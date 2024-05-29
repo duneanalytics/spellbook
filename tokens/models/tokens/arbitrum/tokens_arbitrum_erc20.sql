@@ -62,6 +62,7 @@ FROM (VALUES
     , (0x5402b5f40310bded796c7d0f3ff6683f5c0cffdf, 'sGLP', 18)
     , (0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 'GYD', 18)
     , (0xed65c5085a18fa160af0313e60dcc7905e944dc7, 'ETHx', 18)
+    , (0x221A0f68770658C15B525d0F89F5da2baAB5f321, 'OD', 18)
     , (0xb6b9cb46d9821b507e4f9705ad0d010dc8bf0447, 'TB', 18)
     , (0x4e6b45bb1c7d11402faf72c2d59cabc4085e36f2, 'OOGABOOGA', 18)
     , (0x7cc35c17db6fc7c7894f0ac19932a2c852fa7ed2, 'testDE', 18)

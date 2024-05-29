@@ -1,49 +1,6 @@
 version: 2
 
 models:
-  - name: opensea_v2_polygon_events
-    meta:
-      blockchain: polygon
-      project: opensea
-      contributors: springzh, sohwak
-    config:
-      tags: ['polygon','opensea','trades']
-    description: >
-        Opensea Wyvern trades on Polygon
-    tests:
-      - check_columns_nft_old_events
-      - check_seed:
-          seed_file: ref('opensea_polygon_zeroex_trades_samples')
-          filter:
-            blockchain: polygon
-            project: opensea
-            version: v2
-          check_columns:
-            - buyer
-            - seller
-            - amount_original
-            - platform_fee_amount
-            - royalty_fee_amount
-          match_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - nft_contract_address
-            - token_id
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_type
-            - evt_index
-            - token_id
-    columns:
-      - &unique_trade_id
-        name: unique_trade_id
-        description: "Unique trade ID"
-        tests:
-          - unique
-
   - name: opensea_v3_polygon_events
     meta:
       blockchain: polygon
@@ -85,7 +42,11 @@ models:
             - nft_contract_address
             - token_id
     columns:
-      - *unique_trade_id
+      - &unique_trade_id
+        name: unique_trade_id
+        description: "Unique trade ID"
+        tests:
+          - unique
 
   - name: opensea_v4_polygon_events
     meta:
