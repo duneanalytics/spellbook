@@ -7,10 +7,10 @@
     incremental_strategy = 'merge',
     unique_key = ['block_date','unique_key'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-    post_hook='{{ expose_spells(\'["linea"]\',
-                                "sector",
-                                "tokens",
-                                \'["aalan3", "jeff-dude", "hildobby"]\') }}'
+    post_hook='{{ expose_spells(blockchains = \'["linea"]\',
+                                spell_type = "sector",
+                                spell_name = "tokens",
+                                contributors = \'["aalan3", "jeff-dude", "hildobby"]\') }}'
 )
 }}
 
