@@ -144,14 +144,14 @@ select
                           case
                             when try_cast(srcToken as uint256) = uint256 '0' then '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
                             else try_cast(
-                              from_hex(regexp_replace(srcToken, '(00){12}')) as varchar
-                            ) -- shrink address to to bytes20
+                              from_hex(regexp_replace(srcToken, '^(0x)?(00){12}')) as varchar
+                            ) -- shrink hex to get address format (bytes20)
                           end as srcToken,
                           case
                             when try_cast(destToken as uint256) = uint256 '0' then '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
                             else try_cast(
-                              from_hex(regexp_replace(destToken, '(00){12}')) as varchar
-                            ) -- shrink address to to bytes20
+                              from_hex(regexp_replace(destToken, '^(0x)?(00){12}')) as varchar
+                            ) -- shrink hex to get address format (bytes20)
                           end as destToken,
                           fromAmount,
                           toAmount,
@@ -161,7 +161,8 @@ select
                           output_receivedAmount,
                           JSON_EXTRACT_SCALAR(balancerData, '$.metadata') AS metadata,
                           try_cast(
-                            from_hex(regexp_replace(beneficiary, '(00){12}')) as varchar
+                            from_hex(regexp_replace(beneficiary, '^(0x)?(00){12}')) as varchar
+                            -- shrink hex to get address format (bytes20)
                           ) as beneficiary,
                           partnerAndFee,
                           output_partnerShare,
