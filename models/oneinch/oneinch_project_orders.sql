@@ -91,7 +91,6 @@ orders as (
         , call_trace_address
         , any_value(project) as project
         , any_value(call_selector) as call_selector
-        , any_value(call_trace_address) as call_trace_address
         , any_value(call_from) as call_from
         , any_value(call_to) as call_to
         , any_value(call_gas_used) as call_gas_used
@@ -120,7 +119,6 @@ select
     , call_trace_address
     , project
     , call_selector
-    , call_trace_address
     , call_from
     , call_to
     , call_gas_used
