@@ -3,15 +3,12 @@ name: dbt slim ci
 on:
   workflow_dispatch:
   pull_request:
-    paths:
-      - .github/workflows/spellbook.yaml
-      - .github/workflows/dbt_run.yaml
     paths-ignore:
       - 'scripts/**'
       - 'Pipfile'
       - '.gitignore'
       - 'tokens/**'
-      - 'daily_spellbook'
+      - 'daily_spellbook/**'
 
 concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}

@@ -7,10 +7,6 @@ on:
       - tokens/**
       - .github/workflows/tokens.yaml
       - .github/workflows/dbt_run.yaml
-    paths-ignore:
-      - 'scripts/**'
-      - 'Pipfile'
-      - '.gitignore'
 
 concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}

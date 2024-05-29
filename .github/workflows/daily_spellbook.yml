@@ -7,10 +7,6 @@ on:
       - daily_spellbook/**
       - .github/workflows/daily_spellbook.yaml
       - .github/workflows/dbt_run.yaml
-    paths-ignore:
-      - 'scripts/**'
-      - 'Pipfile'
-      - '.gitignore'
 
 concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}
