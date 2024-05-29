@@ -1,5 +1,31 @@
 # Best practices
 
+## To speed up your development process in PRs, keep these tips in mind:
+
+- Each commit to your feature branch will rerun CI tests ([see example](https://github.com/duneanalytics/spellbook/actions/runs/8202519819/job/22433451880?pr=5519))
+    - This includes *all* modified models on your branch
+    - This includes *all* history of the data
+- Two tips for faster development iteration:
+    - Ensure dbt is installed locally (refer to main `readme`) and run `dbt compile`
+        - This will output raw SQL in `target/` directory to copy/paste and run on Dune directly for initial query testing
+    - Hardcode a `WHERE` filter for only ~7 days of history on large source tables, i.e. `ethereum.transactions`
+        - This will speed up the CI tests and output results quicker -- whether that's an error or fully successful run
+        - Once comfortable with small timeframe, remove filter and let full history run
+
+## Incremental model setup
+- Make sure your unique key columns are *exactly* the same in the model config block, schema yml file, and seed match columns (where applicable)
+- There cannot be nulls in the unique key columns
+    - Be sure to double check key columns are correct or `COALESCE()` as needed on key column(s), otherwise the tests may fail on duplicates
+
+## 🪄 Use the built CI tables for testing 🪄
+
+Once CI completes, you can query the CI tables and errors in dune when it finishes running.
+- For example:
+    - In the `run initial models` and `test initial models`, there will be a schema that looks like this: `test_schema.git_dunesql_4da8bae_sudoswap_v2_base_pool_creations`
+    - This can be temporarily queried in Dune for ~24 hours
+
+Leverage these tables to perform QA testing on Dune query editor -- or even full test dashboards!
+
 ## How to efficiently join tables
 The DuneSQL query planner can reveal a lot of helpful information to efficiently write certain logic within queries. One takeaway is how the planner interprets joins. The order of the tables or subqueries within the joins can improve efficiency of the query, resulting in better performance.
 
