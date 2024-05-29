@@ -1,4 +1,4 @@
-name: dbt slim ci
+name: DBT Spellbook run
 
 on:
   workflow_dispatch:
