@@ -1,5 +1,6 @@
 {{
     config(
+        schema = 'balancer_ethereum', 
         alias = 'balances',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

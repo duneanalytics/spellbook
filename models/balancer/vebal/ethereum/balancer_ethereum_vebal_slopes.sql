@@ -1,7 +1,6 @@
 {{
     config(
-        schema="balancer_ethereum",
-        
+        schema="balancer_ethereum",     
         alias = 'vebal_slopes',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

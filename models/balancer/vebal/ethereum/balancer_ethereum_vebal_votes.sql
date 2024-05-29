@@ -1,5 +1,6 @@
 {{
     config(
+        schema = 'balancer_ethereum',
         alias = 'vebal_votes',
         materialized = 'table',
         file_format = 'delta',
