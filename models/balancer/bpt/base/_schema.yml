@@ -112,7 +112,7 @@ models:
         name: supply
         description: "Supply of the BPT, discounted of premints"
 
-      - name: balancer_v2_base_bpt_supply_changes
+  - name: balancer_v2_base_bpt_supply_changes
     meta:
       blockchain: base
       project: balancer_v2
