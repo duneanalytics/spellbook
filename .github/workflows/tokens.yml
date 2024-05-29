@@ -1,4 +1,4 @@
-name: DBT Token run
+name: DBT Tokens run
 
 on:
   workflow_dispatch:
