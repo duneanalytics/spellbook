@@ -106,7 +106,7 @@ orders as (
         , any_value(taking_amount * price / pow(10, decimals)) filter(where contract_address = taker_asset) as taking_amount_usd
         , any_value(coalesce(order_hash, concat(tx_hash, to_big_endian_32(counter)))) as order_hash
         , any_value(flags) as flags
-    from orders, unnest(assets) as assets(contract_address)
+    from (select * from orders, unnest(assets) as assets(contract_address))
     left join prices using(blockchain, contract_address, minute)
     group by 1, 2, 3, 4
 )
