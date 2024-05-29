@@ -9,10 +9,12 @@ WITH
                           /* cutting down balancer data into bytes32 words to RLP decode assetOffset and assetsSize later */
                           regexp_extract_all(substr(try_cast(data as varchar), 11), '.{64}') as sData
                         FROM
-                          {{ srcTable }} 
-                          {% if is_incremental() %}
-                            WHERE call_block_time >= date_trunc('day', now() - interval '7' day)
-                          {% endif %}      
+                          {{ srcTable }}
+                          WHERE 
+                            call_success = TRUE
+                            {% if is_incremental() %}
+                              AND call_block_time >= date_trunc('day', now() - interval '7' day)
+                            {% endif %}      
                       )
                     SELECT
                       *,{% if inOrOut == 'in' %}
