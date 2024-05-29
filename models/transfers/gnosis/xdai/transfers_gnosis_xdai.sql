@@ -82,7 +82,11 @@ gas_fee_rewards as (
         t1.block_number,
         t2.miner as wallet_address, 
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
-        TRY_CAST(t1.gas_used as INT256) * (TRY_CAST(t1.gas_price as INT256) - TRY_CAST(COALESCE(t2.base_fee_per_gas,0) as INT256)) as amount_raw
+        TRY_CAST(t1.gas_used as INT256) * (
+            TRY_CAST(t1.gas_price as INT256) 
+            - 
+            IF(	t1.type = 'DynamicFee', TRY_CAST(COALESCE(t2.base_fee_per_gas,0) as INT256), CAST(0 AS INT256))
+            ) as amount_raw
     FROM 
         {{ source('gnosis', 'transactions') }} t1
     INNER JOIN
