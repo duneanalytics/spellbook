@@ -15,7 +15,8 @@ basic_yak_swaps AS (
         , s.evt_block_time AS block_time
         , t.index AS tx_index
         , s.evt_tx_hash AS tx_hash
-        , t.gas_used * {% if blockchain == 'arbitrum' %}t.effective_gas_price{% else %}t.gas_price{% endif %} AS tx_fee
+        , t.to AS tx_to_address
+        , t.gas_used * ({% if blockchain == 'arbitrum' %}t.effective_gas_price{% else %}t.gas_price{% endif %} / 1e18) AS tx_fee
         , s.evt_index
         , COUNT(*) OVER (PARTITION BY s.evt_block_number, t.index) AS number_of_swaps_in_tx
         , t."from" AS trader_address
@@ -45,6 +46,7 @@ SELECT
     , s.block_time
     , s.tx_index
     , s.tx_hash
+    , s.tx_to_address
     , s.tx_fee
     , s.evt_index
     , s.number_of_swaps_in_tx
@@ -81,6 +83,7 @@ GROUP BY
     , s.block_time
     , s.tx_index
     , s.tx_hash
+    , s.tx_to_address
     , s.tx_fee
     , s.evt_index
     , s.number_of_swaps_in_tx

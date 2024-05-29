@@ -26,6 +26,7 @@ FROM (
         , block_time
         , tx_index
         , tx_hash
+        , tx_to_address
         , tx_fee
         , swap_evt_index
         , number_of_swaps_in_tx

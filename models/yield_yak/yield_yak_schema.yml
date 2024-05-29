@@ -275,6 +275,9 @@ models:
       - *block_time
       - *tx_index
       - *tx_hash
+      - &tx_to_address
+        name: tx_to_address
+        description: "Address 'to' which this transaction was sent (i.e. which had a function called)"
       - &tx_fee
         name: tx_fee
         description: "Transaction / gas cost in native token for the transaction calculated using (price * gas used)"
@@ -330,6 +333,7 @@ models:
       - *block_time
       - *tx_index
       - *tx_hash
+      - *tx_to_address
       - *tx_fee
       - &swap_evt_index
         name: swap_evt_index
