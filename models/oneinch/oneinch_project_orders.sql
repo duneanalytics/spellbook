@@ -92,7 +92,6 @@ orders as (
         , any_value(block_time) as block_time
         , any_value(project) as project
         , any_value(call_selector) as call_selector
-        , any_value(call_trace_address) as call_trace_address
         , any_value(call_from) as call_from
         , any_value(call_to) as call_to
         , any_value(call_gas_used) as call_gas_used
@@ -105,7 +104,7 @@ orders as (
         , any_value(taking_amount) as taking_amount
         , any_value(making_amount * price / pow(10, decimals)) filter(where contract_address = maker_asset) as making_amount_usd
         , any_value(taking_amount * price / pow(10, decimals)) filter(where contract_address = taker_asset) as taking_amount_usd
-        , any_value(coalesce(order_hash, concat(tx_hash, to_big_endian_32(counter)))) as order_hash
+        , any_value(coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int))))) as order_hash
         , any_value(flags) as flags
     from (select * from orders, unnest(assets) as assets(contract_address))
     left join prices using(blockchain, contract_address, minute)
@@ -122,7 +121,6 @@ select
     , call_trace_address
     , project
     , call_selector
-    , call_trace_address
     , call_from
     , call_to
     , call_gas_used
