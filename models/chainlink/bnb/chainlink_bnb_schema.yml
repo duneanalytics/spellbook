@@ -1312,6 +1312,7 @@ models:
       - &destination_chain_selector
         name: destination_chain_selector
         description: "Destination Chain Selector"
+      - *tx_hash
 
   - name: chainlink_bnb_ccip_send_requested_daily
     meta:
@@ -1375,15 +1376,21 @@ models:
         name: trace_address
         description: "Trace Address"
 
-  - name: chainlink_bnb_ccip_tokens_locked_logs
+  - name: chainlink_bnb_ccip_tokens_transferred_logs
     meta:
       blockchain: "bnb"
       project: chainlink
       contributors: ["linkpool_jon"]
     config:
-      tags: ["chainlink", "ccip", "tokens", "locked", "logs", "bnb"]
+      tags: ["chainlink", "ccip", "tokens", "transferred", "logs", "bnb"]
     description: >
-      Chainlink CCIP Tokens Locked Logs
+      Chainlink CCIP Tokens Transferred Logs
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_hash
@@ -1401,6 +1408,35 @@ models:
       - &total_tokens
         name: total_tokens
         description: "Total Tokens"
+
+  - name: chainlink_bnb_ccip_tokens_transferred
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "tokens", "transferred", "bnb"]
+    description: >
+      Chainlink CCIP Tokens Transferred
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - total_tokens
+            - token_symbol
+    columns:
+      - *blockchain
+      - *block_time
+      - *total_tokens
+      - *destination_blockchain
+      - *token
+      - &token_symbol
+        name: token_symbol
+        description: "Token Symbol"
+      - &token_price
+        name: token_price
+        description: "Token Price"
 
   - name: chainlink_bnb_ccip_transmitted_fulfilled
     meta:

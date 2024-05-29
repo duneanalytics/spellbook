@@ -48,8 +48,8 @@ models:
         description: "Block month column used to partition data in this table"
       - &token_address
         name: token_address
-      - &contract_address
-        name: contract_address
+      - &project_contract_address
+        name: project_contract_address
         tests:
           - not_null
       - &block_time
@@ -97,7 +97,7 @@ models:
       - *amount
       - *fee
       - *token_address
-      - *contract_address
+      - *project_contract_address
       - *block_month
       - *block_time
       - *block_number
@@ -128,7 +128,7 @@ models:
       - *amount
       - *fee
       - *token_address
-      - *contract_address
+      - *project_contract_address
       - *block_month
       - *block_time
       - *block_number
@@ -159,7 +159,7 @@ models:
       - *amount
       - *fee
       - *token_address
-      - *contract_address
+      - *project_contract_address
       - *block_month
       - *block_time
       - *block_number

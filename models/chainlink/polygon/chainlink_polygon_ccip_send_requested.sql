@@ -43,7 +43,8 @@ SELECT
   MAX(token) AS token,
   MAX(fee_token) AS fee_token,
   MAX(destination_selector) AS destination_selector,
-  MAX(destination_blockchain) AS destination_blockchain
+  MAX(destination_blockchain) AS destination_blockchain,
+  MAX(tx_hash) AS tx_hash
 FROM
   combined_logs
 GROUP BY

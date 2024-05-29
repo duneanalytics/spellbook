@@ -114,6 +114,15 @@ swap_fees AS (
     WHERE t.rn = 1
 ),
 
+pool_labels AS (
+    SELECT
+        blockchain, 
+        address AS pool_address,
+        name AS pool_symbol,
+        pool_type
+    FROM {{ ref('labels_balancer_v2_pools') }}
+),
+
 dexs AS (
     SELECT
         swap.evt_block_number AS block_number,
@@ -126,6 +135,8 @@ dexs AS (
         swap.tokenIn AS token_sold_address,
         swap_fees.contract_address AS project_contract_address,
         swap.poolId AS pool_id,
+        l.pool_symbol,
+        l.pool_type,
         swap_fees.swap_fee_percentage / POWER(10, 18) AS swap_fee,
         swap.evt_tx_hash AS tx_hash,
         swap.evt_index
@@ -134,6 +145,9 @@ dexs AS (
         ON swap.evt_block_number = swap_fees.evt_block_number
         AND swap.evt_tx_hash = swap_fees.evt_tx_hash
         AND swap.evt_index = swap_fees.evt_index
+    LEFT JOIN pool_labels l 
+        ON l.blockchain = '{{ blockchain }}'
+        AND l.pool_address = swap_fees.contract_address
     WHERE swap.tokenIn <> swap_fees.contract_address
         AND swap.tokenOut <> swap_fees.contract_address
         {% if is_incremental() %}
@@ -159,7 +173,9 @@ SELECT
     dexs.tx_hash,
     dexs.evt_index,
     dexs.pool_id,
-    dexs.swap_fee
+    dexs.swap_fee,
+    dexs.pool_symbol,
+    dexs.pool_type
 FROM dexs
 
 {% endmacro %}

@@ -15,7 +15,8 @@
     ref('balancer_v2_ethereum_pools_tokens_weights'),
     ref('balancer_v2_gnosis_pools_tokens_weights'),
     ref('balancer_v2_optimism_pools_tokens_weights'),
-    ref('balancer_v2_polygon_pools_tokens_weights')
+    ref('balancer_v2_polygon_pools_tokens_weights'),
+    ref('balancer_v2_zkevm_pools_tokens_weights')
 ] %}
 
 

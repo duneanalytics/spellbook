@@ -1,7 +1,7 @@
 {{ config(
         schema = 'safe',
         alias = 'safes_all',
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","fantom","gnosis","goerli","optimism","polygon","zksync"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","fantom","gnosis","goerli","optimism","polygon","zkevm","zksync"]\',
                                 "project",
                                 "safe",
                                 \'["tschubotz", "danielpartida", "kryptaki"]\') }}'
@@ -20,6 +20,7 @@
 ,ref('safe_goerli_safes')
 ,ref('safe_optimism_safes')
 ,ref('safe_polygon_safes')
+,ref('safe_zkevm_safes')
 ,ref('safe_zksync_safes')
 ] %}
 

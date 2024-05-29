@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: sushiswap_v2_linea
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
+  - name: lynex_linea
+    tables:
+      - name: PairFactory_evt_PairCreated
+      - name: Pair_evt_Swap
+  - name: nile_linea
+    tables:
+      - name: ClPoolFactory_evt_PoolCreated
+      - name: ClPool_evt_Swap
+  - name: echodex_linea
+    tables:
+      - name: EchodexFactory_evt_PairCreated
+      - name: EchodexPair_evt_Swap
+  - name: secta_linea
+    tables:
+      - name: SectaFactory_evt_PairCreated
+      - name: SectaPair_evt_Swap

@@ -16,6 +16,7 @@
     ref('balancer_v2_gnosis_protocol_fee'),
     ref('balancer_v2_optimism_protocol_fee'),
     ref('balancer_v2_polygon_protocol_fee'),
+    ref('balancer_v2_zkevm_protocol_fee'),
 ] %}
 
 SELECT *
