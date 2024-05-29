@@ -14,7 +14,7 @@ with
 orders as (
     select
         *
-        , array[maker_asset, taker_asset] as assets
+        , array[maker_asset, taker_asset] as _assets
         , date_trunc('minute', block_time) as minute
         , row_number() over(partition by blockchain, block_number, tx_hash, project order by call_trace_address) as counter
     from (
@@ -106,7 +106,7 @@ orders as (
         , any_value(taking_amount * price / pow(10, decimals)) filter(where contract_address = taker_asset) as taking_amount_usd
         , any_value(coalesce(order_hash, concat(tx_hash, to_big_endian_32(counter)))) as order_hash
         , any_value(flags) as flags
-    from orders, unnest(assets) as _assets(contract_address)
+    from orders, unnest(_assets) as assets(contract_address)
     left join prices using(blockchain, contract_address, minute)
     group by 1, 2, 3, 4
 )
