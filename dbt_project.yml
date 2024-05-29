@@ -1112,8 +1112,3 @@ models:
       +schema: aerodrome
       base:
         +schema: aerodrome_base
-
-    hivemapper:
-      +schema: hivemapper
-      solana:
-        +schema: hivemapper_solana

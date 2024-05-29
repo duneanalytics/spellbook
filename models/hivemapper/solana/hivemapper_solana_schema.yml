@@ -8,6 +8,14 @@ models:
       contributors: [ilemi, alexus98]
     config:
       tags: ['hivemapper', 'solana', 'reward', 'honey']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - 'tx_id'
+            - 'outer_instruction_index'
+            - 'inner_instruction_index' 
+            - 'block_slot'
+
     description: >
         List of HONEY rewards distributed for contributors
     columns:
@@ -17,6 +25,9 @@ models:
       - name: block_slot
       - name: action
       - name: amount
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "amount / 1e9 >= 0 AND amount / 1e9 <= 10000000" # so far the biggest reward was 125k HONEY
       - name: token_mint_address
       - name: from_owner
       - name: to_owner
@@ -24,8 +35,5 @@ models:
       - name: to_token_account
       - name: tx_signer
       - name: tx_id
-      - name: outer_instruction_index
-      - name: inner_instruction_index
-      - name: outer_executing_account 
         
        

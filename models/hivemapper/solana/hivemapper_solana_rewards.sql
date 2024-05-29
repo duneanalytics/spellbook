@@ -14,7 +14,25 @@
 
 with 
     honey_transfers as (
-        SELECT * FROM {{ ref('tokens_solana_transfers') }} WHERE token_mint_address = '4vMsoUT2BWatFweudnQM1xedRLfJgJ7hswhcpz4xgBTy'
+        SELECT 
+            block_time
+            , block_date
+            , block_slot
+            , "action"
+            , amount
+            , token_mint_address
+            , from_owner
+            , to_owner
+            , from_token_account
+            , to_token_account
+            , tx_signer
+            , tx_id
+        
+        FROM {{ ref('tokens_solana_transfers') }} WHERE token_mint_address = '4vMsoUT2BWatFweudnQM1xedRLfJgJ7hswhcpz4xgBTy'
+
+        {% if is_incremental() %}
+        where {{ incremental_predicate('block_time') }}
+        {% endif %}
     )
     
     , memo_join as (
@@ -36,11 +54,11 @@ with
         WHERE 1=1 
         and contains(account_keys, 'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr') --memo program invoked sometimes not by honey though
         {% if is_incremental() %}
-        and tx.block_time >= (select coalesce(max(block_time), timestamp '2022-11-01') from {{ this }})
+        and {{ incremental_predicate('tx.block_time') }}
         {% endif %}
 
-        and tx.block_time >= now() - interval '7' day -- delete on merge
-    )
+        and tx.block_time >= now() - interval '3' day -- delete on merge
+    ) 
     
 SELECT
 *
