@@ -7,6 +7,8 @@ Please check the type of contribution this pull request is for:
 - [ ] Adding to existing spell lineage
 - [ ] Bug fix
 
+**Note:** You can safely discard any section below which doesn't apply based on selection above
+
 ---
 
 ### For new spell(s)
