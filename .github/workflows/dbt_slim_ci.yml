@@ -19,7 +19,7 @@ jobs:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
     strategy:
       matrix:
-        project: [ 'tokens', 'spellbook' ]
+        project: [ 'tokens', 'spellbook', 'daily_spellbook' ]
       max-parallel: 1
     timeout-minutes: 90
 
@@ -37,6 +37,9 @@ jobs:
           elif [[ "${{ matrix.project }}" == "spellbook" ]]; then
             echo "PROJECT_DIR=." >> $GITHUB_ENV
             echo "S3_LOCATION=s3://manifest-spellbook-dunesql/spellbook" >> $GITHUB_ENV
+            elif [[ "${{ matrix.project }}" == "daily_spellbook" ]]; then
+            echo "PROJECT_DIR=." >> $GITHUB_ENV
+            echo "S3_LOCATION=s3://manifest-spellbook-dunesql/daily_spellbook" >> $GITHUB_ENV
           fi
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_dunesql_$GIT_SHA"
