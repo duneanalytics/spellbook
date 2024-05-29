@@ -1,10 +1,10 @@
 {{ config(
     schema = 'balancer',
     alias = 'protocol_fee',
-    post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon", "gnosis", "optimism","avalanche_c", "base"]\',
+    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
                             "project",
                             "balancer",
-                            \'["viniabussafi"]\') }}'
+                            contributors = \'["viniabussafi"]\') }}'
     )
 }}
 

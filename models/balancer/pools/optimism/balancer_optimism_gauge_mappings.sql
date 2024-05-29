@@ -1,16 +1,15 @@
 {{
     config(
         schema = 'balancer_optimism',
-        
         alias = 'gauge_mappings',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['pool_contract', 'incentives_contract'],
         post_hook='{{ expose_spells(\'["optimism"]\',
-                                    "project",
-                                    "balancer",
-                                    \'["msilb7"]\') }}'
+                                spell_type = "project",
+                                spell_name = "balancer",
+                                contributors = \'["msilb7"]\') }}'
     ) 
 }}
 

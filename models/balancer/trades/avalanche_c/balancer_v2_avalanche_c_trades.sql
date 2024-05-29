@@ -4,10 +4,10 @@
         alias = 'trades',
         materialized = 'view',
         post_hook = '{{ expose_spells(\'["avalanche_c"]\',
-                                        "project",
-                                        "balancer_v2",
-                                        \'["mendesfabio", "jacektrocinski", "thetroyharris", "tomfutago", "viniabussafi"]\') }}'
-    )
+                                spell_type = "project",
+                                spell_name = "balancer",
+                                contributors = \'["mendesfabio", "jacektrocinski", "thetroyharris", "tomfutago", "viniabussafi"]\') }}'
+   )
 }}
 
 WITH

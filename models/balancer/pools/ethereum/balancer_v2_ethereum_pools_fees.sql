@@ -1,16 +1,11 @@
 {{
     config(
         schema = 'balancer_v2_ethereum',
-        
         alias = 'pools_fees',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_number', 'tx_hash', 'index'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "balancer_v2",
-                                    \'["metacrypto", "jacektrocinski", "thetroyharris", "viniabussafi"]\') }}'
+        unique_key = ['block_number', 'tx_hash', 'index']
     ) 
 }}
 

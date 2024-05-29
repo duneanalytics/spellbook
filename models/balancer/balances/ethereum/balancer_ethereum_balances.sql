@@ -3,9 +3,9 @@
         schema = 'balancer_ethereum', 
         alias = 'balances',
         post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "balancer",
-                                    \'["metacrypto", "jacektrocinski", "viniabussafi"]\') }}'
+                                    spell_type = "project",
+                                    spell_name = "balancer",
+                                    contributors = \'["metacrypto", "jacektrocinski", "viniabussafi"]\') }}'
     ) 
 }}
 

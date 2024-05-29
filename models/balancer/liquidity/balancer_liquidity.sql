@@ -2,11 +2,11 @@
         schema = 'balancer',
         alias = 'liquidity', 
         
-        post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis","avalanche_c", "base", "zkevm" 
+        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
         ]\',
-                                "project",
-                                "balancer",
-                                \'["viniabussafi"]\') }}'
+                                spell_type = "project",
+                                spell_name = "balancer",
+                                contributors = \'["viniabussafi"]\') }}'
         )
 }}
 

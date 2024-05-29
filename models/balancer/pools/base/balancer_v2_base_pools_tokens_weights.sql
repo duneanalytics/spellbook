@@ -2,7 +2,6 @@
     config(
         schema='balancer_v2_base',
         alias = 'pools_tokens_weights',
-        
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

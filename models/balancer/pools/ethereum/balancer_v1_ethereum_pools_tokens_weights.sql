@@ -2,15 +2,10 @@
     config(
         schema='balancer_v1_ethereum',
         alias = 'pools_tokens_weights',
-        
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['pool_id', 'token_address'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "balancer_v1",
-                                    \'["metacrypto", "jacektrocinski"]\') }}'
+        unique_key = ['pool_id', 'token_address']
     )
 }}
 

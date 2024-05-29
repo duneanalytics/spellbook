@@ -6,10 +6,6 @@
       , file_format = 'delta'
       , incremental_strategy = 'merge'
       , unique_key = ['tx_hash', 'evt_index']
-      , post_hook='{{ expose_spells(\'["avalanche_c"]\',
-                                  "project",
-                                  "balancer_v2",
-                                  \'["hildobby", "viniabussafi"]\') }}'
   )
 }}
 

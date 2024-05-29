@@ -1,10 +1,10 @@
 {{ config(
     schema = 'balancer',
     alias = 'bpt_supply_changes_daily',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
-                                "project",
-                                "balancer",
-                                \'["viniabussafi"]\') }}'
+    post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
+                                spell_type = "project",
+                                spell_name = "balancer",
+                                contributors = \'["viniabussafi"]\') }}'
     )
 }}
 

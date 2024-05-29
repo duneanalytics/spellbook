@@ -6,11 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['block_number', 'tx_hash', 'index'],
-        post_hook='{{ expose_spells(\'["zkevm"]\',
-                                    "project",
-                                    "balancer_v2",
-                                    \'["metacrypto", "jacektrocinski", "thetroyharris", "viniabussafi"]\') }}'
-    ) 
+    )
 }}
 
 {% set event_signature = '0xa9ba3ffe0b6c366b81232caab38605a0699ad5398d6cce76f91ee809e322dafc' %}
