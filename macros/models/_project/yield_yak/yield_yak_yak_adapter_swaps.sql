@@ -57,9 +57,9 @@ SELECT
     , s.amount_out AS swap_amount_out
     , COUNT(*) OVER (PARTITION BY s.block_number, s.tx_index, s.evt_index) AS number_of_hops
     , l.index AS adapter_evt_index
-    , CAST(l.contract_address AS varchar) AS adapter_address
-    , CAST(varbinary_substring(l.topic1, 13) AS varchar) AS adapter_token_in_address
-    , CAST(varbinary_substring(l.topic2, 13) AS varchar) AS adapter_token_out_address
+    , l.contract_address AS adapter_address
+    , varbinary_substring(l.topic1, 13) AS adapter_token_in_address
+    , varbinary_substring(l.topic2, 13) AS adapter_token_out_address
     , varbinary_to_uint256(varbinary_substring(l.data, 1, 32)) AS adapter_amount_in
     , varbinary_to_uint256(varbinary_substring(l.data, 33, 32)) AS adapter_amount_out
 FROM basic_yak_swaps s
