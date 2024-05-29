@@ -11,10 +11,10 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - 'tx_id'
-            - 'outer_instruction_index'
-            - 'inner_instruction_index' 
-            - 'block_slot'
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index 
+            - block_slot
 
     description: >
         List of HONEY rewards distributed for contributors

@@ -27,6 +27,9 @@ with
             , to_token_account
             , tx_signer
             , tx_id
+            , outer_instruction_index
+            , inner_instruction_index
+            , outer_executing_account
         
         FROM {{ ref('tokens_solana_transfers') }} WHERE token_mint_address = '4vMsoUT2BWatFweudnQM1xedRLfJgJ7hswhcpz4xgBTy'
 
