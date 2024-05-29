@@ -115,7 +115,7 @@
         , ('0x6131b5fae19ea4f9d964eac0408e4408b66337b5', 'true', 'Kyber'                , 'MetaAggregationRouterV2' , ['optimism'])
         , ('0xdf1a1b60f2d438842916c0adc43748768353ec25', 'true', 'Kyber'                , 'AggregationRouterV2'     , ['polygon','fantom'])
         , ('0xb18d4f69627f8320619a696202ad2c430cef7c53', 'true', 'LevinSwap'            , 'UniswapV2Router02'       , ['gnosis'])
-        , ('0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae', 'true', 'LiFi'                 , 'DiamondV2'               , ['bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom'])
+        , ('0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae', 'true', 'LiFi'                 , 'DiamondV2'               , ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom'])
         , ('0x62c1a0d92b09d0912f7bb9c96c5ecdc7f2b87059', 'true', 'Mdex'                 , 'MdexRouter'              , ['bnb'])
         , ('0x7dae51bd3e3376b8c7c4900e9107f12be3af1ba8', 'true', 'Mdex'                 , 'MdexRouter'              , ['bnb'])
         , ('0xbbf1ee38152e9d8e3470dc47947eaa65dca94913', 'true', 'Maverick'             , 'Router'                  , ['ethereum'])
