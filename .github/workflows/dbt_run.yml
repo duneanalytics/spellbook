@@ -1,26 +1,16 @@
-# .github/workflows/app.yaml
-name: dbt slim ci
+name: DBT Run Reusable Workflow
 
 on:
-  workflow_dispatch:
-  pull_request:
-    paths-ignore:
-      - 'scripts/**'
-      - 'Pipfile'
-      - '.gitignore'
-
-concurrency:
-  group:  ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
+  workflow_call:
+    inputs:
+      project:
+        description: 'DBT run for project'
+        required: true
+        type: string
 
 jobs:
   dbt-test:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
-    strategy:
-      matrix:
-        project: [ 'tokens', 'spellbook' ]
-      max-parallel: 1
     timeout-minutes: 90
 
     steps:
@@ -28,16 +18,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup variables
-        run: |
+        run: | # Spellbook is a special case because it's not a subdirectory
           echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
           echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
-          if [[ "${{ matrix.project }}" == "tokens" ]]; then
-            echo "PROJECT_DIR=tokens" >> $GITHUB_ENV
-            echo "S3_LOCATION=s3://manifest-spellbook-dunesql/tokens" >> $GITHUB_ENV
-          elif [[ "${{ matrix.project }}" == "spellbook" ]]; then
-            echo "PROJECT_DIR=." >> $GITHUB_ENV
-            echo "S3_LOCATION=s3://manifest-spellbook-dunesql/spellbook" >> $GITHUB_ENV
+          echo "S3_LOCATION=s3://manifest-spellbook-dunesql/${{inputs.project}}" >> $GITHUB_ENV
+          PROJECT_DIR=${{ inputs.project }}
+          if [[ "$PROJECT_DIR" == "spellbook" ]]; then
+            PROJECT_DIR="."
           fi
+          echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_dunesql_$GIT_SHA"
 
