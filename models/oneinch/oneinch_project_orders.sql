@@ -89,6 +89,7 @@ orders as (
         , block_number
         , tx_hash
         , call_trace_address
+        , any_value(block_time) as block_time
         , any_value(project) as project
         , any_value(call_selector) as call_selector
         , any_value(call_trace_address) as call_trace_address
@@ -116,6 +117,7 @@ orders as (
 select
     blockchain
     , block_number
+    , block_time
     , tx_hash
     , call_trace_address
     , project
