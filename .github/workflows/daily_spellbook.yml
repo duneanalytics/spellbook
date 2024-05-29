@@ -5,8 +5,8 @@ on:
   pull_request:
     paths:
       - daily_spellbook/**
-      - .github/workflows/daily_spellbook.yaml
-      - .github/workflows/dbt_run.yaml
+      - .github/workflows/daily_spellbook.yml
+      - .github/workflows/dbt_run.yml
 
 concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}

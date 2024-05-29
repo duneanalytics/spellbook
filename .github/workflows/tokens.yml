@@ -5,8 +5,8 @@ on:
   pull_request:
     paths:
       - tokens/**
-      - .github/workflows/tokens.yaml
-      - .github/workflows/dbt_run.yaml
+      - .github/workflows/tokens.yml
+      - .github/workflows/dbt_run.yml
 
 concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}
