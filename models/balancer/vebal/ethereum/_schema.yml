@@ -89,3 +89,4 @@ models:
         description: "Address of the wallet which voted for the gauge"
       - name: vote
         description: "Weight of the vote performed by the provider for the gauge"
+        
