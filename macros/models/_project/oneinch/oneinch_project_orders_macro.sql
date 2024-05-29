@@ -697,11 +697,11 @@ logs as (
             , try(bytearray_to_uint256(trade['taker_min_amount'])) as call_taker_min_amount
             , try(bytearray_to_uint256(trade['making_amount'])) as call_making_amount
             , try(bytearray_to_uint256(trade['taking_amount'])) as call_taking_amount
-            , try(bytearray_to_bigint(substr(trade['start'], 24 + 1, 8))) as call_start
-            , try(bytearray_to_bigint(substr(trade['end'], 24 + 1, 8))) as call_end
-            , try(bytearray_to_bigint(substr(trade['deadline'], 24 + 1, 8))) as call_deadline
-            , try(bytearray_to_bigint(trade['maker_fee_amount'])) as call_maker_fee_amount
-            , try(bytearray_to_bigint(trade['taker_fee_amount'])) as call_taker_fee_amount
+            , try(bytearray_to_uint256(substr(trade['start'], 24 + 1, 8))) as call_start
+            , try(bytearray_to_uint256(substr(trade['end'], 24 + 1, 8))) as call_end
+            , try(bytearray_to_uint256(substr(trade['deadline'], 24 + 1, 8))) as call_deadline
+            , try(bytearray_to_uint256(trade['maker_fee_amount'])) as call_maker_fee_amount
+            , try(bytearray_to_uint256(trade['taker_fee_amount'])) as call_taker_fee_amount
             , trade['fee_asset'] as call_fee_asset
             , try(bytearray_to_uint256(trade['fee_max_amount'])) as call_fee_max_amount
             , try(bytearray_to_uint256(trade['fee_min_amount'])) as call_fee_min_amount
