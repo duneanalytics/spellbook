@@ -21,7 +21,7 @@ jobs:
       matrix:
         project: [ 'tokens', 'spellbook' ]
       max-parallel: 1
-    timeout-minutes: 90
+    timeout-minutes: 250
 
     steps:
       - name: Check out repository code
