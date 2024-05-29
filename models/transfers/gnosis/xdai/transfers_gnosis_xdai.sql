@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transfer_type', 'tx_hash', 'trace_address', 'wallet_address', 'block_time'], 
-    alias = 'xdai_v2',
+    alias = 'xdai',
     post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "sector",
                                     "transfers",
