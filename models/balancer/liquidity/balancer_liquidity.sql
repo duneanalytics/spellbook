@@ -3,7 +3,6 @@
         alias = 'liquidity', 
         
         post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
-        ]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
                                 contributors = \'["viniabussafi"]\') }}'
