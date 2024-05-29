@@ -104,7 +104,7 @@ orders as (
         , any_value(taking_amount) as taking_amount
         , any_value(making_amount * price / pow(10, decimals)) filter(where contract_address = maker_asset) as making_amount_usd
         , any_value(taking_amount * price / pow(10, decimals)) filter(where contract_address = taker_asset) as taking_amount_usd
-        , any_value(coalesce(order_hash, concat(tx_hash, to_big_endian_32(counter)))) as order_hash
+        , any_value(coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int))))) as order_hash
         , any_value(flags) as flags
     from (select * from orders, unnest(assets) as assets(contract_address))
     left join prices using(blockchain, contract_address, minute)
