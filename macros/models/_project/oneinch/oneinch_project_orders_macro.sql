@@ -459,7 +459,7 @@
             "0x13d79a0b": {
                 "name": "settle",
                 "event": "0xa07a543ab8a018198e99ca0184c93fe9050a79400a0a723441f84de1d972cc17",
-                "number": "bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 24 + 1, 8))",
+                "number": "coalesce(try(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 24 + 1, 8))), 1)",
                 "_order_beginning": "4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8))",
                 "maker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*0 + 24 + 1, 8)) + 1) + 12 + 1, 20)",
                 "taker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*1 + 24 + 1, 8)) + 1) + 12 + 1, 20)",
@@ -515,7 +515,7 @@
             "0x0d7a16c3": {
                 "name": "executeBatch",
                 "event": "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
-                "number":           "bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8))",
+                "number":           "coalesce(try(bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8))), 1)",
                 "_order_beginning": "4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8))",
                 "maker":            "substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8)) + 32*14 + 12 + 1, 20)",
                 "receiver":         "substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8)) + 32*12 + 24 + 1, 8)) + 32*8 + 12 + 1, 20)",
@@ -537,7 +537,7 @@
             "0x13fb72c7": {
                 "name": "executeBatchWithCallback",
                 "event": "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
-                "number":           "bytearray_to_bigint(substr(input, 4 + 32*3 + 24 + 1, 8))",
+                "number":           "coalesce(try(bytearray_to_bigint(substr(input, 4 + 32*3 + 24 + 1, 8))), 1)",
                 "_order_beginning": "4 + 32*3 + bytearray_to_bigint(substr(input, 4 + 32*3 + 32*(x - 1) + 24 + 1, 8))",
                 "maker":            "substr(input, 4 + 32*3 + bytearray_to_bigint(substr(input, 4 + 32*3 + 32*(x - 1) + 24 + 1, 8)) + 32*14 + 12 + 1, 20)",
                 "receiver":         "substr(input, 4 + 32*3 + bytearray_to_bigint(substr(input, 4 + 32*3 + 32*(x - 1) + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + 32*3 + bytearray_to_bigint(substr(input, 4 + 32*3 + 32*(x - 1) + 24 + 1, 8)) + 32*12 + 24 + 1, 8)) + 32*8 + 12 + 1, 20)",
@@ -594,7 +594,7 @@
                 "name": "settleMulti",
                 "event": "0xadd7095becdaa725f0f33243630938c861b0bba83dfd217d4055701aa768ec2e",
                 "_order_beginning": "4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8))",
-                "number":           "greatest(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)), bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)))",
+                "number":           "coalesce(try(greatest(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)), bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)))), 1)",
                 "maker":            "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*2 + 12 + 1, 32)",
                 "taker":            "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 12 + 1, 32)",
                 "receiver":         "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*8 + 12 + 1, 32)",
@@ -685,7 +685,7 @@ logs as (
             , call_error
             , method
             , topic0
-            , try(from_big_endian_64(trade['trade'])) as call_trade
+            , trade['trade'] as call_trade
             , trade['maker'] as call_maker
             , trade['taker'] as call_taker
             , trade['receiver'] as call_receiver
@@ -849,7 +849,7 @@ select
     , coalesce(log_fee_amount, call_fee_amount) as fee_amount
     , coalesce(log_fee_receiver, call_fee_receiver) as fee_receiver
     , coalesce(log_nonce, call_nonce) as order_nonce
-    , coalesce(log_order_hash, call_order_hash) as order_hash
+    , coalesce(log_order_hash, call_order_hash, to_big_endian_64(call_trade_counter)) as order_hash
     , array[input] as call_input
     , array[output] as call_output
     , index as event_index
@@ -864,5 +864,6 @@ from joined
 where
     trades = 1
     or call_trade_counter = log_counter
+    or log_counter is null
 
 {% endmacro %}
