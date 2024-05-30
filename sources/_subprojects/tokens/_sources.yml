@@ -324,4 +324,20 @@ sources:
           - name: vault_token
             data_type: varbinary
 
-
+  - name: tokens_nft
+    database: your_database_name
+    schema: your_schema_name
+    tables:
+      - name: your_table_name
+        description: Crosschain NFT (ERC721 and ERC1155) tokens
+        columns:
+          - name: blockchain
+            description: "The blockchain where the NFT token is deployed"
+          - name: contract_address
+            description: "NFT Token's contract address"
+          - name: name
+            description: "NFT collection name"
+          - name: symbol
+            description: "NFT collection symbol"
+          - name: standard
+            description: "NFT collection standard"
