@@ -46,7 +46,8 @@
  ref('lido_liquidity_base_uniswap_v3_pools'),
  ref('lido_liquidity_zksync_syncswap_pools'),
  ref('lido_liquidity_linea_syncswap_pools'),
- ref('lido_liquidity_scroll_syncswap_pools')
+ ref('lido_liquidity_scroll_syncswap_pools'),
+ ref('lido_liquidity_scroll_zebra_pools')
 ] %}
 
 {% set project_start_date =  '2020-12-15'%} 
