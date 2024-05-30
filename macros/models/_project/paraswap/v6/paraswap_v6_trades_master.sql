@@ -98,7 +98,7 @@ select
   cast(date_trunc('day', call_block_time) as date) as block_date,
   cast(date_trunc('month', call_block_time) as date) as block_month,
   'paraswap' AS project,
-  '6' as version,
+  '6.1' as version,
   call_block_time as blockTime,
   call_block_number as blockNumber,
   call_tx_hash as txHash,

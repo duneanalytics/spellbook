@@ -9,4 +9,4 @@
     )
 }}
 
-{{ paraswap_v6_trades_master('optimism', 'paraswap', 'AugustusV6') }}
+{{ paraswap_v6_trades_master('optimism', 'paraswap', 'AugustusV6_1') }}

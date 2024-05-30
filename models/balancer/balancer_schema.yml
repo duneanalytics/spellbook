@@ -1,92 +1,6 @@
 version: 2
 
 models:
-  - name: balancer_trades
-    meta:
-      blockchain: arbitrum, ethereum, optimism, polygon, gnosis
-      sector: dex
-      contributors: bizzyvinci, thetroyharris
-    config:
-      tags: ['balancer', 'amm', 'trades', 'dex']
-    description: >
-      DEX trades on balancer on all chains
-    columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
-      - &project
-        name: project
-        description: "Project name (balancer)"
-      - &version
-        name: version
-        description: "Version of the project"
-      - &block_month
-        name: block_month
-        description: "Block month in UTC"
-      - &block_date
-        name: block_date
-        description: "Block date in UTC"
-      - &block_time
-        name: block_time
-        description: 'Block time in UTC'
-      - &token_bought_symbol
-        name: token_bought_symbol
-        description: "Token symbol for token bought in the trade"
-      - &token_sold_symbol
-        name: token_sold_symbol
-        description: "Token symbol for token sold in the trade"
-      - &token_pair
-        name: token_pair
-        description: "Token symbol pair for each token involved in the trade"
-      - &token_bought_amount
-        name: token_bought_amount
-        description: "Value of the token bought at time of execution in the original currency"
-      - &token_sold_amount
-        name: token_sold_amount
-        description: "Value of the token sold at time of execution in the original currency"
-      - &token_bought_amount_raw
-        name: token_bought_amount_raw
-        description: "Raw value of the token bought at time of execution in the original currency"
-      - &token_sold_amount_raw
-        name: token_sold_amount_raw
-        description: "Raw value of the token sold at time of execution in the original currency"
-      - &amount_usd
-        name: amount_usd
-        description: "USD value of the trade at time of execution"
-      - &token_bought_address
-        name: token_bought_address
-        description: "Contract address of the token bought"
-      - &token_sold_address
-        name: token_sold_address
-        description: "Contract address of the token sold"
-      - &taker
-        name: taker
-        description: "Address of trader who purchased a token"
-      - &maker
-        name: maker
-        description: "Address of trader who sold a token"
-      - &pool_id
-        name: pool_id
-        description: "Pool id"
-      - &swap_fee
-        name: swap_fee
-        description: 'Swap fee'
-      - &project_contract_address
-        name: project_contract_address
-        description: "Pool address"
-      - &tx_hash
-        name: tx_hash
-        description: 'Transaction hash'
-      - &tx_from
-        name: tx_from
-        description: "transaction.from"
-      - &tx_to
-        name: tx_to
-        description: "transaction.to"
-      - &evt_index
-        name: evt_index
-        description: 'Event index'
-
   - name: balancer_gauge_mappings
     meta:
       blockchain: optimism
@@ -97,13 +11,21 @@ models:
     description: >
       Gauge to Pool mappings for balancer on all chains
     columns:
-      - *blockchain
-      - *project
-      - *version
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project name (balancer)"
+      - &version
+        name: version
+        description: "Version of the project"
       - &pool_contract
         name: pool_contract
         description: "Address of the liquidity pool contract"
-      - *pool_id
+      - &pool_id
+        name: pool_id
+        description: "Pool id"
       - &incentives_contract
         name: incentives_contract
         description: "Address of the contract where incentives are stored and emitted."
@@ -122,7 +44,9 @@ models:
       - &evt_tx_hash
         name: evt_tx_hash
         description: 'Tx Hash'
-      - *evt_index
+      - &evt_index
+        name: evt_index
+        description: 'Event index'
 
   - name: balancer_flashloans
     meta:
@@ -245,7 +169,9 @@ models:
       - *blockchain
       - name: version
       - *contract_address
-      - *block_date
+      - &block_date
+        name: block_date
+        description: "Block date in UTC"
       - *evt_tx_hash
       - *evt_index
       - *evt_block_time
@@ -404,3 +330,36 @@ models:
       - name: pool_id
       - name: project
       - name: blockchain
+
+  - name: balancer_pools_metrics_daily
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      contributors: viniabussafi, metacrypto
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
+    description: >
+      This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - project_contract_address
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_date
+      - name: project_contract_address
+      - name: pool_symbol
+      - name: pool_type
+      - name: swap_amount_usd
+        description: "Daily swap volume on a pool, in USD"
+      - name: tvl_usd
+        description: "Total Value Locked on a pool, in USD"
+      - name: tvl_eth
+        description: "Total Value Locked on a pool, in eth"
+      - name: fee_amount_usd
+        description: "Daily fees collected on a pool, in USD"
