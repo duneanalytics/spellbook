@@ -154,7 +154,7 @@ FROM
             and tok.blockchain = '{{blockchain}}'
         LEFT JOIN namespaces ec ON etxs.to=ec.address
         {%- if blockchain == 'optimism' %}
-        LEFT JOIN {{ ref('tokens_optimism_nft_bridged_mapping') }} as bm
+        LEFT JOIN {{ source('tokens_optimism', 'nft_bridged_mapping') }} as bm
             ON bm.contract_address=nft_mints.contract_address
         {%- endif -%}
         {% if is_incremental() %}
