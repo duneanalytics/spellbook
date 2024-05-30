@@ -7,10 +7,12 @@ WITH only_relevant AS (
     FROM {{token_transfers}} tr
     INNER JOIN {{transactions}} txs ON txs.block_number = tr.block_number
         AND txs.index = tr.tx_index
+        AND txs.block_time > NOW() - interval '6' month
         {% if is_incremental() %}
         AND {{ incremental_predicate('txs.block_time') }}
         {% endif %}
     WHERE tr."from"=tr.tx_from
+    AND tr.block_time > NOW() - interval '6' month
     {% if is_incremental() %}
     AND {{ incremental_predicate('tr.block_time') }}
     {% endif %}
@@ -46,6 +48,7 @@ WITH only_relevant AS (
         AND "RIGHT"(CAST(attack.tx_to AS varchar), 4)="RIGHT"(CAST(normal.tx_to AS varchar), 4)
         AND normal.amount_raw > 0
     WHERE attack.amount_raw > 0
+    AND attack.block_time > NOW() - interval '6' month
     {% if is_incremental() %}
     AND {{ incremental_predicate('attack.block_time') }}
     {% endif %}
