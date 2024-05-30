@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'bebop',
+        schema = 'bebop_base',
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["polygon", "arbitrum", "ethereum", "bnb", "base", "optimism", "scroll", "zksync"]\',
+        post_hook='{{ expose_spells(\'["base"]\',
                         "project",
                         "bebop",
                         \'["alekss"]\') }}'
@@ -10,14 +10,7 @@
 
 
 {% set bebop_models = [
-    ref('bebop_polygon_trades'),
-    ref('bebop_ethereum_trades'),
-    ref('bebop_arbitrum_trades'),
-    ref('bebop_bnb_trades'),
-    ref('bebop_base_trades'),
-    ref('bebop_optimism_trades'),
-    ref('bebop_scroll_trades'),
-    ref('bebop_zksync_trades')
+    ref('bebop_jam_base_trades')
 ] %}
 
 SELECT *
