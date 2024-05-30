@@ -1,6 +1,7 @@
 {{
     config(
          alias= 'edition_metadata'
+        ,schema = 'sound_xyz_optimism'
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'

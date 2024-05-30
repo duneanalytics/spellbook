@@ -1,7 +1,7 @@
 {{
     config(
         alias = 'edition_metadata'
-        
+        ,schema = 'decent_optimism'
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
@@ -13,7 +13,7 @@
     )
 }}
 
-SELECT 
+SELECT
 contract_address AS sdk_contract_address,
 call_tx_hash AS created_tx_hash,
 call_block_time AS created_block_time,
@@ -54,7 +54,7 @@ AND ce.call_block_time >= NOW() - interval '7' day
 
 UNION ALL
 
-SELECT 
+SELECT
 contract_address AS sdk_contract_address,
 call_tx_hash AS created_tx_hash,
 call_block_time AS created_block_time,
@@ -96,7 +96,7 @@ AND ce.call_block_time >= NOW() - interval '7' day
 
 UNION ALL
 
-SELECT 
+SELECT
 contract_address AS sdk_contract_address,
 call_tx_hash AS created_tx_hash,
 call_block_time AS created_block_time,
@@ -137,7 +137,7 @@ AND ce.call_block_time >= NOW() - interval '7' day
 
 UNION ALL
 
-SELECT 
+SELECT
 contract_address AS sdk_contract_address,
 call_tx_hash AS created_tx_hash,
 call_block_time AS created_block_time,

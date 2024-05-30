@@ -1,6 +1,7 @@
 {{
     config(
           alias = 'edition_metadata'
+        ,schema = 'zora_optimism'
         ,materialized = 'incremental'
         ,file_format = 'delta'
         ,incremental_strategy = 'merge'
@@ -20,7 +21,7 @@ call_block_time AS created_block_time,
 
 name AS edition_name,
 description AS edition_description,
-CASE 
+CASE
     WHEN SUBSTRING(symbol, 1, 1) = '$' THEN SUBSTRING(symbol, 2)
     ELSE symbol
 END AS edition_symbol,
@@ -54,7 +55,7 @@ call_block_time AS created_block_time,
 
 name AS edition_name,
 CAST(NULL as varchar) AS edition_description,
-CASE 
+CASE
     WHEN SUBSTRING(symbol, 1, 1) = '$' THEN SUBSTRING(symbol, 2)
     ELSE symbol
 END AS edition_symbol,
@@ -91,7 +92,7 @@ FROM (
     call_tx_hash AS created_tx_hash,
     call_block_number AS created_block_number,
     call_block_time AS created_block_time,
-    
+
     name AS edition_name,
     CAST(NULL AS varchar) AS edition_description,
     name AS edition_symbol,
@@ -101,16 +102,16 @@ FROM (
     CAST(NULL as varchar) AS animation_uri,
     newContractURI AS metadata_contract_uri,
     CAST(NULL as varchar) AS metadata_uri_base,
-    
+
     cast( json_extract_scalar(defaultRoyaltyConfiguration, '$.royaltyRecipient') as varbinary) AS funds_recipient,
     defaultAdmin AS default_admin,
-    
+
     '1155 Edition' as mint_type,
     CAST(NULL AS varchar) AS sale_config,
     ROW_NUMBER() OVER (PARTITION BY output_0 ORDER BY call_trace_address DESC) as rn
-    
+
     FROM {{ source('zora_optimism','ZoraCreator1155Factory_call_createContract') }}
-    
+
     WHERE call_success = true
     AND output_0 IS NOT NULL
     {% if is_incremental() %}
