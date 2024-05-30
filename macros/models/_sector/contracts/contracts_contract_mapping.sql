@@ -41,7 +41,7 @@ WITH get_contracts as (
     as {{ col }}
     {% endfor %}
   FROM (
-  select 
+  select
     c.blockchain
     ,c.trace_creator_address
     ,c.contract_address
@@ -50,10 +50,10 @@ WITH get_contracts as (
     ,t_mapped.symbol as token_symbol
     ,c.creator_address
     ,c.trace_deployer_address
-    ,c.created_time 
+    ,c.created_time
     ,c.created_month
 
-    
+
     ,c.created_tx_hash
     ,c.created_block_number
     ,c.created_tx_from
@@ -75,7 +75,7 @@ WITH get_contracts as (
     ,c.code_deploy_rank_by_chain
     ,c.is_self_destruct
     ,map_rank
-  from 
+  from
     (
       SELECT
       blockchain, trace_creator_address, contract_address, creator_address, trace_deployer_address,created_time, created_month
@@ -86,7 +86,7 @@ WITH get_contracts as (
       ,1 as map_rank
       FROM {{ ref('contracts_' + chain + '_base_iterated_creators') }} b
 
-      UNION ALL 
+      UNION ALL
 
       SELECT
       p.blockchain, trace_creator_address, contract_address, creator_address, creator_address AS trace_deployer_address, created_time, DATE_TRUNC('month',created_time) AS created_month
@@ -102,7 +102,7 @@ WITH get_contracts as (
       WHERE p.blockchain = '{{chain}}'
 
     ) c
-  left join {{ ref('contracts_contract_creator_address_list') }} as cc 
+  left join {{ ref('contracts_contract_creator_address_list') }} as cc
     on c.creator_address = cc.creator_address
   left join {{ ref('contracts_contract_creator_address_list') }} as ccd
     on c.trace_creator_address = ccd.creator_address
@@ -119,9 +119,9 @@ WITH get_contracts as (
         -- WHERE e.blockchain = '{{chain}}'
         GROUP BY 1,2,3,4
       UNION ALL
-        select 
+        select
           '{{chain}}' as bblockchain ,t.contract_address ,t.name as symbol, standard AS token_standard
-        from {{ ref('tokens_' + chain + '_nft') }} as t --chain-specific NFT model
+        from {{ source('tokens_' + chain, 'nft') }} as t --chain-specific NFT model
         -- WHERE t.blockchain = '{{chain}}'
         group by 1, 2, 3, 4
       ) as t_mapped
@@ -129,7 +129,7 @@ WITH get_contracts as (
     AND c.blockchain = t_mapped.blockchain
   group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29
   ) a
-  where contract_address is not NULL 
+  where contract_address is not NULL
   group by 1,2
 )
 
@@ -166,7 +166,7 @@ FROM (
   , created_tx_to, created_tx_method_id, created_tx_index
   , top_level_contract_address, top_level_time, top_level_tx_hash, top_level_block_number
   , top_level_tx_from, top_level_tx_to , top_level_tx_method_id
-  , code_bytelength , token_standard 
+  , code_bytelength , token_standard
   , code
   , code_deploy_rank_by_chain
   , is_self_destruct
@@ -175,7 +175,7 @@ FROM (
   , is_deterministic_deployer_deployed
 
   FROM (
-    select 
+    select
       cast( created_month as date) AS created_month
       ,c.blockchain
       ,c.trace_creator_address
@@ -212,7 +212,7 @@ FROM (
       ,c.top_level_tx_from
       ,c.top_level_tx_to
       ,c.top_level_tx_method_id
-      
+
       ,c.code_bytelength
       ,c.token_standard
       ,c.code
@@ -220,7 +220,7 @@ FROM (
       ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
       ,CASE WHEN c.top_level_tx_method_id in (SELECT method_id FROM {{ ref('evm_smart_account_method_ids') }}) THEN 1 ELSE 0 END AS is_smart_wallet_deployed
       ,CASE WHEN c.trace_creator_address in (SELECT creator_address from {{ref('contracts_deterministic_contract_creators')}} ) THEN 1 ELSE 0 END AS is_deterministic_deployer_deployed
-    from get_contracts as c 
+    from get_contracts as c
     left join {{ ref('contracts_project_name_mappings') }} as dnm -- fix names for decoded contracts
       on lower(c.contract_project) = lower(dnm.dune_name)
     left join {{ ref('contracts_contract_overrides') }} as co --override contract maps
