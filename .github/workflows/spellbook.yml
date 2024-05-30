@@ -1,0 +1,22 @@
+name: DBT Spellbook run
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - 'scripts/**'
+      - 'Pipfile'
+      - '.gitignore'
+      - 'tokens/**'
+      - 'daily_spellbook/**'
+
+concurrency:
+  group:  ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dbt-run:
+    uses: ./.github/workflows/dbt_run.yml
+    with:
+      project: 'spellbook'
+

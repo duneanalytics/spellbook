@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: dex_trades_legacy
+  - name: dex_aggregator_trades
     meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum
-      sector: dex
-      contributors: jeff-dude
+      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
+      sector: dex_aggregator
+      contributors: bh2smith, Henrystats, jeff-dude, rantum
     config:
-      tags: ['ethereum', 'amm', 'trades', 'dex', 'cross-chain','optimism']
+      tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >
-      DEX trades on all chains across all contracts and versions
+      Aggregator trades on all chains across all contracts and versions
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -19,6 +19,7 @@ models:
             - version
             - tx_hash
             - evt_index
+            - trace_address
     columns:
       - &blockchain
         name: blockchain
@@ -32,9 +33,6 @@ models:
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
-      - &block_month
-        name: block_month
-        description: "UTC event block month of each DEX trade"
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
@@ -89,54 +87,11 @@ models:
       - &tx_to
         name: tx_to
         description: "Address which received the trade"
+      - &trace_address
+        name: trace_address
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
-
-  - name: dex_aggregator_trades
-    meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
-      sector: dex_aggregator
-      contributors: bh2smith, Henrystats, jeff-dude, rantum
-    config:
-      tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
-    description: >
-      Aggregator trades on all chains across all contracts and versions
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_date
-      - *block_time
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *amount_usd
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - &trace_address
-        name: trace_address
-      - *evt_index
 
   - name: dex_prices
     meta:
@@ -154,7 +109,9 @@ models:
             - blockchain
             - contract_address
     columns:
-      - *block_month
+      - &block_month
+        name: block_month
+        description: "Month corresponding to the prices data"
       - &hour
         name: hour
         description: "hour corresponding to the prices data"
