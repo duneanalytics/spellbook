@@ -289,6 +289,7 @@ sources:
           - name: latest_transfer
             data_type: timestamp(3) with time zone
       - name: nft
+      - name: nft_bridged_mapping
 
 
   - name: tokens_polygon
