@@ -34,7 +34,7 @@ with
         FROM {{ ref('tokens_solana_transfers') }} WHERE token_mint_address = '4vMsoUT2BWatFweudnQM1xedRLfJgJ7hswhcpz4xgBTy'
 
         {% if is_incremental() %}
-        where 
+        and 
             {{ incremental_predicate('block_time') }}
         {% endif %}
     )
