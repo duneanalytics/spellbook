@@ -1,5 +1,5 @@
 {{ config(
-    
+
     schema = 'tokens_zksync',
     alias = 'nft_standards',
     materialized='incremental',
@@ -12,7 +12,7 @@
  SELECT
   t.contract_address
 , max_by(t.token_standard, t.block_time) AS standard
-FROM {{ ref('nft_zksync_transfers') }} t
+FROM {{ source('nft_zksync', 'transfers') }} t
     {% if is_incremental() %}
        WHERE t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}

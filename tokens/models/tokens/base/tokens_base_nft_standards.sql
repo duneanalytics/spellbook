@@ -10,7 +10,7 @@
  SELECT
   t.contract_address
 , max_by(t.token_standard, t.block_time) AS standard
-FROM {{ ref('nft_base_transfers') }} t
+FROM {{ source('nft_base', 'transfers') }} t
     {% if is_incremental() %}
        WHERE t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
