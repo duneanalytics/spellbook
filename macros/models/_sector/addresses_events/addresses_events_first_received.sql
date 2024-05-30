@@ -35,10 +35,10 @@ SELECT '{{blockchain}}' AS blockchain
 , tt.unique_key
 , tt."from"
 FROM {{token_transfers}} tt
-INNER JOIN identify_first iff 
-    ON COALESCE(tt.block_number, -1) = COALESCE(iff.block_number, -1)
-    AND COALESCE(tt.tx_index, -1) = COALESCE(iff.tx_index, -1)
-    AND COALESCE(tt.evt_index, -1) = COALESCE(iff.evt_index, -1)
+INNER JOIN identify_first iff USING ON tt.block_number=iff.block_number
+    AND tt.address=iff.to 
+    AND tt.tx_index = iff.tx_index
+    AND tt.evt_index = iff.evt_index
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('block_time') }}
 {% endif %}
