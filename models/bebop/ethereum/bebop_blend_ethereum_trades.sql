@@ -274,16 +274,16 @@ INNER JOIN
     {% endif %}
   LEFT JOIN 
   {{ source('tokens', 'erc20') }} t_bought 
-    ON t_bought.contract_address = t.token_bought_address
+    ON t_bought.contract_address = t.maker_token_address
     AND t_bought.blockchain = 'ethereum'
   LEFT JOIN 
   {{ source('tokens', 'erc20') }} t_sold
-    ON t_sold.contract_address = t.token_sold_address
+    ON t_sold.contract_address = t.taker_token_address
     AND t_sold.blockchain = 'ethereum'
   LEFT JOIN 
   {{ source('prices', 'usd') }} p_bought 
     ON p_bought.minute = date_trunc('minute', t.block_time)
-    AND p_bought.contract_address = t.token_bought_address
+    AND p_bought.contract_address = t.maker_token_address
     AND p_bought.blockchain = 'ethereum'
   {% if not is_incremental() %}
   AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
@@ -294,7 +294,7 @@ INNER JOIN
   LEFT JOIN 
   {{ source('prices', 'usd') }} p_sold 
     ON p_sold.minute = date_trunc('minute', t.block_time)
-    AND p_sold.contract_address = t.token_sold_address
+    AND p_sold.contract_address = t.taker_token_address
     AND p_sold.blockchain = 'ethereum'
   {% if not is_incremental() %}
   AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
