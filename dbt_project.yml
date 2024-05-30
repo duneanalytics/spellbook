@@ -994,29 +994,8 @@ models:
       ethereum:
         +schema: tokemak_ethereum
 
-    sound_xyz:
-      +schema: sound_xyz
-      optimism:
-        +schema: sound_xyz_optimism
-
-
     quests:
       +schema: quests
-
-    zora:
-      +schema: zora
-      optimism:
-        +schema: zora_optimism
-
-    decent:
-      +schema: decent
-      optimism:
-        +schema: decent_optimism
-
-    mirror:
-      +schema: mirror
-      optimism:
-        +schema: mirror_optimism
 
     worldcoin:
       +schema: worldcoin
