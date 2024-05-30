@@ -1,0 +1,24 @@
+version: 2
+
+seeds:
+  - name: account_abstraction_erc4337_userops_seed
+    config:
+      column_types:
+        entrypoint_contract: varbinary
+        tx_hash: varbinary
+        sender: varbinary
+        userop_hash: varbinary
+        paymaster: varbinary
+        bundler: varbinary
+        tx_to: varbinary
+        beneficiary: varbinary
+
+  - name: account_abstraction_erc4337_account_deployed_seed
+    config:
+      column_types:
+        entrypoint_contract: varbinary
+        tx_hash: varbinary
+        sender: varbinary
+        userop_hash: varbinary
+        paymaster: varbinary
+        factory: varbinary
