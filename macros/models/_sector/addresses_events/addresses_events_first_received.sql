@@ -1,39 +1,39 @@
 {% macro addresses_events_first_received(blockchain, token_transfers) %}
 
 WITH identify_first AS (
-    SELECT to AS address
-    , MIN(block_number) AS block_number
-    , MIN_BY(tx_index, (block_number, tx_index)) AS tx_index
-    , MIN_BY(evt_index, (block_number, tx_index, evt_index)) AS evt_index
+    SELECT tt.to AS address
+    , MIN(tt.block_number) AS block_number
+    , MIN_BY(tt.tx_index, (tt.block_number, tt.tx_index)) AS tx_index
+    , MIN_BY(tt.evt_index, (tt.block_number, tt.tx_index, tt.evt_index)) AS evt_index
     FROM {{token_transfers}} tt
     {% if is_incremental() %}
     LEFT JOIN {{this}} t ON t.address = tt.to
         AND COALESCE(t.unique_key, 'NULL') = 'NULL'
     WHERE {{ incremental_predicate('tt.block_time') }}
     {% endif %}
-    GROUP BY to
+    GROUP BY tt.to
     )
 
 SELECT '{{blockchain}}' AS blockchain
-, to AS address
-, block_date
-, block_time
-, block_number
-, tx_hash
-, tx_index
-, evt_index
-, tx_from
-, tx_to
-, contract_address
-, trace_address
-, token_standard
-, symbol
-, amount_raw
-, amount
-, price_usd
-, amount_usd
-, unique_key
-, "from"
+, tt.to AS address
+, tt.block_date
+, tt.block_time
+, tt.block_number
+, tt.tx_hash
+, tt.tx_index
+, tt.evt_index
+, tt.tx_from
+, tt.tx_to
+, tt.contract_address
+, tt.trace_address
+, tt.token_standard
+, tt.symbol
+, tt.amount_raw
+, tt.amount
+, tt.price_usd
+, tt.amount_usd
+, tt.unique_key
+, tt."from"
 FROM {{token_transfers}} tt
 INNER JOIN identify_first iff 
     ON COALESCE(tt.block_number, -1) = COALESCE(iff.block_number, -1)
