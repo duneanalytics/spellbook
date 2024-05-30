@@ -74,7 +74,7 @@ chainlink_oracle_nxmty_price as (
   select
     block_date,
     avg(oracle_price) as nxmty_price
-  from {{ ref('chainlink_ethereum_price_feeds') }}
+  from {{ source('chainlink_ethereum', 'price_feeds') }}
   where proxy_address = 0xcc72039a141c6e34a779ef93aef5eb4c82a893c7 -- Nexus wETH Reserves
     and block_time > timestamp '2022-08-15'
   group by 1
