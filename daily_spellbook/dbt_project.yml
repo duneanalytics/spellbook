@@ -22,7 +22,9 @@ vars:
 # You don't need to change these!
 model-paths: ["models", "../sources"]
 analysis-paths: ["analyses"]
-test-paths: ["tests"]
+# ../tests/* should be added to a separate shared folder
+# TODO: adding just ../tests causes a bunch of warnings so remove this once we figure out better granularity
+test-paths: ["tests", "../tests"] # "../tests/generic", "../tests/macros", "../tests/integration-tests", "../tests/transfers"]
 seed-paths: ["seeds"]
 macro-paths: ["../macros"]
 snapshot-paths: ["snapshots"]
