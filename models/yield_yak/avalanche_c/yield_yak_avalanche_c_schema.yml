@@ -94,6 +94,7 @@ models:
       - &block_month
         name: block_month
         description: "UTC event block month of each DEX trade"
+
   - name: yield_yak_avalanche_c_deposits
     meta:
       blockchain: avalanche_c
@@ -138,6 +139,7 @@ models:
       - &deposit_amount
         name: deposit_amount
         description: "Amount of deposit tokens deposited into the strategy"
+
   - name: yield_yak_avalanche_c_withdraws
     meta:
       blockchain: avalanche_c
@@ -166,6 +168,7 @@ models:
       - &withdraw_amount
         name: withdraw_amount
         description: "Amount of deposit tokens withdrawn from the strategy"
+
   - name: yield_yak_avalanche_c_reinvests
     meta:
       blockchain: avalanche_c
@@ -208,6 +211,7 @@ models:
       - &recent_reinvest_info
         name: recent_reinvest_info
         description: "An array of the ratio growth and time between reinvests for the last 25 Reinvest events"
+
   - name: yield_yak_avalanche_c_balances
     meta:
       blockchain: avalanche_c
@@ -234,6 +238,7 @@ models:
       - &deposit_token_balance
         name: deposit_token_balance
         description: "Balance of deposit tokens held in the contract in the time window specified"
+
   - name: yield_yak_avalanche_c_user_yrt_balances
     meta:
       blockchain: avalanche_c
@@ -261,6 +266,7 @@ models:
       - &yrt_balance
         name: yrt_balance
         description: "Balance of YRT tokens held by the user_address in the time window specified"
+
   - name: yield_yak_avalanche_c_yak_swaps
     meta:
       blockchain: avalanche_c
@@ -320,6 +326,7 @@ models:
       - &yak_adapter_swaps
         name: yak_adapter_swaps
         description: "JSON array containing detailed information about the individual YakAdapterSwap events which make up this YakSwap"
+
   - name: yield_yak_avalanche_c_yak_adapter_swaps
     meta:
       blockchain: avalanche_c

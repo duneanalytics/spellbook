@@ -1,5 +1,6 @@
-{{ config(
-	schema = 'yield_yak',
+{{
+    config(
+	    schema = 'yield_yak',
         alias = 'yak_adapter_swaps',
         materialized = 'view',
         post_hook='{{ expose_spells(
