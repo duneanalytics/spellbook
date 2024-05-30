@@ -45,6 +45,7 @@
  ref('lido_liquidity_base_aerodrome_pools'),
  ref('lido_liquidity_base_uniswap_v3_pools'),
  ref('lido_liquidity_zksync_syncswap_pools'),
+ ref('lido_liquidity_zksync_maverick_pools'),
  ref('lido_liquidity_linea_syncswap_pools'),
  ref('lido_liquidity_scroll_syncswap_pools'),
  ref('lido_liquidity_scroll_zebra_pools')
