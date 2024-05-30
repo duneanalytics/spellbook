@@ -26,8 +26,9 @@ models:
       - name: action
       - name: amount
         tests:
-          - dbt_utils.expression_is_true:
-              expression: "amount / 1e9 >= 0 AND amount / 1e9 <= 10000000" # so far the biggest reward was 125k HONEY
+          - dbt_utils.accepted_range:
+            max_value: 1000000000000000 # maximum reward of 1 million HONEY * 1e9 (9 decimal places)
+            min_value: 0
       - name: token_mint_address
       - name: from_owner
       - name: to_owner
