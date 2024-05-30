@@ -22,7 +22,7 @@ WITH early_price AS (
     AND contract_address= {{etherfi_token_address}}
     )
 
-SELECT 'ethereum' AS blockchain
+SELECT DISTINCT 'ethereum' AS blockchain
 , t.evt_block_time AS block_time
 , t.evt_block_number AS block_number
 , 'etherfi' AS project
