@@ -1,6 +1,6 @@
 {{ config(
     alias = 'userops',
-    
+    schema = 'account_abstraction_erc4337_base',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -16,7 +16,7 @@
 {% set chain = 'base' %}
 {% set gas_symbol = 'ETH' %}
 --currently, base chain price data is not integrated in Dune, use optimism instead
-{% set wrapped_gas_address = '0x4200000000000000000000000000000000000006' %} 
+{% set wrapped_gas_address = '0x4200000000000000000000000000000000000006' %}
 {% set deployed_date = '2023-02-15' %}
 
 {% set erc4337_models = [
@@ -28,7 +28,7 @@ with userop as(
     SELECT *
     FROM (
         {% for erc4337_model in erc4337_models %}
-        SELECT 
+        SELECT
             blockchain
             , version
             , block_month
@@ -48,16 +48,16 @@ with userop as(
         {% if not loop.last %}
         UNION ALL
         {% endif %}
-        {% endfor %} 
+        {% endfor %}
     )
 )
 , txs as (
-    select 
+    select
           hash as tx_hash
         , tx."from" as tx_from
         , tx.to as tx_to
         , '{{gas_symbol}}' as gas_symbol
-        , ((cast(gas_used as double) * gas_price)+l1_fee) / 1e18 as tx_fee 
+        , ((cast(gas_used as double) * gas_price)+l1_fee) / 1e18 as tx_fee
     from {{ source('base', 'transactions') }} tx
     where hash in (
         select tx_hash from userop
@@ -68,16 +68,16 @@ with userop as(
     {% endif %}
 )
 , price as (
-    select symbol, decimals, minute, price  
+    select symbol, decimals, minute, price
     from {{source('prices','usd')}}
-    where minute > date '{{deployed_date}}' 
+    where minute > date '{{deployed_date}}'
         and contract_address={{wrapped_gas_address}}
         and blockchain='optimism'
         {% if is_incremental() %}
          and minute >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 )
-select 
+select
       userop.blockchain
     , userop.version
     , userop.block_month
@@ -96,6 +96,6 @@ select
     , txs.tx_fee
     , txs.tx_fee * price.price as tx_fee_usd
     , userop.beneficiary
-from userop 
+from userop
 left join txs on userop.tx_hash = txs.tx_hash
 left join price on date_trunc('minute', userop.block_time) = price.minute
