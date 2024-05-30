@@ -150,7 +150,7 @@ models:
       - *evt_index
       - *block_month
       - *trade_type
-      -
+
   - name: bebop_blend_ethereum_trades
     meta:
       blockchain: ethereum
