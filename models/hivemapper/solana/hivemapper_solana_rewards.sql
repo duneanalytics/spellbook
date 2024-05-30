@@ -62,7 +62,6 @@ with
             {{ incremental_predicate('tx.block_time') }}
         {% endif %}
 
-        and tx.block_time >= now() - interval '3' day -- delete on merge
     ) 
     
 SELECT
