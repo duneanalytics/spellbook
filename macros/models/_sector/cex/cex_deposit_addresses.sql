@@ -5,7 +5,7 @@ WITH potential_addresses AS (
     , f."from" AS potential_deposit
     , f.to AS cex_address
     , f.cex_name
-    , f.cex_name = affb.cex_name AS funded_by_same_cex
+    , MAX(f.cex_name = affb.cex_name) AS funded_by_same_cex
     , ffb.block_time AS creation_block_time
     , ffb.block_number AS creation_block_number
     FROM {{cex_flows}} f
@@ -24,7 +24,7 @@ WITH potential_addresses AS (
     {% if is_incremental() %}
     AND {{incremental_predicate('f.block_time')}}
     {% endif %}
-    GROUP BY f."from", f.to, f.cex_name, ffb.block_time, ffb.block_number, funded_by_same_cex
+    GROUP BY f."from", f.to, f.cex_name, ffb.block_time, ffb.block_number
     )
 
 , unique_addresses AS (
