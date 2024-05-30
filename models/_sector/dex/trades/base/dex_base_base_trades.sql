@@ -44,6 +44,7 @@
     , ref('rocketswap_base_base_trades')
     , ref('alienbase_base_base_trades')
     , ref('swapbased_base_base_trades')
+    , ref('clipper_base_base_trades')
 ] %}
 
 WITH base_union AS (

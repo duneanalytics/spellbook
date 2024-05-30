@@ -7,12 +7,8 @@ sources:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     tables:
-      - name: SyncSwapAquaPoolFactory_v2_evt_PoolCreated
+      - name: SyncSwapClassicPool_evt_Mint
         loaded_at_field: evt_block_time
-      - name: AquaPool_evt_Mint
-        loaded_at_field: evt_block_time
-      - name: AquaPool_evt_Burn
+      - name: SyncSwapClassicPool_evt_Burn
         loaded_at_field: evt_block_time  
-      - name: AquaPool_evt_Swap
-        loaded_at_field: evt_block_time 
-
+      

@@ -7791,4 +7791,7 @@ FROM (VALUES
     , ( 0x5f603c60adb40691939b9a740beecef4b0f5c146, 'mooAuraGnosisWstETH-GNO', 18)
     , ( 0x5012c6bf79b3047ecfff2f212dffda4d2128188f, 'yvEURe-1', 18)
     , ( 0x7644fa5d0ea14fcf3e813fdf93ca9544f8567655, 'sBAL3', 18)
+    , ( 0x4d18815d14fe5c3304e87b3fa18318baa5c23820, 'SAFE', 18)    
+    , ( 0x270ba1f35d8b87510d24f693fccc0da02e6e4eeb, 'stataGnoUSDC', 6)       
+    , ( 0x1a8805194d0ef2f73045a00c70da399d9e74221c, 'GNOBBY', 18)    
 ) AS temp_table (contract_address, symbol, decimals)

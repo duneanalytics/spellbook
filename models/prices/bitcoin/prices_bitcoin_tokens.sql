@@ -26,5 +26,6 @@ FROM
     ('rats-ratsordinals', 'bitcoin', 'RATS'),
     ('sats-sats-ordinals', 'bitcoin', 'SATS'),
     ('trac-trac-ordinals', 'bitcoin', 'TRAC'),
-    ('whee-wheeordinals', 'bitcoin', 'WHEE')
+    ('whee-wheeordinals', 'bitcoin', 'WHEE'),
+    ('pups-pups-ordinals', 'bitcoin', 'PUPS')
 ) as temp (token_id, blockchain, symbol)

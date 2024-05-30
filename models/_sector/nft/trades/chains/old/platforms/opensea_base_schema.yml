@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: opensea_v4_base_events
+    meta:
+      blockchain: base
+      project: opensea
+      contributors: BroderickBonelli
+    config:
+      tags: ['base','opensea','events']
+    description: >
+        Opensea events on base, from Seaport v1.4, 1.5, and 1.6
+    tests:
+      - check_columns_nft_old_events
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - nft_contract_address
+            - token_id
+            - sub_type
+            - sub_idx
+    columns:
+      - &unique_trade_id
+        name: unique_trade_id
+        description: "Unique trade ID"
+        tests:
+          - unique

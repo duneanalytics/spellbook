@@ -1,7 +1,7 @@
 {{ config(
     schema = 'balancer',
     alias = 'bpt_supply',
-    post_hook = '{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon"]\',
+    post_hook = '{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "ethereum", "gnosis", "optimism", "polygon", "zkevm"]\',
                                 "project",
                                 "balancer",
                                 \'["thetroyharris", "viniabussafi"]\') }}'
@@ -15,7 +15,8 @@
     ref('balancer_v2_gnosis_bpt_supply'),
     ref('balancer_v2_optimism_bpt_supply'),
     ref('balancer_v2_avalanche_c_bpt_supply'),
-    ref('balancer_v2_base_bpt_supply') 
+    ref('balancer_v2_base_bpt_supply'),
+    ref('balancer_v2_zkevm_bpt_supply') 
 ] %}
 
 SELECT *
