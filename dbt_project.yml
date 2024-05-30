@@ -687,27 +687,6 @@ models:
       arbitrum:
         +schema: camelot_arbitrum
 
-    chainlink:
-      +schema: chainlink
-      arbitrum:
-        +schema: chainlink_arbitrum
-      avalanche_c:
-        +schema: chainlink_avalanche_c
-      base:
-        +schema: chainlink_base
-      bnb:
-        +schema: chainlink_bnb
-      ethereum:
-        +schema: chainlink_ethereum
-      fantom:
-        +schema: chainlink_fantom
-      gnosis:
-        +schema: chainlink_gnosis
-      optimism:
-        +schema: chainlink_optimism
-      polygon:
-        +schema: chainlink_polygon
-
     reaper:
       +schema: reaper
       optimism:
@@ -1067,26 +1046,6 @@ models:
 
     quests:
       +schema: quests
-
-    account_abstraction:
-      erc4337:
-        +schema: account_abstraction_erc4337
-        ethereum:
-          +schema: account_abstraction_erc4337_ethereum
-        avalanche_c:
-          +schema: account_abstraction_erc4337_avalanche_c
-        arbitrum:
-          +schema: account_abstraction_erc4337_arbitrum
-        optimism:
-          +schema: account_abstraction_erc4337_optimism
-        polygon:
-          +schema: account_abstraction_erc4337_polygon
-        gnosis:
-          +schema: account_abstraction_erc4337_gnosis
-        base:
-          +schema: account_abstraction_erc4337_base
-        bnb:
-          +schema: account_abstraction_erc4337_bnb
 
     zora:
       +schema: zora
