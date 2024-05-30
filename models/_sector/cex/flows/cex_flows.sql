@@ -27,7 +27,6 @@
      , (ref('cex_zora_flows'))
      , (ref('cex_zksync_flows'))
      , (ref('cex_scroll_flows'))
-     , (ref('cex_goerli_flows'))
      , (ref('cex_linea_flows'))
      , (ref('cex_zkevm_flows'))
 ] %}
