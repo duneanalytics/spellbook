@@ -201,8 +201,8 @@ GROUP BY 1,2,3,4
 , swap_events_hourly as (
  select DATE_TRUNC('hour', s.evt_block_time) AS time,
       s.contract_address AS pool,
-      sum(case when cr.token0 = 0xf610A9dfB7C89644979b4A0f27063E9e7d7Cda32 then CAST(amount0 AS DOUBLE)
-            else CAST(amount1 AS DOUBLE) end) as wsteth_amount
+      sum(case when cr.token0 = 0xf610A9dfB7C89644979b4A0f27063E9e7d7Cda32 then ABS(CAST(amount0 AS DOUBLE))
+            else ABS(CAST(amount1 AS DOUBLE)) end) as wsteth_amount
  from {{source('zebra_scroll','ZebraV2Pool_evt_Swap')}} s
  left join {{source('zebra_scroll','ZebraV2Factory_evt_PoolCreated')}} cr on s.contract_address = cr.pool
 
