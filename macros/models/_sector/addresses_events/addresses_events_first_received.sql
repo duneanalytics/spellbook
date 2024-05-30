@@ -7,7 +7,7 @@ WITH identify_first AS (
     , MIN_BY(evt_index, (block_number, tx_index, evt_index)) AS evt_index
     FROM {{token_transfers}} tt
     {% if is_incremental() %}
-    LEFT JOIN {{this}} t ON t.address=tt.to
+    LEFT JOIN {{this}} t ON t.address = tt.to
         AND COALESCE(t.unique_key, 'NULL') = 'NULL'
     WHERE {{ incremental_predicate('tt.block_time') }}
     {% endif %}
@@ -35,7 +35,10 @@ SELECT '{{blockchain}}' AS blockchain
 , unique_key
 , "from"
 FROM {{token_transfers}} tt
-INNER JOIN identify_first iff USING (block_number, tx_index, evt_index)
+INNER JOIN identify_first iff 
+    ON COALESCE(tt.block_number, -1) = COALESCE(iff.block_number, -1)
+    AND COALESCE(tt.tx_index, -1) = COALESCE(iff.tx_index, -1)
+    AND COALESCE(tt.evt_index, -1) = COALESCE(iff.evt_index, -1)
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('block_time') }}
 {% endif %}
