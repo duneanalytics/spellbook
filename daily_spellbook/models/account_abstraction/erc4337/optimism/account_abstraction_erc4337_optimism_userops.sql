@@ -43,7 +43,7 @@ with userop as(
             , beneficiary
         FROM {{ erc4337_model }}
         {% if is_incremental() %}
-        WHERE block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -64,7 +64,7 @@ with userop as(
     )
     and block_time > date '{{deployed_date}}'
     {% if is_incremental() %}
-        and block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('block_time') }}
     {% endif %}
 )
 , price as (
