@@ -181,6 +181,7 @@ sources:
           - name: decimals
             data_type: integer
       - name: nft
+      - name: erc20_stablecoins
 
       - name: rebase
         columns:
