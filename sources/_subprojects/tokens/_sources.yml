@@ -325,10 +325,8 @@ sources:
             data_type: varbinary
 
   - name: tokens_nft
-    database: your_database_name
-    schema: your_schema_name
     tables:
-      - name: your_table_name
+      - name: nft
         description: Crosschain NFT (ERC721 and ERC1155) tokens
         columns:
           - name: blockchain
