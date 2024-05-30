@@ -105,6 +105,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
   - name: tokens_avalanche_c
     tables:
@@ -116,6 +117,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
 
   - name: tokens_base
@@ -128,7 +130,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
-
+      - name: nft
 
   - name: tokens_bnb
     tables:
@@ -140,7 +142,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
-
+      - name: nft
 
   - name: tokens_celo
     tables:
@@ -152,7 +154,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
-
+      - name: nft
 
   - name: tokens_ethereum
     tables:
@@ -164,6 +166,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
       - name: rebase
         columns:
@@ -183,6 +186,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
   - name: tokens_goerli
     tables:
@@ -194,6 +198,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
   - name: tokens_gnosis
     tables:
@@ -205,6 +210,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
 
   - name: tokens_optimism
@@ -267,6 +273,7 @@ sources:
             data_type: varbinary
           - name: latest_transfer
             data_type: timestamp(3) with time zone
+      - name: nft
 
 
   - name: tokens_polygon
@@ -279,6 +286,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
 
   - name: tokens_zksync
@@ -291,7 +299,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
-
+      - name: nft
 
   - name: tokens_zora
     tables:
@@ -303,7 +311,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
-
+      - name: nft
 
   - name: tokens_yearn
     tables:
