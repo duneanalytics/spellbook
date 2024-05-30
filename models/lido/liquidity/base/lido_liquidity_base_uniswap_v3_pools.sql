@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
+    post_hook='{{ expose_spells(\'["base"]\',
                                 "project",
                                 "lido_liquidity",
                                 \'["ppclunghe"]\') }}'
