@@ -34,7 +34,8 @@ with
         FROM {{ ref('tokens_solana_transfers') }} WHERE token_mint_address = '4vMsoUT2BWatFweudnQM1xedRLfJgJ7hswhcpz4xgBTy'
 
         {% if is_incremental() %}
-        where {{ incremental_predicate('block_time') }}
+        where 
+            {{ incremental_predicate('block_time') }}
         {% endif %}
     )
     
@@ -57,7 +58,8 @@ with
         WHERE 1=1 
         and contains(account_keys, 'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr') --memo program invoked sometimes not by honey though
         {% if is_incremental() %}
-        and {{ incremental_predicate('tx.block_time') }}
+        and 
+            {{ incremental_predicate('tx.block_time') }}
         {% endif %}
 
         and tx.block_time >= now() - interval '3' day -- delete on merge
