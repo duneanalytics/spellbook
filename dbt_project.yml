@@ -64,72 +64,8 @@ models:
     +schema: no_schema    # this should be overridden in model specific configs
     +view_security: invoker
 
-    aave:
-      +schema: aave
-      ethereum:
-        +schema: aave_ethereum
-      optimism:
-        +schema: aave_optimism
-
-    balancer:
-      +schema: balancer
-      arbitrum:
-        +schema: balancer_arbitrum
-      ethereum:
-        +schema: balancer_ethereum
-      polygon:
-        +schema: balancer_polygon
-      optimism:
-        +schema: balancer_optimism
-      gnosis:
-        +schema: balancer_gnosis
-
-    ens:
-      +schema: ens
-      ethereum:
-        +schema: ens_ethereum
-
-    euler:
-      +schema: euler
-      ethereum:
-        +schema: euler_ethereum
-
-    evms:
-      +schema: evms
-
-    staking:
-      +schema: staking
-      ethereum:
-        +schema: staking_ethereum
-
     dex:
       +schema: dex
-
-    airdrop:
-      +schema: airdrop
-      +materialized: table
-      ethereum:
-        +schema: airdrop_ethereum
-      optimism:
-        +schema: airdrop_optimism
-      arbitrum:
-        +schema: airdrop_arbitrum
-      avalanche_c:
-        +schema: airdrop_avalanche_c
-      bnb:
-        +schema: airdrop_bnb
-      gnosis:
-        +schema: airdrop_gnosis
-
-    ellipsis_finance:
-      +schema: ellipsis_finance
-      bnb:
-        +schema: ellipsis_finance_bnb
-
-    velodrome:
-      +schema: velodrome
-      optimism:
-        +schema: velodrome_optimism
 
     nft:
       +schema: nft
@@ -159,33 +95,6 @@ models:
         +schema: cex_fantom
       bitcoin:
         +schema: cex_bitcoin
-
-    compound:
-      +schema: compound
-      ethereum:
-        +schema: compound_ethereum
-
-    gitcoin:
-      +schema: gitcoin
-      ethereum:
-        +schema: gitcoin_ethereum
-      polygon:
-        +schema: gitcoin_polygon
-
-    blur:
-      +schema: blur
-      ethereum:
-        +schema: blur_ethereum
-
-    looksrare:
-      +schema: looksrare
-      ethereum:
-        +schema: looksrare_ethereum
-
-    x2y2:
-      +schema: x2y2
-      ethereum:
-        +schema: x2y2_ethereum
 
     uniswap:
       +schema: uniswap
