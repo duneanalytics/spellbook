@@ -12,7 +12,20 @@ ref('magiceden_solana_events')
 ,ref('nftearth_optimism_events')
 ,ref('mooar_polygon_events')
 ,ref('oneplanet_polygon_events')
+<<<<<<< ours
 ,ref('opensea_v2_polygon_events')
+=======
+,ref('opensea_v3_arbitrum_events')
+,ref('opensea_v4_arbitrum_events')
+,ref('opensea_v3_ethereum_events')
+,ref('opensea_v4_ethereum_events')
+,ref('opensea_v3_optimism_events')
+,ref('opensea_v4_optimism_events')
+,ref('opensea_v3_polygon_events')
+,ref('opensea_v4_polygon_events')
+,ref('opensea_v4_base_events')
+,ref('opensea_v4_zora_events')
+>>>>>>> theirs
 ,ref('opensea_solana_events')
 ,ref('quix_seaport_optimism_events')
 ] %}
