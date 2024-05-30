@@ -75,7 +75,7 @@ WITH potential_addresses AS (
     )
 
 SELECT '{{blockchain}}' AS blockchain
-, sar.potential_deposit AS address
+, potential_deposit AS address
 , sar.cex_name
 , sar.creation_block_time
 , sar.creation_block_number
@@ -83,7 +83,7 @@ SELECT '{{blockchain}}' AS blockchain
 FROM sent_and_received sar
 INNER JOIN unique_addresses_two ua USING (potential_deposit)
 {% if is_incremental() %}
-LEFT JOIN {{this}} eda ON sar.potential_deposit = eda.address 
+LEFT JOIN {{this}} eda ON potential_deposit = eda.address 
     AND eda.address IS NULL
 {% endif %}
 WHERE sar.deposited > 0
