@@ -13,7 +13,6 @@
 
 WITH 
 
-
 xdai_transfers  as (
     SELECT 
         'receive' as transfer_type, 
@@ -131,24 +130,6 @@ block_reward AS (
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
-),
-
-bridged AS (
-    SELECT 
-        'bridged' as transfer_type,
-        evt_tx_hash AS tx_hash, 
-        array[evt_index] as trace_address, 
-        evt_block_time AS block_time, 
-        evt_block_number AS block_number,
-        recipient AS wallet_address,
-        0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
-        TRY_CAST(value as INT256) as amount_raw
-    FROM 
-        {{ source('xdai_bridge_gnosis', 'HomeBridgeErcToNative_evt_UserRequestForSignature') }}
-    {% if is_incremental() %}
-        WHERE block_time >= date_trunc('day', now() - interval '3' Day)
-    {% endif %}
-
 )
 
 SELECT
