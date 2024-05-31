@@ -452,50 +452,6 @@ models:
       +schema: tokens
       +materialized: table
       +file_format: delta
-      ethereum:
-        +schema: tokens_ethereum
-        +materialized: table
-        +file_format: delta
-      optimism:
-        +schema: tokens_optimism
-        +materialized: table
-        +file_format: delta
-      avalanche_c:
-        +schema: tokens_avalanche_c
-        +materialized: table
-        +file_format: delta
-      bnb:
-        +schema: tokens_bnb
-        +materialized: table
-        +file_format: delta
-      gnosis:
-        +schema: tokens_gnosis
-        +materialized: table
-        +file_format: delta
-      arbitrum:
-        +schema: tokens_arbitrum
-        +materialized: table
-        +file_format: delta
-      polygon:
-        +schema: tokens_polygon
-        +materialized: table
-        +file_format: delta
-      fantom:
-        +schema: tokens_fantom
-        +materialized: table
-        +file_format: delta
-      solana:
-        +schema: tokens_solana
-        +materialized: table
-        +file_format: delta
-      base:
-        +schema: tokens_base
-        +materialized: table
-        +file_format: delta
-      celo:
-        +schema: tokens_celo
-        +materialized: table
-        +file_format: delta
 
     solana_utils:
       +schema: solana_utils
@@ -1038,29 +994,8 @@ models:
       ethereum:
         +schema: tokemak_ethereum
 
-    sound_xyz:
-      +schema: sound_xyz
-      optimism:
-        +schema: sound_xyz_optimism
-
-
     quests:
       +schema: quests
-
-    zora:
-      +schema: zora
-      optimism:
-        +schema: zora_optimism
-
-    decent:
-      +schema: decent
-      optimism:
-        +schema: decent_optimism
-
-    mirror:
-      +schema: mirror
-      optimism:
-        +schema: mirror_optimism
 
     worldcoin:
       +schema: worldcoin
