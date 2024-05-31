@@ -5,7 +5,7 @@
     )
 %}
 
-    select 
+    select
           '{{blockchain}}' as blockchain
         , '{{version}}' as version
         , evt_block_time as block_time
@@ -18,7 +18,7 @@
         , factory
     from {{account_deployed_evt_model}}
     {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 
 {% endmacro %}
