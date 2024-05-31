@@ -1,21 +1,16 @@
 {{ config(
-        alias = 'pool_creations',
-        schema = 'sudoswap_v2_ethereum',
-        
+        alias = 'pools',
+        schema = 'sudoswap_v2_arbitrum',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['pool_address'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "sudoswap",
-                                    \'["niftytable","0xRob"]\') }}'
+        unique_key = ['pool_address']
         )
 }}
 
 with
   pool_creations as (
-      SELECT 
+      SELECT
           output_pair AS pool_address,
           nft_contract_address,
           nft_type,
@@ -39,7 +34,7 @@ with
           call_tx_hash as creation_tx_hash,
           tx."from" as creator_address
     FROM (
-          SELECT 
+          SELECT
               output_pair,
               _nft AS nft_contract_address,
               _bondingCurve as bonding_curve,
@@ -50,7 +45,7 @@ with
               contract_address,
               call_block_time,
               call_tx_hash
-        FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC721ETH') }}
+        FROM {{ source('sudoswap_v2_arbitrum','LSSVMPairFactory_call_createPairERC721ETH') }}
         WHERE call_success
           {% if is_incremental() %}
           AND call_block_time >= date_trunc('day', now() - interval '7' day)
@@ -67,13 +62,13 @@ with
               contract_address,
               call_block_time,
               call_tx_hash
-        FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC1155ETH') }}
+        FROM {{ source('sudoswap_v2_arbitrum','LSSVMPairFactory_call_createPairERC1155ETH') }}
         WHERE call_success
           {% if is_incremental() %}
           AND call_block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
-        UNION ALL 
-        SELECT 
+        UNION ALL
+        SELECT
             output_pair
             , from_hex(json_extract_scalar(params,'$.nft')) as nft_contract_address
             , from_hex(json_extract_scalar(params,'$.bondingCurve')) as bonding_curve
@@ -84,13 +79,13 @@ with
             , contract_address
             , call_block_time
             , call_tx_hash
-        FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC1155ERC20') }}
+        FROM {{ source('sudoswap_v2_arbitrum','LSSVMPairFactory_call_createPairERC1155ERC20') }}
         WHERE call_success
           {% if is_incremental() %}
           AND call_block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
-        UNION ALL 
-        SELECT 
+        UNION ALL
+        SELECT
             output_pair
             , from_hex(json_extract_scalar(params,'$.nft')) as nft_contract_address
             , from_hex(json_extract_scalar(params,'$.bondingCurve')) as bonding_curve
@@ -101,13 +96,13 @@ with
             , contract_address
             , call_block_time
             , call_tx_hash
-        FROM {{ source('sudoswap_v2_ethereum','LSSVMPairFactory_call_createPairERC721ERC20') }}
+        FROM {{ source('sudoswap_v2_arbitrum','LSSVMPairFactory_call_createPairERC721ERC20') }}
         WHERE call_success
           {% if is_incremental() %}
           AND call_block_time >= date_trunc('day', now() - interval '7' day)
           {% endif %}
     ) cre
-    INNER JOIN {{ source('ethereum','transactions') }} tx 
+    INNER JOIN {{ source('arbitrum','transactions') }} tx
       ON tx.block_time = cre.call_block_time
       AND tx.hash = cre.call_tx_hash
       AND tx.success
