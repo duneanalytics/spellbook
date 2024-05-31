@@ -6,6 +6,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_day')],
         unique_key = ['wallet_address', 'token_address', 'block_day', 'token_id'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",

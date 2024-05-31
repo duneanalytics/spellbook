@@ -6,6 +6,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.tx_block_time')],
         unique_key = ['tx_hash', 'trace_address'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
