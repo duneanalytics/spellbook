@@ -58,7 +58,7 @@ bebop_single_trade AS (
             ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
         FROM {{ source('bebop_pmms_ethereum', 'BebopSettlement_call_swapSingleFromContract') }}
         ) ex
-        ON ex.call_tx_hash = evt.evt_tx_hash
+        ON ex.call_tx_hash = evt.evt_tx_hash and ex.row_num = evt.row_num
     WHERE ex.call_success = TRUE
     {% if is_incremental() %}
     AND evt.evt_block_time >= date_trunc('day', now() - interval '7' Day)
@@ -105,7 +105,7 @@ raw_bebop_multi_trade AS (
             ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
         FROM {{ source('bebop_pmms_ethereum', 'BebopSettlement_call_swapMulti') }}
         ) ex
-        ON ex.call_tx_hash = evt.evt_tx_hash
+        ON ex.call_tx_hash = evt.evt_tx_hash and ex.row_num = evt.row_num
     WHERE ex.call_success = TRUE
     {% if is_incremental() %}
     AND evt.evt_block_time >= date_trunc('day', now() - interval '7' Day)
@@ -151,7 +151,7 @@ raw_bebop_aggregate_trade AS (
             ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
         FROM {{ source('bebop_pmms_ethereum', 'BebopSettlement_call_swapAggregate') }}
         ) ex
-        ON ex.call_tx_hash = evt.evt_tx_hash
+        ON ex.call_tx_hash = evt.evt_tx_hash and ex.row_num = evt.row_num
     WHERE ex.call_success = TRUE
     {% if is_incremental() %}
     AND evt.evt_block_time >= date_trunc('day', now() - interval '7' Day)
