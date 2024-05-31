@@ -218,7 +218,7 @@ FROM (
       ,c.code
       ,c.code_deploy_rank_by_chain
       ,CASE WHEN c.trace_creator_address = c.created_tx_from THEN 1 ELSE 0 END AS is_eoa_deployed
-      ,CASE WHEN c.top_level_tx_method_id in (SELECT method_id FROM {{ ref('evm_smart_account_method_ids') }}) THEN 1 ELSE 0 END AS is_smart_wallet_deployed
+      ,CASE WHEN c.top_level_tx_method_id in (SELECT method_id FROM {{ source('evms', 'evm_smart_account_method_ids') }}) THEN 1 ELSE 0 END AS is_smart_wallet_deployed
       ,CASE WHEN c.trace_creator_address in (SELECT creator_address from {{ref('contracts_deterministic_contract_creators')}} ) THEN 1 ELSE 0 END AS is_deterministic_deployer_deployed
     from get_contracts as c
     left join {{ ref('contracts_project_name_mappings') }} as dnm -- fix names for decoded contracts

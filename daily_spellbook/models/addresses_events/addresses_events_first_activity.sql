@@ -1,8 +1,8 @@
 {{ config
 (
-    alias = 'first_activity'
-    
-    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zksync", "zora", "base", "scroll"]\',
+    alias = 'first_activity',
+    schema = 'addresses_events',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zksync", "zora", "base", "scroll"]\',
                                     "sector",
                                     "addresses_events",
                                     \'["Henrystats", "hildobby"]\') }}'
@@ -30,7 +30,7 @@
 SELECT *
 FROM (
     {% for addresses_events_model in addresses_events_models %}
-    SELECT 
+    SELECT
       blockchain
     , address
     , first_activity_to

@@ -1,6 +1,6 @@
  {{
   config(
-        
+
         schema = 'contracts',
         alias = 'predeploys',
         post_hook='{{ expose_spells(\'["ethereum", "base", "optimism", "zora"]\',
@@ -24,7 +24,7 @@
 with get_contracts AS (
 SELECT *, ROW_NUMBER() OVER (PARTITION BY blockchain, contract_address ORDER BY pref_rnk ASC) AS c_rank
 FROM (
-  select 
+  select
      blockchain
     ,cast(NULL as varbinary) as trace_creator_address
     ,cast(NULL as varbinary) as creator_address
@@ -42,7 +42,7 @@ FROM (
   union all
   -- ovm 1.0 contracts
 
-  select 
+  select
     'optimism' as blockchain
     ,creator_address AS trace_creator_address
     ,creator_address
@@ -57,10 +57,10 @@ FROM (
   from {{ source('ovm1_optimism', 'contracts') }} as c
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11
 
-  union all 
+  union all
   --synthetix genesis contracts
 
-  select 
+  select
     'optimism' as blockchain
     ,cast(NULL as varbinary) as trace_creator_address
     ,cast(NULL as varbinary) as creator_address
@@ -76,10 +76,10 @@ FROM (
 
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11
 
-    union all 
+    union all
   --uniswap pools from ovm1
 
-  select 
+  select
     'optimism' as blockchain
     ,cast(NULL as varbinary) as trace_creator_address
     ,cast(NULL as varbinary) as creator_address
@@ -91,7 +91,7 @@ FROM (
     ,'ovm1 uniswap pools' as source
     ,cast(NULL as varbinary) as created_tx_hash
     , 4 as pref_rnk
-  from {{ ref('uniswap_optimism_ovm1_pool_mapping') }} as uni
+  from {{ source('uniswap_v3_optimism', 'ovm1_pool_mapping') }} as uni
 
     group by 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
   ) a
@@ -106,14 +106,14 @@ FROM (
     ,(array_agg({{ col }}) filter (where {{ col }} is not NULL))[1] as {{ col }}
     {% endfor %}
   from get_contracts
-  where contract_address is not NULL 
+  where contract_address is not NULL
   AND c_rank = 1 -- get first instance, no dupes
   group by 1,2
 )
 
 SELECT distinct
   blockchain, cast(trace_creator_address as varbinary) AS trace_creator_address
-  , cast(contract_address as varbinary) AS contract_address, 
+  , cast(contract_address as varbinary) AS contract_address,
   initcap(contract_project) AS contract_project
   --
 , contract_name
@@ -122,7 +122,7 @@ SELECT distinct
 , cast(created_tx_hash as varbinary) AS created_tx_hash
 , source
 FROM (
-  select 
+  select
     blockchain
     ,c.trace_creator_address
     ,c.contract_address
@@ -145,7 +145,7 @@ FROM (
     ,coalesce(c.is_self_destruct, false) as is_self_destruct
     ,c.created_tx_hash
     ,c.source
-  from cleanup as c 
+  from cleanup as c
 
   left join {{ source('ovm1_optimism', 'contracts') }} as ovm1c
     on c.contract_address = ovm1c.contract_address --fill in any missing contract creators
