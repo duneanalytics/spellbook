@@ -21,7 +21,7 @@ with userop as (
         , actualGasCost/1e18 as op_fee
     from {{ userops_evt_model }}
     {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 )
 , handleops as (
@@ -30,7 +30,7 @@ with userop as (
     from {{ handleops_call_model }}
     where call_success = true
     {% if is_incremental() %}
-        and call_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('call_block_time') }}
     {% endif %}
 )
 
