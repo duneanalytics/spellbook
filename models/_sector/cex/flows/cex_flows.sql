@@ -7,10 +7,10 @@
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'flow_type', 'unique_key'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "zora", "zksync", "scroll"]\',
-                                "sector",
-                                "inscription",
-                                \'["hildobby"]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "zora", "zksync", "scroll"]\',
+                                spell_type = "sector",
+                                spell_name = "cex",
+                                contributors = \'["hildobby"]\') }}'
         )
 }}
 
