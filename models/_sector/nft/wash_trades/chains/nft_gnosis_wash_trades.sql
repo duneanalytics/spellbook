@@ -1,5 +1,5 @@
 {{ config(
-        
+
         schema = 'nft_gnosis',
         alias='wash_trades',
         partition_by=['block_month'],
@@ -13,6 +13,5 @@
 
 {{nft_wash_trades(
     blockchain='gnosis',
-    first_funded_by= ref('addresses_events_gnosis_first_funded_by')
-
+    first_funded_by= source('addresses_events_gnosis', 'first_funded_by')
 )}}

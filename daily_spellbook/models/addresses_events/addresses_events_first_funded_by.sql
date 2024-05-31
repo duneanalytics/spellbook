@@ -1,8 +1,8 @@
 {{ config
 (
-    alias = 'first_funded_by'
-    
-    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zksync", "zora", "base", "scroll"]\',
+    alias = 'first_funded_by',
+    schema = 'addresses_events',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zksync", "zora", "base", "scroll"]\',
                                     "sector",
                                     "addresses_events",
                                     \'["hildobby", "Henrystats"]\') }}'
