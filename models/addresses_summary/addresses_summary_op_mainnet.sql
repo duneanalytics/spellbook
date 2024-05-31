@@ -111,7 +111,7 @@ INNER JOIN
 {{ source('addresses_events_optimism', 'first_activity') }} fa
     ON wd.address = fa.address
 LEFT JOIN
-{{ source('contracts_optimism', 'contract_mapping') }} cm
+{{ source('contracts_optimism', 'contract_creator_project_mapping') }} cm
     ON ot."to" = cm.contract_address
 LEFT JOIN (
     SELECT
@@ -212,7 +212,7 @@ INNER JOIN
 {{ source('addresses_events_optimism', 'first_activity') }} fa
     ON ot."from" = fa.address
 LEFT JOIN
-{{ source('contracts_optimism', 'contract_mapping') }} cm
+{{ source('contracts_optimism', 'contract_creator_project_mapping') }} cm
     ON ot."to" = cm.contract_address
 LEFT JOIN (
     SELECT
