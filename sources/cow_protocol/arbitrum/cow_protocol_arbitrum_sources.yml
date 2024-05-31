@@ -3,6 +3,7 @@ version: 2
 sources:
   - name: gnosis_protocol_v2_arbitrum
     description: "Arbitrum Chain decoded tables related to CoW Protocol contract"
+    tables:
       - name: GPv2Settlement_evt_Trade
         description: "Trade events emitted by GPv2Settlement"
         columns:
