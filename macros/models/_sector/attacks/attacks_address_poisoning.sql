@@ -35,7 +35,7 @@ SELECT '{{blockchain}}' AS blockchain
 , attack.amount_raw
 , attack.contract_address AS token_address
 , attack.token_standard
-, attack.symbol
+, attack.symbol AS token_symbol
 , attack.tx_hash
 , attack.tx_index
 , attack.evt_index
