@@ -30,7 +30,7 @@ WITH check_date AS (
     )
 
 , smart_account_methods AS (
-    SELECT array_agg(method_id) AS method_id_array FROM {{ref('base_evm_smart_account_method_ids')}}
+    SELECT array_agg(method_id) AS method_id_array FROM {{source('evms', 'base_evm_smart_account_method_ids')}}
     )
 
 , levels as (
@@ -61,7 +61,7 @@ WITH check_date AS (
     , creator_address_lineage_intermediate AS creator_address_lineage
     , tx_method_id_lineage_intermediate AS tx_method_id_lineage
     -- used to make sure we don't double map self-destruct contracts that are created multiple times. We'll opt to take the last one
-    
+
   FROM (
     WITH new_contracts AS (
       SELECT
@@ -94,7 +94,7 @@ WITH check_date AS (
         , 1 AS is_new_contract
 
       FROM {{ref('contracts_' + chain + '_base_starting_level') }} s, check_date cd
-      WHERE 
+      WHERE
           1=1
 
           AND {{ incremental_days_forward_predicate('s.created_time', 'cd.base_time', days_forward ) }}
@@ -103,7 +103,7 @@ WITH check_date AS (
 
     {% if is_incremental() %}
     -- pre-generate the list of contracts we need to pull to help speed up the process
-    
+
     -- Logic checked here: https://dune.com/queries/3210612
     , inc_contracts AS (
       SELECT contract_address
@@ -162,7 +162,7 @@ WITH check_date AS (
       , 0 AS is_new_contract -- since we rebuild initial on static ref updates, we don't need to iterate on this.
 
     FROM {{ this }} s, check_date cd
-    WHERE 
+    WHERE
         1=1
         AND (NOT {{ incremental_days_forward_predicate('s.created_time', 'cd.base_time', days_forward ) }} ) --don't pick up incrementals
         AND s.contract_address IN (SELECT contract_address FROM inc_contracts) --is this a contract we need to iterate through
@@ -171,22 +171,22 @@ WITH check_date AS (
     {% endif %}
 
   ) b
-    left join {{ref('contracts_deterministic_contract_creators')}} as nd 
+    left join {{ref('contracts_deterministic_contract_creators')}} as nd
           ON nd.creator_address = b.creator_address_intermediate
     left join (
               SELECT method_id, contract_project
-              FROM {{ ref('base_evm_smart_account_method_ids') }}
+              FROM {{source('evms', 'base_evm_smart_account_method_ids')}}
               GROUP BY 1,2
-            ) aa 
+            ) aa
           ON aa.method_id = b.created_tx_method_id
-    left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd 
+    left join {{ ref('contracts_'+ chain +'_find_self_destruct_contracts') }} as sd
       on b.contract_address = sd.contract_address
       AND b.blockchain = sd.blockchain
       AND b.created_tx_hash = sd.created_tx_hash
       AND b.created_block_number = sd.created_block_number
 
   )
-  -- starting from 0 
+  -- starting from 0
   -- u = next level up contract (i.e. the factory)
   -- b = base-level contract
   {% for i in range(max_levels) -%}
@@ -194,7 +194,7 @@ WITH check_date AS (
   ,level{{i}}
     as (
       select
-        {{i}} as level 
+        {{i}} as level
         ,b.blockchain
         ,b.trace_creator_address -- get the original contract creator address
         ,case when nd.creator_address IS NOT NULL
@@ -234,11 +234,11 @@ WITH check_date AS (
         ,b.is_self_destruct
         ,b.code
         ,b.token_standard_erc20
-        , CASE WHEN u.creator_address IS NOT NULL THEN 
+        , CASE WHEN u.creator_address IS NOT NULL THEN
               b.creator_address_lineage || u.creator_address
             ELSE b.creator_address_lineage
           END AS creator_address_lineage
-        , CASE WHEN u.created_tx_method_id IS NOT NULL THEN 
+        , CASE WHEN u.created_tx_method_id IS NOT NULL THEN
               b.tx_method_id_lineage || u.created_tx_method_id
             ELSE b.tx_method_id_lineage
           END AS tx_method_id_lineage
@@ -258,7 +258,7 @@ WITH check_date AS (
         AND b.blockchain = u.blockchain
       {% endif %}
       -- is the creator deterministic?
-      left join {{ref('contracts_deterministic_contract_creators')}} as nd 
+      left join {{ref('contracts_deterministic_contract_creators')}} as nd
         ON nd.creator_address = b.creator_address
       WHERE b.is_new_contract = 1
   )
@@ -277,7 +277,7 @@ WITH check_date AS (
 
 )
 
-  select 
+  select
     blockchain
     ,trace_creator_address
     ,creator_address
@@ -318,9 +318,9 @@ WITH check_date AS (
               AND {{ incremental_days_forward_predicate('r.evt_block_time', 'cd.base_time', days_forward ) }}
 
             group by 1
-          ) ts 
+          ) ts
   ON u.contract_address = ts.contract_address
 
   GROUP BY 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28
-  
+
 {% endmacro %}

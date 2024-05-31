@@ -1,8 +1,8 @@
 {{ config
 (
-    alias = 'first_funded_by'
-    
-    , post_hook='{{ expose_spells(\'["goerli"]\',
+    alias = 'first_funded_by',
+    schema = 'addresses_events_testnets',
+    post_hook='{{ expose_spells(\'["goerli"]\',
                                     "sector",
                                     "addresses_events_testnets",
                                     \'["hildobby"]\') }}'
