@@ -7,13 +7,11 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['tx_index', 'evt_index']
+        unique_key = ['tx_hash', 'evt_index']
 )
 }}
 
 {{attacks_address_poisoning(
         blockchain = blockchain
-        , transactions = source(blockchain, 'transactions')
         , token_transfers = ref('tokens_' + blockchain + '_transfers')
-        , cex_addresses = ref('cex_' + blockchain + '_addresses')
 )}}

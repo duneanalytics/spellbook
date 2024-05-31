@@ -1,4 +1,4 @@
-{% macro attacks_address_poisoning(blockchain, transactions, token_transfers, cex_addresses) %}
+{% macro attacks_address_poisoning(blockchain, token_transfers) %}
 
 WITH transfer_recipients AS (
     SELECT to AS address
@@ -23,9 +23,12 @@ WITH transfer_recipients AS (
     )
 
 SELECT '{{blockchain}}' AS blockchain
+, attack.block_time
+, attack.block_number
 , 'Address Poisoning' AS attack_type
-, 'Integrity' AS attack_type
+, 'Integrity' AS attack_category
 , ma.address_attack AS attacker
+, attack."from" AS victim
 , ma.address_normal AS intended_recipient
 , attack.amount_usd
 , attack.amount
@@ -34,6 +37,8 @@ SELECT '{{blockchain}}' AS blockchain
 , attack.token_standard
 , attack.symbol
 , attack.tx_hash
+, attack.tx_index
+, attack.evt_index
 FROM matching_addresses ma
 INNER JOIN {{token_transfers}} attack ON attack.to = ma.address_attack
     {% if is_incremental() %}

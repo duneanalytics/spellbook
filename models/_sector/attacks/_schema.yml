@@ -13,7 +13,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - tx_index
+            - tx_hash
             - evt_index
     columns:
       - &blockchain

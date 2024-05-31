@@ -8,12 +8,12 @@ models:
       contributors: hildobby
     config:
       tags: ['attacks']
-    description: "All identified onchain attacks"
+    description: "All identified address poisoning attacks"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - tx_index
+            - tx_hash
             - evt_index
     columns:
       - &blockchain
@@ -25,9 +25,15 @@ models:
       - &block_number
         name: block_number
         description: "Block number"
+      - &attacker
+        name: attacker
+        description: "Attacker"
       - &victim
         name: victim
-        description: "victim"
+        description: "Victim"
+      - &intended_recipient
+        name: intended_recipient
+        description: "Intended recipient"
       - &amount_usd
         name: amount_usd
         description: "USD value of transfered tokens"
@@ -45,10 +51,7 @@ models:
         description: "Token address of stolen token"
       - &token_symbol
         name: token_symbol
-        description: "Token standard"
-      - &intended_recipient
-        name: intended_recipient
-        description: "Flow type"
+        description: "Token symbol"
       - &tx_hash
         name: tx_hash
         description: "Transaction hash"
