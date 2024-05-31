@@ -168,3 +168,6 @@ sources:
     tables:
       - name: UniswapV3Pool_evt_Swap
       - name: UniswapV3Factory_evt_PoolCreated
+  - name: clipper_base
+    tables:
+      - name: ClipperPackedVerifiedExchange_evt_Swapped

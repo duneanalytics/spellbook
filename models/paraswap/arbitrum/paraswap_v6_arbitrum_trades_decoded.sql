@@ -9,4 +9,4 @@
     )
 }}
 
-{{ paraswap_v6_trades_master('arbitrum', 'paraswap', 'AugustusV6') }}
+{{ paraswap_v6_trades_master('arbitrum', 'paraswap', 'AugustusV6_1') }}
