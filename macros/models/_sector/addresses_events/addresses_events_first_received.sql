@@ -35,7 +35,7 @@ SELECT '{{blockchain}}' AS blockchain
 , tt.unique_key
 , tt."from"
 FROM {{token_transfers}} tt
-INNER JOIN identify_first iff USING ON tt.block_number=iff.block_number
+INNER JOIN identify_first iff ON tt.block_number=iff.block_number
     AND tt.address=iff.to 
     AND tt.tx_index = iff.tx_index
     AND tt.evt_index = iff.evt_index
