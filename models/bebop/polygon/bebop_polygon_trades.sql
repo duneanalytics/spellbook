@@ -11,7 +11,8 @@
 
 {% set bebop_models = [
     ref('bebop_rfq_polygon_trades'),
-    ref('bebop_jam_polygon_trades')
+    ref('bebop_jam_polygon_trades'),
+    ref('bebop_blend_polygon_trades')
 ] %}
 
 SELECT *

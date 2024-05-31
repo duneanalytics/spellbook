@@ -11,7 +11,8 @@
 
 {% set bebop_models = [
     ref('bebop_rfq_arbitrum_trades'),
-    ref('bebop_jam_arbitrum_trades')
+    ref('bebop_jam_arbitrum_trades'),
+    ref('bebop_blend_arbitrum_trades')
 ] %}
 
 SELECT *

@@ -10,7 +10,8 @@
 
 
 {% set bebop_models = [
-    ref('bebop_jam_base_trades')
+    ref('bebop_jam_base_trades'),
+    ref('bebop_blend_base_trades')
 ] %}
 
 SELECT *
