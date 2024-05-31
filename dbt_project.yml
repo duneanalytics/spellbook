@@ -674,6 +674,8 @@ models:
         +schema: cow_protocol_ethereum
       gnosis:
         +schema: cow_protocol_gnosis
+      arbitrum:
+        +schema: cow_protocol_arbitrum
 
     ironbank:
       +schema: ironbank
