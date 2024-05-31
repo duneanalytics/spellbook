@@ -28,6 +28,7 @@ xdai_transfers  as (
     WHERE (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS NULL )
     AND success
     AND TRY_CAST(value as INT256) > 0
+    AND tx_hash IS NOT NULL
     {% if is_incremental() %}
         AND block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
