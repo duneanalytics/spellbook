@@ -417,29 +417,6 @@ models:
       optimism:
         +schema: addresses_optimism
 
-    addresses_events:
-      +schema: addresses_events
-      arbitrum:
-        +schema: addresses_events_arbitrum
-      avalanche_c:
-        +schema: addresses_events_avalanche_c
-      bnb:
-        +schema: addresses_events_bnb
-      ethereum:
-        +schema: addresses_events_ethereum
-      fantom:
-        +schema: addresses_events_fantom
-      gnosis:
-        +schema: addresses_events_gnosis
-      optimism:
-        +schema: addresses_events_optimism
-      polygon:
-        +schema: addresses_events_polygon
-    addresses_events_testnets:
-      +schema: addresses_events_testnets
-      goerli:
-        +schema: addresses_events_testnets_goerli
-
     addresses_summary:
       +schema: addresses_summary
 
