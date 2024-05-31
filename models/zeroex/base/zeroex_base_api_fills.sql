@@ -33,7 +33,8 @@ WITH zeroex_tx AS (
                             WHEN bytearray_position(INPUT, 0xfbc019a7) <> 0 THEN SUBSTRING(INPUT
                                                                                    FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16)
                                                                                    FOR 20)
-                        END AS affiliate_address
+                        END AS affiliate_address,
+                        case when  (varbinary_position(input,0x3d8d4082) <> 0  ) then 1 else 0 end as is_gasless
         FROM {{ source('base', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -172,7 +173,8 @@ SELECT
         cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
         maker,
         CASE
-             WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN varbinary_substring(data,177,20) 
+            WHEN is_gasless = 1 then case when (varbinary_substring(data,177,19)  ) = 0x00000000000000000000000000000000000000 then varbinary_substring(data,81,20) else (varbinary_substring(data,177,20)  )  end 
+            WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN varbinary_substring(data,177,20) 
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
          taker_token,
