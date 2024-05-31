@@ -149,12 +149,12 @@ FROM
         LEFT JOIN {{ ref('nft_aggregators') }} agg
             ON etxs.to=agg.contract_address
             AND agg.blockchain = '{{blockchain}}'
-        LEFT JOIN {{ ref('tokens_nft') }} tok
+        LEFT JOIN {{ source('tokens', 'nft') }} tok
             ON tok.contract_address=nft_mints.contract_address
             and tok.blockchain = '{{blockchain}}'
         LEFT JOIN namespaces ec ON etxs.to=ec.address
         {%- if blockchain == 'optimism' %}
-        LEFT JOIN {{ ref('tokens_optimism_nft_bridged_mapping') }} as bm
+        LEFT JOIN {{ source('tokens_optimism', 'nft_bridged_mapping') }} as bm
             ON bm.contract_address=nft_mints.contract_address
         {%- endif -%}
         {% if is_incremental() %}
