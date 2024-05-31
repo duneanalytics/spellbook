@@ -1,6 +1,6 @@
 {{ config(
     schema='lido_liquidity_optimism',
-    alias = 'aerodrome_cl',     
+    alias = 'velodrome_cl',     
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
