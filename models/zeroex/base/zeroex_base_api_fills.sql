@@ -78,7 +78,8 @@ ERC20BridgeTransfer AS (
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
             TRUE                                    AS swap_flag,
-            FALSE                                   AS matcha_limit_order_flag
+            FALSE                                   AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('base', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
@@ -107,7 +108,8 @@ BridgeFill AS (
             'BridgeFill'                                    AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
-            FALSE                                           AS matcha_limit_order_flag
+            FALSE                                           AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('base', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9
@@ -136,7 +138,8 @@ NewBridgeFill AS (
             'BridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
-            FALSE                                           AS matcha_limit_order_flag
+            FALSE                                           AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('base' ,'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8
