@@ -82,7 +82,7 @@ with events_raw as (
     join {{ ref('tokens_optimism_base_transfers') }} as tr
       on er.tx_hash = tr.tx_hash
       and er.block_number = tr.block_number
-      and tr.value_decimal > 0
+      and tr.amount_raw > 0
       and tr.to not in (
         {{quix_fee_address_address}} --qx platform fee address
         ,er.seller
