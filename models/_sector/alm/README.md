@@ -1,6 +1,6 @@
 # README for `alm.trades`
 
-Welcome to the `models/_sector/alm/` directory of our project. This README provides essential information on contributing to the `dex` sector models, insights into our design choices, and outlines the next steps in the `dex.trades` redesign workstream.
+Welcome to the `models/_sector/alm/` directory of our project. This README provides essential information on contributing to the `alm` sector models, insights into our design choices, and outlines the next steps in the `alm.trades` redesign workstream.
 
 ## Table of Contents
 
