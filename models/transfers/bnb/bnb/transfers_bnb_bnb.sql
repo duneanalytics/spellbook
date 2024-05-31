@@ -30,7 +30,7 @@ bnb_transfers  as (
         AND to IS NOT NULL
         AND to != 0x0000000000000000000000000000000000000000
         {% if is_incremental() %}
-            AND{{ incremental_predicate('block_time') }}
+            AND {{ incremental_predicate('block_time') }}
         {% endif %}
 
         UNION ALL
@@ -51,7 +51,7 @@ bnb_transfers  as (
         AND "from" IS NOT NULL
         AND "from" != 0x0000000000000000000000000000000000000000 -- this is causing duplicates in the test because for some weird reason there are transactions showing in bnb.transactions of this address that doesn't have a tx_hash
         {% if is_incremental() %}
-            AND{{ incremental_predicate('block_time') }}
+            AND {{ incremental_predicate('block_time') }}
         {% endif %}
 ),
 
@@ -70,7 +70,7 @@ gas_fee as (
     FROM
     {{ source('bnb', 'transactions') }}
     {% if is_incremental() %}
-        WHERE{{ incremental_predicate('block_time') }}
+        WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
 )
 

@@ -29,7 +29,7 @@ matic_transfers  as (
         AND CAST(value as double) > 0
         AND to IS NOT NULL
         {% if is_incremental() %}
-            AND{{ incremental_predicate('block_time') }}
+            and {{ incremental_predicate('block_time') }}
         {% endif %}
 
         UNION ALL
@@ -49,7 +49,7 @@ matic_transfers  as (
         AND CAST(value as double) > 0
         AND "from" IS NOT NULL
         {% if is_incremental() %}
-            AND{{ incremental_predicate('block_time') }}
+            and {{ incremental_predicate('block_time') }}
         {% endif %}
 ),
 
@@ -68,7 +68,7 @@ gas_fee as (
     FROM
     {{ source('polygon', 'transactions') }}
     {% if is_incremental() %}
-        WHERE{{ incremental_predicate('block_time') }}
+        WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
 )
 

@@ -1,6 +1,6 @@
-{{ 
+{{
     config(
-        
+
         alias = 'erc721',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -29,7 +29,7 @@ sent_transfers as (
     from {{ source('erc721_celo', 'evt_transfer') }}
     where 1=1
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        and evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 ),
 
@@ -46,7 +46,7 @@ received_transfers as (
     from {{ source('erc721_celo', 'evt_transfer') }}
     where 1=1
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        and evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 )
 

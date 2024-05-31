@@ -69,7 +69,7 @@ with eth_transfers as (
         and t.success
         and r.value > uint256 '0'
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        and r.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('r.evt_block_time') }}
         and {{ incremental_predicate('t.block_time') }}
         {% endif %}
 )
