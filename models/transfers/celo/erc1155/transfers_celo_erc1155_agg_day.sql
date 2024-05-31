@@ -1,6 +1,6 @@
-{{ 
+{{
     config(
-        
+
         alias = 'erc1155_agg_day',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -25,6 +25,6 @@ select
 from {{ ref('transfers_celo_erc1155') }} tr
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-where tr.block_time >= date_trunc('day', now() - interval '7' day)
+where t{{ incremental_predicate('r.block_time') }}
 {% endif %}
 group by 1, 2, 3, 4, 5, 6

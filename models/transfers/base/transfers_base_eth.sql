@@ -1,7 +1,7 @@
 {{
     config(
         alias ='eth',
-        
+
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
@@ -38,8 +38,8 @@ with eth_transfers as (
         and r.success
         and r.value > uint256 '0'
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        and r.block_time >= date_trunc('day', now() - interval '7' day)
-        and t.block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('r.block_time') }}
+        and {{ incremental_predicate('t.block_time') }}
         {% endif %}
 
     union all
@@ -70,7 +70,7 @@ with eth_transfers as (
         and r.value > uint256 '0'
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
         and r.evt_block_time >= date_trunc('day', now() - interval '7' day)
-        and t.block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('t.block_time') }}
         {% endif %}
 )
 select *
