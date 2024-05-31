@@ -116,7 +116,8 @@ transfers_gnosis_xdai_full AS (
         block_month,
         wallet_address, 
         token_address, 
-        amount_raw
+        amount_raw,
+        amount_raw - COALESCE(LAG(amount_raw) OVER (PARTITION BY wallet_address ORDER BY block_time),0 ) AS mount_raw_diff
     FROM (
         SELECT
             blockchain, 
