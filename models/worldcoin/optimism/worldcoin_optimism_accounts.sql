@@ -23,7 +23,7 @@ SELECT
     trace_creator_address
 
 
-FROM {{ source('contracts_optimism', 'contract_mapping') }}
+FROM {{ source('contracts_optimism', 'contract_creator_project_mapping') }}
 where 1=1 -- limit by time
     and created_time > TIMESTAMP '2023-06-01'
     {% if is_incremental() %}
