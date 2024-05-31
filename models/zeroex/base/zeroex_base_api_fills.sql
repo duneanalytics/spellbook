@@ -23,7 +23,8 @@
 
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address
+           max(affiliate_address) as affiliate_address,
+           is_gasless 
     FROM (
        SELECT tr.tx_hash,
                 CASE
