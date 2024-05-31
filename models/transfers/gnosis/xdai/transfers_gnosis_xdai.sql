@@ -51,7 +51,7 @@ xdai_transfers  as (
     AND TRY_CAST(value as INT256) > 0
     AND tx_hash IS NOT NULL
     {% if is_incremental() %}
-        AND t1.block_time >= date_trunc('day', now() - interval '3' Day)
+        AND block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 ),
 
