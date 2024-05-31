@@ -172,7 +172,7 @@ SELECT
         cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
         maker,
         CASE
-             WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN tx."from"
+             WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN varbinary_substring(data,177,20) 
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
          taker_token,
