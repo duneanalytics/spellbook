@@ -16,3 +16,5 @@ sources:
       - name: StakingPool_call_manager
       - name: StakingPool_evt_PoolFeeChanged
       - name: SafeTrackerNXMIS_evt_CoverReInvestmentUSDCUpdated
+      - name: MCR_evt_MCREvent
+      - name: MCR_evt_MCRUpdated

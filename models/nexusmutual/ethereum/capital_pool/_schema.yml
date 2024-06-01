@@ -196,6 +196,31 @@ models:
       - *avg_aave_debt_usdc_usd_total
       - *avg_aave_debt_usdc_eth_total
 
+  - name: nexusmutual_ethereum_capital_pool_mcr
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "capital_pool"]
+    description: "Minimum Capital Requirement (MCR) in the Nexus Mutual Capital Pool"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+      - *avg_eth_usd_price
+      - &mcr_eth_total
+        name: mcr_eth_total
+        description: "MCR ETH total"
+      - &mcr_floor_total
+        name: mcr_floor_total
+        description: "MCR ETH floor"
+      - &mcr_cover_min_total
+        name: mcr_cover_min_total
+        description: "MCR ETH cover minimum"
+
 
   # to be deprecated:
   - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary
