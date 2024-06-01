@@ -29,7 +29,7 @@ SELECT 'fantom' as blockchain
 , ps.evt_tx_hash AS tx_hash
 , ps.evt_index AS sub_tx_trade_id
 , SUM(CASE WHEN traces.to = 0x045ef160107ed663d10c5a31c7d2ec5527eea1d0 THEN traces.value END) AS platform_fee_amount_raw
-, MAX(CASE WHEN traces.to = 0x045ef160107ed663d10c5a31c7d2ec5527eea1d0 THEN traces.to END) AS platform_fee_address
+, 0x045ef160107ed663d10c5a31c7d2ec5527eea1d0 AS platform_fee_address
 , SUM(CASE WHEN traces.to != 0x045ef160107ed663d10c5a31c7d2ec5527eea1d0 THEN traces.value END) AS royalty_fee_amount_raw
 , MAX(CASE WHEN traces.to != 0x045ef160107ed663d10c5a31c7d2ec5527eea1d0 THEN traces.to END) AS royalty_fee_address
 FROM {{ source('paintswap_fantom','PaintSwapMarketplaceV3_evt_Sold') }} ps
@@ -43,4 +43,4 @@ WHERE {{incremental_predicate('ps.evt_block_time')}}
 {% else %}
 WHERE ps.evt_block_time >= TIMESTAMP '{{project_start_date}}'
 {% endif %}
-GROUP BY 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
+GROUP BY 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19
