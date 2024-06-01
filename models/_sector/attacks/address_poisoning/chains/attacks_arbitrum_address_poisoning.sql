@@ -14,4 +14,5 @@
 {{attacks_address_poisoning(
         blockchain = blockchain
         , token_transfers = ref('tokens_' + blockchain + '_transfers')
+        , first_funded_by = ref('addresses_events_' + blockchain + '_first_funded_by')
 )}}
