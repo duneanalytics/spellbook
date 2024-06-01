@@ -42,12 +42,12 @@ SELECT DISTINCT '{{blockchain}}' AS blockchain
 FROM matching_addresses ma
 INNER JOIN {{token_transfers}} attack ON attack.to = ma.address_attack
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('attack.block_time') }}
+    AND {{ incremental_predicate('attack.block_time') }}
     {% endif %}
 INNER JOIN {{token_transfers}} normal ON normal.to = ma.address_normal
     AND attack.tx_from=normal.tx_from
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('attack.block_time') }} - interval '14' day
+    AND {{ incremental_predicate('attack.block_time') }} - interval '14' day
     {% endif %}
     AND attack.block_number > normal.block_number
 INNER JOIN {{token_transfers}} attack_probe ON attack_probe.to = ma.address_attack
