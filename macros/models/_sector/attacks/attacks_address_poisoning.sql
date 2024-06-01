@@ -22,7 +22,7 @@ WITH transfer_recipients AS (
     GROUP BY 1, 2
     )
 
-SELECT '{{blockchain}}' AS blockchain
+SELECT DISTINCT '{{blockchain}}' AS blockchain
 , attack.block_time
 , attack.block_number
 , 'Address Poisoning' AS attack_type
