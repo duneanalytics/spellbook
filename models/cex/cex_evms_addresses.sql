@@ -918,11 +918,6 @@ FROM (VALUES
     , (0x2c2301fdb0bfa06eaabaa0122cbceb2265337c25, 'Crypto.com', 'Crypto.com 20', 'hildobby', date '2024-05-27')
     , (0x8a161a996617f130d0f37478483afc8c1914db6d, 'Crypto.com', 'Crypto.com 21', 'hildobby', date '2024-05-27')
     , (0xae45a8240147e6179ec7c9f92c5a18f9a97b3fca, 'Crypto.com', 'Crypto.com Deposit Funder', 'hildobby', date '2023-11-15')
-    , (0x3aa370aacf4cb08c7e1e7aa8e8ff9418d73c7e0f, 'Crypto.com', 'Crypto.com USDC-WETH', 'hildobby', date '2024-04-02')
-    , (0x9ef7e917fb41cc02f78a5c99b42f497ed8979350, 'Crypto.com', 'Crypto.com CRO-WETH', 'hildobby', date '2024-04-02')
-    , (0x35e8777ec43cb99e935588dcd0305268f06c1274, 'Crypto.com', 'Crypto.com CRO-USDC', 'hildobby', date '2024-04-02')
-    , (0x50cf1b844068f7dfe89f078fe6d82a7a4a73b180, 'Crypto.com', 'Crypto.com YFI-WETH', 'hildobby', date '2024-05-27')
-    , (0x4087d0e6e513f260de87408bee9334a5742cfdf4, 'Crypto.com', 'Crypto.com CRO-USDT', 'hildobby', date '2024-05-27')
     -- Wirex
     , (0x2f13d388b85e0ecd32e7c3d7f36d1053354ef104, 'Wirex', 'Wirex 1', 'hildobby', date '2023-11-19')
     , (0xe3f277382419535245a345e923898c2d43f7cbe5, 'Wirex', 'Wirex 2', 'hildobby', date '2023-11-19')
@@ -1661,6 +1656,9 @@ FROM (VALUES
     -- Bitcoin Suisse
     , (0x7b4576d06d0ce1f83f9a9b76bf8077bffd34fcb1, 'Bitcoin Suisse', 'Bitcoin Suisse 1', 'hildobby', date '2023-11-23')
     , (0x3f262579e4332e1be2722684eaa1c1b111f7a8d8, 'Bitcoin Suisse', 'Bitcoin Suisse 2', 'hildobby', date '2024-05-27')
+    , (0x31dff0cf605f9719b9171f6049150595cc1240f1, 'Bitcoin Suisse', 'Bitcoin Suisse 3', 'hildobby', date '2024-06-01')
+    , (0xc2288b408dc872a1546f13e6ebfa9c94998316a2, 'Bitcoin Suisse', 'Bitcoin Suisse 4', 'hildobby', date '2024-06-01')
+    , (0xfcb7edb966d320c7f3ae1f751a8c86f30fa5ad37, 'Bitcoin Suisse', 'Bitcoin Suisse Binance Deposit 1', 'hildobby', date '2024-06-01')
     , (0x2a7077399b3e90f5392d55a1dc7046ad8d152348, 'Bitcoin Suisse', 'Bitcoin Suisse ETH Staking 1', 'hildobby', date '2023-11-23')
     -- Bitci
     , (0xe954b098b80d43fd66af4a58400c05e62b087b72, 'Bitci', 'Bitci 1', 'hildobby', date '2023-11-23')
