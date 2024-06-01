@@ -1,5 +1,5 @@
 {{ config(
-    
+
     alias = 'op_mainnet',
     materialized='incremental',
     file_format = 'delta',
@@ -61,24 +61,24 @@ SELECT
         WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) = 0 THEN 'First Time User'
         WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) != 0 AND COUNT(ot.hash) = 1 THEN 'One Time User'
         WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) != 0 AND COUNT(ot.hash) != 1 THEN (
-            CASE 
+            CASE
                 WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 1 THEN 'Daily User'
                 WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 0.14285714 AND COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) < 1 THEN 'Weekly User'
                 WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 0.03333333 AND COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) < 0.14285714 THEN 'Monthly User'
                 WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 0.00273973 AND COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) < 0.03333333 THEN 'Yearly User'
                 ELSE 'Sparse Trader'
-            END 
+            END
         )
     END as usage_frequency,
     COUNT(ot.hash) as number_of_transactions,
     COUNT(DISTINCT(cm.contract_project)) as unique_dapps,
     MIN_BY(cm.contract_project, ot.block_number) as first_to_project,
     MIN_BY(ot.to, ot.block_number) as first_to_address,
-    MAX_BY(cm.contract_project, ot.block_number) as last_to_project, 
+    MAX_BY(cm.contract_project, ot.block_number) as last_to_project,
     MAX_BY(ot.to, ot.block_number) as last_to_address,
     bf.token_amount as total_bridged_eth
-FROM 
-weekly_active_addresses wd 
+FROM
+weekly_active_addresses wd
 INNER JOIN (
         SELECT
             "from",
@@ -108,23 +108,23 @@ INNER JOIN (
 ) ot
     ON wd.address = ot."from"
 INNER JOIN
-{{ ref('addresses_events_optimism_first_activity') }} fa
+{{ source('addresses_events_optimism', 'first_activity') }} fa
     ON wd.address = fa.address
-LEFT JOIN 
-{{ ref('contracts_optimism_contract_mapping') }} cm 
-    ON ot."to" = cm.contract_address  
+LEFT JOIN
+{{ source('contracts_optimism', 'contract_creator_project_mapping') }} cm
+    ON ot."to" = cm.contract_address
 LEFT JOIN (
-    SELECT 
+    SELECT
         SUM(token_amount) as token_amount,
         receiver
-    FROM 
-    {{ ref('optimism_standard_bridge_flows') }} bf 
+    FROM
+    {{ source('bridge_optimism', 'standard_bridge_flows') }} bf
     WHERE destination_chain_name = 'Optimism'
     AND token_symbol = 'ETH'
-    GROUP BY 2 
+    GROUP BY 2
 ) bf
     ON wd.address = bf.receiver
-GROUP BY 1, 2, 3, 4, 5, 19 
+GROUP BY 1, 2, 3, 4, 5, 19
 
 {% else %}
 
@@ -164,23 +164,23 @@ SELECT
         WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) = 0 THEN 'First Time User'
         WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) != 0 AND COUNT(ot.hash) = 1 THEN 'One Time User'
         WHEN (date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp))) != 0 AND COUNT(ot.hash) != 1 THEN (
-            CASE 
+            CASE
                 WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 1 THEN 'Daily User'
                 WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 0.14285714 AND COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) < 1 THEN 'Weekly User'
                 WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 0.03333333 AND COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) < 0.14285714 THEN 'Monthly User'
                 WHEN COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) >= 0.00273973 AND COUNT(ot.hash)/CAST(date_diff('day', min(fa.first_block_time), CAST(NOW() as timestamp)) as double) < 0.03333333 THEN 'Yearly User'
                 ELSE 'Sparse Trader'
-            END 
+            END
         )
     END as usage_frequency,
     COUNT(ot.hash) as number_of_transactions,
     COUNT(DISTINCT(cm.contract_project)) as unique_dapps,
     MIN_BY(cm.contract_project, ot.block_number) as first_to_project,
     MIN_BY(ot.to, ot.block_number) as first_to_address,
-    MAX_BY(cm.contract_project, ot.block_number) as last_to_project, 
+    MAX_BY(cm.contract_project, ot.block_number) as last_to_project,
     MAX_BY(ot.to, ot.block_number) as last_to_address,
     bf.token_amount as total_bridged_eth
-FROM 
+FROM
 (
         SELECT
             "from",
@@ -209,22 +209,22 @@ FROM
         {{ source('optimism_legacy_ovm1', 'transactions') }}
 ) ot
 INNER JOIN
-{{ ref('addresses_events_optimism_first_activity') }} fa
+{{ source('addresses_events_optimism', 'first_activity') }} fa
     ON ot."from" = fa.address
-LEFT JOIN 
-{{ ref('contracts_optimism_contract_mapping') }} cm 
+LEFT JOIN
+{{ source('contracts_optimism', 'contract_creator_project_mapping') }} cm
     ON ot."to" = cm.contract_address
 LEFT JOIN (
-    SELECT 
+    SELECT
         SUM(token_amount) as token_amount,
         receiver
-    FROM 
-    {{ ref('optimism_standard_bridge_flows') }} bf 
+    FROM
+    {{ source('bridge_optimism', 'standard_bridge_flows') }} bf
     WHERE destination_chain_name = 'Optimism'
     AND token_symbol = 'ETH'
-    GROUP BY 2 
+    GROUP BY 2
 ) bf
     ON ot."from" = bf.receiver
-GROUP BY 1, 2, 3, 4, 5, 19 
+GROUP BY 1, 2, 3, 4, 5, 19
 
 {% endif %}
