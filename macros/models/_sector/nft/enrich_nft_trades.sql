@@ -103,7 +103,7 @@ SELECT
         ELSE coalesce(agg_mark.aggregator_name, agg1.name, agg2.name)
         END as aggregator_name
 FROM {{base_trades}} base
-LEFT JOIN {{ref('tokens_nft')}} nft
+LEFT JOIN {{source('tokens', 'nft')}} nft
     ON nft.blockchain = base.blockchain
     AND nft.contract_address = base.nft_contract_address
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20
