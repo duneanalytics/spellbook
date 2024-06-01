@@ -29,7 +29,7 @@ SELECT DISTINCT '{{blockchain}}' AS blockchain
 , 'Integrity' AS attack_category
 , ma.address_attack AS attacker
 , attack."from" AS victim
-, ma.address_normal AS intended_recipient
+, MIN_BY(ma.address_normal, normal.block_number) AS intended_recipient
 , attack.amount_usd
 , attack.amount
 , attack.amount_raw
@@ -53,5 +53,5 @@ INNER JOIN {{token_transfers}} normal ON normal.to = ma.address_normal
 INNER JOIN {{token_transfers}} attack_probe ON attack_probe.to = ma.address_attack
     AND attack_probe.tx_from=attack.tx_from
     AND attack_probe.block_number BETWEEN normal.block_number AND attack.block_number
-
+GROUP BY 2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17
 {% endmacro %}
