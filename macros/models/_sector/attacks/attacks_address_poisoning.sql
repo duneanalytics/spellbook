@@ -60,7 +60,7 @@ WITH transfer_recipients AS (
 , remove_high_funded_counts AS (
     SELECT victim
     FROM matching_addresses ma
-    INNER JOIN {{first_funded_by}} ffb.first_funded_by=ma.victim
+    INNER JOIN {{first_funded_by}} ffb ON ffb.first_funded_by=ma.victim
     HAVING COUNT(DISTINCT ffb.address) < 1000
     )
 
