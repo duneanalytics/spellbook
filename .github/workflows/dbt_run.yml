@@ -32,6 +32,7 @@ jobs:
 
       - name: Get latest manifest
         run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json"
+        continue-on-error: true # Temprorary until all projects have manifest
 
       - name: dbt dependencies
         working-directory: ${{env.PROJECT_DIR}}
