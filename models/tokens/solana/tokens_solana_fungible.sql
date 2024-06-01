@@ -16,12 +16,18 @@ with
         bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data, 2, 1))) as decimals
         , call_data
         , account_mint
+        , token_version
         , call_tx_id
         , call_block_time
         FROM (
-            SELECT call_data, account_mint, call_tx_id, call_block_time FROM {{ source('spl_token_solana', 'spl_token_call_initializeMint') }}
+            SELECT call_data, account_mint, call_tx_id, call_block_time, 'spl_token' as token_version FROM {{ source('spl_token_solana', 'spl_token_call_initializeMint') }}
             UNION ALL 
-            SELECT call_data, account_mint, call_tx_id, call_block_time FROM {{ source('spl_token_solana', 'spl_token_call_initializeMint2') }}
+            SELECT call_data, account_mint, call_tx_id, call_block_time, 'spl_token' as token_version FROM {{ source('spl_token_solana', 'spl_token_call_initializeMint2') }}
+            UNION ALL
+            SELECT call_data, account_mint, call_tx_id, call_block_time, 'token2022' as token_version FROM {{ source('spl_token_2022_solana', 'spl_token_2022_call_initializeMint') }}
+            UNION ALL 
+            SELECT call_data, account_mint, call_tx_id, call_block_time, 'token2022' as token_version FROM {{ source('spl_token_2022_solana', 'spl_token_2022_call_initializeMint2') }}
+      
         )
         {% if is_incremental() %}
         where call_block_time >= date_trunc('day', now() - interval '7' day)
@@ -82,14 +88,37 @@ with
         {% endif %}
     )
 
+    , token2022_metadata as (
+        SELECT 
+            from_utf8(bytearray_substring(data,1+8+4,bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))))) as name
+            , from_utf8(bytearray_substring(data,1+8+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))) + 4 --start from end of name and end of length of symbol
+                , bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))),4))) --get length of symbol from end of name
+                )) as symbol
+            , from_utf8(bytearray_substring(data,1+8+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))) + 4 --end of name and end of length of symbol
+                    + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))),4))) + 4 --start from end of symbol and end of length of uri
+                , bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))) + 4 
+                    + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))),4))),4))) --get length of uri from end of symbol
+                )) as uri
+            , tx_id as metadata_tx
+            , account_arguments[1] as account_metadata
+            , account_arguments[2] as update_authority
+            , account_arguments[3] as account_mint
+            , account_arguments[4] as mint_authority
+        FROM {{ source('solana','instruction_calls') }}
+        WHERE executing_account = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
+        AND bytearray_substring(data,1,1) = 0xd2 --deal with updateField later 0xdd
+        AND tx_success
+    )
+
 SELECT
     tk.account_mint as token_mint_address
     , tk.decimals
-    , trim(json_value(args, 'strict $.name'))as name 
-    , trim(json_value(args, 'strict $.symbol')) as symbol 
-    , trim(json_value(args, 'strict $.uri')) as token_uri
+    , coalesce(m22.name,trim(json_value(args, 'strict $.name'))) as name 
+    , coalesce(m22.symbol,trim(json_value(args, 'strict $.symbol'))) as symbol 
+    , coalesce(m22.uri,trim(json_value(args, 'strict $.uri'))) as token_uri
     , tk.call_block_time as created_at
 FROM tokens tk
+LEFT JOIN token2022_metadata m22 ON tk.account_mint = m22.account_mint
 LEFT JOIN metadata m ON tk.account_mint = m.account_mint
 WHERE m.master_edition is null
 
