@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: bridge_optimism
+    tables:
+      - name: standard_bridge_flows
