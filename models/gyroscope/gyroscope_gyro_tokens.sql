@@ -10,6 +10,7 @@ WITH gyro_tokens as (
     (0x7CFaDFD5645B50bE87d546f42699d863648251ad, 'stataArbUSDCn', 6, 'arbitrum'),
     (0xb165a74407fE1e519d6bCbDeC1Ed3202B35a4140, 'stataArbUSDT', 6, 'arbitrum'),
     (0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc, 'stataBasUSDC', 6, 'base'),
+    (0x270ba1f35d8b87510d24f693fccc0da02e6e4eeb, 'stataGnoUSDC', 6, 'base'),
     (0x862c57d48becB45583AEbA3f489696D22466Ca1b, 'stataEthUSDT', 6, 'ethereum'),
     (0x87A1fdc4C726c459f597282be639a045062c0E46, 'stataPolUSDT', 6, 'polygon'),
     (0x2dCa80061632f3F87c9cA28364d1d0c30cD79a19, 'stataPolUSDCn', 6, 'polygon'),        

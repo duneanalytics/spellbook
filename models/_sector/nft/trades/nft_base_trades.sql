@@ -23,6 +23,7 @@
  ,ref('nft_scroll_base_trades')
  ,ref('nft_celo_base_trades')
  ,ref('nft_avalanche_c_base_trades')
+ ,ref('nft_linea_base_trades')
 ] %}
 
 with base_union as (

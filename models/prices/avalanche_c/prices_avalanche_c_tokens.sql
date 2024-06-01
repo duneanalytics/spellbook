@@ -80,6 +80,7 @@ FROM
     ('vchf-vnx-swiss-franc','avalanche_c','VCHF',0x228a48df6819ccc2eca01e2192ebafffdad56c19,18),
     ('veur-vnx-euro','avalanche_c','VEUR',0x7678e162f38ec9ef2bfd1d0aaf9fd93355e5fa0b,18),
     -- ('yyavax-yieldyak-gavax','avalanche_c','YYAVAX',0xf7d9281e8e363584973f946201b82ba72c965d27,18), -- inactive
+    ('yak-yield-yak','avalanche_c','YAK',0x59414b3089ce2af0010e7523dea7e2b35d776ec7,18),
     ('kimbo-kimbo','avalanche_c','KIMBO',0x184ff13b3ebcb25be44e860163a5d8391dd568c1,18),
     ('gec-gecko-inu','avalanche_c','GEC',0xe8385cecb013561b69beb63ff59f4d10734881f3,18),
     ('hec-heroeschained','avalanche_c','HEC',0xc7f4debc8072e23fe9259a5c0398326d8efb7f5c,18),
@@ -89,5 +90,7 @@ FROM
     ('spell-spell-token','avalanche_c','SPELL',0xce1bffbd5374dac86a2893119683f4911a2f7814,18),
     ('gurs-gursonavax','avalanche_c','GURS',0x223a368ad0e7396165fc629976d77596a51f155c,18),
     ('hon-heroes-of-nft','avalanche_c','HON',0xed2b42d3c9c6e97e11755bb37df29b6375ede3eb,18),
-    ('bawls-bawls-onu','avalanche_c','BAWLS',0x2da8312e2c08b79104c6b18ba26bc7065abec704,18)
+    ('bawls-bawls-onu','avalanche_c','BAWLS',0x2da8312e2c08b79104c6b18ba26bc7065abec704,18),
+    ('shrap-shrapnel', 'avalanche_c', 'SHRAP', 0xd402298a793948698b9a63311404fbbee944eafd, 18),
+    ('bal-balancer', 'avalanche_c', 'BAL', 0xe15bcb9e0ea69e6ab9fa080c4c4a5632896298c3, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

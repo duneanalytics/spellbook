@@ -106,6 +106,8 @@ known_solver_metadata (address, environment, name) as (
                  (0x8646Ee3c5e82b495Be8F9FE2f2f213701EeD0edc, 'prod', 'Seasolver_v2'),
                  (0x9528e8c42F7e109bADED964E2D927fD5B6ca71E9, 'prod', 'Odos'),
                  (0x755BaE1cd46C9C27A3230AeF0CE923BDa13d29F7, 'prod', 'FractalSolver'),
+                 (0x8F70A86c1309d8B1F5BefC58948e7386Fd495875, 'prod', 'Tsolver'),
+                 (0xa432cea087311d7cd07925d70f799eE94E7893a4, 'barn', 'Tsolver'),
                  (0xAb11302CB4f7C417e527A4d39C22Aa9f04EdB07D, 'barn', 'FractalSolver'),
                  (0xf13eaf9093a210EBdaBa581f5448ffA545EE2E65, 'barn', 'Odos'),
                  (0x94aEF67903bFe8Bf65193A78074C887ba901d043, 'barn', 'Seasolver_v2'),
