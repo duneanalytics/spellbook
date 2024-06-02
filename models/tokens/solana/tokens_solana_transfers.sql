@@ -175,4 +175,4 @@ WHERE 1=1
 {% if is_incremental() %}
 AND {{incremental_predicate('call_block_time')}}
 {% endif %}
-AND call_block_time > now() - interval '14' day --for faster CI testing
+AND call_block_time > now() - interval '90' day --for faster CI testing
