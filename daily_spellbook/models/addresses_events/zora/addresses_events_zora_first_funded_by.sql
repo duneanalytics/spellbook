@@ -1,5 +1,7 @@
+{% set blockchain = 'zora' %}
+
 {{ config(
-    schema = 'addresses_events_zora'
+    schema = 'addresses_events_' + blockchain
     , alias = 'first_funded_by'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -10,5 +12,6 @@
 
 
 {{addresses_events_first_funded_by(
-    blockchain='zora'
+    blockchain = blockchain
+    , token_transfers = ref('tokens_' + blockchain + '_transfers')
 )}}

@@ -1,5 +1,7 @@
+{% set blockchain = 'ethereum' %}
+
 {{ config(
-    schema = 'addresses_events_ethereum'
+    schema = 'addresses_events_' + blockchain
     
     , alias = 'first_funded_by'
     , materialized = 'incremental'
@@ -11,5 +13,6 @@
 
 
 {{addresses_events_first_funded_by(
-    blockchain='ethereum'
+    blockchain = blockchain
+    , token_transfers = ref('tokens_' + blockchain + '_transfers')
 )}}

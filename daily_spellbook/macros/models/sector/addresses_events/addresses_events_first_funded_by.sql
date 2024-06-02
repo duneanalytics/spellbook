@@ -1,4 +1,4 @@
-{% macro addresses_events_first_funded_by(blockchain) %}
+{% macro addresses_events_first_funded_by(blockchain, token_transfers) %}
 
 SELECT '{{blockchain}}' as blockchain
 , tt.to AS address

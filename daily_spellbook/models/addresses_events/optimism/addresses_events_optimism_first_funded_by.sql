@@ -1,5 +1,7 @@
+{% set blockchain = 'optimism' %}
+
 {{ config(
-    schema = 'addresses_events_optimism'
+    schema = 'addresses_events_' + blockchain
     
     , alias = 'first_funded_by'
     , materialized = 'incremental'
@@ -11,5 +13,6 @@
 
 
 {{addresses_events_first_funded_by(
-    blockchain='optimism'
+    blockchain = blockchain
+    , token_transfers = ref('tokens_' + blockchain + '_transfers')
 )}}
