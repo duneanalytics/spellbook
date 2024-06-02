@@ -4,7 +4,7 @@
         alias = 'airdrop_claims',
         materialized = 'incremental',
         file_format = 'delta',
-        unique_key = ['recipient', 'tx_hash', 'evt_index'],
+        unique_key = ['tx_hash', 'evt_index', 'recipient'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "etherfi",
@@ -39,7 +39,7 @@ SELECT DISTINCT 'ethereum' AS blockchain
 , 'ETHFI' AS token_symbol
 , t.evt_index
 FROM {{ source('ethfi_ethereum', 'MerkleDistributorWithDeadline_evt_Claimed') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ ref('prices_usd') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{etherfi_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time >= CAST('2024-03-18' as TIMESTAMP)
