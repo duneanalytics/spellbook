@@ -19,7 +19,7 @@ with
         , token_version
         , call_tx_id
         , call_block_time
-        , row_number() over (partition by account_mint order by block_time desc) as latest
+        , row_number() over (partition by account_mint order by call_block_time desc) as latest
         FROM (
             SELECT call_data, account_mint, call_tx_id, call_block_time, 'spl_token' as token_version FROM {{ source('spl_token_solana', 'spl_token_call_initializeMint') }}
             UNION ALL 
