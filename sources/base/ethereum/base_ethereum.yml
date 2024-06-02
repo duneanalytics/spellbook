@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: base_ethereum
+    description: >
+      Decoded tables related to Base
+    tables:
+      - name: L1StandardBridge_evt_ERC20BridgeInitiated
+      - name: L1StandardBridge_evt_ETHBridgeInitiated
+      - name: L1StandardBridge_evt_ERC20BridgeFinalised
+      - name: L1StandardBridge_evt_ETHBridgeFinalised
