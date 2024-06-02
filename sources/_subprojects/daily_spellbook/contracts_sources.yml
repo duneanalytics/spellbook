@@ -1,0 +1,10 @@
+version: 2
+sources:
+  - name: contracts
+    tables:
+      - name: system_predeploys
+
+  - name: contracts_optimism
+    tables:
+      - name: disperse_contracts
+      - name: contract_creator_project_mapping
