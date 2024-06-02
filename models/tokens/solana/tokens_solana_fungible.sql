@@ -106,7 +106,7 @@ with
             , account_arguments[3] as account_mint
             , account_arguments[4] as mint_authority
             , block_time
-            , row_number() over (partition by account_mint order by block_time desc) as latest
+            , row_number() over (partition by account_arguments[3] order by block_time desc) as latest
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
         AND bytearray_substring(data,1,1) = 0xd2 --deal with updateField later 0xdd
