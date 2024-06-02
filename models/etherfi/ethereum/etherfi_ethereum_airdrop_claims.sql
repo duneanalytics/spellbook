@@ -39,7 +39,7 @@ SELECT DISTINCT 'ethereum' AS blockchain
 , 'ETHFI' AS token_symbol
 , t.evt_index
 FROM {{ source('ethfi_ethereum', 'MerkleDistributorWithDeadline_evt_Claimed') }} t
-LEFT JOIN {{ ref('prices_usd') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{etherfi_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time >= CAST('2024-03-18' as TIMESTAMP)
