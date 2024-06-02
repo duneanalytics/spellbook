@@ -34,6 +34,8 @@ sources:
         loaded_at_field: call_block_time
       - name: spl_token_2022_call_initializeMint2
         loaded_at_field: call_block_time
+      - name: spl_token_2022_call_transferFeeExtension
+        loaded_at_field: call_block_time
       - name: spl_token_2022_call_transferChecked
         loaded_at_field: call_block_time
       - name: spl_token_2022_call_mintTo

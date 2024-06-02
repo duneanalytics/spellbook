@@ -31,33 +31,139 @@ SELECT
     , COALESCE(call_inner_instruction_index,0) as inner_instruction_index
     , call_outer_executing_account as outer_executing_account
 FROM (  
-      SELECT account_source, account_destination, amount, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, 'transfer' as action, call_outer_instruction_index, call_inner_instruction_index
+      SELECT 
+            account_source, account_destination, amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'transfer' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , null as fee
+            , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_transfer') }}
 
       UNION ALL
 
-      SELECT account_source, account_destination, amount, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, 'transfer' as action, call_outer_instruction_index, call_inner_instruction_index
+      SELECT 
+            account_source, account_destination, amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'transfer' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , null as fee
+            , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_transferChecked') }}
 
       UNION ALL
 
-      SELECT null, account_account as account_destination, amount, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, 'mint' as action, call_outer_instruction_index, call_inner_instruction_index
+      SELECT 
+            null as account_source, account_account as account_destination, amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'mint' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , null as fee
+            , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_mintTo') }}
 
       UNION ALL
 
-      SELECT null, account_account as account_destination, amount, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, 'mint' as action, call_outer_instruction_index, call_inner_instruction_index
+      SELECT 
+            null as account_source, account_account as account_destination, amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'mint' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , null as fee
+            , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_mintToChecked') }}
 
       UNION ALL
 
-      SELECT account_account as account_source, null, amount, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, 'burn' as action, call_outer_instruction_index, call_inner_instruction_index
+      SELECT 
+            account_account as account_source, null as account_destination, amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'burn' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , null as fee
+            , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_burn') }}
 
       UNION ALL
 
-      SELECT account_account as account_source, null, amount, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, 'burn' as action, call_outer_instruction_index, call_inner_instruction_index
+      SELECT 
+            account_account as account_source, null as account_destination, amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'burn' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , null as fee
+            , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_burnChecked') }}
+
+      --token2022. Most mint and account extensions still use the parent transferChecked instruction, hooks are excecuted after and interest-bearing is precalculated.
+      UNION ALL
+
+      SELECT 
+            account_source, account_destination, amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'transfer' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , null as fee
+            , 'token2022' as token_version
+      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferChecked') }}
+
+      UNION ALL
+
+      SELECT 
+            null as account_source, account_account as account_destination, amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'mint' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , null as fee
+            , 'token2022' as token_version
+      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_mintTo') }}
+
+      UNION ALL
+
+      SELECT
+            null as account_source, account_account as account_destination, amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'mint' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , null as fee
+            , 'token2022' as token_version
+      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_mintToChecked') }}
+
+      UNION ALL
+
+      SELECT 
+            account_account as account_source, null as account_destination, amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'burn' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , null as fee
+            , 'token2022' as token_version
+      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_burn') }}
+
+      UNION ALL
+
+      SELECT 
+            account_account as account_source, null as account_destination, amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'burn' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , null as fee
+            , 'token2022' as token_version
+      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_burnChecked') }}
+
+      --token2022 transferFeeExtension has some extra complications. It's the only extension with its own transferChecked wrapper (confidential transfers will have this too)      
+      UNION ALL
+
+      SELECT 
+            call_account_arguments[1] as account_source, call_account_arguments[3] as account_destination
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+2,8))) as amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'burn' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data, 1+2+8+1,8))) as fee
+            , 'token2022' as token_version
+      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
+      WHERE bytearray_substring(call_data,1,2) = 0x1a01 --https://github.com/solana-labs/solana-program-library/blob/8f50c6fabc6ec87ada229e923030381f573e0aed/token/program-2022/src/extension/transfer_fee/instruction.rs#L284
 ) tr
 --get token and accounts
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.account_source 

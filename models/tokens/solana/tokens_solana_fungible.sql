@@ -44,6 +44,7 @@ with
             , meta.account_mint
             , meta.call_block_time
             , master.account_edition as master_edition
+            , row_number() over (partition by meta.account_mint order by meta.call_block_time desc) as latest
         FROM (
             SELECT 
                 call_tx_id
@@ -104,6 +105,8 @@ with
             , account_arguments[2] as update_authority
             , account_arguments[3] as account_mint
             , account_arguments[4] as mint_authority
+            , block_time
+            , row_number() over (partition by account_mint order by block_time desc) as latest
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
         AND bytearray_substring(data,1,1) = 0xd2 --deal with updateField later 0xdd
@@ -117,9 +120,10 @@ SELECT
     , coalesce(m22.symbol,trim(json_value(args, 'strict $.symbol'))) as symbol 
     , coalesce(m22.uri,trim(json_value(args, 'strict $.uri'))) as token_uri
     , tk.call_block_time as created_at
+    , tk.token_version
 FROM tokens tk
-LEFT JOIN token2022_metadata m22 ON tk.account_mint = m22.account_mint
-LEFT JOIN metadata m ON tk.account_mint = m.account_mint
+LEFT JOIN token2022_metadata m22 ON tk.account_mint = m22.account_mint AND m22.latest = 1
+LEFT JOIN metadata m ON tk.account_mint = m.account_mint AND m.latest = 1
 WHERE m.master_edition is null
 
 UNION ALL
@@ -132,6 +136,7 @@ SELECT
   , trim(symbol) as symbol
   , token_uri
   , cast(created_at as timestamp) created_at
+  , token_version
 FROM 
 (
   VALUES
@@ -141,6 +146,7 @@ FROM
   'wrapped SOL',
   'SOL',
   null,
-  '2021-01-31 00:00:00'
+  '2021-01-31 00:00:00',
+  'spl_token'
 )
-) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at)
+) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at,token_version)
