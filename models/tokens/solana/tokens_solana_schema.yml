@@ -19,6 +19,8 @@ models:
         description: "token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible a token can be"
+      - name: token_version
+        description: version of the token program used (spl_token, token2022)
       - name: created_at
         description: token mint created at
 
