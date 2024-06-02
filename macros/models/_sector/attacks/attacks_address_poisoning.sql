@@ -42,17 +42,18 @@ WITH transfer_recipients AS (
     , evt_index
     FROM matching_addresses ma
     INNER JOIN {{token_transfers}} attack ON to = ma.address_attack
+        AND attack.tx_from=attack."from"
         {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
         {% endif %}
     INNER JOIN {{token_transfers}} normal ON normal.to = ma.address_normal
-        AND tx_from=normal.tx_from
+        AND normal.tx_from=normal."from"
         {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }} - interval '14' day
         {% endif %}
         AND block_number > normal.block_number
     INNER JOIN {{token_transfers}} attack_probe ON attack_probe.to = ma.address_attack
-        AND attack_probe.tx_from=tx_from
+        AND attack_probe.tx_from<>attack_probe."from"
         AND attack_probe.block_number BETWEEN normal.block_number AND block_number
     GROUP BY 2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17
     )
