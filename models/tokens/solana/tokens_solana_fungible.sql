@@ -128,7 +128,7 @@ with
             , account_arguments[2] as account_mint
             , block_time
             , row_number() over (partition by account_arguments[2] order by block_time desc) as latest
-        FROM solana.instruction_calls
+        FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = 'META4s4fSmpkTbZoUsgC1oBnWB31vQcmnN8giPw51Zu'
         AND bytearray_substring(data,1,1) = 0x21
         AND tx_success

@@ -143,7 +143,7 @@ base as (
             call_account_arguments[1] as account_source, call_account_arguments[3] as account_destination
             , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+2,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
-            , 'burn' as action
+            , 'transfer' as action
             , call_outer_instruction_index, call_inner_instruction_index
             , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data, 1+2+8+1,8))) as fee
             , 'token2022' as token_version
