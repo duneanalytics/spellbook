@@ -45,6 +45,7 @@ with
             , meta.account_mint
             , meta.call_block_time
             , master.account_edition as master_edition
+            , executing_account as metadata_program
             , row_number() over (partition by meta.account_mint order by meta.call_block_time desc) as latest
         FROM (
             SELECT 
@@ -56,6 +57,7 @@ with
                 , json_query(createMetadataAccountArgs, 'lax $.CreateMetadataAccountArgs.data.Data') as args
                 , account_metadata
                 , account_mint
+                , executing_account as metadata_program
             FROM  {{ source('mpl_token_metadata_solana', 'mpl_token_metadata_call_CreateMetadataAccount') }}
             UNION ALL 
             SELECT 
@@ -67,6 +69,7 @@ with
                 , json_query(createMetadataAccountArgsV2, 'lax $.CreateMetadataAccountArgsV2.data.DataV2') as args
                 , account_metadata
                 , account_mint
+                , executing_account as metadata_program
             FROM {{ source('mpl_token_metadata_solana', 'mpl_token_metadata_call_CreateMetadataAccountV2') }}
             UNION ALL 
             SELECT  
@@ -78,6 +81,7 @@ with
                 , json_query(createMetadataAccountArgsV3, 'lax $.CreateMetadataAccountArgsV3.data.DataV2') as args
                 , account_metadata
                 , account_mint
+                , executing_account as metadata_program
             FROM {{ source('mpl_token_metadata_solana', 'mpl_token_metadata_call_CreateMetadataAccountV3') }} 
         ) meta 
         LEFT JOIN (
@@ -105,6 +109,7 @@ with
             , tx_id as metadata_tx
             , account_arguments[3] as account_mint
             , block_time
+            , executing_account as metadata_program
             , row_number() over (partition by account_arguments[3] order by block_time desc) as latest
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
@@ -127,6 +132,7 @@ with
             , tx_id as metadata_tx
             , account_arguments[2] as account_mint
             , block_time
+            , executing_account as metadata_program
             , row_number() over (partition by account_arguments[2] order by block_time desc) as latest
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = 'META4s4fSmpkTbZoUsgC1oBnWB31vQcmnN8giPw51Zu'
@@ -141,6 +147,7 @@ SELECT
     , coalesce(m22.symbol,trim(json_value(args, 'strict $.symbol'))) as symbol 
     , coalesce(m22.uri,trim(json_value(args, 'strict $.uri'))) as token_uri
     , tk.call_block_time as created_at
+    , metadata_program
     , tk.token_version
 FROM tokens tk
 LEFT JOIN token2022_metadata m22 ON tk.account_mint = m22.account_mint AND m22.latest = 1
@@ -158,6 +165,7 @@ SELECT
   , trim(symbol) as symbol
   , token_uri
   , cast(created_at as timestamp) created_at
+  , metadata_program
   , token_version
 FROM 
 (
@@ -169,6 +177,7 @@ FROM
   'SOL',
   null,
   '2021-01-31 00:00:00',
+  null,
   'spl_token'
 )
 ) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at,token_version)
