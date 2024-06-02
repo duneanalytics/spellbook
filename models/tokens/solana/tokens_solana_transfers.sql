@@ -103,7 +103,7 @@ FROM (
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'transfer' as action
             , call_outer_instruction_index, call_inner_instruction_index
-            , null as fee
+            , null as fee --there are edge cases like transferFeeExtension still going through this parent function, or interest-bearing calculations being implicit. Not going to fix now but we should keep that in mind.
             , 'token2022' as token_version
       FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferChecked') }}
 
