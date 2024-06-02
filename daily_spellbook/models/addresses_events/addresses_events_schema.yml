@@ -20,6 +20,9 @@ models:
       - &first_funded_by
         name: first_funded_by
         description: "Which address first funded the address with the native asset on that chain"
+      - &first_funding_executed_by
+        name: first_funding_executed_by
+        description: "Which address executed the first funding tx"
       - &block_time
         name: block_time
         description: "The block time on which the address was first funded with the native asset on that chain"
@@ -29,6 +32,9 @@ models:
       - &tx_hash
         name: tx_hash
         description: "The transaction hash on which the address was first funded with the native asset on that chain"
+      - &tx_index
+        name: tx_index
+        description: "The transaction index within its block on which the address was first funded with the native asset on that chain"
 
   - name: addresses_events_first_activity
     meta:
@@ -57,3 +63,22 @@ models:
       - &first_function
         name: first_function
         description: "first function called by address"
+
+  - name: addresses_events_crosschain_first_funded_by
+    meta:
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, zksync, base, scroll, zkevm, linea
+      sector: addresses_events
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'funded', 'addresses_events', 'mainnets', 'crosschain']
+    description: "Table showing what chain an address was first funded on and its details"
+    columns:
+      - *blockchain
+      - *address
+      - *first_funded_by
+      - *first_funding_executed_by
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_index

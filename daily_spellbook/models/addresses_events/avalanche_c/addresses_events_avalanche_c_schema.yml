@@ -29,6 +29,8 @@ models:
         description: "Concerned Avalanche address"
         tests:
           - unique
+      - name: first_funding_executed_by
+        description: "Which address executed the first funding tx"
       - name: first_funded_by
         description: "Which Avalanche address first funded the address with AVAX"
       - name: block_time

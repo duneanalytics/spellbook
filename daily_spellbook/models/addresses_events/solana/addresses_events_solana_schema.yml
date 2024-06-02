@@ -30,6 +30,8 @@ models:
         description: "Concerned Solana address"
         tests:
           - unique
+      - name: first_funding_executed_by
+        description: "Which address executed the first funding tx"
       - name: first_funded_by
         description: "Which Solana address first funded the address with SOL"
       - name: block_time
