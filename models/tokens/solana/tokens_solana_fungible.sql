@@ -90,7 +90,7 @@ with
     )
 
     , token2022_metadata as (
-        SELECT 
+        SELECT
             from_utf8(bytearray_substring(data,1+8+4,bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))))) as name
             , from_utf8(bytearray_substring(data,1+8+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))) + 4 --start from end of name and end of length of symbol
                 , bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))),4))) --get length of symbol from end of name
