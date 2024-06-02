@@ -14,23 +14,8 @@
                                     \'["ilemi"]\') }}')
 }}
 
-SELECT
-    call_block_time as block_time
-    , cast (date_trunc('day', call_block_time) as date) as block_date
-    , call_block_slot as block_slot
-    , action
-    , amount
-    , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
-    , tk_s.token_balance_owner as from_owner
-    , tk_d.token_balance_owner as to_owner
-    , account_source as from_token_account
-    , account_destination as to_token_account
-    , call_tx_signer as tx_signer
-    , call_tx_id as tx_id
-    , call_outer_instruction_index as outer_instruction_index
-    , COALESCE(call_inner_instruction_index,0) as inner_instruction_index
-    , call_outer_executing_account as outer_executing_account
-FROM (  
+with 
+base as (  
       SELECT 
             account_source, account_destination, amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
@@ -164,7 +149,25 @@ FROM (
             , 'token2022' as token_version
       FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
       WHERE bytearray_substring(call_data,1,2) = 0x1a01 --https://github.com/solana-labs/solana-program-library/blob/8f50c6fabc6ec87ada229e923030381f573e0aed/token/program-2022/src/extension/transfer_fee/instruction.rs#L284
-) tr
+) 
+
+SELECT
+    call_block_time as block_time
+    , cast (date_trunc('day', call_block_time) as date) as block_date
+    , call_block_slot as block_slot
+    , action
+    , amount
+    , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
+    , tk_s.token_balance_owner as from_owner
+    , tk_d.token_balance_owner as to_owner
+    , account_source as from_token_account
+    , account_destination as to_token_account
+    , call_tx_signer as tx_signer
+    , call_tx_id as tx_id
+    , call_outer_instruction_index as outer_instruction_index
+    , COALESCE(call_inner_instruction_index,0) as inner_instruction_index
+    , call_outer_executing_account as outer_executing_account
+FROM base tr
 --get token and accounts
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.account_source 
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.account_destination

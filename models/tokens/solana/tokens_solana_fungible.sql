@@ -91,6 +91,7 @@ with
     )
 
     , token2022_metadata as (
+        --token2022 direct metadata extension
         SELECT
             from_utf8(bytearray_substring(data,1+8+4,bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))))) as name
             , from_utf8(bytearray_substring(data,1+8+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))) + 4 --start from end of name and end of length of symbol
@@ -102,15 +103,34 @@ with
                     + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+8,4))),4))),4))) --get length of uri from end of symbol
                 )) as uri
             , tx_id as metadata_tx
-            , account_arguments[1] as account_metadata
-            , account_arguments[2] as update_authority
             , account_arguments[3] as account_mint
-            , account_arguments[4] as mint_authority
             , block_time
             , row_number() over (partition by account_arguments[3] order by block_time desc) as latest
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
         AND bytearray_substring(data,1,1) = 0xd2 --deal with updateField later 0xdd
+        AND tx_success
+
+        UNION ALL 
+
+        --some other metadata program (idk the owner)
+        SELECT
+            from_utf8(bytearray_substring(data,1+1+4,bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))))) as name
+            , from_utf8(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))) + 4 --start from end of name and end of length of symbol
+                , bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))),4))) --get length of symbol from end of name
+                )) as symbol
+            , from_utf8(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))) + 4 --end of name and end of length of symbol
+                    + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))),4))) + 4 --start from end of symbol and end of length of uri
+                , bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))) + 4 
+                    + bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1+4+bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))),4))),4))) --get length of uri from end of symbol
+                )) as uri
+            , tx_id as metadata_tx
+            , account_arguments[2] as account_mint
+            , block_time
+            , row_number() over (partition by account_arguments[2] order by block_time desc) as latest
+        FROM solana.instruction_calls
+        WHERE executing_account = 'META4s4fSmpkTbZoUsgC1oBnWB31vQcmnN8giPw51Zu'
+        AND bytearray_substring(data,1,1) = 0x21
         AND tx_success
     )
 
