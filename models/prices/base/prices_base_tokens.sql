@@ -109,5 +109,5 @@ FROM
     ('carlo-carlo', 'base', 'CARLO', 0x38d513ec43dda20f323f26c7bef74c5cf80b6477, 18),
     ('ski-ski-mask-dog', 'base', 'SKI', 0x768be13e1680b5ebe0024c42c896e3db59ec0149, 9),
     ('kurbi-kurbi', 'base', 'KURBI', 0x653a143b8d15c565c6623d1f168cfbec1056d872, 9), 
-    ('bord-base-lord', 'base', 'BORD', 0x160452f95612699d1a561a70eeeeede67c6812af, 18)
+    ('bord-base-lord', 'base', 'BORD', 0x160452f95612699d1a561a70eeeeede67c6812af, 18) 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
