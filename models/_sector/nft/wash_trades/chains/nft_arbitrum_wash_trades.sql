@@ -1,5 +1,5 @@
 {{ config(
-        
+
         schema = 'nft_arbitrum',
         alias='wash_trades',
         partition_by=['block_month'],
@@ -13,5 +13,5 @@
 
 {{nft_wash_trades(
     blockchain='arbitrum',
-    first_funded_by= ref('addresses_events_arbitrum_first_funded_by')
+    first_funded_by = source('addresses_events_arbitrum', 'first_funded_by')
 )}}

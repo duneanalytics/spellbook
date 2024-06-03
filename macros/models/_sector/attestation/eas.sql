@@ -44,7 +44,7 @@ select
   er.evt_tx_hash as tx_hash,
   er.evt_index
 from src_SchemaRegistry_evt_Registered er
-  join src_SchemaRegistry_call_register cr on er.evt_tx_hash = cr.call_tx_hash
+  join src_SchemaRegistry_call_register cr on er.evt_tx_hash = cr.call_tx_hash and er.{{ uid_column_name }} = cr.output_0
 where cr.call_success
 
 {% endmacro %}

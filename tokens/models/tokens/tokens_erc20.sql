@@ -3,10 +3,10 @@
         schema = 'tokens'
         ,alias = 'erc20'
         ,materialized = 'table'
-        ,post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","fantom","gnosis","goerli","optimism","polygon","scroll","zkevm","zksync","zora"]\',
+        ,post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","fantom","gnosis","goerli","optimism","polygon","scroll","zkevm","zksync","zora","fuse"]\',
                         "sector",
                         "tokens",
-                        \'["bh2smith", "0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude", "viniabussafi"]\') }}'
+                        \'["bh2smith", "0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude", "viniabussafi","IrishLatte19"]\') }}'
     )
 }}
 
@@ -31,6 +31,7 @@
     ,'tokens_zkevm': {'blockchain': 'zkevm', 'model': ref('tokens_zkevm_erc20')}
     ,'tokens_zksync': {'blockchain': 'zksync', 'model': ref('tokens_zksync_erc20')}
     ,'tokens_zora': {'blockchain': 'zora', 'model': ref('tokens_zora_erc20')}
+    ,'tokens_fuse': {'blockchain': 'fuse', 'model': ref('tokens_fuse_erc20')}
 } %}
 
 with

@@ -16,6 +16,7 @@
     ref('boost_ethereum_claimed'),
     ref('boost_optimism_claimed'),
     ref('boost_polygon_claimed'),
+    ref('boost_zora_claimed'),
 ] %}
 
 with quest_claimed_data as (
@@ -46,7 +47,8 @@ quest_claims_enriched as (
         coalesce(claim_fee_eth, 0.000075) claim_fee_eth,
         coalesce(b.action_type, c.action_type) action_type,
         action_tx_hash,
-        coalesce(b.action_network, c.action_network) action_network
+        coalesce(b.action_network, c.action_network) action_network,
+        b.creator_address
     from quest_claimed_data c
     left join {{ ref("boost_deployed") }} b
     on c.boost_address = b.boost_address
@@ -71,7 +73,8 @@ unified_claims as (
         claim_fee_eth,
         action_type,
         action_tx_hash,
-        action_network
+        action_network,
+        creator_address
     from {{ ref("boost_claimed_legacy") }} 
     {% if is_incremental() %}
     where
@@ -92,7 +95,8 @@ unified_claims as (
         claim_fee_eth,
         action_type,
         action_tx_hash,
-        action_network
+        action_network,
+        creator_address
     from quest_claims_enriched
 )
 
@@ -111,7 +115,8 @@ select
     claim_fee_eth,
     action_type,
     action_tx_hash,
-    action_network
+    action_network,
+    creator_address
 from unified_claims u
 left join {{ source('prices','usd') }} p
 on date_trunc('hour', block_time) = p.minute
