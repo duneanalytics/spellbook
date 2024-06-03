@@ -62,21 +62,6 @@ select * from  (values
 ),
 
 
-dai_referral_payments_addr AS (
-    SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded')}}
-    WHERE
-    (
-        NOT EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
-        OR (
-            EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
-            AND 
-            _recipient NOT IN (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
-        )
-    ) 
-    UNION ALL
-    SELECT 0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d --rhino
-),
-
 trp_expenses_txns AS (
     SELECT 
         evt_block_time,
