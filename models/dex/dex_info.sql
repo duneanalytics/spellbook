@@ -159,4 +159,5 @@ FROM (VALUES
     , ('lynex', 'Lynex', 'Direct', 'Lynex')
     , ('nile', 'Nile', 'Direct', 'Nile')
     , ('nuri', 'Nuri', 'Direct', 'nuriexchange')
+    , ('merchant_moe', 'Merchant Moe', 'Direct', 'MerchantMoe_xyz')
     ) AS temp_table (project, name, marketplace_type, x_username)
