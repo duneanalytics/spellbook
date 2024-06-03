@@ -8,7 +8,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
   ccip_reverted_transactions AS (

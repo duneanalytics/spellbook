@@ -14,7 +14,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 SELECT
   'bnb' as blockchain,

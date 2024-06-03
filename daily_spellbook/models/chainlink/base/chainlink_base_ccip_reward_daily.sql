@@ -9,7 +9,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
     token_meta AS (

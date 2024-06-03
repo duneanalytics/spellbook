@@ -10,7 +10,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
   admin_address_meta as (

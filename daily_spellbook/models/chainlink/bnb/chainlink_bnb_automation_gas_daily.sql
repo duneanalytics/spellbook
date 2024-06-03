@@ -10,7 +10,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 {% set truncate_by = 'day' %}
 
 WITH

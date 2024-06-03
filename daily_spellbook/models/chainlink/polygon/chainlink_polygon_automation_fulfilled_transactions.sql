@@ -10,7 +10,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
   polygon_usd AS (

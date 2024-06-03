@@ -14,7 +14,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 {% set project_start_date = '2019-12-28' %}
 
 SELECT 'fantom' as blockchain,

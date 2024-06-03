@@ -14,7 +14,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
   avalanche_c_usd AS (
