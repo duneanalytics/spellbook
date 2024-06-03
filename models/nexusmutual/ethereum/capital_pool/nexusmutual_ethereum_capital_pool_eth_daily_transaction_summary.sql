@@ -6,7 +6,7 @@
     incremental_strategy = 'merge',
     file_format = 'delta',
     unique_key = ['day'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "nexusmutual",
