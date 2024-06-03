@@ -9,6 +9,7 @@ select
   erc20.symbol,
   borrow.token_address,
   borrow.borrower,
+  borrow.on_behalf_of,
   borrow.repayer,
   borrow.liquidator,
   borrow.amount / power(10, coalesce(erc20.decimals, 18)) as amount,

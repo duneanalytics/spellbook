@@ -17,7 +17,8 @@ with
 addresses AS (
 select * from (values
 (0x3e40d73eb977dc6a537af587d48316fee66e9c8c, 'Aragon'),
-(0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5,  'NO'),
+(0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5,  'NO (Curated)'),
+(0xaE7B191A31f627b4eB1d4DaC64eaB9976995b433,  'NO (DVT)'),
 (0x8B3f33234ABD88493c0Cd28De33D583B70beDe35,  'InsuranceFund')
 ) as list(address, name)
  ),
@@ -39,7 +40,7 @@ oraclev2_txns as (
     SELECT 
         o.evt_block_time as period,
         case when t.to in  (select address from addresses where name = 'Aragon') then cast(t.value as double) else 0 end AS treasury_revenue,
-        case when t.to in  (select address from addresses where name = 'NO') then cast(t.value as double) else 0 end AS operators_revenue,
+        case when t.to in  (select address from addresses where name like 'NO%') then cast(t.value as double) else 0 end AS operators_revenue,
         case when t.to in  (select address from addresses where name = 'InsuranceFund') then cast(t.value as double) else 0 end as insurance_revenue,
         o.evt_tx_hash
     FROM {{source('lido_ethereum','AccountingOracle_evt_ProcessingStarted')}} o

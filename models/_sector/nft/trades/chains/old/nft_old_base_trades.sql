@@ -11,19 +11,7 @@
 ref('nftearth_optimism_events')
 ,ref('mooar_polygon_events')
 ,ref('oneplanet_polygon_events')
-,ref('opensea_v3_arbitrum_events')
-,ref('opensea_v4_arbitrum_events')
-,ref('opensea_v3_ethereum_events')
-,ref('opensea_v4_ethereum_events')
-,ref('opensea_v3_optimism_events')
-,ref('opensea_v4_optimism_events')
-,ref('opensea_v3_polygon_events')
-,ref('opensea_v4_polygon_events')
-,ref('opensea_v4_base_events')
-,ref('opensea_v4_zora_events')
 ,ref('quix_seaport_optimism_events')
-,ref('opensea_v3_avalanche_c_events')
-,ref('opensea_v4_avalanche_c_events')
 ] %}
 
 

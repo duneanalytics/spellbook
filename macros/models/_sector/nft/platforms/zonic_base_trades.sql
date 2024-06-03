@@ -39,56 +39,6 @@ with events_raw as (
     where {{incremental_predicate('evt_block_time')}}
     {% endif %}
 )
-,transfers_raw as (
-    -- royalties
-    select
-      tr.block_number
-      ,tr.block_time
-      ,tr.tx_hash
-      ,tr.amount_raw as value
-      ,tr.to
-      ,er.evt_index
-      ,er.evt_index - coalesce(tr.evt_index,element_at(tr.trace_address,1), 0) as ranking
-    from events_raw as er
-    join {{ ref('tokens_' ~ blockchain ~ '_base_transfers') }} as tr
-      on er.tx_hash = tr.tx_hash
-      and er.block_number = tr.block_number
-      and tr.amount_raw > 0
-      and tr."from" in (er.project_contract_address, er.buyer) -- only include transfer from zonic or buyer to royalty fee address
-      and tr.to not in (
-        {{zonic_fee_address_address}} --platform fee address
-        ,er.seller
-        ,er.project_contract_address
-        {% if royalty_fee_receive_address_to_skip %}
-          {% for receive_address in royalty_fee_receive_address_to_skip %}
-          ,{{ receive_address }}
-          {% endfor %}
-        {% endif %}
-      )
-      {% if not is_incremental() %}
-      -- smallest block number for source tables above
-      and tr.block_number >= {{min_block_number}}
-      {% endif %}
-      {% if is_incremental() %}
-      and {{incremental_predicate('tr.block_time')}}
-      {% endif %}
-)
-,transfers as (
-    select
-        block_number
-        ,block_time
-        ,tx_hash
-        ,value
-        ,to
-        ,evt_index
-    from (
-        select
-            *
-            ,row_number() over (partition by tx_hash, evt_index order by abs(ranking)) as rn
-        from transfers_raw
-    ) as x
-    where rn = 1 -- select closest by order
-)
 , base_trades as (
 select
     '{{ blockchain }}' as blockchain
@@ -111,14 +61,10 @@ select
     ,er.project_contract_address
     ,er.platform_fee_amount_raw
     ,er.royalty_fee_amount_raw
-    ,case when tr.value is not null then tr.to end as royalty_fee_address
+    ,cast(null as varbinary) royalty_fee_address
     ,cast(null as varbinary) as platform_fee_address
     ,er.evt_index as sub_tx_trade_id
 from events_raw as er
-left join transfers as tr
-    on tr.tx_hash = er.tx_hash
-    and tr.block_number = er.block_number
-    and tr.evt_index = er.evt_index
 )
 
 -- this will be removed once tx_from and tx_to are available in the base event tables
