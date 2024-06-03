@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'bebop_jam_arbitrum',
+    schema = 'bebop_jam_base',
     alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
@@ -8,7 +8,7 @@
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
 )}}
 
-{% set project_start_date = '2023-11-30' %}
+{% set project_start_date = '2024-04-24' %}
 
 WITH 
 
@@ -30,18 +30,18 @@ bebop_jam_raw_data AS (
     FROM
         (SELECT
             evt_index, evt_tx_hash, evt_block_time, ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS row_num
-         FROM {{ source('bebop_jam_arbitrum', 'JamSettlement_evt_Settlement') }}
+         FROM {{ source('bebop_jam_base', 'JamSettlement_evt_Settlement') }}
         ) evt
     LEFT JOIN
         (SELECT
             call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
             ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_jam_arbitrum', 'JamSettlement_call_settle') }}
+        FROM {{ source('bebop_jam_base', 'JamSettlement_call_settle') }}
         UNION ALL
         SELECT
             call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
             ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_jam_arbitrum', 'JamSettlement_call_settleWithPermitsSignatures') }}
+        FROM {{ source('bebop_jam_base', 'JamSettlement_call_settleWithPermitsSignatures') }}
         ) ex
         ON ex.call_tx_hash = evt.evt_tx_hash and ex.row_num = evt.row_num
     WHERE ex.call_success = TRUE
@@ -124,7 +124,7 @@ jam_simple_trades as (
 )
 
 SELECT
-  'arbitrum' AS blockchain,
+  'base' AS blockchain,
   'bebop' AS project,
   'jam' AS version,
   CAST(date_trunc('DAY', t.block_time) AS date) AS block_date,
@@ -168,7 +168,7 @@ SELECT
 FROM
 jam_simple_trades t
 INNER JOIN 
-{{ source('arbitrum', 'transactions')}} tx
+{{ source('base', 'transactions')}} tx
     ON t.tx_hash = tx.hash
     {% if not is_incremental() %}
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -179,16 +179,16 @@ INNER JOIN
   LEFT JOIN 
   {{ source('tokens', 'erc20') }} t_bought 
     ON t_bought.contract_address = t.token_bought_address
-    AND t_bought.blockchain = 'arbitrum'
+    AND t_bought.blockchain = 'base'
   LEFT JOIN 
   {{ source('tokens', 'erc20') }} t_sold
     ON t_sold.contract_address = t.token_sold_address
-    AND t_sold.blockchain = 'arbitrum'
+    AND t_sold.blockchain = 'base'
   LEFT JOIN 
   {{ source('prices', 'usd') }} p_bought 
     ON p_bought.minute = date_trunc('minute', t.block_time)
     AND p_bought.contract_address = t.token_bought_address
-    AND p_bought.blockchain = 'arbitrum'
+    AND p_bought.blockchain = 'base'
   {% if not is_incremental() %}
   AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
   {% endif %}
@@ -199,7 +199,7 @@ INNER JOIN
   {{ source('prices', 'usd') }} p_sold 
     ON p_sold.minute = date_trunc('minute', t.block_time)
     AND p_sold.contract_address = t.token_sold_address
-    AND p_sold.blockchain = 'arbitrum'
+    AND p_sold.blockchain = 'base'
   {% if not is_incremental() %}
   AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
   {% endif %}
