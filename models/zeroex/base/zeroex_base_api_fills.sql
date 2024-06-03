@@ -23,7 +23,8 @@
 
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address
+           max(affiliate_address) as affiliate_address,
+           is_gasless 
     FROM (
        SELECT tr.tx_hash,
                 CASE
@@ -33,7 +34,8 @@ WITH zeroex_tx AS (
                             WHEN bytearray_position(INPUT, 0xfbc019a7) <> 0 THEN SUBSTRING(INPUT
                                                                                    FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16)
                                                                                    FOR 20)
-                        END AS affiliate_address
+                        END AS affiliate_address,
+                        case when  (varbinary_position(input,0x3d8d4082) <> 0  ) then 1 else 0 end as is_gasless
         FROM {{ source('base', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -57,7 +59,7 @@ WITH zeroex_tx AS (
                 AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
                 {% endif %}
     ) temp
-    group by tx_hash
+    group by tx_hash , is_gasless 
 
 ),
 
@@ -77,7 +79,8 @@ ERC20BridgeTransfer AS (
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
             TRUE                                    AS swap_flag,
-            FALSE                                   AS matcha_limit_order_flag
+            FALSE                                   AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('base', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
@@ -106,7 +109,8 @@ BridgeFill AS (
             'BridgeFill'                                    AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
-            FALSE                                           AS matcha_limit_order_flag
+            FALSE                                           AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('base', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9
@@ -135,7 +139,8 @@ NewBridgeFill AS (
             'BridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
-            FALSE                                           AS matcha_limit_order_flag
+            FALSE                                           AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('base' ,'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8
@@ -172,7 +177,8 @@ SELECT
         cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
         maker,
         CASE
-             WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN tx."from"
+            WHEN is_gasless = 1 then case when (varbinary_substring(data,177,19)  ) = 0x00000000000000000000000000000000000000 then varbinary_substring(data,81,20) else (varbinary_substring(data,177,20)  )  end 
+            WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN varbinary_substring(data,177,20) 
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
          taker_token,
