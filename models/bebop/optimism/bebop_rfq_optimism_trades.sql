@@ -48,7 +48,7 @@ bebop_raw_data AS (
         ON ex.call_tx_hash = evt.evt_tx_hash and ex.row_num = evt.row_num
     WHERE ex.call_success = TRUE
     {% if is_incremental() %}
-    AND evt.evt_block_time >= date_trunc('day', now() - interval '7' Day)
+    AND evt.evt_block_time >= {{ incremental_predicate('evt.evt_block_time') }}
     {% endif %}
 ),
 
@@ -185,7 +185,7 @@ INNER JOIN
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' Day)
+    AND tx.block_time >= {{ incremental_predicate('tx.block_time') }}
     {% endif %}
   LEFT JOIN 
   {{ source('tokens', 'erc20') }} t_bought 
@@ -204,7 +204,7 @@ INNER JOIN
   AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
   {% endif %}
   {% if is_incremental() %}
-  AND p_bought.minute >= date_trunc('day', now() - interval '7' Day)
+  AND p_bought.minute >= {{ incremental_predicate('p_bought.minute') }}
   {% endif %}
   LEFT JOIN 
   {{ source('prices', 'usd') }} p_sold 
@@ -215,5 +215,5 @@ INNER JOIN
   AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
   {% endif %}
   {% if is_incremental() %}
-  AND p_sold.minute >= date_trunc('day', now() - interval '7' Day)
+  AND p_sold.minute >= {{ incremental_predicate('p_sold.minute') }}
   {% endif %}
