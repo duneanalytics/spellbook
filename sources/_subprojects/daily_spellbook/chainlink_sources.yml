@@ -1,9 +1,0 @@
-version: 2
-sources:
-  - name: chainlink
-    tables:
-      - name: price_feeds
-
-  - name: chainlink_ethereum
-    tables:
-      - name: price_feeds
