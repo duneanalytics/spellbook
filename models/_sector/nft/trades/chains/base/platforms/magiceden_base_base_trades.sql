@@ -1,6 +1,6 @@
 {{ config(
     schema = 'magiceden_base',
-    
+
     alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
@@ -31,9 +31,9 @@ WITH trades AS (
     {% else %}
     WHERE evt_block_time >= {{magiceden_start_date}}
     {% endif %}
-    
+
     UNION ALL
-    
+
     SELECT evt_block_time AS block_time
     , evt_block_number AS block_number
     , evt_tx_hash AS tx_hash
@@ -53,9 +53,9 @@ WITH trades AS (
     {% else %}
     WHERE evt_block_time >= {{magiceden_start_date}}
     {% endif %}
-    
+
     UNION ALL
-    
+
     SELECT evt_block_time AS block_time
     , evt_block_number AS block_number
     , evt_tx_hash AS tx_hash
@@ -75,9 +75,9 @@ WITH trades AS (
     {% else %}
     WHERE evt_block_time >= {{magiceden_start_date}}
     {% endif %}
-    
+
     UNION ALL
-    
+
     SELECT evt_block_time AS block_time
     , evt_block_number AS block_number
     , evt_tx_hash AS tx_hash
@@ -98,7 +98,7 @@ WITH trades AS (
     WHERE evt_block_time >= {{magiceden_start_date}}
     {% endif %}
     )
-    
+
 , whitelisted_trades AS (
     SELECT t.block_time
     , t.block_number
@@ -141,7 +141,7 @@ WITH trades AS (
     , MAX_BY(tr.to, tr.amount_raw) FILTER (WHERE to != 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS royalty_fee_address
     , SUM(tr.amount_raw) FILTER (WHERE to = 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS platform_fee_amount_raw
     , SUM(tr.amount_raw) FILTER (WHERE to != 0xca9337244b5f04cb946391bc8b8a980e988f9a6a) AS royalty_fee_amount_raw
-    FROM {{ ref('tokens_base_transfers') }} tr
+    FROM {{ ref('tokens_base_base_transfers') }} tr
     INNER JOIN bundled_whitelisted_trades wt ON tr.block_number=wt.block_number
         AND tr.tx_hash=wt.tx_hash
         AND tr.amount_raw > 0
