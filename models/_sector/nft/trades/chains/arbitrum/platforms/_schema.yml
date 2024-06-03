@@ -91,6 +91,21 @@ models:
             - platform_fee_amount_raw
             - royalty_fee_amount_raw
 
+  - name: sudoswap_v2_arbitrum__pools
+    meta:
+      blockchain: arbitrum
+      project: sudoswap
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'base','sudoswap','pool_creations' ]
+    description: >
+      sudoswap v2 pool creations on base
+    columns:
+      - name: pool_address
+        description: 'Address of the pool'
+        tests:
+          - unique
+
   - name: sudoswap_v2_arbitrum_base_trades
     meta:
       blockchain: arbitrum
