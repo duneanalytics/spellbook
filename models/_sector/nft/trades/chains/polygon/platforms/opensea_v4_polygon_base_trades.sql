@@ -1,10 +1,11 @@
 {{ config(
-    schema = 'opensea_v3_polygon',
-    alias = 'events',
+    schema = 'opensea_v4_polygon',
+    alias = 'base_trades',
+
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx']
+    unique_key = ['block_number', 'tx_hash', 'sub_tx_trade_id']
     )
 }}
 WITH fee_wallets as (
@@ -13,14 +14,13 @@ WITH fee_wallets as (
     ) as foo(wallet_address, wallet_name)
 )
 , trades as (
-    {{ seaport_v3_trades(
+    {{ seaport_v4_trades(
      blockchain = 'polygon'
      ,source_transactions = source('polygon','transactions')
      ,Seaport_evt_OrderFulfilled = source('seaport_polygon','Seaport_evt_OrderFulfilled')
-     ,Seaport_call_matchAdvancedOrders = source('seaport_polygon','Seaport_call_matchAdvancedOrders')
-     ,Seaport_call_matchOrders = source('seaport_polygon','Seaport_call_matchOrders')
+     ,Seaport_evt_OrdersMatched = source('seaport_polygon','Seaport_evt_OrdersMatched')
      ,fee_wallet_list_cte = 'fee_wallets'
-     ,start_date = '2022-07-01'
+     ,start_date = '2023-02-01'
      ,native_currency_contract = '0x0000000000000000000000000000000000001010'
     )
   }}
@@ -31,3 +31,4 @@ from trades
 where (    fee_wallet_name = 'opensea'
            or right_hash = 0x360c6ebe
          )
+

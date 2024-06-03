@@ -7,6 +7,7 @@
 
 {% set nft_models = [
  ref('zonic_zora_base_trades')
+ ,ref('opensea_v4_zora_base_trades')
 ] %}
 
 with base_union as (
