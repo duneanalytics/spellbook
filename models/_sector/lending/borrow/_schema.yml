@@ -52,6 +52,9 @@ models:
       - &borrower
         name: borrower
         description: "Borrower wallet address"
+      - &on_behalf_of
+        name: on_behalf_of
+        description: "Wallet address tx was executed on behalf of"
       - &repayer
         name: repayer
         description: "Repayer wallet address"
