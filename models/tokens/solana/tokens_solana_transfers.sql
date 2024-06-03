@@ -43,7 +43,7 @@ token2022_fee_state as (
                         +2
                   ,16)))) as fee_maximum
       , call_block_time as fee_time
-      FROM spl_token_2022_solana.spl_token_2022_call_transferFeeExtension
+      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
       WHERE bytearray_substring(call_data,1+1,1) = 0x00 --https://github.com/solana-labs/solana-program-library/blob/8f50c6fabc6ec87ada229e923030381f573e0aed/token/program-2022/src/extension/transfer_fee/instruction.rs#L38
       UNION ALL 
       SELECT 
@@ -53,7 +53,7 @@ token2022_fee_state as (
       , try(bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,
                   1+1+1+2,16)))) as fee_maximum
       , call_block_time as fee_time
-      FROM spl_token_2022_solana.spl_token_2022_call_transferFeeExtension
+      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
       WHERE bytearray_substring(call_data,1+1,1) = 0x05 --https://github.com/solana-labs/solana-program-library/blob/8f50c6fabc6ec87ada229e923030381f573e0aed/token/program-2022/src/extension/transfer_fee/instruction.rs#L147
 )
 
