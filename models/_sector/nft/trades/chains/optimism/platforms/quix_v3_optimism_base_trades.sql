@@ -71,18 +71,18 @@ with events_raw as (
     where nft_contract_address != 0xbe81eabdbd437cba43e4c1c330c63022772c2520 -- --exploit contract
 )
 ,transfers as (
-    -- eth royalities
+    -- royalities
     select
-      tr.tx_block_number as block_number
-      ,tr.tx_block_time as block_time
+      tr.block_number as block_number
+      ,tr.block_time as block_time
       ,tr.tx_hash
-      ,cast(tr.value as uint256) as value
+      ,cast(tr.amount_raw as uint256) as value
       ,tr.to
     from events_raw as er
-    join {{ ref('transfers_optimism_eth') }} as tr
+    join {{ ref('tokens_optimism_base_transfers') }} as tr
       on er.tx_hash = tr.tx_hash
-      and er.block_number = tr.tx_block_number
-      and tr.value_decimal > 0
+      and er.block_number = tr.block_number
+      and tr.amount_raw > 0
       and tr.to not in (
         {{quix_fee_address_address}} --qx platform fee address
         ,er.seller
@@ -91,38 +91,10 @@ with events_raw as (
       )
       {% if not is_incremental() %}
       -- smallest block number for source tables above
-      and tr.tx_block_number >= {{min_block_number}}
+      and tr.block_number >= {{min_block_number}}
       {% endif %}
       {% if is_incremental() %}
-      and tr.tx_block_time >= date_trunc('day', now() - interval '7' day)
-      {% endif %}
-
-    union all
-
-    -- erc20 royalities
-    select
-      erc20.evt_block_number as block_number
-      ,erc20.evt_block_time as block_time
-      ,erc20.evt_tx_hash as tx_hash
-      ,erc20.value
-      ,erc20.to
-    from events_raw as er
-    join {{ source('erc20_optimism','evt_transfer') }} as erc20
-      on er.tx_hash = erc20.evt_tx_hash
-      and er.block_number = erc20.evt_block_number
-      and erc20.value is not null
-      and erc20.to not in (
-        {{quix_fee_address_address}} --qx platform fee address
-        ,er.seller
-        ,er.project_contract_address
-        ,0x0000000000000000000000000000000000000000 -- v3 first few txs misconfigured to send fee to null address
-      )
-      {% if not is_incremental() %}
-      -- smallest block number for source tables above
-      and erc20.evt_block_number >= {{min_block_number}}
-      {% endif %}
-      {% if is_incremental() %}
-      and erc20.evt_block_time >= date_trunc('day', now() - interval '7' day)
+      and tr.block_time >= date_trunc('day', now() - interval '7' day)
       {% endif %}
 )
 ,base_trades as (
