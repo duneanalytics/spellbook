@@ -145,7 +145,10 @@ token2022_fee_state as (
                   , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
                   , 'transfer' as action
                   , call_outer_instruction_index, call_inner_instruction_index
-                  , least(cast(amount as double)*cast(f.fee_basis as double)/10000,f.fee_maximum) as fee --we want to take the percent fee on total amount, but not exceed the maximum fee
+                  , least(
+                        cast(bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as double)
+                              *cast(f.fee_basis as double)/10000
+                        ,f.fee_maximum) as fee --we want to take the percent fee on total amount, but not exceed the maximum fee
                   , 'token2022' as token_version
                   , f.fee_time
                   , row_number() over (partition by tr.call_tx_id,  tr.call_outer_instruction_index,  tr.call_inner_instruction_index order by f.fee_time desc) as latest_fee
