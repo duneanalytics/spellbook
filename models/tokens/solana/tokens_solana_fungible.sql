@@ -148,6 +148,7 @@ SELECT
     , tk.call_block_time as created_at
     , coalesce(m22.metadata_program,mo.metadata_program,m.metadata_program) as metadata_program
     , tk.token_version
+    , tk.call_tx_id as init_tx
 FROM tokens tk
 LEFT JOIN token2022_metadata m22 ON tk.account_mint = m22.account_mint AND m22.latest = 1
 LEFT JOIN token_metadata_other mo ON tk.account_mint = mo.account_mint AND mo.latest = 1
@@ -167,6 +168,7 @@ SELECT
   , cast(created_at as timestamp) created_at
   , metadata_program
   , token_version
+  , init_tx
 FROM 
 (
   VALUES
@@ -178,9 +180,10 @@ FROM
   null,
   '2023-08-02 00:00:00',
   null,
-  'token2022'
+  'token2022',
+  '2L1o7sDMCMJ6PYqfNrnY6ozJC1DEx61pRYiLdfCCggxw81naQXsmHKDLn6EhJXmDmDSQ2eCKjUMjZAQuUsyNnYUv'
 )
-) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at, metadata_program, token_version)
+) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at, metadata_program, token_version, init_tx)
 
 UNION ALL
 
@@ -194,6 +197,7 @@ SELECT
   , cast(created_at as timestamp) created_at
   , metadata_program
   , token_version
+  , init_tx
 FROM 
 (
   VALUES
@@ -205,6 +209,7 @@ FROM
   null,
   '2021-01-31 00:00:00',
   null,
-  'spl_token'
+  'spl_token',
+  null
 )
-) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at, metadata_program, token_version)
+) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at, metadata_program, token_version, init_tx)
