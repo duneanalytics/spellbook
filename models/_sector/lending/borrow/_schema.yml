@@ -52,6 +52,9 @@ models:
       - &borrower
         name: borrower
         description: "Borrower wallet address"
+      - &on_behalf_of
+        name: on_behalf_of
+        description: "Wallet address tx was executed on behalf of"
       - &repayer
         name: repayer
         description: "Repayer wallet address"
@@ -75,6 +78,10 @@ models:
       - &block_number
         name: block_number
         description: "Event block number"
+        tests:
+          - not_null
+      - &project_contract_address
+        name: project_contract_address
         tests:
           - not_null
       - &tx_hash

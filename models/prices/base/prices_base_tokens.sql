@@ -96,6 +96,7 @@ FROM
     ('coinye-coinye-west', 'base', 'COINYE', 0x0028e1e60167b48a938b785aa5292917e7eaca8b, 18),
     ('trump-maga', 'base', 'TRUMP', 0x57f5fbd3de65dfc0bd3630f732969e5fb97e6d37, 9),
     ('weeth-wrapped-eeth', 'base', 'WEETH', 0x04c0599ae5a44757c0af6f9ec3b93da8976c150a, 18),
+<<<<<<< new-tokens-t
     ('pola-pola', 'base', 'POLA', 0x76e7447bafa3f0acafc9692629b1d1bc937ca15d, 18),
     ('jogeco-jogeco-dog', 'base', 'JOGECO', 0x92fb1b7d9730b2f1bd4e2e91368c1eb6fdd2a009, 9),
     ('boshi-boshi', 'base', 'BOSHI', 0x33ad778e6c76237d843c52d7cafc972bb7cf8729, 18),
@@ -110,4 +111,9 @@ FROM
     ('ski-ski-mask-dog', 'base', 'SKI', 0x768be13e1680b5ebe0024c42c896e3db59ec0149, 9),
     ('kurbi-kurbi', 'base', 'KURBI', 0x653a143b8d15c565c6623d1f168cfbec1056d872, 9)
     ('bord-base-lord', 'base', 'BORD', 0x160452f95612699d1a561a70eeeeede67c6812af, 18)
+=======
+    ('rdnt-radiant-capital','base','RDNT',0xd722e55c1d9d9fa0021a5215cbb904b92b3dc5d4,18),
+    ('well-moonwell', 'base', 'WELL', 0xff8adec2221f9f4d8dfbafa6b9a297d17603493d, 18),
+    ('mochi3-mochi', 'base', 'MOCHI', 0xf6e932ca12afa26665dc4dde7e27be02a7c02e50, 18)
+>>>>>>> main
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

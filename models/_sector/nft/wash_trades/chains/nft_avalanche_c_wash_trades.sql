@@ -1,5 +1,5 @@
 {{ config(
-        
+
         schema = 'nft_avalanche_c',
         alias='wash_trades',
         partition_by=['block_month'],
@@ -13,5 +13,5 @@
 
 {{nft_wash_trades(
     blockchain='avalanche_c',
-    first_funded_by= ref('addresses_events_avalanche_c_first_funded_by')
+    first_funded_by= source('addresses_events_avalanche_c', 'first_funded_by')
 )}}
