@@ -113,13 +113,6 @@ models:
       celo:
         +schema: uniswap_celo
 
-    daohaus:
-      +schema: daohaus
-      ethereum:
-        +schema: daohaus_ethereum
-      gnosis:
-        +schema: daohaus_gnosis
-
     colony:
       +schema: colony
       gnosis:
