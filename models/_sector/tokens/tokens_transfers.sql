@@ -1,6 +1,6 @@
 {{ config(
         schema = 'tokens'
-        ,alias = 'transfers'
+        , alias = 'transfers'
         )
 }}
 
@@ -18,6 +18,7 @@
     ,'zksync'
     ,'zora'
     ,'scroll'
+    ,'linea'
 ] %}
 
 SELECT *
