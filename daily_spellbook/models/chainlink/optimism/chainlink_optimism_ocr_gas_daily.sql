@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='ocr_gas_daily',
     partition_by=['date_month'],
     materialized='incremental',
@@ -28,7 +28,7 @@ WITH
       {{ ref('chainlink_optimism_ocr_fulfilled_transactions') }} fulfilled
     {% if is_incremental() %}
       WHERE
-        fulfilled.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {{ incremental_predicate('fulfilled.block_time') }}
     {% endif %}
     GROUP BY
       1, 2
@@ -45,7 +45,7 @@ WITH
       {{ ref('chainlink_optimism_ocr_reverted_transactions') }} reverted
     {% if is_incremental() %}
       WHERE
-        reverted.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {{ incremental_predicate('reverted.block_time') }}
     {% endif %}
     GROUP BY
       1, 2
@@ -57,7 +57,7 @@ WITH
       COALESCE(
         fulfilled.date_start,
         reverted.date_start
-      ) AS "date_start",      
+      ) AS "date_start",
       COALESCE(
         fulfilled.node_address,
         reverted.node_address
@@ -90,7 +90,7 @@ WITH
     FROM ocr_gas_daily_meta
     LEFT JOIN {{ ref('chainlink_optimism_ocr_operator_node_meta') }} ocr_operator_node_meta ON ocr_operator_node_meta.node_address = ocr_gas_daily_meta.node_address
   )
-SELECT 
+SELECT
   blockchain,
   date_start,
   date_month,
@@ -101,7 +101,7 @@ SELECT
   reverted_token_amount,
   reverted_usd_amount,
   total_token_amount,
-  total_usd_amount    
+  total_usd_amount
 FROM
   ocr_gas_daily
 ORDER BY

@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='price_feeds_hourly',
     partition_by=['block_month'],
     materialized='incremental',
@@ -25,7 +25,7 @@ WITH hourly_sequence_meta AS (
         AND price.minute >= timestamp '{{project_start_date}}'
       {% endif %}
       {% if is_incremental() %}
-        AND price.minute >= date_trunc('hour', now() - interval '{{incremental_interval}}' day)
+        AND {{ incremental_predicate('price.minute') }}
       {% endif %}
     GROUP BY
       1
@@ -70,7 +70,7 @@ aggregated_price_feeds AS (
           hourly_sequence.hr >= timestamp '{{project_start_date}}'
         {% endif %}
         {% if is_incremental() %}
-          hourly_sequence.hr >= date_trunc('hour', now() - interval '{{incremental_interval}}' day)
+          {{ incremental_predicate('hourly_sequence.hr') }}
         {% endif %}
     GROUP BY
         hourly_sequence.hr, hourly_sequence.feed_name, hourly_sequence.proxy_address, hourly_sequence.aggregator_address

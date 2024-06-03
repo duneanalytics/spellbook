@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='automation_gas_daily',
     partition_by=['date_month'],
     materialized='incremental',
@@ -24,7 +24,7 @@ WITH
       {{ ref('chainlink_ethereum_automation_fulfilled_transactions') }} fulfilled
     {% if is_incremental() %}
       WHERE
-        fulfilled.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {{ incremental_predicate('fulfilled.block_time') }}
     {% endif %}
     GROUP BY
       1, 2
@@ -41,7 +41,7 @@ WITH
       {{ ref('chainlink_ethereum_automation_reverted_transactions') }} reverted
     {% if is_incremental() %}
       WHERE
-        reverted.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {{ incremental_predicate('reverted.block_time') }}
     {% endif %}
     GROUP BY
       1, 2
@@ -53,7 +53,7 @@ WITH
       COALESCE(
         fulfilled.date_start,
         reverted.date_start
-      ) AS "date_start",      
+      ) AS "date_start",
       COALESCE(
         fulfilled.node_address,
         reverted.node_address
@@ -86,7 +86,7 @@ WITH
     FROM automation_gas_daily_meta
     LEFT JOIN {{ ref('chainlink_ethereum_automation_meta') }} automation_meta ON automation_meta.keeper_address = automation_gas_daily_meta.node_address
   )
-SELECT 
+SELECT
   blockchain,
   date_start,
   date_month,
@@ -97,7 +97,7 @@ SELECT
   reverted_token_amount,
   reverted_usd_amount,
   total_token_amount,
-  total_usd_amount    
+  total_usd_amount
 FROM
   automation_gas_daily
 ORDER BY

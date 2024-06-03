@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='price_feeds',
     partition_by=['block_month'],
     materialized='incremental',
@@ -59,7 +59,7 @@ FROM
         AND l.block_time >= cast('{{project_start_date}}' as date)
         {% endif %}
         {% if is_incremental() %}
-        AND l.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND {{ incremental_predicate('l.block_time') }}
         {% endif %}
     GROUP BY
         1, 2, 3, 4, 5, 6

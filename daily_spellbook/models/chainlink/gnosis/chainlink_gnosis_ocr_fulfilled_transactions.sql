@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='ocr_fulfilled_transactions',
     partition_by=['date_month'],
     materialized='incremental',
@@ -26,8 +26,8 @@ WITH
     WHERE
       symbol = 'XDAI'
       {% if is_incremental() %}
-        AND minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
+        AND {{ incremental_predicate('minute') }}
+      {% endif %}
   ),
   ocr_fulfilled_transactions AS (
     SELECT
@@ -43,8 +43,8 @@ WITH
       RIGHT JOIN {{ ref('chainlink_gnosis_ocr_gas_transmission_logs') }} ocr_gas_transmission_logs ON ocr_gas_transmission_logs.tx_hash = tx.hash
       LEFT JOIN gnosis_usd ON date_trunc('minute', tx.block_time) = gnosis_usd.block_time
     {% if is_incremental() %}
-      WHERE tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-    {% endif %}      
+      WHERE {{ incremental_predicate('tx.block_time') }}
+    {% endif %}
     GROUP BY
       tx.hash,
       tx.index,

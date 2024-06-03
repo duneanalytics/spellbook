@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='ocr_reverted_transactions',
     partition_by=['date_month'],
     materialized='incremental',
@@ -26,8 +26,8 @@ WITH
     WHERE
       symbol = 'ETH'
       {% if is_incremental() %}
-        AND minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
+        AND {{ incremental_predicate('minute') }}
+      {% endif %}
   ),
   ocr_reverted_transactions AS (
     SELECT
@@ -46,8 +46,8 @@ WITH
     WHERE
       success = false
       {% if is_incremental() %}
-        AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
+        AND {{ incremental_predicate('tx.block_time') }}
+      {% endif %}
     GROUP BY
       tx.hash,
       tx.index,

@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='automation_performed_daily',
     partition_by=['date_month'],
     materialized='incremental',
@@ -22,8 +22,8 @@ SELECT
 FROM
   {{ref('chainlink_avalanche_c_automation_performed')}} automation_performed
 {% if is_incremental() %}
-  WHERE evt_block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-{% endif %}      
+  WHERE {{ incremental_predicate('evt_block_time') }}
+{% endif %}
 GROUP BY
   2, 4
 ORDER BY
