@@ -41,7 +41,7 @@ SELECT 'optimism' AS blockchain
 , 'OP' AS token_symbol
 , t.evt_index
 FROM {{ source('op_optimism', 'MerkleDistributor_evt_Claimed') }} t
-LEFT JOIN {{ ('prices_usd_forward_fill') }} pu ON pu.blockchain = 'optimism'
+LEFT JOIN {{ source('prices', 'usd_forward_fill') }} pu ON pu.blockchain = 'optimism'
     AND pu.contract_address= {{op_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
