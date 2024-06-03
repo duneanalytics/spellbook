@@ -23,3 +23,7 @@ sources:
       - name: SyncSwapClassicPool_evt_Swap
       - name: SyncSwapStablePoolFactory_evt_PoolCreated
       - name: SyncSwapStablePool_evt_Swap
+  - name: nuri_scroll
+    tables:
+      - name: ClPoolFactory_evt_PoolCreated
+      - name: ClPool_evt_Swap
