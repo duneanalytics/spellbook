@@ -113,42 +113,6 @@ models:
       celo:
         +schema: uniswap_celo
 
-    timeswap:
-      +schema: timeswap
-      ethereum:
-        +schema: timeswap_ethereum
-      arbitrum:
-        +schema: timeswap_arbitrum
-      polygon:
-        +schema: timeswap_polygon
-
-    paraswap:
-      +schema: paraswap
-      avalanche_c:
-        +schema: paraswap_avalanche_c
-      fantom:
-        +schema: paraswap_fantom
-      arbitrum:
-        +schema: paraswap_arbitrum
-      bnb:
-        +schema: paraswap_bnb
-      ethereum:
-        +schema: paraswap_ethereum
-      optimism:
-        +schema: paraswap_optimism
-      polygon:
-        +schema: paraswap_polygon
-
-    opx_finance:
-      +schema: opx_finance
-      optimism:
-        +schema: opx_finance_optimism
-
-    zodiac:
-      +schema: zodiac
-      ethereum:
-        +schema: zodiac_ethereum
-
     daohaus:
       +schema: daohaus
       ethereum:

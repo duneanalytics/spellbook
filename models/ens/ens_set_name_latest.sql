@@ -1,6 +1,7 @@
 {{
     config(
-         alias = 'set_name_latest'
+        schema = 'ens'
+        ,alias = 'set_name_latest'
         
         ,materialized = 'table'
         ,file_format = 'delta'
