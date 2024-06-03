@@ -146,7 +146,7 @@ SELECT
     , coalesce(m22.symbol,trim(json_value(args, 'strict $.symbol'))) as symbol 
     , coalesce(m22.uri,trim(json_value(args, 'strict $.uri'))) as token_uri
     , tk.call_block_time as created_at
-    , metadata_program
+    , coalesce(m22.metadata_program,m.metadata_program) as metadata_program
     , tk.token_version
 FROM tokens tk
 LEFT JOIN token2022_metadata m22 ON tk.account_mint = m22.account_mint AND m22.latest = 1
@@ -179,7 +179,7 @@ FROM
   null,
   'token2022'
 )
-) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at,token_version)
+) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at, metadata_program, token_version)
 
 UNION ALL
 
@@ -206,4 +206,4 @@ FROM
   null,
   'spl_token'
 )
-) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at,token_version)
+) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at, metadata_program, token_version)
