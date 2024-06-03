@@ -1,11 +1,12 @@
 {{ config(
-    
+    schema = 'nexusmutual_ethereum',
     alias = 'capital_pool_eth_daily_transaction_summary',
     partition_by = ['day'],
     materialized = 'incremental',
     incremental_strategy = 'merge',
     file_format = 'delta',
     unique_key = ['day'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "nexusmutual",
