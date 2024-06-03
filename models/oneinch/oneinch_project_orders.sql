@@ -33,10 +33,13 @@ orders as (
                 , call_gas_used
                 , maker
                 , maker_asset
-                , coalesce(making_amount, if(order_start = uint256 '0', maker_max_amount, maker_max_amount - cast(block_unixtime - order_start as double) / (order_end - order_start) * (maker_max_amount - maker_min_amount))) as making_amount
+                , coalesce(making_amount, if(order_start = uint256 '0', maker_max_amount, maker_max_amount - cast(block_unixtime - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double)))) as making_amount
                 , taker_asset
-                , coalesce(taking_amount, if(order_start = uint256 '0', taker_max_amount, taker_max_amount - cast(block_unixtime - order_start as double) / (order_end - order_start) * (taker_max_amount - taker_min_amount))) as taking_amount
+                , coalesce(taking_amount, if(order_start = uint256 '0', taker_max_amount, taker_max_amount - cast(block_unixtime - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double)))) as taking_amount
                 , order_hash
+                , order_start
+                , order_end
+                , order_deadline
                 , flags
             from {{ ref('oneinch_' + blockchain + '_project_orders') }}
             where call_success
@@ -63,6 +66,9 @@ orders as (
             , taker_asset
             , taking_amount
             , order_hash
+            , null as order_start
+            , null as order_end
+            , null as order_deadline
             , flags
         from {{ ref('oneinch_lop') }}
         where call_success
@@ -105,6 +111,9 @@ orders as (
         , any_value(making_amount * price / pow(10, decimals)) filter(where contract_address = maker_asset) as making_amount_usd
         , any_value(taking_amount * price / pow(10, decimals)) filter(where contract_address = taker_asset) as taking_amount_usd
         , any_value(coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int))))) as order_hash
+        , any_value(order_start) as order_start
+        , any_value(order_end) as order_end
+        , any_value(order_deadline) as order_deadline
         , any_value(flags) as flags
     from (select * from orders, unnest(assets) as assets(contract_address))
     left join prices using(blockchain, contract_address, minute)
@@ -135,6 +144,9 @@ select
     , taking_amount_usd
     , greatest(coalesce(making_amount_usd, 0), coalesce(taking_amount_usd, 0)) as amount_usd
     , order_hash
+    , order_start
+    , order_end
+    , order_deadline
     , flags
     , date(date_trunc('month', block_time)) as block_month
 from joined
