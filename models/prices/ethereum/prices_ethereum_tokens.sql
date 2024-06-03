@@ -1758,7 +1758,7 @@ FROM
     ('pepecoin-pepecoin', 'ethereum', 'PEPECOIN', 0xa9e8acf069c58aec8825542845fd754e41a9489a, 18 ),
     ('gpu-node-ai', 'ethereum', 'GPU', 0x1258d60b224c0c5cd888d37bbf31aa5fcfb7e870, 18 ),
     ('doge20-dogecoin20', 'ethereum', 'DOGE20', 0x2541a36be4cd39286ed61a3e6afc2307602489d6, 18 ),
-    ('chad-chad-frog', 'ethereum', 'CHAD', 0x9e22b4f836a461ddc7765e5fad693688e76e6069, 9 )
+    ('chad-chad-frog', 'ethereum', 'CHAD', 0x9e22b4f836a461ddc7765e5fad693688e76e6069, 9 ),
     ('rivus-rivusdao', 'ethereum', 'RIVUS', 0x60e254e35dd712394b3aba7a1d19114732e143dd, 18),
     ('dog-the-doge-nft', 'ethereum', 'DOG', 0xbaac2b4491727d78d2b78815144570b9f2fe8899, 18),
     ('tru-truefi', 'ethereum', 'TRU', 0x4c19596f5aaff459fa38b0f7ed92f11ae6543784, 8),
