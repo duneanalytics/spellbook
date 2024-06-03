@@ -158,4 +158,8 @@ FROM (VALUES
     , ('tron', 'TDjiAAzZGzTkDtEvEvoStN3JvriADT1qXr', 'B2BinPay', 'B2BinPay 1', 'hildobby', date '2024-05-04')
     , ('tron', 'TSjD7g8ZC29HQCLvKg5TLQMeXaxhNS8KLk', 'Bitpanda', 'Bitpanda 1', 'hildobby', date '2024-05-04')
     , ('tron', 'TWT3L694985N2sF8aCQpMbtpxCUgRPsfME', 'XT.com', 'XT.com 1', 'hildobby', date '2024-05-04')
+    , ('tron', 'TTU7icZN9VBs3ReUCVBUnwyvdU41hGJzbL', 'Bidesk', 'Bidesk 1', 'hildobby', date '2024-06-03')
+    , ('tron', 'TJsi3EFYUSFnSnVCmyH4yJYVdPg8fXRQJ3', 'Bidesk', 'Bidesk 2', 'hildobby', date '2024-06-03')
+    , ('tron', 'TAjUZpjqknS7qHGN2nwM8NxsbdcffP9dyd', 'Bidesk', 'Bidesk 3', 'hildobby', date '2024-06-03')
+    , ('tron', 'TJGyzWET16gyChHtnF5xPdhdp3RRN14QCY', 'Dex-Trade', 'Dex-Trade 1', 'hildobby', date '2024-06-03')
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)
