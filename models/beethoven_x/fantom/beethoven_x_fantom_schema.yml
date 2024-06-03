@@ -34,7 +34,7 @@ models:
     config:
       tags: ['fantom', 'balancer', 'pools', 'liquidity']
     description: >
-      Beethoven X v2 pools liquidity by token in Arbitrum.
+      Beethoven X pools liquidity by token in fantom.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -111,3 +111,104 @@ models:
         tests:
           - not_null
 
+  - name: beethoven_x_fantom_protocol_fee
+    meta:
+      blockchain: fantom
+      project: beethoven_x
+      contributors: viniabussafi
+    config:
+      tags: ['fantom', 'revenue', 'fees']
+    description: >
+      Daily Protocol Fee collected and Revenue by pool on Beethoven X, an automated portfolio manager and trading platform built on Balancer.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - name: day
+      - name: pool_id
+      - name: pool_address
+      - name: pool_symbol
+      - name: blockchain
+      - name: token_address
+      - name: token_symbol
+      - name: token_amount_raw
+        description: "Raw amount of revenues of the token in the pool"
+      - name: token_amount
+        description: "Amount of revenues of the token in the pool"
+      - name: protocol_fee_collected_usd
+        description: "Fee collected in the pool in USD"
+        
+  - name: beethoven_x_fantom_bpt_supply
+    meta:
+      blockchain: fantom
+      project: beethoven_x
+      contributors: viniabussafi
+    config:
+      tags: ['fantom', 'bpt', 'supply']
+    description: >
+      Balancer Pool Token (BPT) supply for Beethoven X pools built on Balancer.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - token_address
+    columns:
+      - name: day
+      - name: pool_type
+      - name: blockchain
+      - name: token_address
+      - name: supply
+
+  - name: beethoven_x_fantom_bpt_prices
+    meta:
+      blockchain: fantom
+      project: beethoven_x
+      contributors: viniabussafi
+    config:
+      tags: ['fantom', 'bpt', 'prices']
+    description: >
+      Balancer Pool Token (BPT) daily price by pool on Beethoven X, an automated portfolio manager and trading platform built on Balancer.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - day
+            - contract_address
+    columns:
+      - name: blockchain
+      - name: day
+      - name: decimals
+      - name: contract_address
+      - name: bpt_price      
+
+  - name: beethoven_x_fantom_transfers_bpt
+    meta:
+      blockchain: fantom
+      project: beethoven_x
+      contributors: viniabussafi
+    config:
+      tags: ['fantom', 'bpt', 'transfers']
+    description: >
+      Balancer Pool Token (BPT) transfer logs on Beethoven X, an automated portfolio manager and trading platform built on Balancer.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - block_date
+    columns:
+      - name: blockchain
+      - name: contract_address
+      - name: block_date
+      - name: block_month
+      - name: evt_tx_hash
+      - name: evt_index
+      - name: evt_block_time
+      - name: evt_block_number
+      - name: from
+      - name: to
+      - name: value

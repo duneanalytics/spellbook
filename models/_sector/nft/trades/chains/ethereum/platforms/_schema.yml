@@ -499,6 +499,21 @@ models:
             - platform_fee_amount_raw
             - royalty_fee_amount_raw
 
+  - name: sudoswap_v2_ethereum__pools
+    meta:
+      blockchain: ethereum
+      project: sudoswap
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'ethereum','sudoswap','pool_creations' ]
+    description: >
+      sudoswap v2 pool creations on Ethereum
+    columns:
+      - name: pool_address # unique
+        description: 'Address of the pool'
+        tests:
+          - unique
+
   - name: sudoswap_v2_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -526,6 +541,21 @@ models:
             - price_raw
             - platform_fee_amount_raw
             - royalty_fee_amount_raw
+
+  - name: collectionswap_ethereum__pools
+    meta:
+      blockchain: ethereum
+      project: collectionswap
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','collectionswap','v1','pools' ]
+    description: >
+      collectionswap v1 pools on ethereum
+    columns:
+      - name: pool_address
+        tests:
+          - unique
+
 
   - name: collectionswap_ethereum_base_trades
     meta:

@@ -1,6 +1,6 @@
 {{
     config(
-        
+
         schema = 'blur_ethereum',
         alias = 'blend_events',
         post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -44,9 +44,9 @@ WITH offer_taken AS (
     , tx_hash
     , evt_index
     FROM offer_taken
-    
+
     UNION ALL
-    
+
     SELECT evt_block_time AS block_time
     , evt_block_number AS block_number
     , lienId AS lien_id
@@ -61,9 +61,9 @@ WITH offer_taken AS (
     , evt_tx_hash AS tx_hash
     , evt_index
     FROM {{ source('blur_ethereum', 'Blend_evt_Refinance') }}
-    
+
     UNION ALL
-    
+
     SELECT evt_block_time AS block_time
     , evt_block_number AS block_number
     , lienId AS lien_id
@@ -78,9 +78,9 @@ WITH offer_taken AS (
     , evt_tx_hash AS tx_hash
     , evt_index
     FROM {{ source('blur_ethereum', 'Blend_evt_Seize') }}
-    
+
     UNION ALL
-    
+
     SELECT evt_block_time AS block_time
     , evt_block_number AS block_number
     , lienId AS lien_id
@@ -95,9 +95,9 @@ WITH offer_taken AS (
     , evt_tx_hash AS tx_hash
     , evt_index
     FROM {{ source('blur_ethereum', 'Blend_evt_Repay') }}
-    
+
     UNION ALL
-    
+
     SELECT evt_block_time AS block_time
     , evt_block_number AS block_number
     , lienId AS lien_id
@@ -112,9 +112,9 @@ WITH offer_taken AS (
     , evt_tx_hash AS tx_hash
     , evt_index
     FROM {{ source('blur_ethereum', 'Blend_evt_StartAuction') }}
-    
+
     UNION ALL
-    
+
     SELECT evt_block_time AS block_time
     , evt_block_number AS block_number
     , lienId AS lien_id
@@ -156,7 +156,7 @@ FROM all_events a
 INNER JOIN (SELECT distinct lien_id, token_id FROM offer_taken) USING (lien_id)
 LEFT JOIN {{ source('ethereum', 'transactions') }} txs ON txs.block_number=a.block_number
     AND txs.hash=a.tx_hash
-LEFT JOIN {{ ref('tokens_ethereum_nft') }} tok ON tok.contract_address=a.collection
+LEFT JOIN {{ source('tokens_ethereum', 'nft') }} tok ON tok.contract_address=a.collection
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='ethereum'
     AND pu.contract_address=0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
     AND pu.minute=date_trunc('minute', a.block_time)

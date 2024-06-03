@@ -1,5 +1,5 @@
 {{ config(
-    
+
     alias = 'trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
@@ -38,7 +38,7 @@ with source_polygon_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-    from {{ ref('tokens_nft') }}
+    from {{ source('tokens', 'nft') }}
     where blockchain = 'polygon'
 )
 ,ref_tokens_erc20 as (
