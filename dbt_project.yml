@@ -113,39 +113,6 @@ models:
       celo:
         +schema: uniswap_celo
 
-    gas:
-      +schema: gas
-      ethereum:
-        +schema: gas_ethereum
-      bnb:
-        +schema: gas_bnb
-      avalanche_c:
-        +schema: gas_avalanche_c
-      optimism:
-        +schema: gas_optimism
-      arbitrum:
-        +schema: gas_arbitrum
-      polygon:
-        +schema: gas_polygon
-      fantom:
-        +schema: gas_fantom
-      gnosis:
-        +schema: gas_gnosis
-
-    gmx:
-      +schema: gmx
-      arbitrum:
-        +schema: gmx_arbitrum
-      avalanche_c:
-        +schema: gmx_avalanche_c
-
-    tigris:
-      +schema: tigris
-      arbitrum:
-        +schema: tigris_arbitrum
-      polygon:
-        +schema: tigris_polygon
-
     nomad:
       +schema: nomad
       ethereum:
