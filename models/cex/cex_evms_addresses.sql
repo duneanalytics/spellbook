@@ -191,6 +191,7 @@ FROM (VALUES
     , (0x23f4569002a5a07f0ecf688142eeb6bcd883eef8, 'Blockchain.com', 'Blockchain.com 4', 'hildobby', date '2023-09-12')
     , (0x46e0813dcb480517e3e73449761bdc596e424a79, 'Blockchain.com', 'Blockchain.com 5', 'hildobby', date '2023-09-12')
     , (0x9aa65464b4cfbe3dc2bdb3df412aee2b3de86687, 'Blockchain.com', 'Blockchain.com 6', 'hildobby', date '2023-11-20')
+    , (0xfc3e21f959551512d68b6b00f8931593d3106151, 'Blockchain.com', 'Blockchain.com 7', 'hildobby', date '2024-06-03')
     -- Coinbase
     , (0x71660c4005ba85c37ccec55d0c4493e66fe775d3, 'Coinbase', 'Coinbase 1', 'hildobby', date '2022-08-28')
     , (0x503828976d22510aad0201ac7ec88293211d23da, 'Coinbase', 'Coinbase 2', 'hildobby', date '2022-08-28')
@@ -1838,6 +1839,7 @@ FROM (VALUES
     -- IDEX
     , (0x2a0c0dbecc7e4d658f48e01e3fa353f44050c208, 'IDEX', 'IDEX 1', 'hildobby', date '2023-09-08')
     , (0xa7a7899d944fe658c4b0a1803bab2f490bd3849e, 'IDEX', 'IDEX 2', 'hildobby', date '2023-09-08')
+    0x8af97264482b59c7aa11010907710dee6d8d8c6c
     -- Flata Exchange
     , (0x14301566b9669b672878d86ff0b1d18dd58054e9, 'Flata Exchange', 'Flata Exchange', 'hildobby', date '2022-08-28')
     -- XT.com
@@ -2174,6 +2176,7 @@ FROM (VALUES
     , (0x22bf0a4c4eff418b3306abfee20813d0b6e8dc74, 'SwissBorg', 'SwissBorg 12', 'hildobby', date '2024-04-20')
     , (0x67fe3293fc4e877f3cdc3f0ed93721a600f72bde, 'SwissBorg', 'SwissBorg 13', 'hildobby', date '2024-04-20')
     , (0xff4606bd3884554cdbdabd9b6e25e2fad4f6fc54, 'SwissBorg', 'SwissBorg 14', 'hildobby', date '2024-04-20')
+    , (0x0a52368d5a7e70d8c927f75ea6618c2c468031d4, 'SwissBorg', 'SwissBorg 15', 'hildobby', date '2024-06-03')
     , (0x43fda7708c97c4c40d5402c6392f0457f23c0b8e, 'SwissBorg', 'SwissBorg Deposit Funder 1', 'hildobby', date '2023-11-23')
     , (0xa5546c4bc006d23b60d690d3033b8df40cecc230, 'SwissBorg', 'SwissBorg Deposit Funder 2', 'hildobby', date '2023-11-23')
     , (0xcdf2bfd0ff20811c98471b331db19aabf3d3b972, 'SwissBorg', 'SwissBorg Deposit Funder 3', 'hildobby', date '2023-11-23')
