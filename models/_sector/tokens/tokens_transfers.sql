@@ -18,6 +18,7 @@
     ,'zksync'
     ,'zora'
     ,'scroll'
+    ,'zkevm'
     ,'linea'
 ] %}
 
