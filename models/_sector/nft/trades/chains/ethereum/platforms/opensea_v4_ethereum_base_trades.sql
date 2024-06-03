@@ -1,10 +1,11 @@
 {{ config(
     schema = 'opensea_v4_ethereum',
-    alias = 'events',
+    alias = 'base_trades',
+
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'evt_index', 'nft_contract_address', 'token_id', 'sub_type', 'sub_idx', 'number_of_items']
+    unique_key = ['block_number', 'tx_hash', 'sub_tx_trade_id']
     )
 }}
 
@@ -40,10 +41,4 @@ where
           )
  or  fee_wallet_name = 'opensea'
 )
--- temporary fix to exclude duplicates
-and tx_hash not in (
-select tx_hash from
-trades
-group by tx_hash, evt_index, nft_contract_address, token_id, sub_type, sub_idx
-having count(*) > 1
-)
+
