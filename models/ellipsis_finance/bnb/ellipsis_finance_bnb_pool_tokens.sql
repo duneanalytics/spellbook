@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema='ellipsis_finance_bnb',
     alias = 'pool_tokens',
     materialized = 'incremental',
     file_format = 'delta',

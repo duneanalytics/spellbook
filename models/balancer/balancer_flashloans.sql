@@ -1,5 +1,5 @@
 {{ config(
-    
+        schema='balancer',
         alias = 'flashloans',
         post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon", "gnosis", "avalanche_c", "base", "zkevm"]\',
                                 "project",
