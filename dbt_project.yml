@@ -437,8 +437,6 @@ models:
         +schema: transfers_arbitrum
       polygon:
         +schema: transfers_polygon
-      fantom:
-        +schema: transfers_fantom
       base:
         +schema: transfers_base
       celo:
