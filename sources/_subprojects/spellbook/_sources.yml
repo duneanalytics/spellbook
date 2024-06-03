@@ -56,3 +56,7 @@ sources:
   - name: prices
     tables:
       - name: usd_forward_fill
+  - name: op_retropgf_optimism
+    tables:
+      - name: recipients
+      - name: voters
