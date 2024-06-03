@@ -216,6 +216,7 @@ SELECT
     , tk_d.token_balance_owner as to_owner
     , account_source as from_token_account
     , account_destination as to_token_account
+    , token_version
     , call_tx_signer as tx_signer
     , call_tx_id as tx_id
     , call_outer_instruction_index as outer_instruction_index

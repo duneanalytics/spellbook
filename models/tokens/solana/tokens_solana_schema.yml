@@ -90,6 +90,7 @@ models:
       - name: to_owner
       - name: from_token_account
       - name: to_token_account
+      - name: token_version
       - name: tx_signer 
       - name: tx_id
       - name: outer_instruction_index
