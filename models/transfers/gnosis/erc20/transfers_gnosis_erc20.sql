@@ -19,7 +19,7 @@ WITH
 
 erc20_transfers  as (
         SELECT 
-            'receive' as transfer_type, 
+            IF("from" = 0x0000000000000000000000000000000000000000, 'mint', 'receive') as transfer_type, 
             evt_tx_hash,
             evt_index, 
             evt_block_time,
@@ -33,7 +33,7 @@ erc20_transfers  as (
         UNION ALL 
 
         SELECT 
-            'send' as transfer_type, 
+            IF(to = 0x0000000000000000000000000000000000000000, 'burn', 'send') as transfer_type, 
             evt_tx_hash,
             evt_index, 
             evt_block_time,
