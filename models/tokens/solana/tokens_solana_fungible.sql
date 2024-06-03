@@ -114,9 +114,9 @@ with
         WHERE executing_account = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
         AND bytearray_substring(data,1,1) = 0xd2 --deal with updateField later 0xdd
         AND tx_success
+    )
 
-        UNION ALL 
-
+    , token_metadata_other as (
         --some other metadata program (idk the owner)
         SELECT
             from_utf8(bytearray_substring(data,1+1+4,bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+1,4))))) as name
@@ -142,14 +142,15 @@ with
 SELECT
     tk.account_mint as token_mint_address
     , tk.decimals
-    , coalesce(m22.name,trim(json_value(args, 'strict $.name'))) as name 
-    , coalesce(m22.symbol,trim(json_value(args, 'strict $.symbol'))) as symbol 
-    , coalesce(m22.uri,trim(json_value(args, 'strict $.uri'))) as token_uri
+    , coalesce(m22.name,mo.name,trim(json_value(args, 'strict $.name'))) as name 
+    , coalesce(m22.symbol,mo.symbol,trim(json_value(args, 'strict $.symbol'))) as symbol 
+    , coalesce(m22.uri,mo.uri,trim(json_value(args, 'strict $.uri'))) as token_uri
     , tk.call_block_time as created_at
-    , coalesce(m22.metadata_program,m.metadata_program) as metadata_program
+    , coalesce(m22.metadata_program,mo.metadata_program,m.metadata_program) as metadata_program
     , tk.token_version
 FROM tokens tk
 LEFT JOIN token2022_metadata m22 ON tk.account_mint = m22.account_mint AND m22.latest = 1
+LEFT JOIN token_metadata_other mo ON tk.account_mint = mo.account_mint AND mo.latest = 1
 LEFT JOIN metadata m ON tk.account_mint = m.account_mint AND m.latest = 1
 WHERE m.master_edition is null
 AND tk.latest = 1
