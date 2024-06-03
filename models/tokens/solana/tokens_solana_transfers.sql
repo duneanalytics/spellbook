@@ -59,7 +59,8 @@ token2022_fee_state as (
 
 , base as (  
       SELECT 
-            account_source, account_destination, amount
+            account_source, account_destination
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'transfer' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -70,7 +71,8 @@ token2022_fee_state as (
       UNION ALL
 
       SELECT 
-            account_source, account_destination, amount
+            account_source, account_destination
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'transfer' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -81,7 +83,8 @@ token2022_fee_state as (
       UNION ALL
 
       SELECT 
-            null as account_source, account_account as account_destination, amount
+            null as account_source, account_account as account_destination
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'mint' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -92,7 +95,8 @@ token2022_fee_state as (
       UNION ALL
 
       SELECT 
-            null as account_source, account_account as account_destination, amount
+            null as account_source, account_account as account_destination
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'mint' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -103,7 +107,8 @@ token2022_fee_state as (
       UNION ALL
 
       SELECT 
-            account_account as account_source, null as account_destination, amount
+            account_account as account_source, null as account_destination
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'burn' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -114,7 +119,8 @@ token2022_fee_state as (
       UNION ALL
 
       SELECT 
-            account_account as account_source, null as account_destination, amount
+            account_account as account_source, null as account_destination
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'burn' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -134,7 +140,8 @@ token2022_fee_state as (
             , token_version
       FROM (
             SELECT 
-                  account_source, account_destination, amount --note that interestbearing mints have a different amount methodology, to add later
+                  account_source, account_destination
+                  , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount --note that interestbearing mints have a different amount methodology, to add later
                   , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
                   , 'transfer' as action
                   , call_outer_instruction_index, call_inner_instruction_index
@@ -149,7 +156,8 @@ token2022_fee_state as (
       UNION ALL
 
       SELECT 
-            null as account_source, account_mintTo as account_destination, amount
+            null as account_source, account_mintTo as account_destination
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'mint' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -160,7 +168,8 @@ token2022_fee_state as (
       UNION ALL
 
       SELECT
-            null as account_source, account_mintTo as account_destination, amount
+            null as account_source, account_mintTo as account_destination
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'mint' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -171,7 +180,8 @@ token2022_fee_state as (
       UNION ALL
 
       SELECT 
-            account_burnAccount as account_source, null as account_destination, amount
+            account_burnAccount as account_source, null as account_destination
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'burn' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -182,7 +192,8 @@ token2022_fee_state as (
       UNION ALL
 
       SELECT 
-            account_burnAccount as account_source, null as account_destination, amount
+            account_burnAccount as account_source, null as account_destination
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'burn' as action
             , call_outer_instruction_index, call_inner_instruction_index

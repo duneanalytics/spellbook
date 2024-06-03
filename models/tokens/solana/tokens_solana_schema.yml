@@ -25,6 +25,8 @@ models:
         description: version of the token program used (spl_token, token2022)
       - name: created_at
         description: token mint created at
+      - name: init_tx
+        description: "transaction that initialized the mint"
 
   - name: tokens_solana_nft
     meta:
