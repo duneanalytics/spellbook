@@ -39,7 +39,7 @@ token2022_fee_state as (
                               then 32
                               when bytearray_substring(call_data,1+1+1,1) = 0x00 and bytearray_substring(call_data,1+1+1+1,1) = 0x00
                               then 0
-                              end --variations of COPTION enums for first two arguments
+                              end
                         +2
                   ,16)))) as fee_maximum
       , call_block_time as fee_time
