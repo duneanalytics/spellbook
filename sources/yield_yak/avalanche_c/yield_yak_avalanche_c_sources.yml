@@ -52,6 +52,14 @@ sources:
         loaded_at_field: evt_block_time
       - name: AaveV3StrategyV1_evt_Transfer
         loaded_at_field: evt_block_time
+      - name: AbracadabraStrategyForLP_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: AbracadabraStrategyForLP_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: AbracadabraStrategyForLP_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: AbracadabraStrategyForLP_evt_Transfer
+        loaded_at_field: evt_block_time
       - name: AnkrAvaxPlatypusStrategy_evt_Deposit
         loaded_at_field: evt_block_time
       - name: AnkrAvaxPlatypusStrategy_evt_Withdraw
@@ -67,6 +75,14 @@ sources:
       - name: AutoPoolStrategy_evt_Reinvest
         loaded_at_field: evt_block_time
       - name: AutoPoolStrategy_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: AvaiStrategyForLP_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: AvaiStrategyForLP_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: AvaiStrategyForLP_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: AvaiStrategyForLP_evt_Transfer
         loaded_at_field: evt_block_time
       - name: AxialStrategyForLP_evt_Deposit
         loaded_at_field: evt_block_time
@@ -91,6 +107,14 @@ sources:
       - name: BalancerDirectJoinStrategy_evt_Reinvest
         loaded_at_field: evt_block_time
       - name: BalancerDirectJoinStrategy_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: BambooStrategyForLP_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: BambooStrategyForLP_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: BambooStrategyForLP_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: BambooStrategyForLP_evt_Transfer
         loaded_at_field: evt_block_time
       - name: BenqiStrategyAvaxV1_evt_Deposit
         loaded_at_field: evt_block_time
@@ -220,6 +244,14 @@ sources:
         loaded_at_field: evt_block_time
       - name: CompoundingJoe_evt_Transfer
         loaded_at_field: evt_block_time
+      - name: CompoundingJoeV2_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: CompoundingJoeV2_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: CompoundingJoeV2_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: CompoundingJoeV2_evt_Transfer
+        loaded_at_field: evt_block_time
       - name: CompoundingJoeV3_evt_Deposit
         loaded_at_field: evt_block_time
       - name: CompoundingJoeV3_evt_Withdraw
@@ -304,6 +336,14 @@ sources:
         loaded_at_field: evt_block_time
       - name: DexStrategySAWithSwapV2_evt_Transfer
         loaded_at_field: evt_block_time
+      - name: DexStrategyV3_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: DexStrategyV3_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: DexStrategyV3_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: DexStrategyV3_evt_Transfer
+        loaded_at_field: evt_block_time
       - name: DexStrategyV4_evt_Deposit
         loaded_at_field: evt_block_time
       - name: DexStrategyV4_evt_Withdraw
@@ -327,6 +367,14 @@ sources:
       - name: DexStrategyV5Reflection_evt_Reinvest
         loaded_at_field: evt_block_time
       - name: DexStrategyV5Reflection_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: DexStrategyV5ReflectionV2_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: DexStrategyV5ReflectionV2_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: DexStrategyV5ReflectionV2_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: DexStrategyV5ReflectionV2_evt_Transfer
         loaded_at_field: evt_block_time
       - name: DexStrategyV6_evt_Deposit
         loaded_at_field: evt_block_time
@@ -424,6 +472,14 @@ sources:
         loaded_at_field: evt_block_time
       - name: GondolaStrategyForLP_evt_Transfer
         loaded_at_field: evt_block_time
+      - name: GondolaStrategyForLPV2_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: GondolaStrategyForLPV2_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: GondolaStrategyForLPV2_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: GondolaStrategyForLPV2_evt_Transfer
+        loaded_at_field: evt_block_time
       - name: GondolaStrategyForPoolBTC_evt_Deposit
         loaded_at_field: evt_block_time
       - name: GondolaStrategyForPoolBTC_evt_Withdraw
@@ -479,6 +535,22 @@ sources:
       - name: HakuStrategyForLP_evt_Reinvest
         loaded_at_field: evt_block_time
       - name: HakuStrategyForLP_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: IceQueenStrategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: IceQueenStrategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: IceQueenStrategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: IceQueenStrategy_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: IceQueenStrategyV2_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: IceQueenStrategyV2_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: IceQueenStrategyV2_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: IceQueenStrategyV2_evt_Transfer
         loaded_at_field: evt_block_time
       - name: JoeLendingStrategyAvaxV1_evt_Deposit
         loaded_at_field: evt_block_time
@@ -640,6 +712,14 @@ sources:
         loaded_at_field: evt_block_time
       - name: MoreMoneyStrategy_evt_Transfer
         loaded_at_field: evt_block_time
+      - name: OliveStrategyForLPa_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: OliveStrategyForLPa_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: OliveStrategyForLPa_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: OliveStrategyForLPa_evt_Transfer
+        loaded_at_field: evt_block_time
       - name: OliveStrategyForLPb_evt_Deposit
         loaded_at_field: evt_block_time
       - name: OliveStrategyForLPb_evt_Withdraw
@@ -647,6 +727,14 @@ sources:
       - name: OliveStrategyForLPb_evt_Reinvest
         loaded_at_field: evt_block_time
       - name: OliveStrategyForLPb_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: OliveStrategyForLPc_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: OliveStrategyForLPc_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: OliveStrategyForLPc_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: OliveStrategyForLPc_evt_Transfer
         loaded_at_field: evt_block_time
       - name: OliveStrategyForSA_evt_Deposit
         loaded_at_field: evt_block_time
@@ -704,6 +792,14 @@ sources:
         loaded_at_field: evt_block_time
       - name: SonicStrategyForSA_evt_Transfer
         loaded_at_field: evt_block_time
+      - name: StableVaultStrategyForS3D_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: StableVaultStrategyForS3D_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: StableVaultStrategyForS3D_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: StableVaultStrategyForS3D_evt_Transfer
+        loaded_at_field: evt_block_time
       - name: StableVaultStrategyForS3F_evt_Deposit
         loaded_at_field: evt_block_time
       - name: StableVaultStrategyForS3F_evt_Withdraw
@@ -720,6 +816,14 @@ sources:
         loaded_at_field: evt_block_time
       - name: StargateStrategyForLP_evt_Transfer
         loaded_at_field: evt_block_time
+      - name: StargateV2Strategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: StargateV2Strategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: StargateV2Strategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: StargateV2Strategy_evt_Transfer
+        loaded_at_field: evt_block_time
       - name: StormStrategyForLP_evt_Deposit
         loaded_at_field: evt_block_time
       - name: StormStrategyForLP_evt_Withdraw
@@ -735,6 +839,14 @@ sources:
       - name: StormStrategyForSA_evt_Reinvest
         loaded_at_field: evt_block_time
       - name: StormStrategyForSA_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: SuStrategyV2_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: SuStrategyV2_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: SuStrategyV2_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: SuStrategyV2_evt_Transfer
         loaded_at_field: evt_block_time
       - name: SynapseStrategy_evt_Deposit
         loaded_at_field: evt_block_time

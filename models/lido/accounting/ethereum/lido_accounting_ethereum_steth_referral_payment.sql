@@ -6,7 +6,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "lido_accounting",
-                                \'["ppclunghe"]\') }}'
+                                \'["pipistrella"]\') }}'
         )
 }}
 
@@ -46,16 +46,6 @@ select * from (values
 
 steth_referral_payments_addr AS (
     SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
-    WHERE
-    (
-        NOT EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientRemoved')}})
-        OR (
-            EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientRemoved')}})
-            AND 
-            _recipient NOT IN (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientRemoved')}})
-        )
-    ) 
-    
 ),
 
 

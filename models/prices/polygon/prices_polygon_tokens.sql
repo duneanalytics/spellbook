@@ -129,7 +129,9 @@ FROM
     ('pzcx-zen-exchange-token', 'polygon', 'PZCX', 0xdd75542611d57c4b6e68168b14c3591c539022ed,18),
     ('orbs-orbs', 'polygon', 'ORBS', 0x614389eaae0a6821dc49062d56bda3d9d45fa2ff,18),
     ('mask-mask-network', 'polygon', 'MASK', 0x2b9e7ccdf0f4e5b24757c1e1a80e311e34cb10c7,18),
-    ('ice-decentral-games-ice', 'polygon', 'ICE', 0xc6c855ad634dcdad23e64da71ba85b8c51e5ad7c,18)
+    ('ice-decentral-games-ice', 'polygon', 'ICE', 0xc6c855ad634dcdad23e64da71ba85b8c51e5ad7c,18),
+    ('bonsai-bonsai-token', 'polygon', 'BONSAI', 0x3d2bd0e15829aa5c362a4144fdf4a1112fa29b5c, 18),
+    ('wifi-wifi', 'polygon', 'WIFI', 0xe238ecb42c424e877652ad82d8a939183a04c35f, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0xef938b6da8576a896f6e0321ef80996f4890f9c4 -- DG, bad price feed
