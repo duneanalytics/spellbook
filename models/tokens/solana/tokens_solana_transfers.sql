@@ -60,7 +60,7 @@ token2022_fee_state as (
 , base as (  
       SELECT 
             account_source, account_destination
-            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'transfer' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -84,7 +84,7 @@ token2022_fee_state as (
 
       SELECT 
             null as account_source, account_account as account_destination
-            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'mint' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -96,7 +96,7 @@ token2022_fee_state as (
 
       SELECT 
             null as account_source, account_account as account_destination
-            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'mint' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -108,7 +108,7 @@ token2022_fee_state as (
 
       SELECT 
             account_account as account_source, null as account_destination
-            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'burn' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -120,7 +120,7 @@ token2022_fee_state as (
 
       SELECT 
             account_account as account_source, null as account_destination
-            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'burn' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -157,7 +157,7 @@ token2022_fee_state as (
 
       SELECT 
             null as account_source, account_mintTo as account_destination
-            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'mint' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -169,7 +169,7 @@ token2022_fee_state as (
 
       SELECT
             null as account_source, account_mintTo as account_destination
-            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'mint' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -181,7 +181,7 @@ token2022_fee_state as (
 
       SELECT 
             account_burnAccount as account_source, null as account_destination
-            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'burn' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -193,7 +193,7 @@ token2022_fee_state as (
 
       SELECT 
             account_burnAccount as account_source, null as account_destination
-            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'burn' as action
             , call_outer_instruction_index, call_inner_instruction_index
@@ -206,11 +206,11 @@ token2022_fee_state as (
 
       SELECT 
             call_account_arguments[1] as account_source, call_account_arguments[3] as account_destination
-            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data,1+2,8))) as amount
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+2,8))) as amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'transfer' as action
             , call_outer_instruction_index, call_inner_instruction_index
-            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data, 1+2+8+1,8))) as fee
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data, 1+2+8+1,8))) as fee
             , 'token2022' as token_version
       FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
       WHERE bytearray_substring(call_data,1,2) = 0x1a01 --https://github.com/solana-labs/solana-program-library/blob/8f50c6fabc6ec87ada229e923030381f573e0aed/token/program-2022/src/extension/transfer_fee/instruction.rs#L284
