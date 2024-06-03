@@ -13,7 +13,6 @@
 
 WITH 
 
-
 suicide AS (
     SELECT 
         block_time
