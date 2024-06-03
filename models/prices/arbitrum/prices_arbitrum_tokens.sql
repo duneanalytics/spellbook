@@ -191,6 +191,7 @@ FROM
     ('ankr-ankr-network','arbitrum','ANKR',0x46f74778b265df3a15ec9695ccd2fd3869ca848c, 18),
     ('forex-handlefi','arbitrum','FOREX',0xdb298285fe4c5410b05390ca80e8fbe9de1f259b, 18),
     ('susde-ethena-staked-usde','arbitrum','SUSDE',0x211cc4dd073734da055fbf44a2b4667d5e5fe5d2, 18),
+    ('usde-ethena-usde','arbitrum','USDe',0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34, 18),
     ('yak-yield-yak','arbitrum','YAK',0x7f4db37d7beb31f445307782bc3da0f18df13696,18),
     ('ethx-stader-ethx','arbitrum','ETHX',0xed65c5085a18fa160af0313e60dcc7905e944dc7, 18),
     ('gyd-gyro-dollar','arbitrum','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 18),
