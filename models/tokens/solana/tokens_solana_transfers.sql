@@ -211,6 +211,7 @@ SELECT
     , call_block_slot as block_slot
     , action
     , amount
+    , fee
     , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
     , tk_s.token_balance_owner as from_owner
     , tk_d.token_balance_owner as to_owner
