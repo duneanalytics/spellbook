@@ -17,7 +17,7 @@ select
     token_id,
     nft_tokens.name as collection_name
 from {{balances_raw}} balances
-left join {{ ref('tokens_nft') }} nft_tokens on (
+left join {{ source('tokens', 'nft') }} nft_tokens on (
    nft_tokens.blockchain = balances.blockchain
    AND nft_tokens.contract_address = balances.token_address
    AND balances.token_standard in ('erc721', 'erc1155')

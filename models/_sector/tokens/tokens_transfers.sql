@@ -19,6 +19,7 @@
     ,'zora'
     ,'scroll'
     ,'zkevm'
+    ,'linea'
 ] %}
 
 SELECT *

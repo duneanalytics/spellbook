@@ -1,6 +1,7 @@
 {{ config(
-        schema = 'uniswap_avalanche_c',
-        alias = 'trades'
+        schema = 'uniswap_avalanche_c'
+        , alias = 'trades'
+        , tags = ['prod_exclude']
         )
 }}
 
