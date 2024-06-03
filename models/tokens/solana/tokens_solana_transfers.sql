@@ -140,6 +140,7 @@ token2022_fee_state as (
                   , call_outer_instruction_index, call_inner_instruction_index
                   , least(cast(amount as double)*cast(f.fee_basis as double)/10000,f.fee_maximum) as fee --we want to take the percent fee on total amount, but not exceed the maximum fee
                   , 'token2022' as token_version
+                  , f.fee_time
                   , row_number() over (partition by tr.call_tx_id,  tr.call_outer_instruction_index,  tr.call_inner_instruction_index order by f.fee_time desc) as latest_fee
             FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferChecked') }} tr
             LEFT JOIN token2022_fee_state f ON tr.account_tokenMint = f.account_mint AND tr.call_block_time >= f.fee_time
