@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'nft_solana'
-        
+
         , alias = 'trades'
         , materialized = 'view'
         ,post_hook='{{ expose_spells(\'["solana"]\',
@@ -17,6 +17,7 @@
     , ref('magiceden_mmm_solana_trades')
     , ref('tensorswap_v1_solana_trades')
     , ref('tensorswap_v2_solana_trades')
+    , ref('nft_solana_old_trades')
 ] %}
 
 
