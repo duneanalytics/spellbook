@@ -1,6 +1,6 @@
 {{ config(
     alias = 'all_distributions_labels',
-    
+
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
                                 "op_token_distributions",
@@ -24,7 +24,7 @@ WITH all_labels AS (
         , 'Utility Contract' AS proposal_name
         , contract_name AS address_descriptor
         , contract_name AS project_name
-    FROM {{ ref('contracts_optimism_disperse_contracts') }}
+    FROM {{ source('contracts_optimism', 'disperse_contracts') }}
     WHERE contract_address NOT IN (SELECT address FROM {{ ref('op_token_distributions_optimism_project_wallets') }})
 
     UNION ALL
@@ -39,7 +39,7 @@ WITH all_labels AS (
     WHERE address NOT IN (SELECT address FROM {{ ref('op_token_distributions_optimism_project_wallets') }})
 )
 
-SELECT 
+SELECT
     cast(address as varbinary) as address
     ,label
     ,proposal_name

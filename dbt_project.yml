@@ -304,29 +304,6 @@ models:
       optimism:
         +schema: addresses_optimism
 
-    addresses_events:
-      +schema: addresses_events
-      arbitrum:
-        +schema: addresses_events_arbitrum
-      avalanche_c:
-        +schema: addresses_events_avalanche_c
-      bnb:
-        +schema: addresses_events_bnb
-      ethereum:
-        +schema: addresses_events_ethereum
-      fantom:
-        +schema: addresses_events_fantom
-      gnosis:
-        +schema: addresses_events_gnosis
-      optimism:
-        +schema: addresses_events_optimism
-      polygon:
-        +schema: addresses_events_polygon
-    addresses_events_testnets:
-      +schema: addresses_events_testnets
-      goerli:
-        +schema: addresses_events_testnets_goerli
-
     addresses_summary:
       +schema: addresses_summary
 
@@ -339,50 +316,6 @@ models:
       +schema: tokens
       +materialized: table
       +file_format: delta
-      ethereum:
-        +schema: tokens_ethereum
-        +materialized: table
-        +file_format: delta
-      optimism:
-        +schema: tokens_optimism
-        +materialized: table
-        +file_format: delta
-      avalanche_c:
-        +schema: tokens_avalanche_c
-        +materialized: table
-        +file_format: delta
-      bnb:
-        +schema: tokens_bnb
-        +materialized: table
-        +file_format: delta
-      gnosis:
-        +schema: tokens_gnosis
-        +materialized: table
-        +file_format: delta
-      arbitrum:
-        +schema: tokens_arbitrum
-        +materialized: table
-        +file_format: delta
-      polygon:
-        +schema: tokens_polygon
-        +materialized: table
-        +file_format: delta
-      fantom:
-        +schema: tokens_fantom
-        +materialized: table
-        +file_format: delta
-      solana:
-        +schema: tokens_solana
-        +materialized: table
-        +file_format: delta
-      base:
-        +schema: tokens_base
-        +materialized: table
-        +file_format: delta
-      celo:
-        +schema: tokens_celo
-        +materialized: table
-        +file_format: delta
 
     solana_utils:
       +schema: solana_utils
@@ -573,27 +506,6 @@ models:
       +schema: camelot
       arbitrum:
         +schema: camelot_arbitrum
-
-    chainlink:
-      +schema: chainlink
-      arbitrum:
-        +schema: chainlink_arbitrum
-      avalanche_c:
-        +schema: chainlink_avalanche_c
-      base:
-        +schema: chainlink_base
-      bnb:
-        +schema: chainlink_bnb
-      ethereum:
-        +schema: chainlink_ethereum
-      fantom:
-        +schema: chainlink_fantom
-      gnosis:
-        +schema: chainlink_gnosis
-      optimism:
-        +schema: chainlink_optimism
-      polygon:
-        +schema: chainlink_polygon
 
     reaper:
       +schema: reaper
@@ -941,49 +853,8 @@ models:
       ethereum:
         +schema: tokemak_ethereum
 
-    sound_xyz:
-      +schema: sound_xyz
-      optimism:
-        +schema: sound_xyz_optimism
-
-
     quests:
       +schema: quests
-
-    account_abstraction:
-      erc4337:
-        +schema: account_abstraction_erc4337
-        ethereum:
-          +schema: account_abstraction_erc4337_ethereum
-        avalanche_c:
-          +schema: account_abstraction_erc4337_avalanche_c
-        arbitrum:
-          +schema: account_abstraction_erc4337_arbitrum
-        optimism:
-          +schema: account_abstraction_erc4337_optimism
-        polygon:
-          +schema: account_abstraction_erc4337_polygon
-        gnosis:
-          +schema: account_abstraction_erc4337_gnosis
-        base:
-          +schema: account_abstraction_erc4337_base
-        bnb:
-          +schema: account_abstraction_erc4337_bnb
-
-    zora:
-      +schema: zora
-      optimism:
-        +schema: zora_optimism
-
-    decent:
-      +schema: decent
-      optimism:
-        +schema: decent_optimism
-
-    mirror:
-      +schema: mirror
-      optimism:
-        +schema: mirror_optimism
 
     worldcoin:
       +schema: worldcoin
