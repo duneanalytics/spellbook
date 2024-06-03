@@ -27,8 +27,7 @@ with
             UNION ALL
             SELECT call_data, account_mint, call_tx_id, call_block_time, 'token2022' as token_version FROM {{ source('spl_token_2022_solana', 'spl_token_2022_call_initializeMint') }}
             UNION ALL 
-            SELECT call_data, account_mint, call_tx_id, call_block_time, 'token2022' as token_version FROM {{ source('spl_token_2022_solana', 'spl_token_2022_call_initializeMint2') }}
-      
+            SELECT call_data, account_mint, call_tx_id, call_block_time, 'token2022' as token_version FROM {{ source('spl_token_2022_solana', 'spl_token_2022_call_initializeMint2') }}      
         )
         {% if is_incremental() %}
         where call_block_time >= date_trunc('day', now() - interval '7' day)
@@ -157,7 +156,34 @@ AND tk.latest = 1
 
 UNION ALL
 
---wrapped sol is special and doesn't have a init tx (that I can find)
+--token2022 wrapped sol https://solscan.io/tx/2L1o7sDMCMJ6PYqfNrnY6ozJC1DEx61pRYiLdfCCggxw81naQXsmHKDLn6EhJXmDmDSQ2eCKjUMjZAQuUsyNnYUv
+SELECT 
+  trim(token_mint_address) as token_mint_address
+  , decimals
+  , trim(name) as name
+  , trim(symbol) as symbol
+  , token_uri
+  , cast(created_at as timestamp) created_at
+  , metadata_program
+  , token_version
+FROM 
+(
+  VALUES
+(
+  '9pan9bMn5HatX4EJdBwg9VgCa7Uz5HL8N1m5D3NdXejP',
+  9,
+  'wrapped SOL',
+  'SOL',
+  null,
+  '2023-08-02 00:00:00',
+  null,
+  'token2022'
+)
+) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at,token_version)
+
+UNION ALL
+
+--old wrapped sol is special and doesn't have a init tx (that I can find)
 SELECT 
   trim(token_mint_address) as token_mint_address
   , decimals
