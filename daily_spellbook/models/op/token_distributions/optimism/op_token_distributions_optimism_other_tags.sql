@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'op_token_distributions_optimism',
     alias = 'other_tags',
     tags = [ 'static']
     )

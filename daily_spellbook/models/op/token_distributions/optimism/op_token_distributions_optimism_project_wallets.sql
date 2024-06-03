@@ -1,5 +1,5 @@
 {{ config(
-
+    schema = 'op_token_distributions_optimism',
     alias = 'project_wallets',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",

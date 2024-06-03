@@ -1,5 +1,6 @@
 {{ config(
     tags = ['prod_exclude'],
+    schema = 'op_token_distributions_optimism',
     alias = 'transfer_mapping',
     partition_by = ['block_date'],
     materialized = 'incremental',

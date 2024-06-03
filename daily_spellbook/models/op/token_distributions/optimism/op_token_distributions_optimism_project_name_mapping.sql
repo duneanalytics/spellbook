@@ -1,6 +1,7 @@
 -- Map governance proposal names to Dune project names
 {{ config(
     tags = ['static'],
+    schema = 'op_token_distributions_optimism',
     alias = 'project_name_mapping'
     )
 }}

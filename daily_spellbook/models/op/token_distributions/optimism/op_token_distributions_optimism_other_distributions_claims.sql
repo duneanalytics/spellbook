@@ -1,6 +1,6 @@
 {{ config(
+    schema = 'op_token_distributions_optimism',
     alias = 'other_distributions_claims',
-
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',

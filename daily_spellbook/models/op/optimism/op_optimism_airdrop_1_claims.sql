@@ -1,6 +1,5 @@
 {{
     config(
-
         schema = 'op_optimism',
         alias = 'airdrop_1_claims',
         materialized = 'incremental',
