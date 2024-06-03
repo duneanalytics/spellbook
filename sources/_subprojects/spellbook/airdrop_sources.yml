@@ -1,6 +1,0 @@
-version: 2
-
-sources:
-  - name: op_optimism
-    tables:
-      - name: airdrop_1_claims

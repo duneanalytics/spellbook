@@ -47,3 +47,12 @@ sources:
   - name: uniswap_v3_optimism
     tables:
       - name: ovm1_pool_mapping
+  - name: op_optimism
+    tables:
+      - name: airdrop_1_claims
+  - name: cex_optimism
+    tables:
+      - name: addresses
+  - name: prices
+    tables:
+      - name: usd_forward_fill
