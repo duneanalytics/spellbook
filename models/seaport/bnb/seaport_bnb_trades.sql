@@ -1,5 +1,5 @@
 {{ config(
-    
+
     alias = 'trades',
     partition_by = ['block_date'],
     materialized = 'incremental',
@@ -38,7 +38,7 @@ with source_bnb_transactions as (
 )
 ,ref_tokens_nft as (
     select *
-    from {{ ref('tokens_nft') }}
+    from {{ source('tokens', 'nft') }}
     where blockchain = 'bnb'
 )
 ,ref_tokens_erc20 as (

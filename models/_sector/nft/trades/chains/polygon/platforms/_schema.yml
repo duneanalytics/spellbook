@@ -170,3 +170,28 @@ models:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: opensea_v2_polygon_base_trades
+   meta:
+     blockchain: polygon
+     sector: nft
+     project: opensea
+     contributors: 0xRob, springzh, sohwak
+   config:
+     tags: [ 'opensea', 'nft', 'trades' ]
+   description: "NFT trades on opensea on polygon"
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+     - check_seed:
+         seed_file: ref('opensea_polygon_zeroex_trades_samples')
+         match_columns:
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw

@@ -1,7 +1,7 @@
 {{ config(
     schema = 'magiceden_solana',
     alias = 'events',
-
+    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

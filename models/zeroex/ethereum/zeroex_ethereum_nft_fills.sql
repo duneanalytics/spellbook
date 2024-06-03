@@ -1,10 +1,10 @@
 {{  config(
-        
+
         alias = 'nft_fills',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
-        on_schema_change='sync_all_columns',     
+        on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
         post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -16,7 +16,7 @@
 
 {% set zeroex_v4_nft_start_date = '2022-03-01' %}
 
---sample query on dune v2: https://dune.com/queries/1607746 
+--sample query on dune v2: https://dune.com/queries/1607746
 WITH tbl_cte_transaction AS
 (
     SELECT  evt_block_time
@@ -37,7 +37,7 @@ WITH tbl_cte_transaction AS
          , erc20Token       AS token
          , erc20TokenAmount AS token_amount_raw
     FROM {{ source ('zeroex_ethereum', 'ExchangeProxy_evt_ERC721OrderFilled') }}
-    WHERE 1 = 1 
+    WHERE 1 = 1
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
@@ -65,7 +65,7 @@ WITH tbl_cte_transaction AS
             , erc20Token        AS token
             , erc20FillAmount   AS token_amount_raw
     FROM {{ source ('zeroex_ethereum', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
-    WHERE 1 = 1 
+    WHERE 1 = 1
         {% if is_incremental() %}
         AND evt_block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
@@ -87,16 +87,16 @@ WITH tbl_cte_transaction AS
         FROM {{ source('prices', 'usd') }} p
         WHERE 1=1
             AND blockchain = 'ethereum'
-            AND p.contract_address IN ( SELECT DISTINCT price_label FROM tbl_cte_transaction) 
+            AND p.contract_address IN ( SELECT DISTINCT price_label FROM tbl_cte_transaction)
             {% if is_incremental() %}
             AND minute >= date_trunc('day', now() - interval '7' day)
             {% endif %}
             {% if not is_incremental() %}
-            AND minute >= TIMESTAMP '{{zeroex_v4_nft_start_date}}' 
+            AND minute >= TIMESTAMP '{{zeroex_v4_nft_start_date}}'
             {% endif %}
     ) a
-    WHERE ranker = 1 
-) 
+    WHERE ranker = 1
+)
 , tbl_master AS
 (
 SELECT a.evt_block_time                                      AS block_time
@@ -125,7 +125,7 @@ FROM tbl_cte_transaction AS a
 LEFT JOIN tbl_usd AS b
     ON date_trunc('minute', a.evt_block_time) = b.minute
     AND a.price_label = b.contract_address
-LEFT JOIN {{ ref('tokens_nft') }} AS c
+LEFT JOIN {{ source('tokens', 'nft') }} AS c
     ON nft_address = c.contract_address
     AND c.blockchain = 'ethereum'
 )
