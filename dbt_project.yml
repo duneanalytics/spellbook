@@ -113,16 +113,6 @@ models:
       celo:
         +schema: uniswap_celo
 
-    syndicate:
-      +schema: syndicate
-      ethereum:
-        +schema: syndicate_ethereum
-      polygon:
-        +schema: syndicate_polygon
-
-    abi:
-      +schema: abi
-
     gas:
       +schema: gas
       ethereum:
