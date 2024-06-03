@@ -45,7 +45,7 @@ with
             , meta.account_mint
             , meta.call_block_time
             , master.account_edition as master_edition
-            , executing_account as metadata_program
+            , metadata_program
             , row_number() over (partition by meta.account_mint order by meta.call_block_time desc) as latest
         FROM (
             SELECT 
@@ -57,7 +57,7 @@ with
                 , json_query(createMetadataAccountArgs, 'lax $.CreateMetadataAccountArgs.data.Data') as args
                 , account_metadata
                 , account_mint
-                , executing_account as metadata_program
+                , call_executing_account as metadata_program
             FROM  {{ source('mpl_token_metadata_solana', 'mpl_token_metadata_call_CreateMetadataAccount') }}
             UNION ALL 
             SELECT 
@@ -69,7 +69,7 @@ with
                 , json_query(createMetadataAccountArgsV2, 'lax $.CreateMetadataAccountArgsV2.data.DataV2') as args
                 , account_metadata
                 , account_mint
-                , executing_account as metadata_program
+                , call_executing_account as metadata_program
             FROM {{ source('mpl_token_metadata_solana', 'mpl_token_metadata_call_CreateMetadataAccountV2') }}
             UNION ALL 
             SELECT  
@@ -81,7 +81,7 @@ with
                 , json_query(createMetadataAccountArgsV3, 'lax $.CreateMetadataAccountArgsV3.data.DataV2') as args
                 , account_metadata
                 , account_mint
-                , executing_account as metadata_program
+                , call_executing_account as metadata_program
             FROM {{ source('mpl_token_metadata_solana', 'mpl_token_metadata_call_CreateMetadataAccountV3') }} 
         ) meta 
         LEFT JOIN (

@@ -19,6 +19,8 @@ models:
         description: "token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible a token can be"
+      - name: metadata_program
+        description: program used for creating token metadata
       - name: token_version
         description: version of the token program used (spl_token, token2022)
       - name: created_at
