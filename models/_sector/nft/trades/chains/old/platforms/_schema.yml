@@ -2,18 +2,6 @@ version: 2
 
 models:
 
-  - name: element_avalanche_c_events
-    meta:
-      blockchain: avalanche_c
-      project: element
-      contributors: hildobby
-    config:
-      tags: [ 'avalanche_c','element','events' ]
-    description: >
-      Element events on Avalanche
-    tests:
-      - check_columns_nft_old_events
-
   - name: mooar_polygon_events
     meta:
       blockchain: polygon

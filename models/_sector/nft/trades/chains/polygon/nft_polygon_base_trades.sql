@@ -12,10 +12,13 @@
     ,ref('decentraland_polygon_base_trades')
     ,ref('element_polygon_base_trades')
     ,ref('fractal_polygon_base_trades')
+    ,ref('opensea_v2_polygon_base_trades')
     ,ref('rarible_polygon_base_trades')
     ,ref('tofu_polygon_base_trades')
     ,ref('magiceden_polygon_base_trades')
     ,ref('magiceden_v2_polygon_base_trades')
+    ,ref('opensea_v3_polygon_base_trades')
+    ,ref('opensea_v4_polygon_base_trades')
 ] %}
 
 with base_union as (
