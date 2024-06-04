@@ -35,7 +35,6 @@ with
                 ('OpenBookV2','opnb2LAfJYbRMAHHvqjCwQxanZn7ReEHp1k81EohpZb'),
                 ('Meteora', 'Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB'),
                 ('Meteora', 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'),
-                ('Openbook', 'srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX'),
                 ('Mercurial', 'MERLuDFBMmsHnsBPZw2sDQZHvXFMwp8EdjudcU2HKky'),
                 ('FluxBeam', 'FLUXubRmkEi2q6K3Y9kBPg9248ggaZVsoSFhtJHSrm1X'),
                 ('Raydium CLMM', 'CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK'),
