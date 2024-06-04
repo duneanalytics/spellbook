@@ -114,6 +114,9 @@ with
         WHERE executing_account = 'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
         AND bytearray_substring(data,1,1) = 0xd2 --deal with updateField later 0xdd
         AND tx_success
+        {% if is_incremental() %}
+        AND block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
     )
 
     , token_metadata_other as (
@@ -137,6 +140,9 @@ with
         WHERE executing_account = 'META4s4fSmpkTbZoUsgC1oBnWB31vQcmnN8giPw51Zu'
         AND bytearray_substring(data,1,1) = 0x21
         AND tx_success
+        {% if is_incremental() %}
+        AND block_time >= date_trunc('day', now() - interval '7' day)
+        {% endif %}
     )
 
 SELECT
