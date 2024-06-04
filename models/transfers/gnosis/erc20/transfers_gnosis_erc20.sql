@@ -55,7 +55,7 @@ erc20_transfers  as (
             evt_index, 
             evt_block_time,
             dst as wallet_address, 
-            src as counterparty,
+            NULL as counterparty,
             contract_address as token_address, 
             TRY_CAST(wad as INT256) as amount_raw
         FROM 
@@ -70,7 +70,7 @@ erc20_transfers  as (
             evt_index, 
             evt_block_time,
             src as wallet_address, 
-            dst as counterparty,
+            NULL as counterparty,
             contract_address as token_address, 
             -TRY_CAST(wad as INT256) as amount_raw
         FROM 
