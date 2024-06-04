@@ -5,6 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "sector",
@@ -33,7 +34,7 @@ WITH deposit_events AS (
     WHERE d.evt_block_time >= TIMESTAMP '2020-10-13' -- SHOULD BE 2020-10-14 BUT CHANGED TO 2020-10-13 TO TRIGGER TABLE RERUN
     {% endif %}
     {% if is_incremental() %}
-    WHERE d.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE  {{ incremental_predicate('d.evt_block_time') }}
     {% endif %}
     )
 
@@ -52,7 +53,7 @@ WITH deposit_events AS (
     AND t.block_time >= TIMESTAMP '2020-10-13' -- SHOULD BE 2020-10-14 BUT CHANGED TO 2020-10-13 TO TRIGGER TABLE RERUN
     {% endif %}
     {% if is_incremental() %}
-    AND t.block_time >= date_trunc('day', now() - interval '7' day)
+    AND  {{ incremental_predicate('t.block_time') }}
     {% endif %}
     )
 
@@ -82,7 +83,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} et ON et.block_number=d.bloc
     AND et.block_time >= TIMESTAMP '2020-10-13' -- SHOULD BE 2020-10-14 BUT CHANGED TO 2020-10-13 TO TRIGGER TABLE RERUN
     {% endif %}
     {% if is_incremental() %}
-    AND et.block_time >= date_trunc('day', now() - interval '7' day)
+    AND  {{ incremental_predicate('et.block_time') }}
     {% endif %}
 INNER JOIN traces ett ON ett.block_number=d.block_number
     AND ett.tx_hash=d.tx_hash
