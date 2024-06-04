@@ -96,6 +96,8 @@ voting_power_share,
 COALESCE(number_of_delegators,1) AS number_of_delegators,
 total_delegators
 FROM voting_power_delegators_data_revised
+GROUP BY block_time, tx_hash, evt_index, delegate, newBalance, previousBalance,
+power_diff,voting_power_change, total_voting_power, voting_power_share, total_delegators
 ), 
 
 OP_delegates_table AS
