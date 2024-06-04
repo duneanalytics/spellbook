@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='fm_reward_evt_transfer_daily',
     partition_by=['date_month'],
     materialized='incremental',
@@ -10,7 +10,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 SELECT
   'ethereum' as blockchain,
@@ -23,8 +22,8 @@ FROM
   {{ref('chainlink_ethereum_fm_reward_evt_transfer')}} fm_reward_evt_transfer
   LEFT JOIN {{ ref('chainlink_ethereum_ocr_operator_admin_meta') }} fm_operator_admin_meta ON fm_operator_admin_meta.admin_address = fm_reward_evt_transfer.admin_address
 {% if is_incremental() %}
-  WHERE evt_block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-{% endif %}      
+  WHERE {{ incremental_predicate('evt_block_time') }}
+{% endif %}
 GROUP BY
   2, 4
 ORDER BY
