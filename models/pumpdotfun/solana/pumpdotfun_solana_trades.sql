@@ -38,7 +38,7 @@ with
             , outer_instruction_index
             , inner_instruction_index
             , outer_executing_account
-        FROM solana.instruction_calls
+        FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P'
         AND bytearray_substring(data,1,16) = 0xe445a52e51cb9a1dbddb7fd34ee661ee --SwapEvent 
         and tx_success = true
@@ -107,8 +107,8 @@ with
             , null as token_bought_vault
             , null as token_sold_vault
         FROM swaps sp
-        LEFT JOIN tokens_solana.fungible tk ON tk.token_mint_address = sp.token_mint_address
-        LEFT JOIN tokens_solana.fungible tk_sol ON tk_sol.token_mint_address = 'So11111111111111111111111111111111111111112'
+        LEFT JOIN {{ ref('tokens_solana_fungible') }} tk ON tk.token_mint_address = sp.token_mint_address
+        LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_sol ON tk_sol.token_mint_address = 'So11111111111111111111111111111111111111112'
     )
     
 SELECT    
