@@ -1,16 +1,16 @@
 {{
   config(
-    
+
     alias='automation_performed_daily',
     partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['date_start', 'keeper_address']
+    unique_key=['date_start', 'keeper_address'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.date_month')]
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 SELECT
   'ethereum' as blockchain,
@@ -22,8 +22,8 @@ SELECT
 FROM
   {{ref('chainlink_ethereum_automation_performed')}} automation_performed
 {% if is_incremental() %}
-  WHERE evt_block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-{% endif %}      
+  WHERE {{ incremental_predicate('evt_block_time') }}
+{% endif %}
 GROUP BY
   2, 4
 ORDER BY

@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='ocr_reward_evt_transfer_daily',
     partition_by=['date_month'],
     materialized='incremental',
@@ -14,7 +14,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 SELECT
   'gnosis' as blockchain,
@@ -27,8 +26,8 @@ FROM
   {{ref('chainlink_gnosis_ocr_reward_evt_transfer')}} ocr_reward_evt_transfer
   LEFT JOIN {{ ref('chainlink_gnosis_ocr_operator_admin_meta') }} ocr_operator_admin_meta ON ocr_operator_admin_meta.admin_address = ocr_reward_evt_transfer.admin_address
 {% if is_incremental() %}
-  WHERE evt_block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-{% endif %}      
+  WHERE {{ incremental_predicate('evt_block_time') }}
+{% endif %}
 GROUP BY
   2, 4
 ORDER BY
