@@ -76,6 +76,9 @@ orders as (
         from {{ ref('oneinch_lop') }}
         where call_success
     )
+    {% if is_incremental() %}
+        where {{ incremental_predicate('block_time') }}
+    {% endif %}
 )
 
 , prices as (
