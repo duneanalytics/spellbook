@@ -92,7 +92,7 @@ with
                 end as token_sold_amount
             , sp.sol_amount*0.01 as sol_fee_raw
             , sp.sol_amount/pow(10,tk_sol.decimals)*0.01 as sol_fee
-            , null as pool_id
+            , cast(null as varchar) as pool_id
             , sp.sol_reserves as sol_reserves_raw
             , sp.sol_reserves/pow(10,tk_sol.decimals) as sol_reserves
             , sp.token_reserves as token_reserves_raw
@@ -103,8 +103,8 @@ with
             , sp.inner_instruction_index
             , sp.tx_index
             , sp.block_slot
-            , null as token_bought_vault
-            , null as token_sold_vault
+            , cast(null as varchar) as token_bought_vault
+            , cast(null as varchar) as token_sold_vault
         FROM swaps sp
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tk ON tk.token_mint_address = sp.token_mint_address
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_sol ON tk_sol.token_mint_address = 'So11111111111111111111111111111111111111112'
