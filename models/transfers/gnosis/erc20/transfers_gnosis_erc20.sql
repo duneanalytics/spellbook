@@ -24,6 +24,7 @@ erc20_transfers  as (
             evt_index, 
             evt_block_time,
             to as wallet_address, 
+            "from" AS counterparty,
             contract_address as token_address,
             TRY_CAST(value as INT256) as amount_raw
         FROM 
@@ -38,6 +39,7 @@ erc20_transfers  as (
             evt_index, 
             evt_block_time,
             "from" as wallet_address, 
+            to AS counterparty,
             contract_address as token_address,
             -TRY_CAST(value as INT256) as amount_raw
         FROM 
@@ -53,6 +55,7 @@ erc20_transfers  as (
             evt_index, 
             evt_block_time,
             dst as wallet_address, 
+            src as counterparty,
             contract_address as token_address, 
             TRY_CAST(wad as INT256) as amount_raw
         FROM 
@@ -67,6 +70,7 @@ erc20_transfers  as (
             evt_index, 
             evt_block_time,
             src as wallet_address, 
+            dst as counterparty,
             contract_address as token_address, 
             -TRY_CAST(wad as INT256) as amount_raw
         FROM 
@@ -83,6 +87,7 @@ SELECT
     evt_block_time,
     CAST(date_trunc('month', evt_block_time) as date) as block_month,
     wallet_address, 
+    counterparty,
     token_address, 
     amount_raw
 FROM 

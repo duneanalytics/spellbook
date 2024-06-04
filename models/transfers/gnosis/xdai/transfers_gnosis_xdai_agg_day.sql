@@ -5,7 +5,7 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key = ['day', 'wallet_address', 'token_address']
+        unique_key = ['day', 'wallet_address', 'counterparty', 'token_address']
         )
 }}
 
@@ -14,6 +14,7 @@ select
     CAST(date_trunc('day', tr.block_time) as date) as day,
     block_month,
     tr.wallet_address,
+    tr.counterparty,
     tr.token_address,
     'xDAI' as symbol,
     sum(tr.amount_raw) as amount_raw,
@@ -24,4 +25,4 @@ FROM
 -- this filter will only be applied on an incremental run
 WHERE tr.block_time >= date_trunc('day', now() - interval '3' Day)
 {% endif %}
-GROUP BY 1, 2, 3, 4, 5, 6
+GROUP BY 1, 2, 3, 4, 5, 6, 7
