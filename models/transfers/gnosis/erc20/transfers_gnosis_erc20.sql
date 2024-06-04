@@ -104,6 +104,7 @@ SELECT
     evt_block_time,
     CAST(date_trunc('month', evt_block_time) as date) as block_month,
     wallet_address, 
+    counterparty,
     token_address, 
     amount_raw
 FROM 
