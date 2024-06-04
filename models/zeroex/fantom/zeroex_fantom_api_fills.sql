@@ -1,12 +1,13 @@
 {{  config(
-        
+
         alias = 'api_fills',
         materialized='incremental',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge'
+        incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
@@ -29,11 +30,11 @@ WITH zeroex_tx AS (
         FROM {{ source('fantom', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
-                0x61935cbdd02287b511119ddb11aeb42f1593b7ef, 
+                0x61935cbdd02287b511119ddb11aeb42f1593b7ef,
                 -- forwarder addresses
                 0x6958f5e95332d93d21af0d7b9ca85b8212fee0a5,
                 0x4aa817c6f383c8e8ae77301d18ce48efb16fd2be,
-                0x4ef40d1bf0983899892946830abf99eca2dbc5ce, 
+                0x4ef40d1bf0983899892946830abf99eca2dbc5ce,
                 -- exchange proxy
                 0xdef189deaef76e379df891899eb5a00a94cbc250
                 )
@@ -41,9 +42,9 @@ WITH zeroex_tx AS (
                     bytearray_position(INPUT, 0x869584cd ) <> 0
                     OR bytearray_position(INPUT, 0xfbc019a7 ) <> 0
                 )
-                
+
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '7' day)
+                AND {{ incremental_predicate('block_time') }}
                 {% endif %}
                 {% if not is_incremental() %}
                 AND block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
@@ -54,7 +55,7 @@ WITH zeroex_tx AS (
 ),
 /*
 v4_rfq_fills_no_bridge AS (
-    SELECT 
+    SELECT
             fills.evt_tx_hash               AS tx_hash,
             fills.evt_index,
             fills.contract_address,
@@ -73,14 +74,14 @@ v4_rfq_fills_no_bridge AS (
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
 v4_limit_fills_no_bridge AS (
-    SELECT 
+    SELECT
             fills.evt_tx_hash AS tx_hash,
             fills.evt_index,
             fills.contract_address,
@@ -99,14 +100,14 @@ v4_limit_fills_no_bridge AS (
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
     {% endif %}
 ),
 otc_fills AS (
-    SELECT 
+    SELECT
             fills.evt_tx_hash               AS tx_hash,
             fills.evt_index,
             fills.contract_address,
@@ -125,7 +126,7 @@ otc_fills AS (
     LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
@@ -134,7 +135,7 @@ otc_fills AS (
 ),
 */
 ERC20BridgeTransfer AS (
-    SELECT 
+    SELECT
             logs.tx_hash,
             logs.block_number                      AS block_number,
             INDEX                                   AS evt_index,
@@ -153,17 +154,17 @@ ERC20BridgeTransfer AS (
     FROM {{ source('fantom', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
-    
+
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('block_time') }}
     {% endif %}
     {% if not is_incremental() %}
     AND block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
     {% endif %}
 
-), 
+),
 BridgeFill AS (
-    SELECT 
+    SELECT
             logs.tx_hash,
             logs.block_number                      AS block_number,
             INDEX                                           AS evt_index,
@@ -185,14 +186,14 @@ BridgeFill AS (
         AND contract_address = 0xb4d961671cadfed687e040b076eee29840c142e5
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not is_incremental() %}
         AND block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
         {% endif %}
-), 
+),
 NewBridgeFill AS (
-    SELECT 
+    SELECT
             logs.tx_hash as tx_hash,
             logs.block_number                      AS block_number,
             INDEX                                           AS evt_index,
@@ -214,7 +215,7 @@ NewBridgeFill AS (
         AND contract_address = 0xb4d961671cadfed687e040b076eee29840c142e5
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not is_incremental() %}
         AND block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
@@ -222,7 +223,7 @@ NewBridgeFill AS (
 ),
 /*
 direct_PLP AS (
-    SELECT 
+    SELECT
             plp.evt_tx_hash,
             plp.evt_index               AS evt_index,
             plp.contract_address,
@@ -241,27 +242,27 @@ direct_PLP AS (
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
     {% endif %}
-), 
+),
  */
 all_tx AS (
-    
+
     SELECT *
     FROM ERC20BridgeTransfer
     UNION ALL SELECT *
     FROM BridgeFill
-    UNION ALL 
+    UNION ALL
     SELECT *
-    FROM NewBridgeFill 
-    
-    
+    FROM NewBridgeFill
+
+
 )
 
-SELECT 
+SELECT
         all_tx.tx_hash,
         all_tx.block_number,
         all_tx.evt_index,
@@ -291,10 +292,10 @@ SELECT
                 ,0x049d68029688eabf473097a2fc38ef61633a3c7a,0x321162cd933e2be498cd2267a90534a804051b11,0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e) AND  mp.price IS NOT NULL
              THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
              WHEN taker_token IN (0x04068da6c83afcfa0e13ba15a6696662335d5b75,0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83,0x74b23882a30290451a17c44f4f05243b6b58c76d,
-                0x049d68029688eabf473097a2fc38ef61633a3c7a, 0x321162cd933e2be498cd2267a90534a804051b11,0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e)  AND  tp.price IS NOT NULL   
+                0x049d68029688eabf473097a2fc38ef61633a3c7a, 0x321162cd933e2be498cd2267a90534a804051b11,0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e)  AND  tp.price IS NOT NULL
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
-             END AS volume_usd, 
+             END AS volume_usd,
         tx."from" AS tx_from,
         tx.to AS tx_to,
         'fantom' AS blockchain
@@ -302,7 +303,7 @@ FROM all_tx
 INNER JOIN {{ source('fantom', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
 {% if is_incremental() %}
-AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('tx.block_time') }}
 {% endif %}
 {% if not is_incremental() %}
 AND tx.block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
@@ -316,7 +317,7 @@ AND CASE
 AND tp.blockchain = 'fantom'
 
 {% if is_incremental() %}
-AND tp.minute >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('tp.minute') }}
 {% endif %}
 {% if not is_incremental() %}
 AND tp.minute >= TIMESTAMP '{{zeroex_v3_start_date}}'
@@ -330,7 +331,7 @@ AND CASE
 AND mp.blockchain = 'fantom'
 
 {% if is_incremental() %}
-AND mp.minute >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('mp.minute') }}
 {% endif %}
 {% if not is_incremental() %}
 AND mp.minute >= TIMESTAMP '{{zeroex_v3_start_date}}'

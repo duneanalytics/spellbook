@@ -1,5 +1,5 @@
 {{ config(
-    
+
     schema = 'staking_ethereum',
     alias = 'deposits',
     materialized = 'incremental',
@@ -36,7 +36,7 @@ WITH deposit_events AS (
     WHERE d.evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     )
-    
+
 , traces AS (
     SELECT t.block_number
     , t.tx_hash AS tx_hash
@@ -55,7 +55,7 @@ WITH deposit_events AS (
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
     )
-    
+
 SELECT distinct d.block_time
 , d.block_number
 , d.amount AS amount_staked
@@ -100,4 +100,3 @@ LEFT JOIN {{ ref('staking_ethereum_entities')}} etes
     OR (etes.pubkey IS NOT NULL AND d.pubkey=etes.pubkey)
     OR (etes.withdrawal_credentials IS NOT NULL AND d.withdrawal_credentials=etes.withdrawal_credentials))
     AND etes.sub_entity IS NOT NULL
-    

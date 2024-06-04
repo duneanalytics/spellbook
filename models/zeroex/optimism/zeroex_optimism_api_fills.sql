@@ -1,15 +1,16 @@
 {{  config(
          schema = 'zeroex_optimism',
-        
+
         alias = 'api_fills',
-        materialized='incremental',                                      
+        materialized='incremental',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge'
+        incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
-}} 
+}}
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
 
@@ -43,9 +44,9 @@ WITH zeroex_tx AS (
                     bytearray_position(INPUT, 0x869584cd ) <> 0
                     OR bytearray_position(INPUT, 0xfbc019a7 ) <> 0
                 )
-                
+
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '7' day) 
+                AND {{ incremental_predicate('block_time') }}
                 {% endif %}
                 {% if not is_incremental() %}
                 AND block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
@@ -56,7 +57,7 @@ WITH zeroex_tx AS (
 ),
 
 v4_rfq_fills_no_bridge AS (
-    SELECT 
+    SELECT
             fills.evt_tx_hash               AS tx_hash,
             fills.evt_index,
             fills.contract_address,
@@ -74,14 +75,14 @@ v4_rfq_fills_no_bridge AS (
     FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= cast('{{zeroex_v4_start_date}}' as date)
     {% endif %}
 ),
 v4_limit_fills_no_bridge AS (
-    SELECT 
+    SELECT
             fills.evt_tx_hash AS tx_hash,
             fills.evt_index,
             fills.contract_address,
@@ -95,18 +96,18 @@ v4_limit_fills_no_bridge AS (
             'LimitOrderFilled' AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipient) AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            (fills.feeRecipient in 
+            (fills.feeRecipient in
                 (0x9b858be6e3047d88820f439b240deac2418a2551,
                 0x86003b044f70dac0abc80ac8957305b6370893ed,
-                0x5bc2419a087666148bfbe1361ae6c06d240c6131)) 
-                AS matcha_limit_order_flag 
+                0x5bc2419a087666148bfbe1361ae6c06d240c6131))
+                AS matcha_limit_order_flag
     FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
 
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
 
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= cast('{{zeroex_v4_start_date}}' as date)
@@ -116,7 +117,7 @@ v4_limit_fills_no_bridge AS (
 
 
 otc_fills AS (
-    SELECT 
+    SELECT
             fills.evt_tx_hash               AS tx_hash,
             fills.evt_index,
             fills.contract_address,
@@ -137,7 +138,7 @@ otc_fills AS (
 
 
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
     {% if not is_incremental() %}
     WHERE evt_block_time >= cast('{{zeroex_v4_start_date}}' as date)
@@ -147,7 +148,7 @@ otc_fills AS (
 
 
 ERC20BridgeTransfer AS (
-    SELECT 
+    SELECT
             logs.tx_hash,
             INDEX                                   AS evt_index,
             logs.contract_address,
@@ -167,7 +168,7 @@ ERC20BridgeTransfer AS (
     WHERE topic0 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
 
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('block_time') }}
     {% endif %}
     {% if not is_incremental() %}
     AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
@@ -199,7 +200,7 @@ NewBridgeFill AS (
         AND contract_address = 0xa3128d9b7cca7d5af29780a56abeec12b05a6740
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not is_incremental() %}
         AND block_time >= cast('{{zeroex_v4_start_date}}' as date)
@@ -208,22 +209,22 @@ NewBridgeFill AS (
 
 all_tx AS (
     SELECT *
-    FROM NewBridgeFill 
+    FROM NewBridgeFill
     UNION ALL
     SELECT *
     FROM ERC20BridgeTransfer
-    UNION ALL 
+    UNION ALL
     SELECT *
     FROM v4_rfq_fills_no_bridge
-    UNION ALL 
+    UNION ALL
     SELECT *
     FROM v4_limit_fills_no_bridge
-    UNION ALL 
+    UNION ALL
     SELECT *
-    FROM otc_fills   
+    FROM otc_fills
 )
 
-SELECT 
+SELECT
         all_tx.tx_hash,
         tx.block_number,
         all_tx.evt_index,
@@ -257,14 +258,14 @@ SELECT
                 0x4200000000000000000000000000000000000042,0x94b008aa00579c1307b0ef2c499ad98a8ce58e58, 0x8c6f28f2f1a3c87f0f938b96d27520d9751ec8d9)    AND  tp.price IS NOT NULL
              THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
              ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
-             END AS volume_usd, 
+             END AS volume_usd,
         tx."from" AS tx_from,
         tx.to AS tx_to,
         'optimism' AS blockchain
 FROM all_tx
 INNER JOIN {{ source('optimism', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 {% if is_incremental() %}
-AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('tx.block_time') }}
 {% endif %}
 {% if not is_incremental() %}
 AND tx.block_time >= cast('{{zeroex_v3_start_date}}' as date)
@@ -278,7 +279,7 @@ AND CASE
 AND tp.blockchain = 'optimism'
 
 {% if is_incremental() %}
-AND tp.minute >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('tp.minute') }}
 {% endif %}
 {% if not is_incremental() %}
 AND tp.minute >= cast('{{zeroex_v3_start_date}}' as date)
@@ -292,7 +293,7 @@ AND CASE
 AND mp.blockchain = 'optimism'
 
 {% if is_incremental() %}
-AND mp.minute >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('mp.minute') }}
 {% endif %}
 {% if not is_incremental() %}
 AND mp.minute >= cast('{{zeroex_v3_start_date}}' as date)
