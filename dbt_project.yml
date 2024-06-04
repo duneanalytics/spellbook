@@ -71,6 +71,19 @@ models:
       optimism:
         +schema: aave_optimism
 
+    balancer:
+      +schema: balancer
+      arbitrum:
+        +schema: balancer_arbitrum
+      ethereum:
+        +schema: balancer_ethereum
+      polygon:
+        +schema: balancer_polygon
+      optimism:
+        +schema: balancer_optimism
+      gnosis:
+        +schema: balancer_gnosis
+
     ens:
       +schema: ens
       ethereum:
