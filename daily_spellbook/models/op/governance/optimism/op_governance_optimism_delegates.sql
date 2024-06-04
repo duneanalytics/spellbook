@@ -1,7 +1,7 @@
 {{ config(
      schema = 'op_governance_optimism'
         , alias = 'delegates'
-        , tags=['prod_exclude'] -- Due to duplicates
+        , tags=['prod_exclude']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "op_governance",
