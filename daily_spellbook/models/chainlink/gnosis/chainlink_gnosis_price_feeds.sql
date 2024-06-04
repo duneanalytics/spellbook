@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='price_feeds',
     partition_by=['block_month'],
     materialized='incremental',
@@ -14,7 +14,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 {% set project_start_date = '2019-10-01' %}
 
 SELECT 'gnosis' as blockchain,
@@ -27,11 +26,11 @@ SELECT 'gnosis' as blockchain,
        c.proxy_address,
        c.aggregator_address,
        c.oracle_price / POWER(10, 0) as underlying_token_price,
-       CASE 
+       CASE
            WHEN cardinality(split(c.feed_name, ' / ')) = 1 THEN c.feed_name
            ELSE element_at(split(c.feed_name, ' / '), 1)
        END AS base,
-       CASE 
+       CASE
            WHEN cardinality(split(c.feed_name, ' / ')) = 1 THEN NULL
            ELSE element_at(split(c.feed_name, ' / '), 2)
        END AS quote
@@ -39,14 +38,14 @@ FROM
 (
     SELECT
         l.block_time,
-        cast(date_trunc('day', l.block_time) as date) as block_date, 
-        cast(date_trunc('month', l.block_time) as date) as block_month, 
+        cast(date_trunc('day', l.block_time) as date) as block_date,
+        cast(date_trunc('month', l.block_time) as date) as block_month,
         l.block_number,
         cfa.feed_name,
         cfa.proxy_address,
         MAX(cfa.aggregator_address) as aggregator_address,
         AVG(
-           CAST(bytearray_to_uint256(bytearray_substring(l.topic1, 3, 64)) as DOUBLE) 
+           CAST(bytearray_to_uint256(bytearray_substring(l.topic1, 3, 64)) as DOUBLE)
            / POWER(10, cfa.decimals)
         ) as oracle_price
     FROM
@@ -56,10 +55,10 @@ FROM
     WHERE
         l.topic0 = 0x0559884fd3a460db3073b7fc896cc77986f16e378210ded43186175bf646fc5f
         {% if not is_incremental() %}
-        AND l.block_time >= cast('{{project_start_date}}' as date) 
+        AND l.block_time >= cast('{{project_start_date}}' as date)
         {% endif %}
         {% if is_incremental() %}
-        AND l.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND {{ incremental_predicate('l.block_time') }}
         {% endif %}
     GROUP BY
         1, 2, 3, 4, 5, 6
