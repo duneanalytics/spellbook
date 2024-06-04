@@ -99,6 +99,8 @@ models:
         description: slot number of the transaction
       - name: block_time
         description: block time of the transaction
+      - name: block_month
+        description: block month of the transaction
       - name: tx_signer
         description: signer of the transactions
       - name: jup_version
