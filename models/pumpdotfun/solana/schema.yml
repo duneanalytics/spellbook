@@ -73,7 +73,7 @@ models:
       - &sol_reserves
         name: sol_reserves
         description: "sol reserves after swap"
-      - &token_reserves_raw
+      - &token_reserves
         name: token_reserves
         description: "token reserves after swap"
       - &fee_tier
