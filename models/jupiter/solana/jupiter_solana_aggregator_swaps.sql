@@ -18,6 +18,7 @@ with
         SELECT
         *
         FROM (
+            --use this api https://station.jup.ag/api-v6/get-program-id-to-label
             values
                 ('Invariant', 'HyaB3W9q6XdA5xwpU4XnSZV94htfmbmqJXZcEbRaJutt'),
                 ('Saber (Decimals)', 'DecZY86MU5Gj7kppfUCEmd4LbXXuyZH1yHaP2NTqdiZB'),
@@ -28,18 +29,23 @@ with
                 ('Sanctum', 'stkitrT1Uoy18Dk1fTrgPw8W6MVzoCfYoAFT4MLsmhq'),
                 ('Jupiter LO', 'jupoNjAxXgZ4rjzxzPMP4oxduvQsQtZzyknqvzYNrNu'),
                 ('Orca V2', '9W959DqEETiGZocYWCQPaJ6sBmUzgfxXfqGeTEdp3aQP'),
+                ('Dexlab', 'DSwpgjMvXhtGn6BsbqmacdBZyfLj6jSWf3HJpdJtmg6N'),
+                ('Clone', 'C1onEW2kPetmHmwe74YC1ESx3LnFEpVau6g2pg4fHycr'),
+                ('OpenBook','srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX'),
+                ('OpenBookV2','opnb2LAfJYbRMAHHvqjCwQxanZn7ReEHp1k81EohpZb'),
                 ('Meteora', 'Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB'),
                 ('Meteora', 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo'),
                 ('Openbook', 'srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX'),
                 ('Mercurial', 'MERLuDFBMmsHnsBPZw2sDQZHvXFMwp8EdjudcU2HKky'),
                 ('FluxBeam', 'FLUXubRmkEi2q6K3Y9kBPg9248ggaZVsoSFhtJHSrm1X'),
                 ('Raydium CLMM', 'CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK'),
+                ('Raydium CP', 'CPMMoo8L3F4NbTegBCKVNunggL7H1ZpdTHKxQB5qKP1C'),
                 ('Aldrin', 'AMM55ShdkoGRB5jVYPjWziwk8m5MpwyDgsMWHaMSQWH6'),
                 ('Orca (Whirlpool)', 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc'),
                 ('Orca V1', 'DjVE6JNiYqPL2QXyCUUh8rNjHrbz9hXHNYt99MQ59qw1'),
                 ('Crema', 'CLMM9tUoggJu2wagPkkqs9eFG4BWhVBZWkP1qv3Sp7tR'),
                 ('Helium Network', 'treaf4wWBBty3fHdyBpo35Mz84M8k3heKXmjmi9vFt5'),
-                ('Cropper', 'CTMAxxk34HjKWxQ3QLZK1HpaLXmBveao3ESePXbiyfzh'),
+                ('Cropper Legacy', 'CTMAxxk34HjKWxQ3QLZK1HpaLXmBveao3ESePXbiyfzh'),
                 ('Saros', 'SSwapUtytfBdBn1b9NUGG6foMVPtcWgpRU32HToDUZr'),
                 ('Oasis', '9tKE7Mbmj4mxDjWatikzGAtkoWosiiZX9y6J4Hfm2R8H'),
                 ('Symmetry', '2KehYt3KsEQR53jYcxjbQp2d2kCp4AkuQW68atufRwSr'),
@@ -51,7 +57,11 @@ with
                 ('Bonkswap', 'BSwp6bEBihVLdqJRKGgzjcGLHkcTuzmSo1TQkHepzH8p'),
                 ('Serum v3', '9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin'),
                 ('Lifinity v2', '2wT8Yq49kHgDzXuPxZSaeLaH1qbmGXtEyPy64bL7aD3c'),
-                ('GooseFX SSL v2', 'GFXsSL5sSaDfNFQUYsHekbWBW1TsFdjDYzACh62tEHxn')
+                ('GooseFX SSL v2', 'GFXsSL5sSaDfNFQUYsHekbWBW1TsFdjDYzACh62tEHxn'),
+                ('Cropper', 'H8W3ctz92svYg6mkn1UtGfu2aQr2fnUFHM1RhScEtQDt'),
+                ('Sanctum Infinity', '5ocnV1qiCgaQR8Jb8xWnVbApfaygJ8tNoZfgPwsgx9kx'),
+                ('Token Swap', 'SwaPpA9LAaLfeLi3a68M4DjnLqgtticKg6CnyNwgAC8'),
+                ('Jupiter Perps', 'PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu')
             ) as v(amm_name, amm)
     )
     
