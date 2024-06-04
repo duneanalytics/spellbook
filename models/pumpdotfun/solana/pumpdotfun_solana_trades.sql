@@ -1,6 +1,5 @@
  {{
   config(
-        
         schema = 'pumpdotfun_solana',
         alias = 'trades',
         partition_by = ['block_month'],
