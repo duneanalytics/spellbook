@@ -5,6 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['unique_trade_id']
     )
 }}
@@ -34,7 +35,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p
   AND p.blockchain is null
   AND p.symbol = 'SOL'
   {% if is_incremental() %}
-  AND p.minute >= date_trunc('day', now() - interval '7' day)
+  AND {{ incremental_predicate('p.minute') }}
   {% endif %}
 WHERE (contains(account_keys, '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y')
        OR contains(account_keys, 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r'))
@@ -43,7 +44,7 @@ AND block_time > TIMESTAMP '2022-04-06'
 AND block_slot > 128251864
 {% endif %}
 {% if is_incremental() %}
-AND block_time >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('block_time') }}
 {% endif %}
 )
 
