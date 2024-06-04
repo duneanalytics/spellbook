@@ -92,6 +92,9 @@ models:
     dex:
       +schema: dex
 
+    pumpdotfun:
+      +schema: pumpdotfun
+
     airdrop:
       +schema: airdrop
       +materialized: table
