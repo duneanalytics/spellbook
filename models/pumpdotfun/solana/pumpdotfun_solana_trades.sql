@@ -146,7 +146,7 @@ SELECT
     , tb.inner_instruction_index
     , tb.tx_index
 FROM all_swaps tb
-LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_bought ON p_bought.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_bought.minute 
     AND token_bought_mint_address = toBase58(p_bought.contract_address)
     {% if is_incremental() %}
@@ -154,7 +154,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solan
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
+LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_sold ON p_sold.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_sold.minute 
     AND token_sold_mint_address = toBase58(p_sold.contract_address)
     {% if is_incremental() %}
