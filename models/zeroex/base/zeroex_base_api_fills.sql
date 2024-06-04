@@ -20,7 +20,7 @@
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
 
--- Test Query here: https://dune.com/queries/2755622  / https://dune.com/queries/2755822
+-- Test Query here: https://dune.com/queries/2834419
 
 WITH zeroex_tx AS (
     SELECT tx_hash,
