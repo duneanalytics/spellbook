@@ -1,11 +1,12 @@
 {{ config(
-    
+
     alias = 'donations',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['blockchain', 'tx_hash', 'evt_index'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "gitcoin",
@@ -31,7 +32,7 @@ WITH gitcoin_donations AS (
         ELSE gd.token
         END AS currency_contract
     , CASE WHEN gd.token = {{eth_contract}}
-        THEN 'MATIC' 
+        THEN 'MATIC'
         ELSE tok.symbol
         END AS currency_symbol
     , gd.evt_index
@@ -41,7 +42,7 @@ WITH gitcoin_donations AS (
     LEFT JOIN {{ source('tokens_polygon', 'erc20') }} tok
         ON tok.contract_address=gd.token
     {% if is_incremental() %}
-    WHERE gd.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('gd.evt_block_time') }}
     {% endif %}
     )
 
