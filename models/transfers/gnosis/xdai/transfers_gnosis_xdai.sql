@@ -21,6 +21,7 @@ xdai_transfers  as (
         block_time,
         block_number,
         COALESCE(to,address) as wallet_address, 
+        "from" as counterparty,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address,
         TRY_CAST(value as INT256) as amount_raw
     FROM 
@@ -42,6 +43,7 @@ xdai_transfers  as (
         block_time,
         block_number,
         "from" as wallet_address, 
+        COALESCE(to,address) as counterparty, 
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address,
         -TRY_CAST(value as INT256) as amount_raw
     FROM 
@@ -64,6 +66,7 @@ gas_fee as (
         block_time, 
         block_number,
         "from" as wallet_address, 
+        NULL AS counterparty,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         - TRY_CAST(gas_used as INT256) * TRY_CAST(gas_price as INT256) as amount_raw
     FROM 
@@ -81,6 +84,7 @@ gas_fee_rewards as (
         t1.block_time, 
         t1.block_number,
         t2.miner as wallet_address, 
+        NULL AS counterparty,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         IF(TRY_CAST(t1.gas_price as INT256) = 0,
             CAST(0 AS INT256),
@@ -107,6 +111,7 @@ block_reward AS (
         evt_block_time AS block_time,
         evt_block_number AS block_number, 
         receiver AS wallet_address,
+        NULL AS counterparty,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         TRY_CAST(amount as INT256) as amount_raw
     FROM 
@@ -124,6 +129,7 @@ block_reward AS (
         evt_block_time AS block_time,
         evt_block_number AS block_number, 
         receiver AS wallet_address,
+        NULL AS counterparty,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         TRY_CAST(amount as INT256) as amount_raw
     FROM 
@@ -142,6 +148,7 @@ SELECT
     block_number,
     CAST(date_trunc('month', block_time) as date) as block_month,
     wallet_address, 
+    counterparty,
     token_address, 
     amount_raw
 FROM 
@@ -158,7 +165,8 @@ SELECT
     block_time,
     block_number,
     CAST(date_trunc('month', block_time) as date) as block_month,
-    wallet_address, 
+    wallet_address,
+    counterparty, 
     token_address, 
     amount_raw
 FROM 
@@ -175,6 +183,7 @@ SELECT
     block_number,
     CAST(date_trunc('month', block_time) as date) as block_month,
     wallet_address, 
+    counterparty,
     token_address, 
     amount_raw
 FROM 
@@ -191,6 +200,7 @@ SELECT
     block_number,
     CAST(date_trunc('month', block_time) as date) as block_month,
     wallet_address, 
+    counterparty,
     token_address, 
     amount_raw
 FROM 
