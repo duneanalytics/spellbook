@@ -11,7 +11,7 @@
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
-                                    "pumpdotfun",
+                                    "pumpdotfun_solana",
                                     \'["ilemi"]\') }}')
 }}
 
