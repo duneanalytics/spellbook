@@ -44,7 +44,7 @@ with
         {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
         {% else %}
-        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+        AND block_time >= TIMESTAMP '{{project_start_date}}'
         -- and block_time >= now() - interval '7' day
         {% endif %}
         -- AND tx_id = '5782i58ZHCKSANgTi3WXL5vjFAWEVJuPMGAr6gjx2qqcRP6LLNRH2g6pb61tk44H7PC9ohFNCUKQVUAMd5vYeUns'
