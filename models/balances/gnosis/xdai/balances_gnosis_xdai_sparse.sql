@@ -12,9 +12,18 @@ WITH
 
 transfers_gnosis_xdai AS (
     SELECT
-        *
+        blockchain, 
+        tx_hash, 
+        block_time,
+        block_number,
+        block_month,
+        wallet_address,
+        token_address, 
+        SUM(amount_raw) AS amount_raw
     FROM
         {{ ref('transfers_gnosis_xdai') }}
+    GROUP BY    
+        1, 2, 3, 4, 5, 6, 7
 ),
 
 

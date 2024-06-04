@@ -12,7 +12,7 @@
 
 SELECT
     tr.blockchain,
-    date_trunc('day', tr.evt_block_time) as block_hour,
+    date_trunc('day', tr.evt_block_time) as block_day,
     tr.block_month,
     tr.wallet_address,
     tr.counterparty,
