@@ -79,12 +79,12 @@ WITH pool_labels AS (
     joins AS (
         SELECT 
             DATE_TRUNC('day', evt_block_time) AS block_date, 
-            tokenOut AS token,
+            tokenOut,
             pool_type,
             CASE WHEN pool_type IN ('weighted') 
             THEN 0
             ELSE SUM(amountOut / POWER(10, 18)) 
-            END AS amount
+            END AS ajoins
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} 
         LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
         WHERE tokenOut = BYTEARRAY_SUBSTRING(poolId, 1, 20)       
@@ -94,37 +94,25 @@ WITH pool_labels AS (
     exits AS (
         SELECT 
             DATE_TRUNC('day', evt_block_time) AS block_date, 
-            tokenIn AS token,
+            tokenIn,
             pool_type,
             CASE WHEN pool_type IN ('weighted') 
             THEN 0
-            ELSE SUM( -amountIn / POWER(10, 18)) 
-            END AS amount
+            ELSE SUM(amountIn / POWER(10, 18)) 
+            END AS aexits
         FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} 
         LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
         WHERE tokenIn = BYTEARRAY_SUBSTRING(poolId, 1, 20)        
         GROUP BY 1, 2, 3
     ),
 
-    joins_and_exits_1 AS (
-        SELECT 
-            *
-        FROM joins 
-        
-        UNION ALL
-        
-        SELECT 
-            *
-        FROM exits
-            ),
-
     joins_and_exits AS (
         SELECT 
-            block_date, 
-            token AS bpt, 
-            LEAD(block_date, 1, NOW()) OVER (PARTITION BY token ORDER BY block_date) AS day_of_next_change,
-            SUM(amount) OVER (PARTITION BY token ORDER BY block_date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS adelta
-        FROM joins_and_exits_1
+            j.block_date, 
+            j.tokenOut AS bpt, 
+            SUM(COALESCE(ajoins, 0) - COALESCE(aexits, 0)) OVER (PARTITION BY j.tokenOut ORDER BY j.block_date ASC) AS adelta
+        FROM joins j
+        FULL OUTER JOIN exits e ON j.block_date = e.block_date AND e.tokenIn = j.tokenOut
     ),
 
     calendar AS (
@@ -142,7 +130,7 @@ WITH pool_labels AS (
         COALESCE(SUM(b.supply - COALESCE(preminted_bpts, 0) + COALESCE(adelta, 0)),0) AS supply
     FROM calendar c 
     LEFT JOIN balances b ON b.day <= c.day AND c.day < b.day_of_next_change
-    LEFT JOIN joins_and_exits j ON j.block_date <= c.day AND c.day < j.day_of_next_change AND b.token = j.bpt
+    LEFT JOIN joins_and_exits j ON c.day = j.block_date AND b.token = j.bpt
     LEFT JOIN premints p ON b.token = p.bpt
     LEFT JOIN pool_labels l ON b.token = l.address
     WHERE l.pool_type IN ('weighted', 'LBP', 'investment', 'stable', 'linear', 'ECLP', 'managed', 'FX')
