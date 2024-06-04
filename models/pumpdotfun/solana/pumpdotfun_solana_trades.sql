@@ -145,7 +145,7 @@ SELECT
     , tb.outer_instruction_index
     , tb.inner_instruction_index
     , tb.tx_index
-FROM all_swaps tb
+FROM trades_base tb
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_bought ON p_bought.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_bought.minute 
     AND token_bought_mint_address = toBase58(p_bought.contract_address)
