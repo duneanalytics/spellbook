@@ -565,6 +565,7 @@ with source_ethereum_transactions as (
           ,t."from" as tx_from
           ,t.to as tx_to
           ,bytearray_reverse(bytearray_substring(bytearray_reverse(t.data),1,4)) as right_hash
+          ,bytearray_reverse(bytearray_substring(bytearray_reverse(t.data),1,32))  as tx_data_marker
           ,a.fee_wallet_name
   from iv_nfts a
   inner join source_ethereum_transactions t on t.hash = a.tx_hash
@@ -576,69 +577,48 @@ select
         -- basic info
          '{{blockchain}}' as blockchain
         ,'opensea' as project
-        ,'v3' as version
+        ,'v3' as project_version
 
         -- order info
         ,block_time
+        ,cast(date_trunc('day', block_time) as date) as block_date
+        ,cast(date_trunc('month', block_time) as date) as block_month
         ,seller
         ,buyer
         ,trade_type
-        ,order_type as trade_category -- Buy / Offer Accepted
-        ,'Trade' as evt_type
+        ,order_type as trade_category -- Buy / Sell
 
         -- nft token info
         ,nft_contract_address
-        ,nft_token_id as token_id
-        ,nft_token_amount as number_of_items
-        ,nft_token_standard as token_standard
+        ,nft_token_id as nft_token_id
+        ,nft_token_amount as nft_amount
 
         -- price info
-        ,price_amount_raw as amount_raw
+        ,price_amount_raw as price_raw
         ,case when token_contract_address = 0x0000000000000000000000000000000000000000 then {{native_currency_contract}}
          else token_contract_address end as currency_contract
 
         -- project info (platform or exchange)
         ,platform_contract_address as project_contract_address
-        ,platform_fee_receiver as platform_fee_receive_address
+        ,platform_fee_receiver as platform_fee_address
         ,platform_fee_amount_raw
 
         -- royalty info
-        ,creator_fee_receiver_1 as royalty_fee_receive_address
+        ,creator_fee_receiver_1 as royalty_fee_address
         ,creator_fee_amount_raw as royalty_fee_amount_raw
-        ,creator_fee_receiver_1 as royalty_fee_receive_address_1
-        ,creator_fee_receiver_2 as royalty_fee_receive_address_2
-        ,creator_fee_receiver_3 as royalty_fee_receive_address_3
-        ,creator_fee_receiver_4 as royalty_fee_receive_address_4
-        ,creator_fee_receiver_5 as royalty_fee_receive_address_5
-        ,creator_fee_amount_raw_1 as royalty_fee_amount_raw_1
-        ,creator_fee_amount_raw_2 as royalty_fee_amount_raw_2
-        ,creator_fee_amount_raw_3 as royalty_fee_amount_raw_3
-        ,creator_fee_amount_raw_4 as royalty_fee_amount_raw_4
-        ,creator_fee_amount_raw_5 as royalty_fee_amount_raw_5
 
         -- tx
         ,block_number
         ,tx_hash
-        ,evt_index
         ,tx_from
         ,tx_to
-        ,right_hash
+        ,tx_data_marker
 
         -- seaport etc
-        ,zone as zone_address
-        ,estimated_price
-        ,is_private
-        ,sub_idx
-        ,sub_type
+        , row_number() over (partition by tx_hash order by evt_index) as sub_tx_trade_id
+
+        ,right_hash
         ,fee_wallet_name
-        ,'seaport-' || CAST(tx_hash AS varchar) || '-' || cast(evt_index as varchar) || '-' || CAST(nft_contract_address AS varchar) || '-' || cast(nft_token_id as varchar) || '-' || cast(sub_type as varchar) || '-' || cast(sub_idx as varchar) as unique_trade_id
+        ,zone as zone_address
   from   iv_trades
--- where  ( zone in (0xf397619df7bfd4d1657ea9bdd9df7ff888731a11
---                                          ,0x9b814233894cd227f561b78cc65891aa55c62ad2
---                                          ,0x004c00500000ad104d7dbd00e3ae0a5c00560c00
---                                          ,0x110b2b128a9ed1be5ef3232d8e4e41640df5c2cd
---                                          ,0x000000e7ec00e7b300774b00001314b8610022b8 -- newly added on seaport v1.4
---                                          )
---         or  fee_wallet_name = 'opensea'
---        )
 {% endmacro %}
