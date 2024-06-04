@@ -8,6 +8,7 @@ select
   erc20.symbol,
   supply.token_address,
   supply.depositor,
+  supply.on_behalf_of,
   supply.withdrawn_to,
   supply.liquidator,
   supply.amount / power(10, coalesce(erc20.decimals, 18)) as amount,

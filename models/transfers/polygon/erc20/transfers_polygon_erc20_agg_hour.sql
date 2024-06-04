@@ -1,10 +1,11 @@
 {{ config(
-        
+
         alias = 'erc20_agg_hour',
         partition_by = ['block_month'],
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_hour')],
         unique_key = ['block_hour', 'wallet_address', 'token_address']
         )
 }}
