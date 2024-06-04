@@ -102,3 +102,47 @@ models:
       - *symbol
       - *amount_raw
       - *amount
+
+  - name: transfers_gnosis_xdai_rolling_hour
+    meta:
+      blockchain: gnosis
+      sector: transfers
+      project: xdai
+      contributors: hdser
+    description: "xdai Token Transfers on gnosis per hour."
+    config:
+      tags: ['transfers', 'gnosis', 'xdai', 'rolling_hour', 'hdser']
+    columns:
+      - *blockchain
+      - *hour
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - &updated_at
+        name: updated_at
+        description: "UTC timestamp when table was last updated"
+      - &recency_index
+        name: recency_index
+        description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+
+  - name: transfers_gnosis_xdai_rolling_day
+    meta:
+      blockchain: gnosis
+      sector: transfers
+      project: xdai
+      contributors: hdser
+    description: "xdai Token Transfers on gnosis per day."
+    config:
+      tags: ['transfers', 'gnosis', 'xdai', 'rolling_day', 'hdser']
+    columns:
+      - *blockchain
+      - *hour
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - *updated_at
+      - *recency_index
