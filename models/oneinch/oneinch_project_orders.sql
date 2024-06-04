@@ -2,7 +2,10 @@
     config(
         schema = 'oneinch',
         alias = 'project_orders',
-        materialized = 'view',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        partition_by = ['block_month'],
         unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address']
     )
 }}
