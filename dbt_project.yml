@@ -113,21 +113,6 @@ models:
       celo:
         +schema: uniswap_celo
 
-    nomad:
-      +schema: nomad
-      ethereum:
-        +schema: nomad_ethereum
-
-    wigoswap:
-      +schema: wigoswap
-      fantom:
-        +schema: wigoswap_fantom
-
-    bend_dao:
-      +schema: bend_dao
-      ethereum:
-        +schema: bend_dao_ethereum
-
     seaport:
       +schema: seaport
       ethereum:
@@ -171,12 +156,6 @@ models:
       base:
         +schema: dodo_base
 
-
-    spookyswap:
-      +schema: spookyswap
-      fantom:
-        +schema: spookyswap_fantom
-
     labels:
       +schema: labels
       +materialized: table
@@ -191,14 +170,6 @@ models:
         +schema: addresses_ethereum
       optimism:
         +schema: addresses_optimism
-
-    addresses_summary:
-      +schema: addresses_summary
-
-    aztec:
-      +schema: aztec
-      ethereum:
-        +schema: aztec_ethereum
 
     tokens:
       +schema: tokens
@@ -417,23 +388,6 @@ models:
         +schema: kyberswap_bnb
       polygon:
         +schema: kyberswap_polygon
-
-    hubble_exchange:
-      +schema: hubble_exchange
-      avalanche_c:
-        +schema: hubble_exchange_avalanche_c
-
-    frax_finance:
-      +schema: frax_finance
-      +materialized: table
-      bnb:
-        +schema: frax_finance_bnb
-        +materialized: table
-
-    emdx:
-      +schema: emdx
-      avalanche_c:
-        +schema: emdx_avalanche_c
 
     hashflow:
       +schema: hashflow

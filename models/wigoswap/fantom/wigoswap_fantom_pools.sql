@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'wigoswap_fantom',
     alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',
