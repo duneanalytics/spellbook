@@ -81,8 +81,8 @@ with
             , case when is_buy = 0 then COALESCE(tk.symbol, sp.token_mint_address)
                 else COALESCE(tk_sol.symbol, 'So11111111111111111111111111111111111111112') 
                 end as token_sold_symbol 
-            , case when is_buy = 1 then sp.token_mint_address
-                else 'So11111111111111111111111111111111111111112'
+            , case when is_buy = 1 then 'So11111111111111111111111111111111111111112'
+                else sp.token_mint_address
                 end as token_sold_mint_address
             , case when is_buy = 0 then token_amount
                 else sol_amount
