@@ -128,6 +128,7 @@
         , 'phoenix' as project 
         , 1 as version 
         , 'solana' as blockchain
+        , l.call_block_slot as block_slot
         , case when s.call_outer_executing_account = 'PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY' then 'direct'
             else s.call_outer_executing_account
             end as trade_source
@@ -154,7 +155,7 @@
             else l.tokenB_filled/pow(10,p.tokenB_decimals) 
             end token_sold_amount
         , p.pool_id
-        , s.account_trader as trader_id
+        , s.call_tx_signer as trader_id
         , s.call_tx_id as tx_id
         , s.call_outer_instruction_index as outer_instruction_index
         , COALESCE(s.call_inner_instruction_index,0) as inner_instruction_index
@@ -196,6 +197,7 @@ SELECT
     , tb.version
     , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
     , tb.block_time
+    , tb.block_slot
     , tb.token_pair
     , tb.trade_source
     , tb.token_bought_symbol
