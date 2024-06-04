@@ -60,3 +60,7 @@ sources:
     tables:
       - name: recipients
       - name: voters
+  - name: addresses_optimism
+    tables:
+      - name: fee_vaults
+      - name: grants_funding
