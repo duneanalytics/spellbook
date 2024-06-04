@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'tigris_polygon',
+        schema = 'tigris_polygon'
         , alias = 'events_contracts_positions'
         )
 }}
