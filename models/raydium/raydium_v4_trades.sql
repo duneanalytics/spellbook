@@ -47,8 +47,8 @@
             , sp.call_tx_index as tx_index
             , COALESCE(trs_2.token_mint_address, cast(null as varchar)) as token_bought_mint_address
             , COALESCE(trs_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
-            , trs_2.account_source as token_bought_vault
-            , trs_1.account_destination as token_sold_vault
+            , trs_2.from_token_account as token_bought_vault
+            , trs_1.to_token_account as token_sold_vault
         FROM (
             SELECT account_serumMarket, account_amm, call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
             FROM {{ source('raydium_amm_solana', 'raydium_amm_call_swapBaseOut') }}
@@ -80,7 +80,7 @@
             {% else %}
             AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_2 ON tk_2.address = trs_2.account_source
+        LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_2 ON tk_2.address = trs_2.from_token_account
         LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_1 ON dec_1.token_mint_address = trs_1.token_mint_address
         LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_2 ON dec_2.token_mint_address = trs_2.token_mint_address
         WHERE 1=1
