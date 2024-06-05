@@ -88,24 +88,10 @@
             SELECT 
                 account_poolState , call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
             FROM {{ source('raydium_clmm_solana', 'amm_v3_call_swap') }} 
-            WHERE 1=1
-            {% if is_incremental() %}
-            AND {{incremental_predicate('call_block_time')}}
-            {% else %}
-            AND call_block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
-            
             UNION ALL 
-
             SELECT 
                 account_poolState , call_is_inner, call_outer_instruction_index, call_inner_instruction_index, call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer, call_tx_index
             FROM {{ source('raydium_clmm_solana', 'amm_v3_call_swapV2') }}
-            WHERE 1=1
-            {% if is_incremental() %}
-            AND {{incremental_predicate('call_block_time')}}
-            {% else %}
-            AND call_block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
         ) sp
         INNER JOIN pools p
             ON sp.account_poolState = p.pool_id --account 2
@@ -129,6 +115,13 @@
             AND {{incremental_predicate('tr_2.block_time')}}
             {% else %}
             AND tr_2.block_time >= TIMESTAMP '{{project_start_date}}'
+            {% endif %}
+        WHERE 1=1
+            {% if is_incremental() %}
+            AND {{incremental_predicate('call_block_time')}}
+            {% else %}
+            -- AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+            AND call_block_time >= now() - interval '7 day'
             {% endif %}
     )
     
