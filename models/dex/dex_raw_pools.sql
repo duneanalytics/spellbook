@@ -22,3 +22,6 @@ where (blockchain, pool) not in (
     group by blockchain, pool
     having count(*) > 1
 )
+{% if is_incremental() %}
+    and {{incremental_predicate('creation_block_time')}}
+{% endif %}
