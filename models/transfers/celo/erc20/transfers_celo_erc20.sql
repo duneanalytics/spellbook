@@ -1,11 +1,11 @@
-{{ 
+{{
     config(
-        
+
         alias = 'erc20',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy = 'merge',
+        incremental_strategy = 'merge',incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['tx_hash', 'transfer_type', 'evt_index', 'wallet_address'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
@@ -29,10 +29,10 @@ with
             {{ source('erc20_celo', 'evt_transfer') }}
         where 1=1
             {% if is_incremental() %} -- this filter will only be applied on an incremental run
-            and evt_block_time >= date_trunc('day', now() - interval '7' day)
+            and {{ incremental_predicate('evt_block_time') }}
             {% endif %}
     ),
-    
+
     received_transfers as (
         select
             'received' as transfer_type,
@@ -47,11 +47,11 @@ with
             {{ source('erc20_celo', 'evt_transfer') }}
         where 1=1
             {% if is_incremental() %} -- this filter will only be applied on an incremental run
-            and evt_block_time >= date_trunc('day', now() - interval '7' day)
+            and {{ incremental_predicate('evt_block_time') }}
             {% endif %}
 
     )
-    
+
     /*,
     -- Wrapped Celo looks to work differently than WETH - commenting this section out for now
     deposited_wcelo as (
@@ -69,7 +69,7 @@ with
             and topic0 = 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef --deposit
             and bytearray_substring(topic1,13,20) <> 0x0000000000000000000000000000000000000000
             {% if is_incremental() %} -- this filter will only be applied on an incremental run
-            and block_time >= date_trunc('day', now() - interval '7' day)
+            and {{ incremental_predicate('block_time') }}
             {% endif %}
     ),
 
@@ -88,11 +88,11 @@ with
             and topic0 = 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef --withdrawal
             and bytearray_substring(topic1,13,20) = 0x0000000000000000000000000000000000000000
             {% if is_incremental() %} -- this filter will only be applied on an incremental run
-            and block_time >= date_trunc('day', now() - interval '7' day)
+            and {{ incremental_predicate('block_time') }}
             {% endif %}
     )
     */
-    
+
 select 'celo' as blockchain, transfer_type, wallet_address, token_address, block_time, block_month, amount_raw, evt_index, tx_hash
 from sent_transfers
 union

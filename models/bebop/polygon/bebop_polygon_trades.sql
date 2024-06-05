@@ -1,17 +1,18 @@
 {{ config(
         schema = 'bebop_polygon',
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["polygon"]\',
-                        "project",
-                        "bebop",
-                        \'["alekss"]\') }}'
-        )
-}}
+        materialized = 'view',
+        post_hook='{{ expose_spells(blockchains = \'["polygon"]\',
+                                    spell_type = "project",
+                                    spell_name = "bebop",
+                                    contributors = \'["alekss"]\') }}'
+)}}
 
 
 {% set bebop_models = [
     ref('bebop_rfq_polygon_trades'),
-    ref('bebop_jam_polygon_trades')
+    ref('bebop_jam_polygon_trades'),
+    ref('bebop_blend_polygon_trades')
 ] %}
 
 SELECT *

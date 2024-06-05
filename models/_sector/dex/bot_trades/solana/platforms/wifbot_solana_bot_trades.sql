@@ -6,6 +6,7 @@
         materialized='incremental',
         file_format='delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key=[
             'blockchain',
             'tx_id',
@@ -29,7 +30,7 @@ with
             '{{wsol_token}}' as fee_token_mint_address
         from {{ source('solana', 'account_activity') }}
         where
-            {% if is_incremental() %} 
+            {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
             {% else %} block_time >= timestamp '{{project_start_date}}'
             {% endif %}

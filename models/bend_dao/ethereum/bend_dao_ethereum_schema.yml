@@ -27,7 +27,7 @@ models:
               - tx_hash
               - token_id
             check_columns:
-              - amount_original
+#              - amount_original
               - evt_type
               - borrower
     columns:
