@@ -85,6 +85,9 @@ models:
       - &project_program_id
         name: project_program_id
         description: "pool program id of the project"
+      - &project_main_id
+        name: project_main_id
+        description: "main program id of the project"
       - &trader_id
         name: trader_id
         description: "id (address) of trader who purchased a token"
@@ -139,6 +142,7 @@ models:
       - *token_bought_vault
       - *token_sold_vault
       - *project_program_id
+      - *project_main_id
       - *trader_id
       - *tx_id
       - *outer_instruction_index

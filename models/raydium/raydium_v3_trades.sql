@@ -150,6 +150,7 @@ SELECT
     , tb.token_sold_vault
     , tb.token_bought_vault
     , tb.pool_id as project_program_id
+    , 'CAMMCzo5YL8w4VFF8KVHrK22GGUsp5VTaW7grrKgrWqK' as project_main_id
     , tb.trader_id
     , tb.tx_id
     , tb.outer_instruction_index
