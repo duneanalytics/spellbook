@@ -1,6 +1,6 @@
 {{
   config(
-      
+      schema='nomad_ethereum',
       alias='view_bridge_transactions',
       post_hook='{{ expose_spells(\'["ethereum"]\',
                                       "project",

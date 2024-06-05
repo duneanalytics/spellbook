@@ -1,6 +1,7 @@
 {{ config(
-       alias = 'interest'
-      , post_hook='{{ expose_spells(\'["optimism"]\',
+    schema = 'aave_optimism'
+    , alias = 'interest_rates'
+    , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "aave",
                                   \'["batwayne", "chuxin"]\') }}'

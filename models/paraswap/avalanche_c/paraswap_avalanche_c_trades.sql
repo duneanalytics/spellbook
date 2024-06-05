@@ -1,4 +1,5 @@
 {{ config(
+        schema='paraswap_avalanche_c',
         alias = 'trades',
         
         )
