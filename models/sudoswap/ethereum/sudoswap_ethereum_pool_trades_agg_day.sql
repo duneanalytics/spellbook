@@ -41,7 +41,7 @@ SELECT
         ELSE -1 * cast(nft_amount as int256)
       END
     ) AS nft_change_trading
-FROM (select * from {{ source('nft','base_trades') }} WHERE t.project = 'sudoswap') t
+FROM (select * from {{ source('nft','base_trades') }} WHERE project = 'sudoswap') t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} usd
 ON usd.blockchain = null and usd.symbol = 'ETH'
     AND usd.minute = date_trunc('minute',t.block_time)
