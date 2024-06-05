@@ -29,10 +29,10 @@ WITH trades AS (
     , evt_tx_to AS tx_to
     FROM {{ source('fantasy_blast', 'Exchange_evt_Buy')}}
     {% if not is_incremental() %}
-    AND tr1.block_time >= TIMESTAMP '{{project_start_date}}'
+    WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND {{ incremental_predicate('evt_block_time') }}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
     
     UNION ALL
@@ -55,10 +55,10 @@ WITH trades AS (
     , evt_tx_to AS tx_to
     FROM {{ source('fantasy_blast', 'Exchange_evt_Sell')}}
     {% if not is_incremental() %}
-    AND tr1.block_time >= TIMESTAMP '{{project_start_date}}'
+    WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND {{ incremental_predicate('evt_block_time') }}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
     )
 
