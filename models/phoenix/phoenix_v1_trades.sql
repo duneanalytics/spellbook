@@ -101,7 +101,7 @@
       {% if is_incremental() %}
       AND {{incremental_predicate('l.call_block_time')}}
       {% endif %}
-      AND call_block_time >= now() - interval '7 day' --qa
+      AND call_block_time >= now() - interval '7 day' day --qa
   ),
   max_log_index AS (
     SELECT

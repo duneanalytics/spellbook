@@ -121,7 +121,7 @@
             AND {{incremental_predicate('call_block_time')}}
             {% else %}
             -- AND call_block_time >= TIMESTAMP '{{project_start_date}}'
-            AND call_block_time >= now() - interval '7 day'
+            AND call_block_time >= now() - interval '7' day
             {% endif %}
     )
     
