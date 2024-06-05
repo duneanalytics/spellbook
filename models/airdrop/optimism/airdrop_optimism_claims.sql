@@ -10,7 +10,7 @@
 
 
 {% set airdrop_claims_models = [
-    ref('op_optimism_airdrop_1_claims')
+    source('op_optimism', 'airdrop_1_claims')
    ,ref('velodrome_optimism_airdrop_claims')
 ] %}
 
