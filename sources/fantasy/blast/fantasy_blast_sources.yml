@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: fantasy_blast
+    tables:
+      - name: Exchange_evt_Buy
+      - name: Exchange_evt_Sell
