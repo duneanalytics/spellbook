@@ -1,5 +1,7 @@
+{% set blockchain = 'ethereum' %}
+
 {{ config(
-    schema = 'bridge_ethereum',
+    schema = 'bridge_' + blockchain,
     alias = 'flows',
     partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',

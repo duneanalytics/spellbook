@@ -1,5 +1,7 @@
+{% set blockchain = 'ethereum' %}
+
 {{ config(
-    schema = 'bridge_ethereum',
+    schema = 'bridge_' + blockchain,
     alias = 'base_raw_flows',
     partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',
@@ -21,14 +23,14 @@ WITH base_union AS (
     SELECT * FROM  (
     {% for bridge_model in bridge_models %}
 
-        bridge_opstack_flows(
+        {{bridge_opstack_flows(
             blockchain = blockchain
             , project = blockchain
             , project_version = '1'
-            , events = bridge_model[1]
-            , token_standard = bridge_model[2]
-            , flows_type = bridge_model[3]
-            )
+            , events = bridge_model[0]
+            , token_standard = bridge_model[1]
+            , flows_type = bridge_model[2]
+            )}}
 
         {% if not loop.last %}
         UNION ALL
