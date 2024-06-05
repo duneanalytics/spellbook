@@ -22,7 +22,7 @@ WITH chain_names AS (
         {% endfor %}
 )
 
-SELECT 
+SELECT
         c.chain_dune_name as blockchain,
         cast(i.name as varchar) as blockchain_name,
         cast(i.chain_id as int) AS chain_id,
@@ -30,5 +30,5 @@ SELECT
         c.is_superchain
 
 FROM chain_names c
-        LEFT JOIN {{ ref('evms_info') }} i 
+        LEFT JOIN {{ source('evms', 'info') }} i
                 ON i.blockchain = c.chain_dune_name

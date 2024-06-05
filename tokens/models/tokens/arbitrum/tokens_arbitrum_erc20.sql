@@ -75,4 +75,7 @@ FROM (VALUES
     , (0x8d66ff1845b1bacc6e87d867ca4680d05a349ca8, 'S*USDT', 6)
     , (0xba4a858d664ddb052158168db04afa3cff5cfcc8, 'PENDLE-LPT', 18)
     , (0xf9f9779d8ff604732eba9ad345e6a27ef5c2a9d6, 'PENDLE-LPT', 18)
+    , (0x4cb9a7ae498cedcbb5eae9f25736ae7d428c9d66, 'XAI', 18)
+    , (0x323665443cef804a3b5206103304bd4872ea4253, 'USDV', 6)
+    , (0x966570a84709d693463cdd69dcadb0121b2c9d26, 'taoUSD', 18)
 ) AS temp_table (contract_address, symbol, decimals)

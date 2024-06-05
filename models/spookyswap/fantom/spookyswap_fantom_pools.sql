@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'spookyswap_fantom',
     alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',

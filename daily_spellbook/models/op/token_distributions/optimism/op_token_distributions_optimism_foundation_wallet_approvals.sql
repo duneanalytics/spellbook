@@ -1,10 +1,11 @@
 {{ config(
+    schema = 'op_token_distributions_optimism',
     alias = 'foundation_wallet_approvals',
-    
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     unique_key = ['block_date', 'evt_block_time', 'evt_block_number', 'evt_tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
@@ -24,11 +25,11 @@
 
 
 WITH project_labels AS (
-    SELECT 
-        address, 
-        project_name, 
-        label, 
-        address_descriptor 
+    SELECT
+        address,
+        project_name,
+        label,
+        address_descriptor
     FROM {{ ref('op_token_distributions_optimism_project_wallets') }}
     WHERE label IS NOT NULL
     GROUP BY 1, 2, 3, 4
@@ -40,7 +41,7 @@ SELECT
     a.evt_block_time, a.evt_block_number, a.evt_tx_hash, a.evt_index,
     a.spender AS project_address, al.project_name,
 
-    t."from" AS tx_from_address, t.to AS tx_to_address, 
+    t."from" AS tx_from_address, t.to AS tx_to_address,
 
     cast(a.value as double)/cast(1e18 as double) AS op_approved_to_project
 
@@ -48,8 +49,8 @@ FROM {{ source('erc20_optimism', 'evt_Approval') }} a
     INNER JOIN {{ source('optimism', 'transactions') }} t
         ON t.hash = a.evt_tx_hash
         AND t.block_number = a.evt_block_number
-        {% if is_incremental() %} 
-        AND t.block_time >= date_trunc('day', now() - interval '7' day)
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('t.block_time') }}
         {% else %}
         AND t.block_time >= cast( '{{approvals_start_date}}' as date )
         {% endif %}
@@ -60,8 +61,8 @@ FROM {{ source('erc20_optimism', 'evt_Approval') }} a
 WHERE
     a.contract_address = {{op_token_address}} --OP Token
     AND owner in (SELECT address FROM project_labels WHERE label = '{{foundation_label}}' AND address_descriptor = '{{grants_descriptor}}')
-    {% if is_incremental() %} 
-    AND a.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('a.evt_block_time') }}
     {% else %}
     AND a.evt_block_time >= cast( '{{approvals_start_date}}' as date )
     {% endif %}

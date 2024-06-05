@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: signatures
+  - name: abi_signatures
     meta:
       blockchain: ['ethereum','optimism','polygon','arbitrum','avalanche_c','gnosis','bnb','fantom','celo','base']
       sector: abi

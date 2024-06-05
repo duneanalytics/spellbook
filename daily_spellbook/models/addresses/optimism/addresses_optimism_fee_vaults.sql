@@ -1,7 +1,8 @@
 {{config(
       tags = ['static'],
+      schema = 'addresses_optimism',
       alias = 'fee_vaults',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+      post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
                                     "addresses",
                                     \'["msilb7"]\') }}')}}

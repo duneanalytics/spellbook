@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'lend'
+    schema = 'timeswap_ethereum'
+    ,alias = 'lend'
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'

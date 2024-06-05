@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'op_token_distributions_optimism',
     alias = 'other_tags',
     tags = [ 'static']
     )
@@ -44,7 +45,7 @@ FROM (values
             ,('0x574a21fe5ea9666dbca804c9d69d8caf21d5322b', 'Rubicon LP')
             ,('0x1111111254760f7ab3f16433eea9304126dcd199', '1inch Swap')
             ,('0x1111111254EEB25477B68fb85Ed929f73A960582', '1inch Swap')
-            
+
     ) a (address, address_name)
     ) b
     WHERE rnk = 1 --check to prevent duplicates
@@ -56,6 +57,6 @@ FROM (
     FROM tagged_wallets
     UNION ALL
     SELECT 'Other',address, cex_name
-    FROM {{ ref('cex_optimism_addresses') }}
+    FROM {{ source('cex_optimism', 'addresses') }}
     )
 WHERE address NOT IN (SELECT address FROM {{ ref('op_token_distributions_optimism_project_wallets') }}) --not already tagged
