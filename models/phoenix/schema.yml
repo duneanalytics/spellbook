@@ -85,6 +85,9 @@ models:
       - &project_program_id
         name: project_program_id
         description: "pool program id of the project"
+      - &project_main_id
+        name: project_main_id
+        description: "main program id of the project"
       - &trader_id
         name: trader_id
         description: "id (address) of trader who purchased a token"

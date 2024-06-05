@@ -217,6 +217,7 @@ SELECT
     , tb.token_sold_vault
     , tb.token_bought_vault
     , tb.pool_id as project_program_id
+    , 'PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY' as project_main_id
     , tb.trader_id
     , tb.tx_id
     , tb.outer_instruction_index
