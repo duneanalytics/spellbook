@@ -173,7 +173,7 @@ ERC20BridgeTransfer AS (
     WHERE topic0 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
 
     {% if is_incremental() %}
-    AND {{ incremental_predicate('zeroex_tx.block_time') }}
+    AND {{ incremental_predicate('logs.block_time') }}
     {% endif %}
     {% if not is_incremental() %}
     AND zeroex_tx.block_time >= cast('{{zeroex_v3_start_date}}' as date)
