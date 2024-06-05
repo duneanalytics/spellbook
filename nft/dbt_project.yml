@@ -21,11 +21,11 @@ vars:
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
-model-paths: ["models", "../../sources"]
+model-paths: ["models", "../sources"]
 # ../tests/* should be added to a separate shared folder
 test-paths: ["tests"]
 seed-paths: ["seeds"]
-macro-paths: ["../../macros", "macros"]
+macro-paths: ["../macros", "macros"]
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
