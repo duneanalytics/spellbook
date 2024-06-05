@@ -64,79 +64,8 @@ models:
     +schema: no_schema    # this should be overridden in model specific configs
     +view_security: invoker
 
-    aave:
-      +schema: aave
-      ethereum:
-        +schema: aave_ethereum
-      optimism:
-        +schema: aave_optimism
-
-    ens:
-      +schema: ens
-      ethereum:
-        +schema: ens_ethereum
-
-    euler:
-      +schema: euler
-      ethereum:
-        +schema: euler_ethereum
-
-    evms:
-      +schema: evms
-
-    staking:
-      +schema: staking
-      ethereum:
-        +schema: staking_ethereum
-
     dex:
       +schema: dex
-
-    airdrop:
-      +schema: airdrop
-      +materialized: table
-      ethereum:
-        +schema: airdrop_ethereum
-      optimism:
-        +schema: airdrop_optimism
-      arbitrum:
-        +schema: airdrop_arbitrum
-      avalanche_c:
-        +schema: airdrop_avalanche_c
-      bnb:
-        +schema: airdrop_bnb
-      gnosis:
-        +schema: airdrop_gnosis
-
-    giveth:
-      +schema: giveth
-      gnosis:
-        +schema: giveth_gnosis
-
-    ellipsis_finance:
-      +schema: ellipsis_finance
-      bnb:
-        +schema: ellipsis_finance_bnb
-
-    arbitrum:
-      +schema: arbitrum
-      arbitrum:
-        +schema: arbitrum_arbitrum
-
-    pangolin:
-      +schema: pangolin
-      avalanche_c:
-        +schema: pangolin_avalanche_c
-
-    ampleforth:
-      +schema: ampleforth
-      ethereum:
-        +schema: ampleforth_ethereum
-
-    velodrome:
-      +schema: velodrome
-      optimism:
-        +schema: velodrome_optimism
 
     nft:
       +schema: nft
@@ -167,33 +96,6 @@ models:
       bitcoin:
         +schema: cex_bitcoin
 
-    compound:
-      +schema: compound
-      ethereum:
-        +schema: compound_ethereum
-
-    gitcoin:
-      +schema: gitcoin
-      ethereum:
-        +schema: gitcoin_ethereum
-      polygon:
-        +schema: gitcoin_polygon
-
-    blur:
-      +schema: blur
-      ethereum:
-        +schema: blur_ethereum
-
-    looksrare:
-      +schema: looksrare
-      ethereum:
-        +schema: looksrare_ethereum
-
-    x2y2:
-      +schema: x2y2
-      ethereum:
-        +schema: x2y2_ethereum
-
     uniswap:
       +schema: uniswap
       arbitrum:
@@ -210,135 +112,6 @@ models:
         +schema: uniswap_base
       celo:
         +schema: uniswap_celo
-
-    timeswap:
-      +schema: timeswap
-      ethereum:
-        +schema: timeswap_ethereum
-      arbitrum:
-        +schema: timeswap_arbitrum
-      polygon:
-        +schema: timeswap_polygon
-
-    paraswap:
-      +schema: paraswap
-      ethereum:
-        +schema: paraswap_ethereum
-      avalanche_c:
-        +schema: paraswap_avalanche_c
-      fantom:
-        +schema: paraswap_fantom
-      arbitrum:
-        +schema: paraswap_arbitrum
-      bnb:
-        +schema: paraswap_bnb
-      ethereum:
-        +schema: paraswap_ethereum
-      optimism:
-        +schema: paraswap_optimism
-      polygon:
-        +schema: paraswap_polygon
-
-    opx_finance:
-      +schema: opx_finance
-      optimism:
-        +schema: opx_finance_optimism
-
-    zodiac:
-      +schema: zodiac
-      ethereum:
-        +schema: zodiac_ethereum
-
-    daohaus:
-      +schema: daohaus
-      ethereum:
-        +schema: daohaus_ethereum
-      gnosis:
-        +schema: daohaus_gnosis
-
-    colony:
-      +schema: colony
-      gnosis:
-        +schema: colony_gnosis
-
-    sushiswap:
-      optimism:
-        +schema: sushiswap_optimism
-
-    zerion:
-      +schema: zerion
-      arbitrum:
-        +schema: zerion_arbitrum
-      avalanche_c:
-        +schema: zerion_avalanche_c
-      bnb:
-        +schema: zerion_bnb
-      gnosis:
-        +schema: zerion_gnosis
-      optimism:
-        +schema: zerion_optimism
-      polygon:
-        +schema: zerion_polygon
-      fantom:
-        +schema: zerion_fantom
-
-    syndicate:
-      +schema: syndicate
-      ethereum:
-        +schema: syndicate_ethereum
-      polygon:
-        +schema: syndicate_polygon
-
-    abi:
-      +schema: abi
-
-    gas:
-      +schema: gas
-      ethereum:
-        +schema: gas_ethereum
-      bnb:
-        +schema: gas_bnb
-      avalanche_c:
-        +schema: gas_avalanche_c
-      optimism:
-        +schema: gas_optimism
-      arbitrum:
-        +schema: gas_arbitrum
-      polygon:
-        +schema: gas_polygon
-      fantom:
-        +schema: gas_fantom
-      gnosis:
-        +schema: gas_gnosis
-
-    gmx:
-      +schema: gmx
-      arbitrum:
-        +schema: gmx_arbitrum
-      avalanche_c:
-        +schema: gmx_avalanche_c
-
-    tigris:
-      +schema: tigris
-      arbitrum:
-        +schema: tigris_arbitrum
-      polygon:
-        +schema: tigris_polygon
-
-    nomad:
-      +schema: nomad
-      ethereum:
-        +schema: nomad_ethereum
-
-    wigoswap:
-      +schema: wigoswap
-      fantom:
-        +schema: wigoswap_fantom
-
-    bend_dao:
-      +schema: bend_dao
-      ethereum:
-        +schema: bend_dao_ethereum
 
     seaport:
       +schema: seaport
@@ -383,12 +156,6 @@ models:
       base:
         +schema: dodo_base
 
-
-    spookyswap:
-      +schema: spookyswap
-      fantom:
-        +schema: spookyswap_fantom
-
     labels:
       +schema: labels
       +materialized: table
@@ -401,14 +168,6 @@ models:
       +schema: addresses
       ethereum:
         +schema: addresses_ethereum
-
-    addresses_summary:
-      +schema: addresses_summary
-
-    aztec:
-      +schema: aztec
-      ethereum:
-        +schema: aztec_ethereum
 
     tokens:
       +schema: tokens
@@ -628,23 +387,6 @@ models:
       polygon:
         +schema: kyberswap_polygon
 
-    hubble_exchange:
-      +schema: hubble_exchange
-      avalanche_c:
-        +schema: hubble_exchange_avalanche_c
-
-    frax_finance:
-      +schema: frax_finance
-      +materialized: table
-      bnb:
-        +schema: frax_finance_bnb
-        +materialized: table
-
-    emdx:
-      +schema: emdx
-      avalanche_c:
-        +schema: emdx_avalanche_c
-
     hashflow:
       +schema: hashflow
       ethereum:
@@ -790,11 +532,6 @@ models:
       +schema: notional
       ethereum:
         +schema: notional_ethereum
-
-    dydx:
-      +schema: dydx
-      ethereum:
-        +schema: dydx_ethereum
 
     dappradar:
       +schema: dappradar
