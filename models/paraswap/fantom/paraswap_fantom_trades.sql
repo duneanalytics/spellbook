@@ -1,4 +1,5 @@
 {{ config(
+        schema='paraswap_fantom',
         alias = 'trades',
         
         )

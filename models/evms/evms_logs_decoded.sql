@@ -1,5 +1,5 @@
 {{ config(
-        
+        schema='evms',
         alias = 'logs_decoded',
         unique_key=['blockchain', 'tx_hash'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll"]\',
