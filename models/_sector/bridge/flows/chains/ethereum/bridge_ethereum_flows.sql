@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'bridge',
-    alias = 'ethereum_flows',
+    schema = 'bridge_ethereum',
+    alias = 'flows',
     partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',
     file_format = 'delta',
