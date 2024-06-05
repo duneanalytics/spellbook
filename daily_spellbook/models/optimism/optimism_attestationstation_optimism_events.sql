@@ -1,6 +1,6 @@
 {{ config(
+    schema = 'optimism_attestationstation_optimism',
     alias = 'events',
-    
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
