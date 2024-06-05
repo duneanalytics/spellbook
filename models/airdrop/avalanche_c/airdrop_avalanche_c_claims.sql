@@ -1,5 +1,5 @@
 {{ config(
-    
+        schema = 'airdrop_avalanche_c',
         alias = 'claims',
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                       "sector",

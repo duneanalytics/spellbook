@@ -347,6 +347,7 @@ uni_v2_swap as (
 
 
 )
+-- TODO: this is really slow, need to optimize
 , uni_v2_pair_creation as (
     SELECT
         bytearray_substring(data,13,20) as pair,

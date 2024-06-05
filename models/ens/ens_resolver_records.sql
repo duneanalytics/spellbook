@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'ens',
     alias = 'resolver_records',
     
     materialized = 'incremental',

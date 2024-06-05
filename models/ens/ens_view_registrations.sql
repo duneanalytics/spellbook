@@ -1,4 +1,5 @@
 {{config(
+        schema = 'ens',
         alias = 'view_registrations',
         
         post_hook='{{ expose_spells(\'["ethereum"]\',

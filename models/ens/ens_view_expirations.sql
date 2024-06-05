@@ -1,5 +1,5 @@
 {{config(
-    
+    schema='ens',
     alias = 'view_expirations',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                             "project",

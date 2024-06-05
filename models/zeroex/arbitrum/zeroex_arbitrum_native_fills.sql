@@ -57,6 +57,9 @@ WITH
         FROM {{ source('zeroex_arbitrum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
         LEFT JOIN {{ source('prices', 'usd') }} tp ON
             date_trunc('minute', evt_block_time) = tp.minute and  tp.blockchain = 'arbitrum'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('tp.minute') }}
+            {% endif %}
             AND CASE
                     -- set native token to wrapped version
                     WHEN fills.takerToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
@@ -64,6 +67,9 @@ WITH
                 END = tp.contract_address
         LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'arbitrum'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('mp.minute') }}
+            {% endif %}
             AND CASE
                     -- set native token to wrapped version
                     WHEN fills.makerToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
