@@ -1,5 +1,5 @@
 {{config(
-    
+
     alias = 'l2_fee_vaults',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",
@@ -18,4 +18,4 @@ SELECT 'optimism'        AS blockchain
      , 'l2_fee_vaults'   AS model_name
      , 'identifier'      AS label_type
 
-FROM {{ ref('addresses_optimism_fee_vaults') }}
+FROM {{ source('addresses_optimism', 'fee_vaults') }}

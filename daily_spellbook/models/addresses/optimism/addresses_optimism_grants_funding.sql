@@ -1,10 +1,11 @@
 {{config(
-  tags = ['static'],
-  alias = 'grants_funding',
+   tags = ['static'],
+   schema = 'addresses_optimism',
+   alias = 'grants_funding',
 	post_hook='{{ expose_spells(\'["optimism"]\',
-		"sector",
-		"addresses",
-		\'["msilb7", "chuxin"]\') }}')}}
+                                 "sector",
+                                 "addresses",
+                                 \'["msilb7", "chuxin"]\') }}')}}
 
 /*
 Sourced from Public Distributions Tracker: https://docs.google.com/spreadsheets/d/1Ul8iMTsOFUKUmqz6MK0zpgt8Ki8tFtoWKGlwXj-Op34/edit#gid=590972026
