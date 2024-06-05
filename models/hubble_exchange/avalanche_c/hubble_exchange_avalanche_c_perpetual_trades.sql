@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'hubble_exchange_avalanche_c',
     alias = 'perpetual_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',

@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='vrf_gas_daily',
     partition_by=['date_month'],
     materialized='incremental',
@@ -10,7 +10,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 {% set truncate_by = 'day' %}
 
 WITH
@@ -24,7 +23,7 @@ WITH
       {{ ref('chainlink_ethereum_vrf_fulfilled_transactions') }} fulfilled
     {% if is_incremental() %}
       WHERE
-        fulfilled.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {{ incremental_predicate('fulfilled.block_time') }}
     {% endif %}
     GROUP BY
       1, 2
@@ -41,7 +40,7 @@ WITH
       {{ ref('chainlink_ethereum_vrf_reverted_transactions') }} reverted
     {% if is_incremental() %}
       WHERE
-        reverted.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {{ incremental_predicate('reverted.block_time') }}
     {% endif %}
     GROUP BY
       1, 2
@@ -53,7 +52,7 @@ WITH
       COALESCE(
         fulfilled.date_start,
         reverted.date_start
-      ) AS "date_start",      
+      ) AS "date_start",
       COALESCE(
         fulfilled.node_address,
         reverted.node_address
@@ -84,7 +83,7 @@ WITH
       fulfilled_usd_amount + reverted_usd_amount as total_usd_amount
     FROM vrf_gas_daily_meta
   )
-SELECT 
+SELECT
   blockchain,
   date_start,
   date_month,
@@ -94,7 +93,7 @@ SELECT
   reverted_token_amount,
   reverted_usd_amount,
   total_token_amount,
-  total_usd_amount    
+  total_usd_amount
 FROM
   vrf_gas_daily
 ORDER BY

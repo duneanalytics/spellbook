@@ -104,6 +104,10 @@ dai_referral_payments_addr AS (
     SELECT 0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d --rhino
 ),
 
+steth_referral_payments_addr AS (
+    SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
+),
+
 
 other_expenses_txns AS (
     SELECT 
@@ -127,6 +131,8 @@ other_expenses_txns AS (
             SELECT address FROM ldo_referral_payments_addr
             UNION ALL
             SELECT address FROM dai_referral_payments_addr  
+            UNION ALL
+            SELECT address FROM steth_referral_payments_addr
             UNION ALL
             SELECT 0x0000000000000000000000000000000000000000
             UNION ALL

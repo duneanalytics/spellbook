@@ -1,17 +1,18 @@
 {{ config(
         schema = 'bebop_ethereum',
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                        "project",
-                        "bebop",
-                        \'["alekss"]\') }}'
-        )
-}}
+        materialized = 'view',
+        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                    spell_type = "project",
+                                    spell_name = "bebop",
+                                    contributors = \'["alekss"]\') }}'
+)}}
 
 
 {% set bebop_models = [
     ref('bebop_rfq_ethereum_trades'),
-    ref('bebop_jam_ethereum_trades')
+    ref('bebop_jam_ethereum_trades'),
+    ref('bebop_blend_ethereum_trades')
 ] %}
 
 SELECT *

@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'ens',
     alias = 'resolver_latest',
     
     post_hook='{{ expose_spells(\'["ethereum"]\',
