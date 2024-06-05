@@ -1,9 +1,10 @@
 {{ config(
     alias = 'erc20',
-    
+
     materialized ='incremental',
     file_format ='delta',
     incremental_strategy='merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key='unique_transfer_id',
         post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
@@ -22,7 +23,7 @@ with
             {{ source('erc20_base', 'evt_transfer') }}
             where 1=1
             {% if is_incremental() %} -- this filter will only be applied on an incremental run
-            and evt_block_time >= date_trunc('day', now() - interval '7' day)
+            and {{ incremental_predicate('evt_block_time') }}
             {% endif %}
     )
 
@@ -38,7 +39,7 @@ with
             {{ source('erc20_base', 'evt_transfer') }}
             where 1=1
             {% if is_incremental() %} -- this filter will only be applied on an incremental run
-            and evt_block_time >= date_trunc('day', now() - interval '7' day)
+            and {{ incremental_predicate('evt_block_time') }}
             {% endif %}
 
     )
@@ -56,7 +57,7 @@ with
             WHERE contract_address = 0x4200000000000000000000000000000000000006
             AND topic0 = 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c --deposit
             {% if is_incremental() %} -- this filter will only be applied on an incremental run
-            and block_time >= date_trunc('day', now() - interval '7' day)
+            and {{ incremental_predicate('block_time') }}
             {% endif %}
     )
 
@@ -73,7 +74,7 @@ with
             WHERE contract_address = 0x4200000000000000000000000000000000000006
             AND topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65 --withdrawal
             {% if is_incremental() %} -- this filter will only be applied on an incremental run
-            and block_time >= date_trunc('day', now() - interval '7' day)
+            and {{ incremental_predicate('block_time') }}
             {% endif %}
     )
 

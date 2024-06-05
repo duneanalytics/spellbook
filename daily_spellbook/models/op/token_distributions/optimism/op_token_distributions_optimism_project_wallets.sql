@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'op_token_distributions_optimism',
     alias = 'project_wallets',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
@@ -88,7 +88,7 @@ FROM (values
 
     --quix - should come from CB
     ,(0x5Ad4A019F77e82940f6Dd15A5215362AF061A742,'Quix','Distributor')
-    
+
     --suspected grants multisigs
     ,(0x5a06d52f38965904cf15c3f55286263ab9a237d7, 'Perpetual Protocol','Grants Wallet') --guessing
     ,(0xC69a2d7e3De31542aB9ba1e80F9F5d68e49f78e6, 'Lyra','Lyra Grants DAO')
@@ -103,7 +103,7 @@ FROM (values
     ) a (address, proposal_name, address_descriptor)
     ) b
     WHERE rnk = 1 --check to prevent duplicates
-    AND address NOT IN (SELECT address FROM {{ref('cex_optimism_addresses')}} ) --make sure we don't accidently catch a CEX
+    AND address NOT IN (SELECT address FROM {{source('cex_optimism', 'addresses')}} ) --make sure we don't accidently catch a CEX
 )
 
 
@@ -191,7 +191,7 @@ FROM (values
     ,(0x3ee85ac7c0e1799af6f4e582de485fcdfb12855a, 'Rocket Pool', 'WETH/rETH: Beethoven X')
     ,(0xdd5bfe292e377308abb58a211a572bd9732b62b7, 'Rocket Pool', 'sWETH/rETH: Velodrome')
     ,(0x4bae082f810fa888364600efda0bf9f5c6e5e315, 'Rocket Pool', 'vWETH/rETH: Velodrome')
-    ,(0xE01A297289f0aE9e745DdDC61F139537ab733710, 'Overnight', 'USD+/USDC: Velodrome') 
+    ,(0xE01A297289f0aE9e745DdDC61F139537ab733710, 'Overnight', 'USD+/USDC: Velodrome')
     ,(0x8801b45390095f7632C02392C4489985e0607E82, 'Overnight', 'BPT-USD+: Beethoven X')
     ,(0xB66D278b843dBE76ee73Da61182fF97100f97920, 'Overnight', 'USD+/DOLA: Velodrome')
     ,(0x41a7540ec8cb3afafe16a834abe0863f22016ec0, 'Overnight', 'USD+/LUSD: Velodrome')
@@ -262,12 +262,12 @@ FROM (values
 
     --grants deployed
     ,(0xC98786D5A7a03C1e74AffCb97fF7eF8a710DA09B, 'Karma', 'Karma - Grant')
-    
-    
+
+
     ) a (address, proposal_name, address_descriptor)
     ) b
     WHERE rnk = 1 --check to prvent duplicates
-    AND address NOT IN (SELECT address FROM {{ref('cex_optimism_addresses')}}) --make sure we don't accidently catch a CEX
+    AND address NOT IN (SELECT address FROM {{source('cex_optimism', 'addresses')}}) --make sure we don't accidently catch a CEX
 )
 
 SELECT
@@ -277,11 +277,11 @@ SELECT
         , concat_ws(',', ARRAY_AGG(DISTINCT fin.label) ) AS label
         , concat_ws(',', ARRAY_AGG(DISTINCT fin.proposal_name) ) AS proposal_name
         , concat_ws(',', ARRAY_AGG(DISTINCT fin.address_descriptor) ) address_descriptor
-        , concat_ws(',', ARRAY_AGG(DISTINCT 
+        , concat_ws(',', ARRAY_AGG(DISTINCT
                 COALESCE(pnm.project_name, fin.proposal_name) )
          ) AS project_name
 FROM (
-        SELECT address, label, proposal_name, address_descriptor, ROW_NUMBER() OVER(PARTITION BY address ORDER BY rnk ASC) AS choice_rank 
+        SELECT address, label, proposal_name, address_descriptor, ROW_NUMBER() OVER(PARTITION BY address ORDER BY rnk ASC) AS choice_rank
                 FROM (
                 -- Pull known project wallets
                 SELECT address, category AS label, proposal_name, funding_source AS address_descriptor, 1 as rnk
@@ -304,7 +304,7 @@ FROM (
 
                 ) do_choice_rank
         ) fin
-LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping') }} pnm 
+LEFT JOIN {{ ref('op_token_distributions_optimism_project_name_mapping') }} pnm
         ON trim(lower(pnm.proposal_name)) = trim(lower(fin.proposal_name))
 
 GROUP BY fin.address

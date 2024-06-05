@@ -7,6 +7,7 @@ tags=['prod_exclude'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
                                 "zeroex",
@@ -44,7 +45,7 @@ WITH tbl_cte_transaction AS
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC721OrderFilled') }}
     WHERE 1 = 1
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+        AND {{ incremental_predicate('evt_block_time') }}
         {% endif %}
         {% if not is_incremental() %}
         AND evt_block_time >= '{{zeroex_v4_nft_start_date}}'
@@ -72,7 +73,7 @@ WITH tbl_cte_transaction AS
     FROM {{ source ('zeroex_polygon', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
     WHERE 1 = 1
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - interval '1 week')
+        AND {{ incremental_predicate('evt_block_time') }}
         {% endif %}
         {% if not is_incremental() %}
         AND evt_block_time >= '{{zeroex_v4_nft_start_date}}'
