@@ -77,6 +77,7 @@ models:
       - &evt_index
         name: evt_index
         description: "The position of this event log within this transaction"
+
   - name: yield_yak_deposits
     meta:
       blockchain: avalanche_c, arbitrum
@@ -102,26 +103,27 @@ models:
         description: "Address of the YRT smart contract / strategy"  
       - &tx_hash
         name: tx_hash
-        description: "Transaction hash of the deposit/withdraw/reinvest"
+        description: "Transaction hash of the deposit/withdraw/reinvest/swap"
       - *evt_index
       - &tx_index
         name: tx_index
         description: "Index of the transaction within the block"
       - &block_time
         name: block_time
-        description: "UTC time of the deposit/withdraw/reinvest"
+        description: "UTC time of the deposit/withdraw/reinvest/swap"
       - &block_date
         name: block_date
-        description: "UTC event block date of the deposit/withdraw/reinvest"
+        description: "UTC event block date of the deposit/withdraw/reinvest/swap"
       - &block_number
         name: block_number
-        description: "Block number of the deposit/withdraw/reinvest"
+        description: "Block number of the deposit/withdraw/reinvest/swap"
       - &user_address
         name: user_address
         description: "Address of the wallet which made the deposit/withdraw/reinvest"
       - &deposit_amount
         name: deposit_amount
         description: "Amount of deposit tokens deposited into the strategy"
+
   - name: yield_yak_withdraws
     meta:
       blockchain: avalanche_c, arbitrum
@@ -151,6 +153,7 @@ models:
       - &withdraw_amount
         name: withdraw_amount
         description: "Amount of deposit tokens withdrawn from the strategy"
+
   - name: yield_yak_reinvests
     meta:
       blockchain: avalanche_c, arbitrum
@@ -194,6 +197,7 @@ models:
       - &recent_reinvest_info
         name: recent_reinvest_info
         description: "An array of the ratio growth and time between reinvests for the last 25 Reinvest events"
+
   - name: yield_yak_balances
     meta:
       blockchain: avalanche_c, arbitrum
@@ -221,6 +225,7 @@ models:
       - &deposit_token_balance
         name: deposit_token_balance
         description: "Balance of deposit tokens held in the contract in the time window specified"
+
   - name: yield_yak_user_yrt_balances
     meta:
       blockchain: avalanche_c, arbitrum
@@ -249,3 +254,119 @@ models:
       - &yrt_balance
         name: yrt_balance
         description: "Balance of YRT tokens held by the user_address in the time window specified"
+
+  - name: yield_yak_yak_swaps
+    meta:
+      blockchain: avalanche_c, arbitrum
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'arbitrum', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex']
+    description: >
+        yield yak aggregator yak swaps
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_index
+            - evt_index
+    columns:
+      - *blockchain
+      - &yak_router_address
+        name: yak_router_address
+        description: "Address of the YakRouter contract which made the swap"
+      - *block_number
+      - *block_date
+      - *block_time
+      - *tx_index
+      - *tx_hash
+      - &tx_to_address
+        name: tx_to_address
+        description: "Address 'to' which this transaction was sent (i.e. which had a function called)"
+      - &tx_fee
+        name: tx_fee
+        description: "Transaction / gas cost in native token for the transaction calculated using (price * gas used)"
+      - *evt_index
+      - &number_of_swaps_in_tx
+        name: number_of_swaps_in_tx
+        description: "Count of the number of YakSwap events in this same transaction (used to divide the gas cost / tx fee)"
+      - &tx_fee_per_swap
+        name: tx_fee_per_swap
+        description: "Transaction fee divided per each Yak Swap event"
+      - &trader_address
+        name: trader_address
+        description: "Address which initiated the transaction"
+      - &swap_token_in_address
+        name: swap_token_in_address
+        description: "Address of the token being sold in the YakSwap event"
+      - &swap_token_out_address
+        name: swap_token_out_address
+        description: "Address of the token being bought in the YakSwap event"
+      - &swap_amount_in
+        name: swap_amount_in
+        description: "Amount of the sold token being swapped from / traded in the YakSwap event"
+      - &swap_amount_out
+        name: swap_amount_out
+        description: "Amount of the bought token being swapped to / bought in the YakSwap event"
+      - &number_of_hops
+        name: number_of_hops
+        description: "Number of steps/hops the YakSwap has gone through in order to get the desired token at the best rate"
+      - &yak_adapter_swaps
+        name: yak_adapter_swaps
+        description: "JSON array containing detailed information about the individual YakAdapterSwap events which make up this YakSwap"
+
+  - name: yield_yak_yak_adapter_swaps
+    meta:
+      blockchain: avalanche_c, arbitrum
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'arbitrum', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex', 'yakadapter']
+    description: >
+        yield yak aggregator yak adapter swaps
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_index
+            - adapter_evt_index
+    columns:
+      - *blockchain
+      - *yak_router_address
+      - *block_number
+      - *block_date
+      - *block_time
+      - *tx_index
+      - *tx_hash
+      - *tx_to_address
+      - *tx_fee
+      - &swap_evt_index
+        name: swap_evt_index
+        description: "Index of the YakSwap event to which this YakAdapterSwap event is related"
+      - *number_of_swaps_in_tx
+      - *trader_address
+      - *swap_token_in_address
+      - *swap_token_out_address
+      - *swap_amount_in
+      - *swap_amount_out
+      - *number_of_hops
+      - &adapter_evt_index
+        name: adapter_evt_index
+        description: "Index of the YakAdapterSwap event in the transaction"
+      - &adapter_address
+        name: adapter_address
+        description: "Address of the adapter being used for this part of the YakSwap"
+      - &adapter_token_in_address
+        name: adapter_token_in_address
+        description: "Address of the token being sold in the YakAdapterSwap event"
+      - &adapter_token_out_address
+        name: adapter_token_out_address
+        description: "Address of the token being bought in the YakAdapterSwap event"
+      - &adapter_amount_in
+        name: adapter_amount_in
+        description: "Amount of the sold token being swapped from / traded in the YakAdapterSwap event"
+      - &adapter_amount_out
+        name: adapter_amount_out
+        description: "Amount of the bought token being swapped to / bought in the YakAdapterSwap event"
