@@ -101,7 +101,6 @@
       {% if is_incremental() %}
       AND {{incremental_predicate('l.call_block_time')}}
       {% endif %}
-      AND call_block_time >= now() - interval '7' day --qa
   ),
   max_log_index AS (
     SELECT
@@ -129,7 +128,6 @@
         , 'phoenix' as project 
         , 1 as version 
         , 'solana' as blockchain
-        , l.call_block_slot as block_slot
         , case when s.call_outer_executing_account = 'PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY' then 'direct'
             else s.call_outer_executing_account
             end as trade_source
@@ -156,7 +154,7 @@
             else l.tokenB_filled/pow(10,p.tokenB_decimals) 
             end token_sold_amount
         , p.pool_id
-        , s.call_tx_signer as trader_id
+        , s.account_trader as trader_id
         , s.call_tx_id as tx_id
         , s.call_outer_instruction_index as outer_instruction_index
         , COALESCE(s.call_inner_instruction_index,0) as inner_instruction_index
@@ -181,11 +179,9 @@
             *
             , 2 * bytearray_to_integer (bytearray_substring (call_data, 3, 1)) - 1 as side --if side = 1 then tokenB was bought, else tokenA was bought 
         FROM {{ source('phoenix_v1_solana','phoenix_v1_call_Swap') }}
-        WHERE 1=1
         {% if is_incremental() %}
-        AND {{incremental_predicate('call_block_time')}}
+        WHERE {{incremental_predicate('call_block_time')}}
         {% endif %}
-        AND call_block_time >= now() - interval '7' day --qa
     ) s ON s.call_block_slot = l.call_block_slot
         AND s.call_tx_id = l.call_tx_id
         AND s.account_market = l.market
@@ -200,7 +196,6 @@ SELECT
     , tb.version
     , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
     , tb.block_time
-    , tb.block_slot
     , tb.token_pair
     , tb.trade_source
     , tb.token_bought_symbol
