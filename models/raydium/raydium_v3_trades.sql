@@ -104,7 +104,8 @@
             {% if is_incremental() %}
             AND {{incremental_predicate('tr_1.block_time')}}
             {% else %}
-            AND tr_1.block_time >= TIMESTAMP '{{project_start_date}}'
+            -- AND tr_1.block_time >= TIMESTAMP '{{project_start_date}}'
+            AND tr_1.block_time >= now() - interval '7' day
             {% endif %}
         INNER JOIN {{ ref('tokens_solana_transfers') }} tr_2 
             ON tr_2.tx_id = sp.call_tx_id 
@@ -114,7 +115,8 @@
             {% if is_incremental() %}
             AND {{incremental_predicate('tr_2.block_time')}}
             {% else %}
-            AND tr_2.block_time >= TIMESTAMP '{{project_start_date}}'
+            -- AND tr_2.block_time >= TIMESTAMP '{{project_start_date}}'
+            AND tr_2.block_time >= now() - interval '7' day
             {% endif %}
         WHERE 1=1
             {% if is_incremental() %}

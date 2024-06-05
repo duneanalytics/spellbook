@@ -66,7 +66,8 @@
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_1.block_time')}}
             {% else %}
-            AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
+            -- AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
+            AND trs_1.block_time >= now() - interval '7' day
             {% endif %}
         INNER JOIN {{ ref('tokens_solana_transfers') }} trs_2 
             ON trs_2.tx_id = sp.call_tx_id 
@@ -78,7 +79,8 @@
             {% if is_incremental() %}
             AND {{incremental_predicate('trs_2.block_time')}}
             {% else %}
-            AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
+            -- AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
+            AND trs_2.block_time >= now() - interval '7' day
             {% endif %}
         LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_2 ON tk_2.address = trs_2.from_token_account
         LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_1 ON dec_1.token_mint_address = trs_1.token_mint_address
@@ -129,7 +131,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solan
     {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
-    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
+    -- AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
+    AND p_bought.minute >= now() - interval '7' day
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_sold.minute 
@@ -137,5 +140,6 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     {% if is_incremental() %}
     AND {{incremental_predicate('p_sold.minute')}}
     {% else %}
-    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
+    -- AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
+    AND p_sold.minute >= now() - interval '7' day
     {% endif %}
