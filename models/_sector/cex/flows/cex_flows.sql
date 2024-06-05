@@ -45,7 +45,7 @@ FROM (
         , amount
         , amount_raw
         , amount_usd
-        , from
+        , "from"
         , to
         , tx_from
         , tx_to
