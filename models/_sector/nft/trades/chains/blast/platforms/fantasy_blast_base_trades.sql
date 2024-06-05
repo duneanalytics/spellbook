@@ -62,28 +62,33 @@ WITH trades AS (
     {% endif %}
     )
 
-SELECT 'blast' AS blockchain
-, 'fantasy' AS project
-, 'v1' AS project_version
-, block_time
-, block_date
-, date_trunc('month', block_time) AS block_month
-, nft_token_id
-, 'secondary' AS trade_type
-, nft_amount
-, trade_category
-, seller
-, buyer
-, price_raw
-, currency_contract
-, nft_contract_address
-, tx_hash
-, project_contract_address
-, block_number
-, tx_from
-, tx_to
-, CAST(0.015*CAST(price_raw AS double) AS BIGINT) AS platform_fee_amount_raw
-, CAST(0.015*CAST(price_raw AS double) AS BIGINT) AS royalty_fee_amount_raw
-, CAST(NULL AS VARBINARY) AS royalty_fee_address
-, 0x8ab15fe88a00b03724ac91ee4ee1f998064f2e31 AS platform_fee_address
-FROM trades
+    , trades_final AS (
+    SELECT 'blast' AS blockchain
+    , 'fantasy' AS project
+    , 'v1' AS project_version
+    , block_time
+    , block_date
+    , date_trunc('month', block_time) AS block_month
+    , nft_token_id
+    , 'secondary' AS trade_type
+    , nft_amount
+    , trade_category
+    , seller
+    , buyer
+    , price_raw
+    , currency_contract
+    , nft_contract_address
+    , tx_hash
+    , project_contract_address
+    , block_number
+    , sub_tx_trade_id
+    --, tx_from
+    --, tx_to
+    , CAST(0.015*CAST(price_raw AS double) AS BIGINT) AS platform_fee_amount_raw
+    , CAST(0.015*CAST(price_raw AS double) AS BIGINT) AS royalty_fee_amount_raw
+    , CAST(NULL AS VARBINARY) AS royalty_fee_address
+    , 0x8ab15fe88a00b03724ac91ee4ee1f998064f2e31 AS platform_fee_address
+    FROM trades
+    )
+
+{{ add_nft_tx_data('trades_final', 'base') }}
