@@ -91,7 +91,7 @@ models:
         tests:
           - unique:
               config:
-                where: "{{ column_name }} is not null and block_date >= NOW() - interval '2' day"
+                where: "unique_trade_id is not null and block_date >= NOW() - interval '2' day"
       - &buyer_first_funded_by
         name: buyer_first_funded_by
         description: "Which wallet first funded the buyer's wallet in ETH"
