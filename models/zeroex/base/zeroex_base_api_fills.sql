@@ -20,7 +20,7 @@
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
 
--- Test Query here: https://dune.com/queries/2755622  / https://dune.com/queries/2755822
+-- Test Query here: https://dune.com/queries/2834419
 
 WITH zeroex_tx AS (
     SELECT tx_hash,
@@ -36,7 +36,7 @@ WITH zeroex_tx AS (
                                                                                    FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16)
                                                                                    FOR 20)
                         END AS affiliate_address,
-                        case when  (varbinary_position(input,0x3d8d4082) <> 0  ) then 1 else 0 end as is_gasless
+                        case when  (varbinary_position(input,0x3d8d4082) <> 0  or varbinary_position(input,0x4f948110) <> 0  ) then 1 else 0 end as is_gasless
         FROM {{ source('base', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -179,7 +179,7 @@ SELECT
         maker,
         CASE
             WHEN is_gasless = 1 then case when (varbinary_substring(data,177,19)  ) = 0x00000000000000000000000000000000000000 then varbinary_substring(data,81,20) else (varbinary_substring(data,177,20)  )  end
-            WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN varbinary_substring(data,177,20)
+            WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN tx."from"
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
          taker_token,
