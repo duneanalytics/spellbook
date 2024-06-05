@@ -1,11 +1,12 @@
-{{ 
+{{
     config(
-        
+
         alias = 'erc1155',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['tx_hash', 'transfer_type', 'wallet_address', 'token_address', 'token_id', 'amount'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
@@ -37,7 +38,7 @@ sent_transfers as (
     from {{ source('erc1155_celo', 'evt_transfersingle') }}
     where 1=1
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        and evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('evt_block_time') }}
         {% endif %}
     union all
     select
@@ -52,7 +53,7 @@ sent_transfers as (
     from transfer_batch
     where 1=1
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        and evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 ),
 
@@ -69,7 +70,7 @@ received_transfers as (
     from {{ source('erc1155_celo', 'evt_transfersingle') }}
     where 1=1
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        and evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('evt_block_time') }}
         {% endif %}
     union all
     select
@@ -84,7 +85,7 @@ received_transfers as (
     from transfer_batch
     where 1=1
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        and evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('evt_block_time') }}
         {% endif %}
 )
 

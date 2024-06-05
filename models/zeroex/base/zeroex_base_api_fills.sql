@@ -1,5 +1,5 @@
 {{  config(
-    
+
     schema = 'zeroex_base',
         alias = 'api_fills',
         materialized='incremental',
@@ -8,22 +8,24 @@
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         post_hook='{{ expose_spells(\'["base"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantum"]\') }}'
-        
+
     )
 }}
 
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
 
--- Test Query here: https://dune.com/queries/2755622  / https://dune.com/queries/2755822 
+-- Test Query here: https://dune.com/queries/2755622  / https://dune.com/queries/2755822
 
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address
+           max(affiliate_address) as affiliate_address,
+           is_gasless
     FROM (
        SELECT tr.tx_hash,
                 CASE
@@ -33,15 +35,16 @@ WITH zeroex_tx AS (
                             WHEN bytearray_position(INPUT, 0xfbc019a7) <> 0 THEN SUBSTRING(INPUT
                                                                                    FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16)
                                                                                    FOR 20)
-                        END AS affiliate_address
+                        END AS affiliate_address,
+                        case when  (varbinary_position(input,0x3d8d4082) <> 0  ) then 1 else 0 end as is_gasless
         FROM {{ source('base', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
-                0xdef1c0ded9bec7f1a1670819833240f027b25eff, 
+                0xdef1c0ded9bec7f1a1670819833240f027b25eff,
                 -- forwarder addresses
                 0x6958f5e95332d93d21af0d7b9ca85b8212fee0a5,
                 0x4aa817c6f383c8e8ae77301d18ce48efb16fd2be,
-                0x4ef40d1bf0983899892946830abf99eca2dbc5ce, 
+                0x4ef40d1bf0983899892946830abf99eca2dbc5ce,
                 -- exchange proxy
                 0xdef189deaef76e379df891899eb5a00a94cbc250
                 )
@@ -49,20 +52,20 @@ WITH zeroex_tx AS (
                     bytearray_position(INPUT, 0x869584cd ) <> 0
                     OR bytearray_position(INPUT, 0xfbc019a7 ) <> 0
                 )
-                
+
                 {% if is_incremental() %}
-                AND block_time >= date_trunc('day', now() - interval '7' day) 
+                AND {{ incremental_predicate('block_time') }}
                 {% endif %}
                 {% if not is_incremental() %}
                 AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
                 {% endif %}
     ) temp
-    group by tx_hash
+    group by tx_hash , is_gasless
 
 ),
 
 ERC20BridgeTransfer AS (
-    SELECT 
+    SELECT
             logs.tx_hash,
             logs.block_number                      AS block_number,
             INDEX                                   AS evt_index,
@@ -77,21 +80,22 @@ ERC20BridgeTransfer AS (
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
             TRUE                                    AS swap_flag,
-            FALSE                                   AS matcha_limit_order_flag
+            FALSE                                   AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('base', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
-    
+
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('block_time') }}
     {% endif %}
     {% if not is_incremental() %}
     AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
     {% endif %}
 
-), 
+),
 BridgeFill AS (
-    SELECT 
+    SELECT
             logs.tx_hash,
             logs.block_number                      AS block_number,
             INDEX                                           AS evt_index,
@@ -106,21 +110,22 @@ BridgeFill AS (
             'BridgeFill'                                    AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
-            FALSE                                           AS matcha_limit_order_flag
+            FALSE                                           AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('base', 'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9
         AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not is_incremental() %}
         AND block_time >= cast('{{zeroex_v4_start_date}}' as date)
         {% endif %}
-), 
+),
 NewBridgeFill AS (
-    SELECT 
+    SELECT
             logs.tx_hash as tx_hash,
             logs.block_number                      AS block_number,
             INDEX                                           AS evt_index,
@@ -135,14 +140,15 @@ NewBridgeFill AS (
             'BridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
-            FALSE                                           AS matcha_limit_order_flag
+            FALSE                                           AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('base' ,'logs') }} logs
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
     WHERE topic0 = 0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8
         AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
 
         {% if is_incremental() %}
-        AND block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not is_incremental() %}
         AND block_time >= cast('{{zeroex_v4_start_date}}' as date)
@@ -150,19 +156,19 @@ NewBridgeFill AS (
 ),
 
 all_tx AS (
-    
+
     SELECT *
     FROM ERC20BridgeTransfer
     UNION ALL SELECT *
     FROM BridgeFill
-    UNION ALL 
+    UNION ALL
     SELECT *
-    FROM NewBridgeFill 
-    
-    
+    FROM NewBridgeFill
+
+
 )
 
-SELECT 
+SELECT
         all_tx.tx_hash,
         all_tx.block_number,
         all_tx.evt_index,
@@ -172,7 +178,8 @@ SELECT
         cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
         maker,
         CASE
-             WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN tx."from"
+            WHEN is_gasless = 1 then case when (varbinary_substring(data,177,19)  ) = 0x00000000000000000000000000000000000000 then varbinary_substring(data,81,20) else (varbinary_substring(data,177,20)  )  end
+            WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN varbinary_substring(data,177,20)
             ELSE taker
         END AS taker, -- fix the user masked by ProxyContract issue
          taker_token,
@@ -201,7 +208,7 @@ FROM all_tx
 INNER JOIN {{ source('base', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
 
 {% if is_incremental() %}
-AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('tx.block_time') }}
 {% endif %}
 {% if not is_incremental() %}
 AND tx.block_time >= cast('{{zeroex_v3_start_date}}' as date)
@@ -215,7 +222,7 @@ AND CASE
 AND tp.blockchain = 'base'
 
 {% if is_incremental() %}
-AND tp.minute >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('tp.minute') }}
 {% endif %}
 {% if not is_incremental() %}
 AND tp.minute >= cast('{{zeroex_v3_start_date}}' as date)
@@ -229,7 +236,7 @@ AND CASE
 AND mp.blockchain = 'base'
 
 {% if is_incremental() %}
-AND mp.minute >= date_trunc('day', now() - interval '7' day)
+AND {{ incremental_predicate('mp.minute') }}
 {% endif %}
 {% if not is_incremental() %}
 AND mp.minute >= cast('{{zeroex_v3_start_date}}' as date)

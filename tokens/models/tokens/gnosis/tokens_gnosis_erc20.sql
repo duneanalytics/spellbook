@@ -7794,4 +7794,5 @@ FROM (VALUES
     , ( 0x4d18815d14fe5c3304e87b3fa18318baa5c23820, 'SAFE', 18)    
     , ( 0x270ba1f35d8b87510d24f693fccc0da02e6e4eeb, 'stataGnoUSDC', 6)       
     , ( 0x1a8805194d0ef2f73045a00c70da399d9e74221c, 'GNOBBY', 18)    
+    , ( 0xF4F3c1666E750E014DE65c50d0e98B1263E678B8, 'SLX', 18)        
 ) AS temp_table (contract_address, symbol, decimals)

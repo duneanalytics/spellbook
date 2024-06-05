@@ -1,5 +1,5 @@
 {{  config(
-        
+
         schema = 'zeroex_base',
         alias = 'api_fills_deduped',
         materialized='incremental',
@@ -7,7 +7,8 @@
         unique_key = ['block_date', 'tx_hash', 'evt_index'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
-        incremental_strategy='merge'
+        incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
@@ -20,13 +21,13 @@ AS
            , *
     FROM {{ ref('zeroex_base_api_fills') }}
     WHERE 1=1
-    AND swap_flag = true 
+    AND swap_flag = true
     {% if is_incremental() %}
-    AND block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('block_time') }}
     {% endif %}
     {% if not is_incremental() %}
     AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
-    {% endif %}    
+    {% endif %}
 )
 , fills_first_last
 AS
@@ -54,7 +55,7 @@ AS
         , MAX(CASE WHEN taker_consider_flag = 0 THEN NULL ELSE taker_token END )            AS taker_token
         , MAX(CASE WHEN maker_consider_flag = 0 THEN NULL ELSE maker_token END )            AS maker_token
         , MAX(CASE WHEN taker_consider_flag = 0 THEN NULL ELSE taker_symbol END )           AS taker_symbol
-        , MAX(CASE WHEN maker_consider_flag = 0 THEN NULL ELSE maker_symbol END )           AS maker_symbol        
+        , MAX(CASE WHEN maker_consider_flag = 0 THEN NULL ELSE maker_symbol END )           AS maker_symbol
         , MAX(CASE WHEN taker_consider_flag = 0 THEN NULL ELSE taker_token_amount END)      AS taker_token_amount
         , MAX(CASE WHEN maker_consider_flag = 0 THEN NULL ELSE maker_token_amount END)      AS maker_token_amount
         , MAX(CASE WHEN taker_consider_flag = 0 THEN NULL ELSE taker_token_amount_raw END)  AS taker_token_amount_raw
@@ -66,7 +67,7 @@ AS
 SELECT  a.blockchain
       , '0x API'  as project
       , cast(null as varchar(10)) as version
-      
+
       , a.block_date
       , a.block_month
       , a.block_time
@@ -76,7 +77,7 @@ SELECT  a.blockchain
         WHEN LOWER(b.taker_symbol) > LOWER(b.maker_symbol)
         THEN CONCAT(COALESCE(b.maker_symbol, ''), '-', COALESCE(b.taker_symbol, ''))
         ELSE CONCAT(COALESCE(b.taker_symbol, ''), '-', COALESCE(b.maker_symbol, ''))
-        END AS token_pair   
+        END AS token_pair
       , b.taker_token_amount
       , b.maker_token_amount
       , b.taker_token_amount_raw AS taker_token_amount_raw
@@ -95,7 +96,7 @@ SELECT  a.blockchain
       , a.type
       , a.swap_flag
       , b.fills_within
-      , a.contract_address 
+      , a.contract_address
 FROM fills_with_tx_fill_number a
 INNER JOIN deduped_bridge_fills b
     ON a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index

@@ -1,10 +1,11 @@
 {{ config(
-    
+
     alias = 'donations',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['blockchain', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -41,7 +42,7 @@ WITH gitcoin_donations AS (
     LEFT JOIN {{ source('tokens_ethereum', 'erc20') }} tok
         ON tok.contract_address=gd.token
     {% if is_incremental() %}
-    WHERE gd.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('gd.evt_block_time') }}
     {% endif %}
     )
 
