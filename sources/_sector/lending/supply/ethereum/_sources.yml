@@ -16,6 +16,7 @@ sources:
     tables:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
+      - name: Pool_evt_ReserveDataUpdated
 
   - name: compound_v2_ethereum
     tables:

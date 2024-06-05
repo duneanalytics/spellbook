@@ -1,12 +1,13 @@
 {{  config(
         alias='eth_flow_orders',
-        
+
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash', 'order_uid'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
@@ -53,8 +54,8 @@ eth_flow_orders as (
         and call_tx_hash = evt_tx_hash
         and call_success = true
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
-    AND call_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
+    AND {{ incremental_predicate('call_block_time') }}
     {% endif %}
 )
 

@@ -1,16 +1,16 @@
 {{
   config(
-    
+
     alias='automation_fulfilled_transactions',
     partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['tx_hash', 'tx_index', 'node_address']
+    unique_key=['tx_hash', 'tx_index', 'node_address'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
   avalanche_c_usd AS (
@@ -22,8 +22,8 @@ WITH
     WHERE
       symbol = 'AVAX'
       {% if is_incremental() %}
-        AND minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
+        AND {{ incremental_predicate('minute') }}
+      {% endif %}
   ),
   automation_fulfilled_transactions AS (
     SELECT
@@ -38,12 +38,12 @@ WITH
       {{ source('avalanche_c', 'transactions') }} tx
       RIGHT JOIN {{ ref('chainlink_avalanche_c_automation_upkeep_performed_logs') }} automation_upkeep_performed_logs ON automation_upkeep_performed_logs.tx_hash = tx.hash
       {% if is_incremental() %}
-        AND automation_upkeep_performed_logs.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND {{ incremental_predicate('automation_upkeep_performed_logs.block_time') }}
       {% endif %}
       LEFT JOIN avalanche_c_usd ON date_trunc('minute', tx.block_time) = avalanche_c_usd.block_time
     {% if is_incremental() %}
-      WHERE tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-    {% endif %}      
+      WHERE {{ incremental_predicate('tx.block_time') }}
+    {% endif %}
     GROUP BY
       tx.hash,
       tx.index,

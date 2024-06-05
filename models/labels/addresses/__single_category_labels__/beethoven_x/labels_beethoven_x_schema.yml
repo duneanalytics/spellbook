@@ -28,6 +28,9 @@ models:
       - &name
         name: name
         description: 'Label name of pool containg the token symbols and their respective weights (if applicable)'
+      - &poolname
+        name: poolname
+        description: 'Label name of pool set at contract creation'
       - &category
         name: category
         description: 'Label category'

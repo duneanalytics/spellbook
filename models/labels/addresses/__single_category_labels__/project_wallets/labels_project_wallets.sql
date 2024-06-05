@@ -1,5 +1,5 @@
 {{config(
-        
+
         alias = 'project_wallets',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
@@ -20,7 +20,7 @@ SELECT
     'project_wallets' AS model_name,
     'identifier' AS label_type
 
-FROM {{ ref('addresses_optimism_grants_funding') }}
+FROM {{ source('addresses_optimism', 'grants_funding') }}
 GROUP BY 1,2,3
 
 -- UNION ALL
