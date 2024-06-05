@@ -1,6 +1,6 @@
 {{ config(
-    
-        alias = 'events_contracts_positions'
+        schema = 'tigris_polygon'
+        , alias = 'events_contracts_positions'
         )
 }}
 

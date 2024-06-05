@@ -13,6 +13,8 @@ WITH tagged_entities AS (
         (0x617c8de5bde54ffbb8d92716cc947858ca38f582, 'MEV Protocol', 'Liquid Staking')
         , (0xcDBF58a9A9b54a2C43800c50C7192946dE858321, 'Bitpanda', 'CEX')
         , (0xb10edd6fa6067dba8d4326f1c8f0d1c791594f13, 'Bitpanda', 'CEX')
+        , (0xf197c6f2ac14d25ee2789a73e4847732c7f16bc9, 'Bitpanda', 'CEX')
+        , (0xba1951df0c0a52af23857c5ab48b4c43a57e7ed1, 'Golem Foundation', 'Staking Pool')
         , (0x70D5cCC14a1a264c05Ff48B3ec6751b0959541aA, 'Binance US', 'CEX')
         ) 
         x (funds_origin, entity, category)

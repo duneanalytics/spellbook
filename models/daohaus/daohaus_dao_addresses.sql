@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'daohaus',
     alias = 'dao_addresses',
     materialized = 'view',
     file_format = 'delta',

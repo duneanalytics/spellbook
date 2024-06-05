@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'ens',
     alias = 'node_names',
     materialized = 'incremental',
     file_format = 'delta',
