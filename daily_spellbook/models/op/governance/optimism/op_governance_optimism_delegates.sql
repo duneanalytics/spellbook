@@ -1,7 +1,6 @@
 {{ config(
      schema = 'op_governance_optimism'
         , alias = 'delegates'
-        , tags=['prod_exclude']
         , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "project",
                                   "op_governance",
@@ -109,5 +108,5 @@ SELECT *
 FROM OP_delegates_table
 
 GROUP BY block_time, tx_hash, evt_index, delegate, current_voting_power, previous_voting_power,
-power_diff,voting_power_change, total_voting_power, voting_power_share, number_of_delegators, 
+power_diff,voting_power_change, total_voting_power, voting_power_share, number_of_delegators,
 total_delegators, total_delegators_share
