@@ -67,6 +67,10 @@ token2022_fee_state as (
             , null as fee
             , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_transfer') }}
+      WHERE 1=1 
+      {% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
 
       UNION ALL
 
@@ -79,6 +83,10 @@ token2022_fee_state as (
             , null as fee
             , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_transferChecked') }}
+      WHERE 1=1 
+      {% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
 
       UNION ALL
 
@@ -91,6 +99,10 @@ token2022_fee_state as (
             , null as fee
             , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_mintTo') }}
+      WHERE 1=1 
+      {% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
 
       UNION ALL
 
@@ -103,6 +115,10 @@ token2022_fee_state as (
             , null as fee
             , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_mintToChecked') }}
+      WHERE 1=1 
+      {% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
 
       UNION ALL
 
@@ -115,6 +131,10 @@ token2022_fee_state as (
             , null as fee
             , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_burn') }}
+      WHERE 1=1 
+      {% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
 
       UNION ALL
 
@@ -127,6 +147,10 @@ token2022_fee_state as (
             , null as fee
             , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_burnChecked') }}
+      WHERE 1=1 
+      {% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
 
       --token2022. Most mint and account extensions still use the parent transferChecked instruction, hooks are excecuted after and interest-bearing is precalculated.
       UNION ALL
@@ -154,6 +178,10 @@ token2022_fee_state as (
                   , row_number() over (partition by tr.call_tx_id,  tr.call_outer_instruction_index,  tr.call_inner_instruction_index order by f.fee_time desc) as latest_fee
             FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferChecked') }} tr
             LEFT JOIN token2022_fee_state f ON tr.account_tokenMint = f.account_mint AND tr.call_block_time >= f.fee_time
+            WHERE 1=1 
+            {% if is_incremental() %}
+            AND {{incremental_predicate('tr.call_block_time')}}
+            {% endif %}
       ) WHERE latest_fee = 1
 
       UNION ALL
@@ -167,6 +195,10 @@ token2022_fee_state as (
             , null as fee
             , 'token2022' as token_version
       FROM {{ source('spl_token_2022_solana','spl_token_2022_call_mintTo') }}
+      WHERE 1=1 
+      {% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
 
       UNION ALL
 
@@ -179,6 +211,10 @@ token2022_fee_state as (
             , null as fee
             , 'token2022' as token_version
       FROM {{ source('spl_token_2022_solana','spl_token_2022_call_mintToChecked') }}
+      WHERE 1=1 
+      {% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
 
       UNION ALL
 
@@ -191,6 +227,10 @@ token2022_fee_state as (
             , null as fee
             , 'token2022' as token_version
       FROM {{ source('spl_token_2022_solana','spl_token_2022_call_burn') }}
+      WHERE 1=1 
+      {% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
 
       UNION ALL
 
@@ -203,6 +243,10 @@ token2022_fee_state as (
             , null as fee
             , 'token2022' as token_version
       FROM {{ source('spl_token_2022_solana','spl_token_2022_call_burnChecked') }}
+      WHERE 1=1 
+      {% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
 
       --token2022 transferFeeExtension has some extra complications. It's the only extension with its own transferChecked wrapper (confidential transfers will have this too)      
       UNION ALL
@@ -217,6 +261,9 @@ token2022_fee_state as (
             , 'token2022' as token_version
       FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
       WHERE bytearray_substring(call_data,1,2) = 0x1a01 --https://github.com/solana-labs/solana-program-library/blob/8f50c6fabc6ec87ada229e923030381f573e0aed/token/program-2022/src/extension/transfer_fee/instruction.rs#L284
+      {% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
 ) 
 
 SELECT
@@ -242,7 +289,4 @@ FROM base tr
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.account_source 
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.account_destination
 WHERE 1=1
-{% if is_incremental() %}
-AND {{incremental_predicate('call_block_time')}}
-{% endif %}
 -- AND call_block_time > now() - interval '90' day --for faster CI testing
