@@ -1,4 +1,4 @@
-name: DBT Tokens run
+name: DBT NFT run
 
 on:
   workflow_dispatch:
