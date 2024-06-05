@@ -6,7 +6,9 @@
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['log_index','tx_id','output_mint','input_mint'],
+        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
         post_hook='{{ expose_spells(\'["jupiter"]\',
                                     "project",
                                     "jupiter_solana",
@@ -177,8 +179,14 @@ LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_2 ON tk_2.token_mint_address = 
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_1 ON p_1.blockchain = 'solana' 
     AND date_trunc('minute', l.block_time) = p_1.minute 
     AND l.input_mint = toBase58(p_1.contract_address)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('p_1.block_time') }}
+    {% endif %}
 LEFT JOIN {{ ref('prices_usd_forward_fill') }}  p_2 ON p_2.blockchain = 'solana' 
     AND date_trunc('minute', l.block_time) = p_2.minute 
     AND l.output_mint = toBase58(p_2.contract_address)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('p_2.block_time') }}
+    {% endif %}
 WHERE l.input_mint not in ('4PfN9GDeF9yQ37qt9xCPsQ89qktp1skXfbsZ5Azk82Xi')
 AND l.output_mint not in ('4PfN9GDeF9yQ37qt9xCPsQ89qktp1skXfbsZ5Azk82Xi')
