@@ -56,6 +56,9 @@ WITH
         FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
         LEFT JOIN {{ source('prices', 'usd') }} tp ON
             date_trunc('minute', evt_block_time) = tp.minute and  tp.blockchain = 'optimism'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('tp.minute') }}
+            {% endif %}
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0x4200000000000000000000000000000000000006
@@ -63,6 +66,9 @@ WITH
                 END = tp.contract_address
         LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'optimism'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('mp.minute') }}
+            {% endif %}
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.makerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0x4200000000000000000000000000000000000006
@@ -116,6 +122,9 @@ WITH
       FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
       LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'optimism'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('tp.minute') }}
+            {% endif %}
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0x4200000000000000000000000000000000000006
@@ -123,6 +132,9 @@ WITH
               END = tp.contract_address
       LEFT JOIN {{ source('prices', 'usd') }} mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'optimism'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('mp.minute') }}
+            {% endif %}
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.makerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0x4200000000000000000000000000000000000006
@@ -175,6 +187,9 @@ WITH
         FROM {{ source('zeroex_optimism', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'optimism'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('tp.minute') }}
+            {% endif %}
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0x4200000000000000000000000000000000000006
@@ -182,6 +197,9 @@ WITH
               END = tp.contract_address
       LEFT JOIN {{ source('prices', 'usd') }} mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'optimism'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('mp.minute') }}
+            {% endif %}
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.makerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0x4200000000000000000000000000000000000006
