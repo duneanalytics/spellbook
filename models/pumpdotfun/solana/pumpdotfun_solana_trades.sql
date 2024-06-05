@@ -19,7 +19,24 @@
 {% set project_start_date = '2024-01-14' %} --grabbed program deployed at time (account created at)
 
 with 
-    swaps as (
+    bonding_curves as (
+        SELECT
+            account_arguments[1] as token_mint_address
+            , account_arguments[3] as bonding_curve 
+            , account_arguments[4] as bonding_curve_vault
+        FROM {{ source('solana','instruction_calls') }}
+        WHERE executing_account = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P'
+            AND bytearray_substring(data,1,8) = 0x181ec828051c0777 --Create https://solscan.io/tx/2Vfq4gS9nq2jvpmZSxVXJ3uHGeheENXetwUus6KnhBzFu23Brqbt5EoNiTLds6jr72yZYGJ9YbMDG1BYKMRe3hSQ 
+            and tx_success = true
+        {% if is_incremental() %}
+        AND {{incremental_predicate('block_time')}}
+        {% else %}
+        AND block_time >= TIMESTAMP '{{project_start_date}}'
+        -- and block_time >= now() - interval '7' day
+        {% endif %}
+    )
+    
+    , swaps as (
         SELECT
             to_base58(bytearray_substring(data,1+16,32)) as token_mint_address
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(data,1+16+32,8))) as sol_amount
@@ -66,6 +83,7 @@ with
                 when lower(tk.symbol) > lower(tk_sol.symbol) then concat(tk_sol.symbol, '-', tk.symbol)
                 else concat(tk.symbol, '-', tk_sol.symbol)
             end as token_pair
+            --bought
             , case when is_buy = 1 then COALESCE(tk.symbol, sp.token_mint_address)
                 else COALESCE(tk_sol.symbol, 'So11111111111111111111111111111111111111112') 
                 end as token_bought_symbol 
@@ -78,11 +96,12 @@ with
             , case when is_buy = 1 then token_amount/pow(10,tk.decimals)
                 else sol_amount/pow(10,tk_sol.decimals) 
                 end as token_bought_amount
+            --sold
             , case when is_buy = 0 then COALESCE(tk.symbol, sp.token_mint_address)
                 else COALESCE(tk_sol.symbol, 'So11111111111111111111111111111111111111112') 
                 end as token_sold_symbol 
-            , case when is_buy = 1 then 'So11111111111111111111111111111111111111112'
-                else sp.token_mint_address
+            , case when is_buy = 0 then sp.token_mint_address
+                else 'So11111111111111111111111111111111111111112'
                 end as token_sold_mint_address
             , case when is_buy = 0 then token_amount
                 else sol_amount
@@ -92,7 +111,8 @@ with
                 end as token_sold_amount
             , sp.sol_amount*0.01 as sol_fee_raw
             , sp.sol_amount/pow(10,tk_sol.decimals)*0.01 as sol_fee
-            , cast(null as varchar) as pool_id
+            , cast(bc.bonding_curve as varchar) as pool_id
+            , '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P' as project_main_id
             , sp.sol_reserves as sol_reserves_raw
             , sp.sol_reserves/pow(10,tk_sol.decimals) as sol_reserves
             , sp.token_reserves as token_reserves_raw
@@ -103,11 +123,16 @@ with
             , sp.inner_instruction_index
             , sp.tx_index
             , sp.block_slot
-            , cast(null as varchar) as token_bought_vault
-            , cast(null as varchar) as token_sold_vault
+            , cast(case when is_buy = 1 then bc.bonding_curve --sol is just held on the curve account
+                else bonding_curve_vault
+                end as varchar) as token_bought_vault
+            , cast(case when is_buy = 0 then bc.bonding_curve --sol is just held on the curve account
+                else bonding_curve_vault
+                end as varchar) as token_sold_vault
         FROM swaps sp
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tk ON tk.token_mint_address = sp.token_mint_address
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_sol ON tk_sol.token_mint_address = 'So11111111111111111111111111111111111111112'
+        LEFT JOIN bonding_curves bc ON bc.token_mint_address = sp.token_mint_address
     )
     
 SELECT    
@@ -140,6 +165,7 @@ SELECT
     , tb.token_sold_vault
     , tb.token_bought_vault
     , tb.pool_id as project_program_id
+    , tb.project_main_id
     , tb.trader_id
     , tb.tx_id
     , tb.outer_instruction_index
