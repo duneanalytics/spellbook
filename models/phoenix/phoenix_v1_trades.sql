@@ -184,7 +184,7 @@
         {% if is_incremental() %}
         WHERE {{incremental_predicate('call_block_time')}}
         {% endif %}
-        AND call_block_time >= now() - interval '7' day --qa
+        WHERE call_block_time >= now() - interval '7' day --qa
     ) s ON s.call_block_slot = l.call_block_slot
         AND s.call_tx_id = l.call_tx_id
         AND s.account_market = l.market
