@@ -10,4 +10,4 @@
     )
 }}
 
-{{enrich_bridge_flows(ref('bridge_raw_trades'))}}
+{{enrich_bridge_flows(ref('bridge_raw_flows'))}}
