@@ -13,7 +13,7 @@ with
 
 src_LendingPool_evt_Borrow as (
   select *
-  from {{ source(project_decoded_as + '_' + blockchain, 'LendingPool_evt_Borrow') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_Borrow') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -21,7 +21,7 @@ src_LendingPool_evt_Borrow as (
 
 src_LendingPool_evt_Repay as (
   select *
-  from {{ source(project_decoded_as + '_' + blockchain, 'LendingPool_evt_Repay') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_Repay') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -29,7 +29,7 @@ src_LendingPool_evt_Repay as (
 
 src_LendingPool_evt_LiquidationCall as (
   select *
-  from {{ source(project_decoded_as + '_' + blockchain, 'LendingPool_evt_LiquidationCall') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_LiquidationCall') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -134,7 +134,7 @@ with
 
 src_LendingPool_evt_Borrow as (
   select *
-  from {{ source(project_decoded_as + '_' + blockchain, 'LendingPool_evt_Borrow') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_Borrow') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -142,7 +142,7 @@ src_LendingPool_evt_Borrow as (
 
 src_LendingPool_evt_Repay as (
   select *
-  from {{ source(project_decoded_as + '_' + blockchain, 'LendingPool_evt_Repay') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_Repay') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -150,7 +150,7 @@ src_LendingPool_evt_Repay as (
 
 src_LendingPool_evt_LiquidationCall as (
   select *
-  from {{ source(project_decoded_as + '_' + blockchain, 'LendingPool_evt_LiquidationCall') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_LiquidationCall') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -247,7 +247,7 @@ with
 
 src_LendingPool_evt_Borrow as (
   select *
-  from {{ source(project_decoded_as + '_' + blockchain, decoded_contract_name + '_evt_Borrow') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_Borrow') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -255,7 +255,7 @@ src_LendingPool_evt_Borrow as (
 
 src_LendingPool_evt_Repay as (
   select *
-  from {{ source(project_decoded_as + '_' + blockchain, decoded_contract_name + '_evt_Repay') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_Repay') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -263,7 +263,7 @@ src_LendingPool_evt_Repay as (
 
 src_LendingPool_evt_LiquidationCall as (
   select *
-  from {{ source(project_decoded_as + '_' + blockchain, decoded_contract_name + '_evt_LiquidationCall') }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_LiquidationCall') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}

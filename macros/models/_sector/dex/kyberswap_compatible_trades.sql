@@ -21,8 +21,8 @@ WITH dexs AS
             t.contract_address AS project_contract_address,
             t.evt_tx_hash AS tx_hash,
             t.evt_index
-        FROM {{ source('kyber_' + blockchain, src["source_evt_swap"]) }} t
-            INNER JOIN {{ source('kyber_' + blockchain, src["source_evt_factory"]) }} p ON t.contract_address = p.pool
+        FROM {{ source('kyber_' ~ blockchain, src["source_evt_swap"]) }} t
+            INNER JOIN {{ source('kyber_' ~ blockchain, src["source_evt_factory"]) }} p ON t.contract_address = p.pool
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('t.evt_block_time') }}
         {% endif %}

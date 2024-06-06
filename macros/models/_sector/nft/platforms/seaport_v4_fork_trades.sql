@@ -515,7 +515,7 @@ select
         ,token_symbol as currency_symbol
         ,token_alternative_symbol as currency_contract
         ,token_contract_address as original_currency_contract
-        ,price_token_decimals as currency_decimals   -- in case calculating royalty1+4
+        ,price_token_decimals as currency_decimals   -- in case calculating royalty1~4
 
         -- project info (platform or exchange)
         ,platform_contract_address as project_contract_address

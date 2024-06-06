@@ -34,7 +34,7 @@ base_token_dexs AS (
             s.contract_address AS project_contract_address,
             s.evt_tx_hash AS tx_hash,
             s.evt_index
-        FROM {{ source(decoded_project + '_' + blockchain, sell_base_token_source )}} s
+        FROM {{ source(decoded_project ~ '_' ~ blockchain, sell_base_token_source )}} s
         LEFT JOIN markets m ON s.contract_address = m.market_contract_address
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('s.evt_block_time') }}
@@ -60,7 +60,7 @@ base_token_dexs AS (
             b.contract_address AS project_contract_address,
             b.evt_tx_hash AS tx_hash,
             b.evt_index
-        FROM {{ source(decoded_project + '_' + blockchain, buy_base_token_source )}} b
+        FROM {{ source(decoded_project ~ '_' ~ blockchain, buy_base_token_source )}} b
         LEFT JOIN markets m ON b.contract_address = m.market_contract_address
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('b.evt_block_time') }}
@@ -84,7 +84,7 @@ other_dexs AS (
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
             evt_index
-        FROM {{ source(decoded_project + '_' + blockchain, src["source"] )}}
+        FROM {{ source(decoded_project ~ '_' ~ blockchain, src["source"] )}}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}

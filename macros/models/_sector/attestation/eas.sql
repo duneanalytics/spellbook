@@ -14,7 +14,7 @@ with
 
 src_SchemaRegistry_evt_Registered as (
   select *
-  from {{ source(decoded_project_name + '_' + blockchain, 'SchemaRegistry_evt_Registered') }}
+  from {{ source(decoded_project_name ~ '_' ~ blockchain, 'SchemaRegistry_evt_Registered') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -22,7 +22,7 @@ src_SchemaRegistry_evt_Registered as (
 
 src_SchemaRegistry_call_register as (
   select *
-  from {{ source(decoded_project_name + '_' + blockchain, 'SchemaRegistry_call_register') }}
+  from {{ source(decoded_project_name ~ '_' ~ blockchain, 'SchemaRegistry_call_register') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('call_block_time') }}
   {% endif %}
@@ -71,7 +71,7 @@ select
   block_time,
   tx_hash,
   evt_index
-from {{ ref(project + '_' + blockchain + '_schemas') }} sr
+from {{ ref(project ~ '_' ~ blockchain ~ '_schemas') }} sr
   cross join unnest(sr.schema_array) with ordinality as se (element, ordinality)
 where cardinality(se.element) = 2 -- only inlcude valid schemas
 
@@ -95,19 +95,19 @@ with
 
 src_EAS_evt_Attested as (
   select *
-  from {{ source(decoded_project_name + '_' + blockchain, 'EAS_evt_Attested') }}
+  from {{ source(decoded_project_name ~ '_' ~ blockchain, 'EAS_evt_Attested') }}
 ),
 
 src_EAS_call_attest as (
   select
     *,
     replace(replace(replace(request, '\"', '"'), '"{', '{'), '}"', '}') as clean_request
-  from {{ source(decoded_project_name + '_' + blockchain, 'EAS_call_attest') }}
+  from {{ source(decoded_project_name ~ '_' ~ blockchain, 'EAS_call_attest') }}
 ),
 
 src_EAS_evt_Revoked as (
   select *
-  from {{ source(decoded_project_name + '_' + blockchain, 'EAS_evt_Revoked') }}
+  from {{ source(decoded_project_name ~ '_' ~ blockchain, 'EAS_evt_Revoked') }}
 )
 
 select distinct
@@ -171,7 +171,7 @@ schema_details as (
       '-',
       cast(row_number() over (partition by schema_uid, data_type order by ordinality) as varchar)
     ) as data_type_join
-  from {{ ref(project + '_' + blockchain + '_schema_details') }}
+  from {{ ref(project ~ '_' ~ blockchain ~ '_schema_details') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('block_time') }}
   {% endif %}
@@ -179,7 +179,7 @@ schema_details as (
 
 attestations as (
   select *
-  from {{ ref(project + '_' + blockchain + '_attestations') }}
+  from {{ ref(project ~ '_' ~ blockchain ~ '_attestations') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('block_time') }}
   {% endif %}
