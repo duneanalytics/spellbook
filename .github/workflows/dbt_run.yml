@@ -45,7 +45,7 @@ jobs:
         run: "dbt --warn-error compile --project-dir ${PROJECT_DIR}"
 
       - name: check schemas
-        run: .github/scripts/check_schema.sh
+        run: "./.github/scripts/check_schema.sh"
 
       - name: dbt seed
         run: "dbt seed $PROFILE --select @state:modified --exclude tag:prod_exclude tag:remove --state . --project-dir ${PROJECT_DIR}"
