@@ -1,10 +1,12 @@
-# Run the dbt command and capture its output
-test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select state:modified,config.schema:no_schema --output path --state . --project-dir $PROJECT_DIR)
+# Run the dbt command and capture its output and error
+test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select state:modified,config.schema:no_schema --output path --state . --project-dir $PROJECT_DIR 2>error_output.txt)
 dbt_exit_status=$?
 
 # Check if the dbt command failed
 if [[ $dbt_exit_status -ne 0 ]]; then
     echo "Error: dbt command failed with exit status $dbt_exit_status"
+    echo "dbt error output:"
+    cat error_output.txt
     exit $dbt_exit_status
 fi
 
