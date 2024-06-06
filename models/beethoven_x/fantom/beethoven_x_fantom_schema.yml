@@ -279,7 +279,7 @@ models:
       - name: delta_amount
         description: "Normalized value of the transaction at the time of execution in the original currency"
 
-  - name: beethoven_x_token_balance_changes_daily
+  - name: beethoven_x_fantom_token_balance_changes_daily
     meta:
       blockchain: fantom
       project: beethoven_x
