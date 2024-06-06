@@ -46,7 +46,7 @@ jobs:
 
       - name: check schemas
         run: |
-          test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select  state:modified,config.schema:no_schema --output path --state $PROJECT_DIR --project-dir $PROJECT_DIR)
+          test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select  state:modified,config.schema:no_schema --output path --state . --project-dir $PROJECT_DIR)
           [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
 
       - name: dbt seed
