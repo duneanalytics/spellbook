@@ -13,12 +13,12 @@
 WITH trades AS (
     SELECT evt_block_time AS block_time
     , evt_block_date AS block_date
-    , JSON_EXTRACT_SCALAR(sell, '$.tokenId') AS nft_token_id
+    , CAST(JSON_EXTRACT_SCALAR(sell, '$.tokenId') AS UINT256) AS nft_token_id
     , UINT256 '1' AS nft_amount
     , 'Buy' AS trade_category
     , from_hex(JSON_EXTRACT_SCALAR(sell, '$.trader')) AS seller
     , buyer
-    , JSON_EXTRACT_SCALAR(sell, '$.price') AS price_raw
+    , CAST(JSON_EXTRACT_SCALAR(sell, '$.price') AS UINT256) AS price_raw
     , from_hex(JSON_EXTRACT_SCALAR(sell, '$.paymentToken')) AS currency_contract
     , from_hex(JSON_EXTRACT_SCALAR(sell, '$.collection')) AS nft_contract_address
     , evt_tx_hash AS tx_hash
@@ -39,12 +39,12 @@ WITH trades AS (
     
     SELECT evt_block_time AS block_time
     , evt_block_date AS block_date
-    , JSON_EXTRACT_SCALAR(buyOrder, '$.tokenId') AS nft_token_id
+    , CAST(JSON_EXTRACT_SCALAR(buyOrder, '$.tokenId') AS UINT256) AS nft_token_id
     , UINT256 '1' AS nft_amount
     , 'Sell' AS trade_category
     , seller
     , from_hex(JSON_EXTRACT_SCALAR(buyOrder, '$.trader')) AS buyer
-    , JSON_EXTRACT_SCALAR(buyOrder, '$.price') AS price_raw
+    , CAST(JSON_EXTRACT_SCALAR(buyOrder, '$.price') AS UINT256) AS price_raw
     , from_hex(JSON_EXTRACT_SCALAR(buyOrder, '$.paymentToken')) AS currency_contract
     , from_hex(JSON_EXTRACT_SCALAR(buyOrder, '$.collection')) AS nft_contract_address
     , evt_tx_hash AS tx_hash
@@ -84,8 +84,8 @@ WITH trades AS (
     , sub_tx_trade_id
     --, tx_from
     --, tx_to
-    , CAST(0.015*CAST(price_raw AS double) AS BIGINT) AS platform_fee_amount_raw
-    , CAST(0.015*CAST(price_raw AS double) AS BIGINT) AS royalty_fee_amount_raw
+    , CAST(0.015*CAST(price_raw AS double) AS UINT256) AS platform_fee_amount_raw
+    , CAST(0.015*CAST(price_raw AS double) AS UINT256) AS royalty_fee_amount_raw
     , CAST(NULL AS VARBINARY) AS royalty_fee_address
     , 0x8ab15fe88a00b03724ac91ee4ee1f998064f2e31 AS platform_fee_address
     FROM trades
