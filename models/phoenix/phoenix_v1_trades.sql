@@ -101,7 +101,7 @@
       {% if is_incremental() %}
       AND {{incremental_predicate('l.call_block_time')}}
       {% endif %}
-      AND call_block_time >= now() - interval '7' day --qa
+      -- AND call_block_time >= now() - interval '7' day --qa
   ),
   max_log_index AS (
     SELECT
@@ -185,7 +185,7 @@
         {% if is_incremental() %}
         AND {{incremental_predicate('call_block_time')}}
         {% endif %}
-        AND call_block_time >= now() - interval '7' day --qa
+        -- AND call_block_time >= now() - interval '7' day --qa
     ) s ON s.call_block_slot = l.call_block_slot
         AND s.call_tx_id = l.call_tx_id
         AND s.account_market = l.market
