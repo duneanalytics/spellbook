@@ -111,12 +111,12 @@ SELECT
                OR contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
           )
          AND contains(log_messages, 'Program log: Instruction: Buy') THEN (element_at(element_at(me_instructions,3).account_arguments,2))
-       WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN cast(null as varbinary) END as seller,
-  cast(NULL as varbinary) as nft_contract_address,
+       WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN cast(null as varchar) END as seller,
+  cast(NULL as varchar) as nft_contract_address,
   cast(NULL as varchar) as aggregator_name,
-  cast(NULL as varbinary) as aggregator_address,
-  cast(NULL as varbinary) as tx_from,
-  cast(NULL as varbinary) as tx_to,
+  cast(NULL as varchar) as aggregator_address,
+  cast(NULL as varchar) as tx_from,
+  cast(NULL as varchar) as tx_to,
   cast(2*(abs(element_at(post_balances,1) - element_at(pre_balances,1)))/100 as uint256) as platform_fee_amount_raw,
   2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9))/100 as platform_fee_amount,
   2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9) * p.price)/100 as platform_fee_amount_usd,
@@ -135,7 +135,7 @@ SELECT
   +abs(element_at(post_balances,14) / 1e9 - element_at(pre_balances,14) / 1e9)
   +abs(element_at(post_balances,15) / 1e9 - element_at(pre_balances,15) / 1e9)
   +abs(element_at(post_balances,16) / 1e9 - element_at(pre_balances,16) / 1e9)) / ((abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9)-0.00204928)) * 100),2) as royalty_fee_percentage,
-  cast(NULL as varbinary) as royalty_fee_receive_address,
+  cast(NULL as varchar) as royalty_fee_receive_address,
   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
                contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
