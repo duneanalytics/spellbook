@@ -36,7 +36,6 @@ SELECT '{{blockchain}}' AS blockchain
 , "from"
 , to
 , localToken AS local_token
-, localToken AS local_token
 , remotetoken AS remote_token
 , extraData AS extra_data
 , evt_tx_hash AS tx_hash
