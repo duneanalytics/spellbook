@@ -6,7 +6,7 @@
         materialized = 'view',
         post_hook='{{ expose_spells(\'["blast"]\',
                                     "project",
-                                    "nftrade",
+                                    "fantasy",
                                     \'["hildobby"]\') }}')
 }}
 
