@@ -11,8 +11,11 @@
 }}
 
 {{ 
-    balancer_liquidity_macro(
+    balancer_v2_compatible_liquidity_macro(
         blockchain = blockchain,
-        version = '2'
+        version = '2',        
+        project_decoded_as = 'balancer_v2',
+        base_spell_namespace = 'balancer',
+        pool_labels_spell = 'labels_balancer_v2_pools'
     )
 }}
