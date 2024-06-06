@@ -17,8 +17,8 @@ models:
           evt_sources:
             - source('base_ethereum','L1StandardBridge_evt_ERC20BridgeInitiated')
             - source('base_ethereum','L1StandardBridge_evt_ETHBridgeInitiated')
-            - source('base_ethereum','L1StandardBridge_evt_ERC20BridgeFinalised')
-            - source('base_ethereum','L1StandardBridge_evt_ETHBridgeFinalised')
+            - source('base_ethereum','L1StandardBridge_evt_ERC20BridgeFinalized')
+            - source('base_ethereum','L1StandardBridge_evt_ETHBridgeFinalized')
     columns:
       - &blockchain
         name: blockchain

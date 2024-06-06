@@ -7,5 +7,5 @@ sources:
     tables:
       - name: L1StandardBridge_evt_ERC20BridgeInitiated
       - name: L1StandardBridge_evt_ETHBridgeInitiated
-      - name: L1StandardBridge_evt_ERC20BridgeFinalised
-      - name: L1StandardBridge_evt_ETHBridgeFinalised
+      - name: L1StandardBridge_evt_ERC20BridgeFinalized
+      - name: L1StandardBridge_evt_ETHBridgeFinalized

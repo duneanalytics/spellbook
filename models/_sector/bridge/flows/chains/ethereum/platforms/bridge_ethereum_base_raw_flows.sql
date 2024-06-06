@@ -15,8 +15,8 @@
 {% set bridge_models = [
  (source('base_ethereum', 'L1StandardBridge_evt_ERC20BridgeInitiated'), 'erc20', 'initialised')
  , (source('base_ethereum', 'L1StandardBridge_evt_ETHBridgeInitiated'), 'native', 'initialised')
- , (source('base_ethereum', 'L1StandardBridge_evt_ERC20BridgeFinalised'), 'erc20', 'finalised')
- , (source('base_ethereum', 'L1StandardBridge_evt_ETHBridgeFinalised'), 'native', 'finalised')
+ , (source('base_ethereum', 'L1StandardBridge_evt_ERC20BridgeFinalized'), 'erc20', 'finalised')
+ , (source('base_ethereum', 'L1StandardBridge_evt_ETHBridgeFinalized'), 'native', 'finalised')
 ] %}
 
 WITH base_union AS (
