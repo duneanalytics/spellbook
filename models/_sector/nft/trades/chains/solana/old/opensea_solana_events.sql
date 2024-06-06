@@ -15,16 +15,16 @@ SELECT
   'solana' as blockchain,
   'opensea' as project,
   'v1' as version,
-  from_base58(signatures[1]) as tx_hash,
+  (signatures[1]) as tx_hash,
   block_time,
   CAST(block_slot AS bigint) as block_number,
   abs(post_balances[1] / 1e9 - pre_balances[1] / 1e9) * p.price AS amount_usd,
   abs(post_balances[1] / 1e9 - pre_balances[1] / 1e9) AS amount_original,
   CAST(abs(post_balances[1] - pre_balances[1]) AS uint256) AS amount_raw,
   p.symbol as currency_symbol,
-  from_base58(p.contract_address)as currency_contract,
+  p.contract_address as currency_contract,
   'metaplex' as token_standard,
-  from_base58(CASE WHEN (contains(account_keys, '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y')) THEN '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y'
+  (CASE WHEN (contains(account_keys, '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y')) THEN '3o9d13qUvEuuauhFrVom1vuCzgNsJifeaBYDPquaT73Y'
   WHEN (contains(account_keys, 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r')) THEN 'pAHAKoTJsAAe2ZcvTZUxoYzuygVAFAmbYmJYdWT886r'
   END) as project_contract_address,
   'Trade' as evt_type,
