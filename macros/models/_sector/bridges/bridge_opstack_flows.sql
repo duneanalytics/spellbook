@@ -12,7 +12,6 @@ SELECT '{{blockchain}}' AS blockchain
 , amount AS amount_raw
 , "from"
 , to
-, local_token AS local_token
 , {{ var("ETH_ERC20_ADDRESS") }} AS local_token
 , {{ var("ETH_ERC20_ADDRESS") }} AS remote_token
 , extraData AS extra_data
@@ -36,8 +35,8 @@ SELECT '{{blockchain}}' AS blockchain
 , amount AS amount_raw
 , "from"
 , to
-, local_token AS local_token
-, localtoken AS local_token
+, localToken AS local_token
+, localToken AS local_token
 , remotetoken AS remote_token
 , extraData AS extra_data
 , evt_tx_hash AS tx_hash
