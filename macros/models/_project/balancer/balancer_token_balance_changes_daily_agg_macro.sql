@@ -57,7 +57,7 @@ WITH
             contract_address AS token,
             decimals,
             bpt_price
-        FROM {{ ref(base_spell_namespace ~ '_bpt_prices') }}
+        FROM {{ ref('balancer_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
         {% if is_incremental() %}
         AND {{ incremental_predicate('day') }}
