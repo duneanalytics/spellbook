@@ -31,7 +31,7 @@ WITH pool_labels AS (
                     poolId AS pool_id,
                     tokenIn AS token,
                     CAST(amountIn as int256) AS delta
-                FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
+                FROM {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_Swap') }}
                 {% if is_incremental() %}
                 WHERE {{ incremental_predicate('evt_block_time') }}
                 {% endif %}
@@ -46,7 +46,7 @@ WITH pool_labels AS (
                     poolId AS pool_id,
                     tokenOut AS token,
                     -CAST(amountOut AS int256) AS delta
-                FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
+                FROM {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_Swap') }}
                 {% if is_incremental() %}
                 WHERE {{ incremental_predicate('evt_block_time') }}
                 {% endif %}
@@ -64,7 +64,7 @@ WITH pool_labels AS (
             t.tokens,
             d.deltas,
             p.protocolFeeAmounts
-        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolBalanceChanged') }}
+        FROM {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_PoolBalanceChanged') }}
         CROSS JOIN UNNEST (tokens) WITH ORDINALITY as t(tokens,i)
         CROSS JOIN UNNEST (deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
@@ -96,7 +96,7 @@ WITH pool_labels AS (
             poolId AS pool_id,
             token,
             cashDelta + managedDelta AS delta
-        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolBalanceManaged') }}
+        FROM {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_PoolBalanceManaged') }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}
