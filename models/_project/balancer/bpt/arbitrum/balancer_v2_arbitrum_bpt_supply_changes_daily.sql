@@ -1,8 +1,8 @@
-{% set blockchain = 'ethereum' %}
+{% set blockchain = 'arbitrum' %}
 
 {{
     config(
-        schema = 'balancer_v2_ethereum',
+        schema = 'balancer_v2_arbitrum',
         alias = 'bpt_supply_changes_daily', 
         materialized = 'table',
         file_format = 'delta'
