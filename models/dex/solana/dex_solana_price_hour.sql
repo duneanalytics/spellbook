@@ -15,7 +15,7 @@
                             \'["get_nimbus"]\') }}')
 }}
 
-{# { % set project_start_date = '2022-03-10' % } --grabbed min block time from whirlpool_solana.whirlpool_call_swap #}
+{ % set project_start_date = '2022-03-10' % } --grabbed min block time from whirlpool_solana.whirlpool_call_swap #}
 with
     raw_data as (
         SELECT
@@ -26,7 +26,7 @@ with
             {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
             {% else %}
-            AND block_time >= DATE('2022-03-10')
+            AND block_time >= DATE('{{project_start_date}}')
             {% endif %}
     ),
     bought_price as (
