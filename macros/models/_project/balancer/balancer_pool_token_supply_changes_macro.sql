@@ -12,7 +12,7 @@ WITH pool_labels AS (
         WHERE blockchain = '{{blockchain}}'
     ),
 
-      -- Extract mints and burns from transfers
+    -- Extract mints and burns from transfers
     transfers AS (
         SELECT
             t.evt_block_time,
