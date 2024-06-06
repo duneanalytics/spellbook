@@ -4560,5 +4560,7 @@ FROM (VALUES
     , ( 0xfc87753df5ef5c368b5fba8d4c5043b77e8c5b39, 'aETH', 18)
     , ( 0xf1617882a71467534d14eee865922de1395c9e89, 'saETH', 18)
     , ( 0x9deb0fc809955b79c85e82918e8586d3b7d2695a, 'GOLD', 18)
-    , ( 0x75e88b8c2d34a52a6d36deada664d7dc9116e4ef, 'ZRS', 18)    
+    , ( 0x75e88b8c2d34a52a6d36deada664d7dc9116e4ef, 'ZRS', 18)
+    , ( 0x5983B89FA184f14917013B9C3062afD9434C5b03, 'POWER', 0)
+    , ( 0x988567FE094570cCE1FFdA29D1f2d842B70492be, 'ZERO', 6)
 ) AS temp_table (contract_address, symbol, decimals)
