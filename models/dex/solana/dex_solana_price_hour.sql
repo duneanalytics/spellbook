@@ -1,7 +1,7 @@
 {{
   config(
-        schema = 'dex_solana_price_hour',
-        alias = 'dex_solana_price_hour',
+        schema = 'dex_solana',
+        alias = 'price_hour',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
