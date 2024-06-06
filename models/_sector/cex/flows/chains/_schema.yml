@@ -474,3 +474,111 @@ models:
       - *tx_hash
       - *evt_index
       - *unique_key
+
+  - name: cex_fantom_flows
+    meta:
+      blockchain: fantom
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'fantom']
+    description: "All CEX-tied flows identified on ZORA Network"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_linea_flows
+    meta:
+      blockchain: linea
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'linea']
+    description: "All CEX-tied flows identified on ZORA Network"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
+
+  - name: cex_zkevm_flows
+    meta:
+      blockchain: zkevm
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows', 'zkevm']
+    description: "All CEX-tied flows identified on ZORA Network"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - unique_key
+    columns:
+      - *blockchain
+      - *block_month
+      - *block_time
+      - *block_number
+      - *cex_name
+      - *distinct_name
+      - *token_address
+      - *token_symbol
+      - *token_standard
+      - *flow_type
+      - *amount
+      - *amount_raw
+      - *amount_usd
+      - *from
+      - *to
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *tx_hash
+      - *evt_index
+      - *unique_key
