@@ -26,4 +26,11 @@ WITH
             group by 1
       )
       
-SELECT * FROM distinct_accounts
+SELECT 
+* 
+, case when nft.account_mint is not null then 'nft' 
+      when token_mint_address is not null then 'fungible'
+      else 'basic' 
+      end as account_type
+FROM distinct_accounts da
+LEFT JOIN {{ ref('tokens_solana_nft')}} nft ON da.token_mint_address = nft.account_mint
