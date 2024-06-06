@@ -8,7 +8,7 @@ models:
       contributors: 0xRob, hosuke, jeff-dude, tomfutago
     config:
       tags: [ 'dex', 'trades', 'beta' ]
-      description: '{{ doc("table_events") }}'
+    description: '{{ doc("dex_trades_doc") }}'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
