@@ -35,7 +35,7 @@ WITH pool_labels AS (
                 THEN - value
                 ELSE 0
                 END AS amount
-        FROM {{ ref(base_spell_namespace + '_transfers_bpt') }} t
+        FROM {{ ref(base_spells_namespace + '_transfers_bpt') }} t
         LEFT JOIN pool_labels l ON t.contract_address = l.address
         WHERE t.blockchain = '{{blockchain}}'
         AND t.version = '{{version}}'

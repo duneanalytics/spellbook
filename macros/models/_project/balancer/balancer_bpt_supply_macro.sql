@@ -24,7 +24,7 @@ WITH pool_labels AS (
             contract_address AS token,
             COALESCE(SUM(CASE WHEN t."from" = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS mints,
             COALESCE(SUM(CASE WHEN t.to = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS burns
-        FROM  {{ ref(base_spell_namespace + '_transfers_bpt') }} t
+        FROM  {{ ref(base_spells_namespace + '_transfers_bpt') }} t
         WHERE blockchain = '{{blockchain}}'   
         AND version = '{{version}}'
         GROUP BY 1, 2

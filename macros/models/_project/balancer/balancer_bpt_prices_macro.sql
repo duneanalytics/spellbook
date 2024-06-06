@@ -177,7 +177,7 @@ WITH pool_labels AS (
             ROW_NUMBER() OVER (partition by b.day, b.pool_id ORDER BY SUM(b.protocol_liquidity_usd) ASC) AS pricing_count, --to avoid double count in pools with multiple pricing assets
             SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity
         FROM cumulative_usd_balance b
-        LEFT JOIN {{ ref(base_spell_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+        LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
         AND b.token = w.token_address
         AND b.protocol_liquidity_usd > 0
         LEFT JOIN {{ ref('balancer_token_whitelist') }} q ON b.token = q.address 
@@ -208,7 +208,7 @@ WITH pool_labels AS (
     FROM cumulative_usd_balance c
     FULL OUTER JOIN weighted_pool_liquidity_estimates_2 b ON c.day = b.day
     AND c.pool_id = b.pool_id
-    LEFT JOIN {{ ref(base_spell_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+    LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
     AND w.blockchain = '{{blockchain}}'
     AND w.version = '{{version}}'    
     AND w.token_address = c.token
@@ -387,7 +387,7 @@ WITH pool_labels AS (
         ELSE l.liquidity / s.supply 
         END AS bpt_price
     FROM tvl l
-    LEFT JOIN {{ ref(base_spell_namespace + '_bpt_supply') }} s ON l.pool_address = s.token_address
+    LEFT JOIN {{ ref(base_spells_namespace + '_bpt_supply') }} s ON l.pool_address = s.token_address
     AND l.blockchain = s.blockchain
     AND l.version = s.version  
     AND l.day = s.day

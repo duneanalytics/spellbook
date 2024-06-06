@@ -65,8 +65,8 @@ WITH pool_labels AS (
             s.token_address AS token,
             18 AS decimals,
             SUM(protocol_liquidity_usd / supply) AS price
-        FROM {{ ref(base_spell_namespace + '_liquidity') }} l
-        LEFT JOIN {{ ref(base_spell_namespace + '_bpt_supply') }} s ON s.token_address = l.pool_address 
+        FROM {{ ref(base_spells_namespace + '_liquidity') }} l
+        LEFT JOIN {{ ref(base_spells_namespace + '_bpt_supply') }} s ON s.token_address = l.pool_address 
         AND l.blockchain = s.blockchain AND s.day = l.day AND s.supply > 0
         WHERE l.blockchain = '{{blockchain}}'
         AND l.version = '{{version}}'
