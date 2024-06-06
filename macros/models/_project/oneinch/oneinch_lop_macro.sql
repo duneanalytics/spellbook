@@ -32,7 +32,7 @@
     }
 %}
 -- partial_bit & multiple_bit: the number of the bit on the left starting from 1 to 256 in 32 bytes in MakerTraits struct
--- [the number of the bit] = 256 - [solidity offset (~ PARTIAL_FILLS & ~ MULTIPLE_FILLS)]
+-- [the number of the bit] = 256 - [solidity offset (+ PARTIAL_FILLS & + MULTIPLE_FILLS)]
 
 -- CONTRACTS CONFIG
 {%

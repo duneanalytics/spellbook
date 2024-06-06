@@ -20,8 +20,8 @@ swap_fees AS (
             swaps.evt_block_number,
             fees.swapFee,
             ROW_NUMBER() OVER (PARTITION BY swaps.contract_address, evt_tx_hash, evt_index ORDER BY call_block_number DESC) AS rn
-        FROM {{ source(project_decoded_as ~ '_' ~ blockchain, BPool_evt_LOG_SWAP) }} swaps
-            LEFT JOIN {{ source(project_decoded_as ~ '_' ~ blockchain, BPool_call_setSwapFee) }} fees
+        FROM {{ source(project_decoded_as + '_' + blockchain, BPool_evt_LOG_SWAP) }} swaps
+            LEFT JOIN {{ source(project_decoded_as + '_' + blockchain, BPool_call_setSwapFee) }} fees
                 ON fees.contract_address = swaps.contract_address
                 AND fees.call_block_number < swaps.evt_block_number
         {% if is_incremental() %}
@@ -45,7 +45,7 @@ dexs AS (
         swaps.evt_block_time AS block_time,
         swaps.evt_tx_hash AS tx_hash,
         swaps.evt_index
-    FROM {{ source(project_decoded_as ~ '_' ~ blockchain, BPool_evt_LOG_SWAP) }} swaps
+    FROM {{ source(project_decoded_as + '_' + blockchain, BPool_evt_LOG_SWAP) }} swaps
         LEFT JOIN swap_fees fees
             ON fees.evt_tx_hash = swaps.evt_tx_hash
             AND fees.evt_block_number = swaps.evt_block_number
@@ -103,8 +103,8 @@ swap_fees AS (
             bytearray_substring(swaps.poolId, 1, 20) AS contract_address,
             fees.swap_fee_percentage,
             ROW_NUMBER() OVER (PARTITION BY poolId, evt_tx_hash, evt_index ORDER BY block_number DESC, index DESC) AS rn
-        FROM {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Swap) }} swaps
-        LEFT JOIN {{ ref(project_decoded_as ~ '_' ~ blockchain ~ '_' ~ pools_fees) }} fees
+        FROM {{ source(project_decoded_as + '_' + blockchain, Vault_evt_Swap) }} swaps
+        LEFT JOIN {{ ref(project_decoded_as + '_' + blockchain + '_' + pools_fees) }} fees
             ON fees.contract_address = bytearray_substring(swaps.poolId, 1, 20)
             AND ARRAY[fees.block_number] || ARRAY[fees.index] < ARRAY[swaps.evt_block_number] || ARRAY[swaps.evt_index]
         {% if is_incremental() %}
@@ -141,7 +141,7 @@ dexs AS (
         swap.evt_tx_hash AS tx_hash,
         swap.evt_index
     FROM swap_fees
-    INNER JOIN {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Swap) }} swap
+    INNER JOIN {{ source(project_decoded_as + '_' + blockchain, Vault_evt_Swap) }} swap
         ON swap.evt_block_number = swap_fees.evt_block_number
         AND swap.evt_tx_hash = swap_fees.evt_tx_hash
         AND swap.evt_index = swap_fees.evt_index

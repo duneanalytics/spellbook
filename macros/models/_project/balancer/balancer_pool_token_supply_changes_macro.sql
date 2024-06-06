@@ -35,7 +35,7 @@ WITH pool_labels AS (
                 THEN - value
                 ELSE 0
                 END AS amount
-        FROM {{ ref(base_spell_namespace ~ '_transfers_bpt') }} t
+        FROM {{ ref(base_spell_namespace + '_transfers_bpt') }} t
         LEFT JOIN pool_labels l ON t.contract_address = l.address
         WHERE t.blockchain = '{{blockchain}}'
         AND t.version = '{{version}}'
@@ -59,7 +59,7 @@ WITH pool_labels AS (
             THEN 0
             ELSE s.amountOut 
             END AS amount
-        FROM {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_Swap') }} s
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} s
         LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.poolId, 1, 20) = l.address
         WHERE tokenOut = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
         {% if is_incremental() %}
@@ -82,7 +82,7 @@ WITH pool_labels AS (
             THEN 0
             ELSE - s.amountIn
             END AS amount
-        FROM {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_Swap') }} s
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} s
         LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.poolId, 1, 20) = l.address
         WHERE tokenIn = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
         {% if is_incremental() %}

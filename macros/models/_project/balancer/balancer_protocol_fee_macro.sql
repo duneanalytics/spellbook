@@ -65,8 +65,8 @@ WITH pool_labels AS (
             s.token_address AS token,
             18 AS decimals,
             SUM(protocol_liquidity_usd / supply) AS price
-        FROM {{ ref(base_spell_namespace ~ '_liquidity') }} l
-        LEFT JOIN {{ ref(base_spell_namespace ~ '_bpt_supply') }} s ON s.token_address = l.pool_address 
+        FROM {{ ref(base_spell_namespace + '_liquidity') }} l
+        LEFT JOIN {{ ref(base_spell_namespace + '_bpt_supply') }} s ON s.token_address = l.pool_address 
         AND l.blockchain = s.blockchain AND s.day = l.day AND s.supply > 0
         WHERE l.blockchain = '{{blockchain}}'
         AND l.version = '{{version}}'
@@ -89,7 +89,7 @@ WITH pool_labels AS (
             poolId AS pool_id,
             token AS token_address,
             SUM(protocol_fees) AS protocol_fee_amount_raw
-        FROM {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_PoolBalanceChanged') }} b
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolBalanceChanged') }} b
         CROSS JOIN unnest("protocolFeeAmounts", "tokens") AS t(protocol_fees, token)   
         GROUP BY 1, 2, 3 
 
@@ -100,7 +100,7 @@ WITH pool_labels AS (
             poolId AS pool_id,
             b.poolAddress AS token_address,
             sum(value) AS protocol_fee_amount_raw
-        FROM {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_PoolRegistered') }} b
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolRegistered') }} b
         INNER JOIN {{ source('erc20_' + blockchain, 'evt_transfer') }} t
             ON t.contract_address = b.poolAddress
             AND t."from" = 0x0000000000000000000000000000000000000000

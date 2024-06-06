@@ -8,7 +8,7 @@
         SELECT
         DISTINCT poolAddress AS pool_address
         FROM
-        {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_PoolRegistered') }}
+        {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolRegistered') }}
     )
 
     SELECT DISTINCT * FROM (

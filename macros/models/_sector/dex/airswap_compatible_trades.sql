@@ -21,7 +21,7 @@ WITH dexs AS
             contract_address AS project_contract_address,
             evt_tx_hash AS tx_hash,
             evt_index
-        FROM {{ source('airswap_' ~ blockchain, src["source"] )}}
+        FROM {{ source('airswap_' + blockchain, src["source"] )}}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}

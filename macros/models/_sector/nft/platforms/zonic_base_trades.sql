@@ -31,7 +31,7 @@ with events_raw as (
             else currency
         end as currency_contract
        ,saleId as sale_id
-    from {{ source(project_decoded_as ~ '_' ~ blockchain, 'ZonicMarketplace_evt_ZonicBasicOrderFulfilled') }} as o
+    from {{ source(project_decoded_as + '_' + blockchain, 'ZonicMarketplace_evt_ZonicBasicOrderFulfilled') }} as o
     {% if not is_incremental() %}
     where evt_block_time >= timestamp '{{project_start_date}}'  -- zonic first txn
     {% endif %}

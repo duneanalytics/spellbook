@@ -20,7 +20,7 @@ WITH dexs AS (
             t.contract_address AS project_contract_address,
             t.evt_tx_hash AS tx_hash,
             t.evt_index
-        FROM {{ source('clipper_' ~ blockchain, src["source"] )}} t
+        FROM {{ source('clipper_' + blockchain, src["source"] )}} t
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}

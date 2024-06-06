@@ -20,7 +20,7 @@ src_Mint as (
       evt_index,
       evt_block_time,
       evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Mint' )}}
+    from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_Mint' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {% endif %}
@@ -46,7 +46,7 @@ src_Redeem as (
       evt_index,
       evt_block_time,
       evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Redeem' )}}
+    from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_Redeem' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {% endif %}
@@ -57,7 +57,7 @@ src_Redeem as (
 ),
 
 ctokens as (
-  select * from {{ ref( decoded_project ~ '_' ~ blockchain ~ '_ctokens' ) }}
+  select * from {{ ref( decoded_project + '_' + blockchain + '_ctokens' ) }}
 ),
 
 base_supply as (
@@ -130,7 +130,7 @@ with
 src_SupplyCollateral as (
   {% for src in sources %}
     select contract_address, "from", amount, asset, evt_tx_hash, evt_index, evt_block_time, evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_SupplyCollateral' )}}
+    from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_SupplyCollateral' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {% endif %}
@@ -143,7 +143,7 @@ src_SupplyCollateral as (
 src_WithdrawCollateral as (
   {% for src in sources %}
     select contract_address, src, to, amount, asset, evt_tx_hash, evt_index, evt_block_time, evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_WithdrawCollateral' )}}
+    from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_WithdrawCollateral' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {% endif %}
@@ -156,7 +156,7 @@ src_WithdrawCollateral as (
 src_AbsorbCollateral as (
   {% for src in sources %}
     select contract_address, borrower, absorber, collateralAbsorbed, asset, evt_tx_hash, evt_index, evt_block_time, evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_AbsorbCollateral' )}}
+    from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_AbsorbCollateral' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {% endif %}

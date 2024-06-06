@@ -22,13 +22,13 @@ SELECT DISTINCT
         )
     ), 0) AS token_price
 FROM
-    {{ref('chainlink_' ~ blockchain ~ '_ccip_tokens_transferred_logs')}} le
-    INNER JOIN {{ref('chainlink_' ~ blockchain ~ '_ccip_send_requested')}} sr ON le.tx_hash = sr.tx_hash
+    {{ref('chainlink_' + blockchain + '_ccip_tokens_transferred_logs')}} le
+    INNER JOIN {{ref('chainlink_' + blockchain + '_ccip_send_requested')}} sr ON le.tx_hash = sr.tx_hash
     AND le.block_time = sr.evt_block_time
     {% if is_incremental() %}
         AND {{ incremental_predicate('sr.evt_block_time') }}
     {% endif %}
-    INNER JOIN  {{ source('erc20_' ~ blockchain, 'evt_transfer') }} te ON le.contract_address = te.to
+    INNER JOIN  {{ source('erc20_' + blockchain, 'evt_transfer') }} te ON le.contract_address = te.to
     AND te.evt_tx_hash = le.tx_hash
     AND te.evt_block_time = le.block_time
     {% if is_incremental() %}

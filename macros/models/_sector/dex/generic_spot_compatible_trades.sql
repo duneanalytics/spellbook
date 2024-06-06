@@ -76,7 +76,7 @@ WITH dexs AS (
             t.contract_address as project_contract_address,
             t.evt_tx_hash as tx_hash,
             t.evt_index
-        FROM {{ source(project ~ '_' ~ blockchain, src["source"] )}} t
+        FROM {{ source(project + '_' + blockchain, src["source"] )}} t
         WHERE 1 = 1
         {% if src["exclude"] %}
             AND t."from" NOT IN ({{ src["exclude"] }})

@@ -26,7 +26,7 @@ src_Borrow as (
       evt_index,
       evt_block_time,
       evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Borrow' )}}
+    from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_Borrow' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {% endif %}
@@ -50,7 +50,7 @@ src_Repay as (
       evt_index,
       evt_block_time,
       evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_RepayBorrow' )}}
+    from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_RepayBorrow' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {% endif %}
@@ -74,7 +74,7 @@ src_LiquidationCall as (
       evt_index,
       evt_block_time,
       evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_LiquidateBorrow' )}}
+    from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_LiquidateBorrow' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {% endif %}
@@ -85,7 +85,7 @@ src_LiquidationCall as (
 ),
 
 ctokens as (
-  select * from {{ ref( decoded_project ~ '_' ~ blockchain ~ '_ctokens' ) }}
+  select * from {{ ref( decoded_project + '_' + blockchain + '_ctokens' ) }}
 ),
 
 base_borrow as (
@@ -172,10 +172,10 @@ with
 src_Borrow as (
   {% for src in sources %}
     select contract_address, src, amount, evt_tx_hash, evt_index, evt_block_time, evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Withdraw' )}}
+    from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_Withdraw' )}}
     where evt_tx_hash not in (
         select evt_tx_hash
-        from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Transfer' )}}
+        from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_Transfer' )}}
         where "to" = 0x0000000000000000000000000000000000000000
       )
     {% if is_incremental() %}
@@ -190,10 +190,10 @@ src_Borrow as (
 src_Repay as (
   {% for src in sources %}
     select contract_address, "from", dst, amount, evt_tx_hash, evt_index, evt_block_time, evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Supply' )}}
+    from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_Supply' )}}
     where evt_tx_hash not in (
         select evt_tx_hash
-        from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_Transfer' )}}
+        from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_Transfer' )}}
         where "from" = 0x0000000000000000000000000000000000000000
       )
     {% if is_incremental() %}
@@ -208,7 +208,7 @@ src_Repay as (
 src_LiquidationCall as (
   {% for src in sources %}
     select contract_address, borrower, absorber, basePaidOut, evt_tx_hash, evt_index, evt_block_time, evt_block_number
-    from {{ source( decoded_project ~ '_' ~ blockchain, src["contract"] ~ '_evt_AbsorbDebt' )}}
+    from {{ source( decoded_project + '_' + blockchain, src["contract"] + '_evt_AbsorbDebt' )}}
     {% if is_incremental() %}
     where {{ incremental_predicate('evt_block_time') }}
     {% endif %}
@@ -219,7 +219,7 @@ src_LiquidationCall as (
 ),
 
 ctokens as (
-  select * from {{ ref( decoded_project ~ '_' ~ blockchain ~ '_ctokens' ) }}
+  select * from {{ ref( decoded_project + '_' + blockchain + '_ctokens' ) }}
 ),
 
 base_borrow as (
