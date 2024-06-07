@@ -15,8 +15,6 @@
 WITH
 base as (
       --token2022. Most mint and account extensions still use the parent transferChecked instruction, hooks are excecuted after and interest-bearing is precalculated.
-      UNION ALL
-
       SELECT
             account_source, account_destination, amount
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
