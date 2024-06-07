@@ -42,6 +42,10 @@ call_account_arguments[1] as account_mint
 , call_block_time as fee_time
 FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
 WHERE bytearray_substring(call_data,1+1,1) = 0x00 --https://github.com/solana-labs/solana-program-library/blob/8f50c6fabc6ec87ada229e923030381f573e0aed/token/program-2022/src/extension/transfer_fee/instruction.rs#L38
+{% if is_incremental() %}
+AND {{incremental_predicate('call_block_time')}}
+{% endif %}
+
 UNION ALL 
 SELECT 
 call_account_arguments[1] as account_mint
@@ -52,3 +56,6 @@ call_account_arguments[1] as account_mint
 , call_block_time as fee_time
 FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
 WHERE bytearray_substring(call_data,1+1,1) = 0x05 --https://github.com/solana-labs/solana-program-library/blob/8f50c6fabc6ec87ada229e923030381f573e0aed/token/program-2022/src/extension/transfer_fee/instruction.rs#L147
+{% if is_incremental() %}
+AND {{incremental_predicate('call_block_time')}}
+{% endif %}
