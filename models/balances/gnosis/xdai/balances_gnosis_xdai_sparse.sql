@@ -1,6 +1,7 @@
 {{ config(
         
         alias = 'xdai_sparse',
+        partition_by = ['block_month'],
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "sector",
                                     "balances",
