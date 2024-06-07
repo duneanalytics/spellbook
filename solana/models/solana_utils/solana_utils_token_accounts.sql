@@ -25,7 +25,6 @@ WITH
             {% endif %}
             group by 1
       )
-
 SELECT
 *
 , case when nft.account_mint is not null then 'nft'
