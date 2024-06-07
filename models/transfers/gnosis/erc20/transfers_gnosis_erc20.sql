@@ -16,7 +16,6 @@
 
 WITH
 
-
 erc20_transfers  as (
         SELECT 
             IF("from" = 0x0000000000000000000000000000000000000000, 'mint', 'receive') as transfer_type, 
