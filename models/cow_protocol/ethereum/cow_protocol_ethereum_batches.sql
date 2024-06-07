@@ -57,6 +57,9 @@ batch_values as (
     from {{ ref('cow_protocol_ethereum_trades') }}
         left outer join {{ source('prices', 'usd') }} as p
             on p.contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+            {% if is_incremental() %}
+            and {{ incremental_predicate('minute') }}
+            {% endif %}
             and p.minute = date_trunc('minute', block_time)
             and blockchain = 'ethereum'
     {% if is_incremental() %}
