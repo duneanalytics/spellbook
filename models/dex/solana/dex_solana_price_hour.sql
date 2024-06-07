@@ -15,7 +15,7 @@
                             \'["get_nimbus"]\') }}')
 }}
 
-{ % set project_start_date = '2022-03-10' % } --grabbed min block time from whirlpool_solana.whirlpool_call_swap #}
+{% set project_start_date = '2022-03-10' %} --grabbed min block time from whirlpool_solana.whirlpool_call_swap
 with
     raw_data as (
         SELECT
