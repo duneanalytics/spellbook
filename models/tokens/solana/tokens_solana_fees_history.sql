@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.fee_time')],
-        unique_key = ['account_mint','fee_time']
+        unique_key = ['account_mint','fee_time'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "tokens",
@@ -14,7 +14,7 @@
 }}
 
 --we need the fee basis points and maximum fee for token2022 transfers because the fee amount is not emitted in transferChecked
-SELECT 
+SELECT
 call_account_arguments[1] as account_mint
 , try(bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,
             1+1+1+1+1+case when bytearray_substring(call_data,1+1+1,1) = 0x01 and bytearray_substring(call_data,1+1+1+32+1,1) = 0x01
@@ -46,8 +46,8 @@ WHERE bytearray_substring(call_data,1+1,1) = 0x00 --https://github.com/solana-la
 AND {{incremental_predicate('call_block_time')}}
 {% endif %}
 
-UNION ALL 
-SELECT 
+UNION ALL
+SELECT
 call_account_arguments[1] as account_mint
 , try(bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,
             1+1+1,2)))) as fee_basis
