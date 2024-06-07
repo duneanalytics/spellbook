@@ -27,3 +27,6 @@ sources:
     tables:
       - name: ClPoolFactory_evt_PoolCreated
       - name: ClPool_evt_Swap
+  - name: iziswap_scroll
+    tables:
+      - name: iZiSwapPool_evt_Swap
