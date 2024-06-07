@@ -8,6 +8,7 @@
         partition_by = ['block_date'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['tx_id','outer_instruction_index','inner_instruction_index', 'block_slot']
+  )
 }}
 
 
