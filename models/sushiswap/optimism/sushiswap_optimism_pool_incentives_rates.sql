@@ -1,5 +1,6 @@
 {{ config(
-     alias = 'pool_incentives_rates'
+    schema = 'sushiswap_optimism'
+    , alias = 'pool_incentives_rates'
     , materialized = 'table'
     )
 }}

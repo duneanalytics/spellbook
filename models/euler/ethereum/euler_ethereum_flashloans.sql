@@ -1,5 +1,6 @@
 {{ config(
-     alias = 'flashloans'
+      schema = 'euler_ethereum'
+      , alias = 'flashloans'
       , partition_by = ['block_month']
       , materialized = 'incremental'
       , file_format = 'delta'

@@ -1,6 +1,7 @@
 {{ config(
-       alias = 'interest'
-      , post_hook='{{ expose_spells(\'["ethereum"]\',
+    schema = 'aave_ethereum'
+    , alias = 'interest_rates'
+    , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "project",
                                   "aave",
                                   \'["batwayne", "chuxin"]\') }}'
