@@ -20,7 +20,7 @@ base as (
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'transfer' as action
             , call_outer_instruction_index, call_inner_instruction_index
-            , null as fee
+            , cast(null as double) as fee
             , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_transfer') }}
       WHERE 1=1
@@ -36,7 +36,7 @@ base as (
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'transfer' as action
             , call_outer_instruction_index, call_inner_instruction_index
-            , null as fee
+            , cast(null as double) as fee
             , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_transferChecked') }}
       WHERE 1=1
@@ -52,7 +52,7 @@ base as (
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'mint' as action
             , call_outer_instruction_index, call_inner_instruction_index
-            , null as fee
+            , cast(null as double) as fee
             , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_mintTo') }}
       WHERE 1=1
@@ -68,7 +68,7 @@ base as (
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'mint' as action
             , call_outer_instruction_index, call_inner_instruction_index
-            , null as fee
+            , cast(null as double) as fee
             , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_mintToChecked') }}
       WHERE 1=1
@@ -84,7 +84,7 @@ base as (
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'burn' as action
             , call_outer_instruction_index, call_inner_instruction_index
-            , null as fee
+            , cast(null as double) as fee
             , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_burn') }}
       WHERE 1=1
@@ -100,7 +100,7 @@ base as (
             , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
             , 'burn' as action
             , call_outer_instruction_index, call_inner_instruction_index
-            , null as fee
+            , cast(null as double) as fee
             , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_burnChecked') }}
       WHERE 1=1
