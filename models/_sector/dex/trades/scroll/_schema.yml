@@ -121,5 +121,5 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index  
-      # - check_dex_base_trades_seed:
-      #     seed_file: ref('iziswap_scroll_base_trades_seed')  
+      - check_dex_base_trades_seed:
+          seed_file: ref('iziswap_scroll_base_trades_seed')  
