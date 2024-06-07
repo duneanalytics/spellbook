@@ -26,7 +26,7 @@ with
             {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
             {% else %}
-            AND block_time >= DATE('{{project_start_date}}')
+            AND block_time >= DATE '{{project_start_date}}'
             {% endif %}
     ),
     bought_price as (
