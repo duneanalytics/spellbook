@@ -38,22 +38,14 @@ models:
       tags: ['table', 'metadata', 'fess', 'solana']
     description: "fee updates on token2022 tokens"
     columns:
-      - name: token_mint_address
+      - name: account_mint
         description: "fungible token mint address on Solana"
-        tests:
-          - unique
-      - name: symbol
-        description: "token symbol"
-      - name: decimals
-        description: "Number of decimals, refers to how divisible a token can be"
-      - name: metadata_program
-        description: program used for creating token metadata
-      - name: token_version
-        description: version of the token program used (spl_token, token2022)
-      - name: created_at
-        description: token mint created at
-      - name: init_tx
-        description: "transaction that initialized the mint"
+      - name: fee_basis
+        description: basis points fee on transfers
+      - name: fee_maximum
+        description: maximum fee amount on a given transfer
+      - name: fee_time
+        description: fee update time
 
   - name: tokens_solana_nft
     meta:
