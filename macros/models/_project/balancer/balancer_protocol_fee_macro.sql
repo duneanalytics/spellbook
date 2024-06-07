@@ -104,7 +104,11 @@ WITH pool_labels AS (
         INNER JOIN {{ source('erc20_' + blockchain, 'evt_transfer') }} t
             ON t.contract_address = b.poolAddress
             AND t."from" = 0x0000000000000000000000000000000000000000
-            AND t.to = 0xce88686553686DA562CE7Cea497CE749DA109f9F --ProtocolFeesCollector address, which is the same across all chains   
+            AND t."to" =
+                CASE
+                    WHEN blockchain = 'fantom' THEN 0xc6920d3a369e7c8bd1a22dbe385e11d1f7af948f
+                    ELSE 0xce88686553686DA562CE7Cea497CE749DA109f9F
+                    END --ProtocolFeesCollector address, which is the same across all chains except for fantom   
         GROUP BY 1, 2, 3
     ),
 
