@@ -14,50 +14,9 @@
                                     \'["ilemi"]\') }}')
 }}
 
-with 
-token2022_fee_state as (
-      --we need the fee basis points and maximum fee for token2022 transfers because the fee amount is not emitted in transferChecked
-      SELECT 
-      call_account_arguments[1] as account_mint
-      , try(bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,
-                  1+1+1+1+1+case when bytearray_substring(call_data,1+1+1,1) = 0x01 and bytearray_substring(call_data,1+1+1+32+1,1) = 0x01
-                              then 64
-                              when bytearray_substring(call_data,1+1+1,1) = 0x01 and bytearray_substring(call_data,1+1+1+32+1,1) = 0x00
-                              then 32
-                              when bytearray_substring(call_data,1+1+1,1) = 0x00 and bytearray_substring(call_data,1+1+1+1,1) = 0x01
-                              then 32
-                              when bytearray_substring(call_data,1+1+1,1) = 0x00 and bytearray_substring(call_data,1+1+1+1,1) = 0x00
-                              then 0
-                              end --variations of COPTION enums for first two arguments
-                  ,2)))) as fee_basis
-      , try(bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,
-                  1+1+1+1+1+case when bytearray_substring(call_data,1+1+1,1) = 0x01 and bytearray_substring(call_data,1+1+1+32+1,1) = 0x01
-                              then 64
-                              when bytearray_substring(call_data,1+1+1,1) = 0x01 and bytearray_substring(call_data,1+1+1+32+1,1) = 0x00
-                              then 32
-                              when bytearray_substring(call_data,1+1+1,1) = 0x00 and bytearray_substring(call_data,1+1+1+1,1) = 0x01
-                              then 32
-                              when bytearray_substring(call_data,1+1+1,1) = 0x00 and bytearray_substring(call_data,1+1+1+1,1) = 0x00
-                              then 0
-                              end
-                        +2
-                  ,16)))) as fee_maximum
-      , call_block_time as fee_time
-      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
-      WHERE bytearray_substring(call_data,1+1,1) = 0x00 --https://github.com/solana-labs/solana-program-library/blob/8f50c6fabc6ec87ada229e923030381f573e0aed/token/program-2022/src/extension/transfer_fee/instruction.rs#L38
-      UNION ALL 
-      SELECT 
-      call_account_arguments[1] as account_mint
-      , try(bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,
-                  1+1+1,2)))) as fee_basis
-      , try(bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,
-                  1+1+1+2,16)))) as fee_maximum
-      , call_block_time as fee_time
-      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
-      WHERE bytearray_substring(call_data,1+1,1) = 0x05 --https://github.com/solana-labs/solana-program-library/blob/8f50c6fabc6ec87ada229e923030381f573e0aed/token/program-2022/src/extension/transfer_fee/instruction.rs#L147
-)
 
-, base as (  
+WITH
+base as (  
       SELECT 
             account_source, account_destination
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
@@ -177,7 +136,7 @@ token2022_fee_state as (
                   , f.fee_time
                   , row_number() over (partition by tr.call_tx_id,  tr.call_outer_instruction_index,  tr.call_inner_instruction_index order by f.fee_time desc) as latest_fee
             FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferChecked') }} tr
-            LEFT JOIN token2022_fee_state f ON tr.account_tokenMint = f.account_mint AND tr.call_block_time >= f.fee_time
+            LEFT JOIN {{ ref('tokens_solan_fees_history') }} f ON tr.account_tokenMint = f.account_mint AND tr.call_block_time >= f.fee_time
             WHERE 1=1 
             {% if is_incremental() %}
             AND {{incremental_predicate('tr.call_block_time')}}
