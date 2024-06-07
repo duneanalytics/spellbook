@@ -136,8 +136,8 @@ base as (
                   , f.fee_time
                   , row_number() over (partition by tr.call_tx_id,  tr.call_outer_instruction_index,  tr.call_inner_instruction_index order by f.fee_time desc) as latest_fee
             FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferChecked') }} tr
-            LEFT JOIN {{ ref('tokens_solan_fees_history') }} f ON tr.account_tokenMint = f.account_mint AND tr.call_block_time >= f.fee_time
-            WHERE 1=1 
+            LEFT JOIN {{ ref('tokens_solana_fees_history') }} f ON tr.account_tokenMint = f.account_mint AND tr.call_block_time >= f.fee_time
+            WHERE 1=1
             {% if is_incremental() %}
             AND {{incremental_predicate('tr.call_block_time')}}
             {% endif %}
