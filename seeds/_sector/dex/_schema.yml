@@ -2189,7 +2189,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-    
+
   - name: hashflow_optimism_base_trades_seed
     config:
       column_types:
@@ -2219,7 +2219,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: baseswap_base_base_trades_seed
     config:
       column_types:
@@ -2264,7 +2264,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: smardex_base_base_trades_seed
     config:
       column_types:
@@ -2309,7 +2309,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-    
+
   - name: chainhop_optimism_base_trades_seed
     config:
       column_types:
@@ -2324,7 +2324,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: fraxswap_arbitrum_base_trades_seed
     config:
       column_types:
@@ -2384,7 +2384,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: apeswap_arbitrum_base_trades_seed
     config:
       column_types:
@@ -2414,7 +2414,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: smardex_arbitrum_base_trades_seed
     config:
       column_types:
@@ -2459,7 +2459,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: swaap_v2_arbitrum_base_trades_seed
     config:
       column_types:
@@ -2489,7 +2489,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: woofi_arbitrum_base_trades_seed
     config:
       column_types:
@@ -2564,7 +2564,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: plantbaseswap_base_base_trades_seed
     config:
       column_types:
@@ -2594,7 +2594,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: derpdex_base_base_trades_seed
     config:
       column_types:
@@ -2609,7 +2609,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-    
+
   - name: torus_base_base_trades_seed
     config:
       column_types:
@@ -2655,7 +2655,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
 
   - name: throne_exchange_v2_base_base_trades_seed
     config:
@@ -2746,7 +2746,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: autotronic_base_base_trades_seed
     config:
       column_types:
@@ -2806,7 +2806,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: sharkyswap_arbitrum_base_trades_seed
     config:
       column_types:
@@ -2866,7 +2866,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: auragi_arbitrum_base_trades_seed
     config:
       column_types:
@@ -2926,7 +2926,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: oasisswap_base_base_trades_seed
     config:
       column_types:
@@ -2941,7 +2941,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: leetswap_v2_base_base_trades_seed
     config:
       column_types:
@@ -2986,7 +2986,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: openocean_base_base_trades_seed
     config:
       column_types:
@@ -3031,7 +3031,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: alienbase_base_base_trades_seed
     config:
       column_types:
@@ -3046,7 +3046,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: swapbased_base_base_trades_seed
     config:
       column_types:
@@ -3061,7 +3061,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: gridex_base_base_trades_seed
     config:
       column_types:
@@ -3106,7 +3106,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: solidly_base_base_trades_seed
     config:
       column_types:
@@ -3121,7 +3121,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: energon_base_base_trades_seed
     config:
       column_types:
@@ -3136,7 +3136,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: voltswap_base_base_trades_seed
     config:
       column_types:
@@ -3151,7 +3151,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: crescentswap_base_base_trades_seed
     config:
       column_types:
@@ -3196,7 +3196,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: uniswap_zksync_base_trades_seed
     config:
       column_types:
@@ -3211,7 +3211,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: uniswap_zora_base_trades_seed
     config:
       column_types:
@@ -3226,7 +3226,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: syncswap_zksync_base_trades_seed
     config:
       column_types:
@@ -3271,7 +3271,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: mute_zksync_base_trades_seed
     config:
       column_types:
@@ -3331,7 +3331,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: zkswap_finance_zksync_base_trades_seed
     config:
       column_types:
@@ -3346,7 +3346,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: gemswap_zksync_base_trades_seed
     config:
       column_types:
@@ -3361,7 +3361,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: vesync_zksync_base_trades_seed
     config:
       column_types:
@@ -3376,7 +3376,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: dracula_finance_zksync_base_trades_seed
     config:
       column_types:
@@ -3483,6 +3483,21 @@ seeds:
         block_date: timestamp
 
   - name: nile_linea_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: icecreamswap_scroll_base_trades_seed
     config:
       column_types:
         blockchain: varchar
