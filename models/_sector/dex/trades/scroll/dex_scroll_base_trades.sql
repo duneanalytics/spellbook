@@ -11,7 +11,8 @@
     , ref('zebra_scroll_base_trades')
     , ref('scrollswap_scroll_base_trades')
     , ref('syncswap_v1_scroll_base_trades')
-    , ref('nuri_scroll_base_trades') 
+    , ref('nuri_scroll_base_trades')
+    , ref('icecreamswap_scroll_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -35,7 +36,7 @@ WITH base_union AS (
             , project_contract_address
             , tx_hash
             , evt_index
-        FROM 
+        FROM
             {{ base_model }}
         {% if not loop.last %}
         UNION ALL
