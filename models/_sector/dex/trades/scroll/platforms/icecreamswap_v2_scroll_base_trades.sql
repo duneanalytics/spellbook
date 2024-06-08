@@ -14,7 +14,7 @@
           blockchain = 'scroll'
         , project = 'icecreamswap'
         , version = '2'
-        , Pair_evt_Swap = source('icecreamswap_v2_scroll', 'pool_evt_Swap')
-        , Factory_evt_PairCreated = source('icecreamswap_v2_scroll', 'IceCreamSwapFactory_evt_PairCreated')
+        , Pair_evt_Swap = source('icecreamswap_v2_scroll', 'UniswapV2Factory_evt_Swap')
+        , Factory_evt_PairCreated = source('icecreamswap_v2_scroll', 'UniswapV2Factory_evt_PairCreated')
     )
 }}
