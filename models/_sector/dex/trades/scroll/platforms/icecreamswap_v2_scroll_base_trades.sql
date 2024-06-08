@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'icecreamswap_scroll'
+    schema = 'icecreamswap_v2_scroll'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
