@@ -155,6 +155,19 @@
     ])
 }}
 
+{% elif blockchain == 'mantle' %}
+
+{{
+    return([
+        'CompoundingJoeMantle',
+        'CompoundingMoe',
+        'CompoundingYYStaking',
+        'LendleStrategy',
+        'MoeStrategy',
+        'StargateV2Strategy'
+    ])
+}}
+
 {% endif %}
 
 {% endmacro %}

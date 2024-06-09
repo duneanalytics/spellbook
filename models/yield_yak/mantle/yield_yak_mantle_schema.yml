@@ -1,25 +1,39 @@
 version: 2
 
 models:
-  - name: yield_yak_trades
+  - name: yield_yak_mantle_trades
     meta:
-      blockchain: avalanche_c, arbitrum, mantle
+      blockchain: mantle
       sector: dex
       project: yield_yak
-      contributors: Henrystats, angus_1
+      contributors: angus_1
     config:
-      tags: ['avalanche_c', 'yield_yak','trades', 'dex', 'aggregator', 'Henrystats', 'angus_1', 'cross-chain', 'arbitrum', 'mantle']
+      tags: ['mantle','trades', 'aggregator', 'yield_yak','dex']
     description: >
-        yield yak aggregator trades on all chains across all contracts and versions. This table will load dex trades downstream.
+        yield yak aggregator trades on mantle
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+      - check_dex_aggregator_seed:
+          blockchain: mantle
+          project: yield_yak
+          version: 1
     columns:
       - name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project 
+      - &project
         name: project
         description: "Project name of the DEX"  
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"  
+        description: "Version of the contract built and deployed by the DEX project"
       - name: block_date
         description: "UTC event block date of each DEX trade"
       - name: block_time
@@ -73,24 +87,26 @@ models:
         description: "Address which received the transaction"
       - &trace_address
         name: trace_address
-        description: "Address of the trace within the call graph forest"
+        description: ""
       - &evt_index
         name: evt_index
         description: "The position of this event log within this transaction"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
 
-  - name: yield_yak_deposits
+  - name: yield_yak_mantle_deposits
     meta:
-      blockchain: avalanche_c, arbitrum, mantle
+      blockchain: mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
+      tags: ['mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
     description: >
-        yield yak deposits
+        yield yak deposits on mantle
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - block_number
             - tx_index
             - evt_index
@@ -98,7 +114,7 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain on which the YRT contract is deployed"
-      - &contract_address 
+      - &contract_address
         name: contract_address
         description: "Address of the YRT smart contract / strategy"  
       - &tx_hash
@@ -124,19 +140,18 @@ models:
         name: deposit_amount
         description: "Amount of deposit tokens deposited into the strategy"
 
-  - name: yield_yak_withdraws
+  - name: yield_yak_mantle_withdraws
     meta:
-      blockchain: avalanche_c, arbitrum, mantle
+      blockchain: mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
+      tags: ['mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
     description: >
-        yield yak withdraws
+        yield yak withdraws on mantle
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - block_number
             - tx_index
             - evt_index
@@ -154,19 +169,18 @@ models:
         name: withdraw_amount
         description: "Amount of deposit tokens withdrawn from the strategy"
 
-  - name: yield_yak_reinvests
+  - name: yield_yak_mantle_reinvests
     meta:
-      blockchain: avalanche_c, arbitrum, mantle
+      blockchain: mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
+      tags: ['mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
     description: >
-        yield yak reinvests
+        yield yak reinvests on mantle
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - block_number
             - tx_index
             - evt_index
@@ -198,19 +212,18 @@ models:
         name: recent_reinvest_info
         description: "An array of the ratio growth and time between reinvests for the last 25 Reinvest events"
 
-  - name: yield_yak_balances
+  - name: yield_yak_mantle_balances
     meta:
-      blockchain: avalanche_c, arbitrum, mantle
+      blockchain: mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
+      tags: ['mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
     description: >
-        yield yak vault/farm/pool balances as a temporal table
+        yield yak vault/farm/pool balances on mantle as a temporal table
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - contract_address
             - from_time
     columns:
@@ -226,19 +239,18 @@ models:
         name: deposit_token_balance
         description: "Balance of deposit tokens held in the contract in the time window specified"
 
-  - name: yield_yak_user_yrt_balances
+  - name: yield_yak_mantle_user_yrt_balances
     meta:
-      blockchain: avalanche_c, arbitrum, mantle
+      blockchain: mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
+      tags: ['mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
     description: >
-        yield yak user-level YRT balances as a temporal table
+        yield yak user-level YRT balances on mantle as a temporal table
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - user_address
             - contract_address
             - from_time
@@ -255,19 +267,18 @@ models:
         name: yrt_balance
         description: "Balance of YRT tokens held by the user_address in the time window specified"
 
-  - name: yield_yak_yak_swaps
+  - name: yield_yak_mantle_yak_swaps
     meta:
-      blockchain: avalanche_c, arbitrum, mantle
+      blockchain: mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex']
+      tags: ['mantle', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex']
     description: >
-        yield yak aggregator yak swaps
+        yield yak aggregator yak swaps on mantle
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - block_number
             - tx_index
             - evt_index
@@ -316,19 +327,18 @@ models:
         name: yak_adapter_swaps
         description: "JSON array containing detailed information about the individual YakAdapterSwap events which make up this YakSwap"
 
-  - name: yield_yak_yak_adapter_swaps
+  - name: yield_yak_mantle_yak_adapter_swaps
     meta:
-      blockchain: avalanche_c, arbitrum, mantle
+      blockchain: mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex', 'yakadapter']
+      tags: ['mantle', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex', 'yakadapter']
     description: >
-        yield yak aggregator yak adapter swaps
+        yield yak aggregator yak adapter swaps on mantle
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - block_number
             - tx_index
             - adapter_evt_index
@@ -371,19 +381,18 @@ models:
         name: adapter_amount_out
         description: "Amount of the bought token being swapped to / bought in the YakAdapterSwap event"
 
-  - name: yield_yak_yield_strategies
+  - name: yield_yak_mantle_yield_strategies
     meta:
-      blockchain: avalanche_c, arbitrum, mantle
+      blockchain: mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield_yak', 'strategies', 'yield']
+      tags: ['mantle', 'yield_yak', 'strategies', 'yield']
     description: >
-        yield yak strategies on all chains
+        yield yak strategies on mantle
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
             - contract_address
     columns:
       - *blockchain

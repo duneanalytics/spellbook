@@ -5,8 +5,9 @@
 }}
 
 {% set yield_yak_models = [
-ref('yield_yak_avalanche_c_trades')
-,ref('yield_yak_arbitrum_trades')
+    ref('yield_yak_avalanche_c_trades'),
+    ref('yield_yak_arbitrum_trades'),
+    ref('yield_yak_mantle_trades')
 ] %}
 
 
