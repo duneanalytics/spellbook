@@ -1,7 +1,7 @@
 {{
     config(
 	    schema = 'yield_yak',
-        alias = 'trades'
+        alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(
                       blockchains = \'["arbitrum", "avalanche_c", "mantle"]\',

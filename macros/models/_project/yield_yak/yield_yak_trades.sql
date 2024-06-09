@@ -8,15 +8,15 @@
 
 WITH dexs AS (
     SELECT 
-        evt_block_time AS block_time,
+        evt_block_time AS block_time
         -- , '' AS taker commenting this as there's no trader in the event
-        , CAST(NULL as VARBINARY) AS maker,
-        , _amountIn AS token_sold_amount_raw,
-        , _amountOut AS token_bought_amount_raw,
-        , CAST(NULL AS double) AS amount_usd,
-        , _tokenIn AS token_sold_address,
-        , _tokenOut AS token_bought_address,
-        , contract_address As project_contract_address,
+        , CAST(NULL as VARBINARY) AS maker
+        , _amountIn AS token_sold_amount_raw
+        , _amountOut AS token_bought_amount_raw
+        , CAST(NULL AS double) AS amount_usd
+        , _tokenIn AS token_sold_address
+        , _tokenOut AS token_bought_address
+        , contract_address As project_contract_address
         , evt_tx_hash AS tx_hash
         , ARRAY[-1] AS trace_address
         , evt_index
