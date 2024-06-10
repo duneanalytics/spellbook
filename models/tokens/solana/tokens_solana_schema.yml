@@ -97,7 +97,7 @@ models:
     config:
       tags: ['solana','transfers','erc20','nft','spl']
     description: >
-        get all spl token transfers
+        get all spl token transfers (will add in token2022 later)
     columns:
       - name: block_time
       - name: block_date
@@ -105,13 +105,10 @@ models:
       - name: action
       - name: token_mint_address
       - name: amount
-      - name: fee
-      - name: token_version
       - name: from_owner
       - name: to_owner
       - name: from_token_account
       - name: to_token_account
-      - name: token_version
       - name: tx_signer 
       - name: tx_id
       - name: outer_instruction_index
