@@ -12,7 +12,7 @@
 
 {{
     uniswap_compatible_v3_trades(
-        blockchain = 'base',
+        blockchain = 'polygon',
         project = 'smardex',
         version = '1',
         Pair_evt_Swap = source('smardex_polygon', 'SmardexPair_evt_Swap'),
