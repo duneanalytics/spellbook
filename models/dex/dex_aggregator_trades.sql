@@ -1,6 +1,5 @@
 
 {{ config(
-        
         schema ='dex_aggregator',
         alias = 'trades',
         materialized = 'incremental',
@@ -8,10 +7,10 @@
         incremental_strategy = 'merge',
         unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
         incremental_predicates = ['DBT_INTERNAL_DEST.block_date >= date_trunc(\'day\', now() - interval \'7\' day)'],
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom", "bnb", "optimism", "arbitrum"]\',
-                                "sector",
-                                "dex_aggregator",
-                                \'["bh2smith", "Henrystats", "jeff-dude", "rantum" ]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["ethereum", "gnosis", "avalanche_c", "fantom", "bnb", "optimism", "arbitrum"]\',
+                                    spell_type = "sector",
+                                    spell_name = "dex_aggregator",
+                                    contributors = \'["bh2smith", "Henrystats", "jeff-dude", "rantum", "hosuke"]\') }}'
         )
 }}
 
@@ -31,37 +30,72 @@
     ,ref('odos_trades')
 ] %}
 
-{% for aggregator_model in dex_aggregator_models %}
-SELECT
-    blockchain
-    , project
-    , version
-    , block_date
-    , block_month
-    , block_time
-    , token_bought_symbol
-    , token_sold_symbol
-    , token_pair
-    , token_bought_amount
-    , token_sold_amount
-    , token_bought_amount_raw
-    , token_sold_amount_raw
-    , amount_usd
-    , token_bought_address
-    , token_sold_address
-    , taker
-    , maker
-    , project_contract_address
-    , tx_hash
-    , tx_from
-    , tx_to
-    , trace_address
-    , evt_index
-FROM {{ aggregator_model }}
-{% if is_incremental() %}
-WHERE block_date >= date_trunc('day', now() - interval '7' day)
-{% endif %}
-{% if not loop.last %}
-UNION ALL
-{% endif %}
-{% endfor %}
+WITH trades_basic_info AS (
+    {% for aggregator_model in dex_aggregator_models %}
+    SELECT
+        blockchain
+        , project
+        , version
+        , block_date
+        , block_month
+        , block_time
+        , token_bought_symbol
+        , token_sold_symbol
+        , token_pair
+        , token_bought_amount
+        , token_sold_amount
+        , token_bought_amount_raw
+        , token_sold_amount_raw
+        , token_bought_address
+        , token_sold_address
+        , taker
+        , maker
+        , project_contract_address
+        , tx_hash
+        , tx_from
+        , tx_to
+        , trace_address
+        , evt_index
+    FROM {{ aggregator_model }}
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('block_date') }}
+    {% endif %}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+)
+
+, enrichments_with_prices AS (
+    {{
+        add_amount_usd(
+            trades_cte = 'trades_basic_info'
+        )
+    }}
+)
+
+SELECT blockchain
+     , project
+     , version
+     , block_date
+     , block_month
+     , block_time
+     , token_bought_symbol
+     , token_sold_symbol
+     , token_pair
+     , token_bought_amount
+     , token_sold_amount
+     , token_bought_amount_raw
+     , token_sold_amount_raw
+     , amount_usd
+     , token_bought_address
+     , token_sold_address
+     , taker
+     , maker
+     , project_contract_address
+     , tx_hash
+     , tx_from
+     , tx_to
+     , trace_address
+     , evt_index
+FROM enrichments_with_prices
