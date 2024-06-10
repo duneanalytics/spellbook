@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        partition_by = ['block_date'],
+        partition_by = ['block_month'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['tx_id','outer_instruction_index','inner_instruction_index', 'block_slot']
   )
@@ -14,6 +14,7 @@
 SELECT
       call_block_time as block_time
     , cast (date_trunc('day', call_block_time) as date) as block_date
+    , cast (date_trunc('month', call_block_time) as date) as block_month
     , call_block_slot as block_slot
     , 'transfer' as action
     , amount
