@@ -1,6 +1,8 @@
-{{ config(
+{{
+    config(
 	    schema = 'yield_yak',
         alias = 'user_yrt_balances',
+        materialized = 'view',
         post_hook='{{ expose_spells(
                       blockchains = \'["arbitrum", "avalanche_c"]\',
                       spell_type = "project",

@@ -5,7 +5,8 @@ tags=['prod_exclude'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
-    incremental_strategy = 'merge',
+    incremental_strategy='merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['tx_hash', 'trace'],
     )
 }}
@@ -46,13 +47,13 @@ WITH traces AS (
           , tx_success
           FROM {{ source('fantom','traces') }}
           {% if is_incremental() %}
-          WHERE block_time >= date_trunc("day", NOW() - interval '1 days')
+          WHERE {{ incremental_predicate('block_time') }}
           {% endif %}
-          
+
           UNION ALL
-          
-          SELECT CAST(NULL AS varchar(1)) AS from 
-          , CAST(NULL AS varchar(1)) AS to 
+
+          SELECT CAST(NULL AS varchar(1)) AS from
+          , CAST(NULL AS varchar(1)) AS to
           , tx_hash
           , slice(trace_address, 1, cardinality(trace_address) - 1) AS trace
           , CAST(NULL AS double) AS gas_used_original
@@ -67,7 +68,7 @@ WITH traces AS (
           FROM {{ source('fantom','traces') }}
           WHERE cardinality(trace_address) > 0
           {% if is_incremental() %}
-          AND block_time >= date_trunc("day", NOW() - interval '1 days')
+          AND {{ incremental_predicate('block_time') }}
           {% endif %}
           ) traces
      GROUP BY traces.tx_hash, traces.trace, traces.block_time, traces.block_number
@@ -104,11 +105,11 @@ FROM traces
 INNER JOIN {{ source('fantom','transactions') }} txs ON txs.block_time=traces.block_time
      AND txs.hash=traces.tx_hash
      {% if is_incremental() %}
-     AND txs.block_time >= date_trunc("day", NOW() - interval '1 days')
+     AND {{ incremental_predicate('txs.block_time') }}
      {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.minute=date_trunc('minute', traces.block_time)
      AND pu.blockchain='fantom'
      AND pu.contract_address='0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83'
      {% if is_incremental() %}
-     AND pu.minute >= date_trunc("day", NOW() - interval '1' week)
+     AND {{ incremental_predicate('pu.minute') }}
      {% endif %}

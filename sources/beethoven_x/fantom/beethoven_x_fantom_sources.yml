@@ -41,7 +41,7 @@ sources:
           - name: evt_block_number
             description: 'Block number which processed the unique transaction hash'
           - name: poolAddress
-            description: 'Arbitrum address for the liquidity pool used in transaction'
+            description: 'Fantom address for the liquidity pool used in transaction'
           - name: poolId
             description: 'Unique encoded identifier that refers to each pool'
           - name: specialization
@@ -79,6 +79,38 @@ sources:
           - name: weights
             description: 'Array with the weight of each token in the created pool'
 
+      - name: WeightedPoolFactoryV2_call_create
+        description: >
+          Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
+        loaded_at_field: call_block_time
+        columns:
+          - name: call_block_number
+            description: 'Block number which processed the unique transaction hash'
+          - name: call_block_time
+            description: 'Timestamp for block time in which the call occurred in UTC'
+          - name: call_success
+            description: 'Boolean indicating if call was successfully processed'
+          - name: call_trace_address
+            description: ''
+          - name: call_tx_hash
+            description: 'Primary key of the transaction'
+          - name: contract_address
+            description: 'Address of the WeightedPoolV2Factory contract'
+          - name: name
+            description: 'Name of the created pool'
+          - name: normalizedWeights
+            description: 'Array with the normalized weight of each token in the created pool'
+          - name: output_0
+            description: 'Contract address of the created pool'
+          - name: owner
+            description: 'Contract of the pool owner'
+          - name: swapFeePercentage
+            description: 'Pool swap fee in percentage'
+          - name: symbol
+            description: 'Symbol of the created pool'
+          - name: tokens
+            description: 'Array with the address of the created pool tokens'
+
       - name: WeightedPool2TokensFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
@@ -102,7 +134,7 @@ sources:
 
       - name: Vault_evt_PoolBalanceChanged
         description: >
-          Decoded table of pool balances changes record on the Balancer Vault contract on Arbitrum.
+          Decoded table of pool balances changes record on the Balancer Vault contract on Fantom.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
@@ -124,7 +156,7 @@ sources:
 
       - name: Vault_evt_PoolBalanceManaged
         description: >
-          Decoded table of transactions performed by asset managers on the Balancer Vault contract on Arbitrum.
+          Decoded table of transactions performed by asset managers on the Balancer Vault contract on Fantom.
         loaded_at_field: evt_block_time
         columns:
           - name: contract_address
@@ -144,3 +176,16 @@ sources:
           - name: cashDelta
             description: 'Change in the amount of token cashed the vault'
 
+      - name: ComposableStablePoolFactory_call_create
+        description: >
+          Decoded table of Composable Stable Pools created by the Composable Stable Pool Factory contract.
+        loaded_at_field: evt_block_time
+        columns:
+          - name: contract_address
+            description: 'Balancer v2 Composable Stable Pool Factory contract address.'
+          - name: evt_tx_hash
+          - name: evt_index
+          - name: evt_block_time
+          - name: evt_block_number
+          - name: pool
+            description: 'Ethereum address for the Composable Stable Pool created in the transaction.'

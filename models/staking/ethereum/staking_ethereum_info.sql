@@ -130,4 +130,10 @@ FROM (VALUES
     , ('Galaxy Digital', 'GalaxyHQ')
     , ('Copper.co', 'CopperHQ')
     , ('Kelp DAO', 'KelpDAO')
+    , ('Puffer Finance', 'puffer_finance')
+    , ('Eigenpie', 'Eigenpiexyz_io')
+
+    -- Unknown Clusters:
+    , ('Cluster 0x0f5b', 'etherscan.io/address/0x0f5b2f0d89f66b163e5e8e2ccf4de706c53a5060')
+    , ('Cluster 0xc372', 'etherscan.io/address/0xc372d454835ac654d43b99c7789cc1c32f364237')
     ) AS temp_table (entity, x_username)

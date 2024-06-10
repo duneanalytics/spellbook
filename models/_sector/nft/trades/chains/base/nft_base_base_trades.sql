@@ -12,6 +12,7 @@
  ,ref('zonic_base_base_trades')
  ,ref('sudoswap_v2_base_base_trades')
  ,ref('magiceden_base_base_trades')
+ ,ref('opensea_v4_base_base_trades')
 ] %}
 
 with base_union as (

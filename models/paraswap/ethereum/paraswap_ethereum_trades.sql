@@ -1,4 +1,5 @@
 {{ config(
+        schema='paraswap_ethereum',
         alias = 'trades',
         
         )
