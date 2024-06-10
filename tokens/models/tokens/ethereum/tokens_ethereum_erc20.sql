@@ -4561,6 +4561,8 @@ FROM (VALUES
     , ( 0xf1617882a71467534d14eee865922de1395c9e89, 'saETH', 18)
     , ( 0x9deb0fc809955b79c85e82918e8586d3b7d2695a, 'GOLD', 18)
     , ( 0x75e88b8c2d34a52a6d36deada664d7dc9116e4ef, 'ZRS', 18)
+    , ( 0x5983B89FA184f14917013B9C3062afD9434C5b03, 'POWER', 0)
+    , ( 0x988567FE094570cCE1FFdA29D1f2d842B70492be, 'ZERO', 6)
     , ( 0x10dea67478c5f8c5e2d90e5e9b26dbe60c54d800, 'TAIKO', 18)
     , ( 0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b, 'syrupUSDC', 6)    
 ) AS temp_table (contract_address, symbol, decimals)
