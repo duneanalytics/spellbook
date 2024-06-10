@@ -195,5 +195,6 @@ FROM
     ('yak-yield-yak','arbitrum','YAK',0x7f4db37d7beb31f445307782bc3da0f18df13696,18),
     ('ethx-stader-ethx','arbitrum','ETHX',0xed65c5085a18fa160af0313e60dcc7905e944dc7, 18),
     ('gyd-gyro-dollar','arbitrum','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 18),
-    ('a51-a51-finance','arbitrum','A51',0xb3f13b0c61d65d67d7d6215d70c89533ee567a91, 18)
+    ('a51-a51-finance','arbitrum','A51',0xb3f13b0c61d65d67d7d6215d70c89533ee567a91, 18),
+    ('sliz-solidlizard-dex-token','arbitrum','SLIZ',0x463913D3a3D3D291667D53B8325c598Eb88D3B0e, 18)    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
