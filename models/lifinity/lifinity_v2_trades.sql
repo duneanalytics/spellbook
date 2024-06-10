@@ -38,8 +38,8 @@ WITH
         FROM {{ source('solana','instruction_calls') }} ip
         INNER JOIN {{ ref('solana_utils_token_accounts') }} mintA ON mintA.address = ip.account_arguments[4]
         INNER JOIN {{ ref('solana_utils_token_accounts') }} mintB ON mintB.address = ip.account_arguments[5]
-        INNER JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = mintA.token_mint_address
-        INNER JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = mintB.token_mint_address
+        LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = mintA.token_mint_address
+        LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = mintB.token_mint_address
         WHERE bytearray_substring(ip.data,1,8) = 0xafaf6d1f0d989bed
         and executing_account = '2wT8Yq49kHgDzXuPxZSaeLaH1qbmGXtEyPy64bL7aD3c'
         and tx_success
