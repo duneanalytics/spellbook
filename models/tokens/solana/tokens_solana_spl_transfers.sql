@@ -22,22 +22,6 @@ base as (
             , call_outer_instruction_index, call_inner_instruction_index
             , cast(null as double) as fee
             , 'spl_token' as token_version
-      FROM {{ source('spl_token_solana','spl_token_call_transfer') }}
-      WHERE 1=1
-      {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% endif %}
-
-      UNION ALL
-
-      SELECT
-            account_source, account_destination
-            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
-            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
-            , 'transfer' as action
-            , call_outer_instruction_index, call_inner_instruction_index
-            , cast(null as double) as fee
-            , 'spl_token' as token_version
       FROM {{ source('spl_token_solana','spl_token_call_transferChecked') }}
       WHERE 1=1
       {% if is_incremental() %}
@@ -124,4 +108,24 @@ SELECT
     , call_outer_instruction_index as outer_instruction_index
     , COALESCE(call_inner_instruction_index,0) as inner_instruction_index
     , call_outer_executing_account as outer_executing_account
-FROM base tr
+FROM base
+UNION ALL
+SELECT
+    block_time
+    , block_date
+    , block_slot
+    , action
+    , amount
+    , fee
+    , from_token_account
+    , to_token_account
+    , token_version
+    , tx_signer
+    , tx_id
+    , outer_instruction_index
+    , inner_instruction_index
+    , outer_executing_account
+ FROM {{ref'spl_transfers_call_transfer')}}
+{% if is_incremental() %}
+      AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
