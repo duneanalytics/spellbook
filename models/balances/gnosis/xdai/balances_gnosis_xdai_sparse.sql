@@ -54,7 +54,7 @@ suicide_end_balances as (
         FROM 
             transfers_gnosis_xdai t1
         INNER JOIN  
-            (SELECT * FROM {{ ref('suicide_gnosis_xdai') }}) t2
+            (SELECT * FROM {{ ref('balances_suicide_gnosis_xdai') }}) t2
             ON 
             t2.address = t1.wallet_address
         WHERE

@@ -28,6 +28,9 @@ models:
       - &wallet_address
         name: wallet_address
         description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &counterparty
+        name: counterparty
+        description: "Wallet address of the counterparty. If amount is positive, counterparty address is the sender's."
       - &token_address
         name: token_address
         description: "Contract address for token"
@@ -42,7 +45,7 @@ models:
         description: "Transaction hash"
       - &trace_address
         name: trace_address
-        description: "Trace index"
+        description: "Trace Address"
       - &amount_raw
         name: amount_raw
         description: "Raw amount of xdai token held *before* taking into account token decimals"
@@ -60,6 +63,7 @@ models:
           combination_of_columns:
             - hour
             - wallet_address
+            - counterparty
             - token_address
     columns:
       - *blockchain
@@ -68,6 +72,7 @@ models:
         description: "UTC event block time truncated to the hour mark."
       - *block_month
       - *wallet_address
+      - *counterparty
       - *token_address
       - &symbol
         name: symbol
@@ -90,6 +95,7 @@ models:
           combination_of_columns:
             - day
             - wallet_address
+            - counterparty
             - token_address
     columns:
       - *blockchain
@@ -98,6 +104,7 @@ models:
         description: "UTC event block time truncated to the day mark."
       - *block_month
       - *wallet_address
+      - *counterparty
       - *token_address
       - *symbol
       - *amount_raw

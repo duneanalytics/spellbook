@@ -12,6 +12,12 @@ models:
     description: >
         Block resolution xDAI balances and balances diff for each address on gnosis.
         Depends on transfers_gnosis_xdai
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - wallet_address
+            - token_address
     columns:
       - &blockchain
         name: blockchain
@@ -37,3 +43,107 @@ models:
       - &amount_raw_diff
         name: amount_raw_diff
         description: "Raw amount of xDAI token difference *before* taking into account token decimals"
+
+  - name: balances_suicide_gnosis_xdai
+    meta:
+      blockchain: gnosis
+      sector: balances
+      project: xdai
+      contributors: hdser
+    config:
+      tags: ['balances', 'gnosis', 'xdai', 'suicide', 'hdser']
+    description: >
+        Contract suicide table keeps tract of refundable addresses. It will be used in balances_gnosis_xdai_sparse in order
+        to add the balance of the contract destroyed into the refundable address.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - trace_address
+            - address
+            - block_time
+    columns:
+      - *block_time
+      - *block_number
+      - *block_month
+      - &tx_hash
+        name: tx_hash
+        description: "Event transaction hash"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &trace_address
+        name: trace_address
+        description: "Trace Address"
+      - &address
+        name: address
+        description: "Address of contract beeing destroyed"
+      - &refund_address
+        name: refund_address
+        description: "Address receiving the refund"
+
+  - name: balances_diff_gnosis_xdai_sparse_hour
+    meta:
+      blockchain: gnosis
+      sector: balances
+      project: xdai
+      contributors: hdser
+    config:
+      tags: ['balances', 'gnosis', 'xdai','hdser']
+    description: >
+        xDAI balances and balances diff for each address on gnosis on a hourly resolution. Sparse version.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_hour
+            - wallet_address
+            - token_address
+    columns:
+      - *blockchain
+      - &block_hour
+        name: block_hour
+        description: "UTC event block time truncated to the hour mark"
+      - *block_month
+      - *wallet_address
+      - *token_address
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - *amount_raw
+      - &amount
+        name: amount
+        description: "Amount of xDAI token held *after* taking into account token decimals"
+      - *amount_raw_diff
+      - &amount_diff
+        name: amount_diff
+        description: "Amount of xDAI token difference *after* taking into account token decimals"
+
+  - name: balances_diff_gnosis_xdai_sparse_day
+    meta:
+      blockchain: gnosis
+      sector: balances
+      project: xdai
+      contributors: hdser
+    config:
+      tags: ['balances', 'gnosis', 'xdai','hdser']
+    description: >
+        xDAI balances and balances diff for each address on gnosis on a daily resolution. Sparse version.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_day
+            - wallet_address
+            - token_address
+    columns:
+      - *blockchain
+      - &block_day
+        name: block_day
+        description: "UTC event block time truncated to the day mark"
+      - *block_month
+      - *wallet_address
+      - *token_address
+      - *symbol
+      - *amount_raw
+      - *amount
+      - *amount_raw_diff
+      - *amount_diff

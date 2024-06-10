@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['tx_hash', 'trace_address', 'address', 'block_time'], 
-    alias = 'xdai_v3',
+    alias = 'xdai_suicide',
     post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "sector",
                                     "transfers",

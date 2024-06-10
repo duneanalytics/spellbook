@@ -6,7 +6,7 @@ models:
       blockchain: gnosis
       sector: transfers
       project: erc20
-      contributors: soispoke, dot2dotseurat, tschubotz, hosuke, Henrystats, hdser
+      contributors: hdser
     config:
       tags: ['transfers', 'gnosis', 'erc20']
     description: "ERC20 Token Transfers on gnosis. This table is updated every 30 minutes."
@@ -27,6 +27,9 @@ models:
       - &wallet_address
         name: wallet_address
         description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &counterparty
+        name: counterparty
+        description: "Wallet address of counterparty. If amount is positive, counterparty address is the sender's."
       - &token_address
         name: token_address
         description: "Contract address for token"
@@ -59,6 +62,7 @@ models:
           combination_of_columns:
             - block_hour
             - wallet_address
+            - counterparty
             - token_address
     columns:
       - *blockchain
@@ -67,6 +71,7 @@ models:
         description: "UTC event block time truncated to the hour mark."
       - *block_month
       - *wallet_address
+      - *counterparty
       - *token_address
       - &symbol
         name: symbol
@@ -89,6 +94,7 @@ models:
           combination_of_columns:
             - block_day
             - wallet_address
+            - counterparty
             - token_address
     columns:
       - *blockchain
@@ -97,6 +103,7 @@ models:
         description: "UTC event block time truncated to the day mark."
       - *block_month 
       - *wallet_address
+      - *counterparty
       - *token_address
       - *symbol
       - *amount_raw
