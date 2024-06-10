@@ -17,8 +17,8 @@ SELECT
     wallet_address,
     token_address,
     'xDAI' AS symbol,
-    ARRAY_AGG(amount_raw ORDER BY block_time DESC)[1] AS amount_raw
-    ARRAY_AGG(amount_raw / power(10, 18) ORDER BY block_time DESC)[1] AS amount
+    ARRAY_AGG(amount_raw ORDER BY block_time DESC)[1] AS amount_raw,
+    ARRAY_AGG(amount_raw / power(10, 18) ORDER BY block_time DESC)[1] AS amount,
     SUM(amount_raw_diff) AS amount_raw_diff,
     SUM(amount_raw_diff / power(10, 18)) AS amount_diff
 FROM 
