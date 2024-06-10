@@ -16,7 +16,7 @@ SELECT
     , cast (date_trunc('day', call_block_time) as date) as block_date
     , call_block_slot as block_slot
     , 'transfer' as action
-    , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
+    , amount
     , cast(null as double) as fee
     , account_source as from_token_account
     , account_destination as to_token_account
