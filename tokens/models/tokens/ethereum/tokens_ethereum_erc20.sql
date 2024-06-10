@@ -4561,4 +4561,5 @@ FROM (VALUES
     , ( 0xf1617882a71467534d14eee865922de1395c9e89, 'saETH', 18)
     , ( 0x9deb0fc809955b79c85e82918e8586d3b7d2695a, 'GOLD', 18)
     , ( 0x75e88b8c2d34a52a6d36deada664d7dc9116e4ef, 'ZRS', 18)    
+    , ( 0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b, 'syrupUSDC', 6)    
 ) AS temp_table (contract_address, symbol, decimals)
