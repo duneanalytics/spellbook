@@ -6,10 +6,10 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'method', 'trace_address'],
-    post_hook='{{ expose_spells(\'["zkevm"]\',
-                                "project",
-                                "paraswap_v6",
-                                \'["eptighte", "mwamedacen"]\') }}'
+    post_hook='{{ expose_spells(blockchains = \'["zkevm"]\',
+                                spell_type = "project",
+                                spell_name = "paraswap_v6",
+                                contributors = \'["eptighte", "mwamedacen"]\') }}'
     )
 }}
 
