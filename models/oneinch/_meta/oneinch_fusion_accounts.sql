@@ -50,7 +50,13 @@ executors as (
 , fusion as (
     select blockchain, tx_hash, call_from as resolver_executor
     from {{ ref('oneinch_lop') }}
-    where flags['fusion']
+    where
+        {% if is_incremental() %}
+            {{ incremental_predicate('block_time') }}
+        {% else %}
+            block_time >= {{ project_start_date }}
+        {% endif %}
+        and flags['fusion']
 )
 
 , calls as (
