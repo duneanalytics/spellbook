@@ -432,6 +432,7 @@ daily_running_totals_enriched as (
     drt.block_date,
     coalesce(p_avg_eth.price_usd, 0) as avg_eth_usd_price,
     coalesce(p_avg_dai.price_usd, 0) as avg_dai_usd_price,
+    coalesce(p_avg_usdc.price_usd, 0) as avg_usdc_usd_price,
     -- ETH
     coalesce(drt.eth_total, 0) as eth_total,
     coalesce(drt.eth_total * p_avg_eth.price_usd, 0) as avg_eth_usd_total,
@@ -475,6 +476,7 @@ select
   block_date,
   avg_eth_usd_price,
   avg_dai_usd_price,
+  avg_usdc_usd_price,
   -- Capital Pool totals
   eth_total + nxmty_eth_total + steth_total + avg_dai_eth_total + avg_reth_eth_total + avg_usdc_eth_total
     + avg_cover_re_usdc_eth_total + aave_collateral_weth_total + avg_aave_debt_usdc_eth_total as avg_capital_pool_eth_total,

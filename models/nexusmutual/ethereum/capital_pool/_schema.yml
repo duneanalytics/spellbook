@@ -78,6 +78,9 @@ models:
       - &avg_dai_usd_price
         name: avg_dai_usd_price
         description: "Daily average DAI/USD price"
+      - &avg_usdc_usd_price
+        name: avg_usdc_usd_price
+        description: "Daily average USDC/USD price"
       - &avg_capital_pool_eth_total
         name: avg_capital_pool_eth_total
         description: "Daily average Capital Pool total expressed in ETH"
@@ -173,6 +176,7 @@ models:
       - *block_date
       - *avg_eth_usd_price
       - *avg_dai_usd_price
+      - *avg_usdc_usd_price
       - *avg_capital_pool_eth_total
       - *avg_capital_pool_usd_total
       - *eth_total
