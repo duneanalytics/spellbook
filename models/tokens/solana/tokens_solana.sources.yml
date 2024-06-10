@@ -24,6 +24,29 @@ sources:
       - name: spl_token_call_burnChecked
         loaded_at_field: call_block_time
 
+  - name: spl_token_2022_solana
+    description: "spl_token 2022 decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: spl_token_2022_call_initializeMint
+        loaded_at_field: call_block_time
+      - name: spl_token_2022_call_initializeMint2
+        loaded_at_field: call_block_time
+      - name: spl_token_2022_call_transferFeeExtension
+        loaded_at_field: call_block_time
+      - name: spl_token_2022_call_transferChecked
+        loaded_at_field: call_block_time
+      - name: spl_token_2022_call_mintTo
+        loaded_at_field: call_block_time
+      - name: spl_token_2022_call_mintToChecked
+        loaded_at_field: call_block_time
+      - name: spl_token_2022_call_burn
+        loaded_at_field: call_block_time
+      - name: spl_token_2022_call_burnChecked
+        loaded_at_field: call_block_time
+
   - name: mpl_token_metadata_solana
     description: "mpl metadata decoded tables"
     freshness: # default freshness
