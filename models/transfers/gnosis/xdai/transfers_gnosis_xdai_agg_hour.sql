@@ -5,13 +5,13 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key = ['hour', 'wallet_address', 'counterparty', 'token_address']
+        unique_key = ['block_hour', 'wallet_address', 'counterparty', 'token_address']
         )
 }}
 
 select
     tr.blockchain,
-    date_trunc('hour', tr.block_time) as hour,
+    date_trunc('hour', tr.block_time) as block_hour,
     block_month,
     tr.wallet_address,
     tr.counterparty,

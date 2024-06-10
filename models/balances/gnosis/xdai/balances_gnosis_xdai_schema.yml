@@ -15,7 +15,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - tx_hash
+            - block_time
             - wallet_address
             - token_address
     columns:
@@ -36,7 +36,7 @@ models:
         description: "Address of the wallet holding matic"
       - &token_address
         name: token_address
-        description: "matic Dead Address on gnosis"
+        description: "xDAI Dead Address on gnosis"
       - &amount_raw
         name: amount_raw
         description: "Raw amount of xDAI token held *before* taking into account token decimals"
