@@ -41,7 +41,7 @@ with dexs AS (
         CAST(-1 as integer) AS evt_index
     FROM {{ ref('paraswap_v6_zkevm_trades_decoded') }}     
     {% if is_incremental() %}
-    WHERE blockTime >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('blockTime') }}
     {% endif %}
 ),
 
