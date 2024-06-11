@@ -119,10 +119,10 @@ LEFT JOIN trusted_tokens tt_bought
 LEFT JOIN trusted_tokens tt_sold
     ON bt.token_sold_address = tt_sold.contract_address
     AND bt.blockchain = tt_sold.blockchain
-LEFT JOIN {{ tokens_erc20_model }} as erc20_bought
+LEFT JOIN {{ source('tokens', 'erc20') }} as erc20_bought
     ON bt.token_bought_address = erc20_bought.contract_address
     AND bt.blockchain = erc20_bought.blockchain
-LEFT JOIN {{ tokens_erc20_model }} as erc20_sold
+LEFT JOIN {{ source('tokens', 'erc20') }} as erc20_sold
     ON bt.token_sold_address = erc20_sold.contract_address
     AND bt.blockchain = erc20_sold.blockchain
 
