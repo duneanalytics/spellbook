@@ -44,6 +44,22 @@ sources:
         loaded_at_field: evt_block_time
       - name: BoostedPendleStrategy_evt_Transfer
         loaded_at_field: evt_block_time
+      - name: BoostedStargateV2NativeStrategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2NativeStrategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2NativeStrategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2NativeStrategy_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2Strategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2Strategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2Strategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2Strategy_evt_Transfer
+        loaded_at_field: evt_block_time
       - name: CompoundingBets_evt_Deposit
         loaded_at_field: evt_block_time
       - name: CompoundingBets_evt_Withdraw

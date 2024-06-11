@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'borrow'
+    schema = 'timeswap_arbitrum'
+    ,alias = 'borrow'
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'

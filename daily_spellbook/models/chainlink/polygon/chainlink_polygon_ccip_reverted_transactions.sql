@@ -8,7 +8,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
   ccip_reverted_transactions AS (
@@ -23,12 +22,12 @@ WITH
       LEFT JOIN {{ source('polygon', 'transactions') }} tx ON
         ccip_send_logs_v1.tx_hash = tx.hash
         {% if is_incremental() %}
-            AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+            AND {{ incremental_predicate('tx.block_time') }}
         {% endif %}
       WHERE
         tx.success = false
       {% if is_incremental() %}
-        AND ccip_send_logs_v1.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND {{ incremental_predicate('ccip_send_logs_v1.block_time') }}
       {% endif %}
 
     UNION
@@ -44,14 +43,14 @@ WITH
       LEFT JOIN {{ source('polygon', 'transactions') }} tx ON
         ccip_send_logs_v1_2.tx_hash = tx.hash
         {% if is_incremental() %}
-            AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+            AND {{ incremental_predicate('tx.block_time') }}
         {% endif %}
       WHERE
         tx.success = false
       {% if is_incremental() %}
-        AND ccip_send_logs_v1_2.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND {{ incremental_predicate('ccip_send_logs_v1_2.block_time') }}
       {% endif %}
-        
+
   )
 SELECT
  'polygon' as blockchain,

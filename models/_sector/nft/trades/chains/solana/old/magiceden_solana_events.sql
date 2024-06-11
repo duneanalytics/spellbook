@@ -1,10 +1,11 @@
 {{ config(
     schema = 'magiceden_solana',
     alias = 'events',
-    
+
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['unique_trade_id']
     )
 }}
@@ -40,7 +41,7 @@ WITH me_txs AS (
     {% endif %}
     {% if is_incremental() %}
     -- this filter will only be applied on an incremental run
-    AND block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('block_time') }}
     {% endif %}
 
 )
@@ -154,5 +155,5 @@ LEFT JOIN {{ source('prices', 'usd') }} AS p
   AND p.blockchain is NULL
   AND p.symbol = 'SOL'
   {% if is_incremental() %}
-  AND p.minute >= date_trunc('day', now() - interval '7' day)
+  AND {{ incremental_predicate('p.minute') }}
   {% endif %}

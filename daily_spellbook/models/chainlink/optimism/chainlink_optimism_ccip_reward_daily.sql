@@ -9,7 +9,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
     token_meta AS (
@@ -28,7 +27,7 @@ WITH
             {{ source('prices', 'usd') }} price
         JOIN token_meta ON price.symbol = token_meta.token_symbol
         {% if is_incremental() %}
-            WHERE price.minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+            WHERE {{ incremental_predicate('price.minute') }}
         {% endif %}
         GROUP BY
             1, token_meta.token_symbol
@@ -36,21 +35,21 @@ WITH
             1
     ),
     ccip_reward_daily AS (
-        SELECT 
+        SELECT
             ccip_send_requested_daily.date_start,
-            cast(date_trunc('month', ccip_send_requested_daily.date_start) as date) as date_month,  
+            cast(date_trunc('month', ccip_send_requested_daily.date_start) as date) as date_month,
             SUM(ccip_send_requested_daily.fee_amount) as token_amount,
             SUM((ccip_send_requested_daily.fee_amount * tud.usd_amount)) as usd_amount,
             ccip_send_requested_daily.token as token
-        FROM 
+        FROM
             {{ref('chainlink_optimism_ccip_send_requested_daily')}} ccip_send_requested_daily
         LEFT JOIN token_usd_daily tud ON tud.date_start = ccip_send_requested_daily.date_start AND tud.symbol = ccip_send_requested_daily.token
         {% if is_incremental() %}
-            WHERE ccip_send_requested_daily.date_start >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-        {% endif %}  
+            WHERE {{ incremental_predicate('ccip_send_requested_daily.date_start') }}
+        {% endif %}
         GROUP BY 1, 5
     )
-    
+
 SELECT
     'optimism' as blockchain,
     date_start,
@@ -58,7 +57,7 @@ SELECT
     token_amount,
     usd_amount,
     token
-FROM 
+FROM
     ccip_reward_daily
 ORDER BY
     2, 6
