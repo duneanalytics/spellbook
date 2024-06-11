@@ -3,11 +3,11 @@ version: 2
 models:
   - name: tokens_erc20
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, fantom, polygon, base
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, mantle, optimism, fantom, polygon, base
       sector: tokens
-      contributors: hildobby, 0xManny, dot2dotseurat, soispoke, mtitus6, wuligy
+      contributors: hildobby, 0xManny, dot2dotseurat, soispoke, mtitus6, wuligy, angus_1
     config:
-      tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb','ethereum', 'gnosis','optimism', 'fantom', 'base']
+      tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'mantle', 'optimism', 'fantom', 'base']
     description: >
         Crosschain ERC20 tokens
     tests:

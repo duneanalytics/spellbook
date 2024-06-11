@@ -380,3 +380,29 @@ models:
       - &adapter_amount_out
         name: adapter_amount_out
         description: "Amount of the bought token being swapped to / bought in the YakAdapterSwap event"
+
+  - name: yield_yak_avalanche_c_yield_strategies
+    meta:
+      blockchain: avalanche_c
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'yield_yak', 'strategies', 'yield']
+    description: >
+        yield yak strategies on avalanche_c
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+    columns:
+      - *blockchain
+      - *contract_address
+      - &contract_name
+        name: contract_name
+        description: "Name of the deployed contract"
+      - &created_block_time
+        name: created_block_time
+        description: "Timestamp at which the contract was deployed/created"
+      - &created_block_number
+        name: created_block_number
+        description: "Block number at which the contract was deployed/created"
