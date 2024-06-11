@@ -107,6 +107,23 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('nuri_scroll_base_trades_seed')  
 
+  - name: iziswap_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: iziswap
+      contributors: niftytable
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'iziswap' ]
+    description: "Iziswap scroll base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index  
+      - check_dex_base_trades_seed:
+          seed_file: ref('iziswap_scroll_base_trades_seed')  
+          
   - name: icecreamswap_v2_scroll_base_trades
     meta:
       blockchain: scroll
@@ -123,4 +140,3 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('icecreamswap_v2_scroll_base_trades_seed')
-
