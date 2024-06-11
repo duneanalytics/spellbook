@@ -139,6 +139,8 @@
         'AutoPoolStrategy',
         'BalancerDirectJoinStrategy',
         'BoostedPendleStrategy',
+        'BoostedStargateV2NativeStrategy',
+        'BoostedStargateV2Strategy',
         'CompoundingBets',
         'CompoundingJoe',
         'CompoundingYYStaking',
