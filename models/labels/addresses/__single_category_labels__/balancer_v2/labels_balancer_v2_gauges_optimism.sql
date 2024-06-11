@@ -101,4 +101,4 @@ INNER JOIN gauges g ON g.address = c.addr
          , g.model_name
          , g.label_type
     FROM gauges g
-    INNER JOIN controller c ON s.address = c.address
+    INNER JOIN controller c ON g.address = c.address
