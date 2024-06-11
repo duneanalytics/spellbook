@@ -9,7 +9,7 @@
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        unique_key = ['block_hour', 'wallet_address', 'token_address']
+        unique_key = ['block_day', 'wallet_address', 'token_address']
         )
 }}
 
@@ -26,6 +26,6 @@ SELECT
 FROM 
 {{ ref('transfers_gnosis_erc20_agg_day') }} 
 {% if is_incremental() %}
-WHERE block_hour >= date_trunc('hour', now() - interval '3' Day)
+WHERE block_day >= date_trunc('hour', now() - interval '3' Day)
 {% endif %}
 GROUP BY 1, 2, 3, 4, 5, 6

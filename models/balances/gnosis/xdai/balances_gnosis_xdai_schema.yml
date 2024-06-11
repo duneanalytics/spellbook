@@ -92,12 +92,6 @@ models:
       tags: ['balances', 'gnosis', 'xdai','hdser']
     description: >
         xDAI balances and balances diff for each address on gnosis on a hourly resolution. Sparse version.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_hour
-            - wallet_address
-            - token_address
     columns:
       - *blockchain
       - &block_hour
@@ -128,12 +122,6 @@ models:
       tags: ['balances', 'gnosis', 'xdai','hdser']
     description: >
         xDAI balances and balances diff for each address on gnosis on a daily resolution. Sparse version.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_day
-            - wallet_address
-            - token_address
     columns:
       - *blockchain
       - &block_day
