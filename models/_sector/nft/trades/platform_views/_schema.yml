@@ -251,3 +251,13 @@ models:
      tags: ['nft', 'trades', 'zora']
    description: "NFT trades view for zora"
 
+
+ - name: fantasy_trades_view
+   meta:
+     blockchain: ["blast"]
+     sector: nft
+     contributors: hildobby
+   config:
+     tags: ['nft', 'trades', 'blast']
+   description: "NFT trades view for fantasy"
+
