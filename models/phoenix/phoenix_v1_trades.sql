@@ -108,7 +108,7 @@
       {% if is_incremental() %}
       AND {{incremental_predicate('l.call_block_time')}}
       {% endif %}
-      AND call_block_time >= now() - interval '7' day --qa
+      -- AND call_block_time >= now() - interval '7' day --qa
   ),
   max_log_index AS (
     SELECT
@@ -192,7 +192,7 @@
         {% if is_incremental() %}
         AND {{incremental_predicate('call_block_time')}}
         {% endif %}
-        AND call_block_time >= now() - interval '7' day --qa
+        -- AND call_block_time >= now() - interval '7' day --qa
     ) s ON s.call_block_slot = l.call_block_slot
         AND s.call_tx_id = l.call_tx_id
         AND s.account_market = l.market
@@ -238,8 +238,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solan
     {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
-    -- AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
-    AND p_bought.minute >= now() - interval '7' day --qa
+    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
+    -- AND p_bought.minute >= now() - interval '7' day --qa
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_sold.minute 
@@ -247,8 +247,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     {% if is_incremental() %}
     AND {{incremental_predicate('p_sold.minute')}}
     {% else %}
-    -- AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
-    AND p_sold.minute >= now() - interval '7' day --qa
+    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
+    -- AND p_sold.minute >= now() - interval '7' day --qa
     {% endif %}
 WHERE 1=1 
 AND recent_swap = 1
