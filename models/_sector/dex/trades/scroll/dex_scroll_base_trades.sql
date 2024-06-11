@@ -13,6 +13,7 @@
     , ref('syncswap_v1_scroll_base_trades')
     , ref('nuri_scroll_base_trades') 
     , ref('iziswap_scroll_base_trades')    
+    , ref('icecreamswap_v2_scroll_base_trades') 
 ] %}
 
 WITH base_union AS (

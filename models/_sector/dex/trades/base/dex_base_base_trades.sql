@@ -45,6 +45,7 @@
     , ref('alienbase_base_base_trades')
     , ref('swapbased_base_base_trades')
     , ref('clipper_base_base_trades')
+    , ref('solidly_v3_base_base_trades')
 ] %}
 
 WITH base_union AS (
