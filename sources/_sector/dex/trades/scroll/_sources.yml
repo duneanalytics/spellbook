@@ -27,3 +27,8 @@ sources:
     tables:
       - name: ClPoolFactory_evt_PoolCreated
       - name: ClPool_evt_Swap
+  - name: icecreamswap_v2_scroll
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
+

@@ -106,3 +106,21 @@ models:
             - evt_index  
       - check_dex_base_trades_seed:
           seed_file: ref('nuri_scroll_base_trades_seed')  
+
+  - name: icecreamswap_v2_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: icecreamswap
+      contributors: intensodefi
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'icecreamswap' ]
+    description: "icecreamswap v2 scroll base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('icecreamswap_v2_scroll_base_trades_seed')
+
