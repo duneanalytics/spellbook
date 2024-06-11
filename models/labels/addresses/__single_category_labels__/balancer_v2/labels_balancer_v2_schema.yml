@@ -277,8 +277,11 @@ models:
         description: "Address of the pool to which a Gauge belongs"
       - &child_gauge_address
         name: child_gauge_address
-        description: "Address of the Child Gauge on L2s, NULL if on mainner"
+        description: "Address of the Child Gauge on L2s, NULL if on mainnet"
       - *name
+      - &status
+        name: status
+        description: "Flag for whether a gauge is active or inactive"
       - *category
       - *contributor
       - *source
@@ -306,6 +309,7 @@ models:
       - *pool_address
       - *child_gauge_address
       - *name
+      - *status
       - *category
       - *contributor
       - *source
@@ -333,6 +337,7 @@ models:
       - *pool_address
       - *child_gauge_address
       - *name
+      - *status
       - *category
       - *contributor
       - *source
@@ -360,6 +365,7 @@ models:
       - *pool_address
       - *child_gauge_address
       - *name
+      - *status
       - *category
       - *contributor
       - *source
@@ -387,6 +393,7 @@ models:
       - *pool_address
       - *child_gauge_address
       - *name
+      - *status
       - *category
       - *contributor
       - *source
@@ -414,6 +421,7 @@ models:
       - *pool_address
       - *child_gauge_address
       - *name
+      - *status
       - *category
       - *contributor
       - *source
@@ -441,6 +449,7 @@ models:
       - *pool_address
       - *child_gauge_address
       - *name
+      - *status
       - *category
       - *contributor
       - *source
@@ -468,6 +477,7 @@ models:
       - *pool_address
       - *child_gauge_address
       - *name
+      - *status
       - *category
       - *contributor
       - *source
@@ -495,6 +505,7 @@ models:
       - *pool_address
       - *child_gauge_address
       - *name
+      - *status
       - *category
       - *contributor
       - *source
