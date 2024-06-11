@@ -1,5 +1,5 @@
 {{ config(
-        
+        schema = 'gitcoin',
         alias = 'donations',
         partition_by = ['block_month'],
         materialized = 'incremental',

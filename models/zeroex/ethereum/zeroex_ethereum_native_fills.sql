@@ -54,6 +54,9 @@ WITH
         FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills
         LEFT JOIN {{ source('prices', 'usd') }} tp ON
             date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('tp.minute') }}
+            {% endif %}
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20)) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
@@ -61,6 +64,9 @@ WITH
                 END = tp.contract_address
         LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'ethereum'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('mp.minute') }}
+            {% endif %}
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20)) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
@@ -115,6 +121,9 @@ WITH
         FROM {{ source('zeroex_v2_ethereum', 'Exchange2_1_evt_Fill') }} fills
         LEFT JOIN {{ source('prices', 'usd') }} tp ON
             date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('tp.minute') }}
+            {% endif %}
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN greatest(bytearray_substring(takerAssetData, 17, 20),bytearray_substring(takerAssetData, 245, 20)) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
@@ -122,6 +131,9 @@ WITH
                 END = tp.contract_address
         LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute and mp.blockchain = 'ethereum'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('mp.minute') }}
+            {% endif %}
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN greatest(bytearray_substring(makerAssetData, 17, 20),bytearray_substring(makerAssetData, 245, 20)) IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
@@ -177,6 +189,9 @@ WITH
         FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
         LEFT JOIN {{ source('prices', 'usd') }} tp ON
             date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('tp.minute') }}
+            {% endif %}
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
@@ -184,6 +199,9 @@ WITH
                 END = tp.contract_address
         LEFT JOIN {{ source('prices', 'usd') }} mp ON
             DATE_TRUNC('minute', evt_block_time) = mp.minute and    mp.blockchain = 'ethereum'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('mp.minute') }}
+            {% endif %}
             AND CASE
                     -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.makerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
@@ -296,6 +314,9 @@ WITH
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
       LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute and tp.blockchain = 'ethereum'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('tp.minute') }}
+            {% endif %}
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
@@ -303,6 +324,9 @@ WITH
               END = tp.contract_address
       LEFT JOIN {{ source('prices', 'usd') }} mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute  and mp.blockchain = 'ethereum'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('mp.minute') }}
+            {% endif %}
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.makerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
