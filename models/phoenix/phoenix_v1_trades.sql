@@ -145,18 +145,18 @@
             else COALESCE(tokenA_symbol, tokenA) 
             end as token_bought_symbol
         , case when s.side = 1 then l.tokenB_filled 
-            else l.tokenA_filled 
+            else (l.tokenA_filled*coalesce(mm.raw_base_units_per_base_unit,1)) --base unit can be adjusted by phoenix, i.e. for BONK it starts at 1e6. There is a script for updating the markets seed file.
             end as token_bought_amount_raw
         , case when s.side = 1 then l.tokenB_filled/pow(10,p.tokenB_decimals)
-            else l.tokenA_filled/pow(10,p.tokenA_decimals) 
+            else (l.tokenA_filled*coalesce(mm.raw_base_units_per_base_unit,1))/pow(10,p.tokenA_decimals) 
             end token_bought_amount
         , case when s.side = 1 then COALESCE(tokenA_symbol, tokenA) 
             else COALESCE(tokenB_symbol, tokenB) 
             end as token_sold_symbol
-        , case when s.side = 1 then l.tokenA_filled 
+        , case when s.side = 1 then (l.tokenA_filled*coalesce(mm.raw_base_units_per_base_unit,1)) 
             else l.tokenB_filled 
             end as token_sold_amount_raw
-        , case when s.side = 1 then l.tokenA_filled/pow(10,p.tokenA_decimals)
+        , case when s.side = 1 then (l.tokenA_filled*coalesce(mm.raw_base_units_per_base_unit,1))/pow(10,p.tokenA_decimals)
             else l.tokenB_filled/pow(10,p.tokenB_decimals) 
             end token_sold_amount
         , p.pool_id
@@ -196,6 +196,7 @@
         AND s.call_outer_instruction_index = l.call_outer_instruction_index
         AND COALESCE(s.call_inner_instruction_index, 0) <= COALESCE(l.call_inner_instruction_index,0) --only get swaps before the log call
     JOIN pools p ON l.market = p.pool_id
+    LEFT JOIN market_metadata mm ON l.market = mm.market_id
   )
   
 SELECT
