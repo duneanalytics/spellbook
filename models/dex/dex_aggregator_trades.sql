@@ -68,7 +68,7 @@ WITH trades_basic_info AS (
 
 , enrichments_with_prices AS (
     {{
-        add_amount_usd(
+        add_amount_usd_using_amount_raw(
             trades_cte = 'trades_basic_info'
         )
     }}
