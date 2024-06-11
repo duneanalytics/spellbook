@@ -89,3 +89,42 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('secta_linea_base_trades_seed')
+
+  - name: pancakeswap_v2_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
+    description: "Pancakeswap linea v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_linea_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: pancakeswap_v3_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'pancakeswap' ]
+    description: "Pancakeswap V3 linea base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_linea_base_trades_seed')
+          filter:
+            version: 3

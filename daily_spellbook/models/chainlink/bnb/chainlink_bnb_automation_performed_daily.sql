@@ -7,7 +7,7 @@
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['date_start', 'keeper_address'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.date_month')]
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.date_start')]
   )
 }}
 

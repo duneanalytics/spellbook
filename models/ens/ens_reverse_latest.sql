@@ -1,4 +1,5 @@
 {{ config(
+    schema = 'ens',
     alias = 'reverse_latest',
     
     materialized = 'incremental',
