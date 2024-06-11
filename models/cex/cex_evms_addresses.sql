@@ -1848,7 +1848,8 @@ FROM (VALUES
     -- IDEX
     , (0x2a0c0dbecc7e4d658f48e01e3fa353f44050c208, 'IDEX', 'IDEX 1', 'hildobby', date '2023-09-08')
     , (0xa7a7899d944fe658c4b0a1803bab2f490bd3849e, 'IDEX', 'IDEX 2', 'hildobby', date '2023-09-08')
-    0x8af97264482b59c7aa11010907710dee6d8d8c6c
+    , (0x8af97264482b59c7aa11010907710dee6d8d8c6c, 'IDEX', 'IDEX 2', 'hildobby', date '2024-06-03')
+0x
     -- Flata Exchange
     , (0x14301566b9669b672878d86ff0b1d18dd58054e9, 'Flata Exchange', 'Flata Exchange', 'hildobby', date '2022-08-28')
     -- XT.com
@@ -2105,7 +2106,6 @@ FROM (VALUES
     , (0xbde577b9582aa0305f623b51f1b70c5a118b922a, 'Dex-Trade', 'Dex-Trade 1', 'hildobby', date '2023-09-12')
     , (0x881368e08cc5353e0188b2ca0401b5de35f319f4, 'Dex-Trade', 'Dex-Trade 2', 'hildobby', date '2023-09-12')
     , (0xd0acb9c61cd72e0f57b19268d70c73b77dbdd553, 'Dex-Trade', 'Dex-Trade 3', 'hildobby', date '2023-09-12')
-    0xa0f66086c32c692033b664a775cb3484c62c2c9e
     -- Eigen Fx
     , (0x608f94df1c1d89ea13e5984d7bf107df137a6541, 'Eigen Fx', 'Eigen Fx 1', 'hildobby', date '2023-04-06')
     , (0xeb9ebf2c624ebee42e0853da6443ddc6c8020de7, 'Eigen Fx', 'Eigen Fx 2', 'hildobby', date '2023-04-06')
