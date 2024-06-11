@@ -3,12 +3,12 @@ version: 2
 models:
   - name: yield_yak_trades
     meta:
-      blockchain: avalanche_c, arbitrum
+      blockchain: avalanche_c, arbitrum, mantle
       sector: dex
       project: yield_yak
       contributors: Henrystats, angus_1
     config:
-      tags: ['avalanche_c', 'yield_yak','trades', 'dex', 'aggregator', 'Henrystats', 'angus_1', 'cross-chain', 'arbitrum']
+      tags: ['avalanche_c', 'yield_yak','trades', 'dex', 'aggregator', 'Henrystats', 'angus_1', 'cross-chain', 'arbitrum', 'mantle']
     description: >
         yield yak aggregator trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
@@ -80,11 +80,11 @@ models:
 
   - name: yield_yak_deposits
     meta:
-      blockchain: avalanche_c, arbitrum
+      blockchain: avalanche_c, arbitrum, mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
     description: >
         yield yak deposits
     tests:
@@ -126,11 +126,11 @@ models:
 
   - name: yield_yak_withdraws
     meta:
-      blockchain: avalanche_c, arbitrum
+      blockchain: avalanche_c, arbitrum, mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
     description: >
         yield yak withdraws
     tests:
@@ -156,11 +156,11 @@ models:
 
   - name: yield_yak_reinvests
     meta:
-      blockchain: avalanche_c, arbitrum
+      blockchain: avalanche_c, arbitrum, mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
     description: >
         yield yak reinvests
     tests:
@@ -200,11 +200,11 @@ models:
 
   - name: yield_yak_balances
     meta:
-      blockchain: avalanche_c, arbitrum
+      blockchain: avalanche_c, arbitrum, mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
     description: >
         yield yak vault/farm/pool balances as a temporal table
     tests:
@@ -228,11 +228,11 @@ models:
 
   - name: yield_yak_user_yrt_balances
     meta:
-      blockchain: avalanche_c, arbitrum
+      blockchain: avalanche_c, arbitrum, mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
     description: >
         yield yak user-level YRT balances as a temporal table
     tests:
@@ -257,11 +257,11 @@ models:
 
   - name: yield_yak_yak_swaps
     meta:
-      blockchain: avalanche_c, arbitrum
+      blockchain: avalanche_c, arbitrum, mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex']
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex']
     description: >
         yield yak aggregator yak swaps
     tests:
@@ -318,11 +318,11 @@ models:
 
   - name: yield_yak_yak_adapter_swaps
     meta:
-      blockchain: avalanche_c, arbitrum
+      blockchain: avalanche_c, arbitrum, mantle
       project: yield_yak
       contributors: angus_1
     config:
-      tags: ['avalanche_c', 'arbitrum', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex', 'yakadapter']
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex', 'yakadapter']
     description: >
         yield yak aggregator yak adapter swaps
     tests:
@@ -370,3 +370,30 @@ models:
       - &adapter_amount_out
         name: adapter_amount_out
         description: "Amount of the bought token being swapped to / bought in the YakAdapterSwap event"
+
+  - name: yield_yak_yield_strategies
+    meta:
+      blockchain: avalanche_c, arbitrum, mantle
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield_yak', 'strategies', 'yield']
+    description: >
+        yield yak strategies on all chains
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+    columns:
+      - *blockchain
+      - *contract_address
+      - &contract_name
+        name: contract_name
+        description: "Name of the deployed contract"
+      - &created_block_time
+        name: created_block_time
+        description: "Timestamp at which the contract was deployed/created"
+      - &created_block_number
+        name: created_block_number
+        description: "Block number at which the contract was deployed/created"

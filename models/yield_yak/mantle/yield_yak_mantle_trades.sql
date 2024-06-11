@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'yield_yak_avalanche_c',
+        schema = 'yield_yak_mantle',
         alias = 'trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -13,7 +13,7 @@
 
 {{
     yield_yak_trades(
-        blockchain = 'avalanche_c',
-        project_start_date = '2021-09-15'
+        blockchain = 'mantle',
+        project_start_date = '2024-01-09'
     )
 }}
