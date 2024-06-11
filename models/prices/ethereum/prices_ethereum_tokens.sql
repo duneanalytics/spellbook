@@ -1749,7 +1749,7 @@ FROM
     ('zyn-zyncoin', 'ethereum', 'ZYN', 0x58cb30368ceb2d194740b144eab4c2da8a917dcb, 18),
     ('nut6-nutcoin', 'ethereum', 'NUT', 0x473f4068073cd5b2ab0e4cc8e146f9edc6fb52cc, 18),
     --('gswift-gameswift', 'ethereum', 'GSWIFT', 0x580e933d90091b9ce380740e3a4a39c67eb85b4c, 18),
-    ('nmt-netmind-token', 'ethereum', 'NMT', 0x03aa6298f1370642642415edc0db8b957783e8d6, 9),
+    ('nmt-netmind-token', 'ethereum', 'NMT', 0x03aa6298f1370642642415edc0db8b957783e8d6, 18),
     ('simpson-homer', 'ethereum', 'SIMPSON', 0x44aAd22aFbB2606d7828Ca1f8f9E5af00e779AE1, 9),
     ('pongo-pongo', 'ethereum', 'PONGO', 0x7c68e725b0b2ffcba8947fded4198c3d1db041e6, 9),
     ('truf-truflation', 'ethereum', 'TRUF', 0x38c2a4a7330b22788374b8ff70bba513c8d848ca, 18 ),
