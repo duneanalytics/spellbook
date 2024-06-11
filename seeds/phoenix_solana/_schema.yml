@@ -18,7 +18,7 @@ seeds:
          market_name: varchar
          base_symbol: varchar
          quote_symbol: varchar
-         raw_base_units_per_base_unit: bigint
-         raw_base_units_per_base_lot: bigint
-         quote_units_per_quote_lot: bigint
-         tick_size_in_quote_units_per_raw_base_unit: bigint
+         raw_base_units_per_base_unit: double
+         raw_base_units_per_base_lot: double
+         quote_units_per_quote_lot: double
+         tick_size_in_quote_units_per_raw_base_unit: double

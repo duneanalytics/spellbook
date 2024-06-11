@@ -20,7 +20,10 @@
 
   WITH
   market_metadata as (
-    SELECT * FROM ref('phoenix_solana_market_metadata')
+    SELECT 
+        market_id
+        , cast(raw_base_units_per_base_unit as int) as raw_base_units_per_base_unit
+    FROM ref('phoenix_solana_market_metadata')
   )
 
   , pools as (
