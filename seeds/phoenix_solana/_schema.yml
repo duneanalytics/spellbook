@@ -1,0 +1,4 @@
+version: 2
+
+seeds:
+   - name: phoenix_solana_market_metadata

@@ -19,22 +19,26 @@
 {% set project_start_date = '2023-02-15' %} --grabbed program deployed at time (account created at)
 
   WITH
-  pools as (
-        SELECT 
-            tkA.symbol as tokenA_symbol
-            , length(json_extract_scalar(initializeParams, '$.InitializeParams.numBaseLotsPerBaseUnit')) - 1 as tokenA_decimals --if lot size is 1000, then its 3 decimals
-            , ip.account_baseMint as tokenA
-            , ip.account_baseVault as tokenAVault
-            , tkB.symbol as tokenB_symbol
-            , length(json_extract_scalar(initializeParams, '$.InitializeParams.numQuoteLotsPerQuoteUnit')) - 1 as tokenB_decimals
-            , ip.account_quoteMint as tokenB
-            , ip.account_quoteVault as tokenBVault
-            , cast(json_extract_scalar(initializeParams, '$.InitializeParams.takerFeeBps') as double)/100 as fee_tier
-            , ip.account_market as pool_id
-            , ip.call_tx_id as init_tx
-        FROM {{ source('phoenix_v1_solana','phoenix_v1_call_InitializeMarket') }} ip
-        LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkA ON tkA.token_mint_address = ip.account_baseMint
-        LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkB ON tkB.token_mint_address = ip.account_quoteMint
+  market_metadata as (
+    SELECT * FROM ref('phoenix_solana_market_metadata')
+  )
+
+  , pools as (
+    SELECT 
+        tkA.symbol as tokenA_symbol
+        , length(json_extract_scalar(initializeParams, '$.InitializeParams.numBaseLotsPerBaseUnit')) - 1 as tokenA_decimals --if lot size is 1000, then its 3 decimals
+        , ip.account_baseMint as tokenA
+        , ip.account_baseVault as tokenAVault
+        , tkB.symbol as tokenB_symbol
+        , length(json_extract_scalar(initializeParams, '$.InitializeParams.numQuoteLotsPerQuoteUnit')) - 1 as tokenB_decimals
+        , ip.account_quoteMint as tokenB
+        , ip.account_quoteVault as tokenBVault
+        , cast(json_extract_scalar(initializeParams, '$.InitializeParams.takerFeeBps') as double)/100 as fee_tier
+        , ip.account_market as pool_id
+        , ip.call_tx_id as init_tx
+    FROM {{ source('phoenix_v1_solana','phoenix_v1_call_InitializeMarket') }} ip
+    LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkA ON tkA.token_mint_address = ip.account_baseMint
+    LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkB ON tkB.token_mint_address = ip.account_quoteMint
   )
   
   , logs AS (
@@ -101,7 +105,7 @@
       {% if is_incremental() %}
       AND {{incremental_predicate('l.call_block_time')}}
       {% endif %}
-      -- AND call_block_time >= now() - interval '7' day --qa
+      AND call_block_time >= now() - interval '7' day --qa
   ),
   max_log_index AS (
     SELECT
@@ -185,7 +189,7 @@
         {% if is_incremental() %}
         AND {{incremental_predicate('call_block_time')}}
         {% endif %}
-        -- AND call_block_time >= now() - interval '7' day --qa
+        AND call_block_time >= now() - interval '7' day --qa
     ) s ON s.call_block_slot = l.call_block_slot
         AND s.call_tx_id = l.call_tx_id
         AND s.account_market = l.market
@@ -230,7 +234,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solan
     {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
-    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
+    -- AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
+    AND p_bought.minute >= now() - interval '7' day --qa
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
     AND date_trunc('minute', tb.block_time) = p_sold.minute 
@@ -238,7 +243,8 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
     {% if is_incremental() %}
     AND {{incremental_predicate('p_sold.minute')}}
     {% else %}
-    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
+    -- AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
+    AND p_sold.minute >= now() - interval '7' day --qa
     {% endif %}
 WHERE 1=1 
 AND recent_swap = 1
