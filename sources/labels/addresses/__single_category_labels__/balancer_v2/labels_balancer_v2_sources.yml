@@ -934,6 +934,17 @@ sources:
           - name: pool
           - name: output_0    
 
+      - name: GaugeController_evt_NewGauge
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: addr
+          - name: gauge_type
+          - name: weight    
+
   - name: balancer_zkevm
     description: >
       Decoded tables related to Balancer, an automated portfolio manager and trading platform, on ZKEVM.
