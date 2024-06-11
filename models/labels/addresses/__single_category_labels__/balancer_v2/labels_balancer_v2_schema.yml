@@ -272,9 +272,11 @@ models:
     columns:
       - *blockchain
       - *address
-      - name: pool_address
+      - &pool_address
+        name: pool_address
         description: "Address of the pool to which a Gauge belongs"
-      - name: child_gauge_address
+      - &child_gauge_address
+        name: child_gauge_address
         description: "Address of the Child Gauge on L2s, NULL if on mainner"
       - *name
       - *category
