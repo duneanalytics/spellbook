@@ -298,5 +298,3 @@ WHERE
   AND t.block_time >= timestamp '2022-01-01'
   {% endif %}
 GROUP BY 1,2
-
-UNION ALL
