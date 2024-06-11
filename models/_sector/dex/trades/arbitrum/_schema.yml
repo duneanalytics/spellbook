@@ -680,3 +680,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('wombat_exchange_arbitrum_base_trades_seed')
+
+  - name: solidly_v3_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: solidly
+      contributors: SolidlyLabs
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'solidly' ]
+    description: "solidly v3 arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('solidly_v3_arbitrum_base_trades_seed')
+
