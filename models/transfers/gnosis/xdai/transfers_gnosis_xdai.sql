@@ -66,7 +66,7 @@ gas_fee as (
         block_time, 
         block_number,
         "from" as wallet_address, 
-        NULL AS counterparty,
+        0xffffffffffffffffffffffffffffffffffffffff AS counterparty,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         - TRY_CAST(gas_used as INT256) * TRY_CAST(gas_price as INT256) as amount_raw
     FROM 
@@ -84,7 +84,7 @@ gas_fee_rewards as (
         t1.block_time, 
         t1.block_number,
         t2.miner as wallet_address, 
-        NULL AS counterparty,
+        0xffffffffffffffffffffffffffffffffffffffff AS counterparty,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         IF(TRY_CAST(t1.gas_price as INT256) = 0,
             CAST(0 AS INT256),
@@ -111,7 +111,7 @@ block_reward AS (
         evt_block_time AS block_time,
         evt_block_number AS block_number, 
         receiver AS wallet_address,
-        NULL AS counterparty,
+        0xffffffffffffffffffffffffffffffffffffffff AS counterparty,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         TRY_CAST(amount as INT256) as amount_raw
     FROM 
@@ -129,7 +129,7 @@ block_reward AS (
         evt_block_time AS block_time,
         evt_block_number AS block_number, 
         receiver AS wallet_address,
-        NULL AS counterparty,
+        0xffffffffffffffffffffffffffffffffffffffff AS counterparty,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
         TRY_CAST(amount as INT256) as amount_raw
     FROM 
