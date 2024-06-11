@@ -9,6 +9,8 @@
 SELECT
     'ethereum' AS blockchain,
     gauge AS address,
+    pools.address AS pool_address,
+    NULL AS child_gauge_address,
     'eth:' || pools.name AS name,
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,
@@ -20,10 +22,14 @@ SELECT
 FROM
     {{ source('balancer_ethereum', 'LiquidityGaugeFactory_evt_GaugeCreated') }} gauge
     LEFT JOIN {{ ref('labels_balancer_v2_pools_ethereum') }} pools ON pools.address = gauge.pool
+
 UNION ALL
+
 SELECT
     'ethereum' AS blockchain,
     gauge AS address,
+    pools.address AS pool_address,
+    NULL AS child_gauge_address,
     'eth:' || pools.name AS name,
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,
@@ -36,10 +42,14 @@ FROM
     {{ source('balancer_ethereum', 'CappedLiquidityGaugeFactory_evt_GaugeCreated') }} evt
     INNER JOIN {{ source('balancer_ethereum', 'CappedLiquidityGaugeFactory_call_create') }} call ON call.call_tx_hash = evt.evt_tx_hash
     LEFT JOIN {{ ref('labels_balancer_v2_pools_ethereum') }} pools ON pools.address = call.pool
+
 UNION ALL 
+
 SELECT
     'ethereum' AS blockchain,
     gauge_address AS address,
+    BYTEARRAY_SUBSTRING(pool_id, 1,20) AS pool_address,
+    NULL AS child_gauge_address,
     'eth:' || project AS name,
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,

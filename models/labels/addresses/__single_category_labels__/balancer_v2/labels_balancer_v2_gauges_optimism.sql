@@ -10,6 +10,8 @@ WITH reward_gauges AS(
 SELECT
     'optimism' AS blockchain,
     gauge.gauge AS address,
+    pools.address AS pool_address,
+    streamer.output_0 AS child_gauge_address,
     'op:' || pools.name AS name,
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,
@@ -28,6 +30,8 @@ UNION ALL
 SELECT
     'optimism' AS blockchain,
     gauge.gauge AS address,
+    pools.address AS pool_address,
+    streamer.output_0 AS child_gauge_address,
     'op:' || pools.name AS name,
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,
@@ -46,6 +50,8 @@ child_gauges AS(
 SELECT distinct
     'optimism' AS blockchain,
     call.output_0 AS address,
+    pools.address AS pool_address,
+    child.output_0 AS child_gauge_address,
     'opt:' || pools.name AS name,
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,

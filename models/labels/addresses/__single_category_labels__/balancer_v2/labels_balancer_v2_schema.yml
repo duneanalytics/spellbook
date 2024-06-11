@@ -272,6 +272,10 @@ models:
     columns:
       - *blockchain
       - *address
+      - name: pool_address
+        description: "Address of the pool to which a Gauge belongs"
+      - name: child_gauge_address
+        description: "Address of the Child Gauge on L2s, NULL if on mainner"
       - *name
       - *category
       - *contributor
@@ -297,6 +301,8 @@ models:
     columns:
       - *blockchain
       - *address
+      - *pool_address
+      - *child_gauge_address
       - *name
       - *category
       - *contributor
@@ -322,6 +328,8 @@ models:
     columns:
       - *blockchain
       - *address
+      - *pool_address
+      - *child_gauge_address
       - *name
       - *category
       - *contributor
@@ -347,6 +355,8 @@ models:
     columns:
       - *blockchain
       - *address
+      - *pool_address
+      - *child_gauge_address
       - *name
       - *category
       - *contributor
@@ -372,6 +382,8 @@ models:
     columns:
       - *blockchain
       - *address
+      - *pool_address
+      - *child_gauge_address
       - *name
       - *category
       - *contributor
@@ -397,6 +409,8 @@ models:
     columns:
       - *blockchain
       - *address
+      - *pool_address
+      - *child_gauge_address
       - *name
       - *category
       - *contributor
@@ -422,6 +436,8 @@ models:
     columns:
       - *blockchain
       - *address
+      - *pool_address
+      - *child_gauge_address
       - *name
       - *category
       - *contributor
@@ -447,6 +463,8 @@ models:
     columns:
       - *blockchain
       - *address
+      - *pool_address
+      - *child_gauge_address
       - *name
       - *category
       - *contributor
@@ -472,6 +490,8 @@ models:
     columns:
       - *blockchain
       - *address
+      - *pool_address
+      - *child_gauge_address
       - *name
       - *category
       - *contributor

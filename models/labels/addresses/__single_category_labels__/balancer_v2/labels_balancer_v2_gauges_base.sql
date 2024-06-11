@@ -9,6 +9,8 @@
 SELECT distinct
     'base' AS blockchain,
     call.output_0 AS address,
+    pools.address AS pool_address,
+    child.output_0 AS child_gauge_address,    
     'base:' || pools.name AS name,
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,

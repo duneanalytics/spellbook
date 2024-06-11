@@ -9,6 +9,8 @@
 SELECT distinct
     'avalanche_c' AS blockchain,
     call.output_0 AS address,
+    pools.address AS pool_address,
+    child.output_0 AS child_gauge_address,    
     'ava:' || pools.name AS name,
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,
