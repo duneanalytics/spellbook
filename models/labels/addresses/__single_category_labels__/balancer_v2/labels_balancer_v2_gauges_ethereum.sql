@@ -50,7 +50,7 @@ SELECT
     'ethereum' AS blockchain,
     gauge_address AS address,
     BYTEARRAY_SUBSTRING(pool_id, 1,20) AS pool_address,
-    CAST(NULL AS VARCHAR) AS child_gauge_address,
+    CAST(NULL AS VARBINARY) AS child_gauge_address,
     'eth:' || project AS name,
     'balancer_v2_gauges' AS category,
     'balancerlabs' AS contributor,
