@@ -75,7 +75,6 @@ FROM
     ('beni-beni', 'base', 'BENI', 0xde7a416ac821c77478340eebaa21b68297025ef3, 18),
     ('bunny-based-bunny', 'base', 'BUNNY', 0x75570e1189ffc1d63b3417cdf0889f87cd3e9bd1, 18),
     ('britt-britt', 'base', 'BRITT', 0x3b1228c3ede7e0898d57054cd9b8f812d24315c1, 9),
-    ('normie1-normie', 'base', 'NORMIE', 0x7f12d13b34f5f4f0a9449c16bcd42f0da47af200, 9),
     ('bshib2-based-shiba-inu', 'base', 'BSHIB', 0xfea9dcdc9e23a9068bf557ad5b186675c61d33ea, 18),
     ('mfercoin-mfercoin', 'base', 'mfercoin', 0xe3086852a4b125803c815a158249ae468a3254ca, 18),
     ('bsb-based-street-bets', 'base', 'BSB', 0x8a24d7260cd02d3dfd8eefb66bc17ad4b17d494c, 18),
