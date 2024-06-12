@@ -1,7 +1,7 @@
 {% macro 
     oneinch_project_swaps_macro(
         blockchain
-        , date_from = '2024-01-01'
+        , date_from = '2024-06-01'
     ) 
 %}
 
@@ -43,7 +43,7 @@ static as (
         id as selector
         , signature
         , split_part(signature, '(', 1) as method
-    from abi.signatures
+    from {{ source('abi', 'signatures') }}
     where length(id) = 4
     group by 1, 2, 3
 )

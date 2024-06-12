@@ -44,7 +44,6 @@ meta as (
         blockchain
         , wrapped_native_token_address
         , native_token_symbol as native_symbol
-    from ({{ oneinch_blockchain_macro(blockchain) }})
     from {{ ref('oneinch_blockchains') }}
 )
 
