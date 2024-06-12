@@ -24,10 +24,10 @@
      , ('zksync', source('erc20_zksync', 'evt_transfer'))
      , ('zora', source('erc20_zora', 'evt_transfer'))
      , ('scroll', source('erc20_scroll', 'evt_transfer'))
-     , ('linea', source('linea', 'evt_transfer'))
-     , ('zkevm', source('zkevm', 'evt_transfer'))
-     , ('blast', source('blast', 'evt_transfer'))
-     , ('mantle', source('mantle', 'evt_transfer'))
+     , ('linea', source('erc20_linea', 'evt_transfer'))
+     , ('zkevm', source('erc20_zkevm', 'evt_transfer'))
+     , ('blast', source('erc20_blast', 'evt_transfer'))
+     , ('mantle', source('erc20_mantle', 'evt_transfer'))
 ] %}
 
 SELECT *

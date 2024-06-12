@@ -24,10 +24,10 @@
      , ('zksync', source('erc1155_zksync', 'evt_ApprovalForAll'))
      , ('zora', source('erc1155_zora', 'evt_ApprovalForAll'))
      , ('scroll', source('erc1155_scroll', 'evt_ApprovalForAll'))
-     , ('linea', source('linea', 'evt_ApprovalForAll'))
-     , ('zkevm', source('zkevm', 'evt_ApprovalForAll'))
-     , ('blast', source('blast', 'evt_ApprovalForAll'))
-     , ('mantle', source('mantle', 'evt_ApprovalForAll'))
+     , ('linea', source('erc1155_linea', 'evt_ApprovalForAll'))
+     , ('zkevm', source('erc1155_zkevm', 'evt_ApprovalForAll'))
+     , ('blast', source('erc1155_blast', 'evt_ApprovalForAll'))
+     , ('mantle', source('erc1155_mantle', 'evt_ApprovalForAll'))
 ] %}
 
 SELECT *
