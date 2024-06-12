@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'curvefi_ethereum',
     alias = 'view_pools',
     materialized='table',
     file_format = 'delta',

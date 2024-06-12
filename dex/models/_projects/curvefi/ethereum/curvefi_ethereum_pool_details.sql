@@ -1,6 +1,6 @@
 {{ config(
-    
-    alias = 'pool_details'
+    schema = 'curvefi_ethereum'
+    , alias = 'pool_details'
 ) }}
 
 SELECT

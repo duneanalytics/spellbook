@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'curvefi_fantom',
     alias = 'pool_tokens',
     materialized = 'incremental',
     file_format = 'delta',

@@ -1,6 +1,7 @@
 {{config(
-  alias = 'balancer_v2_pools_base',
-  post_hook = '{{ expose_spells(\'["base"]\',
+  schema = 'labels',
+  alias = 'balancer_v2_pools_avalanche_c',
+  post_hook = '{{ expose_spells(\'["avalanche_c"]\',
                                "sector",
                                "labels",
                                \'["balancerlabs"]\') }}'
@@ -20,8 +21,8 @@ WITH pools AS (
       w.weights,
       cc.symbol,
       'weighted' AS pool_type
-    FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
-    INNER JOIN {{ source('balancer_v2_base', 'WeightedPoolFactory_call_create') }} cc
+    FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_avalanche_c', 'WeightedPoolFactory_call_create') }} cc
       ON c.evt_tx_hash = cc.call_tx_hash
       AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
     CROSS JOIN UNNEST(cc.tokens) WITH ORDINALITY t(tokens, pos)
@@ -37,8 +38,8 @@ WITH pools AS (
     0 AS normalized_weight,
     cc.symbol,
     'LBP' AS pool_type
-  FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
-  INNER JOIN {{ source('balancer_v2_base', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
+  FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
+  INNER JOIN {{ source('balancer_v2_avalanche_c', 'NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
@@ -51,8 +52,8 @@ WITH pools AS (
     0 AS normalized_weight,
     cc.symbol,
     'stable' AS pool_type
-  FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
-  INNER JOIN {{ source('balancer_v2_base', 'ComposableStablePoolFactory_call_create') }} cc
+  FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
+  INNER JOIN {{ source('balancer_v2_avalanche_c', 'ComposableStablePoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
@@ -65,8 +66,8 @@ WITH pools AS (
     0 AS normalized_weight,
     cc.symbol,
     'linear' AS pool_type
-  FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
-  INNER JOIN {{ source('balancer_v2_base', 'AaveLinearPoolFactory_call_create') }} cc
+  FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
+  INNER JOIN {{ source('balancer_v2_avalanche_c', 'AaveLinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
@@ -79,11 +80,23 @@ WITH pools AS (
     0 AS normalized_weight,
     cc.symbol,
     'linear' AS pool_type
-  FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
-  INNER JOIN {{ source('balancer_v2_base', 'ERC4626LinearPoolFactory_call_create') }} cc
+  FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
+  INNER JOIN {{ source('balancer_v2_avalanche_c', 'ERC4626LinearPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(ARRAY[cc.mainToken, cc.wrappedToken]) AS t (element)
+
+  UNION ALL
+
+  SELECT
+    cc.output_0 AS pool_id,
+    token AS token_address,
+    0 AS normalized_weight,
+    cc._name,
+    'FX' AS pool_type
+  FROM {{ source('xavefinance_avalanche_c', 'FXPoolFactory_call_newFXPool') }} cc
+  CROSS JOIN UNNEST(_assetsToRegister) AS t (token)
+  WHERE call_success
 
   UNION ALL
 
@@ -93,27 +106,13 @@ WITH pools AS (
     0 AS normalized_weight,
     json_extract_scalar(params, '$.symbol') AS symbol,
     'managed' AS pool_type
-  FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
-  INNER JOIN {{ source('balancer_v2_base', 'ManagedPoolFactory_call_create') }} cc
+  FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
+  INNER JOIN {{ source('balancer_v2_avalanche_c', 'ManagedPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_pool
   CROSS JOIN UNNEST(
         CAST(json_extract(settingsParams, '$.tokens') AS ARRAY(VARCHAR))
     ) AS t (tokens)
-
-  UNION ALL
-
-  SELECT
-    c.poolId AS pool_id,
-    t.tokens AS token_address,
-    0 AS normalized_weight,
-    cc.symbol,
-    'ECLP' AS pool_type
-  FROM {{ source('balancer_v2_base', 'Vault_evt_PoolRegistered') }} c
-  INNER JOIN {{ source('gyroscope_base', 'GyroECLPPoolFactory_call_create') }} cc
-    ON c.evt_tx_hash = cc.call_tx_hash
-    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
-  CROSS JOIN UNNEST(cc.tokens) AS t(tokens)    
 ),
 
 settings AS (
@@ -128,9 +127,9 @@ settings AS (
 )
 
 SELECT 
-  'base' AS blockchain,
+  'avalanche_c' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
-  CASE WHEN pool_type IN ('stable', 'linear', 'LBP', 'managed', 'ECLP') 
+  CASE WHEN pool_type IN ('stable', 'linear', 'LBP', 'FX', 'managed') 
   THEN lower(pool_symbol)
     ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
     array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))
@@ -139,9 +138,9 @@ SELECT
   'balancer_v2_pool' AS category,
   'balancerlabs' AS contributor,
   'query' AS source,
-  TIMESTAMP '2023-08-17' AS created_at,
+  TIMESTAMP'2022-12-23 00:00' AS created_at,
   now() AS updated_at,
-  'balancer_v2_pools_base' AS model_name,
+  'balancer_v2_pools_avalanche_c' AS model_name,
   'identifier' AS label_type
 FROM (
   SELECT

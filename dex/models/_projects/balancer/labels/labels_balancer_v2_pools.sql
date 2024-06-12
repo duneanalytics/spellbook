@@ -1,5 +1,6 @@
-{{config(alias = 'balancer_v2_pools',
-        
+{{config(
+        schema = 'labels',
+        alias = 'balancer_v2_pools',        
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism", "polygon", "avalanche_c", "base", "gnosis", "zkevm"]\',
                                     "sector",
                                     "labels",

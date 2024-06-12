@@ -26,15 +26,21 @@ models:
          project: paraswap
          version: 4
     columns:
-      - *blockchain
-      - *project
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project name"
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"
       - &block_date
         name: block_date
         description: "UTC event block date of each DEX trade"
-      - *block_time
+      - &block_time
+        name: block_time
+        description: "Block time of transaction"
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the transaction"
@@ -56,7 +62,9 @@ models:
       - &token_sold_amount_raw
         name: token_sold_amount_raw
         description: "Raw value of the token sold at time of execution in the original currency"
-      - *amount_usd
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of tokens"
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
@@ -72,7 +80,9 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "Project contract address which executed the trade on the blockchain"
-      - *tx_hash
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
       - &tx_from
         name: tx_from
         description: "Address which initiated the transaction"
@@ -82,7 +92,9 @@ models:
       - &trace_address
         name: trace_address
         description: ""
-      - *evt_index
+      - &evt_index
+        name: evt_index
+        description: "Event index"
 
   - name: paraswap_v5_ethereum_trades
     meta:
