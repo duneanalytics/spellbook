@@ -27,3 +27,4 @@ sources:
       - name: QuotationData_call_addCover
       - name: Cover_call_buyCover
       - name: StakingProducts_call_getPremium
+      - name: CoverMigrator_evt_CoverMigrated

@@ -152,7 +152,7 @@ covers_v1_migrated as (
     cm.newOwner as cover_owner,
     cm.evt_index,
     cm.evt_tx_hash as tx_hash
-  from nexusmutual_ethereum.CoverMigrator_evt_CoverMigrated cm
+  from {{ source('nexusmutual_ethereum', 'CoverMigrator_evt_CoverMigrated') }} cm
     inner join {{ ref('nexusmutual_ethereum_covers_v1') }} cv1 on cm.coverIdV1 = cv1.cover_id
 ),
 
