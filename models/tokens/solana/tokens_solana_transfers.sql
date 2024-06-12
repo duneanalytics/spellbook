@@ -19,7 +19,7 @@ WITH
 base as (
     SELECT
     block_time
-    , call_block_slot as block_slot
+    , block_slot
     , action
     , amount
     , fee
@@ -38,7 +38,7 @@ WHERE {{incremental_predicate('block_time')}}
 UNION ALL
     SELECT
     block_time
-    , call_block_slot as block_slot
+    , block_slot
     , action
     , amount
     , fee
@@ -59,7 +59,7 @@ WHERE {{incremental_predicate('block_time')}}
 SELECT
     call_block_time as block_time
     , cast (date_trunc('day', call_block_time) as date) as block_date
-    , call_block_slot as block_slot
+    , block_slot
     , action
     , amount
     , fee
