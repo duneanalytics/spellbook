@@ -2,11 +2,7 @@
     schema = 'bridge',
     alias = 'raw_flows',
     materialized = 'view',
-    unique_key = ['blockchain','tx_hash','evt_index'],
-    post_hook='{{ expose_spells(\'["ethereum","base"]\',
-                    "sector",
-                    "bridge",
-                    \'[ "hildobby"]\') }}')
+    unique_key = ['blockchain','tx_hash','evt_index']
 }}
 
 {% set bridges_models = [
