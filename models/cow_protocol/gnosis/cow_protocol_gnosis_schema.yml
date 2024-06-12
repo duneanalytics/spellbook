@@ -10,19 +10,7 @@ models:
       tags: ['gnosis_chain','cow_protocol','solver']
     description: >
       CoW Protocol solvers list on Gnosis Chain
-    columns:
-      - &address
-        name: address
-        description: "Solver's wallet address"
-      - &environment
-        name: environment
-        description: "Solver's environment"
-      - &name
-        name: name
-        description: "Solver's name"
-      - &active
-        name: active
-        description: "Solver's active status according to the events emitted by GPv2AllowListAuthentication. True if solver has been 'added' and not yet removed, False when the solver has been 'removed'."
+
   - name: cow_protocol_gnosis_batches
     meta:
       blockchain: gnosis
@@ -32,43 +20,3 @@ models:
       tags: ['gnosis','cow_protocol','trades', 'dex', 'aggregator', 'auction']
     description: >
       CoW Protocol enriched batches table on Gnosis Chain
-    columns:
-      - *block_date
-      - *block_time
-      - &num_trades
-        name: num_trades
-        description: Number of trades settled within the batch
-      - &dex_swaps
-        name: dex_swaps
-        description: Number of AMM interactions used to settle the batch (estimated)
-      - &batch_value
-        name: batch_value
-        description: Total USD value of trades settled within the batch
-      - &solver_address
-        name: solver_address
-        description: Ethereum address of solver settled batch (equivalent to tx.from)
-      - name: tx_hash
-        description: "Transaction hash of trade"
-        tests:
-          - unique
-      - &gas_price
-        name: gas_price
-        description: Gas price (in WEI) of transaction
-      - &gas_used
-        name: gas_used
-        description: Total/cumulative gas consumed (in WEI) to settle the batch
-      - &tx_cost_usd
-        name: tx_cost_usd
-        description: USD cost of batch execution (gas_price * gas_used) / 1e18 * ETH price
-      - &fee_value
-        name: fee_value
-        description: Total USD valuation of fees collected from all trades within the batch
-      - &call_data_size
-        name: call_data_size
-        description: Size (in Kilobytes) of call data passed into the settle method.
-      - &unwraps
-        name: unwraps
-        description: Number of WETH unwraps performed within the settlement
-      - &token_approvals
-        name: token_approvals
-        description: Number of ERC20 token approvals made within the settlement

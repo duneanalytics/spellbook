@@ -68,7 +68,7 @@ WITH
             dexs.block_time,
             MAX(bpt_prices.day) AS bpa_max_block_date
         FROM dexs
-            LEFT JOIN {{ ref('balancer_v2_base_bpt_prices') }} bpt_prices
+            LEFT JOIN {{ source('balancer_v2_base', 'bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_bought_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
         GROUP BY 1, 2, 3, 4, 5
@@ -82,7 +82,7 @@ WITH
             dexs.block_time,
             MAX(bpt_prices.day) AS bpb_max_block_date
         FROM dexs
-            LEFT JOIN {{ ref('balancer_v2_base_bpt_prices') }} bpt_prices
+            LEFT JOIN {{ source('balancer_v2_base', 'bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_sold_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
         GROUP BY 1, 2, 3, 4, 5
@@ -132,13 +132,13 @@ FROM dexs
         ON bpa.block_number = dexs.block_number
         AND bpa.tx_hash = dexs.tx_hash
         AND bpa.evt_index = dexs.evt_index
-    LEFT JOIN {{ ref('balancer_v2_base_bpt_prices') }} bpa_bpt_prices
+    LEFT JOIN {{ source('balancer_v2_base', 'bpt_prices') }} bpa_bpt_prices
         ON bpa_bpt_prices.contract_address = bpa.contract_address
         AND bpa_bpt_prices.day = bpa.bpa_max_block_date
     INNER JOIN bpb
         ON bpb.block_number = dexs.block_number
         AND bpb.tx_hash = dexs.tx_hash
         AND bpb.evt_index = dexs.evt_index
-    LEFT JOIN {{ ref('balancer_v2_base_bpt_prices') }} bpb_bpt_prices
+    LEFT JOIN {{ source('balancer_v2_base', 'bpt_prices') }} bpb_bpt_prices
         ON bpb_bpt_prices.contract_address = bpb.contract_address
         AND bpb_bpt_prices.day = bpb.bpb_max_block_date

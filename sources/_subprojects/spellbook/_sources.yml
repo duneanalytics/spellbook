@@ -65,3 +65,27 @@ sources:
     tables:
       - name: fee_vaults
       - name: grants_funding
+  - name: balancer_v2_optimism
+    tables:
+      - name: trades
+  - name: balancer_v2_arbitrum
+    tables:
+      - name: trades
+  - name: balancer_v2_avalanche_c
+    tables:
+      - name: trades
+  - name: balancer_v2_base
+    tables:
+      - name: trades
+  - name: balancer_v2_ethereum
+    tables:
+      - name: trades
+  - name: balancer_v2_gnosis
+    tables:
+      - name: trades
+  - name: balancer_v2_polygon
+    tables:
+      - name: trades
+  - name: balancer_v2_zkevm
+    tables:
+      - name: trades

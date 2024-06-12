@@ -1,6 +1,6 @@
 version: 2
 
-models:
+models: 
   - name: aerodrome_trades
   - name: airswap_trades
   - name: apeswap_trades
