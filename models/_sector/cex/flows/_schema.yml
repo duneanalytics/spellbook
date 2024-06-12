@@ -3,7 +3,7 @@ version: 2
 models:
   - name: cex_flows
     meta:
-      blockchain: ethereum, arbitrum, avalanche_c, base, bnb, celo, gnosis, gnosis, optimism, polygon, scroll, zksync, zora
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, linea, optimism, polygon, scroll, zkevm, zksync, zora
       sector: cex
       contributors: hildobby
     config:

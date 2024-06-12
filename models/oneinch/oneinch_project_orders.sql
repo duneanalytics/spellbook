@@ -2,7 +2,11 @@
     config(
         schema = 'oneinch',
         alias = 'project_orders',
-        materialized = 'view',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        partition_by = ['block_month'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address']
     )
 }}
@@ -73,6 +77,9 @@ orders as (
         from {{ ref('oneinch_lop') }}
         where call_success
     )
+    {% if is_incremental() %}
+        where {{ incremental_predicate('block_time') }}
+    {% endif %}
 )
 
 , prices as (

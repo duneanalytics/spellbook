@@ -397,9 +397,24 @@ daily_running_totals as (
     sum(coalesce(tt.dai_total, 0)) over (order by ds.block_date) as dai_total,
     sum(coalesce(tt.reth_total, 0)) over (order by ds.block_date) as reth_total,
     sum(coalesce(tt.usdc_total, 0)) over (order by ds.block_date) as usdc_total,
-    coalesce(steth_rt.steth_total, lag(steth_rt.steth_total) over (order by ds.block_date), 0) as steth_total,
-    coalesce(nxmty_rt.nxmty_total, lag(nxmty_rt.nxmty_total) over (order by ds.block_date), 0) as nxmty_total,
-    coalesce(nxmty_rt.nxmty_in_eth_total, lag(nxmty_rt.nxmty_in_eth_total) over (order by ds.block_date), 0) as nxmty_eth_total,
+    coalesce(
+      steth_rt.steth_total,
+      lag(steth_rt.steth_total, 1) over (order by ds.block_date),
+      lag(steth_rt.steth_total, 2) over (order by ds.block_date),
+      0
+    ) as steth_total,
+    coalesce(
+      nxmty_rt.nxmty_total,
+      lag(nxmty_rt.nxmty_total, 1) over (order by ds.block_date),
+      lag(nxmty_rt.nxmty_total, 2) over (order by ds.block_date),
+      0
+    ) as nxmty_total,
+    coalesce(
+      nxmty_rt.nxmty_in_eth_total,
+      lag(nxmty_rt.nxmty_in_eth_total, 1) over (order by ds.block_date),
+      lag(nxmty_rt.nxmty_in_eth_total, 2) over (order by ds.block_date),
+      0
+    ) as nxmty_eth_total,
     coalesce(cre.amount, 0) as cover_re_usdc_total,
     coalesce(aave_s.supplied_amount, 0) as aave_collateral_weth_total,
     -1 * coalesce(aave_b.borrowed_amount, 0) as aave_debt_usdc_total
@@ -416,6 +431,8 @@ daily_running_totals_enriched as (
   select
     drt.block_date,
     coalesce(p_avg_eth.price_usd, 0) as avg_eth_usd_price,
+    coalesce(p_avg_dai.price_usd, 0) as avg_dai_usd_price,
+    coalesce(p_avg_usdc.price_usd, 0) as avg_usdc_usd_price,
     -- ETH
     coalesce(drt.eth_total, 0) as eth_total,
     coalesce(drt.eth_total * p_avg_eth.price_usd, 0) as avg_eth_usd_total,
@@ -458,6 +475,8 @@ daily_running_totals_enriched as (
 select
   block_date,
   avg_eth_usd_price,
+  avg_dai_usd_price,
+  avg_usdc_usd_price,
   -- Capital Pool totals
   eth_total + nxmty_eth_total + steth_total + avg_dai_eth_total + avg_reth_eth_total + avg_usdc_eth_total
     + avg_cover_re_usdc_eth_total + aave_collateral_weth_total + avg_aave_debt_usdc_eth_total as avg_capital_pool_eth_total,
