@@ -5,6 +5,7 @@
         alias = 'trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
+        tags = ['prod_exclude'],
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
