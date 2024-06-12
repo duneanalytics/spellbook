@@ -3,7 +3,7 @@
 {{ config(
     schema = 'bridge_' + blockchain,
     alias = 'base_raw_flows',
-    partition_by = ['blockchain','project','block_month'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
