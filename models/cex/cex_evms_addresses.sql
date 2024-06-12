@@ -1068,7 +1068,7 @@ FROM (VALUES
     , (0x58b704065b7aff3ed351052f8560019e05925023, 'Bitso', 'Bitso 1', 'hildobby', date '2023-09-12')
     , (0x29d5527caa78f1946a409fa6acaf14a0a4a0274b, 'Bitso', 'Bitso 2', 'hildobby', date '2023-09-12')
     , (0x20beea119e70255a8c36e4009c94aedb1f8b8eea, 'Bitso', 'Bitso 3', 'hildobby', date '2024-05-04')
-    , (0xa01aa2196724a39290f465b3925e5dcafe7f2256, 'Bitso', 'Bitso 3', 'hildobby', date '2024-06-03')
+    , (0xa01aa2196724a39290f465b3925e5dcafe7f2256, 'Bitso', 'Bitso 4', 'hildobby', date '2024-06-03')
     -- Stake.com
     , (0xdebfbe80c8aeba98a32968278463ccb639c6c4e3, 'Stake.com', 'Stake.com 1', 'hildobby', date '2023-11-15')
     , (0x974caa59e49682cda0ad2bbe82983419a2ecc400, 'Stake.com', 'Stake.com 2', 'hildobby', date '2023-11-15')
@@ -1803,9 +1803,8 @@ FROM (VALUES
     , (0xf6ee635c28dda95a74ba989807000cbe00317d27, 'FixedFloat', 'FixedFloat 4', 'hildobby', date '2024-05-25')
     -- Bitrue
     , (0x6cc8dcbca746a6e4fdefb98e1d0df903b107fd21, 'Bitrue', 'Bitrue 1', 'hildobby', date '2022-08-28')
-    , (0xf4c62b4f8b7b1b1c4ba88bfd3a8ea392641516e9, 'Bitrue', 'Bitrue 2', 'hildobby', date '2023-11-23')
-    , (0xd205a958527f083f1b222061b4d60d147fec5044, 'Bitrue', 'Bitrue 3', 'hildobby', date '2024-06-03')
-    , (0xf4c62b4f8b7b1b1c4ba88bfd3a8ea392641516e9, 'Bitrue', 'Bitrue Deposit Funder 1', 'hildobby', date '2024-06-03')
+    , (0xd205a958527f083f1b222061b4d60d147fec5044, 'Bitrue', 'Bitrue 2', 'hildobby', date '2024-06-03')
+    , (0xf4c62b4f8b7b1b1c4ba88bfd3a8ea392641516e9, 'Bitrue', 'Bitrue Deposit Funder 1', 'hildobby', date '2023-11-23')
     -- Coinmetro
     , (0xa270f3ad1a7a82e6a3157f12a900f1e25bc4fbfd, 'Coinmetro', 'Coinmetro 1', 'hildobby', date '2022-08-28')
     , (0x4cf2220105995f006813923019f02be1ccca8132, 'Coinmetro', 'Coinmetro 2', 'hildobby', date '2023-11-23')
@@ -1848,7 +1847,7 @@ FROM (VALUES
     -- IDEX
     , (0x2a0c0dbecc7e4d658f48e01e3fa353f44050c208, 'IDEX', 'IDEX 1', 'hildobby', date '2023-09-08')
     , (0xa7a7899d944fe658c4b0a1803bab2f490bd3849e, 'IDEX', 'IDEX 2', 'hildobby', date '2023-09-08')
-    , (0x8af97264482b59c7aa11010907710dee6d8d8c6c, 'IDEX', 'IDEX 2', 'hildobby', date '2024-06-03')
+    , (0x8af97264482b59c7aa11010907710dee6d8d8c6c, 'IDEX', 'IDEX 3', 'hildobby', date '2024-06-03')
     -- Flata Exchange
     , (0x14301566b9669b672878d86ff0b1d18dd58054e9, 'Flata Exchange', 'Flata Exchange', 'hildobby', date '2022-08-28')
     -- XT.com
