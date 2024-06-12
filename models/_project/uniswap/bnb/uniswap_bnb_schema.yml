@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: uniswap_v3_celo_trades
+  - name: uniswap_v3_bnb_trades
     meta:
-      blockchain: celo
+      blockchain: bnb
       sector: dex
       project: uniswap_v3
-      contributors: jeff-dude, masquot, soispoke, tomfutago
+      contributors: chrispearcx
     config:
-      tags: ['celo','uniswap_v3','trades', 'uniswap','dex']
+      tags: ['bnb','uniswap_v3','trades', 'uniswap','dex']
     description: >
-        Uniswap V3 contract trades on Celo
+        Uniswap V3 contract trades on BNB chain
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,7 +21,7 @@ models:
             - tx_hash
             - evt_index
       - check_dex_seed:
-          blockchain: celo
+          blockchain: bnb
           project: uniswap
           version: 3
     columns:
@@ -35,7 +35,7 @@ models:
         name: version
         description: "Version of the contract built and deployed by the DEX project"
       - &block_month
-        name: block_month
+        name: block_date
         description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
@@ -95,16 +95,16 @@ models:
         name: evt_index
         description: ""
 
-  - name: uniswap_celo_trades
+  - name: uniswap_bnb_trades
     meta:
-      blockchain: celo
+      blockchain: bnb
       sector: dex
       project: uniswap
-      contributors: jeff-dude, masquot, soispoke, tomfutago
+      contributors: chrispearcx
     config:
-      tags: ['celo','dex','trades', 'uniswap']
+      tags: ['bnb','dex','trades', 'uniswap']
     description: >
-        Uniswap trades on Celo across all contracts and versions. This table will load dex trades downstream.
+        Uniswap trades on BNB chain across all contracts and versions. This table will load dex trades downstream.
     columns:
       - *blockchain
       - *project
@@ -130,46 +130,15 @@ models:
       - *tx_to
       - *evt_index
 
-  - name: uniswap_celo_pools
+  - name: uniswap_v3_bnb_flashloans
     meta:
-      blockchain: celo
-      sector: dex
-      contributors: hildobby, tomfutago
-    config:
-      tags: ['celo']
-    description: >
-      Uniswap DEX pools
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_month
-      - name: pool
-        description: "DEX pool smart contract address"
-        tests:
-          - unique
-      - name: fee
-        description: "Defined fee"
-      - name: token0
-        description: "First token in pool"
-      - name: token1
-        description: "Second token in pool"
-      - name: creation_block_time
-        description: "Block time of pool creation"
-      - name: creation_block_number
-        description: "Block number of pool creation"
-      - name: contract_address
-        description: "Contract address used to create the pool"
-
-  - name: uniswap_v3_celo_flashloans
-    meta:
-      blockchain: celo
+      blockchain: bnb
       sector: lending
-      contributors: hildobby, tomfutago
+      contributors: hildobby
     config:
-      tags: ['celo', 'flashloans']
+      tags: ['bnb', 'flashloans']
     description: >
-      All Uniswap v3 flashloans on Celo
+      All Uniswap v3 flashloans on BNB
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -177,17 +146,18 @@ models:
             - tx_hash
             - evt_index
     columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_time
       - name: block_number
       - name: amount
       - name: amount_usd
-      - *tx_hash
-      - *evt_index
+      - name: tx_hash
+      - name: evt_index
       - name: fee
       - name: currency_contract
       - name: currency_symbol
       - name: recipient
       - name: contract_address
+      - name: block_month 
