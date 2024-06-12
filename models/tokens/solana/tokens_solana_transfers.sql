@@ -57,8 +57,8 @@ WHERE {{incremental_predicate('block_time')}}
 )
 
 SELECT
-    call_block_time as block_time
-    , cast (date_trunc('day', call_block_time) as date) as block_date
+    block_time
+    , cast (date_trunc('day', block_time) as date) as block_date
     , block_slot
     , action
     , amount
