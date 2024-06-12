@@ -127,5 +127,5 @@ SELECT
     , outer_executing_account
  FROM {{ref('tokens_solana_spl_transfers_call_transfer')}}
 {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
+      AND {{incremental_predicate('block_time')}}
       {% endif %}
