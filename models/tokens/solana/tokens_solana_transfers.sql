@@ -18,7 +18,7 @@
 WITH
 base as (
     SELECT
-    block_time,
+    block_time
     , call_block_slot as block_slot
     , action
     , amount
@@ -37,7 +37,7 @@ WHERE {{incremental_predicate('block_time')}}
 {% endif %}
 UNION ALL
     SELECT
-    block_time,
+    block_time
     , call_block_slot as block_slot
     , action
     , amount
