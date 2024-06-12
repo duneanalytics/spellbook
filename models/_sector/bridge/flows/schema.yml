@@ -62,7 +62,7 @@ models:
         name: contract_address
         description: "Contract address used for the bridge tx"
 
- -  name: bridge_flows
+ -  name: bridge_flows_beta
     meta:
      blockchain: ethereum, base
      sector: bridge

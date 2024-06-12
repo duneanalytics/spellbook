@@ -1,6 +1,6 @@
 {{ config(
     schema = 'bridge',
-    alias = 'flows',
+    alias = 'flows_beta',
     partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',
     file_format = 'delta',
