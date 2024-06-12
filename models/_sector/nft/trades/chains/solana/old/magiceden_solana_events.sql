@@ -51,17 +51,17 @@ SELECT
   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')) THEN 'v2'
   WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN 'launchpad_v3'
   END as version,
-  from_base58(signatures[1]) as tx_hash,
+  (signatures[1]) as tx_hash,
   block_time,
   CAST(block_slot AS BIGINT) as block_number,
   abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9) * p.price AS amount_usd,
   abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9) AS amount_original,
   CAST(abs(element_at(post_balances,1) - element_at(pre_balances,1)) AS uint256) AS amount_raw,
   p.symbol as currency_symbol,
-  from_base58(p.contract_address) as currency_contract,
+  (p.contract_address) as currency_contract,
   'metaplex' as token_standard,
-  CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')) THEN from_base58('M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')
-       WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN from_base58('CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')
+  CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')) THEN ('M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')
+       WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN ('CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')
        END as project_contract_address,
   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
        AND (
@@ -103,20 +103,20 @@ SELECT
          END as trade_type,
   uint256 '1' as number_of_items,
   cast(NULL as varchar) as trade_category,
-  from_base58(signer) as buyer,
+  (signer) as buyer,
   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
                contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
                OR contains(log_messages, 'Program log: Instruction: ExecuteSale')
                OR contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
           )
-         AND contains(log_messages, 'Program log: Instruction: Buy') THEN from_base58(element_at(element_at(me_instructions,3).account_arguments,2))
-       WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN cast(null as varbinary) END as seller,
-  cast(NULL as varbinary) as nft_contract_address,
+         AND contains(log_messages, 'Program log: Instruction: Buy') THEN (element_at(element_at(me_instructions,3).account_arguments,2))
+       WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN cast(null as varchar) END as seller,
+  cast(NULL as varchar) as nft_contract_address,
   cast(NULL as varchar) as aggregator_name,
-  cast(NULL as varbinary) as aggregator_address,
-  cast(NULL as varbinary) as tx_from,
-  cast(NULL as varbinary) as tx_to,
+  cast(NULL as varchar) as aggregator_address,
+  cast(NULL as varchar) as tx_from,
+  cast(NULL as varchar) as tx_to,
   cast(2*(abs(element_at(post_balances,1) - element_at(pre_balances,1)))/100 as uint256) as platform_fee_amount_raw,
   2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9))/100 as platform_fee_amount,
   2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9) * p.price)/100 as platform_fee_amount_usd,
@@ -135,7 +135,7 @@ SELECT
   +abs(element_at(post_balances,14) / 1e9 - element_at(pre_balances,14) / 1e9)
   +abs(element_at(post_balances,15) / 1e9 - element_at(pre_balances,15) / 1e9)
   +abs(element_at(post_balances,16) / 1e9 - element_at(pre_balances,16) / 1e9)) / ((abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9)-0.00204928)) * 100),2) as royalty_fee_percentage,
-  cast(NULL as varbinary) as royalty_fee_receive_address,
+  cast(NULL as varchar) as royalty_fee_receive_address,
   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
                contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
