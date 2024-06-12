@@ -1,5 +1,5 @@
 {{  config(
-
+        schema = 'cow_protocol_gnosis',
         alias='trades',
         materialized='incremental',
         partition_by = ['block_month'],

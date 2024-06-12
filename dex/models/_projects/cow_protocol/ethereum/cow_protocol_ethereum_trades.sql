@@ -1,17 +1,17 @@
 {{  config(
-
-        alias='trades',
-        materialized='incremental',
-        partition_by = ['block_month'],
-        unique_key = ['tx_hash', 'order_uid', 'evt_index'],
-        on_schema_change='sync_all_columns',
-        file_format ='delta',
-        incremental_strategy='merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha", "olgafetisova"]\') }}'
+    schema='cow_protocol_ethereum',
+    alias='trades',
+    materialized='incremental',
+    partition_by = ['block_month'],
+    unique_key = ['tx_hash', 'order_uid', 'evt_index'],
+    on_schema_change='sync_all_columns',
+    file_format ='delta',
+    incremental_strategy='merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    post_hook='{{ expose_spells(\'["ethereum"]\',
+                                "project",
+                                "cow_protocol",
+                                \'["bh2smith", "gentrexha", "olgafetisova"]\') }}'
     )
 }}
 

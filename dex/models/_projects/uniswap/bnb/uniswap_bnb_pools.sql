@@ -1,5 +1,5 @@
 {{ config(
-    
+
     schema = 'uniswap_bnb',
     alias = 'pools',
     materialized = 'incremental',

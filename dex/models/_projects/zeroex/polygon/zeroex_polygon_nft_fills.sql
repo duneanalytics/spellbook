@@ -1,5 +1,6 @@
 {{  config(
-tags=['prod_exclude'],
+        tags=['prod_exclude'],
+        schema = 'zeroex_polygon',
         alias = 'nft_fills',
         materialized='incremental',
         partition_by = ['block_date'],

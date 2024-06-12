@@ -1,5 +1,4 @@
 {{ config(
-    
     schema = 'uniswap_arbitrum',
     alias = 'pools',
     materialized = 'incremental',

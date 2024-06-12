@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'odos',
         alias = 'trades',
         post_hook='{{ expose_spells(\'["optimism", "ethereum"]\',
                                 "project",

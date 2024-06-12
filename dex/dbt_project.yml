@@ -21,10 +21,9 @@ vars:
 # You don't need to change these!
 model-paths: ["models", "../sources"]
 analysis-paths: ["analyses"]
-# ../tests/* should be added to a separate shared folder
 test-paths: ["tests"]
 seed-paths: ["seeds"]
-macro-paths: ["../macros", "macros"]
+macro-paths: ["macros", "../macros"]
 snapshot-paths: ["snapshots"]
 
 target-path: "target" # directory which will store compiled SQL files
@@ -41,8 +40,6 @@ tests:
 # Configuring seeds
 # Full documentation: https://docs.getdbt.com/reference/seed-configs
 # For configuring individual seeds (e.g. overriding column types) we recommend a yml file nested in the same folder as the seed
-# example: seeds/cryptopunks/schema.yml
-# TODO: uncomment when seeds are added
 seeds:
   dex:
     +schema: test_data

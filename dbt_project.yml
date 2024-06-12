@@ -114,21 +114,6 @@ models:
       polygon:
         +schema: balances_polygon
 
-    dodo:
-      +schema: dodo
-      ethereum:
-        +schema: dodo_ethereum
-      bnb:
-        +schema: dodo_bnb
-      polygon:
-        +schema: dodo_polygon
-      arbitrum:
-        +schema: dodo_arbitrum
-      optimism:
-        +schema: dodo_optimism
-      base:
-        +schema: dodo_base
-
     labels:
       +schema: labels
       +materialized: table
@@ -149,11 +134,6 @@ models:
 
     solana_utils:
       +schema: solana_utils
-
-    odos:
-      +schema: odos
-      avalanche_c:
-        +schema: odos_avalanche_c
 
     transfers:
       +schema: transfers
@@ -239,11 +219,6 @@ models:
       +schema: spaceid
       bnb:
         +schema: spaceid_bnb
-
-    spartacus_exchange:
-      +schema: spartacus_exchange
-      fantom:
-        +schema: spartacus_exchange_fantom
 
     tornado_cash:
       +schema: tornado_cash
@@ -369,25 +344,6 @@ models:
       ethereum:
         +schema: nexusmutual_ethereum
 
-    zeroex:
-      +schema: zeroex
-      ethereum:
-        +schema: zeroex_ethereum
-      optimism:
-        +schema: zeroex_optimism
-      polygon:
-        +schema: zeroex_polygon
-      avalanche_c:
-        +schema: zeroex_avalanche_c
-      fantom:
-        +schema: zeroex_fantom
-      arbitrum:
-        +schema: zeroex_arbitrum
-      bnb:
-        +schema: zeroex_bnb
-      celo:
-        +schema: zeroex_celo
-
 
     ampleforth:
       +schema: ampleforth
@@ -470,11 +426,6 @@ models:
       +schema: tokenfy
       ethereum:
         +schema: tokenfy_ethereum
-
-    tokenlon:
-      +schema: tokenlon
-      ethereum:
-        +schema: tokenlon_ethereum
 
     thales:
       +schema: thales
