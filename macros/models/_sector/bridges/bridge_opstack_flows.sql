@@ -8,6 +8,7 @@ SELECT '{{blockchain}}' AS blockchain
 , '{{project_version}}' AS project_version
 , '{{flows_type}}' AS flows_type
 , evt_block_time AS block_time
+, date_trunc('month', evt_block_time) AS block_month
 , evt_block_number AS block_number
 , amount AS amount_raw
 , "from"
@@ -31,6 +32,7 @@ SELECT '{{blockchain}}' AS blockchain
 , '{{project_version}}' AS project_version
 , '{{flows_type}}' AS flows_type
 , evt_block_time AS block_time
+, date_trunc('month', evt_block_time) AS block_month
 , evt_block_number AS block_number
 , amount AS amount_raw
 , "from"
