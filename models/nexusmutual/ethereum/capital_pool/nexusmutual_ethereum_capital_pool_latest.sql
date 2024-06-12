@@ -16,6 +16,8 @@ daily_running_totals as (
   select
     block_date,
     avg_eth_usd_price,
+    avg_dai_usd_price,
+    avg_usdc_usd_price,
     -- Capital Pool
     avg_capital_pool_eth_total,
     avg_capital_pool_usd_total,
@@ -58,6 +60,8 @@ daily_running_totals as (
 select
   block_date,
   avg_eth_usd_price,
+  avg_dai_usd_price,
+  avg_usdc_usd_price,
   -- Capital Pool
   avg_capital_pool_eth_total,
   avg_capital_pool_usd_total,

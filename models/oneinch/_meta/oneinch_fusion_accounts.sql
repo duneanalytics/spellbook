@@ -25,56 +25,87 @@ executors as (
 )
 
 , settlements as (
-    select blockchain, contract_address
-    from {{ ref('oneinch_blockchains') }}, unnest(fusion_settlement_addresses) as t(contract_address)
+    select blockchain, settlement
+    from {{ ref('oneinch_blockchains') }}, unnest(fusion_settlement_addresses) as t(settlement)
 )
 
 , evms_traces as (
     {% for blockchain in oneinch_exposed_blockchains_list() %}
-        select '{{ blockchain }}' as blockchain, tx_hash, "from", "to" from {{ source(blockchain, 'traces') }}
-        {% if is_incremental() %}
-            where {{ incremental_predicate('block_time') }}
-        {% else %}
-            where block_time >= {{ project_start_date }}
-        {% endif %}
+        select
+            '{{ blockchain }}' as blockchain
+            , tx_hash
+            , "from" as resolver_executor
+            , "to" as settlement
+        from {{ source(blockchain, 'traces') }}
+        where
+            {% if is_incremental() %}
+                {{ incremental_predicate('block_time') }}
+            {% else %}
+                block_time >= {{ project_start_date }}
+            {% endif %}
         {% if not loop.last %} union all {% endif %}
     {% endfor %}
+)
+
+, fusion as (
+    select blockchain, tx_hash, call_from as resolver_executor
+    from {{ ref('oneinch_lop') }}
+    where
+        {% if is_incremental() %}
+            {{ incremental_predicate('block_time') }}
+        {% else %}
+            block_time >= {{ project_start_date }}
+        {% endif %}
+        and flags['fusion']
+)
+
+, calls as (
+    select blockchain, resolver_name, resolver_address, tx_hash
+    from evms_traces
+    join executors using(blockchain, resolver_executor)
+    join settlements using(blockchain, settlement)
+    group by 1, 2, 3, 4
+
+    union all
+
+    select blockchain, resolver_name, resolver_address, tx_hash
+    from fusion
+    join executors using(blockchain, resolver_executor)
 )
 
 , evms_transactions as (
     {% for blockchain in oneinch_exposed_blockchains_list() %}
-        select '{{ blockchain }}' as blockchain, hash, "from", block_time from {{ source(blockchain, 'transactions') }}
-        {% if is_incremental() %}
-            where {{ incremental_predicate('block_time') }}
-        {% else %}
-            where block_time >= {{ project_start_date }}
-        {% endif %}
+        select
+            '{{ blockchain }}' as blockchain
+            , hash as tx_hash
+            , "from" as tx_from
+            , block_time
+        from {{ source(blockchain, 'transactions') }}
+        where
+            {% if is_incremental() %}
+                {{ incremental_predicate('block_time') }}
+            {% else %}
+                block_time >= {{ project_start_date }}
+            {% endif %}
         {% if not loop.last %} union all {% endif %}
     {% endfor %}
-)
-
-, calls as (
-    select evms_traces.blockchain, executors.resolver_name, executors.resolver_address, evms_traces.tx_hash as hash
-    from evms_traces
-    join executors on evms_traces.blockchain = executors.blockchain and evms_traces."from" = executors.resolver_executor
-    join settlements on evms_traces.blockchain = settlements.blockchain and evms_traces."to" = settlements.contract_address
-    group by 1, 2, 3, 4
 )
 
 , txs as (
     select
         resolver_name
-        , evms_transactions."from" as resolver_eoa
+        , tx_from as resolver_eoa
         , resolver_address
         , blockchain
-        , max(block_time) latest_tx_at
+        , max(block_time) as latest_tx_at
     from evms_transactions
-    join calls using(blockchain, hash)
+    join calls using(blockchain, tx_hash)
     group by 1, 2, 3, 4
 )
 
+-- output --
 
-select 
+select
     blockchain
     , resolver_eoa as address
     , max_by(resolver_address, latest_tx_at) as resolver_address
