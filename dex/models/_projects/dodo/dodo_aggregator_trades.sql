@@ -1,11 +1,11 @@
 {{ config(
-        
-        alias = 'aggregator_trades',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism","base"]\',
-                                "project",
-                                "dodo",
-                                \'["owen05"]\') }}'
-        )
+    schema = 'dodo',        
+    alias = 'aggregator_trades',
+    post_hook='{{ expose_spells(\'["ethereum","bnb","polygon","arbitrum","optimism","base"]\',
+                            "project",
+                            "dodo",
+                            \'["owen05"]\') }}'
+    )
 }}
 
 {% set dodo_models = [

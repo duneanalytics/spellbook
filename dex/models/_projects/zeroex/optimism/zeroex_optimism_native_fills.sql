@@ -1,4 +1,5 @@
 {{  config(
+        schema = 'zeroex_optimism',
         alias = 'native_fills',
         materialized='incremental',
         partition_by = ['block_month'],

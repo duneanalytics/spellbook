@@ -1,5 +1,5 @@
 {{ config(
-    
+        schema = 'lifi',
         alias = 'trades',
         post_hook='{{ expose_spells(\'["fantom", "optimism"]\',
                                 "project",

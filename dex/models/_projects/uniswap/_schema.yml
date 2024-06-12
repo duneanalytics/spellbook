@@ -29,9 +29,11 @@ models:
         description: "DEX pool smart contract address"
       - name: fee
         description: "Defined fee"
-      - name: token0
+      - &token0
+        name: token0
         description: "First token in pool"
-      - name: token1
+      - &token1
+        name: token1
         description: "Second token in pool"
       - name: creation_block_time
         description: "Block time of pool creation"
@@ -57,7 +59,8 @@ models:
         description: "DEX pool smart contract address"
         tests:
           - unique
-      - name: fee
+      - &fee
+        name: fee
         description: "Defined fee"
       - name: token0
         description: "First token in pool"

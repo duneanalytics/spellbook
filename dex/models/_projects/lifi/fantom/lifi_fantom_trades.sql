@@ -1,6 +1,6 @@
 
 {{ config(
-    
+        schema = 'lifi_fantom',
         alias = 'trades'
         )
 }}

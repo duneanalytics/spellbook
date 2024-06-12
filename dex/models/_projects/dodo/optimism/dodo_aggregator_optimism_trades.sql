@@ -1,6 +1,6 @@
 {{ config
 (
-    
+    schema = 'dodo_optimism',
     alias = 'aggregator_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',

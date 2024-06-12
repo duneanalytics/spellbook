@@ -1,5 +1,5 @@
 {{  config(
-
+        schema = 'zeroex_ethereum',
         alias = 'nft_fills',
         materialized='incremental',
         partition_by = ['block_date'],
