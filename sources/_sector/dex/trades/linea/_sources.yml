@@ -21,3 +21,11 @@ sources:
     tables:
       - name: SectaFactory_evt_PairCreated
       - name: SectaPair_evt_Swap
+  - name: pancakeswap_v2_linea
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+  - name: pancakeswap_v3_linea
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated

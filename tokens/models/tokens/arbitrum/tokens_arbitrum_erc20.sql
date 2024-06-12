@@ -78,4 +78,5 @@ FROM (VALUES
     , (0x4cb9a7ae498cedcbb5eae9f25736ae7d428c9d66, 'XAI', 18)
     , (0x323665443cef804a3b5206103304bd4872ea4253, 'USDV', 6)
     , (0x966570a84709d693463cdd69dcadb0121b2c9d26, 'taoUSD', 18)
+    , (0x993614e1c8c9c5abe49462ce5702431978fd767f, 'S*ETH', 18)
 ) AS temp_table (contract_address, symbol, decimals)
