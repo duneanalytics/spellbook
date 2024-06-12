@@ -22,3 +22,8 @@ sources:
       - name: Cover_call_setProductTypes
       - name: Cover_evt_ProductSet
       - name: Cover_call_setProducts
+      - name: Quotation_call_buyCoverWithMetadata
+      - name: Quotation_call_makeCoverUsingNXMTokens
+      - name: QuotationData_call_addCover
+      - name: Cover_call_buyCover
+      - name: StakingProducts_call_getPremium

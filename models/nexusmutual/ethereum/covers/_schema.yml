@@ -125,6 +125,116 @@ models:
         name: date_added
         description: "date added"
 
+  - name: nexusmutual_ethereum_covers_v1
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Nexus Mutual Covers v1"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cover_id
+    columns:
+      - *block_time
+      - &block_date
+        name: block_date
+        description: "block date"
+      - *block_number
+      - &cover_id
+        name: block_date
+        description: "cover id"
+        tests:
+          - not_null
+      - &cover_start_time
+        name: cover_start_time
+        description: "cover start time"
+        tests:
+          - not_null
+      - &cover_end_time
+        name: cover_end_time
+        description: "cover end time"
+        tests:
+          - not_null
+      - &cover_start_date
+        name: cover_start_date
+        description: "cover start date"
+      - &cover_end_date
+        name: cover_end_date
+        description: "cover end date"
+      - &product_contract
+        name: product_contract
+        description: "product contract"
+      - name: syndicate
+        description: "syndicate"
+      - *product_name
+      - *product_type
+      - &cover_asset
+        name: cover_asset
+        description: "cover asset"
+      - &sum_assured
+        name: sum_assured
+        description: "total cover amount"
+      - &premium_asset
+        name: premium_asset
+        description: "premium asset"
+      - &premium
+        name: premium
+        description: "premium in cover asset"
+      - &premium_nxm
+        name: premium_nxm
+        description: "premium in NXM"
+      - &cover_owner
+        name: cover_owner
+        description: "cover owner"
+      - *evt_index
+      - *tx_hash
+
+  - name: nexusmutual_ethereum_covers_v2
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Nexus Mutual Covers v2"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cover_id
+    columns:
+      - *block_time
+      - *block_date
+      - *block_number
+      - *cover_id
+      - *cover_start_time
+      - *cover_end_time
+      - *cover_start_date
+      - *cover_end_date
+      - &staking_pool
+        name: staking_pool
+        description: "staking pool id"
+      - *product_type
+      - *product_name
+      - *cover_asset
+      - *sum_assured
+      - &partial_cover_amount
+        name: partial_cover_amount
+        description: "partial cover amount"
+      - *premium_asset
+      - *premium
+      - *premium_nxm
+      - &premium_incl_commission
+        name: premium_incl_commission
+        description: "premium incl commission"
+      - *cover_owner
+      - &is_migrated
+        name: is_migrated
+        description: "is migrated flag"
+      - *tx_hash
+
 
   # to be deprecated:
   - name: nexusmutual_ethereum_product_information
@@ -177,24 +287,15 @@ models:
         name: evt_tx_hash
       - &curr
         name: curr
-      - &premium
-        name: premium
-        tests:
-          - not_null
+      - *premium
       - &pre_amount
         name: pre_amount
-      - &premium_nxm
-        name: premium_nxm
-        tests:
-          - not_null
+      - *premium_nxm
       - &pre_nxm_amount
         name: pre_nxm_amount
       - &sc_add
         name: sc_add
-      - &sum_assured
-        name: sum_assured
-        tests:
-          - not_null
+      - *sum_assured
       - &block_hash
         name: block_hash
       - &nonce
@@ -225,8 +326,6 @@ models:
         name: evt_expiry
       - &evt_expiry_date
         name: evt_expiry_date
-      - &block_date
-        name: block_date
-        description: "UTC event block date of each DEX trade"
+      - *block_date
       - &token_address
         name: token_address
