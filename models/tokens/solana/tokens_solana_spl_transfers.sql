@@ -125,7 +125,7 @@ SELECT
     , outer_instruction_index
     , inner_instruction_index
     , outer_executing_account
- FROM {{ref('tokens_solana_spl_transfers_call_transfer')}}
+FROM {{ref('tokens_solana_spl_transfers_call_transfer')}}
 {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% endif %}
+    WHERE {{incremental_predicate('block_time')}}
+{% endif %}
