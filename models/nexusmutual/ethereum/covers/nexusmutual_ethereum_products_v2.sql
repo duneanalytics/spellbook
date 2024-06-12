@@ -43,7 +43,7 @@ product_data_raw as (
     cast(json_extract_scalar(t.product_param, '$.productId') as uint256) as product_id,
     json_extract_scalar(t.product_param, '$.productName') as product_name,
     json_extract_scalar(t.product_param, '$.ipfsMetadata') as call_product_ipfs_metadata,
-    json_extract(t.product_param, '$.allowedPools') as allowed_pools,
+    array_join(cast(json_extract(t.product_param, '$.allowedPools') as array(varchar)), ', ') as allowed_pools,
     json_parse(json_query(t.product_param, 'lax $.product' omit quotes)) as product_json,
     t.product_ordinality,
     p.tx_hash
