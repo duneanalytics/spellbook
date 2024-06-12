@@ -19,6 +19,7 @@
 ,ref('looksrare_seaport_ethereum_base_trades')
 ,ref('looksrare_v1_ethereum_base_trades')
 ,ref('looksrare_v2_ethereum_base_trades')
+,ref('opensea_v1_ethereum_base_trades')
 ,ref('sudoswap_ethereum_base_trades')
 ,ref('sudoswap_v2_ethereum_base_trades')
 ,ref('superrare_ethereum_base_trades')
@@ -28,6 +29,8 @@
 ,ref('zora_v2_ethereum_base_trades')
 ,ref('zora_v3_ethereum_base_trades')
 ,ref('magiceden_ethereum_base_trades')
+,ref('opensea_v3_ethereum_base_trades')
+,ref('opensea_v4_ethereum_base_trades')
 ] %}
 
 with base_union as (

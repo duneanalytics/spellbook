@@ -5,7 +5,7 @@ sources:
     freshness:
           warn_after: { count: 12, period: hour }
     description: >
-      Decoded event tables for swaps, deposits, withdraws and reinvests on yield yak
+      Decoded event tables for swaps, deposits, withdraws, reinvests and transfers on yield yak
     tables:
       - name: YakRouter_evt_YakSwap
         loaded_at_field: evt_block_time
@@ -43,6 +43,22 @@ sources:
       - name: BoostedPendleStrategy_evt_Reinvest
         loaded_at_field: evt_block_time
       - name: BoostedPendleStrategy_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2NativeStrategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2NativeStrategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2NativeStrategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2NativeStrategy_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2Strategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2Strategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2Strategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: BoostedStargateV2Strategy_evt_Transfer
         loaded_at_field: evt_block_time
       - name: CompoundingBets_evt_Deposit
         loaded_at_field: evt_block_time
@@ -111,6 +127,14 @@ sources:
       - name: SiloStrategy_evt_Reinvest
         loaded_at_field: evt_block_time
       - name: SiloStrategy_evt_Transfer
+        loaded_at_field: evt_block_time
+      - name: StargateV2Strategy_evt_Deposit
+        loaded_at_field: evt_block_time
+      - name: StargateV2Strategy_evt_Withdraw
+        loaded_at_field: evt_block_time
+      - name: StargateV2Strategy_evt_Reinvest
+        loaded_at_field: evt_block_time
+      - name: StargateV2Strategy_evt_Transfer
         loaded_at_field: evt_block_time
       - name: SushiStrategyForLP_evt_Deposit
         loaded_at_field: evt_block_time

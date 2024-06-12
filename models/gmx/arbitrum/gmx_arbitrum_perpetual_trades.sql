@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'gmx_arbitrum',
     alias = 'perpetual_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',

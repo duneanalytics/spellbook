@@ -1,6 +1,6 @@
 {{ config(
     alias = 'dao_addresses',
-    
+    schema = 'zodiac_ethereum',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

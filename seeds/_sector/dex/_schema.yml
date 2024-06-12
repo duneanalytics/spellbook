@@ -1034,6 +1034,21 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
+    
+  - name: iziswap_scroll_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
 
   - name: kyberswap_arbitrum_base_trades_seed
     config:
@@ -1396,6 +1411,21 @@ seeds:
         block_date: timestamp
 
   - name: pancakeswap_ethereum_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: pancakeswap_linea_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -2641,6 +2671,66 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
+  - name: solidly_v3_arbitrum_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: solidly_v3_base_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: solidly_v3_ethereum_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: solidly_v3_fantom_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
   - name: solidly_v3_optimism_base_trades_seed
     config:
       column_types:
@@ -2655,7 +2745,6 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
 
   - name: throne_exchange_v2_base_base_trades_seed
     config:
@@ -2838,6 +2927,21 @@ seeds:
         block_date: timestamp
 
   - name: syncswap_scroll_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: nuri_scroll_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -3468,6 +3572,21 @@ seeds:
         block_date: timestamp
 
   - name: nile_linea_base_trades_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        token_bought_amount_raw: uint256
+        token_sold_amount_raw: uint256
+        block_date: timestamp
+
+  - name: icecreamswap_v2_scroll_base_trades_seed
     config:
       column_types:
         blockchain: varchar

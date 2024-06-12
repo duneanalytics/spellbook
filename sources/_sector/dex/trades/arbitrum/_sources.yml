@@ -134,3 +134,8 @@ sources:
   - name: wombatexchange_arbitrum
     tables:
       - name: CrossChainPool_evt_SwapV2
+  - name: solidly_v3_arbitrum
+    tables:
+      - name: SolidlyV3Factory_evt_PoolCreated
+      - name: SolidlyV3Pool_evt_Swap
+

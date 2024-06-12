@@ -2,7 +2,7 @@
     schema = 'nft',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon","zksync"]\',
+    post_hook='{{ expose_spells(\'["ethereum","solana","bnb","optimism","arbitrum","polygon","zksync", "blast"]\',
                     "sector",
                     "nft",
                     \'["soispoke","0xRob", "hildobby"]\') }}')

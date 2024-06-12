@@ -1,14 +1,14 @@
 {{ config(
-    
+
     alias = 'daily_deposits'
     )
 }}
 
-WITH 
+WITH
 
 deposit_events AS (
     SELECT
-        collateralId as collateral_id, 
+        collateralId as collateral_id,
         tokenId AS collateral_token_id,
         tokenContract AS collateral_token_contract,
         evt_block_time AS event_time,
@@ -34,52 +34,52 @@ all_events AS (
 ),
 
 time_seq AS (
-    SELECT 
+    SELECT
         sequence(
         CAST('2023-04-27' as timestamp),
         date_trunc('day', cast(now() as timestamp)),
         interval '1' day
-        ) AS time 
+        ) AS time
 ),
 
 days AS (
-    SELECT 
-        time.time AS day 
+    SELECT
+        time.time AS day
     FROM time_seq
     CROSS JOIN unnest(time) AS time(time)
 ),
 
 rolling_balance AS (
-    SELECT 
-        CAST(date_trunc('DAY', event_time) AS date) as day, 
+    SELECT
+        CAST(date_trunc('DAY', event_time) AS date) as day,
         collateral_token_id,
         collateral_token_contract,
         SUM(balance_change) OVER (
-            PARTITION BY collateral_token_id, collateral_token_contract 
+            PARTITION BY collateral_token_id, collateral_token_contract
             ORDER BY CAST(date_trunc('DAY', event_time) AS date)
         ) AS balance_over_time,
         lead(CAST(date_trunc('DAY', event_time) AS date), 1, current_timestamp) OVER (
-            PARTITION BY collateral_token_id, collateral_token_contract 
+            PARTITION BY collateral_token_id, collateral_token_contract
             ORDER BY CAST(date_trunc('DAY', event_time) AS date)
         ) AS next_day
-    FROM 
+    FROM
         all_events
 ),
 
 daily_balances AS (
-    SELECT 
-        d.day, 
+    SELECT
+        d.day,
         rb.collateral_token_id,
         rb.collateral_token_contract,
         COALESCE(SUM(rb.balance_over_time), 0) as daily_balance
-    FROM 
-        rolling_balance rb 
-    INNER JOIN 
-        days d 
-        ON rb.day <= d.day 
+    FROM
+        rolling_balance rb
+    INNER JOIN
+        days d
+        ON rb.day <= d.day
         AND d.day < rb.next_day
     GROUP BY 1, 2, 3
-), 
+),
 
 
 nft_data AS (
@@ -89,7 +89,7 @@ nft_data AS (
         symbol AS nft_symbol,
         standard as nft_token_standard
     FROM
-    {{ ref('tokens_nft') }}
+    {{ source('tokens', 'nft') }}
     WHERE blockchain = 'ethereum'
 ),
 
@@ -102,8 +102,8 @@ collateral_ids AS (
         deposit_events
 )
 
-SELECT 
-    db.day, 
+SELECT
+    db.day,
     db.collateral_token_id,
     db.collateral_token_contract,
     db.daily_balance,
@@ -111,7 +111,7 @@ SELECT
     nd.nft_symbol,
     nd.nft_token_standard,
     ci.collateral_Id
-FROM 
+FROM
     daily_balances db
 LEFT JOIN
     nft_data nd

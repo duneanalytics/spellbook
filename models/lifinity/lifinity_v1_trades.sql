@@ -1,6 +1,6 @@
  {{
   config(
-        
+
         schema = 'lifinity_v1',
         alias = 'trades',
         partition_by = ['block_month'],
@@ -22,7 +22,7 @@ WITH
   pools as (
         -- we can get fees after they give us the right IDL for initializing the pool and updating configs
         -- https://solscan.io/tx/DNXYzbhFnY9PwT4iwXNMpQq42kafcPaxSSgxsZ6XFLACvVNfpEfbJHG6VjPKevnH3aT4nwqPy4WFmQu4Y4NrY3e
-        SELECT 
+        SELECT
             tkA.symbol as tokenA_symbol
             , tkA.decimals as tokenA_decimals
             , mintA.token_mint_address as tokenA
@@ -36,8 +36,8 @@ WITH
             , ip.account_arguments[3] as pool_mint_id
             , ip.tx_id as init_tx
         FROM {{ source('solana','instruction_calls') }} ip
-        LEFT JOIN {{ ref('solana_utils_token_accounts') }} mintA ON mintA.address = ip.account_arguments[4]
-        LEFT JOIN {{ ref('solana_utils_token_accounts') }} mintB ON mintB.address = ip.account_arguments[5]
+        INNER JOIN {{ ref('solana_utils_token_accounts') }} mintA ON mintA.address = ip.account_arguments[4]
+        INNER JOIN {{ ref('solana_utils_token_accounts') }} mintB ON mintB.address = ip.account_arguments[5]
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = mintA.token_mint_address
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = mintB.token_mint_address
         WHERE bytearray_substring(ip.data,1,8) = 0xafaf6d1f0d989bed
@@ -46,9 +46,9 @@ WITH
         and cardinality(account_arguments) >= 5 --filter out broken cases/inits for now
         and block_time > TIMESTAMP '{{project_start_date}}'
     )
-    
+
     , all_swaps as (
-        SELECT 
+        SELECT
             sp.call_block_time as block_time
             , 'lifinity' as project
             , 1 as version
@@ -60,9 +60,9 @@ WITH
                 when lower(tokenA_symbol) > lower(tokenB_symbol) then concat(tokenB_symbol, '-', tokenA_symbol)
                 else concat(tokenA_symbol, '-', tokenB_symbol)
             end as token_pair
-            , case when tk_1.token_mint_address = p.tokenA then COALESCE(tokenB_symbol, tokenB) 
+            , case when tk_1.token_mint_address = p.tokenA then COALESCE(tokenB_symbol, tokenB)
                 else COALESCE(tokenA_symbol, tokenA)
-                end as token_bought_symbol 
+                end as token_bought_symbol
             -- token bought is always the second instruction (transfer) in the inner instructions
             , tr_2.amount as token_bought_amount_raw
             , tr_2.amount/pow(10,COALESCE(case when tk_1.token_mint_address = p.tokenA then p.tokenB_decimals else tokenA_decimals end,9)) as token_bought_amount
@@ -80,26 +80,26 @@ WITH
             , case when tk_1.token_mint_address = p.tokenA then p.tokenB
                 else p.tokenA
                 end as token_bought_mint_address
-            , case when tk_1.token_mint_address = p.tokenA then p.tokenA 
+            , case when tk_1.token_mint_address = p.tokenA then p.tokenA
                 else p.tokenB
                 end as token_sold_mint_address
             , case when tk_1.token_mint_address = p.tokenA then p.tokenBVault
                 else p.tokenAVault
                 end as token_bought_vault
-            , case when tk_1.token_mint_address = p.tokenA then p.tokenAVault 
+            , case when tk_1.token_mint_address = p.tokenA then p.tokenAVault
                 else p.tokenBVault
                 end as token_sold_vault
             --swap out can be either 2nd or 3rd transfer, we need to filter for the first transfer out.
             , tr_2.call_inner_instruction_index as transfer_out_index
-            , row_number() over (partition by sp.call_tx_id, sp.call_outer_instruction_index, sp.call_inner_instruction_index 
+            , row_number() over (partition by sp.call_tx_id, sp.call_outer_instruction_index, sp.call_inner_instruction_index
                                 order by COALESCE(tr_2.call_inner_instruction_index, 0) asc) as first_transfer_out
         FROM {{ source('lifinity_amm_solana', 'lifinity_amm_call_swap') }} sp
         INNER JOIN pools p
             ON sp.account_amm = p.pool_id --account 2
-        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1 
-            ON tr_1.call_tx_id = sp.call_tx_id 
-            AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index 
-            AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1) 
+        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1
+            ON tr_1.call_tx_id = sp.call_tx_id
+            AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index
+            AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1)
                 OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
             {% if is_incremental() %}
             AND {{incremental_predicate('tr_1.call_block_time')}}
@@ -107,9 +107,9 @@ WITH
             AND tr_1.call_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         --swap out can be either 2nd or 3rd transfer.
-        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2 
-            ON tr_2.call_tx_id = sp.call_tx_id 
-            AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index 
+        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2
+            ON tr_2.call_tx_id = sp.call_tx_id
+            AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index
             AND ((sp.call_is_inner = false AND (tr_2.call_inner_instruction_index = 2 OR tr_2.call_inner_instruction_index = 3))
                 OR (sp.call_is_inner = true AND (tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2 OR tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 3))
                 )
@@ -127,10 +127,10 @@ WITH
         AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
     )
-    
+
 SELECT
     tb.blockchain
-    , tb.project 
+    , tb.project
     , tb.version
     , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
     , tb.block_time
@@ -156,16 +156,16 @@ SELECT
     , tb.inner_instruction_index
     , tb.tx_index
 FROM all_swaps tb
-LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
-    AND date_trunc('minute', tb.block_time) = p_bought.minute 
+LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana'
+    AND date_trunc('minute', tb.block_time) = p_bought.minute
     AND token_bought_mint_address = toBase58(p_bought.contract_address)
     {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
-    AND date_trunc('minute', tb.block_time) = p_sold.minute 
+LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
+    AND date_trunc('minute', tb.block_time) = p_sold.minute
     AND token_sold_mint_address = toBase58(p_sold.contract_address)
     {% if is_incremental() %}
     AND {{incremental_predicate('p_sold.minute')}}
