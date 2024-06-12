@@ -25,6 +25,7 @@
  ,ref('nft_avalanche_c_base_trades')
  ,ref('nft_linea_base_trades')
  ,ref('nft_zora_base_trades')
+ ,ref('nft_blast_base_trades')
 ] %}
 
 with base_union as (
