@@ -24,24 +24,24 @@ WITH transfer_recipients AS (
 
 , results AS (
         SELECT DISTINCT '{{blockchain}}' AS blockchain
-    , block_time
-    , block_number
+    , attack.block_time
+    , attack.block_number
     , 'Address Poisoning' AS attack_type
     , 'Integrity' AS attack_category
     , ma.address_attack AS attacker
     , "from" AS victim
     , MIN_BY(ma.address_normal, normal.block_number) AS intended_recipient
-    , amount_usd
-    , amount
-    , amount_raw
-    , contract_address AS token_address
-    , token_standard
-    , symbol AS token_symbol
-    , tx_hash
-    , tx_index
-    , evt_index
+    , attack.amount_usd
+    , attack.amount
+    , attack.amount_raw
+    , attack.contract_address AS token_address
+    , attack.token_standard
+    , attack.symbol AS token_symbol
+    , attack.tx_hash
+    , attack.tx_index
+    , attack.evt_index
     FROM matching_addresses ma
-    INNER JOIN {{token_transfers}} attack ON to = ma.address_attack
+    INNER JOIN {{token_transfers}} attack ON attack.to = ma.address_attack
         AND attack.tx_from=attack."from"
         {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
