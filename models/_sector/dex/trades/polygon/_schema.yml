@@ -324,3 +324,23 @@ models:
           seed_file: ref('uniswap_polygon_base_trades_seed')
           filter:
             version: 2
+
+  - name: gridex_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: gridex
+      contributors: blanchemaria6
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'gridex' ]
+    description: "gridex polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gridex_polygon_base_trades_seed')
+          filter:
+            version: 1
+
