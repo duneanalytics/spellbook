@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: uniswap_v3_bnb_trades
+  - name: uniswap_v3_arbitrum_trades
     meta:
-      blockchain: bnb
+      blockchain: arbitrum
       sector: dex
       project: uniswap_v3
-      contributors: chrispearcx
+      contributors: jeff-dude, masquot, soispoke, mtitus6
     config:
-      tags: ['bnb','uniswap_v3','trades', 'uniswap','dex']
+      tags: ['arbitrum','uniswap_v3','trades', 'uniswap','dex']
     description: >
-        Uniswap V3 contract trades on BNB chain
+        Uniswap V3 contract trades on Arbitrum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,7 +21,7 @@ models:
             - tx_hash
             - evt_index
       - check_dex_seed:
-          blockchain: bnb
+          blockchain: arbitrum
           project: uniswap
           version: 3
     columns:
@@ -35,7 +35,7 @@ models:
         name: version
         description: "Version of the contract built and deployed by the DEX project"
       - &block_month
-        name: block_date
+        name: block_month
         description: "UTC event block month of each DEX trade"
       - &block_date
         name: block_date
@@ -95,16 +95,16 @@ models:
         name: evt_index
         description: ""
 
-  - name: uniswap_bnb_trades
+  - name: uniswap_arbitrum_trades
     meta:
-      blockchain: bnb
+      blockchain: arbitrum
       sector: dex
       project: uniswap
-      contributors: chrispearcx
+      contributors: jeff-dude, masquot, soispoke, mtitus6
     config:
-      tags: ['bnb','dex','trades', 'uniswap']
+      tags: ['arbitrum','dex','trades', 'uniswap']
     description: >
-        Uniswap trades on BNB chain across all contracts and versions. This table will load dex trades downstream.
+        Uniswap trades on Arbitrum across all contracts and versions. This table will load dex trades downstream.
     columns:
       - *blockchain
       - *project
@@ -130,15 +130,15 @@ models:
       - *tx_to
       - *evt_index
 
-  - name: uniswap_v3_bnb_flashloans
+  - name: uniswap_v3_arbitrum_flashloans
     meta:
-      blockchain: bnb
+      blockchain: arbitrum
       sector: lending
       contributors: hildobby
     config:
-      tags: ['bnb', 'flashloans']
+      tags: ['arbitrum', 'flashloans']
     description: >
-      All Uniswap v3 flashloans on BNB
+      All Uniswap v3 flashloans on Arbitrum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -160,34 +160,4 @@ models:
       - name: currency_symbol
       - name: recipient
       - name: contract_address
-      - name: block_month 
-
-  - name: uniswap_bnb_pools
-    meta:
-      blockchain: bnb
-      sector: dex
-      contributors: mtitus6
-    config:
-      tags: ['bnb']
-    description: >
-      Uniswap DEX pools on BNB
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - name: pool
-        description: "DEX pool smart contract address"
-        tests:
-          - unique
-      - name: fee
-        description: "Defined fee"
-      - name: token0
-        description: "First token in pool"
-      - name: token1
-        description: "Second token in pool"
-      - name: creation_block_time
-        description: "Block time of pool creation"
-      - name: creation_block_number
-        description: "Block number of pool creation"
-      - name: contract_address
-        description: "Contract address used to create the pool"
+      - name: block_month

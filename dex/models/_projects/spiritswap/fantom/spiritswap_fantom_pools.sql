@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'spritswap_fantom',
     alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',

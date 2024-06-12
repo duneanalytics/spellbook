@@ -105,3 +105,34 @@ models:
       - *creation_block_number
       - name: contract_address
         description: "Contract address used to create the pool"
+
+  - name: dex_pools
+    meta:
+      blockchain: ethereum, arbitrum, polygon
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['ethereum', 'arbitrum', 'polygon', 'dex', 'cross-chain', 'pools']
+    description: >
+      DEX pools on all chains across all contracts and versions
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+    columns:
+      - *blockchain
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - *version
+      - *pool
+      - &fee
+        name: fee
+        description: "Defined fee"
+      - *token0
+      - *token1
+      - *creation_block_time
+      - *creation_block_number
+      - name: contract_address
+        description: "Contract address used to create the pool"

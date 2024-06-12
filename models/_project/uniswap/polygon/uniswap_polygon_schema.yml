@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: uniswap_v3_arbitrum_trades
+  - name: uniswap_v3_polygon_trades
     meta:
-      blockchain: arbitrum
+      blockchain: polygon
       sector: dex
       project: uniswap_v3
-      contributors: jeff-dude, masquot, soispoke, mtitus6
+      contributors: Henrystats
     config:
-      tags: ['arbitrum','uniswap_v3','trades', 'uniswap','dex']
+      tags: ['polygon','uniswap_v3','trades', 'uniswap','dex']
     description: >
-        Uniswap V3 contract trades on Arbitrum
+        Uniswap V3 contract trades on polygon
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -21,7 +21,7 @@ models:
             - tx_hash
             - evt_index
       - check_dex_seed:
-          blockchain: arbitrum
+          blockchain: polygon
           project: uniswap
           version: 3
     columns:
@@ -95,16 +95,16 @@ models:
         name: evt_index
         description: ""
 
-  - name: uniswap_arbitrum_trades
+  - name: uniswap_polygon_trades
     meta:
-      blockchain: arbitrum
+      blockchain: polygon
       sector: dex
       project: uniswap
-      contributors: jeff-dude, masquot, soispoke, mtitus6
+      contributors: henrystats
     config:
-      tags: ['arbitrum','dex','trades', 'uniswap']
+      tags: ['polygon','dex','trades', 'uniswap']
     description: >
-        Uniswap trades on Arbitrum across all contracts and versions. This table will load dex trades downstream.
+        Uniswap trades on Polygon across all contracts and versions. This table will load dex trades downstream.
     columns:
       - *blockchain
       - *project
@@ -130,45 +130,15 @@ models:
       - *tx_to
       - *evt_index
 
-  - name: uniswap_arbitrum_pools
+  - name: uniswap_v3_polygon_flashloans
     meta:
-      blockchain: arbitrum
-      sector: dex
-      contributors: hildobby
-    config:
-      tags: ['arbitrum']
-    description: >
-      Uniswap DEX pools
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - name: pool
-        description: "DEX pool smart contract address"
-        tests:
-          - unique
-      - name: fee
-        description: "Defined fee"
-      - name: token0
-        description: "First token in pool"
-      - name: token1
-        description: "Second token in pool"
-      - name: creation_block_time
-        description: "Block time of pool creation"
-      - name: creation_block_number
-        description: "Block number of pool creation"
-      - name: contract_address
-        description: "Contract address used to create the pool"
-
-  - name: uniswap_v3_arbitrum_flashloans
-    meta:
-      blockchain: arbitrum
+      blockchain: polygon
       sector: lending
       contributors: hildobby
     config:
-      tags: ['arbitrum', 'flashloans']
+      tags: ['polygon', 'flashloans']
     description: >
-      All Uniswap v3 flashloans on Arbitrum
+      All Uniswap v3 flashloans on Polygon
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

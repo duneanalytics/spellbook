@@ -1,5 +1,5 @@
 {{ config(
-        
+        schema = 'dex',
         alias = 'pools',
         materialized = 'incremental',
         file_format = 'delta',
