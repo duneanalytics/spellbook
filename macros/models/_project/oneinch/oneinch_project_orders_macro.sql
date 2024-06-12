@@ -805,7 +805,7 @@ logs as (
         , coalesce(log_fee_amount, call_fee_amount) as fee_amount
         , coalesce(log_fee_receiver, call_fee_receiver) as fee_receiver
         , coalesce(log_nonce, call_nonce) as order_nonce
-        , coalesce(log_order_hash, call_order_hash, concat(tx_hash, to_big_endian_32(cast(call_trade_counter as int))))) as order_hash
+        , coalesce(log_order_hash, call_order_hash, concat(tx_hash, to_big_endian_32(cast(call_trade_counter as int)))) as order_hash
         , count(*) over(partition by blockchain, block_number, tx_hash, call_trace_address, call_trade) as trades
     from calls
     full join logs using(block_number, tx_hash, topic0)
