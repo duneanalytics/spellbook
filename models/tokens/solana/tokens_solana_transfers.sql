@@ -76,7 +76,7 @@ SELECT
     , outer_executing_account
 FROM base tr
 --get token and accounts
-INNER JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.account_source
-INNER JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.account_destination
+INNER JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.from_token_account
+INNER JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.to_token_account
 WHERE 1=1
 -- AND call_block_time > now() - interval '90' day --for faster CI testing
