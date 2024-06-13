@@ -208,11 +208,6 @@ models:
       arbitrum:
         +schema: aragon_arbitrum
 
-    spiritswap:
-      +schema: spiritswap
-      fantom:
-        +schema: spiritswap_fantom
-
     jarvis_network:
       +schema: jarvis_network
       polygon:
@@ -285,15 +280,6 @@ models:
       ethereum:
         +schema: fiat_dao_ethereum
 
-    curvefi:
-      +schema: curvefi
-      ethereum:
-        +schema: curvefi_ethereum
-      optimism:
-        +schema: curvefi_optimism
-      fantom:
-        +schema: curvefi_fantom
-
     cow_protocol:
       +schema: cow_protocol
       ethereum:
@@ -322,21 +308,6 @@ models:
       +schema: yield_yak
       avalanche_c:
         +schema: yield_yak_avalanche_c
-
-    kyberswap:
-      +schema: kyberswap
-      avalanche_c:
-        +schema: kyberswap_avalanche_c
-      optimism:
-        +schema: kyberswap_optimism
-      ethereum:
-        +schema: kyberswap_ethereum
-      arbitrum:
-        +schema: kyberswap_arbitrum
-      bnb:
-        +schema: kyberswap_bnb
-      polygon:
-        +schema: kyberswap_polygon
 
     hashflow:
       +schema: hashflow
@@ -528,11 +499,6 @@ models:
       polygon:
         +schema: rocifi_polygon
 
-    oneinch:
-      +schema: oneinch
-      ethereum:
-        +schema: oneinch_ethereum
-
     pooltogether:
       +schema: pooltogether
       ethereum:
@@ -586,15 +552,6 @@ models:
         +schema: layerzero_celo
       base:
         +schema: layerzero_base
-
-    bebop:
-      +schema: bebop
-      ethereum:
-        +schema: bebop_ethereum
-      polygon:
-        +schema: bebop_polygon
-      arbitrum:
-        +schema: bebop_arbitrum
 
     tokemak:
       +schema: tokemak
