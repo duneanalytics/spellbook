@@ -22,6 +22,7 @@
          when 'zkevm' = chain_ then 'https://zkevm.polygonscan.com'
          when 'scroll' = chain_ then 'https://scrollscan.com'
          when 'zora' = chain_ then 'https://zora.superscan.network'
+         when 'mantle' = chain_ then 'https://explorer.mantle.xyz'
          else 'https://etherscan.io'
       end as explorer_url;
 {% endmacro %}
