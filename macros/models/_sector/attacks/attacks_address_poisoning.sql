@@ -1,4 +1,4 @@
-{% macro  (blockchain, token_transfers, first_funded_by) %}
+{% macro attacks_address_poisoning(blockchain, token_transfers, first_funded_by) %}
 
 WITH transfer_recipients AS (
     SELECT to AS address
