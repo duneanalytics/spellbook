@@ -104,7 +104,7 @@ meta as (
             not flags['exception']
             and flags['suitable']
             and (tx_success or tx_success is null)
-            and success
+            and call_success
     )
     left join orders using(block_number, block_time, tx_hash, call_trace_address, project)
     join meta on true
