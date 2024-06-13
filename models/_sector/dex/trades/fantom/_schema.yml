@@ -186,3 +186,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('curvefi_fantom_base_trades_seed')
+
+  - name: solidly_v3_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: solidly
+      contributors: SolidlyLabs
+    config:
+      tags: [ 'fantom', 'dex', 'trades', 'solidly' ]
+    description: "solidly v3 fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('solidly_v3_fantom_base_trades_seed')
+

@@ -1,5 +1,5 @@
 {{ config(
-    
+        schema = 'airdrop_gnosis',
         alias = 'claims',
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                       "sector",

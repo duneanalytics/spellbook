@@ -76,7 +76,7 @@ models:
         description: "token associated address for the whirlpool, of the token sold"
       - &project_program_id
         name: project_program_id
-        description: "Project program id that the trade was executed on - like the whirlpool id"
+        description: "pool program id of the project"
       - &trader_id
         name: trader_id
         description: "id (address) of trader who purchased a token"

@@ -1,4 +1,5 @@
 {{ config(
+        schema='paraswap_arbitrum',
         alias = 'trades',
         
         )
