@@ -175,7 +175,7 @@ meta as (
             , any_value(flags) as flags
             , any_value(call_from) as call_from
             , any_value(call_to) as call_to
-            , any_value(selector) as call_selector
+            , any_value(call_selector) as call_selector
             , any_value(method) as method
             , any_value(direct) as direct
             , any_value(order_hash) as order_hash
