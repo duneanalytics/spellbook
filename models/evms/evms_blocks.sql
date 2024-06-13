@@ -24,10 +24,10 @@
      , ('zksync', source('zksync', 'blocks'))
      , ('zora', source('zora', 'blocks'))
      , ('scroll', source('scroll', 'blocks'))
-     , ('linea', source('linea', 'transactions'))
-     , ('zkevm', source('zkevm', 'transactions'))
-     , ('blast', source('blast', 'transactions'))
-     , ('mantle', source('mantle', 'transactions'))
+     , ('linea', source('linea', 'blocks'))
+     , ('zkevm', source('zkevm', 'blocks'))
+     , ('blast', source('blast', 'blocks'))
+     , ('mantle', source('mantle', 'blocks'))
 ] %}
 
 SELECT *
