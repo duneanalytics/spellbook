@@ -37,7 +37,7 @@ with
         and token_bought_address in (select staking_token_address from staking_tokens)
         UNION ALL
         select tx_hash, evt_index, project, version
-        from {{ ref('dex_trades') }}
+        from {{ source('dex', 'trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select staking_token_address from staking_tokens)
     )
