@@ -156,7 +156,8 @@ with verify_txns as (
     AND bytearray_substring(t.data, 1, 4) IN 
     (
     0x4165d6dd, -- Finalize Blocks (proof verified immediately)
-    0xd630280f -- finalizeCompressedBlocksWithProof (Aplha v2 Release at block. 19222438)
+    0xd630280f, -- finalizeCompressedBlocksWithProof (Aplha v2 Release at block. 19222438)
+    0xabffac32 -- finalizeBlocksWithProof (new as of block. 20025455)
     )
     AND t.block_time >= timestamp '2023-07-12'
     {% if is_incremental() %}

@@ -267,6 +267,8 @@ with tx_batch_appends as (
       OR t.to = 0xa0425d71cB1D6fb80E65a5361a04096E0672De03
       -- L1 transactions settle here post-EIP4844
       OR t.to = 0xa8CB082A5a689E0d594d7da1E2d72A3D63aDc1bD
+      -- L1 transactions settle here post-V24 upgrade
+      OR t.to = 0x5D8ba173Dc6C3c90C8f7C04C9288BeF5FDbAd06E
     )
     AND (
       -- L1 transactions use these method ID's pre-Boojum
@@ -278,6 +280,11 @@ with tx_batch_appends as (
       bytearray_substring(t.data, 1, 4) = 0x701f58c5 -- Commit Batches
       OR
       bytearray_substring(t.data, 1, 4) = 0xc3d93e7c -- Execute Batches
+      OR
+      -- L1 transactions use these method ID's post-
+      bytearray_substring(t.data, 1, 4) = 0x6edd4f12 -- commitBatchesSharedBridge
+      OR
+      bytearray_substring(t.data, 1, 4) = 0x6f497ac6 -- executeBatchesSharedBridge
     )
     AND t.block_time >= timestamp '2023-03-01'
     {% if is_incremental() %}
@@ -340,7 +347,8 @@ with tx_batch_appends as (
   WHERE t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F -- Linea, L1 Message Service
     AND bytearray_substring(t.data, 1, 4) IN (
       0x7a776315, -- submitData (Aplha v2 Release at block. 19222438)
-      0x2d3c12e5 -- submitBlobData
+      0x2d3c12e5, -- submitBlobData
+      0x42fbe842 -- submitBlobs (new as of block. 20025443)
       )
     AND t.block_time >= timestamp '2023-07-12'
     {% if is_incremental() %}
