@@ -94,7 +94,6 @@ meta as (
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
         , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as _taker_asset
         , coalesce(order_hash, to_big_endian_64(counter)) as call_trade_id
-        -- , concat(to_big_endian_32(cast(chain_id as int)), coalesce(order_hash, concat(tx_hash, to_big_endian_64(counter)))) as unique_key
     from (
         select
             *
