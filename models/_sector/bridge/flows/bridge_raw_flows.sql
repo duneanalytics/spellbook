@@ -3,6 +3,7 @@
     alias = 'raw_flows',
     materialized = 'view',
     unique_key = ['blockchain','tx_hash','evt_index']
+)
 }}
 
 {% set bridges_models = [

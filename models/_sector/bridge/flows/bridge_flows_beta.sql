@@ -11,7 +11,6 @@
                                 spell_type = "sector",
                                 spell_name = "bridge",
                                 contributors = \'["hildobby"]\') }}')
-    )
 }}
 
 {{enrich_bridge_flows(ref('bridge_raw_flows'))}}
