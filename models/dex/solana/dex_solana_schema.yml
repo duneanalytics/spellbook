@@ -92,6 +92,7 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
+
   - name: dex_solana_price_hour
     meta:
       blockchain: solana
