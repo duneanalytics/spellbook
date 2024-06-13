@@ -1,5 +1,5 @@
 {{ config(
-	
+	schema = 'tigris',
 	alias = 'perpetual_trades',
     post_hook='{{ expose_spells(\'["arbitrum", "polygon"]\',
                                 "project",

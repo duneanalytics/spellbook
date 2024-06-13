@@ -94,6 +94,20 @@ sources:
           - name: decimals
             data_type: integer
 
+      - name: nft
+        description: Crosschain NFT (ERC721 and ERC1155) tokens
+        columns:
+          - name: blockchain
+            description: "The blockchain where the NFT token is deployed"
+          - name: contract_address
+            description: "NFT Token's contract address"
+          - name: name
+            description: "NFT collection name"
+          - name: symbol
+            description: "NFT collection symbol"
+          - name: standard
+            description: "NFT collection standard"
+
 
   - name: tokens_arbitrum
     tables:
@@ -105,6 +119,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
   - name: tokens_avalanche_c
     tables:
@@ -116,6 +131,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
 
   - name: tokens_base
@@ -128,7 +144,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
-
+      - name: nft
 
   - name: tokens_bnb
     tables:
@@ -140,7 +156,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
-
+      - name: nft
 
   - name: tokens_celo
     tables:
@@ -152,7 +168,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
-
+      - name: nft
 
   - name: tokens_ethereum
     tables:
@@ -164,6 +180,8 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
+      - name: stablecoins
 
       - name: rebase
         columns:
@@ -183,6 +201,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
   - name: tokens_goerli
     tables:
@@ -194,6 +213,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
   - name: tokens_gnosis
     tables:
@@ -205,6 +225,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
 
   - name: tokens_optimism
@@ -267,6 +288,8 @@ sources:
             data_type: varbinary
           - name: latest_transfer
             data_type: timestamp(3) with time zone
+      - name: nft
+      - name: nft_bridged_mapping
 
 
   - name: tokens_polygon
@@ -279,6 +302,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
+      - name: nft
 
 
   - name: tokens_zksync
@@ -291,7 +315,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
-
+      - name: nft
 
   - name: tokens_zora
     tables:
@@ -303,7 +327,7 @@ sources:
             data_type: varchar
           - name: decimals
             data_type: integer
-
+      - name: nft
 
   - name: tokens_yearn
     tables:
@@ -323,5 +347,3 @@ sources:
             data_type: varchar
           - name: vault_token
             data_type: varbinary
-
-

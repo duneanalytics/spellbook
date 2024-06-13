@@ -1,17 +1,18 @@
 {{ config(
         schema = 'bebop_arbitrum',
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                        "project",
-                        "bebop",
-                        \'["alekss"]\') }}'
-        )
-}}
+        materialized = 'view',
+        post_hook='{{ expose_spells(blockchains = \'["arbitrum"]\',
+                                    spell_type = "project",
+                                    spell_name = "bebop",
+                                    contributors = \'["alekss"]\') }}'
+)}}
 
 
 {% set bebop_models = [
     ref('bebop_rfq_arbitrum_trades'),
-    ref('bebop_jam_arbitrum_trades')
+    ref('bebop_jam_arbitrum_trades'),
+    ref('bebop_blend_arbitrum_trades')
 ] %}
 
 SELECT *

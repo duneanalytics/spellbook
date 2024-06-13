@@ -14,6 +14,8 @@
 ,ref('sudoswap_v2_arbitrum_base_trades')
 ,ref('element_arbitrum_base_trades')
 ,ref('zonic_arbitrum_base_trades')
+,ref('opensea_v3_arbitrum_base_trades')
+,ref('opensea_v4_arbitrum_base_trades')
 ] %}
 
 

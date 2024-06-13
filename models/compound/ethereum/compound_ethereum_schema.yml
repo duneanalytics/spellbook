@@ -149,6 +149,9 @@ models:
       - &depositor
         name: depositor
         description: "Depositor wallet address"
+      - &on_behalf_of
+        name: on_behalf_of
+        description: "Wallet address tx was executed on behalf of"
       - &withdrawn_to
         name: withdrawn_to
         description: "The wallet address where the tokens are withdrawn to"
@@ -161,6 +164,9 @@ models:
       - &usd_amount
         name: usd_amount
         description: "Token amount in USD"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address"
       - &tx_hash
         name: tx_hash
         description: "Transaction hash of the event"
@@ -196,6 +202,7 @@ models:
       - &borrower
         name: borrower
         description: "Borrower wallet address"
+      - *on_behalf_of
       - &repayer
         name: repayer
         description: "Repayer wallet address"
@@ -204,5 +211,6 @@ models:
       - *usd_amount
       - *block_time
       - *block_number
+      - *project_contract_address
       - *tx_hash
       - *evt_index

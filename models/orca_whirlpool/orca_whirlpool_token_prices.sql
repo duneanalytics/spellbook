@@ -1,11 +1,12 @@
 {{
-  config(   
+  config(
         schema = 'orca_whirlpool',
         alias = 'token_prices',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.minute')],
         unique_key = ['blockchain', 'contract_address', 'minute'],
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
         post_hook='{{ expose_spells(\'["solana"]\',
@@ -59,7 +60,7 @@ SELECT t1.token_mint as contract_address,
     t2.decimals,
     'solana' as blockchain,
     avg(t1.price) as price,
-    DATE_TRUNC('month', t1.minute) as block_month
+    CAST(DATE_TRUNC('month', t1.minute) as date) as block_month
 FROM all_trades t1
     JOIN
         {{ ref('tokens_solana_fungible') }}  t2 ON t1.token_mint = t2.token_mint_address
