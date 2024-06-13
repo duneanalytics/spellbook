@@ -101,16 +101,19 @@ meta as (
             , row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
         from {{ ref('oneinch_' + blockchain + '_project_calls') }}
         where
-            not flags['exception']
-            and flags['suitable']
+            {% if is_incremental() %}
+                {{ incremental_predicate('block_time') }}
+            {% else %}
+                block_time >= timestamp '{{date_from}}'
+            {% endif %}
             and (tx_success or tx_success is null)
             and call_success
     )
-    left join orders using(block_number, block_time, tx_hash, call_trace_address, project)
+    left join orders using(block_number, tx_hash, call_trace_address, project)
     join meta on true
     where
-        order_hash is not null -- all orders
-        or reduce(call_trace_addresses, true, (r, x) -> if(r and x <> call_trace_address and slice(call_trace_address, 1, cardinality(x)) = x, false, r), r -> r) -- only not nested calls of the project in tx
+        reduce(call_trace_addresses, true, (r, x) -> if(r and x <> call_trace_address and slice(call_trace_address, 1, cardinality(x)) = x, false, r), r -> r) -- only not nested calls of the project in tx
+        or order_hash is not null -- all orders
 )
 
 , tokens as (

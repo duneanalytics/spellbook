@@ -48,10 +48,7 @@ static as (
 )
 
 , calls as (
-    select
-        *
-        , reduce(suitables, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) as suitable -- "suitable" methods
-        , reduce(exceptions, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) as exception -- "exception" methods
+    select *
     from (
         select
             block_number
@@ -79,6 +76,7 @@ static as (
     join (
         select
             block_number
+            , block_time
             , hash as tx_hash
             , "from" as tx_from
             , "to" as tx_to
@@ -91,7 +89,10 @@ static as (
                 block_time >= timestamp '{{date_from}}'
             {% endif %}
             
-    ) using(block_number, tx_hash)
+    ) using(block_number, block_time, tx_hash)
+    where
+        not reduce(exceptions, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) -- without "exception" methods
+        and reduce(suitables, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) -- "suitable" methods only
 )
 
 -- output --
@@ -108,11 +109,7 @@ select
     , call_trace_address
     , project
     , tag
-    , map_concat(flags, map_from_entries(array[
-        ('direct', direct)
-        , ('suitable', suitable)
-        , ('exception', exception)
-    ])) as flags
+    , map_concat(flags, map_from_entries(array[('direct', direct)])) as flags
     , selector as call_selector
     , method
     , signature
