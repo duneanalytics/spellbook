@@ -8,7 +8,7 @@ WITH pool_labels AS (
             address AS pool_id,
             name AS pool_symbol,
             pool_type
-        FROM {{ ref('labels_balancer_v2_pools') }}
+        FROM {{ source('labels', 'balancer_v2_pools') }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
