@@ -82,6 +82,7 @@ static as (
             , hash as tx_hash
             , "from" as tx_from
             , "to" as tx_to
+            , gas_used as tx_gas_used
         from {{ source(blockchain, 'transactions') }}
         where
             {% if is_incremental() %}
@@ -106,6 +107,7 @@ select
     , tx_from
     , tx_to
     , tx_success
+    , tx_gas_used
     , call_trace_address
     , project
     , tag
