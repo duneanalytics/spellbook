@@ -159,7 +159,7 @@ meta as (
         , array_agg(
             cast(row(project, call_trace_address, coalesce(user_amount_usd, amount_usd)) as row(project varchar, call_trace_address array(bigint), amount_usd double))
         ) over(partition by block_number, tx_hash) as amounts
-        , coalesce(if(direct, user_amount_usd, caller_amount_usd), amount_usd) as result_amount_usd
+        , coalesce(if(flags['direct'], user_amount_usd, caller_amount_usd), amount_usd) as result_amount_usd
     from (
         select
             blockchain
@@ -177,7 +177,6 @@ meta as (
             , any_value(call_to) as call_to
             , any_value(call_selector) as call_selector
             , any_value(method) as method
-            , any_value(direct) as direct
             , any_value(order_hash) as order_hash
             , any_value(maker) as maker
             , any_value(maker_asset) as maker_asset
@@ -240,7 +239,7 @@ select
     , call_trace_address
     , project
     , tag
-    , map_concat(flags, map_from_entries(array[('direct', direct)])) as flags
+    , flags
     , call_selector
     , method
     , call_from
