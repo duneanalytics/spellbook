@@ -11,7 +11,7 @@ with
         *
     from (
         select tx_hash, evt_index, project, version
-        from {{ ref('dex_aggregator_trades') }}
+        from {{ source('dex_aggregator', 'trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select contract_address from {{ source('tokens_ethereum', 'stablecoins') }})
         and token_sold_address not in (select contract_address from {{ source('tokens_ethereum', 'stablecoins') }})

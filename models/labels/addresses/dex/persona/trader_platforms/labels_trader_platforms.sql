@@ -20,7 +20,7 @@ with trader_platforms as (
                taker,
                project,
                block_time
-        from {{ ref('dex_aggregator_trades') }}
+        from {{ source('dex_aggregator', 'trades') }}
         UNION ALL
         select blockchain,
                taker,
