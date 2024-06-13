@@ -44,9 +44,6 @@ sources:
   - name: bridge_optimism
     tables:
       - name: standard_bridge_flows
-  - name: uniswap_v3_optimism
-    tables:
-      - name: ovm1_pool_mapping
   - name: op_optimism
     tables:
       - name: airdrop_1_claims
