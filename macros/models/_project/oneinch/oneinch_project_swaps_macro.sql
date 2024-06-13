@@ -109,7 +109,7 @@ meta as (
     left join orders using(block_number, block_time, tx_hash, call_trace_address, project)
     join meta on true
     where
-        order_hash is not null
+        order_hash is not null -- all orders
         or reduce(call_trace_addresses, true, (r, x) -> if(r and x <> call_trace_address and slice(call_trace_address, 1, cardinality(x)) = x, false, r), r -> r) -- only not nested calls of the project in tx
 )
 
