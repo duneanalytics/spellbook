@@ -7,7 +7,7 @@
         incremental_strategy = 'merge',
         partition_by = ['block_month'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address']
+        unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address', 'order_hash']
     )
 }}
 
@@ -55,7 +55,7 @@ meta as (
             , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset)
         ] as assets
         , date_trunc('minute', block_time) as minute
-        , row_number() over(partition by blockchain, block_number, tx_hash order by call_trace_address) as counter
+        , row_number() over(partition by blockchain, block_number, tx_hash order by call_trace_address, order_hash) as counter
     from (
         {% for blockchain in oneinch_exposed_blockchains_list() %}
             select
@@ -108,6 +108,7 @@ meta as (
         , block_number
         , tx_hash
         , call_trace_address
+        , coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int)))) as order_hash
         , any_value(block_time) as block_time
         , any_value(project) as project
         , any_value(call_selector) as call_selector
@@ -123,7 +124,6 @@ meta as (
         , any_value(taking_amount) as taking_amount
         , any_value(making_amount * price / pow(10, decimals)) filter(where contract_address = assets[1]) as making_amount_usd
         , any_value(taking_amount * price / pow(10, decimals)) filter(where contract_address = assets[2]) as taking_amount_usd
-        , any_value(coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int))))) as order_hash
         , any_value(order_start) as order_start
         , any_value(order_end) as order_end
         , any_value(order_deadline) as order_deadline
@@ -131,7 +131,7 @@ meta as (
         , any_value(tag) as tag
     from (select * from orders, unnest(assets) as a(contract_address))
     left join prices using(blockchain, contract_address, minute)
-    group by 1, 2, 3, 4
+    group by 1, 2, 3, 4, 5
 )
 
 -- output --

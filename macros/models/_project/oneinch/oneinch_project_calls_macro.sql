@@ -1,5 +1,5 @@
 {% macro 
-    oneinch_project_swaps_macro(
+    oneinch_project_calls_macro(
         blockchain
         , date_from = '2024-06-01'
     )
@@ -52,7 +52,6 @@ static as (
         *
         , reduce(suitable, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) as suitable -- "suitable" methods
         , reduce(exceptions, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) as exception -- "exception" methods
-        , array_agg(call_trace_address) over(partition by block_number, tx_hash, project) as call_trace_addresses
     from (
         select
             block_number

@@ -13,7 +13,8 @@ with
 
 meta as (
     select 
-        wrapped_native_token_address
+        chain_id
+        , wrapped_native_token_address
         , native_token_symbol as native_symbol
     from ({{ oneinch_blockchain_macro(blockchain) }})
 )
@@ -92,12 +93,17 @@ meta as (
         , taking_amount
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
         , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as _taker_asset
+        , coalesce(order_hash, to_big_endian_64(counter)) as call_trade_id
+        -- , concat(to_big_endian_32(cast(chain_id as int)), coalesce(order_hash, concat(tx_hash, to_big_endian_64(counter)))) as unique_key
     from (
-        select *
+        select
+            *
+            , array_agg(call_trace_address) over(partition by block_number, tx_hash, project) as call_trace_addresses
+            , row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
         from {{ ref('oneinch_' + blockchain + '_project_calls') }}
         where
-            not exception
-            and suitable
+            not flags['exception']
+            and flags['suitable']
             and (tx_success or tx_success is null)
             and success
     )
@@ -158,6 +164,7 @@ meta as (
             , calls.block_number
             , calls.tx_hash
             , calls.call_trace_address
+            , call_trade_id
             , any_value(block_time) as block_time
             , any_value(tx_from) as tx_from
             , any_value(tx_to) as tx_to
@@ -215,7 +222,7 @@ meta as (
         left join tokens using(contract_address)
         left join creations as creations_from on creations_from.address = transfers.transfer_from
         left join creations as creations_to on creations_to.address = transfers.transfer_to
-        group by 1, 2, 3, 4
+        group by 1, 2, 3, 4, 5
     )
 )
 
@@ -251,6 +258,7 @@ select
     , amounts
     , if(cardinality(users) = 0 or order_hash is null, array_union(users, array[tx_from]), users) as users
     , date(date_trunc('month', block_time)) as block_month
+    , call_trade_id
 from swaps
 
 {% endmacro %}
