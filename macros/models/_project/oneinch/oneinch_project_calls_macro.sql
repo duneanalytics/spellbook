@@ -92,9 +92,6 @@ static as (
             {% endif %}
             
     ) using(block_number, tx_hash)
-    where
-        reduce(suitable, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r)
-        and not reduce(exceptions, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r)
 )
 
 -- output --
