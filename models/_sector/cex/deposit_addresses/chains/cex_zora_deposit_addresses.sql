@@ -16,5 +16,5 @@
         , token_transfers = ref('tokens_' + blockchain + '_transfers')
         , cex_addresses = ref('cex_' + blockchain + '_addresses')
         , cex_flows = ref('cex_' + blockchain + '_flows')
-        , first_funded_by = source('addresses_events_' + blockchain + '_first_funded_by')
+        , first_funded_by = source('addresses_events_' + blockchain, 'first_funded_by')
 )}}
