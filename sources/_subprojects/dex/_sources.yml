@@ -40,6 +40,12 @@ sources:
   - name: balancer_v2_zkevm
     tables:
       - name: trades
+  - name: balancer
+    tables:
+      - name: trades
+  - name: labels
+    tables:
+      - name: balancer_v2_pools
   - name: uniswap_v3_optimism
     tables:
       - name: ovm1_pool_mapping
