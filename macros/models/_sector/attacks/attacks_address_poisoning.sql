@@ -51,10 +51,10 @@ WITH transfer_recipients AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }} - interval '14' day
         {% endif %}
-        AND block_number > normal.block_number
+        AND attack.block_number > normal.block_number
     INNER JOIN {{token_transfers}} attack_probe ON attack_probe.to = ma.address_attack
         AND attack_probe.tx_from<>attack_probe."from"
-        AND attack_probe.block_number BETWEEN normal.block_number AND block_number
+        AND attack_probe.block_number BETWEEN normal.block_number AND attack.block_number
     GROUP BY 2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17
     )
 
