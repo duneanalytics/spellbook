@@ -24,7 +24,7 @@ with
         and taker in (select address from daos)
         UNION ALL
         select tx_hash, evt_index, project, version
-        from {{ ref('dex_trades') }}
+        from {{ source('dex', 'trades') }}
         where blockchain = 'ethereum'
         and taker in (select address from daos)
     )
