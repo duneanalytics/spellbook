@@ -13,5 +13,5 @@
 
 {{addresses_events_first_funded_by(
     blockchain = blockchain
-    , token_transfers = ref('tokens_' + blockchain + '_transfers')
+    , token_transfers = source('tokens_' + blockchain + '_transfers')
 )}}
