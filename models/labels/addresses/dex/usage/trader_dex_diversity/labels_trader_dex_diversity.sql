@@ -19,7 +19,7 @@ with
           from {{ source('dex_aggregator', 'trades') }}
           union all
           select blockchain, taker, project
-          from {{ ref('dex_trades') }})
+          from {{ source('dex', 'trades') }})
     group by taker, blockchain
  )
 

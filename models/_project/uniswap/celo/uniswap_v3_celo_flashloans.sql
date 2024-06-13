@@ -1,13 +1,14 @@
 {{ config(
-       alias = 'flashloans'
-      , materialized = 'incremental'
-      , file_format = 'delta'
-      , incremental_strategy = 'merge'
-      , unique_key = ['tx_hash', 'evt_index']
-      , post_hook = '{{ expose_spells(\'["celo"]\',
-                                  "project",
-                                  "uniswap_v3",
-                                  \'["hildobby", "tomfutago"]\') }}'
+        schema = 'uniswap_v3_celo'
+        , alias = 'flashloans'
+        , materialized = 'incremental'
+        , file_format = 'delta'
+        , incremental_strategy = 'merge'
+        , unique_key = ['tx_hash', 'evt_index']
+        , post_hook = '{{ expose_spells(\'["celo"]\',
+                                    "project",
+                                    "uniswap_v3",
+                                    \'["hildobby", "tomfutago"]\') }}'
   )
 }}
 

@@ -46,6 +46,14 @@ sources:
   - name: labels
     tables:
       - name: balancer_v2_pools
+      - name: balancer_v2_pools_arbitrum
+      - name: balancer_v2_pools_avalanche_c
+      - name: balancer_v2_pools_base
+      - name: balancer_v2_pools_ethereum
+      - name: balancer_v2_pools_gnosis
+      - name: balancer_v2_pools_optimism
+      - name: balancer_v2_pools_polygon
+      - name: balancer_v2_pools_zkevm
   - name: uniswap_v3_optimism
     tables:
       - name: ovm1_pool_mapping
