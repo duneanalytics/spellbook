@@ -7,7 +7,8 @@
     post_hook='{{ expose_spells(blockchains = \'["zksync"]\',
                                 spell_type = "project",
                                 spell_name = "lido_liquidity",
-                                contributors = \'["pipistrella"]\') }}'
+                                contributors = \'["pipistrella"]\') }}',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.time')]
     )
 }}
 
