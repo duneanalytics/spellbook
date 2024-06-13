@@ -1,12 +1,13 @@
 {{  config(
         alias = 'batches',
-        
+
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "cow_protocol",
@@ -36,12 +37,12 @@ batch_counts as (
         left outer join {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
             {% if is_incremental() %}
-            AND i.evt_block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
         join cow_protocol_ethereum.solvers
             on solver = address
     {% if is_incremental() %}
-    WHERE s.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
     group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, solver, name
 ),
@@ -56,10 +57,13 @@ batch_values as (
     from {{ ref('cow_protocol_ethereum_trades') }}
         left outer join {{ source('prices', 'usd') }} as p
             on p.contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+            {% if is_incremental() %}
+            and {{ incremental_predicate('minute') }}
+            {% endif %}
             and p.minute = date_trunc('minute', block_time)
             and blockchain = 'ethereum'
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
     group by tx_hash, price
 ),
@@ -87,7 +91,7 @@ combined_batch_info as (
         inner join {{ source('ethereum', 'transactions') }} tx
             on evt_tx_hash = hash
             {% if is_incremental() %}
-            AND block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{ incremental_predicate('block_time') }}
             {% endif %}
     where num_trades > 0 --! Exclude Withdraw Batches
 )

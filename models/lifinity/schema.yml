@@ -35,7 +35,7 @@ models:
         description: "UTC event block time of each DEX trade"
       - &trade_source
         name: trade_source
-        description: "Was the trade a direct call to the whirlpool or did it go through another program like Jupiter (Dex Aggregator)"
+        description: "Was the trade a direct call to the dexor did it go through another program like Jupiter (Dex Aggregator)"
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the trade"
@@ -66,10 +66,10 @@ models:
               severity: warn
       - &fee_tier
         name: fee_tier
-        description: "Whirlpool fee tier (fee %)"
+        description: "dexfee tier (fee %)"
       - &fee_usd
         name: fee_usd
-        description: "Whirlpool fee usd paid on swap"
+        description: "dexfee usd paid on swap"
       - &token_bought_mint_address
         name: token_bought_address
         description: "token mint address of the token bought"
@@ -78,13 +78,13 @@ models:
         description: "token mint address of the token sold"
       - &token_bought_vault
         name: token_bought_vault
-        description: "token associated address for the whirlpool, of the token bought"
+        description: "token associated address for thedex, of the token bought"
       - &token_sold_vault
         name: token_sold_vault
-        description: "token associated address for the whirlpool, of the token sold"
+        description: "token associated address for thedex, of the token sold"
       - &project_program_id
         name: project_program_id
-        description: "Project program id that the trade was executed on - like the whirlpool id"
+        description: "pool program id of the project"
       - &trader_id
         name: trader_id
         description: "id (address) of trader who purchased a token"

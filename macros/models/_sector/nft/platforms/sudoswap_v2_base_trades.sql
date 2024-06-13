@@ -7,7 +7,7 @@ WITH
     pools as (
         SELECT
         *
-        FROM {{ ref('sudoswap_v2_' ~ blockchain ~ '_pool_creations')}}
+        FROM {{ ref('sudoswap_v2_' ~ blockchain ~ '__pools')}}
     )
 
     , sell_nft_base as (
@@ -21,7 +21,7 @@ WITH
             ,case when p.nft_type = 'ERC1155' then array[p.nft_id] else sp_start.nftIds end as token_ids
             ,sp.output_protocolFee/(sp.protocolFeeMultiplier/1e18) as amount_raw --for some reason sp.spotPrice is sometimes inaccurate for GDA curves? https://explorer.phalcon.xyz/tx/eth/0x20f4cf9aecae7d26ee170fbbf8017fb290bc6ce0caeae30ad2ae085d214d04d3
             ,sp.feeMultiplier
-            ,sp.protocolFeeMultiplier 
+            ,sp.protocolFeeMultiplier
             ,sp.output_tradeFee
             ,sp.output_protocolFee
             ,COALESCE(case when cardinality(roy.output_1) = 0 then null else roy.output_1[1] end,cast(0 as uint256)) as royalty_fee_amount_raw
@@ -184,7 +184,7 @@ blockchain
 , trade_type
 , trade_category
 , currency_contract
-, case when trade_category = 'buy' 
+, case when trade_category = 'buy'
     then price_raw + platform_fee_amount_raw + royalty_fee_amount_raw + pool_fee_amount_raw --when purchasing, the user pays for the spot price + fees to the pool
     else price_raw - pool_fee_amount_raw --when selling, the pool pays out just the spot price since fees are deducted from amount out to user
     end as price_raw --trade pool fees are added to spot on purchase and subtracted on sale

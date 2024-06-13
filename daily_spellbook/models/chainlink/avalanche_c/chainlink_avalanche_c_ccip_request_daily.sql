@@ -9,7 +9,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
 ethereum_agg AS (
@@ -23,7 +22,7 @@ ethereum_agg AS (
                 WHERE
                     eth.date_start = date_series.date_start
                 {% if is_incremental() %}
-                    AND eth.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+                    AND {{ incremental_predicate('eth.block_time') }}
                 {% endif %}
             ) AS fulfilled_requests,
             (
@@ -34,7 +33,7 @@ ethereum_agg AS (
                 WHERE
                     rev.date_start = date_series.date_start
                 {% if is_incremental() %}
-                    AND rev.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+                    AND {{ incremental_predicate('rev.block_time') }}
                 {% endif %}
             ) AS reverted_requests
         FROM
@@ -52,7 +51,7 @@ ethereum_agg AS (
             ) AS seq
             CROSS JOIN UNNEST (seq.date_sequence) AS t (date_start)
             {% if is_incremental() %}
-                    WHERE date_start >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+                    WHERE {{ incremental_predicate('date_start') }}
             {% endif %}
             ) date_series
     ),
@@ -67,7 +66,7 @@ ethereum_agg AS (
         FROM
             ethereum_agg
     )
-SELECT 
+SELECT
   ccip_request_daily.blockchain,
   date_start,
   date_month,

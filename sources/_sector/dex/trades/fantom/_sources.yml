@@ -36,3 +36,8 @@ sources:
     tables:
       - name: StableSwap_evt_TokenExchange
       - name: StableSwap_evt_TokenExchangeUnderlying
+  - name: solidly_v3_fantom
+    tables:
+      - name: SolidlyV3Factory_evt_PoolCreated
+      - name: SolidlyV3Pool_evt_Swap
+

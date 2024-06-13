@@ -1,11 +1,12 @@
 {{
   config(
-    
+
     alias='ocr_reward_evt_transfer_daily',
     partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.date_start')],
     unique_key=['date_start', 'admin_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -14,7 +15,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 SELECT
   'ethereum' as blockchain,
@@ -27,8 +27,8 @@ FROM
   {{ref('chainlink_ethereum_ocr_reward_evt_transfer')}} ocr_reward_evt_transfer
   LEFT JOIN {{ ref('chainlink_ethereum_ocr_operator_admin_meta') }} ocr_operator_admin_meta ON ocr_operator_admin_meta.admin_address = ocr_reward_evt_transfer.admin_address
 {% if is_incremental() %}
-  WHERE evt_block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-{% endif %}      
+  WHERE {{ incremental_predicate('evt_block_time') }}
+{% endif %}
 GROUP BY
   2, 4
 ORDER BY

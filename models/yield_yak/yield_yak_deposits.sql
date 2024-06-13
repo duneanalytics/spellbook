@@ -1,8 +1,10 @@
-{{ config(
+{{
+    config(
 	    schema = 'yield_yak',
         alias = 'deposits',
+        materialized = 'view',
         post_hook='{{ expose_spells(
-                      blockchains = \'["arbitrum", "avalanche_c"]\',
+                      blockchains = \'["arbitrum", "avalanche_c", "mantle"]\',
                       spell_type = "project",
                       spell_name = "yield_yak",
                       contributors = \'["angus_1"]\') }}'
@@ -10,8 +12,9 @@
 }}
 
 {%- set yield_yak_models = [
-ref('yield_yak_avalanche_c_deposits')
-,ref('yield_yak_arbitrum_deposits')
+    ref('yield_yak_avalanche_c_deposits'),
+    ref('yield_yak_arbitrum_deposits'),
+    ref('yield_yak_mantle_deposits')
 ] -%}
 
 

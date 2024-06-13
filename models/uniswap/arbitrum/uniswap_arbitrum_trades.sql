@@ -1,5 +1,6 @@
 {{ config(
         alias = 'trades'
+        , tags = ['prod_exclude']
         )
 }}
 
