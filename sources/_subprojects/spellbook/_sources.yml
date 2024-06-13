@@ -62,3 +62,30 @@ sources:
     tables:
       - name: fee_vaults
       - name: grants_funding
+  - name: balancer_v2_optimism
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_arbitrum
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_avalanche_c
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_base
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_ethereum
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_gnosis
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_polygon
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_zkevm
+    tables:
+      - name: bpt_prices
+  - name: balancer
+    tables:
+      - name: bpt_prices
