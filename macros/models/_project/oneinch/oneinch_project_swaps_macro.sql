@@ -72,7 +72,6 @@ meta as (
     select
         blockchain
         , block_number
-        , block_time
         , tx_hash
         , tx_from
         , tx_to
