@@ -88,6 +88,7 @@ cover_premiums as (
     case c.payment_asset
       when 0 then 'ETH'
       when 1 then 'DAI'
+      when 6 then 'USDC'
       when 255 then 'NXM'
       else 'NA'
     end as premium_asset,
