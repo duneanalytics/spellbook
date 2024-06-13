@@ -120,6 +120,6 @@ select
     , call_to
     , call_success
     , date(date_trunc('month', block_time)) as block_month
-from swaps
+from calls
 
 {% endmacro %}
