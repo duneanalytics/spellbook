@@ -1,4 +1,4 @@
-{% macro attacks_address_poisoning(blockchain, token_transfers, first_funded_by) %}
+{% macro  (blockchain, token_transfers, first_funded_by) %}
 
 WITH transfer_recipients AS (
     SELECT to AS address
@@ -8,7 +8,7 @@ WITH transfer_recipients AS (
     FROM {{token_transfers}}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
-    {% endif %}
+    {% endif %} 
     GROUP BY 1, 2, 3
     )
 
@@ -29,7 +29,7 @@ WITH transfer_recipients AS (
     , 'Address Poisoning' AS attack_type
     , 'Integrity' AS attack_category
     , ma.address_attack AS attacker
-    , "from" AS victim
+    , attack."from" AS victim
     , MIN_BY(ma.address_normal, normal.block_number) AS intended_recipient
     , attack.amount_usd
     , attack.amount
@@ -44,12 +44,12 @@ WITH transfer_recipients AS (
     INNER JOIN {{token_transfers}} attack ON attack.to = ma.address_attack
         AND attack.tx_from=attack."from"
         {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
+        AND {{ incremental_predicate('attack.block_time') }}
         {% endif %}
     INNER JOIN {{token_transfers}} normal ON normal.to = ma.address_normal
         AND normal.tx_from=normal."from"
         {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }} - interval '14' day
+        AND {{ incremental_predicate('normal.block_time') }} - interval '14' day
         {% endif %}
         AND attack.block_number > normal.block_number
     INNER JOIN {{token_transfers}} attack_probe ON attack_probe.to = ma.address_attack
