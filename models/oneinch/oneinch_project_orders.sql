@@ -54,7 +54,6 @@ meta as (
             if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset)
             , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset)
         ] as assets
-        , native_symbol
         , date_trunc('minute', block_time) as minute
         , row_number() over(partition by blockchain, block_number, tx_hash order by call_trace_address) as counter
     from (
