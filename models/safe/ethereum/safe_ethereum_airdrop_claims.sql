@@ -22,7 +22,7 @@ WITH more_prices AS (
     , MAX(hour) AS max_hour
     , MIN_BY(median_price, hour) AS min_price
     , MAX_BY(median_price, hour) AS max_price
-    FROM {{ ref('dex_prices') }}
+    FROM {{ source('dex', 'prices') }}
     WHERE blockchain = 'ethereum'
     AND contract_address= {{safe_token_address}}
     )
@@ -46,7 +46,7 @@ SELECT 'ethereum' AS blockchain
 , 'SAFE' AS token_symbol
 , t.evt_index
 FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
-LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ source('dex', 'prices') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{safe_token_address}}
     AND pu.hour = date_trunc('hour', t.evt_block_time)
     {% if is_incremental() %}
