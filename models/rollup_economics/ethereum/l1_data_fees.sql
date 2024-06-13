@@ -267,7 +267,7 @@ with tx_batch_appends as (
       OR t.to = 0xa0425d71cB1D6fb80E65a5361a04096E0672De03
       -- L1 transactions settle here post-EIP4844
       OR t.to = 0xa8CB082A5a689E0d594d7da1E2d72A3D63aDc1bD
-      -- L1 transactions settle here post-V24 upgrade
+      -- L1 transactions settle here post-V24 upgrade (as of block 20033194)
       OR t.to = 0x5D8ba173Dc6C3c90C8f7C04C9288BeF5FDbAd06E
     )
     AND (
@@ -281,7 +281,7 @@ with tx_batch_appends as (
       OR
       bytearray_substring(t.data, 1, 4) = 0xc3d93e7c -- Execute Batches
       OR
-      -- L1 transactions use these method ID's post-
+      -- L1 transactions use these method ID's post-V24 upgrade (as of block 20033194)
       bytearray_substring(t.data, 1, 4) = 0x6edd4f12 -- commitBatchesSharedBridge
       OR
       bytearray_substring(t.data, 1, 4) = 0x6f497ac6 -- executeBatchesSharedBridge
