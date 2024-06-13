@@ -1,6 +1,5 @@
 {{
     config(
-        tags = ['prod_exclude'],
         schema = 'trino_upgrade_tevaera_zksync',
         alias = 'base_trades',
         materialized = 'incremental',
