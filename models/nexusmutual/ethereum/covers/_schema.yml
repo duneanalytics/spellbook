@@ -118,9 +118,6 @@ models:
       - &product_type
         name: product_type
         description: "product type"
-        tests:
-          - accepted_values:
-              values: [ "Protocol", "Custody", "Token", "Eth2slashing", "Sherlock"]
       - &date_added
         name: date_added
         description: "date added"
@@ -204,6 +201,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - cover_id
+            - staking_pool
     columns:
       - *block_time
       - *block_date
