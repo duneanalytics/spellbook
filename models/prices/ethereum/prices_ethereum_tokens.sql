@@ -1791,7 +1791,8 @@ FROM
     ('gods-gods-unchained', 'ethereum', 'GODS', 0xccc8cb5229b0ac8069c51fd58367fd1e622afd97, 18),
     ('cah-moon-tropica', 'ethereum', 'CAH', 0x8e0e57dcb1ce8d9091df38ec1bfc3b224529754a, 18),
     ('bigtime-big-time', 'ethereum', 'BIGTIME', 0x64Bc2cA1Be492bE7185FAA2c8835d9b824c8a194, 18),
-    ('portal2-portal-coin', 'ethereum', 'PORTAL', 0x1bbe973bef3a977fc51cbed703e8ffdefe001fed, 18)
+    ('portal2-portal-coin', 'ethereum', 'PORTAL', 0x1bbe973bef3a977fc51cbed703e8ffdefe001fed, 18),
+    ('dough-l3t-h1m-c00k', 'ethereum', 'DOUGH', 0xFc116eA24F002F600e363bdce4b91715fe5e0392, 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
