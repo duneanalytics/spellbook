@@ -12,8 +12,8 @@
 -- single category labels (no subsets), needs label_type and model_name added still.
 {% set single_category_labels_models = [
     ref('labels_aztec_v2_contracts_ethereum')
-    , source('labels', 'balancer_v1_pools')
-    , source('labels', 'balancer_v2_pools')
+    , source('labels', 'labels_balancer_v1_pools')
+    , source('labels', 'labels_balancer_v2_pools')
     , ref('labels_balancer_v2_gauges')
     , ref('labels_cex')
     , ref('labels_contracts')

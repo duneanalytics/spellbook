@@ -46,8 +46,8 @@ sources:
   - name: labels
     tables:
       - name: balancer_v1_pools_ethereum
-      - name: balancer_v1_pools
-      - name: balancer_v2_pools
+      - name: labels_balancer_v1_pools
+      - name: labels_balancer_v2_pools
       - name: balancer_v2_pools_arbitrum
       - name: balancer_v2_pools_avalanche_c
       - name: balancer_v2_pools_base
