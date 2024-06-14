@@ -386,7 +386,7 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: elk_finance
-      contributors: 
+      contributors: blanchemaria6
     config:
       tags: [ 'avalanche_c', 'dex', 'trades', 'elk_finance' ]
     description: "elk_finance avalanche_c base trades"
