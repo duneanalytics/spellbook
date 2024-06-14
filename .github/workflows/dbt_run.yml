@@ -45,9 +45,7 @@ jobs:
         run: "dbt --warn-error compile --project-dir ${PROJECT_DIR}"
 
       - name: check schemas
-        run: |
-          test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select  state:modified,config.schema:no_schema --output path --state . --project-dir ${PROJECT_DIR})
-          [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
+        run: "./scripts/check_schema.sh"
 
       - name: dbt seed
         run: "dbt seed $PROFILE --select @state:modified --exclude tag:prod_exclude tag:remove --state . --project-dir ${PROJECT_DIR}"
