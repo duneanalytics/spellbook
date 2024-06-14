@@ -9,7 +9,7 @@ sources:
   - name: labels
     tables:
       - name: cex
-      - name: bridges
+      - name: bridge
 
   - name: dex
     tables:
