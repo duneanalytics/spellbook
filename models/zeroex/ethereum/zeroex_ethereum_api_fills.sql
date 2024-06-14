@@ -102,7 +102,7 @@ v3_fills_no_bridge AS (
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipientAddress)           AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL)                                            AS swap_flag,
             (fills.feeRecipientAddress = 0x86003b044f70dac0abc80ac8957305b6370893ed) AS matcha_limit_order_flag,
-            is_gaslesss
+            is_gasless
     FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills
     INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash and fills.evt_block_time = zeroex_tx.block_time 
     WHERE  (bytearray_substring(makerAssetData, 1, 4) <> 0xdc1600f3)
