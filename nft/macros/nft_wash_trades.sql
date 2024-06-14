@@ -87,7 +87,7 @@ WITH filter_1 AS (
     FROM {{ ref('nft_trades') }} nftt
     INNER JOIN {{ first_funded_by }} filter_funding_buyer
         ON filter_funding_buyer.address=nftt.buyer
-        AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ source('labels','bridges') }})
+        AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ source('labels','bridge') }})
         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ source('labels','cex') }})
         AND filter_funding_buyer.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ source('tornado_cash','withdrawals') }})
         {% if is_incremental() %}
@@ -95,7 +95,7 @@ WITH filter_1 AS (
         {% endif %}
     INNER JOIN {{ first_funded_by }} filter_funding_seller
         ON filter_funding_seller.address=nftt.seller
-        AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ source('labels','bridges') }})
+        AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ source('labels','bridge') }})
         AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT address FROM {{ source('labels','cex') }})
         AND filter_funding_seller.first_funded_by NOT IN (SELECT DISTINCT contract_address FROM {{ source('tornado_cash','withdrawals') }})
         AND nftt.blockchain='{{blockchain}}'
