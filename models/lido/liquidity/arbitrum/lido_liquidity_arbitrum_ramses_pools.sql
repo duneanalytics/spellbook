@@ -362,7 +362,7 @@ with
       LEFT JOIN trading_volume AS tv ON l.time = tv.time AND l.pool = tv.pool
       
   )
-SELECT blockchain||' '||project||' '||COALESCE(paired_token_symbol, 'unknown')||':'||CAST(main_token_symbol AS VARCHAR)|||' '||format('%,.3f',round(coalesce(fee,0),4)) AS pool_name, *
+SELECT blockchain||' '||project||' '||COALESCE(paired_token_symbol, 'unknown')||':'||main_token_symbol||' '||format('%,.3f',round(coalesce(fee,0),4)) AS pool_name, *
 FROM all_metrics
 
 
