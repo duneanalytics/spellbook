@@ -1,5 +1,5 @@
 {{ config(
-
+    schema='addresses_summary',
     alias = 'op_mainnet',
     materialized='incremental',
     file_format = 'delta',

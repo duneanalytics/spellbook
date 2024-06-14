@@ -6,7 +6,7 @@
         tags=['static']
         )
 }}
-SELECT 
+SELECT
     token_id
     , blockchain
     , symbol
@@ -75,7 +75,6 @@ FROM
     ('beni-beni', 'base', 'BENI', 0xde7a416ac821c77478340eebaa21b68297025ef3, 18),
     ('bunny-based-bunny', 'base', 'BUNNY', 0x75570e1189ffc1d63b3417cdf0889f87cd3e9bd1, 18),
     ('britt-britt', 'base', 'BRITT', 0x3b1228c3ede7e0898d57054cd9b8f812d24315c1, 9),
-    ('normie1-normie', 'base', 'NORMIE', 0x7f12d13b34f5f4f0a9449c16bcd42f0da47af200, 9),
     ('bshib2-based-shiba-inu', 'base', 'BSHIB', 0xfea9dcdc9e23a9068bf557ad5b186675c61d33ea, 18),
     ('mfercoin-mfercoin', 'base', 'mfercoin', 0xe3086852a4b125803c815a158249ae468a3254ca, 18),
     ('bsb-based-street-bets', 'base', 'BSB', 0x8a24d7260cd02d3dfd8eefb66bc17ad4b17d494c, 18),
@@ -84,7 +83,7 @@ FROM
     ('fungi-fungi', 'base', 'FUNGI', 0x7d9ce55d54ff3feddb611fc63ff63ec01f26d15f, 9),
     ('dog-the-doge-nft', 'base', 'DOG', 0xafb89a09d82fbde58f18ac6437b3fc81724e4df6, 18),
     ('higher-higher', 'base', 'HIGHER', 0x0578d8a44db98b23bf096a382e016e29a5ce0ffe, 18),
-    --('stg-stargate-finance', 'base', 'STG', 0xe3b53af74a4bf62ae5511055290838050bf764df, 18), -- token_id not found in API 
+    --('stg-stargate-finance', 'base', 'STG', 0xe3b53af74a4bf62ae5511055290838050bf764df, 18), -- token_id not found in API
     ('keycat-keyboard-cat-base', 'base', 'KEYCAT', 0x9a26f5433671751c3276a065f57e5a02d2817973, 18),
     ('briun-briun-armstrung', 'base', 'BRIUN', 0x8c81b4c816d66d36c4bf348bdec01dbcbc70e987, 18),
     ('benji-basenji', 'base', 'BENJI', 0xbc45647ea894030a4e9801ec03479739fa2485f0, 18),
@@ -96,7 +95,21 @@ FROM
     ('coinye-coinye-west', 'base', 'COINYE', 0x0028e1e60167b48a938b785aa5292917e7eaca8b, 18),
     ('trump-maga', 'base', 'TRUMP', 0x57f5fbd3de65dfc0bd3630f732969e5fb97e6d37, 9),
     ('weeth-wrapped-eeth', 'base', 'WEETH', 0x04c0599ae5a44757c0af6f9ec3b93da8976c150a, 18),
+    ('pola-pola', 'base', 'POLA', 0x76e7447bafa3f0acafc9692629b1d1bc937ca15d, 18),
+    ('jogeco-jogeco-dog', 'base', 'JOGECO', 0x92fb1b7d9730b2f1bd4e2e91368c1eb6fdd2a009, 9),
+    ('boshi-boshi', 'base', 'BOSHI', 0x33ad778e6c76237d843c52d7cafc972bb7cf8729, 18),
+    ('doomer-doomer-on-base-cto', 'base', 'DOOMER', 0xd3741ac9b3f280b0819191e4b30be4ecd990771e, 8),
+    ('rock-just-a-black-rock-on-base', 'base', 'ROCK', 0xece7b98bd817ee5b1f2f536daf34d0b6af8bb542, 18),
+    ('bloom-bloomer', 'base', 'BLOOM', 0xafb5d4d474693e68df500c9c682e6a2841f9661a, 18),
+    ('caw1-crow-with-knife', 'base', 'CAW', 0xdfbea88c4842d30c26669602888d746d30f9d60d, 18),
+    ('keren-keren', 'base', 'KEREN', 0x174e33ef2effa0a4893d97dda5db4044cc7993a3, 18),
+    ('mog-mog-coin', 'base', 'MOG', 0x2da56acb9ea78330f947bd57c54119debda7af71, 18),
+    ('carlo-carlo', 'base', 'CARLO', 0x38d513ec43dda20f323f26c7bef74c5cf80b6477, 18),
+    ('ski-ski-mask-dog', 'base', 'SKI', 0x768be13e1680b5ebe0024c42c896e3db59ec0149, 9),
+    ('kurbi-kurbi', 'base', 'KURBI', 0x653a143b8d15c565c6623d1f168cfbec1056d872, 9),
+    ('bord-base-lord', 'base', 'BORD', 0x160452f95612699d1a561a70eeeeede67c6812af, 18),
     ('rdnt-radiant-capital','base','RDNT',0xd722e55c1d9d9fa0021a5215cbb904b92b3dc5d4,18),
     ('well-moonwell', 'base', 'WELL', 0xff8adec2221f9f4d8dfbafa6b9a297d17603493d, 18),
-    ('mochi3-mochi', 'base', 'MOCHI', 0xf6e932ca12afa26665dc4dde7e27be02a7c02e50, 18)
+    ('mochi3-mochi', 'base', 'MOCHI', 0xf6e932ca12afa26665dc4dde7e27be02a7c02e50, 18),
+    ('bet-betbase', 'base', 'BET', 0x80F6BcedD3d4fa1035285affA30e38f464Db3895, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

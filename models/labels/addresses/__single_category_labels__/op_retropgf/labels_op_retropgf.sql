@@ -18,7 +18,7 @@ SELECT blockchain,
         'op_retropgf_recipients' as model_name,
        'identifier' as label_type
 
-FROM {{ ref('op_retropgf_optimism_recipients') }} 
+FROM {{ source('op_retropgf_optimism', 'recipients') }} 
 
 UNION ALL
 
@@ -33,4 +33,4 @@ SELECT blockchain,
         'op_retropgf_voters' as model_name,
        'identifier' as label_type
 
-FROM {{ ref('op_retropgf_optimism_voters') }} 
+FROM {{ source('op_retropgf_optimism', 'voters') }} 

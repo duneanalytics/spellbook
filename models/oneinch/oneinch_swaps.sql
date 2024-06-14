@@ -1,10 +1,11 @@
-{{  
+{{
     config(
         schema = 'oneinch',
         alias = 'swaps',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         partition_by = ['block_month'],
         unique_key = ['unique_key'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "fantom", "optimism", "base"]\',
@@ -20,7 +21,7 @@
 {% set true_native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
 
 -- base columns to not to duplicate in the union
-{% set 
+{% set
     calls_base_columns = [
         'blockchain',
         'block_number',
@@ -55,7 +56,7 @@
 with
 
 tokens as (
-    select 
+    select
         blockchain
         , contract_address
         , symbol as token_symbol
@@ -97,7 +98,7 @@ tokens as (
 
 , swaps as (
     -- AR & LOP calls
-    select 
+    select
         {{ calls_base_columns | join(', ') }}
         , if(protocol = 'AR', tx_from, maker) as user
         , receiver
@@ -141,7 +142,7 @@ tokens as (
 {% set decimals = 'coalesce(decimals, token_decimals)' %}
 
 , amounts as (
-    select 
+    select
         blockchain
         , block_number
         , tx_hash
@@ -176,7 +177,7 @@ tokens as (
 
         , count(distinct (contract_address, transfer_native)) as tokens -- count distinct tokens in transfers
         , count(*) as transfers -- count transfers
-    from swaps 
+    from swaps
     join (
         select * from {{ ref('oneinch_call_transfers') }}
         {% if is_incremental() %}

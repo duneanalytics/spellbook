@@ -543,3 +543,21 @@ models:
               - Factory V2
               - Factory V2 updated
               - Regular
+
+  - name: solidly_v3_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: solidly
+      contributors: SolidlyLabs
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'solidly' ]
+    description: "solidly v3 ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('solidly_v3_ethereum_base_trades_seed')
+

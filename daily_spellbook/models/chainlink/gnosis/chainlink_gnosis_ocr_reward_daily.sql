@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='ocr_reward_daily',
     partition_by = ['date_month'],
     materialized = 'incremental',
@@ -14,7 +14,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
   admin_address_meta as (
@@ -32,8 +31,8 @@ WITH
     WHERE
       price.symbol = 'LINK'
       {% if is_incremental() %}
-        AND price.minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
+        AND {{ incremental_predicate('price.minute') }}
+      {% endif %}
     GROUP BY
       1
     ORDER BY
@@ -81,16 +80,16 @@ WITH
       1, 2
   ),
   ocr_reward_daily AS (
-    SELECT 
+    SELECT
       payment_meta.date_start,
       cast(date_trunc('month', payment_meta.date_start) as date) as date_month,
       payment_meta.admin_address,
-      ocr_operator_admin_meta.operator_name,      
+      ocr_operator_admin_meta.operator_name,
       COALESCE(ocr_reward_evt_transfer_daily.token_amount / EXTRACT(DAY FROM next_payment_date - prev_payment_date), 0) as token_amount,
       (COALESCE(ocr_reward_evt_transfer_daily.token_amount / EXTRACT(DAY FROM next_payment_date - prev_payment_date), 0) * payment_meta.usd_amount) as usd_amount
-    FROM 
+    FROM
       payment_meta
-    LEFT JOIN 
+    LEFT JOIN
       {{ref('chainlink_gnosis_ocr_reward_evt_transfer_daily')}} ocr_reward_evt_transfer_daily ON
         payment_meta.next_payment_date = ocr_reward_evt_transfer_daily.date_start AND
         payment_meta.admin_address = ocr_reward_evt_transfer_daily.admin_address
@@ -105,7 +104,7 @@ SELECT
   operator_name,
   token_amount,
   usd_amount
-FROM 
+FROM
   ocr_reward_daily
 ORDER BY
   2, 4

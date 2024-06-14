@@ -1,5 +1,5 @@
 {{ config(
-
+    schema = 'bend_dao_ethereum',
     alias = 'lending',
     partition_by = ['block_month'],
     materialized = 'incremental',

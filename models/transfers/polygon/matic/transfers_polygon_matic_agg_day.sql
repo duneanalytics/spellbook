@@ -1,10 +1,11 @@
 {{ config(
-        
+
         alias = 'matic_agg_day',
         partition_by = ['block_month'],
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
         unique_key = ['day', 'wallet_address', 'token_address']
         )
 }}
@@ -18,10 +19,10 @@ select
     'MATIC' as symbol,
     sum(tr.amount_raw) as amount_raw,
     sum(tr.amount_raw / power(10, 18)) as amount
-FROM 
+FROM
 {{ ref('transfers_polygon_matic') }} tr
 {% if is_incremental() %}
 -- this filter will only be applied on an incremental run
-WHERE tr.block_time >= date_trunc('day', now() - interval '3' Day)
+WHERE {{ incremental_predicate('tr.block_time') }}
 {% endif %}
 GROUP BY 1, 2, 3, 4, 5, 6

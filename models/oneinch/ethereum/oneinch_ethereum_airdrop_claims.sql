@@ -1,11 +1,12 @@
 {{
     config(
-        
+
         schema = 'oneinch_ethereum',
         alias = 'airdrop_claims',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['recipient', 'tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -45,8 +46,8 @@ LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{oinch_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
     {% if is_incremental() %}
-    AND pu.minute >= date_trunc('day', now() - interval '7' Day)
+    AND {{incremental_predicate('pu.minute')}}
     {% endif %}
 {% if is_incremental() %}
-WHERE t.evt_block_time >= date_trunc('day', now() - interval '7' Day)
+WHERE {{incremental_predicate('t.evt_block_time')}}
 {% endif %}

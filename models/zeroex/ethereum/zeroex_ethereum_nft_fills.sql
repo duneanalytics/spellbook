@@ -7,6 +7,7 @@
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "zeroex",
@@ -39,7 +40,7 @@ WITH tbl_cte_transaction AS
     FROM {{ source ('zeroex_ethereum', 'ExchangeProxy_evt_ERC721OrderFilled') }}
     WHERE 1 = 1
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('evt_block_time') }}
         {% endif %}
         {% if not is_incremental() %}
         AND evt_block_time >= TIMESTAMP '{{zeroex_v4_nft_start_date}}'
@@ -67,7 +68,7 @@ WITH tbl_cte_transaction AS
     FROM {{ source ('zeroex_ethereum', 'ExchangeProxy_evt_ERC1155OrderFilled') }}
     WHERE 1 = 1
         {% if is_incremental() %}
-        AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('evt_block_time') }}
         {% endif %}
         {% if not is_incremental() %}
         AND evt_block_time >= TIMESTAMP '{{zeroex_v4_nft_start_date}}'
@@ -89,7 +90,7 @@ WITH tbl_cte_transaction AS
             AND blockchain = 'ethereum'
             AND p.contract_address IN ( SELECT DISTINCT price_label FROM tbl_cte_transaction)
             {% if is_incremental() %}
-            AND minute >= date_trunc('day', now() - interval '7' day)
+            AND {{ incremental_predicate('minute') }}
             {% endif %}
             {% if not is_incremental() %}
             AND minute >= TIMESTAMP '{{zeroex_v4_nft_start_date}}'

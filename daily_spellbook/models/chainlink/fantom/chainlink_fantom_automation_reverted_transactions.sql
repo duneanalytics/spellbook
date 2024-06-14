@@ -1,16 +1,16 @@
 {{
   config(
-    
+
     alias='automation_reverted_transactions',
     partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['tx_hash', 'tx_index', 'node_address']
+    unique_key=['tx_hash', 'tx_index', 'node_address'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
   fantom_usd AS (
@@ -22,8 +22,8 @@ WITH
     WHERE
       symbol = 'FTM'
       {% if is_incremental() %}
-        AND minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
+        AND {{ incremental_predicate('minute') }}
+      {% endif %}
   ),
   automation_reverted_transactions AS (
     SELECT
@@ -40,8 +40,8 @@ WITH
     WHERE
       success = false
       {% if is_incremental() %}
-        AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
+        AND {{ incremental_predicate('tx.block_time') }}
+      {% endif %}
     GROUP BY
       tx.hash,
       tx.index,

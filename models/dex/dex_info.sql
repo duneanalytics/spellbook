@@ -158,4 +158,6 @@ FROM (VALUES
     , ('echodex', 'EchoDex', 'Direct', 'EchoDex')
     , ('lynex', 'Lynex', 'Direct', 'Lynex')
     , ('nile', 'Nile', 'Direct', 'Nile')
+    , ('nuri', 'Nuri', 'Direct', 'nuriexchange')
+    , ('icecreamswap', 'IceCreamSwap', 'Direct', 'icecream_swap')
     ) AS temp_table (project, name, marketplace_type, x_username)
