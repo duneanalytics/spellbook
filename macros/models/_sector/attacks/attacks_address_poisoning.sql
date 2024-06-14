@@ -59,30 +59,34 @@ WITH transfer_recipients AS (
     )
 
 , remove_high_funded_counts AS (
-    SELECT victim
+    SELECT ma.address_normal AS victim
     FROM matching_addresses ma
-    INNER JOIN {{first_funded_by}} ffb ON ffb.first_funded_by=ma.victim
-    HAVING COUNT(DISTINCT ffb.address) < 1000
+    INNER JOIN {{first_funded_by}} ffb ON ffb.first_funded_by=ma.address_normal
+    GROUP BY 1
+    HAVING COUNT(DISTINCT ffb.address) > 1000
     )
 
-SELECT blockchain
-, block_time
-, block_number
-, attack_type
-, attack_category
-, attacker
-, victim
-, intended_recipient
-, amount_usd
-, amount
-, amount_raw
-, token_address
-, token_standard
-, token_symbol
-, tx_hash
-, tx_index
-, evt_index
-FROM results
-INNER JOIN remove_high_funded_counts USING (victim)
+SELECT r.blockchain
+, r.block_time
+, r.block_number
+, r.attack_type
+, r.attack_category
+, r.attacker
+, r.victim
+, r.intended_recipient
+, r.amount_usd
+, r.amount
+, r.amount_raw
+, r.token_address
+, r.token_standard
+, r.token_symbol
+, r.tx_hash
+, r.tx_index
+, r.evt_index
+FROM results r
+{#
+LEFT JOIN remove_high_funded_counts rhfc ON rhfc.victim=r.victim
+    AND rhfc.victim IS NULL
+#}
 
 {% endmacro %}
