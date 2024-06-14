@@ -374,7 +374,7 @@ direct_sushiswap AS (
             is_gasless 
    FROM {{ source('sushi_ethereum', 'Pair_evt_Swap') }} swap
    LEFT JOIN {{ source('sushi_ethereum', 'Factory_evt_PairCreated') }} pair ON pair.pair = swap.contract_address
-   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash and fills.evt_block_time = swap.block_time 
+   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash and swap.evt_block_time = zeroex_tx.block_time 
    WHERE sender = 0xdef1c0ded9bec7f1a1670819833240f027b25eff
 
         {% if is_incremental() %}
