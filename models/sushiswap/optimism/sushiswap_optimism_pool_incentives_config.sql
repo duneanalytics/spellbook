@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'pool_incentives_config'
+    schema = 'sushiswap_optimism'
+    , alias = 'pool_incentives_config'
     , tags=['static']
     )
 }}

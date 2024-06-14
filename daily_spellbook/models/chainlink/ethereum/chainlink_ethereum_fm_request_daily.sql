@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='fm_request_daily',
     partition_by=['date_month'],
     materialized='incremental',
@@ -10,7 +10,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 {% set truncate_by = 'day' %}
 
 WITH
@@ -19,7 +18,7 @@ WITH
       COALESCE(
         cast(date_trunc('{{truncate_by}}', fulfilled.block_time) as date),
         cast(date_trunc('{{truncate_by}}', reverted.block_time) as date)
-      ) AS "date_start",      
+      ) AS "date_start",
       COALESCE(
         fulfilled.node_address,
         reverted.node_address
@@ -34,8 +33,8 @@ WITH
         reverted.node_address = fulfilled.node_address
     {% if is_incremental() %}
       WHERE
-        fulfilled.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-        AND reverted.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        {{ incremental_predicate('fulfilled.block_time') }}
+        AND {{ incremental_predicate('reverted.block_time') }}
     {% endif %}
     GROUP BY
       1, 2
@@ -55,7 +54,7 @@ WITH
     FROM fm_request_daily_meta
     LEFT JOIN {{ ref('chainlink_ethereum_ocr_operator_node_meta') }} fm_operator_node_meta ON fm_operator_node_meta.node_address = fm_request_daily_meta.node_address
   )
-SELECT 
+SELECT
   blockchain,
   date_start,
   date_month,

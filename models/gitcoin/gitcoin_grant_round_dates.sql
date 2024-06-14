@@ -1,5 +1,6 @@
 {{ config(
-        alias = 'grant_round_dates'
+        schema = 'gitcoin'
+        , alias = 'grant_round_dates'
         , tags=['static']
         )
 }}

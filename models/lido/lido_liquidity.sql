@@ -25,6 +25,7 @@
  ref('lido_liquidity_optimism_balancer_pools'),
  ref('lido_liquidity_optimism_velodrome_pools'),
  ref('lido_liquidity_optimism_velodrome_v2_pools'),
+ ref('lido_liquidity_optimism_velodrome_cl_pools'),
  ref('lido_liquidity_polygon_balancer_pools'),
  ref('lido_liquidity_polygon_uniswap_v3_pools'),
  ref('lido_liquidity_polygon_kyberswap_v2_pools'),
@@ -43,9 +44,14 @@
  ref('lido_liquidity_ethereum_solidly_pools'),
  ref('lido_liquidity_base_kyberswap_pools'),
  ref('lido_liquidity_base_aerodrome_pools'),
+ ref('lido_liquidity_base_aerodrome_cl_pools'),
  ref('lido_liquidity_base_uniswap_v3_pools'),
  ref('lido_liquidity_zksync_syncswap_pools'),
- ref('lido_liquidity_linea_syncswap_pools')
+ ref('lido_liquidity_zksync_syncswap_v2_pools'),
+ ref('lido_liquidity_zksync_maverick_pools'),
+ ref('lido_liquidity_linea_syncswap_pools'),
+ ref('lido_liquidity_scroll_syncswap_pools'),
+ ref('lido_liquidity_scroll_zebra_pools')
 ] %}
 
 {% set project_start_date =  '2020-12-15'%} 

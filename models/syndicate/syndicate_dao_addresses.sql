@@ -1,5 +1,5 @@
 {{ config(
-    
+    schema = 'syndicate',
     alias = 'dao_addresses',
     materialized = 'view',
     file_format = 'delta',

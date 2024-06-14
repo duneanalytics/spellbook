@@ -7,7 +7,7 @@
         post_hook = '{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "celo", "base", "zksync", "zora", "bitcoin", "cardano"]\',
                                     "sector",
                                     "prices",
-                                    \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "rantum", "lgingerich", "hildobby", "cryptokoryo", "0xRob"]\') }}'
+                                    \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "rantum", "lgingerich", "hildobby", "cryptokoryo", "0xRob", "hosuke"]\') }}'
         )
 }}
 
@@ -31,6 +31,7 @@ ref('prices_native_tokens')
 ,ref('prices_scroll_tokens')
 ,ref('prices_linea_tokens')
 ,ref('prices_zkevm_tokens')
+,ref('prices_mantle_tokens')
 ] %}
 
 
