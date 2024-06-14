@@ -12,7 +12,7 @@
 
 {{
     uniswap_compatible_v2_trades(
-        blockchain = '_avalanche_c',
+        blockchain = 'avalanche_c',
         project = 'elk_finance',
         version = '1',
         Pair_evt_Swap = source('elk_finance_avalanche_c', 'ElkPair_evt_Swap'),
