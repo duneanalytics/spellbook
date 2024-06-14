@@ -24,8 +24,7 @@ models:
         name: child_gauge_address
         description: "Address of the Child Gauge on L2s, NULL if on mainnet"
       - &name
-        name: name
-        description: 'Label name of pool containg the token symbols and their respective weights (if applicable)'
+         name: name
       - &status
         name: status
         description: "Flag for whether a gauge is active or inactive"
@@ -189,7 +188,7 @@ models:
       - *created_at
       - *updated_at
       - *model_name
-      - *label_type      
+      - *label_type
 
   - name: labels_balancer_v2_gauges_base
     meta:
@@ -217,7 +216,7 @@ models:
       - *created_at
       - *updated_at
       - *model_name
-      - *label_type        
+      - *label_type
 
   - name: labels_balancer_v2_gauges_gnosis
     meta:
@@ -245,7 +244,7 @@ models:
       - *created_at
       - *updated_at
       - *model_name
-      - *label_type            
+      - *label_type
 
   - name: labels_balancer_v2_gauges_zkevm
     meta:
@@ -273,4 +272,4 @@ models:
       - *created_at
       - *updated_at
       - *model_name
-      - *label_type         
+      - *label_type
