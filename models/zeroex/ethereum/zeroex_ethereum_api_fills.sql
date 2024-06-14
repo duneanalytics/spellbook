@@ -17,7 +17,7 @@
 -- Test Query here: https://dune.com/queries/1330551
 WITH zeroex_tx AS (
     SELECT tx_hash,
-            evt_block_time as block_time,
+            block_time as block_time,
            max(affiliate_address) as affiliate_address,
            is_gasless
     FROM (
