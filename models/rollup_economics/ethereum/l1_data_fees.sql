@@ -275,7 +275,7 @@ with tx_batch_appends as (
       bytearray_substring(t.data, 1, 4) = 0x0c4dd810 -- Commit Block
       OR
       bytearray_substring(t.data, 1, 4) = 0xce9dcf16 -- Execute Block
-      OR
+      OR 
       -- L1 transactions use these method ID's post-Boojum
       bytearray_substring(t.data, 1, 4) = 0x701f58c5 -- Commit Batches
       OR
