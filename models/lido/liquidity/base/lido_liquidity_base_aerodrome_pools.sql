@@ -1,15 +1,15 @@
 {{ config(
     schema='lido_liquidity_base',
-    alias = 'aerodrome',
-     
+    alias = 'aerodrome',     
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
-    post_hook='{{ expose_spells(\'["base"]\',
-                                "project",
-                                "lido_liquidity",
-                                \'["ppclunghe", "kemasan"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.time')],
+    post_hook='{{ expose_spells(blockchains = \'["base"]\',
+                                spell_type = "project",
+                                spell_name = "lido_liquidity",
+                                contributors = \'["pipistrella", "kemasan"]\') }}'
     )
 }}
 
@@ -59,7 +59,7 @@ FROM {{source('prices','usd')}} p
 {% if not is_incremental() %}
 WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}' 
 {% else %}
-WHERE  DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day) --?
+WHERE {{ incremental_predicate('p.minute') }}
 {% endif %}
 
   and date_trunc('day', minute) < current_date
@@ -94,7 +94,7 @@ select distinct
      {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
      {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
      {% endif %}
     and blockchain = 'base' and contract_address = 0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452
     
@@ -120,9 +120,8 @@ from wsteth_prices_hourly
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
- {% endif %}
- 
+ WHERE {{ incremental_predicate('m.evt_block_time') }}
+ {% endif %} 
  and m.contract_address in (select address from pools)
  group by 1,2,3,4
  )
@@ -135,14 +134,12 @@ from wsteth_prices_hourly
       (-1)*SUM(CAST(amount0 AS DOUBLE)) AS amount0,
       (-1)*SUM(CAST(amount1 AS DOUBLE)) AS amount1
  from {{source('aerodrome_base','Pool_evt_Burn')}} b
- left join {{source('aerodrome_base','PoolFactory_evt_PoolCreated')}} cr on b.contract_address = cr.pool 
- 
+ left join {{source('aerodrome_base','PoolFactory_evt_PoolCreated')}} cr on b.contract_address = cr.pool  
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', b.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', b.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
- {% endif %}
- 
+ WHERE {{ incremental_predicate('b.evt_block_time') }}
+ {% endif %} 
  and b.contract_address in (select address from pools)
  group by 1,2,3,4
  
@@ -156,14 +153,12 @@ from wsteth_prices_hourly
       SUM(CAST(amount0In AS DOUBLE) - CAST(amount0Out AS DOUBLE)) AS amount0,
       SUM(CAST(amount1In AS DOUBLE) - CAST(amount1Out AS DOUBLE)) AS amount1
  from {{source('aerodrome_base','Pool_evt_Swap')}} s
- left join {{source('aerodrome_base','PoolFactory_evt_PoolCreated')}} cr on s.contract_address = cr.pool
- 
+ left join {{source('aerodrome_base','PoolFactory_evt_PoolCreated')}} cr on s.contract_address = cr.pool 
  {% if not is_incremental() %}
   WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
-  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
- {% endif %}
- 
+  WHERE {{ incremental_predicate('s.evt_block_time') }}
+ {% endif %} 
  and s.contract_address in (select address from pools)
  group by 1,2,3,4
  
@@ -182,7 +177,7 @@ select
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('s.evt_block_time') }}
  {% endif %}
  and s.contract_address in (select address from pools)
  group by 1,2,3,4
@@ -241,7 +236,7 @@ GROUP BY 1,2,3,4
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('s.evt_block_time') }}
  {% endif %}
 
  and s.contract_address in (select address from pools)
@@ -302,7 +297,7 @@ group by 1,2
  )
 
  
-select  CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ', pool_type, ' ', format('%,.3f',round(coalesce(fee,0),4))) as pool_name,
+select  blockchain||' '||project||' '||coalesce(paired_token_symbol,'unknown')||':'|| main_token_symbol||' '||pool_type||' '||format('%,.3f',round(coalesce(fee,0),4)) as pool_name,
         pool,
         blockchain,
         project,
