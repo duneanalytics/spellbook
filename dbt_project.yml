@@ -86,23 +86,6 @@ models:
       bitcoin:
         +schema: cex_bitcoin
 
-    uniswap:
-      +schema: uniswap
-      arbitrum:
-        +schema: uniswap_arbitrum
-      ethereum:
-        +schema: uniswap_ethereum
-      optimism:
-        +schema: uniswap_optimism
-      polygon:
-        +schema: uniswap_polygon
-      bnb:
-        +schema: uniswap_bnb
-      base:
-        +schema: uniswap_base
-      celo:
-        +schema: uniswap_celo
-
     balances:
       +schema: balances
       ethereum:
@@ -179,13 +162,6 @@ models:
         +schema: safe_goerli
       base:
         +schema: safe_base
-
-    lifi:
-      +schema: lifi
-      fantom:
-        +schema: lifi_fantom
-      optimism:
-        +schema: lifi_optimism
 
     aragon:
       +schema: aragon
