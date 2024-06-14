@@ -83,7 +83,7 @@ WITH zeroex_tx AS (
                 AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
                 {% endif %}
     ) temp
-    group by tx_hash, is_gasless
+    group by tx_hash, is_gasless, block_time 
 
 ),
 v3_fills_no_bridge AS (
