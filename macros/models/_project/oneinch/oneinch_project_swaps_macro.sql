@@ -5,78 +5,139 @@
     ) 
 %}
 
+{% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
+
 
 
 with
 
-methods as (
+meta as (
+    select 
+        chain_id
+        , wrapped_native_token_address
+        , native_token_symbol as native_symbol
+    from ({{ oneinch_blockchain_macro(blockchain) }})
+)
+
+, orders as (
     select
-        blockchain
-        , address as call_to
+        block_number
+        , tx_hash
+        , call_trace_address
         , project
-        , method
-        , selector
-        , flags
-    from {{ ref('oneinch_' + blockchain + '_mapped_methods') }}
-    where flags['swap']
+        , order_hash
+        , maker
+        , maker_asset
+        , making_amount
+        , taker_asset
+        , taking_amount
+        , flags as order_flags
+    from {{ ref('oneinch_' + blockchain + '_project_orders') }}
+    where
+        {% if is_incremental() %}
+            {{ incremental_predicate('block_time') }}
+        {% else %}
+            block_time >= timestamp '{{date_from}}'
+        {% endif %}
+        and call_success
+    
+    union all
+    
+    select
+        block_number
+        , tx_hash
+        , call_trace_address
+        , '1inch' as project
+        , coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int)))) as order_hash
+        , maker
+        , maker_asset
+        , making_amount
+        , taker_asset
+        , taking_amount
+        , flags as order_flags
+    from (
+        select *, row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
+        from {{ ref('oneinch_' + blockchain + '_lop') }}
+        where
+            {% if is_incremental() %}
+                {{ incremental_predicate('block_time') }}
+            {% else %}
+                block_time >= timestamp '{{date_from}}'
+            {% endif %}
+            and call_success
+    )
 )
 
 , calls as (
     select
-        *
-        , array_agg((call_trace_address, flags)) over(partition by block_number, tx_hash, project) as call_trace_addresses
+        blockchain
+        , block_number
+        , tx_hash
+        , tx_from
+        , tx_to
+        , call_trace_address
+        , project
+        , tag
+        , flags
+        , call_selector
+        , method
+        , call_from
+        , call_to
+        , order_hash
+        , order_flags
+        , maker
+        , maker_asset
+        , making_amount
+        , taker_asset
+        , taking_amount
+        , call_trace_addresses
+        , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
+        , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as _taker_asset
+        , coalesce(order_hash, to_big_endian_64(counter)) as call_trade_id
     from (
         select
-            block_number
-            , block_time
-            , tx_hash
-            , "from" as call_from
-            , "to" as call_to
-            , trace_address as call_trace_address
-            , cardinality(trace_address) = 0 as direct
-            , substr(input, 1, 4) as selector
-        from {{ source(blockchain, 'traces') }}
-        {% if is_incremental() %}
-            where {{ incremental_predicate('block_time') }}
-        {% else %}
-            where block_time >= timestamp '{{date_from}}'
-        {% endif %}
+            *
+            , array_agg(call_trace_address) over(partition by block_number, tx_hash, project) as call_trace_addresses
+            , row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
+        from {{ ref('oneinch_' + blockchain + '_project_calls') }}
+        where
+            {% if is_incremental() %}
+                {{ incremental_predicate('block_time') }}
+            {% else %}
+                block_time >= timestamp '{{date_from}}'
+            {% endif %}
             and (tx_success or tx_success is null)
-            and success
+            and call_success
     )
-    join methods using(call_to, selector)
-    join (
-        select
-            block_number
-            , hash as tx_hash
-            , "from" as tx_from
-        from {{ source(blockchain, 'transactions') }}
-        {% if is_incremental() %}
-            where {{ incremental_predicate('block_time') }}
-        {% else %}
-            where block_time >= timestamp '{{date_from}}'
-        {% endif %}
-            and (success or success is null)
-            
-    ) using(block_number, tx_hash)
+    left join orders using(block_number, tx_hash, call_trace_address, project)
+    join meta on true
+    where
+        reduce(call_trace_addresses, true, (r, x) -> if(r and x <> call_trace_address and slice(call_trace_address, 1, cardinality(x)) = x, false, r), r -> r) -- only not nested calls of the project in tx
+        or order_hash is not null -- all orders
+)
+
+, tokens as (
+    select
+        contract_address
+        , symbol
+    from {{ source('tokens', 'erc20') }}
+    where blockchain = '{{blockchain}}'
 )
 
 , prices as (
     select
-        blockchain
-        , contract_address
+        contract_address
         , minute
         , price
         , decimals
-        , symbol
     from {{ source('prices', 'usd') }}
     where
-        blockchain = '{{blockchain}}'
         {% if is_incremental() %}
-            and {{ incremental_predicate('minute') }}
+            {{ incremental_predicate('minute') }}
         {% else %}
-            and minute >= timestamp '{{date_from}}'
+            minute >= timestamp '{{date_from}}'
         {% endif %}
+        and blockchain = '{{blockchain}}'
 )
 
 , creations as (
@@ -91,57 +152,78 @@ methods as (
         (0x0000000000000000000000000000000000000000, 0)
 )
 
-, amounts as (
+, swaps as (
     select
         *
-        , transform(filter(array_distinct(flatten(call_transfer_addresses)), x -> x[2]), x -> (x[1])) as users
+        , transform(filter(array_distinct(flatten(call_transfer_addresses)), x -> not x.contract), x -> (x.address)) as users
         , array_agg(
             cast(row(project, call_trace_address, coalesce(user_amount_usd, amount_usd)) as row(project varchar, call_trace_address array(bigint), amount_usd double))
         ) over(partition by block_number, tx_hash) as amounts
-        , coalesce(if(direct, user_amount_usd, caller_amount_usd), amount_usd) as result_amount_usd
+        , coalesce(if(flags['direct'], user_amount_usd, caller_amount_usd), amount_usd) as result_amount_usd
     from (
         select
-            calls.blockchain
+            blockchain
             , calls.block_number
             , calls.tx_hash
             , calls.call_trace_address
-            , any_value(calls.block_time) as block_time
-            , any_value(calls.tx_from) as tx_from
-            , any_value(calls.project) as project
-            , any_value(calls.call_from) as call_from
-            , any_value(calls.call_to) as call_to
-            , any_value(calls.method) as method
-            , any_value(calls.flags) as flags
-            , any_value(calls.direct) as direct
+            , call_trade_id
+            , any_value(block_time) as block_time
+            , any_value(tx_from) as tx_from
+            , any_value(tx_to) as tx_to
+            , any_value(project) as project
+            , any_value(tag) as tag
+            , any_value(flags) as flags
+            , any_value(call_from) as call_from
+            , any_value(call_to) as call_to
+            , any_value(call_selector) as call_selector
+            , any_value(method) as method
+            , any_value(order_hash) as order_hash
+            , any_value(maker) as maker
+            , any_value(maker_asset) as maker_asset
+            , any_value(making_amount) as making_amount
+            , any_value(taker_asset) as taker_asset
+            , any_value(taking_amount) as taking_amount
+            , any_value(order_flags) as order_flags
+            , array_agg(distinct if(native, native_symbol, symbol)) as tokens
             , max(amount * price / pow(10, decimals)) as amount_usd
             , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
             , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
             , array_agg(array[
-                cast(row(transfer_from, creations_from.block_number is null) as row(address varbinary, success boolean)),
-                cast(row(transfer_to, creations_to.block_number is null) as row(address varbinary, success boolean))
-            ]) as call_transfer_addresses       
+                cast(row(transfer_from, creations_from.block_number is not null) as row(address varbinary, contract boolean))
+                , cast(row(transfer_to, creations_to.block_number is not null) as row(address varbinary, contract boolean))
+            ]) as call_transfer_addresses
         from calls
         join (
-            select *
-            from ({{ oneinch_parsed_transfers_from_calls_macro(blockchain) }})
-            {% if is_incremental() %}
-                where {{ incremental_predicate('block_time') }}
-            {% else %}
-                where block_time >= timestamp '{{date_from}}'
-            {% endif %}
+            select
+                block_number
+                , block_time
+                , tx_hash
+                , transfer_trace_address
+                , if(type = 'native', wrapped_native_token_address, contract_address) as contract_address
+                , type = 'native' as native
+                , amount
+                , native_symbol
+                , transfer_from
+                , transfer_to
+                , date_trunc('minute', block_time) as minute
+            from ({{ oneinch_parsed_transfers_from_calls_macro(blockchain) }}), meta
+            where
+                {% if is_incremental() %}
+                    {{ incremental_predicate('block_time') }}
+                {% else %}
+                    block_time >= timestamp '{{date_from}}'
+                {% endif %}
         ) as transfers on
             calls.block_number = transfers.block_number
             and calls.tx_hash = transfers.tx_hash
-            and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address
-            and reduce(call_trace_addresses, call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x[1])) = x[1] and r < x[1], x[1], r), r -> r) = call_trace_address
-        left join prices on
-            prices.contract_address = transfers.contract_address
-            and prices.minute = date_trunc('minute', transfers.block_time)
+            and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
+            and reduce(call_trace_addresses, call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
+            and (order_hash is null or contract_address in (_maker_asset, _taker_asset)) -- transfers related to the order only
+        left join prices using(contract_address, minute)
+        left join tokens using(contract_address)
         left join creations as creations_from on creations_from.address = transfers.transfer_from
         left join creations as creations_to on creations_to.address = transfers.transfer_to
-        where
-            reduce(call_trace_addresses, true, (r, x) -> if(r and x[1] <> call_trace_address and slice(call_trace_address, 1, cardinality(x[1])) = x[1] and x[2] = flags, false, r), r -> r)
-        group by 1, 2, 3, 4
+        group by 1, 2, 3, 4, 5
     )
 )
 
@@ -150,22 +232,34 @@ methods as (
 select
     blockchain
     , block_number
-    , tx_hash
-    , call_trace_address
     , block_time
+    , tx_hash
     , tx_from
+    , tx_to
+    , call_trace_address
     , project
+    , tag
+    , flags
+    , call_selector
+    , method
     , call_from
     , call_to
-    , method
-    , map_concat(flags, map_from_entries(array[('direct', direct)])) as flags
+    , order_hash
+    , maker
+    , maker_asset
+    , making_amount
+    , taker_asset
+    , taking_amount
+    , order_flags
+    , tokens
     , amount_usd
     , user_amount_usd
     , caller_amount_usd
     , result_amount_usd
     , amounts
-    , if(cardinality(users) = 0 or not flags['limits'], array_union(users, array[tx_from]), users) as users
+    , if(cardinality(users) = 0 or order_hash is null, array_union(users, array[tx_from]), users) as users
     , date(date_trunc('month', block_time)) as block_month
-from amounts
+    , call_trade_id
+from swaps
 
 {% endmacro %}
