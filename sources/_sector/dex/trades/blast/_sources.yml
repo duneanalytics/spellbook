@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_blast
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: uniswap_v2_blast
+    tables:
+      - name: Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
