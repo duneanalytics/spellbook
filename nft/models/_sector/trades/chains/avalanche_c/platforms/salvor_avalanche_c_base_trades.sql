@@ -61,10 +61,7 @@ base_trades as (
         'secondary' as trade_type,
         ee.nft_amount,
         ee.trade_category,
-        CASE 
-            WHEN number_of_payments = 1 THEN seller
-            ELSE CAST(NULL as VARBINARY)
-        END as seller,
+        ra.seller,
         ee.buyer,
         ee.price_raw,
         ee.currency_contract,
