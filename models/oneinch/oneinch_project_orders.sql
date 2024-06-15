@@ -7,44 +7,64 @@
         incremental_strategy = 'merge',
         partition_by = ['block_month'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address']
+        unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address', 'order_hash']
     )
 }}
+
+{% set
+    orders_base_columns = [
+        'blockchain',
+        'block_number',
+        'block_time',
+        'tx_hash',
+        'method',
+        'call_selector',
+        'call_trace_address',
+        'call_from',
+        'call_to',
+        'call_gas_used',
+        'maker',
+        'maker_asset',
+        'making_amount',
+        'taker_asset',
+        'taking_amount',
+        'order_hash',
+        'flags',
+    ]
+%}
+
+{% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
 
 
 
 with
-    
-orders as (
+
+meta as (
+    select 
+        blockchain
+        , wrapped_native_token_address
+        , native_token_symbol as native_symbol
+    from {{ ref('oneinch_blockchains') }}
+)
+
+, orders as (
     select
         *
-        , array[maker_asset, taker_asset] as assets
+        , array[
+            if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset)
+            , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset)
+        ] as assets
         , date_trunc('minute', block_time) as minute
-        , row_number() over(partition by blockchain, block_number, tx_hash, project order by call_trace_address) as counter
+        , row_number() over(partition by blockchain, block_number, tx_hash order by call_trace_address, order_hash) as counter
     from (
         {% for blockchain in oneinch_exposed_blockchains_list() %}
             select
-                blockchain
-                , block_number
-                , block_time
-                , tx_hash
+                {{ orders_base_columns | join(', ') }}
+                , tag
                 , project
-                , method
-                , call_selector
-                , call_trace_address
-                , call_from
-                , call_to
-                , call_gas_used
-                , maker
-                , maker_asset
-                , coalesce(making_amount, if(order_start = uint256 '0', maker_max_amount, maker_max_amount - cast(block_unixtime - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double)))) as making_amount
-                , taker_asset
-                , coalesce(taking_amount, if(order_start = uint256 '0', taker_max_amount, taker_max_amount - cast(block_unixtime - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double)))) as taking_amount
-                , order_hash
                 , order_start
                 , order_end
                 , order_deadline
-                , flags
             from {{ ref('oneinch_' + blockchain + '_project_orders') }}
             where call_success
             {% if not loop.last %} union all {% endif %}
@@ -53,30 +73,16 @@ orders as (
         union all
 
         select
-            blockchain
-            , block_number
-            , block_time
-            , tx_hash
+            {{ orders_base_columns | join(', ') }}
+            , contract_name as tag
             , '1inch' as project
-            , method
-            , call_selector
-            , call_trace_address
-            , call_from
-            , call_to
-            , call_gas_used
-            , maker
-            , maker_asset
-            , making_amount
-            , taker_asset
-            , taking_amount
-            , order_hash
             , null as order_start
             , null as order_end
             , null as order_deadline
-            , flags
         from {{ ref('oneinch_lop') }}
         where call_success
     )
+    join meta using(blockchain)
     {% if is_incremental() %}
         where {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -102,6 +108,7 @@ orders as (
         , block_number
         , tx_hash
         , call_trace_address
+        , coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int)))) as order_hash
         , any_value(block_time) as block_time
         , any_value(project) as project
         , any_value(call_selector) as call_selector
@@ -111,20 +118,20 @@ orders as (
         , any_value(maker) as maker
         , any_value(maker_asset) as maker_asset
         , any_value(taker_asset) as taker_asset
-        , any_value(symbol) filter(where contract_address = maker_asset) as maker_asset_symbol
-        , any_value(symbol) filter(where contract_address = taker_asset) as taker_asset_symbol
+        , any_value(if(maker_asset = assets[1], symbol, native_symbol)) filter(where contract_address = assets[1]) as maker_asset_symbol
+        , any_value(if(taker_asset = assets[2], symbol, native_symbol)) filter(where contract_address = assets[2]) as taker_asset_symbol
         , any_value(making_amount) as making_amount
         , any_value(taking_amount) as taking_amount
-        , any_value(making_amount * price / pow(10, decimals)) filter(where contract_address = maker_asset) as making_amount_usd
-        , any_value(taking_amount * price / pow(10, decimals)) filter(where contract_address = taker_asset) as taking_amount_usd
-        , any_value(coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int))))) as order_hash
+        , any_value(making_amount * price / pow(10, decimals)) filter(where contract_address = assets[1]) as making_amount_usd
+        , any_value(taking_amount * price / pow(10, decimals)) filter(where contract_address = assets[2]) as taking_amount_usd
         , any_value(order_start) as order_start
         , any_value(order_end) as order_end
         , any_value(order_deadline) as order_deadline
         , any_value(flags) as flags
-    from (select * from orders, unnest(assets) as assets(contract_address))
+        , any_value(tag) as tag
+    from (select * from orders, unnest(assets) as a(contract_address))
     left join prices using(blockchain, contract_address, minute)
-    group by 1, 2, 3, 4
+    group by 1, 2, 3, 4, 5
 )
 
 -- output --
@@ -134,8 +141,8 @@ select
     , block_number
     , block_time
     , tx_hash
-    , call_trace_address
     , project
+    , call_trace_address
     , call_selector
     , call_from
     , call_to
@@ -155,5 +162,6 @@ select
     , order_end
     , order_deadline
     , flags
+    , tag
     , date(date_trunc('month', block_time)) as block_month
 from joined

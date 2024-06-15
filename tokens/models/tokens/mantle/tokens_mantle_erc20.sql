@@ -32,4 +32,6 @@ FROM (VALUES
     , (0xc1f43e45f86e7bfb92c3c309b0ef366f9ba33bfa, 'MoeLP', 18)
     , (0xefc38c1b0d60725b824ebee8d431abfbf12bc953, 'MoeLP', 18)
     , (0xfbea6da85f6554fe4d429e9f37f8ba54a9ac94c3, 'MoeLP', 18)
+    , (0x5d131cb99ce5642f3d539417a187a93eeae48177, 'S*USDC', 6)
+    , (0xe1152564ed7b59e01915fc95bbf87cf9b6636fe6, 'S*USDT', 6)
 ) AS temp_table (contract_address, symbol, decimals)

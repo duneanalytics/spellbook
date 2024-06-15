@@ -18,8 +18,8 @@
 WITH
 base as (
     SELECT
-    block_time,
-    , call_block_slot as block_slot
+    block_time
+    , block_slot
     , action
     , amount
     , fee
@@ -37,8 +37,8 @@ WHERE {{incremental_predicate('block_time')}}
 {% endif %}
 UNION ALL
     SELECT
-    block_time,
-    , call_block_slot as block_slot
+    block_time
+    , block_slot
     , action
     , amount
     , fee
@@ -57,9 +57,9 @@ WHERE {{incremental_predicate('block_time')}}
 )
 
 SELECT
-    call_block_time as block_time
-    , cast (date_trunc('day', call_block_time) as date) as block_date
-    , call_block_slot as block_slot
+    block_time
+    , cast (date_trunc('day', block_time) as date) as block_date
+    , block_slot
     , action
     , amount
     , fee
@@ -76,7 +76,7 @@ SELECT
     , outer_executing_account
 FROM base tr
 --get token and accounts
-INNER JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.account_source
-INNER JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.account_destination
+LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.from_token_account
+LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.to_token_account
 WHERE 1=1
 -- AND call_block_time > now() - interval '90' day --for faster CI testing
