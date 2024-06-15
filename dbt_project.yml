@@ -67,16 +67,6 @@ models:
     dex:
       +schema: dex
 
-    nft:
-      +schema: nft
-      ethereum:
-        +schema: nft_ethereum
-        metadata:
-          +schema: nft_ethereum_metadata
-          +materialized: table
-          +file_format: delta
-          +tags: "static"
-
     cex:
       +schema: cex
       arbitrum:
@@ -112,23 +102,6 @@ models:
         +schema: uniswap_base
       celo:
         +schema: uniswap_celo
-
-    seaport:
-      +schema: seaport
-      ethereum:
-        +schema: seaport_ethereum
-      bnb:
-        +schema: seaport_bnb
-      arbitrum:
-        +schema: seaport_arbitrum
-      optimism:
-        +schema: seaport_optimism
-      avalanche_c:
-        +schema: seaport_avalanche_c
-      polygon:
-        +schema: seaport_polygon
-      base:
-        +schema: seaport_base
 
     balances:
       +schema: balances
@@ -233,11 +206,6 @@ models:
         +schema: lifi_fantom
       optimism:
         +schema: lifi_optimism
-
-    astaria:
-      +schema: astaria
-      ethereum:
-        +schema: astaria_ethereum
 
     aragon:
       +schema: aragon
