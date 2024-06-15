@@ -136,7 +136,7 @@ select 0x5979D7b546E38E414F7E9822514be443A4800529
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE {{ incremental_predicate('p.minute') }}
+    WHERE {{ incremental_predicate('sw.evt_block_time') }}
     {% endif %}
     and sw.contract_address in (select address from pools)
     group by 1,2,3,4
