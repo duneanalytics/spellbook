@@ -53,9 +53,6 @@ sources:
   - name: cex_optimism
     tables:
       - name: addresses
-  - name: prices
-    tables:
-      - name: usd_forward_fill
   - name: op_retropgf_optimism
     tables:
       - name: recipients
@@ -64,3 +61,10 @@ sources:
     tables:
       - name: fee_vaults
       - name: grants_funding
+
+  - name: prices
+    tables:
+      - name: usd_forward_fill
+  - name: prices
+    tables:
+      - name: usd_latest
