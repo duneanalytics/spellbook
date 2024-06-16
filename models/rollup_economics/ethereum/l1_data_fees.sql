@@ -268,7 +268,7 @@ with tx_batch_appends as (
       -- L1 transactions settle here post-EIP4844
       OR t.to = 0xa8CB082A5a689E0d594d7da1E2d72A3D63aDc1bD
       -- L1 transactions settle here post-V24 upgrade (as of block 20033194)
-      OR t.to = 0x5D8ba173Dc6C3c90C8f7C04C9288BeF5FDbAd06E
+      OR t.to = 0x5D8ba173Dc6C3c90C8f7C04C9288BeF5FDbAd06E 
     )
     AND (
       -- L1 transactions use these method ID's pre-Boojum
