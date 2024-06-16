@@ -16,7 +16,10 @@ auction_started_event as (
         'Auction Sale' as trade_category,
         id as auction_id,
         tokenId as nft_token_id, 
-        payment_token as currency_contract,
+        CASE 
+            WHEN paymentToken = 0x0000000000000000000000000000000000000000 THEN 0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7
+            ELSE paymentToken 
+        END as currency_contract,
         collection as nft_contract_address,
         tx."from" as seller 
     FROM 
