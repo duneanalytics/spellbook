@@ -77,3 +77,108 @@ models:
           combination_of_columns:
             - pool
             - contract_address
+
+  - name: dackieswap_v2_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: dackieswap
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'pools', 'dackieswap', 'v2']
+    description: "Dackieswap optimism v2 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
+
+  - name: dackieswap_v3_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: dackieswap
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'pools', 'dackieswap', 'v3']
+    description: "Dackieswap optimism v3 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
+
+  - name: elk_finance_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: elk_finance
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'pools', 'elk_finance', 'v1']
+    description: "elk finance optimism v1 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
+
+  - name: gridex_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: gridex
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'pools', 'gridex', 'v1']
+    description: "gridex optimism v1 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
+
+  - name: velodrome_v1_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: velodrome
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'pools', 'velodrome', 'v1']
+    description: "velodrome optimism v1 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
+
+  - name: velodrome_v2_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: velodrome
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'pools', 'velodrome', 'v2']
+    description: "velodrome optimism v2 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address
+
+  - name: zipswap_optimism_pools
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: zipswap
+      contributors: Henrystats
+    config:
+      tags: [ 'optimism', 'dex', 'pools', 'zipswap', 'v1']
+    description: "Zipswap optimism v1 pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - contract_address

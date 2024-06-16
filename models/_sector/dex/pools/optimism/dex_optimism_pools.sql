@@ -11,6 +11,13 @@
     ,ref('solidly_v3_optimism_pools')
     ,ref('sushiswap_v2_optimism_pools')
     ,ref('fraxswap_optimism_pools')
+    ,ref('dackieswap_v2_optimism_pools')
+    ,ref('dackieswap_v3_optimism_pools')
+    ,ref('elk_finance_optimism_pools')
+    ,ref('gridex_optimism_pools')
+    ,ref('velodrome_v1_optimism_pools')
+    ,ref('velodrome_v2_optimism_pools')
+    ,ref('zipswap_optimism_pools')
 ] %}
 
 WITH base_union AS (
