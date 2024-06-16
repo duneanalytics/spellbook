@@ -4,6 +4,7 @@
         schema = 'lifinity_v1',
         alias = 'trades',
         partition_by = ['block_month'],
+        tags = ['prod_exclude'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

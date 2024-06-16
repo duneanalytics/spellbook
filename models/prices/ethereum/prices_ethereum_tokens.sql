@@ -347,6 +347,7 @@ FROM
     ('syn-synapse', 'ethereum', 'SYN', 0x0f2d719407fdbeff09d87557abb7232601fd9f29, 18),
     ('sync-sync-network', 'ethereum', 'SYNC', 0xb6ff96b8a8d214544ca0dbc9b33f7ad6503efd32, 18),
     ('t-threshold-network-token', 'ethereum', 'T', 0xcdf7028ceab81fa0c6971208e83fa7872994bee5, 18),
+    ('taiko-taiko', 'ethereum', 'TAIKO', 0x10dea67478c5f8c5e2d90e5e9b26dbe60c54d800, 18),
     ('tcr-tracer-dao', 'ethereum', 'TCR', 0xe38b72d6595fd3885d1d2f770aa23e94757f91a1, 8),
     ('tel-telcoin', 'ethereum', 'TEL', 0x467bccd9d29f223bce8043b84e8c8b282827790f, 2),
     ('temp-tempus', 'ethereum', 'TEMP', 0xa36fdbbae3c9d55a1d67ee5821d53b50b63a1ab9, 18),

@@ -11,6 +11,8 @@
     , ref('nile_linea_base_trades')
     , ref('echodex_linea_base_trades')
     , ref('secta_linea_base_trades')
+    , ref('pancakeswap_v2_linea_base_trades')
+    , ref('pancakeswap_v3_linea_base_trades')
 ] %}
 
 WITH base_union AS (
