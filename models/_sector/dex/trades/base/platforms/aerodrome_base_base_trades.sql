@@ -27,13 +27,13 @@ dexs_v1 AS (
 
 dexs_v2 AS (
     {{
-        uniswap_compatible_v2_trades(
+        uniswap_compatible_v3_trades(
             blockchain = 'base',
             project = 'aerodrome',
             version = 'slipstream',
             Pair_evt_Swap = source('aerodrome_base', 'CLPool_evt_Swap'),
-            Factory_evt_PairCreated = source('aerodrome_base', 'CLFactory_evt_PoolCreated'),
-            pair_column_name = 'pool'
+            Factory_evt_PoolCreated = source('aerodrome_base', 'CLFactory_evt_PoolCreated'),
+            optional_columns = null
         )
     }}
 )
