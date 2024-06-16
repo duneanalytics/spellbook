@@ -40,7 +40,9 @@
     , ref('sterling_finance_arbitrum_base_trades')
     , ref('sharkyswap_arbitrum_base_trades')
     , ref('uniswap_v2_arbitrum_base_trades')
+    , ref('auragi_arbitrum_base_trades')
     , ref('wombat_exchange_arbitrum_base_trades')
+    , ref('solidly_v3_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (

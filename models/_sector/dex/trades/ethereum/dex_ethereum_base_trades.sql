@@ -34,6 +34,7 @@
     , ref('mstable_ethereum_base_trades')
     , ref('xchange_ethereum_base_trades')
     , ref('curvefi_ethereum_base_trades')
+    , ref('solidly_v3_ethereum_base_trades')
 ] %}
 
 WITH base_union AS (

@@ -6,6 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type', 'positions_contract', 'protocol_version'],
     post_hook='{{ expose_spells(\'["arbitrum", "polygon"]\',
                                 "project",
@@ -148,7 +149,7 @@ close_liquidate as (
     {{ ref('tigris_trades') }}
     WHERE trade_type IN ('close_position', 'liquidate_position')
     {% if is_incremental() %}
-    AND evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ),
 
@@ -176,7 +177,7 @@ close_liquidate_pnl as (
         AND pe.blockchain = 'arbitrum'
         AND pe.symbol = 'WETH'
         {% if is_incremental() %}
-        AND pe.minute >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('pe.minute') }}
         {% endif %}
 )
 -- use to reload x

@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: addresses_events_bitcoin_first_funded_by
+    meta:
+      blockchain: bitcoin
+      sector: addresses_events
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'funded', 'addresses_events', 'bitcoin']
+    description: "Table showing who first funded each Bitcoin address in BTC"
+    tests:
+      - check_seed:
+          seed_file: ref('first_funded_by_seed_bitcoin')
+          filter:
+            blockchain: bitcoin
+          match_columns:
+            - blockchain
+            - address
+          check_columns:
+            - block_height
+            - tx_id
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Concerned Bitcoin address"
+        tests:
+          - unique
+      - name: first_funded_by
+        description: "Which Bitcoin address first funded the address with BTC"
+      - name: block_time
+        description: "The block time on which the address was first funded with BTC"
+      - name: block_height
+        description: "The block number on which the address was first funded with BTC"
+      - name: tx_id
+        description: "The transaction hash on which the address was first funded with BTC"

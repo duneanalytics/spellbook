@@ -9,7 +9,8 @@
     ref('maverick_zksync_base_trades')
     , ref('pancakeswap_v2_zksync_base_trades')
     , ref('pancakeswap_v3_zksync_base_trades')
-    , ref('syncswap_zksync_base_trades')
+    , ref('syncswap_v1_zksync_base_trades')
+    , ref('syncswap_v2_zksync_base_trades')
     , ref('uniswap_v3_zksync_base_trades')
     , ref('mute_zksync_base_trades')
     , ref('spacefi_v1_zksync_base_trades')
@@ -22,6 +23,9 @@
     , ref('dracula_finance_zksync_base_trades')
     , ref('iziswap_v1_zksync_base_trades')
     , ref('iziswap_v2_zksync_base_trades')
+    , ref('velocore_v0_zksync_base_trades')
+    , ref('velocore_v1_zksync_base_trades')
+    , ref('velocore_v2_zksync_base_trades')
 ] %}
 
 WITH base_union AS (

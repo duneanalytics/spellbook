@@ -6,6 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trade_type', 'positions_contract', 'protocol_version']
     )
 }}
@@ -45,7 +46,7 @@ open_position as (
     {{ ref('tigris_arbitrum_events_options_open_position') }} op 
     WHERE order_type = '0'
     {% if is_incremental() %}
-    AND op.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('op.evt_block_time') }}
     {% endif %}
 ),
 
@@ -85,7 +86,7 @@ limit_order as (
     FROM 
     {{ ref('tigris_arbitrum_events_options_limit_order') }} op 
     {% if is_incremental() %}
-    WHERE op.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('op.evt_block_time') }}
     {% endif %}
 ),
 
@@ -131,10 +132,10 @@ close_position as (
         AND op.evt_join_index = f.evt_join_index
         -- can't join on position id as position id isn't present in fees event so using this workaround 
         {% if is_incremental() %}
-        AND f.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        AND {{ incremental_predicate('f.evt_block_time') }}
         {% endif %}
     {% if is_incremental() %}
-    WHERE op.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('op.evt_block_time') }}
     {% endif %}
 ),
 
@@ -174,7 +175,7 @@ limit_cancel as (
     FROM 
     {{ ref('tigris_arbitrum_events_options_limit_cancel') }} op 
     {% if is_incremental() %}
-    WHERE op.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('op.evt_block_time') }}
     {% endif %}
 )
 

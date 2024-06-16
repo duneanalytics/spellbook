@@ -1,5 +1,5 @@
 {{ config(
-        
+        schema = 'airdrop',
         alias = 'claims',
         materialized = 'incremental',
         file_format = 'delta',

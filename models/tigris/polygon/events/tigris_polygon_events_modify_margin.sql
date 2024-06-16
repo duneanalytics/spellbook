@@ -6,6 +6,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
     unique_key = ['evt_block_time', 'evt_tx_hash', 'position_id', 'trader', 'margin', 'leverage', 'protocol_version']
     )
 }}
@@ -161,7 +162,7 @@ modify_margin_events_v2 AS (
             mm.contract_address as project_contract_address
         FROM {{ source('tigristrade_v2_polygon', modify_margin_trading_evt) }} mm
         {% if is_incremental() %}
-        WHERE mm.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('mm.evt_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -179,7 +180,7 @@ add_margin_calls_v2 AS (
             ap._addMargin/1e18 as margin_change
         FROM {{ source('tigristrade_v2_polygon', add_margin_trading_call) }} ap
         {% if is_incremental() %}
-        WHERE ap.call_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('ap.call_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -197,7 +198,7 @@ remove_margin_calls_v2 AS (
             ap._removeMargin/1e18 as margin_change
         FROM {{ source('tigristrade_v2_polygon', remove_margin_trading_call) }} ap
         {% if is_incremental() %}
-        WHERE ap.call_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('ap.call_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL

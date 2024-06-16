@@ -15,7 +15,7 @@ FROM (VALUES
         ,(0x473300df21d047806a082244b417f96b32f13a33, 'OP Mainnet', 'Optimism', 'State Commitment Chain','from_address','1','OP Mainnet: OVM State Commitment Chain')
 
         ,(0x6887246668a3b87f54deb3b94ba47a6f63f32985, 'OP Mainnet', 'Optimism', 'Canonical Transaction Chain','from_address','','OP Mainnet: Sequencer')
-        ,(0xe969c2724d2448f1d1a6189d3e2aa1f37d5998c1, 'OP Mainnet', 'Optimism', 'State Commitment Chain','from_address','','OP Mainnet: State Root Proposer')
+        ,(0xe969c2724d2448f1d1a6189d3e2aa1f37d5998c1, 'OP Mainnet', 'Optimism', 'State Commitment Chain','to_address','','OP Mainnet: State Root Proposer')
 
         ,(0xff00000000000000000000000000000000000010, 'OP Mainnet', 'Optimism', 'L1BatchInbox','to_address','Modern','OP Mainnet: L1BatchInbox')
         ,(0x6887246668a3b87f54deb3b94ba47a6f63f32985, 'OP Mainnet', 'Optimism', 'L1BatchInbox','from_address','Modern','OP Mainnet: L1BatchInbox')

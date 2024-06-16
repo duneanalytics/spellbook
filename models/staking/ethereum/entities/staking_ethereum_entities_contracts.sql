@@ -28,6 +28,8 @@ WITH contracts AS (
     , (0x24d729aae93a05a729e68504e5ccdfa3bb876491, 'Gemini', 'CEX')
     , (0xcf5ea1b38380f6af39068375516daf40ed70d299, 'Stader', 'Liquid Staking')
     , (0x4f4bfa0861f62309934a5551e0b2541ee82fdcf1, 'Stader', 'Liquid Staking')
+    , (0x09134c643a6b95d342bdaf081fa473338f066572, 'Stader', 'Liquid Staking')
+    , (0xd1a72bd052e0d65b7c26d3dd97a98b74acbbb6c5, 'Stader', 'Liquid Staking')
         ) 
         x (address, entity, category)
     )

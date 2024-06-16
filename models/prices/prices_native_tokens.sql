@@ -62,6 +62,21 @@ FROM
     ('xmr-monero', null, 'XMR', null, null),
     ('xrp-xrp', null, 'XRP', null, null),
     ('xtz-tezos', null, 'XTZ', null, null),
-    ('zec-zcash', null, 'ZEC', null, null)
+    ('zec-zcash', null, 'ZEC', null, null),
+    ('astr-astar', null, 'ASTR', null, null),
+    ('dym-dymension-iou', null, 'DYM', null, null),
+    ('manta-manta-network', null, 'MANTA', null, null),
+    ('rose-oasis-network', null, 'ROSE', null, null),
+    ('saga-saga', null, 'SAGA', null, null),
+    ('kas-kaspa', null, 'KAS', null, null),
+    ('egld-elrond', null, 'EGLD', null, null),
+    ('ntrn1-neutron', null, 'NTRN', null, null),
+    ('flr-flare-network', null, 'FLR', null, null),
+    ('ar-arweave', null, 'AR', null, null),
+    ('glmr-moonbeam', null, 'GLMR', null, null),
+    ('klay-klaytn', null, 'KLAY', null, null),
+    ('fuse-fuse-network', null, 'FUSE', null, null),
+    ('zel-zelcash', null, 'FLUX', null, null),
+    ('myria-myria', null, 'MYRIA', null, null)
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

@@ -38,6 +38,10 @@ sources:
     tables:
       - name: PancakeV3Pool_evt_Swap
       - name: PancakeV3Factory_evt_PoolCreated
+  - name: pancakeswap_v2_arbitrum
+    tables:
+      - name: PancakeStableSwapTwoPool_evt_TokenExchange
+      - name: PancakeStableSwapFactory_evt_NewStableSwapPair
   - name: balancer_v2_arbitrum
     tables:
       - name: Vault_evt_Swap
@@ -123,7 +127,15 @@ sources:
     tables:
       - name: SharkyPair_evt_Swap
       - name: SharkyFactory_evt_PairCreated
+  - name: auragi_arbitrum
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
   - name: wombatexchange_arbitrum
     tables:
       - name: CrossChainPool_evt_SwapV2
-  
+  - name: solidly_v3_arbitrum
+    tables:
+      - name: SolidlyV3Factory_evt_PoolCreated
+      - name: SolidlyV3Pool_evt_Swap
+

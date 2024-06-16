@@ -29,6 +29,30 @@ WITH pools AS (
     WHERE t.pos = w.pos
   ) zip
 
+  UNION ALL  
+    
+    SELECT
+    pool_id,
+    zip.tokens AS token_address,
+    zip.weights / pow(10, 18) AS normalized_weight,
+    symbol,
+    pool_type
+  FROM (
+    SELECT
+      c.poolId AS pool_id,
+      t.tokens,
+      w.weights,
+      cc.symbol,
+      'weighted' AS pool_type
+    FROM {{ source('balancer_v2_optimism', 'Vault_evt_PoolRegistered') }} c
+    INNER JOIN {{ source('balancer_v2_optimism', 'WeightedPoolFactory_call_create') }} cc
+      ON c.evt_tx_hash = cc.call_tx_hash
+      AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
+    CROSS JOIN UNNEST(cc.tokens) WITH ORDINALITY t(tokens, pos)
+    CROSS JOIN UNNEST(cc.normalizedWeights) WITH ORDINALITY w(weights, pos)
+    WHERE t.pos = w.pos
+  ) zip
+
   UNION ALL
 
   SELECT

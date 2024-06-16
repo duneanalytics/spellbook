@@ -1,7 +1,12 @@
+{% set blockchain = 'optimism' %}
+
 {{config(
-        schema = 'cex_optimism',
+        schema = 'cex_' + blockchain,
         alias = 'addresses'
         )}}
 
-SELECT 'optimism' AS blockchain, address, cex_name, distinct_name, added_by, added_date
-FROM {{ ref('cex_evms_addresses')}}
+{{cex_evms(
+        cex_addresses = ref('cex_evms_addresses')
+        , blockchain = blockchain
+        , traces = source(blockchain, 'traces')
+        )}}

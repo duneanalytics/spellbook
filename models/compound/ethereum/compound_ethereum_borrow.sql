@@ -19,6 +19,7 @@ select
   symbol,
   token_address,
   borrower,
+  on_behalf_of,
   repayer,
   liquidator,
   amount,
@@ -26,6 +27,7 @@ select
   block_month,
   block_time,
   block_number,
+  project_contract_address,
   tx_hash,
   evt_index
 from {{ ref('lending_borrow') }}
