@@ -14,6 +14,7 @@
  ,ref('element_avalanche_c_base_trades')
  ,ref('opensea_v3_avalanche_c_base_trades')
  ,ref('opensea_v4_avalanche_c_base_trades')
+ ,ref('superchief_avalanche_c_base_trades')
 ] %}
 
 
