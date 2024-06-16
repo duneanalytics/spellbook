@@ -7,7 +7,7 @@
     unique_key = ['block_number','tx_hash','sub_tx_trade_id']
 )}}
 
-{% set project_start_date = '2023-09-01' %}
+{% set project_start_date = '2022-10-29' %}
 
 WITH 
 
