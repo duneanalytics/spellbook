@@ -164,7 +164,7 @@ from (select t1."from", date_trunc('month', t1.block_time) AS month, count(*) AS
                when sum(amount_usd) >= cast(100000 AS double) and
                     sum(amount_usd) < cast(500000 AS double) then 'Shark trader'
                when sum(amount_usd) >= cast(500000 AS double) then 'Whale trader' end AS trader_type
-    from {{ ref('dex_trades') }}
+    from {{ source('dex', 'trades') }}
     where block_time > now() - interval '30' day
     group by 1
     having sum(amount_usd) > cast (10000 AS double)
@@ -184,8 +184,8 @@ from (select t1."from", date_trunc('month', t1.block_time) AS month, count(*) AS
                date_trunc('month', t1.block_time)                                           AS month,
                sum(t1.amount_usd)                                                           AS monthly_trade_amount,
                ROW_NUMBER() OVER (PARTITION BY t1.tx_from ORDER BY sum(t1.amount_usd) DESC) AS rn
-        FROM {{ ref('dex_trades') }} t1
-            join (select distinct tx_from from {{ ref('dex_trades') }} where block_time > now() - interval '3' month ) t3
+        FROM {{ source('dex', 'trades') }} t1
+            join (select distinct tx_from from {{ source('dex', 'trades') }} where block_time > now() - interval '3' month ) t3
         on t3.tx_from = t1.tx_from
             left join active_traders t2 on t1.tx_from = t2.tx_from
         where t1.block_time >= now() - interval '1' year
