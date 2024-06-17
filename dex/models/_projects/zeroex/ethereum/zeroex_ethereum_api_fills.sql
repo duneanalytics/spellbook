@@ -1,5 +1,5 @@
 {{  config(
-        schema = 'zeroex_ethereum',
+
         alias = 'api_fills',
         materialized='incremental',
         partition_by = ['block_month'],
