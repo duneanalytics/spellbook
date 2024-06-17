@@ -22,13 +22,13 @@ with
         *
     from (
         select tx_hash, evt_index, project, version
-        from {{ ref('dex_aggregator_trades') }}
+        from {{ source('dex_aggregator', 'trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select bluechip_address from bluechips)
         and token_sold_address not in (select bluechip_address from bluechips)
         UNION ALL
         select tx_hash, evt_index, project, version
-        from {{ ref('dex_trades') }}
+        from {{ source('dex', 'trades') }}
         where blockchain = 'ethereum'
         and token_bought_address in (select bluechip_address from bluechips)
         and token_sold_address not in (select bluechip_address from bluechips)
