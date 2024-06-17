@@ -9,6 +9,7 @@ on:
       - '.gitignore'
       - 'tokens/**'
       - 'daily_spellbook/**'
+      - 'nft/**'
 
 concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}
