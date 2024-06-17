@@ -13,7 +13,6 @@
     )
 }}
 
-
 WITH
 
 erc20_transfers  as (
