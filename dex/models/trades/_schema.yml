@@ -4,6 +4,8 @@ models:
   - name: dex_trades
     meta:
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea
+      test_random_tag: test_value
+      docs_slug: /curated/DEX/dex-trades
       sector: dex
       contributors: 0xRob, hosuke, jeff-dude, tomfutago
     config:
