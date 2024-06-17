@@ -45,6 +45,3 @@ FROM {{ source('alienswap_base','Alienswap_evt_OrderFulfilled') }} s
     WHERE s.evt_block_time >= timestamp '{{alienswap_usage_start_date}}'
     {% endif %}
 )
-
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_trades', 'base') }}

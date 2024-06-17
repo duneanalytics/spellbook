@@ -11,7 +11,7 @@ WITH pool_labels AS (
                 name,
                 pool_type,
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
-            FROM {{ ref('labels_balancer_v2_pools') }}
+            FROM {{ source('labels', 'balancer_v2_pools') }}
             WHERE blockchain = '{{blockchain}}'
             GROUP BY 1, 2, 3) 
         WHERE num = 1
@@ -35,7 +35,7 @@ WITH pool_labels AS (
             contract_address AS token,
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
-        FROM {{ ref('dex_prices') }}
+        FROM {{ source('dex', 'prices') }}
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
