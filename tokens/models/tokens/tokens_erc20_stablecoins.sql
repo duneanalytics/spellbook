@@ -26,7 +26,7 @@
     ,'tokens_zkevm': {'blockchain': 'zkevm', 'model': ref('tokens_zkevm_erc20_stablecoins')}
     ,'tokens_zksync': {'blockchain': 'zksync', 'model': ref('tokens_zksync_erc20_stablecoins')}
     ,'tokens_linea': {'blockchain': 'linea', 'model': ref('tokens_linea_erc20_stablecoins')}
-    ,'tokens_tron': {'blockchain': 'tron', 'model': ref('tokens_tron_erc20_stablecoins')}
+    ,'tokens_tron': {'blockchain': 'tron', 'model': ref('tokens_tron_trc20_stablecoins')}
 } %}
 
 SELECT *
