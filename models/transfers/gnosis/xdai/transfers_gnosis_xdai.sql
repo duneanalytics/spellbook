@@ -70,8 +70,10 @@ gas_fee as (
         - TRY_CAST(gas_used as INT256) * TRY_CAST(gas_price as INT256) as amount_raw
     FROM 
     {{ source('gnosis', 'transactions') }}
+    WHERE   
+        success
     {% if is_incremental() %}
-        WHERE block_time >= date_trunc('day', now() - interval '3' Day)
+        AND block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 ),
 
@@ -92,8 +94,10 @@ gas_fee_collection as (
         {{ source('gnosis', 'blocks') }} t2
         ON
         t2.number = t1.block_number
+    WHERE   
+        t1.success
     {% if is_incremental() %}
-        WHERE t1.block_time >= date_trunc('day', now() - interval '3' Day)
+        AND t1.block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 ),
 
@@ -119,8 +123,10 @@ gas_fee_rewards as (
         {{ source('gnosis', 'blocks') }} t2
         ON
         t2.number = t1.block_number
+    WHERE   
+        t1.success
     {% if is_incremental() %}
-        WHERE t1.block_time >= date_trunc('day', now() - interval '3' Day)
+        AND t1.block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 ),
 
