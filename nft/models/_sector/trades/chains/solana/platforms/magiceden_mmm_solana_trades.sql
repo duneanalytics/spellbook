@@ -524,3 +524,4 @@ select
     *
 from
     raw_nft_trades
+
