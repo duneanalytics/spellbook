@@ -122,6 +122,7 @@ with
     , all_swaps as (
         SELECT
             sp.call_block_time as block_time
+            , sp.call_block_slot as block_slot
             , 'whirlpool' as project
             , 1 as version
             , 'solana' as blockchain
@@ -145,6 +146,7 @@ with
             , tr_1.amount/pow(10,case when tk_1.token_mint_address = wp.tokenA then wp.tokenA_decimals else tokenB_decimals end) as token_sold_amount
             , wp.fee_rate
             , wp.whirlpool_id
+            , 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc' as project_main_id
             , sp.call_tx_signer as trader_id
             , sp.call_tx_id as tx_id
             , sp.call_outer_instruction_index as outer_instruction_index
@@ -229,6 +231,7 @@ SELECT
     , tb.version
     , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
     , tb.block_time
+    , tb.block_slot
     , tb.token_pair
     , tb.trade_source
     , tb.token_bought_symbol
@@ -245,6 +248,7 @@ SELECT
     , tb.token_sold_vault
     , tb.token_bought_vault
     , tb.whirlpool_id as project_program_id
+    , tb.project_main_id
     , tb.trader_id
     , tb.tx_id
     , tb.outer_instruction_index
