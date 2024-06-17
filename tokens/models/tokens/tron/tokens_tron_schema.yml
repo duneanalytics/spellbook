@@ -1,7 +1,7 @@
 version: 2
 
 models:
- - name: tokens_tron_trc20_stablecoins
+  - name: tokens_tron_trc20_stablecoins
     meta:
       blockchain: tron
       sector: tokens
