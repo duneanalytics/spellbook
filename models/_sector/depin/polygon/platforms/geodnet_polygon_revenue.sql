@@ -51,7 +51,7 @@ WITH
       AVG(median_price) AS price,
       DATE_TRUNC('hour', hour) AS hour,
       DATE_TRUNC('day', hour) AS day
-    FROM {{ ref('dex_prices') }}
+    FROM {{ source('dex', 'prices') }}
     WHERE
       blockchain = 'polygon'
       AND contract_address = 0xac0f66379a6d7801d7726d5a943356a172549adb
