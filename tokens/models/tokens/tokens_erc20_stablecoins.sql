@@ -3,10 +3,10 @@
         schema = 'tokens'
         , alias = 'erc20_stablecoins'
         , materialized = 'table'
-        , post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","fantom","gnosis","optimism","polygon","scroll","zkevm","zksync","linea", "tron"]\',
-                        "sector",
-                        "tokens",
-                        \'["thetroyharris", "gentrexha", "dot2dotseurat", "msilb7", "lgingerich", "Henrystats"]\') }}'
+        , post_hook='{{ expose_spells(blockchains = \'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","fantom","gnosis","optimism","polygon","scroll","zkevm","zksync","linea", "tron"]\',
+                        spell_type = "sector",
+                        spell_name = "tokens",
+                        contributors = \'["thetroyharris", "gentrexha", "dot2dotseurat", "msilb7", "lgingerich", "Henrystats"]\') }}'
     )
 }}
 
