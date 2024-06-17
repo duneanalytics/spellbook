@@ -78,18 +78,22 @@ gas_fee as (
 gas_fee_collection as (
     SELECT 
         'gas_fee_collection' as transfer_type,
-        hash as tx_hash, 
-        array[index] as trace_address, 
-        block_time, 
-        block_number,
+        t1.hash as tx_hash, 
+        array[t1.index] as trace_address, 
+        t1.block_time, 
+        t1.block_number,
         0x6BBe78ee9e474842Dbd4AB4987b3CeFE88426A92 as wallet_address, 
         0xffffffffffffffffffffffffffffffffffffffff AS counterparty,
         0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
-        - TRY_CAST(gas_used as INT256) * TRY_CAST(COALESCE(t2.base_fee_per_gas,0) as INT256) as amount_raw
+        - TRY_CAST(t1.gas_used as INT256) * TRY_CAST(COALESCE(t2.base_fee_per_gas,0) as INT256) as amount_raw
     FROM 
-    {{ source('gnosis', 'transactions') }}
+    {{ source('gnosis', 'transactions') }} t1
+    INNER JOIN
+        {{ source('gnosis', 'blocks') }} t2
+        ON
+        t2.number = t1.block_number
     {% if is_incremental() %}
-        WHERE block_time >= date_trunc('day', now() - interval '3' Day)
+        WHERE t1.block_time >= date_trunc('day', now() - interval '3' Day)
     {% endif %}
 ),
 
