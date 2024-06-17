@@ -64,7 +64,7 @@ models:
       - name: standard
         description: "NFT collection standard"
           
-  - name: tokens_erc20_stablecoins
+  - name: tokens_stablecoins
     meta:
       blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zkevm, zksync, linea, tron
       sector: tokens
