@@ -1,64 +1,6 @@
 version: 2
 
 models:
-  - name: balancer_v2_optimism_pools_fees
-    meta:
-      blockchain: optimism
-      project: balancer_v2
-      contributors: jacektrocinski, thetroyharris, viniabussafi
-    config:
-      tags: ['optimism', 'balancer', 'pools_fees']
-    description: >
-      Balancer v2 swap fees stored at the pool level.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_number
-            - tx_hash
-            - index
-    columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
-      - &version
-        name: version
-        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
-      - &contract_address
-        name: contract_address
-        description: 'optimism address for the liquidity pool used in transaction'
-        tests:
-          - not_null
-      - &tx_hash
-        name: tx_hash
-        description: 'Transaction hash'
-        tests:
-          - not_null
-      - &index
-        name: index
-        description: 'Event Index'
-        tests:
-          - not_null
-      - &tx_index
-        name: tx_index
-        description: 'Transaction Index'
-        tests:
-          - not_null
-      - &block_time
-        name: block_time
-        description: 'Block time in UTC'
-        tests:
-          - not_null
-      - &block_number
-        name: block_number
-        description: 'Event Block Number'
-        tests:
-          - not_null
-      - &swap_fee_percentage
-        name: swap_fee_percentage
-        description: 'Swap fees for the pool, values are returned with 18 decimals (1e18 meaning 100%)'
-        tests:
-          - not_null
-
   - name: balancer_optimism_pools_tokens_weights
     meta:
       blockchain: optimism
@@ -69,8 +11,12 @@ models:
     description: >
       Token weights in Balancer pools.
     columns:
-      - *blockchain
-      - *version
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &version
+        name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
       - &pool_id
         name: pool_id
         description: 'Unique encoded identifier that refers to each pool'
@@ -137,7 +83,8 @@ models:
       - &evt_block_number
         name: evt_block_number
         description: 'Event Block Number'
-      - *contract_address
+      - &contract_address
+        name: contract_address
       - &evt_tx_hash
         name: evt_tx_hash
         description: 'Transaction hash'

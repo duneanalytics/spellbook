@@ -22,7 +22,7 @@ trades AS(
         blockchain,
         project_contract_address,
         sum(amount_usd) AS swap_amount_usd
-    FROM {{ ref('balancer_trades') }}
+    FROM {{ source('balancer', 'trades') }}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('block_date')}}
     {% endif %}
