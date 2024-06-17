@@ -1,5 +1,4 @@
 {{ config(
-    tags = ['prod_exclude'],
     alias = 'bot_trades',
     schema = 'bonkbot_solana',
     partition_by = ['block_month'],
