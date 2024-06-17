@@ -906,8 +906,19 @@ sources:
           - *call_block_number
           - *output_0
           - name: recipient
-          - name: relativeWeightCap          
+          - name: relativeWeightCap       
 
+      - name: GaugeController_evt_NewGauge
+        columns:
+          - name: contract_address
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: addr
+          - name: gauge_type
+          - name: weight    
+          
   - name: balancer_polygon
     description: >
       Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Polygon.
