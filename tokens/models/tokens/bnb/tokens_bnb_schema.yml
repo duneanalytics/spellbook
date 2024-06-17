@@ -81,3 +81,26 @@ models:
         tests:
           - accepted_values:
               values: [ 'bep721', 'bep1155' ]
+
+  - name: tokens_bnb_bep20_stablecoins
+    meta:
+      blockchain: bnb
+      sector: tokens
+      project: bep20
+      contributors: thetroyharris
+    config:
+      tags: [ 'table', 'bep20', 'stablecoins' ]
+    description: "BEP20 Stablecoin Token Addresses, Symbols and Decimals"
+    columns:
+      - name: contract_address
+        description: "BEP20 stablecoin token contract address"
+        tests:
+          - unique
+      - name: symbol
+        description: "BEP20 stablecoin token symbol"
+      - name: decimals
+        description: "Number of decimals, refers to how divisible an BEP20 stablecoin token can be"
+      - name: name
+        description: "BEP20 stablecoin token name"
+
+

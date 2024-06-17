@@ -83,3 +83,26 @@ models:
           - unique
       - name: standard
         description: "The NFT standard erc721/erc1155/..."
+
+  - name: tokens_zksync_erc20_stablecoins
+    meta:
+      blockchain: zksync
+      sector: tokens
+      project: erc20
+      contributors: thetroyharris
+    config:
+      tags: [ 'table', 'erc20', 'stablecoins' ]
+    description: "ERC20 Stablecoin Token Addresses, Symbols and Decimals"
+    columns:
+      - name: contract_address
+        description: "ERC20 stablecoin token contract address"
+        tests:
+          - unique
+      - name: symbol
+        description: "ERC20 stablecoin token symbol"
+      - name: decimals
+        description: "Number of decimals, refers to how divisible an ERC20 stablecoin token can be"
+      - name: name
+        description: "ERC20 stablecoin token name"
+
+
