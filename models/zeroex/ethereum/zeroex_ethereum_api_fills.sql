@@ -481,7 +481,7 @@ SELECT
         tx.to AS tx_to,
         'ethereum' AS blockchain
 FROM all_tx
-INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
+INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash and all_tx.block_time = tx.block_time 
 
 {% if is_incremental() %}
 AND {{ incremental_predicate('tx.block_time') }}
