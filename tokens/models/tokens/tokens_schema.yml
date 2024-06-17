@@ -63,3 +63,29 @@ models:
         description: "NFT collection symbol"
       - name: standard
         description: "NFT collection standard"
+          
+  - name: tokens_erc20_stablecoins
+    meta:
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zkevm, zksync, linea, tron
+      sector: tokens
+      contributors: thetroyharris, gentrexha, dot2dotseurat, msilb7, lgingerich, Henrystats
+    config:
+      tags: ['tokens', 'erc20', 'stablecoins']
+    description: >
+        Crosschain ERC20 stablecoin tokens
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+    columns:
+      - name: contract_address
+        description: "ERC20 Stablecoin contract address"
+      - name: symbol
+        description: "ERC20 Stablecoin symbol"
+      - name: decimals
+        description: "ERC20 Stablecoin number of decimals"
+      - name: name
+        description: "ERC20 Stablecoin name"
+
+
