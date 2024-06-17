@@ -2,8 +2,8 @@
     config(
         schema = 'tokens'
         , alias = 'stablecoins'
-        , materialized = 'table'
-        , post_hook='{{ expose_spells(blockchains = \'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","fantom","gnosis","optimism","polygon","scroll","zkevm","zksync","linea", "tron"]\',
+        , materialized = 'view'
+        , post_hook='{{ expose_spells(blockchains = \'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","fantom","gnosis","optimism","polygon","scroll","zkevm","zksync","linea","tron"]\',
                         spell_type = "sector",
                         spell_name = "tokens",
                         contributors = \'["thetroyharris", "gentrexha", "dot2dotseurat", "msilb7", "lgingerich", "Henrystats"]\') }}'

@@ -169,36 +169,6 @@ models:
         tests:
           - unique
 
-  - name: tokens_optimism_erc20_stablecoins
-    meta:
-      blockchain: optimism
-      sector: tokens
-      project: erc20
-      contributors: msilb7
-    config:
-      tags: [ 'table', 'erc20', 'stablecoins' ]
-    description: "Optimism ERC20 Stablecoin Token Addresses, Symbols, Decimals, and Information"
-    columns:
-      - name: contract_address
-        description: "ERC20 stablecoin token contract address"
-        tests:
-          - unique
-          - not_null
-      - name: symbol
-        description: "ERC20 stablecoin token symbol"
-      - name: decimals
-        description: "Number of decimals, refers to how divisible an ERC20 stablecoin token can be"
-      - name: name
-        description: "ERC20 stablecoin token name"
-      - name: currency_peg
-        description: "What currency is the stablecoin pegged to"
-      - &reserve_type
-        name: reserve_type
-        description: "What is the type of backing for the stablecoin"
-        tests:
-          - accepted_values:
-              values: ['Crypto-Backed','Fiat-Backed','Algorithmic','Bridge-Backed']
-
   - name: tokens_optimism_nft_standards
     meta:
       blockchain: optimism

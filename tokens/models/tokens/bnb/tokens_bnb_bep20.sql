@@ -587,4 +587,12 @@ FROM (VALUES
     , (0x188738e1177a994fd3f1a1daa07c14e148ef03d0, 'CHOPIN', 18)
     , (0x1cebf8735c8d1365cb4c2117787dc811ea6148e0, 'DUSD', 18)
     , (0xefc41e176a20ae15c7c20da48d40d83d098845d8, 'SPRT', 18)
+
+    , (0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d, 'USDC', 18)
+    , (0x55d398326f99059ff775485246999027b3197955, 'USDT', 18)
+    , (0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3, 'DAI',  18)
+    , (0xd17479997F34dd9156Deef8F95A52D81D265be9c, 'USDD', 18)
+    , (0xe80772eaf6e2e18b651f160bc9158b2a5cafca65, 'USD+', 6)
+    , (0xb7f8cd00c5a06c0537e2abff0b58033d02e5e094, 'PAX',  18)
+    , (0x8965349fb649a33a30cbfda057d8ec2c48abe2a2, 'USDC', 18)
 ) AS temp_table (contract_address, symbol, decimals)

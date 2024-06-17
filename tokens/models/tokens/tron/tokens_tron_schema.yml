@@ -1,25 +1,23 @@
 version: 2
 
 models:
-  - name: tokens_tron_trc20_stablecoins
+  - name: tokens_tron_trc20
     meta:
       blockchain: tron
       sector: tokens
       project: trc20
       contributors: thetroyharris
     config:
-      tags: [ 'table', 'trc20', 'stablecoins' ]
-    description: "TRC20 Stablecoin Token Addresses, Symbols and Decimals"
+      tags: [ 'table', 'trc20', 'tron' ]
+    description: "TRC20 Token Addresses, Symbols and Decimals"
     columns:
       - name: contract_address
-        description: "TRC20 stablecoin token contract address"
+        description: "TRC20 token contract address"
         tests:
           - unique
       - name: symbol
-        description: "TRC20 stablecoin token symbol"
+        description: "TRC20 token symbol"
       - name: decimals
-        description: "Number of decimals, refers to how divisible an TRC20 stablecoin token can be"
-      - name: name
-        description: "TRC20 stablecoin token name"
+        description: "Number of decimals, refers to how divisible an TRC20 token can be"
 
 
