@@ -17,7 +17,7 @@ dexs_v1_30bps AS (
         uniswap_compatible_v2_trades(
             blockchain = 'blast',
             project = 'thruster',
-            version = 'UNI V2 30bps',
+            version = 'UNI-V2-30bps',
             Pair_evt_Swap = source('thruster_blast', 'ThrusterPair_V2_Point_3_Fee_evt_Swap'),
             Factory_evt_PairCreated = source('thruster_blast', 'ThrusterFactory_Point_3_Fee_evt_PairCreated')
         )
@@ -29,7 +29,7 @@ dexs_v1_100bps AS (
         uniswap_compatible_v2_trades(
             blockchain = 'blast',
             project = 'thruster',
-            version = 'UNI V2 100bps',
+            version = 'UNI-V2-100bps',
             Pair_evt_Swap = source('thruster_blast', 'ThrusterPair_V2_1_Fee_evt_Swap'),
             Factory_evt_PairCreated = source('thruster_blast', 'ThrusterFactory_1_Fee_evt_PairCreated')
         )
@@ -41,7 +41,7 @@ dexs_v1_univ3 AS (
         uniswap_compatible_v3_trades(
             blockchain = 'blast'
             , project = 'thruster'
-            , version = 'UNI V3'
+            , version = 'UNI-V3'
             , Pair_evt_Swap = source('thruster_blast', 'ThrusterPool_V3_Point_3_Fee_evt_Swap')
             , Factory_evt_PoolCreated = source('thruster_blast', 'ThrusterPoolFactory_evt_PoolCreated')
         )
