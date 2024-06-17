@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'tokens'
-        , alias = 'erc20_stablecoins'
+        , alias = 'stablecoins'
         , materialized = 'table'
         , post_hook='{{ expose_spells(blockchains = \'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","fantom","gnosis","optimism","polygon","scroll","zkevm","zksync","linea", "tron"]\',
                         spell_type = "sector",
