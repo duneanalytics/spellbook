@@ -44,9 +44,6 @@ sources:
   - name: bridge_optimism
     tables:
       - name: standard_bridge_flows
-  - name: uniswap_v3_optimism
-    tables:
-      - name: ovm1_pool_mapping
   - name: op_optimism
     tables:
       - name: airdrop_1_claims
@@ -56,6 +53,8 @@ sources:
   - name: prices
     tables:
       - name: usd_forward_fill
+      - name: trusted_tokens
+      - name: usd_latest
   - name: op_retropgf_optimism
     tables:
       - name: recipients
@@ -64,3 +63,30 @@ sources:
     tables:
       - name: fee_vaults
       - name: grants_funding
+  - name: balancer_v2_optimism
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_arbitrum
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_avalanche_c
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_base
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_ethereum
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_gnosis
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_polygon
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_zkevm
+    tables:
+      - name: bpt_prices
+  - name: balancer
+    tables:
+      - name: bpt_prices

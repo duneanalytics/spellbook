@@ -45,6 +45,3 @@ with base_trades as (
     where s.evt_block_time >= timestamp '{{tevaera_usage_start_date}}'
     {% endif %}
 )
-
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_trades', 'zksync') }}
