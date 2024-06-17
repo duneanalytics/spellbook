@@ -76,6 +76,24 @@ gas_fee as (
     {% endif %}
 ),
 
+gas_fee_collection as (
+    SELECT 
+        'gas_fee_collection' as transfer_type,
+        hash as tx_hash, 
+        array[index] as trace_address, 
+        block_time, 
+        block_number,
+        0x6BBe78ee9e474842Dbd4AB4987b3CeFE88426A92 as wallet_address, 
+        0xffffffffffffffffffffffffffffffffffffffff AS counterparty,
+        0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee as token_address, 
+        - TRY_CAST(gas_used as INT256) * TRY_CAST(COALESCE(t2.base_fee_per_gas,0) as INT256) as amount_raw
+    FROM 
+    {{ source('gnosis', 'transactions') }}
+    {% if is_incremental() %}
+        WHERE block_time >= date_trunc('day', now() - interval '3' Day)
+    {% endif %}
+),
+
 gas_fee_rewards as (
     SELECT 
         'gas_fee_reward' as transfer_type,
@@ -154,7 +172,6 @@ SELECT
 FROM 
 xdai_transfers
 
-
 UNION ALL 
 
 SELECT 
@@ -171,6 +188,23 @@ SELECT
     amount_raw
 FROM 
 gas_fee
+
+UNION ALL 
+
+SELECT 
+    'gnosis' as blockchain, 
+    transfer_type,
+    tx_hash, 
+    trace_address,
+    block_time,
+    block_number,
+    CAST(date_trunc('month', block_time) as date) as block_month,
+    wallet_address,
+    counterparty, 
+    token_address, 
+    amount_raw
+FROM 
+gas_fee_collection
 
 UNION ALL 
 
