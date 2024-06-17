@@ -101,7 +101,7 @@ with
     camelot_pair_trades_by_minute as (
         select distinct
             date_trunc('minute', block_time) as minute, project_contract_address as pair
-        from {{ ref("dex_trades") }}
+        from {{ source('dex', 'trades') }}
         where
             blockchain = '{{blockchain}}' and project = 'camelot'
             {% if not is_incremental() %}
