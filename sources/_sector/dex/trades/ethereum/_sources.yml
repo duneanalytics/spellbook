@@ -107,3 +107,8 @@ sources:
     tables:
       - name: XchangePair_evt_Swap
       - name: XchangeFactory_evt_PairCreated
+  - name: solidly_v3_ethereum
+    tables:
+      - name: SolidlyV3Factory_evt_PoolCreated
+      - name: SolidlyV3Pool_evt_Swap
+

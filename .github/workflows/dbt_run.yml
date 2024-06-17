@@ -32,6 +32,7 @@ jobs:
 
       - name: Get latest manifest
         run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json"
+        continue-on-error: true # Temprorary until all projects have manifest
 
       - name: dbt dependencies
         working-directory: ${{env.PROJECT_DIR}}
@@ -41,12 +42,10 @@ jobs:
         run: "./scripts/ensure_cluster.sh"
 
       - name: dbt compile to create manifest to compare to
-        run: "dbt --warn-error compile $PROFILE --project-dir ${PROJECT_DIR}"
+        run: "dbt --warn-error compile --project-dir ${PROJECT_DIR}"
 
       - name: check schemas
-        run: |
-          test=$(dbt --quiet --no-print ls $PROFILE --resource-type model --select  state:modified,config.schema:no_schema --output path --state . --project-dir ${PROJECT_DIR})
-          [[ -z "$test" ]] && { echo "Success: All models have a custom schema"; exit 0; } || { echo "Found models without custom schema:"; echo "$test"; exit 1; }
+        run: "./scripts/check_schema.sh"
 
       - name: dbt seed
         run: "dbt seed $PROFILE --select @state:modified --exclude tag:prod_exclude tag:remove --state . --project-dir ${PROJECT_DIR}"

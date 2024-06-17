@@ -12,7 +12,7 @@
 with
  dex_traders as (
     select distinct taker as address, blockchain
-    from {{ ref('dex_aggregator_trades') }}
+    from {{ source('dex_aggregator', 'trades') }}
   )
 select
   blockchain,

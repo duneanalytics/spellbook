@@ -14,7 +14,7 @@
 WITH trusted_tokens AS (
     SELECT contract_address
          , blockchain
-    FROM {{ ref('prices_trusted_tokens') }}
+    FROM {{ source('prices','trusted_tokens') }}
 )
 , prices AS (
     SELECT

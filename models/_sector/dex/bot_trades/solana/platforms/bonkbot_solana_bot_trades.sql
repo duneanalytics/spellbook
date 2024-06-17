@@ -1,10 +1,12 @@
 {{ config(
+    tags = ['prod_exclude'],
     alias = 'bot_trades',
     schema = 'bonkbot_solana',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']
    )
 }}
