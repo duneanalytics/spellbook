@@ -57,7 +57,6 @@ xdai_transfers  as (
     {% endif %}
 ),
 
-
 gas_fee as (
     SELECT 
         'gas_fee' as transfer_type,
