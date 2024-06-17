@@ -18,7 +18,7 @@ dexs_v1_30bps AS (
             blockchain = 'blast',
             project = 'thruster',
             version = 'UNI V2 30bps',
-            Pair_evt_Swap = source('thruster_blast', '.ThrusterPair_V2_Point_3_Fee_evt_Swap'),
+            Pair_evt_Swap = source('thruster_blast', 'ThrusterPair_V2_Point_3_Fee_evt_Swap'),
             Factory_evt_PairCreated = source('thruster_blast', 'ThrusterFactory_Point_3_Fee_evt_PairCreated')
         )
     }}
