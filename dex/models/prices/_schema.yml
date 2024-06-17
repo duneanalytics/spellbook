@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: dex_prices
+    meta:
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: ['ethereum', 'polygon', 'arbitrum', 'optimism', 'gnosis', 'fantom', 'avalanche_c', 'trades', 'dex', 'cross-chain', 'prices']
+    description: >
+      This table loads the prices of tokens from the dex.trades table. This helps for missing tokens from the prices.usd table
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hour
+            - blockchain
+            - contract_address
+    columns:
+      - &block_month
+        name: block_month
+        description: "Month corresponding to the prices data"
+      - &hour
+        name: hour
+        description: "hour corresponding to the prices data"
+      - &contract_address
+        name: contract_address
+        description: "token's contract address"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &median_price
+        name: median_price
+        description: "Median price of the token in USD within the corresponding hour"
+      - &sample_size
+        name: sample_size
+        description: "Number of times the token was traded within the coressponding hour"

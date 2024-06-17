@@ -22,6 +22,7 @@
          when 'zkevm' = chain_ then 'https://zkevm.polygonscan.com' || CAST(hash_ AS VARCHAR)
          when 'scroll' = chain_ then 'https://scrollscan.com' || CAST(hash_ AS VARCHAR)
          when 'zora' = chain_ then 'https://zora.superscan.network' || CAST(hash_ AS VARCHAR)
+         when 'mantle' = chain_ then 'https://explorer.mantle.xyz/tx/' || CAST(hash_ AS VARCHAR)
          else 'https://etherscan.io/tx/' || CAST(hash_ AS VARCHAR)
       end as explorer_tx_hash_url;
 {% endmacro %}
