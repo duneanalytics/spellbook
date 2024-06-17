@@ -17,7 +17,7 @@
 
 WITH
   allFeePayments AS (
-    SELECT
+    SELECT DISTINCT
       tx_id,
       IF(balance_change > 0, 'SOL', 'SPL') AS feeTokenType,
       IF(
