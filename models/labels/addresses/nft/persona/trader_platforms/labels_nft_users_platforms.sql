@@ -7,13 +7,13 @@ SELECT
     blockchain,
     project,
     buyer AS address
-FROM {{ ref('nft_trades') }}
+FROM {{ source('nft','trades') }}
         UNION
 SELECT
     blockchain,
     project,
     seller AS address
-FROM {{ ref('nft_trades') }}
+FROM {{ source('nft','trades') }}
 )
 
 SELECT

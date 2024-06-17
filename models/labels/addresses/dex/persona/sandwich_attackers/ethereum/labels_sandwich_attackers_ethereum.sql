@@ -4,8 +4,8 @@ with
  eth_sandwich_attackers as (
     select 
         distinct buy.tx_to as address
-    from {{ ref('dex_trades') }} buy
-    inner join {{ ref('dex_trades') }} sell
+    from {{ source('dex', 'trades') }} buy
+    inner join {{ source('dex', 'trades') }} sell
         on sell.block_time = buy.block_time
             and sell.tx_hash != buy.tx_hash
             and buy."tx_from" = sell."tx_from"
