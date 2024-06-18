@@ -1,10 +1,10 @@
 {{ config(
         alias='native',
         tags=['static'],
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","solana", "celo", "zksync", "mantle"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","solana", "celo", "zksync", "mantle","blast"]\',
                                     "sector",
                                     "tokens",
-                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","angus_1"]\') }}')}}
+                                    \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","angus_1","Henrystats"]\') }}')}}
 
 SELECT chain, symbol, price_symbol, price_address, decimals
 FROM (VALUES
@@ -22,4 +22,5 @@ FROM (VALUES
          , ('celo', 'CELO', 'CELO', 0x471ece3750da237f93b8e339c536989b8978a438, 18)
          , ('zksync', 'ETH', 'WETH', 0x000000000000000000000000000000000000800A, 18)
          , ('mantle', 'MNT', 'WMNT', 0x78c1b0c915c4faa5fffa6cabf0219da63d7f4cb8, 18)
+         , ('blast', 'ETH', 'WETH', 0x4300000000000000000000000000000000000004, 18)
      ) AS temp_table (chain, symbol, price_symbol, price_address, decimals)
