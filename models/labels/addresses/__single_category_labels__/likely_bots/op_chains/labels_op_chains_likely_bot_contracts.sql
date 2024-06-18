@@ -34,8 +34,7 @@ FROM (
             SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('erc20_' + chain,'evt_transfer') }} r WHERE t.hash = r.evt_tx_hash AND t.block_number = r.evt_block_number) THEN 1
                     WHEN EXISTS (SELECT 1 FROM {{ source('nft_' + chain,'transfers') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number ) THEN 1
                 ELSE 0 END) AS num_token_tfer_txs,
-
-            SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('dex_trades') }} r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND r.block_month = DATE_TRUNC('month',r.block_time) AND blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS num_dex_trade_txs,
+            SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('dex', 'trades') }} r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND r.block_month = DATE_TRUNC('month',r.block_time) AND blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS num_dex_trade_txs,
             SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ ref('perpetual_trades') }} r WHERE t.hash = r.tx_hash AND t.block_time = r.block_time AND r.block_month = DATE_TRUNC('month',r.block_time) AND blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS num_perp_trade_txs,
             SUM(CASE WHEN EXISTS (SELECT 1 FROM {{ source('nft', 'trades') }} r WHERE t.hash = r.tx_hash AND t.block_number = r.block_number AND r.block_month = DATE_TRUNC('month',r.block_time) AND blockchain = '{{chain}}') THEN 1 ELSE 0 END) AS num_nft_trade_txs,
         COUNT(*) AS num_txs, COUNT(DISTINCT "from") AS num_senders, COUNT(*)/COUNT(DISTINCT "from") AS txs_per_sender,
