@@ -45,6 +45,7 @@
         , ('0xa218543cc21ee9388fa1e509f950fd127ca82155', 'true', '1inch'                , 'SettlementV1'            , ['fantom'])
         , ('0x7f069df72b7a39bce9806e3afaf579e54d8cf2b9', 'true', '1inch'                , 'SettlementV1'            , ['base'])
         , ('0x11de482747d1b39e599f120d526af512dd1a9326', 'true', '1inch'                , 'SettlementV1'            , ['zksync'])
+        , ('0xfb2809a5314473e1165f6b58018e20ed8f07b840', 'true', '1inch'                , 'SettlementV2'            , ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base'])
         , ('0x0cae51e1032e8461f4806e26332c030e34de3adb', 'true', 'AnySwap'              , 'AnyswapV3Router'         , ['arbitrum'])
         , ('0x7782046601e7b9b05ca55a3899780ce6ee6b8b2b', 'true', 'AnySwap'              , 'AnyswapV6Router'         , ['ethereum'])
         , ('0xb0731d50c681c45856bfc3f7539d5f61d4be81d8', 'true', 'AnySwap'              , 'UNDEFINED'               , ['avalanche_c'])
@@ -72,6 +73,7 @@
         , ('0x99a58482bd75cbab83b27ec03ca68ff489b5788f', 'true', 'Curvefi'              , 'SwapRouter'              , ['ethereum'])
         , ('0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7', 'true', 'Curvefi'              , 'ThreepoolSwap'           , ['ethereum'])
         , ('0xdc24316b9ae028f1497c275eb9192a3ea0f67022', 'true', 'Curvefi'              , 'StETHSwap'               , ['ethereum'])
+        , ('0xF0d4c12A5768D806021F80a262B4d39d26C58b8D', 'true', 'Curvefi'              , 'CurveRouterV1'           , ['ethereum'])
         , ('0x1d8b86e3d88cdb2d34688e87e72f388cb541b7c8', 'true', 'Curvefi'              , 'VyperContract'           , ['polygon'])
         , ('0x43b4fdfd4ff969587185cdb6f0bd875c5fc83f8c', 'true', 'Curvefi'              , 'Vyper'                   , ['ethereum'])
         , ('0x0656fd85364d03b103ceeda192fb2d3906a6ac15', 'true', 'DODO'                 , 'DODOFeeRouteProxy'       , ['bnb'])
@@ -111,8 +113,7 @@
         , ('0x1fc3607fa67b58deddb0faf7a116f417a20c551c', 'true', 'Kyber'                , 'AggregationRouter'       , ['fantom'])
         , ('0x546c79662e028b661dfb4767664d0273184e4dd1', 'true', 'Kyber'                , 'AggregationRouter'       , ['polygon'])
         , ('0x617dee16b86534a5d792a4d7a62fb491b544111e', 'true', 'Kyber'                , 'MetaAggregationRouterV1' , ['ethereum','polygon','fantom'])
-        , ('0x6131b5fae19ea4f9d964eac0408e4408b66337b5', 'true', 'Kyber'                , 'MetaAggregationRouterV2' , ['ethereum','bnb','polygon','arbitrum','avalanche_c','fantom'])
-        , ('0x6131b5fae19ea4f9d964eac0408e4408b66337b5', 'true', 'Kyber'                , 'MetaAggregationRouterV2' , ['optimism'])
+        , ('0x6131b5fae19ea4f9d964eac0408e4408b66337b5', 'true', 'Kyber'                , 'MetaAggregationRouterV2' , ['ethereum','bnb','polygon','arbitrum','avalanche_c','optimism','fantom'])
         , ('0xdf1a1b60f2d438842916c0adc43748768353ec25', 'true', 'Kyber'                , 'AggregationRouterV2'     , ['polygon','fantom'])
         , ('0xb18d4f69627f8320619a696202ad2c430cef7c53', 'true', 'LevinSwap'            , 'UniswapV2Router02'       , ['gnosis'])
         , ('0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae', 'true', 'LiFi'                 , 'DiamondV2'               , ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom'])
@@ -358,21 +359,6 @@ contracts as (
             , 'TransitSwap'
             , 'ZeroEx'
         ], project) as multi
-        , contains(array[
-              '1inch'
-            , 'ZeroEx'
-            , 'Clipper'
-            , 'Hashflow'
-            , 'Native'
-            , 'Swaap'
-            , 'Paraswap'
-        ], project) as lop
-        , contains(array[
-              '1inch'
-            , 'CoWSwap'
-            , 'Uniswap'
-            , 'Bebop'
-        ], project) as auction
         , tag
     from (values
         {% for row in config if blockchain in row[4] %}
@@ -400,7 +386,7 @@ select
     , address
     , project
     , tag
-    , map_from_entries(array[('user', user), ('multi', multi), ('lop', lop), ('auction', auction)]) as flags
+    , map_from_entries(array[('user', user), ('multi', multi), ('recreated', first_created_at <> last_created_at)]) as flags
     , first_created_at
     , last_created_at
     , last_creator

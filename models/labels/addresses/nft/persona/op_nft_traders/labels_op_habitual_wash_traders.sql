@@ -5,13 +5,13 @@
 WITH wash_trades_count AS
 (SELECT trader, COUNT(trader) AS trade_count
 FROM (SELECT buyer AS trader
-FROM {{ ref('nft_optimism_wash_trades') }}
+FROM {{ source('nft_optimism','wash_trades') }}
 WHERE is_wash_trade = true
 
 UNION ALL
 
 SELECT seller AS trader
-FROM {{ ref('nft_optimism_wash_trades') }}
+FROM {{ source('nft_optimism','wash_trades') }}
 WHERE is_wash_trade = true
 )
 GROUP BY trader

@@ -23,7 +23,7 @@ SELECT
 FROM
     {{ source('balancer_ethereum', 'PolygonRootGaugeFactory_evt_PolygonRootGaugeCreated') }} gauge
     LEFT JOIN {{ source('balancer_polygon', 'ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated') }} streamer ON gauge.recipient = streamer.streamer
-    LEFT JOIN {{ ref('labels_balancer_v2_pools_polygon') }} pools ON pools.address = streamer.pool
+    LEFT JOIN {{ source('labels', 'balancer_v2_pools_polygon') }} pools ON pools.address = streamer.pool
 
 UNION ALL
 
@@ -44,7 +44,7 @@ FROM
     {{ source('balancer_ethereum', 'CappedPolygonRootGaugeFactory_evt_GaugeCreated') }} gauge
     INNER JOIN {{ source('balancer_ethereum', 'CappedPolygonRootGaugeFactory_call_create') }} call ON call.call_tx_hash = gauge.evt_tx_hash
     LEFT JOIN {{ source('balancer_polygon', 'ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated') }} streamer ON streamer.streamer = call.recipient
-    LEFT JOIN {{ ref('labels_balancer_v2_pools_polygon') }} pools ON pools.address = streamer.pool),
+    LEFT JOIN {{ source('labels', 'balancer_v2_pools_polygon') }} pools ON pools.address = streamer.pool),
 
 child_gauges AS(
 SELECT distinct
@@ -62,7 +62,7 @@ SELECT distinct
     'identifier' AS label_type
 FROM {{ source('balancer_ethereum', 'CappedPolygonRootGaugeFactory_call_create') }} call
     LEFT JOIN {{ source('balancer_polygon', 'ChildChainGaugeFactory_call_create') }} child ON child.output_0 = call.recipient
-    LEFT JOIN {{ ref('labels_balancer_v2_pools_polygon') }} pools ON pools.address = child.pool),
+    LEFT JOIN {{ source('labels', 'balancer_v2_pools_polygon') }} pools ON pools.address = child.pool),
 
 gauges AS(
 SELECT * FROM reward_gauges

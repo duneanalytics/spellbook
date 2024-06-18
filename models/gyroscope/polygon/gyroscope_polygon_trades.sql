@@ -46,7 +46,7 @@ with E_CLPs AS (
     tx_from,
     tx_to,
     evt_index
-    FROM {{ ref('balancer_v2_polygon_trades') }} x
+    FROM {{ source('balancer_v2_polygon', 'trades') }} x
     inner join E_CLPs y
     on x.block_time >= y.min_block_time
     and x.project_contract_address = y.pool

@@ -600,8 +600,8 @@
                 "receiver":         "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*8 + 12 + 1, 32)",
                 "maker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8))) + 12 + 1, 20)",
                 "taker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8))) + 12 + 1, 20)",
-                "maker_max_amount": "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*7 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*7 + 24 + 1, 8))) + 1, 32)",
-                "taker_max_amount": "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*6 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*6 + 24 + 1, 8))) + 1, 32)",
+                "making_amount":    "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*7 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*7 + 24 + 1, 8))) + 1, 32)",
+                "taking_amount":    "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*6 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*6 + 24 + 1, 8))) + 1, 32)",
                 "deadline":         "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 24 + 1, 8)",
                 "nonce":            "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*3 + 1, 32)",
                 "order_hash":       "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*10 + 1, 16)",
@@ -783,6 +783,29 @@ logs as (
 , joined as (
     select
         *
+        , coalesce(log_maker, call_maker, call_to) as maker
+        , coalesce(log_taker, call_taker) as taker
+        , coalesce(log_receiver, call_receiver) as receiver
+        , coalesce(log_maker_asset, call_maker_asset) as maker_asset
+        , coalesce(log_taker_asset, call_taker_asset) as taker_asset
+        , coalesce(log_maker_max_amount, call_maker_max_amount) as maker_max_amount
+        , coalesce(log_taker_max_amount, call_taker_max_amount) as taker_max_amount
+        , coalesce(log_maker_min_amount, call_maker_min_amount) as maker_min_amount
+        , coalesce(log_taker_min_amount, call_taker_min_amount) as taker_min_amount
+        , coalesce(log_making_amount, call_making_amount) as making_amount
+        , coalesce(log_taking_amount, call_taking_amount) as taking_amount
+        , coalesce(log_start, call_start) as order_start
+        , coalesce(log_end, call_end) as order_end
+        , coalesce(log_deadline, call_deadline) as order_deadline
+        , coalesce(log_maker_fee_amount, call_maker_fee_amount) as maker_fee_amount
+        , coalesce(log_taker_fee_amount, call_taker_fee_amount) as taker_fee_amount
+        , coalesce(log_fee_asset, call_fee_asset) as fee_asset
+        , coalesce(log_fee_max_amount, call_fee_max_amount) as fee_max_amount
+        , coalesce(log_fee_min_amount, call_fee_min_amount) as fee_min_amount
+        , coalesce(log_fee_amount, call_fee_amount) as fee_amount
+        , coalesce(log_fee_receiver, call_fee_receiver) as fee_receiver
+        , coalesce(log_nonce, call_nonce) as order_nonce
+        , coalesce(log_order_hash, call_order_hash, concat(tx_hash, to_big_endian_32(cast(call_trade_counter as int)))) as order_hash
         , count(*) over(partition by blockchain, block_number, tx_hash, call_trace_address, call_trade) as trades
     from calls
     full join logs using(block_number, tx_hash, topic0)
@@ -812,7 +835,9 @@ select
     blockchain
     , project
     , tag
-    , flags
+    , map_concat(flags, map_from_entries(array[
+        ('auction', coalesce(order_start, uint256 '0') > uint256 '0' or project in ('CoWSwap', 'Bebop'))
+    ])) as flags
     , block_number
     , block_time
     , tx_hash
@@ -827,29 +852,29 @@ select
     , call_error
     , call_trade
     , method
-    , coalesce(coalesce(log_maker, call_maker), call_to) as maker
-    , coalesce(log_taker, call_taker) as taker
-    , coalesce(log_receiver, call_receiver) as receiver
-    , coalesce(log_maker_asset, call_maker_asset) as maker_asset
-    , coalesce(log_taker_asset, call_taker_asset) as taker_asset
-    , coalesce(log_maker_max_amount, call_maker_max_amount) as maker_max_amount
-    , coalesce(log_taker_max_amount, call_taker_max_amount) as taker_max_amount
-    , coalesce(log_maker_min_amount, call_maker_min_amount) as maker_min_amount
-    , coalesce(log_taker_min_amount, call_taker_min_amount) as taker_min_amount
-    , coalesce(log_making_amount, call_making_amount) as making_amount
-    , coalesce(log_taking_amount, call_taking_amount) as taking_amount
-    , coalesce(log_start, call_start) as order_start
-    , coalesce(log_end, call_end) as order_end
-    , coalesce(log_deadline, call_deadline) as order_deadline
-    , coalesce(log_maker_fee_amount, call_maker_fee_amount) as maker_fee_amount
-    , coalesce(log_taker_fee_amount, call_taker_fee_amount) as taker_fee_amount
-    , coalesce(log_fee_asset, call_fee_asset) as fee_asset
-    , coalesce(log_fee_max_amount, call_fee_max_amount) as fee_max_amount
-    , coalesce(log_fee_min_amount, call_fee_min_amount) as fee_min_amount
-    , coalesce(log_fee_amount, call_fee_amount) as fee_amount
-    , coalesce(log_fee_receiver, call_fee_receiver) as fee_receiver
-    , coalesce(log_nonce, call_nonce) as order_nonce
-    , coalesce(log_order_hash, call_order_hash, to_big_endian_64(call_trade_counter)) as order_hash
+    , maker
+    , taker
+    , receiver
+    , maker_asset
+    , taker_asset
+    , maker_max_amount
+    , taker_max_amount
+    , maker_min_amount
+    , taker_min_amount
+    , coalesce(making_amount, if(order_start = uint256 '0' or order_start = order_end, maker_max_amount, maker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double))), maker_max_amount, maker_min_amount) as making_amount
+    , coalesce(taking_amount, if(order_start = uint256 '0' or order_start = order_end, taker_max_amount, taker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double))), taker_max_amount, taker_min_amount) as taking_amount
+    , order_start
+    , order_end
+    , order_deadline
+    , maker_fee_amount
+    , taker_fee_amount
+    , fee_asset
+    , fee_max_amount
+    , fee_min_amount
+    , fee_amount
+    , fee_receiver
+    , order_nonce
+    , order_hash
     , array[input] as call_input
     , array[output] as call_output
     , index as event_index
