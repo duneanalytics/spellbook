@@ -15,7 +15,8 @@ models:
           combination_of_columns:
             - blockchain
             - tx_id
-            - evt_index
+            - outer_instruction_index
+            - inner_instruction_index
     columns: 
       - &blockchain
         name: blockchain
@@ -53,9 +54,6 @@ models:
       - &tx_id
         name: tx_hash
         description: "Unique transaction hash value tied to each transaction on the DEX"
-      - &project_contract_address
-        name: project_contract_address
-        description: "Project contract address which executed the trade on the blockchain"
       - &token_pair
         name: token_pair
         description: "Token symbol pair for each token involved in the trade"
@@ -113,7 +111,8 @@ models:
           combination_of_columns:
             - blockchain
             - tx_id
-            - evt_index
+            - outer_instruction_index
+            - inner_instruction_index
     columns: 
       - *blockchain
       - *project
@@ -127,7 +126,6 @@ models:
       - *token_bought_symbol
       - *trader_id
       - *tx_id
-      - *project_contract_address
       - *token_pair
       - *tx_index
       - *token_sold_amount_raw

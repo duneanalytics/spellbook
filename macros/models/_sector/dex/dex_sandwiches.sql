@@ -3,7 +3,7 @@
 -- Checking that each frontrun trade has a matching backrun and at least one victim in between
 WITH indexed_sandwich_trades AS (
     SELECT DISTINCT front.block_time
-    , t.tx_hash_all AS tx_hash
+    , t.tx_id_unwrapped AS tx_id
     , front.project
     , front.version
     , front.project_contract_address
@@ -11,26 +11,24 @@ WITH indexed_sandwich_trades AS (
     FROM {{ ref('dex_solana_trades') }} front
     INNER JOIN {{ ref('dex_solana_trades') }} back ON back.blockchain='{{blockchain}}'
         AND front.block_time=back.block_time
-        AND front.project_contract_address=back.project_contract_address
-        AND front.tx_from=back.tx_from
-        AND front.tx_hash!=back.tx_hash
+        --AND front.project_contract_address=back.project_contract_address
+        AND front.trader_id=back.trader_id
+        AND front.tx_id + 1 < back.tx_id
         AND front.token_sold_mint_address=back.token_bought_mint_address
         AND front.token_bought_mint_address=back.token_sold_mint_address
-        AND front.evt_index + 1 < back.evt_index
         {% if is_incremental() %}
         AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
     INNER JOIN {{ ref('dex_solana_trades') }} victim ON victim.blockchain='{{blockchain}}'
         AND front.block_time=victim.block_time
-        AND front.project_contract_address=victim.project_contract_address
-        AND front.tx_from!=victim.tx_from
+        --AND front.project_contract_address=victim.project_contract_address
+        AND victim.trader_id BETWEEN front.trader_id AND back.trader_id
         AND front.token_bought_mint_address=victim.token_bought_mint_address
         AND front.token_sold_mint_address=victim.token_sold_mint_address
-        AND victim.evt_index BETWEEN front.evt_index AND back.evt_index
         {% if is_incremental() %}
         AND {{ incremental_predicate('victim.block_time') }}
         {% endif %}
-    CROSS JOIN UNNEST(ARRAY[(front.tx_hash, front.evt_index), (back.tx_hash, back.evt_index)]) AS t(tx_hash_all, evt_index_all)
+    CROSS JOIN UNNEST(ARRAY[front.tx_id, back.tx_id]) AS t(tx_id_unwrapped)
     WHERE front.blockchain='{{blockchain}}'
     {% if is_incremental() %}
     AND {{ incremental_predicate('front.block_time') }}
@@ -43,7 +41,7 @@ SELECT dt.blockchain
 , dt.version
 , dt.block_time
 , dt.block_month
-, tx.block_number
+, tx.block_slot
 , dt.token_sold_mint_address
 , dt.token_bought_mint_address
 , dt.token_sold_vault
@@ -52,7 +50,7 @@ SELECT dt.blockchain
 , dt.token_bought_symbol
 , dt.trader_id
 , dt.tx_id
-, dt.project_contract_address
+--, dt.project_contract_address
 , dt.token_pair
 , tx.index AS tx_index
 , dt.token_sold_amount_raw
@@ -69,12 +67,11 @@ SELECT dt.blockchain
 , dt.evt_index
 FROM {{ ref('dex_solana_trades') }} dt
 INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
-    AND dt.tx_hash=s.tx_hash
-    AND dt.project_contract_address=s.project_contract_address
-    AND dt.evt_index=s.evt_index
+    AND dt.tx_id=s.tx_id
+    --AND dt.project_contract_address=s.project_contract_address
 -- Adding block_number and tx_index to the mix, can be removed once those are in dex.trades
 INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
-    AND tx.hash=s.tx_hash
+    AND tx.id=s.tx_id
     {% if is_incremental() %}
     AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
