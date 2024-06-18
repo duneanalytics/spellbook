@@ -1,14 +1,14 @@
 {{ config(
-    alias = 'uniswap_v2_pools',
-                 
+    alias = 'uniswap_v2_pools',                 
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "lido_liquidity",
-                                \'["ppclunghe", "gregshestakovlido"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.time')],
+    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                spell_type = "project",
+                                spell_name = "lido_liquidity",
+                                contributors = \'["pipistrella", "zergil1397"]\') }}'
     )
 }}
 
@@ -67,7 +67,7 @@ cross join unnest(day) as days(day)
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
       AND DATE_TRUNC('day', minute) < current_date
       AND blockchain = 'ethereum'
@@ -114,7 +114,7 @@ cross join unnest(day) as days(day)
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
         {% else %}
-        WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+        WHERE {{ incremental_predicate('p.minute') }}
         {% endif %}
         AND blockchain = 'ethereum'
         AND contract_address IN (SELECT address FROM tokens)
@@ -136,7 +136,7 @@ cross join unnest(day) as days(day)
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('sw.evt_block_time') }}
     {% endif %}
     and sw.contract_address IN (SELECT address  FROM  pools)
     GROUP BY 1,2,3,4
@@ -155,7 +155,7 @@ cross join unnest(day) as days(day)
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', mt.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('mt.evt_block_time') }}
     {% endif %}
       and mt.contract_address IN (SELECT address FROM pools)
     GROUP BY 1,  2,  3,  4
@@ -175,7 +175,7 @@ cross join unnest(day) as days(day)
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', bn.evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', bn.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('bn.evt_block_time') }}
     {% endif %}
       and bn.contract_address IN (SELECT address FROM pools)
     GROUP BY 1, 2, 3, 4
@@ -221,7 +221,7 @@ cross join unnest(day) as days(day)
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
         {% else %}
-        WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+        WHERE {{ incremental_predicate('sw.evt_block_time') }}
         {% endif %}         
         GROUP BY 1, 2, 3, 4
         
@@ -266,5 +266,5 @@ left join trading_volume AS tv ON l.time = tv.time AND l.pool = tv.pool
   
 
  
-select CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), COALESCE(paired_token_symbol, 'unknown')),':') , main_token_symbol, ' ', format('%,.3f',round(coalesce(fee,0),4))) as pool_name,* 
+select blockchain||' '||project||' '||COALESCE(paired_token_symbol, 'unknown')||':'||main_token_symbol||' '||format('%,.3f',round(coalesce(fee,0),4)) as pool_name,* 
 from all_metrics
