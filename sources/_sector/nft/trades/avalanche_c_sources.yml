@@ -15,3 +15,7 @@ sources:
       - name: JoepegExchange_evt_TakerBid
       - name: JoepegExchange_evt_TakerAsk
       - name: JoepegExchange_evt_RoyaltyPayment
+  - name: superchief_avalanche_c
+    tables:
+      - name: AuctionManager_evt_NewAuction
+      - name: AuctionManager_evt_AuctionFinished
