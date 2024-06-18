@@ -43,6 +43,7 @@
     , ref('auragi_arbitrum_base_trades')
     , ref('wombat_exchange_arbitrum_base_trades')
     , ref('solidly_v3_arbitrum_base_trades')
+    , ref('dackieswap_v3_arbitrum_base_trades')
     , ref('dackieswap_v2_arbitrum_base_trades')
 ] %}
 
