@@ -5,6 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key='contract_address'
+    )
 }}
 WITH vasa_contracts as (
     SELECT distinct

@@ -1,11 +1,11 @@
 {{ config(
-
         schema = 'nft_ethereum',
         alias = 'aggregators_markers',
 		materialized = 'incremental',
 		file_format = 'delta',
 		incremental_strategy = 'merge',
         unique_key='hash_marker'
+        )
 }}
 
  WITH reservoir AS (
