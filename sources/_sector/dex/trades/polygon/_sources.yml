@@ -60,8 +60,11 @@ sources:
     tables:
       - name: DooarSwapV2Pair_evt_Swap
       - name: DooarSwapV2Factory_evt_PairCreated
+  - name: smardex_polygon
+    tables:
+      - name: SmardexPair_evt_Swap
+      - name: SmardexFactory_evt_PairCreated
   - name: gridex_polygon
     tables:
       - name: GridFactory_evt_GridCreated
       - name: GridPair_evt_Swap
-

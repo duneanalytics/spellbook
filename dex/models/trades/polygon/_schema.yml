@@ -325,6 +325,23 @@ models:
           filter:
             version: 2
 
+  - name: smardex_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: smardex
+      contributors: blanchemaria6
+    config:
+      tags: [ 'base', 'dex', 'trades', 'smardex' ]
+    description: "smardex base trades on polygon"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('smardex_polygon_base_trades_seed')
+          
   - name: gridex_polygon_base_trades
     meta:
       blockchain: polygon
@@ -343,4 +360,3 @@ models:
           seed_file: ref('gridex_polygon_base_trades_seed')
           filter:
             version: 1
-
