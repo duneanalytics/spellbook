@@ -86,23 +86,6 @@ models:
       bitcoin:
         +schema: cex_bitcoin
 
-    uniswap:
-      +schema: uniswap
-      arbitrum:
-        +schema: uniswap_arbitrum
-      ethereum:
-        +schema: uniswap_ethereum
-      optimism:
-        +schema: uniswap_optimism
-      polygon:
-        +schema: uniswap_polygon
-      bnb:
-        +schema: uniswap_bnb
-      base:
-        +schema: uniswap_base
-      celo:
-        +schema: uniswap_celo
-
     balances:
       +schema: balances
       ethereum:
@@ -113,21 +96,6 @@ models:
         +schema: balances_bnb
       polygon:
         +schema: balances_polygon
-
-    dodo:
-      +schema: dodo
-      ethereum:
-        +schema: dodo_ethereum
-      bnb:
-        +schema: dodo_bnb
-      polygon:
-        +schema: dodo_polygon
-      arbitrum:
-        +schema: dodo_arbitrum
-      optimism:
-        +schema: dodo_optimism
-      base:
-        +schema: dodo_base
 
     labels:
       +schema: labels
@@ -149,11 +117,6 @@ models:
 
     solana_utils:
       +schema: solana_utils
-
-    odos:
-      +schema: odos
-      avalanche_c:
-        +schema: odos_avalanche_c
 
     transfers:
       +schema: transfers
@@ -200,13 +163,6 @@ models:
       base:
         +schema: safe_base
 
-    lifi:
-      +schema: lifi
-      fantom:
-        +schema: lifi_fantom
-      optimism:
-        +schema: lifi_optimism
-
     aragon:
       +schema: aragon
       ethereum:
@@ -219,11 +175,6 @@ models:
         +schema: aragon_base
       arbitrum:
         +schema: aragon_arbitrum
-
-    spiritswap:
-      +schema: spiritswap
-      fantom:
-        +schema: spiritswap_fantom
 
     jarvis_network:
       +schema: jarvis_network
@@ -239,11 +190,6 @@ models:
       +schema: spaceid
       bnb:
         +schema: spaceid_bnb
-
-    spartacus_exchange:
-      +schema: spartacus_exchange
-      fantom:
-        +schema: spartacus_exchange_fantom
 
     tornado_cash:
       +schema: tornado_cash
@@ -302,15 +248,6 @@ models:
       ethereum:
         +schema: fiat_dao_ethereum
 
-    curvefi:
-      +schema: curvefi
-      ethereum:
-        +schema: curvefi_ethereum
-      optimism:
-        +schema: curvefi_optimism
-      fantom:
-        +schema: curvefi_fantom
-
     cow_protocol:
       +schema: cow_protocol
       ethereum:
@@ -340,21 +277,6 @@ models:
       avalanche_c:
         +schema: yield_yak_avalanche_c
 
-    kyberswap:
-      +schema: kyberswap
-      avalanche_c:
-        +schema: kyberswap_avalanche_c
-      optimism:
-        +schema: kyberswap_optimism
-      ethereum:
-        +schema: kyberswap_ethereum
-      arbitrum:
-        +schema: kyberswap_arbitrum
-      bnb:
-        +schema: kyberswap_bnb
-      polygon:
-        +schema: kyberswap_polygon
-
     hashflow:
       +schema: hashflow
       ethereum:
@@ -368,25 +290,6 @@ models:
       +schema: nexusmutual
       ethereum:
         +schema: nexusmutual_ethereum
-
-    zeroex:
-      +schema: zeroex
-      ethereum:
-        +schema: zeroex_ethereum
-      optimism:
-        +schema: zeroex_optimism
-      polygon:
-        +schema: zeroex_polygon
-      avalanche_c:
-        +schema: zeroex_avalanche_c
-      fantom:
-        +schema: zeroex_fantom
-      arbitrum:
-        +schema: zeroex_arbitrum
-      bnb:
-        +schema: zeroex_bnb
-      celo:
-        +schema: zeroex_celo
 
 
     ampleforth:
@@ -470,11 +373,6 @@ models:
       +schema: tokenfy
       ethereum:
         +schema: tokenfy_ethereum
-
-    tokenlon:
-      +schema: tokenlon
-      ethereum:
-        +schema: tokenlon_ethereum
 
     thales:
       +schema: thales
@@ -569,11 +467,6 @@ models:
       polygon:
         +schema: rocifi_polygon
 
-    oneinch:
-      +schema: oneinch
-      ethereum:
-        +schema: oneinch_ethereum
-
     pooltogether:
       +schema: pooltogether
       ethereum:
@@ -627,15 +520,6 @@ models:
         +schema: layerzero_celo
       base:
         +schema: layerzero_base
-
-    bebop:
-      +schema: bebop
-      ethereum:
-        +schema: bebop_ethereum
-      polygon:
-        +schema: bebop_polygon
-      arbitrum:
-        +schema: bebop_arbitrum
 
     tokemak:
       +schema: tokemak
