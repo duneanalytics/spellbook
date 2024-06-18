@@ -2,7 +2,7 @@
         alias = 'pool_trades',
         materialized = 'incremental',
         schema = 'sudoswap_ethereum',
-        
+
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['day', 'pool_address'],
@@ -41,7 +41,7 @@ SELECT
         ELSE -1 * cast(nft_amount as int256)
       END
     ) AS nft_change_trading
-FROM {{ ref('sudoswap_ethereum_base_trades') }} t
+FROM {{ source('sudoswap_ethereum','base_trades') }} t
 LEFT JOIN {{ ref('prices_usd_forward_fill') }} usd
 ON usd.blockchain = null and usd.symbol = 'ETH'
     AND usd.minute = date_trunc('minute',t.block_time)

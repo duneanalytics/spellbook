@@ -37,7 +37,7 @@ WITH pool_labels AS (
             contract_address AS token,
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
-        FROM {{ ref('dex_prices') }}
+        FROM {{ source('dex', 'prices') }}
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),

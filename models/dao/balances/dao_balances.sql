@@ -107,7 +107,7 @@ LEFT JOIN
     AND e.blockchain = 'ethereum'
     AND e.symbol = 'WETH'
 LEFT JOIN
-{{ ref('dex_prices') }} dp 
+{{ source('dex', 'prices') }} dp 
     ON dp.contract_address = db.asset_contract_address
     AND d.day = dp.hour 
     AND dp.blockchain = db.blockchain
