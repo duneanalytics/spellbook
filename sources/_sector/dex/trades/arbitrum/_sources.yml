@@ -138,4 +138,9 @@ sources:
     tables:
       - name: SolidlyV3Factory_evt_PoolCreated
       - name: SolidlyV3Pool_evt_Swap
+  - name: dackieswap_v2_arbitrum
+    tables:
+      - name: DackieFactory_evt_PairCreated
+      - name: DackiePair_evt_Swap
+
 
