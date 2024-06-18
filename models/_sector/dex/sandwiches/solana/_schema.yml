@@ -75,9 +75,6 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD Value"
-      - &evt_index
-        name: evt_index
-        description: "Event index"
       - &fee_tier
         name: fee_tier
         description: ""
@@ -133,7 +130,6 @@ models:
       - *token_sold_amount
       - *token_bought_amount
       - *amount_usd
-      - *evt_index
       - *fee_tier
       - *fee_usd
       - *project_program_id

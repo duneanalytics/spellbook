@@ -49,7 +49,6 @@ SELECT DISTINCT dt.blockchain
 , dt.outer_instruction_index
 , dt.inner_instruction_index
 , dt.trade_source
-, dt.evt_index
 , txs.index AS tx_index
 FROM {{ ref('dex_solana_trades') }} dt
 INNER JOIN sandwich_bounds sb ON sb.block_time=dt.block_time

@@ -7,7 +7,6 @@ WITH indexed_sandwich_trades AS (
     , front.project
     , front.version
     , front.project_contract_address
-    , t.evt_index_all AS evt_index
     FROM {{ ref('dex_solana_trades') }} front
     INNER JOIN {{ ref('dex_solana_trades') }} back ON back.blockchain='{{blockchain}}'
         AND front.block_time=back.block_time
@@ -64,7 +63,6 @@ SELECT dt.blockchain
 , dt.outer_instruction_index
 , dt.inner_instruction_index
 , dt.trade_source
-, dt.evt_index
 FROM {{ ref('dex_solana_trades') }} dt
 INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
     AND dt.tx_id=s.tx_id
