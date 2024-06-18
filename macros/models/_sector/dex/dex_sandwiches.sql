@@ -6,11 +6,11 @@ WITH indexed_sandwich_trades AS (
     , t.tx_id_unwrapped AS tx_id
     , front.project
     , front.version
-    , front.project_contract_address
+    , front.project_program_id
     FROM {{ ref('dex_solana_trades') }} front
     INNER JOIN {{ ref('dex_solana_trades') }} back ON back.blockchain='{{blockchain}}'
         AND front.block_time=back.block_time
-        --AND front.project_contract_address=back.project_contract_address
+        AND front.project_program_id=back.project_program_id
         AND front.trader_id=back.trader_id
         AND front.tx_id + 1 < back.tx_id
         AND front.token_sold_mint_address=back.token_bought_mint_address
@@ -20,7 +20,7 @@ WITH indexed_sandwich_trades AS (
         {% endif %}
     INNER JOIN {{ ref('dex_solana_trades') }} victim ON victim.blockchain='{{blockchain}}'
         AND front.block_time=victim.block_time
-        --AND front.project_contract_address=victim.project_contract_address
+        AND front.project_program_id=victim.project_program_id
         AND victim.trader_id BETWEEN front.trader_id AND back.trader_id
         AND front.token_bought_mint_address=victim.token_bought_mint_address
         AND front.token_sold_mint_address=victim.token_sold_mint_address
@@ -49,7 +49,6 @@ SELECT dt.blockchain
 , dt.token_bought_symbol
 , dt.trader_id
 , dt.tx_id
---, dt.project_contract_address
 , dt.token_pair
 , tx.index AS tx_index
 , dt.token_sold_amount_raw
@@ -66,7 +65,7 @@ SELECT dt.blockchain
 FROM {{ ref('dex_solana_trades') }} dt
 INNER JOIN indexed_sandwich_trades s ON dt.block_time=s.block_time
     AND dt.tx_id=s.tx_id
-    --AND dt.project_contract_address=s.project_contract_address
+    AND dt.project_program_id=s.project_program_id
 -- Adding block_number and tx_index to the mix, can be removed once those are in dex.trades
 INNER JOIN {{transactions}} tx ON tx.block_time=s.block_time
     AND tx.id=s.tx_id
