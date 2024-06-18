@@ -1,15 +1,15 @@
 {{ config(
 
-    alias = 'curve_wsteth_reth_pool',
-               
+    alias = 'curve_wsteth_reth_pool',               
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "lido_liquidity",
-                                \'["ppclunghe"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.time')],
+    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                spell_type = "project",
+                                spell_name = "lido_liquidity",
+                                contributors = \'["pipistrella"]\') }}'
     )
 }}
 
@@ -75,7 +75,7 @@ from {{source('erc20_ethereum','evt_Transfer')}} t
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('evt_block_time') }}
  {% endif %}
  and contract_address = 0xae78736Cd615f374D3085123A210448E74Fc6393
  and to = 0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08
@@ -90,7 +90,7 @@ from {{source('erc20_ethereum','evt_Transfer')}} t
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('evt_block_time') }}
  {% endif %}
  and contract_address = 0xae78736Cd615f374D3085123A210448E74Fc6393
  and "from" = 0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08
@@ -121,7 +121,7 @@ order by 1
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
     and date_trunc('day', minute) < current_date
     and blockchain = 'ethereum'
@@ -151,7 +151,7 @@ order by 1
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
     and blockchain = 'ethereum'
     and contract_address = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
@@ -166,7 +166,7 @@ order by 1
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
     and date_trunc('day', minute) < current_date
     and blockchain = 'ethereum'
@@ -190,7 +190,7 @@ order by 1
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
     group by 1
     
@@ -213,10 +213,14 @@ order by 1
 
 select 'ethereum curve rETH:wstETH 0.04' as pool_name, 
         0x447Ddd4960d9fdBF6af9a790560d0AF76795CB08 as pool, 
-        'ethereum' as blockchain, 'curve' as project,0.04 as fee,
+        'ethereum' as blockchain, 
+        'curve' as project,
+        0.04 as fee,
         cast(b.time as date) as time, 
-        0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 as main_token, 'wstETH' as main_token_symbol,
-        0xae78736Cd615f374D3085123A210448E74Fc6393 as paired_token, 'rETH' as paired_token_symbol,
+        0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 as main_token, 
+        'wstETH' as main_token_symbol,
+        0xae78736Cd615f374D3085123A210448E74Fc6393 as paired_token, 
+        'rETH' as paired_token_symbol,
         wsteth as main_token_reserve,
         coalesce(reth.reth, 0) as paired_token_reserve,
         coalesce(wstethp.price, 0)as main_token_usd_price,
