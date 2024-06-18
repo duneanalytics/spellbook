@@ -1,0 +1,188 @@
+version: 2
+
+models:
+  - name: pyth_base_transactions
+    meta:
+      blockchain: base
+      contributors: synthquest
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['base']
+    description: "Pyth transactions"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - tx_hash
+            - trace_address
+    columns:
+      - &chain
+        name: chain
+        description: "Blockchain where pyth transaction occurs"
+      - &pyth_contract
+        name: pyth_contract
+        description: "Price feed contract address"
+      - &chain_type
+        name: chain_type
+        description: "Type of blockchain (EVM, SVM, cosmwasm)"
+      - &block_time
+        name: block_time
+        description: "Timestamp of block"
+      - &block_date
+        name: block_date
+        description: "Day of block"
+      - &block_number
+        name: block_number
+        description: "Number of block"
+      - &trace_value
+        name: trace_value
+        description: "wei transferred to pyth contracts"
+      - &txn_value
+        name: txn_value
+        description: "wei transferred in overall transaction (pyth + other interactions)"
+      - &trace_gas_used
+        name: trace_gas_used
+        description: "Gas used during interactions with pyth contracts"
+      - &txn_gas_used
+        name: txn_gas_used
+        description: "Gas used during entire transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &trace_from
+        name: trace_from
+        description: "Contract that interacts with pyth contract"
+      - &trace_to
+        name: trace_to
+        description: "pyth contract that gets interacted with"
+      - &txn_from
+        name: txn_from
+        description: "from address on overall transaction"
+      - &txn_to
+        name: txn_to
+        description: "to address on overall transaction"
+      - &call_type
+        name: call_type
+        description: "type of contract call"
+      - &trace_address
+        name: trace_address
+        description: "trace indexs"
+      - &sub_traces
+        name: sub_traces
+        description: "Number of sub traces"
+      - &trace_gas_paid_in_eth
+        name: trace_gas_paid_in_eth
+        description: "Gas paid to interact with pyth contract"
+      - &txn_gas_paid_in_eth
+        name: txn_gas_paid_in_eth
+        description: "Gas paid on overall transaction"
+      - &function_signature
+        name: function_signature
+        description: "function called in contract interaction"
+      - &namespace
+        name: namespace
+        description: "Namespace of trace_from contract"
+      - &name
+        name: name
+        description: "name of trace_from contract"
+
+  - name: pyth_base_price_feed_logs
+    meta:
+      blockchain: base
+      contributors: synthquest
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['base']
+    description: "Pyth transactions"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - tx_hash
+            - trace_address
+    columns:
+      - *chain_type
+      - *chain
+      - &identifier
+        name: identifier
+        description: "Unique pyth identifier for the market category and market price feed"
+      - &category
+        name: category
+        description: "Market Category"
+      - &token1
+        name: token1
+        description: "Market price feed"
+      - &token2
+        name: token2
+        description: "Price feed denomination"
+      - *block_time
+      - *block_number
+      - &publish_time
+        name: publish_time
+        description: "emitted publish time"
+      - &price
+        name: price
+        description: "emitted price"
+      - &conf
+        name: conf
+        description: "emitted confidence interval for price"
+      - *tx_hash
+      - &price_id
+        name: price_id
+        description: "price feed hash ID, topic0 in logs"
+      - &index
+        name: index
+        description: "log index"
+      - &tx_index
+        name: tx_index
+        description: "tx block index"
+      - &tx_to
+        name: tx_to
+        description: "to address on overall transaction"
+      - &tx_from
+        name: tx_from
+        description: "from address on overall transaction"
+      - *namespace
+      - *name
+  
+  - name: pyth_base_active_price_feed_ids
+    meta:
+      blockchain: base
+      project: pyth
+      contributors: synthquest
+    config:
+      tags: ['pyth']
+    description: >
+        Pyth Price Feed ID's (https://pyth.network/developers/price-feed-ids#pyth-evm-stable)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - identifier
+            - hash
+    columns:
+      - name: identifier
+        description: "pyth"
+      - name: category
+        description: "market type"
+      - name: token1
+        description: "token"
+      - name: token2
+        description: "denomination"
+      - name: hash
+        description: "Price Id"
+      - name: pending
+        description: "coming soon"
+      - name: price_id
+        description: "price feed id"
+      - name: expo
+        description: "market exponent used in a * 10^e"
+      - name: last_used
+        description: "last active call to price_id-hash-expo unique key"
+      - name: first_used
+        description: "last active call to price_id-hash-expo unique key"
