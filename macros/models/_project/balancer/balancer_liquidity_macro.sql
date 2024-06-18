@@ -9,7 +9,7 @@ WITH pool_labels AS (
             address AS pool_id,
             name AS pool_symbol,
             pool_type
-        FROM {{ ref('labels_balancer_v2_pools') }}
+        FROM {{ source('labels', 'balancer_v2_pools') }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
@@ -30,7 +30,7 @@ WITH pool_labels AS (
             contract_address AS token,
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
-        FROM {{ ref('dex_prices') }}
+        FROM {{ source('dex', 'prices') }}
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
