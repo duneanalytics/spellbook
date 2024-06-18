@@ -3,7 +3,12 @@
 
         schema = 'dex_solana',
         alias = 'trades',
-        materialized = 'view',
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        partition_by = ['block_month'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "dex",
@@ -19,7 +24,7 @@
     , ref('lifinity_v2_trades')
     , ref('meteora_v1_solana_trades')
     , ref('meteora_v2_solana_trades')
-    , ref('goosefx_ssl_v2_solana_trades')   
+    , ref('goosefx_ssl_v2_solana_trades')
     , ref('pumpdotfun_solana_trades')
 ] %}
 
@@ -28,6 +33,7 @@ SELECT
       blockchain
       , project
       , version
+      , CAST(date_trunc('month', block_time) AS DATE) as block_month
       , block_time
       , trade_source
       , token_bought_symbol
@@ -51,7 +57,9 @@ SELECT
       , inner_instruction_index
       , tx_index
 FROM {{ dex }}
-
+{% if is_incremental() %}
+WHERE {{incremental_predicate('block_time')}}
+{% endif %}
 {% if not loop.last %}
 UNION ALL
 {% endif %}

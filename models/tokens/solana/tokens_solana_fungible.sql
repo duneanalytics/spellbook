@@ -1,7 +1,8 @@
 {{ config
 (
   alias = 'fungible',
-
+  schema = 'tokens_solana',
+  materialized = 'table',
   post_hook='{{ expose_spells(\'["solana"]\',
                                   "sector",
                                   "tokens",
