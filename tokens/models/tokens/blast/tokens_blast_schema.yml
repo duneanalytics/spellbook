@@ -6,7 +6,7 @@ models:
       blockchain: blast
       sector: tokens
       project: erc20
-      contributors: thetroyharris
+      contributors: Henrystats, thetroyharris
     config:
       tags: ['table', 'erc20', 'blast' ]
     description: "ERC20 Token Addresses, Symbols and Decimals"
@@ -19,5 +19,3 @@ models:
         description: "ERC20 token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible an ERC20 token can be"
-
-
