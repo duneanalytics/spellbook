@@ -81,5 +81,3 @@ models:
           - unique
       - name: standard
         description: "The NFT standard erc721/erc1155/..."
-
-

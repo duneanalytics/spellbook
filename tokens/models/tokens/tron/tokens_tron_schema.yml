@@ -19,5 +19,3 @@ models:
         description: "TRC20 token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible an TRC20 token can be"
-
-

@@ -81,4 +81,3 @@ models:
         tests:
           - accepted_values:
               values: [ 'bep721', 'bep1155' ]
-
