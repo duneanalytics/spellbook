@@ -79,7 +79,6 @@ FROM (VALUES
     , (0x323665443cef804a3b5206103304bd4872ea4253, 'USDV', 6)
     , (0x966570a84709d693463cdd69dcadb0121b2c9d26, 'taoUSD', 18)
     , (0x993614e1c8c9c5abe49462ce5702431978fd767f, 'S*ETH', 18)
-
     , (0xaf88d065e77c8cc2239327c5edb3a432268e5831, 'USDC', 6) -- Native
     , (0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 'USDC', 6) -- Bridged
     , (0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9, 'USDT', 6)

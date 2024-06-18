@@ -6,7 +6,7 @@ models:
       blockchain: celo
       sector: tokens
       project: erc20
-      contributors: hosuke
+      contributors: hosuke, thetroyharris
     config:
       tags: ['table', 'erc20', 'celo']
     description: "All ERC20 Token Addresses on Celo - with mapped Symbols and Decimals if known."

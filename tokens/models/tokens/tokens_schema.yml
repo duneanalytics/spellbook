@@ -66,7 +66,7 @@ models:
           
   - name: tokens_stablecoins
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zkevm, zksync, linea, tron
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, linea, optimism, polygon, scroll, tron, zkevm, zksync
       sector: tokens
       contributors: thetroyharris, gentrexha, dot2dotseurat, msilb7, lgingerich, Henrystats
     config:
@@ -85,7 +85,5 @@ models:
         description: "ERC20 Stablecoin symbol"
       - name: decimals
         description: "ERC20 Stablecoin number of decimals"
-      - name: name
-        description: "ERC20 Stablecoin name"
 
 
