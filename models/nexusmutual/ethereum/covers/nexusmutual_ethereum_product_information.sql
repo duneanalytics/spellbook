@@ -1,10 +1,7 @@
 {{ config(
+    schema = 'nexusmutual_ethereum',
     alias = 'product_information',
-    materialized = 'view',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["guyhowlett"]\') }}'
+    materialized = 'view'
     )
 }}
 
