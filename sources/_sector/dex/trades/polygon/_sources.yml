@@ -60,3 +60,8 @@ sources:
     tables:
       - name: DooarSwapV2Pair_evt_Swap
       - name: DooarSwapV2Factory_evt_PairCreated
+  - name: gridex_polygon
+    tables:
+      - name: GridFactory_evt_GridCreated
+      - name: GridPair_evt_Swap
+
