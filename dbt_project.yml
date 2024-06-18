@@ -110,14 +110,6 @@ models:
       ethereum:
         +schema: addresses_ethereum
 
-    tokens:
-      +schema: tokens
-      +materialized: table
-      +file_format: delta
-
-    solana_utils:
-      +schema: solana_utils
-
     transfers:
       +schema: transfers
       ethereum:
