@@ -19,3 +19,7 @@ sources:
     tables:
       - name: Marketplace_evt_AcceptCollectionOffer
       - name: PaymentManager_evt_RoyaltyReceived
+  - name: superchief_avalanche_c
+    tables:
+      - name: AuctionManager_evt_NewAuction
+      - name: AuctionManager_evt_AuctionFinished

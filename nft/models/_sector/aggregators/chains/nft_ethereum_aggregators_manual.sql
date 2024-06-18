@@ -1,5 +1,4 @@
 {{config(
-    
     schema = 'nft_ethereum',
     alias='aggregators_manual'
 )}}
