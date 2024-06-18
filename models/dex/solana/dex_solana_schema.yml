@@ -76,7 +76,7 @@ models:
         description: "token associated address for the whirlpool, of the token sold"
       - &project_program_id
         name: project_program_id
-        description: "Project program id that the trade was executed on - like the whirlpool id"
+        description: "pool program id of the project"
       - &trader_id
         name: trader_id
         description: "id (address) of trader who purchased a token"
@@ -92,3 +92,33 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
+
+  - name: dex_solana_price_hour
+    meta:
+      blockchain: solana
+      contributors: [get_nimbus]
+    config:
+      tags: ['solana','dex', 'price']  
+    description: >
+        All token price in Orca pool
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - hour
+    columns:
+      - name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - name: contract_address
+        description: "contract_address of token"
+      - name: hour
+        description: "Time of price in hour"
+      - name: block_month
+        description: "UTC event block month of each DEX trade"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Token decimals"
+      - name: price
+        description: "Token price"

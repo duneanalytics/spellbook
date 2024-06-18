@@ -1,4 +1,5 @@
 {{ config(
+        schema='evms',
         tags = [ 'static'],
         alias = 'info',
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll"]\',

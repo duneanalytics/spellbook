@@ -24,7 +24,9 @@ class TokenChecker:
                             "celo": "celo-celo",
                             "base": "base-base",
                             "zksync": "zksync-zksync",
-                            "zora": "eth-ethereum"
+                            "zora": "eth-ethereum",
+                            "mantle": "mnt-mantle",
+                            "blast": "blast-blast"
                             }
         self.tokens_by_id = self.get_tokens()
         self.contracts_by_chain = self.get_contracts()

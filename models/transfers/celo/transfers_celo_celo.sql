@@ -1,11 +1,12 @@
 {{
     config(
-        
+
         alias = 'celo',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.tx_block_time')],
         unique_key = ['tx_hash', 'trace_address'],
         post_hook='{{ expose_spells(\'["celo"]\',
                                     "sector",
@@ -40,8 +41,8 @@ with celo_transfers as (
         and r.success
         and r.value > uint256 '0'
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        and r.block_time >= date_trunc('day', now() - interval '7' day)
-        and t.block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('r.block_time') }}
+        and {{ incremental_predicate('t.block_time') }}
         {% endif %}
 
     union all
@@ -71,8 +72,8 @@ with celo_transfers as (
         and t.success
         and r.value > uint256 '0'
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        and r.evt_block_time >= date_trunc('day', now() - interval '7' day)
-        and t.block_time >= date_trunc('day', now() - interval '7' day)
+        and {{ incremental_predicate('r.evt_block_time') }}
+        and {{ incremental_predicate('t.block_time') }}
         {% endif %}
 )
 select *
