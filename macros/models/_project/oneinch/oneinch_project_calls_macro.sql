@@ -38,17 +38,20 @@ static as (
 )
 
 , signatures as (
-    select
-        id as selector
-        , min(signature) as signature
-        , min(split_part(signature, '(', 1)) as method
-    from {{ source('abi', 'signatures') }}
+    select *
+    from (
+        select
+            id as selector
+            , min(signature) as signature
+            , min(split_part(signature, '(', 1)) as method
+        from {{ source('abi', 'signatures') }}
+        where length(id) = 4
+        group by 1
+    )
     join static on true
     where
         not reduce(exceptions, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) -- without "exception" methods
         and reduce(suitables, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) -- "suitable" methods only
-        and length(id) = 4
-    group by 1
 )
 
 , calls as (
