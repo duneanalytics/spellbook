@@ -42,7 +42,7 @@ models:
           seed_file: ref('uniswap_blast_base_trades_seed')
           filter:
             version: 2
-
+            
   - name: thruster_blast_base_trades
     meta:
       blockchain: blast
