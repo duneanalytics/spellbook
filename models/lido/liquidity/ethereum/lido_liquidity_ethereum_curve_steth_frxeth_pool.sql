@@ -1,14 +1,14 @@
 {{ config(
-    alias = 'curve_steth_frxeth_pool',
-     
+    alias = 'curve_steth_frxeth_pool',     
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "lido_liquidity",
-                                \'["ppclunghe"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.time')],
+    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                spell_type = "project",
+                                spell_name = "lido_liquidity",
+                                contributors = \'["pipistrella"]\') }}'
     )
 }}
 
@@ -65,7 +65,7 @@ from {{source('erc20_ethereum','evt_Transfer')}} t
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('evt_block_time') }}
  {% endif %}
  and contract_address = 0xae7ab96520de3a18e5e111b5eaab095312d7fe84 
  and to = 0x4d9f9D15101EEC665F77210cB999639f760F831E
@@ -84,7 +84,7 @@ from {{source('erc20_ethereum','evt_Transfer')}} t
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('evt_block_time') }}
  {% endif %}
 
  and contract_address = 0xae7ab96520de3a18e5e111b5eaab095312d7fe84 
@@ -119,7 +119,7 @@ from {{source('erc20_ethereum','evt_Transfer')}} t
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('evt_block_time') }}
  {% endif %}
  and contract_address = 0x5e8422345238f34275888049021821e8e08caa1f 
  and to = 0x4d9f9d15101eec665f77210cb999639f760f831e 
@@ -135,7 +135,7 @@ from {{source('erc20_ethereum','evt_Transfer')}} t
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('evt_block_time') }}
  {% endif %}
  and contract_address = 0x5e8422345238f34275888049021821e8e08caa1f
  and "from" = 0x4d9f9d15101eec665f77210cb999639f760f831e 
@@ -168,7 +168,7 @@ from {{source('curvefi_ethereum','frxeth_eth_pool_call_price_oracle')}}
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', call_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', call_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('call_block_time') }}
  {% endif %}
  and call_success = true
 
@@ -182,7 +182,7 @@ from {{source('curvefi_ethereum','frxeth_eth_pool_call_price_oracle')}}
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %} 
     and date_trunc('day', minute) < current_date
     and blockchain = 'ethereum'
@@ -212,7 +212,7 @@ from {{source('curvefi_ethereum','frxeth_eth_pool_call_price_oracle')}}
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
  
     and blockchain = 'ethereum'
@@ -228,7 +228,7 @@ from {{source('curvefi_ethereum','frxeth_eth_pool_call_price_oracle')}}
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
  
     and date_trunc('day', minute) < current_date
@@ -253,7 +253,7 @@ from {{source('curvefi_ethereum','frxeth_eth_pool_call_price_oracle')}}
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', c.evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', c.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('c.evt_block_time') }}
     {% endif %}
     group by 1
     
@@ -275,16 +275,20 @@ from {{source('curvefi_ethereum','frxeth_eth_pool_call_price_oracle')}}
 )
 
 select 'ethereum curve frxETH:stETH 0.04' as pool_name, 
-0x4d9f9D15101EEC665F77210cB999639f760F831E as pool, 
-'ethereum' as blockchain, 'curve' as project,0.04 as fee,
-cast(b.time as date) as time, 
-0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 as main_token, 'stETH' as main_token_symbol,
-0x5E8422345238F34275888049021821E8E08CAa1f as paired_token, 'frxETH' as paired_token_symbol,
-wsteth as main_token_reserve,
-coalesce(frxeth.frxeth, 0) as paired_token_reserve,
-coalesce(stethp.price*r.rate, wethp.price*r.rate) as main_token_usd_price,
-wethp.price*coalesce(fr.rate,1) as paired_token_usd_price,
-v.volume as trading_volume
+        0x4d9f9D15101EEC665F77210cB999639f760F831E as pool, 
+        'ethereum' as blockchain, 
+        'curve' as project,
+        0.04 as fee,
+        cast(b.time as date) as time, 
+        0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 as main_token, 
+        'stETH' as main_token_symbol,
+        0x5E8422345238F34275888049021821E8E08CAa1f as paired_token, 
+        'frxETH' as paired_token_symbol,
+        wsteth as main_token_reserve,
+        coalesce(frxeth.frxeth, 0) as paired_token_reserve,
+        coalesce(stethp.price*r.rate, wethp.price*r.rate) as main_token_usd_price,
+        wethp.price*coalesce(fr.rate,1) as paired_token_usd_price,
+        v.volume as trading_volume
 from steth_balances b 
 left join wsteth_rate r on b.time >= r.day and b.time < r.next_day 
 left join frxeth_balances frxeth on b.time = frxeth.time 

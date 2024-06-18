@@ -29,3 +29,8 @@ sources:
     tables:
       - name: PancakeV3Pool_evt_Swap
       - name: PancakeV3Factory_evt_PoolCreated
+  - name: horizondex_linea
+    tables:
+      - name: Pool_evt_Swap
+      - name: Factory_evt_PoolCreated
+
