@@ -60,10 +60,6 @@ models:
       - &project
         name: project
         description: "The underlying protocol/project where the swap took place"
-        tests:
-          - relationships:
-              to: ref('dex_info')
-              field: project
       - &version
         name: version
         description: "The version of the protocol/project"

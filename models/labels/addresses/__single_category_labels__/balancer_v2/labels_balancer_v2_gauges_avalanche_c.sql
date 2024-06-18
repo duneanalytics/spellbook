@@ -22,7 +22,7 @@ SELECT distinct
     'identifier' AS label_type
 FROM {{ source('balancer_ethereum', 'AvalancheRootGaugeFactory_call_create') }} call
     LEFT JOIN {{ source('balancer_avalanche_c', 'ChildChainGaugeFactory_call_create') }} child ON child.output_0 = call.recipient
-    LEFT JOIN {{ ref('labels_balancer_v2_pools_avalanche_c') }} pools ON pools.address = child.pool),
+    LEFT JOIN {{ source('labels', 'balancer_v2_pools_avalanche_c') }} pools ON pools.address = child.pool),
 
 controller AS( --to allow filtering for active gauges only
 SELECT
