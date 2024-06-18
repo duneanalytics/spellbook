@@ -4,7 +4,8 @@
     materialized = 'incremental',
     incremental_strategy = 'merge',
     file_format = 'delta',
-    unique_key = ['block_number','tx_hash','sub_tx_trade_id']
+    unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
