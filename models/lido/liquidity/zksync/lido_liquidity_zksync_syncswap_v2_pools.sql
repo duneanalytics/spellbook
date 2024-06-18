@@ -5,6 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.time')],
     post_hook='{{ expose_spells(blockchains = \'["zksync"]\',
                                 spell_type = "project",
                                 spell_name = "lido_liquidity",
@@ -268,7 +269,7 @@ group by 1,2
  )
  
  
-select  CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ', pool_type, ' ', format('%,.3f',round(coalesce(fee,0),4))) as pool_name,
+select  blockchain||' '||project||' '||coalesce(paired_token_symbol,'unknown')||':'||main_token_symbol||' '||pool_type||' '||format('%,.3f',round(coalesce(fee,0),4)) as pool_name,
         pool,
         blockchain,
         project,
