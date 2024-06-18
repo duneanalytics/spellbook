@@ -266,7 +266,8 @@ FROM
     --('dofn-openfabric', 'bnb', 'OFN', 0x8899ec96ed8c96b5c86c23c3f069c3def75b6d97,18),--not found in api 
     ('xpe-xpense', 'bnb', 'XPE', 0x88691f292b76bf4d2caa5678a54515fae77c33af,18),
     ('trump-maga', 'bnb', 'TRUMP', 0x4ea98c1999575aaadfb38237dd015c5e773f75a2,9),
-    ('wsm-wall-street-memes', 'bnb', 'WSM', 0xb62e45c3df611dce236a6ddc7a493d79f9dfadef, 18)
+    ('wsm-wall-street-memes', 'bnb', 'WSM', 0xb62e45c3df611dce236a6ddc7a493d79f9dfadef, 18),
+    ('the-thena', 'bnb', 'THE', 0xf4c8e32eadec4bfe97e0f595add0f4450a863a11, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.
