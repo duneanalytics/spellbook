@@ -2,7 +2,7 @@
     schema = 'opensea_v1_ethereum',
     alias = 'base_trades',
     materialized = 'incremental',
-    incremental_strategy = 'merge'
+    incremental_strategy = 'merge',
     file_format = 'delta',
     unique_key = ['block_number','tx_hash','sub_tx_trade_id']
     )
