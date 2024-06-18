@@ -1,13 +1,11 @@
 {{ config(
-
         schema = 'nft_ethereum',
         alias = 'aggregators_markers',
-		materialized = 'table',
-        unique_key='hash_marker',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "nft",
-                                    \'["hildobby", "0xRob"]\') }}')
+		materialized = 'incremental',
+		file_format = 'delta',
+		incremental_strategy = 'merge',
+        unique_key='hash_marker'
+        )
 }}
 
  WITH reservoir AS (
@@ -25,6 +23,9 @@
     AND regexp_replace(cast(data as varchar), '^.*00', '') != '1f'
     AND length(regexp_replace(cast(data as varchar), '^.*00', ''))%2 = 0
     AND block_time > TIMESTAMP '2022-10-15'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('block_time')}}
+    {% endif %}
     )
 
   -- needed to eliminate duplicates
