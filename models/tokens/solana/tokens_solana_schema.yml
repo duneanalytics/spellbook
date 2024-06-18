@@ -19,8 +19,33 @@ models:
         description: "token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible a token can be"
+      - name: metadata_program
+        description: program used for creating token metadata
+      - name: token_version
+        description: version of the token program used (spl_token, token2022)
       - name: created_at
         description: token mint created at
+      - name: init_tx
+        description: "transaction that initialized the mint"
+
+  - name: tokens_solana_fees_history
+    meta:
+      blockchain: solana
+      sector: tokens
+      project: fees
+      contributors: ilemi
+    config:
+      tags: ['table', 'metadata', 'fess', 'solana']
+    description: "fee updates on token2022 tokens"
+    columns:
+      - name: account_mint
+        description: "fungible token mint address on Solana"
+      - name: fee_basis
+        description: basis points fee on transfers
+      - name: fee_maximum
+        description: maximum fee amount on a given transfer
+      - name: fee_time
+        description: fee update time
 
   - name: tokens_solana_nft
     meta:
@@ -72,7 +97,7 @@ models:
     config:
       tags: ['solana','transfers','erc20','nft','spl']
     description: >
-        get all spl token transfers (will add in token2022 later)
+        get all spl token transfers
     columns:
       - name: block_time
       - name: block_date
@@ -80,10 +105,13 @@ models:
       - name: action
       - name: token_mint_address
       - name: amount
+      - name: fee
+      - name: token_version
       - name: from_owner
       - name: to_owner
       - name: from_token_account
       - name: to_token_account
+      - name: token_version
       - name: tx_signer 
       - name: tx_id
       - name: outer_instruction_index

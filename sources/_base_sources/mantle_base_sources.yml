@@ -19,14 +19,14 @@ sources:
             description: "Timestamp for block event time in UTC"
           - &value
             name: value
-            description: "Amount of Ether transferred from sender to recipient"
+            description: "Amount of mantle transferred from sender to recipient"
           - &block_number
             name: block_number
             description: "Block number"
           - name: gas_limit
             description: "Maximum amount of gas units that can be consumed by the transaction"
           - name: gas_price
-            description: "Gas price denoted in gwei, which itself is a denomination of Ether - each gwei is equal to 10-9 Ether"
+            description: "Gas price denoted in gwei, which itself is a denomination of mantle - each gwei is equal to 10-9 mantle"
           - name: gas_used
             description: "Number of gas units consumed by the transaction"
           - name: max_fee_per_gas
@@ -229,7 +229,7 @@ sources:
                   values: ["factory", "base", "dynamic"]
           - name: created_at
             description: "Timestamp for contract creation"
-
+          
       - name: creation_traces
         loaded_at_field: block_time
         description: "mantle creation traces"
@@ -243,3 +243,162 @@ sources:
             description: "Contract creator address"
           - name: code
             description: "Contract code"
+
+  # ERC Transfer Tables
+  - name: erc20_mantle
+    description: "Transfers events for ERC20 tokens on mantle."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for ERC20 tokens on mantle."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        columns:
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Transaction hash of the event"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Event block number"
+          - *from
+          - *to
+          - name: value
+            description: "Amount of ERC20 token transferred"
+
+      - name: evt_approval
+        loaded_at_field: evt_block_time
+        description: "Approval events for ERC20 tokens on mantle."
+        columns:
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: approved
+            description: "Approved"
+          - name: owner
+            description: "Owner"
+          - name: spender
+            description: "Spender"
+          - name: value
+            description: "Amount of ERC20 token transferred"
+
+  - name: erc1155_mantle
+    description: "Transfers events for ERC1155 tokens on mantle."
+    tables:
+      - name: evt_transfersingle
+        loaded_at_field: evt_block_time
+        description: "Single transfers events for ERC1155 tokens on mantle."
+        columns:
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+          - *from
+          - *to
+          - name: id
+            description: "ERC1155 token ID"
+          - name: value
+            description: "Amount of ERC1155 token transferred"
+
+      - name: evt_transferbatch
+        loaded_at_field: evt_block_time
+        description: "Batch transfers events for ERC1155 tokens on mantle."
+        columns:
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+          - *from
+          - *to
+          - name: ids
+            description: "ERC1155 token IDs"
+          - name: values
+            description: "Amounts of ERC1155 token transferred"
+
+      - name: evt_ApprovalForAll
+        loaded_at_field: evt_block_time
+        description: "Approval for all events for ERC1155 tokens on mantle."
+        columns:
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &approved
+            name: approved
+            description: "Is approved"
+          - &owner
+            name: owner
+            description: "Owner"
+          - name: account
+            description: "Account"
+          - &operator
+            name: operator
+            description: "Opperator"
+
+  - name: erc721_mantle
+    description: "Transfers events for ERC721 tokens on mantle."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for ERC721 tokens on mantle."
+        columns:
+          - name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *from
+          - *to
+          - name: tokenId
+            description: "ERC721 token ID."
+
+      - name: evt_Approval
+        loaded_at_field: evt_block_time
+        description: "Approval events for ERC721 tokens on mantle."
+        columns:
+          - name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved
+          - *owner
+          - name: tokenId
+            description: "ERC721 token ID."
+
+      - name: evt_ApprovalForAll
+        loaded_at_field: evt_block_time
+        description: "Approval for all events for ERC721 tokens on mantle."
+        columns:
+          - name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved
+          - *owner
+          - *operator

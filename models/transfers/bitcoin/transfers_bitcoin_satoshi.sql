@@ -1,16 +1,17 @@
 {{ config(
-        
+
         schema = 'transfers_bitcoin',
         alias = 'satoshi',
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['type', 'tx_id', 'index', 'wallet_address'],
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                     "sector",
                                     "transfers",
                                     \'["longnhbkhn", "hosuke"]\') }}') }}
-with 
+with
     input_transfers as (
         select
             'input' as type,
@@ -22,13 +23,13 @@ with
             block_height,
             -1 * value as amount_raw
         from
-            {{ source('bitcoin', 'inputs') }} 
+            {{ source('bitcoin', 'inputs') }}
         where address is not null
         {% if is_incremental() %}
-            and block_time >= date_trunc('day', now() - interval '7' day)
+            and {{ incremental_predicate('block_time') }}
         {% endif %}
     )
-    , 
+    ,
     output_transfers as (
         select
             'output' as type,
@@ -40,38 +41,38 @@ with
             block_height,
             value as amount_raw
         from
-            {{ source('bitcoin', 'outputs') }} 
+            {{ source('bitcoin', 'outputs') }}
         where address is not null
         {% if is_incremental() %}
-            and block_time >= date_trunc('day', now() - interval '7' day)
+            and {{ incremental_predicate('block_time') }}
         {% endif %}
     )
     , transfer_btc as (
-        select any_value(type) as type, 
-            tx_id, 
-            index, 
-            'bitcoin' as blockchain, 
-            any_value(wallet_address) as wallet_address, 
-            any_value(block_time) as block_time, 
-            any_value(block_date) as block_date, 
-            any_value(block_height) as block_height, 
+        select any_value(type) as type,
+            tx_id,
+            index,
+            'bitcoin' as blockchain,
+            any_value(wallet_address) as wallet_address,
+            any_value(block_time) as block_time,
+            any_value(block_date) as block_date,
+            any_value(block_height) as block_height,
             any_value(amount_raw) as amount_raw
         from input_transfers
-        group by 
+        group by
             tx_id
             , index
         union all
-        select any_value(type) as type, 
-            tx_id, 
-            index, 
-            'bitcoin' as blockchain, 
-            any_value(wallet_address) as wallet_address, 
-            any_value(block_time) as block_time, 
-            any_value(block_date) as block_date, 
-            any_value(block_height) as block_height, 
+        select any_value(type) as type,
+            tx_id,
+            index,
+            'bitcoin' as blockchain,
+            any_value(wallet_address) as wallet_address,
+            any_value(block_time) as block_time,
+            any_value(block_date) as block_date,
+            any_value(block_height) as block_height,
             any_value(amount_raw) as amount_raw
-        from output_transfers 
-        group by 
+        from output_transfers
+        group by
             tx_id
             , index
     )
@@ -81,7 +82,7 @@ with
         where symbol='BTC'
             and blockchain is null
             {% if is_incremental() %}
-            and minute >= date_trunc('day', now() - interval '7' day)
+            and {{ incremental_predicate('minute') }}
             {% endif %}
     )
 
