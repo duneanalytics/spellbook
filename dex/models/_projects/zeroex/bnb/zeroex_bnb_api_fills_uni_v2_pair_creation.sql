@@ -27,7 +27,7 @@ SELECT
 FROM {{ source('bnb', 'logs') }} creation
 WHERE creation.topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9  -- all the uni v2 pair creation event
     {% if is_incremental() %}
-    AND {{ incremental_predicate('tx.block_time') }}
+    AND {{ incremental_predicate('block_time') }}
     {% else %}
     AND tx.block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
     {% endif %}
