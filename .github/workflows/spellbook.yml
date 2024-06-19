@@ -10,6 +10,7 @@ on:
       - 'tokens/**'
       - 'daily_spellbook/**'
       - 'nft/**'
+      - 'solana/**'
 
 concurrency:
   group:  ${{ github.workflow }}-${{ github.ref }}
