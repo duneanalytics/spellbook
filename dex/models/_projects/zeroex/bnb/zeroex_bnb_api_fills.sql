@@ -365,7 +365,7 @@ select s.tx_hash,
     matcha_limit_order_flag
 
 from uni_v2_swap s
-join {{ref('zeroex_bnb_fills_uni_v2_pair_creation')}} creation on s.contract_address = creation.pair
+join {{ref('zeroex_bnb_api_fills_uni_v2_pair_creation')}} creation on s.contract_address = creation.pair
 ),
 
 all_tx AS (
