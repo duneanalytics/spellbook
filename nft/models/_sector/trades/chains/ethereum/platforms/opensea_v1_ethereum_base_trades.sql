@@ -1,9 +1,11 @@
 {{ config(
     schema = 'opensea_v1_ethereum',
     alias = 'base_trades',
-    tags =['static'],
-    materialized = 'table',
-    file_format = 'delta'
+    materialized = 'incremental',
+    incremental_strategy = 'merge',
+    file_format = 'delta',
+    unique_key = ['block_number','tx_hash','sub_tx_trade_id'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
@@ -68,9 +70,13 @@ WITH wyvern_call_data as (
     FROM
       {{ source('opensea_ethereum','wyvernexchange_call_atomicmatch_') }} wc
     WHERE 1=1
-        AND (element_at(addrs,4) = {{OS_WALLET}} OR element_at(addrs,11) = {{OS_WALLET}}) -- limit to OpenSea
+    {% if is_incremental() %}
+    AND {{incremental_predicate('call_block_time')}}
+    {% endif %}
+    AND (element_at(addrs,4) = {{OS_WALLET}} OR element_at(addrs,11) = {{OS_WALLET}}) -- limit to OpenSea
     AND call_success = true
     AND call_block_time >= TIMESTAMP '{{START_DATE}}' AND call_block_time <= TIMESTAMP '{{END_DATE}}'
+
 ),
 
 
@@ -85,6 +91,9 @@ order_prices as (
         lag(evt_index) over (partition by evt_block_number, evt_tx_hash order by evt_index asc) as prev_order_evt_index
     from {{ source('opensea_ethereum','wyvernexchange_evt_ordersmatched') }}
     WHERE evt_block_time >= TIMESTAMP '{{START_DATE}}' AND evt_block_time <= TIMESTAMP '{{END_DATE}}'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('evt_block_time')}}
+    {% endif %}
 
 ),
 -- needed to pull token_id, token_amounts, token_standard and nft_contract_address
@@ -102,6 +111,9 @@ nft_transfers as (
         tx_hash
     from {{ ref('nft_ethereum_transfers') }}
     WHERE block_time >= TIMESTAMP '{{START_DATE}}' AND block_time <= TIMESTAMP '{{END_DATE}}'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('block_time')}}
+    {% endif %}
 ),
 
 -- join call and order data
