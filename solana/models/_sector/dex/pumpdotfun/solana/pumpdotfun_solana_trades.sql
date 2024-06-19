@@ -18,15 +18,15 @@
 
 {% set project_start_date = '2024-01-14' %} --grabbed program deployed at time (account created at)
 
-with 
+with
     bonding_curves as (
         SELECT
             account_arguments[1] as token_mint_address
-            , account_arguments[3] as bonding_curve 
+            , account_arguments[3] as bonding_curve
             , account_arguments[4] as bonding_curve_vault
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P'
-            AND bytearray_substring(data,1,8) = 0x181ec828051c0777 --Create https://solscan.io/tx/2Vfq4gS9nq2jvpmZSxVXJ3uHGeheENXetwUus6KnhBzFu23Brqbt5EoNiTLds6jr72yZYGJ9YbMDG1BYKMRe3hSQ 
+            AND bytearray_substring(data,1,8) = 0x181ec828051c0777 --Create https://solscan.io/tx/2Vfq4gS9nq2jvpmZSxVXJ3uHGeheENXetwUus6KnhBzFu23Brqbt5EoNiTLds6jr72yZYGJ9YbMDG1BYKMRe3hSQ
             and tx_success = true
         {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
@@ -35,7 +35,7 @@ with
         -- and block_time >= now() - interval '7' day
         {% endif %}
     )
-    
+
     , swaps as (
         SELECT
             to_base58(bytearray_substring(data,1+16,32)) as token_mint_address
@@ -56,7 +56,7 @@ with
             , outer_executing_account
         FROM {{ source('solana','instruction_calls') }}
         WHERE executing_account = '6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P'
-        AND bytearray_substring(data,1,16) = 0xe445a52e51cb9a1dbddb7fd34ee661ee --SwapEvent 
+        AND bytearray_substring(data,1,16) = 0xe445a52e51cb9a1dbddb7fd34ee661ee --SwapEvent
         and tx_success = true
         {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
@@ -69,9 +69,9 @@ with
         --buy https://solscan.io/tx/5782i58ZHCKSANgTi3WXL5vjFAWEVJuPMGAr6gjx2qqcRP6LLNRH2g6pb61tk44H7PC9ohFNCUKQVUAMd5vYeUns
         --sell https://solscan.io/tx/4thHCu9SX166TP2cnjgwJ7mDSSMn5MBe8xLsTYzRLJmE7jPgwQatXh4ehh3At4xvVcgUefFzzsYVBaVwYyS1bA6v
     )
-    
+
     , trades_base as (
-        SELECT 
+        SELECT
             sp.block_time
             , 'pumpdotfun' as project
             , 1 as version
@@ -85,8 +85,8 @@ with
             end as token_pair
             --bought
             , case when is_buy = 1 then COALESCE(tk.symbol, sp.token_mint_address)
-                else COALESCE(tk_sol.symbol, 'So11111111111111111111111111111111111111112') 
-                end as token_bought_symbol 
+                else COALESCE(tk_sol.symbol, 'So11111111111111111111111111111111111111112')
+                end as token_bought_symbol
             , case when is_buy = 1 then sp.token_mint_address
                 else 'So11111111111111111111111111111111111111112'
                 end as token_bought_mint_address
@@ -94,12 +94,12 @@ with
                 else sol_amount
                 end as token_bought_amount_raw
             , case when is_buy = 1 then token_amount/pow(10,tk.decimals)
-                else sol_amount/pow(10,tk_sol.decimals) 
+                else sol_amount/pow(10,tk_sol.decimals)
                 end as token_bought_amount
             --sold
             , case when is_buy = 0 then COALESCE(tk.symbol, sp.token_mint_address)
-                else COALESCE(tk_sol.symbol, 'So11111111111111111111111111111111111111112') 
-                end as token_sold_symbol 
+                else COALESCE(tk_sol.symbol, 'So11111111111111111111111111111111111111112')
+                end as token_sold_symbol
             , case when is_buy = 0 then sp.token_mint_address
                 else 'So11111111111111111111111111111111111111112'
                 end as token_sold_mint_address
@@ -107,7 +107,7 @@ with
                 else sol_amount
                 end as token_sold_amount_raw
             , case when is_buy = 0 then token_amount/pow(10,tk.decimals)
-                else sol_amount/pow(10,tk_sol.decimals) 
+                else sol_amount/pow(10,tk_sol.decimals)
                 end as token_sold_amount
             , sp.sol_amount*0.01 as sol_fee_raw
             , sp.sol_amount/pow(10,tk_sol.decimals)*0.01 as sol_fee
@@ -134,10 +134,10 @@ with
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_sol ON tk_sol.token_mint_address = 'So11111111111111111111111111111111111111112'
         LEFT JOIN bonding_curves bc ON bc.token_mint_address = sp.token_mint_address
     )
-    
-SELECT    
+
+SELECT
     tb.blockchain
-    , tb.project 
+    , tb.project
     , tb.version
     , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
     , tb.block_time
@@ -154,7 +154,7 @@ SELECT
     , sol_fee_raw
     , sol_fee
     , (case when tb.token_bought_mint_address = 'So11111111111111111111111111111111111111112' then p_bought.price
-        else p_sold.price 
+        else p_sold.price
         end) * sol_fee as fee_usd --fees are only in sol
     , tb.token_sold_mint_address
     , tb.token_bought_mint_address
@@ -172,16 +172,16 @@ SELECT
     , tb.inner_instruction_index
     , tb.tx_index
 FROM trades_base tb
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_bought ON p_bought.blockchain = 'solana' 
-    AND date_trunc('minute', tb.block_time) = p_bought.minute 
+LEFT JOIN {{ source('prices', 'usd_forward_fill') }} p_bought ON p_bought.blockchain = 'solana'
+    AND date_trunc('minute', tb.block_time) = p_bought.minute
     AND token_bought_mint_address = toBase58(p_bought.contract_address)
     {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_sold ON p_sold.blockchain = 'solana' 
-    AND date_trunc('minute', tb.block_time) = p_sold.minute 
+LEFT JOIN {{ source('prices', 'usd_forward_fill') }} p_sold ON p_sold.blockchain = 'solana'
+    AND date_trunc('minute', tb.block_time) = p_sold.minute
     AND token_sold_mint_address = toBase58(p_sold.contract_address)
     {% if is_incremental() %}
     AND {{incremental_predicate('p_sold.minute')}}
