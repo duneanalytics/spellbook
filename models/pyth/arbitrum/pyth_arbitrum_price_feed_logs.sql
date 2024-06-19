@@ -49,8 +49,8 @@ with price_feed_ids as (
 
 
 select
-       pc.chain_type
-     , pc.chain
+       pcc.chain_type
+     , pcc.chain
      , ids.identifier
      , ids.category
      , ids.token1
