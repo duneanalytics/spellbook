@@ -598,12 +598,31 @@
                                         bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) + 24 + 1, 8))
                                         , bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)) + 24 + 1, 8))
                                     )), 1)",
+                "_maker_parts":     "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)) + 24 + 1, 8)",
+                "_taker_parts":     "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) + 24 + 1, 8)",
                 "maker":            "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*2 + 12 + 1, 20)",
                 "taker":            "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 12 + 1, 20)",
                 "receiver":         "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*8 + 12 + 1, 20)",
                 "maker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)) + 24 + 1, 8))) + 12 + 1, 20)",
                 "taker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) + 24 + 1, 8))) + 12 + 1, 20)",
-                "making_amount":    "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*7 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*7 + 24 + 1, 8)) + 24 + 1, 8))) + 1, 32)",
+                "making_amount":    "substr(
+                                        input
+                                        , 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8))
+                                            + bytearray_to_bigint(substr(
+                                                input
+                                                , 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*7 + 24 + 1
+                                                , 8
+                                            ))
+                                            + 32 * least(x, bytearray_to_bigint(substr(
+                                                input
+                                                , 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8))
+                                                    + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*7 + 24 + 1, 8))
+                                                    + 24 + 1
+                                                , 8
+                                            )))
+                                            + 1
+                                        , 32
+                                    )",
                 "taking_amount":    "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*6 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*6 + 24 + 1, 8)) + 24 + 1, 8))) + 1, 32)",
                 "deadline":         "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 24 + 1, 8)",
                 "nonce":            "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*3 + 1, 32)",
@@ -698,8 +717,8 @@ logs as (
             , try(bytearray_to_uint256(trade['taker_max_amount'])) as call_taker_max_amount
             , try(bytearray_to_uint256(trade['maker_min_amount'])) as call_maker_min_amount
             , try(bytearray_to_uint256(trade['taker_min_amount'])) as call_taker_min_amount
-            , try(bytearray_to_uint256(trade['making_amount'])) as call_making_amount
-            , try(bytearray_to_uint256(trade['taking_amount'])) as call_taking_amount
+            , try(bytearray_to_uint256(trade['making_amount']) / bytearray_to_bigint(trade['_taker_parts'])) as call_making_amount -- for multi trades: when exchange many to one or one to many
+            , try(bytearray_to_uint256(trade['taking_amount']) / bytearray_to_bigint(trade['_maker_parts'])) as call_taking_amount
             , try(bytearray_to_uint256(substr(trade['start'], 24 + 1, 8))) as call_start
             , try(bytearray_to_uint256(substr(trade['end'], 24 + 1, 8))) as call_end
             , try(bytearray_to_uint256(substr(trade['deadline'], 24 + 1, 8))) as call_deadline
@@ -760,6 +779,8 @@ logs as (
                     , ('fee_receiver',      {{ method_data.get("fee_receiver", "null") }})
                     , ('nonce',             {{ method_data.get("nonce", "null") }})
                     , ('order_hash',        {{ method_data.get("order_hash", "null") }})
+                    , ('_maker_parts',      {{ method_data.get("_maker_parts", "0x01") }})
+                    , ('_taker_parts',      {{ method_data.get("_taker_parts", "0x01") }})
                 ])) as trades
                 , input
                 , output
