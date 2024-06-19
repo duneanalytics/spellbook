@@ -712,7 +712,7 @@ logs as (
             , trade['fee_receiver'] as call_fee_receiver
             , trade['nonce'] as call_nonce
             , trade['order_hash'] as call_order_hash
-            , cardinality(trades) as call_trades
+            , cardinality(trades) as call_trades -- total trades in the call
             , input
             , output
         from (
