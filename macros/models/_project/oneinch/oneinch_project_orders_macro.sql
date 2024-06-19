@@ -7,8 +7,8 @@
 {%
     set events = {
         "0x0bcc4c97732e47d9946f229edb95f5b6323f601300e4690de719993f3c371129": {
-            "project": "ZeroEx",
-            "name": "Fill",
+            "project":          "ZeroEx",
+            "name":             "Fill",
             "maker":            "substr(topic1  , 12 + 1                , 20)",
             "taker":            "substr(data    , 12 + 1                , 20)",
             "maker_asset":      "if(substr(data, bytearray_to_bigint(substr(data, 32*6 + 24 + 1, 8)) + 32*1 + 1, 4) = 0xf47261b0, substr(data, bytearray_to_bigint(substr(data, 32*6 + 24 + 1, 8)) + 32*1 + 4 + 12 + 1, 20), 0x01)",
@@ -18,8 +18,8 @@
             "order_hash":       "substr(topic3  , 1                     , 32)",
         },
         "0x6869791f0a34781b29882982cc39e882768cf2c96995c2a110c577c53bc932d5": {
-            "project": "ZeroEx",
-            "name": "Fill",
+            "project":          "ZeroEx",
+            "name":             "Fill",
             "maker":            "substr(topic1  , 12 + 1                , 20)",
             "taker":            "substr(data    , 32*4 + 12 + 1         , 20)",
             "maker_asset":      "if(substr(data, bytearray_to_bigint(substr(data, 32*0 + 24 + 1, 8)) + 32*1 + 1, 4) = 0xf47261b0, substr(data, bytearray_to_bigint(substr(data, 32*0 + 24 + 1, 8)) + 32*1 + 4 + 12 + 1, 20), 0x01)",
@@ -29,8 +29,8 @@
             "order_hash":       "substr(topic3  , 1                     , 32)",
         },
         "0xab614d2b738543c0ea21f56347cf696a3a0c42a7cbec3212a5ca22a4dcff2124": {
-            "project": "ZeroEx",
-            "name": "LimitOrderFilled",
+            "project":          "ZeroEx",
+            "name":             "LimitOrderFilled",
             "maker":            "substr(data    , 32*1 + 12 + 1         , 20)",
             "taker":            "substr(data    , 32*2 + 12 + 1         , 20)",
             "maker_asset":      "substr(data    , 32*4 + 12 + 1         , 20)",
@@ -41,8 +41,8 @@
             "order_hash":       "substr(data    , 1                     , 32)",
         },
         "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f": {
-            "project": "ZeroEx",
-            "name": "OtcOrderFilled",
+            "project":          "ZeroEx",
+            "name":             "OtcOrderFilled",
             "maker":            "substr(data    , 32*1 + 12 + 1         , 20)",
             "taker":            "substr(data    , 32*2 + 12 + 1         , 20)",
             "maker_asset":      "substr(data    , 32*3 + 12 + 1         , 20)",
@@ -52,8 +52,8 @@
             "order_hash":       "substr(data    , 1                     , 32)",
         },
         "0x829fa99d94dc4636925b38632e625736a614c154d55006b7ab6bea979c210c32": {
-            "project": "ZeroEx",
-            "name": "RfqOrderFilled",
+            "project":          "ZeroEx",
+            "name":             "RfqOrderFilled",
             "maker":            "substr(data    , 32*1 + 12 + 1         , 20)",
             "taker":            "substr(data    , 32*2 + 12 + 1         , 20)",
             "maker_asset":      "substr(data    , 32*3 + 12 + 1         , 20)",
@@ -63,8 +63,8 @@
             "order_hash":       "substr(data    , 1                     , 32)",
         },
         "0xb709ddcc6550418e9b89df1f4938071eeaa3f6376309904c77e15d46b16066f5": {
-            "project": "Hashflow",
-            "name": "Trade",
+            "project":          "Hashflow",
+            "name":             "Trade",
             "maker":            "substr(data    , 32*0 + 12 + 1         , 20)",
             "taker":            "substr(data    , 32*1 + 12 + 1         , 20)",
             "maker_asset":      "substr(data    , 32*4 + 12 + 1         , 20)",
@@ -73,8 +73,8 @@
             "taking_amount":    "substr(data    , 32*5 + 1              , 32)",
         },
         "0x8cf3dec1929508e5677d7db003124e74802bfba7250a572205a9986d86ca9f1e": {
-            "project": "Hashflow",
-            "name": "Trade",
+            "project":          "Hashflow",
+            "name":             "Trade",
             "taker":            "substr(data    , 32*0 + 12 + 1         , 20)",
             "maker_asset":      "substr(data    , 32*3 + 12 + 1         , 20)",
             "taker_asset":      "substr(data    , 32*2 + 12 + 1         , 20)",
@@ -82,8 +82,8 @@
             "taking_amount":    "substr(data    , 32*4 + 1              , 32)",
         },
         "0x34f57786fb01682fb4eec88d340387ef01a168fe345ea5b76f709d4e560c10eb": {
-            "project": "Hashflow",
-            "name": "Trade",
+            "project":          "Hashflow",
+            "name":             "Trade",
             "taker":            "substr(data    , 32*0 + 12 + 1         , 20)",
             "maker_asset":      "substr(data    , 32*4 + 12 + 1         , 20)",
             "taker_asset":      "substr(data    , 32*3 + 12 + 1         , 20)",
@@ -92,8 +92,8 @@
             "order_hash":       "substr(data    , 32*2 + 1              , 32)",
         },
         "0xe3a54b69726c85299f4e794bac96150af56af801be76cafd11947a1103b6308a": {
-            "project": "Native",
-            "name": "Swap",
+            "project":          "Native",
+            "name":             "Swap",
             "taker":            "substr(topic1  , 12 + 1                , 20)",
             "maker_asset":      "substr(data    , 32*1 + 12 + 1         , 20)",
             "taker_asset":      "substr(data    , 32*0 + 12 + 1         , 20)",
@@ -102,8 +102,8 @@
             "order_hash":       "substr(data    , 32*5 + 1              , 16)",
         },
         "0x4be05c8d54f5e056ab2cfa033e9f582057001268c3e28561bb999d35d2c8f2c8": {
-            "project": "Clipper",
-            "name": "Swapped",
+            "project":          "Clipper",
+            "name":             "Swapped",
             "taker":            "substr(topic3  , 12 + 1                , 20)",
             "maker_asset":      "substr(topic2  , 12 + 1                , 20)",
             "taker_asset":      "substr(topic1  , 12 + 1                , 20)",
@@ -111,16 +111,16 @@
             "taking_amount":    "substr(data    , 32*0 + 1              , 32)",
         },
         "0x2170c741c41531aec20e7c107c24eecfdd15e69c9bb0a8dd37b1840b9e0b207b": {
-            "project": "Swaap",
-            "name": "Swap",
+            "project":          "Swaap",
+            "name":             "Swap",
             "maker_asset":      "substr(topic3  , 12 + 1                , 20)",
             "taker_asset":      "substr(topic2  , 12 + 1                , 20)",
             "making_amount":    "substr(data    , 32*1 + 1              , 32)",
             "taking_amount":    "substr(data    , 32*0 + 1              , 32)",
         },
         "0x6621486d9c28838df4a87d2cca5007bc2aaf6a5b5de083b1db8faf709302c473": {
-            "project": "Paraswap",
-            "name": "OrderFilled",
+            "project":          "Paraswap",
+            "name":             "OrderFilled",
             "maker":            "substr(topic2  , 12 + 1                , 20)",
             "taker":            "substr(topic3  , 12 + 1                , 20)",
             "maker_asset":      "substr(data    , 32*0 + 12 + 1         , 20)",
@@ -130,8 +130,8 @@
             "order_hash":       "substr(topic1  , 1                     , 32)",
         },
         "0xa07a543ab8a018198e99ca0184c93fe9050a79400a0a723441f84de1d972cc17": {
-            "project": "CoWSwap",
-            "name": "Trade",
+            "project":          "CoWSwap",
+            "name":             "Trade",
             "maker":            "substr(topic1  , 12 + 1                , 20)",
             "maker_asset":      "substr(data    , 32*0 + 12 + 1         , 20)",
             "taker_asset":      "substr(data    , 32*1 + 12 + 1         , 20)",
@@ -142,16 +142,16 @@
             "order_hash":       "substr(data    , 32*7 + 1              , 56)",
         },
         "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66": {
-            "project": "Uniswap",
-            "name": "Fill",
+            "project":          "Uniswap",
+            "name":             "Fill",
             "maker":            "substr(topic3  , 12 + 1                , 20)",
             "taker":            "substr(topic2  , 12 + 1                , 20)",
             "order_hash":       "substr(topic1  , 1                     , 32)",
             "nonce":            "substr(data    , 1                     , 32)",
         },
         "0xadd7095becdaa725f0f33243630938c861b0bba83dfd217d4055701aa768ec2e": {
-            "project": "Bebop",
-            "name": "BebopOrder",
+            "project":          "Bebop",
+            "name":             "BebopOrder",
             "order_hash":       "substr(topic1  , 16 + 1                , 16)",
         }
     }
@@ -162,8 +162,8 @@
     set cfg = {
         "ZeroEx": {
             "0xb4be83d5": {
-                "name": "fillOrder",
-                "event": "0x0bcc4c97732e47d9946f229edb95f5b6323f601300e4690de719993f3c371129",
+                "name":             "fillOrder",
+                "event":            "0x0bcc4c97732e47d9946f229edb95f5b6323f601300e4690de719993f3c371129",
                 "maker":            "substr(input   , 4 + 32*3 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*10 + 24 + 1, 8)) + 32*1 + 4 + 12 + 1, 20)",
                 "taker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*11 + 24 + 1, 8)) + 32*1 + 4 + 12 + 1, 20)",
@@ -173,8 +173,8 @@
                 "taking_amount":    "substr(output  , 32*1 + 1                  , 32)",
             },
             "0xf6274f66": {
-                "name": "fillLimitOrder",
-                "event": "0xab614d2b738543c0ea21f56347cf696a3a0c42a7cbec3212a5ca22a4dcff2124",
+                "name":             "fillLimitOrder",
+                "event":            "0xab614d2b738543c0ea21f56347cf696a3a0c42a7cbec3212a5ca22a4dcff2124",
                 "maker":            "substr(input   , 4 + 32*5 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -184,8 +184,8 @@
                 "taking_amount":    "substr(output  , 32*0 + 1                  , 32)",
             },
             "0x414e4ccf": {
-                "name": "_fillLimitOrder",
-                "event": "0xab614d2b738543c0ea21f56347cf696a3a0c42a7cbec3212a5ca22a4dcff2124",
+                "name":             "_fillLimitOrder",
+                "event":            "0xab614d2b738543c0ea21f56347cf696a3a0c42a7cbec3212a5ca22a4dcff2124",
                 "maker":            "substr(input   , 4 + 32*5 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -195,8 +195,8 @@
                 "taking_amount":    "substr(output  , 32*0 + 1                  , 32)",
             },
             "0x9240529c": {
-                "name": "fillOrKillLimitOrder",
-                "event": "0xab614d2b738543c0ea21f56347cf696a3a0c42a7cbec3212a5ca22a4dcff2124",
+                "name":             "fillOrKillLimitOrder",
+                "event":            "0xab614d2b738543c0ea21f56347cf696a3a0c42a7cbec3212a5ca22a4dcff2124",
                 "maker":            "substr(input   , 4 + 32*5 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -205,8 +205,8 @@
                 "making_amount":    "substr(output  , 32*0 + 1                  , 32)",
             },
             "0xdac748d4": {
-                "name": "fillOtcOrder",
-                "event": "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f",
+                "name":             "fillOtcOrder",
+                "event":            "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -216,8 +216,8 @@
                 "taking_amount":    "substr(output  , 32*0 + 1                  , 32)",
             },
             "0xe4ba8439": {
-                "name": "_fillOtcOrder",
-                "event": "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f",
+                "name":             "_fillOtcOrder",
+                "event":            "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -227,8 +227,8 @@
                 "taking_amount":    "substr(output  , 32*0 + 1                  , 32)",
             },
             "0xa578efaf": {
-                "name": "fillOtcOrderForEth",
-                "event": "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f",
+                "name":             "fillOtcOrderForEth",
+                "event":            "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -238,8 +238,8 @@
                 "taking_amount":    "substr(output  , 32*0 + 1                  , 32)",
             },
             "0x706394d5": {
-                "name": "fillOtcOrderWithEth",
-                "event": "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f",
+                "name":             "fillOtcOrderWithEth",
+                "event":            "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -249,8 +249,8 @@
                 "taking_amount":    "substr(output  , 32*0 + 1                  , 32)",
             },
             "0x724d3953": {
-                "name": "fillTakerSignedOtcOrderForEth",
-                "event": "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f",
+                "name":             "fillTakerSignedOtcOrderForEth",
+                "event":            "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -258,8 +258,8 @@
                 "taker_max_amount": "substr(input   , 4 + 32*3 + 1              , 32)",
             },
             "0x4f948110": {
-                "name": "fillTakerSignedOtcOrder",
-                "event": "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f",
+                "name":             "fillTakerSignedOtcOrder",
+                "event":            "0xac75f773e3a92f1a02b12134d65e1f47f8a14eabe4eaf1e24624918e6a8b269f",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -267,8 +267,8 @@
                 "taker_max_amount": "substr(input   , 4 + 32*3 + 1              , 32)",
             },
             "0xaa77476c": {
-                "name": "fillRfqOrder",
-                "event": "0x829fa99d94dc4636925b38632e625736a614c154d55006b7ab6bea979c210c32",
+                "name":             "fillRfqOrder",
+                "event":            "0x829fa99d94dc4636925b38632e625736a614c154d55006b7ab6bea979c210c32",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -278,8 +278,8 @@
                 "taking_amount":    "substr(output  , 32*0 + 1                  , 32)",
             },
             "0xaa6b21cd": {
-                "name": "_fillRfqOrder",
-                "event": "0x829fa99d94dc4636925b38632e625736a614c154d55006b7ab6bea979c210c32",
+                "name":             "_fillRfqOrder",
+                "event":            "0x829fa99d94dc4636925b38632e625736a614c154d55006b7ab6bea979c210c32",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -289,8 +289,8 @@
                 "taking_amount":    "substr(output  , 32*0 + 1                  , 32)",
             },
             "0xa656186b": {
-                "name": "_fillRfqOrder",
-                "event": "0x829fa99d94dc4636925b38632e625736a614c154d55006b7ab6bea979c210c32",
+                "name":             "_fillRfqOrder",
+                "event":            "0x829fa99d94dc4636925b38632e625736a614c154d55006b7ab6bea979c210c32",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -300,8 +300,8 @@
                 "taking_amount":    "substr(output  , 32*0 + 1                  , 32)",
             },
             "0x438cdfc5": {
-                "name": "fillOrKillRfqOrder",
-                "event": "0x829fa99d94dc4636925b38632e625736a614c154d55006b7ab6bea979c210c32",
+                "name":             "fillOrKillRfqOrder",
+                "event":            "0x829fa99d94dc4636925b38632e625736a614c154d55006b7ab6bea979c210c32",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
@@ -310,8 +310,8 @@
                 "making_amount":    "substr(output  , 32*0 + 1                  , 32)",
             },
             "0x3e228bae": {
-                "name": "fillOrderNoThrow",
-                "event": "0x0bcc4c97732e47d9946f229edb95f5b6323f601300e4690de719993f3c371129",
+                "name":             "fillOrderNoThrow",
+                "event":            "0x0bcc4c97732e47d9946f229edb95f5b6323f601300e4690de719993f3c371129",
                 "maker":            "substr(input   , 4 + 32*3 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*10 + 24 + 1, 8)) + 32*1 + 4 + 12 + 1, 20)",
                 "taker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*11 + 24 + 1, 8)) + 32*1 + 4 + 12 + 1, 20)",
@@ -321,8 +321,8 @@
                 "taking_amount":    "substr(output  , 32*1 + 1                  , 32)",
             },
             "0x9b44d556": {
-                "name": "fillOrder",
-                "event": "0x6869791f0a34781b29882982cc39e882768cf2c96995c2a110c577c53bc932d5",
+                "name":             "fillOrder",
+                "event":            "0x6869791f0a34781b29882982cc39e882768cf2c96995c2a110c577c53bc932d5",
                 "maker":            "substr(input   , 4 + 32*3 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*10 + 24 + 1, 8)) + 32*1 + 4 + 12 + 1, 20)",
                 "taker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*11 + 24 + 1, 8)) + 32*1 + 4 + 12 + 1, 20)",
@@ -334,8 +334,8 @@
         },
         "Hashflow": {
             "0x1e9a2e92": {
-                "name": "tradeSingleHop",
-                "event": "0xb709ddcc6550418e9b89df1f4938071eeaa3f6376309904c77e15d46b16066f5",
+                "name":             "tradeSingleHop",
+                "event":            "0xb709ddcc6550418e9b89df1f4938071eeaa3f6376309904c77e15d46b16066f5",
                 "maker":            "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
                 "maker_external":   "substr(input   , 4 + 32*3 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*7 + 12 + 1         , 20)",
@@ -344,8 +344,8 @@
                 "taker_max_amount": "substr(input   , 4 + 32*9 + 1              , 32)",
             },
             "0xf0210929": {
-                "name": "tradeSingleHop",
-                "event": "0x8cf3dec1929508e5677d7db003124e74802bfba7250a572205a9986d86ca9f1e",
+                "name":             "tradeSingleHop",
+                "event":            "0x8cf3dec1929508e5677d7db003124e74802bfba7250a572205a9986d86ca9f1e",
                 "maker":            "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
                 "maker_external":   "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*6 + 12 + 1         , 20)",
@@ -354,8 +354,8 @@
                 "taker_max_amount": "substr(input   , 4 + 32*8 + 1              , 32)",
             },
             "0xc52ac720": {
-                "name": "tradeRFQT",
-                "event": "0x34f57786fb01682fb4eec88d340387ef01a168fe345ea5b76f709d4e560c10eb",
+                "name":             "tradeRFQT",
+                "event":            "0x34f57786fb01682fb4eec88d340387ef01a168fe345ea5b76f709d4e560c10eb",
                 "maker":            "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
                 "maker_external":   "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*6 + 12 + 1         , 20)",
@@ -367,8 +367,8 @@
         },
         "Native": {
             "0xd025fdfa": {
-                "name": "swap",
-                "event": "0xe3a54b69726c85299f4e794bac96150af56af801be76cafd11947a1103b6308a",
+                "name":             "swap",
+                "event":            "0xe3a54b69726c85299f4e794bac96150af56af801be76cafd11947a1103b6308a",
                 "maker":            "substr(input   , 4 + 32*7 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*10 + 12 + 1        , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*11 + 12 + 1        , 20)",
@@ -378,8 +378,8 @@
         },
         "Clipper": {
             "0x2b651a6c": {
-                "name": "swap",
-                "event": "0x4be05c8d54f5e056ab2cfa033e9f582057001268c3e28561bb999d35d2c8f2c8",
+                "name":             "swap",
+                "event":            "0x4be05c8d54f5e056ab2cfa033e9f582057001268c3e28561bb999d35d2c8f2c8",
                 "taker":            "substr(input   , 4 + 32*5 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
@@ -387,24 +387,24 @@
                 "taker_max_amount": "substr(input   , 4 + 32*2 + 1              , 32)",
             },
             "0x4cb6864c": {
-                "name": "sellTokenForEth",
-                "event": "0x4be05c8d54f5e056ab2cfa033e9f582057001268c3e28561bb999d35d2c8f2c8",
+                "name":             "sellTokenForEth",
+                "event":            "0x4be05c8d54f5e056ab2cfa033e9f582057001268c3e28561bb999d35d2c8f2c8",
                 "taker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "maker_max_amount": "substr(input   , 4 + 32*2 + 1              , 32)",
                 "taker_max_amount": "substr(input   , 4 + 32*1 + 1              , 32)",
             },
             "0x27a9b424": {
-                "name": "sellEthForToken",
-                "event": "0x4be05c8d54f5e056ab2cfa033e9f582057001268c3e28561bb999d35d2c8f2c8",
+                "name":             "sellEthForToken",
+                "event":            "0x4be05c8d54f5e056ab2cfa033e9f582057001268c3e28561bb999d35d2c8f2c8",
                 "taker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
                 "taker_max_amount": "substr(input   , 4 + 32*2 + 1              , 32)",
                 "maker_max_amount": "substr(input   , 4 + 32*1 + 1              , 32)",
             },
             "0x3b26e4eb": {
-                "name": "transmitAndSwap",
-                "event": "0x4be05c8d54f5e056ab2cfa033e9f582057001268c3e28561bb999d35d2c8f2c8",
+                "name":             "transmitAndSwap",
+                "event":            "0x4be05c8d54f5e056ab2cfa033e9f582057001268c3e28561bb999d35d2c8f2c8",
                 "taker":            "substr(input   , 4 + 32*5 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*1 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*0 + 12 + 1         , 20)",
@@ -414,8 +414,8 @@
         },
         "Swaap": {
             "0x52bbbe29": {
-                "name": "swap",
-                "event": "0x2170c741c41531aec20e7c107c24eecfdd15e69c9bb0a8dd37b1840b9e0b207b",
+                "name":             "swap",
+                "event":            "0x2170c741c41531aec20e7c107c24eecfdd15e69c9bb0a8dd37b1840b9e0b207b",
                 "taker":            "substr(input   , 4 + 32*3 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*10 + 12 + 1        , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*9 + 12 + 1         , 20)",
@@ -426,8 +426,8 @@
         },
         "Paraswap": {
             "0x98f9b46b": {
-                "name": "fillOrder",
-                "event": "0x6621486d9c28838df4a87d2cca5007bc2aaf6a5b5de083b1db8faf709302c473",
+                "name":             "fillOrder",
+                "event":            "0x6621486d9c28838df4a87d2cca5007bc2aaf6a5b5de083b1db8faf709302c473",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*3 + 12 + 1         , 20)",
@@ -435,8 +435,8 @@
                 "taker_max_amount": "substr(input   , 4 + 32*7 + 1              , 32)",
             },
             "0xc88ae6dc": {
-                "name": "partialFillOrder",
-                "event": "0x6621486d9c28838df4a87d2cca5007bc2aaf6a5b5de083b1db8faf709302c473",
+                "name":             "partialFillOrder",
+                "event":            "0x6621486d9c28838df4a87d2cca5007bc2aaf6a5b5de083b1db8faf709302c473",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*3 + 12 + 1         , 20)",
@@ -445,8 +445,8 @@
                 "making_amount":    "substr(output  , 32*0 + 1                  , 32)",
             },
             "0x24abf828": {
-                "name": "partialFillOrderWithTarget",
-                "event": "0x6621486d9c28838df4a87d2cca5007bc2aaf6a5b5de083b1db8faf709302c473",
+                "name":             "partialFillOrderWithTarget",
+                "event":            "0x6621486d9c28838df4a87d2cca5007bc2aaf6a5b5de083b1db8faf709302c473",
                 "maker":            "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
                 "taker_asset":      "substr(input   , 4 + 32*3 + 12 + 1         , 20)",
@@ -457,9 +457,9 @@
         },
         "CoWSwap": {
             "0x13d79a0b": {
-                "name": "settle",
-                "event": "0xa07a543ab8a018198e99ca0184c93fe9050a79400a0a723441f84de1d972cc17",
-                "number": "coalesce(try(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 24 + 1, 8))), 1)",
+                "name":             "settle",
+                "event":            "0xa07a543ab8a018198e99ca0184c93fe9050a79400a0a723441f84de1d972cc17",
+                "number":           "coalesce(try(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 24 + 1, 8))), 1)",
                 "_order_beginning": "4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8))",
                 "maker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*0 + 24 + 1, 8)) + 1) + 12 + 1, 20)",
                 "taker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*1 + 24 + 1, 8)) + 1) + 12 + 1, 20)",
@@ -473,8 +473,8 @@
         },
         "UniswapX": {
             "0x3f62192e": {
-                "name": "execute",
-                "event": "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
+                "name":             "execute",
+                "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
                 "maker":            "substr(input    , 4 + 32*15 + 12 + 1       , 20)",
                 "receiver":         "substr(input, 4 + 32*4 + bytearray_to_bigint(substr(input, 4 + 32*13 + 24 + 1, 8)) + 32*5 + 12 + 1, 20)",
                 "maker_asset":      "substr(input    , 4 + 32*10 + 12 + 1       , 20)",
@@ -493,8 +493,8 @@
                 "fee_receiver":     "if(bytearray_to_bigint(substr(input, 4 + 32*4 + bytearray_to_bigint(substr(input, 4 + 32*13 + 24 + 1, 8)) + 32*1 + 24 + 1, 8)) > 1, substr(input, 4 + 32*4 + bytearray_to_bigint(substr(input, 4 + 32*13 + 24 + 1, 8)) + 32*9 + 12 + 1, 20))",
             },
             "0x0d335884": {
-                "name": "executeWithCallback",
-                "event": "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
+                "name":             "executeWithCallback",
+                "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
                 "maker":            "substr(input    , 4 + 32*16 + 12 + 1       , 20)",
                 "receiver":         "substr(input, 4 + 32*5 + bytearray_to_bigint(substr(input, 4 + 32*14 + 24 + 1, 8)) + 32*5 + 12 + 1, 20)",
                 "maker_asset":      "substr(input    , 4 + 32*11 + 12 + 1       , 20)",
@@ -513,8 +513,8 @@
                 "fee_receiver":     "if(bytearray_to_bigint(substr(input, 4 + 32*5 + bytearray_to_bigint(substr(input, 4 + 32*14 + 24 + 1, 8)) + 32*1 + 24 + 1, 8)) > 1, substr(input, 4 + 32*5 + bytearray_to_bigint(substr(input, 4 + 32*14 + 24 + 1, 8)) + 32*9 + 12 + 1, 20))",
             },
             "0x0d7a16c3": {
-                "name": "executeBatch",
-                "event": "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
+                "name":             "executeBatch",
+                "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
                 "number":           "coalesce(try(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 24 + 1, 8))), 1)",
                 "_order_beginning": "4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8))",
                 "maker":            "substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8)) + 32*14 + 12 + 1, 20)",
@@ -535,8 +535,8 @@
                 "fee_receiver":     "if(bytearray_to_bigint(substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8)) + 32*12 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) > 1, substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8)) + 32*12 + 24 + 1, 8)) + 32*12 + 12 + 1, 20))",
             },
             "0x13fb72c7": {
-                "name": "executeBatchWithCallback",
-                "event": "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
+                "name":             "executeBatchWithCallback",
+                "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
                 "number":           "coalesce(try(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 24 + 1, 8))), 1)",
                 "_order_beginning": "4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 32*(x - 1) + 24 + 1, 8))",
                 "maker":            "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 32*(x - 1) + 24 + 1, 8)) + 32*14 + 12 + 1, 20)",
@@ -559,13 +559,13 @@
         },
         "Bebop": {
             "0x1a499026": {
-                "name": "settleSingle",
-                "event": "0xadd7095becdaa725f0f33243630938c861b0bba83dfd217d4055701aa768ec2e",
-                "maker":            "substr(input    , 4 + 32*2 + 12 + 1        , 32)",
-                "taker":            "substr(input    , 4 + 32*1 + 12 + 1        , 32)",
-                "receiver":         "substr(input    , 4 + 32*8 + 12 + 1        , 32)",
-                "maker_asset":      "substr(input    , 4 + 32*5 + 12 + 1        , 32)",
-                "taker_asset":      "substr(input    , 4 + 32*4 + 12 + 1        , 32)",
+                "name":             "settleSingle",
+                "event":            "0xadd7095becdaa725f0f33243630938c861b0bba83dfd217d4055701aa768ec2e",
+                "maker":            "substr(input    , 4 + 32*2 + 12 + 1        , 20)",
+                "taker":            "substr(input    , 4 + 32*1 + 12 + 1        , 20)",
+                "receiver":         "substr(input    , 4 + 32*8 + 12 + 1        , 20)",
+                "maker_asset":      "substr(input    , 4 + 32*5 + 12 + 1        , 20)",
+                "taker_asset":      "substr(input    , 4 + 32*4 + 12 + 1        , 20)",
                 "maker_max_amount": "substr(input    , 4 + 32*7 + 1             , 32)",
                 "taker_max_amount": "substr(input    , 4 + 32*6 + 1             , 32)",
                 "making_amount":    "substr(input    , 4 + 32*14 + 1            , 32)",
@@ -575,13 +575,13 @@
                 "order_hash":       "substr(input    , 4 + 32*10 + 1            , 16)",
             },
             "0x38ec0211": {
-                "name": "settleSingleAndSignPermit2",
-                "event": "0xadd7095becdaa725f0f33243630938c861b0bba83dfd217d4055701aa768ec2e",
-                "maker":            "substr(input    , 4 + 32*2 + 12 + 1        , 32)",
-                "taker":            "substr(input    , 4 + 32*1 + 12 + 1        , 32)",
-                "receiver":         "substr(input    , 4 + 32*8 + 12 + 1        , 32)",
-                "maker_asset":      "substr(input    , 4 + 32*5 + 12 + 1        , 32)",
-                "taker_asset":      "substr(input    , 4 + 32*4 + 12 + 1        , 32)",
+                "name":             "settleSingleAndSignPermit2",
+                "event":            "0xadd7095becdaa725f0f33243630938c861b0bba83dfd217d4055701aa768ec2e",
+                "maker":            "substr(input    , 4 + 32*2 + 12 + 1        , 20)",
+                "taker":            "substr(input    , 4 + 32*1 + 12 + 1        , 20)",
+                "receiver":         "substr(input    , 4 + 32*8 + 12 + 1        , 20)",
+                "maker_asset":      "substr(input    , 4 + 32*5 + 12 + 1        , 20)",
+                "taker_asset":      "substr(input    , 4 + 32*4 + 12 + 1        , 20)",
                 "maker_max_amount": "substr(input    , 4 + 32*7 + 1             , 32)",
                 "taker_max_amount": "substr(input    , 4 + 32*6 + 1             , 32)",
                 "making_amount":    "substr(input    , 4 + 32*14 + 1            , 32)",
@@ -591,17 +591,39 @@
                 "order_hash":       "substr(input    , 4 + 32*10 + 1            , 16)",
             },
             "0xefe34fe6": {
-                "name": "settleMulti",
-                "event": "0xadd7095becdaa725f0f33243630938c861b0bba83dfd217d4055701aa768ec2e",
+                "name":             "settleMulti",
+                "event":            "0xadd7095becdaa725f0f33243630938c861b0bba83dfd217d4055701aa768ec2e",
                 "_order_beginning": "4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8))",
-                "number":           "coalesce(try(greatest(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)), bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)))), 1)",
-                "maker":            "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*2 + 12 + 1, 32)",
-                "taker":            "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 12 + 1, 32)",
-                "receiver":         "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*8 + 12 + 1, 32)",
-                "maker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8))) + 12 + 1, 20)",
-                "taker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8))) + 12 + 1, 20)",
-                "making_amount":    "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*7 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*7 + 24 + 1, 8))) + 1, 32)",
-                "taking_amount":    "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*6 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*6 + 24 + 1, 8))) + 1, 32)",
+                "number":           "coalesce(try(greatest(
+                                        bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) + 24 + 1, 8))
+                                        , bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)) + 24 + 1, 8))
+                                    )), 1)",
+                "_maker_parts":     "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)) + 24 + 1, 8)",
+                "_taker_parts":     "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) + 24 + 1, 8)",
+                "maker":            "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*2 + 12 + 1, 20)",
+                "taker":            "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 12 + 1, 20)",
+                "receiver":         "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*8 + 12 + 1, 20)",
+                "maker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*5 + 24 + 1, 8)) + 24 + 1, 8))) + 12 + 1, 20)",
+                "taker_asset":      "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) + 24 + 1, 8))) + 12 + 1, 20)",
+                "making_amount":    "substr(
+                                        input
+                                        , 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8))
+                                            + bytearray_to_bigint(substr(
+                                                input
+                                                , 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*7 + 24 + 1
+                                                , 8
+                                            ))
+                                            + 32 * least(x, bytearray_to_bigint(substr(
+                                                input
+                                                , 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8))
+                                                    + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*7 + 24 + 1, 8))
+                                                    + 24 + 1
+                                                , 8
+                                            )))
+                                            + 1
+                                        , 32
+                                    )",
+                "taking_amount":    "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*6 + 24 + 1, 8)) + 32 * least(x, bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*6 + 24 + 1, 8)) + 24 + 1, 8))) + 1, 32)",
                 "deadline":         "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 24 + 1, 8)",
                 "nonce":            "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*3 + 1, 32)",
                 "order_hash":       "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*10 + 1, 16)",
@@ -664,7 +686,7 @@ logs as (
 )
 
 , calls as (
-    select *, row_number() over(partition by block_number, tx_hash order by call_trace_address, call_trade) as call_trade_counter
+    select *, row_number() over(partition by block_number, tx_hash order by call_trace_address, call_trade) as call_trade_counter -- trade counter in the tx: there may be multiple calls and multiple trades within a call in a single transaction
     from (
         select
             blockchain
@@ -695,8 +717,8 @@ logs as (
             , try(bytearray_to_uint256(trade['taker_max_amount'])) as call_taker_max_amount
             , try(bytearray_to_uint256(trade['maker_min_amount'])) as call_maker_min_amount
             , try(bytearray_to_uint256(trade['taker_min_amount'])) as call_taker_min_amount
-            , try(bytearray_to_uint256(trade['making_amount'])) as call_making_amount
-            , try(bytearray_to_uint256(trade['taking_amount'])) as call_taking_amount
+            , try(bytearray_to_uint256(trade['making_amount']) / bytearray_to_bigint(trade['_taker_parts'])) as call_making_amount -- for multi trades: when exchange many to one or one to many
+            , try(bytearray_to_uint256(trade['taking_amount']) / bytearray_to_bigint(trade['_maker_parts'])) as call_taking_amount
             , try(bytearray_to_uint256(substr(trade['start'], 24 + 1, 8))) as call_start
             , try(bytearray_to_uint256(substr(trade['end'], 24 + 1, 8))) as call_end
             , try(bytearray_to_uint256(substr(trade['deadline'], 24 + 1, 8))) as call_deadline
@@ -709,6 +731,7 @@ logs as (
             , trade['fee_receiver'] as call_fee_receiver
             , trade['nonce'] as call_nonce
             , trade['order_hash'] as call_order_hash
+            , cardinality(trades) as call_trades -- total trades in the call
             , input
             , output
         from (
@@ -733,7 +756,7 @@ logs as (
                 , error as call_error
                 , '{{ method_data["name"] }}' as method
                 , {{ method_data["event"] }} as topic0
-                , transform(sequence(1, {{ method_data.get("number", "1") }}), x -> map_from_entries(array[
+                , transform(sequence(1, coalesce({{ method_data.get("number", "1") }}, 1)), x -> map_from_entries(array[
                       ('trade',             try(to_big_endian_64(x)))
                     , ('maker',             {{ method_data.get("maker", "null") }})
                     , ('taker',             {{ method_data.get("taker", "null") }})
@@ -756,13 +779,15 @@ logs as (
                     , ('fee_receiver',      {{ method_data.get("fee_receiver", "null") }})
                     , ('nonce',             {{ method_data.get("nonce", "null") }})
                     , ('order_hash',        {{ method_data.get("order_hash", "null") }})
+                    , ('_maker_parts',      {{ method_data.get("_maker_parts", "0x01") }})
+                    , ('_taker_parts',      {{ method_data.get("_taker_parts", "0x01") }})
                 ])) as trades
                 , input
                 , output
             from {{ source(blockchain, 'traces') }}
             join (
                 select *, address as "to"
-                from {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
+                from {{ source('oneinch_' + blockchain, 'mapped_contracts') }}
                 where
                     blockchain = '{{ blockchain }}'
                     and '{{ project }}' in (project, tag)
@@ -806,7 +831,7 @@ logs as (
         , coalesce(log_fee_receiver, call_fee_receiver) as fee_receiver
         , coalesce(log_nonce, call_nonce) as order_nonce
         , coalesce(log_order_hash, call_order_hash, concat(tx_hash, to_big_endian_32(cast(call_trade_counter as int)))) as order_hash
-        , count(*) over(partition by blockchain, block_number, tx_hash, call_trace_address, call_trade) as trades
+        , count(*) over(partition by blockchain, block_number, tx_hash, call_trace_address, call_trade) as call_trade_logs -- logs for each trade
     from calls
     full join logs using(block_number, tx_hash, topic0)
     join ({{ oneinch_blockchain_macro(blockchain) }}) using(blockchain)
@@ -836,7 +861,7 @@ select
     , project
     , tag
     , map_concat(flags, map_from_entries(array[
-        ('auction', coalesce(order_start, uint256 '0') > uint256 '0' or project in ('CoWSwap', 'Bebop'))
+        ('auction', coalesce(order_end - order_start, uint256 '0') > uint256 '0' or project in ('CoWSwap', 'Bebop'))
     ])) as flags
     , block_number
     , block_time
@@ -850,7 +875,8 @@ select
     , call_gas_used
     , call_type
     , call_error
-    , call_trade
+    , bytearray_to_bigint(call_trade) as call_trade
+    , call_trades
     , method
     , maker
     , taker
@@ -887,8 +913,8 @@ select
     , date(date_trunc('month', block_time)) as block_month
 from joined
 where
-    trades = 1
-    or call_trade_counter = log_counter
-    or log_counter is null
+    call_trade_logs = 1 -- if found the only one log for a trade in the call
+    or call_trade_counter = log_counter -- if found several logs
+    or log_counter is null -- if the log was not found
 
 {% endmacro %}

@@ -1,7 +1,7 @@
 {% macro 
     oneinch_project_swaps_macro(
         blockchain
-        , date_from = '2024-01-01'
+        , date_from = '2024-06-18'
     ) 
 %}
 
@@ -32,7 +32,7 @@ meta as (
         , taker_asset
         , taking_amount
         , flags as order_flags
-    from {{ ref('oneinch_' + blockchain + '_project_orders') }}
+    from {{ source('oneinch_' + blockchain, 'project_orders') }}
     where
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
@@ -57,7 +57,7 @@ meta as (
         , flags as order_flags
     from (
         select *, row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
-        from {{ ref('oneinch_' + blockchain + '_lop') }}
+        from {{ source('oneinch_' + blockchain, 'lop') }}
         where
             {% if is_incremental() %}
                 {{ incremental_predicate('block_time') }}

@@ -2,7 +2,7 @@
         schema='evms',
         alias = 'erc721_approvals',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -24,6 +24,10 @@
      , ('zksync', source('erc721_zksync', 'evt_Approval'))
      , ('zora', source('erc721_zora', 'evt_Approval'))
      , ('scroll', source('erc721_scroll', 'evt_Approval'))
+     , ('linea', source('erc721_linea', 'evt_Approval'))
+     , ('zkevm', source('erc721_zkevm', 'evt_Approval'))
+     , ('blast', source('erc721_blast', 'evt_Approval'))
+     , ('mantle', source('erc721_mantle', 'evt_Approval'))
 ] %}
 
 SELECT *
