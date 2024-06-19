@@ -23,10 +23,10 @@ with price_feed_ids as (
             , category
             , token1
             , token2
-            , from_hex("hash") as "hash"
+            , "hash"
             , pending
             , expo
-            , row_number() over (order by last_used desc) as change
+            , row_number() over (partition by "hash" order by last_used desc) as change
         FROM
             {{ ref('pyth_scroll_active_price_feed_ids') }}
 
