@@ -86,9 +86,9 @@ inner join price_feed_ids ids on log.topic1 = ids."hash"
 left join {{ source('avalanche_c', 'contracts') }} bc on log.tx_to = bc.address
 where 
 {% if is_incremental() %}
-and {{ incremental_predicate('log.block_time') }}
+{{ incremental_predicate('log.block_time') }}
 {% else %}
-and log.block_time >= DATE '{{project_start_date}}'
+log.block_time >= DATE '{{project_start_date}}'
 {% endif %}
 
 order by log.block_time desc
