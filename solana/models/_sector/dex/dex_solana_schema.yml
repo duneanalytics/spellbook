@@ -92,3 +92,33 @@ models:
       - &tx_index
         name: tx_index
         description: "index of the transaction in the block slot"
+
+  - name: dex_solana_price_hour
+    meta:
+      blockchain: solana
+      contributors: [get_nimbus]
+    config:
+      tags: ['solana','dex', 'price']  
+    description: >
+        All token price in Orca pool
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - hour
+    columns:
+      - name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - name: contract_address
+        description: "contract_address of token"
+      - name: hour
+        description: "Time of price in hour"
+      - name: block_month
+        description: "UTC event block month of each DEX trade"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Token decimals"
+      - name: price
+        description: "Token price"

@@ -6,10 +6,12 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "lido_liquidity",
-                                \'["ppclunghe"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.time')],
+    post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
+                                spell_type = "project",
+                                spell_name = "lido_liquidity",
+                                contributors = \'["pipistrella"]\') }}'
+    
     )
 }}
 
@@ -57,9 +59,8 @@ FROM {{source('prices','usd')}} p
 {% if not is_incremental() %}
 WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
 {% else %}
-WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+WHERE {{ incremental_predicate('p.minute') }}
 {% endif %}
-
      and date_trunc('day', minute) < current_date
      and blockchain = 'optimism'
   and contract_address IN (select token from tokens)
@@ -90,9 +91,8 @@ select distinct
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
-
       and blockchain = 'optimism' and contract_address = 0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb
     
 )
@@ -113,14 +113,12 @@ from wsteth_prices_hourly
       SUM(CAST(amount0 AS DOUBLE)) AS amount0,
       SUM(CAST(amount1 AS DOUBLE)) AS amount1
  from {{source('velodrome_optimism','Pair_evt_Mint')}} m
- left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on m.contract_address = cr.pair 
- 
+ left join {{source('velodrome_optimism','PairFactory_evt_PairCreated')}} cr on m.contract_address = cr.pair  
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
- {% endif %}
- 
+ WHERE {{ incremental_predicate('m.evt_block_time') }} 
+ {% endif %} 
  and m.contract_address in (select address from pools)
  group by 1,2,3,4
  )
@@ -138,9 +136,8 @@ from wsteth_prices_hourly
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', b.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', b.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
- {% endif %}
- 
+ WHERE {{ incremental_predicate('b.evt_block_time') }} 
+ {% endif %} 
  and b.contract_address in (select address from pools)
  group by 1,2,3,4
  
@@ -159,9 +156,8 @@ from wsteth_prices_hourly
  {% if not is_incremental() %}
   WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
-  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
- {% endif %}
- 
+  WHERE {{ incremental_predicate('s.evt_block_time') }} 
+ {% endif %} 
  and s.contract_address in (select address from pools)
  group by 1,2,3,4
  
@@ -181,7 +177,7 @@ select
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('s.evt_block_time') }} 
  {% endif %}
  and s.contract_address in (select address from pools)
  group by 1,2,3,4
@@ -240,7 +236,7 @@ GROUP BY 1,2,3,4
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('s.evt_block_time') }} 
  {% endif %}
 
  and s.contract_address in (select address from pools)
@@ -299,7 +295,7 @@ group by 1,2
       AND l.pool = tv.pool
  )
  
-select  CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(blockchain,CONCAT(' ', project)) ,' '), coalesce(paired_token_symbol,'unknown')),':') , main_token_symbol, ' ', pool_type) as pool_name,
+select  blockchain||' '||project||' '||coalesce(paired_token_symbol,'unknown')||':'||main_token_symbol||' '||pool_type as pool_name,
         pool,
         blockchain,
         project,
