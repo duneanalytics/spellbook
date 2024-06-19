@@ -46,3 +46,6 @@ with base_trades as (
     where s.evt_block_time >= timestamp '{{tevaera_usage_start_date}}'
     {% endif %}
 )
+
+select *
+from base_trades
