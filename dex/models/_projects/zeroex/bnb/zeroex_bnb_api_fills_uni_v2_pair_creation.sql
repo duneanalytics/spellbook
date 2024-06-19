@@ -29,7 +29,7 @@ WHERE creation.topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde3
     {% if is_incremental() %}
     AND {{ incremental_predicate('block_time') }}
     {% else %}
-    AND tx.block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
+    AND block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
     {% endif %}
 )
 WHERE rn = 1
