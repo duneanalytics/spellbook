@@ -65,6 +65,8 @@ meta as (
                 , order_start
                 , order_end
                 , order_deadline
+                , call_trade
+                , call_trades
             from {{ ref('oneinch_' + blockchain + '_project_orders') }}
             where call_success
             {% if not loop.last %} union all {% endif %}
@@ -79,6 +81,8 @@ meta as (
             , null as order_start
             , null as order_end
             , null as order_deadline
+            , 1 as call_trade
+            , 1 as call_trades
         from {{ ref('oneinch_lop') }}
         where call_success
     )
@@ -127,6 +131,8 @@ meta as (
         , any_value(order_start) as order_start
         , any_value(order_end) as order_end
         , any_value(order_deadline) as order_deadline
+        , any_value(call_trade) as call_trade
+        , any_value(call_trades) as call_trades
         , any_value(flags) as flags
         , any_value(tag) as tag
     from (select * from orders, unnest(assets) as a(contract_address))
@@ -161,6 +167,8 @@ select
     , order_start
     , order_end
     , order_deadline
+    , call_trade
+    , call_trades
     , flags
     , tag
     , date(date_trunc('month', block_time)) as block_month
