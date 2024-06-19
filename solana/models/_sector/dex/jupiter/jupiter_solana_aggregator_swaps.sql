@@ -15,7 +15,7 @@
                                     \'["ilemi"]\') }}')
 }}
 
-with 
+with
     amms as (
         SELECT
         *
@@ -65,13 +65,13 @@ with
                 ('Jupiter Perps', 'PERPHjGBqRHArX4DySjwM6UJHiR3sWAatqfdBS2qQJu')
             ) as v(amm_name, amm)
     )
-    
+
 
     , jup_messages_logs as (
         --SwapEvent through log messages
-        with 
+        with
             hex_data as (
-                SELECT 
+                SELECT
                     from_base64(split(l.logs, ' ')[3]) as hex_data
                     -- , split(logs, ' ')[3] as base64_data
                     , l.log_index_raw
@@ -80,7 +80,7 @@ with
                     , t.block_slot
                     , t.block_time
                     , t.signer as tx_signer
-                    , case when contains(t.account_keys, 'JUP5pEAZeHdHrLxh5UCwAbpjGwYKKoquCpda2hfP4u8') then 5 
+                    , case when contains(t.account_keys, 'JUP5pEAZeHdHrLxh5UCwAbpjGwYKKoquCpda2hfP4u8') then 5
                         when contains(t.account_keys, 'JUP4Fb2cqiRUcaTHdrPC8h2gNsA2ETXiPDD33WcGuJB') then 4
                         end as jup_version
                 FROM {{ source('solana','transactions') }} t
@@ -95,8 +95,8 @@ with
                 {% endif %}
                 -- and block_time >= now() - interval '7' day --shorten CI
         )
-        
-        SELECT 
+
+        SELECT
             a.amm_name
             , toBase58(bytearray_substring(hex_data,1+8,32)) as amm
             , toBase58(bytearray_substring(hex_data,1+40,32)) as input_mint
@@ -112,7 +112,7 @@ with
         FROM hex_data
         JOIN amms a ON a.amm = toBase58(bytearray_substring(hex_data,1+8,32)) --only include amms that we are tracking.
     )
-    
+
     , jup6_logs as (
         --uses event CPI
         SELECT
@@ -129,7 +129,7 @@ with
             , tx_signer
             , 6 as jup_version
         FROM (
-            SELECT 
+            SELECT
                 *
                 , row_number() over (partition by tx_id order by outer_instruction_index asc, COALESCE(inner_instruction_index,0) asc) as log_index
             FROM {{ source('solana','instruction_calls') }}
@@ -168,22 +168,22 @@ l.amm
 , l.tx_signer
 , l.jup_version
 FROM (
-    SELECT * FROM jup_messages_logs 
+    SELECT * FROM jup_messages_logs
     WHERE input_amount > 0 and output_amount > 0
-    UNION ALL 
+    UNION ALL
     SELECT * FROM jup6_logs
-) l 
+) l
 --tokens
 LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_1 ON tk_1.token_mint_address = l.input_mint
 LEFT JOIN {{ ref('tokens_solana_fungible') }} tk_2 ON tk_2.token_mint_address = l.output_mint
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} p_1 ON p_1.blockchain = 'solana' 
-    AND date_trunc('minute', l.block_time) = p_1.minute 
+LEFT JOIN {{ source('prices','usd_forward_fill') }} p_1 ON p_1.blockchain = 'solana'
+    AND date_trunc('minute', l.block_time) = p_1.minute
     AND l.input_mint = toBase58(p_1.contract_address)
     {% if is_incremental() %}
     AND {{ incremental_predicate('p_1.minute') }}
     {% endif %}
-LEFT JOIN {{ ref('prices_usd_forward_fill') }}  p_2 ON p_2.blockchain = 'solana' 
-    AND date_trunc('minute', l.block_time) = p_2.minute 
+LEFT JOIN {{ source('prices', 'usd_forward_fill') }}  p_2 ON p_2.blockchain = 'solana'
+    AND date_trunc('minute', l.block_time) = p_2.minute
     AND l.output_mint = toBase58(p_2.contract_address)
     {% if is_incremental() %}
     AND {{ incremental_predicate('p_2.minute') }}
