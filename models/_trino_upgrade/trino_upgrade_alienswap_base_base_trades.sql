@@ -45,3 +45,6 @@ FROM {{ source('alienswap_base','Alienswap_evt_OrderFulfilled') }} s
     WHERE s.evt_block_time >= timestamp '{{alienswap_usage_start_date}}'
     {% endif %}
 )
+
+select *
+from base_trades
