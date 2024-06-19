@@ -69,7 +69,6 @@ meta as (
                 , call_trades
             from {{ ref('oneinch_' + blockchain + '_project_orders') }}
             where call_success
-            and block_time >= date('2024-06-18')
             {% if not loop.last %} union all {% endif %}
         {% endfor %}
             
@@ -86,7 +85,6 @@ meta as (
             , 1 as call_trades
         from {{ ref('oneinch_lop') }}
         where call_success
-        and block_time >= date('2024-06-18')
     )
     join meta using(blockchain)
     {% if is_incremental() %}
@@ -105,8 +103,6 @@ meta as (
     from {{ source('prices', 'usd') }}
     {% if is_incremental() %}
         where {{ incremental_predicate('minute') }}
-    {% else %}
-        where minute >= date('2024-06-18')
     {% endif %}
 )
 
