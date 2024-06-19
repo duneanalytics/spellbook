@@ -148,3 +148,22 @@ models:
           filter:
             version: 1
 
+  - name: uniswap_v3_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: uniswap
+      contributors: chef_seaweed
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap linea v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_linea_base_trades_seed')
+          filter:
+            version: 3            
+
