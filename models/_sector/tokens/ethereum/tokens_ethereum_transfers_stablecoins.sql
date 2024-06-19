@@ -15,4 +15,4 @@
     )
 }}
 
-{{ transfers_erc20_stablecoins(blockchain = 'ethereum') }}
+{{ transfers_erc20_stablecoins('ethereum') }}
