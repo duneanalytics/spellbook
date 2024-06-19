@@ -20,6 +20,7 @@ with base_trades as (
         '1' as project_version,
         s.evt_block_time as block_time,
         cast(date_trunc('day', s.evt_block_time) as date) as block_date,
+        CAST(s.evt_block_time AS TIMESTAMP(2)) AS the_no_timezone_column,
         cast(date_trunc('month', s.evt_block_time) as date) as block_month,
         s.evt_block_number as block_number,
         s.assetContract as nft_contract_address,
