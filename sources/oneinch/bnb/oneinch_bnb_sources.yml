@@ -137,3 +137,10 @@ sources:
         loaded_at_field: call_block_time
       - name: AggregationRouterV6_call_fillContractOrderArgs
         loaded_at_field: call_block_time
+      - name: mapped_contracts
+      - name: project_orders
+        loaded_at_field: block_time
+      - name: project_calls
+        loaded_at_field: block_time
+      - name: lop
+        loaded_at_field: block_time
