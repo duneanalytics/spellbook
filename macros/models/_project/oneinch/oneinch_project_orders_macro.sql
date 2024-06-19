@@ -1,6 +1,6 @@
 {% macro oneinch_project_orders_macro(
     blockchain
-    , date_from = '2024-06-01'
+    , date_from = '2024-06-18'
 )%}
 
 -- EVENTS CONFIG
@@ -787,7 +787,7 @@ logs as (
             from {{ source(blockchain, 'traces') }}
             join (
                 select *, address as "to"
-                from {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
+                from {{ source('oneinch_' + blockchain, 'mapped_contracts') }}
                 where
                     blockchain = '{{ blockchain }}'
                     and '{{ project }}' in (project, tag)

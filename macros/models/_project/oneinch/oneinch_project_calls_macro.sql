@@ -1,7 +1,7 @@
 {% macro 
     oneinch_project_calls_macro(
         blockchain
-        , date_from = '2024-06-01'
+        , date_from = '2024-06-18'
     )
 %}
 
@@ -31,7 +31,7 @@ static as (
         , any_value(project) as project
         , any_value(tag) as tag
         , any_value(flags) as flags
-    from {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
+    from {{ source('oneinch_' + blockchain, 'mapped_contracts') }}
     where
         project not in ('MEVBot', 'Unknown')
     group by 1, 2
