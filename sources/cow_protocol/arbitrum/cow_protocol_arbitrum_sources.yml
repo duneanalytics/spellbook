@@ -47,7 +47,7 @@ sources:
             description: "Amount (in atoms) of the buyToken bought"
           - &buyToken
             name: buyToken
-            description: "Contract address of token obtained in trade"
+            description: "Contract address of token obtained in trade. 0xeee...ee represents native asset ETH"
           - *contract_address
           - *evt_block_number
           - *evt_block_time
@@ -91,6 +91,11 @@ sources:
             name: interactions
             description: "An array of internal contract interactions"
           - &tokens
+            name: tokens
+            description: "An array of token addresses (to be matched by index on `clearingPrices`)"
+          - &trades
+            name: trades
+            description: "An array of order data for the trades being executed"
       - name: GPv2Settlement_evt_Settlement
         description: "Settlement events emitted by GPv2Settlement"
         columns:
@@ -117,8 +122,3 @@ sources:
           - &value
             name: value
             description: ETH amount (in WEI) being passed into contract interaction
-            name: tokens
-            description: "An array of token addresses (to be matched by index on `clearingPrices`)"
-          - &trades
-            name: trades
-            description: "An array of order data for the trades being executed"
