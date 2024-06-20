@@ -1,12 +1,12 @@
 {{
     config(
-        schema = 'balancer_ethereum', 
+        schema = 'balancer_ethereum',
         alias = 'balances',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
                                     spell_type = "project",
                                     spell_name = "balancer",
                                     contributors = \'["metacrypto", "jacektrocinski", "viniabussafi"]\') }}'
-    ) 
+    )
 }}
 
 {% set balancer_contract = '0xba12222222228d8ba445958a75a0704d566bf2c8' %}

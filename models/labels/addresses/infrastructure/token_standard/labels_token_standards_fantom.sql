@@ -35,7 +35,7 @@ SELECT distinct 'fantom' AS blockchain
 , NOW() AS updated_at
 , 'token_standard' AS model_name
 , 'persona' as label_type
-FROM {{ ref('nft_fantom_transfers') }} nft
+FROM {{ source('nft_fantom','transfers') }} nft
 {% if is_incremental() %}
 LEFT JOIN this t
     ON t.address = nft.contract_address

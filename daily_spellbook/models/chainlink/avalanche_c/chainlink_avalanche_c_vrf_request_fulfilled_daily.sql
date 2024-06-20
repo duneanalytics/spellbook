@@ -1,16 +1,16 @@
 {{
   config(
-    
+
     alias='vrf_request_fulfilled_daily',
     partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.date_start')],
     unique_key=['date_start', 'operator_address']
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 SELECT
   'avalanche_c' as blockchain,
@@ -21,8 +21,8 @@ SELECT
 FROM
   {{ref('chainlink_avalanche_c_vrf_request_fulfilled')}} vrf_request_fulfilled
 {% if is_incremental() %}
-  WHERE evt_block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-{% endif %}      
+  WHERE {{ incremental_predicate('evt_block_time') }}
+{% endif %}
 GROUP BY
   2, 4
 ORDER BY

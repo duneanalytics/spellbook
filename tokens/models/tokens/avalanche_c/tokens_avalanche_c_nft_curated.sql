@@ -9,6 +9,16 @@
 
 SELECT contract_address, name, symbol
 FROM (VALUES
+      (0x7098b1918eb2aa13945b8a489975bbbf0d5dd79b, 'Long Long Legacy', 'LLL'),
+      (0xc732518034c5df52cdddf17486b9409bc7721e2c, 'Sausagers', 'MEAT'),
+      (0x00bf1594507ccf60b41ad64524d4aba23b059f4b, 'Ferdy Frends', 'FREN'),
+      (0xcf81b983b1888e131db9416baa5564ff675a6a12, 'Black Flag Pirates', 'BFPR'),
+      (0xb449701a5ebb1d660cb1d206a94f151f5a544a81, 'Smol Joes Season 2', 'SJ'),
+      (0x9b216c723f77a97abed00780865c070ad6e3dfb6, 'DQN', 'DQN'),
+      (0xe19b85a3440d5999a8363d386e3eacc088800b68, 'Elements', 'ELEMENTS'),
+      (0xf0ad42e8d11dd0a3f06f76ddb39279c797568cb0, 'ferdy fish', 'fdfh'),
+      (0xce4fee23ab35d0d9a4b6b644881ddd8adebeb300, 'The Salvors', 'SALVOR'),
+      (0xcdab7d987f0198edb440d014ed1e71256a0e3e7a, 'Steady', 'STDY'),
       (0x36335Bda9a1e4224671B3fDF3e599DFbe083a7c1, 'Walrus Anglers Club', 'WAC'),
       (0xdce4867e34f977619b296646b04bdb334b8f6950, 'Bananaz', 'NANAZ'),
       (0xddccc21fc45e96a04d4213e3b0b9e54498107702, 'Scourge Apes', 'SAPE'),

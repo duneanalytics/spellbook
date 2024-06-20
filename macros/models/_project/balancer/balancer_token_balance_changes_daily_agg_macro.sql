@@ -24,7 +24,7 @@ WITH
             contract_address AS token,
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
-        FROM {{ ref('dex_prices') }}
+        FROM {{ source('dex', 'prices') }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('hour') }}
         {% endif %}

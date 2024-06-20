@@ -1,5 +1,6 @@
 {{ config(
 tags=['prod_exclude'],
+        schema = 'gmx_arbitrum',
         alias = 'glp_float',
         partition_by = ['block_date'],
         materialized = 'incremental',
