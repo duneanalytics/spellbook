@@ -1,5 +1,7 @@
 {% macro transfers_erc20_stablecoins(blockchain = null) %}
 
+{% set first_stablecoin_deployed = '2017-11-28' %} -- Tether
+
 WITH
     stables_in_tx AS (
         SELECT 
@@ -9,7 +11,16 @@ WITH
             SELECT distinct 
                 t.contract_address
                 , t.tx_hash 
-            FROM {{ source('tokens_' + blockchain, 'transfer') }} t
+            FROM {{
+                transfers_enrich(
+                    base_transfers = ref('tokens_' + blockchain + '_base_transfers')
+                    , tokens_erc20_model = source('tokens', 'erc20')
+                    , prices_model = source('prices', 'usd')
+                    , evms_info_model = ref('evms_info')
+                    , transfers_start_date = {{first_stablecoin_deployed}}
+                    , blockchain = {{blockchain}}
+                )
+            }} t
             INNER JOIN (
                 SELECT contract_address 
                 FROM {{ source('tokens_' + blockchain, 'stablecoins') }}
@@ -30,7 +41,16 @@ WITH
             , s.symbol
             , COALESCE(t.amount, t.raw_amount / POW(10, s.decimals)) AS amount
             , x.stables_in_tx
-        FROM {{ source('tokens_' + blockchain, 'transfer') }} t
+        FROM {{
+            transfers_enrich(
+                base_transfers = ref('tokens_' + blockchain + '_base_transfers')
+                , tokens_erc20_model = source('tokens', 'erc20')
+                , prices_model = source('prices', 'usd')
+                , evms_info_model = ref('evms_info')
+                , transfers_start_date = {{first_stablecoin_deployed}}
+                , blockchain = {{blockchain}}
+            )
+        }} t
         INNER JOIN (
             SELECT tx_hash, stables_in_tx 
             FROM stables_in_tx
