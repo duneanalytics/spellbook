@@ -8,7 +8,7 @@ WITH pool_labels AS (
             address,
             name,
             pool_type
-        FROM pool_labels_spell
+        FROM {{ pool_labels_spell }}
         WHERE blockchain = '{{blockchain}}'
     ),
 

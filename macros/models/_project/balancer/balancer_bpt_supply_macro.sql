@@ -11,7 +11,7 @@ WITH pool_labels AS (
                 name,
                 pool_type,
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
-            FROM pool_labels_spell
+            FROM {{ pool_labels_spell }}
             WHERE blockchain = '{{blockchain}}'
             GROUP BY 1, 2, 3) 
         WHERE num = 1
