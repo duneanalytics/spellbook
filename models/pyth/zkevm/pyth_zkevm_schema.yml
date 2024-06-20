@@ -143,7 +143,6 @@ models:
         name: tx_from
         description: "from address on overall transaction"
       - *namespace
-      - *name
   
   - name: pyth_zkevm_active_price_feed_ids
     meta:

@@ -185,4 +185,3 @@ models:
         name: tx_from
         description: "from address on overall transaction"
       - *namespace
-      - *name

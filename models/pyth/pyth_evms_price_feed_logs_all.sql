@@ -50,7 +50,6 @@ FROM (
         , tx_to
         , tx_from
         , namespace
-        , name
     FROM {{ transfer_model }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
