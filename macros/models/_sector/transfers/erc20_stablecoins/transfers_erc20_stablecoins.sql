@@ -33,7 +33,7 @@ WITH stables_in_tx AS (
             {% if is_incremental() %}
             WHERE {{ incremental_predicate('block_time') }}
             {% endif %}
-        ) GROUP BY 1, 2
+        ) GROUP BY 1
     )
     , transfers AS (
         SELECT
