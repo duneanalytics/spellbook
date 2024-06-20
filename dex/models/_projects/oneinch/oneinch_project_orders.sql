@@ -7,7 +7,7 @@
         incremental_strategy = 'merge',
         partition_by = ['block_month'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address', 'order_hash']
+        unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address', 'order_hash', 'call_trade']
     )
 }}
 
@@ -113,6 +113,7 @@ meta as (
         , tx_hash
         , call_trace_address
         , coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int)))) as order_hash
+        , call_trade
         , any_value(block_time) as block_time
         , any_value(project) as project
         , any_value(call_selector) as call_selector
@@ -131,13 +132,12 @@ meta as (
         , any_value(order_start) as order_start
         , any_value(order_end) as order_end
         , any_value(order_deadline) as order_deadline
-        , any_value(call_trade) as call_trade
         , any_value(call_trades) as call_trades
         , any_value(flags) as flags
         , any_value(tag) as tag
     from (select * from orders, unnest(assets) as a(contract_address))
     left join prices using(blockchain, contract_address, minute)
-    group by 1, 2, 3, 4, 5
+    group by 1, 2, 3, 4, 5, 6
 )
 
 -- output --
