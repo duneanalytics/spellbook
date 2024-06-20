@@ -92,33 +92,25 @@ WITH stables_in_tx AS (
             , t.block_time
             , t.block_date
             , t.stables_in_tx
-            , CASE
-                WHEN t.blockchain = 'arbitrum' THEN ((tx.effective_gas_price/1e9) * (tx.gas_used/1e9))
-                WHEN t.blockchain = 'base'     THEN ((tx.gas_price/1e9) * (tx.gas_used/1e9)) + (tx.l1_fee/1e18)
-                WHEN t.blockchain = 'blast'    THEN ((tx.gas_price/1e9) * (tx.gas_used/1e9)) + (tx.l1_fee/1e18)
-                WHEN t.blockchain = 'optimism' THEN ((tx.gas_price/1e9) * (tx.gas_used/1e9)) + (tx.l1_fee/1e18)
-                WHEN t.blockchain = 'scroll'   THEN ((tx.gas_price/1e9) * (tx.gas_used/1e9)) + (tx.l1_fee/1e18)
-                WHEN t.blockchain = 'tron'     THEN ((tx.gas_used) * (0.00042))
-                --WHEN t.blockchain = 'zkevm' THEN ((effective_gas_price/1e9) * (gas_used/1e9)) --zkevm uses effective_gas_price but this is not in table
-                ELSE ((tx.gas_price/1e9) * (tx.gas_used/1e9))
-            END AS tx_fee_gas_coin
+            , tx.tx_fee_gas_coin
         FROM transfers t
         INNER JOIN (
             SELECT 
-                gas_price
-                , gas_used
-                , hash 
-                , CASE WHEN '{{blockchain}}' = 'arbitrum' THEN effective_gas_price ELSE NULL END AS effective_gas_price
+                hash 
                 , CASE
-                    WHEN '{{blockchain}}' = 'base' THEN l1_fee
-                    WHEN '{{blockchain}}' = 'blast' THEN l1_fee
-                    WHEN '{{blockchain}}' = 'optimism' THEN l1_fee
-                    WHEN '{{blockchain}}' = 'scroll' THEN l1_fee
-                    ELSE NULL
-                END AS l1_fee
-            FROM {{ source(blockchain, 'transactions') }}
+                    WHEN blockchain = 'arbitrum' THEN ((effective_gas_price/1e9) * (gas_used/1e9))
+                    WHEN blockchain = 'base'     THEN ((gas_price/1e9) * (gas_used/1e9)) + (l1_fee/1e18)
+                    WHEN blockchain = 'blast'    THEN ((gas_price/1e9) * (gas_used/1e9)) + (l1_fee/1e18)
+                    WHEN blockchain = 'optimism' THEN ((gas_price/1e9) * (gas_used/1e9)) + (l1_fee/1e18)
+                    WHEN blockchain = 'scroll'   THEN ((gas_price/1e9) * (gas_used/1e9)) + (l1_fee/1e18)
+                    WHEN blockchain = 'tron'     THEN ((gas_used) * (0.00042))
+                    --WHEN t.blockchain = 'zkevm' THEN ((effective_gas_price/1e9) * (gas_used/1e9)) --zkevm uses effective_gas_price but this is not in table
+                    ELSE ((gas_price/1e9) * (gas_used/1e9))
+                END AS tx_fee_gas_coin
+            FROM {{ ref('evms_transactions') }}
+            WHERE blockchain = '{{blockchain}}'
             {% if is_incremental() %}
-            WHERE {{ incremental_predicate('block_time') }}
+            AND {{ incremental_predicate('block_time') }}
             {% endif %}
         ) tx
             ON tx.hash = t.tx_hash 
