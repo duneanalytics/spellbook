@@ -48,23 +48,11 @@ sources:
           - &buyToken
             name: buyToken
             description: "Contract address of token obtained in trade"
-          - &contract_address
-            name: contract_address
-            description: "Ethereum address of contract emitting the event"
-          - &evt_block_number
-            name: evt_block_number
-            description: "Block number which processed the unique transaction hash"
-          - &evt_block_time
-            name: evt_block_time
-            description: "Timestamp for block event time in UTC"
-          - &evt_index
-            name: evt_index
-            description: "Index of the event within transaction"
-          - &evt_tx_hash
-            name: evt_tx_hash
-            description: "Primary key of the transaction"
-            tests:
-              - not_null
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
           - &orderUid
             name: orderUid
             description: "Unique identifier of order involved in trade. Note that partially fillable orders can be touched multiple times so this is not a unique ID for trade events."
