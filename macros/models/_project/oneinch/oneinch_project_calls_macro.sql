@@ -1,7 +1,7 @@
 {% macro 
     oneinch_project_calls_macro(
         blockchain
-        , date_from = '2024-01-01'
+        , date_from = '2024-06-18'
     )
 %}
 
@@ -31,20 +31,27 @@ static as (
         , any_value(project) as project
         , any_value(tag) as tag
         , any_value(flags) as flags
-    from {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
+    from {{ source('oneinch_' + blockchain, 'mapped_contracts') }}
     where
         project not in ('MEVBot', 'Unknown')
     group by 1, 2
 )
 
 , signatures as (
-    select
-        id as selector
-        , min(signature) as signature
-        , min(split_part(signature, '(', 1)) as method
-    from {{ source('abi', 'signatures') }}
-    where length(id) = 4
-    group by 1
+    select *
+    from (
+        select
+            id as selector
+            , min(signature) as signature
+            , min(split_part(signature, '(', 1)) as method
+        from {{ source('abi', 'signatures') }}
+        where length(id) = 4
+        group by 1
+    )
+    join static on true
+    where
+        not reduce(exceptions, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) -- without "exception" methods
+        and reduce(suitables, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) -- "suitable" methods only
 )
 
 , calls as (
@@ -71,7 +78,6 @@ static as (
     )
     join contracts using(call_to)
     join signatures using(selector)
-    join static on true
     join meta on true
     join (
         select
@@ -90,9 +96,6 @@ static as (
             {% endif %}
             
     ) using(block_number, block_time, tx_hash)
-    where
-        not reduce(exceptions, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) -- without "exception" methods
-        and reduce(suitables, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) -- "suitable" methods only
 )
 
 -- output --

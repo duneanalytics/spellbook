@@ -14,7 +14,7 @@ WITH
 base_trades as (
     SELECT 
         'avalanche_c' as blockchain,
-        'joepegs' as project,
+        'chikn' as project,
         'v1' as project_version,
         evt_block_time as block_time, 
         date_trunc('day', evt_block_time) as block_date,

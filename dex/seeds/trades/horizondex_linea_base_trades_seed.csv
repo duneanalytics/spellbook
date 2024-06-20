@@ -1,0 +1,2 @@
+﻿blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_sold_address,block_number,token_bought_amount_raw,token_sold_amount_raw
+linea,horizondex,1,2024-03-31,0x96944de91cdace41b3a31e9009be155923c57a0231ebd2f806e8991aa32f39fd,122,0x3aab2285ddcddad8edf438c1bab47e1a9d05a9b4,0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f,3276720,3,596000000000
