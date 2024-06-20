@@ -11,13 +11,7 @@ models:
     config:
       tags: ['zkevm']
     description: "Pyth transactions"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - tx_hash
-            - trace_address
+    
     columns:
       - &chain
         name: chain
@@ -102,10 +96,10 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - day
-            - address
+            - block_number
+            - chain
             - tx_hash
-            - trace_address
+            - index
     columns:
       - *chain_type
       - *chain

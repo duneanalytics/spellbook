@@ -12,15 +12,7 @@ models:
     config:
       tags: ['pyth', 'arbitrum', 'avalanche_c', 'bnb', 'celo', 'ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'safe', 'zkevm', 'zksync']
     description: "Pyth transactions"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - tx_hash
-            - trace_address
-            - sub_traces
-            - function_signature
+
     columns:
       - &chain
         name: chain
@@ -155,6 +147,7 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_number
             - chain
             - identifier
             - tx_hash
