@@ -43,7 +43,7 @@ WITH stables_in_tx AS (
             , t.tx_hash
             , t.contract_address
             , s.symbol
-            , COALESCE(t.amount, t.raw_amount / POW(10, s.decimals)) AS amount
+            , COALESCE(t.amount, t.amount_raw / POW(10, s.decimals)) AS amount
             , x.stables_in_tx
         FROM ( 
             {{
