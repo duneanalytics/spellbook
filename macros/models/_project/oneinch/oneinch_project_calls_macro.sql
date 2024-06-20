@@ -31,7 +31,7 @@ static as (
         , any_value(project) as project
         , any_value(tag) as tag
         , any_value(flags) as flags
-    from {{ source('oneinch_' + blockchain, 'mapped_contracts') }}
+    from {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
     where
         project not in ('MEVBot', 'Unknown')
     group by 1, 2

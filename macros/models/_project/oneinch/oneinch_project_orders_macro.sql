@@ -787,7 +787,7 @@ logs as (
             from {{ source(blockchain, 'traces') }}
             join (
                 select *, address as "to"
-                from {{ source('oneinch_' + blockchain, 'mapped_contracts') }}
+                from {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
                 where
                     blockchain = '{{ blockchain }}'
                     and '{{ project }}' in (project, tag)
