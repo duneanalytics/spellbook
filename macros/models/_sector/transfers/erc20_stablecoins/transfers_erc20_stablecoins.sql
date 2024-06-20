@@ -1,58 +1,58 @@
-{% macro transfers_erc20_stablecoins(blockchain) %}
+{% macro transfers_erc20_stablecoins(blockchain = null) %}
+
 WITH
     stables_in_tx AS (
         SELECT 
-            evt_tx_hash
+            tx_hash
             , COUNT(*) AS stables_in_tx 
         FROM (
             SELECT distinct 
                 t.contract_address
-                , t.evt_tx_hash 
-            FROM {{ source('erc20_' + blockchain, 'evt_transfer') }} t
+                , t.tx_hash 
+            FROM {{ source('tokens_' + blockchain, 'transfer') }} t
             INNER JOIN (
-                SELECT 
-                    blockchain
-                    , contract_address 
+                SELECT contract_address 
                 FROM {{ source('tokens_' + blockchain, 'stablecoins') }}
             ) s
-                ON s.blockchain = '{{blockchain}}' 
-                AND s.contract_address = t.contract_address
+                ON s.contract_address = t.contract_address
             {% if is_incremental() %}
-            WHERE {{ incremental_predicate('evt_block_time') }}
+            WHERE {{ incremental_predicate('block_time') }}
             {% endif %}
         ) GROUP BY 1, 2
     )
     , transfers AS (
         SELECT
             '{{blockchain}}' AS blockchain
-            , t.evt_block_time
-            , t.evt_tx_hash
+            , t.block_time
+            , t.block_date
+            , t.tx_hash
             , t.contract_address
             , s.symbol
-            , t.value / POW(10, s.decimals) AS amount
+            , COALESCE(t.amount, t.raw_amount / POW(10, s.decimals)) AS amount
             , x.stables_in_tx
-        FROM {{ source('erc20_' + blockchain, 'evt_transfer') }} t
-        INNER JOIN (SELECT * FROM stables_in_tx) x 
-            ON x.evt_tx_hash = t.evt_tx_hash
+        FROM {{ source('tokens_' + blockchain, 'transfer') }} t
+        INNER JOIN (
+            SELECT tx_hash, stables_in_tx 
+            FROM stables_in_tx
+        ) x 
+            ON x.tx_hash = t.tx_hash
         INNER JOIN (
             SELECT 
-                blockchain
-                , symbol
+                symbol
                 , contract_address
                 , decimals 
             FROM {{ source('tokens_' + blockchain, 'stablecoins') }}
         ) s
-            ON s.blockchain = '{{blockchain}}'
-            AND s.contract_address = t.contract_address
+            ON s.contract_address = t.contract_address
         {% if is_incremental() %}
-        WHERE {{ incremental_predicate('evt_block_time') }}
+        WHERE {{ incremental_predicate('block_time') }}
         {% endif %}
     )
     , transfer_volume AS (
         SELECT 
             blockchain
             , symbol
-            , evt_tx_hash
+            , tx_hash
             , sum(amount) AS volume
         FROM transfers
         GROUP BY 1, 2, 3
@@ -62,17 +62,17 @@ WITH
             t.blockchain
             , t.contract_address
             , t.symbol
-            , t.evt_tx_hash
-            , t.evt_block_time
-            , date_trunc('DAY', t.evt_block_time) AS evt_block_date
+            , t.tx_hash
+            , t.block_time
+            , t.block_date
             , t.stables_in_tx
             , CASE
-                WHEN t.blockchain = 'arbitrum' THEN ((effective_gas_price/1e9) * (gas_used/1e9))
-                WHEN t.blockchain = 'base' THEN ((gas_price/1e9) * (gas_used/1e9)) + (l1_fee/1e18)
-                WHEN t.blockchain = 'blast' THEN ((gas_price/1e9) * (gas_used/1e9)) + (l1_fee/1e18)
-                WHEN t.blockchain = 'optimism' THEN ((gas_price/1e9) * (gas_used/1e9)) + (l1_fee/1e18)
-                WHEN t.blockchain = 'scroll' THEN ((gas_price/1e9) * (gas_used/1e9)) + (l1_fee/1e18)
-                WHEN t.blockchain = 'tron' THEN ((gas_used) * (0.00042))
+                WHEN t.blockchain = 'arbitrum' THEN ((tx.effective_gas_price/1e9) * (tx.gas_used/1e9))
+                WHEN t.blockchain = 'base'     THEN ((tx.gas_price/1e9) * (tx.gas_used/1e9)) + (tx.l1_fee/1e18)
+                WHEN t.blockchain = 'blast'    THEN ((tx.gas_price/1e9) * (tx.gas_used/1e9)) + (tx.l1_fee/1e18)
+                WHEN t.blockchain = 'optimism' THEN ((tx.gas_price/1e9) * (tx.gas_used/1e9)) + (tx.l1_fee/1e18)
+                WHEN t.blockchain = 'scroll'   THEN ((tx.gas_price/1e9) * (tx.gas_used/1e9)) + (tx.l1_fee/1e18)
+                WHEN t.blockchain = 'tron'     THEN ((tx.gas_used) * (0.00042))
                 --WHEN t.blockchain = 'zkevm' THEN ((effective_gas_price/1e9) * (gas_used/1e9)) --zkevm uses effective_gas_price but this is not in table
                 ELSE ((tx.gas_price/1e9) * (tx.gas_used/1e9))
             END AS tx_fee_gas_coin
@@ -92,19 +92,19 @@ WITH
                 END AS l1_fee
             FROM {{ source(blockchain, 'transactions') }}
             {% if is_incremental() %}
-            WHERE block_time >= date_trunc('day', now() - interval '7' day)
+            WHERE {{ incremental_predicate('block_time') }}
             {% endif %}
         ) tx
-            ON tx.hash = t.evt_tx_hash 
+            ON tx.hash = t.tx_hash 
     )
     , costs_and_transfers AS (
         SELECT 
             c.blockchain
             , c.contract_address
             , c.symbol
-            , c.evt_tx_hash
-            , c.evt_block_time
-            , c.evt_block_date
+            , c.tx_hash
+            , c.block_time
+            , c.block_date
             , c.tx_fee_gas_gwei
             , c.stables_in_tx
             , t.volume
@@ -114,11 +114,11 @@ WITH
         INNER JOIN (
           SELECT
                 symbol
-                , evt_tx_hash
+                , tx_hash
                 , volume
             FROM transfer_volume
         ) t
-            ON t.evt_tx_hash = c.evt_tx_hash 
+            ON t.tx_hash = c.tx_hash 
             AND t.symbol = c.symbol
         LEFT JOIN ( -- Add on USD price of tx
             SELECT 
