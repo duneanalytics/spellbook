@@ -18,6 +18,6 @@
 {{ 
     transfers_erc20_stablecoins(
         blockchain = 'ethereum'
-        , first_stablecoin_deployed = '2017-11-28' -- Tether
+        , first_stablecoin_deployed = '2017-11-28' # Tether
     )
 }}
