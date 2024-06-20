@@ -23,16 +23,14 @@ solver_activation_events AS (
       evt_block_number,
       evt_index,
       TRUE AS activated
-    FROM
-      gnosis_protocol_v2_arbitrum.GPv2AllowListAuthentication_evt_SolverAdded
+    FROM {{ source('gnosis_protocol_v2_gnosis', 'GPv2AllowListAuthentication_evt_SolverAdded') }}
     UNION
     SELECT
       solver,
       evt_block_number,
       evt_index,
       FALSE AS activated
-    FROM
-      gnosis_protocol_v2_arbitrum.GPv2AllowListAuthentication_evt_SolverRemoved
+    FROM {{ source('gnosis_protocol_v2_gnosis', 'GPv2AllowListAuthentication_evt_SolverRemoved') }}
   ),
   ranked_solver_events as (
     select
