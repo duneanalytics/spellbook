@@ -32,7 +32,7 @@ meta as (
         , taker_asset
         , taking_amount
         , flags as order_flags
-    from {{ source('oneinch_' + blockchain, 'project_orders') }}
+    from {{ ref('oneinch_' + blockchain + '_project_orders') }}
     where
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
@@ -57,7 +57,7 @@ meta as (
         , flags as order_flags
     from (
         select *, row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
-        from {{ source('oneinch_' + blockchain, 'lop') }}
+        from {{ ref('oneinch_' + blockchain + '_lop') }}
         where
             {% if is_incremental() %}
                 {{ incremental_predicate('block_time') }}
