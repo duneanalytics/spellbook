@@ -158,10 +158,10 @@ WITH stables_in_tx AS (
             {% if is_incremental() %}
             AND {{ incremental_predicate('minute') }}
             {% endif %}
-            GROUP BY 1, 2
+            GROUP BY 1, 2, 3
         ) p
             ON p.chain = IF(c.blockchain in ('polygon', 'gnosis', 'bnb', 'avalanche_c', 'tron', 'fantom', 'celo'), c.blockchain, 'ethereum')
-            AND date_trunc('day', p.minute) = c.evt_block_date
+            AND date_trunc('day', p.minute) = c.block_date
     )
 
 SELECT * FROM costs_and_transfers
