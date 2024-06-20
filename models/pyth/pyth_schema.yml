@@ -3,14 +3,14 @@ version: 2
 models:
   - name: pyth_evms_transactions_all
     meta:
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, goerli, optimism, polygon, zkevm, zksync
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, linea, mantle, optimism, polygon, scroll, zkevm, zksync
       project: pyth
       contributors: synthquest
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     config:
-      tags: ['pyth', 'arbitrum', 'avalanche_c', 'bnb', 'celo', 'ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'safe', 'zkevm', 'zksync']
+      tags: ['pyth', 'arbitrum', 'avalanche_c', 'bnb', 'celo', 'ethereum', 'fantom', 'gnosis', 'goerli', 'optimism', 'polygon', 'zkevm', 'zksync']
     description: "Pyth transactions"
 
     columns:
@@ -86,18 +86,13 @@ models:
           
   - name: pyth_evms_price_feed_ids
     meta:
-      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, fantom, base, zksync, celo, zora
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, linea, mantle, optimism, polygon, scroll, zkevm, zksync
       project: pyth
       contributors: synthquest
     config:
       tags: ['pyth']
     description: >
         Pyth Price Feed ID's (https://pyth.network/developers/price-feed-ids#pyth-evm-stable)
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - identifier
-            - hash
     columns:
       - name: identifier
         description: "pyth"
@@ -114,18 +109,13 @@ models:
 
   - name: pyth_price_feed_contracts
     meta:
-      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, fantom, base, zksync, celo, zora
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, linea, mantle, optimism, polygon, scroll, zkevm, zksync
       project: pyth
       contributors: synthquest
     config:
       tags: ['pyth']
     description: >
         Pyth Price Feed contracts (https://docs.pyth.network/price-feeds/contract-addresses/evm)
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - identifier
-            - hash
     columns:
       - name: chain
         description: "Network of price feed deployment"

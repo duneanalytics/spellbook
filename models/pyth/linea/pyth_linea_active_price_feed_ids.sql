@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time', 'chain', 'trace_address', 'trace_from'],
+    unique_key = ['block_time', 'chain', 'trace_address', 'trace_from', 'last_used'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook='{{ expose_spells(\'["linea"]\',
                             "project",

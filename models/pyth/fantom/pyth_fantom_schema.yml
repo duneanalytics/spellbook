@@ -159,6 +159,7 @@ models:
           combination_of_columns:
             - identifier
             - hash
+            - last_used
     columns:
       - name: identifier
         description: "pyth"

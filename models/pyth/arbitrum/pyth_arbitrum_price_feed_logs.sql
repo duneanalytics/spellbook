@@ -48,7 +48,7 @@ with price_feed_ids as (
 )
 
 
-select
+select distinct
        pcc.chain_type
      , pcc.chain
      , ids.identifier
@@ -79,7 +79,6 @@ select
      , log.tx_to
      , log.tx_from
      , bc.namespace
-     , bc.name
 from {{ source('arbitrum', 'logs') }} log
 inner join pyth_contracts pcc on log.contract_address = pcc.contract_address
 inner join price_feed_ids ids on log.topic1 = ids."hash"

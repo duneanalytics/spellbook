@@ -523,7 +523,7 @@ with definitions as (
     ) as t (identifier, category, token1, token2, void1, void2, "hash", pending)
 )
 
-select 
+select distinct
       identifier
     , category
     , token1
