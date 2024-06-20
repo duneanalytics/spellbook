@@ -190,3 +190,37 @@ models:
       - name: symbol
       - name: decimals
       - name: collection_name
+
+  - name: tokens_ethereum_transfers_stablecoins
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: thetroyharris
+    config:
+      tags: ['stablecoins','transfers', 'ethereum']
+    description: >
+      Token transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - contract_address
+    columns:
+      - name: blockchain
+        description: "The blockchain of the transfers"
+      - name: block_date
+        description: "The date of the block"
+      - name: block_time
+        description: "The time of the block"
+      - name: tx_hash
+        description: "The transaction hash"
+      - name: contract_address
+      - name: symbol
+      - name: tx_fee_gas_coin
+      - name: stables_in_tx
+      - name: volume
+      - name: gas_coin
+      - name: gas_coin_median_price_day
+
+

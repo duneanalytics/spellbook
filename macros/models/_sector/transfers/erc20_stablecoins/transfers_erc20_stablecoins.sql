@@ -1,6 +1,10 @@
-{% macro transfers_erc20_stablecoins(blockchain = null) %}
+{% 
+    macro transfers_erc20_stablecoins(
+        blockchain = null
+        , first_stablecoin_deployed = null
+    ) 
+%}
 
-{% set first_stablecoin_deployed = '2017-11-28' %} -- Tether
 
 WITH
     stables_in_tx AS (
@@ -125,7 +129,7 @@ WITH
             , c.tx_hash
             , c.block_time
             , c.block_date
-            , c.tx_fee_gas_gwei
+            , c.tx_fee_gas_coin
             , c.stables_in_tx
             , t.volume
             , p.gas_coin
