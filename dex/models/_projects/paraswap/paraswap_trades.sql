@@ -1,10 +1,10 @@
 {{ config(
 	    schema='paraswap',
         alias = 'trades',
-        post_hook='{{ expose_spells(\'["avalanche_c","fantom","arbitrum","bnb","ethereum","optimism","polygon","base"]\',
-                                "project",
-                                "paraswap",
-                                \'["Henrystats","springzh"]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["avalanche_c","fantom","arbitrum","bnb","ethereum","optimism","polygon","base"]\',
+                                spell_type = "project",
+                                spell_name = "paraswap",
+                                contributors = \'["Henrystats", "springzhang", "eptighte", "mwamedacen"]\') }}'
         )
 }}
 
@@ -37,7 +37,6 @@ FROM (
         token_sold_amount,
         token_bought_amount_raw,
         token_sold_amount_raw,
-        amount_usd,
         token_bought_address,
         token_sold_address,
         taker,

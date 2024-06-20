@@ -1,7 +1,6 @@
 {{ config(
         schema='paraswap_bnb',
-        alias = 'trades',
-        
+        alias = 'trades'
         )
 }}
 
