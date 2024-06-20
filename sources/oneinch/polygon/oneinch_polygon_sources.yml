@@ -138,8 +138,3 @@ sources:
       - name: lop
         loaded_at_field: block_time
 
-
-
-  - name: oneinch_polygon
-    tables:
-      - name: mapped_contracts

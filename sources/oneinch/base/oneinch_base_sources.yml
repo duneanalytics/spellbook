@@ -85,8 +85,3 @@ sources:
         loaded_at_field: block_time
       - name: lop
         loaded_at_field: block_time
-
-
-  - name: oneinch_base
-    tables:
-      - name: mapped_contracts

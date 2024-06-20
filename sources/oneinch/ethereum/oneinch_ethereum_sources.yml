@@ -174,10 +174,6 @@ sources:
       - name: lop
         loaded_at_field: block_time
 
-  - name: oneinch_ethereum
-    tables:
-      - name: mapped_contracts   
-
   - name: onesplit_ethereum
     description: "decoded events and function calls for onesplit on ethereum"
     freshness:

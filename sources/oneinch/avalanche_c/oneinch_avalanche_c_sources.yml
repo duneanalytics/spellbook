@@ -122,7 +122,3 @@ sources:
       - name: lop
         loaded_at_field: block_time
 
-
-  - name: oneinch_avalanche_c
-    tables:
-      - name: mapped_contracts
