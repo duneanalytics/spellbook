@@ -12,10 +12,10 @@
                                     \'["ilemi"]\') }}')
 }}
 
-WITH 
+WITH
       distinct_accounts as (
             SELECT
-                  aa.address 
+                  aa.address
                   , max_by(aa.token_balance_owner, aa.block_time) as token_balance_owner
                   , max_by(aa.token_mint_address, aa.block_time) as token_mint_address
             FROM {{ source('solana','account_activity') }} aa
@@ -25,5 +25,10 @@ WITH
             {% endif %}
             group by 1
       )
-      
-SELECT * FROM distinct_accounts
+SELECT
+*
+, case when nft.account_mint is not null then 'nft'
+      else 'fungible'
+      end as account_type
+FROM distinct_accounts da
+LEFT JOIN {{ ref('tokens_solana_nft')}} nft ON da.token_mint_address = nft.account_mint
