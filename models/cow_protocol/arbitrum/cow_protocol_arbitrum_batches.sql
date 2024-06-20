@@ -1,5 +1,5 @@
 {{  config(
-        alias = 'batches',
+        alias = 'arbitrum_batches',
 
         materialized='incremental',
         partition_by = ['block_date'],
