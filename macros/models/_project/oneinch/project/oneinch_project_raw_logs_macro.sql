@@ -1,6 +1,6 @@
 {% macro oneinch_project_raw_logs_macro(
     blockchain
-    , date_from = '2024-06-01'
+    , date_from = '2019-01-01'
 )%}
 
 select 
