@@ -257,7 +257,7 @@ WITH
       LEFT JOIN {{ source('prices', 'usd') }} tp ON
           date_trunc('minute', evt_block_time) = tp.minute
           {% if is_incremental() %}
-          AND {{ incremental_predicate('minute') }}
+          AND {{ incremental_predicate('tp.minute') }}
           {% endif %}
           {% if not is_incremental() %}
           AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
@@ -270,7 +270,7 @@ WITH
       LEFT JOIN {{ source('prices', 'usd') }} mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute
           {% if is_incremental() %}
-          AND {{ incremental_predicate('minute') }}
+          AND {{ incremental_predicate('mp.minute') }}
           {% endif %}
           {% if not is_incremental() %}
           AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
