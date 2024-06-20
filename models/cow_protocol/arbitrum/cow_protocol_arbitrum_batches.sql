@@ -53,7 +53,7 @@ batch_values as (
         sum(usd_value)  as batch_value,
         sum(fee_usd)    as fee_value,
         price           as eth_price
-    from {{ source('cow_protocol_arbitrum', 'trades') }}
+    from cow_protocol_arbitrum.trades
         left outer join {{ source('prices', 'usd') }} as p
             on p.contract_address = 0x82af49447d8a07e3bd95bd0d56f35241523fbab1
             {% if is_incremental() %}
