@@ -17,8 +17,8 @@ WITH
                     , tokens_erc20_model = source('tokens', 'erc20')
                     , prices_model = source('prices', 'usd')
                     , evms_info_model = ref('evms_info')
-                    , transfers_start_date = {{first_stablecoin_deployed}}
-                    , blockchain = {{blockchain}}
+                    , transfers_start_date = first_stablecoin_deployed
+                    , blockchain = blockchain
                 )
             }} t
             INNER JOIN (
@@ -47,8 +47,8 @@ WITH
                 , tokens_erc20_model = source('tokens', 'erc20')
                 , prices_model = source('prices', 'usd')
                 , evms_info_model = ref('evms_info')
-                , transfers_start_date = {{first_stablecoin_deployed}}
-                , blockchain = {{blockchain}}
+                , transfers_start_date = first_stablecoin_deployed
+                , blockchain = blockchain
             )
         }} t
         INNER JOIN (
