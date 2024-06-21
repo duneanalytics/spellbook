@@ -215,6 +215,8 @@ bebop_multi_and_aggregate_trades AS (
           WHEN maker_tokens_len = 1 AND taker_tokens_len > 1 THEN 'Multi-Sell'
           ELSE 'Simple-Swap'
         END as trade_type,
+        taker_tokens_len,
+        maker_tokens_len,
         cast(array[order_index, taker_token_index, sequence_number - 1] as array<bigint>) as trace_address
     FROM unnested_taker_arrays
     CROSS JOIN UNNEST(sequence(1, maker_tokens_len)) AS t(sequence_number)
@@ -241,11 +243,11 @@ SELECT
   CASE 
     WHEN t.trade_type = 'Multi-Buy' THEN COALESCE(
         (CAST(t.maker_token_amount as double) / power(10, t_bought.decimals)) * p_bought.price,
-        (CAST(t.taker_token_amount as double) / power(10, t_sold.decimals)) * p_sold.price / t.trace_address[2]
+        (CAST(t.taker_token_amount as double) / power(10, t_sold.decimals)) * p_sold.price / maker_tokens_len
     )
     WHEN t.trade_type = 'Multi-Sell' THEN COALESCE(
         (CAST(t.taker_token_amount as double) / power(10, t_sold.decimals)) * p_sold.price,
-        (CAST(t.maker_token_amount as double) / power(10, t_bought.decimals)) * p_bought.price / t.trace_address[1]
+        (CAST(t.maker_token_amount as double) / power(10, t_bought.decimals)) * p_bought.price / taker_tokens_len
     )
     ELSE COALESCE(
         (CAST(t.maker_token_amount as double) / power(10, t_bought.decimals)) * p_bought.price,
