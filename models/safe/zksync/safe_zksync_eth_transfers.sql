@@ -1,5 +1,6 @@
 {{
     config(
+        tags = ['prod_exclude'],
         materialized='incremental',
         schema = 'safe_zksync',
         alias = 'eth_transfers',

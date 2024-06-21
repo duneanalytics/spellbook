@@ -1,15 +1,15 @@
 {{ config(
     schema='lido_liquidity_arbitrum',
-    alias = 'wombat_pools',
-    
+    alias = 'wombat_pools',    
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                "project",
-                                "lido_liquidity",
-                                \'["ppclunghe"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.time')],
+    post_hook='{{ expose_spells(blockchains = \'["arbitrum""]\',
+                                spell_type = "project",
+                                spell_name = "lido_liquidity",
+                                contributors = \'["pipistrella"]\') }}'
     )
 }}
 
@@ -33,7 +33,7 @@ tokens_prices_daily AS (
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
       AND DATE_TRUNC('day', minute) < DATE_TRUNC('day', now())
       AND blockchain = 'arbitrum'
@@ -65,7 +65,7 @@ SELECT
       {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
       AND blockchain = 'arbitrum'
       AND contract_address = 0x5979d7b546e38e414f7e9822514be443a4800529
@@ -83,7 +83,7 @@ SELECT
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('sw.evt_block_time') }}
     {% endif %}
     GROUP BY  1,2
  )
@@ -97,7 +97,7 @@ SELECT
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('sw.evt_block_time') }}
     {% endif %}
     and token = 0x5979d7b546e38e414f7e9822514be443a4800529
     GROUP BY  1,2
@@ -113,7 +113,7 @@ SELECT
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('sw.evt_block_time') }}
     {% endif %}
     and token = 0x5979d7b546e38e414f7e9822514be443a4800529
     GROUP BY  1,2
@@ -156,7 +156,7 @@ group by 1,2,3
         {% if not is_incremental() %}
         WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE '{{ project_start_date }}'
         {% else %}
-        WHERE DATE_TRUNC('day', sw.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+        WHERE {{ incremental_predicate('sw.evt_block_time') }}
         {% endif %}
         GROUP BY 1,2
         
@@ -187,13 +187,21 @@ group by 1,2,3
   )
   
 
-  select 'arbitrum wombat wstETH one-sided' as pool_name, 0xe14302040c0a1eb6fb5a4a79efa46d60029358d9 as pool,
-  'arbitrum' as blockchain, 'wombat' as project, 0.01 as fee, cast(l.time as date) as time, 
-  0x5979d7b546e38e414f7e9822514be443a4800529 as main_token, 'wstETH' as main_token_symbol, 
-  cast(null as varbinary) as paired_token, '' as paired_token_symbol,
-  l.amount0/1e18 as main_token_reserve, 0 as paired_token_reserve,
-  p0.price as main_token_usd_price, 0 as paired_token_usd_price,
-  coalesce(tv.volume,0)/2 as trading_volume
+  select 'arbitrum wombat wstETH one-sided' as pool_name, 
+          0xe14302040c0a1eb6fb5a4a79efa46d60029358d9 as pool,
+          'arbitrum' as blockchain, 
+          'wombat' as project, 
+          0.01 as fee, 
+          cast(l.time as date) as time, 
+          0x5979d7b546e38e414f7e9822514be443a4800529 as main_token, 
+          'wstETH' as main_token_symbol, 
+          cast(null as varbinary) as paired_token, 
+          '' as paired_token_symbol,
+          l.amount0/1e18 as main_token_reserve, 
+          0 as paired_token_reserve,
+          p0.price as main_token_usd_price, 
+          0 as paired_token_usd_price,
+          coalesce(tv.volume,0)/2 as trading_volume
   FROM  pool_liquidity AS l 
   LEFT JOIN tokens_prices_daily AS p0 ON DATE_TRUNC('day', l.time) = p0.time
   LEFT JOIN trading_volume AS tv ON DATE_TRUNC('day', l.time) = tv.time
