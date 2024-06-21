@@ -78,7 +78,7 @@ select distinct
      , log.tx_index
      , log.tx_to
      , log.tx_from
-     , bc.namespace
+     , array_agg(bc.namespace) as namespace
 from {{ source('arbitrum', 'logs') }} log
 inner join pyth_contracts pcc on log.contract_address = pcc.contract_address
 inner join price_feed_ids ids on log.topic1 = ids."hash"
@@ -90,5 +90,8 @@ where
 {% else %}
 log.block_time >= DATE '{{project_start_date}}'
 {% endif %}
+
+group by 
+1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17
 
 order by log.block_time desc
