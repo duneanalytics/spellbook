@@ -1,9 +1,9 @@
 {{config(alias = 'mev',
         tags=['static'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "addresses",
-                                    \'["hildobby", "0xr3x", "sharples"]\') }}')}}
+        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                    spell_type = "sector",
+                                    spell_name = "addresses",
+                                    contributors = \'["hildobby", "0xr3x", "sharples"]\') }}')}}
 
 -- Source: https://etherscan.io/accounts/label/mev-bot
 
