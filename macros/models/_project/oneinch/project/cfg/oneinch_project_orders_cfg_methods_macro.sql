@@ -1,4 +1,4 @@
-{% macro oneinch_project_cfg_methods_macro() %}
+{% macro oneinch_project_orders_cfg_methods_macro() %}
 
 -- METHODS CONFIG
 {%

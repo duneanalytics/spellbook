@@ -25,7 +25,7 @@ where
     {% endif %}
 
     and topic0 in (
-        {{ oneinch_project_cfg_events_macro().keys() | join(', ') }}
+        {{ oneinch_project_orders_cfg_events_macro().keys() | join(', ') }}
     )
 
 {% endmacro %}

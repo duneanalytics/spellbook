@@ -29,7 +29,7 @@ where
 
     and substr(input, 1, 4) in (
         {% set selectors_array = [] %}
-        {% for selectors in oneinch_project_cfg_methods_macro().values() %}
+        {% for selectors in oneinch_project_orders_cfg_methods_macro().values() %}
             {% for selector in selectors.keys() %}
                 {% do selectors_array.append(selector) %}
             {% endfor %}

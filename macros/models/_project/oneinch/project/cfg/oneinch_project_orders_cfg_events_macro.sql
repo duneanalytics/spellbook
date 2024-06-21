@@ -1,4 +1,4 @@
-{% macro oneinch_project_cfg_events_macro() %}
+{% macro oneinch_project_orders_cfg_events_macro() %}
 
 -- EVENTS CONFIG
 {%
