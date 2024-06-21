@@ -104,7 +104,7 @@ logs as (
             , trade['fee_receiver'] as call_fee_receiver
             , trade['nonce'] as call_nonce
             , trade['order_hash'] as call_order_hash
-            , cardinality(trades) as call_trades -- total trades in the call
+            , call_trades -- total trades in the call
             , input
             , output
         from (
@@ -129,6 +129,7 @@ logs as (
                 , error as call_error
                 , '{{ method_data["name"] }}' as method
                 , {{ method_data["event"] }} as topic0
+                , coalesce({{ method_data.get("number", "1") }}, 1) as call_trades -- total trades in the call
                 , transform(sequence(1, coalesce({{ method_data.get("number", "1") }}, 1)), x -> map_from_entries(array[
                       ('trade',             try(to_big_endian_64(x)))
                     , ('maker',             {{ method_data.get("maker", "null") }})
@@ -169,6 +170,7 @@ logs as (
                 {% if is_incremental() %}{{ incremental_predicate('block_time') }}
                 {% else %}block_time > greatest(first_created_at, timestamp '{{date_from}}'){% endif %}
                 and substr(input, 1, 4) = {{ selector }}
+                and {{ method_data.get("condition", "true") }}
 
             {% if not loop.last %}union all{% endif %}
         {% endfor %}
