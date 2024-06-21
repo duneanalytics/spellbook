@@ -27,6 +27,8 @@ bebop_single_trade AS (
         JSON_EXTRACT_SCALAR(ex."order", '$.taker_amount') AS taker_token_amount,
         JSON_EXTRACT_SCALAR(ex."order", '$.maker_amount') AS maker_token_amount,
         'Simple-Swap' as trade_type,
+        1 as taker_tokens_len,
+        1 as maker_tokens_len,
         cast(array[0, 0, 0] as array<bigint>) as trace_address
     FROM
         (SELECT
