@@ -1,11 +1,11 @@
-{% set blockchain = 'ethereum' %}
+{% set blockchain = 'fantom' %}
 
 
 
 {{
     config(
         schema = 'oneinch_' + blockchain,
-        alias = 'project_raw_traces',
+        alias = 'project_orders_raw_traces',
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -18,7 +18,7 @@
 
 
 {{
-    oneinch_project_raw_traces_macro(
+    oneinch_project_orders_raw_traces_macro(
         blockchain = blockchain
     )
 }}
