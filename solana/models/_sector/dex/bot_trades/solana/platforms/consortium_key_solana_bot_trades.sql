@@ -23,15 +23,7 @@
 
 with
     users as (
-        select distinct transactions.signer as user
-        from {{ source("solana", "account_activity") }} as activity
-        join {{ source("solana", "transactions") }} as transactions on tx_id = id
-        where
-            activity.block_time >= timestamp '{{project_start_date}}'  -- FirstTradeTimestamp
-            and transactions.block_time >= timestamp '{{project_start_date}}'  -- FirstTradeTimestamp
-            and tx_success
-            and address = '{{fee_receiver_1}}'  -- SolanaFeeWallet
-            and balance_change > 0  -- SOL fee payments
+        select * from {{ref('consortium_key_solana_bot_users')}}
     ),
     bottrades as (
         select
