@@ -19,7 +19,7 @@ WITH zeroex_tx AS (
     SELECT tx_hash,
             block_time as block_time,
            max(affiliate_address) as affiliate_address,
-           is_gasless
+           max(is_gasless)
     FROM (
 
         SELECT v3.evt_tx_hash AS tx_hash,
@@ -83,7 +83,7 @@ WITH zeroex_tx AS (
                 AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
                 {% endif %}
     ) temp
-    group by tx_hash, is_gasless, block_time 
+    group by tx_hash, block_time 
 
 ),
 v3_fills_no_bridge AS (
