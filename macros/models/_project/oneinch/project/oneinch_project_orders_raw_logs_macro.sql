@@ -1,4 +1,4 @@
-{% macro oneinch_project_raw_logs_macro(
+{% macro oneinch_project_orders_raw_logs_macro(
     blockchain
     , date_from = '2019-01-01'
 )%}
