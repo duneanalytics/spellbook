@@ -1,4 +1,4 @@
-{% macro oneinch_project_cfg_methods_macro() %}
+{% macro oneinch_project_orders_cfg_methods_macro() %}
 
 -- METHODS CONFIG
 {%
@@ -312,6 +312,7 @@
                 "deadline":         "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*5 + 24, 8)",
                 "fee_amount":       "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*7 + 1, 32)",
                 "making_amount":    "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*9 + 1, 32)",
+                "condition":        "bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 24 + 1, 8)) > 0",
             },
         },
         "UniswapX": {
