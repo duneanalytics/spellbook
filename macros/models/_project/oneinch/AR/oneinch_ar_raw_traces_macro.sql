@@ -1,4 +1,4 @@
-{% macro oneinch_ar_raw_traces_macro( BREAK CI
+{% macro oneinch_ar_raw_traces_macro(
     blockchain
     , date_from = '2019-06-01'
 )%}
