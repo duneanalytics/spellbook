@@ -58,7 +58,7 @@ WITH zeroex_tx AS (
                                                                                    FOR 20)
                         END AS affiliate_address,
                         case when (varbinary_position(input,0x3d8d4082) <> 0 or varbinary_position(input,0x4f948110) <> 0 
-                            or varbinary_position(input,0x3a46c4e1) <> 0 or varbinary_position(input,0x724d3953) <> 0  ) then 1 end as is_gasless, 
+                            then 1 end as is_gasless, 
                             block_time
         FROM {{ source('ethereum', 'traces') }} tr
         WHERE tr.to IN (
