@@ -1793,7 +1793,7 @@ FROM
     ('bigtime-big-time', 'ethereum', 'BIGTIME', 0x64Bc2cA1Be492bE7185FAA2c8835d9b824c8a194, 18),
     ('portal2-portal-coin', 'ethereum', 'PORTAL', 0x1bbe973bef3a977fc51cbed703e8ffdefe001fed, 18),
     ('dough-l3t-h1m-c00k', 'ethereum', 'DOUGH', 0xFc116eA24F002F600e363bdce4b91715fe5e0392, 9),
-    ('giv-giv', 'ethereum', 'GIV', 0x900db999074d9277c5da2a43f252d74366230da0, 18)
+    ('giv-giv', 'ethereum', 'GIV', 0x900db999074d9277c5da2a43f252d74366230da0, 18),
     ('quartz-sandclock', 'ethereum', 'QUARTZ', 0xbA8A621b4a54e61C442F5Ec623687e2a942225ef, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
