@@ -55,7 +55,7 @@ select identifier, category, token1, token2, "hash", pending, price_id, expo, fi
         and tx_success = true
         and error is null
         {% if is_incremental() %}
-        and {{ incremental_predicate('tr.block_time') }}
+        and {{ incremental_predicate('last_used') }}
         {% else %}
         and tr.block_time >= DATE '{{project_start_date}}'
         {% endif %}

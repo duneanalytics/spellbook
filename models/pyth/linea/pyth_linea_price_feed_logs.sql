@@ -77,7 +77,7 @@ select distinct
      , log.tx_index
      , log.tx_to
      , log.tx_from
-     , array_agg(bc.namespace) as namespace
+     , array_distinct(array_agg(bc.namespace)) as namespace
 from {{ source('linea', 'logs') }} log
 inner join pyth_contracts pcc on log.contract_address = pcc.contract_address
 inner join price_feed_ids ids on log.topic1 = ids."hash"

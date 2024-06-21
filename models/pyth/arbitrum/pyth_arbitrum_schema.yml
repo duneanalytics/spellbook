@@ -11,7 +11,15 @@ models:
     config:
       tags: ['arbitrum']
     description: "Pyth transactions"
-
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - trace_address
+            - call_type
+            - chain
+            - sub_traces
+            - trace_from
     columns:
       - &chain
         name: chain
@@ -92,7 +100,7 @@ models:
       error_after: { count: 24, period: hour }
     config:
       tags: ['arbitrum']
-    description: "Pyth transactions"
+    description: "Pyth price logs"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
