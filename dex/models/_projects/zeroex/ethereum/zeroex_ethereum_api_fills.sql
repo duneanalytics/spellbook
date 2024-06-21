@@ -19,7 +19,7 @@ WITH zeroex_tx AS (
     SELECT tx_hash,
             block_time as block_time,
            max(affiliate_address) as affiliate_address,
-           max(is_gasless)
+           max(is_gasless) as is_gasless 
     FROM (
 
         SELECT v3.evt_tx_hash AS tx_hash,
