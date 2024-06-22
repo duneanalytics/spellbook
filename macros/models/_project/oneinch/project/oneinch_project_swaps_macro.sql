@@ -26,7 +26,6 @@ meta as (
         , call_trace_address
         , project
         , order_hash
-        , call_trade
         , maker
         , maker_asset
         , making_amount
@@ -50,7 +49,6 @@ meta as (
         , call_trace_address
         , '1inch' as project
         , coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int)))) as order_hash
-        , 1 as call_trade
         , maker
         , maker_asset
         , making_amount
@@ -95,7 +93,7 @@ meta as (
         , call_trace_addresses
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
         , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as _taker_asset
-        , coalesce(concat(order_hash, to_big_endian_64(call_trade)), to_big_endian_64(counter)) as call_trade_id
+        , coalesce(order_hash, to_big_endian_64(counter)) as call_trade_id
     from (
         select
             *
