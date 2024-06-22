@@ -5,12 +5,14 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']
    )
 }}
 
 {% set project_start_date = '2023-12-07' %}
-{% set fee_receiver = 'CPixcsP8LEMeUoavaHG3bdkywR8s4mZXNN3mYUgbXFev' %}
+{% set fee_receiver_1 = 'CPixcsP8LEMeUoavaHG3bdkywR8s4mZXNN3mYUgbXFev' %}
+{% set fee_receiver_2 = '8dEe5BM7irAnHtJ6SSWwCRf7njgnyczS3jPrvJJs88U5' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
@@ -30,7 +32,10 @@ WITH
       {% endif %}
       AND tx_success
       AND balance_change > 0
-      AND address = '{{fee_receiver}}'
+      AND (
+        address = '{{fee_receiver_1}}'
+        OR address = '{{fee_receiver_2}}'
+      )
   ),
   botTrades AS (
     SELECT
@@ -85,8 +90,10 @@ WITH
         {% endif %}
       )
     WHERE
-      trades.trader_id != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
-      AND transactions.signer != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
+      trades.trader_id != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
       {% if is_incremental() %}
       AND {{ incremental_predicate('trades.block_time') }}
       {% else %}
