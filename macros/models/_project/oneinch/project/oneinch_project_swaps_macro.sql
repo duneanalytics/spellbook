@@ -90,7 +90,7 @@ meta as (
         , making_amount
         , taker_asset
         , taking_amount
-        , call_trace_addresses
+        , array_agg(call_trace_address) over(partition by block_number, tx_hash, project) as call_trace_addresses -- to update the array after filtering nested calls of the project
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
         , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as _taker_asset
         , coalesce(order_hash, to_big_endian_64(counter)) as call_trade_id -- without call_trade for the correctness of the max transfer approach
@@ -217,7 +217,7 @@ meta as (
             calls.block_number = transfers.block_number
             and calls.tx_hash = transfers.tx_hash
             and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
-            and reduce(call_trace_addresses, call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
+            and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
             and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and maker in (transfer_from, transfer_to)) -- transfers related to the order only
         left join prices using(contract_address, minute)
         left join tokens using(contract_address)
