@@ -80,7 +80,7 @@ WITH pool_labels AS (
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
         WHERE t.i = d.i 
         AND d.i = p.i
-        ORDER BY 1,2,3
+        ORDER BY 1, 2, 3
     ),
 
     balances_changes AS (

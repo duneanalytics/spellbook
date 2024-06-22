@@ -1,5 +1,5 @@
 {{ config(
-        
+        schema = 'gas',
         alias = 'fees',
         post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","zksync","zora","base","scroll"]\',
                                 "sector",

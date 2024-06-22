@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'borrow'
+    schema = 'timeswap_ethereum'
+    ,alias = 'borrow'
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,incremental_strategy = 'merge'
