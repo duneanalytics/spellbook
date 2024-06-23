@@ -38,7 +38,9 @@
             , row_number() over (partition by ip.account_poolState order by ip.call_block_time desc) as recent_init
         FROM {{ source('raydium_clmm_solana','amm_v3_call_createPool') }} ip
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_tokenMint0
+            AND tkA.token_version = 'spl_token'
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_tokenMint1
+            AND tkB.token_version = 'spl_token'
     )
     
     , all_swaps as (
@@ -101,6 +103,7 @@
             AND tr_1.outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_1.inner_instruction_index = 1) 
                 OR (sp.call_is_inner = true AND tr_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
+            AND tr_1.token_version = 'fungible'
             {% if is_incremental() %}
             AND {{incremental_predicate('tr_1.block_time')}}
             {% else %}
@@ -112,6 +115,7 @@
             AND tr_2.outer_instruction_index = sp.call_outer_instruction_index 
             AND ((sp.call_is_inner = false AND tr_2.inner_instruction_index = 2)
                 OR (sp.call_is_inner = true AND tr_2.inner_instruction_index = sp.call_inner_instruction_index + 2))
+            AND tr_2.token_version = 'fungible'
             {% if is_incremental() %}
             AND {{incremental_predicate('tr_2.block_time')}}
             {% else %}
