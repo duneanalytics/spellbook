@@ -76,3 +76,4 @@ INNER JOIN {{source('solana','transactions')}} txs ON txs.block_time=dt.block_ti
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
+{% endif %}
