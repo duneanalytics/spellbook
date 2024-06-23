@@ -347,6 +347,7 @@ FROM
     ('syn-synapse', 'ethereum', 'SYN', 0x0f2d719407fdbeff09d87557abb7232601fd9f29, 18),
     ('sync-sync-network', 'ethereum', 'SYNC', 0xb6ff96b8a8d214544ca0dbc9b33f7ad6503efd32, 18),
     ('t-threshold-network-token', 'ethereum', 'T', 0xcdf7028ceab81fa0c6971208e83fa7872994bee5, 18),
+    ('taiko-taiko', 'ethereum', 'TAIKO', 0x10dea67478c5f8c5e2d90e5e9b26dbe60c54d800, 18),
     ('tcr-tracer-dao', 'ethereum', 'TCR', 0xe38b72d6595fd3885d1d2f770aa23e94757f91a1, 8),
     ('tel-telcoin', 'ethereum', 'TEL', 0x467bccd9d29f223bce8043b84e8c8b282827790f, 2),
     ('temp-tempus', 'ethereum', 'TEMP', 0xa36fdbbae3c9d55a1d67ee5821d53b50b63a1ab9, 18),
@@ -1749,7 +1750,7 @@ FROM
     ('zyn-zyncoin', 'ethereum', 'ZYN', 0x58cb30368ceb2d194740b144eab4c2da8a917dcb, 18),
     ('nut6-nutcoin', 'ethereum', 'NUT', 0x473f4068073cd5b2ab0e4cc8e146f9edc6fb52cc, 18),
     --('gswift-gameswift', 'ethereum', 'GSWIFT', 0x580e933d90091b9ce380740e3a4a39c67eb85b4c, 18),
-    ('nmt-netmind-token', 'ethereum', 'NMT', 0x03aa6298f1370642642415edc0db8b957783e8d6, 9),
+    ('nmt-netmind-token', 'ethereum', 'NMT', 0x03aa6298f1370642642415edc0db8b957783e8d6, 18),
     ('simpson-homer', 'ethereum', 'SIMPSON', 0x44aAd22aFbB2606d7828Ca1f8f9E5af00e779AE1, 9),
     ('pongo-pongo', 'ethereum', 'PONGO', 0x7c68e725b0b2ffcba8947fded4198c3d1db041e6, 9),
     ('truf-truflation', 'ethereum', 'TRUF', 0x38c2a4a7330b22788374b8ff70bba513c8d848ca, 18 ),
@@ -1790,7 +1791,9 @@ FROM
     ('gods-gods-unchained', 'ethereum', 'GODS', 0xccc8cb5229b0ac8069c51fd58367fd1e622afd97, 18),
     ('cah-moon-tropica', 'ethereum', 'CAH', 0x8e0e57dcb1ce8d9091df38ec1bfc3b224529754a, 18),
     ('bigtime-big-time', 'ethereum', 'BIGTIME', 0x64Bc2cA1Be492bE7185FAA2c8835d9b824c8a194, 18),
-    ('portal2-portal-coin', 'ethereum', 'PORTAL', 0x1bbe973bef3a977fc51cbed703e8ffdefe001fed, 18)
+    ('portal2-portal-coin', 'ethereum', 'PORTAL', 0x1bbe973bef3a977fc51cbed703e8ffdefe001fed, 18),
+    ('dough-l3t-h1m-c00k', 'ethereum', 'DOUGH', 0xFc116eA24F002F600e363bdce4b91715fe5e0392, 9),
+    ('giv-giv', 'ethereum', 'GIV', 0x900db999074d9277c5da2a43f252d74366230da0, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

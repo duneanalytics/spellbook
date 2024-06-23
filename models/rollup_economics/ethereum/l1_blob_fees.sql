@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "rollup_economics",
-                                    \'["niftytable"]\') }}'
+                                    \'["niftytable", "maybeYonas"]\') }}'
 )}}
 
 SELECT 
@@ -41,4 +41,6 @@ AND s.blob_submitter_label IN ('Arbitrum',
 'Public Goods Network',
 'OP Mainnet', 
 'Starknet', 
-'Mode')
+'Mode',
+'Blast'
+)

@@ -90,5 +90,21 @@ sources:
       - name: Pool_evt_Fees
         loaded_at_field: evt_block_time           
       - name: PoolFactory_call_getFee
-        loaded_at_field: call_block_time             
+        loaded_at_field: call_block_time  
+      - name: CLFactory_evt_PoolCreated
+        loaded_at_field: evt_block_time
+      - name: CLPool_evt_Mint
+        loaded_at_field: evt_block_time
+      - name: CLPool_evt_Collect
+        loaded_at_field: evt_block_time          
+      - name: CLPool_evt_Fees
+        loaded_at_field: evt_block_time           
+      - name: CLPoolFactory_call_getFee
+        loaded_at_field: call_block_time                  
+      - name: CLFactory_call_getSwapFee
+        loaded_at_field: call_block_time 
+      - name: CLPool_evt_Swap
+        loaded_at_field: evt_block_time     
+      - name: CLPool_evt_CollectFees
+        loaded_at_field: evt_block_time    
        
