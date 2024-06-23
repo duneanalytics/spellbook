@@ -276,6 +276,7 @@ select
     , call_amount_usd
     , tx_swaps
     , if(cardinality(users) = 0 or order_hash is null, array_union(users, array[tx_from]), users) as users
+    , users as direct_users
     , date(date_trunc('month', block_time)) as block_month
     , call_trade_id
 from swaps
