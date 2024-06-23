@@ -42,3 +42,20 @@ models:
           seed_file: ref('uniswap_blast_base_trades_seed')
           filter:
             version: 2
+            
+  - name: thruster_blast_base_trades
+    meta:
+      blockchain: blast
+      sector: dex
+      project: thruster
+      contributors: Henrystats
+    config:
+      tags: [ 'blast', 'dex', 'trades', 'thruster' ]
+    description: "Thruster blast v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('thruster_blast_base_trades_seed')
