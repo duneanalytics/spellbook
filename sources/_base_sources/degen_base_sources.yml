@@ -82,10 +82,14 @@ sources:
             description: "Fourth topic"
           - name: data
             description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings."
-          - *tx_hash
+          - &tx_hash
+            name: tx_hash
+            description: "Primary key of the transaction"
           - name: index
             description: "Log index"
-          - *tx_index
+          - &tx_index
+            name: tx_index
+            description: "Transaction index"
 
       - name: blocks
         freshness:

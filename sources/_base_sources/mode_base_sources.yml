@@ -76,6 +76,54 @@ sources:
           - name: l1_tx_origin
             description: "L1 transaction origin address. This is not null for L1→L2 transactions: https://optimistic.etherscan.io/txsEnqueued"
 
+      - name: traces
+        loaded_at_field: block_time
+        description: "A mantle trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - *value
+          - name: gas
+            description: "Amount of gas consumed by the trace"
+          - name: gas_used
+            description: "Number of gas units used by the trace"
+          - *block_hash
+          - name: success
+            description: "Whether the trace was completed successfully"
+          - &tx_index
+            name: tx_index
+            description: "Transaction index"
+          - name: subtraces
+            description: "Number of subtraces (i.e, number of calls at a particular level within a transaction)"
+          - name: error
+            description: "Error log"
+          - name: tx_success
+            description: "Whether the transaction was completed sucessfully"
+          - &tx_hash
+            name: tx_hash
+            description: "Primary key of the transaction"
+          - name: from
+            description: "Wallet address that initiated the trace"
+          - name: to
+            description: "Wallet address that received the trace"
+          - name: trace_address
+            description: "All returned traces, gives the exact location in the call trace"
+          - name: type
+            description: "Type of trace (e.g., call, create, suicide)"
+          - name: address
+            description: "Address of the trace creator"
+          - name: code
+            description: "Raw EVM code for the trace"
+          - name: call_type
+            description: "Hexadecimal representations of the trace's call type"
+          - name: input
+            description: "Input data for the trace"
+          - name: output
+            description: "Output data for the trace"
+          - name: refund_address
+            description: "Refund Address"
+
       - name: logs
         loaded_at_field: block_time
         description: "An Mode log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
