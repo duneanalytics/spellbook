@@ -157,9 +157,27 @@ meta as (
         *
         , transform(filter(array_distinct(flatten(call_transfer_addresses)), x -> not x.contract), x -> (x.address)) as users
         , array_agg(
-            cast(row(project, call_trace_address, coalesce(user_amount_usd, amount_usd)) as row(project varchar, call_trace_address array(bigint), amount_usd double))
-        ) over(partition by block_number, tx_hash) as amounts
-        , coalesce(if(flags['direct'], user_amount_usd, caller_amount_usd), amount_usd) as result_amount_usd
+            cast(row(
+                project
+                , call_trace_address
+                , tokens
+                , if(
+                    user_amount_usd is null or caller_amount_usd is null
+                    , coalesce(user_amount_usd, caller_amount_usd, call_amount_usd)
+                    , greatest(user_amount_usd, caller_amount_usd)
+                )
+            ) as row(
+                project varchar
+                , call_trace_address array(bigint)
+                , tokens array(varchar)
+                , amount_usd double
+            ))
+        ) over(partition by block_number, tx_hash) as tx_swaps
+        , if(
+            user_amount_usd is null or caller_amount_usd is null
+            , coalesce(user_amount_usd, caller_amount_usd, call_amount_usd)
+            , greatest(user_amount_usd, caller_amount_usd)
+        ) as amount_usd
     from (
         select
             blockchain
@@ -185,7 +203,7 @@ meta as (
             , any_value(taking_amount) as taking_amount
             , any_value(order_flags) as order_flags
             , array_agg(distinct if(native, native_symbol, symbol)) as tokens
-            , max(amount * price / pow(10, decimals)) as amount_usd
+            , max(amount * price / pow(10, decimals)) as call_amount_usd
             , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
             , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
             , array_agg(array[
@@ -255,8 +273,8 @@ select
     , amount_usd
     , user_amount_usd
     , caller_amount_usd
-    , result_amount_usd
-    , amounts
+    , call_amount_usd
+    , tx_swaps
     , if(cardinality(users) = 0 or order_hash is null, array_union(users, array[tx_from]), users) as users
     , date(date_trunc('month', block_time)) as block_month
     , call_trade_id
