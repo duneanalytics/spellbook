@@ -9,4 +9,4 @@
     )
 }}
 
-{{ paraswap_v6_trades_master('bnb', 'paraswap', 'AugustusV6_1') }}
+{{ paraswap_v6_trades_master('bnb', 'paraswap', 'AugustusV6_2') }}

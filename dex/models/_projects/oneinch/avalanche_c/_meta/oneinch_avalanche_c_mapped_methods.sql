@@ -7,7 +7,6 @@
         schema = 'oneinch_' + blockchain,
         alias = 'mapped_methods',
         materialized = 'table',
-        on_table_exists = 'drop',
         unique_key = ['blockchain', 'address'],
     )
 }}
