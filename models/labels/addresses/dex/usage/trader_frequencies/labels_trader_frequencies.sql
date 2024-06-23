@@ -21,10 +21,10 @@ with
         end as trades_per_day
     from (
         select blockchain, taker, block_date, tx_hash
-        from {{ ref('dex_aggregator_trades') }}
+        from {{ source('dex_aggregator', 'trades') }}
         UNION ALL
         select blockchain, taker, block_date, tx_hash
-        from {{ ref('dex_trades') }}
+        from {{ source('dex', 'trades') }}
     )
     group by taker, blockchain
     -- That have at least more than 1 trade
