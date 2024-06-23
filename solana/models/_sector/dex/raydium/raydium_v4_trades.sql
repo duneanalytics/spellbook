@@ -86,7 +86,7 @@
             -- AND trs_2.block_time >= now() - interval '7' day
             {% endif %}
         LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_2 ON tk_2.address = trs_2.from_token_account
-            AND tk_2.token_version = 'fungible'
+            AND tk_2.account_type = 'fungible'
         LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_1 ON dec_1.token_mint_address = trs_1.token_mint_address AND dec_1.token_version = 'spl_token'
         LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_2 ON dec_2.token_mint_address = trs_2.token_mint_address AND dec_2.token_version = 'spl_token'
         WHERE 1=1
