@@ -1,4 +1,4 @@
-{% macro oneinch_project_raw_logs_macro(
+{% macro oneinch_project_orders_raw_logs_macro(
     blockchain
     , date_from = '2019-01-01'
 )%}
@@ -25,7 +25,7 @@ where
     {% endif %}
 
     and topic0 in (
-        {{ oneinch_project_cfg_events_macro().keys() | join(', ') }}
+        {{ oneinch_project_orders_cfg_events_macro().keys() | join(', ') }}
     )
 
 {% endmacro %}
