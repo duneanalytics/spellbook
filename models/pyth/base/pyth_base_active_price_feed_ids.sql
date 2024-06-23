@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_time', 'chain', 'trace_address', 'trace_from', 'last_used'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.last_used')],
     post_hook='{{ expose_spells(\'["base"]\',
                             "project",
                             "pyth",
