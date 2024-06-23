@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='vrf_reward_daily',
     partition_by = ['date_month'],
     materialized = 'incremental',
@@ -10,7 +10,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
   link_usd_daily AS (
@@ -20,20 +19,20 @@ WITH
     FROM
       {{ source('prices', 'usd') }} price
     WHERE
-      price.symbol = 'LINK'     
+      price.symbol = 'LINK'
     GROUP BY
       1
     ORDER BY
       1
   ),
   vrf_reward_daily AS (
-    SELECT 
+    SELECT
       vrf_daily.date_start,
       cast(date_trunc('month', vrf_daily.date_start) as date) as date_month,
-      vrf_daily.operator_address,      
+      vrf_daily.operator_address,
       COALESCE(vrf_daily.token_amount, 0) as token_amount,
       COALESCE(vrf_daily.token_amount * lud.usd_amount, 0)  as usd_amount
-    FROM 
+    FROM
       {{ref('chainlink_fantom_vrf_request_fulfilled_daily')}} vrf_daily
     LEFT JOIN link_usd_daily lud ON lud.date_start = vrf_daily.date_start
     ORDER BY date_start
@@ -45,7 +44,7 @@ SELECT
   operator_address,
   token_amount,
   usd_amount
-FROM 
+FROM
   vrf_reward_daily
 ORDER BY
   2, 4

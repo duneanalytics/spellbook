@@ -1,0 +1,475 @@
+version: 2
+
+seeds:
+  - name: archipelago_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: foundation_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: superrare_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: blur_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: blur_seaport_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: blur_v2_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: element_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: element_optimism_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: x2y2_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: zora_v1_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: zora_v2_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: zora_v3_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: cryptopunks_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: looksrare_v1_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: looksrare_v2_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: looksrare_seaport_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: collectionswap_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: sudoswap_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: sudoswap_v2_ethereum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: sudoswap_v2_base_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: sudoswap_v2_arbitrum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: aurem_polygon_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: dew_polygon_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: alienswap_base_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: tevaera_zksync_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: zonic_zksync_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: element_base_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: zonic_base_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: element_arbitrum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: zk_markets_zksync_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: mintsquare_zksync_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: zonic_arbitrum_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: zonic_zora_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: chikn_avalanche_c_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        nft_token_id: uint256
+
+  - name: campfire_avalanche_c_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        nft_token_id: uint256
+
+  - name: hyperspace_avalanche_c_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        nft_token_id: uint256
+
+  - name: joepegs_avalanche_c_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+
+  - name: quix_events_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        project_contract_address: varbinary
+        tx_from: varbinary
+        tx_to: varbinary
+        royalty_fee_receive_address: varbinary
+        token_id: uint256
+        block_date: date
+
+  - name: salvor_avalanche_c_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        royalty_fee_amount_raw: uint256
+        nft_token_id: uint256
+        
+  - name: superchief_avalanche_c_base_trades_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        nft_contract_address: varbinary
+        price_raw: uint256
+        nft_token_id: uint256
+

@@ -1,131 +1,6 @@
 version: 2
 
 models:
-  - name: dex_aggregator_trades
-    meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
-      sector: dex_aggregator
-      contributors: bh2smith, Henrystats, jeff-dude, rantum
-    config:
-      tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
-    description: >
-      Aggregator trades on all chains across all contracts and versions
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
-            - trace_address
-    columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain which the DEX is deployed"
-      - &project
-        name: project
-        description: "Project name of the DEX"
-      - &version
-        name: version
-        description: "Version of the contract built and deployed by the DEX project"
-      - &block_date
-        name: block_date
-        description: "UTC event block date of each DEX trade"
-      - &block_time
-        name: block_time
-        description: "UTC event block time of each DEX trade"
-      - &token_bought_symbol
-        name: token_bought_symbol
-        description: "Token symbol for token bought in the trade"
-      - &token_sold_symbol
-        name: token_sold_symbol
-        description: "Token symbol for token sold in the trade"
-      - &token_pair
-        name: token_pair
-        description: "Token symbol pair for each token involved in the trade"
-      - &token_bought_amount
-        name: token_bought_amount
-        description: "Value of the token bought at time of execution in the original currency"
-      - &token_sold_amount
-        name: token_sold_amount
-        description: "Value of the token sold at time of execution in the original currency"
-      - &token_bought_amount_raw
-        name: token_bought_amount_raw
-        description: "Raw value of the token bought at time of execution in the original currency"
-      - &token_sold_amount_raw
-        name: token_sold_amount_raw
-        description: "Raw value of the token sold at time of execution in the original currency"
-      - &amount_usd
-        name: amount_usd
-        description: "USD value of the trade at time of execution"
-        tests:
-          - dbt_utils.accepted_range:
-              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
-      - &token_bought_address
-        name: token_bought_address
-        description: "Contract address of the token bought"
-      - &token_sold_address
-        name: token_sold_address
-        description: "Contract address of the token sold"
-      - &taker
-        name: taker
-        description: "Address of trader who purchased a token"
-      - &maker
-        name: maker
-        description: "Address of trader who sold a token"
-      - &project_contract_address
-        name: project_contract_address
-        description: "Project contract address which executed the trade on the blockchain"
-      - &tx_hash
-        name: tx_hash
-        description: "Unique transaction hash value tied to each transaction on the DEX"
-      - &tx_from
-        name: tx_from
-        description: "Address which initiated the trade"
-      - &tx_to
-        name: tx_to
-        description: "Address which received the trade"
-      - &trace_address
-        name: trace_address
-      - &evt_index
-        name: evt_index
-        description: "Index of the corresponding trade event"
-
-  - name: dex_prices
-    meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom
-      sector: dex
-      contributors: Henrystats
-    config:
-      tags: ['ethereum', 'polygon', 'arbitrum', 'optimism', 'gnosis', 'fantom', 'avalanche_c', 'trades', 'dex', 'cross-chain', 'prices']
-    description: >
-      This table loads the prices of tokens from the dex.trades table. This helps for missing tokens from the prices.usd table
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - hour
-            - blockchain
-            - contract_address
-    columns:
-      - &block_month
-        name: block_month
-        description: "Month corresponding to the prices data"
-      - &hour
-        name: hour
-        description: "hour corresponding to the prices data"
-      - &contract_address
-        name: contract_address
-        description: "token's contract address"
-      - *blockchain
-      - &median_price
-        name: median_price
-        description: "Median price of the token in USD within the corresponding hour"
-      - &sample_size
-        name: sample_size
-        description: "Number of times the token was traded within the coressponding hour"
-
   - name: dex_incentive_mappings
     meta:
       blockchain: optimism
@@ -136,9 +11,15 @@ models:
     description: >
       Mappings for DEX incentives contracts (i.e. gauges, bribes) to liquidity pools on all chains across all contracts and versions
     columns:
-      - *blockchain
-      - *project
-      - *version
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
       - &pool_contract
         name: pool_contract
         description: "Address of the liquidity pool contract"
@@ -154,137 +35,15 @@ models:
       - &evt_block_number
         name: evt_block_number
         description: 'Block Number'
-      - *contract_address
+      - &contract_address
+        name: contract_address
+        description: "token's contract address"
       - &evt_tx_hash
         name: evt_tx_hash
         description: 'Tx Hash'
-      - *evt_index
-
-  - name: dex_pools
-    meta:
-      blockchain: ethereum, arbitrum, polygon
-      sector: dex
-      contributors: hildobby
-    config:
-      tags: ['ethereum', 'arbitrum', 'polygon', 'dex', 'cross-chain', 'pools']
-    description: >
-      DEX pools on all chains across all contracts and versions
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - &pool
-        name: pool
-        description: "DEX pool smart contract address"
-      - &fee
-        name: fee
-        description: "Defined fee"
-      - &token0
-        name: token0
-        description: "First token in pool"
-      - &token1
-        name: token1
-        description: "Second token in pool"
-      - &creation_block_time
-        name: creation_block_time
-        description: "Block time of pool creation"
-      - &creation_block_number
-        name: creation_block_number
-        description: "Block number of pool creation"
-      - name: contract_address
-        description: "Contract address used to create the pool"
-
-  - name: dex_raw_pool_initializations
-    meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
-      sector: dex
-      contributors: grkhr
-    config:
-      tags: ['dex', 'cross-chain', 'pools']
-    description: >
-      DEX raw pools initialization calls
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
-            - tx_hash
-            - call_trace_address
-    columns:
-      - *blockchain
-      - &type
-        name: type
-        description: "Pool implementation standard"
-      - *version
-      - *block_time
-      - *pool
-      - *token0
-      - *token1
-      - *tx_hash
-      - &call_trace_address
-        name: call_trace_address
-
-  - name: dex_raw_pool_creations
-    meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
-      sector: dex
-      contributors: grkhr
-    config:
-      tags: ['dex', 'cross-chain', 'pools']
-    description: >
-      DEX raw pools on all chains across all contracts and versions parsed from logs
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
-    columns:
-      - *blockchain
-      - *type
-      - *version
-      - *pool
-      - *token0
-      - *token1
-      - &tokens
-        name: tokens
-        description: "Tokens in the pool"
-      - *creation_block_time
-      - *creation_block_number
-      - name: contract_address
-        description: "Contract address used to create the pool"
-      - name: rn
-
-  - name: dex_raw_pools
-    meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora
-      sector: dex
-      contributors: grkhr
-    config:
-      tags: ['dex', 'cross-chain', 'pools']
-    description: >
-      DEX raw pools on all chains across all contracts and versions parsed from logs + filtered degen pools
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - pool
-    columns:
-      - *blockchain
-      - *type
-      - *version
-      - *pool
-      - *token0
-      - *token1
-      - *tokens
-      - *creation_block_time
-      - *creation_block_number
-      - name: contract_address
-        description: "Contract address used to create the pool"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding trade event"
 
   - name: dex_offers
     meta:
@@ -299,8 +58,12 @@ models:
       - *blockchain
       - *project
       - *version
-      - *block_date
-      - *block_time
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
       - &block_number
         name: block_number
         description: "the block number of the block that the offer was created in"
@@ -308,7 +71,9 @@ models:
         name: tx_index
         description: "the transaction index of the transaction that the offer was created in"
       - *evt_index
-      - *maker
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
       - &sell_token_symbol
         name: sell_token_symbol
         description: "the token the offer is selling"
@@ -321,7 +86,9 @@ models:
       - &buy_token_address
         name: buy_token_address
         description: "the address of the token the offer is buying"
-      - *token_pair
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
       - &sell_amount
         name: sell_amount
         description: "the amount of the token that the maker is selling"
@@ -361,10 +128,18 @@ models:
       - &txn_cost_usd
         name: txn_cost_usd
         description: "the cost of the transaction in USD"
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address which executed the trade on the blockchain"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
 
 
   - name: dex_flashloans
@@ -398,175 +173,3 @@ models:
       - name: recipient
       - name: contract_address
       - name: block_month
-
-  - name: dex_sandwiches
-    meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora
-      sector: dex
-      contributors: hildobby
-    config:
-      tags: ['dex', 'mev', 'sandwiches']
-    description: >
-      DEX MEV Sandwich Trades across chains
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
-    columns: 
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
-      - *block_month
-      - *block_number
-      - *token_sold_address
-      - *token_bought_address
-      - *token_sold_symbol
-      - *token_bought_symbol
-      - *maker
-      - *taker
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *project_contract_address
-      - *trace_address
-      - *token_pair
-      - &index
-        name: index
-        description: "Index of the transaction in block"
-      - *token_sold_amount_raw
-      - *token_bought_amount_raw
-      - *token_sold_amount
-      - *token_bought_amount
-      - *amount_usd
-      - *evt_index
-
-  - name: dex_sandwiched
-    meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora
-      sector: dex
-      contributors: hildobby
-    config:
-      tags: ['dex', 'mev', 'sandwiched']
-    description: >
-      DEX MEV Sandwiched Trades across chains
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - evt_index
-    columns: 
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
-      - *block_month
-      - *block_number
-      - *token_sold_address
-      - *token_bought_address
-      - *token_sold_symbol
-      - *token_bought_symbol
-      - *maker
-      - *taker
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *project_contract_address
-      - *trace_address
-      - *token_pair
-      - *tx_index
-      - *token_sold_amount_raw
-      - *token_bought_amount_raw
-      - *token_sold_amount
-      - *token_bought_amount
-      - *amount_usd
-      - *evt_index
-
-  - name: dex_info
-    meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, solana
-      sector: dex
-      contributors: hildobby
-    config:
-      tags: ['dex', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'solana', 'info']
-    description: >
-        DEXs info
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - project
-    columns:
-      - name: project
-        description: "Marketplace codename"
-      - name: name
-        description: "Marketplace capitalised name"
-      - name: marketplace_type
-        description: "Type of marketplace"
-      - name: x_username
-        description: "Username on X"
-
-  - name: dex_addresses
-    meta:
-      blockchain: arbitrum, base, bnb, ethereum, optimism, polygon
-      sector: dex
-      project: addresses
-      contributors: rantum
-    config:
-      tags: ['table', 'dex', 'addresses', 'arbitrum', 'base', 'bnb', 'ethereum', 'optimism', 'polygon']
-    description: "Known decentralised exchange addresses"
-    columns:
-      - name: blockchain
-        description: "Name of blockchain"
-      - name: address
-        description: "Address of known DEX"
-      - name: dex_name
-        description: "Name of decentralised exchange"
-      - name: distinct_name
-        description: "Distinct name of decentralised exchange address"
-
-  - name: dex_atomic_arbitrages
-    meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora
-      sector: dex
-      contributors: hildobby
-    config:
-      tags: ['dex', 'mev', 'atomic', 'arbitrages']
-    description: >
-      DEX MEV Arbitrage Trades across all Chains
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - tx_hash
-            - project_contract_address
-            - evt_index
-    columns: 
-      - *blockchain
-      - *project
-      - *version
-      - *block_time
-      - *block_month
-      - *block_number
-      - *token_sold_address
-      - *token_bought_address
-      - *token_sold_symbol
-      - *token_bought_symbol
-      - *maker
-      - *taker
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *project_contract_address
-      - *trace_address
-      - *token_pair
-      - *tx_index
-      - *token_sold_amount_raw
-      - *token_bought_amount_raw
-      - *token_sold_amount
-      - *token_bought_amount
-      - *amount_usd
-      - *evt_index

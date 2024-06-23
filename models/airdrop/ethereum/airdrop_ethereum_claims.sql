@@ -1,5 +1,5 @@
 {{ config(
-        
+        schema = 'airdrop_ethereum',
         alias = 'claims',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                       "sector",
