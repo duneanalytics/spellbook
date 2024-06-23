@@ -11,7 +11,7 @@ with decoded_calls as (
             {% if is_incremental() %}
                 where {{ incremental_predicate('call_block_time') }}
             {% else %}
-                where call_block_time >= timestamp '{{ contract_data['start'] }}'
+                where call_block_time >= greatest(timestamp '{{ contract_data['start'] }}', timestamp '{{date_from}}')
             {% endif %}
             {% if not outer_loop.last or not loop.last %}
                 union all
