@@ -66,7 +66,7 @@ batch_counts as (
             {% if is_incremental() %}
             AND {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
-        join solver_activation_events
+        join registered_solvers
             on solver = address
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
