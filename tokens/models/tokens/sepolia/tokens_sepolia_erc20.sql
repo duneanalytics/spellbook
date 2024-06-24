@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'tokens_blast'
+        schema = 'tokens_sepolia'
         ,alias = 'erc20'
         ,tags = ['static']
         ,materialized = 'table'
