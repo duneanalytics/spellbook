@@ -195,3 +195,4 @@ SELECT
 FROM verify_txns txs
 INNER JOIN block_basefees bxs
   ON txs.block_number = bxs.block_number
+
