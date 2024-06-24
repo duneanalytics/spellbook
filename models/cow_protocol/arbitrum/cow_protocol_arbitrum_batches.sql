@@ -1,6 +1,6 @@
 {{  config(
-        alias = 'arbitrum_batches',
-
+        schema = 'cow_protocol_arbitrum',
+        alias = 'batches',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash'],
