@@ -1,11 +1,11 @@
 {{ config(
     schema = 'pyth_celo',
     alias = 'active_price_feed_ids',
-    materialized = 'incremental',
+    materialized = 'table',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_time', 'chain', 'trace_address', 'trace_from', 'last_used'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.last_used')],
+
     post_hook='{{ expose_spells(\'["celo"]\',
                             "project",
                             "pyth",
@@ -54,11 +54,7 @@ select identifier, category, token1, token2, "hash", pending, price_id, expo, fi
                                                 )
         and tx_success = true
         and error is null
-        {% if is_incremental() %}
-        and {{ incremental_predicate('tr.block_time') }}
-        {% else %}
         and tr.block_time >= DATE '{{project_start_date}}'
-        {% endif %}
     group by (bytearray_substring(input,1 + 4,32)), bytearray_to_int256(bytearray_substring(output,1 + 32 + 32,32))
 )
 left join price_feed_ids ids on ids."hash" = price_id
