@@ -8,10 +8,10 @@
         file_format ='delta',
         incremental_strategy='merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["olgafetisova"]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["arbitrum"]\',
+                                    spell_type = "project",
+                                    spell_name = "cow_protocol",
+                                    contributors = \'["olgafetisova"]\') }}'
     )
 }}
 
