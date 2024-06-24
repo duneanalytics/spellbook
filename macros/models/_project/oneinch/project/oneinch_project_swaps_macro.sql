@@ -141,15 +141,22 @@ meta as (
 )
 
 , creations as (
-    select
-        address
-        , block_number
-    from {{ source(blockchain, 'creation_traces') }}
-    
-    union all
-    
-    values
-        (0x0000000000000000000000000000000000000000, 0)
+    select address, max(block_number) as block_number
+    from (
+        select address, block_number
+        from {{ source(blockchain, 'creation_traces') }}
+        
+        union all
+        
+        values
+            (0x0000000000000000000000000000000000000000, 0)
+
+        union all
+        
+        select wrapped_native_token_address, 0
+        from meta
+    )
+    group by 1
 )
 
 , swaps as (
