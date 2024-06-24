@@ -157,6 +157,7 @@ SELECT
     , tb.token_sold_vault
     , tb.token_bought_vault
     , tb.pool_id as project_program_id
+    , '2wT8Yq49kHgDzXuPxZSaeLaH1qbmGXtEyPy64bL7aD3c' as project_main_id
     , tb.trader_id
     , tb.tx_id
     , tb.outer_instruction_index
