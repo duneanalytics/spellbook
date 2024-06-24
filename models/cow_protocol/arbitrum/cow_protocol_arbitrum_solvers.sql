@@ -1,10 +1,10 @@
 {{ config(
         schema = 'cow_protocol_arbitrum',
         alias='solvers',
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["olgafetisova"]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["arbitrum"]\',
+                                    spell_type = "project",
+                                    spell_name = "cow_protocol",
+                                    contributors = \'["olgafetisova"]\') }}'
 )}}
 
 -- Find the PoC Query here: https://dune.com/queries/3840597
