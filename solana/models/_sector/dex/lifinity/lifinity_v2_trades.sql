@@ -35,7 +35,16 @@ WITH
             , ip.account_arguments[2] as pool_id
             , ip.account_arguments[3] as pool_mint_id
             , ip.tx_id as init_tx
-        FROM {{ source('solana','instruction_calls') }} ip
+        FROM (
+            SELECT
+            *
+            FROM {{ source('solana','instruction_calls') }}
+            WHERE cardinality(account_arguments) >= 5 --filter out broken cases/inits for now
+            and bytearray_substring(data,1,8) = 0xafaf6d1f0d989bed
+            and executing_account = '2wT8Yq49kHgDzXuPxZSaeLaH1qbmGXtEyPy64bL7aD3c'
+            and tx_success
+            and block_time > TIMESTAMP '2022-01-26'
+        ) ip
         INNER JOIN {{ ref('solana_utils_token_accounts') }} mintA ON mintA.address = ip.account_arguments[4]
             AND mintA.account_type = 'fungible'
         INNER JOIN {{ ref('solana_utils_token_accounts') }} mintB ON mintB.address = ip.account_arguments[5]
@@ -44,11 +53,6 @@ WITH
             AND tkA.token_version = 'spl_token'
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = mintB.token_mint_address
             AND tkB.token_version = 'spl_token'
-        WHERE bytearray_substring(ip.data,1,8) = 0xafaf6d1f0d989bed
-        and executing_account = '2wT8Yq49kHgDzXuPxZSaeLaH1qbmGXtEyPy64bL7aD3c'
-        and tx_success
-        and cardinality(account_arguments) >= 5 --filter out broken cases/inits for now
-        and block_time > TIMESTAMP '{{project_start_date}}'
     )
 
     , all_swaps as (
