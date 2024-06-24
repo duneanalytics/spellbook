@@ -38,9 +38,13 @@ WITH
             , ip.tx_id as init_tx
         FROM {{ source('solana','instruction_calls') }} ip
         INNER JOIN {{ ref('solana_utils_token_accounts') }} mintA ON mintA.address = ip.account_arguments[4]
+            AND mintA.account_type = 'fungible'
         INNER JOIN {{ ref('solana_utils_token_accounts') }} mintB ON mintB.address = ip.account_arguments[5]
+            AND mintB.account_type = 'fungible'
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = mintA.token_mint_address
+            AND tkA.token_version = 'spl_token'
         LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = mintB.token_mint_address
+            AND tkB.token_version = 'spl_token'
         WHERE bytearray_substring(ip.data,1,8) = 0xafaf6d1f0d989bed
         and executing_account = '2wT8Yq49kHgDzXuPxZSaeLaH1qbmGXtEyPy64bL7aD3c'
         and tx_success
@@ -121,6 +125,7 @@ WITH
             {% endif %}
         --we want to get what token was transfered out first as this is the sold token. THIS MUST BE THE DESTINATION account, the source account is commonly created/closed through swap legs.
         LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_1 ON tk_1.address = tr_1.account_destination
+            AND tk_1.account_type = 'fungible'
         WHERE 1=1
         {% if is_incremental() %}
         AND {{incremental_predicate('sp.call_block_time')}}
