@@ -4,6 +4,38 @@ sources:
   - name: gnosis_protocol_v2_arbitrum
     description: "Arbitrum Chain decoded tables related to CoW Protocol contract"
     tables:
+      - name: GPv2AllowListAuthentication_evt_SolverAdded
+        description: "GPv2AllowListAuthentication list of events when a Solver was added"
+        columns:
+          - &solver
+            name: solver
+            description: "Solver wallet address"
+          - &contract_address
+            name: contract_address
+            description: "Arbitrum address of contract emitting the event"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index of the event within transaction"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+            tests:
+              - not_null
+      - name: GPv2AllowListAuthentication_evt_SolverRemoved
+        description: "GPv2AllowListAuthentication list of events when a solver was removed"
+        columns:
+          - *solver
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
       - name: GPv2Settlement_evt_Trade
         description: "Trade events emitted by GPv2Settlement"
         columns:
@@ -71,6 +103,32 @@ sources:
             name: interactions
             description: "An array of internal contract interactions"
           - &tokens
+      - name: GPv2Settlement_evt_Settlement
+        description: "Settlement events emitted by GPv2Settlement"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *solver
+      - name: GPv2Settlement_evt_Interaction
+        description: "Contract Interaction events emitted by GPv2Settlement"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &selector
+            name: selector
+            description: Method ID of the contract being interacted with
+          - &target
+            name: target
+            description: Target contract address of the interaction
+          - &value
+            name: value
+            description: ETH amount (in WEI) being passed into contract interaction
             name: tokens
             description: "An array of token addresses (to be matched by index on `clearingPrices`)"
           - &trades
