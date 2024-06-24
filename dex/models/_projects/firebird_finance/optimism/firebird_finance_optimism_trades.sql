@@ -6,10 +6,10 @@
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "firebird_finance",
-                                \'["ARDev097"]\') }}'
+    post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
+                                spell_type = "project",
+                                spell_name = "firebird_finance",
+                                contributors = \'["ARDev097"]\') }}'
     )
 }}
 
@@ -35,7 +35,7 @@ with dexs as (
             evt_index
         FROM {{ evt_trade_table }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('evt_block_time') }}
         {% else %}
         WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
@@ -47,6 +47,7 @@ with dexs as (
     {% endfor %}
 )
 
+, basic_trades AS (
 SELECT
     'optimism'                                             AS blockchain,
     'firebird_finance'                                     AS project,
@@ -87,7 +88,7 @@ INNER JOIN {{ source('optimism', 'transactions') }} tx
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
@@ -95,24 +96,38 @@ LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'optimism'
-LEFT JOIN {{ source('prices', 'usd') }} p_bought
-    ON p_bought.minute = date_trunc('minute', dexs.block_time)
-    AND p_bought.contract_address = dexs.token_bought_address
-    AND p_bought.blockchain = 'optimism'
-    {% if not is_incremental() %}
-    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold
-    ON p_sold.minute = date_trunc('minute', dexs.block_time)
-    AND p_sold.contract_address = dexs.token_sold_address
-    AND p_sold.blockchain = 'optimism'
-    {% if not is_incremental() %}
-    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
+)
 
+, enrichments_with_prices AS (
+    {{
+        add_amount_usd(
+            trades_cte = 'basic_trades'
+        )
+    }}
+)
+
+SELECT blockchain,
+       project,
+       version,
+       block_month,
+       block_date,
+       block_time,
+       token_bought_symbol,
+       token_sold_symbol,
+       token_pair,
+       token_bought_amount,
+       token_sold_amount,
+       token_bought_amount_raw,
+       token_sold_amount_raw,
+       amount_usd,
+       token_bought_address,
+       token_sold_address,
+       taker,
+       maker,
+       project_contract_address,
+       tx_hash,
+       tx_from,
+       tx_to,
+       trace_address,
+       evt_index
+FROM enrichments_with_prices
