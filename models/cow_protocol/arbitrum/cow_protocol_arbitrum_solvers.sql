@@ -1,6 +1,6 @@
 {{ config(
+        schema = 'cow_protocol_arbitrum',
         alias='solvers',
-        
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "cow_protocol",
