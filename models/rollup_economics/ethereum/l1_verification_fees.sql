@@ -36,6 +36,8 @@ with verify_txns as (
       OR t.to = 0xa0425d71cB1D6fb80E65a5361a04096E0672De03
       -- L1 transactions settle here post-EIP4844
       OR t.to = 0xa8CB082A5a689E0d594d7da1E2d72A3D63aDc1bD
+      -- L1 transactions settle here post v24 upgrade (shared bridge)
+      OR t.to = 0x5D8ba173Dc6C3c90C8f7C04C9288BeF5FDbAd06E
     )
     AND (
       -- L1 transactions use these method ID's pre-Boojum
@@ -43,6 +45,9 @@ with verify_txns as (
       OR
       -- L1 transactions use these method ID's post-Boojum
       bytearray_substring(t.data, 1, 4) = 0x7f61885c -- Prove Batches
+      OR
+      -- L1 transactions use these method ID's post v24 upgrade (shared bridge)
+      bytearray_substring(t.data, 1, 4) = 0xc37533bb -- Prove Batches Shared Bridge
     )
     AND t.block_time >= timestamp '2023-03-01'
     {% if is_incremental() %}

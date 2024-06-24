@@ -267,17 +267,24 @@ with tx_batch_appends as (
       OR t.to = 0xa0425d71cB1D6fb80E65a5361a04096E0672De03
       -- L1 transactions settle here post-EIP4844
       OR t.to = 0xa8CB082A5a689E0d594d7da1E2d72A3D63aDc1bD
+      -- L1 transactions settle here post v24 upgrade (shared bridge)
+      OR t.to = 0x5D8ba173Dc6C3c90C8f7C04C9288BeF5FDbAd06E      
     )
     AND (
       -- L1 transactions use these method ID's pre-Boojum
-      bytearray_substring(t.data, 1, 4) = 0x0c4dd810 -- Commit Block
+      bytearray_substring(t.data, 1, 4) = 0x0c4dd810 -- Commit Block, pre-Boojum
       OR
-      bytearray_substring(t.data, 1, 4) = 0xce9dcf16 -- Execute Block
+      bytearray_substring(t.data, 1, 4) = 0xce9dcf16 -- Execute Block, pre-Boojum
       OR
       -- L1 transactions use these method ID's post-Boojum
-      bytearray_substring(t.data, 1, 4) = 0x701f58c5 -- Commit Batches
+      bytearray_substring(t.data, 1, 4) = 0x701f58c5 -- Commit Batches, post-Boojum
       OR
-      bytearray_substring(t.data, 1, 4) = 0xc3d93e7c -- Execute Batches
+      bytearray_substring(t.data, 1, 4) = 0xc3d93e7c -- Execute Batches, post-Boojum
+      OR 
+      -- L1 transactions use these method ID's post v24 upgrade (shared bridge)
+      bytearray_substring(t.data, 1, 4) = 0x6edd4f12 -- Commit Batches Shared Bridge, post v24
+      OR
+      bytearray_substring(t.data, 1, 4) = 0x6f497ac6 -- Execute Batches Shared Bridge, post v24
     )
     AND t.block_time >= timestamp '2023-03-01'
     {% if is_incremental() %}
