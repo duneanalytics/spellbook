@@ -62,3 +62,4 @@ select identifier, category, token1, token2, "hash", pending, price_id, expo, fi
     group by (bytearray_substring(input,1 + 4,32)), bytearray_to_int256(bytearray_substring(output,1 + 32 + 32,32))
 )
 left join price_feed_ids ids on ids."hash" = price_id
+ 
