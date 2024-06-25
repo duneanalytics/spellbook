@@ -13,7 +13,8 @@
 WITH
 raw_call_data AS (
     SELECT
-        fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
+        ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
     FROM (
         SELECT
             'Single' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
@@ -85,8 +86,7 @@ raw_call_and_event_data AS (
          ) evt
          LEFT JOIN
          (SELECT
-            fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
+            fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order", row_num
           FROM raw_call_data
          ) ex
          ON ex.call_tx_hash = evt.evt_tx_hash and ex.row_num = evt.row_num
