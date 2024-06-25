@@ -76,7 +76,7 @@ SELECT
     , t2.block_time
     , t2.block_number
     , t2.tx_hash
-    , NULL AS evt_index
+    , CAST(NULL AS INTEGER) AS evt_index
     , t2.trace_address
     , 'native' AS token_standard
     , t2.tx_from
