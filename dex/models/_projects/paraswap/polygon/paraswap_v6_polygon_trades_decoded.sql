@@ -9,4 +9,4 @@
     )
 }}
 
-{{ paraswap_v6_trades_master('polygon', 'paraswap', 'AugustusV6_1') }}
+{{ paraswap_v6_trades_master('polygon', 'paraswap', 'AugustusV6_2') }}
