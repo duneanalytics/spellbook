@@ -322,7 +322,7 @@ direct_uniswapv2 AS (
             swap.contract_address,
             swap.evt_block_time AS block_time,
             swap.contract_address AS maker,
-            LAST_VALUE(swap.to) OVER ( PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
+            0xdef1c0ded9bec7f1a1670819833240f027b25eff as taker,
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token0 ELSE pair.token1 END AS taker_token,
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token1 ELSE pair.token0 END AS maker_token,
             CASE WHEN swap.amount0In > swap.amount0Out THEN
@@ -390,7 +390,7 @@ direct_uniswapv3 AS (
             swap.contract_address,
             swap.evt_block_time                                                                     AS block_time,
             swap.contract_address                                                                   AS maker,
-            LAST_VALUE(swap.recipient) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
+            0xdef1c0ded9bec7f1a1670819833240f027b25eff as taker,
             CASE WHEN amount0 < cast(0 as int256)  THEN pair.token1 ELSE pair.token0 END AS taker_token,
             CASE WHEN amount0 < cast(0 as int256) THEN pair.token0 ELSE pair.token1 END AS maker_token,
             CASE WHEN amount0 < cast(0 as int256) THEN ABS(swap.amount1) ELSE ABS(swap.amount0) END AS taker_token_amount_raw,
