@@ -2,7 +2,7 @@
         alias = 'wash_trades',
         schema = 'nft',
         
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "gnosis", "optimism", "polygon", "celo", "zksync", "base", "scroll", "zora"]\',
+        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "gnosis", "optimism", "polygon", "celo", "zksync", "base", "scroll", "zora", "blast"]\',
                                     "sector",
                                     "nft",
                                     \'["hildobby"]\') }}')
@@ -21,6 +21,7 @@
 , ref('nft_base_wash_trades')
 , ref('nft_scroll_wash_trades')
 , ref('nft_zora_wash_trades')
+, ref('nft_blast_wash_trades')
 ] %}
 
 SELECT *
