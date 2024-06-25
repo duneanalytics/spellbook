@@ -386,7 +386,7 @@ SELECT distinct all_fills.block_time                                    AS block
                 transaction_hash                                        as tx_hash,
                 evt_index,
                 maker_address                                           as maker,
-                case when taker_address = 0xdef1c0ded9bec7f1a1670819833240f027b25eff then tx.tx_from else taker_address end as taker,
+                case when taker_address = 0xdef1c0ded9bec7f1a1670819833240f027b25eff then tx."from" else taker_address end as taker,
                 maker_token,
                 maker_token_filled_amount_raw                           as maker_token_amount_raw,
                 taker_token_filled_amount_raw                           as taker_token_amount_raw,
