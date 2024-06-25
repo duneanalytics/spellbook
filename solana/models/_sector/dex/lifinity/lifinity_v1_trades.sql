@@ -35,7 +35,7 @@ WITH
             , ip.account_arguments[2] as pool_id
             , ip.account_arguments[3] as pool_mint_id
             , ip.tx_id as init_tx
-        FROM (
+        FROM ( 
             SELECT
             *
             FROM {{ source('solana','instruction_calls') }}
