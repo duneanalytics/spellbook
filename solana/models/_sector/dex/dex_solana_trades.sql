@@ -33,17 +33,17 @@ SELECT bt.blockchain
             then concat(token_bought.symbol, '-', token_sold.symbol)
             else concat(token_sold.symbol, '-', token_bought.symbol)
         end as token_pair
-      , token_bought_amount_raw / pow(10,coalesce(token_bought.decmals, 9)) as token_bought_amount
-      , token_sold_amount_raw / pow(10,coalesce(token_sold.decmals, 9)) as token_sold_amount
+      , token_bought_amount_raw / pow(10,coalesce(token_bought.decimals, 9)) as token_bought_amount
+      , token_sold_amount_raw / pow(10,coalesce(token_sold.decimals, 9)) as token_sold_amount
       , token_bought_amount_raw
       , token_sold_amount_raw
-      , COALESCE(token_sold_amount_raw / pow(10,coalesce(token_sold.decmals, 9)) * p_sold.price
-               , token_bought_amount_raw / pow(10,coalesce(token_bought.decmals, 9)) * p_bought.price)
+      , COALESCE(token_sold_amount_raw / pow(10,coalesce(token_sold.decimals, 9)) * p_sold.price
+               , token_bought_amount_raw / pow(10,coalesce(token_bought.decimals, 9)) * p_bought.price)
             as amount_usd
       , fee_tier
       , fee_tier *
-        COALESCE(token_sold_amount_raw / pow(10,coalesce(token_sold.decmals, 9)) * p_sold.price
-               , token_bought_amount_raw / pow(10,coalesce(token_bought.decmals, 9)) * p_bought.price)
+        COALESCE(token_sold_amount_raw / pow(10,coalesce(token_sold.decimals, 9)) * p_sold.price
+               , token_bought_amount_raw / pow(10,coalesce(token_bought.decimals, 9)) * p_bought.price)
             as fee_usd
       , token_bought_mint_address
       , token_sold_mint_address
