@@ -70,7 +70,7 @@ suicide_balances AS (
 )
 
 SELECT 
-    {{dbt_utils.generate_surrogate_key(['t2.block_number', 'tx.index', 't2.evt_index', "array_join(t2.trace_address, ',')"])}} as unique_key
+    {{dbt_utils.generate_surrogate_key(['t2.block_number', 'tx.index', NULL, "array_join(t2.trace_address, ',')"])}} as unique_key
     , 'gnosis' as blockchain
     , t2.block_date
     , t2.block_time
