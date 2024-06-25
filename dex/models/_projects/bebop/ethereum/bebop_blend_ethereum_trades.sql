@@ -169,7 +169,6 @@ unnested_aggregate_orders AS (
     FROM raw_bebop_aggregate_trade
     CROSS JOIN UNNEST(sequence(1, orders_len)) AS t(sequence_number)
 ),
-
 unnested_taker_arrays AS (
     SELECT
         block_time,
