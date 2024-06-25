@@ -16,5 +16,6 @@ FROM
 (
     VALUES
     ('weth-weth','blast','WETH',0x4300000000000000000000000000000000000004,18),
-    ('usdb-usdb','blast','USDB',0x4300000000000000000000000000000000000003,18)
+    ('usdb-usdb','blast','USDB',0x4300000000000000000000000000000000000003,18),
+    ('yolo-yolo-games','blast','YOLO',0xf77dd21c5ce38ac08786be35ef1d1dec1a6a15f3,18)    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
