@@ -1,10 +1,10 @@
-{{
+{{ 
     config(
         schema = 'tokens_blast'
-        ,alias = 'erc20'
-        ,tags = ['static']
-        ,materialized = 'table'
-    )
+        , alias = 'erc20'
+        , tags = ['static']
+        , materialized = 'table'
+  )
 }}
 
 SELECT
@@ -19,4 +19,5 @@ FROM (VALUES
     , (0x5ffd9ebd27f2fcab044c0f0a26a45cb62fa29c06, 'PAC', 18)
     , (0x2416092f143378750bb29b79ed961ab195cceea5, 'ezETH', 18)
     , (0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A, 'weETH', 18)
+    , (0x76da31d7c9cbeae102aff34d3398bc450c8374c1, 'MIM',  18)
 ) AS temp_table (contract_address, symbol, decimals)

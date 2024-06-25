@@ -81,4 +81,3 @@ models:
         tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155' ]
-

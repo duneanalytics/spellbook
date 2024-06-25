@@ -86,27 +86,6 @@ models:
           to be compatible with the common standards. Accepted values are presently standards represented.
           If you are adding a token with a new standard, remember to add it the accepted values list.
 
-  - name: tokens_fantom_erc20_stablecoins
-    meta:
-      blockchain: fantom
-      sector: tokens
-      project: erc20
-      contributors: Henrystats
-    config:
-      tags: [ 'table', 'erc20', 'stablecoins' ]
-    description: "ERC20 Stablecoin Token Addresses, Symbols and Decimals"
-    columns:
-      - name: contract_address
-        description: "ERC20 stablecoin token contract address"
-        tests:
-          - unique
-      - name: symbol
-        description: "ERC20 stablecoin token symbol"
-      - name: decimals
-        description: "Number of decimals, refers to how divisible an ERC20 stablecoin token can be"
-      - name: name
-        description: "ERC20 stablecoin token name"
-
   - name: tokens_fantom_nft_standards
     meta:
       blockchain: fantom

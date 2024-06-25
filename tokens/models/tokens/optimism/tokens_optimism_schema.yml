@@ -241,4 +241,3 @@ models:
         description: "Percent Royalty in decimal form (i.e. 0.01 = 1% royalty)"
       - name: platform
         description: "Where was the NFT minted"
-
