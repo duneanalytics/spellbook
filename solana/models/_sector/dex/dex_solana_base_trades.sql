@@ -49,7 +49,7 @@ SELECT
       , token_bought_vault
       , token_sold_vault
       , project_program_id
-      , cast(null as varchar) -- todo: implement when all models are converted
+      , cast(null as varchar) as project_main_id -- todo: implement when all models are converted
       , trader_id
       , tx_id
       , outer_instruction_index
