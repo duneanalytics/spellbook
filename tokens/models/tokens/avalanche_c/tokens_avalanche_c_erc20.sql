@@ -368,4 +368,5 @@ FROM (VALUES
     , (0x60b78d111382036abc5eed987a709b07d52df9d3, 'COM-LP', 18)
     , (0xf0ed25fd26e0b64c86c6c78b661f2ef283e9b6ff, 'COM-LP', 18)
     , (0xf105fb50fc6ddd8a857bbecd296c8a630e8ca857, 'PGL', 18)
+    , (0xaBe7a9dFDA35230ff60D1590a929aE0644c47DC1, 'aUSD', 18)
 ) AS temp_table (contract_address, symbol, decimals)
