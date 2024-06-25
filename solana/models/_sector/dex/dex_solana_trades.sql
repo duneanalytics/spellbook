@@ -21,11 +21,11 @@ with base_trades as (
     {% endif %}
 )
 
-SELECT blockchain
+SELECT bt.blockchain
       , project
       , version
       , CAST(date_trunc('month', block_time) AS DATE) as block_month
-      , block_time
+      , bt.block_time
       , trade_source
       , token_bought.symbol as token_bought_symbol
       , token_sold.symbol as token_sold_symbol
@@ -55,19 +55,19 @@ SELECT blockchain
       , outer_instruction_index
       , inner_instruction_index
       , tx_index
-FROM base_trades
+FROM base_trades bt
 LEFT JOIN {{ ref('tokens_solana_fungible') }} token_bought ON token_bought.token_mint_address = token_bought_mint_address
 LEFT JOIN {{ ref('tokens_solana_fungible') }} token_sold ON token_sold.token_mint_address = token_sold_mint_address
 LEFT JOIN {{ source('prices', 'usd') }} p_bought
     ON p_bought.blockchain = 'solana'
-    AND date_trunc('minute', block_time) = p_bought.minute
+    AND date_trunc('minute', bt.block_time) = p_bought.minute
     AND token_bought_mint_address = toBase58(p_bought.contract_address)
     {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p_sold
     ON p_sold.blockchain = 'solana'
-    AND date_trunc('minute', block_time) = p_sold.minute
+    AND date_trunc('minute', bt.block_time) = p_sold.minute
     AND token_sold_mint_address = toBase58(p_sold.contract_address)
     {% if is_incremental() %}
     AND {{incremental_predicate('p_sold.minute')}}
