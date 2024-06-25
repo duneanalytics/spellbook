@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'bebop_blend_ethereum',
     alias = 'trades',
     partition_by = ['block_month'],
