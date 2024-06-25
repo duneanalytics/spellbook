@@ -19,7 +19,7 @@ WITH zeroex_tx AS (
     SELECT tx_hash,
             block_time as block_time,
            max(affiliate_address) as affiliate_address,
-           max(is_gasless) as is_gasless 
+           is_gasless
     FROM (
 
         SELECT v3.evt_tx_hash AS tx_hash,
@@ -57,7 +57,8 @@ WITH zeroex_tx AS (
                                                                                    FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16)
                                                                                    FOR 20)
                         END AS affiliate_address,
-                        case when (varbinary_position(input,0x3d8d4082) <> 0 or varbinary_position(input,0x4f948110) <> 0  ) then 1 end as is_gasless, 
+                        case when (varbinary_position(input,0x3d8d4082) <> 0 or varbinary_position(input,0x4f948110) <> 0 
+                            or varbinary_position(input,0x3a46c4e1) <> 0 or varbinary_position(input,0x724d3953) <> 0  ) then 1 end as is_gasless, 
                             block_time
         FROM {{ source('ethereum', 'traces') }} tr
         WHERE tr.to IN (
@@ -82,7 +83,7 @@ WITH zeroex_tx AS (
                 AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
                 {% endif %}
     ) temp
-    group by tx_hash, block_time 
+    group by tx_hash, is_gasless, block_time 
 
 ),
 v3_fills_no_bridge AS (
@@ -322,7 +323,7 @@ direct_uniswapv2 AS (
             swap.contract_address,
             swap.evt_block_time AS block_time,
             swap.contract_address AS maker,
-            0xdef1c0ded9bec7f1a1670819833240f027b25eff as taker,
+            LAST_VALUE(swap.to) OVER ( PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token0 ELSE pair.token1 END AS taker_token,
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token1 ELSE pair.token0 END AS maker_token,
             CASE WHEN swap.amount0In > swap.amount0Out THEN
@@ -390,7 +391,7 @@ direct_uniswapv3 AS (
             swap.contract_address,
             swap.evt_block_time                                                                     AS block_time,
             swap.contract_address                                                                   AS maker,
-            0xdef1c0ded9bec7f1a1670819833240f027b25eff as taker,
+            LAST_VALUE(swap.recipient) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
             CASE WHEN amount0 < cast(0 as int256)  THEN pair.token1 ELSE pair.token0 END AS taker_token,
             CASE WHEN amount0 < cast(0 as int256) THEN pair.token0 ELSE pair.token1 END AS maker_token,
             CASE WHEN amount0 < cast(0 as int256) THEN ABS(swap.amount1) ELSE ABS(swap.amount0) END AS taker_token_amount_raw,
