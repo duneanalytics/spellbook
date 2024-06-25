@@ -19,7 +19,7 @@
 
 {% set project_start_date = '2022-08-17' %} --grabbed program deployed at time (account created at)
 
-  WITH
+  WITH 
     pools as (
         -- come back for fees some other day after we can tie fee account
         SELECT 
