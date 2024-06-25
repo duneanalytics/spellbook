@@ -32,6 +32,7 @@ SELECT
       , version
       , CAST(date_trunc('month', block_time) AS DATE) as block_month
       , block_time
+      , cast(null as bigint) as block_slot -- todo: implement when all models are converted
       , trade_source
 --      , token_bought_symbol
 --      , token_sold_symbol
@@ -48,6 +49,7 @@ SELECT
       , token_bought_vault
       , token_sold_vault
       , project_program_id
+      , cast(null as varchar) -- todo: implement when all models are converted
       , trader_id
       , tx_id
       , outer_instruction_index

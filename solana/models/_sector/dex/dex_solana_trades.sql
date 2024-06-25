@@ -26,7 +26,7 @@ SELECT bt.blockchain
       , version
       , CAST(date_trunc('month', block_time) AS DATE) as block_month
       , bt.block_time
---      , bt.block_slot    -- todo: enable when implemented on all models
+      , bt.block_slot
       , trade_source
       , token_bought.symbol as token_bought_symbol
       , token_sold.symbol as token_sold_symbol
@@ -51,7 +51,7 @@ SELECT bt.blockchain
       , token_bought_vault
       , token_sold_vault
       , project_program_id
---      , project_main_id   -- todo: enable when implemented on all models
+      , project_main_id
       , trader_id
       , tx_id
       , outer_instruction_index
