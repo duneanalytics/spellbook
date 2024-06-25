@@ -90,10 +90,10 @@ meta as (
         , making_amount
         , taker_asset
         , taking_amount
-        , call_trace_addresses
+        , array_agg(call_trace_address) over(partition by block_number, tx_hash, project) as call_trace_addresses -- to update the array after filtering nested calls of the project
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
         , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as _taker_asset
-        , coalesce(order_hash, to_big_endian_64(counter)) as call_trade_id
+        , coalesce(order_hash, to_big_endian_64(counter)) as call_trade_id -- without call_trade for the correctness of the max transfer approach
     from (
         select
             *
@@ -141,15 +141,22 @@ meta as (
 )
 
 , creations as (
-    select
-        address
-        , block_number
-    from {{ source(blockchain, 'creation_traces') }}
-    
-    union all
-    
-    values
-        (0x0000000000000000000000000000000000000000, 0)
+    select address, max(block_number) as block_number
+    from (
+        select address, block_number
+        from {{ source(blockchain, 'creation_traces') }}
+        
+        union all
+        
+        values
+            (0x0000000000000000000000000000000000000000, 0)
+
+        union all
+        
+        select wrapped_native_token_address, 0
+        from meta
+    )
+    group by 1
 )
 
 , swaps as (
@@ -157,9 +164,27 @@ meta as (
         *
         , transform(filter(array_distinct(flatten(call_transfer_addresses)), x -> not x.contract), x -> (x.address)) as users
         , array_agg(
-            cast(row(project, call_trace_address, coalesce(user_amount_usd, amount_usd)) as row(project varchar, call_trace_address array(bigint), amount_usd double))
-        ) over(partition by block_number, tx_hash) as amounts
-        , coalesce(if(flags['direct'], user_amount_usd, caller_amount_usd), amount_usd) as result_amount_usd
+            cast(row(
+                project
+                , call_trace_address
+                , tokens
+                , if(
+                    user_amount_usd is null or caller_amount_usd is null
+                    , coalesce(user_amount_usd, caller_amount_usd, call_amount_usd)
+                    , greatest(user_amount_usd, caller_amount_usd)
+                )
+            ) as row(
+                project varchar
+                , call_trace_address array(bigint)
+                , tokens array(varchar)
+                , amount_usd double
+            ))
+        ) over(partition by block_number, tx_hash) as tx_swaps
+        , if(
+            user_amount_usd is null or caller_amount_usd is null
+            , coalesce(user_amount_usd, caller_amount_usd, call_amount_usd)
+            , greatest(user_amount_usd, caller_amount_usd)
+        ) as amount_usd
     from (
         select
             blockchain
@@ -185,7 +210,7 @@ meta as (
             , any_value(taking_amount) as taking_amount
             , any_value(order_flags) as order_flags
             , array_agg(distinct if(native, native_symbol, symbol)) as tokens
-            , max(amount * price / pow(10, decimals)) as amount_usd
+            , max(amount * price / pow(10, decimals)) as call_amount_usd
             , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
             , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
             , array_agg(array[
@@ -217,8 +242,8 @@ meta as (
             calls.block_number = transfers.block_number
             and calls.tx_hash = transfers.tx_hash
             and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
-            and reduce(call_trace_addresses, call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
-            and (order_hash is null or contract_address in (_maker_asset, _taker_asset)) -- transfers related to the order only
+            and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
+            and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and maker in (transfer_from, transfer_to)) -- transfers related to the order only
         left join prices using(contract_address, minute)
         left join tokens using(contract_address)
         left join creations as creations_from on creations_from.address = transfers.transfer_from
@@ -255,9 +280,10 @@ select
     , amount_usd
     , user_amount_usd
     , caller_amount_usd
-    , result_amount_usd
-    , amounts
+    , call_amount_usd
+    , tx_swaps
     , if(cardinality(users) = 0 or order_hash is null, array_union(users, array[tx_from]), users) as users
+    , users as direct_users
     , date(date_trunc('month', block_time)) as block_month
     , call_trade_id
 from swaps
