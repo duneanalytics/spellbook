@@ -116,7 +116,10 @@ SELECT
     , tb.token_sold_symbol
     , tb.token_sold_amount
     , tb.token_sold_amount_raw
-    , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
+    , case when p_sold.price is not null and p_bought.pric eis not null 
+        then least(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price)
+        else COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price)
+        end as amount_usd    
     , cast(null as double) as fee_tier
     , cast(null as double) as fee_usd
     , tb.token_sold_mint_address
