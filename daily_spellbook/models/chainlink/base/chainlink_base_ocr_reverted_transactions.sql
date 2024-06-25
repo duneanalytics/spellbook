@@ -5,11 +5,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['tx_hash', 'tx_index', 'node_address'],
-    post_hook='{{ expose_spells(\'["base"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_ryan","linkpool_jon"]\') }}'
+    unique_key=['tx_hash', 'tx_index', 'node_address']
   )
 }}
 

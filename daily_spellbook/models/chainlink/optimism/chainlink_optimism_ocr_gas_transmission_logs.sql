@@ -2,11 +2,7 @@
   config(
     
     alias='ocr_gas_transmission_logs',
-    materialized='view',
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_ryan","linkpool_jon"]\') }}'
+    materialized='view'
   )
 }}
 

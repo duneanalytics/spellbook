@@ -1,11 +1,7 @@
 {{
   config(
     alias='ocr_operator_node_meta',
-    materialized = 'view',
-    post_hook='{{ expose_spells(\'["bnb"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_ryan", "linkpool_jon"]\') }}'
+    materialized = 'view'
   )
 }}
 

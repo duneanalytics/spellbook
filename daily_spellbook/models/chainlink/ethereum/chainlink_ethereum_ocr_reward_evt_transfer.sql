@@ -1,11 +1,7 @@
 {{
   config(
     alias='ocr_reward_evt_transfer',
-    materialized='view',
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_ryan","linkpool_jon"]\') }}'
+    materialized='view'
   )
 }}
 

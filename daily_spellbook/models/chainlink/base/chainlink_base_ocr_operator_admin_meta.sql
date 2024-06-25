@@ -1,11 +1,7 @@
 {{
   config(
     alias='ocr_operator_admin_meta',
-    materialized = 'view',
-    post_hook='{{ expose_spells(\'["base"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_jon"]\') }}'
+    materialized = 'view'
   )
 }}
 
