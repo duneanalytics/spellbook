@@ -75,4 +75,4 @@ and tr.block_time >= DATE '{{project_start_date}}'
 {% endif %}
 
 group by  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21
-order by tr.block_time desc 
+order by tr.block_time desc
