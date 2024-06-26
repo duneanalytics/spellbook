@@ -223,7 +223,6 @@ WITH pool_labels AS (
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} v
         LEFT JOIN pool_labels l ON bytearray_substring(v.poolId, 1, 20) = l.pool_id
         WHERE v.tokenIn = bytearray_substring(v.poolId, 1, 20) OR v.tokenOut = bytearray_substring(v.poolId, 1, 20)
-        AND l.pool_type = 'linear'
     ), 
 
     all_trades_info AS (
@@ -336,9 +335,7 @@ WITH pool_labels AS (
         18 AS decimals,
         l.pool_address AS contract_address,
         pl.pool_type,
-        CASE WHEN pl.pool_type = 'linear' AND median_price IS NOT NULL
-        THEN p.median_price
-        WHEN l.liquidity = 0 AND median_price IS NOT NULL 
+        CASE WHEN median_price IS NOT NULL
         THEN p.median_price
         ELSE l.liquidity / s.supply 
         END AS bpt_price
@@ -349,6 +346,6 @@ WITH pool_labels AS (
     AND l.day = s.day
     LEFT JOIN price_formulation p ON p.day = l.day AND p.contract_address = l.pool_address
     LEFT JOIN pool_labels pl ON pl.pool_id = l.pool_address
-    WHERE supply > 1
+    WHERE supply > 0
 
     {% endmacro %}
