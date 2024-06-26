@@ -66,7 +66,7 @@ plain_calls AS (
     FROM
         {{ source(
             'curvefi_ethereum',
-            '1'
+            'CurveFactory_call_deploy_plain_pool'
         ) }}
     WHERE
         call_success
