@@ -24,7 +24,7 @@ WITH indexed_sandwich_trades AS (
         AND front.block_time=back.block_time
         AND front.project_program_id=back.project_program_id
         AND front.trader_id=back.trader_id
-        AND front.tx_id + 1 < back.tx_id
+        AND front.tx_index + 1 < back.tx_index
         AND front.token_sold_mint_address=back.token_bought_mint_address
         AND front.token_bought_mint_address=back.token_sold_mint_address
         {% if is_incremental() %}
