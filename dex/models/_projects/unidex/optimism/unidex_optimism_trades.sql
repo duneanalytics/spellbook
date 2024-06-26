@@ -47,7 +47,7 @@ with dexs as (
     {% endfor %}
 )
 
-, basic_trades AS (
+, trades AS (
 SELECT
     'optimism'                                             AS blockchain,
     'unidex'                                     AS project,
@@ -66,11 +66,6 @@ SELECT
     dexs.token_sold_amount_raw / power(10, erc20b.decimals)   AS token_sold_amount,
     dexs.token_bought_amount_raw                              AS token_bought_amount_raw,
     dexs.token_sold_amount_raw                               AS token_sold_amount_raw,
-    COALESCE(
-        dexs.amount_usd,
-        (dexs.token_bought_amount_raw / power(10, erc20a.decimals)) * p_bought.price,
-        (dexs.token_sold_amount_raw / power(10, erc20b.decimals)) * p_sold.price
-    )                                                     AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
     COALESCE(dexs.taker, tx."from")                        AS taker,
@@ -101,7 +96,7 @@ LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
 , enrichments_with_prices AS (
     {{
         add_amount_usd(
-            trades_cte = 'basic_trades'
+            trades_cte = 'trades'
         )
     }}
 )
