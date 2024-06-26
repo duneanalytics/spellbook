@@ -1,9 +1,9 @@
 {{config(alias = 'mev',
         tags=['static'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "sector",
-                                    "addresses",
-                                    \'["hildobby", "0xr3x"]\') }}')}}
+        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                    spell_type = "sector",
+                                    spell_name = "addresses",
+                                    contributors = \'["hildobby", "0xr3x", "sharples"]\') }}')}}
 
 -- Source: https://etherscan.io/accounts/label/mev-bot
 
@@ -387,4 +387,24 @@ FROM (VALUES
     , (0x7404c78fc91908ee47b349224ed7715dfa40c4ba)
     , (0xf89bfb98e9a677ecd5b7606474c9cbe28b6735c4)
     , (0x9b64fcfb07a270c652b2faa06ce7e88606ff7a07)
+    , (0xe27baebd7b14602de3797974db9f5f4f8dcb6679) -- Etherscan
+    , (0x24902aa0cf0000a08c0ea0b003b0c0bf600000e0) -- Etherscan
+    , (0x16ccf917cf522010287a98b2896e25ab028114cb) -- Etherscan
+    , (0x3aa228a80f50763045bdfc45012da124bd0a6809) -- Etherscan
+    , (0x2684e2d55e30680186ca2d5f5393ac0fb808f011) -- Etherscan
+    , (0x787ca0f0576a833ac6ad7a957ebc870c37ab8300) -- Etherscan
+    , (0x1cdcec6630c99863fb1307c812691bc688f3e92e) -- Etherscan
+    , (0x13f1c719c7114ac47d3f6ce8597a8c55ec7983da) -- Etherscan
+    , (0x1ccdd6e0d68bd97abae46735182c7568c78857ff) -- Etherscan
+    , (0xbb3520096b00071a25af2add99d1bc1391ae922b) -- Etherscan
+    , (0x8dc6254dba998873072ccd424ed2059a14a61197) -- Etherscan
+    , (0xa5c091f0db3d3206449cf517c81cf1080f3bcaba) -- Internal tx to Hiveon Pool
+    , (0x2f7c1f1460aed2594a9977c58fa31c465591b287) -- Etherscan
+    , (0x3face0004bc1003b9d0672e7b23134cb80115fb6) -- Etherscan
+    , (0xf54ac0316e845502bf64c4b2eb754945c36a5f33) -- Etherscan
+    , (0xdb46ac1b9b2cd2e4a452b991dc5417261e87b60c) -- Etherscan
+    , (0xf88424cc0ffef9fd8456ca982cb5eaf872585a46) -- Etherscan
+    , (0xbf901f52aef5bb098f6f7918e1fa0c639720f409) -- Etherscan
+    , (0xe4000004000bd8006e00720000d27d1fa000d43e) -- Etherscan
+    , (0x0ddc6f9ce13b985dfd730b8048014b342d1b54f7) -- Etherscan
     ) AS x (address)
