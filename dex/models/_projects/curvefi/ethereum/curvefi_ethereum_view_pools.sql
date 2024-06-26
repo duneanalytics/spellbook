@@ -66,7 +66,7 @@ plain_calls AS (
     FROM
         {{ source(
             'curvefi_ethereum',
-            'CurveFactory_call_deploy_plain_pool'
+            '1'
         ) }}
     WHERE
         call_success
@@ -251,7 +251,7 @@ v1_stableswap_ng as (
         AND p.call_tx_hash = dp.evt_tx_hash
 ),
 
-, v1_pools_deployed AS (
+v1_pools_deployed AS (
     SELECT
         version,
         name,
