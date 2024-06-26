@@ -6,7 +6,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "curvefi",
-                                \'["yulesa", "agaperste", "ilemi"]\') }}'
+                                \'["yulesa", "agaperste", "ilemi", "viniabussafi"]\') }}'
     )
  }}
 
@@ -217,9 +217,41 @@ v1_stableswap as (
         ) }} dp
         ON p.call_block_time = dp.evt_block_time
         AND p.call_tx_hash = dp.evt_tx_hash
-)
+),
 
-, v1_pools_deployed AS (
+v1_stableswap_ng as (
+    SELECT
+        'Factory V1 Stableswap Plain NG' AS version,
+        dp._name AS name,
+        dp._symbol AS symbol,
+        dp.output_0 AS pool_address,
+        dp._A AS A,        
+        dp._fee AS mid_fee,
+        dp._fee AS out_fee,
+        dp.output_0 AS token_address,
+        dp.output_0 AS deposit_contract,
+        p.coins[1] AS coin0,
+        p.coins[2] AS coin1,
+        COALESCE(try(p.coins[3]),CAST(NULL as varbinary)) as coin2,
+        COALESCE(try(p.coins[4]),CAST(NULL as varbinary)) as coin3,
+        CAST(NULL as varbinary) AS undercoin0,
+        CAST(NULL as varbinary) AS undercoin1,
+        CAST(NULL as varbinary) AS undercoin2,
+        CAST(NULL as varbinary) AS undercoin3
+    FROM
+        {{ source(
+            'curvefi_ethereum',
+            'CurveStableswapFactoryNG_evt_PlainPoolDeployed'
+        ) }} as p
+        LEFT JOIN {{ source(
+            'curvefi_ethereum',
+            'CurveStableswapFactoryNG_call_deploy_plain_pool'
+        ) }} dp
+        ON dp.call_block_time = p.evt_block_time
+        AND dp.call_tx_hash = p.evt_tx_hash
+),
+
+v1_pools_deployed AS (
     SELECT
         version,
         name,
@@ -282,6 +314,27 @@ v1_stableswap as (
         undercoin3
     FROM
         v1_stableswap
+    UNION ALL
+    SELECT
+        version,
+        name,
+        symbol,
+        pool_address,
+        A,
+        mid_fee,
+        out_fee,
+        token_address,
+        deposit_contract,
+        coin0,
+        coin1,
+        coin2,
+        coin3,
+        undercoin0,
+        undercoin1,
+        undercoin2,
+        undercoin3
+    FROM
+        v1_stableswap_ng
 ),
 ---------------------------------------------------------------- V2 Pools ----------------------------------------------------------------
 v2_pools_deployed AS (
