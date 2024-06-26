@@ -17,3 +17,7 @@ sources:
       - name: ThrusterFactory_Point_3_Fee_evt_PairCreated
       - name: ThrusterPair_V2_1_Fee_evt_Swap
       - name: ThrusterFactory_1_Fee_evt_PairCreated
+  - name: bladeswap_blast
+    tables:
+      - name: XYKPoolFactory_V2_evt_PoolCreated
+      - name: XYKPool_evt_Swap
