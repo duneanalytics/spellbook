@@ -75,4 +75,5 @@ FROM (VALUES
     , ('mintsquare', 'Mint Square', 'Direct', 'MintSquareNFT')
     , ('fantasy', 'Fantasy', 'Direct', 'fantasy_top_')
     , ('chikn', 'Chikn', 'Direct', 'chikn_nft')
+    , ('eesee', 'eesee', 'Direct', 'eesee_io')
     ) AS temp_table (project, name, marketplace_type, x_username)
