@@ -351,3 +351,4 @@ WITH pool_labels AS (
     WHERE supply > 0
 
     {% endmacro %}
+    
