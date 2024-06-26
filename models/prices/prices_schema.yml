@@ -20,8 +20,7 @@ models:
         name: contract_address
         description: "Contract address of the token, if any"
         tests:
-          - dbt_utils.not_accepted_values:
-              values: [0x0000000000000000000000000000000000000000]
+          - not_zero_address
       - &symbol
         name: symbol
         description: "Token symbol"
