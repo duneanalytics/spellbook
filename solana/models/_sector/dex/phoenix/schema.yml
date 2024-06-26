@@ -33,6 +33,9 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
+      - &block_slot
+        name: block_slot
+        description: "block slot of each DEX trade"
       - &trade_source
         name: trade_source
         description: "Was the trade a direct call to the dexor did it go through another program like Jupiter (Dex Aggregator)"
@@ -85,6 +88,9 @@ models:
       - &project_program_id
         name: project_program_id
         description: "pool program id of the project"
+      - &project_main_id
+        name: project_main_id
+        description: "main program id of the project"
       - &trader_id
         name: trader_id
         description: "id (address) of trader who purchased a token"
