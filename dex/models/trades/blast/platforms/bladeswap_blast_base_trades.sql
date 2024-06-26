@@ -32,10 +32,10 @@ WITH pools AS (
         , t.evt_tx_hash AS tx_hash
         , t.evt_index AS evt_index
     FROM
-        {{ source('bladeswap_blast', 'XYKPool_evt_Swap') }} t
+        {{ source('bladeswap_blast', 'Vault_Router_evt_Swap') }} t
     INNER JOIN
         pools f
-        ON f.pool = t.contract_address
+        ON f.pool = t.pool
 
 )
 
