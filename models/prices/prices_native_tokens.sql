@@ -77,6 +77,7 @@ FROM
     ('klay-klaytn', null, 'KLAY', null, null),
     ('fuse-fuse-network', null, 'FUSE', null, null),
     ('zel-zelcash', null, 'FLUX', null, null),
-    ('myria-myria', null, 'MYRIA', null, null)
+    ('myria-myria', null, 'MYRIA', null, null),
+    ('mode-mode', null, 'MODE', null,null)    
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
