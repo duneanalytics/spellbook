@@ -1,5 +1,4 @@
 {{ config(
-    tags = ['prod_exclude'],
     schema = 'referral',
     alias = 'rewards',
     partition_by = ['blockchain','project','block_month'],
