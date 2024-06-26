@@ -449,5 +449,5 @@ models:
             - outer_instruction_index
             - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('uniboz_solana_trades_seed')
+          seed_file: ref('unibot_solana_trades_seed')
           blockchain: solana
