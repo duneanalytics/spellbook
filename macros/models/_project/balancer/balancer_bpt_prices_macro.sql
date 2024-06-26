@@ -237,16 +237,14 @@ WITH pool_labels AS (
             a.tokenOut AS token_out,
             CAST(a.amountOut AS DOUBLE) AS amount_out,
             p1.price AS token_in_p,
-            COALESCE(p1.decimals, t1.decimals) AS token_in_decimals,
+            COALESCE(p1.decimals, 18) AS token_in_decimals,
             p2.price AS token_out_p,
-            COALESCE(p2.decimals, t2.decimals) AS token_out_decimals
+            COALESCE(p2.decimals, 18) AS token_out_decimals
         FROM bpt_trades a
-        LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = '{{blockchain}}'
-        AND  p1.minute = date_trunc('minute', a.evt_block_time)
-        LEFT JOIN {{ source ('prices', 'usd') }} p2 ON p2.contract_address = a.tokenOut AND p2.blockchain = '{{blockchain}}'
-        AND  p2.minute = date_trunc('minute', a.evt_block_time)
-        LEFT JOIN {{ source('tokens', 'erc20') }} t1 ON t1.contract_address = a.tokenIn AND t1.blockchain = '{{blockchain}}'
-        LEFT JOIN {{ source('tokens', 'erc20') }} t2 ON t2.contract_address = a.tokenOut AND t2.blockchain = '{{blockchain}}'
+        LEFT JOIN prices p1 ON p1.token = a.tokenIn
+        AND  p1.day = date_trunc('day', a.evt_block_time)
+        LEFT JOIN prices p2 ON p2.token = a.tokenOut
+        AND  p2.day = date_trunc('day', a.evt_block_time)
         ORDER BY a.evt_block_number DESC, a.evt_index DESC
     ),
 
@@ -351,4 +349,3 @@ WITH pool_labels AS (
     WHERE supply > 0
 
     {% endmacro %}
-    
