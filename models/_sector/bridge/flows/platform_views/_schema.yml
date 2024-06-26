@@ -2,11 +2,11 @@
 version: 2
 models:
 
- - name: bridge_base_flows_view
+ - name: base_ethereum_bridge_flows
    meta:
-     blockchain: ["base"]
+     blockchain: ["ethereum"]
      sector: bridge
      contributors: hildobby
    config:
-     tags: ['bridge', 'flows', 'base']
+     tags: ['bridge', 'flows', 'ethereum']
    description: "Bridge flows view for Base's official bridge"

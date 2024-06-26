@@ -1,9 +1,9 @@
 
-{% set blockchain = 'base' %}
+{% set blockchain = 'ethereum' %}
 
 {{ config(
-        schema = blockchain,
-        alias = 'flows',
+        schema = 'base_' + blockchain,
+        alias = 'bridge_flows',
         materialized = 'view',
         unique_key = ['blockchain','tx_hash','evt_index'],
         post_hook='{{ expose_spells(blockchains = \'[\"{{blockchain}}\"]\',
