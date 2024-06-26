@@ -44,7 +44,10 @@ quest_claims_enriched as (
         coalesce(b.reward_token_address, c.reward_token_address) reward_token_address,
         claim_tx_hash,
         c.block_time,
-        coalesce(claim_fee_eth, 0.000075) claim_fee_eth,
+        case 
+            when block_time >= timestamp '2024-06-06 16:00:00' then 0.0
+            else coalesce(claim_fee_eth, 0.000075) end
+        as claim_fee_eth,
         coalesce(b.action_type, c.action_type) action_type,
         action_tx_hash,
         coalesce(b.action_network, c.action_network) action_network,
