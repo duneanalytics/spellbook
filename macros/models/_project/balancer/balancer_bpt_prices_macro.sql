@@ -274,7 +274,7 @@ WITH pool_labels AS (
                     )
             END AS token_out_price
         FROM all_trades_info
-    )
+    ),
 
     backfill_pricing AS (
         SELECT
@@ -357,4 +357,4 @@ WITH pool_labels AS (
     WHERE supply > 1
 
     {% endmacro %}
-    
+
