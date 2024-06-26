@@ -16,6 +16,7 @@
         project = 'bladeswap',
         version = '1',
         Pair_evt_Swap = source('bladeswap_blast', 'XYKPool_evt_Swap'),
-        Factory_evt_PairCreated = source('bladeswap_blast', 'XYKPoolFactory_V2_evt_PoolCreated')
+        Factory_evt_PairCreated = source('bladeswap_blast', 'XYKPoolFactory_V2_evt_PoolCreated'),
+        pair_column_name = 'pool'
     )
 }}
