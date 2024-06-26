@@ -221,9 +221,8 @@ WITH pool_labels AS (
     bpt_trades AS (
         SELECT * 
         FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_Swap') }} v
-        LEFT JOIN pool_labels l ON bytearray_substring(v.poolId, 1, 20) = l.pool_id
+        INNER JOIN pool_labels l ON bytearray_substring(v.poolId, 1, 20) = l.pool_id AND l.pool_type = 'linear'
         WHERE v.tokenIn = bytearray_substring(v.poolId, 1, 20) OR v.tokenOut = bytearray_substring(v.poolId, 1, 20)
-        AND l.pool_type = 'linear'
     ), 
 
     all_trades_info AS (
@@ -238,10 +237,8 @@ WITH pool_labels AS (
             a.tokenOut AS token_out,
             CAST(a.amountOut AS DOUBLE) AS amount_out,
             p1.price AS token_in_p,
-            COALESCE(p1.symbol, t1.symbol) AS token_in_sym,
             COALESCE(p1.decimals, t1.decimals) AS token_in_decimals,
             p2.price AS token_out_p,
-            COALESCE(p2.symbol, t2.symbol) AS token_out_sym,
             COALESCE(p2.decimals, t2.decimals) AS token_out_decimals
         FROM bpt_trades a
         LEFT JOIN {{ source ('prices', 'usd') }} p1 ON p1.contract_address = a.tokenIn AND p1.blockchain = '{{blockchain}}'
@@ -341,9 +338,7 @@ WITH pool_labels AS (
         18 AS decimals,
         l.pool_address AS contract_address,
         pl.pool_type,
-        CASE WHEN pl.pool_type = 'linear' AND median_price IS NOT NULL
-        THEN p.median_price
-        WHEN l.liquidity = 0 AND median_price IS NOT NULL 
+        CASE WHEN median_price IS NOT NULL
         THEN p.median_price
         ELSE l.liquidity / s.supply 
         END AS bpt_price
@@ -354,7 +349,7 @@ WITH pool_labels AS (
     AND l.day = s.day
     LEFT JOIN price_formulation p ON p.day = l.day AND p.contract_address = l.pool_address
     LEFT JOIN pool_labels pl ON pl.pool_id = l.pool_address
-    WHERE supply > 1
+    WHERE supply > 0
 
     {% endmacro %}
 
