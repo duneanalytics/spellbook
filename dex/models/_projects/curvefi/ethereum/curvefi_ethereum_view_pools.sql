@@ -247,8 +247,8 @@ v1_stableswap_ng as (
             'curvefi_ethereum',
             'CurveStableswapFactoryNG_call_deploy_plain_pool'
         ) }} dp
-        ON p.call_block_time = dp.evt_block_time
-        AND p.call_tx_hash = dp.evt_tx_hash
+        ON dp.call_block_time = p.evt_block_time
+        AND dp.call_tx_hash = p.evt_tx_hash
 ),
 
 v1_pools_deployed AS (
