@@ -51,9 +51,9 @@ select
     , tr.call_type
     , array_join(tr.trace_address, ',') as trace_address
     , tr.sub_traces
-    , ((tr.gas_used * POWER(10, -9)) * (txs.effective_gas_price * POWER(10, -9))) AS trace_gas_paid_in_eth
+    , ((tr.gas_used * POWER(10, -9)) * (txs.gas_price * POWER(10, -9))) AS trace_gas_paid_in_eth
     -- L2 fee only
-    , ((txs.gas_used * POWER(10, -9)) * (txs.effective_gas_price * POWER(10, -9))) AS txn_gas_paid_in_eth
+    , ((txs.gas_used * POWER(10, -9)) * (txs.gas_price * POWER(10, -9))) AS txn_gas_paid_in_eth
     , bytearray_substring(tr.input, 1, 4) as function_signature
     -- manually change namespace for unlabeled or mislabeled contracts
     , array_distinct(array_agg(case when tr."from" = 0x3fc194fa6c26be94fc404e69b51793c199c3bf52  or tr."from" = 0x3d07cbc5cb9376a67e76c0655fe239dda8e2b264 then 'synthetix_v3' else bc.namespace 
