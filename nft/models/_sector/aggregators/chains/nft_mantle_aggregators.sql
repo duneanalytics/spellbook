@@ -1,6 +1,6 @@
 {{config(
     
-    schema = 'nft_base',
+    schema = 'nft_mantle',
     alias = 'aggregators'
 )}}
 
