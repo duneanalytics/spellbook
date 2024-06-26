@@ -38,15 +38,6 @@ WITH dexs AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }} 
     {% endif %}
-), prices AS (
-    SELECT DISTINCT
-      DATE_TRUNC('hour', minute) AS hour,
-      contract_address,
-      blockchain,
-      decimals,
-      AVG(price) AS price
-    FROM {{ source('prices', 'usd') }}
-    GROUP BY DATE_TRUNC('hour', minute), contract_address,blockchain,decimals
 )
 
 SELECT
@@ -102,23 +93,3 @@ LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20b
     ON erc20b.contract_address = dexs.token_sold_address
     AND erc20b.blockchain = 'ethereum'
-LEFT JOIN prices p_bought
-    ON p_bought.hour = date_trunc('hour', dexs.block_time)
-    AND p_bought.contract_address = dexs.token_bought_address
-    AND p_bought.blockchain = 'ethereum'
-    {% if not is_incremental() %}
-    AND p_bought.hour >= {{project_start_date}}
-    {% endif %}
-    {% if is_incremental() %}
-    AND p_bought.hour >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-LEFT JOIN prices p_sold
-    ON p_sold.hour = date_trunc('hour', dexs.block_time)
-    AND p_sold.contract_address = dexs.token_sold_address
-    AND p_sold.blockchain = 'ethereum'
-    {% if not is_incremental() %}
-    AND p_sold.hour >= {{project_start_date}}
-    {% endif %}
-    {% if is_incremental() %}
-    AND p_sold.hour >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
