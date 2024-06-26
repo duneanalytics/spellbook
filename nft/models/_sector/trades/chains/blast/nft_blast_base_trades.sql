@@ -9,6 +9,7 @@
 {% set nft_models = [
  ref('fantasy_blast_base_trades')
  , ref('blur_blast_base_trades')
+ , ref('element_blast_base_trades')
 ] %}
 
 
