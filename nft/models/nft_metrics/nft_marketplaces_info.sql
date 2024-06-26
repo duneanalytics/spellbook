@@ -73,4 +73,5 @@ FROM (VALUES
     , ('joepegs', 'Joepegs', 'Direct', 'joepegsnft')
     , ('alienswap', 'AlienSwap', 'Direct & Aggregator', 'AlienSwap_NFT')
     , ('mintsquare', 'Mint Square', 'Direct', 'MintSquareNFT')
+    , ('fantasy', 'Fantasy', 'Direct', 'fantasy_top_')
     ) AS temp_table (project, name, marketplace_type, x_username)
