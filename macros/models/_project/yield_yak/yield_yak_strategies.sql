@@ -139,6 +139,8 @@
         'AutoPoolStrategy',
         'BalancerDirectJoinStrategy',
         'BoostedPendleStrategy',
+        'BoostedStargateV2NativeStrategy',
+        'BoostedStargateV2Strategy',
         'CompoundingBets',
         'CompoundingJoe',
         'CompoundingYYStaking',
@@ -152,6 +154,19 @@
         'SynapseStrategy',
         'SynapseStrategyV2',
         'WombexStrategy'
+    ])
+}}
+
+{% elif blockchain == 'mantle' %}
+
+{{
+    return([
+        'CompoundingJoeMantle',
+        'CompoundingMoe',
+        'CompoundingYYStaking',
+        'LendleStrategy',
+        'MoeStrategy',
+        'StargateV2Strategy'
     ])
 }}
 

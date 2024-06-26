@@ -23,7 +23,10 @@ FROM (
     SELECT
           blockchain
          , address
+         , pool_address
+         , child_gauge_address
          , name
+         , status
          , category
          , contributor
          , source

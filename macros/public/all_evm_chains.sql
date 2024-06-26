@@ -12,7 +12,8 @@
         'base', 
         'zksync', 
         'zora',
-        'scroll'
+        'scroll',
+        'mantle'
     ]) }}
 {% endmacro %}
 
