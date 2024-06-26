@@ -9,7 +9,7 @@
 }}
 
 WITH base_trades as (
-    {{ element_v1_blast_trades(
+    {{ element_v1_base_trades(
           blockchain = 'blast'
         , erc721_sell_order_filled = source('element_ex_blast','ElementEx_evt_ERC721SellOrderFilled')
         , erc721_buy_order_filled = source('element_ex_blast','ElementEx_evt_ERC721BuyOrderFilled')
