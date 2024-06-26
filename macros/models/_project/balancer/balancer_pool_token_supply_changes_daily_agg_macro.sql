@@ -34,4 +34,5 @@ WITH
         FROM calendar c
         LEFT JOIN daily_balance b ON b.block_date = c.day
         WHERE b.token_address IS NOT NULL
+        AND b.pool_type IS NOT NULL
     {% endmacro %}
