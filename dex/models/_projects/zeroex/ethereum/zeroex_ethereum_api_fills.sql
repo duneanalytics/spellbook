@@ -17,14 +17,19 @@
 -- Test Query here: https://dune.com/queries/1330551
 WITH zeroex_tx AS (
     SELECT tx_hash,
-           max(affiliate_address) as affiliate_address
+            block_time as block_time,
+           max(affiliate_address) as affiliate_address,
+           max(is_gasless) as is_gasless 
     FROM (
 
         SELECT v3.evt_tx_hash AS tx_hash,
                     CASE
                         WHEN takerAddress = 0x63305728359c088a52b0b0eeec235db4d31a67fc THEN takerAddress
                         ELSE NULL
-                    END AS affiliate_address
+                    END AS affiliate_address,
+                    null as is_gasless,
+                    evt_block_time as block_time
+
         FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} v3
         WHERE (  -- nuo
                 v3.takerAddress = 0x63305728359c088a52b0b0eeec235db4d31a67fc
@@ -51,7 +56,9 @@ WITH zeroex_tx AS (
                             WHEN bytearray_position(INPUT, 0xfbc019a7) <> 0 THEN SUBSTRING(INPUT
                                                                                    FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16)
                                                                                    FOR 20)
-                        END AS affiliate_address
+                        END AS affiliate_address,
+                        case when (varbinary_position(input,0x3d8d4082) <> 0 or varbinary_position(input,0x4f948110) <> 0  ) then 1 end as is_gasless, 
+                            block_time
         FROM {{ source('ethereum', 'traces') }} tr
         WHERE tr.to IN (
                 -- exchange contract
@@ -75,7 +82,7 @@ WITH zeroex_tx AS (
                 AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
                 {% endif %}
     ) temp
-    group by tx_hash
+    group by tx_hash, block_time 
 
 ),
 v3_fills_no_bridge AS (
@@ -93,9 +100,10 @@ v3_fills_no_bridge AS (
             'Fill'                                                                     AS type,
             COALESCE(zeroex_tx.affiliate_address, fills.feeRecipientAddress)           AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL)                                            AS swap_flag,
-            (fills.feeRecipientAddress = 0x86003b044f70dac0abc80ac8957305b6370893ed) AS matcha_limit_order_flag
+            (fills.feeRecipientAddress = 0x86003b044f70dac0abc80ac8957305b6370893ed) AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('zeroex_v3_ethereum', 'Exchange_evt_Fill') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash and fills.evt_block_time = zeroex_tx.block_time 
     WHERE  (bytearray_substring(makerAssetData, 1, 4) <> 0xdc1600f3)
         AND (zeroex_tx.tx_hash IS NOT NULL
         OR fills.feeRecipientAddress = 0x86003b044f70dac0abc80ac8957305b6370893ed)
@@ -123,9 +131,10 @@ v4_rfq_fills_no_bridge AS (
             'RfqOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            FALSE                           AS matcha_limit_order_flag
+            FALSE                           AS matcha_limit_order_flag,
+            is_gasless 
     FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash and fills.evt_block_time = zeroex_tx.block_time 
 
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
@@ -151,9 +160,10 @@ v4_limit_fills_no_bridge AS (
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
             (fills.feeRecipient in
                 (0x9b858be6e3047d88820f439b240deac2418a2551,0x86003b044f70dac0abc80ac8957305b6370893ed,0x5bc2419a087666148bfbe1361ae6c06d240c6131))
-                AS matcha_limit_order_flag
+                AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LimitOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash and fills.evt_block_time = zeroex_tx.block_time 
 
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
@@ -169,7 +179,7 @@ otc_fills AS (
             fills.contract_address,
             fills.evt_block_time            AS block_time,
             fills.maker                     AS maker,
-            fills.taker                     AS taker,
+            0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
             fills.takerToken                AS taker_token,
             fills.makerToken                AS maker_token,
             cast(fills.takerTokenFilledAmount   as int256)  AS taker_token_amount_raw,
@@ -177,9 +187,10 @@ otc_fills AS (
             'OtcOrderFilled'                AS type,
             zeroex_tx.affiliate_address     AS affiliate_address,
             (zeroex_tx.tx_hash IS NOT NULL) AS swap_flag,
-            FALSE                           AS matcha_limit_order_flag
+            FALSE                           AS matcha_limit_order_flag,
+            is_gasless 
     FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_OtcOrderFilled') }} fills
-    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash
+    LEFT JOIN zeroex_tx ON zeroex_tx.tx_hash = fills.evt_tx_hash and fills.evt_block_time = zeroex_tx.block_time 
 
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
@@ -194,7 +205,7 @@ ERC20BridgeTransfer AS (
             logs.tx_hash,
             INDEX                                   AS evt_index,
             logs.contract_address,
-            block_time                              AS block_time,
+            logs.block_time                              AS block_time,
             bytearray_substring(DATA, 141, 20) AS maker,
             bytearray_substring(DATA, 173, 20) AS taker,
             bytearray_substring(DATA, 13, 20) AS taker_token,
@@ -204,16 +215,17 @@ ERC20BridgeTransfer AS (
             'ERC20BridgeTransfer'                   AS type,
             zeroex_tx.affiliate_address             AS affiliate_address,
             TRUE                                    AS swap_flag,
-            FALSE                                   AS matcha_limit_order_flag
+            FALSE                                   AS matcha_limit_order_flag, 
+            is_gasless
     FROM {{ source('ethereum', 'logs') }} logs
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash and logs.block_time = zeroex_tx.block_time 
     WHERE topic0 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
 
     {% if is_incremental() %}
-    AND {{ incremental_predicate('block_time') }}
+    AND {{ incremental_predicate('logs.block_time') }}
     {% endif %}
     {% if not is_incremental() %}
-    AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
+    AND logs.block_time >= cast('{{zeroex_v3_start_date}}' as date)
     {% endif %}
 
 ),
@@ -222,7 +234,7 @@ BridgeFill AS (
             logs.tx_hash,
             INDEX                                           AS evt_index,
             logs.contract_address,
-            block_time                                      AS block_time,
+            logs.block_time                                      AS block_time,
             bytearray_substring(DATA, 13, 20) AS maker,
             0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
             bytearray_substring(DATA, 45, 20) AS taker_token,
@@ -232,17 +244,18 @@ BridgeFill AS (
             'BridgeFill'                                    AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
-            FALSE                                           AS matcha_limit_order_flag
+            FALSE                                           AS matcha_limit_order_flag,
+            is_gasless 
     FROM {{ source('ethereum', 'logs') }} logs
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash and logs.block_time = zeroex_tx.block_time 
     WHERE topic0 = 0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9
         AND contract_address = 0x22f9dcf4647084d6c31b2765f6910cd85c178c18
 
         {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
+        AND {{ incremental_predicate('logs.block_time') }}
         {% endif %}
         {% if not is_incremental() %}
-        AND block_time >= cast('{{zeroex_v4_start_date}}' as date)
+        AND logs.block_time >= cast('{{zeroex_v4_start_date}}' as date)
         {% endif %}
 ),
 NewBridgeFill AS (
@@ -250,7 +263,7 @@ NewBridgeFill AS (
             logs.tx_hash,
             INDEX                                           AS evt_index,
             logs.contract_address,
-            block_time                                      AS block_time,
+            logs.block_time                                      AS block_time,
             bytearray_substring(DATA, 13, 20) AS maker,
             0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
             bytearray_substring(DATA, 45, 20) AS taker_token,
@@ -260,17 +273,18 @@ NewBridgeFill AS (
             'NewBridgeFill'                                 AS type,
             zeroex_tx.affiliate_address                     AS affiliate_address,
             TRUE                                            AS swap_flag,
-            FALSE                                           AS matcha_limit_order_flag
+            FALSE                                           AS matcha_limit_order_flag,
+            is_gasless 
     FROM {{ source('ethereum' ,'logs') }} logs
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash and logs.block_time = zeroex_tx.block_time 
     WHERE topic0 = 0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8
         AND contract_address = 0x22f9dcf4647084d6c31b2765f6910cd85c178c18
 
         {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
+        AND {{ incremental_predicate('logs.block_time') }}
         {% endif %}
         {% if not is_incremental() %}
-        AND block_time >= cast('{{zeroex_v4_start_date}}' as date)
+        AND logs.block_time >= cast('{{zeroex_v4_start_date}}' as date)
         {% endif %}
 ),
 direct_PLP AS (
@@ -288,9 +302,10 @@ direct_PLP AS (
             'LiquidityProviderSwap'     AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE                        AS swap_flag,
-            FALSE                       AS matcha_limit_order_flag
+            FALSE                       AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_LiquidityProviderSwap') }} plp
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = plp.evt_tx_hash and plp.evt_block_time = zeroex_tx.block_time 
 
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
@@ -307,7 +322,7 @@ direct_uniswapv2 AS (
             swap.contract_address,
             swap.evt_block_time AS block_time,
             swap.contract_address AS maker,
-            LAST_VALUE(swap.to) OVER ( PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
+            0xdef1c0ded9bec7f1a1670819833240f027b25eff as taker,
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token0 ELSE pair.token1 END AS taker_token,
             CASE WHEN swap.amount0In > swap.amount0Out THEN pair.token1 ELSE pair.token0 END AS maker_token,
             CASE WHEN swap.amount0In > swap.amount0Out THEN
@@ -319,10 +334,11 @@ direct_uniswapv2 AS (
             'Uniswap V2 Direct' AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
-            FALSE AS matcha_limit_order_flag
+            FALSE AS matcha_limit_order_flag,
+            is_gasless
     FROM {{ source('uniswap_v2_ethereum', 'Pair_evt_Swap') }} swap
     LEFT JOIN {{ source('uniswap_v2_ethereum', 'Factory_evt_PairCreated') }} pair ON pair.pair = swap.contract_address
-    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
+    JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash and swap.evt_block_time = zeroex_tx.block_time 
     WHERE sender = 0xdef1c0ded9bec7f1a1670819833240f027b25eff
 
         {% if is_incremental() %}
@@ -353,10 +369,11 @@ direct_sushiswap AS (
             'Sushiswap Direct' AS type,
             zeroex_tx.affiliate_address AS affiliate_address,
             TRUE AS swap_flag,
-            FALSE AS matcha_limit_order_flag
+            FALSE AS matcha_limit_order_flag,
+            is_gasless 
    FROM {{ source('sushi_ethereum', 'Pair_evt_Swap') }} swap
    LEFT JOIN {{ source('sushi_ethereum', 'Factory_evt_PairCreated') }} pair ON pair.pair = swap.contract_address
-   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
+   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash and swap.evt_block_time = zeroex_tx.block_time 
    WHERE sender = 0xdef1c0ded9bec7f1a1670819833240f027b25eff
 
         {% if is_incremental() %}
@@ -373,7 +390,7 @@ direct_uniswapv3 AS (
             swap.contract_address,
             swap.evt_block_time                                                                     AS block_time,
             swap.contract_address                                                                   AS maker,
-            LAST_VALUE(swap.recipient) OVER (PARTITION BY swap.evt_tx_hash ORDER BY swap.evt_index) AS taker,
+            0xdef1c0ded9bec7f1a1670819833240f027b25eff as taker,
             CASE WHEN amount0 < cast(0 as int256)  THEN pair.token1 ELSE pair.token0 END AS taker_token,
             CASE WHEN amount0 < cast(0 as int256) THEN pair.token0 ELSE pair.token1 END AS maker_token,
             CASE WHEN amount0 < cast(0 as int256) THEN ABS(swap.amount1) ELSE ABS(swap.amount0) END AS taker_token_amount_raw,
@@ -381,10 +398,11 @@ direct_uniswapv3 AS (
             'Uniswap V3 Direct'                                                                     AS type,
             zeroex_tx.affiliate_address                                                             AS affiliate_address,
             TRUE                                                                                    AS swap_flag,
-            FALSE                                                                                   AS matcha_limit_order_flag
+            FALSE                                                                                   AS matcha_limit_order_flag,
+            is_gasless 
     FROM {{ source('uniswap_v3_ethereum', 'Pair_evt_Swap') }} swap
    LEFT JOIN {{ source('uniswap_v3_ethereum', 'Factory_evt_PoolCreated') }} pair ON pair.pool = swap.contract_address
-   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
+   JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash and swap.evt_block_time = zeroex_tx.block_time 
    WHERE sender = 0xdef1c0ded9bec7f1a1670819833240f027b25eff
 
         {% if is_incremental() %}
@@ -429,10 +447,14 @@ SELECT
         cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
         cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
         maker,
-        CASE
+           CASE
+            when is_gasless = 1 and varbinary_position (data, 0x3a46c4e1) <> 0 then varbinary_substring(data,81,20)
+            when is_gasless = 1 and varbinary_position (data, 0xa98fcbf1) <> 0 then varbinary_substring(data,81,20)
+            when is_gasless = 1 and varbinary_position (data, 0x3d8d4082) <> 0 then varbinary_substring(data,177,20)
+
             WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN tx."from"
             ELSE taker
-        END AS taker, -- fix the user masked by ProxyContract issue
+        END AS taker, -- fix the user masked by ProxyContract issue 
         taker_token,
         ts.symbol AS taker_symbol,
         maker_token,
@@ -458,7 +480,7 @@ SELECT
         tx.to AS tx_to,
         'ethereum' AS blockchain
 FROM all_tx
-INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
+INNER JOIN {{ source('ethereum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash and all_tx.block_time = tx.block_time 
 
 {% if is_incremental() %}
 AND {{ incremental_predicate('tx.block_time') }}
