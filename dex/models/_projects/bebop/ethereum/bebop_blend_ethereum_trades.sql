@@ -8,6 +8,7 @@
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
 )}}
 
+
 {% set project_start_date = '2024-05-01' %}
 
 WITH
