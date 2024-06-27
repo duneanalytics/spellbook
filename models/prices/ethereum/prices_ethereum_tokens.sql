@@ -1794,7 +1794,8 @@ FROM
     ('portal2-portal-coin', 'ethereum', 'PORTAL', 0x1bbe973bef3a977fc51cbed703e8ffdefe001fed, 18),
     ('dough-l3t-h1m-c00k', 'ethereum', 'DOUGH', 0xFc116eA24F002F600e363bdce4b91715fe5e0392, 9),
     ('giv-giv', 'ethereum', 'GIV', 0x900db999074d9277c5da2a43f252d74366230da0, 18),
-    ('zro-layerzero', 'ethereum', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18)
+    ('zro-layerzero', 'ethereum', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
+    ('quartz-sandclock', 'ethereum', 'QUARTZ', 0xba8a621b4a54e61c442f5ec623687e2a942225ef, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
