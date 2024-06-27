@@ -118,7 +118,12 @@ select
     claim_fee_eth,
     action_type,
     action_tx_hash,
-    action_network,
+    case 
+        when creator = 0xe627b03b7fe363e840dab2debf8b962c672e89fb 
+        and evt_block_time <= timestamp '2024-06-27'
+        then 'base' -- fix Drakula wrong action network bug action_network
+    else action_network end
+    as action_network,
     creator_address
 from unified_claims u
 left join {{ source('prices','usd') }} p
