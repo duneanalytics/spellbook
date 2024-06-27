@@ -1,6 +1,6 @@
 {% macro oneinch_ar_raw_traces_macro(
     blockchain
-    , date_from = '2024-06-01'
+    , date_from = '2019-06-01'
 )%}
 
 with decoded_calls as (
