@@ -11,7 +11,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_hash', 'trace_address']
+        unique_key = ['tx_hash', 'trace_address', 'block_date']
     )
 }}
 
