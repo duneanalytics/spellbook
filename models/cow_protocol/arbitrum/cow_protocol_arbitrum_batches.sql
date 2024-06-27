@@ -16,36 +16,6 @@
 }}
 
 WITH
--- Find the PoC Query here: https://dune.com/queries/3840594
-solver_activation_events AS (
-    SELECT
-      solver,
-      evt_block_number,
-      evt_index,
-      TRUE AS activated
-    FROM {{ source('gnosis_protocol_v2_arbitrum', 'GPv2AllowListAuthentication_evt_SolverAdded') }}
-    UNION
-    SELECT
-      solver,
-      evt_block_number,
-      evt_index,
-      FALSE AS activated
-    FROM {{ source('gnosis_protocol_v2_arbitrum', 'GPv2AllowListAuthentication_evt_SolverRemoved') }}
-  ),
-  ranked_solver_events as (
-    select
-        rank() over (partition by solver order by evt_block_number desc, evt_index desc) as rk,
-        solver,
-        evt_block_number,
-        evt_index,
-        activated as active
-    from solver_activation_events
-),
-registered_solvers as (
-    select solver as address, active
-    from ranked_solver_events
-    where rk = 1
-),
 batch_counts as (
     select try_cast(date_trunc('day', s.evt_block_time) as date) as block_date,
            s.evt_block_time,
@@ -66,7 +36,7 @@ batch_counts as (
             {% if is_incremental() %}
             AND {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
-        join registered_solvers
+        join {{ source('cow_protocol_arbitrum', 'solvers') }}
             on solver = address
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
