@@ -20,28 +20,39 @@
 
   WITH
   market_metadata as (
-    SELECT 
-        market_id
-        , cast(raw_base_units_per_base_unit as int) as raw_base_units_per_base_unit
-    FROM {{ ref('phoenix_solana_market_metadata') }}
+      --you can check phoenix_v1_call_InitializeMarket for this data, our decoding just has some nulls/incompletes so recreating manually.
+      SELECT
+          *
+      FROM (
+          VALUES
+              ('4DoNfFBfF7UokCC2FQzriy7yHK6DY6NVdYpuekQ5pRgg', 'So11111111111111111111111111111111111111112', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 1),
+              ('FZRgpfpvicJ3p23DfmZuvUgcQZBHJsWScTf2N2jK8dy6', 'mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So', 'So11111111111111111111111111111111111111112', 1),
+              ('GBMoNx84HsFdVK63t8BZuDgyZhSBaeKWB4pHHpoeRM9z', 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 1000000),
+              ('FicF181nDsEcasznMTPp9aLa5Rbpdtd11GtSEa1UUWzx', 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263', 'So11111111111111111111111111111111111111112', 1000000),
+              ('2t9TBYyUyovhHQq434uAiBxW6DmJCg7w4xdDoSK6LRjP', 'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn', 'So11111111111111111111111111111111111111112', 1),
+              ('Ew3vFDdtdGrknJAVVfraxCA37uNJtimXYPY4QjnfhFHH', '7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 1),
+              ('2sTMN9A1D1qeZLF95XQgJCUPiKe5DiV52jLfZGqMP46m', 'HZ1JovNiVvGrGNiiYvEozEVgZ58xaU3RKwX8eACQBCt3', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 1),
+              ('BRLLmdtPGuuFn3BU6orYw4KHaohAEptBToi3dwRUnHQZ', 'jtojtomepa8beP8AuQc6eXt5FriJwfFMwQx2v2f9mCL', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 1),
+              ('5x91Aaegvx1JmW7g8gDfWqwb6kPF7CdNunqNoYCdLjk1', 'HzwqbKZw8HxMN6bF2yFZNrht3c2iXXzpKcFu7uBEDKtr', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 1),
+              ('6ojSigXF7nDPyhFRgmn3V9ywhYseKF9J32ZrranMGVSX', 'EKpQGSJtjMFqKZ9KQanSqYXRcF8fBopzLHYxdM65zcjm', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 1),
+              ('3J9LfemPBLowAJgpG3YdYPB9n6pUk7HEjwgS6Y5ToSFg', 'So11111111111111111111111111111111111111112', 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', 1),
+              ('2jxpfobdZDU3z9MsDCjAz8psSaTb5HPoDEtusFLGrPnD', 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263', 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', 1000000),
+              ('5LQLfGtqcC5rm2WuGxJf4tjqYmDjsQAbKo2AMLQ8KB7p', 'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 1)
+      ) AS t (market_id, base_mint, quote_mint, raw_base_units_per_base_unit);
   )
 
   , pools as (
     SELECT 
-        tkA.symbol as tokenA_symbol
-        , length(json_extract_scalar(initializeParams, '$.InitializeParams.numBaseLotsPerBaseUnit')) - 1 as tokenA_decimals --if lot size is 1000, then its 3 decimals
+        length(json_extract_scalar(initializeParams, '$.InitializeParams.numBaseLotsPerBaseUnit')) - 1 as tokenA_decimals --if lot size is 1000, then its 3 decimals
         , ip.account_baseMint as tokenA
         , ip.account_baseVault as tokenAVault
-        , tkB.symbol as tokenB_symbol
-        , length(json_extract_scalar(initializeParams, '$.InitializeParams.numQuoteLotsPerQuoteUnit')) - 1 as tokenB_decimals
+        length(json_extract_scalar(initializeParams, '$.InitializeParams.numQuoteLotsPerQuoteUnit')) - 1 as tokenB_decimals
         , ip.account_quoteMint as tokenB
         , ip.account_quoteVault as tokenBVault
         , cast(json_extract_scalar(initializeParams, '$.InitializeParams.takerFeeBps') as double)/100 as fee_tier
         , ip.account_market as pool_id
         , ip.call_tx_id as init_tx
     FROM {{ source('phoenix_v1_solana','phoenix_v1_call_InitializeMarket') }} ip
-    LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkA ON tkA.token_mint_address = ip.account_baseMint
-    LEFT JOIN {{ ref('tokens_solana_fungible') }}  tkB ON tkB.token_mint_address = ip.account_quoteMint
   )
   
   , logs AS (
@@ -140,28 +151,12 @@
         , case when s.call_outer_executing_account = 'PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY' then 'direct'
             else s.call_outer_executing_account
             end as trade_source
-        , case
-            when lower(tokenA_symbol) > lower(tokenB_symbol) then concat(tokenB_symbol, '-', tokenA_symbol)
-            else concat(tokenA_symbol, '-', tokenB_symbol)
-            end as token_pair
-        , case when s.side = 1 then COALESCE(tokenB_symbol, tokenB) 
-            else COALESCE(tokenA_symbol, tokenA) 
-            end as token_bought_symbol
         , case when s.side = 1 then l.tokenB_filled 
             else (l.tokenA_filled*coalesce(mm.raw_base_units_per_base_unit,1)) --base unit can be adjusted by phoenix, i.e. for BONK it starts at 1e6. There is a script for updating the markets seed file.
             end as token_bought_amount_raw
-        , case when s.side = 1 then l.tokenB_filled/pow(10,p.tokenB_decimals)
-            else (l.tokenA_filled*coalesce(mm.raw_base_units_per_base_unit,1))/pow(10,p.tokenA_decimals) 
-            end token_bought_amount
-        , case when s.side = 1 then COALESCE(tokenA_symbol, tokenA) 
-            else COALESCE(tokenB_symbol, tokenB) 
-            end as token_sold_symbol
         , case when s.side = 1 then (l.tokenA_filled*coalesce(mm.raw_base_units_per_base_unit,1)) 
             else l.tokenB_filled 
             end as token_sold_amount_raw
-        , case when s.side = 1 then (l.tokenA_filled*coalesce(mm.raw_base_units_per_base_unit,1))/pow(10,p.tokenA_decimals)
-            else l.tokenB_filled/pow(10,p.tokenB_decimals) 
-            end token_sold_amount
         , p.pool_id
         , s.call_tx_signer as trader_id
         , s.call_tx_id as tx_id
@@ -209,20 +204,10 @@ SELECT
     , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
     , tb.block_time
     , tb.block_slot
-    , tb.token_pair
     , tb.trade_source
-    , tb.token_bought_symbol
-    , tb.token_bought_amount
     , tb.token_bought_amount_raw
-    , tb.token_sold_symbol
-    , tb.token_sold_amount
     , tb.token_sold_amount_raw
-    , case when p_sold.price is not null and p_bought.price is not null 
-        then least(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price)
-        else COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price)
-        end as amount_usd
     , tb.fee_tier as fee_tier
-    , tb.fee_tier * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
     , tb.token_sold_mint_address
     , tb.token_bought_mint_address
     , tb.token_sold_vault
@@ -235,23 +220,5 @@ SELECT
     , tb.inner_instruction_index
     , tb.tx_index
 FROM trades tb
-LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana' 
-    AND date_trunc('minute', tb.block_time) = p_bought.minute 
-    AND token_bought_mint_address = toBase58(p_bought.contract_address)
-    {% if is_incremental() %}
-    AND {{incremental_predicate('p_bought.minute')}}
-    {% else %}
-    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
-    -- AND p_bought.minute >= now() - interval '7' day --qa
-    {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana' 
-    AND date_trunc('minute', tb.block_time) = p_sold.minute 
-    AND token_sold_mint_address = toBase58(p_sold.contract_address)
-    {% if is_incremental() %}
-    AND {{incremental_predicate('p_sold.minute')}}
-    {% else %}
-    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
-    -- AND p_sold.minute >= now() - interval '7' day --qa
-    {% endif %}
 WHERE 1=1 
 AND recent_swap = 1
