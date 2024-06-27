@@ -3,11 +3,10 @@
 {{ config(
     schema = 'bridge_' + blockchain,
     alias = 'flows',
-    partition_by = ['blockchain','project','block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain','tx_hash','evt_index'],
+    unique_key = ['tx_hash','evt_index'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
