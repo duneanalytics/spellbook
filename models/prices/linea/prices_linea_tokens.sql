@@ -24,4 +24,6 @@ FROM
     ,('uni-uniswap', 'linea', 'UNI', 0x636B22bC471c955A8DB60f28D4795066a8201fa3, 18)
     ,('link-chainlink', 'linea', 'LINK', 0x5B16228B94b68C7cE33AF2ACc5663eBdE4dCFA2d, 18)
     ,('dai-dai', 'linea', 'DAI', 0x4AF15ec2A0BD43Db75dd04E62FAA3B8EF36b00d5, 18)
+    ,('m-btc-merlins-seal-btc', 'linea', 'M-BTC',0xe4D584ae9b753e549cAE66200A6475d2f00705f7, 18)
+    ,('solvbtc-solv-protocol-solvbtc', 'linea', 'solvBTC', 0x5FFcE65A40f6d3de5332766ffF6A28BF491C868c, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
