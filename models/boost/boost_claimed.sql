@@ -120,7 +120,7 @@ select
     action_tx_hash,
     case 
         when creator_address = 0xe627b03b7fe363e840dab2debf8b962c672e89fb 
-        and evt_block_time <= timestamp '2024-06-29'
+        and block_time <= timestamp '2024-06-29'
         then 'base' -- fix Drakula wrong action network bug action_network
     else action_network end
     as action_network,
