@@ -69,12 +69,8 @@ with
         )
 
     SELECT
-        tkA.symbol as tokenA_symbol
-        , tkA.decimals as tokenA_decimals
-        , account_tokenMintA as tokenA
+        account_tokenMintA as tokenA
         , account_tokenVaultA as tokenAVault
-        , tkB.symbol as tokenB_symbol
-        , tkB.decimals as tokenB_decimals
         , account_tokenMintB as tokenB
         , account_tokenVaultB as tokenBVault
         , ip.tickSpacing
@@ -84,8 +80,6 @@ with
         , ip.call_tx_id as init_tx
     FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} ip
     LEFT JOIN fee_updates fu ON fu.whirlpool_id = ip.account_whirlpool
-    LEFT JOIN {{ ref('tokens_solana_fungible') }} tkA ON tkA.token_mint_address = ip.account_tokenMintA
-    LEFT JOIN {{ ref('tokens_solana_fungible') }} tkB ON tkB.token_mint_address = ip.account_tokenMintB
     )
 
     , two_hop as (
@@ -122,27 +116,16 @@ with
     , all_swaps as (
         SELECT
             sp.call_block_time as block_time
+            , sp.call_block_slot as block_slot
             , 'whirlpool' as project
             , 1 as version
             , 'solana' as blockchain
             , case when sp.call_outer_executing_account = 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc' then 'direct'
                 else sp.call_outer_executing_account
                 end as trade_source
-            ,case
-                when lower(tokenA_symbol) > lower(tokenB_symbol) then concat(tokenB_symbol, '-', tokenA_symbol)
-                else concat(tokenA_symbol, '-', tokenB_symbol)
-            end as token_pair
-            , case when tk_1.token_mint_address = wp.tokenA then COALESCE(tokenB_symbol, tokenB)
-                else COALESCE(tokenA_symbol, tokenA)
-                end as token_bought_symbol
             -- token bought is always the second instruction (transfer) in the inner instructions
             , tr_2.amount as token_bought_amount_raw
-            , tr_2.amount/pow(10,case when tk_1.token_mint_address = wp.tokenA then wp.tokenB_decimals else tokenA_decimals end) as token_bought_amount
-            , case when tk_1.token_mint_address = wp.tokenA then COALESCE(tokenA_symbol, tokenA)
-                else COALESCE(tokenB_symbol, tokenB)
-                end as token_sold_symbol
             , tr_1.amount as token_sold_amount_raw
-            , tr_1.amount/pow(10,case when tk_1.token_mint_address = wp.tokenA then wp.tokenA_decimals else tokenB_decimals end) as token_sold_amount
             , wp.fee_rate
             , wp.whirlpool_id
             , sp.call_tx_signer as trader_id
@@ -198,29 +181,31 @@ with
         INNER JOIN whirlpools wp
             ON sp.account_whirlpool = wp.whirlpool_id
             AND sp.call_block_time >= wp.update_time
-        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_1
-            ON tr_1.call_tx_id = sp.call_tx_id
-            AND tr_1.call_block_slot = sp.call_block_slot
-            AND tr_1.call_outer_instruction_index = sp.call_outer_instruction_index
-            AND ((sp.call_is_inner = false AND tr_1.call_inner_instruction_index = 1)
-                OR (sp.call_is_inner = true AND tr_1.call_inner_instruction_index = sp.call_inner_instruction_index + 1))
+        INNER JOIN {{ ref('tokens_solana_transfers') }} tr_1
+            ON tr_1.tx_id = sp.call_tx_id
+            AND tr_1.block_slot = sp.call_block_slot
+            AND tr_1.outer_instruction_index = sp.call_outer_instruction_index
+            AND ((sp.call_is_inner = false AND tr_1.inner_instruction_index = 1)
+                OR (sp.call_is_inner = true AND tr_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
+            AND tr_1.token_version = 'spl_token'
             {% if is_incremental() %}
-            AND {{incremental_predicate('tr_1.call_block_time')}}
+            AND {{incremental_predicate('tr_1.block_time')}}
             {% else %}
-            AND tr_1.call_block_time >= TIMESTAMP '{{project_start_date}}'
+            AND tr_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} tr_2
-            ON tr_2.call_tx_id = sp.call_tx_id
-            AND tr_2.call_block_slot = sp.call_block_slot
-            AND tr_2.call_outer_instruction_index = sp.call_outer_instruction_index
-            AND ((sp.call_is_inner = false AND tr_2.call_inner_instruction_index = 2)
-                OR (sp.call_is_inner = true AND tr_2.call_inner_instruction_index = sp.call_inner_instruction_index + 2))
+        INNER JOIN {{ ref('tokens_solana_transfers') }} tr_2
+            ON tr_2.tx_id = sp.call_tx_id
+            AND tr_2.block_slot = sp.call_block_slot
+            AND tr_2.outer_instruction_index = sp.call_outer_instruction_index
+            AND ((sp.call_is_inner = false AND tr_2.inner_instruction_index = 2)
+                OR (sp.call_is_inner = true AND tr_2.inner_instruction_index = sp.call_inner_instruction_index + 2))
+            AND tr_2.token_version = 'spl_token'
             {% if is_incremental() %}
-            AND {{incremental_predicate('tr_2.call_block_time')}}
+            AND {{incremental_predicate('tr_2.block_time')}}
             {% else %}
-            AND tr_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
+            AND tr_2.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_1 ON tk_1.address = tr_1.account_destination
+        LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_1 ON tk_1.address = tr_1.account_destination AND tk_1.account_type = 'fungible'
     )
 
 SELECT
@@ -229,15 +214,11 @@ SELECT
     , tb.version
     , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
     , tb.block_time
-    , tb.token_pair
+    , tb.block_slot
     , tb.trade_source
-    , tb.token_bought_symbol
     , tb.token_bought_amount_raw
-    , tb.token_sold_symbol
     , tb.token_sold_amount_raw
-    , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
     , cast(tb.fee_rate as double)/1000000 as fee_tier
-    , cast(tb.fee_rate as double)/1000000 * COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as fee_usd
     , tb.token_sold_mint_address
     , tb.token_bought_mint_address
     , tb.token_sold_vault
