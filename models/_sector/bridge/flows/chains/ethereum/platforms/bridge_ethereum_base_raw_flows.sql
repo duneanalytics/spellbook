@@ -25,7 +25,7 @@ WITH base_union AS (
 
         {{bridge_opstack_flows(
             blockchain = blockchain
-            , project = blockchain
+            , project = 'base'
             , project_version = '1'
             , events = bridge_model[0]
             , token_standard = bridge_model[1]

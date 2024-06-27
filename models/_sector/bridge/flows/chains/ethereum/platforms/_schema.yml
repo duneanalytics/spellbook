@@ -12,7 +12,7 @@ models:
     description: "Base bridge flows on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','evt_index' ]
+          combination_of_columns: ['tx_hash','evt_index']
       - equal_rowcount_with_sources:
           evt_sources:
             - source('base_ethereum','L1StandardBridge_evt_ERC20BridgeInitiated')

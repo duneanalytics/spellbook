@@ -11,7 +11,7 @@ models:
     description: "Bridge raw flows"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','evt_index' ]
+          combination_of_columns: ['tx_hash','evt_index']
     columns:
       - &blockchain
         name: blockchain
@@ -72,7 +72,7 @@ models:
     description: "Bridge raw flows"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: [ 'block_number','tx_hash','evt_index' ]
+          combination_of_columns: ['tx_hash','evt_index']
     columns:
       - *blockchain
       - *project
