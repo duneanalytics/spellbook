@@ -1,22 +1,27 @@
 version: 2
 
 models:
-  - name: phoenix_v1_trades
+  - name: phoenix_v1_base_trades
     meta:
       blockchain: solana
       contributors: [ilemi, jarryx]
     config:
-      tags: ['solana','dex']  
+      tags: ['solana','dex']
     description: >
         all phoenix v1 dex trades on Solana
     tests:
+      - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
-            - tx_index
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+
+  - name: phoenix_v1_trades
+    meta:
+      blockchain: solana
+      contributors: [ ilemi, jarryx ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+      all phoenix v1 dex trades on Solana
     columns:
       - &blockchain
         name: blockchain
