@@ -4,7 +4,7 @@
 {% if token_standard == 'native' %}
 
 SELECT '{{blockchain}}' AS blockchain
-, '{{blockchain}}' AS project
+, '{{project}}' AS project
 , '{{project_version}}' AS project_version
 , '{{flows_type}}' AS flows_type
 , evt_block_time AS block_time
@@ -28,7 +28,7 @@ WHERE {{incremental_predicate('evt_block_time')}}
 {% else %}
 
 SELECT '{{blockchain}}' AS blockchain
-, '{{blockchain}}' AS project
+, '{{project}}' AS project
 , '{{project_version}}' AS project_version
 , '{{flows_type}}' AS flows_type
 , evt_block_time AS block_time
