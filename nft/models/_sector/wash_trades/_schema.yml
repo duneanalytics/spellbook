@@ -3,7 +3,7 @@ version: 2
 models:
   - name: nft_wash_trades
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, polygon, zksync, base, scroll, zora, blast
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, polygon, zksync, base, scroll, zora, blast, fantom
       sector: nft
       contributors: hildobby
     config:
