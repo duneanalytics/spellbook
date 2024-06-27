@@ -38,7 +38,7 @@
               ('3J9LfemPBLowAJgpG3YdYPB9n6pUk7HEjwgS6Y5ToSFg', 'So11111111111111111111111111111111111111112', 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', 1),
               ('2jxpfobdZDU3z9MsDCjAz8psSaTb5HPoDEtusFLGrPnD', 'DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263', 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', 1000000),
               ('5LQLfGtqcC5rm2WuGxJf4tjqYmDjsQAbKo2AMLQ8KB7p', 'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 1)
-      ) AS t (market_id, base_mint, quote_mint, raw_base_units_per_base_unit);
+      ) AS t (market_id, base_mint, quote_mint, raw_base_units_per_base_unit)
   )
 
   , pools as (
