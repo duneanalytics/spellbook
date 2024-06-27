@@ -21,5 +21,5 @@ models:
     description: >
       CoW Protocol enriched batches table on Arbitrum Chain
     tests:
-      - dbt_utils.unique:
+      - unique:
           column_name: tx_hash
