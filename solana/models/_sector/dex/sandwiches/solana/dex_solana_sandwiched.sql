@@ -32,6 +32,8 @@ WITH sandwich_bounds AS (
         {% endif %}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('front.block_time') }}
+    {% else %}
+    WHERE front.blockchain>NOW() - interval '1' month
     {% endif %}
     )
 
@@ -76,4 +78,6 @@ INNER JOIN {{source('solana','transactions')}} txs ON txs.block_time=dt.block_ti
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
+{% else %}
+AND dt.blockchain > NOW() - interval '1' month
 {% endif %}
