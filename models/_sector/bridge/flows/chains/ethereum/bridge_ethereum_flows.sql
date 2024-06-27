@@ -11,34 +11,5 @@
     )
 }}
 
-{% set bridges_models = [
- ref('bridge_ethereum_base_raw_flows')
-] %}
-
-with base_union as (
-SELECT * FROM  (
-{% for bridges_model in bridges_models %}
-    SELECT blockchain
-    , project
-    , project_version
-    , flows_type
-    , block_month
-    , block_time
-    , block_number
-    , amount_raw
-    , sender
-    , recipient
-    , local_token
-    , remote_token
-    , extra_data
-    , tx_hash
-    , evt_index
-    , contract_address
-    FROM {{ bridges_model }}
-    {% if not loop.last %}
-    UNION ALL
-    {% endif %}
-    {% endfor %}
-    )
-)
-select * from base_union
+SELECT *
+FROM {{ref('bridge_ethereum_base_raw_flows')}}
