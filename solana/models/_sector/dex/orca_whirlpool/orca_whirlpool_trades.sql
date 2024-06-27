@@ -232,10 +232,8 @@ SELECT
     , tb.token_pair
     , tb.trade_source
     , tb.token_bought_symbol
-    , tb.token_bought_amount
     , tb.token_bought_amount_raw
     , tb.token_sold_symbol
-    , tb.token_sold_amount
     , tb.token_sold_amount_raw
     , COALESCE(tb.token_sold_amount * p_sold.price, tb.token_bought_amount * p_bought.price) as amount_usd
     , cast(tb.fee_rate as double)/1000000 as fee_tier
@@ -245,6 +243,7 @@ SELECT
     , tb.token_sold_vault
     , tb.token_bought_vault
     , tb.whirlpool_id as project_program_id
+    , 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc' as project_main_id
     , tb.trader_id
     , tb.tx_id
     , tb.outer_instruction_index
@@ -258,20 +257,4 @@ FROM (
     FROM all_swaps
     )
     tb
-LEFT JOIN {{ source('prices', 'usd') }} p_bought ON p_bought.blockchain = 'solana'
-    AND date_trunc('minute', tb.block_time) = p_bought.minute
-    AND token_bought_mint_address = toBase58(p_bought.contract_address)
-    {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
-    {% else %}
-    AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold ON p_sold.blockchain = 'solana'
-    AND date_trunc('minute', tb.block_time) = p_sold.minute
-    AND token_sold_mint_address = toBase58(p_sold.contract_address)
-    {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
-    {% else %}
-    AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
 WHERE recent_update = 1
