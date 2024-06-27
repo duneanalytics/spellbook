@@ -44,11 +44,11 @@ models:
       - &amount_raw 
         name: amount_raw
         description: "Raw amount of tokens"
-      - &from 
-        name: "from"
+      - &sender 
+        name: sender
         description: "Sender address"
-      - &to 
-        name: to
+      - &recipent 
+        name: recipent
         description: "Receiver address"
       - &local_token  
         name: local_token

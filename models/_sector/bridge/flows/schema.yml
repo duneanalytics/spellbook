@@ -37,12 +37,12 @@ models:
       - &amount_raw 
         name: amount_raw
         description: "Raw amount of tokens"
-      - &from 
-        name: "from"
+      - &sender 
+        name: sender
         description: "Sender address"
-      - &to 
-        name: to
-        description: "Receiver address"
+      - &recipient 
+        name: recipient
+        description: "Recipient address"
       - &local_token  
         name: local_token
         description: "Local token address"
@@ -82,8 +82,8 @@ models:
       - *block_time
       - *block_number
       - *amount_raw 
-      - *from 
-      - *to 
+      - *sender 
+      - *recipient 
       - *local_token  
       - *remote_token
       - *extra_data 

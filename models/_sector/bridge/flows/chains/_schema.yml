@@ -38,12 +38,12 @@ models:
       - &amount_raw 
         name: amount_raw
         description: "Raw amount of tokens"
-      - &from 
-        name: "from"
+      - &sender 
+        name: sender
         description: "Sender address"
-      - &to 
-        name: to
-        description: "Receiver address"
+      - &recipent 
+        name: recipent
+        description: "Recipent address"
       - &local_token  
         name: local_token
         description: "Local token address"

@@ -11,8 +11,8 @@ SELECT '{{blockchain}}' AS blockchain
 , date_trunc('month', evt_block_time) AS block_month
 , evt_block_number AS block_number
 , amount AS amount_raw
-, "from"
-, to
+, "from" AS sender
+, to AS recipient
 , {{ var("ETH_ERC20_ADDRESS") }} AS local_token
 , {{ var("ETH_ERC20_ADDRESS") }} AS remote_token
 , extraData AS extra_data
@@ -35,8 +35,8 @@ SELECT '{{blockchain}}' AS blockchain
 , date_trunc('month', evt_block_time) AS block_month
 , evt_block_number AS block_number
 , amount AS amount_raw
-, "from"
-, to
+, "from" AS sender
+, to AS recipient
 , localToken AS local_token
 , remotetoken AS remote_token
 , extraData AS extra_data

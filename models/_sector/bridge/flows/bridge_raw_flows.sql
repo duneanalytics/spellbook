@@ -21,8 +21,8 @@ SELECT * FROM  (
     , block_time
     , block_number
     , amount_raw
-    , "from"
-    , to
+    , sender
+    , recipient
     , local_token
     , remote_token
     , extra_data
