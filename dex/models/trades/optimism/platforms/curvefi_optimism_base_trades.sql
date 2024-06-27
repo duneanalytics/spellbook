@@ -181,5 +181,3 @@ SELECT DISTINCT
     ,dexs.pool_type
     ,dexs.bought_id
 FROM dexs
-
---force rerun
