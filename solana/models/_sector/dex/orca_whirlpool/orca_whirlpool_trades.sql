@@ -133,16 +133,16 @@ with
             , sp.call_outer_instruction_index as outer_instruction_index
             , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
             , sp.call_tx_index as tx_index
-            , case when tk_1.token_mint_address = wp.tokenA then wp.tokenB
+            , case when tr_1.token_mint_address = wp.tokenA then wp.tokenB
                 else wp.tokenA
                 end as token_bought_mint_address
-            , case when tk_1.token_mint_address = wp.tokenA then wp.tokenA
+            , case when tr_1.token_mint_address = wp.tokenA then wp.tokenA
                 else wp.tokenB
                 end as token_sold_mint_address
-            , case when tk_1.token_mint_address = wp.tokenA then wp.tokenBVault
+            , case when tr_1.token_mint_address = wp.tokenA then wp.tokenBVault
                 else wp.tokenAVault
                 end as token_bought_vault
-            , case when tk_1.token_mint_address = wp.tokenA
+            , case when tr_1.token_mint_address = wp.tokenA
                 then wp.tokenAVault
                 else wp.tokenBVault
                 end as token_sold_vault
@@ -205,7 +205,6 @@ with
             {% else %}
             AND tr_2.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_1 ON tk_1.address = tr_1.account_destination AND tk_1.account_type = 'fungible'
     )
 
 SELECT
