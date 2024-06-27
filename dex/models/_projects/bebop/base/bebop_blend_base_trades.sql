@@ -192,7 +192,7 @@ unnested_taker_arrays AS (
             block_time, block_number, tx_hash, evt_index, contract_address, taker_address, maker_address,
             taker_tokens, maker_tokens, taker_amounts, maker_amounts, taker_tokens_len, maker_tokens_len, order_index
         FROM raw_bebop_multi_trade
-        UNION ALL
+        UNION
         SELECT
             block_time, block_number, tx_hash, evt_index, contract_address, taker_address, maker_address,
             taker_tokens, maker_tokens, taker_amounts, maker_amounts, taker_tokens_len, maker_tokens_len, order_index
@@ -272,7 +272,7 @@ SELECT
         block_time, block_number, tx_hash, evt_index, contract_address, taker_address, maker_address, taker_token_address,
         maker_token_address, taker_token_amount, maker_token_amount, trade_type, taker_tokens_len, maker_tokens_len, trace_address
     FROM bebop_single_trade
-    UNION ALL
+    UNION
     SELECT
         block_time, block_number, tx_hash, evt_index, contract_address, taker_address, maker_address, taker_token_address,
         maker_token_address, taker_token_amount, maker_token_amount, trade_type, taker_tokens_len, maker_tokens_len, trace_address
