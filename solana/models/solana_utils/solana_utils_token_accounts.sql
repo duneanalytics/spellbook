@@ -26,7 +26,7 @@ WITH
             group by 1
       )
 SELECT
-*
+da.*
 , case when nft.account_mint is not null then 'nft'
       else 'fungible'
       end as account_type

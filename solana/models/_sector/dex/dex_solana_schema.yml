@@ -1,14 +1,27 @@
 version: 2
 
 models:
+  - name: dex_solana_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ "ilemi", "0xRob" ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+      all raw dex trades on Solana
+    tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']
+
   - name: dex_solana_trades
     meta:
       blockchain: solana
-      contributors: ["ilemi"]
+      contributors: ["ilemi", "0xRob"]
     config:
-      tags: ['solana','dex']  
+      tags: ['solana','dex']
     description: >
-        all dex trades on Solana
+        enriched dex trades on Solana
     columns:
       - &blockchain
         name: blockchain
@@ -98,7 +111,7 @@ models:
       blockchain: solana
       contributors: [get_nimbus]
     config:
-      tags: ['solana','dex', 'price']  
+      tags: ['solana','dex', 'price']
     description: >
         All token price in Orca pool
     tests:

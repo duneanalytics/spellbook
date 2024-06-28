@@ -7,11 +7,10 @@
 
 {% set wrapping = 'array[0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, wrapped_native_token_address]' %}
 
-
 with
 
 logs as (
-{% for event, event_data in oneinch_project_cfg_events_macro().items() %}
+{% for event, event_data in oneinch_project_orders_cfg_events_macro().items() %}
     select
         block_number
         , tx_hash
@@ -105,11 +104,11 @@ logs as (
             , trade['fee_receiver'] as call_fee_receiver
             , trade['nonce'] as call_nonce
             , trade['order_hash'] as call_order_hash
-            , cardinality(trades) as call_trades -- total trades in the call
+            , call_trades -- total trades in the call
             , input
             , output
         from (
-        {% for project, selectors in oneinch_project_cfg_methods_macro().items() %}
+        {% for project, selectors in oneinch_project_orders_cfg_methods_macro().items() %}
         {% for selector, method_data in selectors.items() %}
             select
                 blockchain
@@ -130,6 +129,7 @@ logs as (
                 , error as call_error
                 , '{{ method_data["name"] }}' as method
                 , {{ method_data["event"] }} as topic0
+                , coalesce({{ method_data.get("number", "1") }}, 1) as call_trades -- total trades in the call
                 , transform(sequence(1, coalesce({{ method_data.get("number", "1") }}, 1)), x -> map_from_entries(array[
                       ('trade',             try(to_big_endian_64(x)))
                     , ('maker',             {{ method_data.get("maker", "null") }})
@@ -161,7 +161,7 @@ logs as (
             from {{ ref('oneinch_' + blockchain + '_project_orders_raw_traces') }}
             join (
                 select *, address as "to"
-                from {{ source('oneinch_' + blockchain, 'mapped_contracts') }}
+                from {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
                 where
                     blockchain = '{{ blockchain }}'
                     and '{{ project }}' in (project, tag)
@@ -170,6 +170,7 @@ logs as (
                 {% if is_incremental() %}{{ incremental_predicate('block_time') }}
                 {% else %}block_time > greatest(first_created_at, timestamp '{{date_from}}'){% endif %}
                 and substr(input, 1, 4) = {{ selector }}
+                and {{ method_data.get("condition", "true") }}
 
             {% if not loop.last %}union all{% endif %}
         {% endfor %}
