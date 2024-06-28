@@ -26,7 +26,7 @@ WITH sandwich_bounds AS (
         AND front.project_program_id=back.project_program_id
         AND front.token_sold_mint_address=back.token_bought_mint_address
         AND front.token_bought_mint_address=back.token_sold_mint_address
-        AND front.tx_id+1 < back.tx_id
+        AND front.tx_index+1 < back.tx_index
         {% if is_incremental() %}
         AND {{ incremental_predicate('back.block_time') }}
         {% endif %}
