@@ -9,4 +9,4 @@ spellbook-local:
       port: 1234
       database: hive
       schema: wizard
-      threads: 6
+      threads: 1
