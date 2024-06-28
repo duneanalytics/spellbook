@@ -27,7 +27,7 @@ with
     bondingcurvetrades as (
         select
             evt_block_time as block_time,
-            date_trunc('day', evt_block_time) as block_day,
+            date_trunc('day', evt_block_time) as block_date,
             date_trunc('month', evt_block_time) as block_month,
             '{{blockchain}}' as blockchain,
             'Bonding Curve' as platform,
@@ -64,7 +64,7 @@ with
     dextrades as (
         select
             trades.block_time,
-            date_trunc('day', trades.block_time) as block_day,
+            date_trunc('day', trades.block_time) as block_date,
             date_trunc('month', trades.block_time) as block_month,
             trades.blockchain,
             'DEX' as platform,
