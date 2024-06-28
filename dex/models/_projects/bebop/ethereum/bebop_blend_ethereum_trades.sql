@@ -222,6 +222,23 @@ bebop_multi_and_aggregate_trades AS (
         cast(array[order_index, taker_token_index, sequence_number - 1] as array<bigint>) as trace_address
     FROM unnested_taker_arrays
     CROSS JOIN UNNEST(sequence(1, maker_tokens_len)) AS t(sequence_number)
+),
+all_trades as (
+  SELECT
+    block_time, block_number, tx_hash, evt_index, contract_address, taker_address, maker_address, taker_token_address,
+    maker_token_address, taker_token_amount, maker_token_amount, trade_type, taker_tokens_len, maker_tokens_len, trace_address,
+    ROW_NUMBER() OVER (PARTITION BY tx_hash, evt_index, trace_address ORDER BY evt_index) AS row_num
+  FROM (
+    SELECT
+        block_time, block_number, tx_hash, evt_index, contract_address, taker_address, maker_address, taker_token_address,
+        maker_token_address, taker_token_amount, maker_token_amount, trade_type, taker_tokens_len, maker_tokens_len, trace_address
+    FROM bebop_single_trade
+    UNION ALL
+    SELECT
+        block_time, block_number, tx_hash, evt_index, contract_address, taker_address, maker_address, taker_token_address,
+        maker_token_address, taker_token_amount, maker_token_amount, trade_type, taker_tokens_len, maker_tokens_len, trace_address
+    FROM bebop_multi_and_aggregate_trades
+    )
 )
 
 SELECT
@@ -266,17 +283,7 @@ SELECT
   tx.to AS tx_to,
   t.trace_address,
   t.evt_index
-  FROM (
-    SELECT
-        block_time, block_number, tx_hash, evt_index, contract_address, taker_address, maker_address, taker_token_address,
-        maker_token_address, taker_token_amount, maker_token_amount, trade_type, taker_tokens_len, maker_tokens_len, trace_address
-    FROM bebop_single_trade
-    UNION
-    SELECT
-        block_time, block_number, tx_hash, evt_index, contract_address, taker_address, maker_address, taker_token_address,
-        maker_token_address, taker_token_amount, maker_token_amount, trade_type, taker_tokens_len, maker_tokens_len, trace_address
-    FROM bebop_multi_and_aggregate_trades
-  ) t
+  FROM (select * from all_trades where row_num = 1) t
   INNER JOIN
   {{ source('ethereum', 'transactions')}} tx
     ON t.tx_hash = tx.hash
