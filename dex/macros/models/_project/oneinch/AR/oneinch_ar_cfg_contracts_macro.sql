@@ -1,5 +1,9 @@
 {% macro oneinch_ar_cfg_contracts_macro() %}
 
+
+{% set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+
+
 {%
     set samples = {
         "aggregate": {

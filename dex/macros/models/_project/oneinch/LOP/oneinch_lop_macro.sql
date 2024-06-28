@@ -60,9 +60,9 @@ orders as (
                 , tx_hash
                 , trace_address as call_trace_address
                 , "from" as call_from
-                , substr(input, 1, 4) as call_selector
+                , selector as call_selector
                 , gas_used as call_gas_used
-                , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as remains
+                , substr(input, input_length - mod(input_length - 4, 32) + 1) as remains
                 , output as call_output
                 , error as call_error
                 , call_type

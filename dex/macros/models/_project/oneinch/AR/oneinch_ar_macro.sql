@@ -6,6 +6,9 @@
 
 
 
+{% set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+
+
 with 
 -- pools tokens for unoswap lineage tokens parsing
 pools_list as (
@@ -30,11 +33,11 @@ pools_list as (
                 , tx_hash as call_tx_hash
                 , trace_address as call_trace_address
                 , "from" as call_from
-                , substr(input, 1, 4) as call_selector
+                , selector as call_selector
                 , gas_used as call_gas_used
                 , input as call_input
-                , length(input) as call_input_length
-                , substr(input, length(input) - mod(length(input) - 4, 32) + 1) as remains
+                , input_length as call_input_length
+                , substr(input, input_length - mod(input_length - 4, 32) + 1) as remains
                 , output as call_output
                 , error as call_error
                 , value as call_value
