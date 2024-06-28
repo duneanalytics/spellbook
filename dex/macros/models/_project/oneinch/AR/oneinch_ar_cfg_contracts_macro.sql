@@ -55,8 +55,6 @@
     }
 %}
 
-{% set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
-
 -- EVENTS CONFIG
 {%
     set contracts = {
@@ -193,12 +191,12 @@
                 "swap":          dict(samples["swap"], src_token_amount="output_spentAmount"),
                 "clipperSwap":   dict(samples["clipper"], src_token_address="substr(cast(srcToken as varbinary), 13)", blockchains=["ethereum","bnb","polygon","arbitrum","optimism","avalanche_c","gnosis","fantom","base"]),
                 "clipperSwapTo": dict(samples["clipper"], src_token_address="substr(cast(srcToken as varbinary), 13)", blockchains=["ethereum","bnb","polygon","arbitrum","optimism","avalanche_c","gnosis","fantom","base"], dst_receiver="recipient"),
-                "ethUnoswap":    dict(samples["unoswap v6"], src_token_address=native, src_token_amount="call_value", pools="array[dex]"),
-                "ethUnoswap2":   dict(samples["unoswap v6"], src_token_address=native, src_token_amount="call_value", pools="array[dex,dex2]"),
-                "ethUnoswap3":   dict(samples["unoswap v6"], src_token_address=native, src_token_amount="call_value", pools="array[dex,dex2,dex3]"),
-                "ethUnoswapTo":  dict(samples["unoswap v6"], src_token_address=native, src_token_amount="call_value", dst_receiver='substr(cast("to" as varbinary), 13)', pools="array[dex]"),
-                "ethUnoswapTo2": dict(samples["unoswap v6"], src_token_address=native, src_token_amount="call_value", dst_receiver='substr(cast("to" as varbinary), 13)', pools="array[dex,dex2]"),
-                "ethUnoswapTo3": dict(samples["unoswap v6"], src_token_address=native, src_token_amount="call_value", dst_receiver='substr(cast("to" as varbinary), 13)', pools="array[dex,dex2,dex3]"),
+                "ethUnoswap":    dict(samples["unoswap v6"], src_token_address='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', src_token_amount="call_value", pools="array[dex]"),
+                "ethUnoswap2":   dict(samples["unoswap v6"], src_token_address='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', src_token_amount="call_value", pools="array[dex,dex2]"),
+                "ethUnoswap3":   dict(samples["unoswap v6"], src_token_address='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', src_token_amount="call_value", pools="array[dex,dex2,dex3]"),
+                "ethUnoswapTo":  dict(samples["unoswap v6"], src_token_address='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', src_token_amount="call_value", dst_receiver='substr(cast("to" as varbinary), 13)', pools="array[dex]"),
+                "ethUnoswapTo2": dict(samples["unoswap v6"], src_token_address='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', src_token_amount="call_value", dst_receiver='substr(cast("to" as varbinary), 13)', pools="array[dex,dex2]"),
+                "ethUnoswapTo3": dict(samples["unoswap v6"], src_token_address='0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', src_token_amount="call_value", dst_receiver='substr(cast("to" as varbinary), 13)', pools="array[dex,dex2,dex3]"),
                 "unoswap":       dict(samples["unoswap v6"], pools="array[dex]"),
                 "unoswap2":      dict(samples["unoswap v6"], pools="array[dex,dex2]"),
                 "unoswap3":      dict(samples["unoswap v6"], pools="array[dex,dex2,dex3]"),
