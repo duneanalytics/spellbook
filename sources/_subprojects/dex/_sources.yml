@@ -65,3 +65,6 @@ sources:
   - name: cow_protocol_gnosis
     tables:
       - name: trades
+  - name: cow_protocol_arbitrum
+    tables:
+      - name: trades
