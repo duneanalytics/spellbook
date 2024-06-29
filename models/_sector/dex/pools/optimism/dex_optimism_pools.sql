@@ -1,13 +1,23 @@
 {{ config(
-    schema = 'dex_ethereum'
+    schema = 'dex_optimism'
     , alias = 'pools'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('uniswap_v2_ethereum_pools')
-    ,ref('uniswap_v3_ethereum_pools')
+    ref('uniswap_v2_optimism_pools')
+    ,ref('uniswap_v3_optimism_pools_array')
+    ,ref('solidly_v3_optimism_pools')
+    ,ref('sushiswap_v2_optimism_pools')
+    ,ref('fraxswap_optimism_pools')
+    ,ref('dackieswap_v2_optimism_pools')
+    ,ref('dackieswap_v3_optimism_pools')
+    ,ref('elk_finance_optimism_pools')
+    ,ref('gridex_optimism_pools')
+    ,ref('velodrome_v1_optimism_pools')
+    ,ref('velodrome_v2_optimism_pools')
+    ,ref('zipswap_optimism_pools')
 ] %}
 
 WITH base_union AS (
