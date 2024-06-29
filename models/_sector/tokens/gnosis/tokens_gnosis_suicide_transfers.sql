@@ -85,7 +85,7 @@ SELECT
     , t2.address AS "from"
     , t2.refund_address AS to
     , CAST(NULL AS varbinary) AS contract_address
-    , t1.amount_raw
+    , CAST(t1.amount_raw AS UINT256) AS amount_raw
 FROM 
     suicide_balances t1
 INNER JOIN
