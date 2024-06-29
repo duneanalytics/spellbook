@@ -144,7 +144,6 @@ non_standard_transfers AS (
     SELECT * FROM gas_fee_rewards
     UNION ALL
     SELECT * FROM block_reward
-
 )
 
 
