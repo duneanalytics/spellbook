@@ -492,7 +492,6 @@ models:
       - *mint_limit
       - *max_supply
       - *full_inscription
-      
 
   - name: inscription_zkevm_deploys
     meta: 
@@ -524,5 +523,65 @@ models:
       - *mint_limit
       - *max_supply
       - *full_inscription
-      
-      
+
+  - name: inscription_mode_deploys
+    meta: 
+      blockchain: mode
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'mode']
+    description: >
+      Inscription deploys on Mode
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription
+
+  - name: inscription_degen_deploys
+    meta: 
+      blockchain: degen
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'deploys', 'degen']
+    description: >
+      Inscription deploys on Degen
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *tx_index
+      - *inscription_standard
+      - *operation
+      - *inscription_symbol
+      - *mint_limit
+      - *max_supply
+      - *full_inscription

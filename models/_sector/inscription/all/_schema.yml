@@ -418,4 +418,54 @@ models:
       - *tx_from
       - *tx_to
       - *full_inscription
+
+  - name: inscription_mode_all
+    meta: 
+      blockchain: mode
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'all', 'mode']
+    description: >
+      All inscriptions on Mode
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *full_inscription
+
+  - name: inscription_degen_all
+    meta: 
+      blockchain: degen
+      sector: inscription
+      contributors: hildobby
+    config:
+      tags: ['inscriptions', 'all', 'degen']
+    description: >
+      All inscriptions on Degen
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+    columns: 
+      - *blockchain
+      - *block_time
+      - *block_month
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *full_inscription
       
