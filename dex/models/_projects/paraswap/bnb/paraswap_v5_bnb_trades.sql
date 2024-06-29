@@ -75,11 +75,6 @@ SELECT 'bnb' AS blockchain,
     d.token_sold_amount_raw / power(10, e2.decimals) AS token_sold_amount,
     d.token_bought_amount_raw,
     d.token_sold_amount_raw,
-    coalesce(
-        d.amount_usd
-        ,(d.token_bought_amount_raw / power(10, p1.decimals)) * p1.price
-        ,(d.token_sold_amount_raw / power(10, p2.decimals)) * p2.price
-    ) AS amount_usd,
     d.token_bought_address,
     d.token_sold_address,
     coalesce(d.taker, tx."from") AS taker,
@@ -103,21 +98,3 @@ LEFT JOIN {{ source('tokens', 'erc20') }} e1 ON e1.contract_address = d.token_bo
     AND e1.blockchain = 'bnb'
 LEFT JOIN {{ source('tokens', 'erc20') }} e2 on e2.contract_address = d.token_sold_address
     AND e2.blockchain = 'bnb'
-LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d.block_time)
-    AND p1.contract_address = d.token_bought_address
-    AND p1.blockchain = 'bnb'
-    {% if not is_incremental() %}
-    AND p1.minute >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND p1.minute >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d.block_time)
-    AND p2.contract_address = d.token_sold_address
-    AND p2.blockchain = 'bnb'
-    {% if not is_incremental() %}
-    AND p2.minute >= TIMESTAMP '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND p2.minute >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
