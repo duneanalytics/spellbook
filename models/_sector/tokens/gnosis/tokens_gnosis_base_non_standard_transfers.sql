@@ -174,3 +174,5 @@ INNER JOIN {{ source('gnosis', 'transactions') }} tx ON
     {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
+WHERE  
+    AND t.amount_raw > UINT256 '0'
