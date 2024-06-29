@@ -1,13 +1,12 @@
 {{
     config(
         alias ='eth',
-
+        
         materialized ='incremental',
         file_format ='delta',
         incremental_strategy='merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.tx_block_time')],
         unique_key='unique_transfer_id',
-        post_hook='{{ expose_spells(\'["optimism"]\',
+        post_hook='{{ expose_spells(\'["base"]\',
                                     "sector",
                                     "transfers",
                                     \'["msilb7", "chuxin"]\') }}'
@@ -29,8 +28,8 @@ with eth_transfers as (
         ,cast(r.tx_hash as varchar) || '-' || COALESCE( NULLIF(array_join(r.trace_address,','),''), '_') as unique_transfer_id
         ,t.to AS tx_to
         ,t."from" AS tx_from
-    from {{ source('optimism', 'traces') }} as r
-    join {{ source('optimism', 'transactions') }} as t
+    from {{ source('base', 'traces') }} as r
+    join {{ source('base', 'transactions') }} as t
         on r.tx_hash = t.hash
         and r.block_number = t.block_number
     where
@@ -39,8 +38,8 @@ with eth_transfers as (
         and r.success
         and r.value > uint256 '0'
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        and {{ incremental_predicate('r.block_time') }}
-        and {{ incremental_predicate('t.block_time') }}
+        and r.block_time >= date_trunc('day', now() - interval '7' day)
+        and t.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 
     union all
@@ -61,8 +60,8 @@ with eth_transfers as (
         ,cast(r.evt_tx_hash as varchar) || '-' || cast(r.evt_index as varchar) as unique_transfer_id
         ,t.to AS tx_to
         ,t."from" AS tx_from
-    from {{ source('erc20_optimism', 'evt_transfer') }} as r
-    join {{ source('optimism', 'transactions') }} as t
+    from {{ source('erc20_base', 'evt_transfer') }} as r
+    join {{ source('base', 'transactions') }} as t
         on r.evt_tx_hash = t.hash
         and r.evt_block_number = t.block_number
     where
@@ -70,8 +69,8 @@ with eth_transfers as (
         and t.success
         and r.value > uint256 '0'
         {% if is_incremental() %} -- this filter will only be applied on an incremental run
-        and {{ incremental_predicate('r.evt_block_time') }}
-        and {{ incremental_predicate('t.block_time') }}
+        and r.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        and t.block_time >= date_trunc('day', now() - interval '7' day)
         {% endif %}
 )
 select *
