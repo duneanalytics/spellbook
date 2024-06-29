@@ -1,11 +1,6 @@
 {{
   config(
-    
-    alias='ocr_reconcile_daily',
-    post_hook='{{ expose_spells(\'["polygon"]\',
-                                "project",
-                                "chainlink",
-                                \'["linkpool_ryan"]\') }}'
+    alias='ocr_reconcile_daily'
   )
 }}
 
