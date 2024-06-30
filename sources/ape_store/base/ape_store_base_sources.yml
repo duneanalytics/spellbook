@@ -4,3 +4,6 @@ sources:
   - name: ape_store_base
     tables:
       - name: Router_evt_CreateToken
+  - name: ape_store_base
+    tables:
+      - name: Router_evt_swap
