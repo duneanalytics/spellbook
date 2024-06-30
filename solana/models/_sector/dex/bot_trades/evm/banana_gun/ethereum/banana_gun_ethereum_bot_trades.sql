@@ -1,24 +1,21 @@
 {{ config(
     alias = 'bot_trades',
-    schema = 'banana_gun_solana',
+    schema = 'banana_gun_ethereum',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['blockchain', 'tx_id', 'tx_index', 'outer_instruction_index', 'inner_instruction_index']
+    unique_key = ['blockchain', 'tx_id', 'evt_index']
    )
 }}
 
-{% set project_start_date = '2024-01-08' %}
-{% set fee_receiver_1 = '8r2hZoDfk5hDWJ1sDujAi2Qr45ZyZw5EQxAXiMZWLKh2' %}
-{% set fee_receiver_2 = 'Cj297UauzMX64FU9dKJZRUBWszJ7tEWpVheasq4CfATV' %}
-{% set fee_receiver_3 = 'HKMh8nV3ysSofRi23LsfVGLGQKB415QAEfZT96kCcVj4' %}
-{% set fee_receiver_4 = '7tQiiBdKoScWQkB1RmVuML7DBGnR31cuKPEtMM7Vy5SA' %}
-{% set fee_receiver_5 = '4BBNEVRgrxVKv9f7pMNE788XM1tt379X9vNjpDH2KCL7' %}
-{% set fee_receiver_6 = '47hEzz83VFR23rLTEeVm9A7eFzjJwjvdupPPmX3cePqF' %}
-{% set fee_receiver_7 = 'EMbqD9Y9jLXEa3RbCR8AsEW1kVa3EiJgDLVgvKh4qNFP' %}
-{% set wsol_token = 'So11111111111111111111111111111111111111112' %}
+{% set project_start_date = '2023-05-26' %}
+{% set blockchain = 'ethereum' %}
+{% set bot_deployer_1 = '0xf414d478934c29d9a80244a3626c681a71e53bb2' %}
+{% set bot_deployer_2 = '0x37aAb97476bA8dC785476611006fD5dDA4eed66B' %}
+{% set weth = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
+{% set fee_token_symbol = 'ETH' %}
 
 WITH
   botContracts AS (
@@ -28,17 +25,17 @@ WITH
       ethereum.creation_traces
     WHERE
       (
-        "from" = 0xf414d478934c29d9a80244a3626c681a71e53bb2 -- BotDeployer1Address
-        OR "from" = 0x37aAb97476bA8dC785476611006fD5dDA4eed66B -- BotDeployer2Address
+        "from" = {{bot_deployer_1}}
+        OR  "from" = {{bot_deployer_2}}
       )
-      AND block_time >= TIMESTAMP '2023-05-26' -- BotDeployerFirstTransactionTimestamp
+      AND block_time >= TIMESTAMP '{{project_start_date}}'
   ),
   botTrades AS (
     SELECT
       dex.trades.block_time,
       amount_usd,
       IF(
-        token_sold_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2, -- WETHAddress
+        token_sold_address = {{weth}},
         'Buy',
         'Sell'
       ) AS type,
@@ -61,7 +58,7 @@ WITH
       JOIN botContracts ON dex.trades.tx_to = botContracts.address
     WHERE
       dex.trades.blockchain = 'ethereum'
-      AND dex.trades.block_time >= TIMESTAMP '2023-05-26' -- BotDeployerFirstTransactionTimestamp
+      AND dex.trades.block_time >= TIMESTAMP '{{project_start_date}}'
   ),
   highestEventIndexForEachTrade AS (
     SELECT
@@ -82,7 +79,7 @@ WITH
       ethereum.traces
       JOIN botContracts ON to = botContracts.address
     WHERE
-      block_time >= TIMESTAMP '2023-05-26' -- BotDeployerFirstTransactionTimestamp
+      block_time >= TIMESTAMP '{{project_start_date}}'
       AND value > CAST(0 AS UINT256)
   ),
   botETHWithdrawals AS (
@@ -97,7 +94,7 @@ WITH
       ethereum.traces
       JOIN botContracts ON "from" = botContracts.address
     WHERE
-      block_time >= TIMESTAMP '2023-05-26' -- BotDeployerFirstTransactionTimestamp
+      block_time >= TIMESTAMP '{{project_start_date}}'
       AND value > CAST(0 AS UINT256)
   ),
   botEthTransfers AS (
@@ -151,7 +148,7 @@ WITH
 SELECT
   block_time,
   block_number,
-  'Ethereum' AS blockchain,
+  '{{blockchain}}' AS blockchain,
   -- Trade
   amount_usd,
   type,
@@ -169,13 +166,13 @@ SELECT
   ) AS feePercentageFraction,
   (feeGwei / 1e18) * price AS fee_usd,
   feeGwei / 1e18 fee_token_amount,
-  'ETH' AS fee_token_symbol,
-  '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS fee_token_address, -- WETH
+  '{{fee_token_symbol}}' AS fee_token_symbol,
+  '{{weth}}' AS fee_token_address,
   -- Bribes
   bribeETH * price AS bribe_usd,
   bribeETH AS bribe_token_amount,
-  'ETH' AS bribe_token_symbol,
-  '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' AS bribe_token_address, -- WETH
+  '{{fee_token_symbol}}' AS bribe_token_symbol,
+  '{{weth}}' AS bribe_token_address,
   -- Dex
   project,
   version,
@@ -189,12 +186,11 @@ SELECT
 FROM
   botTrades
   JOIN highestEventIndexForEachTrade ON botTrades.tx_hash = highestEventIndexForEachTrade.tx_hash
-  /* Left Outer Join to support 0 fee trades */
   LEFT JOIN botETHDeltas ON botTrades.tx_hash = botETHDeltas.tx_hash
   LEFT JOIN minerBribes ON botTrades.tx_hash = minerBribes.tx_hash
   LEFT JOIN prices.usd ON (
-    blockchain = 'ethereum'
-    AND contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+    blockchain = '{{blockchain}}'
+    AND contract_address = {{weth}}
     AND minute = DATE_TRUNC('minute', block_time)
   )
 ORDER BY
