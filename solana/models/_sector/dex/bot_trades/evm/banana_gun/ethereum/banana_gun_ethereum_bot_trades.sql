@@ -163,7 +163,7 @@ SELECT
     CAST(feeGwei AS DOUBLE) / CAST(depositGwei AS DOUBLE),
     /* Round feePercentage to 0.01% steps */
     4
-  ) AS feePercentageFraction,
+  ) AS fee_percentage_fraction,
   (feeGwei / 1e18) * price AS fee_usd,
   feeGwei / 1e18 fee_token_amount,
   '{{fee_token_symbol}}' AS fee_token_symbol,
