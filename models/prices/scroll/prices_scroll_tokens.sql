@@ -25,7 +25,6 @@ FROM
     ('reth-rocket-pool-eth', 'scroll', 'rETH', 0x53878B874283351D26d206FA512aEcE1Bef6C0dD, 18),
     ('dai-dai', 'scroll', 'DAI', 0xca77eb3fefe3725dc33bccb54edefc3d9f764f97, 18),
     ('stone-stakestone-ether', 'scroll', 'STONE', 0x80137510979822322193fc997d400d5a6c747bf7, 18),
-    ('itp-interport-token', 'scroll', 'ITP', 0x2b1d36f5b61addaf7da7ebbd11b35fd8cfb0de31, 18),
     ('sis-symbiosis-finance', 'scroll', 'SIS', 0x1467b62a6ae5cdcb10a6a8173cfe187dd2c5a136, 18),
     ('rseth-rseth', 'scroll', 'wrsETH ', 0xa25b25548b4c98b0c7d3d27dca5d5ca743d68b7f, 18),
     ('iusd-izumi-bond-usd', 'scroll', 'iUSD ', 0x0a3bb08b3a15a19b4de82f8acfc862606fb69a2d, 18),
