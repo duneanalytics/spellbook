@@ -22,7 +22,7 @@ with
             id,
             evt_tx_from as deployer,
             evt_tx_hash
-        from {{ source('ape_store_base', 'Router_evt_CreateToken') }}
+        from {{ source("ape_store_base", "Router_evt_CreateToken") }}
     ),
     bondingcurvetrades as (
         select
