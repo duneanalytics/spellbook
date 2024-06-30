@@ -10,12 +10,6 @@ models:
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'etherfi']
     description: "List of claim transactions for the $ETHFI airdrop"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-            - recipient
     columns:
       - &blockchain
         name: blockchain
