@@ -31,6 +31,7 @@
 SELECT block_time,
        block_date,
        block_month,
+       bot,
        blockchain,
        amount_usd,
        type,
