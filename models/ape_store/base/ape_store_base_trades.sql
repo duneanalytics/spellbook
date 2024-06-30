@@ -9,7 +9,6 @@
    )
 }}
 
-
 {% set project_start_date = '2024-04-04' %}
 {% set blockchain = 'base' %}
 {% set weth_contract_address = '0x4200000000000000000000000000000000000006' %}
