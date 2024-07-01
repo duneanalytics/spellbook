@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: orca_whirlpool_trades
+  - name: orca_whirlpool_base_trades
     meta:
       blockchain: solana
       contributors: [ ilemi ]
