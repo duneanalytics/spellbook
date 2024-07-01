@@ -81,7 +81,7 @@ with
             evt_tx_index as tx_index
         from deployments
         join
-            {{ ref('dex', 'trades') }} as trades
+            {{ source('dex', 'trades') }} as trades
             on (
                 trades.blockchain = deployments.blockchain
                 and trades.block_time >= deployments.evt_block_time
