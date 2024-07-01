@@ -199,5 +199,5 @@ FROM
     ('oseth-stakewise-staked-eth','arbitrum','osETH',0xf7d4e7273e5015c96728a6b02f31c505ee184603, 18),
     ('sliz-solidlizard-dex-token','arbitrum','SLIZ',0x463913D3a3D3D291667D53B8325c598Eb88D3B0e, 18),
     ('vrtx-vertex-protocol', 'arbitrum', 'VRTX', 0x95146881b86b3ee99e63705ec87afe29fcc044d9, 18),
-    ('gho-gho', 'arbitrum', 'GHO', 0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33, 18),    
+    ('gho-gho', 'arbitrum', 'GHO', 0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33, 18)    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
