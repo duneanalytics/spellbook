@@ -9,7 +9,6 @@
 -- while we refactor more marketplace models, they should be removed here and added to the chain specific base_trades unions.
 {% set nft_models = [
 ref('magiceden_solana_events')
-,ref('opensea_solana_events')
 ] %}
 
 
