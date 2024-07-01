@@ -95,3 +95,8 @@ sources:
   - name: odos_v2_avalanche_c
     tables:
       - name: OdosRouterV2_evt_Swap
+  - name: elk_finance_avalanche_c
+    tables:
+      - name: ElkFactory_evt_PairCreated
+      - name: ElkPair_evt_Swap
+

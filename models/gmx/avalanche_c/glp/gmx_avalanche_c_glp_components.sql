@@ -1,5 +1,6 @@
 {{ config(
 tags=['prod_exclude'],
+        schema = 'gmx_avalanche_c',
         alias = 'glp_components',
         materialized = 'incremental',
         partition_by = ['block_date'],

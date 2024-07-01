@@ -15,3 +15,16 @@ sources:
       - name: StakingProducts_evt_ProductUpdated
       - name: StakingPool_call_manager
       - name: StakingPool_evt_PoolFeeChanged
+      - name: SafeTrackerNXMIS_evt_CoverReInvestmentUSDCUpdated
+      - name: MCR_evt_MCREvent
+      - name: MCR_evt_MCRUpdated
+      - name: Cover_evt_ProductTypeSet
+      - name: Cover_call_setProductTypes
+      - name: Cover_evt_ProductSet
+      - name: Cover_call_setProducts
+      - name: Quotation_call_buyCoverWithMetadata
+      - name: Quotation_call_makeCoverUsingNXMTokens
+      - name: QuotationData_call_addCover
+      - name: Cover_call_buyCover
+      - name: StakingProducts_call_getPremium
+      - name: CoverMigrator_evt_CoverMigrated

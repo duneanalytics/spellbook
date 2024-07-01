@@ -5,14 +5,15 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
-    post_hook='{{ expose_spells(\'["zksync"]\',
-                                "project",
-                                "lido_liquidity",
-                                \'["pipistrella"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.time')],
+    post_hook='{{ expose_spells(blockchains = \'["zksync"]\',
+                                spell_type = "project",
+                                spell_name = "lido_liquidity",
+                                contributors = \'["pipistrella"]\') }}'
     )
 }}
 
-{% set project_start_date = '2024-02-10' %}
+{% set project_start_date = '2024-01-01' %}
 
 with  pools as (
 select pool AS address,
@@ -50,7 +51,7 @@ FROM {{source('prices','usd')}} p
 {% if not is_incremental() %}
 WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
 {% else %}
-WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+WHERE {{ incremental_predicate('p.minute') }}
 {% endif %}
 
      and date_trunc('day', minute) < current_date
@@ -83,7 +84,7 @@ select distinct
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
 
       and blockchain = 'zksync' and contract_address = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
@@ -110,7 +111,7 @@ from wsteth_prices_hourly
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', m.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('m.evt_block_time') }}
  {% endif %}
  
  and m.contract_address in (select address from pools)
@@ -130,7 +131,7 @@ from wsteth_prices_hourly
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', b.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', b.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('b.evt_block_time') }}
  {% endif %}
  
  and b.contract_address in (select address from pools)
@@ -151,7 +152,7 @@ from wsteth_prices_hourly
  {% if not is_incremental() %}
   WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
-  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+  WHERE {{ incremental_predicate('s.evt_block_time') }}
  {% endif %}
  
  and s.contract_address in (select address from pools)
@@ -208,7 +209,7 @@ GROUP BY 1,2,3,4
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('s.evt_block_time') }}
  {% endif %}
 
  and s.contract_address in (select address from pools)

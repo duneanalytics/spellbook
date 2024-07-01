@@ -1,16 +1,16 @@
 {{
   config(
-    
+
     alias='ccip_transmitted_reverted',
     partition_by=['date_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['tx_hash', 'tx_index', 'node_address']
+    unique_key=['tx_hash', 'tx_index', 'node_address'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 WITH
   bnb_usd AS (
@@ -22,8 +22,8 @@ WITH
     WHERE
       symbol = 'BNB'
       {% if is_incremental() %}
-        AND minute >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
+        AND {{ incremental_predicate('minute') }}
+      {% endif %}
   ),
   ccip_reverted_transactions AS (
     SELECT
@@ -38,14 +38,14 @@ WITH
       {{ ref('chainlink_bnb_ccip_transmitted_logs') }} tx
       LEFT JOIN {{ source('bnb', 'transactions') }} tx2 ON tx2.hash = tx.tx_hash
       {% if is_incremental() %}
-        AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
+        AND {{ incremental_predicate('tx.block_time') }}
       {% endif %}
       LEFT JOIN bnb_usd ON date_trunc('minute', tx.block_time) = bnb_usd.block_time
     WHERE
       tx2.success = false
       {% if is_incremental() %}
-        AND tx.block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-      {% endif %}      
+        AND {{ incremental_predicate('tx.block_time') }}
+      {% endif %}
     GROUP BY
       tx.tx_hash,
       tx.index,

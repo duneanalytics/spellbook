@@ -17,10 +17,10 @@ with
         blockchain
     from (
         select taker, blockchain, amount_usd
-        from {{ ref('dex_aggregator_trades') }}
+        from {{ source('dex_aggregator', 'trades') }}
         UNION ALL
         select taker, blockchain, amount_usd
-        from {{ ref('dex_trades') }}
+        from {{ source('dex', 'trades') }}
     )
     group by taker, blockchain
  )
