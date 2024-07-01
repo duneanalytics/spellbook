@@ -237,28 +237,6 @@ models:
       - *first_funded_by
       - *is_smart_contract 
 
-  - name: cex_zksync_deposit_addresses
-    meta:
-      blockchain: zksync
-      sector: cex
-      contributors: hildobby
-    config:
-      tags: ['cex','deposit']
-    description: "All identified CEX deposit addresses on zksync"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-    columns:
-      - *blockchain
-      - *address
-      - *cex_name
-      - *creation_block_time
-      - *creation_block_number
-      - *funded_by_same_cex
-      - *first_funded_by
-      - *is_smart_contract 
-
   - name: cex_zora_deposit_addresses
     meta:
       blockchain: zora

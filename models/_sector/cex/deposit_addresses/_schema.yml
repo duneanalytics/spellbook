@@ -3,7 +3,7 @@ version: 2
 models:
   - name: cex_deposit_addresses
     meta:
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, gnosis, optimism, polygon, scroll, zksync, zora
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, gnosis, optimism, polygon, scroll, zora
       sector: cex
       contributors: hildobby
     config:
