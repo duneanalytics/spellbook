@@ -33,3 +33,9 @@ models:
       - &funded_by_same_cex
         name: funded_by_same_cex
         description: "Is it funded by an address identified as belonging to the same CEX"
+      - &first_funded_by
+        name: first_funded_by
+        description: "First address to fund this address"
+      - &is_smart_contract 
+        name: is_smart_contract
+        description: "Is the address a smart contract"

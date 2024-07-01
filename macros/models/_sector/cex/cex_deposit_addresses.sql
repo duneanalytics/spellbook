@@ -6,8 +6,8 @@ WITH potential_addresses AS (
     , f.to AS cex_address
     , f.cex_name
     , COALESCE(MAX(f.cex_name = affb.cex_name), false) AS funded_by_same_cex
-    , MIN(ffb.block_time) AS creation_block_time
-    , MIN(ffb.block_number) AS creation_block_number
+    , ffb.block_time AS creation_block_time
+    , ffb.block_number AS creation_block_number
     , f.token_address
     , f.token_standard
     , SUM(f.amount) AS outflow_amount
@@ -34,7 +34,7 @@ WITH potential_addresses AS (
     {% if is_incremental() %}
     AND {{incremental_predicate('f.block_time')}}
     {% endif %}
-    GROUP BY f."from", ffb.first_funded_by, f.to, f.cex_name, f.token_address, f.token_standard
+    GROUP BY f."from", ffb.first_funded_by, f.to, f.cex_name, f.token_address, f.token_standard, ffb.block_time, ffb.block_number
     )
 
 , inflows_and_outflows AS (
@@ -67,7 +67,7 @@ WITH potential_addresses AS (
     HAVING COUNT(DISTINCT cex_address) = 1
     )
 
-SELECT '{{blockchain}}' AS blockchain
+SELECT DISTINCT '{{blockchain}}' AS blockchain
 , potential_deposit AS address
 , i.first_funded_by
 , i.cex_address
@@ -75,10 +75,6 @@ SELECT '{{blockchain}}' AS blockchain
 , i.funded_by_same_cex
 , i.creation_block_time
 , i.creation_block_number
-, i.token_address
-, i.token_standard
-, i.outflow_amount
-, i.inflow_amount
 , CASE WHEN ct.tx_hash IS NULL THEN true ELSE false END AS is_smart_contract
 FROM inflows_and_outflows i
 INNER JOIN unique_cex_recipient ua USING (potential_deposit)
@@ -95,5 +91,5 @@ WHERE i.inflow_amount > 0
 AND i.outflow_amount > 0
 AND (i.outflow_amount=i.inflow_amount OR
     (i.token_standard='native' AND i.outflow_amount BETWEEN GREATEST(i.inflow_amount - 0.05, 0) AND i.inflow_amount)) -- Can lose some to gas if native token
-
+GROUP BY potential_deposit, i.first_funded_by, i.cex_address, i.cex_name, i.funded_by_same_cex, i.creation_block_time, i.creation_block_number
 {% endmacro %}

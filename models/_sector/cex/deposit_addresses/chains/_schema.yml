@@ -32,6 +32,12 @@ models:
       - &funded_by_same_cex
         name: funded_by_same_cex
         description: "Is it funded by an address identified as belonging to the same CEX"
+      - &first_funded_by
+        name: first_funded_by
+        description: "First address to fund this address"
+      - &is_smart_contract 
+        name: is_smart_contract
+        description: "Is the address a smart contract"
 
   - name: cex_avalanche_c_deposit_addresses
     meta:
@@ -52,6 +58,8 @@ models:
       - *creation_block_time
       - *creation_block_number
       - *funded_by_same_cex
+      - *first_funded_by
+      - *is_smart_contract 
 
   - name: cex_base_deposit_addresses
     meta:
@@ -72,6 +80,8 @@ models:
       - *creation_block_time
       - *creation_block_number
       - *funded_by_same_cex
+      - *first_funded_by
+      - *is_smart_contract 
 
   - name: cex_bnb_deposit_addresses
     meta:
@@ -92,6 +102,8 @@ models:
       - *creation_block_time
       - *creation_block_number
       - *funded_by_same_cex
+      - *first_funded_by
+      - *is_smart_contract 
 
   - name: cex_celo_deposit_addresses
     meta:
@@ -112,6 +124,8 @@ models:
       - *creation_block_time
       - *creation_block_number
       - *funded_by_same_cex
+      - *first_funded_by
+      - *is_smart_contract 
 
   - name: cex_ethereum_deposit_addresses
     meta:
@@ -132,6 +146,8 @@ models:
       - *creation_block_time
       - *creation_block_number
       - *funded_by_same_cex
+      - *first_funded_by
+      - *is_smart_contract 
 
   - name: cex_gnosis_deposit_addresses
     meta:
@@ -152,6 +168,8 @@ models:
       - *creation_block_time
       - *creation_block_number
       - *funded_by_same_cex
+      - *first_funded_by
+      - *is_smart_contract 
 
   - name: cex_optimism_deposit_addresses
     meta:
@@ -172,6 +190,8 @@ models:
       - *creation_block_time
       - *creation_block_number
       - *funded_by_same_cex
+      - *first_funded_by
+      - *is_smart_contract 
 
   - name: cex_polygon_deposit_addresses
     meta:
@@ -192,6 +212,8 @@ models:
       - *creation_block_time
       - *creation_block_number
       - *funded_by_same_cex
+      - *first_funded_by
+      - *is_smart_contract 
 
   - name: cex_scroll_deposit_addresses
     meta:
@@ -212,6 +234,8 @@ models:
       - *creation_block_time
       - *creation_block_number
       - *funded_by_same_cex
+      - *first_funded_by
+      - *is_smart_contract 
 
   - name: cex_zksync_deposit_addresses
     meta:
@@ -232,6 +256,8 @@ models:
       - *creation_block_time
       - *creation_block_number
       - *funded_by_same_cex
+      - *first_funded_by
+      - *is_smart_contract 
 
   - name: cex_zora_deposit_addresses
     meta:
@@ -252,3 +278,5 @@ models:
       - *creation_block_time
       - *creation_block_number
       - *funded_by_same_cex
+      - *first_funded_by
+      - *is_smart_contract 
