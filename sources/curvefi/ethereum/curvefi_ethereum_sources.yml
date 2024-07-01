@@ -79,6 +79,10 @@ sources:
         loaded_at_field: call_block_time
       - name: crvUSD_StableswapFactory_call_deploy_metapool
         loaded_at_field: evt_block_time
+      - name: CurveStableswapFactoryNG_evt_PlainPoolDeployed
+        loaded_at_field: call_block_time
+      - name: CurveStableswapFactoryNG_call_deploy_plain_pool
+        loaded_at_field: call_block_time                
   - name: curvefi_v2_ethereum
     description: "decoded events and function calls for curve.fi v2 on ethereum"
     freshness: # default freshness
