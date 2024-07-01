@@ -26,7 +26,7 @@ unioned_evt_sources AS (
         FROM
             {{ evt_source }}
         {% if not loop.last %}
-        UNION ALL
+        UNION
         {% endif %}
     {% endfor %}
 )
@@ -36,7 +36,7 @@ unioned_evt_sources AS (
         uniswap_compatible_v2_trades(
             blockchain = 'blast',
             project = 'blasterswap',
-            version = '1',
+            version = '2',
             Pair_evt_Swap = 'unioned_evt_sources',
             Factory_evt_PairCreated = source('blasterswap_blast', 'BlasterswapV2Factory_evt_PairCreated')
         )
