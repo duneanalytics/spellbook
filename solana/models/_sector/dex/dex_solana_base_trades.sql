@@ -16,8 +16,8 @@
 
 {% set solana_dexes = [
     ref('orca_whirlpool_trades')
-    , ref('raydium_v3_trades')
-    , ref('raydium_v4_trades')
+    , ref('raydium_v3_base_trades')
+    , ref('raydium_v4_base_trades')
     , ref('phoenix_v1_trades')
     , ref('meteora_v1_solana_trades')
     , ref('meteora_v2_solana_trades')
