@@ -10,51 +10,34 @@
     )
 }}
 
+{% set evt_sources = [
+    source('blasterswap_blast', 'BlasterswapV2Pair_ORBIT_USDB_evt_Swap')
+    , source('blasterswap_blast', 'BlasterswapV2Pair_PAC_USDB_evt_Swap')
+    , source('blasterswap_blast', 'BlasterswapV2Pair_PAC_USDB_evt_Swap')
+    , source('blasterswap_blast', 'BlasterswapV2Pair_USDB_WETH_evt_Swap')
+] %}
+
 WITH
 
-dexs AS (
+unioned_evt_sources AS (
+    {% for evt_source in evt_sources %}
+        SELECT
+            *
+        FROM
+            {{ evt_source }}
+        {% if not loop.last %}
+        UNION ALL
+        {% endif %}
+    {% endfor %}
+)
+
+, dexs AS (
     {{
         uniswap_compatible_v2_trades(
             blockchain = 'blast',
             project = 'blasterswap',
             version = '1',
-            Pair_evt_Swap = source('blasterswap_blast', 'BlasterswapV2Pair_ORBIT_USDB_evt_Swap'),
-            Factory_evt_PairCreated = source('blasterswap_blast', 'BlasterswapV2Factory_evt_PairCreated')
-        )
-    }}
-
-    UNION ALL
-
-    {{
-        uniswap_compatible_v2_trades(
-            blockchain = 'blast',
-            project = 'blasterswap',
-            version = '1',
-            Pair_evt_Swap = source('blasterswap_blast', 'BlasterswapV2Pair_PAC_USDB_evt_Swap'),
-            Factory_evt_PairCreated = source('blasterswap_blast', 'BlasterswapV2Factory_evt_PairCreated')
-        )
-    }}
-
-    UNION ALL
-
-    {{
-        uniswap_compatible_v2_trades(
-            blockchain = 'blast',
-            project = 'blasterswap',
-            version = '1',
-            Pair_evt_Swap = source('blasterswap_blast', 'BlasterswapV2Pair_PAC_WETH_evt_Swap'),
-            Factory_evt_PairCreated = source('blasterswap_blast', 'BlasterswapV2Factory_evt_PairCreated')
-        )
-    }}
-
-    UNION ALL
-
-    {{
-        uniswap_compatible_v2_trades(
-            blockchain = 'blast',
-            project = 'blasterswap',
-            version = '1',
-            Pair_evt_Swap = source('blasterswap_blast', 'BlasterswapV2Pair_USDB_WETH_evt_Swap'),
+            Pair_evt_Swap = unioned_evt_sources,
             Factory_evt_PairCreated = source('blasterswap_blast', 'BlasterswapV2Factory_evt_PairCreated')
         )
     }}
