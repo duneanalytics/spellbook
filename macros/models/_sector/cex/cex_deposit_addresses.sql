@@ -75,7 +75,7 @@ SELECT DISTINCT '{{blockchain}}' AS blockchain
 , i.funded_by_same_cex
 , i.creation_block_time
 , i.creation_block_number
-, CASE WHEN ct.tx_hash IS NULL THEN true ELSE false END AS is_smart_contract
+, CASE WHEN MAX(ct.tx_hash) IS NULL THEN true ELSE false END AS is_smart_contract
 FROM inflows_and_outflows i
 INNER JOIN unique_cex_recipient ua USING (potential_deposit)
 -- check that it never sent to other addresses
