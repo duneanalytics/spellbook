@@ -37,7 +37,7 @@ unioned_evt_sources AS (
             blockchain = 'blast',
             project = 'blasterswap',
             version = '1',
-            Pair_evt_Swap = unioned_evt_sources,
+            Pair_evt_Swap = 'unioned_evt_sources',
             Factory_evt_PairCreated = source('blasterswap_blast', 'BlasterswapV2Factory_evt_PairCreated')
         )
     }}
