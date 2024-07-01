@@ -36,7 +36,7 @@ SELECT address
 , MIN(creation_block_number) AS creation_block_number
 , MIN_BY(funded_by_same_cex, creation_block_time) AS funded_by_same_cex
 , MIN_BY(first_funded_by, creation_block_time) AS first_funded_by
-, MIN_BY(is_smart_contract, creation_block_time) AS first_funded_by
+, MIN_BY(is_smart_contract, creation_block_time) AS is_smart_contract
 FROM (
     {% for cex_model in cex_models %}
     SELECT blockchain

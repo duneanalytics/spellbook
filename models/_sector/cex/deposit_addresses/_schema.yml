@@ -15,9 +15,12 @@ models:
             - blockchain
             - address
     columns:
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
+      - &blockchains
+        name: blockchains
+        description: "Blockchains"
+      - &first_used_blockchain
+        name: first_used_blockchain
+        description: "First blockchain this deposit address was used on"
       - &address
         name: block_month
         description: "Block month"
