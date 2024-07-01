@@ -119,6 +119,7 @@ SELECT
     , tb.version
     , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
     , tb.block_time
+    , tb.block_slot
     , tb.trade_source
     , tb.token_bought_amount_raw
     , tb.token_sold_amount_raw
