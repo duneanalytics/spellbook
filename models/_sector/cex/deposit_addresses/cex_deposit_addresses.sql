@@ -38,6 +38,8 @@ FROM (
     , creation_block_time
     , creation_block_number
     , funded_by_same_cex
+    , first_funded_by
+    , is_smart_contract 
     FROM {{ cex_model }}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('creation_block_time')}}
