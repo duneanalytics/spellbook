@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')],
-        unique_key = ['blockchain', 'address'],
+        unique_key = ['address'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora"]\',
                                     "sector",
                                     "cex",
