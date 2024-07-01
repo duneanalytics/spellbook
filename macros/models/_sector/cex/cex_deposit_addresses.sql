@@ -1,5 +1,6 @@
 {% macro cex_deposit_addresses(blockchain, transactions, token_transfers, cex_addresses, cex_flows, first_funded_by, creation_traces) %}
 
+-- start by looking at addresses that sent tokens to an identified cex address
 WITH potential_addresses AS (
     SELECT f."from" AS potential_deposit
     , ffb.first_funded_by
@@ -13,7 +14,7 @@ WITH potential_addresses AS (
     , SUM(f.amount) AS outflow_amount
     , array_agg(DISTINCT f.tx_hash) AS distinct_transfer_hashes
     FROM {{cex_flows}} f
-    -- ignore addresses already found
+    -- ignore addresses already found in previous incremental runs
     {% if is_incremental() %}
     LEFT JOIN {{this}} this ON f."from" = this.address
         AND eda.address IS NULL
@@ -21,7 +22,7 @@ WITH potential_addresses AS (
     -- check that it's not another cex address
     LEFT JOIN {{cex_addresses}} b ON b.address=f."from"
         AND b.address IS NULL
-    -- check funder
+    -- make sure it was first funded recently
     INNER JOIN {{first_funded_by}} ffb ON ffb.address=f."from"
         AND ffb.block_time > ffb.block_time - interval '2' day
         {% if is_incremental() %}
@@ -37,6 +38,7 @@ WITH potential_addresses AS (
     GROUP BY f."from", ffb.first_funded_by, f.to, f.cex_name, f.token_address, f.token_standard, ffb.block_time, ffb.block_number
     )
 
+-- fetch inflows for outflown tokens
 , inflows_and_outflows AS (
     SELECT pa.potential_deposit
     , pa.first_funded_by
@@ -58,6 +60,7 @@ WITH potential_addresses AS (
     GROUP BY pa.potential_deposit,  pa.first_funded_by, pa.cex_address, pa.cex_name, pa.funded_by_same_cex, pa.creation_block_time, pa.creation_block_number, pa.token_address, pa.token_standard, pa.outflow_amount,  pa.distinct_transfer_hashes
     )
 
+-- ensure the address only deposited to one cex address
 , unique_cex_recipient AS (
     SELECT potential_deposit
     , COUNT(DISTINCT tx_hash) AS distinct_transfer_hashes_count
@@ -86,7 +89,9 @@ LEFT JOIN {{token_transfers}} tt ON tt."from"=potential_deposit
 LEFT JOIN {{transactions}} txs ON txs."from"=potential_deposit
     AND txs.nonce>ua.distinct_transfer_hashes_count
     AND txs.block_number IS NULL
+-- check if it's a smart contract
 LEFT JOIN {{creation_traces}} ct ON ct.address=potential_deposit
+-- ensure non-zero amounts were flown in + out and only keep if outflow matches inflow (allows slightly less if it's the native gas token)
 WHERE i.inflow_amount > 0
 AND i.outflow_amount > 0
 AND (i.outflow_amount=i.inflow_amount OR
