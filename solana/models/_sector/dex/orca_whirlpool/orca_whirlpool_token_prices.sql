@@ -21,8 +21,9 @@ with
         SELECT
             *
         FROM
-            {{ ref('orca_whirlpool_trades') }}
+            {{ ref('dex_solana_trades') }}
         WHERE 1 = 1
+            AND project = 'whirlpool'
             {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
             {% else %}
