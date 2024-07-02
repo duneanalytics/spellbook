@@ -4,7 +4,7 @@ WITH identify_first AS (
     SELECT tt.to AS address
     , MIN(tt.block_number) AS block_number
     , MIN_BY(tt.tx_index, (tt.block_number, tt.tx_index)) AS tx_index
-    , MIN_BY(tt.evt_index, (tt.block_number, tt.tx_index, tt.evt_index)) AS evt_index
+    , MIN_BY(tt.evt_index, (tt.block_number, tt.tx_index, COALESCE(tt.evt_index, 0))) AS evt_index
     FROM {{token_transfers}} tt
     {% if is_incremental() %}
     LEFT JOIN {{this}} t ON t.address = tt.to
