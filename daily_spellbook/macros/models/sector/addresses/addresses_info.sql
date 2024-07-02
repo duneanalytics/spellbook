@@ -88,7 +88,7 @@ WITH executed_txs AS (
     )
 
 , fungible_received AS (
-    SELECT to AS address
+    SELECT tr.to AS address
     , MIN(tr.block_time) AS first_received_block_time
     , MAX(tr.block_time) AS last_received_block_time
     , MIN(tr.block_number) AS first_received_block_number
@@ -146,7 +146,7 @@ WITH executed_txs AS (
     LEFT JOIN addresses_events_ethereum.first_funded_by USING (address)
     )
 
-SELECT address
+SELECT nd.address
 , nd.executed_tx_count+t.executed_tx_count AS executed_tx_count
 , nd.max_nonce
 , COALESCE(COALESCE(nd.is_smart_contract, t.is_smart_contract), false) AS is_smart_contract
