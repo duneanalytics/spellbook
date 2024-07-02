@@ -162,7 +162,7 @@ meta as (
 , swaps as (
     select
         *
-        , transform(filter(array_distinct(flatten(call_transfer_addresses)), x -> not x.contract), x -> (x.address)) as users
+        , array_union(senders, receivers) as users
         , array_agg(
             cast(row(
                 project
@@ -173,11 +173,13 @@ meta as (
                     , coalesce(user_amount_usd, caller_amount_usd, call_amount_usd)
                     , greatest(user_amount_usd, caller_amount_usd)
                 )
+                , order_hash is not null
             ) as row(
                 project varchar
                 , call_trace_address array(bigint)
                 , tokens array(varchar)
                 , amount_usd double
+                , intent boolean
             ))
         ) over(partition by block_number, tx_hash) as tx_swaps
         , if(
@@ -213,10 +215,8 @@ meta as (
             , max(amount * price / pow(10, decimals)) as call_amount_usd
             , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
             , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
-            , array_agg(array[
-                cast(row(transfer_from, creations_from.block_number is not null) as row(address varbinary, contract boolean))
-                , cast(row(transfer_to, creations_to.block_number is not null) as row(address varbinary, contract boolean))
-            ]) as call_transfer_addresses
+            , array_agg(distinct transfer_from) filter(where creations_from.block_number is null) as senders
+            , array_agg(distinct transfer_to) filter(where creations_to.block_number is null) as receivers
         from calls
         join (
             select
@@ -284,6 +284,8 @@ select
     , tx_swaps
     , if(cardinality(users) = 0 or order_hash is null, array_union(users, array[tx_from]), users) as users
     , users as direct_users
+    , senders
+    , receivers
     , date(date_trunc('month', block_time)) as block_month
     , call_trade_id
 from swaps
