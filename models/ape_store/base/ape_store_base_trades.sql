@@ -25,7 +25,7 @@ with
         from {{ source("ape_store_base", "Router_evt_CreateToken") }}
     ),
     bondingcurvetrades as (
-        select
+        select distinct
             evt_block_time as block_time,
             date_trunc('day', evt_block_time) as block_date,
             date_trunc('month', evt_block_time) as block_month,
