@@ -16,3 +16,5 @@ sources:
         loaded_at_field: evt_block_time
       - name: PoolFactory_evt_LiquidityGaugeDeployed
         loaded_at_field: evt_block_time
+      - name: CurveStableswapFactoryNG_call_deploy_plain_pool
+        loaded_at_field: call_block_time

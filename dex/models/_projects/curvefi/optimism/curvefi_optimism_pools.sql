@@ -95,6 +95,19 @@ WITH
           ORDINALITY AS coin_elements (col, pos)
         WHERE
           call_success
+
+       UNION ALL
+
+        SELECT
+          pos - 1 as pos,
+          col,
+          output_0 AS pool
+        FROM {{ source('curvefi_optimism', 'CurveStableswapFactoryNG_call_deploy_plain_pool') }}
+          CROSS JOIN UNNEST (_coins)
+        WITH
+          ORDINALITY AS coin_elements (col, pos)
+        WHERE
+          call_success   
       ) a
     GROUP BY
       pos,
