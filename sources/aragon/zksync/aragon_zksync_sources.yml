@@ -1,8 +1,0 @@
-version: 2
-
-sources:
-  - name: aragon_app_zksync
-    description: "aragon dao (app) deployed decoded event"
-    tables:
-      - name: DAOFactory_evt_DAORegistered
-        loaded_at_field: evt_block_time
