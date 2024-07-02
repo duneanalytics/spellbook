@@ -42,4 +42,8 @@ FROM {{ source('ethfi_ethereum', 'MerkleDistributorWithDeadline_evt_Claimed') }}
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{etherfi_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
+{% if is_incremental() %}
+WHERE {{ incremental_predicate('t.evt_block_time') }}
+{% else %}
 WHERE t.evt_block_time >= CAST('2024-03-18' as TIMESTAMP)
+{% endif %}
