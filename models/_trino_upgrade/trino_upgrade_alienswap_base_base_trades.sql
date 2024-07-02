@@ -46,5 +46,5 @@ FROM {{ source('alienswap_base','Alienswap_evt_OrderFulfilled') }} s
     {% endif %}
 )
 
--- this will be removed once tx_from and tx_to are available in the base event tables
-{{ add_nft_tx_data('base_trades', 'base') }}
+select *
+from base_trades

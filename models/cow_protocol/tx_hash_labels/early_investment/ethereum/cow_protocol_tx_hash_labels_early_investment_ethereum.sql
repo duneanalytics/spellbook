@@ -12,11 +12,11 @@ with
         min(block_date) as project_start
     from (
         select token_bought_address, block_date
-        from {{ ref('dex_aggregator_trades') }}
+        from {{ source('dex_aggregator', 'trades') }}
         where blockchain = 'ethereum'
         UNION ALL
         select token_bought_address, block_date
-        from {{ ref('dex_trades') }}
+        from {{ source('dex', 'trades') }}
         where blockchain = 'ethereum'
     )
     group by
@@ -29,11 +29,11 @@ with
         *
     from (
         select tx_hash, evt_index, project, version, block_date, token_bought_address
-        from {{ ref('dex_aggregator_trades') }}
+        from {{ source('dex_aggregator', 'trades') }}
         where blockchain = 'ethereum'
         UNION ALL
         select tx_hash, evt_index, project, version, block_date, token_bought_address
-        from {{ ref('dex_trades') }}
+        from {{ source('dex', 'trades') }}
         where blockchain = 'ethereum'
     ) t join project_starts p on t.token_bought_address = p.token_bought_address
     where
