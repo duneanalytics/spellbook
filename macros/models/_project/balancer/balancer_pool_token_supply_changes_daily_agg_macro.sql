@@ -1,6 +1,6 @@
 {% macro 
-    bpt_supply_changes_daily_agg_macro(
-        blockchain, version
+    balancer_v2_compatible_bpt_supply_changes_daily_agg_macro(
+        blockchain, version, project_decoded_as, base_spells_namespace
     ) 
 %}
 WITH
@@ -13,7 +13,7 @@ WITH
             token_address,
             LEAD(block_date, 1, NOW()) OVER (PARTITION BY token_address ORDER BY block_date) AS day_of_next_change,
             SUM(delta_amount) AS daily_amount
-        FROM {{ ref('balancer_bpt_supply_changes') }}
+        FROM {{ ref(base_spells_namespace + '_bpt_supply_changes') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3, 4, 5
     ),
@@ -34,4 +34,5 @@ WITH
         FROM calendar c
         LEFT JOIN daily_balance b ON b.block_date = c.day
         WHERE b.token_address IS NOT NULL
+        AND b.pool_type IS NOT NULL
     {% endmacro %}

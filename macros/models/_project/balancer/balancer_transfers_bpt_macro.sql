@@ -1,6 +1,6 @@
 {% macro 
-    balancer_transfers_bpt_macro(
-        blockchain, version 
+    balancer_v2_compatible_transfers_bpt_macro(
+        blockchain, version, project_decoded_as 
     ) 
 %}
 
@@ -8,7 +8,7 @@
         SELECT
         DISTINCT poolAddress AS pool_address
         FROM
-        {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolRegistered') }}
+        {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolRegistered') }}
     )
 
     SELECT DISTINCT * FROM (

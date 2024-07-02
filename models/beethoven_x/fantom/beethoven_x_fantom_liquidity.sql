@@ -11,6 +11,7 @@
     )
 }}
 
+
 WITH pool_labels AS (
         SELECT
             address AS pool_id,
@@ -209,13 +210,17 @@ WITH pool_labels AS (
         c.pool_id,
         BYTEARRAY_SUBSTRING(c.pool_id, 1, 20) AS pool_address,
         p.pool_symbol,
+        '2' AS version,
         'fantom' AS blockchain,
+        p.pool_type,
         c.token AS token_address,
         c.token_symbol,
         c.token_balance_raw,
         c.token_balance,
         COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd) AS protocol_liquidity_usd,
-        COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd)/e.eth_price AS protocol_liquidity_eth
+        COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd)/e.eth_price AS protocol_liquidity_eth,
+        COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd) AS pool_liquidity_usd,
+        COALESCE(b.protocol_liquidity * w.normalized_weight, c.protocol_liquidity_usd)/e.eth_price AS pool_liquidity_eth
     FROM cumulative_usd_balance c
     FULL OUTER JOIN weighted_pool_liquidity_estimates_2 b ON c.day = b.day
     AND c.pool_id = b.pool_id

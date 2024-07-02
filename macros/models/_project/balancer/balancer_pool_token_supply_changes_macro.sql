@@ -1,6 +1,6 @@
 {% macro 
-    bpt_supply_changes_macro(
-        blockchain, version
+    balancer_v2_compatible_bpt_supply_changes_macro(
+        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
     ) 
 %}
 WITH pool_labels AS (
@@ -8,11 +8,11 @@ WITH pool_labels AS (
             address,
             name,
             pool_type
-        FROM {{ source('labels', 'balancer_v2_pools') }}
+        FROM {{ pool_labels_spell }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
-      -- Extract mints and burns from transfers
+    -- Extract mints and burns from transfers
     transfers AS (
         SELECT
             t.evt_block_time,
@@ -35,7 +35,7 @@ WITH pool_labels AS (
                 THEN - value
                 ELSE 0
                 END AS amount
-        FROM {{ ref('balancer_transfers_bpt') }} t
+        FROM {{ ref(base_spells_namespace + '_transfers_bpt') }} t
         LEFT JOIN pool_labels l ON t.contract_address = l.address
         WHERE t.blockchain = '{{blockchain}}'
         AND t.version = '{{version}}'
@@ -59,7 +59,7 @@ WITH pool_labels AS (
             THEN 0
             ELSE s.amountOut 
             END AS amount
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} s
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} s
         LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.poolId, 1, 20) = l.address
         WHERE tokenOut = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
         {% if is_incremental() %}
@@ -82,7 +82,7 @@ WITH pool_labels AS (
             THEN 0
             ELSE - s.amountIn
             END AS amount
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} s
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} s
         LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.poolId, 1, 20) = l.address
         WHERE tokenIn = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
         {% if is_incremental() %}

@@ -1,6 +1,6 @@
 {% macro 
-    balancer_token_balance_changes_macro(
-        blockchain, version
+    balancer_v2_compatible_token_balance_changes_macro(
+        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
     ) 
 %}
 WITH pool_labels AS (
@@ -8,7 +8,7 @@ WITH pool_labels AS (
             address AS pool_id,
             name AS pool_symbol,
             pool_type
-        FROM {{ source('labels', 'balancer_v2_pools') }}
+        FROM {{ pool_labels_spell }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
@@ -31,7 +31,7 @@ WITH pool_labels AS (
                     poolId AS pool_id,
                     tokenIn AS token,
                     CAST(amountIn as int256) AS delta
-                FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }}
+                FROM {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_Swap') }}
                 {% if is_incremental() %}
                 WHERE {{ incremental_predicate('evt_block_time') }}
                 {% endif %}
@@ -46,7 +46,7 @@ WITH pool_labels AS (
                     poolId AS pool_id,
                     tokenOut AS token,
                     -CAST(amountOut AS int256) AS delta
-                FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }}
+                FROM {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_Swap') }}
                 {% if is_incremental() %}
                 WHERE {{ incremental_predicate('evt_block_time') }}
                 {% endif %}
@@ -64,7 +64,7 @@ WITH pool_labels AS (
             t.tokens,
             d.deltas,
             p.protocolFeeAmounts
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolBalanceChanged') }}
+        FROM {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_PoolBalanceChanged') }}
         CROSS JOIN UNNEST (tokens) WITH ORDINALITY as t(tokens,i)
         CROSS JOIN UNNEST (deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
@@ -96,7 +96,7 @@ WITH pool_labels AS (
             poolId AS pool_id,
             token,
             cashDelta + managedDelta AS delta
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolBalanceManaged') }}
+        FROM {{ source(project_decoded_as ~ '_' ~ blockchain, 'Vault_evt_PoolBalanceManaged') }}
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}

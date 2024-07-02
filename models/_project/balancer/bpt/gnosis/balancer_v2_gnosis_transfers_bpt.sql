@@ -14,8 +14,9 @@
 }}
 
 {{ 
-    balancer_transfers_bpt_macro(
+    balancer_v2_compatible_transfers_bpt_macro(
         blockchain = blockchain,
-        version = '2'
+        version = '2',
+        project_decoded_as = 'balancer_v2'
     )
 }}

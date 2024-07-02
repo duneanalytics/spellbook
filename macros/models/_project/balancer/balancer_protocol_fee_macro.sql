@@ -1,6 +1,6 @@
 {% macro 
-    balancer_protocol_fee_macro(
-        blockchain, version
+    balancer_v2_compatible_protocol_fee_macro(
+        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
     ) 
 %}
 
@@ -11,7 +11,7 @@ WITH pool_labels AS (
                 name,
                 pool_type,
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
-            FROM {{ source('labels', 'balancer_v2_pools') }}
+            FROM {{ pool_labels_spell }}
             WHERE blockchain = '{{blockchain}}'
             GROUP BY 1, 2, 3) 
         WHERE num = 1
@@ -65,8 +65,8 @@ WITH pool_labels AS (
             s.token_address AS token,
             18 AS decimals,
             SUM(protocol_liquidity_usd / supply) AS price
-        FROM {{ ref('balancer_liquidity') }} l
-        LEFT JOIN {{ ref('balancer_bpt_supply') }} s ON s.token_address = l.pool_address 
+        FROM {{ ref(base_spells_namespace + '_liquidity') }} l
+        LEFT JOIN {{ ref(base_spells_namespace + '_bpt_supply') }} s ON s.token_address = l.pool_address 
         AND l.blockchain = s.blockchain AND s.day = l.day AND s.supply > 0
         WHERE l.blockchain = '{{blockchain}}'
         AND l.version = '{{version}}'
@@ -89,7 +89,7 @@ WITH pool_labels AS (
             poolId AS pool_id,
             token AS token_address,
             SUM(protocol_fees) AS protocol_fee_amount_raw
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolBalanceChanged') }} b
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolBalanceChanged') }} b
         CROSS JOIN unnest("protocolFeeAmounts", "tokens") AS t(protocol_fees, token)   
         GROUP BY 1, 2, 3 
 
@@ -100,11 +100,15 @@ WITH pool_labels AS (
             poolId AS pool_id,
             b.poolAddress AS token_address,
             sum(value) AS protocol_fee_amount_raw
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolRegistered') }} b
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolRegistered') }} b
         INNER JOIN {{ source('erc20_' + blockchain, 'evt_transfer') }} t
             ON t.contract_address = b.poolAddress
             AND t."from" = 0x0000000000000000000000000000000000000000
-            AND t.to = 0xce88686553686DA562CE7Cea497CE749DA109f9F --ProtocolFeesCollector address, which is the same across all chains   
+            AND t."to" =
+                CASE
+                    WHEN '{{blockchain}}' = 'fantom' THEN 0xc6920d3a369e7c8bd1a22dbe385e11d1f7af948f
+                    ELSE 0xce88686553686DA562CE7Cea497CE749DA109f9F
+                    END --ProtocolFeesCollector address, which is the same across all chains except for fantom   
         GROUP BY 1, 2, 3
     ),
 
