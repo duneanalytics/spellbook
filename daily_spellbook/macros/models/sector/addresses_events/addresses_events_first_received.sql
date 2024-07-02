@@ -8,7 +8,7 @@ WITH identify_first AS (
     FROM {{token_transfers}} tt
     {% if is_incremental() %}
     LEFT JOIN {{this}} t ON t.address = tt.to
-        AND COALESCE(t.unique_key, 'NULL') = 'NULL'
+        AND t.blockchain IS NULL
     WHERE {{ incremental_predicate('tt.block_time') }}
     {% endif %}
     GROUP BY tt.to
@@ -40,7 +40,7 @@ INNER JOIN identify_first iff ON tt.block_number=iff.block_number
     AND tt.tx_index = iff.tx_index
     AND tt.evt_index = iff.evt_index
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('block_time') }}
+WHERE {{ incremental_predicate('tt.block_time') }}
 {% endif %}
 
 {% endmacro %}
