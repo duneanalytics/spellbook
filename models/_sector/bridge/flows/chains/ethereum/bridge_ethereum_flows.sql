@@ -29,7 +29,7 @@ SELECT bf.blockchain
 , bf.contract_address
 FROM {{ref('bridge_ethereum_base_raw_flows')}} bf
 {% if is_incremental() %}
-LEFT JOIN {{this}} t ON t.tx_hash=e.tx_hash AND t.evt_index=e.evt_index
+LEFT JOIN {{this}} t ON t.tx_hash=bf.tx_hash AND t.evt_index=bf.evt_index
     AND t.blockchain IS NULL
 WHERE {{incremental_predicate('bf.block_time')}}
 {% endif %}
