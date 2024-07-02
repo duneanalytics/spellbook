@@ -96,3 +96,6 @@ sources:
   - name: balancer
     tables:
       - name: bpt_prices
+  - name: tokens
+    tables:
+      - name: transfers
