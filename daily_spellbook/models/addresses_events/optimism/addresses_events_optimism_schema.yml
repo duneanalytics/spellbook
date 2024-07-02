@@ -40,6 +40,8 @@ models:
         description: "The transaction hash on which the address was first funded with ETH"
       - name: tx_index
         description: "The transaction index within the block on which the address was first funded with ETH"
+      - name: unique_key
+        description: "Unique transfer identifier key"
 
   - name: addresses_events_optimism_first_activity
     meta:

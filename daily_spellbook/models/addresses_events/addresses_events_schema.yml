@@ -35,6 +35,9 @@ models:
       - &tx_index
         name: tx_index
         description: "The transaction index within its block on which the address was first funded with the native asset on that chain"
+      - &unique_key
+        name: unique_key
+        description: "Unique transfer identifier key"
 
   - name: addresses_events_first_activity
     meta:
