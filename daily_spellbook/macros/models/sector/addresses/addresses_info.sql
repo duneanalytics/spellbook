@@ -59,6 +59,7 @@ SELECT address
 , first_received_block_number AS first_received_block_number
 , GREATEST(last_sent_block_time, last_received_block_time) AS last_transfer_block_time
 , GREATEST(last_sent_block_number, last_received_block_number) AS last_transfer_block_number
+, GREATEST(GREATEST(last_sent_block_time, last_received_block_time), last_tx_block_time) AS last_updated
 FROM executed_txs
 LEFT JOIN fungible_received USING (address)
 LEFT JOIN fungible_sent USING (address)
@@ -67,15 +68,13 @@ LEFT JOIN addresses_events_ethereum.first_funded_by USING (address)
 
 
 
-
-
-
-
 {% else %}
+
+
 
 WITH executed_txs AS (
     SELECT txs."from" AS address
-    , COUNT(*) AS executed_tx_count
+    , COUNT(txs.*) AS executed_tx_count
     , COALESCE(MAX(txs.nonce), 0) AS max_nonce
     , MIN(txs.block_time) AS first_tx_block_time
     , MAX(txs.block_time) AS last_tx_block_time
@@ -165,6 +164,7 @@ SELECT nd.address
 , COALESCE(t.first_received_block_number, nd.first_received_block_number) AS first_received_block_number
 , COALESCE(nd.last_transfer_block_time, t.last_transfer_block_time) AS last_transfer_block_time
 , COALESCE(nd.last_transfer_block_number, t.last_transfer_block_number) AS last_transfer_block_number
+, GREATEST(COALESCE(nd.last_transfer_block_number, t.last_transfer_block_number), COALESCE(nd.last_tx_block_time, t.last_tx_block_time)) AS last_updated
 FROM new_data nd
 LEFT JOIN {{this}} t ON t.address=nd.address
 
