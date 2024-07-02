@@ -29,6 +29,8 @@ models:
         description: "Concerned Gnosis address"
         tests:
           - unique
+      - name: first_funding_executed_by
+        description: "Which address executed the first funding tx"
       - name: first_funded_by
         description: "Which Gnosis address first funded the address with xDAI"
       - name: block_time

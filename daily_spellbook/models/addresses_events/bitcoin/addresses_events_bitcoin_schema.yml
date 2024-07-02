@@ -28,6 +28,8 @@ models:
         description: "Concerned Bitcoin address"
         tests:
           - unique
+      - name: first_funding_executed_by
+        description: "Which address executed the first funding tx"
       - name: first_funded_by
         description: "Which Bitcoin address first funded the address with BTC"
       - name: block_time

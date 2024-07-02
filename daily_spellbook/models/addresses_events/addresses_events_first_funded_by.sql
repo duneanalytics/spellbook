@@ -33,9 +33,11 @@ FROM (
     SELECT blockchain
     , address
     , first_funded_by
+    , first_funding_executed_by
     , block_time
     , block_number
     , tx_hash
+    , tx_index
     FROM {{ addresses_events_model }}
     {% if not loop.last %}
     UNION ALL
