@@ -92,3 +92,6 @@ sources:
     tables:
       - name: FraxswapPair_evt_Swap
       - name: FraxswapFactory_evt_PairCreated
+  - name: swaap_v2_optimism
+    tables:
+      - name: Vault_evt_Swap
