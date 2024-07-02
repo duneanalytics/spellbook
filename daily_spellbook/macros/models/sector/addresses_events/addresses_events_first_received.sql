@@ -35,6 +35,10 @@ SELECT '{{blockchain}}' AS blockchain
 , tt.unique_key
 , tt."from"
 FROM {{token_transfers}} tt
+{% if is_incremental() %}
+LEFT JOIN {{this}} t ON t.address = tt.to
+    AND t.blockchain IS NULL
+{% endif %}
 INNER JOIN identify_first iff ON tt.block_number=iff.block_number
     AND tt.to=iff.address
     AND tt.tx_index = iff.tx_index
