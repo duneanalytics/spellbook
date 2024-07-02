@@ -2,17 +2,17 @@
     schema = 'bridge',
     alias = 'raw_flows',
     materialized = 'view',
-    unique_key = ['tx_hash','evt_index']
+    unique_key = ['blockchain','tx_hash','evt_index']
 )
 }}
 
-{% set bridges_models = [
- ref('bridge_ethereum_flows')
+{% set chains = [
+     'ethereum'
 ] %}
 
-with base_union as (
-SELECT * FROM  (
-{% for bridges_model in bridges_models %}
+SELECT *
+FROM (
+    {% for chain in chains %}
     SELECT blockchain
     , project
     , project_version
@@ -29,11 +29,9 @@ SELECT * FROM  (
     , tx_hash
     , evt_index
     , contract_address
-    FROM {{ bridges_model }}
+    FROM {{ ref('bridge_'~chain~'_flows') }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
-    )
 )
-select * from base_union
