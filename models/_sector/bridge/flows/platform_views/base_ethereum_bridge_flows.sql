@@ -5,7 +5,6 @@
         schema = 'base_' + blockchain,
         alias = 'bridge_flows',
         materialized = 'view',
-        unique_key = ['blockchain','tx_hash','evt_index'],
         post_hook='{{ expose_spells(blockchains = \'[\"{{blockchain}}\"]\',
                                     spell_type = "sector",
                                     spell_name = "bridge",
