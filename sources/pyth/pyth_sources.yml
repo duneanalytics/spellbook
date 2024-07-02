@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: pyth
+    description: "Prices tables across blockchains"
+    tables:
+      - name: price_feed_contracts
+        description: "Pyth price feed contract addresses https://docs.pyth.network/price-feeds/contract-addresses/evm"
+        columns:
+          - name: chain
+            description: "Chain the price feed contract is deployed on"
+          - name: contract_address
+            description: "Contract address for pyth price feeds"
+          - name: chain_type
+            description: "Type of chain contract address is deployed on (evm, svm, cosmwasm, etc)"
