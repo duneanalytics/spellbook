@@ -68,3 +68,6 @@ sources:
     tables:
       - name: GridFactory_evt_GridCreated
       - name: GridPair_evt_Swap
+  - name: swaap_v2_polygon
+    tables:
+      - name: Vault_evt_Swap

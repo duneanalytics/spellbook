@@ -111,4 +111,6 @@ sources:
     tables:
       - name: SolidlyV3Factory_evt_PoolCreated
       - name: SolidlyV3Pool_evt_Swap
-
+  - name: swaap_v2_ethereum
+    tables:
+      - name: Vault_evt_Swap
