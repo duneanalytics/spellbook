@@ -1,7 +1,12 @@
 {% macro enrich_bridge_flows(base_flows) %}
 -- Macro to apply the Bridge flows enrichment(s) to base models
 
-SELECT *
-FROM {{base_flows}}
+SELECT bf.*
+FROM {{base_flows}} bf
+LEFT JOIN {{this}} t ON t.blockchain=bf.blockchain
+    AND t.tx_hash=bf.tx_hash
+    AND t.evt_index=bf.evt_index
+    AND t.block_number IS NULL
+WHERE {{ incremental_predicate('block_time') }}
 
 {% endmacro %}
