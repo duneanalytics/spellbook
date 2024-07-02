@@ -18,7 +18,7 @@
     ref('orca_whirlpool_trades')
     , ref('raydium_v3_trades')
     , ref('raydium_v4_trades')
-    , ref('phoenix_v1_trades')
+    , ref('phoenix_v1_base_trades')
     , ref('meteora_v1_solana_trades')
     , ref('meteora_v2_solana_trades')
     , ref('goosefx_ssl_v2_solana_trades')
