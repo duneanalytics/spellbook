@@ -21,6 +21,7 @@
     ,'zkevm'
     ,'linea'
     ,'mantle'
+    ,'blast'
 ] %}
 
 SELECT *
