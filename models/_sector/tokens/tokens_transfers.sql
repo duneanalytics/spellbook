@@ -20,6 +20,8 @@
     ,'scroll'
     ,'zkevm'
     ,'linea'
+    ,'mantle'
+    ,'blast'
 ] %}
 
 SELECT *
