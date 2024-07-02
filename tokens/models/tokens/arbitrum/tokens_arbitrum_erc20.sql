@@ -85,4 +85,5 @@ FROM (VALUES
     , (0x5a7a183b6b44dc4ec2e3d2ef43f98c5152b1d76d, 'inETH', 18)
     , (0xd08c3f25862077056cb1b710937576af899a4959, 'instETH', 18)
     , (0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33, 'GHO', 18)    
+    , (0xa7997f0ec9fa54e89659229fb26537b6a725b798, 'PAL', 18)
 ) AS temp_table (contract_address, symbol, decimals)
