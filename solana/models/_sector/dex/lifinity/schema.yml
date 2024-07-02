@@ -1,22 +1,27 @@
 version: 2
 
 models:
+  - name: lifinity_v1_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+      all raw lifinity v1 dex trades on Solana
+    tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+
   - name: lifinity_v1_trades
     meta:
       blockchain: solana
       contributors: [ilemi]
     config:
-      tags: ['solana','dex']  
+      tags: ['solana','dex']
     description: >
         all lifinity v1 dex trades on Solana
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
-            - tx_index
     columns:
       - &blockchain
         name: blockchain
@@ -63,10 +68,6 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of the trade at time of execution"
-        tests:
-          - dbt_utils.accepted_range:
-              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
-              severity: warn
       - &fee_tier
         name: fee_tier
         description: "dexfee tier (fee %)"
@@ -107,23 +108,28 @@ models:
         name: tx_index
         description: "index of the transaction in the block slot"
 
+  - name: lifinity_v2_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+      all raw lifinity v2 dex trades on Solana
+    tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+
 
   - name: lifinity_v2_trades
     meta:
       blockchain: solana
       contributors: [ilemi]
     config:
-      tags: ['solana','dex']  
+      tags: ['solana','dex']
     description: >
         all lifinity v2 dex trades on Solana
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
-            - tx_index
     columns:
       - *blockchain
       - *project
