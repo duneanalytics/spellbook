@@ -1,22 +1,28 @@
 version: 2
 
 models:
+  - name: pumpdotfun_solana_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+      all raw pumpdotfun dex trades on Solana
+    tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+
+
   - name: pumpdotfun_solana_trades
     meta:
       blockchain: solana
       contributors: [ilemi]
     config:
-      tags: ['solana','dex']  
+      tags: ['solana','dex']
     description: >
         all pumpdotfun dex trades on Solana
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
-            - tx_index
     columns:
       - &blockchain
         name: blockchain
@@ -60,10 +66,6 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of the trade at time of execution"
-        tests:
-          - dbt_utils.accepted_range:
-              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
-              severity: warn
       - &sol_reserves_raw
         name: sol_reserves_raw
         description: "sol raw reserves after swap"
