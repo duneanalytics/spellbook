@@ -55,6 +55,8 @@
     }
 %}
 
+{% set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+
 -- EVENTS CONFIG
 {%
     set contracts = {
