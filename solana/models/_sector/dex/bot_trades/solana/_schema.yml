@@ -11,6 +11,9 @@ models:
       description: >
         Trades by trading bots on Solana
       columns:
+        - &bot
+          name: bot
+          description: "Trading bot which executed the trade"
         - &blockchain
           name: blockchain
           description: "Blockchain which the DEX is deployed"
@@ -407,7 +410,7 @@ models:
     description: >
       consortium_key users on Solana
     config:
-      tags: [ "solana", "dex", "bot_trades" ]
+      tags: ["solana", "dex", "bot_trades"]
       columns:
         - name: user
           tests: unique
@@ -425,7 +428,7 @@ models:
     description: >
       soul_sniper users on Solana
     config:
-      tags: [ "solana", "dex", "bot_trades" ]
+      tags: ["solana", "dex", "bot_trades"]
       columns:
         - name: user
           tests: unique

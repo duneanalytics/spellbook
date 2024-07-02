@@ -106,6 +106,7 @@ select
     block_time,
     block_date,
     block_month,
+    'Looter' as bot,
     blockchain,
     amount_usd,
     type,
