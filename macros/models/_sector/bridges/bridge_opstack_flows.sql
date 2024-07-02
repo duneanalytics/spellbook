@@ -2,52 +2,52 @@
 %}
 
 {% if token_standard == 'native' %}
-
 SELECT '{{blockchain}}' AS blockchain
 , '{{project}}' AS project
 , '{{project_version}}' AS project_version
 , '{{flows_type}}' AS flows_type
-, evt_block_time AS block_time
-, date_trunc('month', evt_block_time) AS block_month
-, evt_block_number AS block_number
-, amount AS amount_raw
-, "from" AS sender
-, to AS recipient
+, e.evt_block_time AS block_time
+, date_trunc('month', e.evt_block_time) AS block_month
+, e.evt_block_number AS block_number
+, e.amount AS amount_raw
+, e."from" AS sender
+, e.to AS recipient
 , {{ var("ETH_ERC20_ADDRESS") }} AS local_token
 , {{ var("ETH_ERC20_ADDRESS") }} AS remote_token
-, extraData AS extra_data
-, evt_tx_hash AS tx_hash
-, evt_index
-, contract_address
-FROM {{events}}
+, e.extraData AS extra_data
+, e.evt_tx_hash AS tx_hash
+, e.evt_index
+, e.contract_address
+FROM {{events}} e
 {% if is_incremental() %}
+LEFT JOIN {{this}} t ON t.tx_hash=e.evt_tx_hash AND t.evt_index=e.evt_index
+    AND t.blockchain IS NULL
 WHERE {{incremental_predicate('evt_block_time')}}
-
 {% endif %}
 
 {% else %}
-
 SELECT '{{blockchain}}' AS blockchain
 , '{{project}}' AS project
 , '{{project_version}}' AS project_version
 , '{{flows_type}}' AS flows_type
-, evt_block_time AS block_time
-, date_trunc('month', evt_block_time) AS block_month
-, evt_block_number AS block_number
-, amount AS amount_raw
-, "from" AS sender
-, to AS recipient
-, localToken AS local_token
-, remotetoken AS remote_token
-, extraData AS extra_data
-, evt_tx_hash AS tx_hash
-, evt_index
-, contract_address
-FROM {{events}}
+, e.evt_block_time AS block_time
+, date_trunc('month', e.evt_block_time) AS block_month
+, e.evt_block_number AS block_number
+, e.amount AS amount_raw
+, e."from" AS sender
+, e.to AS recipient
+, e.localToken AS local_token
+, e.remotetoken AS remote_token
+, e.extraData AS extra_data
+, e.evt_tx_hash AS tx_hash
+, e.evt_index
+, e.contract_address
+FROM {{events}} e
 {% if is_incremental() %}
+LEFT JOIN {{this}} t ON t.tx_hash=e.evt_tx_hash AND t.evt_index=e.evt_index
+    AND t.blockchain IS NULL
 WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
-
 {% endif %}
 
 {% endmacro %}
