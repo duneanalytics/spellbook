@@ -34,6 +34,7 @@
     ,'tokens_zksync': {'blockchain': 'zksync', 'model': ref('tokens_zksync_erc20')}
     ,'tokens_zora': {'blockchain': 'zora', 'model': ref('tokens_zora_erc20')}
     ,'tokens_blast': {'blockchain': 'blast', 'model': ref('tokens_blast_erc20')}
+    ,'tokens_sepolia': {'blockchain': 'sepolia', 'model': ref('tokens_sepolia_erc20')}    
 } %}
 
 with
