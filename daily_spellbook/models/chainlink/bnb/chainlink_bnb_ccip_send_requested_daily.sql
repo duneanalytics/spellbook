@@ -1,6 +1,6 @@
 {{
   config(
-    
+
     alias='ccip_send_requested_daily',
     partition_by=['date_month'],
     materialized='incremental',
@@ -10,7 +10,6 @@
   )
 }}
 
-{% set incremental_interval = '7' %}
 
 SELECT
   'bnb' as blockchain,
@@ -23,8 +22,8 @@ SELECT
 FROM
   {{ref('chainlink_bnb_ccip_send_requested')}} ccip_send_requested
 {% if is_incremental() %}
-  WHERE evt_block_time >= date_trunc('day', now() - interval '{{incremental_interval}}' day)
-{% endif %}      
+  WHERE {{ incremental_predicate('evt_block_time') }}
+{% endif %}
 GROUP BY
   2, 5, 6
 ORDER BY

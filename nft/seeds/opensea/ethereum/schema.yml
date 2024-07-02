@@ -1,0 +1,14 @@
+version: 2
+
+seeds:
+  - name: opensea_wyvern_trades_samples
+    config:
+      column_types:
+        nft_token_id: uint256
+        tx_hash: varbinary
+        buyer: varbinary
+        seller: varbinary
+        price_raw: uint256
+        nft_contract_address: varbinary
+        platform_fee_amount_raw: uint256
+        royalty_fee_amount_raw: uint256

@@ -10,6 +10,9 @@
     )
 }}
 
+--
+-- Balancer v2 Pools Tokens Weights
+--
 WITH registered AS (
     SELECT
         poolID AS pool_id,
@@ -47,7 +50,20 @@ weighted_pool_2tokens_factory AS (
     AND call_create.call_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 ),
-
+weighted_pool_v2_factory AS (
+    SELECT
+        call_create.output_0 AS pool_id,
+        t.pos AS pos,
+        t.token_address AS token_address,
+        t2.normalized_weight AS normalized_weight
+    FROM {{ source('beethoven_x_fantom', 'WeightedPoolFactoryV2_call_create') }} AS call_create
+    CROSS JOIN UNNEST(call_create.tokens) WITH ORDINALITY t(token_address, pos)
+    CROSS JOIN UNNEST(call_create.normalizedWeights) WITH ORDINALITY t2(normalized_weight, pos)
+    WHERE t.pos = t2.pos
+    {% if is_incremental() %}
+    AND call_create.call_block_time >= date_trunc('day', now() - interval '7' day)
+    {% endif %}
+),
 normalized_weights AS (
     SELECT
         pool_id,
@@ -60,8 +76,20 @@ normalized_weights AS (
         token_address,
         normalized_weight / POWER(10, 18) AS normalized_weight
     FROM weighted_pool_2tokens_factory
+    UNION ALL
+    SELECT
+        pool_id,
+        token_address,
+        normalized_weight / POWER(10, 18) AS normalized_weight
+    FROM weighted_pool_v2_factory
 )
-SELECT 'fantom' as blockchain, r.pool_id, w.token_address, w.normalized_weight 
+
+SELECT 
+    'fantom' AS blockchain, 
+    '2' AS version,
+    r.pool_id, 
+    w.token_address, 
+    w.normalized_weight 
 FROM normalized_weights w 
 LEFT JOIN registered r ON BYTEARRAY_SUBSTRING(r.pool_id,1,20) = w.pool_id
 WHERE w.pool_id IS NOT NULL
