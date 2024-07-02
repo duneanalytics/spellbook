@@ -45,4 +45,5 @@ FROM (VALUES
     , (0x5d0270967bab81d0822e500b986cb6652186eaa9, 'AUC02', 18)
     , (0xc3323b6e71925b25943fb7369ee6769837e9c676, 'PORIGON', 18)
     , (0x365e13f973bd62024be8a70a225684c58baad03c, 'MPM', 18)
+    , (0xA135f5A2Fb085c15BF56e5703e61167Fb5Ae7E42, 'MIKI', 18)
 ) AS temp_table (contract_address, symbol, decimals)

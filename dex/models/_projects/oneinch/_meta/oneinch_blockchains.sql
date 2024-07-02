@@ -3,7 +3,6 @@
         schema = 'oneinch',
         alias = 'blockchains',
         materialized = 'table',
-        on_table_exists = 'drop',
         unique_key = ['blockchain'],
     )
 }}

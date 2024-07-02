@@ -95,7 +95,7 @@ WITH blur_trades AS (
     , bt.nft_token_id AS nft_token_id
     , UINT256 '1' AS nft_amount
     , bt.price_raw
-    , CASE WHEN bt.order_type = 0 THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 ELSE 0x0000000000a39bb272e79075ade125fd351887ac END AS currency_contract
+    , CASE WHEN bt.order_type = 0 THEN 0x4300000000000000000000000000000000000004 ELSE 0xb772d5c5f4a2eef67dfbc89aa658d2711341b8e5 END AS currency_contract
     , bt.project_contract_address
     , uint256 '0' AS platform_fee_amount_raw
     , CAST(NULL AS varbinary) AS platform_fee_address

@@ -675,5 +675,6 @@ FROM
         ('usa-american-coin', 'solana', 'USA', '69kdRLyP5DTRkpHraaSZAQbWmAwzF9guKjZfzMXzcbAs', 6),
         ('scnsol-socean-staked-sol', 'solana',  'SCNSOL', '5oVNBeEEQvYi1cX3ir8Dx5n1P7pdxydbGF2X4TxVusJm', 9),
         ('cwif-catwifhat', 'solana', 'CWIF', '7atgF8KQo4wJrD5ATGX7t1V2zVvykPJbFfNeVf1icFv1', 2),
-        ('sc-shark-cat', 'solana', 'SC', '6D7NaB2xsLd7cauWu1wKk6KBsJohJmP2qZH9GEfVi5Ui', 6)
+        ('sc-shark-cat', 'solana', 'SC', '6D7NaB2xsLd7cauWu1wKk6KBsJohJmP2qZH9GEfVi5Ui', 6),
+        ('io-ionet', 'solana', 'IO', 'BZLbGTNCSFfoth2GYDtwr7e4imWzpR5jqcUuGEwr646K', 8)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

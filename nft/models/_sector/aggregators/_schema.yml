@@ -3,7 +3,7 @@ version: 2
 models:
   - name: nft_aggregators
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, celo, ethereum, optimism, polygon
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, linea, mantle, optimism, polygon, scroll, zksync
       sector: nft
       contributors: hildobby, tomfutago, chuxin, 0xRob, soispoke
     config:

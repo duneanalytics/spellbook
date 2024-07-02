@@ -4565,4 +4565,5 @@ FROM (VALUES
     , ( 0x988567FE094570cCE1FFdA29D1f2d842B70492be, 'ZERO', 6)
     , ( 0x10dea67478c5f8c5e2d90e5e9b26dbe60c54d800, 'TAIKO', 18)
     , ( 0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b, 'syrupUSDC', 6)    
+    , ( 0xa8258deE2a677874a48F5320670A869D74f0cbC1, 'WAR', 18)    
 ) AS temp_table (contract_address, symbol, decimals)

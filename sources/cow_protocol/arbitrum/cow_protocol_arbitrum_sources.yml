@@ -4,21 +4,15 @@ sources:
   - name: gnosis_protocol_v2_arbitrum
     description: "Arbitrum Chain decoded tables related to CoW Protocol contract"
     tables:
-      - name: GPv2Settlement_evt_Trade
-        description: "Trade events emitted by GPv2Settlement"
+      - name: GPv2AllowListAuthentication_evt_SolverAdded
+        description: "GPv2AllowListAuthentication list of events when a Solver was added"
         columns:
-          - &feeAmount
-            name: feeAmount
-            description: "Amount (in sell token) in atoms of the trade fee"
-          - &buyAmount
-            name: buyAmount
-            description: "Amount (in atoms) of the buyToken bought"
-          - &buyToken
-            name: buyToken
-            description: "Contract address of token obtained in trade"
+          - &solver
+            name: solver
+            description: "Solver wallet address"
           - &contract_address
             name: contract_address
-            description: "Ethereum address of contract emitting the event"
+            description: "Arbitrum address of contract emitting the event"
           - &evt_block_number
             name: evt_block_number
             description: "Block number which processed the unique transaction hash"
@@ -33,6 +27,32 @@ sources:
             description: "Primary key of the transaction"
             tests:
               - not_null
+      - name: GPv2AllowListAuthentication_evt_SolverRemoved
+        description: "GPv2AllowListAuthentication list of events when a solver was removed"
+        columns:
+          - *solver
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+      - name: GPv2Settlement_evt_Trade
+        description: "Trade events emitted by GPv2Settlement"
+        columns:
+          - &feeAmount
+            name: feeAmount
+            description: "Amount (in sell token) in atoms of the trade fee"
+          - &buyAmount
+            name: buyAmount
+            description: "Amount (in atoms) of the buyToken bought"
+          - &buyToken
+            name: buyToken
+            description: "Contract address of token obtained in trade. 0xeee...ee represents native asset ETH"
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
           - &orderUid
             name: orderUid
             description: "Unique identifier of order involved in trade. Note that partially fillable orders can be touched multiple times so this is not a unique ID for trade events."
@@ -76,3 +96,29 @@ sources:
           - &trades
             name: trades
             description: "An array of order data for the trades being executed"
+      - name: GPv2Settlement_evt_Settlement
+        description: "Settlement events emitted by GPv2Settlement"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *solver
+      - name: GPv2Settlement_evt_Interaction
+        description: "Contract Interaction events emitted by GPv2Settlement"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &selector
+            name: selector
+            description: Method ID of the contract being interacted with
+          - &target
+            name: target
+            description: Target contract address of the interaction
+          - &value
+            name: value
+            description: ETH amount (in WEI) being passed into contract interaction

@@ -10,59 +10,107 @@
 
 {% set project_start_date = '2024-04-30' %}
 
-WITH 
-
-
+WITH
+raw_call_data AS (
+    SELECT
+        fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
+        ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
+    FROM (
+        SELECT
+            'Single' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleSingle') }}
+        UNION ALL
+        SELECT
+            'Single' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleSingleAndSignPermit') }}
+        UNION ALL
+        SELECT
+            'Single' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleSingleAndSignPermit2') }}
+        UNION ALL
+        SELECT
+            'Single' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_swapSingle') }}
+        UNION ALL
+        SELECT
+            'Single' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_swapSingleFromContract') }}
+        UNION ALL
+        SELECT
+            'Multi' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleMulti') }}
+        UNION ALL
+        SELECT
+            'Multi' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleMultiAndSignPermit') }}
+        UNION ALL
+        SELECT
+            'Multi' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleMultiAndSignPermit2') }}
+        UNION ALL
+        SELECT
+            'Multi' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_swapMulti') }}
+        UNION ALL
+        SELECT
+            'Aggregate' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleAggregate') }}
+        UNION ALL
+        SELECT
+            'Aggregate' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleAggregateAndSignPermit') }}
+        UNION ALL
+        SELECT
+            'Aggregate' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleAggregateAndSignPermit2') }}
+        UNION ALL
+        SELECT
+            'Aggregate' as fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order"
+        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_swapAggregate') }}
+    )
+    WHERE call_success = True
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('call_block_time') }}
+    {% endif %}
+),
+raw_call_and_event_data AS (
+    SELECT
+         fun_type, call_block_time, call_block_number, call_tx_hash, contract_address, "order", evt_index
+    FROM
+        (SELECT
+            evt_index, evt_tx_hash, evt_block_time, ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS row_num
+         FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_evt_BebopOrder') }}
+         {% if is_incremental() %}
+         WHERE {{ incremental_predicate('evt_block_time') }}
+         {% endif %}
+         ) evt
+         LEFT JOIN
+         (SELECT
+            fun_type, call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order", row_num
+          FROM raw_call_data
+         ) ex
+         ON ex.call_tx_hash = evt.evt_tx_hash and ex.row_num = evt.row_num
+),
 bebop_single_trade AS (
     SELECT
         call_block_time AS block_time,
         call_block_number AS block_number,
         call_tx_hash AS tx_hash,
         evt_index,
-        ex.contract_address,
-        from_hex(JSON_EXTRACT_SCALAR(ex."order", '$.taker_address')) as taker_address,
-        from_hex(JSON_EXTRACT_SCALAR(ex."order", '$.maker_address')) as maker_address,
-        from_hex(JSON_EXTRACT_SCALAR(ex."order", '$.taker_token')) AS taker_token_address,
-        from_hex(JSON_EXTRACT_SCALAR(ex."order", '$.maker_token')) AS maker_token_address,
-        JSON_EXTRACT_SCALAR(ex."order", '$.taker_amount') AS taker_token_amount,
-        JSON_EXTRACT_SCALAR(ex."order", '$.maker_amount') AS maker_token_amount,
+        contract_address,
+        from_hex(JSON_EXTRACT_SCALAR("order", '$.taker_address')) as taker_address,
+        from_hex(JSON_EXTRACT_SCALAR("order", '$.maker_address')) as maker_address,
+        from_hex(JSON_EXTRACT_SCALAR("order", '$.taker_token')) AS taker_token_address,
+        from_hex(JSON_EXTRACT_SCALAR("order", '$.maker_token')) AS maker_token_address,
+        JSON_EXTRACT_SCALAR("order", '$.taker_amount') AS taker_token_amount,
+        JSON_EXTRACT_SCALAR("order", '$.maker_amount') AS maker_token_amount,
         'Simple-Swap' as trade_type,
+        1 as taker_tokens_len,
+        1 as maker_tokens_len,
         cast(array[0, 0, 0] as array<bigint>) as trace_address
     FROM
-        (SELECT
-            evt_index, evt_tx_hash, evt_block_time, ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS row_num
-         FROM  {{ source('bebop_pmms_arbitrum', 'BebopSettlement_evt_BebopOrder') }}) evt
-    LEFT JOIN
-        (SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleSingle') }}
-        UNION ALL
-        SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleSingleAndSignPermit') }}
-        UNION ALL
-        SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleSingleAndSignPermit2') }}
-        UNION ALL
-        SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_swapSingle') }}
-        UNION ALL
-        SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_swapSingleFromContract') }}
-        ) ex
-        ON ex.call_tx_hash = evt.evt_tx_hash and ex.row_num = evt.row_num
-    WHERE ex.call_success = TRUE
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('evt.evt_block_time') }}
-    {% endif %}
+        raw_call_and_event_data
+    WHERE fun_type = 'Single'
 ),
 raw_bebop_multi_trade AS (
     SELECT
@@ -70,92 +118,37 @@ raw_bebop_multi_trade AS (
         call_block_number AS block_number,
         call_tx_hash AS tx_hash,
         evt_index,
-        ex.contract_address,
-        from_hex(JSON_EXTRACT_SCALAR(ex."order", '$.taker_address')) as taker_address,
-        from_hex(JSON_EXTRACT_SCALAR(ex."order", '$.maker_address')) as maker_address,
-        CAST(JSON_EXTRACT(ex."order", '$.taker_tokens') AS ARRAY<VARCHAR>) AS taker_tokens,
-        CAST(JSON_EXTRACT(ex."order", '$.maker_tokens') AS ARRAY<VARCHAR>) AS maker_tokens,
-        CAST(JSON_EXTRACT(ex."order", '$.taker_amounts') AS ARRAY<VARCHAR>) AS taker_amounts,
-        CAST(JSON_EXTRACT(ex."order", '$.maker_amounts') AS ARRAY<VARCHAR>) AS maker_amounts,
-        json_array_length(JSON_EXTRACT(ex."order", '$.taker_amounts')) as taker_tokens_len,
-        json_array_length(JSON_EXTRACT(ex."order", '$.maker_amounts')) as maker_tokens_len,
+        contract_address,
+        from_hex(JSON_EXTRACT_SCALAR("order", '$.taker_address')) as taker_address,
+        from_hex(JSON_EXTRACT_SCALAR("order", '$.maker_address')) as maker_address,
+        CAST(JSON_EXTRACT("order", '$.taker_tokens') AS ARRAY<VARCHAR>) AS taker_tokens,
+        CAST(JSON_EXTRACT("order", '$.maker_tokens') AS ARRAY<VARCHAR>) AS maker_tokens,
+        CAST(JSON_EXTRACT("order", '$.taker_amounts') AS ARRAY<VARCHAR>) AS taker_amounts,
+        CAST(JSON_EXTRACT("order", '$.maker_amounts') AS ARRAY<VARCHAR>) AS maker_amounts,
+        json_array_length(JSON_EXTRACT("order", '$.taker_amounts')) as taker_tokens_len,
+        json_array_length(JSON_EXTRACT("order", '$.maker_amounts')) as maker_tokens_len,
         0 as order_index
     FROM
-        (SELECT
-            evt_index, evt_tx_hash, evt_block_time, ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS row_num
-         FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_evt_BebopOrder') }}) evt
-    LEFT JOIN
-        (SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleMulti') }}
-        UNION ALL
-        SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleMultiAndSignPermit') }}
-        UNION ALL
-        SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleMultiAndSignPermit2') }}
-        UNION ALL
-        SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_swapMulti') }}
-        ) ex
-        ON ex.call_tx_hash = evt.evt_tx_hash and ex.row_num = evt.row_num
-    WHERE ex.call_success = TRUE
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('evt.evt_block_time') }}
-    {% endif %}
+        raw_call_and_event_data
+    WHERE fun_type = 'Multi'
 ),
-
 raw_bebop_aggregate_trade AS (
     SELECT
         call_block_time AS block_time,
         call_block_number AS block_number,
         call_tx_hash AS tx_hash,
         evt_index,
-        ex.contract_address,
-        from_hex(JSON_EXTRACT_SCALAR(ex."order", '$.taker_address')) as taker_address,
-        CAST(JSON_EXTRACT(ex."order", '$.maker_addresses') AS ARRAY<VARCHAR>) AS maker_addresses,
-        JSON_EXTRACT(ex."order", '$.taker_tokens') AS taker_tokens_json,
-        JSON_EXTRACT(ex."order", '$.maker_tokens') AS maker_tokens_json,
-        JSON_EXTRACT(ex."order", '$.taker_amounts') AS taker_amounts_json,
-        JSON_EXTRACT(ex."order", '$.maker_amounts') AS maker_amounts_json,
-        json_array_length(JSON_EXTRACT(ex."order", '$.maker_addresses')) as orders_len
+        contract_address,
+        from_hex(JSON_EXTRACT_SCALAR("order", '$.taker_address')) as taker_address,
+        CAST(JSON_EXTRACT("order", '$.maker_addresses') AS ARRAY<VARCHAR>) AS maker_addresses,
+        JSON_EXTRACT("order", '$.taker_tokens') AS taker_tokens_json,
+        JSON_EXTRACT("order", '$.maker_tokens') AS maker_tokens_json,
+        JSON_EXTRACT("order", '$.taker_amounts') AS taker_amounts_json,
+        JSON_EXTRACT("order", '$.maker_amounts') AS maker_amounts_json,
+        json_array_length(JSON_EXTRACT("order", '$.maker_addresses')) as orders_len
     FROM
-        (SELECT
-            evt_index, evt_tx_hash, evt_block_time, ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS row_num
-         FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_evt_BebopOrder') }}) evt
-    LEFT JOIN
-        (SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleAggregate') }}
-        UNION ALL
-        SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleAggregateAndSignPermit') }}
-        UNION ALL
-        SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_settleAggregateAndSignPermit2') }}
-        UNION ALL
-        SELECT
-            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
-            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
-        FROM {{ source('bebop_pmms_arbitrum', 'BebopSettlement_call_swapAggregate') }}
-        ) ex
-        ON ex.call_tx_hash = evt.evt_tx_hash and ex.row_num = evt.row_num
-    WHERE ex.call_success = TRUE
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('evt.evt_block_time') }}
-    {% endif %}
+        raw_call_and_event_data
+    WHERE fun_type = 'Aggregate'
 ),
 unnested_aggregate_orders AS (
     SELECT
@@ -215,6 +208,8 @@ bebop_multi_and_aggregate_trades AS (
           WHEN maker_tokens_len = 1 AND taker_tokens_len > 1 THEN 'Multi-Sell'
           ELSE 'Simple-Swap'
         END as trade_type,
+        taker_tokens_len,
+        maker_tokens_len,
         cast(array[order_index, taker_token_index, sequence_number - 1] as array<bigint>) as trace_address
     FROM unnested_taker_arrays
     CROSS JOIN UNNEST(sequence(1, maker_tokens_len)) AS t(sequence_number)
@@ -241,11 +236,11 @@ SELECT
   CASE 
     WHEN t.trade_type = 'Multi-Buy' THEN COALESCE(
         (CAST(t.maker_token_amount as double) / power(10, t_bought.decimals)) * p_bought.price,
-        (CAST(t.taker_token_amount as double) / power(10, t_sold.decimals)) * p_sold.price / t.trace_address[2]
+        (CAST(t.taker_token_amount as double) / power(10, t_sold.decimals)) * p_sold.price / maker_tokens_len
     )
     WHEN t.trade_type = 'Multi-Sell' THEN COALESCE(
         (CAST(t.taker_token_amount as double) / power(10, t_sold.decimals)) * p_sold.price,
-        (CAST(t.maker_token_amount as double) / power(10, t_bought.decimals)) * p_bought.price / t.trace_address[1]
+        (CAST(t.maker_token_amount as double) / power(10, t_bought.decimals)) * p_bought.price / taker_tokens_len
     )
     ELSE COALESCE(
         (CAST(t.maker_token_amount as double) / power(10, t_bought.decimals)) * p_bought.price,

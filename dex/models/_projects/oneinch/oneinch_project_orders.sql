@@ -7,7 +7,7 @@
         incremental_strategy = 'merge',
         partition_by = ['block_month'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address', 'order_hash']
+        unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address', 'order_hash', 'call_trade']
     )
 }}
 
@@ -65,6 +65,8 @@ meta as (
                 , order_start
                 , order_end
                 , order_deadline
+                , call_trade
+                , call_trades
             from {{ ref('oneinch_' + blockchain + '_project_orders') }}
             where call_success
             {% if not loop.last %} union all {% endif %}
@@ -79,6 +81,8 @@ meta as (
             , null as order_start
             , null as order_end
             , null as order_deadline
+            , 1 as call_trade
+            , 1 as call_trades
         from {{ ref('oneinch_lop') }}
         where call_success
     )
@@ -109,6 +113,7 @@ meta as (
         , tx_hash
         , call_trace_address
         , coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int)))) as order_hash
+        , call_trade
         , any_value(block_time) as block_time
         , any_value(project) as project
         , any_value(call_selector) as call_selector
@@ -127,11 +132,12 @@ meta as (
         , any_value(order_start) as order_start
         , any_value(order_end) as order_end
         , any_value(order_deadline) as order_deadline
+        , any_value(call_trades) as call_trades
         , any_value(flags) as flags
         , any_value(tag) as tag
     from (select * from orders, unnest(assets) as a(contract_address))
     left join prices using(blockchain, contract_address, minute)
-    group by 1, 2, 3, 4, 5
+    group by 1, 2, 3, 4, 5, 6
 )
 
 -- output --
@@ -161,6 +167,8 @@ select
     , order_start
     , order_end
     , order_deadline
+    , call_trade
+    , call_trades
     , flags
     , tag
     , date(date_trunc('month', block_time)) as block_month

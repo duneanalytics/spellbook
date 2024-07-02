@@ -22,6 +22,13 @@ FROM
     ('izi-izumi-finance', 'scroll', 'iZi', 0x60D01EC2D5E98Ac51C8B4cF84DfCCE98D527c747, 18),
     ('lusd-liquity-usd', 'scroll', 'LUSD', 0xeDEAbc3A1e7D21fE835FFA6f83a710c70BB1a051, 18),
     ('wsteth-wrapped-liquid-staked-ether-20', 'scroll', 'wstETH', 0xf610A9dfB7C89644979b4A0f27063E9e7d7Cda32, 18),
-    ('reth-rocket-pool-eth', 'scroll', 'rETH', 0x53878B874283351D26d206FA512aEcE1Bef6C0dD, 18)
-
+    ('reth-rocket-pool-eth', 'scroll', 'rETH', 0x53878B874283351D26d206FA512aEcE1Bef6C0dD, 18),
+    ('dai-dai', 'scroll', 'DAI', 0xca77eb3fefe3725dc33bccb54edefc3d9f764f97, 18),
+    ('stone-stakestone-ether', 'scroll', 'STONE', 0x80137510979822322193fc997d400d5a6c747bf7, 18),
+    ('sis-symbiosis-finance', 'scroll', 'SIS', 0x1467b62a6ae5cdcb10a6a8173cfe187dd2c5a136, 18),
+    ('rseth-rseth', 'scroll', 'wrsETH ', 0xa25b25548b4c98b0c7d3d27dca5d5ca743d68b7f, 18),
+    ('iusd-izumi-bond-usd', 'scroll', 'iUSD ', 0x0a3bb08b3a15a19b4de82f8acfc862606fb69a2d, 18),
+    ('pxeth-pirex-ether', 'scroll', 'pxETH ', 0x9e0d7d79735e1c63333128149c7b616a0dc0bbdb, 18),
+    ('frxeth-frax-ether', 'scroll', 'frxETH ', 0xecc68d0451e20292406967fe7c04280e5238ac7d, 18),
+    ('solvbtc-solv-protocol-solvbtc', 'scroll', 'SolvBTC ', 0x3ba89d490ab1c0c9cc2313385b30710e838370a4, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

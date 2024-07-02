@@ -63,3 +63,28 @@ select * from equality_checks where not contains(split(expected_type,'/'),actual
     } -%}
    {{ check_column_types_macro(model,column_types) }}
 {% endtest %}
+
+{% test check_columns_solana_dex_trades(model) %}
+    {%- set column_types = {
+        'blockchain': 'varchar',
+        'project': 'varchar',
+        'version': 'integer',
+        'block_month': 'date',
+        'block_slot': 'bigint',
+        'block_time': 'timestamp(3) with time zone',
+        'trade_source': 'varchar',
+        'token_bought_amount_raw': 'uint256',
+        'token_sold_amount_raw': 'uint256',
+        'fee_tier': 'double',
+        'token_bought_mint_address': 'varchar',
+        'token_sold_mint_address': 'varchar',
+        'token_bought_vault': 'varchar',
+        'token_sold_vault': 'varchar',
+        'project_program_id': 'varchar',
+        'trader_id': 'varchar',
+        'tx_id': 'varchar',
+        'outer_instruction_index': 'integer',
+        'inner_instruction_index': 'integer'
+    } -%}
+   {{ check_column_types_macro(model,column_types) }}
+{% endtest %}

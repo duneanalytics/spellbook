@@ -1,5 +1,4 @@
 {{ config(
-    tags = ['prod_exclude'],
     alias = 'bot_trades',
     schema = 'bonkbot_solana',
     partition_by = ['block_month'],
@@ -16,8 +15,8 @@
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
-  allFeePayments AS (
-    SELECT
+  feePayments AS (
+    SELECT DISTINCT
       tx_id,
       IF(balance_change > 0, 'SOL', 'SPL') AS feeTokenType,
       IF(
@@ -49,6 +48,19 @@ WITH
           AND token_balance_change > 0 -- SPL fee payments
         )
       )
+  ),
+  -- Eliminate duplicates (e.g. both SOL + WSOL in a single transaction)
+  allFeePayments AS (
+    SELECT
+      tx_id,
+      MIN(feeTokenType) AS feeTokenType,
+      SUM(fee_token_amount) AS fee_token_amount,
+      fee_token_mint_address
+    FROM
+      feePayments
+    GROUP BY
+      tx_id,
+      fee_token_mint_address
   ),
   botTrades AS (
     SELECT

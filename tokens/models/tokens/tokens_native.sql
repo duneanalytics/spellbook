@@ -23,4 +23,5 @@ FROM (VALUES
          , ('zksync', 'ETH', 'WETH', 0x000000000000000000000000000000000000800A, 18)
          , ('mantle', 'MNT', 'WMNT', 0x78c1b0c915c4faa5fffa6cabf0219da63d7f4cb8, 18)
          , ('blast', 'ETH', 'WETH', 0x4300000000000000000000000000000000000004, 18)
+         , ('mode', 'MODE', 'MODE', 0xdfc7c877a950e49d2610114102175a06c2e3167a, 18)
      ) AS temp_table (chain, symbol, price_symbol, price_address, decimals)

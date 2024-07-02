@@ -1,0 +1,150 @@
+version: 2
+
+models:
+  - name: nexusmutual_ethereum_staking_pools
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking pools base data for Nexus Mutual on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - product_id
+    columns:
+      - &pool_id
+        name: pool_id
+        description: "pool id"
+      - &pool_address
+        name: pool_address
+        description: "pool contract deployment address"
+      - &pool_name
+        name: pool_name
+        description: "pool name"
+      - &manager_address
+        name: manager_address
+        description: "manager address"
+      - &manager_ens
+        name: manager_ens
+        description: "manager ENS name (if available)"
+      - &manager
+        name: manager
+        description: "manager ENS name or address if ENS unavailable"
+      - &is_private_pool
+        name: is_private_pool
+        description: "is private pool? true/false"
+      - &initial_pool_fee
+        name: initial_pool_fee
+        description: "initial pool management fee"
+      - &current_pool_fee
+        name: current_pool_fee
+        description: "current pool management fee"
+      - &max_management_fee
+        name: max_management_fee
+        description: "max pool management fee"
+      - &product_id
+        name: product_id
+        description: "product id"
+      - &initial_price
+        name: initial_price
+        description: "product initial price"
+      - &target_price
+        name: target_price
+        description: "product target price"
+      - &initial_weight
+        name: initial_weight
+        description: "product initial weight"
+      - &target_weight
+        name: target_weight
+        description: "product target weight"
+      - &pool_created_time
+        name: pool_created_time
+        description: "pool created datetime in UTC"
+      - &product_added_time
+        name: product_added_time
+        description: "product added datetime in UTC"
+
+  - name: nexusmutual_ethereum_staking_events
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking pools event history for Nexus Mutual on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - block_time
+            - evt_index
+            - tx_hash
+    columns:
+      - &flow_type
+        name: flow_type
+        description: "flow event type: deposit, deposit extended, withdraw or stake burn"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - *pool_address
+      - &token_id
+        name: token_id
+        description: "ERC721 token id representing staking position"
+      - &tranche_id
+        name: tranche_id
+        description: "staking tranche period"
+      - &init_tranche_id
+        name: init_tranche_id
+        description: "initial staking tranche period (applies to: deposit extended)"
+      - &new_tranche_id
+        name: new_tranche_id
+        description: "new staking tranche period (applies to: deposit extended)"
+      - &tranche_expiry_date
+        name: tranche_expiry_date
+        description: "staking period expiry date"
+      - &is_active
+        name: is_active
+        description: "is staking event still active or already expired"
+      - &amount
+        name: amount
+        description: "staking amount"
+      - &topup_amount
+        name: topup_amount
+        description: "staking top-up amount (applies to: deposit extended)"
+      - &user
+        name: user
+        description: "staking user"
+      - &evt_index
+        name: evt_index
+        description: "event index"
+      - &tx_hash
+        name: tx_hash
+        description: "unique transaction hash value"
+
+  - name: nexusmutual_ethereum_staking_deposit_extensions
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking pools deposit extensions for Nexus Mutual on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_address
+            - token_id
+            - init_tranche_id
+            - current_tranche_id
+    columns:
+      - *pool_address
+      - *token_id
+      - *init_tranche_id
+      - name: current_tranche_id
+        description: "current staking tranche period (most recent one in the chain of extensions)"
+      - name: total_amount
+        description: "total staking amount (initial deposit + all top-up amounts)"
+      - *is_active

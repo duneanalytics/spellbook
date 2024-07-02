@@ -283,6 +283,7 @@ v1_twocrypto as (
         AND dp.call_tx_hash = p.evt_tx_hash
 ),
 
+
 v1_pools_deployed AS (
     SELECT
         version,

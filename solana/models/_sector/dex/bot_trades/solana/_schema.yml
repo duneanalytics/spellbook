@@ -331,7 +331,7 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('looter_solana_trades_seed')
           blockchain: solana
-          
+
   - name: consortium_key_solana_bot_trades
     meta:
       blockchain: solana
@@ -352,7 +352,7 @@ models:
             - inner_instruction_index
       - check_bot_trades_seed:
           seed_file: ref('consortium_key_solana_trades_seed')
-          blockchain: solana 
+          blockchain: solana
 
   - name: wifbot_solana_bot_trades
     meta:
@@ -397,3 +397,35 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('soul_sniper_solana_trades_seed')
           blockchain: solana
+
+  - name: consortium_key_solana_bot_users
+    meta:
+      blockchain: solana
+      sector: dex
+      project: consortium_key
+      contributors: whale_hunter
+    description: >
+      consortium_key users on Solana
+    config:
+      tags: [ "solana", "dex", "bot_trades" ]
+      columns:
+        - name: user
+          tests: unique
+
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user
+  - name: soul_sniper_solana_bot_users
+    meta:
+      blockchain: solana
+      sector: dex
+      project: soul_sniper
+      contributors: whale_hunter
+    description: >
+      soul_sniper users on Solana
+    config:
+      tags: [ "solana", "dex", "bot_trades" ]
+      columns:
+        - name: user
+          tests: unique

@@ -7,7 +7,6 @@
 
 {% set base_models = [
     ref('sushiswap_v2_linea_base_trades')
-    , ref('lynex_linea_base_trades')
     , ref('nile_linea_base_trades')
     , ref('echodex_linea_base_trades')
     , ref('secta_linea_base_trades')
@@ -38,7 +37,7 @@ WITH base_union AS (
             , project_contract_address
             , tx_hash
             , evt_index
-        FROM 
+        FROM
             {{ base_model }}
         {% if not loop.last %}
         UNION ALL
