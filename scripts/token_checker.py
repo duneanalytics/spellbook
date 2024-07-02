@@ -26,7 +26,9 @@ class TokenChecker:
                             "zksync": "zksync-zksync",
                             "zora": "eth-ethereum",
                             "mantle": "mnt-mantle",
-                            "blast": "blast-blast"
+                            "blast": "blast-blast",
+                            "linea": "eth-ethereum",
+                            "scroll": "eth-ethereum"
                             }
         self.tokens_by_id = self.get_tokens()
         self.contracts_by_chain = self.get_contracts()

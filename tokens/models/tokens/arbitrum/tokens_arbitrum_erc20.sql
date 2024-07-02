@@ -82,4 +82,5 @@ FROM (VALUES
     , (0xD460f305B150Bc70b063E806815B50BebE9F21b1, 'APRTo', 18)
     , (0x577fd586c9e6ba7f2e85e025d5824dbe19896656, 'SYNO', 18)
     , (0x6985884c4392d348587b19cb9eaaf157f13271cd, 'ZRO', 18)
+    , (0xa7997f0ec9fa54e89659229fb26537b6a725b798, 'PAL', 18)
 ) AS temp_table (contract_address, symbol, decimals)

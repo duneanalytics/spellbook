@@ -22,7 +22,7 @@ select
     ,max_by(tx_hash, block_time) as last_tx_hash
     ,max(block_time) as last_block_time
 from {{source('labels','owner_addresses')}} l
-inner join {{ref('tokens_transfers')}} t
+inner join {{source('tokens', 'transfers')}} t
 on t.blockchain = l.blockchain
  and "to" = l.address
  and amount_usd < pow(10,12)
@@ -40,7 +40,7 @@ select
     ,max_by(tx_hash, block_time) as last_tx_hash
     ,max(block_time) as last_block_time
 from {{source('labels','owner_addresses')}} l
-inner join {{ref('tokens_transfers')}} t
+inner join {{source('tokens', 'transfers')}} t
 on t.blockchain = l.blockchain
  and "from" = l.address
  and amount_usd < pow(10,12)
