@@ -20,7 +20,7 @@ ref('dao_transactions_ethereum_erc20')
 ,ref('dao_transactions_base_eth')
 ,ref('dao_transactions_arbitrum_erc20')
 ,ref('dao_transactions_arbitrum_eth')
-,ref('dao_transactions_zksync_erc20') -- eth transfers are logged on zksync 
+,ref('dao_transactions_zksync_erc20')
 ] %}
 
 SELECT *
