@@ -25,6 +25,9 @@ unioned_evt_sources AS (
             *
         FROM
             {{ evt_source }}
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('evt_block_time') }}
+        {% endif %}
         {% if not loop.last %}
         UNION
         {% endif %}
