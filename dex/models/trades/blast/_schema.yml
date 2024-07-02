@@ -59,3 +59,18 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('thruster_blast_base_trades_seed')
+
+  - name: fenix_blast_base_trades
+    meta:
+      blockchain: blast
+      sector: dex
+      project: fenix
+      contributors: hosuke
+    config:
+      tags: [ 'blast', 'dex', 'trades', 'fenix' ]
+    description: "Fenix blast v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
