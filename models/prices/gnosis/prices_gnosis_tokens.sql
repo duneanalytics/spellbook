@@ -37,5 +37,7 @@ FROM
     ('olas-autonolas', 'gnosis', 'OLAS', 0xcE11e14225575945b8E6Dc0D4F2dD4C570f79d9f, 18),
     ('steth-lido-staked-ether', 'gnosis', 'stETH', 0x3C037849a8ffcf19886e2f5B04f293B7847D0377, 18),
     ('crvusd-curvefi-usd-stablecoin', 'gnosis', 'CRVUSD', 0xaBEf652195F98A91E490f047A5006B71c85f058d, 18),
-    ('safe-safe', 'gnosis', 'SAFE', 0x4d18815d14fe5c3304e87b3fa18318baa5c23820, 18)
+    ('safe-safe', 'gnosis', 'SAFE', 0x4d18815d14fe5c3304e87b3fa18318baa5c23820, 18),
+    ('giv-giv', 'gnosis', 'GIV', 0x4f4F9b8D5B4d0Dc10506e5551B0513B61fD59e75, 18),
+    ('usdc-usd-coin', 'gnosis', 'USDC.e', 0x2a22f9c3b484c3629090feed35f17ff8f88f76f0, 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
