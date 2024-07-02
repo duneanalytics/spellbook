@@ -31,7 +31,7 @@ meta as (
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
         {% else %}
-            block_time >= (select first_deploy_at from meta)
+            block_time >= timestamp '2024-07-01'
         {% endif %}
 )
 

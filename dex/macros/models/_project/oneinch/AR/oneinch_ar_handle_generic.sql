@@ -46,7 +46,7 @@ from (
     {% if is_incremental() %}
         where {{ incremental_predicate('call_block_time') }}
     {% else %}
-        where call_block_time >= timestamp '{{ start_date }}'
+        where call_block_time >= timestamp '2024-07-01'
     {% endif %}
 )
 join traces_cte using(call_block_number, call_tx_hash, call_trace_address)
