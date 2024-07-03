@@ -25,6 +25,7 @@ FROM
     ('aeth-ankreth','zkevm','AETH',0x12d8ce035c5de3ce39b1fdd4c1d5a745eaba3b8c,18),
     ('bal-balancer','zkevm','BAL',0x120ef59b80774f02211563834d8e3b72cb1649d6,18),
     ('usdt-tether','zkevm','USDT',0x1e4a5963abfd975d8c9021ce480b42188849d41d,6),
-    ('gyd-gyro-dollar','zkevm','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8,18)
+    ('gyd-gyro-dollar','zkevm','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8,18),
+    ('wsteth-wrapped-liquid-staked-ether-20', 'zkevm', 'wstETH',0x5d8cff95d7a57c0bf50b30b43c7cc0d52825d4a9,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 
