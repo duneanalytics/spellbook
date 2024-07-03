@@ -14,11 +14,13 @@
 
 
 {% set evm_trading_bot = [
-    ref('banana_gun_avalanche_c_bot_trades')
+    {# ref('banana_gun_avalanche_c_bot_trades')
     , ref('banana_gun_base_bot_trades')
     , ref('banana_gun_blast_bot_trades')
     , ref('banana_gun_bnb_bot_trades')
-    , ref('banana_gun_ethereum_bot_trades')
+    ,  #}
+    
+   ref('banana_gun_ethereum_bot_trades')
 ] %}
 
 {% for bot in solana_trading_bot %}
