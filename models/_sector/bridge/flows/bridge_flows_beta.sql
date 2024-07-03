@@ -4,7 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain','tx_hash','evt_index'],
+    unique_key = ['unique_identifier'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook='{{ expose_spells(blockchains = \'["base"]\',
                                 spell_type = "sector",
