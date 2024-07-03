@@ -52,8 +52,6 @@ SELECT block_time,
        user,
        tx_hash,
        evt_index,
-       outer_instruction_index,
-       inner_instruction_index,
        is_last_trade_in_transaction
 FROM {{ bot }}
 {% if not loop.last %}
