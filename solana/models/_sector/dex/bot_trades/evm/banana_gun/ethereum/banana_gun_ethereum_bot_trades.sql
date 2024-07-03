@@ -184,7 +184,7 @@ SELECT
   CAST(user AS VARCHAR) AS user,
   CAST(botTrades.tx_hash AS VARCHAR) AS tx_hash,
   evt_index,
-  IF(evt_index = highestEventIndex, true, false) AS isLastTradeInTransaction
+  IF(evt_index = highestEventIndex, true, false) AS is_last_trade_in_transaction
 FROM
   botTrades
   JOIN highestEventIndexForEachTrade ON botTrades.tx_hash = highestEventIndexForEachTrade.tx_hash
