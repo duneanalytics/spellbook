@@ -22,7 +22,7 @@ WITH
     SELECT
       address
     FROM
-      ethereum.creation_traces
+      {{ source('ethereum','creation_traces') }}
     WHERE
       (
         "from" = {{bot_deployer_1}}
