@@ -57,7 +57,7 @@ WITH
       {{ source('dex', 'trades') }} as trades
       JOIN botContracts ON trades.tx_to = botContracts.address
     WHERE
-      trades.blockchain = 'ethereum'
+      trades.blockchain = '{{blockchain}}'
       AND trades.block_time >= TIMESTAMP '{{project_start_date}}'
   ),
   highestEventIndexForEachTrade AS (
