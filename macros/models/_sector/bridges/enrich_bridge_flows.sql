@@ -119,6 +119,7 @@ SELECT source_blockchain
 , source_contract_address
 , destination_contract_address
 , destination_blockchain || '-' || CAST (destination_tx_hash AS varchar) || '-' CAST (destination_evt_index AS varchar) AS unique_identifier
+, destination_block_time AS last_updated
 FROM received_flows
 
 UNION ALL
@@ -148,5 +149,6 @@ SELECT source_blockchain
 , source_contract_address
 , destination_contract_address
 , source_blockchain || '-' || CAST (source_tx_hash AS varchar) || '-' CAST (source_evt_index AS varchar) AS unique_identifier
+, source_block_time AS last_updated
 FROM sent_flows
 {% endmacro %}

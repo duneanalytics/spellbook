@@ -136,3 +136,6 @@ models:
       - &unique_identifier
         name: unique_identifier
         description: "Unique bridge transaction identifier"
+      - &last_updated
+        name: last_updated
+        description: "Last update time"
