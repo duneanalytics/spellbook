@@ -18,11 +18,11 @@
     , ref('banana_gun_blast_bot_trades')
     , ref('banana_gun_bnb_bot_trades')
     , #}
-{% set evm_trading_bot = [
+{% set banana_gun_blockchains = [
    ref('banana_gun_ethereum_bot_trades')
 ] %}
 
-{% for bot in botTrades %}
+{% for blockchain in banana_gun_blockchains %}
 SELECT block_time,
        block_date,
        block_month,
@@ -60,7 +60,7 @@ SELECT block_time,
        outer_instruction_index,
        inner_instruction_index,
        is_last_trade_in_transaction
-FROM {{ bot }}
+FROM {{ blockchain }}
 {% if not loop.last %}
 UNION ALL
 {% endif %}

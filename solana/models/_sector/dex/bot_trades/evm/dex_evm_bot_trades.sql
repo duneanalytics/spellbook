@@ -13,11 +13,11 @@
 
 
 
-{% set evm_trading_bot = [
+{% set evm_trading_bots = [
     ref('banana_gun_evm_bot_trades')
 ] %}
 
-{% for bot in evm_trading_bot %}
+{% for bot in evm_trading_bots %}
 SELECT block_time,
        block_date,
        block_month,
