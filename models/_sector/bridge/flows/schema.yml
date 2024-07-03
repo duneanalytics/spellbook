@@ -16,8 +16,8 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain which the DEX is deployed"
-      - &project
-        name: project
+      - &project_version
+        name: project_version
         description: "Project name of the bridge"
       - &version
         name: version
