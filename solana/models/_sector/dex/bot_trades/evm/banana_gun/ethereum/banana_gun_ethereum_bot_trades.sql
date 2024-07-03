@@ -33,8 +33,6 @@ WITH
   botTrades AS (
     SELECT
       trades.block_time,
-      date_trunc('day', trades.block_time) as block_date,
-      date_trunc('month', trades.block_time) as block_month,
       amount_usd,
       IF(
         token_sold_address = {{weth}},
@@ -149,6 +147,8 @@ WITH
   )
 SELECT
   block_time,
+  date_trunc('day', trades.block_time) as block_date,
+  date_trunc('month', trades.block_time) as block_month,
   block_number,
   '{{blockchain}}' AS blockchain,
   -- Trade
