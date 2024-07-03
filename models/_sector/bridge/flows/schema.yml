@@ -72,21 +72,67 @@ models:
     description: "Bridge raw flows"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['blockchain','tx_hash','evt_index']
+          combination_of_columns: ['unique_identifier']
     columns:
-      - *blockchain
+      - &source_blockchain
+        name: source_blockchain
+        description: "Blockchain where tokens were sent"
+      - &destination_blockchain
+        name: destination_blockchain
+        description: "Blockchain where tokens were received"
       - *project
-      - *version
-      - *flows_type
-      - *block_month
-      - *block_time
-      - *block_number
-      - *amount_raw 
-      - *sender 
-      - *recipient 
-      - *local_token  
-      - *remote_token
-      - *extra_data 
-      - *tx_hash
-      - *evt_index  
-      - *contract_address 
+      - *project_version
+      - &source_block_time
+        name: source_block_time
+        description: "Block time of sent tokens on source chain"
+      - &source_block_month
+        name: source_block_month
+        description: "Block month of sent tokens on source chain"
+      - &source_block_number
+        name: source_block_number
+        description: "Block number of sent tokens on source chain"
+      - &source_amount_raw
+        name: source_amount_raw
+        description: "Raw amount of sent tokens on source chain"
+      - &destination_block_time
+        name: destination_block_time
+        description: "Block time of received tokens on destination chain"
+      - &destination_block_month
+        name: destination_block_month
+        description: "Block month of received tokens on destination chain"
+      - &destination_block_number
+        name: destination_block_number
+        description: "Block number of received tokens on destination chain"
+      - &destination_amount_raw
+        name: destination_amount_raw
+        description: "Raw amount of sent tokens on destination chain"
+      - *sender
+      - *recipient
+      - &source_token_address
+        name: source_token_address
+        description: "Token address of sent tokens on source chain"
+      - &destination_token_address
+        name: destination_token_address
+        description: "Token address of received tokens on destination chain"
+      - *extra_data
+      - &source_tx_hash
+        name: source_tx_hash
+        description: "Transaction hash on destination chain of received tokens"
+      - &source_evt_index
+        name: source_evt_index
+        description: "Event index on source chain of sent tokens"
+      - &destination_tx_hash
+        name: destination_tx_hash
+        description: "Transaction hash on destination chain of received tokens"
+      - &destination_evt_index
+        name: destination_evt_index
+        description: "Event index on destination chain of received tokens"
+      - &source_contract_address
+        name: source_contract_address
+        description: "Contract address used for the sent bridge tx"
+      - &destination_contract_address
+        name: destination_contract_address
+        description: "Contract address used for the received bridge tx"
+      - &unique_identifier
+        name: unique_identifier
+        description: "Unique bridge transaction identifier"
