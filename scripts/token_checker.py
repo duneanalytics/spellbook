@@ -28,7 +28,8 @@ class TokenChecker:
                             "mantle": "mnt-mantle",
                             "blast": "blast-blast",
                             "linea": "eth-ethereum",
-                            "scroll": "eth-ethereum"
+                            "scroll": "eth-ethereum",
+                            "zkevm": "eth-ethereum"
                             }
         self.tokens_by_id = self.get_tokens()
         self.contracts_by_chain = self.get_contracts()
