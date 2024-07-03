@@ -23,7 +23,7 @@ select
     ,count(*) as transfers_in
     ,sum(amount_usd) as usd_in
 from {{source('labels','owner_addresses')}} l
-inner join {{ref('tokens_transfers')}} t
+inner join {{source('tokens', 'transfers')}} t
  on t.blockchain = l.blockchain
  and "to" = l.address
  and amount_usd < pow(10,12)
@@ -45,7 +45,7 @@ select
     ,count(*) as transfers_out
     ,sum(amount_usd)  as usd_out
 from {{source('labels','owner_addresses')}} l
-inner join {{ref('tokens_transfers')}} t
+inner join {{source('tokens', 'transfers')}} t
  on t.blockchain = l.blockchain
  and "from" = l.address
  and amount_usd < pow(10,12)
