@@ -13,13 +13,12 @@
 
 
 
-   {# ref('banana_gun_avalanche_c_bot_trades')
-    , ref('banana_gun_base_bot_trades')
-    , ref('banana_gun_blast_bot_trades')
-    , ref('banana_gun_bnb_bot_trades')
-    , #}
 {% set banana_gun_blockchains = [
-   ref('banana_gun_ethereum_bot_trades')
+  ref('banana_gun_avalanche_c_bot_trades')
+  , ref('banana_gun_ethereum_bot_trades')
+  , ref('banana_gun_base_bot_trades')
+  , ref('banana_gun_blast_bot_trades')
+  , ref('banana_gun_bnb_bot_trades')
 ] %}
 
 {% for blockchain in banana_gun_blockchains %}
