@@ -32,7 +32,7 @@ WITH
   ),
   botTrades AS (
     SELECT
-      dex.trades.block_time,
+      trades.block_time,
       amount_usd,
       IF(
         token_sold_address = {{weth}},
@@ -51,14 +51,14 @@ WITH
       project_contract_address,
       tx_from AS user,
       tx_to AS bot,
-      dex.trades.tx_hash,
+      trades.tx_hash,
       evt_index
     FROM
-      dex.trades
-      JOIN botContracts ON dex.trades.tx_to = botContracts.address
+      {{ source('dex', 'trades') }} as trades
+      JOIN botContracts ON trades.tx_to = botContracts.address
     WHERE
-      dex.trades.blockchain = 'ethereum'
-      AND dex.trades.block_time >= TIMESTAMP '{{project_start_date}}'
+      trades.blockchain = 'ethereum'
+      AND trades.block_time >= TIMESTAMP '{{project_start_date}}'
   ),
   highestEventIndexForEachTrade AS (
     SELECT
@@ -76,7 +76,7 @@ WITH
       CAST(value AS DECIMAL (38, 0)) AS deltaGwei,
       CAST(value AS DECIMAL (38, 0)) AS depositGwei
     FROM
-      ethereum.traces
+      {{ source('ethereum','traces') }}
       JOIN botContracts ON to = botContracts.address
     WHERE
       block_time >= TIMESTAMP '{{project_start_date}}'
@@ -91,7 +91,7 @@ WITH
       block_hash,
       to
     FROM
-      ethereum.traces
+      {{ source('ethereum','traces') }}
       JOIN botContracts ON "from" = botContracts.address
     WHERE
       block_time >= TIMESTAMP '{{project_start_date}}'
@@ -138,7 +138,7 @@ WITH
       SUM(deltaGwei * -1) / 1e18 AS bribeETH
     FROM
       botETHWithdrawals
-      JOIN ethereum.blocks AS blocks ON (
+      JOIN {{ source('ethereum','blocks') }} AS blocks ON (
         botETHWithdrawals.block_hash = blocks.hash
         AND botETHWithdrawals.to = blocks.miner
       )
@@ -188,7 +188,7 @@ FROM
   JOIN highestEventIndexForEachTrade ON botTrades.tx_hash = highestEventIndexForEachTrade.tx_hash
   LEFT JOIN botETHDeltas ON botTrades.tx_hash = botETHDeltas.tx_hash
   LEFT JOIN minerBribes ON botTrades.tx_hash = minerBribes.tx_hash
-  LEFT JOIN prices.usd ON (
+  LEFT JOIN {{ source('prices', 'usd') }} ON (
     blockchain = '{{blockchain}}'
     AND contract_address = {{weth}}
     AND minute = DATE_TRUNC('minute', block_time)
