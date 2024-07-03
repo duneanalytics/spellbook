@@ -1,18 +1,24 @@
 version: 2
 
 models:
-  - name: bridge_ethereum_flows
+  - name: bridge_base_base_raw_flows
     meta:
-      blockchain: ethereum
+      blockchain: base
       sector: bridge
       project: base
       contributors: [ 'hildobby']
     config:
-      tags: [ 'base', 'ethereum', 'bridge', 'flows' ]
-    description: "Base bridge flows on Ethereum"
+      tags: [ 'base', 'bridge', 'flows' ]
+    description: "Base bridge flows on Base"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash', 'evt_index']
+          combination_of_columns: ['tx_hash','evt_index']
+      - equal_rowcount_with_sources:
+          evt_sources:
+            - source('base_base','L2StandardBridge_evt_ERC20BridgeInitiated')
+            - source('base_base','L2StandardBridge_evt_ETHBridgeInitiated')
+            - source('base_base','L2StandardBridge_evt_ERC20BridgeFinalized')
+            - source('base_base','L2StandardBridge_evt_ETHBridgeFinalized')
     columns:
       - &blockchain
         name: blockchain
@@ -43,7 +49,7 @@ models:
         description: "Sender address"
       - &recipent 
         name: recipent
-        description: "Recipent address"
+        description: "Receiver address"
       - &local_token  
         name: local_token
         description: "Local token address"
@@ -62,33 +68,3 @@ models:
       - &contract_address 
         name: contract_address
         description: "Contract address used for the bridge tx"
-
-  - name: bridge_base_flows
-    meta:
-      blockchain: base
-      sector: bridge
-      project: base
-      contributors: [ 'hildobby']
-    config:
-      tags: [ 'base', 'bridge', 'flows' ]
-    description: "Base bridge flows on Ethereum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns: ['tx_hash', 'evt_index']
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *flows_type
-      - *block_month
-      - *block_time
-      - *block_number
-      - *amount_raw
-      - *sender
-      - *recipent
-      - *local_token
-      - *remote_token
-      - *extra_data
-      - *tx_hash
-      - *evt_index
-      - *contract_address 

@@ -1,14 +1,14 @@
+{% set blockchain = 'base' %}
+
 {{ config(
-    schema = 'bridge',
-    alias = 'raw_flows',
-    materialized = 'view',
-    unique_key = ['blockchain','tx_hash','evt_index']
-)
+    schema = 'bridge_' + blockchain,
+    alias = 'flows',
+    materialized = 'view'
+    )
 }}
 
-{% set chains = [
-    'ethereum'
-    , 'base'
+{% set bridge_platforms = [
+    'bridge_base_base_raw_flows'
 ] %}
 
 SELECT *
@@ -30,7 +30,7 @@ FROM (
     , tx_hash
     , evt_index
     , contract_address
-    FROM {{ ref('bridge_'~chain~'_flows') }}
+    FROM {{ ref(bridge_platforms) }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}

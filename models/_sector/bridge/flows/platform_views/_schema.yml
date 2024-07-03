@@ -9,4 +9,4 @@ models:
      contributors: hildobby
    config:
      tags: ['bridge', 'flows', 'ethereum']
-   description: "Bridge flows view for Base's official bridge"
+   description: "Bridge flows view for Base's native bridge"
