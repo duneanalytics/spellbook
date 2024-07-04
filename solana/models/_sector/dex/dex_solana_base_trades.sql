@@ -18,8 +18,6 @@
     ref('orca_whirlpool_base_trades')
     , ref('raydium_v3_base_trades')
     , ref('raydium_v4_base_trades')
-    , ref('raydium_v3_trades')
-    , ref('raydium_v4_trades')
     , ref('lifinity_v1_base_trades')
     , ref('lifinity_v2_base_trades')
     , ref('phoenix_v1_trades')
