@@ -1,7 +1,7 @@
-{% macro 
+{% macro
     oneinch_lop_macro(
         blockchain
-    ) 
+    )
 %}
 
 
@@ -68,7 +68,7 @@ orders as (
                 , call_type
             from {{ ref('oneinch_' + blockchain + '_lop_raw_traces') }}
             where
-                {% if is_incremental() %} 
+                {% if is_incremental() %}
                     {{ incremental_predicate('block_time') }}
                 {% else %}
                     block_time >= timestamp '{{ contract_data['start'] }}'
@@ -130,6 +130,7 @@ select
     ) as remains
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
+    , date(date_trunc('day', l.block_time) as date) as block_date,
 from (
     {{
         add_tx_columns(
