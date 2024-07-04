@@ -451,3 +451,25 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('tirador_solana_trades_seed')
           blockchain: solana
+          
+  - name: unibot_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: unibot
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "unibot", "trades"]
+    description: >
+      Unibot trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('unibot_solana_trades_seed')
+          blockchain: solana
