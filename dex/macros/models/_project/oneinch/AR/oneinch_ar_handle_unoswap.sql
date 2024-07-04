@@ -16,7 +16,7 @@
 select
     block_number
     , block_time
-    , date(date_trunc('day', call_block_time)) as block_date
+    , date(date_trunc('day', block_time)) as block_date
     , tx_hash
     , '{{ contract }}' as contract_name
     , '{{ contract_data.version }}' as protocol_version
