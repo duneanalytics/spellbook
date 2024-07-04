@@ -14,7 +14,7 @@ SELECT
     'bnb' AS blockchain
     , evt_block_time AS block_time
     , evt_block_number AS block_number
-    , cast(date_trunc('day', evt_block_number) as date) as block_date
+    , cast(date_trunc('day', evt_block_time) as date) as block_date
     , 'friend3' AS project
     , trader
     , subject
