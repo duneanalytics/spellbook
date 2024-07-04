@@ -146,6 +146,7 @@ SELECT
   block_time,
   block_date,
   block_month,
+  'Maestro' as bot,
   blockchain,
   amount_usd,
   type,
