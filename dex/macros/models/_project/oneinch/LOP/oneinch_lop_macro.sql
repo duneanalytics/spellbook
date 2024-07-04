@@ -15,6 +15,7 @@ orders as (
                 blockchain
                 , call_block_number as block_number
                 , call_block_time as block_time
+                , date(date_trunc('day', call_block_time)) as block_date
                 , call_tx_hash as tx_hash
                 , '{{ contract }}' as contract_name
                 , '{{ contract_data['version'] }}' as protocol_version
@@ -84,6 +85,7 @@ select
     blockchain
     , block_number
     , block_time
+    , block_date
     , tx_hash
     , tx_from
     , tx_to
@@ -130,7 +132,7 @@ select
     ) as remains
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
-    , date(date_trunc('day', block_time)) as block_date
+
 from (
     {{
         add_tx_columns(
