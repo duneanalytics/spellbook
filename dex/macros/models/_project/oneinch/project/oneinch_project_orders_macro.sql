@@ -12,7 +12,9 @@ with
 logs as (
 {% for event, event_data in oneinch_project_orders_cfg_events_macro().items() %}
     select
-        block_number
+        '{{ blockchain }}' as blockchain
+        , block_number
+        , block_time
         , tx_hash
         , index
         , contract_address
@@ -21,6 +23,7 @@ logs as (
         , {{ event_data.get("maker", "null") }} as log_maker
         , {{ event_data.get("taker", "null") }} as log_taker
         , {{ event_data.get("receiver", "null") }} as log_receiver
+        , {{ event_data.get("pool", "null") }} as log_pool
         , {{ event_data.get("maker_asset", "null") }} as log_maker_asset
         , {{ event_data.get("taker_asset", "null") }} as log_taker_asset
         , try(bytearray_to_uint256({{ event_data.get("maker_max_amount", "null") }})) as log_maker_max_amount
@@ -49,11 +52,9 @@ logs as (
     from {{ ref('oneinch_' + blockchain + '_project_orders_raw_logs') }}
     where
         topic0 = {{ event }}
-        {% if is_incremental() %}
-            and {{ incremental_predicate('block_time') }}
-        {% else %}
-            and block_time >= timestamp '{{date_from}}'
-        {% endif %}
+        and {% if is_incremental() %}{{ incremental_predicate('block_time') }}
+            {% else %}block_time >= timestamp '{{date_from}}'
+            {% endif %}
     {% if not loop.last %}union all{% endif %}
 {% endfor %}
 )
@@ -84,6 +85,7 @@ logs as (
             , trade['maker'] as call_maker
             , trade['taker'] as call_taker
             , trade['receiver'] as call_receiver
+            , trade['pool'] as call_pool
             , trade['maker_asset'] as call_maker_asset
             , trade['taker_asset'] as call_taker_asset
             , try(bytearray_to_uint256(trade['maker_max_amount'])) as call_maker_max_amount
@@ -135,6 +137,7 @@ logs as (
                     , ('maker',             {{ method_data.get("maker", "null") }})
                     , ('taker',             {{ method_data.get("taker", "null") }})
                     , ('receiver',          {{ method_data.get("receiver", "null") }})
+                    , ('pool',              {{ method_data.get("pool", "null") }})
                     , ('maker_asset',       {{ method_data.get("maker_asset", "null") }})
                     , ('taker_asset',       {{ method_data.get("taker_asset", "null") }})
                     , ('maker_max_amount',  {{ method_data.get("maker_max_amount", "null") }})
@@ -186,6 +189,7 @@ logs as (
         , coalesce(log_maker, call_maker, call_to) as maker
         , coalesce(log_taker, call_taker) as taker
         , coalesce(log_receiver, call_receiver) as receiver
+        , coalesce(log_pool, call_pool) as pool
         , coalesce(log_maker_asset, call_maker_asset) as maker_asset
         , coalesce(log_taker_asset, call_taker_asset) as taker_asset
         , coalesce(log_maker_max_amount, call_maker_max_amount) as maker_max_amount
@@ -205,28 +209,30 @@ logs as (
         , coalesce(log_fee_amount, call_fee_amount) as fee_amount
         , coalesce(log_fee_receiver, call_fee_receiver) as fee_receiver
         , coalesce(log_nonce, call_nonce) as order_nonce
-        , coalesce(log_order_hash, call_order_hash, concat(tx_hash, to_big_endian_32(cast(call_trade_counter as int)))) as order_hash
-        , count(*) over(partition by blockchain, block_number, tx_hash, call_trace_address, call_trade) as call_trade_logs -- logs for each trade
+        , coalesce(log_order_hash, call_order_hash, concat(tx_hash, to_big_endian_32(cast(call_trade_counter as int))), concat(tx_hash, to_big_endian_32(cast(index as int)))) as order_hash
+        , count(*) over(partition by block_number, tx_hash, call_trace_address, call_trade) as call_trade_logs -- logs for each trade
+        , count(*) over(partition by block_number, tx_hash, index) as log_call_trades -- trades for each log
     from calls
-    full join logs using(block_number, tx_hash, topic0)
+    full join logs using(blockchain, block_number, block_time, tx_hash, topic0)
     join ({{ oneinch_blockchain_macro(blockchain) }}) using(blockchain)
     where
-            (call_maker = log_maker or call_maker is null or log_maker is null)
-        and (call_taker = log_taker or call_taker is null or log_taker is null)
-        and (call_receiver = log_receiver or call_receiver is null or log_receiver is null)
-        and (call_maker_asset = log_maker_asset or call_maker_asset is null or log_maker_asset is null or cardinality(array_intersect({{wrapping}}, array[call_maker_asset, log_maker_asset])) = 2)
-        and (call_taker_asset = log_taker_asset or call_taker_asset is null or log_taker_asset is null or cardinality(array_intersect({{wrapping}}, array[call_taker_asset, log_taker_asset])) = 2)
-        and (call_maker_max_amount = log_maker_max_amount or call_maker_max_amount is null or log_maker_max_amount is null)
-        and (call_taker_max_amount = log_taker_max_amount or call_taker_max_amount is null or log_taker_max_amount is null)
-        and (call_maker_min_amount = log_maker_min_amount or call_maker_min_amount is null or log_maker_min_amount is null)
-        and (call_taker_min_amount = log_taker_min_amount or call_taker_min_amount is null or log_taker_min_amount is null)
-        and (call_making_amount = log_making_amount or call_making_amount is null or log_making_amount is null)
-        and (call_taking_amount = log_taking_amount or call_taking_amount is null or log_taking_amount is null)
-        and (call_start = log_start or call_start is null or log_start is null)
-        and (call_end = log_end or call_end is null or log_end is null)
-        and (call_deadline = log_deadline or call_deadline is null or log_deadline is null)
-        and (call_nonce = log_nonce or call_nonce is null or log_nonce is null)
-        and (call_order_hash = log_order_hash or call_order_hash is null or log_order_hash is null)
+            coalesce(call_maker = log_maker, true)
+        and coalesce(call_taker = log_taker, true)
+        and coalesce(call_receiver = log_receiver, true)
+        and coalesce(call_pool = log_pool, true)
+        and (coalesce(call_maker_asset = log_maker_asset, true) or cardinality(array_intersect(array[0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, wrapped_native_token_address], array[call_maker_asset, log_maker_asset])) = 2)
+        and (coalesce(call_taker_asset = log_taker_asset, true) or cardinality(array_intersect(array[0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, wrapped_native_token_address], array[call_taker_asset, log_taker_asset])) = 2)
+        and coalesce(call_maker_max_amount = log_maker_max_amount, true)
+        and coalesce(call_taker_max_amount = log_taker_max_amount, true)
+        and coalesce(call_maker_min_amount = log_maker_min_amount, true)
+        and coalesce(call_taker_min_amount = log_taker_min_amount, true)
+        and coalesce(call_making_amount = log_making_amount, true)
+        and coalesce(call_taking_amount = log_taking_amount, true)
+        and coalesce(call_start = log_start, true)
+        and coalesce(call_end = log_end, true)
+        and coalesce(call_deadline = log_deadline, true)
+        and coalesce(call_nonce = log_nonce, true)
+        and coalesce(call_order_hash = log_order_hash, true)
 )
 
 -- output --
@@ -250,12 +256,13 @@ select
     , call_gas_used
     , call_type
     , call_error
-    , bytearray_to_bigint(call_trade) as call_trade
+    , coalesce(bytearray_to_bigint(call_trade), 1) as call_trade
     , call_trades
     , method
     , maker
     , taker
     , receiver
+    , pool
     , maker_asset
     , taker_asset
     , maker_max_amount
@@ -280,6 +287,7 @@ select
     , array[output] as call_output
     , index as event_index
     , contract_address as event_contract_address
+    , topic0 as event_topic0
     , topic1 as event_topic1
     , topic2 as event_topic2
     , topic3 as event_topic3
@@ -288,8 +296,8 @@ select
     , date(date_trunc('month', block_time)) as block_month
 from joined
 where
-    call_trade_logs = 1 -- if found the only one log for a trade in the call
+    call_trade_logs = 1 -- if the log was not found or if found the only one log for a trade in the call
+    or log_call_trades = 1 -- if the call was not found or if found the only one call trade for the log
     or call_trade_counter = log_counter -- if found several logs
-    or log_counter is null -- if the log was not found
 
 {% endmacro %}

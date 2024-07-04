@@ -38,6 +38,7 @@ WITH whitelist_token as (
     (0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1, 'USDT', 'optimism'),
     (0x94b008aA00579c1307B0EF2c499aD98a8ce58e58, 'DAI', 'optimism'),
     (0x4200000000000000000000000000000000000006, 'WETH', 'optimism'),
+    (0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb, 'WSTETH', 'optimism'),
     (0x2791bca1f2de4661ed88a30c99a7a9449aa84174, 'USDC', 'polygon'),
     (0x8f3cf7ad23cd3cadbd9735aff958023239c6a063, 'DAI', 'polygon'),
     (0xc2132d05d31c914a87c6611c10748aeb04b58e8f, 'USDT', 'polygon'),

@@ -117,6 +117,7 @@ SELECT
   block_time,
   block_date,
   block_month,
+  'Pepe Boost' as bot,
   blockchain,
   amount_usd,
   type,

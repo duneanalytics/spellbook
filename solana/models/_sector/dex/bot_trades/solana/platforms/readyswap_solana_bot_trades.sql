@@ -125,6 +125,7 @@ SELECT
   block_time,
   block_date,
   block_month,
+  'ReadySwap' as bot,
   blockchain,
   amount_usd,
   type,
