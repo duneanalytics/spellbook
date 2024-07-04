@@ -80,7 +80,6 @@
             AND tr_1.outer_instruction_index = sp.call_outer_instruction_index
             AND ((sp.call_is_inner = false AND tr_1.inner_instruction_index = 1)
                 OR (sp.call_is_inner = true AND tr_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
-            AND tr_1.token_version = 'fungible'
             {% if is_incremental() %}
             AND {{incremental_predicate('tr_1.block_time')}}
             {% else %}
@@ -92,7 +91,6 @@
             AND tr_2.outer_instruction_index = sp.call_outer_instruction_index
             AND ((sp.call_is_inner = false AND tr_2.inner_instruction_index = 2)
                 OR (sp.call_is_inner = true AND tr_2.inner_instruction_index = sp.call_inner_instruction_index + 2))
-            AND tr_2.token_version = 'fungible'
             {% if is_incremental() %}
             AND {{incremental_predicate('tr_2.block_time')}}
             {% else %}
