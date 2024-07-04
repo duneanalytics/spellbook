@@ -1,6 +1,6 @@
 {{ config(
     alias = 'bot_trades',
-    schema = 'maestro_solana',
+    schema = 'unibot_solana',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -10,12 +10,13 @@
    )
 }}
 
-{% set project_start_date = '2024-03-05' %}
-{% set fee_receiver = 'FRMxAnZgkW58zbYcE7Bxqsg99VWpJh6sMP5xLzAWNabN' %}
+{% set project_start_date = '2024-03-23' %}
+{% set fee_receiver_1 = '8FEE2ghpWPoxsypBLW87yyqmChjUbcZz41V7bzfiJqGF' %}
+{% set fee_receiver_2 = '7Yr577ubghnmUTvFgB23iPw3FWReMt18WehCz2b2c9mV' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
-  feePayments AS (
+  allFeePayments AS (
     SELECT
       tx_id,
       'SOL' AS feeTokenType,
@@ -31,44 +32,10 @@ WITH
       {% endif %}
       AND tx_success
       AND balance_change > 0
-      AND address = '{{fee_receiver}}'
-  ),
-  zeroFeeTrades AS (
-   SELECT
-      id AS tx_id,
-      'SOL' AS feeTokenType,
-      0 AS fee_token_amount,
-      '{{wsol_token}}' AS fee_token_mint_address
-    FROM
-      {{ source('solana','transactions') }}
-    WHERE
-      {% if is_incremental() %}
-      {{ incremental_predicate('block_time') }}
-      {% else %}
-      block_time >= TIMESTAMP '{{project_start_date}}'
-      {% endif %}
-      --AND block_time < TIMESTAMP '2024-03-09' -- TOOD: enable end date once fees are live
-      AND contains(
-        account_keys,
-        '{{fee_receiver}}'
+      AND (
+        address = '{{fee_receiver_1}}'
+        OR address = '{{fee_receiver_2}}'
       )
-      AND id NOT IN (
-        SELECT
-          tx_id
-        FROM
-          feePayments
-      )
-  ),
-  allFeePayments AS (
-    SELECT
-      *
-    FROM
-      feePayments
-    UNION ALL
-    SELECT
-      *
-    FROM
-      zeroFeeTrades
   ),
   botTrades AS (
     SELECT
@@ -76,6 +43,7 @@ WITH
       CAST(date_trunc('day', trades.block_time) AS date) AS block_date,
       CAST(date_trunc('month', trades.block_time) AS date) AS block_month,
       'solana' AS blockchain,
+      'Unibot' as bot,
       amount_usd,
       IF(
         token_sold_mint_address = '{{wsol_token}}',
@@ -123,8 +91,10 @@ WITH
         {% endif %}
       )
     WHERE
-      trades.trader_id != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
-      AND transactions.signer != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
+      trades.trader_id != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
       {% if is_incremental() %}
       AND {{ incremental_predicate('trades.block_time') }}
       {% else %}
@@ -146,7 +116,6 @@ SELECT
   block_time,
   block_date,
   block_month,
-  'Maestro' as bot,
   blockchain,
   amount_usd,
   type,
