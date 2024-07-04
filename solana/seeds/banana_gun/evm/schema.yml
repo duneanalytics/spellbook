@@ -1,0 +1,7 @@
+version: 2
+
+seeds:
+  - name: banana_gun_evm_trades_seed
+    config:
+      column_types:
+        version: varchar
