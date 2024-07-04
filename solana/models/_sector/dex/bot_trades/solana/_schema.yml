@@ -11,6 +11,9 @@ models:
       description: >
         Trades by trading bots on Solana
       columns:
+        - &bot
+          name: bot
+          description: "Trading bot which executed the trade"
         - &blockchain
           name: blockchain
           description: "Blockchain which the DEX is deployed"
