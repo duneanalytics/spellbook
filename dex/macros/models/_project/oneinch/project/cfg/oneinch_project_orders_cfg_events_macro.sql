@@ -110,6 +110,7 @@
         "0x2170c741c41531aec20e7c107c24eecfdd15e69c9bb0a8dd37b1840b9e0b207b": {
             "project":          "Swaap",
             "name":             "Swap",
+            "pool":             "topic1",
             "maker_asset":      "substr(topic3  , 12 + 1                , 20)",
             "taker_asset":      "substr(topic2  , 12 + 1                , 20)",
             "making_amount":    "substr(data    , 32*1 + 1              , 32)",
@@ -139,7 +140,7 @@
             "order_hash":       "substr(data    , 32*7 + 1              , 56)",
         },
         "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66": {
-            "project":          "Uniswap",
+            "project":          "UniswapX",
             "name":             "Fill",
             "maker":            "substr(topic3  , 12 + 1                , 20)",
             "taker":            "substr(topic2  , 12 + 1                , 20)",
