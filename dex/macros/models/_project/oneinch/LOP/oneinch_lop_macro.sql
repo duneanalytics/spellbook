@@ -129,8 +129,8 @@ select
         )
     ) as remains
     , date_trunc('minute', block_time) as minute
-    , date(date_trunc('month', block_time)) as block_month
-    , date(date_trunc('day', l.block_time) as date) as block_date,
+    , date(date_trunc('month', block_time) as date) as block_month
+    , date(date_trunc('day', block_time) as date) as block_date
 from (
     {{
         add_tx_columns(
