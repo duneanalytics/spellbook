@@ -407,15 +407,15 @@ models:
     description: >
       consortium_key users on Solana
     config:
-      tags: [ "solana", "dex", "bot_trades" ]
+      tags: ["solana", "dex", "bot_trades"]
       columns:
         - name: user
           tests: unique
-
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - user
+
   - name: soul_sniper_solana_bot_users
     meta:
       blockchain: solana
@@ -425,7 +425,29 @@ models:
     description: >
       soul_sniper users on Solana
     config:
-      tags: [ "solana", "dex", "bot_trades" ]
+      tags: ["solana", "dex", "bot_trades"]
       columns:
         - name: user
           tests: unique
+
+  - name: tirador_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: tirador
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "tirador", "trades"]
+    description: >
+      Tirador trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('tirador_solana_trades_seed')
+          blockchain: solana
