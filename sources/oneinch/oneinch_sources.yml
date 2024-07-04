@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: oneinch
+    description: "decoded events and function calls for 1inch on arbitrum"
+    tables:
+      - name: blockchains
+      - name: lop
+      - name: parsed_transfers_from_calls
+        
