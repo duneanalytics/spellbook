@@ -4566,4 +4566,8 @@ FROM (VALUES
     , ( 0x10dea67478c5f8c5e2d90e5e9b26dbe60c54d800, 'TAIKO', 18)
     , ( 0x80ac24aA929eaF5013f6436cdA2a7ba190f5Cc0b, 'syrupUSDC', 6)    
     , ( 0xa8258deE2a677874a48F5320670A869D74f0cbC1, 'WAR', 18)    
+    , ( 0xbeef69ac7870777598a04b2bd4771c71212e6abc, 'steakLRT', 18)
+    , ( 0x84631c0d0081fde56deb72f6de77abbbf6a9f93a, 'Re7LRT', 18)
+    , ( 0x7a4effd87c2f3c55ca251080b1343b605f327e3a, 'rstETH', 18)
+    , ( 0x5fd13359ba15a84b76f7f87568309040176167cd, 'amprETH', 18)    
 ) AS temp_table (contract_address, symbol, decimals)
