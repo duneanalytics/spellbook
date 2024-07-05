@@ -1,7 +1,7 @@
-{% macro 
+{% macro
     oneinch_ar_macro(
         blockchain
-    ) 
+    )
 %}
 
 
@@ -9,14 +9,14 @@
 {% set native = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
 
 
-with 
+with
 -- pools tokens for unoswap lineage tokens parsing
 pools_list as (
     select
         pool as pool_address
         , tokens
     from {{ ref('dex_raw_pools') }}
-    where 
+    where
         type in ('uniswap_compatible', 'curve_compatible')
         and blockchain = '{{ blockchain }}'
     group by 1, 2
@@ -25,7 +25,7 @@ pools_list as (
 
 , calls as (
     {% for contract, contract_data in oneinch_ar_cfg_contracts_macro().items() if blockchain in contract_data.blockchains %}
-    
+
     select * from (
         with traces_cte as (
             select
@@ -51,10 +51,10 @@ pools_list as (
                 {% endif %}
         )
 
-    
+
         {% for method, method_data in contract_data.methods.items() if blockchain in method_data.get('blockchains', contract_data.blockchains) %} -- method-level blockchains override contract-level blockchains
             {% if method_data.router_type in ['generic', 'clipper'] %}
-                {{ 
+                {{
                     oneinch_ar_handle_generic(
                         contract=contract,
                         contract_data=contract_data,
@@ -63,8 +63,8 @@ pools_list as (
                         blockchain=blockchain,
                         traces_cte=traces_cte,
                         start_date=contract_data['start'],
-                    ) 
-                }} 
+                    )
+                }}
             {% elif method_data.router_type in ['unoswap'] %}
                 {{
                     oneinch_ar_handle_unoswap(
@@ -90,6 +90,7 @@ select
     blockchain
     , block_number
     , block_time
+    , block_date
     , tx_hash
     , tx_from
     , tx_to

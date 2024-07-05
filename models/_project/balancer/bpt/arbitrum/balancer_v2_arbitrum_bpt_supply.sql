@@ -9,8 +9,11 @@
 }}
 
 {{ 
-    balancer_bpt_supply_macro(
+    balancer_v2_compatible_bpt_supply_macro(
         blockchain = blockchain,
-        version = '2'
+        version = '2',        
+        project_decoded_as = 'balancer_v2',
+        base_spells_namespace = 'balancer',
+        pool_labels_spell =  source('labels', 'balancer_v2_pools') 
     )
 }}
