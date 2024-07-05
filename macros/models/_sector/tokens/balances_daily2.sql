@@ -40,7 +40,7 @@ select
         ELSE b.balance_raw
     END as balance_usd
 from forward_fill b
-left join {{ ref('tokens_nft') }} nft_tokens on (
+left join {{ source('tokens', 'nft') }} nft_tokens on (
    nft_tokens.blockchain = 'ethereum'
    AND nft_tokens.contract_address = b.token_address
    AND b.token_standard in ('erc721', 'erc1155')
