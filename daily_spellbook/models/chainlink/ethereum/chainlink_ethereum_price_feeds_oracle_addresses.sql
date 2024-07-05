@@ -176,6 +176,12 @@
 {% set yfi_usd = 'YFI / USD' %}
 {% set zrx_usd = 'ZRX / USD' %}
 {% set efil_por = 'eFIL PoR' %}
+{% set usdt_eth = 'USDT / ETH' %}
+{% set tbtc_usd = 'tBTC / USD' %}
+{% set usdc_usd = 'USDC / USD' %}
+{% set weeth_eth = 'weETH / ETH' %}
+{% set usdc_eth = 'USDC / ETH' %}
+{% set ezeth_eth = 'ezETH / ETH' %}
 
 SELECT
    'ethereum' as blockchain,
@@ -361,5 +367,11 @@ FROM (values
   ('{{xcn_usd}}', 8, 0xeb988B77b94C186053282BfcD8B7ED55142D3cAB, 0xD6A3a9Bb4bd49DdB2374CA58Edf47a8bB63Af3d2),
   ('{{yfi_usd}}', 8, 0xA027702dbb89fbd58938e4324ac03B58d812b0E1, 0xcac109af977AC94929A5dD37ed8Af763BAD78151),
   ('{{zrx_usd}}', 8, 0x2885d15b8Af22648b98B122b22FDF4D2a56c6023, 0x4Dde220fF2690A350b0Ea9404F35C8f3Ad012584),
-  ('{{efil_por}}', 18, 0x8917800a6BDd8fA8b7c94E25aE2219Db28050622, 0xD423C9A9AD8c21C97bdeE2E74F8098625aa4f329)
+  ('{{efil_por}}', 18, 0x8917800a6BDd8fA8b7c94E25aE2219Db28050622, 0xD423C9A9AD8c21C97bdeE2E74F8098625aa4f329),
+  ('{{usdt_eth}}', 18, 0xEe9F2375b4bdF6387aa8265dD4FB8F16512A1d46, 0x000),
+  ('{{tbtc_usd}}', 8, 0x8350b7De6a6a2C1368E7D4Bd968190e13E354297, 0x000),
+  ('{{usdc_usd}}', 8, 0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6, 0x000),
+  ('{{weeth_eth}}', 18, 0x5c9C449BbC9a6075A2c061dF312a35fd1E05fF22, 0x000),
+  ('{{usdc_eth}}', 18, 0x986b5E1e1755e3C2440e960477f25201B0a8bbD4, 0x000),
+  ('{{ezeth_eth}}', 18, 0xb21d661fd6a3769ADB03e373dc00265f3c78cBfD, 0x000)
 ) a (feed_name, decimals, proxy_address, aggregator_address)
