@@ -17,7 +17,7 @@
    ref('chain_swap_ethereum_trades')
  , ref('chain_swap_base_trades')
  , ref('chain_swap_arbitrum_trades')
- , ref('chain_swap_optimsim_trades')
+ , ref('chain_swap_optimism_trades')
  , ref('chain_swap_polygon_trades')
  , ref('chain_swap_bnb_trades')
  , ref('chain_swap_avalanche_c_trades')
