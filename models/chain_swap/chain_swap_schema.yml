@@ -99,4 +99,4 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
-            - evt_tx_index
+            - evt_index
