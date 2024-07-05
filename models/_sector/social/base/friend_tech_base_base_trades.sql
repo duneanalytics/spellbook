@@ -10,10 +10,11 @@
 
 {% set friend_tech_start_date = '2023-08-10' %}
 
-SELECT 
+SELECT
     'base' AS blockchain
     , evt_block_time AS block_time
     , evt_block_number AS block_number
+    , cast(date_trunc('day', evt_block_time) as date) as block_date
     , 'friend_tech' AS project
     , trader
     , subject

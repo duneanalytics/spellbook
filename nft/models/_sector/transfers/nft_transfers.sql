@@ -30,6 +30,7 @@
 ,ref('nft_zora_transfers')
 ,ref('nft_celo_transfers')
 ,ref('nft_scroll_transfers')
+,ref('nft_linea_transfers')
 ] %}
 
 SELECT *
