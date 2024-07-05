@@ -27,7 +27,7 @@
 with
     bot_contracts as (
         select address
-        from {{ source('ethereum', 'creation_traces') }}
+        from {{ source("ethereum", "creation_traces") }}
         where
             (
                 "from" = {{ deployer_1 }}
@@ -57,11 +57,12 @@ with
             tx_to as bot,
             trades.tx_hash,
             evt_index
-        from {{ source('dex', 'trades') }} as trades
+        from {{ source("dex", "trades") }} as trades
         join bot_contracts on trades.tx_to = bot_contracts.address
         where
             trades.blockchain = '{{blockchain}}'
             and trades.block_time >= timestamp '{{project_start_date}}'
+            and (tx_from != {{ fee_recipient_1 }} and tx_from != {{ fee_recipient_2 }})
         order by trades.block_time desc, trades.evt_index desc
     ),
     highest_event_index_for_each_trade as (
@@ -74,7 +75,7 @@ with
             evt_tx_hash,
             value as fee_token_amount,
             contract_address as fee_token_address
-        from {{ source('erc20_ethereum', 'evt_transfer') }}
+        from {{ source("erc20_ethereum", "evt_transfer") }}
         where
             (to = {{ fee_recipient_1 }} or to = {{ fee_recipient_2 }})
             and evt_block_time >= timestamp '{{project_start_date}}'
@@ -88,7 +89,7 @@ with
             tx_hash,
             value as fee_token_amount,
             {{ weth_contract_address }} as fee_token_address
-        from {{ source('ethereum', 'traces') }}
+        from {{ source("ethereum", "traces") }}
         where
             (to = {{ fee_recipient_1 }} or to = {{ fee_recipient_2 }})
             and block_time >= timestamp '{{project_start_date}}'
@@ -97,8 +98,8 @@ with
     )
 select
     block_time,
-    date_trunc('day', block_time) AS block_date,
-    date_trunc('month', block_time) AS block_month,
+    date_trunc('day', block_time) as block_date,
+    date_trunc('month', block_time) as block_month,
     '{{blockchain}}' as blockchain,
     -- Trade
     amount_usd,
@@ -131,7 +132,7 @@ join
 /* Left Outer Join to support 0 fee trades */
 left join fee_deposits on bot_trades.tx_hash = fee_deposits.evt_tx_hash
 left join
-    {{ source('prices', 'usd') }}
+    {{ source("prices", "usd") }}
     on (
         blockchain = '{{blockchain}}'
         and contract_address = fee_token_address
