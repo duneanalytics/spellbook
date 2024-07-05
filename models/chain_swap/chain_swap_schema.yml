@@ -100,3 +100,105 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+
+  - name: chain_swap_arbitrum_trades
+    meta:
+      blockchain: arbitrum
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["arbitrum", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+
+  - name: chain_swap_base_trades
+    meta:
+      blockchain: base
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["base", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+
+  - name: chain_swap_optimism_trades
+    meta:
+      blockchain: optimism
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["optimism", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+
+  - name: chain_swap_bnb_trades
+    meta:
+      blockchain: bnb
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["bnb", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Bnb
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+
+  - name: chain_swap_polygon_trades
+    meta:
+      blockchain: polygon
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["polygon", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+
+  - name: chain_swap_avalanche_c_trades
+    meta:
+      blockchain: avalanche_c
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["avalanche_c", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Avalanche_c
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
