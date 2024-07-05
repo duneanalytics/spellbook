@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'lending_optimism',
+    schema = 'lending_zkevm',
     alias = 'base_flashloans',
     materialized = 'view'
   )
@@ -8,9 +8,7 @@
 
 {%
   set models = [
-    ref('aave_v3_optimism_base_flashloans'),
-    ref('granary_optimism_base_flashloans'),
-    ref('balancer_v2_optimism_base_flashloans')
+    ref('balancer_v2_zkevm_base_flashloans')
   ]
 %}
 

@@ -10,7 +10,8 @@
   set models = [
     ref('aave_v3_arbitrum_base_flashloans'),
     ref('radiant_arbitrum_base_flashloans'),
-    ref('granary_arbitrum_base_flashloans')
+    ref('granary_arbitrum_base_flashloans'),
+    ref('balancer_v2_arbitrum_base_flashloans')
   ]
 %}
 

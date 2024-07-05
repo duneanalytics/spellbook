@@ -1,15 +1,14 @@
 version: 2
 
 models:
-  - name: lending_optimism_base_flashloans
+  - name: lending_zkevm_base_flashloans
     meta:
-      blockchain: optimism
+      blockchain: zkevm
       sector: lending
-      project: aave
-      contributors: tomfutago, hildobby
+      contributors: hildobby
     config:
-      tags: ['lending', 'flashloans', 'aave', 'optimism']
-    description: "All lending flashloans transactions on Optimism"
+      tags: ['lending', 'flashloans', 'zkevm']
+    description: "All lending flashloans transactions on zkevm"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -73,77 +72,15 @@ models:
         tests:
           - not_null
 
-  - name: aave_v3_optimism_base_flashloans
+  - name: balancer_v2_zkevm_base_flashloans
     meta:
-      blockchain: optimism
-      sector: lending
-      project: aave
-      contributors: hildobby, tomfutago
-    config:
-      tags: ['lending', 'flashloans', 'aave', 'optimism']
-    description: "Aave v3 flashloans transactions on Optimism"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-      - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_optimism_base_flashloans_seed')
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *recipient
-      - *amount
-      - *fee
-      - *token_address
-      - *project_contract_address
-      - *block_month
-      - *block_time
-      - *block_number
-      - *tx_hash
-      - *evt_index
-
-  - name: granary_optimism_base_flashloans
-    meta:
-      blockchain: optimism
-      sector: lending
-      project: granary
-      contributors: tomfutago
-    config:
-      tags: ['lending', 'flashloans', 'aave', 'granary', 'optimism']
-    description: "Granary flashloans transactions on Optimism"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-      - check_lending_base_flashloans_seed:
-          seed_file: ref('granary_optimism_base_flashloans_seed')
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *recipient
-      - *amount
-      - *fee
-      - *token_address
-      - *project_contract_address
-      - *block_month
-      - *block_time
-      - *block_number
-      - *tx_hash
-      - *evt_index
-
-  - name: balancer_v2_optimism_base_flashloans
-    meta:
-      blockchain: optimism
+      blockchain: zkevm
       sector: lending
       project: balancer
       contributors: hildobby
     config:
-      tags: ['lending', 'flashloans', 'balancer', 'optimism']
-    description: "Balancer flashloans transactions on Optimism"
+      tags: ['lending', 'flashloans', 'balancer', 'zkevm']
+    description: "Balancer flashloans transactions on zkevm"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -163,4 +100,3 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
-
