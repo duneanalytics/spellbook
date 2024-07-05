@@ -26,5 +26,5 @@ SELECT 'optimism' AS blockchain
 , evt_index
 FROM {{ source('balancer_v2_optimism','Vault_evt_FlashLoan') }}
 {% if is_incremental() %}
-{{ incremental_predicate('evt_block_time') }}
+WHERE {{ incremental_predicate('evt_block_time') }}
 {% endif %}

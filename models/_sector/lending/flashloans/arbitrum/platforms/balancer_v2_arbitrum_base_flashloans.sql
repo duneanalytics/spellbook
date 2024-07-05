@@ -26,5 +26,5 @@ SELECT 'arbitrum' AS blockchain
 , evt_index
 FROM {{ source('balancer_v2_arbitrum','Vault_evt_FlashLoan') }}
 {% if is_incremental() %}
-{{ incremental_predicate('evt_block_time') }}
+WHERE {{ incremental_predicate('evt_block_time') }}
 {% endif %}
