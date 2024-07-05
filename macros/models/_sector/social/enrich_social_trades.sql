@@ -1,8 +1,9 @@
 {% macro enrich_social_trades(base_trades) %}
 
-SELECT 
+SELECT
     t.blockchain AS blockchain
     , CAST(date_trunc('month', t.block_time) AS date) AS block_month
+    , t.block_date
     , t.block_time
     , t.block_number
     , t.project
