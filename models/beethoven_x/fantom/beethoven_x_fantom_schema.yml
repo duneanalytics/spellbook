@@ -48,8 +48,11 @@ models:
       - name: pool_address
       - name: pool_symbol
         description: 'Symbol of the pool, consisting of the symbol of its tokens and their respective weights'
+      - name: version
+        description: "Version of Balancer where the liquidity pool is deployed"
       - name: blockchain
         description: 'Blockchain in which pool was deployed'      
+      - name: pool_type
       - *token_address
       - name: token_symbol
         description: 'Symbol of the token'
@@ -61,6 +64,10 @@ models:
         description: 'Liquidity of the token in the pool in USD, except BPTs'
       - name: protocol_liquidity_eth
         description: 'Liquidity of the token in the pool in ETH, except BPTs'
+      - name: pool_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, including BPTs'
+      - name: pool_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, including BPTs'        
 
   - name: beethoven_x_fantom_protocol_fee
     meta:
@@ -83,6 +90,8 @@ models:
       - name: pool_address
       - name: pool_symbol
       - name: blockchain
+      - name: version
+      - name: pool_type
       - name: token_address
       - name: token_symbol
       - name: token_amount_raw
@@ -91,6 +100,12 @@ models:
         description: "Amount of revenues of the token in the pool"
       - name: protocol_fee_collected_usd
         description: "Fee collected in the pool in USD"
+      - &treasury_share
+        name: treasury_share
+        description: "Share of total fee that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
+      - &treasury_revenue_usd
+        name: treasury_revenue_usd
+        description: "USD value of fee directed to Balancer DAO's treasury"
         
   - name: beethoven_x_fantom_bpt_supply
     meta:
@@ -111,6 +126,7 @@ models:
       - name: day
       - name: pool_type
       - name: blockchain
+      - name: version
       - name: token_address
       - name: supply
 
@@ -131,9 +147,11 @@ models:
             - contract_address
     columns:
       - name: blockchain
+      - name: version
       - name: day
       - name: decimals
       - name: contract_address
+      - name: pool_type
       - name: bpt_price      
 
   - name: beethoven_x_fantom_transfers_bpt
@@ -163,3 +181,150 @@ models:
       - name: from
       - name: to
       - name: value
+
+  - name: beethoven_x_fantom_token_balance_changes
+    meta:
+      blockchain: fantom
+      project: beethoven_x
+      contributors: viniabussafi
+    config:
+      tags: ['fantom', 'bpt', 'supply', 'changes']
+    description: >
+      Token Balance Changes on Beethoven X Pools.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - evt_tx_hash
+            - evt_index
+            - token_address
+    columns:
+      - name: block_date
+        description: "UTC event block date of each DEX trade"
+      - name: evt_block_time
+        description: 'Block time of transfer event'
+      - name: evt_block_number
+        description: 'Block number of transfer event'
+      - name: blockchain
+        description: "Blockchain"
+      - name: evt_tx_hash
+        description: 'Transaction hash of transfer event'
+      - name: evt_index
+        description: 'Event index'
+      - name: pool_id
+        description: "Unique encoded identifier that refers to each pool"
+      - name: pool_address
+        description: "Pool address"
+      - name: pool_symbol
+        description: "Token symbols, followed by their respective weights, if applicable"
+      - name: pool_type
+        description: "Pool attributes, determined by the pool's factory" 
+      - name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
+      - name: token_address
+        description: "Contract address of the token"
+      - name: token_symbol
+        description: "Token symbol"
+      - name: delta_amount_raw
+        description: "Raw value of the transaction at the time of execution in the original currency"
+      - name: delta_amount
+        description: "Normalized value of the transaction at the time of execution in the original currency"
+
+  - name: beethoven_x_fantom_token_balance_changes_daily
+    meta:
+      blockchain: fantom
+      project: beethoven_x
+      contributors: viniabussafi
+    config:
+      tags: ['fantom', 'bpt', 'supply', 'changes']
+    description: >
+      Token Balance Changes on Beethoven X Pools, grouped by day.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+            - token_address
+    columns:
+      - name: block_date
+      - name: pool_id
+      - name: pool_address
+      - name: pool_symbol   
+      - name: version
+      - name: blockchain
+      - name: pool_type
+      - name: token_address
+      - name: token_symbol
+      - &daily_delta   
+        name: daily_delta
+        description: "Daily total impact on token balance" 
+      - &daily_delta_usd   
+        name: daily_delta_usd
+        description: "Daily total impact on token balance, in USD"
+      - &daily_delta_eth
+        name: daily_delta_eth
+        description: "Daily total impact on token balance, in eth"
+
+  - name: beethoven_x_fantom_bpt_supply_changes
+    meta:
+      blockchain: fantom
+      project: beethoven_x
+      contributors: viniabussafi
+    config:
+      tags: ['fantom', 'bpt', 'supply', 'changes']
+    description: >
+      Balancer Pool Token (BPT) supply change events on Beethoven X.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - evt_tx_hash
+            - evt_index
+            - label
+    columns:
+      - name: block_date
+      - name: evt_block_time
+      - name: evt_block_number
+      - name: blockchain
+      - name: evt_tx_hash
+      - name: evt_index
+      - name: pool_type
+      - &pool_symbol
+        name: pool_symbol
+        description: "Token symbols, followed by their respective weights, if applicable"
+      - name: version
+      - &label
+        name: label
+        description: "Nature of the transaction (Join/Exit via swap or Mint/Burn via transfer)"
+      - *token_address
+      - &delta_amount_raw
+        name: delta_amount_raw
+        description: "Raw value of the transaction on token supply at the time of execution in the original currency"
+      - &delta_amount
+        name: delta_amount
+        description: "Normalized value of the transaction on token supply at the time of execution in the original currency"
+
+  - name: beethoven_x_fantom_bpt_supply_changes_daily
+    meta:
+      blockchain: fantom
+      project: beethoven_x
+      contributors: viniabussafi
+    config:
+      tags: ['fantom', 'bpt', 'supply', 'changes']
+    description: >
+      Balancer Pool Token (BPT) supply change events on Beethoven X, grouped by day
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - token_address
+    columns:
+      - name: block_date
+      - name: blockchain
+      - name: pool_type
+      - name: pool_symbol   
+      - name: version 
+      - name: token_address
+      - name: daily_delta
+        description: "Daily total impact on BPT supply"

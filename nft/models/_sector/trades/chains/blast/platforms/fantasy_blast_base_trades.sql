@@ -91,4 +91,4 @@ WITH trades AS (
     FROM trades
     )
 
-{{ add_nft_tx_data('trades_final', 'base') }}
+{{ add_nft_tx_data('trades_final', 'blast') }}
