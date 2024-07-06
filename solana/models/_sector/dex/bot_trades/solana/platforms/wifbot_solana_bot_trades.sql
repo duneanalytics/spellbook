@@ -107,6 +107,7 @@ select
     block_time,
     block_date,
     block_month,
+    'Wifbot' as bot,
     blockchain,
     amount_usd,
     type,
