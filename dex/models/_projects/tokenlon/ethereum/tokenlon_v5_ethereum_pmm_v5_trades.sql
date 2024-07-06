@@ -47,6 +47,12 @@ WITH dexs AS (
       decimals,
       AVG(price) AS price
     FROM {{ source('prices', 'usd') }}
+    WHERE blockchain = 'ethereum'
+    {% if not is_incremental() %}
+    AND minute >= {{project_start_date}}
+    {% else %}
+    AND {{ incremental_predicate('minute') }}
+    {% endif %}
     GROUP BY DATE_TRUNC('hour', minute), contract_address,blockchain,decimals
 )
 
