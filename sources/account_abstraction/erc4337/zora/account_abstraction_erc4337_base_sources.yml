@@ -4,7 +4,7 @@ sources:
   - name: erc4337_zora
     description: >
       Decoded tables related to erc4337.
-    freshness: # default freshness
+    freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     tables:
