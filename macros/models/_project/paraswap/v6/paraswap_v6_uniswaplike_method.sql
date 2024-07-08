@@ -1,8 +1,8 @@
 {% macro paraswap_v6_uniswaplike_method(table_name, method_name, data_field, extra_field=None) %}
-                SELECT                
+                SELECT
                   call_block_time,
                   call_block_number,
-                  call_tx_hash,                  
+                  call_tx_hash,
                   contract_address as project_contract_address,
                   call_trace_address,
                   JSON_EXTRACT_SCALAR({{ data_field }}, '$.srcToken') AS srcToken,
@@ -23,12 +23,12 @@
                   output_partnerShare,
                   output_paraswapShare,
                   '{{ method_name }}' as method{% if extra_field %},
-                  {{ extra_field }}{% endif %}                  
+                  {{ extra_field }}{% endif %}
                 FROM
-                  {{ table_name }}                  
+                  {{ table_name }}
                 WHERE
                   call_success = TRUE
                   {% if is_incremental() %}
-                    AND call_block_time >= date_trunc('day', now() - interval '7' day)
+                  AND {{ incremental_predicate('call_block_time') }}
                   {% endif %}
 {% endmacro %}
