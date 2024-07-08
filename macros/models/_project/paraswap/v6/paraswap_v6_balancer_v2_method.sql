@@ -10,11 +10,11 @@ WITH
                           regexp_extract_all(substr(try_cast(data as varchar), 11), '.{64}') as sData
                         FROM
                           {{ srcTable }}
-                          WHERE 
+                          WHERE
                             call_success = TRUE
                             {% if is_incremental() %}
-                              AND call_block_time >= date_trunc('day', now() - interval '7' day)
-                            {% endif %}      
+                              AND {{ incremental_predicate('call_block_time') }}
+                            {% endif %}
                       )
                     SELECT
                       *,{% if inOrOut == 'in' %}
@@ -47,7 +47,7 @@ WITH
                                 varbinary_to_uint256 (from_hex(sData[3])) as integer
                               ) / 32 + 1
                               /* end of assetsOfsset */
-                            ) 
+                            )
                             +
                             /* start of assetsSize */
                             try_cast(
@@ -79,7 +79,7 @@ WITH
                                 varbinary_to_uint256 (from_hex(sData[3])) as integer
                               ) / 32 + 1
                               /* end of assetsOfsset */
-                            ) 
+                            )
                             +
                             /* start of assetsSize */
                             try_cast(
@@ -115,13 +115,13 @@ WITH
                           ]
                         )
                         ELSE '000000000000000000000000000000000000000000000000000000000000dead'
-                      END as destToken,{% endif %}  
+                      END as destToken,{% endif %}
                       try_cast(
                         JSON_EXTRACT_SCALAR(balancerData, '$.fromAmount') as UINT256
                       ) AS fromAmount,
                       try_cast(
                         JSON_EXTRACT_SCALAR(balancerData, '$.toAmount') as UINT256
-                      ) AS toAmount,                                           
+                      ) AS toAmount,
                       to_hex(
                         try_cast(
                           bitwise_and(
@@ -170,5 +170,5 @@ select
                           '{{ method }}' as method{% if inOrOut == 'out' %},
                           output_spentAmount as spentAmount{% endif %}
             from
-              {{tableOuter}}              
+              {{tableOuter}}
 {% endmacro %}
