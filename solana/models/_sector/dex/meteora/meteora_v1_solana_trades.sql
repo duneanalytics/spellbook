@@ -38,6 +38,7 @@
     , all_swaps as (
         SELECT 
             sp.call_block_time as block_time
+            , sp.call_block_slot as block_slot
             , 'meteora' as project
             , 1 as version
             , 'solana' as blockchain
@@ -61,8 +62,8 @@
             , sp.call_outer_instruction_index as outer_instruction_index
             , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
             , sp.call_tx_index as tx_index
-            , COALESCE(tk_2.token_mint_address, cast(null as varchar)) as token_bought_mint_address
-            , COALESCE(tk_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
+            , COALESCE(trs_2.token_mint_address, cast(null as varchar)) as token_bought_mint_address
+            , COALESCE(trs_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
             , trs_2.account_source as token_bought_vault
             , trs_1.account_destination as token_sold_vault
         FROM (
@@ -87,31 +88,28 @@
                 AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
         ) sp
-        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} trs_1 
-            ON trs_1.call_tx_id = sp.call_tx_id 
-            AND trs_1.call_block_time = sp.call_block_time
-            AND trs_1.call_outer_instruction_index = sp.call_outer_instruction_index 
-            AND trs_1.call_inner_instruction_index = sp.deposit_index + 1
+        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_1 
+            ON trs_1.tx_id = sp.call_tx_id 
+            AND trs_1.block_time = sp.call_block_time
+            AND trs_1.outer_instruction_index = sp.call_outer_instruction_index 
+            AND trs_1.inner_instruction_index = sp.deposit_index + 1
             {% if is_incremental() %}
-            AND {{incremental_predicate('trs_1.call_block_time')}}
+            AND {{incremental_predicate('trs_1.block_time')}}
             {% else %}
-            AND trs_1.call_block_time >= TIMESTAMP '{{project_start_date}}'
+            AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        INNER JOIN {{ source('spl_token_solana', 'spl_token_call_transfer') }} trs_2 
-            ON trs_2.call_tx_id = sp.call_tx_id 
-            AND trs_2.call_block_time = sp.call_block_time
-            AND trs_2.call_outer_instruction_index = sp.call_outer_instruction_index 
-            AND trs_2.call_inner_instruction_index = sp.deposit_index + 4
+        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_2 
+            ON trs_2.tx_id = sp.call_tx_id 
+            AND trs_2.block_time = sp.call_block_time
+            AND trs_2.outer_instruction_index = sp.call_outer_instruction_index 
+            AND trs_2.inner_instruction_index = sp.deposit_index + 4
             {% if is_incremental() %}
-            AND {{incremental_predicate('trs_2.call_block_time')}}
+            AND {{incremental_predicate('trs_2.block_time')}}
             {% else %}
-            AND trs_2.call_block_time >= TIMESTAMP '{{project_start_date}}'
+            AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        --we want to get what token was transfered out first as this is the sold token. THIS MUST BE THE DESTINATION account, the source account is commonly created/closed through swap legs.
-        LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_1 ON tk_1.address = trs_1.account_destination
-        LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_2 ON tk_2.address = trs_2.account_source
-        LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_1 ON dec_1.token_mint_address = tk_1.token_mint_address
-        LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_2 ON dec_2.token_mint_address = tk_2.token_mint_address
+        LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_1 ON dec_1.token_mint_address = trs_1.token_mint_address
+        LEFT JOIN {{ ref('tokens_solana_fungible') }} dec_2 ON dec_2.token_mint_address = trs_2.token_mint_address
         WHERE 1=1
         and first_deposit = 1 --keep only the first deposit after swap invoke
     )
@@ -122,6 +120,7 @@ SELECT
     , tb.version
     , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
     , tb.block_time
+    , tb.block_slot
     , tb.token_pair
     , tb.trade_source
     , tb.token_bought_symbol
@@ -138,6 +137,7 @@ SELECT
     , tb.token_sold_vault
     , tb.token_bought_vault
     , tb.pool_id as project_program_id
+    , 'Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB' as project_main_id
     , tb.trader_id
     , tb.tx_id
     , tb.outer_instruction_index
