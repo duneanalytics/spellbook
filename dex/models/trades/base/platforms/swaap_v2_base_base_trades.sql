@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'swaap_v2_arbitrum',
+        schema = 'swaap_v2_base',
         alias ='base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,7 +12,7 @@
 
 {{
     swaap_v2_compatible_trades(
-        blockchain = 'arbitrum',
+        blockchain = 'base',
         project = 'swaap',
         version = '2'
     )
