@@ -49,3 +49,4 @@ FROM (
     {% endfor %}
 )
 ;
+\include account_abstraction_erc4337_zora_userops.sql
