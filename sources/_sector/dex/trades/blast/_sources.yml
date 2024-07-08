@@ -24,3 +24,8 @@ sources:
       - name: BlasterswapV2Pair_PAC_WETH_evt_Swap
       - name: BlasterswapV2Pair_USDB_WETH_evt_Swap
       - name: BlasterswapV2Factory_evt_PairCreated
+  - name: fenix_blast
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactoryUpgradeable_evt_PairCreated
+
