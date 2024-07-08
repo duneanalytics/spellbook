@@ -4570,4 +4570,5 @@ FROM (VALUES
     , ( 0x84631c0d0081fde56deb72f6de77abbbf6a9f93a, 'Re7LRT', 18)
     , ( 0x7a4effd87c2f3c55ca251080b1343b605f327e3a, 'rstETH', 18)
     , ( 0x5fd13359ba15a84b76f7f87568309040176167cd, 'amprETH', 18)    
+    , ( 0xC8E621909D71F555D2A5A90f68DD9EE0C55514De, 'SATORI', 18)    
 ) AS temp_table (contract_address, symbol, decimals)
