@@ -1,52 +1,55 @@
 version: 2
 
-models:
+sources:
+  - name: erc4337_zora
+    tables:
+      - name: EntryPoint_evt_AccountDeployed
+        description: "Events for account deployments on Zora network"
+      - name: EntryPoint_evt_UserOperationEvent
+        description: "Events for user operations on Zora network"
+      - name: EntryPoint_call_handleOps
+        description: "Calls to handle operations on Zora network"
+      - name: EntryPoint_v0_6_evt_AccountDeployed
+        description: "Events for account deployments on Zora network v0.6"
+      - name: EntryPoint_v0_6_evt_UserOperationEvent
+        description: "Events for user operations on Zora network v0.6"
+      - name: EntryPoint_v0_6_call_handleOps
+        description: "Calls to handle operations on Zora network v0.6"
 
+models:
   - name: account_abstraction_erc4337_zora_v0_5_userops_basics
     meta:
       blockchain: zora
       sector: erc4337
       project: erc4337
-      contributors: yourname
+      contributors: thegr8liberator
     config:
       tags: ["zora", "erc4337", "account", "abstraction", "entrypoint"]
-    description: "erc4337 v0.5 user operations on Zora"
+    description: "erc4337 v0.5 user operations on Zora network"
     columns:
-      - &blockchain
-        name: blockchain
+      - name: blockchain
         description: "blockchain which EntryPoint was deployed"
-      - &version
-        name: version
+      - name: version
         description: "version of the EntryPoint contract"
-      - &block_month
-        name: block_month
+      - name: block_month
         description: "UTC event block date of each User Operation"
-      - &block_time
-        name: block_time
+      - name: block_time
         description: "UTC event block time of each User Operation"
-      - &entrypoint_contract
-        name: entrypoint_contract
+      - name: entrypoint_contract
         description: "the contract address of the EntryPoint"
-      - &tx_hash
-        name: tx_hash
+      - name: tx_hash
         description: "Unique transaction hash value tied to each transaction on the User Operation"
-      - &sender
-        name: sender
-        description: "the sender (AA wallet address) that submitted the user operation"
-      - &userop_hash
-        name: userop_hash
+      - name: sender
+        description: "the sender(AA wallet address) that submitted the user operation"
+      - name: userop_hash
         description: "Unique user operation hash"
-      - &success
-        name: success
+      - name: success
         description: "whether the user operation is successfully executed"
-      - &paymaster
-        name: paymaster
+      - name: paymaster
         description: "the address that pays for the user operation gas fees on behalf of the user"
-      - &op_fee
-        name: op_fee
+      - name: op_fee
         description: "The gas paid by sender or paymaster, depending on the chain gas setting"
-      - &beneficiary
-        name: beneficiary
+      - name: beneficiary
         description: "the address where the bundler setting for the user operation pays for their gas fee"
 
   - name: account_abstraction_erc4337_zora_v0_6_userops_basics
@@ -54,38 +57,46 @@ models:
       blockchain: zora
       sector: erc4337
       project: erc4337
-      contributors: yourname
+      contributors: thegr8liberator
     config:
       tags: ["zora", "erc4337", "account", "abstraction", "entrypoint"]
-    description: "erc4337 v0.6 user operations on Zora"
+    description: "erc4337 v0.6 user operations on Zora network"
     columns:
-      - *blockchain
-      - *version
-      - *block_month
-      - *block_time
-      - *entrypoint_contract
-      - *tx_hash
-      - *sender
-      - *userop_hash
-      - *success
-      - *paymaster
-      - *op_fee
-      - *beneficiary
+      - name: blockchain
+        description: "blockchain which EntryPoint was deployed"
+      - name: version
+        description: "version of the EntryPoint contract"
+      - name: block_month
+        description: "UTC event block date of each User Operation"
+      - name: block_time
+        description: "UTC event block time of each User Operation"
+      - name: entrypoint_contract
+        description: "the contract address of the EntryPoint"
+      - name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the User Operation"
+      - name: sender
+        description: "the sender(AA wallet address) that submitted the user operation"
+      - name: userop_hash
+        description: "Unique user operation hash"
+      - name: success
+        description: "whether the user operation is successfully executed"
+      - name: paymaster
+        description: "the address that pays for the user operation gas fees on behalf of the user"
+      - name: op_fee
+        description: "The gas paid by sender or paymaster, depending on the chain gas setting"
+      - name: beneficiary
+        description: "the address where the bundler setting for the user operation pays for their gas fee"
 
   - name: account_abstraction_erc4337_zora_userops
     meta:
       blockchain: zora
       sector: erc4337
       project: erc4337
-      contributors: yourname
+      contributors: thegr8liberator
     config:
       tags: ["zora", "erc4337", "account", "abstraction", "entrypoint"]
-    description: "erc4337 user operations on Zora"
+    description: "erc4337 user operation on Zora network"
     tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - userop_hash
-            - tx_hash
       - check_seed:
           seed_file: ref('account_abstraction_erc4337_userops_seed')
           filter:
@@ -109,125 +120,87 @@ models:
             - paymaster
             - bundler
     columns:
-      - *blockchain
-      - *version
-      - *block_month
-      - *block_time
-      - *entrypoint_contract
-      - *tx_hash
-      - *sender
-      - *userop_hash
-      - *success
-      - *paymaster
-      - *op_fee
-      - &op_fee_usd
-        name: op_fee_usd
-        description: "The user operation gas (in USD) paid by sender or paymaster"
-      - &bundler
-        name: bundler
-        description: "Address that bundles UserOps and submits those UserOps to the final on-chain by sending an EOA transaction"
-      - &tx_to
-        name: tx_to
-        description: "Address where the bundler sends the transaction"
-      - &gas_symbol
-        name: gas_symbol
-        description: "The gas symbol paid for the transaction"
-      - &tx_fee
-        name: tx_fee
-        description: "The bundler paid gas value for the transaction"
-      - &tx_fee_usd
-        name: tx_fee_usd
-        description: "The bundler paid gas (in USD) value for the transaction"
-      - *beneficiary
+      - name: blockchain
+        description: "blockchain which EntryPoint was deployed"
+      - name: version
+        description: "version of the EntryPoint contract"
+      - name: block_month
+        description: "UTC event block date of each User Operation"
+      - name: block_time
+        description: "UTC event block time of each User Operation"
+      - name: entrypoint_contract
+        description: "the contract address of the EntryPoint"
+      - name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the User Operation"
+      - name: sender
+        description: "the sender(AA wallet address) that submitted the user operation"
+      - name: userop_hash
+        description: "Unique user operation hash"
+      - name: success
+        description: "whether the user operation is successfully executed"
+      - name: paymaster
+        description: "the address that pays for the user operation gas fees on behalf of the user"
+      - name: op_fee
+        description: "The gas paid by sender or paymaster, depending on the chain gas setting"
+      - name: op_fee_usd
+        description: "The user operation gas (in usd) paid by sender or paymaster."
+      - name: bundler
+        description: "address that bundles UserOps and submits those UserOps to the final on-chain by sending an EOA transaction. It is the transaction from address"
+      - name: tx_to
+        description: "address where the bundler sends the transaction"
+      - name: gas_symbol
+        description: "the gas symbol paid for the transaction"
+      - name: tx_fee
+        description: "the bundler paid gas value for the transaction"
+      - name: tx_fee_usd
+        description: "the bundler paid gas (in usd) value for the transaction"
+      - name: beneficiary
+        description: "the address where the bundler setting for the user operation pays for their gas fee"
 
   - name: account_abstraction_erc4337_zora_v0_5_account_deployed
     meta:
       blockchain: zora
       sector: erc4337
       project: erc4337
-      contributors: yourname
+      contributors: thegr8liberator
     config:
       tags: ["zora", "erc4337", "account", "abstraction", "entrypoint"]
-    description: "erc4337 v0.5 account deployed on Zora"
+    description: "erc4337 v0.5 account deployed on Zora network"
     columns:
-      - *blockchain
-      - *version
-      - *block_time
-      - *block_month
-      - *userop_hash
-      - *entrypoint_contract
-      - *tx_hash
-      - *sender
-      - *paymaster
-      - &factory
-        name: factory
-        description: "Who can create a new AA Wallet. It's a smart contract address"
+      - name: blockchain
+        description: "blockchain which EntryPoint was deployed"
+      - name: version
+        description: "version of the EntryPoint contract"
+      - name: block_time
+        description: "UTC event block time of each User Operation"
+      - name: block_month
+        description: "UTC event block date of each User Operation"
+      - name: userop_hash
+        description: "Unique user operation hash"
+      - name: entrypoint_contract
+        description: "the contract address of the EntryPoint"
+      - name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the User Operation"
+      - name: sender
+        description: "the sender(AA wallet address) that submitted the user operation"
+      - name: paymaster
+        description: "the address that pays for the user operation gas fees on behalf of the user"
+      - name: factory
+        description: "who can create a new AA Wallet. It's a smart contract address"
 
   - name: account_abstraction_erc4337_zora_v0_6_account_deployed
     meta:
       blockchain: zora
       sector: erc4337
       project: erc4337
-      contributors: yourname
+      contributors: thegr8liberator
     config:
       tags: ["zora", "erc4337", "account", "abstraction", "entrypoint"]
-    description: "erc4337 v0.6 account deployed on Zora"
+    description: "erc4337 v0.6 account deployed on Zora network"
     columns:
-      - *blockchain
-      - *version
-      - *block_time
-      - *block_month
-      - *userop_hash
-      - *entrypoint_contract
-      - *tx_hash
-      - *sender
-      - *paymaster
-      - *factory
-
-  - name: account_abstraction_erc4337_zora_account_deployed
-    meta:
-      blockchain: zora
-      sector: erc4337
-      project: erc4337
-      contributors: yourname
-    config:
-      tags: ["zora", "erc4337", "account", "abstraction", "entrypoint"]
-    description: "erc4337 account deployed on Zora"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - userop_hash
-            - tx_hash
-      - check_seed:
-          seed_file: ref('account_abstraction_erc4337_account_deployed_seed')
-          filter:
-            blockchain: zora
-            version: v0.5
-          match_columns:
-            - userop_hash
-            - tx_hash
-          check_columns:
-            - paymaster
-            - factory
-      - check_seed:
-          seed_file: ref('account_abstraction_erc4337_account_deployed_seed')
-          filter:
-            blockchain: zora
-            version: v0.6
-          match_columns:
-            - userop_hash
-            - tx_hash
-          check_columns:
-            - paymaster
-            - factory
-    columns:
-      - *blockchain
-      - *version
-      - *block_time
-      - *block_month
-      - *userop_hash
-      - *entrypoint_contract
-      - *tx_hash
-      - *sender
-      - *paymaster
-      - *factory
+      - name: blockchain
+        description: "blockchain which EntryPoint was deployed"
+      - name: version
+        description: "version of the EntryPoint contract"
+      - name: block_time
+        description
