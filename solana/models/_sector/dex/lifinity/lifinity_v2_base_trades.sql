@@ -29,7 +29,7 @@ WITH
             -- token bought is always the second instruction (transfer) in the inner instructions
             , tr_2.amount as token_bought_amount_raw
             , tr_1.amount as token_sold_amount_raw
-            , p.pool_id
+            , sp.account_amm as pool_id
             , sp.call_tx_signer as trader_id
             , sp.call_tx_id as tx_id
             , sp.call_outer_instruction_index as outer_instruction_index
