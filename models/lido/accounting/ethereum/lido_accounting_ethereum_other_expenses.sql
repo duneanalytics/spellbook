@@ -121,7 +121,7 @@ cow_settlement as (
 
 stonks_orders_txns as (
     select evt_tx_hash
-    from lido_ethereum.steth_evt_Transfer
+    from {{source('lido_ethereum', 'steth_evt_Transfer')}}
     where "from" in (
             select cast(replace(topic1, 0x000000000000000000000000, 0x) as varbinary) as order_addr
             from ethereum.logs l
