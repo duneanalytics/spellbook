@@ -360,3 +360,22 @@ models:
           seed_file: ref('gridex_polygon_base_trades_seed')
           filter:
             version: 1
+            
+  - name: swaap_v2_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: swaap
+      contributors: borelien
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'swaap', 'v2']
+    description: "swaap v2 polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('swaap_polygon_base_trades_seed') 
+          filter:
+            version: 2

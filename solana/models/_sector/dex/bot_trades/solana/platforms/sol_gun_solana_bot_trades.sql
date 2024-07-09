@@ -111,6 +111,7 @@ SELECT
   block_time,
   block_date,
   block_month,
+  'Solgun' as bot,
   blockchain,
   amount_usd,
   type,

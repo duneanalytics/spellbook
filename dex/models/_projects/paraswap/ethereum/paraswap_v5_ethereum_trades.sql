@@ -1,11 +1,12 @@
 {{ config(
     schema = 'paraswap_v5_ethereum',
     alias = 'trades',
-    
+
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -46,31 +47,31 @@
 **/
 WITH dex_swap AS (
     {% for trade_table in trade_event_tables %}
-        SELECT 
+        SELECT
             evt_block_time AS block_time,
             evt_block_number AS block_number,
-            beneficiary AS taker, 
-            initiator AS maker, 
+            beneficiary AS taker,
+            initiator AS maker,
             receivedAmount AS token_bought_amount_raw,
             srcAmount AS token_sold_amount_raw,
             CAST(NULL AS double) AS amount_usd,
-            CASE 
+            CASE
                 WHEN destToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH 
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH
                 ELSE destToken
             END AS token_bought_address,
-            CASE 
+            CASE
                 WHEN srcToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH 
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH
                 ELSE srcToken
             END AS token_sold_address,
             contract_address AS project_contract_address,
-            evt_tx_hash AS tx_hash, 
+            evt_tx_hash AS tx_hash,
             CAST(ARRAY[-1] as array<bigint>) AS trace_address,
             evt_index
-        FROM {{ trade_table }} p 
+        FROM {{ trade_table }} p
         {% if is_incremental() %}
-        WHERE p.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('p.evt_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -79,26 +80,26 @@ WITH dex_swap AS (
 ),
 
 liqudity_swap AS (
-    SELECT 
+    SELECT
         p.evt_block_time AS block_time,
         p.evt_block_number AS block_number,
-        tx."from" AS taker, 
-        tx."from" AS maker, 
+        tx."from" AS taker,
+        tx."from" AS maker,
         receivedAmount AS token_bought_amount_raw,
         fromAmount AS token_sold_amount_raw,
         CAST(NULL AS double) AS amount_usd,
-        CASE 
+        CASE
             WHEN toAsset = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-            THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH 
+            THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH
             ELSE toAsset
         END AS token_bought_address,
-        CASE 
+        CASE
             WHEN fromAsset = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-            THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH 
+            THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH
             ELSE fromAsset
         END AS token_sold_address,
         p.contract_address AS project_contract_address,
-        p.evt_tx_hash AS tx_hash, 
+        p.evt_tx_hash AS tx_hash,
         CAST(ARRAY[-1] as array<bigint>) AS trace_address,
         p.evt_index
     FROM {{ source('paraswap_ethereum', 'ParaSwapLiquiditySwapAdapter_evt_Swapped') }} p
@@ -108,10 +109,10 @@ liqudity_swap AS (
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
     {% if is_incremental() %}
-    WHERE p.evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('p.evt_block_time') }}
     {% endif %}
 ),
 
@@ -127,14 +128,14 @@ call_swap_without_event AS (
                 AND c.call_tx_hash = tx.hash
                 AND tx.block_number >= {{ trade_call_start_block_number }}
                 {% if is_incremental() %}
-                AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+                AND {{ incremental_predicate('tx.block_time') }}
                 {% endif %}
                 {% if not is_incremental() %}
                 AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
             WHERE c.call_success = true
             {% if is_incremental() %}
-            AND c.call_block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{ incremental_predicate('c.call_block_time') }}
             {% endif %}
             {% if not loop.last %}
             UNION -- There may be multiple calls in same tx
@@ -167,7 +168,7 @@ call_swap_without_event AS (
                 AND t."from" = c."from"
                 AND t.evt_block_number >= {{ trade_call_start_block_number }}
                 {% if is_incremental() %}
-                AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+                AND {{ incremental_predicate('t.evt_block_time') }}
                 {% endif %}
                 {% if not is_incremental() %}
                 AND t.evt_block_time >= TIMESTAMP '{{project_start_date}}'
@@ -177,7 +178,7 @@ call_swap_without_event AS (
         WHERE row_num = 1 -- Only use the first input row
 
         UNION ALL
-        
+
         -- There can be some transferred in ETH return back to user after swap. Positive Slippage
         SELECT t.tx_hash,
             t.block_number,
@@ -198,7 +199,7 @@ call_swap_without_event AS (
             AND t.call_type = 'call'
             AND t.value > uint256 '0'
             {% if is_incremental() %}
-            AND t.block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{ incremental_predicate('t.block_time') }}
             {% endif %}
             {% if not is_incremental() %}
             AND t.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -232,7 +233,7 @@ call_swap_without_event AS (
                 AND t."to" = c."from"
                 AND t.evt_block_number >= {{ trade_call_start_block_number }}
                 {% if is_incremental() %}
-                AND t.evt_block_time >= date_trunc('day', now() - interval '7' day)
+                AND {{ incremental_predicate('t.evt_block_time') }}
                 {% endif %}
                 {% if not is_incremental() %}
                 AND t.evt_block_time >= TIMESTAMP '{{project_start_date}}'
@@ -242,7 +243,7 @@ call_swap_without_event AS (
         WHERE row_num = 1
 
         UNION ALL
-        
+
         SELECT t.tx_hash,
             t.block_number,
             t.block_time,
@@ -259,7 +260,7 @@ call_swap_without_event AS (
             AND t.call_type = 'call'
             AND t.value > uint256 '0'
             {% if is_incremental() %}
-            AND t.block_time >= date_trunc('day', now() - interval '7' day)
+            AND {{ incremental_predicate('t.block_time') }}
             {% endif %}
             {% if not is_incremental() %}
             AND t.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -287,15 +288,15 @@ call_swap_without_event AS (
 dexs AS (
     SELECT block_time,
         block_number,
-        taker, 
-        maker, 
+        taker,
+        maker,
         token_bought_amount_raw,
         token_sold_amount_raw,
         amount_usd,
         token_bought_address,
         token_sold_address,
         project_contract_address,
-        tx_hash, 
+        tx_hash,
         trace_address,
         evt_index
     FROM dex_swap
@@ -304,15 +305,15 @@ dexs AS (
 
     SELECT l.block_time,
         l.block_number,
-        l.taker, 
-        l.maker, 
+        l.taker,
+        l.maker,
         l.token_bought_amount_raw,
         l.token_sold_amount_raw,
         l.amount_usd,
         l.token_bought_address,
         l.token_sold_address,
         l.project_contract_address,
-        l.tx_hash, 
+        l.tx_hash,
         l.trace_address,
         l.evt_index
     FROM liqudity_swap l
@@ -323,15 +324,15 @@ dexs AS (
 
     SELECT c.block_time,
         c.block_number,
-        c.taker, 
-        c.maker, 
+        c.taker,
+        c.maker,
         c.token_bought_amount_raw,
         c.token_sold_amount_raw,
         c.amount_usd,
         c.token_bought_address,
         c.token_sold_address,
         c.project_contract_address,
-        c.tx_hash, 
+        c.tx_hash,
         c.trace_address,
         c.evt_index
     FROM call_swap_without_event c
@@ -379,7 +380,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx ON d.tx_hash = tx.hash
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} e1 ON e1.contract_address = d.token_bought_address
     AND e1.blockchain = 'ethereum'
@@ -392,7 +393,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d
     AND p1.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p1.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p1.minute') }}
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d.block_time)
     AND p2.contract_address = d.token_sold_address
@@ -401,5 +402,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d
     AND p2.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p2.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p2.minute') }}
     {% endif %}

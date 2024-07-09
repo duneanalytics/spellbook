@@ -1,6 +1,6 @@
 {% macro 
-    balancer_token_balance_changes_daily_agg_macro(
-        blockchain, version
+    balancer_v2_compatible_token_balance_changes_daily_agg_macro(
+        blockchain, version, project_decoded_as, base_spells_namespace
     ) 
 %}
 WITH
@@ -57,7 +57,7 @@ WITH
             contract_address AS token,
             decimals,
             bpt_price
-        FROM {{ ref('balancer_bpt_prices') }}
+        FROM {{ ref(base_spells_namespace + '_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
         {% if is_incremental() %}
         AND {{ incremental_predicate('day') }}
@@ -96,7 +96,7 @@ WITH
             token_symbol,
             LEAD(block_date, 1, NOW()) OVER (PARTITION BY token_address, pool_id ORDER BY block_date) AS day_of_next_change,
             SUM(delta_amount) AS daily_amount
-        FROM {{ ref('balancer_token_balance_changes') }}
+        FROM {{ ref(base_spells_namespace + '_token_balance_changes') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3, 4, 5, 6
     ),
@@ -140,7 +140,7 @@ WITH
             ROW_NUMBER() OVER (PARTITION BY b.block_date, b.pool_id ORDER BY SUM(b.daily_amount_usd) ASC) AS pricing_count, --to avoid double count in pools with multiple pricing assets
             SUM(b.daily_amount_usd) / COALESCE(SUM(w.normalized_weight), 1) AS weighted_daily_amount_usd
         FROM daily_usd_balance b
-        LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+        LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
         AND b.token_address = w.token_address
         AND b.daily_amount_usd > 0
         LEFT JOIN {{ ref('balancer_token_whitelist') }} q ON b.token_address = q.address 
@@ -166,7 +166,7 @@ WITH
         BYTEARRAY_SUBSTRING(c.pool_id, 1, 20) AS pool_address,
         c.pool_symbol,
         '2' AS version,
-        'ethereum' AS blockchain,
+        '{{blockchain}}' AS blockchain,
         c.pool_type,
         c.token_address,
         c.token_symbol,
@@ -176,8 +176,8 @@ WITH
     FROM daily_usd_balance c
     FULL OUTER JOIN weighted_pool_amount_estimates_2 b ON c.block_date = b.block_date
     AND c.pool_id = b.pool_id
-    LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
-    AND w.blockchain = 'ethereum'
+    LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+    AND w.blockchain = '{{blockchain}}'
     AND w.version = '2'     
     AND w.token_address = c.token_address
     LEFT JOIN eth_prices e ON e.day = c.block_date 
