@@ -160,7 +160,7 @@ other_expenses_txns AS (
             UNION ALL
             SELECT address FROM diversifications_addresses    
         )
-        AND evt_tx_hash NOT IN ()   
+        AND evt_tx_hash NOT IN (select evt_tx_hash from stonks_orders_txns)   
     UNION ALL
     --ETH outflow
     SELECT  
