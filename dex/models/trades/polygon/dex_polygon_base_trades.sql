@@ -22,6 +22,9 @@
     , ref('xchange_polygon_base_trades')
     , ref('dooar_polygon_base_trades')
     , ref('uniswap_v2_polygon_base_trades')
+    , ref('smardex_polygon_base_trades')
+    , ref('gridex_polygon_base_trades')
+    , ref('swaap_v2_polygon_base_trades')
 ] %}
 
 WITH base_union AS (
