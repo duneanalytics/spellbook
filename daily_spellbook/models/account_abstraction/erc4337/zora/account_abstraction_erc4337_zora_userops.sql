@@ -12,7 +12,7 @@
                                     \'["0xbitfly", "hosuke", "peterrliem","intensodefi"]\') }}'
 )}}
 
--- min deployed_date
+-- deployed_date
 {% set chain = 'zora' %}
 {% set gas_symbol = 'ETH' %}
 {% set wrapped_gas_address = '0x4200000000000000000000000000000000000006' %}
