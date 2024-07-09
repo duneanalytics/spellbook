@@ -35,6 +35,8 @@ WITH
             , sp.call_outer_instruction_index as outer_instruction_index
             , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
             , sp.call_tx_index as tx_index
+            , COALESCE(tr_2.token_mint_address, cast(null as varchar)) as token_bought_mint_address
+            , COALESCE(tr_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
             , tr_2.from_token_account as token_bought_vault
             , tr_1.to_token_account as token_sold_vault
             --swap out can be either 2nd or 3rd transfer, we need to filter for the first transfer out.
