@@ -35,8 +35,8 @@ WITH
             , sp.call_outer_instruction_index as outer_instruction_index
             , COALESCE(sp.call_inner_instruction_index, 0) as inner_instruction_index
             , sp.call_tx_index as tx_index
-            , tr_2.token_from_account as token_bought_vault
-            , tr_1.token_to_account as token_sold_vault
+            , tr_2.from_token_account as token_bought_vault
+            , tr_1.to_token_account as token_sold_vault
             --swap out can be either 2nd or 3rd transfer, we need to filter for the first transfer out.
             , tr_2.inner_instruction_index as transfer_out_index
             , row_number() over (partition by sp.call_tx_id, sp.call_outer_instruction_index, sp.call_inner_instruction_index
