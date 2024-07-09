@@ -124,7 +124,7 @@ stonks_orders_txns as (
     from {{source('lido_ethereum', 'steth_evt_Transfer')}}
     where "from" in (
             select cast(replace(topic1, 0x000000000000000000000000, 0x) as varbinary) as order_addr
-            from ethereum.logs l
+            from {{source('ethereum', 'logs')}} l
             join stonks s on l.contract_address = s.address 
              and l.topic0 = 0x96a6d5477fba36522dca4102be8b3785435baf902ef6c4edebcb99850630c75f -- Stonks Deployed
             ) 
