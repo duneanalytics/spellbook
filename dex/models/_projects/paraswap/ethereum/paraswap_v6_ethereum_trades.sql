@@ -1,11 +1,12 @@
 {{ config(
     schema = 'paraswap_v6_ethereum',
     alias = 'trades',
-    
+
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'method', 'trace_address'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
@@ -17,33 +18,33 @@
 {% set project_start_date = '2024-03-01' %}
 
 with dexs AS (
-        SELECT 
+        SELECT
             blockTime AS block_time,
             blockNumber AS block_number,
-            from_hex(beneficiary) AS taker, 
-            null AS maker,  -- TODO: can parse from traces 
+            from_hex(beneficiary) AS taker,
+            null AS maker,  -- TODO: can parse from traces
             receivedAmount AS token_bought_amount_raw,
             fromAmount AS token_sold_amount_raw,
             CAST(NULL AS double) AS amount_usd,
-            method,       
-            CASE 
+            method,
+            CASE
                 WHEN from_hex(destToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH 
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH
                 ELSE from_hex(destToken)
             END AS token_bought_address,
-            CASE 
+            CASE
                 WHEN from_hex(srcToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH 
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH
                 ELSE from_hex(srcToken)
             END AS token_sold_address,
             projectContractAddress as project_contract_address,
-            txHash AS tx_hash, 
+            txHash AS tx_hash,
             callTraceAddress AS trace_address,
             CAST(-1 as integer) AS evt_index
-        FROM {{ ref('paraswap_v6_ethereum_trades_decoded') }}     
+        FROM {{ ref('paraswap_v6_ethereum_trades_decoded') }}
         {% if is_incremental() %}
-        WHERE blockTime >= date_trunc('day', now() - interval '7' day)
-        {% endif %}  
+        WHERE {{ incremental_predicate('blockTime') }}
+        {% endif %}
 )
 SELECT 'ethereum' AS blockchain,
     'paraswap' AS project,
@@ -84,7 +85,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx ON d.tx_hash = tx.hash
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} e1 ON e1.contract_address = d.token_bought_address
     AND e1.blockchain = 'ethereum'
@@ -97,7 +98,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d
     AND p1.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p1.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p1.minute') }}
     {% endif %}
 LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d.block_time)
     AND p2.contract_address = d.token_sold_address
@@ -106,5 +107,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d
     AND p2.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p2.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p2.minute') }}
     {% endif %}

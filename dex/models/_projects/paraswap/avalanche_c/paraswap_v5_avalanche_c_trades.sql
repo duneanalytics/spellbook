@@ -1,11 +1,12 @@
 {{ config(
     schema = 'paraswap_v5_avalanche_c',
     alias = 'trades',
-    
+
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
@@ -16,7 +17,7 @@
 
 {% set project_start_date = '2021-09-08' %} -- min(evt_block_time) in bought & swapped events
 
-WITH 
+WITH
 
 {% set trade_event_tables = [
     source('paraswap_avalanche_c', 'AugustusSwapperV5_evt_Bought')
@@ -30,31 +31,31 @@ WITH
 
 dexs as (
     {% for trade_tables in trade_event_tables %}
-        SELECT 
+        SELECT
             evt_block_time as block_time,
             evt_block_number as block_number,
-            beneficiary as taker, 
-            initiator as maker, 
+            beneficiary as taker,
+            initiator as maker,
             receivedAmount as token_bought_amount_raw,
             srcAmount as token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
-            CASE 
+            CASE
                 WHEN destToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 THEN 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7 -- wavax
                 ELSE destToken
             END as token_bought_address,
-            CASE 
+            CASE
                 WHEN srcToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 THEN 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7 -- wavax
                 ELSE srcToken
             END as token_sold_address,
             contract_address as project_contract_address,
-            evt_tx_hash as tx_hash, 
+            evt_tx_hash as tx_hash,
             CAST(ARRAY[-1] as array<bigint>) AS trace_address,
             evt_index
-        FROM {{ trade_tables }} p 
+        FROM {{ trade_tables }} p
         {% if is_incremental() %}
-        WHERE p.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('p.evt_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -111,7 +112,7 @@ price_missed_next AS (
     FROM usdc_price
 
     UNION ALL
-    
+
     SELECT minute, contract_address, decimals, symbol, price
     FROM usdt_price
 )
@@ -156,7 +157,7 @@ INNER JOIN {{ source('avalanche_c', 'transactions') }} tx
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
@@ -172,7 +173,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_bought
     AND p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p_bought.minute') }}
     {% endif %}
 LEFT JOIN price_missed_previous p_prev1 ON dexs.token_bought_address = p_prev1.contract_address
     AND dexs.block_time < p_prev1.minute -- Swap before first price record time
@@ -186,7 +187,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p_sold.minute') }}
     {% endif %}
 LEFT JOIN price_missed_previous p_prev2 ON dexs.token_sold_address = p_prev2.contract_address
     AND dexs.block_time < p_prev2.minute -- Swap before first price record time
