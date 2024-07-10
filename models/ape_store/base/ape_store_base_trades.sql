@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'tx_hash', 'tx_index']
+    unique_key = ['blockchain', 'tx_hash', 'tx_index'],
     post_hook = '{{ expose_spells(
                         blockchains = \'["base"]\',
                         spell_type = "project",
