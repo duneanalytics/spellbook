@@ -1,11 +1,12 @@
 {{ config(
     schema = 'paraswap_v5_fantom',
     alias = 'trades',
-    
+
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["fantom"]\',
                                 "project",
@@ -16,7 +17,7 @@
 
 {% set project_start_date = '2022-01-21' %} -- min(evet_block_time) in bought & swapped events
 
-WITH 
+WITH
 
 {% set trade_event_tables = [
     source('paraswap_fantom', 'AugustusSwapperV5_evt_BoughtV3')
@@ -26,31 +27,31 @@ WITH
 
 dexs as (
     {% for trade_tables in trade_event_tables %}
-        SELECT 
+        SELECT
             evt_block_time as block_time,
             evt_block_number as block_number,
-            beneficiary as taker, 
-            initiator as maker, 
+            beneficiary as taker,
+            initiator as maker,
             receivedAmount as token_bought_amount_raw,
             srcAmount as token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
-            CASE 
+            CASE
                 WHEN destToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83 -- wftm 
+                THEN 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83 -- wftm
                 ELSE destToken
             END as token_bought_address,
-            CASE 
+            CASE
                 WHEN srcToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83 -- wftm 
+                THEN 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83 -- wftm
                 ELSE srcToken
             END as token_sold_address,
             contract_address as project_contract_address,
-            evt_tx_hash as tx_hash, 
+            evt_tx_hash as tx_hash,
             CAST(ARRAY[-1] as array<bigint>) AS trace_address,
             evt_index
-        FROM {{ trade_tables }} p 
+        FROM {{ trade_tables }} p
         {% if is_incremental() %}
-        WHERE p.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('p.evt_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -97,7 +98,7 @@ inner join {{ source('fantom', 'transactions') }} tx
     and tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and tx.block_time >= date_trunc('day', now() - interval '7' day)
+    and {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 left join {{ source('tokens', 'erc20') }} erc20a
     on erc20a.contract_address = dexs.token_bought_address
@@ -113,7 +114,7 @@ left join {{ source('prices', 'usd') }} p_bought
     and p_bought.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and p_bought.minute >= date_trunc('day', now() - interval '7' day)
+    and {{ incremental_predicate('p_bought.minute') }}
     {% endif %}
 left join {{ source('prices', 'usd') }} p_sold
     on p_sold.minute = date_trunc('minute', dexs.block_time)
@@ -123,5 +124,5 @@ left join {{ source('prices', 'usd') }} p_sold
     and p_sold.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    and p_sold.minute >= date_trunc('day', now() - interval '7' day)
+    and {{ incremental_predicate('p_sold.minute') }}
     {% endif %}
