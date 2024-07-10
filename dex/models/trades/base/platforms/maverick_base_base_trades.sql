@@ -11,7 +11,7 @@
 }}
 
 {{
-    maverick_compatible_trades(
+    maverick_v1_compatible_trades(
         blockchain = 'base',
         project = 'maverick',
         version = '1',

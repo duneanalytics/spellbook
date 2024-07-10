@@ -11,11 +11,11 @@
 }}
 
 {{
-    maverick_compatible_trades(
+    maverick_v2_compatible_trades(
         blockchain = 'ethereum',
         project = 'maverick',
         version = '1',
-        source_evt_swap = source('maverick_v1_ethereum', 'pool_evt_Swap'),
-        source_evt_pool = source('maverick_v1_ethereum', 'factory_evt_PoolCreated')
+        source_evt_swap = source('maverick_v2_ethereum', 'V2Pool_evt_PoolSwap'),
+        source_evt_pool = source('maverick_v2_ethereum', 'V2Factory_evt_PoolCreated')
     )
 }}

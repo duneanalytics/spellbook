@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'maverick_bnb',
+        schema = 'maverick_ethereum',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,10 +12,10 @@
 
 {{
     maverick_v1_compatible_trades(
-        blockchain = 'bnb',
+        blockchain = 'ethereum',
         project = 'maverick',
         version = '1',
-        source_evt_swap = source('maverick_v1_bnb', 'pool_evt_Swap'),
-        source_evt_pool = source('maverick_v1_bnb', 'factory_evt_PoolCreated')
+        source_evt_swap = source('maverick_v1_ethereum', 'pool_evt_Swap'),
+        source_evt_pool = source('maverick_v1_ethereum', 'factory_evt_PoolCreated')
     )
 }}
