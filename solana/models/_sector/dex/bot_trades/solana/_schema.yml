@@ -11,6 +11,9 @@ models:
       description: >
         Trades by trading bots on Solana
       columns:
+        - &bot
+          name: bot
+          description: "Trading bot which executed the trade"
         - &blockchain
           name: blockchain
           description: "Blockchain which the DEX is deployed"
@@ -331,7 +334,7 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('looter_solana_trades_seed')
           blockchain: solana
-          
+
   - name: consortium_key_solana_bot_trades
     meta:
       blockchain: solana
@@ -352,7 +355,7 @@ models:
             - inner_instruction_index
       - check_bot_trades_seed:
           seed_file: ref('consortium_key_solana_trades_seed')
-          blockchain: solana 
+          blockchain: solana
 
   - name: wifbot_solana_bot_trades
     meta:
@@ -396,4 +399,80 @@ models:
             - inner_instruction_index
       - check_bot_trades_seed:
           seed_file: ref('soul_sniper_solana_trades_seed')
+          blockchain: solana
+
+  - name: consortium_key_solana_bot_users
+    meta:
+      blockchain: solana
+      sector: dex
+      project: consortium_key
+      contributors: whale_hunter
+    description: >
+      consortium_key users on Solana
+    config:
+      tags: ["solana", "dex", "bot_trades"]
+      columns:
+        - name: user
+          tests: unique
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user
+
+  - name: soul_sniper_solana_bot_users
+    meta:
+      blockchain: solana
+      sector: dex
+      project: soul_sniper
+      contributors: whale_hunter
+    description: >
+      soul_sniper users on Solana
+    config:
+      tags: ["solana", "dex", "bot_trades"]
+      columns:
+        - name: user
+          tests: unique
+
+  - name: tirador_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: tirador
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "tirador", "trades"]
+    description: >
+      Tirador trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('tirador_solana_trades_seed')
+          blockchain: solana
+          
+  - name: unibot_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: unibot
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "unibot", "trades"]
+    description: >
+      Unibot trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('unibot_solana_trades_seed')
           blockchain: solana

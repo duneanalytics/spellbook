@@ -251,6 +251,7 @@ v1_stableswap_ng as (
         AND dp.call_tx_hash = p.evt_tx_hash
 ),
 
+
 v1_twocrypto as (
     SELECT
         'Factory V1 Twocrypto' AS version,
@@ -282,6 +283,7 @@ v1_twocrypto as (
         ON dp.call_block_time = p.evt_block_time
         AND dp.call_tx_hash = p.evt_tx_hash
 ),
+
 
 v1_pools_deployed AS (
     SELECT

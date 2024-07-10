@@ -920,3 +920,21 @@ models:
             version:
               - 1
 
+  - name: swaap_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: swaap
+      contributors: borelien
+    config:
+      tags: [ 'base', 'dex', 'trades', 'swaap', 'v2']
+    description: "swaap v2 base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('swaap_base_base_trades_seed') 
+          filter:
+            version: 2
