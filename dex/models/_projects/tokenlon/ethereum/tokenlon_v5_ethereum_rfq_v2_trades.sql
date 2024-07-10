@@ -1,18 +1,18 @@
 {{ config(
     schema = 'tokenlon_v5_ethereum',
     alias = 'rfq_v2_trades',
-    
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "tokenlon",
                                     \'["keen"]\') }}'
     )
-}} 
+}}
 {% set blockchain = 'ethereum' %}
 {% set project = 'tokenlon' %}
 {% set project_version = '5' %}
@@ -20,7 +20,7 @@
 {% set project_start_date = "timestamp '2023-09-12'" %}
 
 WITH dexs AS (
-    SELECT 
+    SELECT
         evt_block_time        AS block_time,
         user                AS taker,
         "maker"               AS maker,
@@ -36,7 +36,7 @@ WITH dexs AS (
     FROM
         {{ source('tokenlon_v5_ethereum', 'RFQv2_evt_FilledRFQ') }}
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('evt_block_time') }} 
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ), prices AS (
     SELECT DISTINCT
@@ -46,6 +46,12 @@ WITH dexs AS (
       decimals,
       AVG(price) AS price
     FROM {{ source('prices', 'usd') }}
+    WHERE blockchain = 'ethereum'
+    {% if not is_incremental() %}
+    AND minute >= {{project_start_date}}
+    {% else %}
+    AND {{ incremental_predicate('minute') }}
+    {% endif %}
     GROUP BY DATE_TRUNC('hour', minute), contract_address,blockchain,decimals
 )
 
@@ -94,7 +100,7 @@ INNER JOIN {{ source('ethereum', 'transactions') }} tx
     AND tx.block_time >= {{project_start_date}}
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} erc20a
     ON erc20a.contract_address = dexs.token_bought_address
@@ -110,7 +116,7 @@ LEFT JOIN prices p_bought
     AND p_bought.hour >= {{project_start_date}}
     {% endif %}
     {% if is_incremental() %}
-    AND p_bought.hour >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p_bought.hour') }}
     {% endif %}
 LEFT JOIN prices p_sold
     ON p_sold.hour = date_trunc('hour', dexs.block_time)
@@ -120,5 +126,5 @@ LEFT JOIN prices p_sold
     AND p_sold.hour >= {{project_start_date}}
     {% endif %}
     {% if is_incremental() %}
-    AND p_sold.hour >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p_sold.hour') }}
     {% endif %}

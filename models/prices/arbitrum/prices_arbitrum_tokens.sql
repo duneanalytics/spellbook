@@ -202,5 +202,6 @@ FROM
     ('gho-gho', 'arbitrum', 'GHO', 0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33, 18),
     ('rseth-rseth','arbitrum','rsETH',0x4186bfc76e2e237523cbc30fd220fe055156b41f, 18),    
     ('dola-dola','arbitrum','DOLA',0x6a7661795c374c0bfc635934efaddff3a7ee23b6, 18),
-    ('usx-dforce-usd', 'arbitrum', 'USX', 0x641441c631e2f909700d2f41fd87f0aa6a6b4edb, 18)
+    ('usx-dforce-usd', 'arbitrum', 'USX', 0x641441c631e2f909700d2f41fd87f0aa6a6b4edb, 18),
+    ('olas-autonolas', 'arbitrum', 'OLAS', 0x064F8B858C2A603e1b106a2039f5446D32dc81c1, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
