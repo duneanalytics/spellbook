@@ -254,8 +254,13 @@ WITH
           fills.contract_address
           , 'rfq' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-      LEFT JOIN {{ source('prices', 'usd') }} tp ON
-          date_trunc('minute', evt_block_time) = tp.minute
+      LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', evt_block_time) = tp.minute
+          {% if is_incremental() %}
+          AND {{ incremental_predicate('tp.minute') }}
+          {% endif %}
+          {% if not is_incremental() %}
+          AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
+          {% endif %}
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.takerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
