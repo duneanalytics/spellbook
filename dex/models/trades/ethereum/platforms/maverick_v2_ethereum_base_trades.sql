@@ -14,7 +14,7 @@
     maverick_v2_compatible_trades(
         blockchain = 'ethereum',
         project = 'maverick',
-        version = '1',
+        version = '2',
         source_evt_swap = source('maverick_v2_ethereum', 'V2Pool_evt_PoolSwap'),
         source_evt_pool = source('maverick_v2_ethereum', 'V2Factory_evt_PoolCreated')
     )
