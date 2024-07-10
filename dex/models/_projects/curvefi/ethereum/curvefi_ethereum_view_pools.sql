@@ -258,7 +258,7 @@ v1_twocrypto as (
         dp._name AS name,
         dp._symbol AS symbol,
         dp.output_0 AS pool_address,
-        dp._A AS A,        
+        dp.A AS A,        
         dp.mid_fee AS mid_fee,
         dp.out_fee AS out_fee,
         dp.output_0 AS token_address,
