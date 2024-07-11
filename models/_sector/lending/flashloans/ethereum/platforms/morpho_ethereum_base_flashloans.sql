@@ -24,3 +24,6 @@ SELECT 'ethereum' AS blockchain
 , evt_tx_hash AS tx_hash
 , evt_index
 FROM {{ source('morpho_blue_ethereum', 'MorphoBlue_evt_FlashLoan') }}
+{% if is_incremental() %}
+WHERE {{ incremental_predicate('evt_block_time') }}
+{% endif %}
