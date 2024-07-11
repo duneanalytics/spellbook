@@ -44,7 +44,6 @@ WITH dexs AS
                 then p.coins[cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1] 
             when l.topic0 != 0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140
             and cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1 <= CARDINALITY(p.undercoins)        
-                else p.undercoins[cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1]
                 else NULL
             end as token_sold_address
         , l.contract_address as project_contract_address --pool address
