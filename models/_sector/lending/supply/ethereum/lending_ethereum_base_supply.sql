@@ -18,8 +18,7 @@
     ref('spark_ethereum_base_supply'),
     ref('fluxfinance_ethereum_base_supply'),
     ref('strike_ethereum_base_supply'),
-    ref('granary_ethereum_base_supply'),
-    ref('morpho_blue_ethereum_base_supply')
+    ref('granary_ethereum_base_supply')
   ]
 %}
 

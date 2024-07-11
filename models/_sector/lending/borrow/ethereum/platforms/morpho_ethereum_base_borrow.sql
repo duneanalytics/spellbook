@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'morpho_blue_ethereum',
+    schema = 'morpho_ethereum',
     alias = 'base_supply',
     materialized = 'incremental',
     file_format = 'delta',
@@ -85,7 +85,7 @@ WITH markets AS (
 
 SELECT 'ethereum' AS blockchain
 , 'morpho' AS project
-, 'blue' AS version
+, '1' AS version
 , transaction_type
 , loan_type
 , token_address
