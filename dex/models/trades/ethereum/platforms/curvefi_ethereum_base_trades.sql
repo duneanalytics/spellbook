@@ -31,19 +31,20 @@ WITH dexs AS
         , cast(NULL as double) AS amount_usd
         , case
             when l.topic0 = 0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140
-            and cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1 <= CARDINALITY(p.coins)
+                    and cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1 <= CARDINALITY(p.coins)
                 then p.coins[cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1] 
             when l.topic0 != 0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140
-            and cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1 <= CARDINALITY(p.undercoins)    
+                    and cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1 <= CARDINALITY(p.undercoins)    
                 then p.undercoins[cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1]
                 else NULL
             end as token_bought_address
         , case
             when l.topic0 = 0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140
-            and cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1 <= CARDINALITY(p.coins)
+                    and cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1 <= CARDINALITY(p.coins)
                 then p.coins[cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1] 
             when l.topic0 != 0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140
-            and cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1 <= CARDINALITY(p.undercoins)        
+                    and cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1 <= CARDINALITY(p.undercoins) 
+                    then p.undercoins[cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1]
                 else NULL
             end as token_sold_address
         , l.contract_address as project_contract_address --pool address
