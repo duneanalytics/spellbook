@@ -7,10 +7,11 @@
         unique_key = ['block_date', 'tx_hash', 'trace_address'],
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["blast"]\',
-                                    "project",
-                                    "safe",
-                                    \'["danielpartida"]\') }}'
+        post_hook = '{{ expose_spells(
+                        blockchains = \'["blast"]\',
+                        spell_type = "project",
+                        spell_name = "safe",
+                        contributors = \'["danielpartida"]\') }}'
     )
 }}
 
