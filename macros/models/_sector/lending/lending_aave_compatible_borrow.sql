@@ -239,10 +239,7 @@ from base_borrow
     project,
     version,
     project_decoded_as = 'aave_v3',
-    decoded_contract_name = 'Pool',
-    borrow_event_name = 'evt_Borrow',
-    repay_event_name = 'evt_Repay',
-    liquidate_event_name = 'evt_LiquidationCall'
+    decoded_contract_name = 'Pool'
   )
 %}
 
@@ -250,7 +247,7 @@ with
 
 src_LendingPool_evt_Borrow as (
   select *
-  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_' ~ borrow_event_name) }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_Borrow') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -258,7 +255,7 @@ src_LendingPool_evt_Borrow as (
 
 src_LendingPool_evt_Repay as (
   select *
-  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_' ~ repay_event_name) }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_Repay') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -266,7 +263,7 @@ src_LendingPool_evt_Repay as (
 
 src_LendingPool_evt_LiquidationCall as (
   select *
-  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_' ~ liquidate_event_name) }}
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_LiquidationCall') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -308,22 +305,6 @@ base_borrow as (
     evt_block_number
   from src_LendingPool_evt_Repay
   union all
-  {% if project == 'morpho' %}
-  select
-    'borrow_liquidation' as transaction_type,
-    null as loan_type,
-    token as token_address,
-    borrower,
-    borrower as on_behalf_of,
-    _liquidator as repayer,
-    caller as liquidator,
-    -1 * cast(assets as double) as amount,
-    contract_address,
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number
-  {% else %}
   select
     'borrow_liquidation' as transaction_type,
     null as loan_type,
@@ -338,7 +319,6 @@ base_borrow as (
     evt_index,
     evt_block_time,
     evt_block_number
-  {% endif %}
   from src_LendingPool_evt_LiquidationCall
 )
 
