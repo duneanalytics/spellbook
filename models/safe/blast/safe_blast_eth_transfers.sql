@@ -38,7 +38,7 @@ from (
         and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
         and et.value > UINT256 '0' -- et.value is uint256 type
     {% if not is_incremental() %}
-    where et.block_time > timestamp '2023-07-01' -- for initial query optimisation
+    where et.block_time > timestamp '2024-02-24' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
     -- to prevent potential counterfactual safe deployment issues we take a bigger interval
