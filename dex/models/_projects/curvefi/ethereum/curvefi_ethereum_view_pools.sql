@@ -338,27 +338,6 @@ v1_pools_deployed AS (
         undercoin3
     FROM
         v1_stableswap_ng
-    UNION ALL
-    SELECT
-        version,
-        name,
-        symbol,
-        pool_address,
-        A,
-        mid_fee,
-        out_fee,
-        token_address,
-        deposit_contract,
-        coin0,
-        coin1,
-        coin2,
-        coin3,
-        undercoin0,
-        undercoin1,
-        undercoin2,
-        undercoin3
-    FROM
-        v1_twocrypto       
 ),
 ---------------------------------------------------------------- V2 Pools ----------------------------------------------------------------
 v2_pools_deployed AS (
