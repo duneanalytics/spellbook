@@ -16,6 +16,8 @@
     )
 }}
 
+{% set project_start_date = '2024-02-24' %}
+
 select
     t.*,
     p.price * t.amount_raw / 1e18 AS amount_usd
@@ -39,7 +41,7 @@ from (
         and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
         and et.value > UINT256 '0' -- et.value is uint256 type
     {% if not is_incremental() %}
-    where et.block_time > timestamp '2024-02-24' -- for initial query optimisation
+    where et.block_time > timestamp '{{project_start_date}}' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
     -- to prevent potential counterfactual safe deployment issues we take a bigger interval
@@ -65,7 +67,7 @@ from (
         and (lower(et.call_type) not in ('delegatecall', 'callcode', 'staticcall') or et.call_type is null)
         and et.value > UINT256 '0' -- et.value is uint256 type
     {% if not is_incremental() %}
-    where et.block_time > timestamp '2024-02-24' -- for initial query optimisation
+    where et.block_time > timestamp '{{project_start_date}}' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
     -- to prevent potential counterfactual safe deployment issues we take a bigger interval
