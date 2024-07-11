@@ -1,12 +1,13 @@
 {{
     config(
         materialized='table',
-
+        schema = 'safe_blast',
         alias= 'singletons',
-        post_hook='{{ expose_spells(\'["blast"]\',
-                                    "project",
-                                    "safe",
-                                    \'["danielpartida"]\') }}'
+        post_hook = '{{ expose_spells(
+                        blockchains = \'["blast"]\',
+                        spell_type = "project",
+                        spell_name = "safe",
+                        contributors = \'["danielpartida"]\') }}'
     )
 }}
 
