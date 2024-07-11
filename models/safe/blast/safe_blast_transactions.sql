@@ -56,7 +56,7 @@ where bytearray_substring(tr.input, 1, 4) in (
     )
     and tr.call_type = 'delegatecall'
     {% if not is_incremental() %}
-    and tr.block_time > TIMESTAMP '2024-05-01' -- for initial query optimisation
+    and tr.block_time > TIMESTAMP '2024-02-24' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
     and tr.block_time > date_trunc('day', now() - interval '7' day)
