@@ -16,6 +16,8 @@
     )
 }}
 
+{% set project_start_date = '2023-10-15' %}
+
 select
     'scroll' as blockchain,
     et."from" as address,
@@ -40,7 +42,7 @@ where et.success = true
     )
     and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
     {% if not is_incremental() %}
-    and et.block_time > TIMESTAMP '2023-10-15' -- for initial query optimisation
+    and et.block_time > TIMESTAMP '{{project_start_date}}' -- for initial query optimisation
     {% endif %}
     {% if is_incremental() %}
     and et.block_time > date_trunc('day', now() - interval '7' day)
