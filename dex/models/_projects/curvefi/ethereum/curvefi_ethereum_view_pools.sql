@@ -502,7 +502,7 @@ pools AS (
         pd3u.*,
         gauge AS gauge_contract
     FROM
-        v2_updated_pools_deployed pd3u
+        twocrypto pd3u
     LEFT JOIN {{ source(
         'curvefi_ethereum',
         'CurveTwocryptoFactory_evt_LiquidityGaugeDeployed'
