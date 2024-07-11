@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: pancakeswap_v2_zkevm
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+  - name: pancakeswap_v3_zkevm
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated

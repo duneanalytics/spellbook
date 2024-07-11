@@ -18,6 +18,11 @@
          when 'bitcoin' = chain_ then 'https://blockstream.info/address/' || CAST(column_ AS VARCHAR)
          when 'goerli' = chain_ then 'https://goerli.basescan.org/address/' || CAST(column_ AS VARCHAR)
          when 'zksync' = chain_ then 'https://explorer.zksync.io' || CAST(column_ AS VARCHAR)
+         when 'linea' = chain_ then 'https://lineascan.build' || CAST(column_ AS VARCHAR)
+         when 'zkevm' = chain_ then 'https://zkevm.polygonscan.com' || CAST(column_ AS VARCHAR)
+         when 'scroll' = chain_ then 'https://scrollscan.com' || CAST(column_ AS VARCHAR)
+         when 'zora' = chain_ then 'https://zora.superscan.network' || CAST(column_ AS VARCHAR)
+         when 'mantle' = chain_ then 'https://explorer.mantle.xyz/address/' || CAST(column_ AS VARCHAR)
          else 'https://etherscan.io/address/' || CAST(column_ AS VARCHAR)
       end as explorer_address_url;
 {% endmacro %}

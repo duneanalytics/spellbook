@@ -22,7 +22,7 @@ WITH price_bounds AS (
     , MAX(hour) AS max_hour
     , MIN_BY(median_price, hour) AS min_price
     , MAX_BY(median_price, hour) AS max_price
-    FROM {{ ref('dex_prices') }}
+    FROM {{ source('dex', 'prices') }}
     WHERE blockchain = 'optimism'
     AND contract_address= {{velo_token_address}}
     )
@@ -46,7 +46,7 @@ SELECT 'optimism' AS blockchain
 , 'VELO' AS token_symbol
 , t.evt_index
 FROM {{ source('velodrome_optimism', 'MerkleClaim_evt_Claim') }} t
-LEFT JOIN {{ ref('dex_prices') }} pu ON pu.blockchain = 'optimism'
+LEFT JOIN {{ source('dex', 'prices') }} pu ON pu.blockchain = 'optimism'
     AND pu.contract_address= {{velo_token_address}}
     AND pu.hour = date_trunc('hour', t.evt_block_time)
     {% if is_incremental() %}

@@ -1,17 +1,18 @@
 {{
     config(
         materialized='incremental',
-
+        schema = 'safe_zkevm',
         alias = 'matic_transfers',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
         on_schema_change='fail',
         file_format ='delta',
         incremental_strategy='merge',
-        post_hook='{{ expose_spells(\'["zkevm"]\',
-                                    "project",
-                                    "safe",
-                                    \'["danielpartida"]\') }}'
+        post_hook = '{{ expose_spells(
+                        blockchains = \'["zkevm"]\',
+                        spell_type = "project",
+                        spell_name = "safe",
+                        contributors = \'["danielpartida"]\') }}'
     )
 }}
 
@@ -74,5 +75,8 @@ from (
 ) t
 
 left join {{ source('prices', 'usd') }} p on p.blockchain is null
+    {% if is_incremental() %}
+    and {{ incremental_predicate('p.minute') }}
+    {% endif %}
     and p.symbol = t.symbol
     and p.minute = date_trunc('minute', t.block_time)

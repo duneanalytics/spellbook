@@ -10,7 +10,7 @@ select
   flashloans.amount / power(10, coalesce(erc20.decimals, 18)) as amount,
   flashloans.amount / power(10, coalesce(p.decimals, erc20.decimals, 18)) * p.price as usd_amount,
   flashloans.fee / power(10, coalesce(erc20.decimals, 18)) as fee,
-  flashloans.contract_address,
+  flashloans.project_contract_address,
   flashloans.block_month,
   flashloans.block_time,
   flashloans.block_number,

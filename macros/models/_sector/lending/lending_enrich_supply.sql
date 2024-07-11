@@ -8,6 +8,7 @@ select
   erc20.symbol,
   supply.token_address,
   supply.depositor,
+  supply.on_behalf_of,
   supply.withdrawn_to,
   supply.liquidator,
   supply.amount / power(10, coalesce(erc20.decimals, 18)) as amount,
@@ -15,6 +16,7 @@ select
   supply.block_month,
   supply.block_time,
   supply.block_number,
+  supply.project_contract_address,
   supply.tx_hash,
   supply.evt_index
 from {{ model }} supply

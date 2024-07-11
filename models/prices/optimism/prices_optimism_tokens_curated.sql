@@ -117,6 +117,11 @@ FROM
     ('grain-granary', 'GRAIN', 0xfD389Dc9533717239856190F42475d3f263a270d,18),
     ('usdc-usd-coin', 'USDC', 0x0b2c639c533813f4aa9d7837caf62653d097ff85, 6),
     ('tbtc-tbtc', 'TBTC', 0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40, 18),
-    ('axlusdc-axelar-wrapped-usdc', 'AXLUSDC', 0xeb466342c4d449bc9f53a865d5cb90586f405215, 6)
-
+    ('axlusdc-axelar-wrapped-usdc', 'AXLUSDC', 0xeb466342c4d449bc9f53a865d5cb90586f405215, 6),
+    ('beets-beethoven-x', 'BEETS', 0xb4bc46bc6cb217b59ea8f4530bae26bf69f677f0, 18),
+    ('aeth-ankreth', 'ankrETH', 0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 18),
+    ('tux-magicaltux', 'TUX',  0x17aabf6838a6303fc6e9c5a227dc1eb6d95c829a, 18),
+    ('sonne-sonne-finance', 'SONNE', 0x1db2466d9f5e10d7090e7152b68d62703a2245f0, 18),
+    ('reth-rocket-pool-eth', 'rETH', 0x9bcef72be871e61ed4fbbc7630889bee758eb81d, 18),
+    ('weeth-wrapped-eeth', 'WEETH',0x5a7facb970d094b6c7ff1df0ea68d99e6e73cbff, 18)
 ) as temp (token_id, symbol, contract_address, decimals)

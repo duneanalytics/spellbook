@@ -1,12 +1,13 @@
 {{
     config(
         materialized='table',
-
+        schema = 'safe_zkevm',
         alias= 'singletons',
-        post_hook='{{ expose_spells(\'["zkevm"]\',
-                                    "project",
-                                    "safe",
-                                    \'["danielpartida"]\') }}'
+        post_hook = '{{ expose_spells(
+                        blockchains = \'["zkevm"]\',
+                        spell_type = "project",
+                        spell_name = "safe",
+                        contributors = \'["danielpartida"]\') }}'
     )
 }}
 

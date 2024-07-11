@@ -1,14 +1,14 @@
 {{ config(
-    alias = 'curve_steth_conc_pool',
-     
+    alias = 'curve_steth_conc_pool',     
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['pool', 'time'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "lido_liquidity",
-                                \'["ppclunghe"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.time')],
+    post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                spell_type = "project",
+                                spell_name = "lido_liquidity",
+                                contributors = \'["pipistrella"]\') }}'
     )
 }}
 
@@ -64,7 +64,7 @@ from {{source('erc20_ethereum','evt_Transfer')}} t
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('evt_block_time') }}
  {% endif %}
 
  and contract_address = 0xae7ab96520de3a18e5e111b5eaab095312d7fe84 
@@ -85,7 +85,7 @@ from {{source('erc20_ethereum','evt_Transfer')}} t
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('evt_block_time') }}
  {% endif %}
  and contract_address = 0xae7ab96520de3a18e5e111b5eaab095312d7fe84 
  and "from" = 0x828b154032950C8ff7CF8085D841723Db2696056 
@@ -119,7 +119,7 @@ from {{source('erc20_ethereum','evt_Transfer')}} t
 {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('evt_block_time') }}
  {% endif %}
  and contract_address = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 
  and to = 0x828b154032950C8ff7CF8085D841723Db2696056 
@@ -135,7 +135,7 @@ from {{source('erc20_ethereum','evt_Transfer')}} t
 {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+ WHERE {{ incremental_predicate('evt_block_time') }}
  {% endif %}
  and contract_address = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2
  and "from" = 0x828b154032950C8ff7CF8085D841723Db2696056 
@@ -169,7 +169,7 @@ order by 1
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
     and date_trunc('day', minute) < current_date
     and blockchain = 'ethereum'
@@ -199,7 +199,7 @@ order by 1
         {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
     and blockchain = 'ethereum'
     and symbol = 'WETH'
@@ -214,7 +214,7 @@ order by 1
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', p.minute) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('p.minute') }}
     {% endif %}
 
     and date_trunc('day', minute) < current_date
@@ -240,7 +240,7 @@ order by 1
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
-    WHERE DATE_TRUNC('day', evt_block_time) >= DATE_TRUNC('day', NOW() - INTERVAL '1' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
         
     group by 1
@@ -264,16 +264,20 @@ order by 1
 
 
 select 'ethereum curve WETH:stETH concentrated 0.04' as pool_name, 
-0x828b154032950C8ff7CF8085D841723Db2696056 as pool, 
-'ethereum' as blockchain, 'curve' as project,0.04 as fee,
-cast(b.time as date) as time, 
-0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 as main_token, 'stETH' as main_token_symbol,
-0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 as paired_token, 'WETH' as paired_token_symbol,
-wsteth as main_token_reserve,
-coalesce(eth.weth, 0) as paired_token_reserve,
-coalesce(stethp.price*r.rate, wethp.price*r.rate) as main_token_usd_price,
-wethp.price as paired_token_usd_price,
-v.volume as trading_volume
+        0x828b154032950C8ff7CF8085D841723Db2696056 as pool, 
+        'ethereum' as blockchain, 
+        'curve' as project,
+        0.04 as fee,
+        cast(b.time as date) as time, 
+        0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 as main_token, 
+        'stETH' as main_token_symbol,
+        0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 as paired_token, 
+        'WETH' as paired_token_symbol,
+        wsteth as main_token_reserve,
+        coalesce(eth.weth, 0) as paired_token_reserve,
+        coalesce(stethp.price*r.rate, wethp.price*r.rate) as main_token_usd_price,
+        wethp.price as paired_token_usd_price,
+        v.volume as trading_volume
 from steth_balances b 
 left join weth_balances eth on b.time = eth.time
 left join steth_prices_daily stethp on b.time = stethp.time 

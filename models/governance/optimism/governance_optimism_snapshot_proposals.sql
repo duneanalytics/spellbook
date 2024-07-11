@@ -1,6 +1,7 @@
 
 {{ config(
     alias = 'snapshot_proposals'
+    ,tags = ['prod_exclude']
     ,materialized = 'incremental'
     ,file_format = 'delta'
     ,schema = 'governance_optimism'

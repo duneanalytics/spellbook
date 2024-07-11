@@ -1,5 +1,5 @@
 {{ config(
-        
+        schema = 'airdrop_ethereum',
         alias = 'claims',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                       "sector",
@@ -47,6 +47,7 @@
     , ref('value_defi_ethereum_airdrop_claims')
     , ref('alchemydao_ethereum_airdrop_claims')
     , ref('arkham_ethereum_airdrop_claims')
+    , ref('etherfi_ethereum_airdrop_claims')
 ] %}
 
 SELECT *

@@ -10,3 +10,16 @@ sources:
   - name: hyperspace_avalanche_c
     tables:
       - name: ERC721OrdersFeature_evt_ERC721OrderFilled
+  - name: joepegs_avalanche_c
+    tables:
+      - name: JoepegExchange_evt_TakerBid
+      - name: JoepegExchange_evt_TakerAsk
+      - name: JoepegExchange_evt_RoyaltyPayment
+  - name: salvor_avalanche_c
+    tables:
+      - name: Marketplace_evt_AcceptCollectionOffer
+      - name: PaymentManager_evt_RoyaltyReceived
+  - name: superchief_avalanche_c
+    tables:
+      - name: AuctionManager_evt_NewAuction
+      - name: AuctionManager_evt_AuctionFinished

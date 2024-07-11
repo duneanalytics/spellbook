@@ -12,6 +12,11 @@ models:
     config:
       tags: ['safe', 'zkevm']
     description: "Safe addresses"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
     columns:
       - &blockchain
         name: blockchain
@@ -43,6 +48,13 @@ models:
     config:
       tags: ['safe', 'transfers', 'zkevm']
     description: "MATIC transfers for safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+            - tx_hash
+            - trace_address
     columns:
       - *blockchain
       - &symbol
@@ -78,9 +90,6 @@ models:
     columns:
       - name: address
         description: "Safe contract address"
-        tests:
-          - unique
-          - not_null
 
   - name: safe_zkevm_transactions
     meta:
@@ -93,6 +102,12 @@ models:
     config:
       tags: ['safe', 'zkevm']
     description: "Safe transactions"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - trace_address
     columns:
       - *blockchain
       - *block_date
@@ -141,3 +156,6 @@ models:
       - &output
         name: output
         description: "Output data"
+      - &method
+        name: method
+        description: "Function method"
