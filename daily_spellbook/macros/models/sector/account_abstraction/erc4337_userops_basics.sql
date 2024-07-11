@@ -25,7 +25,7 @@ with userop as (
     {% endif %}
 )
 , handleops as (
-    select call_tx_hash as tx_hash,
+    select distinct call_tx_hash as tx_hash,
            beneficiary
     from {{ handleops_call_model }}
     where call_success = true
