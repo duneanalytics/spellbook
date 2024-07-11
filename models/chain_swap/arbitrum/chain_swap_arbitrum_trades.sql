@@ -1,6 +1,6 @@
 {{
     config(
-        alias="trades",
+        alias='trades',
         schema="chain_swap_arbitrum",
         partition_by=["block_month"],
         materialized="incremental",
