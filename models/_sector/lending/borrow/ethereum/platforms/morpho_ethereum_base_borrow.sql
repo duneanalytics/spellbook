@@ -12,9 +12,9 @@
 
 WITH markets AS (
     SELECT id
-    , JSON_EXTRACT_SCALAR("marketParams", '$.loanToken') AS loanToken
-    , JSON_EXTRACT_SCALAR("marketParams", '$.collateralToken') AS collateralToken
-    , JSON_EXTRACT_SCALAR("marketParams", '$.oracle') AS oracle
+    , from_hex(JSON_EXTRACT_SCALAR("marketParams", '$.loanToken')) AS loanToken
+    , from_hex(JSON_EXTRACT_SCALAR("marketParams", '$.collateralToken')) AS collateralToken
+    , from_hex(JSON_EXTRACT_SCALAR("marketParams", '$.oracle')) AS oracle
     , JSON_EXTRACT_SCALAR("marketParams", '$.irm') AS irm
     , JSON_EXTRACT_SCALAR("marketParams", '$.lltv') AS lltv
     FROM {{ source('morpho_blue_ethereum', 'MorphoBlue_evt_CreateMarket') }}
