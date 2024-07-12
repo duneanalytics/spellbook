@@ -28,78 +28,69 @@ select * from (values
 
 
 multisigs_list AS (
-select * from (values
-(0x3e40d73eb977dc6a537af587d48316fee66e9c8c, 'Ethereum', 'Aragon'),
-(0x48F300bD3C52c7dA6aAbDE4B683dEB27d38B9ABb, 'Ethereum', 'FinanceOpsMsig'),
-(0x87D93d9B2C672bf9c9642d853a8682546a5012B5, 'Ethereum', 'LiquidityRewardsMsig'),
-(0x753D5167C31fBEB5b49624314d74A957Eb271709, 'Ethereum', 'LiquidityRewardMngr'),--Curve Rewards Manager 
-(0x1dD909cDdF3dbe61aC08112dC0Fdf2Ab949f79D8, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V1 
-(0x55c8De1Ac17C1A937293416C9BCe5789CbBf61d1, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V2 
-(0x86F6c353A0965eB069cD7f4f91C1aFEf8C725551, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V3 
-(0xf5436129Cf9d8fa2a1cb6e591347155276550635,  'Ethereum', 'LiquidityRewardMngr'),--1inch Reward Manager 
-(0xE5576eB1dD4aA524D67Cf9a32C8742540252b6F4,  'Ethereum', 'LiquidityRewardMngr'), --Sushi Reward Manager
-(0x87D93d9B2C672bf9c9642d853a8682546a5012B5,  'Polygon',  'LiquidityRewardsMsig'),
-(0x9cd7477521B7d7E7F9e2F091D2eA0084e8AaA290,  'Ethereum', 'PolygonTeamRewardsMsig'),
-(0x5033823f27c5f977707b58f0351adcd732c955dd,  'Optimism', 'LiquidityRewardsMsig'),
-(0x8c2b8595ea1b627427efe4f29a64b145df439d16,  'Arbitrum', 'LiquidityRewardsMsig'),
-(0x13c6ef8d45afbccf15ec0701567cc9fad2b63ce8,  'Ethereum',  'ReferralRewardsMsig'),--Solana Ref Prog Msig
-(0x12a43b049A7D330cB8aEAB5113032D18AE9a9030,  'Ethereum',  'LegoMsig'),
-(0x9B1cebF7616f2BC73b47D226f90b01a7c9F86956,  'Ethereum',  'ATCMsig'),
-(0x17F6b2C738a63a8D3A113a228cfd0b373244633D,  'Ethereum',  'PMLMsig'),
-(0xde06d17db9295fa8c4082d4f73ff81592a3ac437,  'Ethereum',  'RCCMsig'),
-(0x834560f580764bc2e0b16925f8bf229bb00cb759,  'Ethereum',  'TRPMsig')
-) as list(address, chain, name)
+    select * from (values
+    (0x3e40d73eb977dc6a537af587d48316fee66e9c8c, 'Ethereum', 'Aragon'),
+    (0x48F300bD3C52c7dA6aAbDE4B683dEB27d38B9ABb, 'Ethereum', 'FinanceOpsMsig'),
+    (0x87D93d9B2C672bf9c9642d853a8682546a5012B5, 'Ethereum', 'LiquidityRewardsMsig'),
+    (0x753D5167C31fBEB5b49624314d74A957Eb271709, 'Ethereum', 'LiquidityRewardMngr'),--Curve Rewards Manager 
+    (0x1dD909cDdF3dbe61aC08112dC0Fdf2Ab949f79D8, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V1 
+    (0x55c8De1Ac17C1A937293416C9BCe5789CbBf61d1, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V2 
+    (0x86F6c353A0965eB069cD7f4f91C1aFEf8C725551, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V3 
+    (0xf5436129Cf9d8fa2a1cb6e591347155276550635,  'Ethereum', 'LiquidityRewardMngr'),--1inch Reward Manager 
+    (0xE5576eB1dD4aA524D67Cf9a32C8742540252b6F4,  'Ethereum', 'LiquidityRewardMngr'), --Sushi Reward Manager
+    (0x87D93d9B2C672bf9c9642d853a8682546a5012B5,  'Polygon',  'LiquidityRewardsMsig'),
+    (0x9cd7477521B7d7E7F9e2F091D2eA0084e8AaA290,  'Ethereum', 'PolygonTeamRewardsMsig'),
+    (0x5033823f27c5f977707b58f0351adcd732c955dd,  'Optimism', 'LiquidityRewardsMsig'),
+    (0x8c2b8595ea1b627427efe4f29a64b145df439d16,  'Arbitrum', 'LiquidityRewardsMsig'),
+    (0x13c6ef8d45afbccf15ec0701567cc9fad2b63ce8,  'Ethereum',  'ReferralRewardsMsig'),--Solana Ref Prog Msig
+    (0x12a43b049A7D330cB8aEAB5113032D18AE9a9030,  'Ethereum',  'LegoMsig'),
+    (0x9B1cebF7616f2BC73b47D226f90b01a7c9F86956,  'Ethereum',  'ATCMsig'),
+    (0x17F6b2C738a63a8D3A113a228cfd0b373244633D,  'Ethereum',  'PMLMsig'),
+    (0xde06d17db9295fa8c4082d4f73ff81592a3ac437,  'Ethereum',  'RCCMsig'),
+    (0x834560f580764bc2e0b16925f8bf229bb00cb759,  'Ethereum',  'TRPMsig')
+    ) as list(address, chain, name)
         
 ),
 
 diversifications_addresses AS (
-select * from  (values
-(0x489f04eeff0ba8441d42736549a1f1d6cca74775, '1round_1'),
-(0x689e03565e36b034eccf12d182c3dc38b2bb7d33, '1round_2'),
-(0xA9b2F5ce3aAE7374a62313473a74C98baa7fa70E, '2round')
-) as list(address, name)
+    select * from  (values
+    (0x489f04eeff0ba8441d42736549a1f1d6cca74775, '1round_1'),
+    (0x689e03565e36b034eccf12d182c3dc38b2bb7d33, '1round_2'),
+    (0xA9b2F5ce3aAE7374a62313473a74C98baa7fa70E, '2round')
+    ) as list(address, name)
 ),
 
 intermediate_addresses AS (
-select * from  (values
-(0xe3224542066d3bbc02bc3d70b641be4bc6f40e36, 'Jumpgate(Solana)'),
-(0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf, 'Polygon bridge'),
-(0xa3a7b6f88361f48403514059f1f16c8e78d60eec, 'Arbitrum bridge'),
-(0x99c9fc46f92e8a1c0dec1b1747d010903e884be1, 'Optimism bridge'),
-(0x0914d4ccc4154ca864637b0b653bc5fd5e1d3ecf, 'AnySwap bridge (Polkadot, Kusama)'),
-(0x3ee18b2214aff97000d974cf647e7c347e8fa585, 'Wormhole bridge'), --Solana, Terra
-(0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599, 'stMatic Contract')
-) as list(address, name)
+    select * from  (values
+    (0xe3224542066d3bbc02bc3d70b641be4bc6f40e36, 'Jumpgate(Solana)'),
+    (0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf, 'Polygon bridge'),
+    (0xa3a7b6f88361f48403514059f1f16c8e78d60eec, 'Arbitrum bridge'),
+    (0x99c9fc46f92e8a1c0dec1b1747d010903e884be1, 'Optimism bridge'),
+    (0x0914d4ccc4154ca864637b0b653bc5fd5e1d3ecf, 'AnySwap bridge (Polkadot, Kusama)'),
+    (0x3ee18b2214aff97000d974cf647e7c347e8fa585, 'Wormhole bridge'), --Solana, Terra
+    (0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599, 'stMatic Contract')
+    ) as list(address, name)
 ),
 
 ldo_referral_payments_addr AS (
-select * from  (values
-(0x558247e365be655f9144e1a0140d793984372ef3),
-(0x6DC9657C2D90D57cADfFB64239242d06e6103E43),
-(0xDB2364dD1b1A733A690Bf6fA44d7Dd48ad6707Cd),
-(0x586b9b2F8010b284A0197f392156f1A7Eb5e86e9),
-(0xC976903918A0AF01366B31d97234C524130fc8B1),
-(0x53773e034d9784153471813dacaff53dbbb78e8c),
-(0x883f91D6F3090EA26E96211423905F160A9CA01d),
-(0xf6502Ea7E9B341702609730583F2BcAB3c1dC041),
-(0x82AF9d2Ea81810582657f6DC04B1d7d0D573F616),
-(0x351806B55e93A8Bcb47Be3ACAF71584deDEaB324),
-(0x9e2b6378ee8ad2A4A95Fe481d63CAba8FB0EBBF9),
-(0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d) --rhino
-) as list(address)
+    select * from  (values
+    (0x558247e365be655f9144e1a0140d793984372ef3),
+    (0x6DC9657C2D90D57cADfFB64239242d06e6103E43),
+    (0xDB2364dD1b1A733A690Bf6fA44d7Dd48ad6707Cd),
+    (0x586b9b2F8010b284A0197f392156f1A7Eb5e86e9),
+    (0xC976903918A0AF01366B31d97234C524130fc8B1),
+    (0x53773e034d9784153471813dacaff53dbbb78e8c),
+    (0x883f91D6F3090EA26E96211423905F160A9CA01d),
+    (0xf6502Ea7E9B341702609730583F2BcAB3c1dC041),
+    (0x82AF9d2Ea81810582657f6DC04B1d7d0D573F616),
+    (0x351806B55e93A8Bcb47Be3ACAF71584deDEaB324),
+    (0x9e2b6378ee8ad2A4A95Fe481d63CAba8FB0EBBF9),
+    (0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d) --rhino
+    ) as list(address)
 ),
 
 dai_referral_payments_addr AS (
     SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded')}}
-    WHERE
-    (
-        NOT EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
-        OR (
-            EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
-            AND 
-            _recipient NOT IN (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
-        )
-    ) 
     UNION ALL
     SELECT 0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d --rhino
 ),
@@ -108,6 +99,37 @@ steth_referral_payments_addr AS (
     SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
 ),
 
+stonks as (
+    select * from (values 
+    ('STETH→DAI', 0x3e2D251275A92a8169A3B17A2C49016e2de492a7),
+    ('STETH→USDC', 0xf4F6A03E3dbf0aA22083be80fDD340943d275Ea5),
+    ('STETH→USDT', 0x7C2a1E25cA6D778eCaEBC8549371062487846aAF),
+    ('DAI→USDC', 0x79f5E20996abE9f6a48AF6f9b13f1E55AED6f06D),
+    ('DAI→USDT', 0x8Ba6D367D15Ebc52f3eBBdb4a8710948C0918d42),
+    ('USDT→USDC', 0x281e6BB6F26A94250aCEb24396a8E4190726C97e),
+    ('USDT→DAI', 0x64B6aF9A108dCdF470E48e4c0147127F26221A7C),
+    ('USDC→USDT', 0x278f7B6CBB3Cc37374e6a40bDFEBfff08f65A5C7),
+    ('USDC→DAI', 0x2B5a3944A654439379B206DE999639508bA2e850)
+    ) as list(namespace, address)
+),
+
+cow_settlement as (
+    select * from (values 
+    (0x9008D19f58AAbD9eD0D60971565AA8510560ab41)
+    ) as list(address)    
+),
+
+stonks_orders_txns as (
+    select evt_tx_hash
+    from {{source('lido_ethereum', 'steth_evt_Transfer')}}
+    where "from" in (
+            select cast(replace(topic1, 0x000000000000000000000000, 0x) as varbinary) as order_addr
+            from {{source('ethereum', 'logs')}} l
+            join stonks s on l.contract_address = s.address 
+             and l.topic0 = 0x96a6d5477fba36522dca4102be8b3785435baf902ef6c4edebcb99850630c75f -- Stonks Deployed
+            ) 
+    and to in (select address from cow_settlement)
+),
 
 other_expenses_txns AS (
     SELECT 
@@ -137,7 +159,8 @@ other_expenses_txns AS (
             SELECT 0x0000000000000000000000000000000000000000
             UNION ALL
             SELECT address FROM diversifications_addresses    
-    )    
+        )
+        AND evt_tx_hash NOT IN (select evt_tx_hash from stonks_orders_txns)   
     UNION ALL
     --ETH outflow
     SELECT  

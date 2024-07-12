@@ -240,4 +240,7 @@ FROM (VALUES
     , (0x7ab8ea5ef610f979e1c59fbd9da9284672e5a136, 'KABOSU', 18)  
     , (0xd722e55c1d9d9fa0021a5215cbb904b92b3dc5d4, 'RDNT', 18)  
     , (0x224114c444e3c3d936532fe08351648700570909, 'PAL', 18)
+    , (0xe96891F2d3838Bfbbce1285e0913b195acc935c5, 'PB', 18)  
+    , (0xaa4ec2d86e61632e88db93cf6d2a42e5f458dc99, 'PA', 18)  
+    , (0x62a52757b580e7fd97203bd0408a7445741b5d5f, 'DT', 18)  
 ) AS temp_table (contract_address, symbol, decimals)

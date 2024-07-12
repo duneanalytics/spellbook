@@ -1,11 +1,12 @@
 {{ config(
     schema = 'paraswap_v5_polygon',
     alias = 'trades',
-    
+
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
     post_hook='{{ expose_spells(\'["polygon"]\',
                                 "project",
@@ -27,31 +28,31 @@
 
 WITH dexs AS (
     {% for trade_table in trade_event_tables %}
-        SELECT 
+        SELECT
             evt_block_time AS block_time,
             evt_block_number AS block_number,
-            beneficiary AS taker, 
-            initiator AS maker, 
+            beneficiary AS taker,
+            initiator AS maker,
             receivedAmount AS token_bought_amount_raw,
             srcAmount AS token_sold_amount_raw,
             CAST(NULL AS double) AS amount_usd,
-            CASE 
+            CASE
                 WHEN destToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270 -- WMATIC 
+                THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270 -- WMATIC
                 ELSE destToken
             END AS token_bought_address,
-            CASE 
+            CASE
                 WHEN srcToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270 -- WMATIC 
+                THEN 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270 -- WMATIC
                 ELSE srcToken
             END AS token_sold_address,
             contract_address AS project_contract_address,
-            evt_tx_hash AS tx_hash, 
+            evt_tx_hash AS tx_hash,
             CAST(ARRAY[-1] as array<bigint>) AS trace_address,
             evt_index
-        FROM {{ trade_table }} p 
+        FROM {{ trade_table }} p
         {% if is_incremental() %}
-        WHERE p.evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('p.evt_block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL
@@ -115,7 +116,7 @@ INNER JOIN {{ source('polygon', 'transactions') }} tx ON d.tx_hash = tx.hash
     AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND tx.block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
 LEFT JOIN {{ source('tokens', 'erc20') }} e1 ON e1.contract_address = d.token_bought_address
     AND e1.blockchain = 'polygon'
@@ -128,7 +129,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p1 ON p1.minute = date_trunc('minute', d
     AND p1.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p1.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p1.minute') }}
     {% endif %}
 LEFT JOIN price_missed_previous p_prev1 ON d.token_bought_address = p_prev1.contract_address
     AND d.block_time < p_prev1.minute -- Swap before first price record time
@@ -141,7 +142,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p2 ON p2.minute = date_trunc('minute', d
     AND p2.minute >= TIMESTAMP '{{project_start_date}}'
     {% endif %}
     {% if is_incremental() %}
-    AND p2.minute >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('p2.minute') }}
     {% endif %}
 LEFT JOIN price_missed_previous p_prev2 ON d.token_sold_address = p_prev2.contract_address
     AND d.block_time < p_prev2.minute -- Swap before first price record time
