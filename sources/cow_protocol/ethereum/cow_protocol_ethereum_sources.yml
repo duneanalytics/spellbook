@@ -171,3 +171,11 @@ sources:
             description: "ETH Flow Order Hash corresponds directly to a GPv2 Order Uid by concatenation with owner = contract_address and validTo = `ffffffff`"
       - name: CowProtocolVirtualToken_evt_Claimed
         loaded_at_field: evt_block_time
+  - name: dune_upload
+    description: "Files uploaded by the CoW Protocol team"
+    tables:
+      - name: dataset_app_data_mainnet
+        description: "App Data for Ethereum Chain trades on CoW Protocol"
+        columns:
+          - name: contract_app_data
+          - name: encode

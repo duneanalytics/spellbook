@@ -1,12 +1,12 @@
 {{ config(alias='app_data',
         
-        post_hook='{{ expose_spells(\'["ethereum"]\',
+        post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "cow_protocol",
                                     \'["olgafetisova"]\') }}'
 )}}
 
--- Find the PoC Query here: https://dune.com/queries/3913360
+-- Find the PoC Query here: https://dune.com/queries/3913346
 with
  results as (
     select
@@ -28,7 +28,6 @@ with
         CAST(json_extract(encode, '$.metadata.widget.appCode')  AS VARCHAR) as widget_app_code,
         CAST(json_extract(encode, '$.metadata.widget.environment')  AS VARCHAR) as widget_environment
 
-    from {{ source('cowprotocol', 'dataset_app_data_mainnet') }}
-    where contract_app_data!=0x0a7bcea9eec07f1634f0adfcc43c00cb391f16aef78f6422eac1203fb997a12a
+    from {{ source('cowprotocol', 'dataset_app_data_arbitrum') }}
 )
 select * from results

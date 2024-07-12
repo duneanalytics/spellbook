@@ -20,3 +20,13 @@ models:
       tags: ['gnosis','cow_protocol','trades', 'dex', 'aggregator', 'auction']
     description: >
       CoW Protocol enriched batches table on Gnosis Chain
+
+  - name: cow_protocol_gnosis_app_data
+    meta:
+      blockchain: gnosis
+      project: cow_protocol
+      contributors: olgafetisova
+    config:
+      tags: ['gnosis','cow_protocol','app_data', "metadata"]
+    description: >
+      CoW Protocol app data table on Gnosis Chain

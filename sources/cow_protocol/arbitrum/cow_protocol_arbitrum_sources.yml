@@ -122,3 +122,11 @@ sources:
           - &value
             name: value
             description: ETH amount (in WEI) being passed into contract interaction
+  - name: dune_upload
+    description: "Files uploaded by the CoW Protocol team"
+    tables:
+      - name: dataset_app_data_arbitrum
+        description: "App Data for Arbitrum Chain trades on CoW Protocol"
+        columns:
+          - name: contract_app_data
+          - name: encode

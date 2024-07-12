@@ -23,3 +23,13 @@ models:
     tests:
       - unique:
           column_name: tx_hash
+  
+  - name: cow_protocol_arbitrum_app_data
+    meta:
+      blockchain: arbitrum
+      project: cow_protocol
+      contributors: olgafetisova
+    config:
+      tags: ['arbitrum','cow_protocol','app_data', "metadata"]
+    description: >
+      CoW Protocol app data table on Arbitrum Chain

@@ -21,16 +21,6 @@ models:
     description: >
       CoW Protocol enriched batches table on Ethereum
 
-  - name: cow_protocol_ethereum_app_data
-    meta:
-      blockchain: ethereum
-      project: cow_protocol
-      contributors: bh2smith
-    config:
-      tags: ['ethereum','cow_protocol','app_data', "metadata"]
-    description: >
-      CoW Protocol App Data is JSON content stored on IPFS corresponding to order AppHash (cf. CoW Documentation https://docs.cow.fi/front-end/creating-app-ids).
-
   - name: cow_protocol_ethereum_order_rewards
     meta:
       blockchain: ethereum
@@ -100,3 +90,13 @@ models:
             - tx_hash
             - recipient
             - evt_index
+
+  - name: cow_protocol_ethereum_app_data
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: olgafetisova
+    config:
+      tags: ['ethereum','cow_protocol','app_data', "metadata"]
+    description: >
+      CoW Protocol app data table on Ethereum Chain
