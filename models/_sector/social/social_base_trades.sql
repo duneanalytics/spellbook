@@ -21,10 +21,11 @@ with base_union as (
     SELECT *
     FROM (
         {% for chain_specific_model in chain_specific_models %}
-        SELECT 
+        SELECT
             blockchain
             , block_time
             , block_number
+            , block_date
             , project
             , trader
             , subject
