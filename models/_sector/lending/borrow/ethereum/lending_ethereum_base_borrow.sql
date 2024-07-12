@@ -18,7 +18,8 @@
     ref('spark_ethereum_base_borrow'),
     ref('fluxfinance_ethereum_base_borrow'),
     ref('strike_ethereum_base_borrow'),
-    ref('granary_ethereum_base_borrow')
+    ref('granary_ethereum_base_borrow'),
+    ref('morpho_ethereum_base_borrow')
   ]
 %}
 
