@@ -9,6 +9,7 @@
     ref('uniswap_v3_blast_base_trades')
     , ref('uniswap_v2_blast_base_trades')
     , ref('thruster_blast_base_trades')
+    , ref('blasterswap_blast_base_trades')
     , ref('fenix_blast_base_trades')
 ] %}
 

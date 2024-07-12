@@ -112,14 +112,17 @@ WITH filter_1 AS (
     SELECT unique_trade_id
     , true AS flashloan
     FROM {{ ref('nft_trades') }} nftt
-    INNER JOIN {{ source('dex','flashloans') }} df ON df.blockchain='{{blockchain}}'
-        AND df.block_time=nftt.block_time
+    INNER JOIN {{ source('lending','flashloans') }} df ON df.blockchain='{{blockchain}}'
+        AND df.block_number=nftt.block_number
         AND df.tx_hash=nftt.tx_hash
-        AND nftt.blockchain='{{blockchain}}'
-        AND nftt.unique_trade_id IS NOT NULL
         {% if is_incremental() %}
-        AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
+        AND df.block_time >= date_trunc('day', NOW() - interval '7' day)
         {% endif %}
+    WHERE nftt.blockchain='{{blockchain}}'
+    AND nftt.unique_trade_id IS NOT NULL
+    {% if is_incremental() %}
+    AND nftt.block_time >= date_trunc('day', NOW() - interval '7' day)
+    {% endif %}
     )
 
 SELECT nftt.blockchain
