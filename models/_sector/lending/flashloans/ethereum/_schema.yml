@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave
-      contributors: tomfutago, morpho
+      contributors: tomfutago, hildobby
     config:
       tags: ['lending', 'flashloans', 'aave', 'ethereum']
     description: "All lending flashloans transactions on Ethereum"
