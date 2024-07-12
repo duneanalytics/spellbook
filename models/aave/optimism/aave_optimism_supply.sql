@@ -22,7 +22,7 @@ select
   withdrawn_to,
   liquidator,
   amount,
-  usd_amount,
+  amount_usd,
   block_month,
   block_time,
   block_number,
