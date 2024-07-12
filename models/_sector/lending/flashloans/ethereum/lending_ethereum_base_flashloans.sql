@@ -14,7 +14,8 @@
     ref('radiant_ethereum_base_flashloans'),
     ref('uwulend_ethereum_base_flashloans'),
     ref('spark_ethereum_base_flashloans'),
-    ref('granary_ethereum_base_flashloans')
+    ref('granary_ethereum_base_flashloans'),
+    ref('morpho_ethereum_base_flashloans')
   ]
 %}
 
