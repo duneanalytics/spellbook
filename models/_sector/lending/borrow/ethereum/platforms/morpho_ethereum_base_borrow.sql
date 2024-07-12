@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'morpho_ethereum',
-    alias = 'base_supply',
+    alias = 'base_borrow',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',

@@ -76,7 +76,5 @@ sources:
 
   - name: morpho_blue_ethereum
     tables:
-      - name: MorphoBlue_evt_CreateMarket
       - name: MorphoBlue_evt_Supply
       - name: MorphoBlue_evt_Withdraw
-      - name: MorphoBlue_evt_Liquidate
