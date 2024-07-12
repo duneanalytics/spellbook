@@ -28,6 +28,6 @@ with
         CAST(json_extract(encode, '$.metadata.widget.appCode')  AS VARCHAR) as widget_app_code,
         CAST(json_extract(encode, '$.metadata.widget.environment')  AS VARCHAR) as widget_environment
 
-    from {{ source('cowprotocol', 'dataset_app_data_arbitrum') }}
+    from {{ source('dune_upload', 'dataset_app_data_arbitrum') }}
 )
 select * from results
