@@ -12,7 +12,7 @@ select
   supply.withdrawn_to,
   supply.liquidator,
   supply.amount / power(10, coalesce(erc20.decimals, 18)) as amount,
-  supply.amount / power(10, coalesce(p.decimals, erc20.decimals, 18)) * p.price as usd_amount,
+  supply.amount / power(10, coalesce(p.decimals, erc20.decimals, 18)) * p.price as amount_usd,
   supply.block_month,
   supply.block_time,
   supply.block_number,
