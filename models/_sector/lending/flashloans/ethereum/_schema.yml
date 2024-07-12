@@ -296,6 +296,35 @@ models:
       - *tx_hash
       - *evt_index
 
+  - name: balancer_v2_ethereum_base_flashloans
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: balancer
+      contributors: hildobby
+    config:
+      tags: ['lending', 'flashloans', 'balancer', 'ethereum']
+    description: "Balancer flashloans transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *project_contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+      
   - name: morpho_ethereum_base_flashloans
     meta:
       blockchain: ethereum
