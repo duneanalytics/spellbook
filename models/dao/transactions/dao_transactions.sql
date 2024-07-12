@@ -1,8 +1,8 @@
 {{ config(
-    
+    schema = 'dao',
     alias = 'transactions',
     materialized = 'view',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base", "arbitrum"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base", "arbitrum","zksync"]\',
                                 "sector",
                                 "dao",
                                 \'["Henrystats"]\') }}')
@@ -20,6 +20,7 @@ ref('dao_transactions_ethereum_erc20')
 ,ref('dao_transactions_base_eth')
 ,ref('dao_transactions_arbitrum_erc20')
 ,ref('dao_transactions_arbitrum_eth')
+,ref('dao_transactions_zksync_erc20')
 ] %}
 
 SELECT *
