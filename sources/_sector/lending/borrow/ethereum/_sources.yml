@@ -19,6 +19,12 @@ sources:
       - name: Pool_evt_Repay
       - name: Pool_evt_LiquidationCall
 
+  - name: compound_v1_ethereum
+    tables:
+      - name: MoneyMarket_evt_BorrowTaken
+      - name: MoneyMarket_evt_BorrowRepaid
+      - name: MoneyMarket_evt_BorrowLiquidated
+
   - name: compound_v2_ethereum
     tables:
       - name: cErc20_evt_Borrow
