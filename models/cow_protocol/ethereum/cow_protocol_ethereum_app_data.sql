@@ -28,7 +28,7 @@ with
         CAST(json_extract(encode, '$.metadata.widget.appCode')  AS VARCHAR) as widget_app_code,
         CAST(json_extract(encode, '$.metadata.widget.environment')  AS VARCHAR) as widget_environment
 
-    from {{ source('cowprotocol', 'dataset_app_data_mainnet') }}
+    from {{ source('dune_upload', 'dataset_app_data_mainnet') }}
     where contract_app_data!=0x0a7bcea9eec07f1634f0adfcc43c00cb391f16aef78f6422eac1203fb997a12a
 )
 select * from results
