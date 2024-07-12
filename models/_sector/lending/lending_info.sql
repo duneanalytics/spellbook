@@ -23,4 +23,6 @@ FROM (VALUES
     , ('spark', 'Spark', TRUE, 'sparkdotfi')
     , ('radiant', 'Radiant Capital', TRUE, 'RDNTCapital')
     , ('moola', 'Moola Market', TRUE, 'moola_market')
+    , ('morpho', 'Morpho', TRUE, 'MorphoLabs')
+    , ('compound', 'Compound', TRUE, 'compoundfinance')
     ) AS temp_table (project, name, has_flashloans, x_username)
