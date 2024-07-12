@@ -1,10 +1,10 @@
 {{ config(
         schema = 'account_abstraction_erc4337',
         alias = 'account_deployed',
-        post_hook='{{ expose_spells(\'["ethereum","polygon","arbitrum","optimism","avalanche_c","gnosis","celo"]\',
+        post_hook='{{ expose_spells(\'["ethereum","polygon","arbitrum","optimism","avalanche_c","gnosis","celo","zora"]\',
                                 "project",
                                 "erc4337",
-                                \'["0xbitfly"]\') }}'
+                                \'["0xbitfly","intensodefi"]\') }}'
         )
 }}
 
@@ -18,6 +18,7 @@
 , ref('account_abstraction_erc4337_base_account_deployed')
 , ref('account_abstraction_erc4337_bnb_account_deployed')
 , ref('account_abstraction_erc4337_celo_account_deployed')
+, ref('account_abstraction_erc4337_zora_account_deployed')
 ] %}
 
 SELECT *

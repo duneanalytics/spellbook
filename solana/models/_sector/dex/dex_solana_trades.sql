@@ -38,12 +38,22 @@ SELECT bt.blockchain
       , token_sold_amount_raw / pow(10,coalesce(token_sold.decimals, 9)) as token_sold_amount
       , token_bought_amount_raw
       , token_sold_amount_raw
-      , COALESCE(token_sold_amount_raw / pow(10,coalesce(token_sold.decimals, 9)) * p_sold.price
+      , COALESCE(
+            -- if bought token is trusted, prefer that price, else default to sold token then bought token.
+            case when tt_bought.symbol is not null then
+                token_bought_amount_raw / pow(10,coalesce(token_bought.decimals, 9)) * p_bought.price
+                else null end
+               , token_sold_amount_raw / pow(10,coalesce(token_sold.decimals, 9)) * p_sold.price
                , token_bought_amount_raw / pow(10,coalesce(token_bought.decimals, 9)) * p_bought.price)
             as amount_usd
       , fee_tier
       , fee_tier *
-        COALESCE(token_sold_amount_raw / pow(10,coalesce(token_sold.decimals, 9)) * p_sold.price
+        COALESCE(
+            -- if bought token is trusted, prefer that price, else default to sold token then bought token.
+            case when tt_bought.symbol is not null then
+                token_bought_amount_raw / pow(10,coalesce(token_bought.decimals, 9)) * p_bought.price
+                else null end
+               , token_sold_amount_raw / pow(10,coalesce(token_sold.decimals, 9)) * p_sold.price
                , token_bought_amount_raw / pow(10,coalesce(token_bought.decimals, 9)) * p_bought.price)
             as fee_usd
       , token_bought_mint_address
@@ -74,3 +84,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     {% if is_incremental() %}
     AND {{incremental_predicate('p_sold.minute')}}
     {% endif %}
+-- if bought token is trusted, prefer that price, else default to sold token then bought token.
+LEFT JOIN {{ source('prices','trusted_tokens') }} tt_bought
+    ON bt.token_bought_mint_address = toBase58(tt_bought.contract_address)
+    AND bt.blockchain = tt_bought.blockchain

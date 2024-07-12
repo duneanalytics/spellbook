@@ -7797,4 +7797,5 @@ FROM (VALUES
     , ( 0xF4F3c1666E750E014DE65c50d0e98B1263E678B8, 'SLX', 18)        
     , ( 0x4e5af8c1bd8ec1ffafa8a6043e57c3d384a7c574, 'ZTLN', 18)
     , ( 0x0deee1f9b96cac0b0ec85e8f800bc0b33e901e9a, 'IDOL', 18)
+    , ( 0xfef5f9d8fe3b23fe4a242a461e537bb69364de94, 'VCUSD', 18)
 ) AS temp_table (contract_address, symbol, decimals)
