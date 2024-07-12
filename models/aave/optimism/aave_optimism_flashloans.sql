@@ -16,7 +16,7 @@ select
   version,
   recipient,
   amount,
-  usd_amount as amount_usd,
+  amount_usd,
   fee,
   symbol as currency_symbol,
   token_address as currency_contract,
