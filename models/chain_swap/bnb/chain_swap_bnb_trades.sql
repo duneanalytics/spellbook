@@ -1,31 +1,31 @@
 {{
     config(
-        alias="trades",
-        schema="chain_swap_bnb",
-        partition_by=["block_month"],
-        materialized="incremental",
-        file_format="delta",
-        incremental_strategy="merge",
+        alias='trades',
+        schema='chain_swap_bnb',
+        partition_by=['block_month'],
+        materialized='incremental',
+        file_format='delta',
+        incremental_strategy='merge',
         incremental_predicates=[
-            incremental_predicate("DBT_INTERNAL_DEST.block_time")
+            incremental_predicate('DBT_INTERNAL_DEST.block_time')
         ],
-        unique_key=["blockchain", "tx_hash", "evt_index"],
+        unique_key=['blockchain', 'tx_hash', 'evt_index'],
     )
 }}
 
-{% set project_start_date = "2024-06-17" %}
-{% set blockchain = "bnb" %}
-{% set deployer_1 = "0x1d32cFeFd97de9D740714A31b2E8C7bc34825442" %}
-{% set deployer_2 = "0x3A510C5a32bCb381c53704AED9c02b0c70041F7A" %}
-{% set wbnb_contract_address = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" %}
-{% set usdc_contract_address = "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d" %}
-{% set fee_recipient_1 = "0x415EEc63c95e944D544b3088bc682B759edB8548" %}
-{% set fee_recipient_2 = "0xe1ff5a4c489b11e094bfbb5d23c6d4597a3a79ad" %}
+{% set project_start_date = '2024-06-17' %}
+{% set blockchain = 'bnb' %}
+{% set deployer_1 = '0x1d32cFeFd97de9D740714A31b2E8C7bc34825442' %}
+{% set deployer_2 = '0x3A510C5a32bCb381c53704AED9c02b0c70041F7A' %}
+{% set wbnb_contract_address = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c' %}
+{% set usdc_contract_address = '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d' %}
+{% set fee_recipient_1 = '0x415EEc63c95e944D544b3088bc682B759edB8548' %}
+{% set fee_recipient_2 = '0xe1ff5a4c489b11e094bfbb5d23c6d4597a3a79ad' %}
 
 with
     bot_contracts as (
         select address
-        from {{ source("bnb", "creation_traces") }}
+        from {{ source('bnb', 'creation_traces') }}
         where
             (
                 "from" = {{ deployer_1 }}
@@ -55,7 +55,7 @@ with
             tx_to as bot,
             trades.tx_hash,
             evt_index
-        from {{ source("dex", "trades") }} as trades
+        from {{ source('dex', 'trades') }} as trades
         join bot_contracts on trades.tx_to = bot_contracts.address
         where
             trades.blockchain = '{{blockchain}}'
@@ -73,7 +73,7 @@ with
             evt_tx_hash,
             value as fee_token_amount,
             contract_address as fee_token_address
-        from {{ source("erc20_bnb", "evt_transfer") }}
+        from {{ source('erc20_bnb', 'evt_transfer') }}
         where
             (to = {{ fee_recipient_1 }} or to = {{ fee_recipient_2 }})
             and evt_block_time >= timestamp '{{project_start_date}}'
@@ -87,7 +87,7 @@ with
             tx_hash,
             value as fee_token_amount,
             {{ wbnb_contract_address }} as fee_token_address
-        from {{ source("bnb", "traces") }}
+        from {{ source('bnb', 'traces') }}
         where
             (to = {{ fee_recipient_1 }} or to = {{ fee_recipient_2 }})
             and block_time >= timestamp '{{project_start_date}}'
@@ -130,7 +130,7 @@ join
 /* Left Outer Join to support 0 fee trades */
 left join fee_deposits on bot_trades.tx_hash = fee_deposits.evt_tx_hash
 left join
-    {{ source("prices", "usd") }}
+    {{ source('prices', 'usd') }}
     on (
         blockchain = '{{blockchain}}'
         and contract_address = fee_token_address

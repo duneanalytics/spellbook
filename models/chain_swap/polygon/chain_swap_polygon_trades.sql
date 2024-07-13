@@ -1,34 +1,34 @@
 {{
     config(
-        alias="trades",
-        schema="chain_swap_polygon",
-        partition_by=["block_month"],
-        materialized="incremental",
-        file_format="delta",
-        incremental_strategy="merge",
+        alias='trades',
+        schema='chain_swap_polygon',
+        partition_by=['block_month'],
+        materialized='incremental',
+        file_format='delta',
+        incremental_strategy='merge',
         incremental_predicates=[
-            incremental_predicate("DBT_INTERNAL_DEST.block_time")
+            incremental_predicate('DBT_INTERNAL_DEST.block_time')
         ],
-        unique_key=["blockchain", "tx_hash", "evt_index"],
+        unique_key=['blockchain', 'tx_hash', 'evt_index'],
     )
 }}
 
-{% set project_start_date = "2024-03-21" %}
-{% set blockchain = "polygon" %}
-{% set deployer_1 = "0x9eC1ACAe39d07E1e8D8B3cEbe7022790D87D744A" %}
-{% set deployer_2 = "0x415EEc63c95e944D544b3088bc682B759edB8548" %}
-{% set deployer_3 = "0xc1cc1a300Dcfe5359eBe37f2007A77d1F91533ba" %}
-{% set deployer_4 = "0x3A510C5a32bCb381c53704AED9c02b0c70041F7A" %}
-{% set deployer_4 = "0xB7B953e81612c57256fF0aebD62B6a2F0546F7dA" %}
-{% set wmatic_contract_address = "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" %}
-{% set usdc_contract_address = "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359" %}
-{% set fee_recipient_1 = "0x415EEc63c95e944D544b3088bc682B759edB8548" %}
-{% set fee_recipient_2 = "0xe1ff5a4c489b11e094bfbb5d23c6d4597a3a79ad" %}
+{% set project_start_date = '2024-03-21' %}
+{% set blockchain = 'polygon' %}
+{% set deployer_1 = '0x9eC1ACAe39d07E1e8D8B3cEbe7022790D87D744A' %}
+{% set deployer_2 = '0x415EEc63c95e944D544b3088bc682B759edB8548' %}
+{% set deployer_3 = '0xc1cc1a300Dcfe5359eBe37f2007A77d1F91533ba' %}
+{% set deployer_4 = '0x3A510C5a32bCb381c53704AED9c02b0c70041F7A' %}
+{% set deployer_4 = '0xB7B953e81612c57256fF0aebD62B6a2F0546F7dA' %}
+{% set wmatic_contract_address = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270' %}
+{% set usdc_contract_address = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359' %}
+{% set fee_recipient_1 = '0x415EEc63c95e944D544b3088bc682B759edB8548' %}
+{% set fee_recipient_2 = '0xe1ff5a4c489b11e094bfbb5d23c6d4597a3a79ad' %}
 
 with
     bot_contracts as (
         select address
-        from {{ source("polygon", "creation_traces") }}
+        from {{ source('polygon', 'creation_traces') }}
         where
             (
                 "from" = {{ deployer_1 }}
@@ -59,7 +59,7 @@ with
             tx_to as bot,
             trades.tx_hash,
             evt_index
-        from {{ source("dex", "trades") }} as trades
+        from {{ source('dex', 'trades') }} as trades
         join bot_contracts on trades.tx_to = bot_contracts.address
         where
             trades.blockchain = '{{blockchain}}'
@@ -77,7 +77,7 @@ with
             evt_tx_hash,
             value as fee_token_amount,
             contract_address as fee_token_address
-        from {{ source("erc20_polygon", "evt_transfer") }}
+        from {{ source('erc20_polygon', 'evt_transfer') }}
         where
             (to = {{ fee_recipient_1 }} or to = {{ fee_recipient_2 }})
             and evt_block_time >= timestamp '{{project_start_date}}'
@@ -91,7 +91,7 @@ with
             tx_hash,
             value as fee_token_amount,
             {{ wmatic_contract_address }} as fee_token_address
-        from {{ source("polygon", "traces") }}
+        from {{ source('polygon', 'traces') }}
         where
             (to = {{ fee_recipient_1 }} or to = {{ fee_recipient_2 }})
             and block_time >= timestamp '{{project_start_date}}'
@@ -134,7 +134,7 @@ join
 /* Left Outer Join to support 0 fee trades */
 left join fee_deposits on bot_trades.tx_hash = fee_deposits.evt_tx_hash
 left join
-    {{ source("prices", "usd") }}
+    {{ source('prices', 'usd') }}
     on (
         blockchain = '{{blockchain}}'
         and contract_address = fee_token_address
