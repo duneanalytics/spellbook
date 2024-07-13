@@ -93,7 +93,7 @@ with
             and value > 0
 
     )
-select
+select distinct
     block_time,
     date_trunc('day', block_time) as block_date,
     date_trunc('month', block_time) as block_month,
