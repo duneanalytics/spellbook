@@ -97,7 +97,9 @@ with
             and block_time >= timestamp '{{project_start_date}}'
             and value > 0
 
-    )
+    ),
+
+    groupedFeeDeposits AS ( select evt_tx_hash, fee_token_address, MIN(fee_token_amount) from fee_deposits group by evt_tx_hash, fee_token_address ),
 select distinct
     block_time,
     date_trunc('day', block_time) as block_date,
@@ -132,7 +134,7 @@ join
     highest_event_index_for_each_trade
     on bot_trades.tx_hash = highest_event_index_for_each_trade.tx_hash
 /* Left Outer Join to support 0 fee trades */
-left join fee_deposits on bot_trades.tx_hash = fee_deposits.evt_tx_hash
+left join groupedFeeDeposits AS fee_deposits on bot_trades.tx_hash = fee_deposits.evt_tx_hash
 left join
     {{ source('prices', 'usd') }}
     on (
