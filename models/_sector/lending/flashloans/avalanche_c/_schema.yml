@@ -6,7 +6,7 @@ models:
       blockchain: avalanche_c
       sector: lending
       project: aave
-      contributors: tomfutago
+      contributors: tomfutago, hildobby
     config:
       tags: ['lending', 'flashloans', 'aave', 'avalanche_c']
     description: "All lending flashloans transactions on Avalanche_c"
@@ -155,6 +155,35 @@ models:
             - evt_index
       - check_lending_base_flashloans_seed:
           seed_file: ref('granary_avalanche_c_base_flashloans_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *project_contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: balancer_v2_avalanche_c_base_flashloans
+    meta:
+      blockchain: avalanche_c
+      sector: lending
+      project: balancer
+      contributors: hildobby
+    config:
+      tags: ['lending', 'flashloans', 'balancer', 'avalanche_c']
+    description: "Balancer flashloans transactions on Avalanche"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
     columns:
       - *blockchain
       - *project
