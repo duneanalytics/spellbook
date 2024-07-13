@@ -30,8 +30,7 @@ with
             (
                 "from" = {{ deployer_1 }}
                 or "from" = {{ deployer_2 }}
-                or "from" = {{ deployer_3 }}
-                or "from" = {{ deployer_4 }}
+            
             )
             and block_time >= timestamp '{{project_start_date}}'
 
