@@ -99,7 +99,7 @@ with
 
     ),
 
-    groupedFeeDeposits AS ( select evt_tx_hash, fee_token_address, MIN(fee_token_amount) from fee_deposits group by evt_tx_hash, fee_token_address )
+    groupedFeeDeposits AS ( select evt_tx_hash, fee_token_address, MIN(fee_token_amount) as fee_token_amount from fee_deposits group by evt_tx_hash, fee_token_address )
 select distinct
     block_time,
     date_trunc('day', block_time) as block_date,
