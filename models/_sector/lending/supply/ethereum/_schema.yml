@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave, compound
-      contributors: tomfutago
+      contributors: tomfutago, hildobby
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'ethereum']
     description: "All lending supply transactions on Ethereum"
@@ -475,6 +475,40 @@ models:
             - evt_index
       - check_lending_base_supply_seed:
           seed_file: ref('granary_ethereum_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *on_behalf_of
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+
+  - name: morpho_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: morpho
+      contributors: hildobby
+    config:
+      tags: ['lending', 'supply', 'morpho', 'ethereum']
+    description: "Morpho supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
     columns:
       - *blockchain
       - *project
