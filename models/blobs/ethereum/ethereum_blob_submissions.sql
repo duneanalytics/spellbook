@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "blobs",
-                                    \'["msilb7","lorenz234","0xRob"]\') }}'
+                                    \'["msilb7","lorenz234","0xRob", "hildobby"]\') }}'
 )}}
 
 with blob_transactions as (
@@ -31,7 +31,7 @@ SELECT
     , t.value as tx_value
     , t.hash as tx_hash
     , t."from" as blob_submitter
-    , l.entity as blob_submitter_label
+    , COALESCE(l.entity, ls.entity) as blob_submitter_label
     , t.index as tx_index
     , t.success as tx_success
     , t.data as tx_data
@@ -65,3 +65,5 @@ LEFT JOIN  {{ source("resident_wizards", "dataset_blob_base_fees_lookup", databa
     ON fee.excess_blob_gas = block.excess_blob_gas
 LEFT JOIN {{ref('blobs_submitters')}} l
     ON t."from" = l.address
+LEFT JOIN {{ref('blobs_based_submitters')}} ls
+    ON t.hash = ls.tx_hash

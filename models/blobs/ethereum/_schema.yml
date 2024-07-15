@@ -102,3 +102,41 @@ models:
       - *is_blobscription
       - *blob_submitter
       - *blob_submitter_label
+
+  - name: ethereum_blob_submitters
+    meta:
+      blockchain: ethereum
+      sector: blobs
+      project: blobs
+      contributors: hildobby
+    config:
+      tags: ['blob', 'blobs', 'ethereum']
+    description: Blob submitting address tags
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - name: address
+        description: "Blob submitting address"
+      - name: entity
+        description: "Entity name the address has been tagged as"
+
+  - name: ethereum_blob_based_submitters
+    meta:
+      blockchain: ethereum
+      sector: blobs
+      project: blobs
+      contributors: hildobby
+    config:
+      tags: ['blob', 'blobs', 'ethereum']
+    description: Blob submitting address tags
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - name: tx_hash
+        description: "Blob submitting address"
+      - name: entity
+        description: "Entity name the address has been tagged as"
