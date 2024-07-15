@@ -10,7 +10,7 @@ SELECT
     token_id
     , blockchain
     , symbol
-    , cast(contract_address as varchar) as contract_address
+    , from_base58(contract_address) as contract_address
     , decimals
 FROM
 (
