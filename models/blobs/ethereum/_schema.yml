@@ -103,7 +103,7 @@ models:
       - *blob_submitter
       - *blob_submitter_label
 
-  - name: ethereum_blob_submitters
+  - name: blobs_submitters
     meta:
       blockchain: ethereum
       sector: blobs
@@ -122,7 +122,7 @@ models:
       - name: entity
         description: "Entity name the address has been tagged as"
 
-  - name: ethereum_blob_based_submitters
+  - name: blobs_based_submitters
     meta:
       blockchain: ethereum
       sector: blobs
