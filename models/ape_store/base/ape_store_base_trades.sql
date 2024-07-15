@@ -101,4 +101,3 @@ from bondingcurvetrades
 union all
 select *
 from dextrades
-order by block_time desc
