@@ -97,7 +97,12 @@ with
             )
         where
             trades.blockchain = '{{blockchain}}'
-            and trades.block_time >= timestamp '{{project_start_date}}'
+            and
+            {% if is_incremental() %}
+            {{ incremental_predicate('trades.block_time') }}
+            {% else %}
+            trades.block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
     )
 select *
 from bondingcurvetrades
