@@ -22,6 +22,7 @@ with
     deployments as (
         select
             evt_block_time,
+            date_trunc('month', evt_block_time) as block_month,
             'base' as blockchain,
             token,
             id,
@@ -89,7 +90,7 @@ with
             {{ source('dex', 'trades') }} as trades
             on (
                 trades.blockchain = deployments.blockchain
-                and trades.block_time >= deployments.evt_block_time
+                and trades.block_month >= deployments.block_month
                 and (token_bought_address = token or token_sold_address = token)
             )
         where
