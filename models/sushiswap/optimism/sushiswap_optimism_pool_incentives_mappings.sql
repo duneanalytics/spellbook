@@ -1,6 +1,6 @@
 {{ config(
-    
-    alias = 'pool_incentives_mappings'
+    schema = 'sushiswap_optimism'
+    , alias = 'pool_incentives_mappings'
     )
 }}
 

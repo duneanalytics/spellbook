@@ -1,5 +1,5 @@
 {{ config(
-        
+        schema = 'airdrop_arbitrum',
         alias = 'claims',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                       "sector",

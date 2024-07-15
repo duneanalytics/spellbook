@@ -18,7 +18,8 @@
     ref('spark_ethereum_base_borrow'),
     ref('fluxfinance_ethereum_base_borrow'),
     ref('strike_ethereum_base_borrow'),
-    ref('granary_ethereum_base_borrow')
+    ref('granary_ethereum_base_borrow'),
+    ref('morpho_ethereum_base_borrow')
   ]
 %}
 
@@ -31,12 +32,14 @@ select
   loan_type,
   token_address,
   borrower,
+  on_behalf_of,
   repayer,
   liquidator,
   amount,
   block_month,
   block_time,
   block_number,
+  project_contract_address,
   tx_hash,
   evt_index
 from {{ model }}

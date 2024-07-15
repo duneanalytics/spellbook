@@ -16,6 +16,7 @@ sources:
     tables:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
+      - name: Pool_evt_ReserveDataUpdated
 
   - name: compound_v2_ethereum
     tables:
@@ -72,3 +73,8 @@ sources:
     tables:
       - name: LendingPool_evt_Deposit
       - name: LendingPool_evt_Withdraw
+
+  - name: morpho_blue_ethereum
+    tables:
+      - name: MorphoBlue_evt_Supply
+      - name: MorphoBlue_evt_Withdraw

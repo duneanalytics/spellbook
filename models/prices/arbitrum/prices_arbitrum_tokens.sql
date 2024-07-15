@@ -190,5 +190,20 @@ FROM
     ('wom-wombat-exchange','arbitrum','WOM',0x7b5eb3940021ec0e8e463d5dbb4b7b09a89ddf96, 18),
     ('ankr-ankr-network','arbitrum','ANKR',0x46f74778b265df3a15ec9695ccd2fd3869ca848c, 18),
     ('forex-handlefi','arbitrum','FOREX',0xdb298285fe4c5410b05390ca80e8fbe9de1f259b, 18),
-    ('susde-ethena-staked-usde','arbitrum','SUSDE',0x211cc4dd073734da055fbf44a2b4667d5e5fe5d2, 18)
+    ('susde-ethena-staked-usde','arbitrum','SUSDE',0x211cc4dd073734da055fbf44a2b4667d5e5fe5d2, 18),
+    ('usde-ethena-usde','arbitrum','USDe',0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34, 18),
+    ('yak-yield-yak','arbitrum','YAK',0x7f4db37d7beb31f445307782bc3da0f18df13696,18),
+    ('ethx-stader-ethx','arbitrum','ETHX',0xed65c5085a18fa160af0313e60dcc7905e944dc7, 18),
+    ('gyd-gyro-dollar','arbitrum','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 18),
+    ('a51-a51-finance','arbitrum','A51',0xb3f13b0c61d65d67d7d6215d70c89533ee567a91, 18),
+    ('oseth-stakewise-staked-eth','arbitrum','osETH',0xf7d4e7273e5015c96728a6b02f31c505ee184603, 18),
+    ('sliz-solidlizard-dex-token','arbitrum','SLIZ',0x463913D3a3D3D291667D53B8325c598Eb88D3B0e, 18),
+    ('vrtx-vertex-protocol', 'arbitrum', 'VRTX', 0x95146881b86b3ee99e63705ec87afe29fcc044d9, 18),
+    ('gho-gho', 'arbitrum', 'GHO', 0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33, 18),
+    ('rseth-rseth','arbitrum','rsETH',0x4186bfc76e2e237523cbc30fd220fe055156b41f, 18),    
+    ('dola-dola','arbitrum','DOLA',0x6a7661795c374c0bfc635934efaddff3a7ee23b6, 18),
+    ('usx-dforce-usd', 'arbitrum', 'USX', 0x641441c631e2f909700d2f41fd87f0aa6a6b4edb, 18),
+    ('olas-autonolas', 'arbitrum', 'OLAS', 0x064F8B858C2A603e1b106a2039f5446D32dc81c1, 18),
+    ('sx-sx-network', 'arbitrum', 'SX', 0x8cf7e3aa6faf6ae180e5ec3f0fb95081c2086ebe, 18),
+    ('zro-layerzero', 'arbitrum', 'ZRO', 0x6985884C4392D348587B19cb9eAAf157F13271cd, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

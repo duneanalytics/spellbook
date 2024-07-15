@@ -1,6 +1,5 @@
 {{
   config(
-    tags=['prod_exclude'],
     schema = 'lending',
     alias = 'supply',
     partition_by = ['blockchain', 'project', 'block_month'],
@@ -12,7 +11,7 @@
     post_hook = '{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "optimism", "polygon", "scroll", "zksync"]\',
                                 "sector",
                                 "lending",
-                                \'["tomfutago"]\') }}'
+                                \'["tomfutago", "hildobby"]\') }}'
   )
 }}
 

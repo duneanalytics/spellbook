@@ -24,7 +24,8 @@
     ref('lending_fantom_base_flashloans'),
     ref('lending_gnosis_base_flashloans'),
     ref('lending_zksync_base_flashloans'),
-    ref('lending_scroll_base_flashloans')
+    ref('lending_scroll_base_flashloans'),
+    ref('lending_zkevm_base_flashloans')
   ]
 %}
 
@@ -37,7 +38,7 @@ select
   amount,
   fee,
   token_address,
-  contract_address,
+  project_contract_address,
   block_month,
   block_time,
   block_number,

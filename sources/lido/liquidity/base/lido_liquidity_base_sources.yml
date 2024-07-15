@@ -33,6 +33,18 @@ sources:
         loaded_at_field: call_block_time 
       - name: Pool_evt_Fees
         loaded_at_field: evt_block_time 
+      - name: CLPool_evt_Mint
+        loaded_at_field: evt_block_time
+      - name: CLPool_evt_Collect
+        loaded_at_field: evt_block_time 
+      - name: CLFactory_call_getSwapFee
+        loaded_at_field: call_block_time 
+      - name: CLFactory_evt_PoolCreated
+        loaded_at_field: evt_block_time   
+      - name: CLPool_evt_Swap
+        loaded_at_field: evt_block_time     
+      - name: CLPool_evt_CollectFees
+        loaded_at_field: evt_block_time       
 
   - name: uniswap_v3_base
     description: "Base decoded tables related to Uniswap v3 contract"

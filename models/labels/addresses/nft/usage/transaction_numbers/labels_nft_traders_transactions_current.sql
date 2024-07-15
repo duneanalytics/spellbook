@@ -7,7 +7,7 @@ SELECT
     blockchain,
     tx_hash,
     buyer AS address
-FROM {{ ref('nft_trades') }}
+FROM {{ source('nft', 'trades') }}
 WHERE block_time > NOW() - interval '14' day
 
 UNION
@@ -16,7 +16,7 @@ SELECT
     blockchain,
     tx_hash,
     seller AS address
-FROM {{ ref('nft_trades') }}
+FROM {{ source('nft', 'trades') }}
 WHERE block_time > NOW() - interval '14' day
 ),
 

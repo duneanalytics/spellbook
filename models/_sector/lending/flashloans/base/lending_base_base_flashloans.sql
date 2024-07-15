@@ -10,7 +10,8 @@
   set models = [
     ref('aave_v3_base_base_flashloans'),
     ref('seamlessprotocol_base_base_flashloans'),
-    ref('granary_base_base_flashloans')
+    ref('granary_base_base_flashloans'),
+    ref('balancer_v2_base_base_flashloans')
   ]
 %}
 
@@ -23,7 +24,7 @@ select
   amount,
   fee,
   token_address,
-  contract_address,
+  project_contract_address,
   block_month,
   block_time,
   block_number,

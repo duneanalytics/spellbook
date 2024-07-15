@@ -1,5 +1,5 @@
 {{ config(
-    
+        schema = 'tigris_arbitrum',
         alias = 'events_contracts_positions'
         )
 }}

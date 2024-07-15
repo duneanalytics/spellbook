@@ -14,7 +14,9 @@
     ref('radiant_ethereum_base_flashloans'),
     ref('uwulend_ethereum_base_flashloans'),
     ref('spark_ethereum_base_flashloans'),
-    ref('granary_ethereum_base_flashloans')
+    ref('granary_ethereum_base_flashloans'),
+    ref('balancer_v2_ethereum_base_flashloans'),
+    ref('morpho_ethereum_base_flashloans')
   ]
 %}
 
@@ -27,7 +29,7 @@ select
   amount,
   fee,
   token_address,
-  contract_address,
+  project_contract_address,
   block_month,
   block_time,
   block_number,

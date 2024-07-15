@@ -1,0 +1,522 @@
+version: 2
+
+models:
+  - name: dex_bnb_base_trades
+    tests:
+      - check_dex_info_relationship
+
+  - name: uniswap_v3_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: uniswap
+      contributors: chrispearcx
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap bnb v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_bnb_base_trades_seed')
+          filter:
+            version: 3
+
+
+  - name: airswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: airswap
+      contributors: tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'airswap' ]
+    description: "Airswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('airswap_bnb_base_trades_seed')
+
+
+  - name: sushiswap_v1_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: sushiswap
+      contributors: chrispearcx, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'sushiswap', 'v1' ]
+    description: "sushiswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_bnb_base_trades_seed')
+          filter:
+            version: 1
+
+
+  - name: sushiswap_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: sushiswap
+      contributors: tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'sushiswap', 'v2' ]
+    description: "sushiswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_bnb_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: trader_joe_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: trader_joe
+      contributors: hsrvc, hosuke
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'trader_joe', 'v2' ]
+    description: "Trader Joe bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('trader_joe_bnb_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: trader_joe_v2_1_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: trader_joe
+      contributors: chef_seaweed
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'trader_joe', 'v2.1' ]
+    description: "Trader Joe bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('trader_joe_bnb_base_trades_seed')
+          filter:
+            version: 2.1
+
+
+  - name: apeswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: apeswap
+      contributors: hosuke
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'apeswap' ]
+    description: apeswap base trades
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('apeswap_bnb_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: pancakeswap_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: pancakeswap
+      contributors: hosuke, chef_seaweed, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
+    description: "Pancakeswap BNB v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_bnb_base_trades_seed')
+          filter:
+            version:
+              - 2
+              - mmpool
+              - stableswap
+
+
+  - name: pancakeswap_v3_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v3' ]
+    description: "Pancakeswap BNB v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_bnb_base_trades_seed')
+          filter:
+            version: 3
+
+
+  - name: fraxswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: fraxswap
+      contributors: kndlexi, tomfutago
+    config:
+      tags: ['bnb', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
+    description: "Fraxswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fraxswap_bnb_base_trades_seed')
+
+
+  - name: biswap_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: biswap
+      contributors: codingsh, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'biswap', 'uniswap', 'v2' ]
+    description: "biswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('biswap_bnb_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: biswap_v3_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: biswap
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'biswap', 'v3' ]
+    description: "biswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('biswap_bnb_base_trades_seed')
+          filter:
+            version: 3
+
+
+  - name: babyswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: babyswap
+      contributors: codingsh, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'babyswap', 'uniswap', 'v2' ]
+    description: "babyswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('babyswap_bnb_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: mdex_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: mdex
+      contributors: codingsh, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'mdex', 'uniswap', 'v2' ]
+    description: "mdex bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('mdex_bnb_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: wombat_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: wombat
+      contributors: umer_h_adil, hosuke, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'wombat' ]
+    description: "Wombat bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wombat_bnb_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: dodo_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: dodo
+      contributors: owen05, scoffie, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'dodo' ]
+    description: "Dodo bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dodo_bnb_base_trades_seed')
+          filter:
+            version:
+              - 1
+              - 2_dvm
+              - 2_dpp
+              - 2_dsp
+              
+  - name: iziswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: iziswap
+      contributors: umer_h_adil, hosuke, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'iziswap' ]
+    description: "iziswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('iziswap_bnb_base_trades_seed')
+          
+  - name: maverick_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: maverick
+      contributors: chef_seaweed, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'maverick' ]
+    description: "Maverick bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('maverick_bnb_base_trades_seed')
+          
+  - name: nomiswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: nomiswap
+      contributors: codingsh, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'nomiswap', 'uniswap', 'v2' ]
+    description: "NomiSwap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('nomiswap_bnb_base_trades_seed')
+
+  - name: kyberswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: kyberswap
+      contributors: nhd98z, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
+    description: "kyberswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kyberswap_bnb_base_trades_seed')
+          filter:
+            version:
+              - classic
+              - elastic_2
+
+  - name: xchange_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: xchange
+      contributors: mike-x7f, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
+    description: "xchange bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('xchange_bnb_base_trades_seed')
+          
+  - name: thena_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: thena
+      contributors: hsrvc, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'thena' ]
+    description: "thena bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('thena_bnb_base_trades_seed')
+          filter:
+            version:
+              - 1
+              - fusion
+              
+  - name: ellipsis_finance_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: ellipsis_finance
+      contributors: Henrystats, 0xRob, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'ellipsis_finance' ]
+    description: "ellipsis_finance bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('ellipsis_finance_bnb_base_trades_seed')
+          
+  - name: onepunchswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: onepunchswap
+      contributors: sunopar, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'onepunchswap' ]
+    description: "onepunchswap bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('onepunchswap_bnb_base_trades_seed')
+
+  - name: woofi_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: woofi
+      contributors: scoffie, tomfutago
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'woofi' ]
+    description: "woofi bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('woofi_bnb_base_trades_seed')
+
+  - name: hashflow_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: hashflow
+      contributors: Henrystats, hosuke
+    config:
+      tags: [ 'bnb','hashflow','trades','dex', 'Henrystats']
+    description: >
+      Hashflow contract trades on Binance Smart Chain
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('hashflow_bnb_base_trades_seed')
+
+  - name: uniswap_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: uniswap
+      contributors: Henrystats
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap bnb v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_bnb_base_trades_seed')
+          filter:
+            version: 2
