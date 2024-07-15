@@ -1,6 +1,6 @@
 {{ config(
         schema='prices_aptos',
-        alias = alias('tokens'),
+        alias = 'tokens',
         materialized='table',
         file_format = 'delta',
         tags = ['static', 'dunesql']
