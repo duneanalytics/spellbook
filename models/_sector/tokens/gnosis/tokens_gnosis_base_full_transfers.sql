@@ -12,11 +12,11 @@
 
 WITH 
 
-tokens_gnosis_base_wihout_suicide_transfers AS (
+tokens_gnosis_base_without_suicide_transfers AS (
     SELECT 
         *
     FROM 
-        {{ ref('tokens_gnosis_base_wihout_suicide_transfers') }}
+        {{ ref('tokens_gnosis_base_without_suicide_transfers') }}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('block_time')}}
     {% endif %}
@@ -32,6 +32,6 @@ tokens_gnosis_suicide_transfers AS (
     {% endif %}
 )
 
-SELECT * FROM tokens_gnosis_base_wihout_suicide_transfers
+SELECT * FROM tokens_gnosis_base_without_suicide_transfers
 UNION ALL 
 SELECT * FROM tokens_gnosis_suicide_transfers

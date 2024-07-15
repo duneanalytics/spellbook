@@ -28,7 +28,7 @@ FROM
         blockchain='gnosis',
         transactions = source('gnosis','transactions'),
         wrapped_token_deposit = source('wxdai_gnosis', 'WXDAI_evt_Deposit'),
-        wrapped_token_withdrawal = source('wxdai_gnosis', 'WXDAI_evt_withdrawal'),
+        wrapped_token_withdrawal = source('wxdai_gnosis', 'WXDAI_evt_Withdrawal'),
     )
     }}
 )

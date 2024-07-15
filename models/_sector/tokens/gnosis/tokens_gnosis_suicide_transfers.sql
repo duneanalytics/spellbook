@@ -46,7 +46,7 @@ suicide_balances AS (
             t2.address 
             , - SUM(t1.amount_raw) AS amount_raw
         FROM    
-            {{ ref('tokens_gnosis_base_wihout_suicide_transfers') }} t1
+            {{ ref('tokens_gnosis_base_without_suicide_transfers') }} t1
         INNER JOIN
             suicide t2
             ON 
@@ -59,7 +59,7 @@ suicide_balances AS (
             t2.address 
             , SUM(t1.amount_raw) AS amount_raw
         FROM    
-            {{ ref('tokens_gnosis_base_wihout_suicide_transfers') }} t1
+            {{ ref('tokens_gnosis_base_without_suicide_transfers') }} t1
         INNER JOIN
             suicide t2
             ON 

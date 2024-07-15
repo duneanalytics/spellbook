@@ -31,7 +31,7 @@ sources:
             name: wad
             description: "Raw amount of WXDAI"
             
-      - name: WXDAI_evt_withdrawal
+      - name: WXDAI_evt_Withdrawal
         loaded_at_field: evt_block_time
         description: "WXDAI withdrawals"
         columns:
