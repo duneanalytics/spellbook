@@ -108,8 +108,6 @@
 {% set tusd_reserves = 'TUSD Reserves' %}
 {% set total_marketcap_usd = 'Total Marketcap / USD' %}
 {% set uni_usd = 'UNI / USD' %}
-{% set usdc_usd = 'USDC / USD' %}
-{% set usdc_eth = 'USDC / ETH' %}
 {% set usdd_usd = 'USDD / USD' %}
 {% set usdp_usd = 'USDP / USD' %}
 {% set usdv_usd = 'USDV / USD' %}
@@ -117,7 +115,6 @@
 {% set ust_eth = 'UST / ETH' %}
 {% set ust_usd = 'UST / USD' %}
 {% set veefriends_floor_price = 'VeeFriends Floor Price' %}
-{% set weeth_eth = 'weETH / ETH' %}
 {% set wbtc_btc = 'WBTC / BTC' %}
 {% set wbtc_por = 'WBTC PoR' %}
 {% set wing_usd = 'WING / USD' %}
@@ -240,8 +237,6 @@ FROM (values
   ('{{tusd_reserves}}', 18, 0xBE456fd14720C3aCCc30A2013Bffd782c9Cb75D5, 0xAC099D59755982757537F13c7c4Ae8c8d9F030B9),
   ('{{total_marketcap_usd}}', 8, 0xEC8761a0A73c34329CA5B1D3Dc7eD07F30e836e2, 0x9257D83A0DdA413cA24F66dD32A056Bc2eBAFd2e),
   ('{{uni_usd}}', 8, 0x553303d460EE0afB37EdFf9bE42922D8FF63220e, 0x373BCe97bec13BfA8A5f07Cc578EC2D77f80c589),
-  ('{{usdc_eth}}', 18, 0x986b5E1e1755e3C2440e960477f25201B0a8bbD4, 0xe5BbBdb2Bb953371841318E1Edfbf727447CeF2E),
-  ('{{usdc_usd}}', 8, 0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6, 0x789190466E21a8b78b8027866CBBDc151542A26C),
   ('{{usdd_usd}}', 8, 0x0ed39A19D2a68b722408d84e4d970827f61E6c0A, 0x589a85FC02EB6bB86D1c84c1a75abbB012C661De),
   ('{{usdp_usd}}', 8, 0x09023c0DA49Aaf8fc3fA3ADF34C6A7016D38D5e3, 0xF3d70857B489Ecc6768D0982B773E1Cba9E1f00b),
   ('{{usdv_usd}}', 8, 0x925B831EB4c9fFA7e384254fb2cd508c65FAe3FE, 0xbf35cFdd68de8b07eA8a3C7a34117557F64050D1),
@@ -250,7 +245,6 @@ FROM (values
   ('{{ust_usd}}', 8, 0x8b6d9085f310396C6E4f0012783E9f850eaa8a82, 0x01b87e7fF78022A70394d3C6Dd127D0c709e3beA),
   ('{{ust_usd}}', 8, 0x8b6d9085f310396C6E4f0012783E9f850eaa8a82, 0x5EDd5F803b831b47715aD3e11a90dD244F0cD0a9),
   ('{{veefriends_floor_price}}', 18, 0x35bf6767577091E7f04707c0290b3f889e968307, 0xe0552DC960366F67Da00CB3d9DF441F24B5C2AC1),
-  ('{{weeth_eth}}', 18, 0x5c9C449BbC9a6075A2c061dF312a35fd1E05fF22, 0x4dF36F726d8059d881294166dB52c1D13e976FE7),
   ('{{wbtc_btc}}', 8, 0xfdFD9C85aD200c506Cf9e21F1FD8dd01932FBB23, 0xD7623f1d24b35c392862fB67C9716564A117C9DE),
   ('{{wbtc_por}}', 8, 0xa81FE04086865e63E12dD3776978E49DEEa2ea4e, 0xB622b7D6d9131cF6A1230EBa91E5da58dbea6F59),
   ('{{wing_usd}}', 8, 0x134fE0a225Fb8e6683617C13cEB6B3319fB4fb82, 0xc29d104A418a08407f9f2CDb614c1CDCf82986e0),
