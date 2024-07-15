@@ -5,6 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_month', 'blockchain', 'tx_hash', 'tx_index']
    )
 }}
@@ -61,6 +62,11 @@ with
                 and ethPrice.contract_address = {{ weth_contract_address }}
                 and ethPrice.minute = date_trunc('minute', evt_block_time)
             )
+        where
+            {% if is_incremental() %}
+            {{ incremental_predicate('evt_block_time') }}
+            {% else %}
+            evt_block_time >= timestamp '{{project_start_date}}'
     ),
     dextrades as (
         select distinct
