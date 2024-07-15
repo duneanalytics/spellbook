@@ -67,6 +67,7 @@ with
             {{ incremental_predicate('evt_block_time') }}
             {% else %}
             evt_block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
     ),
     dextrades as (
         select distinct
