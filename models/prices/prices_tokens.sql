@@ -4,16 +4,17 @@
         materialized='table',
         file_format = 'delta',
         tags = ['static'],
-        post_hook = '{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "celo", "base", "zksync", "zora", "bitcoin", "cardano","blast"]\',
+        post_hook = '{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "celo", "base", "zksync", "zora", "bitcoin", "cardano","blast","aptos"]\',
                                     "sector",
                                     "prices",
-                                    \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "rantum", "lgingerich", "hildobby", "cryptokoryo", "0xRob", "hosuke", "Henrystats"]\') }}'
+                                    \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "rantum", "lgingerich", "hildobby", "cryptokoryo", "0xRob", "hosuke", "Henrystats", "chef_seaweed"]\') }}'
         )
 }}
 
 {% set prices_models = [
 ref('prices_native_tokens')
 ,ref('prices_arbitrum_tokens')
+,ref('prices_aptos_tokens')
 ,ref('prices_avalanche_c_tokens')
 ,ref('prices_bitcoin_tokens')
 ,ref('prices_bnb_tokens')

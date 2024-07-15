@@ -3,7 +3,7 @@ version: 2
 models:
   - name: prices_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm, blast
+      blockchain: arbitrum, aptos, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm, blast
       sector: prices
       contributors: aalan3, hildobby, pipistrella, viniabussafi
     config:
@@ -30,7 +30,7 @@ models:
 
   - name: prices_native_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, zksync, zora
+      blockchain: arbitrum, aptos, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, zksync, zora
       sector: prices
       contributors: aalan3, jeff-dude
     config:
