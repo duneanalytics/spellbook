@@ -55,6 +55,7 @@ select
   date_trunc('day', cd.cover_end_time) as cover_end_date,
   cd.product_contract,
   'v1' as syndicate,
+  cast(null as int) as product_id,
   coalesce(p.product_name, 'unknown') as product_name,
   coalesce(p.product_type, 'unknown') as product_type,
   cd.cover_asset,
