@@ -80,9 +80,9 @@ with
             tx_from as user,
             trades.tx_hash,
             evt_index as tx_index
-        from deployments
+        from {{ source('dex', 'trades') }} as trades
         join
-            {{ source('dex', 'trades') }} as trades
+            deployments
             on (
                 trades.blockchain = deployments.blockchain
                 and trades.block_month >= deployments.block_month
