@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'tx_hash', 'tx_index']
+    unique_key = ['block_month', 'blockchain', 'tx_hash', 'tx_index']
    )
 }}
 
