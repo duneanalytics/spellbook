@@ -87,5 +87,6 @@ FROM (VALUES
     , (0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33, 'GHO', 18)    
     , (0xa7997f0ec9fa54e89659229fb26537b6a725b798, 'PAL', 18)
     , (0x064F8B858C2A603e1b106a2039f5446D32dc81c1, 'OLAS', 18)    
-    , (0xc608dfb90a430df79a8a1edbc8be7f1a0eb4e763, 'fETH', 18)    
+    , (0xc608dfb90a430df79a8a1edbc8be7f1a0eb4e763, 'fETH', 18)
+    , (0x248a431116c6f6fcd5fe1097d16d0597e24100f5, 's_aArbUSDC', 6)
 ) AS temp_table (contract_address, symbol, decimals)

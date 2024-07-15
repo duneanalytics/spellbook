@@ -89,3 +89,10 @@ sources:
       - name: LendingPool_evt_Borrow
       - name: LendingPool_evt_Repay
       - name: LendingPool_evt_LiquidationCall
+
+  - name: morpho_blue_ethereum
+    tables:
+      - name: MorphoBlue_evt_CreateMarket
+      - name: MorphoBlue_evt_Borrow
+      - name: MorphoBlue_evt_Repay
+      - name: MorphoBlue_evt_Liquidate
