@@ -548,18 +548,20 @@ models:
     meta:
       blockchain: arbitrum
       sector: dex
-      project: swaap_v2
+      project: swaap
       contributors: LLDAO
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'swaap_v2']
-    description: "swaap_v2 Arbitrum  base trades"
+      tags: [ 'arbitrum', 'dex', 'trades', 'swaap', 'v2']
+    description: "swaap v2 arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swaap_v2_arbitrum_base_trades_seed') 
+          seed_file: ref('swaap_arbitrum_base_trades_seed') 
+          filter:
+            version: 2
   
   - name: apeswap_arbitrum_base_trades
     meta:
@@ -735,4 +737,3 @@ models:
           seed_file: ref('dackieswap_v2_arbitrum_base_trades_seed')
           filter:
             version: 2
-

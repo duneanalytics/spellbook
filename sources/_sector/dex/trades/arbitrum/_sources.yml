@@ -146,5 +146,3 @@ sources:
     tables:
       - name: DackieFactory_evt_PairCreated
       - name: DackiePair_evt_Swap
-
-

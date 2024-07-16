@@ -9,7 +9,8 @@
 {%
   set models = [
     ref('aave_v2_polygon_base_flashloans'),
-    ref('aave_v3_polygon_base_flashloans')
+    ref('aave_v3_polygon_base_flashloans'),
+    ref('balancer_v2_polygon_base_flashloans')
   ]
 %}
 
