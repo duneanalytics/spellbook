@@ -139,7 +139,7 @@ models:
         description: "block date"
       - *block_number
       - &cover_id
-        name: block_date
+        name: cover_id
         description: "cover id"
         tests:
           - not_null
