@@ -205,5 +205,6 @@ FROM
     ('usx-dforce-usd', 'arbitrum', 'USX', 0x641441c631e2f909700d2f41fd87f0aa6a6b4edb, 18),
     ('olas-autonolas', 'arbitrum', 'OLAS', 0x064F8B858C2A603e1b106a2039f5446D32dc81c1, 18),
     ('sx-sx-network', 'arbitrum', 'SX', 0x8cf7e3aa6faf6ae180e5ec3f0fb95081c2086ebe, 18),
-    ('zro-layerzero', 'arbitrum', 'ZRO', 0x6985884C4392D348587B19cb9eAAf157F13271cd, 18)
+    ('zro-layerzero', 'arbitrum', 'ZRO', 0x6985884C4392D348587B19cb9eAAf157F13271cd, 18),
+    ('opul-opuloustoken-via-chainportio', 'arbitrum', 'OPUL', 0x0c5fa0E07949F941A6c2C29a008252db1527d6EE, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
