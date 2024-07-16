@@ -104,3 +104,87 @@ models:
         description: "The USD price used to calculate the amount_usd"
       - name: amount_usd
         description: "The USD amount of the transfer"
+
+  - name: tokens_linea_balances
+    meta:
+      blockchain: linea
+      sector: tokens
+      contributors: couralex
+    config:
+      tags: ['tokens','balances', 'linea']
+    description: "Token balances enriched"
+    columns:
+      - name: block_number
+      - name: block_time
+      - name: address
+      - name: token_address
+      - name: token_standard
+      - name: balance_raw
+      - name: balance
+      - name: token_symbol
+      - name: token_id
+      - name: collection_name
+
+  - name: tokens_linea_balances_daily_agg_base
+    meta:
+      blockchain: linea
+      sector: tokens
+      contributors: couralex
+    config:
+      tags: ['tokens','balances', 'linea']
+    description: "Token balances daily base"
+    columns:
+          - name: day
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_linea_balances_daily_agg
+    meta:
+      blockchain: linea
+      sector: tokens
+      contributors: couralex
+    config:
+      tags: ['tokens','balances', 'linea']
+    description: "Token balances daily enriched"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name
+
+  - name: tokens_linea_balances_daily
+    meta:
+      blockchain: linea
+      sector: tokens
+      contributors: couralex
+    config:
+      tags: [ 'tokens','balances', 'linea' ]
+    description: "Token balances daily enriched"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name

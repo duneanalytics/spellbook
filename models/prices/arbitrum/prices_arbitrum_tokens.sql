@@ -204,5 +204,7 @@ FROM
     ('dola-dola','arbitrum','DOLA',0x6a7661795c374c0bfc635934efaddff3a7ee23b6, 18),
     ('usx-dforce-usd', 'arbitrum', 'USX', 0x641441c631e2f909700d2f41fd87f0aa6a6b4edb, 18),
     ('olas-autonolas', 'arbitrum', 'OLAS', 0x064F8B858C2A603e1b106a2039f5446D32dc81c1, 18),
+    ('sx-sx-network', 'arbitrum', 'SX', 0x8cf7e3aa6faf6ae180e5ec3f0fb95081c2086ebe, 18),
+    ('zro-layerzero', 'arbitrum', 'ZRO', 0x6985884C4392D348587B19cb9eAAf157F13271cd, 18),
     ('pickle-pickle-finance', 'arbitrum', 'PICKLE', 0x965772e0e9c84b6f359c8597c891108dcf1c5b1a, 18)    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
