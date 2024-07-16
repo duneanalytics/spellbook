@@ -201,7 +201,7 @@ FROM
   null,
   'token2022',
   '4D1xonRin6LKLnJ6YoJ5qiSw7wSE57XMee7DnmS1CWP9hSzZXzWDCyDnRLE2Rf83TxGXMMdBYV35ZVG3kVBTnXnz'
-)
+  )
 ) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at, metadata_program, token_version, init_tx)
 
 UNION ALL
