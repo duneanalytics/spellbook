@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: paraswap_ethereum_airdrop_claims
+  - name: blur_ethereum_airdrop_1_claims
     meta:
       blockchain: ethereum
       sector: airdrop
-      project: paraswap
+      project: blur
       contributors: hildobby
     config:
-      tags: ['table', 'airdrop', 'ethereum', 'claim', 'paraswap']
-    description: "List of claim transactions for the $PSP airdrop"
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'blur']
+    description: "List of claim transactions for the $BLUR airdrop 1"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -23,9 +23,6 @@ models:
       - &block_time
         name: block_time
         description: "Block time of transaction"
-      - &block_month
-        name: block_month
-        description: "Block month of transaction"
       - &block_number
         name: block_number
         description: "Block number of transaction"
