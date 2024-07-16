@@ -2,7 +2,11 @@
   config(
     schema = 'nexusmutual_ethereum',
     alias = 'covers_v1',
-    materialized = 'view',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "nexusmutual",
@@ -42,6 +46,9 @@ cover_details as (
       on cde.evt_tx_hash = ct.call_tx_hash and cde.evt_block_number = ct.call_block_number and ct.call_success
     left join {{ source('nexusmutual_ethereum', 'QuotationData_call_addCover') }} ac
       on cde.evt_tx_hash = ac.call_tx_hash and cde.evt_block_number = ac.call_block_number and ac.call_success
+  {% if is_incremental() %}
+  where {{ incremental_predicate('cde.evt_block_time') }}
+  {% endif %}
 )
 
 select
