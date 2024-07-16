@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_date'],
+    unique_key = ['cover_id', 'staking_pool'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                 "project",
