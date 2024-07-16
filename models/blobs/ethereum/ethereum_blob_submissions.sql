@@ -38,8 +38,8 @@ SELECT
     , t.type as tx_type
     , t.blob_versioned_hashes
     , sequence(
-        (sum(CARDINALITY(t.blob_versioned_hashes)) over (partition by block_number order by index asc)) - CARDINALITY(t.blob_versioned_hashes)
-        ,(sum(CARDINALITY(t.blob_versioned_hashes)) over (partition by block_number order by index asc)) - 1
+        (sum(CARDINALITY(t.blob_versioned_hashes)) over (partition by t.block_number order by index asc)) - CARDINALITY(t.blob_versioned_hashes)
+        ,(sum(CARDINALITY(t.blob_versioned_hashes)) over (partition by t.block_number order by index asc)) - 1
         ,1
     ) as blob_indexes
     , CARDINALITY(t.blob_versioned_hashes) AS blob_count
