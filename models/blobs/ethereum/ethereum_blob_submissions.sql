@@ -66,4 +66,5 @@ LEFT JOIN  {{ source("resident_wizards", "dataset_blob_base_fees_lookup", databa
 LEFT JOIN {{ref('blobs_submitters')}} l
     ON t."from" = l.address
 LEFT JOIN {{ref('blobs_based_submitters')}} ls
-    ON t.hash = ls.tx_hash
+    ON t.block_number = ls.block_number
+    AND t.hash = ls.tx_hash
