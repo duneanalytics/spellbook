@@ -109,6 +109,7 @@ SELECT
   block_time,
   block_date,
   block_month,
+  'Shuriken' as bot,
   blockchain,
   amount_usd,
   type,

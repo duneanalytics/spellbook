@@ -24,7 +24,8 @@
     ref('lending_fantom_base_flashloans'),
     ref('lending_gnosis_base_flashloans'),
     ref('lending_zksync_base_flashloans'),
-    ref('lending_scroll_base_flashloans')
+    ref('lending_scroll_base_flashloans'),
+    ref('lending_zkevm_base_flashloans')
   ]
 %}
 

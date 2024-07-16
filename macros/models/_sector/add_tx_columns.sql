@@ -12,7 +12,9 @@ select
     {% endfor %}
 from {{model_cte}} model
 inner join {{source(blockchain, 'transactions')}} tx
-    on model.block_number = tx.block_number
+    on
+    model.block_date = tx.block_date
+    and model.block_number = tx.block_number
     and model.tx_hash = tx.hash
     {% if is_incremental() %}
     and {{incremental_predicate('tx.block_time')}}

@@ -7,7 +7,10 @@
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    )
+    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum", "fantom", "gnosis", "linea", "optimism", "polygon", "scroll", "zkevm", "zksync", "zora"]\',
+                                    "sector",
+                                    "dex",
+                                    \'["hosuke", "0xrob", "jeff-dude", "tomfutago"]\') }}')
 }}
 
 -- keep existing dbt lineages for the following projects, as the team built themselves and use the spells throughout the entire lineage
@@ -81,7 +84,7 @@ WITH curve AS (
     'curve'
     , 'as_is_dexs'
     , 'dexs'
-    ] 
+    ]
 %}
 
 {% for cte in cte_to_union %}

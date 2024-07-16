@@ -11,7 +11,7 @@
     post_hook = '{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "optimism", "polygon", "scroll", "zksync"]\',
                                 "sector",
                                 "lending",
-                                \'["tomfutago"]\') }}'
+                                \'["tomfutago", "hildobby"]\') }}'
   )
 }}
 

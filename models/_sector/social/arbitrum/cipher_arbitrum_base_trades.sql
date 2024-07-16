@@ -10,10 +10,11 @@
 
 {% set cipher_start_date = '2023-09-20' %}
 
-SELECT 
+SELECT
     'arbitrum' AS blockchain
     , evt_block_time AS block_time
     , evt_block_number AS block_number
+    , cast(date_trunc('day', evt_block_time) as date) as block_date
     , 'cipher' AS project
     , trader
     , subject
