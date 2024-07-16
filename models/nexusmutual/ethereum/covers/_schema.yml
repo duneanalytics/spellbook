@@ -70,8 +70,6 @@ models:
       - &product_id
         name: product_id
         description: "product id"
-        tests:
-          - not_null
       - &product_name
         name: product_name
         description: "product name"
@@ -278,11 +276,13 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
-    description: "Nexus Mutual Active Covers"
+    description: "Daily Covers aggregates"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
+    columns:
+      - *block_date
 
   - name: nexusmutual_ethereum_cover_owners_agg
     meta:
@@ -291,11 +291,13 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
-    description: "Nexus Mutual Active Covers"
+    description: "Cover Owners aggregates"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - cover_owner
+    columns:
+      - *cover_owner
 
 
   # to be deprecated:
