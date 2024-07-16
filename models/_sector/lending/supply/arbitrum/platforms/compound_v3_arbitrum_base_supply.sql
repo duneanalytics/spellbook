@@ -1,6 +1,5 @@
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'compound_v3_arbitrum',
     alias = 'base_supply',
     materialized = 'incremental',
@@ -13,8 +12,8 @@
 
 {%
   set config_sources = [
-    {'contract': 'Comet'},
-    {'contract': 'cUSDCv3Native'},
+    {'contract': 'cUSDCev3'},
+    {'contract': 'cUSDCv3'},
   ]
 %}
 
