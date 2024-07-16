@@ -123,6 +123,7 @@ SELECT
   block_time,
   block_date,
   block_month,
+  'Sol Trading Bot' as bot,
   blockchain,
   amount_usd,
   type,

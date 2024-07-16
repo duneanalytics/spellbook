@@ -19,6 +19,7 @@ WITH base_union AS (
             blockchain
             , block_time
             , block_number
+            , block_date
             , project
             , trader
             , subject
