@@ -164,7 +164,7 @@ SELECT nd.address
 , COALESCE(t.first_received_block_number, nd.first_received_block_number) AS first_received_block_number
 , COALESCE(nd.last_transfer_block_time, t.last_transfer_block_time) AS last_transfer_block_time
 , COALESCE(nd.last_transfer_block_number, t.last_transfer_block_number) AS last_transfer_block_number
-, GREATEST(COALESCE(nd.last_transfer_block_number, t.last_transfer_block_number), COALESCE(nd.last_tx_block_time, t.last_tx_block_time)) AS last_updated
+, GREATEST(COALESCE(nd.last_transfer_block_time, t.last_transfer_block_time), COALESCE(nd.last_tx_block_time, t.last_tx_block_time)) AS last_updated
 FROM new_data nd
 LEFT JOIN {{this}} t ON t.address=nd.address
 
