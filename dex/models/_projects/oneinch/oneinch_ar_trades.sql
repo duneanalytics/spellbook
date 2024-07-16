@@ -18,7 +18,10 @@ select
     , block_time
     , coalesce(dst_token_symbol, '') as token_bought_symbol
     , coalesce(src_token_symbol, '') as token_sold_symbol
-    , array_join(array_sort(array[coalesce(src_token_symbol, ''), coalesce(dst_token_symbol, '')]), '-') as token_pair
+    , case
+        when lower(src_token_symbol) > lower(dst_token_symbol) then concat(dst_token_symbol, '-', src_token_symbol)
+        else concat(src_token_symbol, '-', dst_token_symbol)
+    end as token_pair
     , cast(dst_token_amount as double) / pow(10, dst_token_decimals) as token_bought_amount
     , cast(src_token_amount as double) / pow(10, src_token_decimals) as token_sold_amount
     , dst_token_amount as token_bought_amount_raw

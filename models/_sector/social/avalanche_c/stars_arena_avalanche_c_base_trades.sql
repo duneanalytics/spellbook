@@ -10,10 +10,11 @@
 
 {% set stars_arena_start_date = '2023-09-20' %}
 
-SELECT 
+SELECT
     'avalanche_c' AS blockchain
     , txs.block_time
     , txs.block_number
+    , cast(date_trunc('day', txs.block_time) as date) as block_date
     , 'stars_arena' AS project
     , bytearray_ltrim(bytearray_substring(logs.data, 1, 32)) AS trader
     , bytearray_ltrim(bytearray_substring(logs.data, 1 + 32, 32)) AS subject

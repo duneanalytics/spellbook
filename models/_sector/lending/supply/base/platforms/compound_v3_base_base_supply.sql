@@ -1,5 +1,6 @@
 {{
   config(
+    tags = ['prod_exclude'],
     schema = 'compound_v3_base',
     alias = 'base_supply',
     materialized = 'incremental',
