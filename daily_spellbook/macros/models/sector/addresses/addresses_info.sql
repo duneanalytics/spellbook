@@ -74,11 +74,11 @@ LEFT JOIN addresses_events_ethereum.first_funded_by USING (address)
 
 WITH executed_txs AS (
     SELECT txs."from" AS address
-    , COUNT(txs.*) AS executed_tx_count
+    , COUNT(txs.*)+t.executed_tx_count AS executed_tx_count
     , COALESCE(MAX(txs.nonce), 0) AS max_nonce
-    , MIN(txs.block_time) AS first_tx_block_time
+    , COALESCE(t.first_tx_block_time, MIN(txs.block_time)) AS first_tx_block_time
     , MAX(txs.block_time) AS last_tx_block_time
-    , MIN(txs.block_number) AS first_tx_block_number
+    , COALESCE(t.first_tx_block_number, MIN(txs.block_number)) AS first_tx_block_number
     , MAX(txs.block_number) AS last_tx_block_number
     FROM {{transactions}} txs
     LEFT JOIN {{this}} t ON txs."from"=t.address
@@ -89,9 +89,9 @@ WITH executed_txs AS (
 
 , fungible_received AS (
     SELECT tr.to AS address
-    , MIN(tr.block_time) AS first_received_block_time
+    , COALESCE(t.first_received_block_time, MIN(tr.block_time)) AS first_received_block_time
     , MAX(tr.block_time) AS last_received_block_time
-    , MIN(tr.block_number) AS first_received_block_number
+    , COALESCE(t.first_received_block_number, MIN(tr.block_number)) AS first_received_block_number
     , MAX(tr.block_number) AS last_received_block_number
     FROM {{token_transfers}} tr
     LEFT JOIN {{this}} t ON tr."from"=t.address
@@ -102,10 +102,10 @@ WITH executed_txs AS (
 
 , fungible_sent AS (
     SELECT tr."from" AS address
-    , COUNT(DISTINCT tr.tx_hash) AS sent_tx_count
-    , MIN(tr.block_time) AS first_sent_block_time
+    , COUNT(DISTINCT tr.tx_hash) + t.sent_tx_count AS sent_tx_count
+    , COALESCE(t.first_sent_block_time, MIN(tr.block_time)) AS first_sent_block_time
     , MAX(tr.block_time) AS last_sent_block_time
-    , MIN(tr.block_number) AS first_sent_block_number
+    , COALESCE(t.first_sent_block_number, MIN(tr.block_number)) AS first_sent_block_number
     , MAX(tr.block_number) AS last_sent_block_number
     FROM {{token_transfers}} tr
     LEFT JOIN {{this}} t ON tr."from"=t.address
@@ -150,8 +150,8 @@ WITH executed_txs AS (
     )
 
 SELECT nd.address
-, nd.executed_tx_count+t.executed_tx_count AS executed_tx_count
-, nd.max_nonce
+, COALESCE(nd.executed_tx_count, t.executed_tx_count) AS executed_tx_count
+, COALESCE(nd.max_nonce, t.max_nonce) AS max_nonce
 , COALESCE(COALESCE(nd.is_smart_contract, t.is_smart_contract), false) AS is_smart_contract
 , COALESCE(nd.namespace, t.namespace) AS namespace
 , COALESCE(nd.name, t.name) AS name
