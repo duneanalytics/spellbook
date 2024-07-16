@@ -1,6 +1,5 @@
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'compound_v3_ethereum',
     alias = 'base_supply',
     materialized = 'incremental',
