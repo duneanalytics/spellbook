@@ -34,3 +34,4 @@ sources:
       - name: IndividualClaims_evt_ClaimSubmitted
       - name: IndividualClaims_call_submitClaimFor
       - name: IndividualClaims_call_submitClaim
+      - name: IndividualClaims_call_redeemClaimPayout

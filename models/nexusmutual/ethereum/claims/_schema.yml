@@ -98,3 +98,32 @@ models:
         name: ipfs_metadata
         description: "ipfs metadata"
       - *tx_hash
+
+  - name: nexusmutual_ethereum_claims_paid
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "claims"]
+    description: "Nexus Mutual Claims v2"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - version
+            - claim_id
+    columns:
+      - name: version
+      - *cover_id
+      - *claim_id
+      - name: claim_date
+      - name: claim_payout_date
+      - name: product_type
+      - name: product_name
+      - name: eth_eth_claim_amount
+      - name: eth_usd_claim_amount
+      - name: dai_eth_claim_amount
+      - name: dai_usd_claim_amount
+      - name: usdc_eth_claim_amount
+      - name: usdc_usd_claim_amount
+      
