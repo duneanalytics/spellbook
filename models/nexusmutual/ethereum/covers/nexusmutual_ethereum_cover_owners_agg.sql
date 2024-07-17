@@ -117,6 +117,8 @@ cover_sales_per_owner_aggs as (
     cover_owner,
     count(distinct cover_id) as cover_sold,
     count(distinct coalesce(product_id, -1)) as product_sold,
+    min(cover_start_date) as first_cover_buy,
+    max(cover_start_date) as last_cover_buy,
     --== cover ==
     sum(eth_eth_cover) as eth_eth_cover,
     sum(dai_eth_cover) as dai_eth_cover,
@@ -148,6 +150,8 @@ select
   cover_sold,
   product_sold,
   coalesce(1.00 * product_sold / nullif(cover_sold, 0), 0) as mean_product_sold,
+  first_cover_buy,
+  last_cover_buy,
   --== cover ==
   eth_eth_cover,
   dai_eth_cover,
