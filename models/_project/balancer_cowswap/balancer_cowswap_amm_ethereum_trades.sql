@@ -21,8 +21,8 @@
     , '1' AS version
     , CAST(date_trunc('month', settlement.evt_block_time) AS DATE) AS block_month
     , CAST(date_trunc('day', settlement.evt_block_time) AS DATE) AS block_date
-    , block_time
-    , settlement.evt_block_time block_number
+    , settlement.evt_block_time AS block_time
+    , settlement.evt_block_number block_number
     , tb.symbol AS token_bought_symbol
     , tb.symbol AS token_sold_symbol
     , CONCAT(ts.symbol, '-', tb.symbol) AS token_pair
