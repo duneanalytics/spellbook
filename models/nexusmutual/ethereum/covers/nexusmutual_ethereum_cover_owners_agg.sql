@@ -83,6 +83,8 @@ cover_sales_per_owner as (
   select
     p.block_date,
     c_start.cover_id,
+    c_start.cover_start_date,
+    c_start.cover_end_date,
     c_start.staking_pool,
     c_start.product_id,
     c_start.product_type,
@@ -150,8 +152,6 @@ select
   cover_sold,
   product_sold,
   coalesce(1.00 * product_sold / nullif(cover_sold, 0), 0) as mean_product_sold,
-  first_cover_buy,
-  last_cover_buy,
   --== cover ==
   eth_eth_cover,
   dai_eth_cover,
