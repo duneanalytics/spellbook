@@ -47,23 +47,23 @@
         ON settlement.owner = pool.bPool
              LEFT OUTER JOIN {{ source('prices', 'usd') }} AS ps
                              ON sellToken = ps.contract_address
-                                 AND ps.minute = date_trunc('minute', evt_block_time)
+                                 AND ps.minute = date_trunc('minute', settlement.evt_block_time)
                                  AND ps.blockchain = 'ethereum'
                                  {% if is_incremental() %}
                                  AND {{ incremental_predicate('ps.minute') }}
                                  {% endif %}
              LEFT OUTER JOIN {{ source('prices', 'usd') }} AS pb
                              ON pb.contract_address = buyToken
-                                 AND pb.minute = date_trunc('minute', evt_block_time)
+                                 AND pb.minute = date_trunc('minute', settlement.evt_block_time)
                                  AND pb.blockchain = 'ethereum'
                                  {% if is_incremental() %}
                                  AND {{ incremental_predicate('pb.minute') }}
                                  {% endif %}
              LEFT OUTER JOIN {{ source('tokens', 'erc20') }} AS ts
-                             ON sellToken = ps.contract_address
+                             ON settlement.sellToken = ps.contract_address
                                  AND ts.blockchain = 'ethereum'
              LEFT OUTER JOIN {{ source('tokens', 'erc20') }} AS tb
-                             ON tb.contract_address = buyToken
+                             ON settlement.buyToken = tb.contract_address
                                  AND pb.blockchain = 'ethereum'                             
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('settlement.evt_block_time') }}
