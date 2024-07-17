@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['recipient', 'tx_hash', 'evt_index'],
+        unique_key = ['tx_hash', 'evt_index'],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "balancer_cowswap_amm",
@@ -35,12 +35,12 @@
      AS amount_usd
     ,settlement.buyToken AS token_bought_address
     ,settlement.sellToken AS token_sold_address
-    ,NULL AS taker
-    ,NULL AS maker
+    ,CAST(NULL AS VARBINARY) AS taker
+    ,CAST(NULL AS VARBINARY) AS maker
     , pool.bPool AS project_contract_address
     , settlement.evt_tx_hash AS tx_hash
-    , /*settlement.evt_tx_from*/ NULL AS tx_from
-    , /*settlement.evt_tx_to*/ NULL AS tx_to
+    , /*settlement.evt_tx_from*/ CAST(NULL AS VARBINARY) AS tx_from
+    , /*settlement.evt_tx_to*/ CAST(NULL AS VARBINARY) AS tx_to
     , settlement.evt_index AS evt_index
     FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} settlement
     INNER JOIN {{ source('b_cow_amm_ethereum', 'BCoWFactory_evt_LOG_NEW_POOL') }} pool
