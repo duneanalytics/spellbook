@@ -1,5 +1,5 @@
 {{ config(
-	
+	schema = 'synthetix',
 	alias = 'perpetual_trades',
     post_hook='{{ expose_spells(\'["optimism", "base"]\',
                                 "project",
