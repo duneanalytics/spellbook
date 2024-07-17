@@ -30,13 +30,13 @@ sources:
 
   - name: compound_v3_ethereum
     tables:
-      - name: Comet_evt_Supply
+      - name: cUSDCv3_evt_Supply
       - name: cWETHv3_evt_Supply
-      - name: Comet_evt_Withdraw
+      - name: cUSDCv3_evt_Withdraw
       - name: cWETHv3_evt_Withdraw
-      - name: Comet_evt_Transfer
+      - name: cUSDCv3_evt_Transfer
       - name: cWETHv3_evt_Transfer
-      - name: Comet_evt_AbsorbDebt
+      - name: cUSDCv3_evt_AbsorbDebt
       - name: cWETHv3_evt_AbsorbDebt
 
   - name: radiant_capital_ethereum
