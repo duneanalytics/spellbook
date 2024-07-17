@@ -39,8 +39,8 @@
     ,NULL AS maker
     , pool.bPool AS project_contract_address
     , settlement.evt_tx_hash AS tx_hash
-    , settlement.evt_tx_from AS tx_from
-    , settlement.evt_tx_to AS tx_to
+    , /*settlement.evt_tx_from*/ NULL AS tx_from
+    , /*settlement.evt_tx_to*/ NULL AS tx_to
     , settlement.evt_index AS evt_index
     FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} settlement
     INNER JOIN {{ source('b_cow_amm_ethereum', 'BCoWFactory_evt_LOG_NEW_POOL') }} pool
