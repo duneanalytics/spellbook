@@ -48,7 +48,7 @@ quest_claims_enriched as (
         claim_tx_hash,
         c.block_time,
         case 
-            when block_time >= timestamp {{ boost_fee_removal_timestamp }} then 0.0
+            when block_time >= timestamp '{{ boost_fee_removal_timestamp }}' then 0.0
             else coalesce(claim_fee_eth, 0.000075) end
         as claim_fee_eth,
         coalesce(b.action_type, c.action_type) action_type,
@@ -123,7 +123,7 @@ select
     action_tx_hash,
     case 
         when creator_address = 0xe627b03b7fe363e840dab2debf8b962c672e89fb 
-        and block_time <= timestamp {{ drakula_network_bug_fix_timestamp }}
+        and block_time <= timestamp '{{ drakula_network_bug_fix_timestamp }}'
         then 'base' -- fix Drakula wrong action network bug action_network
     else action_network end
     as action_network,
