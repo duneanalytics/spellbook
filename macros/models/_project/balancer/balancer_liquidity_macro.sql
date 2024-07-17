@@ -31,6 +31,9 @@ WITH pool_labels AS (
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ source('dex', 'prices') }}
+        WHERE 
+        ('{{blockchain}}' != 'fantom' OR 
+        ('{{blockchain}}' = 'fantom' AND contract_address NOT IN (0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757))) --broken price feeds
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
