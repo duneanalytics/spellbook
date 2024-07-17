@@ -109,6 +109,8 @@ known_solver_metadata (address, environment, name) as (
                  (0x8F70A86c1309d8B1F5BefC58948e7386Fd495875, 'prod', 'Tsolver'),
                  (0xbAda55BaBEE5D2B7F3B551f9da846838760E068C, 'prod', 'Project_Blanc'),
                  (0xA883710b6DBf008a1CC25722C54583E35884a209, 'prod', 'Horadrim'),
+                 (0xc10D4DfDA62227d9EC23Ab0010E2942e48338A60, 'prod', 'Apollo'),
+                 (0xa08B00576aeE8d8dd960E08298FAc9fD7C756e36, 'barn', 'Apollo'),
                  (0x2c3A1c33d96C9DcA1c34EB234B1e65F79dEaE60e, 'barn', 'Horadrim'),
                  (0xa5559C2E1302c5Ce82582A6b1E4Aec562C2FbCf4, 'barn', 'Project_Blanc'),
                  (0xa432cea087311d7cd07925d70f799eE94E7893a4, 'barn', 'Tsolver'),
