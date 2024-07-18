@@ -4,13 +4,12 @@ models:
   - name: dex_trades
     meta:
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea
-      test_random_tag: test_value
       docs_slug: /curated/DEX/dex-trades
       sector: dex
       short_description: The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs). This table contains a detailed breakdown of trade execution containing one or many trades per transaction. 
       contributors: 0xRob, hosuke, jeff-dude, tomfutago
     config:
-      tags: [ 'dex', 'trades', 'beta' ]
+      tags: [ 'dex', 'trades']
     description: '{{ doc("dex_trades_doc") }}'
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -63,13 +62,13 @@ models:
         description: "Amount of the token sold in the display unit"
       - &token_bought_amount_raw
         name: token_bought_amount_raw
-        description: "Amount of the token bought at time of execution in the base unit"
+        description: "Amount of the token bought in the base unit"
       - &token_sold_amount_raw
         name: token_sold_amount_raw
-        description: "Amount of the token sold at time of execution in the base unit"
+        description: "Amount of the token sold in the base unit"
       - &amount_usd
         name: amount_usd
-        description: "USD value of the trade at time of execution"
+        description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
         tests:
           - dbt_utils.accepted_range:
               max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
