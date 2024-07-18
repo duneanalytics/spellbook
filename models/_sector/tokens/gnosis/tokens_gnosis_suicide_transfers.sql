@@ -37,7 +37,7 @@ suicide_events AS (
     SELECT
         *
         ,ROW_NUMBER() OVER (PARTITION BY address ORDER BY block_time) AS event_sequence
-        ,LEAD(block_time) OVER (PARTITION BY address ORDER BY block_time) AS next_block_time
+        ,LAG(block_time) OVER (PARTITION BY address ORDER BY block_time) AS previous_block_time
     FROM
         suicide
 ),
@@ -61,9 +61,9 @@ tokens_gnosis_base_without_suicide_transfers AS (
     WHERE  
         t1.token_standard = 'native'
         AND 
-        t1.block_time >= t2.block_time
+        (t1.block_time >= t2.previous_block_time OR t2.previous_block_time IS NULL)
         AND 
-        (t1.block_time < t2.next_block_time OR t2.next_block_time IS NULL)
+        t1.block_time < t2.block_time
 ),
 
 suicide_balances AS (
