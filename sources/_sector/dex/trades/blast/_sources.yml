@@ -22,3 +22,4 @@ sources:
       - name: XYKPoolFactory_V2_evt_PoolCreated
       - name: XYKPool_evt_Swap
       - name: Vault_Router_evt_Swap
+      - name: StableSwapPoolFactory_V2_evt_PoolCreated

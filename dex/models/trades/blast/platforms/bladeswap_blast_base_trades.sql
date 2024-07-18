@@ -10,32 +10,32 @@
     )
 }}
 
-WITH pools AS (
+WITH source_expanded AS (
     SELECT
-        bytearray_substring(t1, 13, 20) as token0,
-        bytearray_substring(t2, 13, 20) as token1,
-        pool
+        delta[1] as amount0,
+        delta[2] as amount1,
+        bytearray_substring (tokenRef[1], 13, 20) as token0,
+        bytearray_substring (tokenRef[2], 13, 20) as token1,
+        *
     FROM
-        {{ source('bladeswap_blast', 'XYKPoolFactory_V2_evt_PoolCreated') }}
+        {{ source('bladeswap_blast', 'Vault_Router_evt_Swap') }}
 )
 , dexs AS (
     SELECT
         t.evt_block_number AS block_number
         , t.evt_block_time AS block_time
-        , t.to AS taker
+        , t.user AS taker
         , t.contract_address AS maker
-        , CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
-        , CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
-        , CASE WHEN amount0Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_bought_address
-        , CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
+        , CASE WHEN amount0 < INT256 '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+        , CASE WHEN amount0 < INT256 '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
+        , CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
+        , CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         , t.contract_address AS project_contract_address
+        , t.pool AS pool
         , t.evt_tx_hash AS tx_hash
-        , t.evt_index AS evt_index
+        , t.evt_index
     FROM
-        {{ source('bladeswap_blast', 'Vault_Router_evt_Swap') }} t
-    INNER JOIN
-        pools f
-        ON f.pool = t.pool
+        source_expanded t
 
 )
 
