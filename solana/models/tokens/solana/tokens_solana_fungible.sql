@@ -30,8 +30,9 @@ with
             UNION ALL
             SELECT call_data, account_mint, call_tx_id, call_block_time, 'token2022' as token_version FROM {{ source('spl_token_2022_solana', 'spl_token_2022_call_initializeMint2') }}
         )
+        WHERE account_mint != '2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo' --pyusd do manually
         {% if is_incremental() %}
-        where {{ incremental_predicate('call_block_time') }}
+        AND {{ incremental_predicate('call_block_time') }}
         {% endif %}
     )
 
@@ -179,17 +180,28 @@ SELECT
 FROM
 (
   VALUES
-(
-  '9pan9bMn5HatX4EJdBwg9VgCa7Uz5HL8N1m5D3NdXejP',
-  9,
-  'wrapped SOL',
-  'SOL',
-  null,
-  '2023-08-02 00:00:00',
+  (
+    '9pan9bMn5HatX4EJdBwg9VgCa7Uz5HL8N1m5D3NdXejP',
+    9,
+    'wrapped SOL',
+    'SOL',
+    null,
+    '2023-08-02 00:00:00',
+    null,
+    'token2022',
+    '2L1o7sDMCMJ6PYqfNrnY6ozJC1DEx61pRYiLdfCCggxw81naQXsmHKDLn6EhJXmDmDSQ2eCKjUMjZAQuUsyNnYUv'
+  )
+  , (
+  '2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo',
+  6,
+  'Paypal USD',
+  'PyUSD',
+  'https://www.paypal.com/us/digital-wallet/manage-money/crypto/pyusd',
+  '2024-04-22 19:58:01',
   null,
   'token2022',
-  '2L1o7sDMCMJ6PYqfNrnY6ozJC1DEx61pRYiLdfCCggxw81naQXsmHKDLn6EhJXmDmDSQ2eCKjUMjZAQuUsyNnYUv'
-)
+  '4D1xonRin6LKLnJ6YoJ5qiSw7wSE57XMee7DnmS1CWP9hSzZXzWDCyDnRLE2Rf83TxGXMMdBYV35ZVG3kVBTnXnz'
+  )
 ) AS temp_table (token_mint_address, decimals, name, symbol, token_uri, created_at, metadata_program, token_version, init_tx)
 
 UNION ALL

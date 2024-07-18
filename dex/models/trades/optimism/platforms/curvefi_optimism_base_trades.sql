@@ -151,7 +151,6 @@ SELECT
         {% if is_incremental() %}
         AND {{ incremental_predicate('t.evt_block_time') }}
         {% endif %}
-
     ) cp
     INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
         ON cp.project_contract_address = ta.pool

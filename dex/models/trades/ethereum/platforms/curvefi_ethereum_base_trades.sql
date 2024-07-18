@@ -31,13 +31,21 @@ WITH dexs AS
         , cast(NULL as double) AS amount_usd
         , case
             when l.topic0 = 0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140
+                    and cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1 <= CARDINALITY(p.coins)
                 then p.coins[cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1] 
-                else p.undercoins[cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1]
+            when l.topic0 != 0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140
+                    and cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1 <= CARDINALITY(p.undercoins)    
+                then p.undercoins[cast(bytearray_to_uint256(bytearray_substring(l.data, 65, 32)) as int) + 1]
+                else NULL
             end as token_bought_address
         , case
             when l.topic0 = 0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140
+                    and cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1 <= CARDINALITY(p.coins)
                 then p.coins[cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1] 
-                else p.undercoins[cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1]
+            when l.topic0 != 0x8b3e96f2b889fa771c53c981b40daf005f63f637f1869f707052d15a3dd97140
+                    and cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1 <= CARDINALITY(p.undercoins) 
+                    then p.undercoins[cast(bytearray_to_uint256(bytearray_substring(l.data, 1, 32)) as int) + 1]
+                else NULL
             end as token_sold_address
         , l.contract_address as project_contract_address --pool address
         , l.tx_hash 
@@ -45,7 +53,7 @@ WITH dexs AS
     FROM {{ source('ethereum', 'logs') }} l
     JOIN  {{ ref('curvefi_ethereum_view_pools') }} p
         ON l.contract_address = p.pool_address
-        AND p.version IN ('Factory V1 Meta', 'Factory V1 Plain', 'Regular', 'Factory V1 Stableswap Plain', 'Factory V1 Stableswap Meta') --note Plain only has TokenExchange.
+        AND p.version IN ('Factory V1 Meta', 'Factory V1 Plain', 'Regular', 'Factory V1 Stableswap Plain', 'Factory V1 Stableswap Meta', 'Factory V1 Stableswap Plain NG') --note Plain only has TokenExchange.
     WHERE l.topic0 IN
         (
             0xd013ca23e77a65003c2c659c5442c00c805371b7fc1ebd4c206c41d1536bd90b -- TokenExchangeUnderlying 
@@ -76,7 +84,7 @@ WITH dexs AS
     FROM {{ source('ethereum', 'logs') }} l
     JOIN {{ ref('curvefi_ethereum_view_pools') }} p
         ON l.contract_address = p.pool_address
-        AND (p.version = 'Factory V2' or p.version = 'Factory V2 updated' or p.version = 'Regular') --some Regular pools are new and use the below topic instead
+        AND (p.version = 'Factory V2' or p.version = 'Factory V2 updated' or p.version = 'Regular' or p.version = 'Factory Twocrypto') --some Regular pools are new and use the below topic instead
     WHERE (l.topic0 = 0xb2e76ae99761dc136e598d4a629bb347eccb9532a5f8bbd72e18467c3c34cc98 --TokenExchange
         OR l.topic0 = 0x143f1f8e861fbdeddd5b46e844b7d3ac7b86a122f36e8c463859ee6811b1f29c) --TokenExchange (v2 updated pool, has some other variables included after old ones so topic hash is changed.)
         {% if is_incremental() %}

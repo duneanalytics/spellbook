@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "blobs",
-                                    \'["msilb7","lorenz234","0xRob"]\') }}'
+                                    \'["msilb7","lorenz234","0xRob", "hildobby"]\') }}'
 )}}
 
 with blob_transactions as (
@@ -31,15 +31,15 @@ SELECT
     , t.value as tx_value
     , t.hash as tx_hash
     , t."from" as blob_submitter
-    , l.entity as blob_submitter_label
+    , COALESCE(l.entity, ls.entity) as blob_submitter_label
     , t.index as tx_index
     , t.success as tx_success
     , t.data as tx_data
     , t.type as tx_type
     , t.blob_versioned_hashes
     , sequence(
-        (sum(CARDINALITY(t.blob_versioned_hashes)) over (partition by block_number order by index asc)) - CARDINALITY(t.blob_versioned_hashes)
-        ,(sum(CARDINALITY(t.blob_versioned_hashes)) over (partition by block_number order by index asc)) - 1
+        (sum(CARDINALITY(t.blob_versioned_hashes)) over (partition by t.block_number order by index asc)) - CARDINALITY(t.blob_versioned_hashes)
+        ,(sum(CARDINALITY(t.blob_versioned_hashes)) over (partition by t.block_number order by index asc)) - 1
         ,1
     ) as blob_indexes
     , CARDINALITY(t.blob_versioned_hashes) AS blob_count
@@ -65,3 +65,6 @@ LEFT JOIN  {{ source("resident_wizards", "dataset_blob_base_fees_lookup", databa
     ON fee.excess_blob_gas = block.excess_blob_gas
 LEFT JOIN {{ref('blobs_submitters')}} l
     ON t."from" = l.address
+LEFT JOIN {{ref('blobs_based_submitters')}} ls
+    ON t.block_number = ls.block_number
+    AND t.hash = ls.tx_hash
