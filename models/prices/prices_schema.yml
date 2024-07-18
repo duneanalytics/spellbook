@@ -3,9 +3,9 @@ version: 2
 models:
   - name: prices_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm, blast, sei
       sector: prices
-      contributors: aalan3, hildobby, pipistrella, viniabussafi
+      contributors: aalan3, hildobby, pipistrella, viniabussafi, jeff-dude
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens"
@@ -19,6 +19,8 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract address of the token, if any"
+        tests:
+          - not_zero_address
       - &symbol
         name: symbol
         description: "Token symbol"
@@ -28,7 +30,7 @@ models:
 
   - name: prices_native_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, zksync, zora
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, zksync, zora, sei
       sector: prices
       contributors: aalan3, jeff-dude
     config:

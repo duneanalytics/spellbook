@@ -27,8 +27,9 @@
     , ref('dex_zkevm_base_trades')
     , ref('dex_linea_base_trades')
     , ref('dex_mantle_base_trades')
+    , ref('dex_blast_base_trades')
 ] %}
- 
+
 with base_union as (
     SELECT *
     FROM

@@ -346,20 +346,7 @@ uni_v2_swap as (
         {% endif %}
 
 
-)
--- TODO: this is really slow, need to optimize
-, uni_v2_pair_creation as (
-    SELECT
-        bytearray_substring(data,13,20) as pair,
-        bytearray_substring(topic1, 13, 20) AS makerToken,
-        bytearray_substring(topic2, 13, 20) AS takerToken,
-        row_number() over (partition by bytearray_substring(creation.data, 13, 20) order by block_time ) rn
-    FROM {{ source('bnb', 'logs') }} creation
-    WHERE creation.topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9  -- all the uni v2 pair creation event
-
-
-
-) ,
+),
 direct_uniswapv2 as (
 
 select s.tx_hash,
@@ -378,9 +365,7 @@ select s.tx_hash,
     matcha_limit_order_flag
 
 from uni_v2_swap s
-
-join uni_v2_pair_creation creation on s.contract_address = creation.pair
-where rn = 1
+join {{ref('zeroex_bnb_api_fills_uni_v2_pair_creation')}} creation on s.contract_address = creation.pair
 ),
 
 all_tx AS (

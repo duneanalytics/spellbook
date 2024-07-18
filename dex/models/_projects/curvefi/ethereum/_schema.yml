@@ -70,7 +70,7 @@ models:
     meta:
       blockchain: ethereum
       project: curvefi
-      contributors: [agaperste, yulesa, ilemi]
+      contributors: [agaperste, yulesa, ilemi, viniabussafi]
     config:
       tags: ["ethereum", "curvefi", "view_pools", "view"]
     description: >
