@@ -78,4 +78,5 @@ on l.blockchain = stats_out.blockchain
     and l.address = stats_out.address
     and (stats_in.block_date is null or stats_in.block_date = stats_out.block_date)
     and (stats_in.token_address is null or stats_in.token_address = stats_out.token_address)
+    and (stats_in.token_symbol is null or stats_in.token_symbol = stats_out.token_symbol)
 where coalesce(stats_in.block_date,stats_out.block_date) is not null
