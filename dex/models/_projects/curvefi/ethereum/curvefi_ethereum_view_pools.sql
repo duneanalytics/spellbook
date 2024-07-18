@@ -251,6 +251,9 @@ v1_stableswap_ng as (
         AND dp.call_tx_hash = p.evt_tx_hash
 ),
 
+
+
+
 v1_pools_deployed AS (
     SELECT
         version,
@@ -402,6 +405,38 @@ v2_updated_pools_deployed AS (
         AND p.evt_tx_hash = dp.call_tx_hash
 ),
 
+
+twocrypto as (
+    SELECT
+        'Factory Twocrypto' AS version,
+        dp._name AS name,
+        dp._symbol AS symbol,
+        dp.output_0 AS pool_address,
+        dp.A AS A,        
+        dp.mid_fee AS mid_fee,
+        dp.out_fee AS out_fee,
+        dp.output_0 AS token_address,
+        dp.output_0 AS deposit_contract,
+        p.coins[1] AS coin0,
+        p.coins[2] AS coin1,
+        COALESCE(try(p.coins[3]),CAST(NULL as varbinary)) as coin2,
+        COALESCE(try(p.coins[4]),CAST(NULL as varbinary)) as coin3,
+        CAST(NULL as varbinary) AS undercoin0,
+        CAST(NULL as varbinary) AS undercoin1,
+        CAST(NULL as varbinary) AS undercoin2,
+        CAST(NULL as varbinary) AS undercoin3
+    FROM
+        {{ source(
+            'curvefi_ethereum',
+            'CurveTwocryptoFactory_evt_TwocryptoPoolDeployed'
+        ) }} as p
+        LEFT JOIN {{ source(
+            'curvefi_ethereum',
+            'CurveTwocryptoFactory_call_deploy_pool'
+        ) }} dp
+        ON dp.call_block_time = p.evt_block_time
+        AND dp.call_tx_hash = p.evt_tx_hash
+),
 ---------------------------------------------------------------- unioning all 3 together ----------------------------------------------------------------
 pools AS (
     SELECT
@@ -441,6 +476,17 @@ pools AS (
         'CurveTricryptoFactory_evt_LiquidityGaugeDeployed'
         ) }} as g3
         ON pd2u.pool_address = g3.pool
+     UNION ALL
+    SELECT
+        pd3u.*,
+        gauge AS gauge_contract
+    FROM
+        twocrypto pd3u
+    LEFT JOIN {{ source(
+        'curvefi_ethereum',
+        'CurveTwocryptoFactory_evt_LiquidityGaugeDeployed'
+        ) }} as g3
+        ON pd3u.pool_address = g3.pool       
 ),
 
 contract_name AS (
