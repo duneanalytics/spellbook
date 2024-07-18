@@ -54,8 +54,8 @@ group by 1,2,3,4,5
 )
 
 select
-    blockchain
-    ,address
+    l.blockchain
+    ,l.address
     ,l.custody_owner
     ,l.account_owner
     ,coalesce(stats_in.token_address,stats_out.token_address) as token_address
