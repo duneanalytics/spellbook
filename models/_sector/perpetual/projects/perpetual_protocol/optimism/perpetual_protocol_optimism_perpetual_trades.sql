@@ -1,5 +1,5 @@
 {{ config(
-	schema = 'perpetual_optimism',
+	schema = 'perpetual_protocol_optimism',
 	alias = 'perpetual_trades',
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
