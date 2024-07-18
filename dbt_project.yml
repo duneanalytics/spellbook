@@ -21,11 +21,9 @@ vars:
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
 model-paths: ["models", "sources"]
-analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
-snapshot-paths: ["snapshots"]
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
@@ -97,10 +95,11 @@ models:
       polygon:
         +schema: balances_polygon
 
-    labels:
-      +schema: labels
-      +materialized: table
-      +file_format: delta
+    _sector:
+      labels:
+        +schema: labels
+        +materialized: table
+        +file_format: delta
 
     dao:
       +schema: dao
@@ -200,24 +199,6 @@ models:
       polygon:
         +schema: tornado_cash_polygon
 
-    perpetual:
-      +schema: perpetual
-
-    perpetual_protocol:
-      +schema: perpetual_protocol
-      optimism:
-        +schema: perpetual_protocol_optimism
-
-    pika:
-      +schema: pika
-      optimism:
-        +schema: pika_optimism
-
-    synthetix:
-      +schema: synthetix
-      optimism:
-        +schema: synthetix_optimism
-
     synapse:
       +schema: synapse
       arbitrum:
@@ -283,140 +264,15 @@ models:
       ethereum:
         +schema: nexusmutual_ethereum
 
-
-    ampleforth:
-      +schema: ampleforth
-      ethereum:
-        +schema: ampleforth_ethereum
-
-    apecoin:
-      +schema: apecoin
-      ethereum:
-        +schema: apecoin_ethereum
-
-    pangolin:
-      +schema: pangolin
-      avalanche_c:
-        +schema: pangolin_avalanche_c
-
-    giveth:
-      +schema: giveth
-      gnosis:
-        +schema: giveth_gnosis
-
-    genie:
-      +schema: genie
-      ethereum:
-        +schema: genie_ethereum
-
-    forta_network:
-      +schema: forta_network
-      ethereum:
-        +schema: forta_network_ethereum
-
-    gas_dao:
-      +schema: gas_dao
-      ethereum:
-        +schema: gas_dao_ethereum
-
-    ribbon:
-      +schema: ribbon
-      ethereum:
-        +schema: ribbon_ethereum
-
     galxe:
       +schema: galxe
-      ethereum:
-        +schema: galxe_ethereum
       optimism:
         +schema: galxe_optimism
-
-    gearbox:
-      +schema: gearbox
-      ethereum:
-        +schema: gearbox_ethereum
-
-    snowswap:
-      +schema: snowswap
-      ethereum:
-        +schema: snowswap_ethereum
-
-    arbitrum:
-      +schema: arbitrum
-      arbitrum:
-        +schema: arbitrum_arbitrum
-
-    forefront:
-      +schema: forefront
-      ethereum:
-        +schema: forefront_ethereum
-
-    component:
-      +schema: component
-      ethereum:
-        +schema: component_ethereum
-
-    alchemydao:
-      +schema: alchemydao
-      ethereum:
-        +schema: alchemydao_ethereum
-
-    tokenfy:
-      +schema: tokenfy
-      ethereum:
-        +schema: tokenfy_ethereum
-
-    thales:
-      +schema: thales
-      ethereum:
-        +schema: thales_ethereum
-
-    shapeshift:
-      +schema: shapeshift
-      ethereum:
-        +schema: shapeshift_ethereum
-
-    value_defi:
-      +schema: value_defi
-      ethereum:
-        +schema: value_defi_ethereum
-
-    botto:
-      +schema: botto
-      ethereum:
-        +schema: botto_ethereum
-
-    notional:
-      +schema: notional
-      ethereum:
-        +schema: notional_ethereum
-
-    dappradar:
-      +schema: dappradar
-      ethereum:
-        +schema: dappradar_ethereum
-
-    paladin:
-      +schema: paladin
-      ethereum:
-        +schema: paladin_ethereum
 
     hop_protocol:
       +schema: hop_protocol
       optimism:
         +schema: hop_protocol_optimism
-      ethereum:
-        +schema: hop_protocol_ethereum
-      # polygon:
-      #   +schema: hop_protocol_polygon
-      # polygon2:
-      #   +schema: hop_polygon
-      # arbitrum:
-      #   +schema: hop_protocol_arbitrum
-      # gnosis:
-      #   +schema: hop_protocol_gnosis
-      # gnosis2:
-      #   +schema: hop_gnosis
 
 
     chain_info:
