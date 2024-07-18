@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'address', 'block_date', 'counterparty', 'token_address'],
+        unique_key = ['blockchain', 'address', 'block_date', 'counterparty', 'token_address', 'token_symbol'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
         post_hook = '{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "optimism", "polygon", "scroll", "zksync"]\',
                                     "sector",
@@ -86,7 +86,7 @@ left join stats_out
 on l.blockchain = stats_out.blockchain
     and l.address = stats_out.address
     and (stats_in.block_date is null or stats_in.block_date = stats_out.block_date)
-    and (stats_in.counterparty is null or stats_in.counterparty = stats_out.counterparty)
-    and (stats_in.token_address is null or stats_in.token_address = stats_out.token_address)
-    and (stats_in.token_symbol is null or stats_in.token_symbol = stats_out.token_symbol)
+    and (stats_in.block_date is null or stats_in.counterparty = stats_out.counterparty)
+    and (stats_in.block_date is null or stats_in.token_address = stats_out.token_address)
+    and (stats_in.block_date is null or stats_in.token_symbol = stats_out.token_symbol)
 where coalesce(stats_in.block_date,stats_out.block_date) is not null
