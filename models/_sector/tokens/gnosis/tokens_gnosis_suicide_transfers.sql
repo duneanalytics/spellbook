@@ -31,46 +31,49 @@ suicide AS (
         type = 'suicide'
         AND
         success
-    {% if is_incremental() %}
-        AND {{incremental_predicate('block_time')}}
-    {% endif %}
+),
+
+suicide_events AS (
+    SELECT
+        *
+        ,ROW_NUMBER() OVER (PARTITION BY address ORDER BY block_time) AS event_sequence
+        ,LEAD(block_time) OVER (PARTITION BY address ORDER BY block_time) AS next_block_time
+    FROM
+        suicide
+),
+
+tokens_gnosis_base_without_suicide_transfers AS (
+    SELECT
+        t2.address 
+        ,CASE 
+            WHEN t2.address = t1."to" THEN t1.amount_raw
+            ELSE -t1.amount_raw
+        END AS amount_raw
+        ,t2.event_sequence
+    FROM    
+        {{ ref('tokens_gnosis_base_without_suicide_transfers') }} t1
+    INNER JOIN
+        suicide_events t2
+        ON 
+        t2.address = t1."from"
+        OR
+        t2.address = t1."to"
+    WHERE  
+        t1.token_standard = 'native'
+        AND 
+        t1.block_time >= t2.block_time
+        AND 
+        (t1.block_time < t2.next_block_time OR t2.next_block_time IS NULL)
 ),
 
 suicide_balances AS (
-    -- not incremental
     SELECT
         address
+        ,event_sequence
         ,SUM(amount_raw) AS amount_raw
-    FROM (
-        SELECT
-            t2.address 
-            , - SUM(t1.amount_raw) AS amount_raw
-        FROM    
-            {{ ref('tokens_gnosis_base_without_suicide_transfers') }} t1
-        INNER JOIN
-            suicide t2
-            ON 
-            t2.address = t1."from"
-        WHERE  
-            t1.token_standard = 'native'
-        GROUP BY 1
-        
-        UNION ALL
-
-        SELECT
-            t2.address 
-            , SUM(t1.amount_raw) AS amount_raw
-        FROM    
-            {{ ref('tokens_gnosis_base_without_suicide_transfers') }} t1
-        INNER JOIN
-            suicide t2
-            ON 
-            t2.address = t1.to
-        WHERE  
-            t1.token_standard = 'native'
-        GROUP BY 1
-    )
-    GROUP BY 1
+    FROM 
+        tokens_gnosis_base_without_suicide_transfers
+    GROUP BY 1, 2
 )
 
 SELECT 
@@ -93,9 +96,11 @@ SELECT
 FROM 
     suicide_balances t1
 INNER JOIN
-    suicide t2
+    suicide_events t2
     ON 
     t2.address = t1.address
+    AND 
+    t2.event_sequence = t1.event_sequence
 INNER JOIN {{ source('gnosis', 'transactions') }} tx ON
     cast(date_trunc('day', tx.block_time) as date) = t2.block_date 
     AND tx.block_number = t2.block_number
