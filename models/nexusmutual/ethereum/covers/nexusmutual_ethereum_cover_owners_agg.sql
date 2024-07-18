@@ -152,6 +152,8 @@ select
   cover_sold,
   product_sold,
   coalesce(1.00 * product_sold / nullif(cover_sold, 0), 0) as mean_product_sold,
+  first_cover_buy,
+  last_cover_buy,
   --== cover ==
   eth_eth_cover,
   dai_eth_cover,
