@@ -1,4 +1,4 @@
-{% macro 
+{% macro
     oneinch_ar_handle_generic(
         contract,
         contract_data,
@@ -15,6 +15,7 @@
 select
     call_block_number as block_number
     , call_block_time as block_time
+    , date(date_trunc('day', call_block_time)) as block_date
     , call_tx_hash as tx_hash
     , '{{ contract }}' as contract_name
     , '{{ contract_data.version }}' as protocol_version

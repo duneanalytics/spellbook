@@ -5,8 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
@@ -18,29 +18,29 @@
 
 WITH dexs AS (
     {% for trade_table in trade_event_tables %}
-        SELECT 
+        SELECT
             evt_block_time AS block_time,
             evt_block_number AS block_number,
-            beneficiary AS taker, 
-            initiator AS maker, 
+            beneficiary AS taker,
+            initiator AS maker,
             receivedAmount AS token_bought_amount_raw,
             srcAmount AS token_sold_amount_raw,
             CAST(NULL AS double) AS amount_usd,
-            CASE 
+            CASE
                 WHEN destToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0x4200000000000000000000000000000000000006 -- WETH 
+                THEN 0x4200000000000000000000000000000000000006 -- WETH
                 ELSE destToken
             END AS token_bought_address,
-            CASE 
+            CASE
                 WHEN srcToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0x4200000000000000000000000000000000000006 -- WETH 
+                THEN 0x4200000000000000000000000000000000000006 -- WETH
                 ELSE srcToken
             END AS token_sold_address,
             contract_address AS project_contract_address,
-            evt_tx_hash AS tx_hash, 
+            evt_tx_hash AS tx_hash,
             CAST(ARRAY[-1] as array<bigint>) AS trace_address,
             evt_index
-        FROM {{ trade_table }} p 
+        FROM {{ trade_table }} p
         {% if is_incremental() %}
         WHERE {{incremental_predicate('p.evt_block_time')}}
         {% endif %}

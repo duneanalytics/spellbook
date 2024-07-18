@@ -23,3 +23,15 @@ sources:
       - name: XYKPool_evt_Swap
       - name: Vault_Router_evt_Swap
       - name: StableSwapPoolFactory_V2_evt_PoolCreated
+  - name: blasterswap_blast
+    tables:
+      - name: BlasterswapV2Pair_ORBIT_USDB_evt_Swap
+      - name: BlasterswapV2Pair_PAC_USDB_evt_Swap
+      - name: BlasterswapV2Pair_PAC_WETH_evt_Swap
+      - name: BlasterswapV2Pair_USDB_WETH_evt_Swap
+      - name: BlasterswapV2Factory_evt_PairCreated
+  - name: fenix_blast
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactoryUpgradeable_evt_PairCreated
+

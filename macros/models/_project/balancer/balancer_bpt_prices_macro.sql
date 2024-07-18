@@ -1,6 +1,6 @@
 {% macro 
-    balancer_bpt_prices_macro(
-        blockchain, version
+    balancer_v2_compatible_bpt_prices_macro(
+        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
     ) 
 %}
 
@@ -9,7 +9,7 @@ WITH pool_labels AS (
             address AS pool_id,
             name AS pool_symbol,
             pool_type
-        FROM {{ source('labels', 'balancer_v2_pools') }}
+        FROM {{ pool_labels_spell }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
@@ -48,7 +48,7 @@ WITH pool_labels AS (
                     poolId AS pool_id,
                     tokenIn AS token,
                     CAST(amountIn as int256) AS delta
-                FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_Swap') }}
+                FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
 
                 UNION ALL
 
@@ -57,7 +57,7 @@ WITH pool_labels AS (
                     poolId AS pool_id,
                     tokenOut AS token,
                     -CAST(amountOut AS int256) AS delta
-                FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_Swap') }}
+                FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
             ) swaps
         GROUP BY 1, 2, 3
     ),
@@ -69,7 +69,7 @@ WITH pool_labels AS (
             t.tokens,
             d.deltas,
             p.protocolFeeAmounts
-        FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_PoolBalanceChanged') }}
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolBalanceChanged') }}
         CROSS JOIN UNNEST (tokens) WITH ORDINALITY as t(tokens,i)
         CROSS JOIN UNNEST (deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
@@ -94,7 +94,7 @@ WITH pool_labels AS (
             poolId AS pool_id,
             token,
             cashDelta + managedDelta AS delta
-        FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_PoolBalanceManaged') }}
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolBalanceManaged') }}
     ),
 
     daily_delta_balance AS (
@@ -177,7 +177,7 @@ WITH pool_labels AS (
             ROW_NUMBER() OVER (partition by b.day, b.pool_id ORDER BY SUM(b.protocol_liquidity_usd) ASC) AS pricing_count, --to avoid double count in pools with multiple pricing assets
             SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity
         FROM cumulative_usd_balance b
-        LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+        LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
         AND b.token = w.token_address
         AND b.protocol_liquidity_usd > 0
         LEFT JOIN {{ ref('balancer_token_whitelist') }} q ON b.token = q.address 
@@ -208,7 +208,7 @@ WITH pool_labels AS (
     FROM cumulative_usd_balance c
     FULL OUTER JOIN weighted_pool_liquidity_estimates_2 b ON c.day = b.day
     AND c.pool_id = b.pool_id
-    LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+    LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
     AND w.blockchain = '{{blockchain}}'
     AND w.version = '{{version}}'    
     AND w.token_address = c.token
@@ -220,8 +220,8 @@ WITH pool_labels AS (
 
     bpt_trades AS (
         SELECT * 
-        FROM {{ source('balancer_v2_' ~ blockchain, 'Vault_evt_Swap') }} v
-        INNER JOIN pool_labels l ON bytearray_substring(v.poolId, 1, 20) = l.pool_id AND l.pool_type = 'linear'
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} v
+        LEFT JOIN pool_labels l ON bytearray_substring(v.poolId, 1, 20) = l.pool_id
         WHERE v.tokenIn = bytearray_substring(v.poolId, 1, 20) OR v.tokenOut = bytearray_substring(v.poolId, 1, 20)
     ), 
 
@@ -340,7 +340,7 @@ WITH pool_labels AS (
         ELSE l.liquidity / s.supply 
         END AS bpt_price
     FROM tvl l
-    LEFT JOIN {{ ref('balancer_bpt_supply') }} s ON l.pool_address = s.token_address
+    LEFT JOIN {{ ref(base_spells_namespace + '_bpt_supply') }} s ON l.pool_address = s.token_address
     AND l.blockchain = s.blockchain
     AND l.version = s.version  
     AND l.day = s.day

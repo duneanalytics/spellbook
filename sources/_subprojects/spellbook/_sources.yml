@@ -47,6 +47,9 @@ sources:
   - name: addresses_events_fantom
     tables:
       - name: first_funded_by
+  - name: lending
+    tables:
+      - name: flashloans
   - name: bridge_optimism
     tables:
       - name: standard_bridge_flows
