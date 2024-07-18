@@ -228,6 +228,12 @@ models:
         name: premium_incl_commission
         description: "premium incl commission"
       - *cover_owner
+      - &commission
+        name: commission
+        description: "commission"
+      - &commission_destination
+        name: commission_destination
+        description: "commission destination (recipient wallet)"
       - &is_migrated
         name: is_migrated
         description: "is migrated flag"
