@@ -47,7 +47,7 @@ FROM
     ('neo-neo', null, 'NEO', null, null),
     ('ont-ontology', null, 'ONT', null, null),
     ('osmo-osmosis', null, 'OSMO', null, null),
-    ('sei-sei', null, 'SEI', null, null),
+    ('sei-sei', null, 'SEI', null, null), --note: SEI already added to native tokens, commenting for history in PR to initiate SEI
     ('sol-solana', null, 'SOL', null, null),
     ('stx-blockstack', null, 'STX', null, null),
     ('sui-sui', null, 'SUI', null, null),

@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'tokens_bnb',
+        schema = 'tokens_linea',
         alias = 'balances_daily_agg_base',
         file_format = 'delta',
         materialized='incremental',
@@ -10,11 +10,7 @@
 }}
 
 with balances_raw as (
-{{balances_fix_schema(
-    source('tokens_bnb', 'balances_bnb'),
-    'bnb',
-    '0xb8c77482e45f1f44de1745f52c74426c631bdd52'
-)}}
+{{balances_fix_schema(source('tokens_linea', 'balances_linea'), 'linea')}}
 )
 
 {{
