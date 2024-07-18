@@ -10,6 +10,7 @@ models:
           combination_of_columns:
             - blockchain
             - address
+            - token_address
 
   - name: labels_transfer_summary_daily
     config:
@@ -21,6 +22,7 @@ models:
             - blockchain
             - address
             - block_date
+            - token_address
 
   - name: labels_counterparty_activity_daily
     config:
@@ -33,3 +35,4 @@ models:
             - address
             - block_date
             - counterparty
+            - token_address
