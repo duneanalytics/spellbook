@@ -19,6 +19,7 @@ WITH source_expanded AS (
         *
     FROM
         {{ source('bladeswap_blast', 'Vault_Router_evt_Swap') }}
+    WHERE CARDINALITY(delta) > 1
 )
 , dexs AS (
     SELECT
