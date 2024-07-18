@@ -10,6 +10,8 @@
     , ref('uniswap_v2_blast_base_trades')
     , ref('thruster_blast_base_trades')
     , ref('bladeswap_blast_base_trades')
+    , ref('blasterswap_blast_base_trades')
+    , ref('fenix_blast_base_trades')
 ] %}
 
 WITH base_union AS (

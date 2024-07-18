@@ -226,7 +226,7 @@ WITH
           , fills.evt_tx_hash AS transaction_hash
           , fills.evt_index
           , fills.maker AS maker_address
-          , fills.taker AS taker_address
+          , 0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker_address
           , fills.makerToken AS maker_token
           , mt.symbol AS maker_symbol
           , CASE WHEN lower(tt.symbol) > lower(mt.symbol) THEN concat(mt.symbol, '-', tt.symbol) ELSE concat(tt.symbol, '-', mt.symbol) END AS token_pair
@@ -254,8 +254,7 @@ WITH
           fills.contract_address
           , 'rfq' as native_order_type
       FROM {{ source('zeroex_ethereum', 'ExchangeProxy_evt_RfqOrderFilled') }} fills
-      LEFT JOIN {{ source('prices', 'usd') }} tp ON
-          date_trunc('minute', evt_block_time) = tp.minute
+      LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', evt_block_time) = tp.minute
           {% if is_incremental() %}
           AND {{ incremental_predicate('tp.minute') }}
           {% endif %}
@@ -269,12 +268,6 @@ WITH
               END = tp.contract_address
       LEFT JOIN {{ source('prices', 'usd') }} mp ON
           DATE_TRUNC('minute', evt_block_time) = mp.minute
-          {% if is_incremental() %}
-          AND {{ incremental_predicate('mp.minute') }}
-          {% endif %}
-          {% if not is_incremental() %}
-          AND evt_block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
-          {% endif %}
           AND CASE
                   -- Set Deversifi ETHWrapper to WETH
                     WHEN fills.makerToken IN (0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee) THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
@@ -398,7 +391,7 @@ SELECT distinct all_fills.block_time                                    AS block
                 transaction_hash                                        as tx_hash,
                 evt_index,
                 maker_address                                           as maker,
-                taker_address                                           as taker,
+                case when taker_address = 0xdef1c0ded9bec7f1a1670819833240f027b25eff then tx."from" else taker_address end as taker,
                 maker_token,
                 maker_token_filled_amount_raw                           as maker_token_amount_raw,
                 taker_token_filled_amount_raw                           as taker_token_amount_raw,

@@ -2,8 +2,10 @@
   config(
         schema = 'solana_utils',
         alias = 'latest_balances',
-        materialized='table',
-        
+        materialized='incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['address'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
@@ -21,6 +23,10 @@ WITH
                   , token_balance_owner
                   , row_number() OVER (partition by address order by day desc) as latest_balance
             FROM {{ ref('solana_utils_daily_balances') }}
+            {% if is_incremental() %}
+            WHERE {{incremental_predicate('day')}}
+            {% endif %}
+
       )
 
 SELECT

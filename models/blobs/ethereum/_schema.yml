@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: blobs
       project: blobs
-      contributors: msilb7, 0xRob, lorenz234
+      contributors: msilb7, 0xRob, lorenz234, hildobby
     config:
       tags: ['blob', 'ethereum',]
     description: Blob table but enriched with size, blob version hash, blob submitter, base fee, ..
@@ -65,7 +65,7 @@ models:
       blockchain: ethereum
       sector: blobs
       project: blobs
-      contributors: msilb7, 0xRob, lorenz234
+      contributors: msilb7, 0xRob, lorenz234, hildobby
     config:
       tags: ['blob', 'blobs', 'BLOB_TX_TYPE', 'L1', 'transaction']
     description: Blob submission transactions.
@@ -102,3 +102,43 @@ models:
       - *is_blobscription
       - *blob_submitter
       - *blob_submitter_label
+
+  - name: blobs_submitters
+    meta:
+      blockchain: ethereum
+      sector: blobs
+      project: blobs
+      contributors: hildobby
+    config:
+      tags: ['blob', 'blobs', 'ethereum']
+    description: Blob submitting address tags
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - name: address
+        description: "Blob submitting address"
+      - name: entity
+        description: "Entity name the address has been tagged as"
+
+  - name: blobs_based_submitters
+    meta:
+      blockchain: ethereum
+      sector: blobs
+      project: blobs
+      contributors: hildobby
+    config:
+      tags: ['blob', 'blobs', 'ethereum']
+    description: Blob submitting address tags
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+    columns:
+      - name: tx_hash
+        description: "Blob submitting address"
+      - name: block_number
+        description: "Block number"
+      - name: entity
+        description: "Entity name the address has been tagged as"

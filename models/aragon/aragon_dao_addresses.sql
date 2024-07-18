@@ -1,9 +1,9 @@
 {{ config(
-    
+    schema = 'aragon',
     alias = 'dao_addresses',
     materialized = 'view',
     file_format = 'delta',
-    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base", "arbitrum"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "gnosis", "polygon", "base", "arbitrum","zksync"]\',
                                 "project",
                                 "aragon",
                                 \'["Henrystats"]\') }}')
@@ -15,6 +15,7 @@ ref('aragon_ethereum_dao_addresses')
 ,ref('aragon_polygon_dao_addresses')
 ,ref('aragon_base_dao_addresses')
 ,ref('aragon_arbitrum_dao_addresses')
+,ref('aragon_zksync_dao_addresses')
 ] %}
 
 
