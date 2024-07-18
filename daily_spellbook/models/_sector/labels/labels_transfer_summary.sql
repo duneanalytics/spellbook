@@ -77,6 +77,6 @@ left join stats_out
 on l.blockchain = stats_out.blockchain
     and l.address = stats_out.address
     and (stats_in.token_address is null or stats_in.token_address = stats_out.token_address)
-where coalesce(stats_in.block_date,stats_out.block_date) is not null
+where coalesce(stats_in.token_address,stats_out.token_address) is not null
 
 
