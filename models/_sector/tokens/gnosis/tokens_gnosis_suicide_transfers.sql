@@ -44,26 +44,49 @@ suicide_events AS (
 
 tokens_gnosis_base_without_suicide_transfers AS (
     SELECT
-        t2.address 
-        ,CASE 
-            WHEN t2.address = t1."to" THEN t1.amount_raw
-            ELSE -t1.amount_raw
-        END AS amount_raw
-        ,t2.event_sequence
-    FROM    
-        {{ ref('tokens_gnosis_base_without_suicide_transfers') }} t1
-    INNER JOIN
-        suicide_events t2
-        ON 
-        t2.address = t1."from"
-        OR
-        t2.address = t1."to"
-    WHERE  
-        t1.token_standard = 'native'
-        AND 
-        (t1.block_time >= t2.previous_block_time OR t2.previous_block_time IS NULL)
-        AND 
-        t1.block_time < t2.block_time
+        address
+        ,event_sequence
+        ,SUM(amount_raw) AS amount_raw
+    FROM (
+        SELECT
+            t2.address 
+            ,-t1.amount_raw AS amount_raw
+            ,t2.event_sequence
+        FROM    
+            {{ ref('tokens_gnosis_base_without_suicide_transfers') }} t1
+        INNER JOIN
+            suicide_events t2
+            ON 
+            t2.address = t1."from"
+        WHERE  
+            t1.token_standard = 'native'
+            AND 
+            (t1.block_time >= t2.previous_block_time OR t2.previous_block_time IS NULL)
+            AND 
+            t1.block_time < t2.block_time
+
+        UNION ALL
+
+        SELECT
+            t2.address 
+            ,t1.amount_raw AS amount_raw
+            ,t2.event_sequence
+        FROM    
+            {{ ref('tokens_gnosis_base_without_suicide_transfers') }} t1
+        INNER JOIN
+            suicide_events t2
+            ON 
+            t2.address = t1."to"
+        WHERE  
+            t1.token_standard = 'native'
+            AND 
+            (t1.block_time >= t2.previous_block_time OR t2.previous_block_time IS NULL)
+            AND 
+            t1.block_time < t2.block_time
+
+    )
+    GROUP BY
+        1, 2
 ),
 
 suicide_balances AS (
