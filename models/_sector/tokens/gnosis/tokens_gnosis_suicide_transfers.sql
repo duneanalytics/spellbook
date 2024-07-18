@@ -51,6 +51,8 @@ suicide_balances AS (
             suicide t2
             ON 
             t2.address = t1."from"
+        WHERE  
+            t1.token_standard = 'native'
         GROUP BY 1
         
         UNION ALL
@@ -64,6 +66,8 @@ suicide_balances AS (
             suicide t2
             ON 
             t2.address = t1.to
+        WHERE  
+            t1.token_standard = 'native'
         GROUP BY 1
     )
     GROUP BY 1
