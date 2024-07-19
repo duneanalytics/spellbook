@@ -700,7 +700,7 @@ FROM
         ('irene-asian-mother', 'solana', 'IRENE', 'EJ1RbQZs1r1eTAnMTVfgGekgWt6nbHjNGqcn8prxpump', 6),
         ('jitosol-jito-staked-sol', 'solana', 'JitoSOL', 'J1toso1uCk3RLmjorhTtrVwY9HJ7X8V9yYac6Y7kGCPn', 9),
         ('kohler-kohler', 'solana', 'KOHLER', 'HmfNGq7kxE6ppMDGW87xPuMU6wnKbeYBZf76K7t33w3s', 6),
-        ('lockin-lock-in', 'solana', 'LOCKIN', '8Ki8DpuWNxu9VsS3kQbarsCWMcFGWkzzA8pUPto9zBd5', 9),
+        ('lockin-lock-in', 'solana', '$LOCKIN', '8Ki8DpuWNxu9VsS3kQbarsCWMcFGWkzzA8pUPto9zBd5', 9),
         ('mother-mother-iggy', 'solana', 'MOTHER', '3S8qX1MsMqRbiwKg2cQyx7nis1oHMgaCuc9c4VfvVdPN', 6),
         ('mumu1-mumu-the-bull', 'solana', 'MUMU', '5LafQUrVco6o7KMz42eqVEJ9LW31StPyGjeeu5sKoMtA', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
