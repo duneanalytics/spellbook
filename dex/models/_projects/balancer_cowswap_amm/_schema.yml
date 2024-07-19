@@ -163,7 +163,7 @@ models:
         name: label_type
         description: "Type of label (see labels overall readme)"
 
-  - name: balancer_v1_ethereum_liquidity
+  - name: balancer_cowswap_amm_ethereum_liquidity
     meta:
       blockchain: ethereum
       project: balancer_v1
