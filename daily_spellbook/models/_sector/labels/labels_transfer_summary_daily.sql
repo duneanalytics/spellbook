@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'address', 'block_date', 'token_symbol'],
+        unique_key = ['blockchain', 'address', 'block_date', 'token_address'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
         post_hook = '{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "optimism", "polygon", "scroll", "zksync"]\',
                                     "sector",
@@ -19,7 +19,7 @@ select
     l.blockchain
     ,l.address
     ,t.block_date
-    ,t.contract_address as token_address
+    ,coalesce(t.contract_address,0x0000000000000000000000000000000000000000) as token_address
     ,t.symbol as token_symbol
     ,t.token_standard
     ,count(*) as transfers_in
@@ -40,7 +40,7 @@ select
     l.blockchain
     ,l.address
     ,t.block_date
-    ,t.contract_address as token_address
+    ,coalesce(t.contract_address,0x0000000000000000000000000000000000000000) as token_address
     ,t.symbol as token_symbol
     ,t.token_standard
     ,count(*) as transfers_out

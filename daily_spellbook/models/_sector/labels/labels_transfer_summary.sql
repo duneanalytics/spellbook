@@ -15,7 +15,7 @@ WITH stats_in as (
 select
     l.blockchain
     ,l.address
-    ,t.contract_address as token_address
+    ,coalesce(t.contract_address,0x0000000000000000000000000000000000000000) as token_address
     ,t.symbol as token_symbol
     ,t.token_standard
     ,count(*) as transfers_in
@@ -36,7 +36,7 @@ group by 1,2,3,4,5
 select
     l.blockchain
     ,l.address
-    ,t.contract_address as token_address
+    ,coalesce(t.contract_address,0x0000000000000000000000000000000000000000) as token_address
     ,t.symbol as token_symbol
     ,t.token_standard
     ,count(*) as transfers_out

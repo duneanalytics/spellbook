@@ -11,7 +11,6 @@ models:
             - blockchain
             - address
             - token_address
-            - token_symbol
 
   - name: labels_transfer_summary_daily
     config:
@@ -24,7 +23,6 @@ models:
             - address
             - block_date
             - token_address
-            - token_symbol
 
   - name: labels_counterparty_activity_daily
     config:
@@ -38,4 +36,3 @@ models:
             - block_date
             - counterparty
             - token_address
-            - token_symbol
