@@ -56,7 +56,7 @@ latest_eth_price as (
   select
     minute as block_date,
     price as price_usd
-  from prices.usd_latest
+  from {{ source('prices', 'usd_latest') }}
   where symbol = 'ETH'
     and blockchain is null
     and contract_address is null
@@ -66,7 +66,7 @@ latest_dai_price as (
   select
     minute as block_date,
     price as price_usd
-  from prices.usd_latest
+  from {{ source('prices', 'usd_latest') }}
   where symbol = 'DAI'
     and blockchain = 'ethereum'
     and contract_address = 0x6b175474e89094c44da98b954eedeac495271d0f
@@ -76,7 +76,7 @@ latest_usdc_price as (
   select
     minute as block_date,
     price as price_usd
-  from prices.usd_latest
+  from {{ source('prices', 'usd_latest') }}
   where symbol = 'USDC'
     and blockchain = 'ethereum'
     and contract_address = 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48
