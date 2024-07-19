@@ -62,7 +62,7 @@ models:
         description: "Date of Eth transfer"
       - &amount_raw
         name: amount_raw
-        description: "Raw amount of transfered Eth"
+        description: "Raw amount of transferred Eth"
       - *tx_hash
       - &trace_address
         name: trace_address
@@ -103,7 +103,9 @@ models:
       - *blockchain
       - *block_date
       - *block_month
-      - *block_time
+      - &block_time
+        name: block_time
+        description: "Date and time of the block"
       - &block_number
         name: block_number
         description: "Number of block"
@@ -170,7 +172,7 @@ models:
         name: threshold
         description: "Number of signer threshold"
 
- - name: safe_ethereum_balances
+  - name: safe_ethereum_balances
     meta:
       blockchain: ethereum
       project: safe
