@@ -1,5 +1,4 @@
 version: 2
-
 models:
   - name: safe_ethereum_safes
     meta:
@@ -10,28 +9,27 @@ models:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     config:
-      tags: ['safe', 'ethereum']
-    description: "Safe addresses"
+      tags: [‘safe’, ‘ethereum’]
+    description: “Safe addresses”
     columns:
       - &blockchain
         name: blockchain
-        description: "The blockchain on which the Safe is deployed"
+        description: “The blockchain on which the Safe is deployed”
       - &address
         name: address
-        description: "Safe contract address"
+        description: “Safe contract address”
       - &creation_version
         name: creation_version
-        description: "Version of initially created safe"
+        description: “Version of initially created safe”
       - &block_date
         name: block_date
       - &block_month
         name: block_month
       - &creation_time
         name: creation_time
-        description: "Date/time of safe creation"
+        description: “Date/time of safe creation”
       - &tx_hash
         name: tx_hash
-
   - name: safe_ethereum_eth_transfers
     meta:
       blockchain: ethereum
@@ -41,8 +39,8 @@ models:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     config:
-      tags: ['safe', 'transfers', 'ethereum']
-    description: "Eth transfers for safes"
+      tags: [‘safe’, ‘transfers’, ‘ethereum’]
+    description: “Eth transfers for safes”
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -53,23 +51,22 @@ models:
       - *blockchain
       - &symbol
         name: symbol
-        description: "Symbol of native gas token: ETH"
+        description: “Symbol of native gas token: ETH”
       - *address
       - *block_date
       - *block_month
       - &block_time
         name: block_time
-        description: "Date of Eth transfer"
+        description: “Date of Eth transfer”
       - &amount_raw
         name: amount_raw
-        description: "Raw amount of transferred Eth"
+        description: “Raw amount of transferred Eth”
       - *tx_hash
       - &trace_address
         name: trace_address
       - &amount_usd
         name: amount_usd
-        description: "USD amount of transferred ETH"
-
+        description: “USD amount of transferred ETH”
   - name: safe_ethereum_singletons
     meta:
       blockchain: ethereum
@@ -79,15 +76,14 @@ models:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     config:
-      tags: ['safe', 'singletons', 'ethereum']
-    description: "Singletons addresses used with Safes"
+      tags: [‘safe’, ‘singletons’, ‘ethereum’]
+    description: “Singletons addresses used with Safes”
     columns:
       - name: address
-        description: "Safe contract address"
+        description: “Safe contract address”
         tests:
           - unique
           - not_null
-
   - name: safe_ethereum_transactions
     meta:
       blockchain: ethereum
@@ -97,8 +93,8 @@ models:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     config:
-      tags: ['safe', 'ethereum']
-    description: "Safe transactions"
+      tags: [‘safe’, ‘ethereum’]
+    description: “Safe transactions”
     columns:
       - *blockchain
       - *block_date
@@ -106,48 +102,47 @@ models:
       - *block_time
       - &block_number
         name: block_number
-        description: "Number of block"
+        description: “Number of block”
       - *tx_hash
       - name: address
-        description: "Safe contract address"
+        description: “Safe contract address”
       - &to
         name: to
-        description: "Destination address"
+        description: “Destination address”
       - &value
         name: value
-        description: "Value of transaction"
+        description: “Value of transaction”
       - &gas
         name: gas
-        description: "Gas limit set for transaction"
+        description: “Gas limit set for transaction”
       - &execution_gas_used
         name: execution_gas_used
-        description: "Execution gas used during transaction, for more details see https://dune.com/docs/data-tables/raw/evm/traces/?h=traces#gas-used-in-traces"
+        description: “Execution gas used during transaction, for more details see https://dune.com/docs/data-tables/raw/evm/traces/?h=traces#gas-used-in-traces”
       - &total_gas_used
         name: total_gas_used
-        description: "Total gas used during transaction"
+        description: “Total gas used during transaction”
       - &tx_index
         name: tx_index
-        description: "Transaction index"
+        description: “Transaction index”
       - &sub_traces
         name: sub_traces
-        description: "Number of sub traces"
+        description: “Number of sub traces”
       - *trace_address
       - &success
         name: success
-        description: "Success state of transaction"
+        description: “Success state of transaction”
       - &error
         name: error
-        description: "Error of transaction if any"
+        description: “Error of transaction if any”
       - &code
         name: code
-        description: "Code"
+        description: “Code”
       - &input
         name: input
-        description: "Input data"
+        description: “Input data”
       - &output
         name: output
-        description: "Output data"
-
+        description: “Output data”
   - name: safe_ethereum_signer_thresholds
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -161,11 +156,43 @@ models:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     config:
-      tags: ['safe', 'ethereum']
-    description: "Safe signer thresholds"
+      tags: [‘safe’, ‘ethereum’]
+    description: “Safe signer thresholds”
     columns:
       - *blockchain
       - *address
       - &threshold
         name: threshold
-        description: "Number of signer threshold"
+        description: “Number of signer threshold”
+  - name: safe_ethereum_balances
+    meta:
+      blockchain: ethereum
+      project: safe
+      contributors: safeintern
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: [‘safe’, ‘ethereum’]
+    description: “Safe addresses balances”
+    columns:
+      - *blockchain
+      - &day
+        name: day
+        description: “Day of Safe balance”
+      - *address
+      - &token_symbol
+        name: token_symbol
+        description: “Token symbol”
+      - &token_address
+        name: token_address
+        description: “Token address”
+      - &token_standard
+        name: token_standard
+        description: “Token standard”
+      - &token_id
+        name: token_id
+        description: “Token ID”
+      - &balance
+        name: balance
+        description: “USD balance of token”
