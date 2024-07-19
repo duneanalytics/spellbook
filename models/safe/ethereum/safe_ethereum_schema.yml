@@ -169,3 +169,43 @@ models:
       - &threshold
         name: threshold
         description: "Number of signer threshold"
+
+
+  - name: safe_ethereum_balances
+    meta:
+      blockchain: ethereum
+      project: safe
+      contributors: safeintern
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'ethereum']
+    description: "Safe addresses balances"
+    columns:
+      - *blockchain
+        name: blockchain
+        description: "The blockchain on which the Safe balance is calculated"
+      - &day
+        name: day
+        description: "Day of Safe balance"
+      - *address
+        name: address
+        description: "Safe contract address"
+      - &token_symbol
+        name: token_symbol
+        description: "token symbol"
+      - &token_address
+        name: token_address
+        description: "token address"
+      - &token_standard
+        name: token_standard
+        description: "token standard"
+      - &token_id
+        name: token_id
+        description: "token id"
+       - &balance
+        name: balance
+        description: "usd balance of token"
+        
+
