@@ -85,18 +85,3 @@ models:
             - order_uid
             - block_number
 
-  - name: cow_protocol_ethereum_airdrop_claims
-    meta:
-      blockchain: ethereum
-      sector: airdrop
-      project: cow_protocol
-      contributors: hildobby
-    config:
-      tags: ['table', 'airdrop', 'ethereum', 'claim', 'cow_protocol']
-    description: "List of claim transactions for the $COW airdrop"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - recipient
-            - evt_index
