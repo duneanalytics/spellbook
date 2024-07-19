@@ -11,7 +11,7 @@ WITH pool_labels AS (
     SELECT
         address,
         name
-    FROM {{ source('labels', 'balancer_cowswap_amm_pools_ethereum') }}
+    FROM {{ ref('labels_balancer_cowswap_amm_pools_ethereum') }}
     ),
 
     prices AS (
