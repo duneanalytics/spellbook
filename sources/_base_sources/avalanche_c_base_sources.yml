@@ -9,7 +9,7 @@ sources:
     tables:
       - name: transactions
         meta:
-          docs_slug: /evm/avalanchec/raw/transactions
+          docs_slug: /evm/avalanche/raw/transactions
           short_description: The `avalanche_c.transactions` table contains detailed information about transactions on the Avalanche C blockchain, including block data, transaction values, and gas-related metrics. 
         loaded_at_field: block_time
         description: '{{ doc("avalanche_c_transactions_doc") }}'
@@ -68,7 +68,7 @@ sources:
 
       - name: traces
         meta:
-          docs_slug: /evm/avalanchec/raw/traces
+          docs_slug: /evm/avalanche/raw/traces
           short_description: The `avalanche_c.traces` table contains information about traces on the Avalanche C blockchain.
         loaded_at_field: block_time
         description: '{{ doc("avalanche_c_traces_doc") }}'
@@ -119,7 +119,7 @@ sources:
 
       - name: traces_decoded
         meta:
-          docs_slug: /evm/avalanchec/decoded/traces_decoded
+          docs_slug: /evm/avalanche/decoded/traces_decoded
           short_description: The `avalanche_c.traces_decoded` table contains decoded Avalanche C traces, including additional information based on submitted smart contracts and their ABIs.
         loaded_at_field: block_time
         description: '{{ doc("avalanche_c_traces_decoded_doc") }}'
@@ -143,7 +143,7 @@ sources:
 
       - name: logs
         meta:
-          docs_slug: /evm/avalanchec/raw/logs
+          docs_slug: /evm/avalanche/raw/logs
           short_description: The `avalanche_c.logs` table contains information about event logs emitted by smart contracts on the Avalanche C blockchain.
         loaded_at_field: block_time
         description: '{{ doc("avalanche_c_logs_doc") }}'
@@ -171,7 +171,7 @@ sources:
 
       - name: logs_decoded
         meta:
-          docs_slug: /evm/avalanchec/decoded/logs_decoded
+          docs_slug: /evm/avalanche/decoded/logs_decoded
           short_description: The `avalanche_c.logs_decoded` table contains decoded Avalanche C logs, including additional information based on submitted smart contracts and their ABIs.
         loaded_at_field: block_time
         description: '{{ doc("avalanche_c_logs_decoded_doc") }}'
@@ -195,7 +195,7 @@ sources:
 
       - name: blocks
         meta:
-          docs_slug: /evm/avalanchec/raw/blocks
+          docs_slug: /evm/avalanche/raw/blocks
           short_description: The `avalanche_c.blocks` table contains information about Avalanche C blocks. Each row represents a single block.
         freshness:
           warn_after: { count: 1, period: day }
@@ -229,7 +229,7 @@ sources:
 
       - name: contracts
         meta:
-          docs_slug: /evm/avalanchec/raw/contracts
+          docs_slug: /evm/avalanche/raw/contracts
           short_description: The `avalanche_c.contracts` table is a view tracking decoded contracts on Avalanche C, including associated metadata such as namespace, name, address, ABI.
         freshness:
           warn_after: { count: 1, period: day }
@@ -262,7 +262,7 @@ sources:
           
       - name: creation_traces
         meta:
-          docs_slug: /evm/avalanchec/raw/creation_traces
+          docs_slug: /evm/avalanche/raw/creation_traces
           short_description: The `avalanche_c.creation_traces` table contains information about contract creation traces on the Avalanche C blockchain. It includes details about newly created contracts, their creators, and the contract code.
         loaded_at_field: block_time
         description: '{{ doc("avalanche_c_creation_traces_doc") }}'
@@ -283,7 +283,7 @@ sources:
     tables:
       - name: evt_transfer
         meta:
-          docs_slug: /evm/avalanchec/decoded/evt_transfer
+          docs_slug: /evm/avalanche/decoded/evt_transfer
           short_description: The `avalanche_c.evt_transfer` table contains individual transfer events for ERC20 tokens on the Avalanche C blockchain. Each row represents a single token transfer.
         loaded_at_field: evt_block_time
         description: '{{ doc("erc20_avalanche_c_evt_transfer_doc") }}'
@@ -312,7 +312,7 @@ sources:
 
       - name: evt_approval
         meta:
-          docs_slug: /evm/avalanchec/decoded/evt_approval
+          docs_slug: /evm/avalanche/decoded/evt_approval
           short_description: The `avalanche_c.evt_approval` table contains approval events for ERC20 tokens on Avalanche C, allowing an address to spend tokens on behalf of the owner.
         loaded_at_field: evt_block_time
         description: '{{ doc("erc20_avalanche_c_evt_approval_doc") }}'
@@ -335,7 +335,7 @@ sources:
     tables:
     - name: evt_transfersingle
       meta:
-        docs_slug: /evm/avalanchec/decoded/evt_transfersingle
+        docs_slug: /evm/avalanche/decoded/evt_transfersingle
         short_description: The `avalanche_c.evt_transfersingle` table contains single transfer events for ERC1155 tokens on the Avalanche C blockchain.
       loaded_at_field: evt_block_time
       description: '{{ doc("erc1155_avalanche_c_evt_transfersingle_doc") }}'
@@ -356,7 +356,7 @@ sources:
           description: "Quantity of the ERC1155 token transferred"
     - name: evt_transferbatch
       meta:
-        docs_slug: /evm/avalanchec/decoded/evt_transferbatch
+        docs_slug: /evm/avalanche/decoded/evt_transferbatch
         short_description: The `avalanche_c.evt_transferbatch` table contains batch transfer events for multiple ERC1155 tokens on the Avalanche C blockchain.
       loaded_at_field: evt_block_time
       description: '{{ doc("erc1155_avalanche_c_evt_transferbatch_doc") }}'
@@ -377,7 +377,7 @@ sources:
           description: "Array of quantities for each ERC1155 token transferred, corresponding to the ids array"
     - name: evt_ApprovalForAll
       meta:
-        docs_slug: /evm/avalanchec/decoded/evt_ApprovalForAll
+        docs_slug: /evm/avalanche/decoded/evt_ApprovalForAll
         short_description: The `avalanche_c.evt_ApprovalForAll` table contains approval events for all tokens of an ERC1155 contract on the Avalanche C blockchain.
       loaded_at_field: evt_block_time
       description: '{{ doc("erc1155_avalanche_c_evt_ApprovalForAll_doc") }}'
@@ -416,7 +416,7 @@ sources:
           description: "Unique identifier of the ERC721 token (NFT) being transferred"
     - name: evt_Approval
       meta:
-        docs_slug: /evm/avalanchec/decoded/evt_Approval
+        docs_slug: /evm/avalanche/decoded/evt_Approval
         short_description: The `avalanche_c.evt_Approval` table contains approval events for individual ERC721 tokens (NFTs) on the Avalanche C blockchain.
       loaded_at_field: evt_block_time
       description: '{{ doc("erc721_avalanche_c_evt_Approval_doc") }}'
@@ -433,7 +433,7 @@ sources:
           description: "Unique identifier of the ERC721 token (NFT) for which approval is granted or revoked"
     - name: evt_ApprovalForAll
       meta:
-        docs_slug: /evm/avalanchec/decoded/evt_ApprovalForAll
+        docs_slug: /evm/avalanche/decoded/evt_ApprovalForAll
         short_description: The `avalanche_c.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the Avalanche C blockchain.
       loaded_at_field: evt_block_time
       description: '{{ doc("erc721_avalanche_c_evt_ApprovalForAll_doc") }}'
