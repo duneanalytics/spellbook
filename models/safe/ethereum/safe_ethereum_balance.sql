@@ -1,7 +1,7 @@
 {{
     config(
         materialized='incremental',
-        alias='eth_transfers',
+        alias='eth_safes_balances',
         partition_by={'field': 'day', 'data_type': 'date'},
         unique_key=['address', 'tx_hash', 'trace_address'],
         on_schema_change='fail',
