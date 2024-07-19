@@ -3,164 +3,153 @@ version: 2
 sources:
   # Base Tables
   - name: bitcoin
-    description: "Bitcoin raw tables including blocks, transactions, inputs and outputs."
+    description: "Base raw tables including blocks, transactions, inputs, and outputs for the Bitcoin blockchain."
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
       - name: blocks
+        meta:
+          docs_slug: /bitcoin/raw/blocks
+          short_description: The `bitcoin.blocks` table contains detailed information about blocks on the Bitcoin blockchain, including block data, transaction counts, and mining rewards.
         loaded_at_field: time
-        description: "Block data of bitcoin"
+        description: '{{ doc("bitcoin_blocks_doc") }}'
         columns:
-          - name: time
-            description: The block time
-          - name: height
-            description: The block number
-          - name: date
-            description: The block date
-          - name: hash
-            description: The block hash
+          - &block_time
+            name: time
+            description: "The exact UTC timestamp when this block was mined"
+          - &block_height
+            name: height
+            description: "The sequential number of this block in the Bitcoin blockchain"
+          - &block_date
+            name: date
+            description: "The UTC date of this block"
+          - &block_hash
+            name: hash
+            description: "Unique 256-bit identifier (hash) of this block"
           - name: transaction_count
-            description: The number of transactions in the block
+            description: "The number of transactions included in this block"
           - name: size
-            description: The size of the block
+            description: "The size of this block in bytes"
           - name: mint_reward
-            description: The output paid out to the miner for minting the block
+            description: "The total reward given to the miner for minting this block, including block reward and transaction fees"
           - name: total_fees
-            description: The fees paid out to the miner from transaction users. Each transaction's fee is what's left of output after input is subtracted from it.
+            description: "The sum of all transaction fees in this block"
           - name: total_reward
-            description: The static reward given to the miner. It is the sum of the outputs in the coinbase transaction (the first transaction).
+            description: "The static block reward given to the miner, not including transaction fees"
           - name: stripped_size
-            description: The size of the block excluding witness data
+            description: "The size of the block excluding witness data"
           - name: weight
-            description: The block weight as defined in BIP 141
+            description: "The block weight as defined in BIP 141"
           - name: chainwork
-            description: The expected number of hashes required to produce the current chain
+            description: "The expected number of hashes required to produce the current chain"
           - name: difficulty
-            description: The estimated amount of work done to find this block relative to the estimated amount of work done to find block 0
+            description: "The mining difficulty for this block"
           - name: merkle_root
-            description: The root node of a Merkle tree, where leaves are transaction hashes
+            description: "The root hash of the merkle tree of transactions in this block"
           - name: nonce
-            description: The number of transactions made by the sender prior to this one
+            description: "The nonce used to generate this block"
           - name: coinbase
-            description: The data specified in the coinbase transaction of the block
+            description: "The coinbase data (arbitrary data miners can include in a coinbase transaction)"
           - name: previous_block_hash
-            description: The hash of the previous block
+            description: "The hash of the previous block in the chain"
           - name: bits
-            description: The difficulty threshold specified in block header
+            description: "The compact format of the difficulty target for this block"
 
       - name: transactions
+        meta:
+          docs_slug: /bitcoin/raw/transactions
+          short_description: The `bitcoin.transactions` table contains detailed information about transactions on the Bitcoin blockchain, including input and output values, fees, and sizes.
         loaded_at_field: block_time
-        description: "The bitcoin transactions"
+        description: '{{ doc("bitcoin_transactions_doc") }}'
         columns:
-          - name: block_time
-            description: The block time
-          - name: block_date
-            description: The block date
-          - name: block_height
-            description: The block number
-          - name: block_hash
-            description: The hash of the block that contains this transaction
+          - *block_time
+          - *block_date
+          - *block_height
+          - *block_hash
           - name: index
-            description: The number of the transaction in the block.
-          - name: id
-            description: The id (hash) of this transaction
+            description: "The position of this transaction within its containing block"
+          - &tx_id
+            name: id
+            description: "Unique 256-bit identifier (hash) of this transaction"
           - name: input_value
-            description: Total value of inputs in the transaction
+            description: "Total value of all inputs in this transaction, in satoshis"
           - name: output_value
-            description: Total value of outputs in the transaction
+            description: "Total value of all outputs in this transaction, in satoshis"
           - name: fee
-            description: The transaction fee paid to the miner. = output_value - input_value
+            description: "The transaction fee paid to the miner, in satoshis"
           - name: input_count
-            description: The number of inputs in the transaction
+            description: "The number of inputs in this transaction"
           - name: output_count
-            description: The number of outputs in the transaction
+            description: "The number of outputs in this transaction"
           - name: size
-            description: The size of this transaction in bytes
+            description: "The size of this transaction in bytes"
           - name: virtual_size
-            description: The virtual transaction size (differs from size for witness transactions)
+            description: "The virtual size of this transaction (differs from size for SegWit transactions)"
           - name: is_coinbase
-            description: The transaction is a coinbase transaction, which is the first transaction in a block
+            description: "Boolean flag indicating whether this is a coinbase transaction"
           - name: coinbase
-            description: If the transaction is a coinbase transaction, contains the coinbase data. Otherwise, null.
-          - name: input
-            description: Transaction inputs
-          - name: output
-            description: Transaction outputs. See outputs table.
+            description: "The coinbase data for coinbase transactions, null otherwise"
           - name: lock_time
-            description: Earliest time that miners can include the transaction in their hashing of the Merkle root to attach it in the latest block of the blockchain
+            description: "The lock time of this transaction"
           - name: hex
-            description: The transaction encoded as hexadecimal
+            description: "The raw transaction data in hexadecimal format"
 
       - name: inputs
+        meta:
+          docs_slug: /bitcoin/raw/inputs
+          short_description: The `bitcoin.inputs` table contains information about transaction inputs on the Bitcoin blockchain, including spent outputs and script details.
         loaded_at_field: block_time
-        description: "The inputs of Bitcoin"
+        description: '{{ doc("bitcoin_inputs_doc") }}'
         columns:
-          - name: block_time
-            description: The block time
-          - name: block_date
-            description: The block date
-          - name: block_height
-            description: The block number
+          - *block_time
+          - *block_date
+          - *block_height
+          - *block_hash
           - name: index
-            description: The index of the input
-          - name: block_hash
-            description: The block hash of the output
-          - name: tx_id
-            description: The transaction id that this input was used
-          - name: spent_block_height
-            description: The block height of the output
+            description: "The position of this input within the transaction"
+          - *tx_id
           - name: spent_tx_id
-            description: The transaction id of the output
-          - name: spent_output_number
-            description: The output number
+            description: "The transaction ID of the output being spent"
+          - name: spent_output_index
+            description: "The index of the output being spent within its transaction"
           - name: value
-            description: The number of Satoshis attached to this input
+            description: "The value of this input in satoshis"
           - name: address
-            description: The address that owned/owns the output used as input
+            description: "The Bitcoin address associated with this input"
           - name: type
-            description: The address type of the input
-          - name: coinbase
-            description: This input was the coinbase input in the transaction
+            description: "The type of the address (e.g., P2PKH, P2SH, P2WPKH)"
           - name: is_coinbase
-            description: True if coinbase is not null, else false
+            description: "Boolean flag indicating whether this is a coinbase input"
           - name: script_asm
-            description: Symbolic representation of the bitcoin's script language op-codes
+            description: "The input script in human-readable ASM format"
           - name: script_hex
-            description: Hexadecimal representation of the bitcoin's script language op-codes
-          - name: script_desc
-            description: The description
-          - name: script_signature_asm
-            description: Symbolic representation of the bitcoin's script language op-codes
-          - name: script_signature_hex
-            description: Hexadecimal representation of the bitcoin's script language op-codes
-          - name: sequence
-            description: A number intended to allow unconfirmed time-locked transactions to be updated before being finalized; not currently used except to disable locktime in a transaction
-          - name: witness_data
-            description: Witness data
+            description: "The input script in hexadecimal format"
+          - name: witness
+            description: "The witness data for SegWit inputs"
 
       - name: outputs
+        meta:
+          docs_slug: /bitcoin/raw/outputs
+          short_description: The `bitcoin.outputs` table contains information about transaction outputs on the Bitcoin blockchain, including values, addresses, and script details.
         loaded_at_field: block_time
-        description: "Output of Bitcoin"
+        description: '{{ doc("bitcoin_outputs_doc") }}'
         columns:
-          - name: block_time
-            description: The block time
-          - name: block_date
-            description: The block date
-          - name: block_height
-            description: The block number
-          - name: block_hash
-            description: The block hash
-          - name: tx_id
-            description: The id (hash) of the transaction this is from
+          - *block_time
+          - *block_date
+          - *block_height
+          - *block_hash
+          - *tx_id
           - name: index
-            description: 0-indexed number of an output within a transaction. Used by inputs to identify outputs.
+            description: "The position of this output within the transaction"
           - name: value
-            description: The number of Satoshis attached to this output
-          - name: script_asm
-            description: Symbolic representation of the bitcoin's script language op-codes
-          - name: script_hex
-            description: Hexadecimal representation of the bitcoin's script language op-codes
+            description: "The value of this output in satoshis"
           - name: address
-            description: The address that owns this output
+            description: "The Bitcoin address associated with this output"
           - name: type
-            description: The address type of the output
+            description: "The type of the address (e.g., P2PKH, P2SH, P2WPKH)"
+          - name: script_asm
+            description: "The output script in human-readable ASM format"
+          - name: script_hex
+            description: "The output script in hexadecimal format"
+          - name: is_spent
+            description: "Boolean flag indicating whether this output has been spent"
