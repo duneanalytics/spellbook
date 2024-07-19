@@ -103,7 +103,7 @@ models:
       - *blockchain
       - *block_date
       - *block_month
-      - &block_time
+      - *block_time
         name: block_time
         description: "Date and time of the block"
       - &block_number
