@@ -11,9 +11,8 @@ sources:
         meta:
           docs_slug: /evm/arbitrum/transactions
           short_description: The `arbitrum.transactions` table contains detailed information about transactions on the Arbitrum blockchain, including block data, transaction values, and gas-related metrics. 
-        
         loaded_at_field: block_time
-        description: '{{ doc("arbitrum_base_doc") }}'
+        description: '{{ doc("arbitrum_transactions_doc") }}'
         
         columns:
           - &block_date
@@ -70,8 +69,11 @@ sources:
             description: "Amount of gas used specifically for Layer 1 (Ethereum mainnet) interactions in this Arbitrum transaction"
 
       - name: traces
+        meta:
+          docs_slug: /evm/arbitrum/traces
+          short_description: The `arbitrum.traces` table contains information about traces on the Arbitrum blockchain.
         loaded_at_field: block_time
-        description: "An Arbitrum trace is a small atomic action that modifies the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
+        description: '{{ doc("arbitrum_traces_doc") }}'
         columns:
           - *block_date
           - *block_time
@@ -118,8 +120,11 @@ sources:
             description: "Ethereum address designated to receive any gas refund from this trace"
 
       - name: traces_decoded
+        meta:
+          docs_slug: /evm/arbitrum/traces_decoded
+          short_description: The `arbitrum.traces_decoded` table contains decoded Arbitrum traces, including additional information based on submitted smart contracts and their ABIs.
         loaded_at_field: block_time
-        description: "Decoded Arbitrum traces including additional information based on submitted smart contracts and their ABIs"
+        description: '{{ doc("arbitrum_traces_decoded_doc") }}'
         columns:
           - *block_date
           - *block_time
@@ -140,7 +145,7 @@ sources:
 
       - name: logs
         loaded_at_field: block_time
-        description: "An Arbitrum log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
+        description: '{{ doc("arbitrum_logs_doc") }}'
         columns:
           - *block_date
           - *block_time
@@ -165,7 +170,7 @@ sources:
 
       - name: logs_decoded
         loaded_at_field: block_time
-        description: "Decoded Arbitrum logs based on submitted smart contracts, providing human-readable event data"
+        description: '{{ doc("arbitrum_logs_decoded_doc") }}'
         columns:
           - *block_date
           - *block_time
@@ -188,7 +193,7 @@ sources:
         freshness:
           warn_after: { count: 1, period: day }
         loaded_at_field: time
-        description: "Arbitrum blocks containing batches of transactions, linked together in a chain by cryptographic hashes"
+        description: '{{ doc("arbitrum_blocks_doc") }}'
         columns:
           - name: base_fee_per_gas
             description: "Minimum fee per gas unit required for transaction inclusion in this block"
@@ -220,7 +225,7 @@ sources:
           warn_after: { count: 1, period: day }
           error_after: { count: 3, period: day }
         loaded_at_field: created_at
-        description: "A view tracking decoded contracts on Arbitrum, including associated metadata such as namespace, name, address, and ABI"
+        description: '{{ doc("arbitrum_contracts_doc") }}'
         columns:
           - name: abi
             description: "JSON representation of the contract's Application Binary Interface (ABI)"
@@ -247,7 +252,7 @@ sources:
           
       - name: creation_traces
         loaded_at_field: block_time
-        description: "Arbitrum creation traces"
+        description: '{{ doc("arbitrum_creation_traces_doc") }}'
         columns:
           - *block_time
           - *block_number
@@ -265,7 +270,7 @@ sources:
     tables:
       - name: evt_transfer
         loaded_at_field: evt_block_time
-        description: "Individual transfer events for ERC20 tokens on Arbitrum"
+        description: '{{ doc("erc20_arbitrum_evt_transfer_doc") }}'
         freshness:
           warn_after: { count: 12, period: hour }
           error_after: { count: 24, period: hour }
@@ -291,7 +296,7 @@ sources:
 
       - name: evt_approval
         loaded_at_field: evt_block_time
-        description: "Approval events for ERC20 tokens on Arbitrum, allowing an address to spend tokens on behalf of the owner"
+        description: '{{ doc("erc20_arbitrum_evt_approval_doc") }}'
         columns:
           - name: contract_address
             description: "Ethereum address of the ERC20 token contract"
@@ -308,112 +313,116 @@ sources:
           - name: value
             description: "Amount of ERC20 tokens approved for spending, in the token's smallest unit"
 
-    - name: erc1155_arbitrum
+  - name: erc1155_arbitrum
     description: "Transfer events for ERC1155 tokens on Arbitrum"
     tables:
-      - name: evt_transfersingle
-        loaded_at_field: evt_block_time
-        description: "Single transfer events for ERC1155 tokens on Arbitrum"
-        columns:
-          - name: contract_address
-            description: "Ethereum address of the ERC1155 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - name: operator
-            description: "Ethereum address authorized to execute the transfer on behalf of the owner"
-          - *from
-          - *to
-          - name: id
-            description: "Unique identifier of the ERC1155 token being transferred"
-          - name: value
-            description: "Quantity of the ERC1155 token transferred"
-
-      - name: evt_transferbatch
-        loaded_at_field: evt_block_time
-        description: "Batch transfer events for multiple ERC1155 tokens on Arbitrum"
-        columns:
-          - name: contract_address
-            description: "Ethereum address of the ERC1155 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - name: operator
-            description: "Ethereum address authorized to execute the batch transfer on behalf of the owner"
-          - *from
-          - *to
-          - name: ids
-            description: "Array of unique identifiers of the ERC1155 tokens being transferred"
-          - name: values
-            description: "Array of quantities for each ERC1155 token transferred, corresponding to the ids array"
-
-      - name: evt_ApprovalForAll
-        loaded_at_field: evt_block_time
-        description: "Approval events for all tokens of an ERC1155 contract on Arbitrum"
-        columns:
-          - name: contract_address
-            description: "Ethereum address of the ERC1155 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - &approved
-            name: approved
-            description: "Boolean indicating whether approval is granted (true) or revoked (false)"
-          - &owner
-            name: owner
-            description: "Ethereum address of the token owner granting or revoking approval"
-          - name: account
-            description: "Ethereum address being granted or revoked permission to operate all tokens"
-          - &operator
-            name: operator
-            description: "Ethereum address being granted or revoked permission to operate all tokens (alternative to 'account')"
-
-    - name: erc721_arbitrum
-    description: "Transfer events for ERC721 tokens (NFTs) on Arbitrum"
+    - name: evt_transfersingle
+      loaded_at_field: evt_block_time
+      description: '{{ doc("erc1155_arbitrum_evt_transfersingle_doc") }}'
+      columns:
+        - name: contract_address
+          description: "Ethereum address of the ERC1155 token contract"
+        - *evt_tx_hash
+        - *evt_index
+        - *evt_block_time
+        - *evt_block_number
+        - name: operator
+          description: "Ethereum address authorized to execute the transfer on behalf of the owner"
+        - *from
+        - *to
+        - name: id
+          description: "Unique identifier of the ERC1155 token being transferred"
+        - name: value
+          description: "Quantity of the ERC1155 token transferred"
+    - name: evt_transferbatch
+      loaded_at_field: evt_block_time
+      description: '{{ doc("erc1155_arbitrum_evt_transferbatch_doc") }}'
+      columns:
+        - name: contract_address
+          description: "Ethereum address of the ERC1155 token contract"
+        - *evt_tx_hash
+        - *evt_index
+        - *evt_block_time
+        - *evt_block_number
+        - name: operator
+          description: "Ethereum address authorized to execute the batch transfer on behalf of the owner"
+        - *from
+        - *to
+        - name: ids
+          description: "Array of unique identifiers of the ERC1155 tokens being transferred"
+        - name: values
+          description: "Array of quantities for each ERC1155 token transferred, corresponding to the ids array"
+    - name: evt_ApprovalForAll
+      loaded_at_field: evt_block_time
+      description: '{{ doc("erc1155_arbitrum_evt_ApprovalForAll_doc") }}'
+      columns:
+        - name: contract_address
+          description: "Ethereum address of the ERC1155 token contract"
+        - *evt_tx_hash
+        - *evt_index
+        - *evt_block_time
+        - *evt_block_number
+        - &approved
+          name: approved
+          description: "Boolean indicating whether approval is granted (true) or revoked (false)"
+        - &owner
+          name: owner
+          description: "Ethereum address of the token owner granting or revoking approval"
+        - name: account
+          description: "Ethereum address being granted or revoked permission to operate all tokens"
+        - &operator
+          name: operator
+          description: "Ethereum address being granted or revoked permission to operate all tokens (alternative to 'account')"
+          
+  - name: erc721_arbitrum
+    description: '{{ doc("erc721_arbitrum_evt_transfer_doc") }}'
     tables:
-      - name: evt_transfer
-        loaded_at_field: evt_block_time
-        description: "Transfer events for ERC721 tokens (NFTs) on Arbitrum"
-        columns:
-          - name: contract_address
-            description: "Ethereum address of the ERC721 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - *from
-          - *to
-          - name: tokenId
-            description: "Unique identifier of the ERC721 token (NFT) being transferred"
-
-      - name: evt_Approval
-        loaded_at_field: evt_block_time
-        description: "Approval events for individual ERC721 tokens (NFTs) on Arbitrum"
-        columns:
-          - name: contract_address
-            description: "Ethereum address of the ERC721 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - *approved
-          - *owner
-          - name: tokenId
-            description: "Unique identifier of the ERC721 token (NFT) for which approval is granted or revoked"
-
-      - name: evt_ApprovalForAll
-        loaded_at_field: evt_block_time
-        description: "Approval events for all tokens of an ERC721 contract on Arbitrum"
-        columns:
-          - name: contract_address
-            description: "Ethereum address of the ERC721 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - *approved
-          - *owner
-          - *operator
+    - name: evt_transfer
+    - name: evt_transfersingle
+      loaded_at_field: evt_block_time
+      description: "Transfer events for ERC721 tokens (NFTs) on Arbitrum"
+      columns:
+        - name: contract_address
+          description: "Ethereum address of the ERC721 token contract"
+          description: "Ethereum address of the ERC1155 token contract"
+        - *evt_tx_hash
+        - *evt_index
+        - *evt_block_time
+        - *evt_block_number
+        - name: operator
+          description: "Ethereum address authorized to execute the transfer on behalf of the owner"
+        - *from
+        - *to
+        - name: tokenId
+          description: "Unique identifier of the ERC721 token (NFT) being transferred"
+    - name: evt_Approval
+      loaded_at_field: evt_block_time
+      description: '{{ doc("erc721_arbitrum_evt_Approval_doc") }}'
+      columns:
+        - name: contract_address
+          description: "Ethereum address of the ERC721 token contract"
+        - *evt_tx_hash
+        - *evt_index
+        - *evt_block_time
+        - *evt_block_number
+        - *approved
+        - *owner
+        - name: tokenId
+          description: "Unique identifier of the ERC721 token (NFT) for which approval is granted or revoked"
+    - name: evt_ApprovalForAll
+      loaded_at_field: evt_block_time
+      description: '{{ doc("erc721_arbitrum_evt_ApprovalForAll_doc") }}'
+      columns:
+        - name: contract_address
+          description: "Address of the ERC721 token contract"
+        - *evt_tx_hash
+        - *evt_index
+        - *evt_block_time
+        - *evt_block_number
+        - *approved
+        - *owner
+        - *operator
+        - name: id
+          description: "Unique identifier of the ERC1155 token being approved"
+        - name: value
+          description: "Quantity of the ERC1155 token transferred"    
