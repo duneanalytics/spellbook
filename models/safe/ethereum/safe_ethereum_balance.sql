@@ -2,7 +2,7 @@
     config(
         materialized='incremental',
         alias='eth_safes_balances',
-        partition_by={'field': 'day'},
+        partition_by=['day'],  // Corrected partition_by syntax
         unique_key=['day', 'address', 'balance', 'token_address', 'token_id'],
         on_schema_change='fail',
         file_format='delta',
