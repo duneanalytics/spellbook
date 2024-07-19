@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'address', 'block_date', 'counterparty', 'token_address'],
+        unique_key = ['blockchain', 'address', 'block_date', 'counterparty', 'token_address', 'token_symbol'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
         post_hook = '{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "optimism", "polygon", "scroll", "zksync"]\',
                                     "sector",
