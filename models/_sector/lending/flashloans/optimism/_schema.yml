@@ -6,7 +6,7 @@ models:
       blockchain: optimism
       sector: lending
       project: aave
-      contributors: tomfutago
+      contributors: tomfutago, hildobby
     config:
       tags: ['lending', 'flashloans', 'aave', 'optimism']
     description: "All lending flashloans transactions on Optimism"
@@ -134,3 +134,33 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: balancer_v2_optimism_base_flashloans
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: balancer
+      contributors: hildobby
+    config:
+      tags: ['lending', 'flashloans', 'balancer', 'optimism']
+    description: "Balancer flashloans transactions on Optimism"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *project_contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+

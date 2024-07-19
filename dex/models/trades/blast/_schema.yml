@@ -60,6 +60,23 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('thruster_blast_base_trades_seed')
 
+  - name: blasterswap_blast_base_trades
+    meta:
+      blockchain: blast
+      sector: dex
+      project: blasterswap
+      contributors: hosuke
+    config:
+      tags: [ 'blast', 'dex', 'trades', 'blasterswap' ]
+    description: "blasterswap blast base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('blasterswap_blast_base_trades_seed')
+
   - name: fenix_blast_base_trades
     meta:
       blockchain: blast
@@ -74,3 +91,4 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
