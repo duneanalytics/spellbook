@@ -104,8 +104,6 @@ models:
       - *block_date
       - *block_month
       - *block_time
-        name: block_time
-        description: "Date and time of the block"
       - &block_number
         name: block_number
         description: "Number of block"
