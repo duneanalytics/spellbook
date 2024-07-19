@@ -102,8 +102,8 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
-            - pool
-            - token
+            - pool_address
+            - token_address
     columns:
       - &day
         name: day
