@@ -77,3 +77,4 @@ WITH pool_labels AS (
         LEFT JOIN {{ source('tokens_ethereum', 'erc20') }} t ON t.contract_address = c.token_address
         LEFT JOIN pool_labels p ON p.address = c.pool_address
         LEFT JOIN eth_prices e ON e.day = c.day
+        WHERE c.pool_address IS NOT NULL

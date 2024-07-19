@@ -18,7 +18,7 @@ WITH events AS (
            contract_address  AS pool,
            token,
            denorm
-    FROM {{ source('b_cow_amm_ethereum', 'BCoWPool_call_bind') }}
+    FROM {{ ref('b_cow_amm_ethereum', 'BCoWPool_call_bind') }}
     WHERE call_success
     {% if is_incremental() %}
         AND call_block_time >= date_trunc('day', now() - interval '7' day)
@@ -56,9 +56,8 @@ settings AS (
     LEFT JOIN {{ source('tokens_ethereum', 'erc20') }} t ON s.token = t.contract_address
     WHERE next_block_number = 99999999
     AND denorm > uint256 '0'
-),
+)
 
-final AS (
     SELECT
       'ethereum' AS blockchain,
       pool AS address,
@@ -78,7 +77,3 @@ final AS (
     ) s
 
     GROUP BY 1, 2
-)
-SELECT *
-FROM final
-WHERE length(name) < 35
