@@ -56,8 +56,9 @@ settings AS (
     LEFT JOIN {{ source('tokens_ethereum', 'erc20') }} t ON s.token = t.contract_address
     WHERE next_block_number = 99999999
     AND denorm > uint256 '0'
-)
+),
 
+final AS (
     SELECT
       'ethereum' AS blockchain,
       pool AS address,
@@ -77,3 +78,7 @@ settings AS (
     ) s
 
     GROUP BY 1, 2
+)
+
+SELECT *
+FROM final
