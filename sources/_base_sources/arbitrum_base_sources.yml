@@ -9,7 +9,7 @@ sources:
     tables:
       - name: transactions
         meta:
-          docs_slug: /evm/arbitrum/transactions
+          docs_slug: /evm/arbitrum/raw/transactions
           short_description: The `arbitrum.transactions` table contains detailed information about transactions on the Arbitrum blockchain, including block data, transaction values, and gas-related metrics. 
         loaded_at_field: block_time
         description: '{{ doc("arbitrum_transactions_doc") }}'
@@ -70,7 +70,7 @@ sources:
 
       - name: traces
         meta:
-          docs_slug: /evm/arbitrum/traces
+          docs_slug: /evm/arbitrum/raw/traces
           short_description: The `arbitrum.traces` table contains information about traces on the Arbitrum blockchain.
         loaded_at_field: block_time
         description: '{{ doc("arbitrum_traces_doc") }}'
@@ -121,7 +121,7 @@ sources:
 
       - name: traces_decoded
         meta:
-          docs_slug: /evm/arbitrum/traces_decoded
+          docs_slug: /evm/arbitrum/decoded/traces_decoded
           short_description: The `arbitrum.traces_decoded` table contains decoded Arbitrum traces, including additional information based on submitted smart contracts and their ABIs.
         loaded_at_field: block_time
         description: '{{ doc("arbitrum_traces_decoded_doc") }}'
@@ -169,6 +169,9 @@ sources:
           - *tx_index
 
       - name: logs_decoded
+        meta:
+          docs_slug: /evm/arbitrum/decoded/logs_decoded
+          short_description: The `arbitrum.logs_decoded` table contains decoded Arbitrum logs, including additional information based on submitted smart contracts and their ABIs.
         loaded_at_field: block_time
         description: '{{ doc("arbitrum_logs_decoded_doc") }}'
         columns:
@@ -190,6 +193,9 @@ sources:
           - *tx_hash
 
       - name: blocks
+        meta:
+          docs_slug: /evm/arbitrum/raw/blocks
+          short_description: The `arbitrum.blocks` table contains information about Arbitrum blocks. Each row represents a single block.
         freshness:
           warn_after: { count: 1, period: day }
         loaded_at_field: time
@@ -221,6 +227,9 @@ sources:
             description: "Total chain difficulty up to this block (may be deprecated in Arbitrum)"
 
       - name: contracts
+        meta:
+          docs_slug: /evm/arbitrum/raw/contracts
+          short_description: The `arbitrum.contracts` table is a view tracking decoded contracts on Arbitrum, including associated metadata such as namespace, name, address, ABI.
         freshness:
           warn_after: { count: 1, period: day }
           error_after: { count: 3, period: day }
@@ -251,6 +260,9 @@ sources:
             description: "Timestamp of when this contract was created or first detected"
           
       - name: creation_traces
+        meta:
+          docs_slug: /evm/arbitrum/raw/creation_traces
+          short_description: The `arbitrum.creation_traces` table contains information about contract creation traces on the Arbitrum blockchain. It includes details about newly created contracts, their creators, and the contract code.
         loaded_at_field: block_time
         description: '{{ doc("arbitrum_creation_traces_doc") }}'
         columns:
@@ -269,6 +281,9 @@ sources:
     description: "Transfer events for ERC20 tokens on Arbitrum"
     tables:
       - name: evt_transfer
+        meta:
+          docs_slug: /evm/arbitrum/decoded/evt_transfer
+          short_description: The `arbitrum.evt_transfer` table contains individual transfer events for ERC20 tokens on the Arbitrum blockchain. Each row represents a single token transfer.
         loaded_at_field: evt_block_time
         description: '{{ doc("erc20_arbitrum_evt_transfer_doc") }}'
         freshness:
@@ -295,6 +310,9 @@ sources:
             description: "Amount of ERC20 tokens transferred, in the token's smallest unit"
 
       - name: evt_approval
+        meta:
+          docs_slug: /evm/arbitrum/decoded/evt_approval
+          short_description: The `arbitrum.evt_approval` table contains approval events for ERC20 tokens on Arbitrum, allowing an address to spend tokens on behalf of the owner.
         loaded_at_field: evt_block_time
         description: '{{ doc("erc20_arbitrum_evt_approval_doc") }}'
         columns:
@@ -317,6 +335,9 @@ sources:
     description: "Transfer events for ERC1155 tokens on Arbitrum"
     tables:
     - name: evt_transfersingle
+      meta:
+        docs_slug: /evm/arbitrum/decoded/evt_transfersingle
+        short_description: The `arbitrum.evt_transfersingle` table contains single transfer events for ERC1155 tokens on the Arbitrum blockchain.
       loaded_at_field: evt_block_time
       description: '{{ doc("erc1155_arbitrum_evt_transfersingle_doc") }}'
       columns:
@@ -335,6 +356,9 @@ sources:
         - name: value
           description: "Quantity of the ERC1155 token transferred"
     - name: evt_transferbatch
+      meta:
+        docs_slug: /evm/arbitrum/decoded/evt_transferbatch
+        short_description: The `arbitrum.evt_transferbatch` table contains batch transfer events for multiple ERC1155 tokens on the Arbitrum blockchain.
       loaded_at_field: evt_block_time
       description: '{{ doc("erc1155_arbitrum_evt_transferbatch_doc") }}'
       columns:
@@ -353,6 +377,9 @@ sources:
         - name: values
           description: "Array of quantities for each ERC1155 token transferred, corresponding to the ids array"
     - name: evt_ApprovalForAll
+      meta:
+        docs_slug: /evm/arbitrum/decoded/evt_ApprovalForAll
+        short_description: The `arbitrum.evt_ApprovalForAll` table contains approval events for all tokens of an ERC1155 contract on the Arbitrum blockchain.
       loaded_at_field: evt_block_time
       description: '{{ doc("erc1155_arbitrum_evt_ApprovalForAll_doc") }}'
       columns:
@@ -396,6 +423,9 @@ sources:
         - name: tokenId
           description: "Unique identifier of the ERC721 token (NFT) being transferred"
     - name: evt_Approval
+      meta:
+        docs_slug: /evm/arbitrum/decoded/evt_Approval
+        short_description: The `arbitrum.evt_Approval` table contains approval events for individual ERC721 tokens (NFTs) on the Arbitrum blockchain.
       loaded_at_field: evt_block_time
       description: '{{ doc("erc721_arbitrum_evt_Approval_doc") }}'
       columns:
@@ -410,6 +440,9 @@ sources:
         - name: tokenId
           description: "Unique identifier of the ERC721 token (NFT) for which approval is granted or revoked"
     - name: evt_ApprovalForAll
+      meta:
+        docs_slug: /evm/arbitrum/decoded/evt_ApprovalForAll
+        short_description: The `arbitrum.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the Arbitrum blockchain.
       loaded_at_field: evt_block_time
       description: '{{ doc("erc721_arbitrum_evt_ApprovalForAll_doc") }}'
       columns:
