@@ -60,19 +60,19 @@ WITH pool_labels AS (
     )
     
         SELECT
-            b.day,
-            b.pool_address AS pool_id,
-            b.pool_address,
+            c.day,
+            c.pool_address AS pool_id,
+            c.pool_address,
             p.name AS pool_symbol,
             '1' AS version,
             'ethereum' AS blockchain,
             'balancer_cowswap_amm' AS pool_type,
             c.token_address,
             t.symbol AS token_symbol,
-            token_balance_raw,
-            token_balance,
-            protocol_liquidity_usd,
-            (protocol_liquidity_usd) / e.eth_price AS protocol_liquidity_eth
+            c.token_balance_raw,
+            c.token_balance,
+            c.protocol_liquidity_usd,
+            (c.protocol_liquidity_usd) / e.eth_price AS protocol_liquidity_eth
         FROM cumulative_usd_balance c
         LEFT JOIN {{ source('tokens_ethereum', 'erc20') }} t ON t.contract_address = c.token_address
         LEFT JOIN pool_labels p ON p.address = c.pool_address
