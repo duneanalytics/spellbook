@@ -68,7 +68,7 @@ from (
     select * from forward_fill
     where balance > 0
 ) b
-left join {{ ref('usd_daily') }} p
+left join {{ ref('prices_usd_daily') }} p
     on (token_standard = 'erc20'
     and b.blockchain = p.blockchain
     and b.token_address = p.contract_address
