@@ -2,8 +2,8 @@
     config(
         materialized='incremental',
         alias='eth_safes_balances',
-        partition_by={'field': 'day', 'data_type': 'date'},
-        unique_key=['address', 'tx_hash', 'trace_address'],
+        partition_by={'field': 'day'},
+        unique_key=['day', 'address', 'balance', 'token_address', 'token_id'],
         on_schema_change='fail',
         file_format='delta',
         incremental_strategy='merge',
