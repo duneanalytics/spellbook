@@ -73,21 +73,9 @@ models:
       - &maker
         name: maker
         description: "Address of trader who sold a token"
-      - &pool_id
-        name: pool_id
-        description: "Unique encoded identifier that refers to each pool"
-      - &swap_fee
-        name: swap_fee
-        description: 'Swap fee'
       - &project_contract_address
         name: project_contract_address
         description: "Pool address"
-      - &pool_symbol
-        name: pool_symbol
-        description: "Token symbols, followed by their respective weights, if applicable"
-      - &pool_type
-        name: pool_type
-        description: "Pool attributes, determined by the pool's factory"
       - &tx_hash
         name: tx_hash
         description: "Tx. Hash"
@@ -192,12 +180,12 @@ models:
             - token_address
     columns:
       - *day
-      - *pool_id
-      - *ool_address
-      - *pool_symbol
+      - name: pool_id
+      - *pool_address
+      - name: pool_symbol
       - *version
       - *blockchain
-      - *pool_type
+      - name: pool_type
       - *token_address
       - &token_symbol
         name: token_symbol
