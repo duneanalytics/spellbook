@@ -1,6 +1,5 @@
 {{
     config(
-        tags=['prod_exclude'],
         schema = 'lynex_linea',
         alias = 'base_trades',
         materialized = 'incremental',
