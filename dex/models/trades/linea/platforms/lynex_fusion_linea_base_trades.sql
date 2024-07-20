@@ -1,6 +1,6 @@
 {{
     config(
-    schema = 'lynex_linea'
+    schema = 'lynex_fusion_linea'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
