@@ -17,6 +17,7 @@
     all_swaps as (
         SELECT 
             sp.call_block_time as block_time
+            , sp.call_block_slot as block_slot
             , 'meteora' as project
             , 2 as version
             , 'solana' as blockchain
@@ -76,6 +77,7 @@ SELECT
     , tb.version
     , CAST(date_trunc('month', tb.block_time) AS DATE) as block_month
     , tb.block_time
+    , tb.block_slot
     , tb.token_pair
     , tb.trade_source
     , tb.token_bought_symbol
@@ -92,6 +94,7 @@ SELECT
     , tb.token_sold_vault
     , tb.token_bought_vault
     , tb.pool_id as project_program_id
+    , 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo' as project_main_id
     , tb.trader_id
     , tb.tx_id
     , tb.outer_instruction_index
