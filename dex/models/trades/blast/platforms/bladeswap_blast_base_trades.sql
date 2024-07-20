@@ -10,7 +10,21 @@
     )
 }}
 
-WITH source_expanded AS (
+WITH filtered_source AS (
+    SELECT * FROM (
+        SELECT
+            *,
+            ROW_NUMBER() OVER (PARTITION BY pool, evt_tx_hash, evt_index ORDER BY evt_block_number DESC, evt_tx_index DESC) AS rn
+        FROM
+            {{ source('bladeswap_blast', 'Vault_Router_evt_Swap') }}
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('evt_block_time') }}
+        {% endif %}
+    ) t
+    WHERE t.rn = 1
+)
+
+, filtered_source_expanded AS (
     SELECT
         delta[1] as amount0,
         delta[2] as amount1,
@@ -18,13 +32,10 @@ WITH source_expanded AS (
         bytearray_substring (tokenRef[2], 13, 20) as token1,
         *
     FROM
-        {{ source('bladeswap_blast', 'Vault_Router_evt_Swap') }}
-    WHERE CARDINALITY(delta) = 2
-    {% if is_incremental() %}
-      AND {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
-
+        filtered_source
+--     WHERE CARDINALITY(delta) = 2
 )
+
 , dexs AS (
     SELECT
         t.evt_block_number AS block_number
@@ -40,7 +51,7 @@ WITH source_expanded AS (
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
     FROM
-        source_expanded t
+        filtered_source_expanded t
 
 )
 
