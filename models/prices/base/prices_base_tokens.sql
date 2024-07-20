@@ -113,6 +113,6 @@ FROM
     ('mochi3-mochi', 'base', 'MOCHI', 0xf6e932ca12afa26665dc4dde7e27be02a7c02e50, 18),
     ('bet-betbase', 'base', 'BET', 0x80F6BcedD3d4fa1035285affA30e38f464Db3895, 18),
     ('aura-aura-finance','base','AURA',0x1509706a6c66ca549ff0cb464de88231ddbe213b, 18),
-    ('ezeth-renzo-restaked-eth', 'base', 'ezETH', 0x2416092f143378750bb29b79ed961ab195cceea5, 18)
+    ('ezeth-renzo-restaked-eth', 'base', 'ezETH', 0x2416092f143378750bb29b79ed961ab195cceea5, 18),
     ('zro-layerzero', 'base', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
