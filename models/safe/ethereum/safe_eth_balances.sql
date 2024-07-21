@@ -3,7 +3,7 @@
         materialized='incremental',
         alias='eth_safes_balances',
         partition_by=['day'],
-        unique_key=['day', 'address', 'balance', 'token_address', 'token_id'],
+        unique_key=['day', 'blockchain', 'address', 'balance', 'token_address'],
         on_schema_change='fail',
         file_format='delta',
         incremental_strategy='merge',
@@ -63,6 +63,10 @@ forward_fill as (
 select
     b.day,
     b.blockchain,
+    b.address,
+    b.token_address,
+    b.token_standard,
+    b.token_id,
     sum(b.balance * p.price) as balance_usd
 from (
     select * from forward_fill
@@ -78,4 +82,4 @@ left join {{ ref('prices_usd_daily') }} p
     and p.contract_address is null
     and p.symbol = 'ETH'
     and b.day = p.day)
-group by 1, 2
+group by 1, 2, 3, 4, 5, 6
