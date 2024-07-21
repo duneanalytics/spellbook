@@ -417,7 +417,7 @@ models:
           seed_file: ref('integral_ethereum_base_trades_seed')
 
 
-  - name: maverick_ethereum_base_trades
+  - name: maverick_v1_ethereum_base_trades
     meta:
       blockchain: ethereum
       sector: dex
@@ -425,7 +425,7 @@ models:
       contributors: get620v, tomfutago
     config:
       tags: [ 'ethereum', 'dex', 'trades', 'maverick' ]
-    description: "Maverick ethereum base trades"
+    description: "Maverick ethereum v1 base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -433,7 +433,28 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('maverick_ethereum_base_trades_seed')
+          filter:
+            version: 1
 
+
+  - name: maverick_v2_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: maverick
+      contributors: maybeYonas
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'maverick' ]
+    description: "Maverick ethereum v2 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('maverick_ethereum_base_trades_seed')
+          filter:
+            version: 2
 
   - name: clipper_ethereum_base_trades
     meta:
