@@ -4,7 +4,7 @@
         alias='eth_safes_balances',
         partition_by=['day'],
         unique_key=['day', 'blockchain', 'address', 'balance', 'token_address'],
-        on_schema_change='fail',
+        on_schema_change='sync_all_columns',
         file_format='delta',
         incremental_strategy='merge',
         post_hook="{{ expose_spells(
