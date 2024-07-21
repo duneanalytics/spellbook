@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'maverick_ethereum',
+        schema = 'maverick_v1_ethereum',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
