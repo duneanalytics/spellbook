@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'balancer_pools',     
+    schema='lido_liquidity_ethereum',
+    alias = 'balancer_pools',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -9,23 +10,23 @@
                                 spell_type = "project",
                                 spell_name = "lido_liquidity",
                                 contributors = \'["pipistrella"]\') }}'
-    
+
     )
 }}
 
-{% set project_start_date = '2021-08-13' %} 
+{% set project_start_date = '2021-08-13' %}
 
-with 
+with
 
 volumes as (
-select u.call_block_time as time,  
-cast(output_0 as double) as steth, cast(_wstETHAmount as double) as wsteth 
-from  {{source('lido_ethereum','WstETH_call_unwrap')}} u 
-where call_success = TRUE 
+select u.call_block_time as time,
+cast(output_0 as double) as steth, cast(_wstETHAmount as double) as wsteth
+from  {{source('lido_ethereum','WstETH_call_unwrap')}} u
+where call_success = TRUE
 union all
-select u.call_block_time, cast(_stETHAmount as double) as steth, cast(output_0 as double) as wsteth 
+select u.call_block_time, cast(_stETHAmount as double) as steth, cast(output_0 as double) as wsteth
 from  {{source('lido_ethereum','WstETH_call_wrap')}} u
-where call_success = TRUE 
+where call_success = TRUE
 )
 
 
@@ -33,14 +34,14 @@ where call_success = TRUE
 SELECT
   day, rate as rate0, value_partition, first_value(rate) over (partition by value_partition order by day) as rate,
   lead(day,1,date_trunc('day', now() + interval '1' day)) over(order by day) as next_day
-  
+
 FROM (
 select day, rate,
 sum(case when rate is null then 0 else 1 end) over (order by day) as value_partition
 from (
-select  date_trunc('day', v.time) as day, 
+select  date_trunc('day', v.time) as day,
        sum(cast(steth as double))/sum(cast(wsteth as double))  AS rate
-from  volumes v 
+from  volumes v
 group by 1
 ))
 
@@ -62,7 +63,7 @@ group by 1
     group by 1
     union all
     SELECT distinct
-        DATE_TRUNC('day', minute), 
+        DATE_TRUNC('day', minute),
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
     WHERE date_trunc('day', minute) = current_date
@@ -73,8 +74,8 @@ group by 1
 
 
 , pools(pool_id, poolAddress) as (
-values       
-(0x32296969EF14EB0C6D29669C550D4A0449130230000200000000000000000080, 0x32296969ef14eb0c6d29669c550d4a0449130230), 
+values
+(0x32296969EF14EB0C6D29669C550D4A0449130230000200000000000000000080, 0x32296969ef14eb0c6d29669c550d4a0449130230),
 (0x5AEE1E99FE86960377DE9F88689616916D5DCABE000000000000000000000467, 0x5AEE1E99FE86960377DE9F88689616916D5DCABE),
 (0x42ed016f826165c2e5976fe5bc3df540c5ad0af700000000000000000000058b, 0x42ed016f826165c2e5976fe5bc3df540c5ad0af7),
 (0x9C6D47FF73E0F5E51BE5FD53236E3F595C5793F200020000000000000000042C, 0x9C6D47FF73E0F5E51BE5FD53236E3F595C5793F2),
@@ -83,7 +84,7 @@ values
 (0x25ACCB7943FD73DDA5E23BA6329085A3C24BFB6A000200000000000000000387, 0x25ACCB7943FD73DDA5E23BA6329085A3C24BFB6A),
 (0x93d199263632a4ef4bb438f1feb99e57b4b5f0bd0000000000000000000005c2, 0x93d199263632a4ef4bb438f1feb99e57b4b5f0bd),
 (0x54ca50ee86616379420cc56718e12566aa75abbe000200000000000000000610, 0x54ca50ee86616379420cc56718e12566aa75abbe)
-              
+
 )
 
 
@@ -124,8 +125,8 @@ WHERE call_create.output_0 in (select distinct  poolAddress from pools)
 ,  sfrxeth_rate as (
 select time, lead(time, 1 , date_trunc('hour', now()) + interval '1' hour) over (order by time) as next_time, rate
 from (
-    select 
-        date_trunc('hour', call_block_time) as time, 
+    select
+        date_trunc('hour', call_block_time) as time,
         avg(CAST(output_0 AS DOUBLE))/POW(10,18) as rate
     from {{source('frax_ethereum','sfrxETH_call_pricePerShare')}}
     {% if not is_incremental() %}
@@ -134,14 +135,14 @@ from (
     WHERE {{ incremental_predicate('call_block_time') }}
     {% endif %}
     and call_success
-    
+
     GROUP BY 1)
     order by 1 desc
 )
 
 , wusdm_rate as (
-    select 
-        date_trunc('day', evt_block_time) as time, 
+    select
+        date_trunc('day', evt_block_time) as time,
         avg(CAST(value AS DOUBLE))/POW(10,18) as rate
     from {{source('mountain_ethereum','USDM_evt_RewardMultiplier')}}
     {% if not is_incremental() %}
@@ -149,9 +150,9 @@ from (
     {% else %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
-    
+
     GROUP BY 1
-)    
+)
 
 , tokens_prices_daily AS (
     SELECT distinct
@@ -172,7 +173,7 @@ from (
     group by 1,2,3,4
     union all
     SELECT distinct
-        DATE_TRUNC('day', minute), 
+        DATE_TRUNC('day', minute),
         contract_address as token,
         symbol,
         decimals,
@@ -201,7 +202,7 @@ from (
 
 union all
     SELECT distinct
-        DATE_TRUNC('day', minute), 
+        DATE_TRUNC('day', minute),
         0x60D604890feaa0b5460B28A424407c24fe89374a as token,
         'bb-a-WETH',
         18,
@@ -218,7 +219,7 @@ SELECT distinct
         18,
         avg(price*r.rate) AS price
     FROM {{source('prices','usd')}} p
-    left join sfrxeth_rate r on DATE_TRUNC('day', minute) >= r.time and DATE_TRUNC('day', minute) < r.next_time 
+    left join sfrxeth_rate r on DATE_TRUNC('day', minute) >= r.time and DATE_TRUNC('day', minute) < r.next_time
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
@@ -250,7 +251,7 @@ SELECT distinct
         'wUSDM',
         18,
         avg(r.rate) AS price
-    FROM wusdm_rate r 
+    FROM wusdm_rate r
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', r.time) >= DATE '{{ project_start_date }}'
     {% else %}
@@ -258,8 +259,8 @@ SELECT distinct
     {% endif %}
     group by 1,2,3,4
 
-    
-    
+
+
 )
 
 , wsteth_prices_hourly AS (
@@ -405,16 +406,16 @@ SELECT distinct
             p1.symbol AS token_symbol,
             amount as token_balance_raw,
             amount / POWER(10, 18) AS token_balance,
-            COALESCE(p1.price, steth_prices_daily.price*r.rate) AS price, 
+            COALESCE(p1.price, steth_prices_daily.price*r.rate) AS price,
             0 as row_numb
-        FROM balance b         
+        FROM balance b
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
-        LEFT JOIN  wsteth_rate r on b.day >= r.day and b.day < r.next_day  
+        LEFT JOIN  wsteth_rate r on b.day >= r.day and b.day < r.next_day
         LEFT JOIN steth_prices_daily on steth_prices_daily.time = b.day
         WHERE b.token = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
-        
+
         union all
-        
+
         SELECT
             day,
             pool_id,
@@ -422,9 +423,9 @@ SELECT distinct
             p1.symbol AS token_symbol,
             amount as token_balance_raw,
             amount / POWER(10, p1.decimals) AS token_balance,
-            COALESCE(p1.price, 0) AS price, 
+            COALESCE(p1.price, 0) AS price,
             row_number() OVER(PARTITION BY day,pool_id ORDER BY  day, pool_id, b.token) as row_numb
-        FROM balance b 
+        FROM balance b
         LEFT JOIN tokens_prices_daily p1 ON p1.time = b.day AND p1.token = b.token
         WHERE b.token not in (select poolAddress from pools
                               union all
@@ -432,7 +433,7 @@ SELECT distinct
 )
 
 , reserves as (
-select main.day, main.pool_id, 
+select main.day, main.pool_id,
 main_token, main_token_symbol, main_token_reserve, main_token_usd_price,
 paired1_token, paired1_token_symbol, paired1_token_reserve, paired1_token_usd_price
 --paired2_token, paired2_token_symbol, paired2_token_reserve, paired2_token_usd_reserve
@@ -446,7 +447,7 @@ SELECT
     coalesce(price, 0) AS main_token_usd_price
 FROM usd_balance b
 where token = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 ) main
-join 
+join
 (
 SELECT
     b.day,
@@ -457,7 +458,7 @@ SELECT
     coalesce(price, 0) AS paired1_token_usd_price
 FROM usd_balance b
 where token !=  0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 and cast(row_numb as int) = int '1') paired1
-on main.day = paired1.day and main.pool_id = paired1.pool_id 
+on main.day = paired1.day and main.pool_id = paired1.pool_id
 /*left join (
 SELECT
     b.day,
@@ -468,16 +469,16 @@ SELECT
     coalesce(amount_usd, 0) AS paired2_token_usd_reserve
 FROM cumulative_usd_balance b
 where token !=  0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 and cast(row_numb as int) = int '2') paired2
-on main.day = paired2.day and main.pool_id = paired2.pool_id 
+on main.day = paired2.day and main.pool_id = paired2.pool_id
 */
 )
 
-, trading_volume as (    
+, trading_volume as (
     select  date_trunc('day', s.evt_block_time) as time,
         poolId,
         sum(
-        case when tokenOut = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 then wsteth_price.price*amountOut/1e18 
-             when tokenIn = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 then  wsteth_price.price*amountIn/1e18 
+        case when tokenOut = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 then wsteth_price.price*amountOut/1e18
+             when tokenIn = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 then  wsteth_price.price*amountIn/1e18
              else 0 end) as trading_volume
     from {{source('balancer_v2_ethereum','Vault_evt_Swap')}} s
     left join wsteth_prices_hourly wsteth_price on date_trunc('hour', s.evt_block_time) >= wsteth_price.time and date_trunc('hour', s.evt_block_time) < wsteth_price.next_time
@@ -485,16 +486,16 @@ on main.day = paired2.day and main.pool_id = paired2.pool_id
     WHERE DATE_TRUNC('day', s.evt_block_time) >= DATE '{{ project_start_date }}'
     {% else %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
-    {% endif %} 
+    {% endif %}
     and s.poolId in (select pool_id from pools)
     group by 1,2
-) 
+)
 
 , all_metrics as (
-select  pool_id as pool, 'ethereum' as blockchain, 'balancer' as project, 0 as fee, 
-cast(day as date) as time, 
-case when pool_id = 0x32296969EF14EB0C6D29669C550D4A0449130230000200000000000000000080 then 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0 else main_token end as main_token, 
-case when pool_id = 0x32296969EF14EB0C6D29669C550D4A0449130230000200000000000000000080 then 'wstETH' else main_token_symbol end as main_token_symbol, 
+select  pool_id as pool, 'ethereum' as blockchain, 'balancer' as project, 0 as fee,
+cast(day as date) as time,
+case when pool_id = 0x32296969EF14EB0C6D29669C550D4A0449130230000200000000000000000080 then 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0 else main_token end as main_token,
+case when pool_id = 0x32296969EF14EB0C6D29669C550D4A0449130230000200000000000000000080 then 'wstETH' else main_token_symbol end as main_token_symbol,
 paired1_token as paired_token,
 paired1_token_symbol as paired_token_symbol,
 --||case when paired2_token_symbol is null then '' else '/'||paired2_token_symbol end as paired_token_symbol,
@@ -509,9 +510,9 @@ order by day desc, pool_id
 )
 
 
-select 
+select
 blockchain ||' '|| project ||' '|| coalesce(paired_token_symbol,'unknown') ||':'|| main_token_symbol ||'('|| substring(cast(pool as varchar),64) ||')' as pool_name,
-* 
+*
 from all_metrics
 
 

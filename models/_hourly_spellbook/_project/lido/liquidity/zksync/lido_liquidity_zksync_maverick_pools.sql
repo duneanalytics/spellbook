@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'maverick_pools_zksync',                 
+    schema='lido_liquidity_zksync',
+    alias = 'maverick_pools_zksync',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -9,16 +10,16 @@
                                 spell_type = "project",
                                 spell_name = "lido_liquidity",
                                 contributors = \'["pipistrella"]\') }}'
-    
+
     )
 }}
 
-{% set project_start_date = '2024-01-17' %} 
+{% set project_start_date = '2024-01-17' %}
 
-with 
+with
 
 pools as (
-select distinct poolAddress, tokenA, tokenB, cast(fee as double)/1e16 as fee 
+select distinct poolAddress, tokenA, tokenB, cast(fee as double)/1e16 as fee
 from {{source('maverick_v1_zksync','factory_evt_PoolCreated')}}
 where tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
    or tokenB = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
@@ -35,7 +36,7 @@ union
 select tokenB
 from {{source('maverick_v1_zksync','factory_evt_PoolCreated')}}
 where tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
-union 
+union
 select 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
 ) t
 )
@@ -52,14 +53,14 @@ select 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
     WHERE {{ incremental_predicate('p.minute') }}
-    {% endif %}    
+    {% endif %}
     and date_trunc('day', minute) < current_date
     and blockchain = 'zksync'
     and contract_address in (select address from tokens)
     group by 1,2,3,4
     union all
     SELECT distinct
-        DATE_TRUNC('day', minute), 
+        DATE_TRUNC('day', minute),
         contract_address as token,
         symbol,
         decimals,
@@ -70,25 +71,25 @@ select 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
     and contract_address in (select address from tokens)
 )
 
-, wsteth_prices_hourly as (   
+, wsteth_prices_hourly as (
    select time, lead(time,1, DATE_TRUNC('hour', now() + interval '1' hour)) over (order by time) as next_time, price
     from (
     SELECT distinct
-        DATE_TRUNC('hour', minute) time, 
+        DATE_TRUNC('hour', minute) time,
         last_value(price) over (partition by DATE_TRUNC('hour', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}} p
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
     WHERE {{ incremental_predicate('p.minute') }}
-    {% endif %}    
+    {% endif %}
     and blockchain = 'zksync'
     and contract_address = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
     ) p
 )
 
 , swap_events as (
-    select 
+    select
         date_trunc('day', sw.evt_block_time) as time,
         sw.contract_address as pool,
         cr.tokenA, cr.tokenB,
@@ -101,16 +102,16 @@ select 0x703b52F2b28fEbcB60E1372858AF5b18849FE867
     {% else %}
     WHERE {{ incremental_predicate('sw.evt_block_time') }}
     {% endif %}
-    and sw.contract_address in (select poolAddress from pools) 
+    and sw.contract_address in (select poolAddress from pools)
     group by 1,2,3,4
 )
 
 , addliquidity_events as (
-    select  date_trunc('day', call_block_time) as time, 
+    select  date_trunc('day', call_block_time) as time,
         a.contract_address as pool,
         cr.tokenA, cr.tokenB,
         sum(cast(output_tokenAAmount as double)) as  amountA,
-        sum(cast(output_tokenBAmount as double)) as  amountB 
+        sum(cast(output_tokenBAmount as double)) as  amountB
 from {{source('maverick_v1_zksync','pool_call_addLiquidity')}} a
 left join {{source('maverick_v1_zksync','factory_evt_PoolCreated')}} cr on a.contract_address = cr.poolAddress
  {% if not is_incremental() %}
@@ -118,13 +119,13 @@ left join {{source('maverick_v1_zksync','factory_evt_PoolCreated')}} cr on a.con
  {% else %}
  WHERE {{ incremental_predicate('a.call_block_time') }}
  {% endif %}
- and a.call_success 
+ and a.call_success
  and a.contract_address in (select poolAddress from pools)
 group by 1,2,3,4
 )
 
 , removeliquidity_events as (
-select  date_trunc('day', call_block_time) as time, 
+select  date_trunc('day', call_block_time) as time,
         a.contract_address as pool,
         cr.tokenA, cr.tokenB,
         (-1)*sum(cast(output_tokenAOut as double)) as amountA,
@@ -136,8 +137,8 @@ left join {{source('maverick_v1_zksync','factory_evt_PoolCreated')}} cr on a.con
  {% else %}
  WHERE {{ incremental_predicate('a.call_block_time') }}
  {% endif %}
- and a.call_success 
- and a.contract_address  in (select poolAddress from pools) 
+ and a.call_success
+ and a.contract_address  in (select poolAddress from pools)
 group by 1,2,3,4
 )
 
@@ -169,7 +170,7 @@ SELECT  time, pools.fee,
         b.tokenB,
         coalesce((SUM(amountA)),0) AS amountA,
         coalesce((SUM(amountB)),0) AS amountB
-FROM daily_delta_balance b  
+FROM daily_delta_balance b
 left join pools on b.pool = pools.poolAddress
 GROUP BY 1,2,3,4,5
 )
@@ -177,14 +178,14 @@ GROUP BY 1,2,3,4,5
 
 
 , wsteth_traded_hourly as (
- select 
+ select
         date_trunc('hour', sw.evt_block_time) as time,
         sw.contract_address as pool,
         cr.tokenA, cr.tokenB,
-        sum(case when (cr.tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 and tokenAIn = true) then amountIn 
-                 when (cr.tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 and tokenAIn = false) then amountOut 
-                 when (cr.tokenA != 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 and tokenAIn = true) then amountOut 
-                 when (cr.tokenA != 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 and tokenAIn = false) then amountIn 
+        sum(case when (cr.tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 and tokenAIn = true) then amountIn
+                 when (cr.tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 and tokenAIn = false) then amountOut
+                 when (cr.tokenA != 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 and tokenAIn = true) then amountOut
+                 when (cr.tokenA != 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 and tokenAIn = false) then amountIn
                  end) as amount
     from {{source('maverick_v1_zksync','pool_evt_Swap')}} sw
     left join {{source('maverick_v1_zksync','factory_evt_PoolCreated')}} cr on sw.contract_address = cr.poolAddress
@@ -199,30 +200,30 @@ GROUP BY 1,2,3,4,5
 )
 
 , trading_volume_hourly as (
-select t.time, pool, t.amount*wp.price as volume_raw 
+select t.time, pool, t.amount*wp.price as volume_raw
 from wsteth_traded_hourly t
 left join wsteth_prices_hourly wp on date_trunc('hour',t.time) >= wp.time and date_trunc('hour',t.time) < wp.next_time
 order by 1,2
 )
 
-, trading_volume as ( 
+, trading_volume as (
     select distinct date_trunc('day', time) as time
-        , pool    
+        , pool
         , sum(volume_raw)/1e18 as volume
-    from trading_volume_hourly 
+    from trading_volume_hourly
     GROUP by 1,2
 )
 
 , all_metrics as (
-select   
+select
         o.pool,
         'zksync' as blockchain,
         'maverick' as project,
         format('%,.3f',round(coalesce(fee,0),4)) as fee,
-        cast(o.time as date) time, 
-        case when o.tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 then o.tokenA else o.tokenB end as main_token, 
+        cast(o.time as date) time,
+        case when o.tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 then o.tokenA else o.tokenB end as main_token,
         case when o.tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 then pA.symbol else pB.symbol end as main_token_symbol,
-        case when o.tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 then o.tokenB else o.tokenA end as paired_token, 
+        case when o.tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 then o.tokenB else o.tokenA end as paired_token,
         case when o.tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 then pB.symbol else pA.symbol end as paired_token_symbol,
         case when o.tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 then amountA/power(10,pA.decimals) else amountB/power(10,pB.decimals) end as main_token_reserve,
         case when o.tokenA = 0x703b52F2b28fEbcB60E1372858AF5b18849FE867 then amountB/power(10,pB.decimals) else amountA/power(10,pA.decimals) end as paired_token_reserve,

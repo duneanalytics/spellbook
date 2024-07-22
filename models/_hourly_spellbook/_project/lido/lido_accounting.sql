@@ -1,4 +1,5 @@
 {{ config(
+        schema = 'lido',
         alias = 'accounting',
 
         materialized = 'table',

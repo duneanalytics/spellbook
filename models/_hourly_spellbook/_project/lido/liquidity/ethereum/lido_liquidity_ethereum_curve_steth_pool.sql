@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'curve_steth_pool',             
+    schema='lido_liquidity_ethereum',
+    alias = 'curve_steth_pool',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -12,7 +13,7 @@
     )
 }}
 
-{% set project_start_date = '2021-01-05' %} 
+{% set project_start_date = '2021-01-05' %}
 
 
 
@@ -22,32 +23,32 @@ select days.day
 from day_seq
 cross join unnest(day) as days(day)
 )
- 
+
 
 , volumes as (
-select u.call_block_time as time,  
-cast(output_0 as double) as steth, cast(_wstETHAmount as double) as wsteth 
-from  {{source('lido_ethereum','WstETH_call_unwrap')}} u 
-where call_success = TRUE 
+select u.call_block_time as time,
+cast(output_0 as double) as steth, cast(_wstETHAmount as double) as wsteth
+from  {{source('lido_ethereum','WstETH_call_unwrap')}} u
+where call_success = TRUE
 union all
-select u.call_block_time, cast(_stETHAmount as double) as steth, cast(output_0 as double) as wsteth 
+select u.call_block_time, cast(_stETHAmount as double) as steth, cast(output_0 as double) as wsteth
 from  {{source('lido_ethereum','WstETH_call_wrap')}} u
-where call_success = TRUE 
+where call_success = TRUE
 )
 
 , wsteth_rate as (
 SELECT
   day, rate as rate0, value_partition, first_value(rate) over (partition by value_partition order by day) as rate,
   lead(day,1,date_trunc('day', now() + interval '1' day)) over(order by day) as next_day
-  
+
 FROM (
 select day, rate,
 sum(case when rate is null then 0 else 1 end) over (order by day) as value_partition
 from (
-select  date_trunc('day', d.day) as day, 
+select  date_trunc('day', d.day) as day,
         case when  date_trunc('day', d.day) = date '{{ project_start_date }}' then 1 else sum(cast(steth as double))/sum(cast(wsteth as double)) end AS rate
 from dates  d
-left join volumes v on date_trunc('day', v.time)  = date_trunc('day', d.day) 
+left join volumes v on date_trunc('day', v.time)  = date_trunc('day', d.day)
 group by 1
 ))
 
@@ -67,7 +68,7 @@ from {{source('erc20_ethereum','evt_Transfer')}} t
  WHERE {{ incremental_predicate('evt_block_time') }}
  {% endif %}
  and contract_address = 0xae7ab96520de3a18e5e111b5eaab095312d7fe84
- and to = 0xdc24316b9ae028f1497c275eb9192a3ea0f67022    
+ and to = 0xdc24316b9ae028f1497c275eb9192a3ea0f67022
 group by 1,4
 )
 
@@ -84,8 +85,8 @@ from {{source('erc20_ethereum','evt_Transfer')}} t
  {% else %}
  WHERE {{ incremental_predicate('evt_block_time') }}
  {% endif %}
- and contract_address = 0xae7ab96520de3a18e5e111b5eaab095312d7fe84 
- and "from" = 0xdc24316b9ae028f1497c275eb9192a3ea0f67022       
+ and contract_address = 0xae7ab96520de3a18e5e111b5eaab095312d7fe84
+ and "from" = 0xdc24316b9ae028f1497c275eb9192a3ea0f67022
 group by 1, 4
 )
 
@@ -121,7 +122,7 @@ FROM (
     AND"from" = 0xDC24316b9AE028F1497c275EB9192a3Ea0f67022
     AND success
     AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS null)
-    
+
     UNION ALL
 
     -- inbound transfers
@@ -135,11 +136,11 @@ FROM (
     AND to = 0xDC24316b9AE028F1497c275EB9192a3Ea0f67022
     AND success
     AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS null)
-    
+
     UNION ALL
-    
+
     -- gas costs
-    SELECT block_time, -cast(gas_price as double)*cast(gas_used as double)/1e18 
+    SELECT block_time, -cast(gas_price as double)*cast(gas_used as double)/1e18
     FROM {{source('ethereum','transactions')}} et
     {% if not is_incremental() %}
     WHERE DATE_TRUNC('day', block_time) >= DATE '{{ project_start_date }}'
@@ -152,7 +153,7 @@ FROM (
 group by 1
 
 
-) 
+)
 
 , weth_prices_daily AS (
     SELECT distinct
@@ -163,22 +164,22 @@ group by 1
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
     WHERE {{ incremental_predicate('p.minute') }}
-    {% endif %} 
+    {% endif %}
     and date_trunc('day', minute) < current_date
     and blockchain = 'ethereum'
     and symbol = 'WETH'
     group by 1
     union all
     SELECT distinct
-        DATE_TRUNC('day', minute), 
+        DATE_TRUNC('day', minute),
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
     WHERE date_trunc('day', minute) = current_date
     and blockchain = 'ethereum'
     and symbol = 'WETH'
-    
-    
-)    
+
+
+)
 
 , weth_prices_hourly AS (
     select time
@@ -196,8 +197,8 @@ group by 1
     {% endif %}
     and blockchain = 'ethereum'
     and symbol = 'WETH'
-    
-))   
+
+))
 
 , steth_prices_daily AS (
     SELECT distinct
@@ -215,7 +216,7 @@ group by 1
     group by 1
     union all
     SELECT distinct
-        DATE_TRUNC('day', minute), 
+        DATE_TRUNC('day', minute),
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
     WHERE date_trunc('day', minute) = current_date
@@ -224,7 +225,7 @@ group by 1
 
 )
 
-, token_exchange_hourly as( 
+, token_exchange_hourly as(
     select date_trunc('hour', evt_block_time) as time
         , sum(case when cast(sold_id as int) = int '0' then cast(tokens_sold as double) else cast(tokens_bought as double) end) as eth_amount_raw
     from {{source('curvefi_ethereum','steth_swap_evt_TokenExchange')}} c
@@ -234,45 +235,45 @@ group by 1
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
     group by 1
-    
+
 )
 
 , trading_volume_hourly as (
     select t.time
-        , t.eth_amount_raw * wp.price as volume_raw 
+        , t.eth_amount_raw * wp.price as volume_raw
     from token_exchange_hourly t
     left join weth_prices_hourly wp on t.time = wp.time
     order by 1
 )
 
-, trading_volume as ( 
+, trading_volume as (
     select distinct date_trunc('day', time) as time
         , sum(volume_raw)/1e18 as volume
-    from trading_volume_hourly 
+    from trading_volume_hourly
     GROUP by 1
 )
 
 
 
-select 'ethereum curve ETH:stETH 0.04' as pool_name, 
-        0xDC24316b9AE028F1497c275EB9192a3Ea0f67022 as pool, 
-        'ethereum' as blockchain, 
+select 'ethereum curve ETH:stETH 0.04' as pool_name,
+        0xDC24316b9AE028F1497c275EB9192a3Ea0f67022 as pool,
+        'ethereum' as blockchain,
         'curve' as project,
         0.04 as fee,
-        cast(b.time as date) as time, 
-        0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 as main_token, 
+        cast(b.time as date) as time,
+        0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84 as main_token,
         'stETH' as main_token_symbol,
-        0x0000000000000000000000000000000000000000 as paired_token, 
+        0x0000000000000000000000000000000000000000 as paired_token,
         'ETH' as paired_token_symbol,
          wsteth as main_token_reserve,
          coalesce(eth.eth_amount, 0) as paired_token_reserve,
          coalesce(stethp.price*r.rate, wethp.price*r.rate) as main_token_usd_price,
          wethp.price as paired_token_usd_price,
          v.volume as trading_volume
-from steth_balances b 
-left join eth_balances eth on b.time = eth.time 
-left join steth_prices_daily stethp on b.time = stethp.time 
-left join weth_prices_daily wethp on b.time = wethp.time 
+from steth_balances b
+left join eth_balances eth on b.time = eth.time
+left join steth_prices_daily stethp on b.time = stethp.time
+left join weth_prices_daily wethp on b.time = wethp.time
 left join trading_volume v on b.time = v.time
-left join wsteth_rate r on b.time >= r.day and b.time < r.next_day 
+left join wsteth_rate r on b.time >= r.day and b.time < r.next_day
 order by 1

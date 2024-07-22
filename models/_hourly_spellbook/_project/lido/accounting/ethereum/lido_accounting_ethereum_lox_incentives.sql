@@ -1,6 +1,7 @@
 {{ config(
+        schema='lido_accounting_ethereum',
         alias = 'lox_incentives',
-         
+
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
@@ -10,10 +11,10 @@
         )
 }}
 --https://dune.com/queries/2012051
---ref{{'lido_accounting_lox_incentives'}}    
+--ref{{'lido_accounting_lox_incentives'}}
 
 with tokens AS (
-select * from (values 
+select * from (values
     (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32), --LDO
     (0x0914d4ccc4154ca864637b0b653bc5fd5e1d3ecf),--anyLDO
     (0xc3c7d422809852031b44ab29eec9f1eff2a58756), --Poly LDO
@@ -24,8 +25,8 @@ select * from (values
     (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0),   --MATIC
     (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84), --stETH
     (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0),   --wstETH
-    (0x03b54A6e9a984069379fae1a4fC4dBAE93B3bCCD)-- Poly wstETH 
-    
+    (0x03b54A6e9a984069379fae1a4fC4dBAE93B3bCCD)-- Poly wstETH
+
 ) as tokens(address)),
 
 
@@ -35,11 +36,11 @@ select * from (values
 (0x3e40d73eb977dc6a537af587d48316fee66e9c8c, 'Ethereum', 'Aragon'),
 (0x48F300bD3C52c7dA6aAbDE4B683dEB27d38B9ABb, 'Ethereum', 'FinanceOpsMsig'),
 (0x87D93d9B2C672bf9c9642d853a8682546a5012B5, 'Ethereum', 'LiquidityRewardsMsig'),
-(0x753D5167C31fBEB5b49624314d74A957Eb271709, 'Ethereum', 'LiquidityRewardMngr'),--Curve Rewards Manager 
-(0x1dD909cDdF3dbe61aC08112dC0Fdf2Ab949f79D8, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V1 
-(0x55c8De1Ac17C1A937293416C9BCe5789CbBf61d1, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V2 
-(0x86F6c353A0965eB069cD7f4f91C1aFEf8C725551, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V3 
-(0xf5436129Cf9d8fa2a1cb6e591347155276550635,  'Ethereum', 'LiquidityRewardMngr'),--1inch Reward Manager 
+(0x753D5167C31fBEB5b49624314d74A957Eb271709, 'Ethereum', 'LiquidityRewardMngr'),--Curve Rewards Manager
+(0x1dD909cDdF3dbe61aC08112dC0Fdf2Ab949f79D8, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V1
+(0x55c8De1Ac17C1A937293416C9BCe5789CbBf61d1, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V2
+(0x86F6c353A0965eB069cD7f4f91C1aFEf8C725551, 'Ethereum', 'LiquidityRewardMngr'), --Balancer Rewards Manager V3
+(0xf5436129Cf9d8fa2a1cb6e591347155276550635,  'Ethereum', 'LiquidityRewardMngr'),--1inch Reward Manager
 (0xE5576eB1dD4aA524D67Cf9a32C8742540252b6F4,  'Ethereum', 'LiquidityRewardMngr'), --Sushi Reward Manager
 (0x87D93d9B2C672bf9c9642d853a8682546a5012B5,  'Polygon',  'LiquidityRewardsMsig'),
 (0x9cd7477521B7d7E7F9e2F091D2eA0084e8AaA290,  'Ethereum', 'PolygonTeamRewardsMsig'),
@@ -52,7 +53,7 @@ select * from (values
 (0xde06d17db9295fa8c4082d4f73ff81592a3ac437,  'Ethereum',  'RCCMsig'),
 (0x834560f580764bc2e0b16925f8bf229bb00cb759,  'Ethereum',  'TRPMsig')
 ) as list(address, chain, name)
-        
+
 ),
 
 diversifications_addresses AS (
@@ -78,178 +79,178 @@ select * from  (values
 
 lox_incentives_txns AS (
 -- Polygon Incentives
-    select 
-        evt_block_time, 
-        CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        to, 
-        "from", 
+    select
+        evt_block_time,
+        CAST(value AS DOUBLE) AS value,
+        evt_tx_hash,
+        to,
+        "from",
         contract_address
     FROM {{source('erc20_polygon','evt_transfer')}}
     WHERE  "from" IN (
         SELECT
-            address 
-        FROM multisigs_list 
+            address
+        FROM multisigs_list
         WHERE name IN  ('LiquidityRewardsMsig') AND chain = 'Polygon'
     )
     AND to != 0x0000000000000000000000000000000000000000
-    
+
     UNION ALL
-    
-    SELECT 
-        evt_block_time, 
-        -CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        to, 
-        "from", 
-        contract_address 
+
+    SELECT
+        evt_block_time,
+        -CAST(value AS DOUBLE) AS value,
+        evt_tx_hash,
+        to,
+        "from",
+        contract_address
     FROM {{source('erc20_polygon','evt_transfer')}}
     WHERE to IN (
-        SELECT 
-            address 
-        FROM multisigs_list 
+        SELECT
+            address
+        FROM multisigs_list
         WHERE name IN  ('LiquidityRewardsMsig') AND chain = 'Polygon'
     )
     AND "from" != 0x0000000000000000000000000000000000000000
-    
+
     UNION ALL
-    
-    SELECT 
-        evt_block_time, 
-        CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        to, 
-        "from", 
+
+    SELECT
+        evt_block_time,
+        CAST(value AS DOUBLE) AS value,
+        evt_tx_hash,
+        to,
+        "from",
         contract_address
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE to IN (
-        SELECT 
-            address 
-        FROM multisigs_list 
+        SELECT
+            address
+        FROM multisigs_list
         WHERE name IN ('PolygonTeamRewardsMsig' ) AND chain = 'Ethereum'
     )
     AND "from" IN (SELECT address FROM multisigs_list WHERE name = 'Aragon' and chain = 'Ethereum' )
-    
+
     UNION ALL
-    
+
     SELECT
         evt_block_time,
-        -CAST(value AS DOUBLE), 
-        evt_tx_hash, 
-        to, 
-        "from", 
+        -CAST(value AS DOUBLE),
+        evt_tx_hash,
+        to,
+        "from",
         contract_address
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE "from" IN (
-        SELECT 
+        SELECT
             address
-        FROM multisigs_list 
+        FROM multisigs_list
         WHERE name IN  ('PolygonTeamRewardsMsig' ) and chain = 'Ethereum'
     )
     AND to IN (SELECT address FROM multisigs_list WHERE name = 'Aragon' and chain = 'Ethereum' )
 
-    
+
     UNION ALL
-    
+
     -- Solana, Terra Liq Incentives
-    SELECT 
-        evt_block_time, 
-        CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        to, 
-        "from", 
+    SELECT
+        evt_block_time,
+        CAST(value AS DOUBLE) AS value,
+        evt_tx_hash,
+        to,
+        "from",
         contract_address
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE "from" IN (
-        SELECT 
-            address 
-        FROM multisigs_list 
+        SELECT
+            address
+        FROM multisigs_list
         WHERE name IN ('LiquidityRewardsMsig', 'Aragon', 'ReferralRewardsMsig') AND chain = 'Ethereum'
     )
     AND to IN (
-        SELECT 
-            address 
-        FROM intermediate_addresses 
-        WHERE name IN ('Jumpgate(Solana)','Wormhole bridge') 
+        SELECT
+            address
+        FROM intermediate_addresses
+        WHERE name IN ('Jumpgate(Solana)','Wormhole bridge')
     )
     UNION ALL
     SELECT
-        evt_block_time, 
-        -CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        to, 
-        "from", 
-        contract_address 
+        evt_block_time,
+        -CAST(value AS DOUBLE) AS value,
+        evt_tx_hash,
+        to,
+        "from",
+        contract_address
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE to IN (
-        SELECT 
-            address 
-        FROM multisigs_list 
+        SELECT
+            address
+        FROM multisigs_list
         WHERE name IN ('LiquidityRewardsMsig', 'Aragon', 'ReferralRewardsMsig') and chain = 'Ethereum'
     )
     AND "from" IN (
-        SELECT 
-            address 
-        FROM intermediate_addresses 
-        WHERE name IN ('Jumpgate(Solana)','Wormhole bridge') 
+        SELECT
+            address
+        FROM intermediate_addresses
+        WHERE name IN ('Jumpgate(Solana)','Wormhole bridge')
     )
     UNION ALL
     -- Polkadot, Kusama Incentives
-    SELECT 
-        evt_block_time, 
-        CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        to, 
-        "from", 
+    SELECT
+        evt_block_time,
+        CAST(value AS DOUBLE) AS value,
+        evt_tx_hash,
+        to,
+        "from",
         contract_address
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE "from" IN (
-        SELECT 
-            address 
-        FROM multisigs_list 
+        SELECT
+            address
+        FROM multisigs_list
         WHERE name IN ('LiquidityRewardsMsig') AND chain = 'Ethereum'
     )
     AND to IN (
-        SELECT 
-            address 
-        FROM intermediate_addresses 
-        WHERE name IN ('AnySwap bridge (Polkadot, Kusama)') 
+        SELECT
+            address
+        FROM intermediate_addresses
+        WHERE name IN ('AnySwap bridge (Polkadot, Kusama)')
     )
     UNION ALL
-    SELECT 
-        evt_block_time, 
-        -CAST(value AS DOUBLE) AS value, 
-        evt_tx_hash, 
-        to, 
-        "from", 
-        contract_address 
+    SELECT
+        evt_block_time,
+        -CAST(value AS DOUBLE) AS value,
+        evt_tx_hash,
+        to,
+        "from",
+        contract_address
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE to IN (
-        SELECT 
-            address 
-        FROM multisigs_list 
+        SELECT
+            address
+        FROM multisigs_list
         WHERE name IN ('LiquidityRewardsMsig') and chain = 'Ethereum'
     )
     AND "from" IN (
-        SELECT 
-            address 
-        FROM intermediate_addresses 
-        WHERE name IN ('AnySwap bridge (Polkadot, Kusama)') 
+        SELECT
+            address
+        FROM intermediate_addresses
+        WHERE name IN ('AnySwap bridge (Polkadot, Kusama)')
     )
-) 
+)
 
 
-    SELECT 
-        evt_block_time AS period, 
+    SELECT
+        evt_block_time AS period,
         evt_tx_hash,
         value AS amount_token,
         CASE
             WHEN contract_address = 0x0914d4ccc4154ca864637b0b653bc5fd5e1d3ecf THEN 0x5a98fcbea516cf06857215779fd812ca3bef1b32 --anyLDO
-            WHEN contract_address = 0xc3c7d422809852031b44ab29eec9f1eff2a58756 THEN 0x5a98fcbea516cf06857215779fd812ca3bef1b32 --Poly LDO 
+            WHEN contract_address = 0xc3c7d422809852031b44ab29eec9f1eff2a58756 THEN 0x5a98fcbea516cf06857215779fd812ca3bef1b32 --Poly LDO
             WHEN contract_address = 0x03b54A6e9a984069379fae1a4fC4dBAE93B3bCCD THEN 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 --Poly wstETH
         ELSE contract_address
-        END AS token     
-    
+        END AS token
+
     FROM lox_incentives_txns
     WHERE contract_address IN (SELECT address FROM tokens)
       and value != 0

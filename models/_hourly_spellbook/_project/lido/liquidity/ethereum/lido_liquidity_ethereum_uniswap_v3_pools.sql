@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'uniswap_v3_pools',                 
+    schema='lido_liquidity_ethereum',
+    alias = 'uniswap_v3_pools',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -12,19 +13,19 @@
     )
 }}
 
-{% set project_start_date = '2021-05-05' %} 
+{% set project_start_date = '2021-05-05' %}
 
-with 
+with
 
 volumes as (
-select u.call_block_time as time,  
-cast(output_0 as double) as steth, cast(_wstETHAmount as double) as wsteth 
-from  {{source('lido_ethereum','WstETH_call_unwrap')}} u 
-where call_success = TRUE 
+select u.call_block_time as time,
+cast(output_0 as double) as steth, cast(_wstETHAmount as double) as wsteth
+from  {{source('lido_ethereum','WstETH_call_unwrap')}} u
+where call_success = TRUE
 union all
-select u.call_block_time, cast(_stETHAmount as double) as steth, cast(output_0 as double) as wsteth 
+select u.call_block_time, cast(_stETHAmount as double) as steth, cast(output_0 as double) as wsteth
 from  {{source('lido_ethereum','WstETH_call_wrap')}} u
-where call_success = TRUE 
+where call_success = TRUE
 )
 
 
@@ -32,14 +33,14 @@ where call_success = TRUE
 SELECT
   day, rate as rate0, value_partition, first_value(rate) over (partition by value_partition order by day) as rate,
   lead(day,1,date_trunc('day', now() + interval '1' day)) over(order by day) as next_day
-  
+
 FROM (
 select day, rate,
 sum(case when rate is null then 0 else 1 end) over (order by day) as value_partition
 from (
-select  date_trunc('day', v.time) as day, 
+select  date_trunc('day', v.time) as day,
        sum(cast(steth as double))/sum(cast(wsteth as double))  AS rate
-from  volumes v 
+from  volumes v
 group by 1
 ))
 
@@ -61,7 +62,7 @@ group by 1
     group by 1
     union all
     SELECT distinct
-        DATE_TRUNC('day', minute), 
+        DATE_TRUNC('day', minute),
         last_value(price) over (partition by DATE_TRUNC('day', minute), contract_address ORDER BY  minute range between unbounded preceding AND unbounded following) AS price
     FROM {{source('prices','usd')}}
     WHERE date_trunc('day', minute) = current_date
@@ -80,10 +81,10 @@ group by 1
     FROM
       {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}}
     WHERE
-      token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 
-      OR token1 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 
+      token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
+      OR token1 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
   )
-  
+
 
  , tokens AS (
     SELECT DISTINCT
@@ -92,22 +93,22 @@ group by 1
       (
         SELECT token1 AS token
         FROM {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}}
-        WHERE token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 
+        WHERE token0 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
         UNION
         SELECT token0
         FROM {{source('uniswap_v3_ethereum','Factory_evt_PoolCreated')}}
-        WHERE token1 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 
+        WHERE token1 = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
         UNION
-        SELECT  0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0 
+        SELECT  0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0
       ) AS t
-      
+
   )
-  
+
  , tokens_prices_daily AS (
     SELECT DISTINCT
       DATE_TRUNC('day', minute) AS time,
       contract_address  AS token,
-      decimals, 
+      decimals,
       symbol,
       AVG(price) AS price
     FROM
@@ -117,7 +118,7 @@ group by 1
     WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
     {% else %}
     WHERE {{ incremental_predicate('p.minute') }}
-    {% endif %}    
+    {% endif %}
     AND DATE_TRUNC('day', minute) < current_date
     AND blockchain = 'ethereum'
     AND contract_address IN (SELECT address  FROM tokens      )
@@ -126,7 +127,7 @@ group by 1
     SELECT DISTINCT
       DATE_TRUNC('day', minute) AS time,
       0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa  AS token, --mETH
-      decimals, 
+      decimals,
       'mETH',
       AVG(price) AS price
     FROM
@@ -140,7 +141,7 @@ group by 1
     SELECT DISTINCT
       DATE_TRUNC('day', minute),
       contract_address  AS token,
-      decimals, 
+      decimals,
       symbol,
       LAST_VALUE(price) OVER (
         PARTITION BY
@@ -157,13 +158,13 @@ group by 1
       AND blockchain = 'ethereum'
       AND contract_address IN (SELECT address  FROM tokens      )
   ),
-  
+
   tokens_prices_hourly AS (
         SELECT DISTINCT
           DATE_TRUNC('hour', minute) AS time,
           LEAD(DATE_TRUNC('hour', minute),1,DATE_TRUNC('hour', NOW() + INTERVAL '1' hour)) OVER (PARTITION BY contract_address  ORDER BY DATE_TRUNC('hour', minute) NULLS FIRST) AS next_time,
           contract_address  AS token,
-          decimals, 
+          decimals,
           symbol,
           LAST_VALUE(price) OVER (
             PARTITION BY
@@ -179,12 +180,12 @@ group by 1
         WHERE DATE_TRUNC('day', p.minute) >= DATE '{{ project_start_date }}'
         {% else %}
         WHERE {{ incremental_predicate('p.minute') }}
-        {% endif %}    
+        {% endif %}
         AND blockchain = 'ethereum'
         AND contract_address IN (SELECT address FROM tokens)
-      
+
   )
-  
+
   , swap_events AS (
     SELECT
       DATE_TRUNC('day', sw.evt_block_time) AS time,
@@ -223,9 +224,9 @@ group by 1
     {% endif %}
       and mt.contract_address IN (SELECT address FROM pools)
     GROUP BY 1, 2, 3, 4
-    
+
   )
-  
+
   , collect_events AS (
     SELECT
       c.evt_block_time AS time,
@@ -245,10 +246,10 @@ group by 1
     {% endif %}
     and c.contract_address IN (SELECT address FROM pools)
   )
-  
+
 
   , daily_delta_balance AS (
-    
+
     SELECT
       time,
       pool,
@@ -298,9 +299,9 @@ group by 1
       2,
       3,
       4
-      
+
   )
-  
+
   , pool_liquidity AS (
     SELECT
       time,
@@ -309,10 +310,10 @@ group by 1
       d.token1,
       SUM(amount0)  AS amount0,
       SUM(amount1)  AS amount1
-    FROM daily_delta_balance d 
+    FROM daily_delta_balance d
     GROUP BY 1,2,3,4
   )
-  
+
   , swap_events_hourly AS (
         SELECT
           sw.evt_block_time as time,
@@ -322,7 +323,7 @@ group by 1
           COALESCE(SUM(CAST(ABS(amount0) AS DOUBLE)), 0) AS amount0,
           COALESCE(SUM(CAST(ABS(amount1) AS DOUBLE)), 0) AS amount1
         FROM
-          {{source('uniswap_v3_ethereum','Pair_evt_Swap')}} AS sw 
+          {{source('uniswap_v3_ethereum','Pair_evt_Swap')}} AS sw
           inner join pools on sw.contract_address = pools.address
 
         {% if not is_incremental() %}
@@ -330,12 +331,12 @@ group by 1
         {% else %}
         WHERE {{ incremental_predicate('sw.evt_block_time') }}
         {% endif %}
-         
+
         GROUP BY 1, 2, 3, 4
-        
+
   )
-  
-  
+
+
   , trading_volume AS (
     SELECT
       date_trunc('day', s.time)  AS time,
@@ -346,9 +347,9 @@ group by 1
       LEFT JOIN tokens_prices_hourly AS p ON date_trunc('hour', s.time) >= p.time
       AND date_trunc('hour', s.time) < p.next_time
       AND s.token0 = p.token
-    group by 1,2  
+    group by 1,2
   )
-  
+
   , all_metrics AS (
     SELECT
       l.pool,
@@ -396,7 +397,7 @@ group by 1
       LEFT JOIN tokens AS t1 ON l.token1 = t1.address
       LEFT JOIN tokens_prices_daily AS p0 ON l.time = p0.time   AND l.token0 = p0.token
       LEFT JOIN tokens_prices_daily AS p1 ON l.time = p1.time   AND l.token1 = p1.token
-      LEFT JOIN  wsteth_rate r on l.time >= r.day and l.time < r.next_day  
+      LEFT JOIN  wsteth_rate r on l.time >= r.day and l.time < r.next_day
       LEFT JOIN steth_prices_daily on steth_prices_daily.time = l.time
       LEFT JOIN trading_volume AS tv ON l.time = tv.time AND l.pool = tv.pool
   )

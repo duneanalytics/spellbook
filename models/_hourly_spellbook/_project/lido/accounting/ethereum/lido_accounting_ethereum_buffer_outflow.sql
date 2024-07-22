@@ -1,6 +1,7 @@
 {{ config(
+        schema='lido_accounting_ethereum',
         alias = 'buffer_outflow',
-         
+
         materialized = 'table',
         file_format = 'delta',
         post_hook='{{ expose_spells(\'["ethereum"]\',
