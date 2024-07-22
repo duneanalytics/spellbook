@@ -18,7 +18,7 @@ WITH events AS (
            contract_address  AS pool,
            token,
            denorm
-    FROM {{ ref('b_cow_amm_ethereum', 'BCoWPool_call_bind') }}
+    FROM {{ source('b_cow_amm_ethereum', 'BCoWPool_call_bind') }}
     WHERE call_success
     {% if is_incremental() %}
         AND call_block_time >= date_trunc('day', now() - interval '7' day)
