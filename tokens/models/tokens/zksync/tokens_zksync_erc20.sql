@@ -29,4 +29,5 @@ FROM (VALUES
     , (0xe0ef1c039a36ec77339e7277ecd4d48e57b61eec, 'ySYNC', 18)
     , (0x9e22d758629761fc5708c171d06c2fabb60b5159, 'WOO', 18)
     , (0x140d5bc5b62d6cb492b1a475127f50d531023803, 'DERI', 18)
+    , (0x787c09494Ec8Bcb24DcAf8659E7d5D69979eE508, 'MAV', 18)
 ) AS temp_table (contract_address, symbol, decimals)

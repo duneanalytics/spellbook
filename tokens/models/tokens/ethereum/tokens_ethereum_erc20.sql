@@ -4583,4 +4583,5 @@ FROM (VALUES
     , ( 0xf591d878608e2e5c7d4f1e499330f4ab9bbae37a, 's_aUSDC', 6)
     , ( 0x73a15fed60bf67631dc6cd7bc5b6e8da8190acf5, 'USD0', 18)  
     , ( 0x2E3CFE45E3EE7C017277f22e35d2f29edC99d570, 'wDAG', 8)          
+    , ( 0x7448c7456a97769F6cD04F1E83A4a23cCdC46aBD, 'MAV', 18)          
 ) AS temp_table (contract_address, symbol, decimals)
