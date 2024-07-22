@@ -170,7 +170,7 @@ models:
         name: threshold
         description: "Number of signer threshold"
 
-  - name: safe_ethereum_balances
+  - name: eth_safes_balances
     meta:
       blockchain: ethereum
       project: safe
