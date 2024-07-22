@@ -7,7 +7,7 @@
                                     \'["hildobby"]\') }}')}}
 
 SELECT blockchain
-, from_base58(address) as address
+, from_base58(cast(address as varchar)) as address
 , distinct_name AS name
 , 'institution' AS category
 , added_by AS contributor
@@ -18,4 +18,4 @@ SELECT blockchain
 , 'identifier' AS label_type
 FROM {{ source('cex','addresses') }}
 WHERE blockchain = 'bitcoin'
-AND regexp_like(address, '^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$')
+AND regexp_like(cast(address as varchar), '^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$')
