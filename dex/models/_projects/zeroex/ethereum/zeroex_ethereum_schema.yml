@@ -294,12 +294,12 @@ models:
             - evt_index
             - volume_usd
       - check_seed:
-          seed_file: ref('zeroex_ethereum_native_fills_sample')
+          seed_file: ref('zeroex_ethereum_settler_trades')
           match_columns:
             - tx_hash
             - evt_index
           check_columns:
-            - maker
+            - taker_token_amount
             - taker
             - maker_token
             - taker_token
