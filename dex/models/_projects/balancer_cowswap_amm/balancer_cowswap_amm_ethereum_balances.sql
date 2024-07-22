@@ -76,3 +76,4 @@ cumulative_balance_by_token AS (
         b.cumulative_amount AS token_balance_raw
     FROM calendar c
     LEFT JOIN cumulative_balance_by_token b ON b.day <= c.day AND c.day < b.day_of_next_change
+    WHERE b.pool IS NOT NULL
