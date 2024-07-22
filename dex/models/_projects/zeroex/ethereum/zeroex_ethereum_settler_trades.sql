@@ -18,7 +18,7 @@ with
 tbl_addresses as (
 select blockchain, token_id, to as settler_address, block_time as begin_block_time, block_number as begin_block_number 
 
-from {{ source('nft', 'transfers') }} where contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae
+from {{ source('nft', 'transfers') }} where contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae and blockchain = 'ethereum'
 ),
 
 tbl_end_times as( 
@@ -53,7 +53,7 @@ from (
      varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker
     
   FROM {{ source('ethereum', 'traces') }} AS tr
-  join result_0x_settler_addresses a on a.settler_address = tr.to
+  join result_0x_settler_addresses a on a.settler_address = tr.to 
   WHERE (a.settler_address is not null or tr.to = 0xca11bde05977b3631167028862be2a173976ca11)
     and varbinary_substring(input,1,4) in (0x1fff991f, 0xfd3ad6d4)
     AND block_time > TIMESTAMP '2024-07-15'  
