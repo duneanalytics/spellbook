@@ -198,7 +198,7 @@ models:
         description: "type of nft - ERC 721 OR ERC 1155"
       - &price_label
         name: price_label
-        description: "token address used to genearate the amount in usd - for eth, we take the price of weth"
+        description: "token address used to generate the amount in usd - for eth, we take the price of weth"
       - &token
         name: token
         description: "token used to pay for the transaction"
@@ -217,9 +217,6 @@ models:
       - &project_name
         name: project_name
         description: "name of the nft project"   
-        tests:
-          - zeroex_ethereum_nft_test:
-              seed_file: ref('zeroex_ethereum_nft_fills_sample')
 
   - name: zeroex_ethereum_native_fills 
     meta:
