@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'maverick_zksync',
+        schema = 'maverick_v2_zksync',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',

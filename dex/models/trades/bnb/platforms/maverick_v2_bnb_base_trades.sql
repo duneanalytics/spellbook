@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'maverick_bnb',
+        schema = 'maverick_v2_bnb',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',

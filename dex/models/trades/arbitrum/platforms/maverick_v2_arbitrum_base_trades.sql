@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'maverick_arbitrum',
+        schema = 'maverick_v2_arbitrum',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
