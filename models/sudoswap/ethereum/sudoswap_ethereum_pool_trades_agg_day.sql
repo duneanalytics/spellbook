@@ -42,7 +42,7 @@ SELECT
       END
     ) AS nft_change_trading
 FROM {{ source('sudoswap_ethereum','base_trades') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} usd
+LEFT JOIN {{ source('prices','usd_forward_fill') }} usd
 ON usd.blockchain = null and usd.symbol = 'ETH'
     AND usd.minute = date_trunc('minute',t.block_time)
     {% if not is_incremental() %}

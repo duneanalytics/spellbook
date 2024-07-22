@@ -1,5 +1,5 @@
 {{config(
-        
+
         alias = 'cex_bitcoin',
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                     "sector",
@@ -16,5 +16,6 @@ SELECT blockchain
 , NOW() AS updated_at
 , 'cex_' || blockchain AS model_name
 , 'identifier' AS label_type
-FROM {{ ref('cex_bitcoin_addresses') }}
-WHERE regexp_like(address, '^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$')
+FROM {{ source('cex','addresses') }}
+WHERE blockchain = 'bitcoin'
+AND regexp_like(address, '^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$')

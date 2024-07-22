@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: cex
+    tables:
+      - name: addresses
+
+  - name: ens
+    tables:
+      - name: reverse_latest
+      - name: resolver_latest
+      - name: view_registrations
+
+  - name: prices
+    tables:
+      - name: usd_latest
+      - name: usd_daily
+      - name: usd_forward_fill

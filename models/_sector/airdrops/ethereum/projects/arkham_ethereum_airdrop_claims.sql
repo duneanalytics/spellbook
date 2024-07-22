@@ -1,6 +1,6 @@
 {{
     config(
-        
+
         schema = 'arkham_ethereum',
         alias = 'airdrop_claims',
         materialized = 'table',
@@ -40,7 +40,7 @@ SELECT 'ethereum' AS blockchain
 , 'ARKM' AS token_symbol
 , t.evt_index
 FROM {{ source('arkham_ethereum', 'Airdrop_evt_Claimed') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ source('prices','usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{arkm_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time >= CAST('2023-07-18' as TIMESTAMP)

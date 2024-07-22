@@ -1,5 +1,5 @@
 {{config(
-        
+
         alias = 'cex_avalanche_c',
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "sector",
@@ -16,4 +16,5 @@ SELECT blockchain
 , NOW() AS updated_at
 , 'cex_' || blockchain AS model_name
 , 'identifier' AS label_type
-FROM {{ ref('cex_avalanche_c_addresses') }}
+FROM {{ source('cex','addresses') }}
+WHERE blockchain = 'avalanche_c'

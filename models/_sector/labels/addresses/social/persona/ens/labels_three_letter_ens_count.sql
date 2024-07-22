@@ -1,14 +1,14 @@
 {{config(
-    
+
     alias = 'three_letter_ens_count'
 )}}
 
 WITH three_letter_ens_count AS (
-    SELECT 
+    SELECT
         owner,
         count(owner) as ens_count
     FROM
-        {{ ref('ens_view_registrations') }}
+        {{ source('ens','view_registrations') }}
     WHERE
         length(name) = 3
 

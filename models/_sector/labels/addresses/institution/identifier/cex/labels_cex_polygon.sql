@@ -1,5 +1,5 @@
 {{config(
-        
+
         alias = 'cex_polygon',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
@@ -16,4 +16,5 @@ SELECT blockchain
 , NOW() AS updated_at
 , 'cex_' || blockchain AS model_name
 , 'identifier' AS label_type
-FROM {{ ref('cex_polygon_addresses') }}
+FROM {{ source('cex','addresses') }}
+WHERE blockchain = 'polygon'

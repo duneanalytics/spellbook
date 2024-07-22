@@ -1,5 +1,5 @@
 {{config(
-        
+
         alias = 'cex_users',
         post_hook='{{ expose_spells(\'["optimism","ethereum"]\',
                                     "sector",
@@ -36,7 +36,7 @@ FROM (
         'cex_users_withdrawals' model_name,
         'persona' as label_type
     FROM {{source('erc20_' + chain, 'evt_transfer')}} t
-    INNER JOIN {{ref('cex_addresses')}} c ON '{{chain}}' = c.blockchain
+    INNER JOIN {{source('cex','addresses')}} c ON '{{chain}}' = c.blockchain
         AND t."from" = c.address
 
     {% if not loop.last %}

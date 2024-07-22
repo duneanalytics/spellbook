@@ -40,7 +40,7 @@ SELECT 'bnb' AS blockchain
 , 'EPS' AS token_symbol
 , t.evt_index
 FROM {{ source('ellipsis_finance_bnb', 'AirdropClaim_evt_Claimed') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'bnb'
+LEFT JOIN {{ source('prices','usd_forward_fill') }} pu ON pu.blockchain = 'bnb'
     AND pu.contract_address= {{eps_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN timestamp '2021-03-24' AND timestamp '2022-04-01'

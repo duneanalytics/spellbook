@@ -347,3 +347,7 @@ sources:
             data_type: varchar
           - name: vault_token
             data_type: varbinary
+
+  - name: prices
+    tables:
+      - name: trusted_tokens

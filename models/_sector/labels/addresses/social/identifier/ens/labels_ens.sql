@@ -1,5 +1,5 @@
 {{config(alias = 'ens',
-        
+
         materialized = 'table',
         file_format = 'delta',
         unique_key = ['blockchain','address'],
@@ -31,10 +31,10 @@ FROM (
                 address,
                  name
                  ,row_number() over (partition by address order by block_time asc) as ordering
-            from {{ ref('ens_resolver_latest') }}
+            from {{ source('ens','resolver_latest') }}
         ) where ordering = 1
     ) res
-    FULL OUTER JOIN {{ ref('ens_reverse_latest') }} rev
+    FULL OUTER JOIN {{ source('ens','reverse_latest') }} rev
     ON res.address = rev.address
 ) ens
 
@@ -48,7 +48,7 @@ FROM (
 --       'query' AS source,
 --       date('2022-10-06') as created_at,
 --       now() as modified_at
---FROM {{ ref('ens_resolver_latest') }}
+--FROM {{ source('ens','resolver_latest') }}
 --UNION
 --SELECT 'ethereum' as blockchain,
 --       address,
@@ -58,5 +58,5 @@ FROM (
 --       'query' AS source,
 --       date('2022-10-06') as created_at,
 --       now() as modified_at
---FROM {{ ref('ens_reverse_latest') }}
+--FROM {{ source('ens','reverse_latest') }}
 

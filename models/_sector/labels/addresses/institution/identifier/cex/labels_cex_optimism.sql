@@ -1,5 +1,5 @@
 {{config(
-        
+
         alias = 'cex_optimism',
         post_hook='{{ expose_spells(\'["optimism"]\',
                                     "sector",
@@ -16,4 +16,5 @@ SELECT blockchain
 , NOW() AS updated_at
 , 'cex_' || blockchain AS model_name
 , 'identifier' AS label_type
-FROM {{ ref('cex_optimism_addresses') }}
+FROM {{ source('cex','addresses') }}
+WHERE blockchain = 'optimism'

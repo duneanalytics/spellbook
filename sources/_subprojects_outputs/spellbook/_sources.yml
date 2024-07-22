@@ -59,11 +59,7 @@ sources:
   - name: cex_optimism
     tables:
       - name: addresses
-  - name: prices
-    tables:
-      - name: usd_forward_fill
-      - name: trusted_tokens
-      - name: usd_latest
+
   - name: op_retropgf_optimism
     tables:
       - name: recipients

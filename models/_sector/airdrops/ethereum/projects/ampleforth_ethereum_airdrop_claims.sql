@@ -40,7 +40,7 @@ SELECT 'ethereum' AS blockchain
 , 'FORTH' AS token_symbol
 , t.evt_index
 FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ source('prices','usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{forth_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN CAST('2021-04-20' as timestamp) AND CAST('2022-04-16' as timestamp)
