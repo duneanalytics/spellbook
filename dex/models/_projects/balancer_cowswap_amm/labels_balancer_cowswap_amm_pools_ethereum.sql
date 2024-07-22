@@ -53,7 +53,8 @@ settings AS (
     denorm,
     next_block_number
     FROM state_with_gaps s
-    LEFT JOIN {{ source('tokens_ethereum', 'erc20') }} t ON s.token = t.contract_address
+    LEFT JOIN {{ source('tokens', 'erc20') }} t ON s.token = t.contract_address
+    AND t.blockchain = 'ethereum'
     WHERE next_block_number = 99999999
     AND denorm > uint256 '0'
 ),
@@ -62,7 +63,7 @@ final AS (
     SELECT
       'ethereum' AS blockchain,
       pool AS address,
-      lower(concat(array_join(array_agg(symbol), '/'), ' ', array_join(array_agg(cast(norm_weight AS varchar)), '/'))) AS name,
+      LOWER(CONCAT('BCowAMM: 'array_join(array_agg(symbol), '/'))) AS name,
       'balancer_cowswap_amm_pool' AS category,
       'balancerlabs' AS contributor,
       'query' AS source,
