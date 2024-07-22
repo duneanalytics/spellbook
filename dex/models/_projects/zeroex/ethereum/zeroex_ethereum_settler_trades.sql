@@ -158,7 +158,7 @@ results as (
             when varbinary_position (data,0xe422ce6ede) <> 0 then varbinary_position(REVERSE(data), REVERSE(0xe422ce6ede))
             end -3, 37)  taker_indicator_string
     from tbl_trades trades
-    join ethereum.transactions tr on tr.hash = trades.tx_hash and tr.block_time = trades.block_time and tr.block_number = trades.block_number 
+    join {{ source('ethereum', 'transactions') }} tr on tr.hash = trades.tx_hash and tr.block_time = trades.block_time and tr.block_number = trades.block_number 
     left join tokens tt on tt.blockchain = 'ethereum' and tt.contract_address = taker_token
     left join tokens tm on tm.blockchain = 'ethereum' and tm.contract_address = maker_token
     left join prices pt on pt.blockchain = 'ethereum' and pt.contract_address = taker_token and pt.minute = date_trunc('minute', trades.block_time)
