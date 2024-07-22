@@ -288,12 +288,10 @@ models:
             - block_time
             - tx_hash
             - evt_index
-            - volume_usd
       - check_seed:
           seed_file: ref('zeroex_ethereum_settler_trades_sample')
           match_columns:
             - tx_hash
-            - evt_index
           check_columns:
             - taker_token_amount
             - taker
