@@ -243,4 +243,5 @@ FROM (VALUES
     , (0xe96891F2d3838Bfbbce1285e0913b195acc935c5, 'PB', 18)  
     , (0xaa4ec2d86e61632e88db93cf6d2a42e5f458dc99, 'PA', 18)  
     , (0x62a52757b580e7fd97203bd0408a7445741b5d5f, 'DT', 18)  
+    , (0x6985884c4392d348587b19cb9eaaf157f13271cd, 'ZRO', 18)
 ) AS temp_table (contract_address, symbol, decimals)
