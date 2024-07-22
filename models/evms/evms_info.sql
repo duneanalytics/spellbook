@@ -1,15 +1,27 @@
 {{ config(
-        schema='evms',
-        tags = [ 'static'],
+        schema = 'evms',
+        tags = ['static'],
         alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll"]\',
-                                    "sector",
-                                    "evms",
-                                    \'["hildobby"]\') }}')
+        post_hook = '{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "sei"]\',
+                                        "sector",
+                                        "evms",
+                                        \'["hildobby"]\') }}')
 }}
 
-SELECT chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement
-FROM (VALUES
+SELECT chain_id
+        , blockchain
+        , name
+        , chain_type
+        , rollup_type
+        , native_token_symbol
+        , wrapped_native_token_address
+        , explorer_link
+        , first_block_time
+        , codebase
+        , data_availability
+        , settlement
+FROM (
+        VALUES
         (1, 'ethereum', 'Ethereum', 'Layer 1', NULL, 'ETH', 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2, 'https://etherscan.io/', timestamp '2015-07-30 15:26', NULL, NULL, NULL)
         , (43114, 'avalanche_c', 'Avalanche C-Chain', 'Layer 1', NULL, 'AVAX', 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7, 'https://snowtrace.io/', timestamp '2020-09-23 11:02', NULL, NULL, NULL)
         , (42161, 'arbitrum', 'Arbitrum One', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x82af49447d8a07e3bd95bd0d56f35241523fbab1, 'https://arbiscan.io/', timestamp '2021-05-29 00:35', 'Arbitrum', 'Ethereum Blobs', 'Ethereum')
@@ -50,4 +62,5 @@ FROM (VALUES
         , (60808, 'bob', 'BOB', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.gobob.xyz/', timestamp '2024-04-11 20:59:47', 'OP Stack', 'Ethereum Blobs', 'Ethereum')
         , (11155111, 'sepolia', 'Sepolia', 'Testnet', 'Testnet', 'tETH', 0x7b79995e5f793a07bc00c21412e50ecae098e7f9, 'https://sepolia.etherscan.io/', timestamp '2015-07-30 15:26:13', NULL, NULL, NULL)
         , (167000, 'taiko', 'Taiko', 'Layer 2', 'Optimistic Rollup', 'ETH', 0xa51894664a773981c6c112c43ce576f315d5b1b6, 'https://taikoscan.network/', timestamp '2024-03-29 07:39:12', 'OP Stack', 'Ethereum Blobs', 'Ethereum')
-        ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement)
+        , (1329, 'sei', 'Sei Network', 'Layer 1', NULL, 'SEI', 0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7, 'https://seitrace.com/?chain=pacific-1', timestamp '2024-05-27 13:14', NULL, NULL, NULL)
+) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement)

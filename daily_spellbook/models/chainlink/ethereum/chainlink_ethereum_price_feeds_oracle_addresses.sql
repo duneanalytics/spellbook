@@ -67,6 +67,7 @@
 {% set dpi_usd = 'DPI / USD' %}
 {% set dydx_usd = 'DYDX / USD' %}
 {% set doodles_floor_price = 'Doodles Floor Price' %}
+{% set efil_por = 'eFIL PoR' %}
 {% set enj_usd = 'ENJ / USD' %}
 {% set ens_usd = 'ENS / USD' %}
 {% set eos_usd = 'EOS / USD' %}
@@ -74,6 +75,7 @@
 {% set eth_btc = 'ETH / BTC' %}
 {% set eth_usd = 'ETH / USD' %}
 {% set eurt_usd = 'EURT / USD' %}
+{% set ezeth_eth = 'ezETH / ETH' %}
 {% set farm_eth = 'FARM / ETH' %}
 {% set fei_usd = 'FEI / USD' %}
 {% set fil_eth = 'FIL / ETH' %}
@@ -157,17 +159,22 @@
 {% set swell_eth_por = 'Swell ETH PoR' %}
 {% set synthetix_aggregator_debt_ratio = 'Synthetix Aggregator Debt Ratio' %}
 {% set synthetix_aggregator_issued_synths = 'Synthetix Aggregator Issued Synths' %}
+{% set tbtc_usd = 'tBTC / USD' %}
 {% set tusd_usd = 'TUSD / USD' %}
 {% set tusd_por = 'TUSD PoR' %}
 {% set tusd_reserves = 'TUSD Reserves' %}
 {% set total_marketcap_usd = 'Total Marketcap / USD' %}
 {% set uma_eth = 'UMA / ETH' %}
 {% set uni_usd = 'UNI / USD' %}
+{% set usdc_usd = 'USDC / USD' %}
+{% set usdc_eth = 'USDC / ETH' %}
 {% set usdd_usd = 'USDD / USD' %}
 {% set usdp_usd = 'USDP / USD' %}
+{% set usdt_eth = 'USDT / ETH' %}
 {% set ust_eth = 'UST / ETH' %}
 {% set ust_usd = 'UST / USD' %}
 {% set veefriends_floor_price = 'VeeFriends Floor Price' %}
+{% set weeth_eth = 'weETH / ETH' %}
 {% set wbtc_btc = 'WBTC / BTC' %}
 {% set wbtc_por = 'WBTC PoR' %}
 {% set wing_usd = 'WING / USD' %}
@@ -175,7 +182,6 @@
 {% set xcn_usd = 'XCN / USD' %}
 {% set yfi_usd = 'YFI / USD' %}
 {% set zrx_usd = 'ZRX / USD' %}
-{% set efil_por = 'eFIL PoR' %}
 
 SELECT
    'ethereum' as blockchain,
@@ -245,6 +251,7 @@ FROM (values
   ('{{dydx_usd}}', 8, 0x478909D4D798f3a1F11fFB25E4920C959B4aDe0b, 0x6A0cCCA35f6ca00146547B949233C63441B34d7a),
   ('{{dydx_usd}}', 8, 0x478909D4D798f3a1F11fFB25E4920C959B4aDe0b, 0xe28371cd7a0c1687d2D956a567946688B48e5629),
   ('{{doodles_floor_price}}', 18, 0x027828052840a43Cc2D0187BcfA6e3D6AcE60336, 0x440C8fc45C7f00E09c2F437b95FC123888a3d951),
+  ('{{efil_por}}', 18, 0x8917800a6BDd8fA8b7c94E25aE2219Db28050622, 0xD423C9A9AD8c21C97bdeE2E74F8098625aa4f329),
   ('{{enj_usd}}', 8, 0x23905C55dC11D609D5d11Dc604905779545De9a7, 0xCBbe4ff0d8add07CCe71afC0CcdF3492b8eaA76A),
   ('{{ens_usd}}', 8, 0x5C00128d4d1c2F4f652C267d7bcdD7aC99C16E16, 0x780f1bD91a5a22Ede36d4B2b2c0EcCB9b1726a28),
   ('{{eos_usd}}', 8, 0x10a43289895eAff840E8d45995BBa89f9115ECEe, 0xea7C55976844396f3bD4C89F66988b8b5Be5E96a),
@@ -252,6 +259,7 @@ FROM (values
   ('{{eth_btc}}', 8, 0xAc559F25B1619171CbC396a50854A3240b6A4e99, 0x0f00392FcB466c0E4E4310d81b941e07B4d5a079),
   ('{{eth_usd}}', 8, 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419, 0xE62B71cf983019BFf55bC83B48601ce8419650CC),
   ('{{eurt_usd}}', 8, 0x01D391A48f4F7339aC64CA2c83a07C22F95F587a, 0x920E5DC12E7500c6571C63D4Bba19c62e99d6883),
+  ('{{ezeth_eth}}', 18, 0x636A000262F6aA9e1F094ABF0aD8f645C44f641C, 0x85Fbd46EDeD893392e52A02BC5ac0294FB06f88D),
   ('{{farm_eth}}', 18, 0x611E0d2709416E002A3f38085e4e1cf77c015921, 0x883Ba661FD9824778FF14a97F3A03eb324540201),
   ('{{fei_usd}}', 8, 0x31e0a88fecB6eC0a411DBe0e9E76391498296EE9, 0xc04126CF546146457C45009BCE5dA529eF960Fa1),
   ('{{fil_eth}}', 18, 0x0606Be69451B1C9861Ac6b3626b99093b713E801, 0x9965AD91B4877d29c246445011Ce370b3890C5C2),
@@ -341,18 +349,23 @@ FROM (values
   ('{{swell_eth_por}}', 18, 0x60cbE8D88EF519cF3C62414D76f50818D211fea1, 0x477716B8e95749bF31ce26cF4e4E4Af87b8Acf59),
   ('{{synthetix_aggregator_debt_ratio}}', 27, 0x0981af0C002345c9C5AD5efd26242D0cBe5aCA99, 0xc7BB32a4951600FBac701589C73e219b26Ca2DFC),
   ('{{synthetix_aggregator_issued_synths}}', 18, 0xbCF5792575bA3A875D8C406F4E7270f51a902539, 0x59CCf62B862f99B5aEd8857FBAdB7F895f6c59D5),
+  ('{{tbtc_usd}}', 8, 0x8350b7De6a6a2C1368E7D4Bd968190e13E354297, 0x0A7AaAa55cEe361EBE1d57F80345285dbAF96FCC),
   ('{{tusd_usd}}', 8, 0xec746eCF986E2927Abd291a2A1716c940100f8Ba, 0x98953e9C76573e06ec265Bdde1dbB89fa02d56d3),
   ('{{tusd_por}}', 18, 0x81243627cC533Ca6CF6F23c3f61add1D0f626674, 0x4d76Ae11EEF9cEf363300Abf66b599BDE4aBb33e),
   ('{{tusd_reserves}}', 18, 0xBE456fd14720C3aCCc30A2013Bffd782c9Cb75D5, 0xAC099D59755982757537F13c7c4Ae8c8d9F030B9),
   ('{{total_marketcap_usd}}', 8, 0xEC8761a0A73c34329CA5B1D3Dc7eD07F30e836e2, 0x9257D83A0DdA413cA24F66dD32A056Bc2eBAFd2e),
   ('{{uma_eth}}', 18, 0xf817B69EA583CAFF291E287CaE00Ea329d22765C, 0x68a371D12213a1EbDd5fa9a2EE5519E6B73F1E37),
   ('{{uni_usd}}', 8, 0x553303d460EE0afB37EdFf9bE42922D8FF63220e, 0x373BCe97bec13BfA8A5f07Cc578EC2D77f80c589),
+  ('{{usdc_eth}}', 18, 0x986b5E1e1755e3C2440e960477f25201B0a8bbD4, 0xe5BbBdb2Bb953371841318E1Edfbf727447CeF2E),
+  ('{{usdc_usd}}', 8, 0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6, 0x789190466E21a8b78b8027866CBBDc151542A26C),
   ('{{usdd_usd}}', 8, 0x0ed39A19D2a68b722408d84e4d970827f61E6c0A, 0x589a85FC02EB6bB86D1c84c1a75abbB012C661De),
   ('{{usdp_usd}}', 8, 0x09023c0DA49Aaf8fc3fA3ADF34C6A7016D38D5e3, 0xF3d70857B489Ecc6768D0982B773E1Cba9E1f00b),
+  ('{{usdt_eth}}', 18, 0xEe9F2375b4bdF6387aa8265dD4FB8F16512A1d46, 0x7De0d6fce0C128395C488cb4Df667cdbfb35d7DE),
   ('{{ust_eth}}', 18, 0xa20623070413d42a5C01Db2c8111640DD7A5A03a, 0x4a81f77C8BBcA2CbA8110279cDbC9F1A8D3eAE6B),
   ('{{ust_usd}}', 8, 0x8b6d9085f310396C6E4f0012783E9f850eaa8a82, 0x01b87e7fF78022A70394d3C6Dd127D0c709e3beA),
   ('{{ust_usd}}', 8, 0x8b6d9085f310396C6E4f0012783E9f850eaa8a82, 0x5EDd5F803b831b47715aD3e11a90dD244F0cD0a9),
   ('{{veefriends_floor_price}}', 18, 0x35bf6767577091E7f04707c0290b3f889e968307, 0xe0552DC960366F67Da00CB3d9DF441F24B5C2AC1),
+  ('{{weeth_eth}}', 18, 0x5c9C449BbC9a6075A2c061dF312a35fd1E05fF22, 0x4dF36F726d8059d881294166dB52c1D13e976FE7),
   ('{{wbtc_btc}}', 8, 0xfdFD9C85aD200c506Cf9e21F1FD8dd01932FBB23, 0xD7623f1d24b35c392862fB67C9716564A117C9DE),
   ('{{wbtc_por}}', 8, 0xa81FE04086865e63E12dD3776978E49DEEa2ea4e, 0xB622b7D6d9131cF6A1230EBa91E5da58dbea6F59),
   ('{{wing_usd}}', 8, 0x134fE0a225Fb8e6683617C13cEB6B3319fB4fb82, 0xc29d104A418a08407f9f2CDb614c1CDCf82986e0),
@@ -360,6 +373,5 @@ FROM (values
   ('{{world_of_women_floor_price}}', 18, 0xDdf0B85C600DAF9e308AFed9F597ACA212354764, 0x45B68d24Df514BF13a838d88bE4363F8011719de),
   ('{{xcn_usd}}', 8, 0xeb988B77b94C186053282BfcD8B7ED55142D3cAB, 0xD6A3a9Bb4bd49DdB2374CA58Edf47a8bB63Af3d2),
   ('{{yfi_usd}}', 8, 0xA027702dbb89fbd58938e4324ac03B58d812b0E1, 0xcac109af977AC94929A5dD37ed8Af763BAD78151),
-  ('{{zrx_usd}}', 8, 0x2885d15b8Af22648b98B122b22FDF4D2a56c6023, 0x4Dde220fF2690A350b0Ea9404F35C8f3Ad012584),
-  ('{{efil_por}}', 18, 0x8917800a6BDd8fA8b7c94E25aE2219Db28050622, 0xD423C9A9AD8c21C97bdeE2E74F8098625aa4f329)
+  ('{{zrx_usd}}', 8, 0x2885d15b8Af22648b98B122b22FDF4D2a56c6023, 0x4Dde220fF2690A350b0Ea9404F35C8f3Ad012584)
 ) a (feed_name, decimals, proxy_address, aggregator_address)

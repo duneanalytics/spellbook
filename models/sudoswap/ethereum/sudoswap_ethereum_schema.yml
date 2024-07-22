@@ -190,21 +190,7 @@ models:
       - name: latest_update_time
         description: "time of the latest update"
 
-  - name: sudoswap_ethereum_airdrop_claims
-    meta:
-      blockchain: ethereum
-      sector: airdrop
-      project: sudoswap
-      contributors: hildobby
-    config:
-      tags: ['table', 'airdrop', 'ethereum', 'claim', 'sudoswap']
-    description: "List of claim transactions for the $SUDO airdrop"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - recipient
-            - evt_index
+
     columns:
       - &blockchain
         name: blockchain

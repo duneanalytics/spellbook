@@ -11,7 +11,8 @@
     ref('agave_gnosis_base_flashloans'),
     ref('aave_v3_gnosis_base_flashloans'),
     ref('realt_rmm_v1_gnosis_base_flashloans'),
-    ref('realt_rmm_v2_gnosis_base_flashloans')
+    ref('realt_rmm_v2_gnosis_base_flashloans'),
+    ref('balancer_v2_gnosis_base_flashloans')
   ]
 %}
 

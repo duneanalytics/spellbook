@@ -119,5 +119,9 @@ FROM (VALUES ('arbitrum', 'USDC.e', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8),
              ('zksync', 'USDT.e', 0x493257fd37edb34451f62edf8d2a0c418852ba4c),
              ('zksync', 'ETH', 0x000000000000000000000000000000000000800a),
              ('zksync', 'WBTC', 0xbbeb516fb02a01611cbbe0453fe3c580d7281011),
-             ('zora', 'WETH', 0x4200000000000000000000000000000000000006)
+             ('zora', 'WETH', 0x4200000000000000000000000000000000000006),
+             ('sei', 'WSEI', 0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7),
+             ('sei', 'USDC', 0x3894085Ef7Ff0f0aeDf52E2A2704928d1Ec074F1),
+             ('sei', 'USDT', 0xB75D0B03c06A926e488e2659DF1A861F860bD3d1),
+             ('sei', 'WETH', 0x160345fC359604fC6e70E3c5fAcbdE5F7A9342d8)
 ) AS t (blockchain, symbol, contract_address)
