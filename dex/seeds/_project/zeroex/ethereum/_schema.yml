@@ -78,6 +78,7 @@ seeds:
         price_usd: double
         token_amount: double
         project_name: varchar
+  
   - name: zeroex_ethereum_settler_trades_sample
     config:
       column_types:
