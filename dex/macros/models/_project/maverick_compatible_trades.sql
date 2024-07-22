@@ -74,7 +74,7 @@ WITH dexs AS (
             WHEN TRY_CAST(JSON_EXTRACT_SCALAR(t.params, '$.tokenAIn') AS BOOLEAN) = TRUE
             THEN f.tokenA
             ELSE f.tokenB
-          END AS token_sold_entity,
+          END AS token_sold_address,
         t.contract_address AS project_contract_address,
         t.evt_tx_hash AS tx_hash,
         t.evt_index
