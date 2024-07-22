@@ -89,3 +89,107 @@ prices as (
            join tbl_trades on (pu.contract_address = taker_token  OR pu.contract_address = maker_token) AND date_trunc('minute',block_time) = minute
            where pu.blockchain = 'ethereum' and minute > TIMESTAMP '2024-07-15'
         ), 
+results as (
+    select 
+        trades.block_time,
+        trades.block_number,
+        zid,
+        trades.contract_address,
+        methodID,
+        trades.tx_hash,
+        "from" as tx_from,
+        "to" as tx_to,
+        index as tx_index,
+            case 
+                when varbinary_substring(data,17,10) != 0x00000000000000000000 and varbinary_substring(data,17,1) != 0x  then varbinary_substring(data,17,20) 
+                when varbinary_substring(data,177,10) != 0x00000000000000000000  then varbinary_substring(data,177,20) 
+                when varbinary_substring(data,277,10) != 0x00000000000000000000  then varbinary_substring(data,277,20) 
+                when varbinary_substring(data,629,10) != 0x00000000000000000000  then varbinary_substring(data,629,20) 
+                when varbinary_substring(data,693,10) != 0x00000000000000000000  then varbinary_substring(data,693,20) 
+                when varbinary_substring(data,917,10) != 0x00000000000000000000  then varbinary_substring(data,917,20) 
+                when varbinary_substring(data,949,10) != 0x00000000000000000000  then varbinary_substring(data,949,20) 
+                -- when varbinary_substring(data,1113,4) != 0x00000000  then varbinary_substring(data,1113,20)
+                when varbinary_substring(data,981,10) != 0x00000000000000000000  then varbinary_substring(data,981,20) 
+                 when varbinary_substring(data,1013,10) != 0x00000000000000000000  then varbinary_substring(data,1013,20)
+                 when varbinary_substring(data,1141,10) != 0x00000000000000000000  then varbinary_substring(data,1141,20) 
+                 when varbinary_substring(data,1273,10) != 0x00000000000000000000  then varbinary_substring(data,1273,20) 
+                 when varbinary_substring(data,1749,4) != 0x00000000  then varbinary_substring(data,1749,20) 
+                 
+                
+                 when varbinary_substring(data,1049,4) != 0x00000000  then varbinary_substring(data,1049,20)
+                 when varbinary_substring(data,17,4) != 0x00000000  then varbinary_substring(data,17,20)
+                 
+            end as taker , 
+        null as maker,
+        taker_token,
+        pt.price,
+        coalesce(tt.symbol, pt.symbol) as taker_symbol,
+        taker_amount as taker_token_amount_raw,
+        taker_amount / pow(10,coalesce(tt.decimals,pt.decimals)) as taker_token_amount,
+        taker_amount / pow(10,coalesce(tt.decimals,pt.decimals)) * pt.price as taker_amount,
+        maker_token,
+        coalesce(tm.symbol, pm.symbol)  as maker_symbol,
+        maker_amount as maker_token_amount_raw,
+        maker_amount / pow(10,coalesce(tm.decimals,pm.decimals)) as maker_token_amount,
+        maker_amount / pow(10,coalesce(tm.decimals,pm.decimals)) * pm.price as maker_amount,
+        tag,data,
+        varbinary_substring(data, varbinary_length(data) -  case
+            when varbinary_position (data,0xc4103b48be) <> 0 then varbinary_position(REVERSE(data), REVERSE(0xc4103b48be))
+            when varbinary_position (data,0xe48d68a156) <> 0 then varbinary_position(REVERSE(data), REVERSE(0xe48d68a156))
+            when varbinary_position (data,0xe422ce6ede) <> 0 then varbinary_position(REVERSE(data), REVERSE(0xe422ce6ede))
+            end -3, 37)  taker_indicator_string
+        , case
+            when varbinary_position (data,0xc4103b48be) <> 0 then varbinary_position(REVERSE(data), REVERSE(0xc4103b48be))
+            when varbinary_position (data,0xe48d68a156) <> 0 then varbinary_position(REVERSE(data), REVERSE(0xe48d68a156))
+            when varbinary_position (data,0xe422ce6ede) <> 0 then varbinary_position(REVERSE(data), REVERSE(0xe422ce6ede))
+            end -3 as  pos
+    from tbl_trades trades
+    join {{blockchain}}.transactions tr on tr.hash = trades.tx_hash and tr.block_time = trades.block_time and tr.block_number = trades.block_number 
+    left join tokens tt on tt.blockchain = '{{blockchain}}' and tt.contract_address = taker_token
+    left join tokens tm on tm.blockchain = '{{blockchain}}' and tm.contract_address = maker_token
+    left join prices pt on pt.blockchain = '{{blockchain}}' and pt.contract_address = taker_token and pt.minute = date_trunc('minute', trades.block_time)
+    left join prices pm on pm.blockchain = '{{blockchain}}' and pm.contract_address = maker_token and pm.minute = date_trunc('minute', trades.block_time)
+    where tr.block_time > TIMESTAMP '2024-07-15' 
+)
+
+ select 
+        '{{blockchain}}' as blockchain,
+        '0x API' as project,
+        'settler' as version,
+        date_trunc('day', block_time) block_date,
+        date_trunc('month', block_time) as block_month,
+        block_time,
+        taker_symbol,
+        maker_symbol,
+        CASE WHEN lower(taker_symbol) > lower(maker_symbol) THEN concat(maker_symbol, '-', taker_symbol) ELSE concat(taker_symbol, '-', maker_symbol) END AS token_pair,
+        taker_token_amount,
+        maker_token_amount,
+        taker_token_amount_raw,
+        maker_token_amount_raw,
+        CASE WHEN maker_token IN (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2,0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48,0xdac17f958d2ee523a2206206994597c13d831ec7,
+                0x4fabb145d64652a948d72533023f6e7a623c7c53,0x6b175474e89094c44da98b954eedeac495271d0f,0xae7ab96520de3a18e5e111b5eaab095312d7fe84) AND  maker_amount IS NOT NULL
+             THEN maker_amount
+             WHEN taker_token IN (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2,0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48,0xdac17f958d2ee523a2206206994597c13d831ec7,
+                0x4fabb145d64652a948d72533023f6e7a623c7c53,0x6b175474e89094c44da98b954eedeac495271d0f,0xae7ab96520de3a18e5e111b5eaab095312d7fe84)  AND taker_amount IS NOT NULL
+             THEN taker_amount
+             ELSE COALESCE(maker_amount, taker_amount)
+             END AS volume_usd,
+        taker_token,
+        maker_token,
+        case when (varbinary_substring(taker,1,4) = 0x00000000) or taker is null or taker = taker_token 
+                or taker = contract_address or taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff or varbinary_substring(taker_indicator_string, 18,20) != contract_address 
+            then varbinary_substring(taker_indicator_string, 18,20) else taker end as taker,
+        maker,
+        tag,
+        tx_hash,
+        tx_from,
+        tx_to,
+        tx_index as evt_index,
+        -1 as trace_address,
+        'settler' as type,
+        true as swap_flag,
+        -1 as fills_within, 
+        contract_address
+   
+    from results 
+    order by block_time desc 
