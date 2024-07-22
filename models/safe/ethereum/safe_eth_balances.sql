@@ -67,6 +67,7 @@ select
     b.token_address,
     b.token_standard,
     b.token_id,
+    sum(b.balance) as token_balance,
     sum(b.balance * p.price) as balance_usd
 from (
     select * from forward_fill
