@@ -139,7 +139,7 @@ results as (
                  when varbinary_substring(data,17,4) != 0x00000000  then varbinary_substring(data,17,20)
                  
             end as taker , 
-        null as maker,
+        cast(null as varbinary) as maker,
         taker_token,
         pt.price,
         coalesce(tt.symbol, pt.symbol) as taker_symbol,
