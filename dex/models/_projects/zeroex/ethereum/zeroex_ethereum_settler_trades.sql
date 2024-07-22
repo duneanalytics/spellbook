@@ -15,6 +15,25 @@
 
 
 with 
+tbl_addresses as (
+select blockchain, token_id, to as settler_address, block_time as begin_block_time, block_number as begin_block_number 
+
+from {{ source('nft', 'transfers') }} where contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae
+),
+
+tbl_end_times as( 
+
+select *, LEAD(begin_block_time) over (partition BY blockchain, token_id order by begin_block_time) as end_block_time,
+LEAD(begin_block_number) over (partition BY blockchain, token_id order by begin_block_number) as end_block_number
+
+ from tbl_addresses
+ ),
+ result_0x_settler_addresses as (
+
+ select * from tbl_end_times
+ where settler_address != 0x0000000000000000000000000000000000000000 
+ ),
+
     settler_txs AS (
 SELECT      tx_hash,
             block_time as block_time,
@@ -34,7 +53,7 @@ from (
      varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker
     
   FROM {{ source('ethereum', 'traces') }} AS tr
-  join dune."0xproject".result_0x_settler_addresses a on a.settler_address = tr.to
+  join result_0x_settler_addresses a on a.settler_address = tr.to
   WHERE (a.settler_address is not null or tr.to = 0xca11bde05977b3631167028862be2a173976ca11)
     and varbinary_substring(input,1,4) in (0x1fff991f, 0xfd3ad6d4)
     AND block_time > TIMESTAMP '2024-07-15'  
@@ -138,22 +157,17 @@ results as (
             when varbinary_position (data,0xe48d68a156) <> 0 then varbinary_position(REVERSE(data), REVERSE(0xe48d68a156))
             when varbinary_position (data,0xe422ce6ede) <> 0 then varbinary_position(REVERSE(data), REVERSE(0xe422ce6ede))
             end -3, 37)  taker_indicator_string
-        , case
-            when varbinary_position (data,0xc4103b48be) <> 0 then varbinary_position(REVERSE(data), REVERSE(0xc4103b48be))
-            when varbinary_position (data,0xe48d68a156) <> 0 then varbinary_position(REVERSE(data), REVERSE(0xe48d68a156))
-            when varbinary_position (data,0xe422ce6ede) <> 0 then varbinary_position(REVERSE(data), REVERSE(0xe422ce6ede))
-            end -3 as  pos
     from tbl_trades trades
-    join {{blockchain}}.transactions tr on tr.hash = trades.tx_hash and tr.block_time = trades.block_time and tr.block_number = trades.block_number 
-    left join tokens tt on tt.blockchain = '{{blockchain}}' and tt.contract_address = taker_token
-    left join tokens tm on tm.blockchain = '{{blockchain}}' and tm.contract_address = maker_token
-    left join prices pt on pt.blockchain = '{{blockchain}}' and pt.contract_address = taker_token and pt.minute = date_trunc('minute', trades.block_time)
-    left join prices pm on pm.blockchain = '{{blockchain}}' and pm.contract_address = maker_token and pm.minute = date_trunc('minute', trades.block_time)
+    join ethereum.transactions tr on tr.hash = trades.tx_hash and tr.block_time = trades.block_time and tr.block_number = trades.block_number 
+    left join tokens tt on tt.blockchain = 'ethereum' and tt.contract_address = taker_token
+    left join tokens tm on tm.blockchain = 'ethereum' and tm.contract_address = maker_token
+    left join prices pt on pt.blockchain = 'ethereum' and pt.contract_address = taker_token and pt.minute = date_trunc('minute', trades.block_time)
+    left join prices pm on pm.blockchain = 'ethereum' and pm.contract_address = maker_token and pm.minute = date_trunc('minute', trades.block_time)
     where tr.block_time > TIMESTAMP '2024-07-15' 
 )
 
  select 
-        '{{blockchain}}' as blockchain,
+        'ethereum' as blockchain,
         '0x API' as project,
         'settler' as version,
         date_trunc('day', block_time) block_date,
