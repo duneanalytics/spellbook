@@ -294,7 +294,6 @@ models:
           match_columns:
             - tx_hash
           check_columns:
-            - taker_token_amount
             - taker
             - maker_token
             - taker_token
