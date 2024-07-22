@@ -11,7 +11,8 @@
 
 
 WITH pools AS (
-    SELECT bPool AS pools
+    SELECT 
+        bPool AS pools
     FROM {{ source('b_cow_amm_ethereum', 'BCoWFactory_evt_LOG_NEW_POOL') }}
 ),
 
