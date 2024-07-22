@@ -208,5 +208,5 @@ results_usd as (
    
     from results 
 )
-select distinct from results_usd 
+select distinct * from results_usd 
     order by block_time desc 
