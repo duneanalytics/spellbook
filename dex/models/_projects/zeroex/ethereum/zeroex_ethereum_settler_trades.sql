@@ -165,7 +165,7 @@ results as (
     left join prices pm on pm.blockchain = 'ethereum' and pm.contract_address = maker_token and pm.minute = date_trunc('minute', trades.block_time)
     where tr.block_time > TIMESTAMP '2024-07-15' 
 ), 
-results_usd (
+results_usd as (
 
  select  
         'ethereum' as blockchain,
