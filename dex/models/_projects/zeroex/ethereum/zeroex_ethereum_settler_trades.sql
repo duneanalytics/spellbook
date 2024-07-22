@@ -80,7 +80,7 @@ where  logs.block_time > TIMESTAMP '2024-07-15'
 tbl_maker_token as (
     select row_number() over (partition by tx_hash order by index desc) rn_last, token as maker_token, tx_hash, block_time, block_number, index 
     from tbl_all_logs 
-    filter where maker_tkn = 1 
+    where maker_tkn = 1 
     ), 
 
 tbl_trades as (
@@ -166,7 +166,7 @@ results as (
     where tr.block_time > TIMESTAMP '2024-07-15' 
 )
 
- select 
+ select distinct 
         'ethereum' as blockchain,
         '0x API' as project,
         'settler' as version,
