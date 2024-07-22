@@ -1,5 +1,5 @@
 {{config(
-    
+
     alias = 'safe_ethereum'
 )}}
 
@@ -14,4 +14,4 @@ SELECT
     now() as updated_at,
     'safe_ethereum' AS model_name,
     'persona' AS label_type
-FROM {{ ref('safe_ethereum_safes') }}
+FROM {{ source('safe_ethereum','safes') }}

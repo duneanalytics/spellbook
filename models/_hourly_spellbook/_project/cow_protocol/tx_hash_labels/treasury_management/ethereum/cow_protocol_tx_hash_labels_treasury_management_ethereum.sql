@@ -1,7 +1,7 @@
 {{
     config(
         alias = 'tx_hash_labels_treasury_management_ethereum',
-        
+
     )
 }}
 
@@ -10,7 +10,7 @@ with
     -- DAO list taken from dao multisig list from Dune
     -- https://github.com/duneanalytics/spellbook/blob/main/models/labels/dao/identifier/multisigs/labels_dao_multisig_ethereum.sql
     SELECT distinct address
-    FROM {{ ref('labels_addresses') }}
+    FROM {{ source('labels','addresses') }}
     WHERE category = 'dao' and blockchain = 'ethereum' and label_type = 'identifier'
   ),
 

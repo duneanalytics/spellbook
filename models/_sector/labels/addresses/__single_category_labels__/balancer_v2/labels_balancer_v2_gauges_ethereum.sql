@@ -1,5 +1,5 @@
 {{config(
-        
+
         alias = 'balancer_v2_gauges_ethereum',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "sector",
@@ -44,7 +44,7 @@ FROM
     INNER JOIN {{ source('balancer_ethereum', 'CappedLiquidityGaugeFactory_call_create') }} call ON call.call_tx_hash = evt.evt_tx_hash
     LEFT JOIN {{ source('labels', 'balancer_v2_pools_ethereum') }} pools ON pools.address = call.pool
 
-UNION ALL 
+UNION ALL
 
 SELECT
     'ethereum' AS blockchain,
@@ -60,7 +60,7 @@ SELECT
     'balancer_v2_gauges_ethereum' AS model_name,
     'identifier' AS label_type
 FROM
-    {{ ref('balancer_single_recipient_gauges') }}
+    {{ source('balancer','single_recipient_gauges') }}
 WHERE
     blockchain = 'ethereum'),
 
@@ -82,7 +82,7 @@ INNER JOIN gauges g ON g.address = c.addr
          , g.pool_address
          , g.child_gauge_address
          , g.name
-         , CASE WHEN c.rn = 1 
+         , CASE WHEN c.rn = 1
             THEN 'active'
             ELSE 'inactive'
             END AS status

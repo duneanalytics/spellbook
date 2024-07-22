@@ -97,3 +97,7 @@ sources:
     tables:
       - name: optimism_batchinbox_combinations
       - name: optimism_outputoracle_combinations
+
+  - name: gyroscope
+    tables:
+      - name: gyro_tokens

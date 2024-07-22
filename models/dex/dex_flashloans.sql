@@ -15,7 +15,7 @@
 
 {% set flashloan_models = [
 ref('aave_flashloans')
-, ref('balancer_flashloans')
+, source('balancer','flashloans')
 , ref('dydx_ethereum_flashloans')
 , ref('uniswap_flashloans')
 , ref('euler_ethereum_flashloans')

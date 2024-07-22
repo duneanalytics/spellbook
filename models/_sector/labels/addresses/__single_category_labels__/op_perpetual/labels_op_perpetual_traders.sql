@@ -5,19 +5,19 @@
 
 WITH perps_trades_count AS
 (SELECT trader, COUNT(trader) AS trades_count
-FROM {{ ref('perpetual_trades') }}
+FROM {{ source('perpetual','trades') }}
 WHERE blockchain = 'optimism'
 GROUP BY trader
 ORDER BY trades_count DESC),
 
 percentile_perp_trades AS
-(SELECT approx_percentile (trades_count, 0.95) AS "0.95p", 
+(SELECT approx_percentile (trades_count, 0.95) AS "0.95p",
 approx_percentile(trades_count, 0.65) AS "0.65p"
 FROM perps_trades_count),
 
 perp_traders AS
 (SELECT trader AS address,
-(CASE 
+(CASE
 WHEN trades_count >= (SELECT "0.95p" FROM percentile_perp_trades) THEN 'Elite Perp Trader'
 WHEN trades_count >= (SELECT "0.65p" FROM percentile_perp_trades) THEN 'Active Perp Trader'
 ELSE 'Normie Perp Trader'

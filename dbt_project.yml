@@ -112,28 +112,36 @@ models:
       ethereum:
         +schema: sudoswap_ethereum
 
-    safe:
-      +schema: safe
-      ethereum:
-        +schema: safe_ethereum
-      optimism:
-        +schema: safe_optimism
-      gnosis:
-        +schema: safe_gnosis
-      polygon:
-        +schema: safe_polygon
-      bnb:
-        +schema: safe_bnb
-      avalanche_c:
-        +schema: safe_avalanche_c
-      fantom:
-        +schema: safe_fantom
-      arbitrum:
-        +schema: safe_arbitrum
-      goerli:
-        +schema: safe_goerli
-      base:
-        +schema: safe_base
+    _hourly_spellbook:
+      _project:
+        safe:
+          +schema: safe
+          ethereum:
+            +schema: safe_ethereum
+          optimism:
+            +schema: safe_optimism
+          gnosis:
+            +schema: safe_gnosis
+          polygon:
+            +schema: safe_polygon
+          bnb:
+            +schema: safe_bnb
+          avalanche_c:
+            +schema: safe_avalanche_c
+          fantom:
+            +schema: safe_fantom
+          arbitrum:
+            +schema: safe_arbitrum
+          goerli:
+            +schema: safe_goerli
+          base:
+            +schema: safe_base
+        cow_protocol:
+          +schema: cow_protocol
+          ethereum:
+            +schema: cow_protocol_ethereum
+          gnosis:
+            +schema: cow_protocol_gnosis
 
     aragon:
       +schema: aragon
@@ -202,12 +210,7 @@ models:
       ethereum:
         +schema: fiat_dao_ethereum
 
-    cow_protocol:
-      +schema: cow_protocol
-      ethereum:
-        +schema: cow_protocol_ethereum
-      gnosis:
-        +schema: cow_protocol_gnosis
+
 
     ironbank:
       +schema: ironbank

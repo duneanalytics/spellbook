@@ -16,7 +16,7 @@ WITH identified_stakers AS (
     , NOW() AS updated_at
     , 'eth_stakers' AS model_name
     , 'identifier' as label_type
-    FROM {{ ref('staking_ethereum_entities') }}
+    FROM {{ source('staking_ethereum','entities') }}
     )
 
 , unidentified_stakers AS (
