@@ -16,3 +16,9 @@ sources:
       - name: usd_latest
       - name: usd_daily
       - name: usd_forward_fill
+
+  - name: lending
+    tables:
+      - name: borrow
+      - name: supply
+      - name: flashloans

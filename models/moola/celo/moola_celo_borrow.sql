@@ -28,6 +28,6 @@ select
   block_number,
   tx_hash,
   evt_index
-from {{ ref('lending_borrow') }}
+from {{ source('lending','borrow') }}
 where blockchain = 'celo'
   and project = 'moola'

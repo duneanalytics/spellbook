@@ -26,6 +26,6 @@ select
   block_number,
   tx_hash,
   evt_index
-from {{ ref('lending_flashloans') }}
+from {{ source('lending','flashloans') }}
 where blockchain = 'optimism'
   and project = 'aave'

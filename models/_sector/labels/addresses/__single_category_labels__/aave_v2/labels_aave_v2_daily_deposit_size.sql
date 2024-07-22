@@ -2,24 +2,24 @@
      alias = 'aave_v2_deposit_size'
 )}}
 
-with latest_net_deposits AS ( 
-        with annual_flows AS (  
-            SELECT 
+with latest_net_deposits AS (
+        with annual_flows AS (
+            SELECT
                 d.evt_block_time
                 , d.user
                 , cast(d.amount as double) / pow(10, p.decimals) AS amount
                 , d.reserve
                 , p.symbol
                 , d.contract_address AS lendingpool_contract
-            FROM {{ source('aave_v2_ethereum', 'LendingPool_evt_Deposit')}} d 
-            LEFT JOIN {{ ref('prices_tokens') }} p
+            FROM {{ source('aave_v2_ethereum', 'LendingPool_evt_Deposit')}} d
+            LEFT JOIN {{ source('prices','tokens') }} p
                 ON p.contract_address = d.reserve
                 AND p.blockchain = 'ethereum'
             WHERE evt_block_time > NOW() - INTERVAL '1' day
-            
+
             UNION ALL
-            
-            SELECT 
+
+            SELECT
                 w.evt_block_time
                 , w.user
                 , cast(w.amount as double) * -1 / pow(10, p.decimals) AS amount
@@ -27,14 +27,14 @@ with latest_net_deposits AS (
                 , p.symbol
                 , w.contract_address AS lendingpool_contract
             FROM {{ source('aave_v2_ethereum', 'LendingPool_evt_Withdraw')}} w
-            LEFT JOIN {{ ref('prices_tokens') }} p
+            LEFT JOIN {{ source('prices','tokens') }} p
                 ON p.contract_address = w.reserve
                 AND p.blockchain = 'ethereum'
             WHERE evt_block_time > NOW() - INTERVAL '1' day
         )
-        
+
         , annual_net_deposit AS (
-        SELECT 
+        SELECT
             user
             , SUM(amount) AS net_deposit
             , reserve
@@ -45,7 +45,7 @@ with latest_net_deposits AS (
         GROUP BY 1,3,4,5
         ORDER BY net_deposit DESC
         )
-        
+
         , ordered_annual_net_deposit AS (
         SELECT
             row_number() OVER (partition by a.user, a.reserve ORDER BY a.evt_block_time DESC) AS rn
@@ -56,14 +56,14 @@ with latest_net_deposits AS (
             , a.evt_block_time
         FROM annual_net_deposit a
         )
-        
+
         SELECT
             user
             , net_deposit
             , reserve
             , symbol
             , evt_block_time
-        FROM ordered_annual_net_deposit 
+        FROM ordered_annual_net_deposit
         WHERE rn = 1
         ORDER BY net_deposit DESC
 )
@@ -77,12 +77,12 @@ with latest_net_deposits AS (
                 , cast(d.availableLiquidity as double) / pow(10, p.decimals) AS available_liquidity
                 , d.call_block_time
             FROM {{ source('aave_v2_ethereum', 'DefaultReserveInterestRateStrategy_call_calculateInterestRates')}} d
-            LEFT JOIN {{ ref('prices_tokens') }} p
+            LEFT JOIN {{ source('prices','tokens') }} p
                 ON p.contract_address = d.reserve
                 AND p.blockchain = 'ethereum'
             ORDER BY call_block_time DESC
         )
-        
+
         SELECT
             reserve
             , symbol
@@ -109,7 +109,7 @@ LEFT JOIN latest_available_liquidity l ON d.reserve = l.reserve AND d.symbol = l
 , final_base_label AS (
 SELECT
     'ethereum' AS blockchain
-    , user AS address 
+    , user AS address
     , case when COALESCE(largest_deposit_pct, 0) <= 1 then 'Small Depositor'
         when largest_deposit_pct <= 10 then 'Sizeable Depositor'
         else 'Large Depositor'
@@ -124,7 +124,7 @@ SELECT
     , net_deposit
     , available_liquidity
     , largest_deposit_pct
-    , symbol 
+    , symbol
 FROM calc_deposit_pct
 )
 

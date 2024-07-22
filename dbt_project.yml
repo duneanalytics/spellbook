@@ -316,17 +316,6 @@ models:
       ethereum:
         +schema: dydx_ethereum
 
-    lido:
-      +schema: lido
-      accounting:
-        +schema: lido_accounting
-        ethereum:
-          +schema: lido_accounting_ethereum
-      liquidity:
-        +schema: lido_liquidity
-        ethereum:
-          +schema: lido_liquidity_ethereum
-
     layerzero:
       +schema: layerzero
       ethereum:

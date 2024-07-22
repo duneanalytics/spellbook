@@ -4,14 +4,14 @@
 
 
 WITH mev_addresses AS (
-    SELECT 
+    SELECT
         address
     FROM {{ ref('labels_mev_ethereum') }}
 )
 
 , aave_v2_annual_liquidations AS (
-    SELECT 
-        * 
+    SELECT
+        *
     FROM {{ source('aave_v2_ethereum', 'LendingPool_evt_LiquidationCall') }}
     WHERE evt_block_time > now() - INTERVAL '365' day
 )
@@ -27,7 +27,7 @@ SELECT
     , m.address AS liquidator
 FROM aave_v2_annual_liquidations a
 LEFT JOIN mev_addresses m ON m.address = a.liquidator
-LEFT JOIN {{ ref('prices_tokens') }} p
+LEFT JOIN {{ source('prices','tokens') }} p
     ON p.contract_address = a.collateralAsset
     AND p.blockchain = 'ethereum'
 )
@@ -38,7 +38,7 @@ SELECT
     , address AS address
     , case when liquidator is not null then 'MEV'
         else 'non-MEV'
-        end as name 
+        end as name
     , 'liquidation type' AS category
     , 'paulx' AS contributor
     , 'query' AS source

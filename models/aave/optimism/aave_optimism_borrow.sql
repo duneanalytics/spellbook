@@ -30,6 +30,6 @@ select
   project_contract_address,
   tx_hash,
   evt_index
-from {{ ref('lending_borrow') }}
+from {{ source('lending','borrow') }}
 where blockchain = 'optimism'
   and project = 'aave'

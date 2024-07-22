@@ -351,3 +351,4 @@ sources:
   - name: prices
     tables:
       - name: trusted_tokens
+      - name: tokens

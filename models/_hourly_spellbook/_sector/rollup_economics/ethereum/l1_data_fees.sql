@@ -1,6 +1,6 @@
 {{ config(
     schema = 'rollup_economics_ethereum',
-    alias = 'l1_data_fees',    
+    alias = 'l1_data_fees',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -41,7 +41,7 @@ with tx_batch_appends as (
       call_block_number as block_number
     FROM {{ source('arbitrum_ethereum','SequencerInbox_call_addSequencerL2BatchFromOrigin') }} o
     WHERE call_success = true
-      AND call_tx_hash NOT IN 
+      AND call_tx_hash NOT IN
         (
           SELECT evt_tx_hash FROM {{ source('arbitrum_ethereum', 'SequencerInbox_evt_SequencerBatchDeliveredFromOrigin') }} o
           WHERE evt_block_time >= timestamp '2022-01-01'
@@ -86,7 +86,7 @@ with tx_batch_appends as (
 
         UNION ALL
 
-      SELECT 
+      SELECT
       hash as tx_hash,
       block_time,
       block_number
@@ -115,8 +115,8 @@ with tx_batch_appends as (
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-  UNION ALL 
-  
+  UNION ALL
+
   SELECT
     lower(protocol_name) as name,
     block_number,
@@ -129,14 +129,14 @@ with tx_batch_appends as (
   FROM (
     SELECT protocol_name, t.block_time, t.block_number, t.hash, t.gas_used, t.gas_price, length(t.data) as data_length, {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     FROM {{ source('ethereum','transactions') }} as t
-    INNER JOIN {{ ref('addresses_ethereum_optimism_batchinbox_combinations') }} as op 
+    INNER JOIN {{ source('addresses_ethereum','optimism_batchinbox_combinations') }} as op
       ON t."from" = op.l1_batch_inbox_from_address
          AND t.to = op.l1_batch_inbox_to_address
       WHERE t.block_time >= timestamp '2020-01-01'
       UNION ALL
     SELECT protocol_name, t.block_time, t.block_number, t.hash, t.gas_used, t.gas_price, length(t.data) as data_length, {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     FROM {{ source('ethereum','transactions') }} as t
-    INNER JOIN {{ ref('addresses_ethereum_optimism_outputoracle_combinations') }} as op 
+    INNER JOIN {{ source('addresses_ethereum','optimism_outputoracle_combinations') }} as op
       ON t."from" = op.l2_output_oracle_from_address
          AND t.to = op.l2_output_oracle_to_address
       WHERE t.block_time >= timestamp '2020-01-01'
@@ -153,8 +153,8 @@ with tx_batch_appends as (
     WHERE b.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-  UNION ALL 
-    
+  UNION ALL
+
   SELECT
     'starknet' AS chain,
     t.block_number,
@@ -181,8 +181,8 @@ with tx_batch_appends as (
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-    UNION ALL 
-    
+    UNION ALL
+
   SELECT
     'imx' AS chain, -- imx state updates to L1 through the Data Availability Committee, imx uses offchain DA
     t.block_number,
@@ -209,8 +209,8 @@ with tx_batch_appends as (
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-  UNION ALL 
-  
+  UNION ALL
+
   SELECT
     'zksync lite' AS name,
     t.block_number,
@@ -241,8 +241,8 @@ with tx_batch_appends as (
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-  UNION ALL 
-  
+  UNION ALL
+
   SELECT
     'zksync era' AS chain,
     t.block_number,
@@ -284,8 +284,8 @@ with tx_batch_appends as (
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-  UNION ALL 
-  
+  UNION ALL
+
   SELECT
     'polygon zkevm' AS chain,
     t.block_number,
@@ -303,9 +303,9 @@ with tx_batch_appends as (
     {% if is_incremental() %}
     AND p.minute >= date_trunc('day', now() - interval '7' day)
     {% endif %}
-  WHERE 
+  WHERE
     (
-      t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2 -- old proxy 
+      t.to = 0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2 -- old proxy
       OR t.to = 0x519E42c24163192Dca44CD3fBDCEBF6be9130987 -- new proxy (as of block 19218878)
     )
     AND bytearray_substring(t.data, 1, 4) IN (
@@ -318,8 +318,8 @@ with tx_batch_appends as (
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-  UNION ALL 
-  
+  UNION ALL
+
   SELECT
     'linea' AS chain,
     t.block_number,
@@ -347,8 +347,8 @@ with tx_batch_appends as (
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-  UNION ALL 
-  
+  UNION ALL
+
   SELECT
     'scroll' AS chain,
     t.block_number,
@@ -373,8 +373,8 @@ with tx_batch_appends as (
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-  UNION ALL 
-  
+  UNION ALL
+
   SELECT
     'loopring' AS chain,
     t.block_number,
@@ -394,13 +394,13 @@ with tx_batch_appends as (
     {% endif %}
   WHERE t.to = 0x153CdDD727e407Cb951f728F24bEB9A5FaaA8512
     AND bytearray_substring(t.data, 1, 4) = 0xdcb2aa31 -- submitBlocksWithCallbacks (proof verified immediately)
-    AND t.block_time >= timestamp '2021-03-23' 
+    AND t.block_time >= timestamp '2021-03-23'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 
-  UNION ALL 
-  
+  UNION ALL
+
   SELECT
     'Mantle' AS chain,
     t.block_number,
@@ -432,14 +432,14 @@ with tx_batch_appends as (
       OR bytearray_substring(t.data, 1, 4) = 0x58942e73 -- confirmDataStore (DA2)
       OR bytearray_substring(t.data, 1, 4) = 0xdcf49ea7 -- initDataStore (DA2)
     )
-    AND t.block_time >= timestamp '2023-06-27' 
+    AND t.block_time >= timestamp '2023-06-27'
     {% if is_incremental() %}
     AND t.block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
 )
 
 ,block_basefees as (
-    SELECT 
+    SELECT
       b.number as block_number
       , b.base_fee_per_gas
       , b.time
