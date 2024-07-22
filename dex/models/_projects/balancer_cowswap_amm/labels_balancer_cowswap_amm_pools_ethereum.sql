@@ -63,7 +63,7 @@ final AS (
     SELECT
       'ethereum' AS blockchain,
       pool AS address,
-      LOWER(CONCAT('BCowAMM: 'array_join(array_agg(symbol), '/'))) AS name,
+      CONCAT('BCowAMM: ', array_join(array_agg(symbol), '/')) AS name,
       'balancer_cowswap_amm_pool' AS category,
       'balancerlabs' AS contributor,
       'query' AS source,
