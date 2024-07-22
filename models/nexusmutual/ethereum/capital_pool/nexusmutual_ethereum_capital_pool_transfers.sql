@@ -41,7 +41,7 @@ transfer_in as (
     contract_address,
     unique_key,
     tx_hash
-  from {{ ref('tokens_ethereum_transfers') }}
+  from {{ source('tokens_ethereum','transfers') }}
   where block_time >= timestamp '2019-05-01'
     and "to" in (select contract_address from nexusmutual_contracts)
     and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC')
@@ -61,7 +61,7 @@ transfer_out as (
     contract_address,
     unique_key,
     tx_hash
-  from {{ ref('tokens_ethereum_transfers') }}
+  from {{ source('tokens_ethereum','transfers') }}
   where block_time >= timestamp '2019-05-01'
     and "from" in (select contract_address from nexusmutual_contracts)
     and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC')
@@ -81,7 +81,7 @@ transfer_nxmty_in as (
     contract_address,
     unique_key,
     tx_hash
-  from {{ ref('tokens_ethereum_transfers') }}
+  from {{ source('tokens_ethereum','transfers') }}
   where block_time >= timestamp '2022-05-27'
     and "to" in (select contract_address from nexusmutual_contracts)
     and contract_address = 0x27f23c710dd3d878fe9393d93465fed1302f2ebd --NXMTY
@@ -101,7 +101,7 @@ transfer_nxmty_out as (
     contract_address,
     unique_key,
     tx_hash
-  from {{ ref('tokens_ethereum_transfers') }}
+  from {{ source('tokens_ethereum','transfers') }}
   where block_time >= timestamp '2022-05-27'
     and "from" in (select contract_address from nexusmutual_contracts)
     and contract_address = 0x27f23c710dd3d878fe9393d93465fed1302f2ebd --NXMTY
