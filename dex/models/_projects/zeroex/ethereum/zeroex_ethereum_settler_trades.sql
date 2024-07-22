@@ -34,7 +34,7 @@ LEAD(begin_block_number) over (partition BY blockchain, token_id order by begin_
  where settler_address != 0x0000000000000000000000000000000000000000 
  ),
 
-    settler_txs AS (
+settler_txs AS (
 SELECT      tx_hash,
             block_time as block_time,
             block_number,
@@ -53,7 +53,7 @@ from (
      varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker
     
   FROM {{ source('ethereum', 'traces') }} AS tr
-  join result_0x_settler_addresses a on a.settler_address = tr.to 
+  join result_0x_settler_addresses a on a.settler_address = tr.to and a.blockchain = 'ethereum'
   WHERE (a.settler_address is not null or tr.to = 0xca11bde05977b3631167028862be2a173976ca11)
     and varbinary_substring(input,1,4) in (0x1fff991f, 0xfd3ad6d4)
     AND block_time > TIMESTAMP '2024-07-15'  
