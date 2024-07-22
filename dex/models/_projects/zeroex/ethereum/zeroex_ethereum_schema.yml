@@ -38,7 +38,7 @@ models:
         description: "Index of the corresponding fill/swap event"
       - &contract_address
         name: contract_address
-        desctiption: "The address of the contract which fired the fill/swap event"
+        description: "The address of the contract which fired the fill/swap event"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
@@ -150,7 +150,6 @@ models:
       - &fills_within
         name: fills_within
         description: "fills in then multihop, if present"          
-
         
   - name: zeroex_ethereum_nft_fills
     meta:
