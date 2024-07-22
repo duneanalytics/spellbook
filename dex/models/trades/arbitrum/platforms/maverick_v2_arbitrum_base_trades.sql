@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'maverick_zksync',
+        schema = 'maverick_arbitrum',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,10 +12,10 @@
 
 {{
     maverick_compatible_trades(
-        blockchain = 'zksync',
+        blockchain = 'arbitrum',
         project = 'maverick',
         version = '2',
-        source_evt_swap = source('maverick_v2_zksync', 'V2Pool_evt_PoolSwap'),
-        source_evt_pool = source('maverick_v2_zksync', 'V2Factory_evt_PoolCreated')
+        source_evt_swap = source('maverick_v2_arbitrum', 'V2Pool_evt_PoolSwap'),
+        source_evt_pool = source('maverick_v2_arbitrum', 'V2Factory_evt_PoolCreated')
     )
 }}

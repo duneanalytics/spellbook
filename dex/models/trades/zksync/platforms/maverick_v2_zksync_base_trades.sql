@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'maverick_scroll',
+        schema = 'maverick_zksync',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,10 +12,10 @@
 
 {{
     maverick_compatible_trades(
-        blockchain = 'scroll',
+        blockchain = 'zksync',
         project = 'maverick',
         version = '2',
-        source_evt_swap = source('maverick_v2_scroll', 'V2Pool_evt_PoolSwap'),
-        source_evt_pool = source('maverick_v2_scroll', 'V2Factory_evt_PoolCreated')
+        source_evt_swap = source('maverick_v2_zksync', 'V2Pool_evt_PoolSwap'),
+        source_evt_pool = source('maverick_v2_zksync', 'V2Factory_evt_PoolCreated')
     )
 }}
