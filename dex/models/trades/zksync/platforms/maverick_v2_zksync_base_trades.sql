@@ -11,7 +11,7 @@
 }}
 
 {{
-    maverick_compatible_trades(
+    maverick_compatible_v2_trades(
         blockchain = 'zksync',
         project = 'maverick',
         version = '2',

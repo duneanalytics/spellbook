@@ -112,5 +112,6 @@ FROM
     ('well-moonwell', 'base', 'WELL', 0xff8adec2221f9f4d8dfbafa6b9a297d17603493d, 18),
     ('mochi3-mochi', 'base', 'MOCHI', 0xf6e932ca12afa26665dc4dde7e27be02a7c02e50, 18),
     ('bet-betbase', 'base', 'BET', 0x80F6BcedD3d4fa1035285affA30e38f464Db3895, 18),
+    ('mav-maverick-token','base','MAV',0x64b88c73A5DfA78D1713fE1b4c69a22d7E0faAa7,18),
     ('aura-aura-finance','base','AURA',0x1509706a6c66ca549ff0cb464de88231ddbe213b, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
