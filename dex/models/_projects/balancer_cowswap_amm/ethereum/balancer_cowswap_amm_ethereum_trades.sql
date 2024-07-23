@@ -42,7 +42,7 @@
     , settlement.solver AS tx_from
     , trade.contract_address AS tx_to
     , trade.evt_index AS evt_index
-    FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlment_evt_Trade') }} trade
+    FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} trade
     INNER JOIN {{ source('b_cow_amm_ethereum', 'BCoWFactory_evt_LOG_NEW_POOL') }} pool
         ON trade.owner = pool.bPool
              LEFT JOIN {{ source('prices', 'usd') }} AS ps
