@@ -43,6 +43,8 @@ FROM (
        , tx_from
        , tx_to
        , evt_index
+       , pool_type
+       , pool_symbol
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL

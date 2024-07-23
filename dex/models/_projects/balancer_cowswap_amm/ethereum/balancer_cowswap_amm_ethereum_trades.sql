@@ -40,6 +40,8 @@
     , settlement.solver AS tx_from
     , trade.contract_address AS tx_to
     , trade.evt_index AS evt_index
+    , p.name AS pool_symbol
+    , p.pool_type
     FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} trade
     INNER JOIN {{ source('b_cow_amm_ethereum', 'BCoWFactory_evt_LOG_NEW_POOL') }} pool
         ON trade.owner = pool.bPool
@@ -64,7 +66,8 @@
                              ON trade.buyToken = tb.contract_address
                                  AND tb.blockchain = '{{blockchain}}'   
              LEFT JOIN {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} AS settlement
-                             ON trade.evt_tx_hash = settlement.evt_tx_hash                                                                
+                             ON trade.evt_tx_hash = settlement.evt_tx_hash  
+             LEFT JOIN {{ ref('labels_balancer_cowswap_amm_pools_ethereum') }} p ON p.address = c.project_contract_address                                                                             
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('trade.evt_block_time') }}
     {% endif %}

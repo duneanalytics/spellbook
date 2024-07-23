@@ -88,6 +88,8 @@ models:
       - &evt_index
         name: evt_index
         description: 'Event index'
+      - name: pool_type
+      - name: pool_symbol
 
   - name: balancer_cowswap_amm_ethereum_balances
     meta:
