@@ -99,6 +99,9 @@ models:
     columns:
       - *blockchain
       - *block_date
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each trade"
       - *block_time
       - &taker_symbol
         name: taker_symbol
