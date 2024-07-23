@@ -27,6 +27,7 @@ FROM (VALUES
         (0x483fde31bce3dcc168e23a870831b50ce2ccd1f1, 'iZiSwap Liquidity NFT', 'IZISWAP-LIQUIDITY-NFT'),
         (0xf27e53edc24be11b4c5dc4631fd75ea0ed896d64, 'Robots.Farm Airdrop', 'RFI'),
         (0xa815e2ed7f7d5b0c49fda367f249232a1b9d2883, 'Pancake V3 Positions NFT-V1', 'PCS-V3-POS'),
+        (0x4D93c58B348d99969257cec007cFb31B410b21A0, 'Maverick v2 Position', 'MPv2'),
 -- ERC-1155:
         (0x3f9931144300f5feada137d7cfe74faaa7ef6497, 'Commemorative OG Cards', 'CMOGC'),
         (0x089b353642e6f066bad44a6a854ef4e3bcb0dc9c, 'Carv Events', 'CARV-EVNT'),
