@@ -56,7 +56,7 @@ from (
     
   FROM {{ source('ethereum', 'traces') }} AS tr
   join result_0x_settler_addresses a on a.settler_address = tr.to and a.blockchain = 'ethereum' 
-        and tr.block_time > a.begin_block_time and (tr.block_time < a.end_block_time OR a.end_block_time is null )
+        and tr.block_time > a.begin_block_time 
   WHERE (a.settler_address is not null or tr.to = 0xca11bde05977b3631167028862be2a173976ca11)
     and varbinary_substring(input,1,4) in (0x1fff991f, 0xfd3ad6d4)
     {% if is_incremental() %}
@@ -73,7 +73,9 @@ from (
 tbl_all_logs as (
 select  logs.tx_hash, logs.block_time, logs.block_number,
     row_number() over (partition by logs.tx_hash order by index) rn_first, index,
-    case when first_value(logs.contract_address) over (partition by logs.tx_hash order by index) = logs.contract_address then 0 else 1 end maker_tkn, 
+    case when varbinary_substring(logs.topic1, 13, 20) = st.contract_address then 0 
+        when first_value(logs.contract_address) over (partition by logs.tx_hash order by index) = logs.contract_address then 0 
+        else 1 end maker_tkn, 
     bytearray_to_int256(bytearray_substring(DATA, 23,10)) value,
     logs.contract_address as token, zid, st.contract_address,
         methodID, tag
