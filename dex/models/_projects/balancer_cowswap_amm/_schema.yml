@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: balancer_cowswap_amm_ethereum_trades
+  - name: balancer_cowswap_amm_trades
     meta:
       blockchain: ethereum
       sector: trades
@@ -89,7 +89,7 @@ models:
         name: evt_index
         description: 'Event index'
 
-  - name: balancer_cowswap_amm_ethereum_balances
+  - name: balancer_cowswap_amm_balances
     meta:
       blockchain: ethereum
       project: balancer_cowswap_amm
@@ -120,7 +120,7 @@ models:
         name: token_balance_raw
         description: "Balance of a token"
 
-  - name: labels_balancer_cowswap_amm_pools_ethereum
+  - name: labels_balancer_cowswap_amm_pools
     meta:
       blockchain: ethereum
       sector: labels
@@ -163,15 +163,15 @@ models:
         name: label_type
         description: "Type of label (see labels overall readme)"
 
-  - name: balancer_cowswap_amm_ethereum_liquidity
+  - name: balancer_cowswap_amm_liquidity
     meta:
       blockchain: ethereum
-      project: balancer_v1
-      contributors: markusbkoch, mendesfabio, victorstefenon, viniabussafi, thetroyharris
+      project: balancer_cowswap_amm
+      contributors: viniabussafi
     config:
       tags: ['ethereum', 'balancer', 'pools', 'liquidity']
     description: >
-      Balancer v1 pools liquidity by token in Ethereum.
+      Balancer CoWSwap AMM pools liquidity by token in Ethereum.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
