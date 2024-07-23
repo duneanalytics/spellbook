@@ -160,4 +160,7 @@ FROM (VALUES
     , ('nile', 'Nile', 'Direct', 'Nile')
     , ('nuri', 'Nuri', 'Direct', 'nuriexchange')
     , ('icecreamswap', 'IceCreamSwap', 'Direct', 'icecream_swap')
+    , ('thruster', 'Thruster Finance', 'Direct', 'ThrusterFi')
+    , ('blasterswap', 'BlasterSwap', 'Direct', 'BlasterSwap')
+    , ('fenix', 'Fenix Finance', 'Direct', 'FenixFinance')
     ) AS temp_table (project, name, marketplace_type, x_username)

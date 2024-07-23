@@ -1,6 +1,6 @@
 {% macro 
-    balancer_liquidity_macro(
-        blockchain, version
+    balancer_v2_compatible_liquidity_macro(
+        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
     ) 
 %}
 
@@ -9,7 +9,7 @@ WITH pool_labels AS (
             address AS pool_id,
             name AS pool_symbol,
             pool_type
-        FROM {{ source('labels', 'balancer_v2_pools') }}
+        FROM {{ pool_labels_spell }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
@@ -31,6 +31,9 @@ WITH pool_labels AS (
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ source('dex', 'prices') }}
+        WHERE 
+        ('{{blockchain}}' != 'fantom' OR 
+        ('{{blockchain}}' = 'fantom' AND contract_address NOT IN (0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757))) --broken price feeds
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -60,7 +63,7 @@ WITH pool_labels AS (
             contract_address AS token,
             decimals,
             bpt_price
-        FROM {{ ref('balancer_bpt_prices') }}
+        FROM {{ ref(base_spells_namespace + '_bpt_prices') }}
         WHERE blockchain = '{{blockchain}}'
         AND version = '{{version}}'
     ),
@@ -96,7 +99,7 @@ WITH pool_labels AS (
                     poolId AS pool_id,
                     tokenIn AS token,
                     CAST(amountIn as int256) AS delta
-                FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }}
+                FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
 
                 UNION ALL
 
@@ -105,7 +108,7 @@ WITH pool_labels AS (
                     poolId AS pool_id,
                     tokenOut AS token,
                     -CAST(amountOut AS int256) AS delta
-                FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }}
+                FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
             ) swaps
         GROUP BY 1, 2, 3
     ),
@@ -117,7 +120,7 @@ WITH pool_labels AS (
             t.tokens,
             d.deltas,
             p.protocolFeeAmounts
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolBalanceChanged') }}
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolBalanceChanged') }}
         CROSS JOIN UNNEST (tokens) WITH ORDINALITY as t(tokens,i)
         CROSS JOIN UNNEST (deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
@@ -142,7 +145,7 @@ WITH pool_labels AS (
             poolId AS pool_id,
             token,
             cashDelta + managedDelta AS delta
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolBalanceManaged') }}
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolBalanceManaged') }}
     ),
 
     daily_delta_balance AS (
@@ -235,7 +238,7 @@ WITH pool_labels AS (
             SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity,
             SUM(b.pool_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1)  AS pool_liquidity
         FROM cumulative_usd_balance b
-        LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+        LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
         AND b.token = w.token_address
         AND b.pool_liquidity_usd > 0
         LEFT JOIN {{ ref('balancer_token_whitelist') }} q ON b.token = q.address 
@@ -276,7 +279,7 @@ WITH pool_labels AS (
     FROM cumulative_usd_balance c
     FULL OUTER JOIN weighted_pool_liquidity_estimates_2 b ON c.day = b.day
     AND c.pool_id = b.pool_id
-    LEFT JOIN {{ ref('balancer_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+    LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
     AND w.blockchain = '{{blockchain}}'
     AND w.version = '{{version}}'     
     AND w.token_address = c.token

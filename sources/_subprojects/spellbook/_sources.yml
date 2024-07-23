@@ -41,6 +41,15 @@ sources:
   - name: addresses_events_zora
     tables:
       - name: first_funded_by
+  - name: addresses_events_blast
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_fantom
+    tables:
+      - name: first_funded_by
+  - name: lending
+    tables:
+      - name: flashloans
   - name: bridge_optimism
     tables:
       - name: standard_bridge_flows
@@ -54,6 +63,7 @@ sources:
     tables:
       - name: usd_forward_fill
       - name: trusted_tokens
+      - name: usd_latest
   - name: op_retropgf_optimism
     tables:
       - name: recipients
@@ -89,3 +99,6 @@ sources:
   - name: balancer
     tables:
       - name: bpt_prices
+  - name: tokens
+    tables:
+      - name: transfers
