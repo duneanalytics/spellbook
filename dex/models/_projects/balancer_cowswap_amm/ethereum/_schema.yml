@@ -90,6 +90,7 @@ models:
         description: 'Event index'
       - name: pool_type
       - name: pool_symbol
+      - name: swap_fee
 
   - name: balancer_cowswap_amm_ethereum_balances
     meta:

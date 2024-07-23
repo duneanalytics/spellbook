@@ -25,7 +25,7 @@
     , tb.symbol AS token_sold_symbol
     , CONCAT(ts.symbol, '-', tb.symbol) AS token_pair
     , (trade.buyAmount / POWER(10, COALESCE(pb.decimals, tb.decimals))) AS token_bought_amount
-    , (trade.sellAmount / POWER(10, COALESCE(ps.decimals, ts.decimals))) AS token_sold_amount
+    , ((trade.sellAmount - trade.feeAmount) / POWER(10, COALESCE(ps.decimals, ts.decimals))) AS token_sold_amount
     , trade.buyAmount AS token_bought_amount_raw
     , trade.sellAmount AS token_sold_amount_raw
     , COALESCE(trade.buyAmount / POWER(10, COALESCE(pb.decimals, tb.decimals)) * pb.price,
@@ -42,6 +42,7 @@
     , trade.evt_index AS evt_index
     , p.name AS pool_symbol
     , p.pool_type
+    , (trade.feeAmount / POWER (10, ts.decimals)) AS swap_fee
     FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} trade
     INNER JOIN {{ source('b_cow_amm_ethereum', 'BCoWFactory_evt_LOG_NEW_POOL') }} pool
         ON trade.owner = pool.bPool
