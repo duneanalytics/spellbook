@@ -112,5 +112,14 @@ FROM
     ('well-moonwell', 'base', 'WELL', 0xff8adec2221f9f4d8dfbafa6b9a297d17603493d, 18),
     ('mochi3-mochi', 'base', 'MOCHI', 0xf6e932ca12afa26665dc4dde7e27be02a7c02e50, 18),
     ('bet-betbase', 'base', 'BET', 0x80F6BcedD3d4fa1035285affA30e38f464Db3895, 18),
-    ('aura-aura-finance','base','AURA',0x1509706a6c66ca549ff0cb464de88231ddbe213b, 18)
+    ('aura-aura-finance','base','AURA',0x1509706a6c66ca549ff0cb464de88231ddbe213b, 18),
+    ('btcb-bitcoin-on-base','base','BTCB',0x0c41f1fc9022feb69af6dc666abfe73c9ffda7ce, 18),
+    ('void-the-void','base','VOID',0x21eceaf3bf88ef0797e3927d855ca5bb569a47fc, 18),
+    ('fpepe-based-father-pepe','base','FPEPE',0x81f91fe59ee415735d59bd5be5cca91a0ea4fa69, 8),
+    ('usa-based-usa','base','USA',0xb56d0839998fd79efcd15c27cf966250aa58d6d3, 18),
+    ('boomer-boomer','base','BOOMER',0xcde172dc5ffc46d228838446c57c1227e0b82049, 18),
+    ('boe-boe','base','BOE',0xff62ddfa80e513114c3a0bf4d6ffff1c1d17aadf, 18),
+    ('9mm-shigure-ui-on-base','base','9mm',0x340c070260520ae477b88caa085a33531897145b, 18),
+    ('wolf13-landwolf','base','WOLF',0x88faea256f789f8dd50de54f9c807eef24f71b16, 18),
+    ('normus-normus','base','NORMUS',0xba5ede8d98ab88cea9f0d69918dde28dc23c2553, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
