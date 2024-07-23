@@ -1,6 +1,6 @@
 with unit_test1
     as (select case
-                 when usd_amount = -21150 then true
+                 when amount_usd = -21150 then true
                  else false
                end as test
         from   {{ ref('aave_ethereum_supply' )}}

@@ -23,7 +23,7 @@ unit_test2 as (
 unit_test3 as (
     -- cErc20 repayBorrow
     select case
-        when usd_amount = -2127.8925117492 then true
+        when amount_usd = -2127.8925117492 then true
         else false
     end as test
     from {{ ref('compound_ethereum_borrow') }}
@@ -34,7 +34,7 @@ unit_test3 as (
 unit_test4 as (
     -- cEther repayBorrow
     select case
-        when usd_amount = -1385143.24 then true
+        when amount_usd = -1385143.24 then true
         else false
     end as test
     from {{ ref('compound_ethereum_borrow') }}

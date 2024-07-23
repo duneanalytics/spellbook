@@ -23,7 +23,7 @@ unit_test2 as (
 unit_test3 as (
     -- cErc20 redeem
     select case
-        when usd_amount = -4506433.947672356 then true
+        when amount_usd = -4506433.947672356 then true
         else false
     end as test
     from {{ ref('compound_ethereum_supply') }}
@@ -34,7 +34,7 @@ unit_test3 as (
 unit_test4 as (
     -- cEther redeem
     select case
-        when usd_amount = -25.819310507320957 then true
+        when amount_usd = -25.819310507320957 then true
         else false
     end as test
     from {{ ref('compound_ethereum_supply') }}

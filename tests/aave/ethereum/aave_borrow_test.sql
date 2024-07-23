@@ -1,6 +1,6 @@
 with unit_test1
     as (select case
-                 when usd_amount = 499785 then true
+                 when amount_usd = 499785 then true
                  else false
                end as test
         from   {{ ref('aave_ethereum_borrow' )}}
