@@ -33,7 +33,7 @@ WITH filtered_source AS (
         *
     FROM
         filtered_source
---     WHERE CARDINALITY(delta) = 2
+    WHERE CARDINALITY(delta) = 2
 )
 
 , dexs AS (
