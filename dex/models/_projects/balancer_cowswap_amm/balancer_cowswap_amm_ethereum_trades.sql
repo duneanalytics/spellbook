@@ -65,7 +65,7 @@
              LEFT JOIN {{ source('tokens', 'erc20') }} AS tb
                              ON settlement.buyToken = tb.contract_address
                                  AND tb.blockchain = 'ethereum'   
-             LEFT JOIN {{ source('ethereum', 'transactios') }} AS tx
+             LEFT JOIN {{ source('ethereum', 'transactions') }} AS tx
                              ON settlement.evt_tx_hash = tb.hash
                                  AND settlement.evt_block_numbern = tx.block_number                                                                       
     {% if is_incremental() %}
