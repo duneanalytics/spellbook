@@ -1,5 +1,5 @@
-{% macro paraswap_v6_trades_master(blockchain, project, contract_name) %}with
-  v6_trades as (
+{% macro paraswap_v6_trades_by_contract(blockchain, project, contract_name, contract_details) %}
+ with v6_trades as (    
     with
       sell_trades as (
             with
@@ -98,7 +98,7 @@ select
   cast(date_trunc('day', call_block_time) as date) as block_date,
   cast(date_trunc('month', call_block_time) as date) as block_month,
   'paraswap' AS project,
-  '6.2' as version,
+  '{{ contract_details['version'] }}' as version,
   call_block_time as blockTime,
   call_block_number as blockNumber,
   call_tx_hash as txHash,
@@ -140,3 +140,22 @@ select
               ) <> 0 AS isTakeSurplus
   from 
     v6_trades{% endmacro %}
+
+{% macro paraswap_v6_trades_master(blockchain, project) %}
+  {% 
+    set contracts = {
+          "AugustusV6_1": {
+              "version":    "6.1",
+          },
+          "AugustusV6_2": {
+              "version":    "6.2",
+          }
+    } 
+  %}
+  {% for contract_name, contract_details in contracts.items() %}
+    select * from ({{ paraswap_v6_trades_by_contract(blockchain, project, contract_name, contract_details) }})
+    {% if not loop.last %}
+      union all
+    {% endif %}
+  {% endfor %}
+{% endmacro %}
