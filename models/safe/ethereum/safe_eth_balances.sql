@@ -35,7 +35,7 @@ with changed_balances as (
     ) q on q.address = a.address
     where day >= date('2021-07-01') and token_standard in ('native', 'erc20')
     {% if is_incremental() %}
-        and day > (select max(day) from {{ this }})
+        and {{ incremental_predicate('day') }}
     {% endif %}
 ),
 days as (
