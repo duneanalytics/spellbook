@@ -12,7 +12,7 @@
     )
 }}
 
-{% set zeroex_settler_start_date = '2024-06-15' %}
+{% set zeroex_settler_start_date = '2024-07-15' %}
 
 with 
 tbl_addresses as (
@@ -20,12 +20,7 @@ select blockchain, token_id, to as settler_address, block_time as begin_block_ti
 
 from {{ source('nft', 'transfers') }} 
 where contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae and blockchain = 'ethereum'
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
-            {% endif %}
-            {% if not is_incremental() %}
-            AND block_time >= cast('{{zeroex_settler_start_date}}' as date)
-            {% endif %}
+           
 ),
 
 tbl_end_times as( 
@@ -152,16 +147,13 @@ results as (
                 when varbinary_substring(data,693,10) != 0x00000000000000000000  then varbinary_substring(data,693,20) 
                 when varbinary_substring(data,917,10) != 0x00000000000000000000  then varbinary_substring(data,917,20) 
                 when varbinary_substring(data,949,10) != 0x00000000000000000000  then varbinary_substring(data,949,20) 
-                -- when varbinary_substring(data,1113,4) != 0x00000000  then varbinary_substring(data,1113,20)
                 when varbinary_substring(data,981,10) != 0x00000000000000000000  then varbinary_substring(data,981,20) 
-                 when varbinary_substring(data,1013,10) != 0x00000000000000000000  then varbinary_substring(data,1013,20)
-                 when varbinary_substring(data,1141,10) != 0x00000000000000000000  then varbinary_substring(data,1141,20) 
-                 when varbinary_substring(data,1273,10) != 0x00000000000000000000  then varbinary_substring(data,1273,20) 
-                 when varbinary_substring(data,1749,4) != 0x00000000  then varbinary_substring(data,1749,20) 
-                 
-                
-                 when varbinary_substring(data,1049,4) != 0x00000000  then varbinary_substring(data,1049,20)
-                 when varbinary_substring(data,17,4) != 0x00000000  then varbinary_substring(data,17,20)
+                when varbinary_substring(data,1013,10) != 0x00000000000000000000  then varbinary_substring(data,1013,20)
+                when varbinary_substring(data,1141,10) != 0x00000000000000000000  then varbinary_substring(data,1141,20) 
+                when varbinary_substring(data,1273,10) != 0x00000000000000000000  then varbinary_substring(data,1273,20) 
+                when varbinary_substring(data,1749,4) != 0x00000000  then varbinary_substring(data,1749,20) 
+                when varbinary_substring(data,1049,4) != 0x00000000  then varbinary_substring(data,1049,20)
+                when varbinary_substring(data,17,4) != 0x00000000  then varbinary_substring(data,17,20)
                  
             end as taker , 
         cast(null as varbinary) as maker,
