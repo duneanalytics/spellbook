@@ -22,22 +22,20 @@ vars:
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
 model-paths: ["models", "../sources"]
-# analysis-paths: ["analyses"]
 # test-paths: ["tests"]
 # seed-paths: ["seeds"]
 macro-paths: ["../macros"]
-# snapshot-paths: ["snapshots"]
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
-# defining search order of macro invokation 
+# defining search order of macro invokation
 dispatch:
   - macro_namespace: dbt_utils
     search_order: ['trino_utils', 'dbt_utils']
-    
+
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
@@ -54,10 +52,10 @@ models:
     +materialized: view
     +schema: no_schema    # this should be overriden in model specific configs
     +view_security: invoker
-    
+
     aave:
       +schema: aave
-    
+
     tokens:
       +schema: tokens
       +materialized: table
