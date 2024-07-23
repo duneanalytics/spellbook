@@ -39,8 +39,8 @@
     ,CAST(NULL AS VARBINARY) AS maker
     , pool.bPool AS project_contract_address
     , settlement.evt_tx_hash AS tx_hash
-    , /*settlement.evt_tx_from*/ CAST(NULL AS VARBINARY) AS tx_from
-    , /*settlement.evt_tx_to*/ CAST(NULL AS VARBINARY) AS tx_to
+    , tx.from AS tx_from
+    , tx.to AS tx_to
     , settlement.evt_index AS evt_index
     FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} settlement
     INNER JOIN {{ source('b_cow_amm_ethereum', 'BCoWFactory_evt_LOG_NEW_POOL') }} pool
@@ -64,7 +64,10 @@
                                  AND ts.blockchain = 'ethereum'
              LEFT JOIN {{ source('tokens', 'erc20') }} AS tb
                              ON settlement.buyToken = tb.contract_address
-                                 AND tb.blockchain = 'ethereum'                             
+                                 AND tb.blockchain = 'ethereum'   
+             LEFT JOIN {{ source('ethereum', 'transactios') }} AS tx
+                             ON settlement.evt_tx_hash = tb.hash
+                                 AND settlement.evt_block_numbern = tx.block_number                                                                       
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('settlement.evt_block_time') }}
     {% endif %}
