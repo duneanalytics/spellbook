@@ -20,8 +20,6 @@ jobs:
     - uses: actions/setup-python@v3
     - name: Checkout main branch
       uses: actions/checkout@v2
-      with:
-        ref: main
 
     - name: Add git_sha to schema
       run: "/runner/change_schema.sh wizard"
