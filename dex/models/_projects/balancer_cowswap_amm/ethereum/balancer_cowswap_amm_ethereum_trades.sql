@@ -1,17 +1,13 @@
 {{
     config(
 
-        schema = 'balancer_cowswap_amm',
+        schema = 'balancer_cowswap_amm_ethereum',
         alias = 'trades',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "balancer_cowswap_amm",
-                                \'["viniabussafi"]\') }}'
+        unique_key = ['tx_hash', 'evt_index']
     )
 }}
 
