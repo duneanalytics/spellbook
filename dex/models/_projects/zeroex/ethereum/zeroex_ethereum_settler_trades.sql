@@ -12,13 +12,20 @@
     )
 }}
 
-
+{% set zeroex_settler_start_date = '2024-06-15' %}
 
 with 
 tbl_addresses as (
 select blockchain, token_id, to as settler_address, block_time as begin_block_time, block_number as begin_block_number 
 
-from {{ source('nft', 'transfers') }} where contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae and blockchain = 'ethereum'
+from {{ source('nft', 'transfers') }} 
+where contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae and blockchain = 'ethereum'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('block_time') }}
+            {% endif %}
+            {% if not is_incremental() %}
+            AND block_time >= cast('{{zeroex_settler_start_date}}' as date)
+            {% endif %}
 ),
 
 tbl_end_times as( 
@@ -56,7 +63,12 @@ from (
   join result_0x_settler_addresses a on a.settler_address = tr.to and a.blockchain = 'ethereum'
   WHERE (a.settler_address is not null or tr.to = 0xca11bde05977b3631167028862be2a173976ca11)
     and varbinary_substring(input,1,4) in (0x1fff991f, 0xfd3ad6d4)
-    AND block_time > TIMESTAMP '2024-07-15'  
+    {% if is_incremental() %}
+            AND {{ incremental_predicate('block_time') }}
+            {% endif %}
+            {% if not is_incremental() %}
+            AND block_time >= cast('{{zeroex_settler_start_date}}' as date)
+            {% endif %}  
     
   ) group by 1,2,3,4,5
 
@@ -71,10 +83,15 @@ select  logs.tx_hash, logs.block_time, logs.block_number,
         methodID, tag
 from {{ source('ethereum', 'logs') }} as logs 
 join settler_txs st on st.tx_hash = logs.tx_hash and logs.block_time = st.block_time and st.block_number = logs.block_number 
-where  logs.block_time > TIMESTAMP '2024-07-15' 
-    and topic0 in (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65, 
+where topic0 in (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65, 
     0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
     0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
+    {% if is_incremental() %}
+            AND {{ incremental_predicate('logs.block_time') }}
+            {% endif %}
+            {% if not is_incremental() %}
+            AND logs.block_time >= cast('{{zeroex_settler_start_date}}' as date)
+            {% endif %}
     ) ,
 
 tbl_maker_token as (
@@ -102,11 +119,19 @@ tokens as (
         select distinct te.* from {{ source('tokens', 'erc20') }} as te 
            join tbl_trades on te.contract_address = taker_token OR te.contract_address = maker_token
            where te.blockchain = 'ethereum'
+           
         ),
 prices as (  
         select distinct pu.* from {{ source('prices', 'usd') }} as  pu
            join tbl_trades on (pu.contract_address = taker_token  OR pu.contract_address = maker_token) AND date_trunc('minute',block_time) = minute
-           where pu.blockchain = 'ethereum' and minute > TIMESTAMP '2024-07-15'
+            
+           where pu.blockchain = 'ethereum' 
+           {% if is_incremental() %}
+            AND {{ incremental_predicate('minute') }}
+            {% endif %}
+            {% if not is_incremental() %}
+            AND minute >= cast('{{zeroex_settler_start_date}}' as date)
+            {% endif %}
         ), 
 results as (
     select 
@@ -163,7 +188,12 @@ results as (
     left join tokens tm on tm.blockchain = 'ethereum' and tm.contract_address = maker_token
     left join prices pt on pt.blockchain = 'ethereum' and pt.contract_address = taker_token and pt.minute = date_trunc('minute', trades.block_time)
     left join prices pm on pm.blockchain = 'ethereum' and pm.contract_address = maker_token and pm.minute = date_trunc('minute', trades.block_time)
-    where tr.block_time > TIMESTAMP '2024-07-15' 
+    where 1=1 {% if is_incremental() %}
+            AND {{ incremental_predicate('tr.block_time') }}
+            {% endif %}
+            {% if not is_incremental() %}
+            AND tr.block_time >= cast('{{zeroex_settler_start_date}}' as date)
+            {% endif %}
 ), 
 results_usd as (
 
