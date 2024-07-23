@@ -9,13 +9,13 @@ sources:
 
   - name: compound_v3_base
     tables:
-      - name: Comet_evt_Supply
+      - name: cUSDCv3_evt_Supply
       - name: cUSDbCv3Comet_evt_Supply
-      - name: Comet_evt_Withdraw
+      - name: cUSDCv3_evt_Withdraw
       - name: cUSDbCv3Comet_evt_Withdraw
-      - name: Comet_evt_Transfer
+      - name: cUSDCv3_evt_Transfer
       - name: cUSDbCv3Comet_evt_Transfer
-      - name: Comet_evt_AbsorbDebt
+      - name: cUSDCv3_evt_AbsorbDebt
       - name: cUSDbCv3Comet_evt_AbsorbDebt
 
   - name: seamlessprotocol_base

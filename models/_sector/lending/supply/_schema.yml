@@ -6,7 +6,7 @@ models:
       blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync
       sector: lending
       project: aave, compound
-      contributors: tomfutago
+      contributors: tomfutago, hildobby
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync']
     description: "All lending transactions involving supply transactions"

@@ -10,6 +10,8 @@
     )
 }}
 
+{% set drakula_network_bug_fix_timestamp = '2024-06-29' %}
+
 {% set network_to_chain_id = {
     '1': 'ethereum',
     '10': 'optimism',
@@ -29,6 +31,9 @@ select
     questName as boost_name,
     actionType as action_type,
     case
+        when creator = 0xe627b03b7fe363e840dab2debf8b962c672e89fb 
+            and evt_block_time <= timestamp '{{ drakula_network_bug_fix_timestamp }}'
+        then 'base' -- fix Drakula wrong action network bug 
     {% for chain_id, network in network_to_chain_id.items() %}
         when chainId={{ chain_id }} then '{{ network }}'
     {% if loop.last %}

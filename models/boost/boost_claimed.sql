@@ -10,6 +10,9 @@
     )
 }}
 
+{% set boost_fee_removal_timestamp = '2024-06-06 16:00:00' %}
+{% set drakula_network_bug_fix_timestamp = '2024-06-29' %}
+
 {% set boost_claimed_models = [
     ref('boost_arbitrum_claimed'),
     ref('boost_base_claimed'),
@@ -44,7 +47,10 @@ quest_claims_enriched as (
         coalesce(b.reward_token_address, c.reward_token_address) reward_token_address,
         claim_tx_hash,
         c.block_time,
-        coalesce(claim_fee_eth, 0.000075) claim_fee_eth,
+        case 
+            when block_time >= timestamp '{{ boost_fee_removal_timestamp }}' then 0.0
+            else coalesce(claim_fee_eth, 0.000075) end
+        as claim_fee_eth,
         coalesce(b.action_type, c.action_type) action_type,
         action_tx_hash,
         coalesce(b.action_network, c.action_network) action_network,
@@ -115,7 +121,12 @@ select
     claim_fee_eth,
     action_type,
     action_tx_hash,
-    action_network,
+    case 
+        when creator_address = 0xe627b03b7fe363e840dab2debf8b962c672e89fb 
+        and block_time <= timestamp '{{ drakula_network_bug_fix_timestamp }}'
+        then 'base' -- fix Drakula wrong action network bug action_network
+    else action_network end
+    as action_network,
     creator_address
 from unified_claims u
 left join {{ source('prices','usd') }} p
