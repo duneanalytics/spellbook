@@ -67,7 +67,8 @@
                                  AND tb.blockchain = 'ethereum'   
              LEFT JOIN {{ source('ethereum', 'transactions') }} AS tx
                              ON settlement.evt_tx_hash = tb.hash
-                                 AND settlement.evt_block_numbern = tx.block_number                                                                       
+                                 AND settlement.evt_block_number = tx.block_number  
+                                 AND settlement.evt_block_time = tx.block_time                                                                    
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('settlement.evt_block_time') }}
     {% endif %}
