@@ -67,6 +67,7 @@ select
     b.token_address,
     b.token_standard,
     b.token_id,
+    b.token_symbol,
     sum(b.balance) as token_balance,
     sum(b.balance * p.price) as balance_usd
 from (
@@ -83,4 +84,4 @@ left join {{ ref('prices_usd_daily') }} p
     and p.contract_address is null
     and p.symbol = 'ETH'
     and b.day = p.day)
-group by 1, 2, 3, 4, 5, 6
+group by 1, 2, 3, 4, 5, 6, 7
