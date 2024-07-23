@@ -65,7 +65,7 @@
              LEFT JOIN {{ source('tokens', 'erc20') }} AS tb
                              ON trade.buyToken = tb.contract_address
                                  AND tb.blockchain = '{{blockchain}}'   
-             LEFT JOIN {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_trade') }} AS settlement
+             LEFT JOIN {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} AS settlement
                              ON trade.evt_tx_hash = settlement.evt_tx_hash                                                                
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('trade.evt_block_time') }}
