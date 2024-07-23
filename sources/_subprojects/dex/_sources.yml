@@ -75,8 +75,3 @@ sources:
       - name: BCoWFactory_call_logBCoWPool
       - name: BCoWPool_call_bind    
       - name: BCoWPool_call_unbind  
-  - name: gnosis_protocol_v2_ethereum
-    tables:
-      - name: GPv2Settlement_evt_Trade
-      - name: GPv2Settlement_evt_Settlement
-
