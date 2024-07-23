@@ -71,7 +71,7 @@ WITH pool_labels AS (
             '{{blockchain}}' AS blockchain,
             'balancer_cowswap_amm' AS pool_type,
             c.token_address,
-            b.symbol AS token_symbol,
+            c.symbol AS token_symbol,
             c.token_balance_raw,
             c.token_balance,
             c.protocol_liquidity_usd,
