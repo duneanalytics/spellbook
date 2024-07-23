@@ -10,4 +10,4 @@
     )
 }}
 
-{{ paraswap_v6_trades_master('avalanche_c', 'paraswap', 'AugustusV6_2') }}
+{{ paraswap_v6_trades_master('avalanche_c', 'paraswap') }}
