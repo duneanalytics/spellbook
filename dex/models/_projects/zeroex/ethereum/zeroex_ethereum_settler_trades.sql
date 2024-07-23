@@ -222,7 +222,7 @@ results_usd as (
         tx_from,
         tx_to,
         tx_index as evt_index,
-        -1 as trace_address,
+        (array[-1]) as trace_address,
         'settler' as type,
         true as swap_flag,
         -1 as fills_within, 
