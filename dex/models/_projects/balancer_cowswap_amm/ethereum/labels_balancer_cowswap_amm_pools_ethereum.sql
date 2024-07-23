@@ -63,10 +63,7 @@ final AS (
       'balancer_cowswap_amm_pools_ethereum' AS model_name,
       'identifier' as label_type
     FROM   (
-        SELECT s1.pool, symbol, cast(100*denorm/total_denorm AS integer) AS norm_weight FROM settings s1
-        INNER JOIN (SELECT pool, sum(denorm) AS total_denorm FROM settings GROUP BY pool) s2
-        ON s1.pool = s2.pool
-        ORDER BY 1 ASC , 3 DESC, 2 ASC
+        SELECT s1.pool, symbol FROM settings s1
     ) s
 
     GROUP BY 1, 2
