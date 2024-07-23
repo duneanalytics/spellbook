@@ -1,0 +1,39 @@
+{{
+    config(
+        schema='balancer_cowswap_amm',
+        alias = 'liquidity',     
+        materialized = 'view',  
+        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                    spell_type = "project",
+                                    spell_name = "balancer_cowswap_amm",
+                                    contributors = \'["viniabussafi"]\') }}'
+    )
+}}
+
+{% set b_cow_amm_models = [
+    ref('balancer_cowswap_amm_ethereum_liquidity')
+] %}
+
+SELECT *
+FROM (
+    {% for model in b_cow_amm_models %}
+    SELECT
+            day,
+            pool_id,
+            pool_address,
+            pool_symbol,
+            version,
+            blockchain,
+            pool_type,
+            token_address,
+            token_symbol,
+            token_balance_raw,
+            token_balance,
+            protocol_liquidity_usd,
+            protocol_liquidity_eth
+    FROM {{ model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+)
