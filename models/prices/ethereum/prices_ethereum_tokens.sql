@@ -1797,7 +1797,10 @@ FROM
     ('zro-layerzero', 'ethereum', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
     ('quartz-sandclock', 'ethereum', 'QUARTZ', 0xba8a621b4a54e61c442f5ec623687e2a942225ef, 18),
     ('wcomai-wrapped-commune-ai', 'ethereum', 'WCOMAI', 0xc78b628b060258300218740b1a7a5b3c82b3bd9f, 18),
-    ('wbeth-wrapped-beacon-eth', 'ethereum', 'WBETH', 0xa2E3356610840701BDf5611a53974510Ae27E2e1, 18)
+    ('wbeth-wrapped-beacon-eth', 'ethereum', 'WBETH', 0xa2E3356610840701BDf5611a53974510Ae27E2e1, 18),
+    ('lever-lever-finance', 'ethereum', 'LEVER', 0x4B5f49487ea7B3609b1aD05459BE420548789f1f, 18),
+    ('hifi-hifi-finance', 'ethereum', 'HIFI', 0x4b9278b94a1112cAD404048903b8d343a810B07e, 18)
+
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
