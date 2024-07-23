@@ -9,6 +9,7 @@ on:
       - '.gitignore'
       - 'tokens/**'
       - 'daily_spellbook/**'
+      - 'hourly_spellbook/**'
       - 'nft/**'
       - 'solana/**'
 
