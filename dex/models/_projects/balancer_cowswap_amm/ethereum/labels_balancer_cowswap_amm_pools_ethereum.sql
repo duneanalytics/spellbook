@@ -54,6 +54,7 @@ final AS (
       '{{blockchain}}' AS blockchain,
       pool AS address,
       CONCAT('BCowAMM: ', array_join(array_agg(symbol), '/')) AS name,
+      'Balancer CoWSwap AMM' AS pool_type,
       'balancer_cowswap_amm_pool' AS category,
       'balancerlabs' AS contributor,
       'query' AS source,

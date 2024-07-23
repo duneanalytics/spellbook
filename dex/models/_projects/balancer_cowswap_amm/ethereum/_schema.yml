@@ -144,6 +144,7 @@ models:
       - &name
         name: name
         description: "Label name of pool containing the token symbols and their respective weights (if applicable)"
+      - name: pool_type
       - &category
         name: category
         description: "Label category"
