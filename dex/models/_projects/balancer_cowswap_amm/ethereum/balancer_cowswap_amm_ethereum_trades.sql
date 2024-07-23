@@ -68,7 +68,7 @@
                                  AND tb.blockchain = '{{blockchain}}'   
              LEFT JOIN {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} AS settlement
                              ON trade.evt_tx_hash = settlement.evt_tx_hash  
-             LEFT JOIN {{ ref('labels_balancer_cowswap_amm_pools_ethereum') }} p ON p.address = c.project_contract_address                                                                             
+             LEFT JOIN {{ ref('labels_balancer_cowswap_amm_pools_ethereum') }} p ON p.address = trade.owner                                                                             
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('trade.evt_block_time') }}
     {% endif %}
