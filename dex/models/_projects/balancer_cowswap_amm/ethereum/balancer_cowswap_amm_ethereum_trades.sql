@@ -1,3 +1,5 @@
+{% set blockchain = 'ethereum' %}
+
 {{
     config(
 
