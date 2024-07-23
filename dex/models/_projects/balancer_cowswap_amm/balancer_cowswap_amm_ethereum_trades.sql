@@ -39,7 +39,7 @@
     ,CAST(NULL AS VARBINARY) AS maker
     , pool.bPool AS project_contract_address
     , settlement.evt_tx_hash AS tx_hash
-    , tx.from AS tx_from
+    , tx."from" AS tx_from
     , tx.to AS tx_to
     , settlement.evt_index AS evt_index
     FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} settlement
