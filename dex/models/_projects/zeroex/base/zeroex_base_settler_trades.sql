@@ -56,7 +56,7 @@ from (
     
   FROM {{ source('base', 'traces') }} AS tr
   join result_0x_settler_addresses a on a.settler_address = tr.to and a.blockchain = 'base' 
-        and tr.block_time > a.begin_block_time and (tr.block_time < a.end_block_time OR a.end_block_time is null )
+        and tr.block_time > a.begin_block_time 
   WHERE (a.settler_address is not null or tr.to = 0xca11bde05977b3631167028862be2a173976ca11)
     and varbinary_substring(input,1,4) in (0x1fff991f, 0xfd3ad6d4)
     {% if is_incremental() %}
