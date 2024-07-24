@@ -345,33 +345,23 @@ models:
             - tx_hash
             - index
     columns:
-      - name: blockchain
-      - name: version
-      - name: contract_address
-      - *tx_hash
-      - *index
-        tests:
-          - not_null
+      - *blockchain
+      - *version
+      - *contract_address
+      - name: tx_hash
+      - name: index
       - &tx_index
         name: tx_index
         description: 'Transaction Index'
-        tests:
-          - not_null
       - &block_time
         name: block_time
         description: 'Block time in UTC'
-        tests:
-          - not_null
       - &block_number
         name: block_number
         description: 'Event Block Number'
-        tests:
-          - not_null
       - &swap_fee_percentage
         name: swap_fee_percentage
-        description: 'Swap fees for the pool, values are returned with 18 decimals (1e18 meaning 100%)'
-        tests:
-          - not_null        
+        description: 'Swap fees for the pool, values are returned with 18 decimals (1e18 meaning 100%)'    
 
   - name: labels_jelly_swap_pools_sei
     meta:
