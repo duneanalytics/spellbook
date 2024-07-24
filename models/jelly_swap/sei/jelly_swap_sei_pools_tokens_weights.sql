@@ -51,5 +51,4 @@ SELECT
     w.token_address, 
     w.normalized_weight 
 FROM normalized_weights w 
-LEFT JOIN registered r ON BYTEARRAY_SUBSTRING(r.pool_id,1,20) = w.pool_id
-WHERE w.pool_id IS NOT NULL
+INNER JOIN registered r ON BYTEARRAY_SUBSTRING(r.pool_id,1,20) = w.pool_id
