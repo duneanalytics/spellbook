@@ -21,6 +21,27 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('maverick_zksync_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: maverick_v2_zksync_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: maverick
+      contributors: get620v
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'maverick' ]
+    description: "Maverick zksync base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('maverick_zksync_base_trades_seed')
+          filter:
+            version: 2
 
   - name: pancakeswap_v2_zksync_base_trades
     meta:
@@ -40,7 +61,7 @@ models:
           seed_file: ref('pancakeswap_zksync_base_trades_seed')
           filter:
             version: 2
-            
+
   - name: uniswap_v3_zksync_base_trades
     meta:
       blockchain: zksync
@@ -59,7 +80,7 @@ models:
           seed_file: ref('uniswap_zksync_base_trades_seed')
           filter:
             version: 3
-            
+
   - name: syncswap_v1_zksync_base_trades
     meta:
       blockchain: zksync
@@ -77,7 +98,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('syncswap_zksync_base_trades_seed')
           filter:
-            version: 1          
+            version: 1
 
   - name: syncswap_v2_zksync_base_trades
     meta:
@@ -133,7 +154,7 @@ models:
           seed_file: ref('pancakeswap_zksync_base_trades_seed')
           filter:
             version: 3
-            
+
   - name: spacefi_v1_zksync_base_trades
     meta:
       blockchain: zksync
@@ -167,7 +188,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('derpdex_zksync_base_trades_seed')
-      
+
   - name: wagmi_v1_zksync_base_trades
     meta:
       blockchain: zksync
@@ -184,7 +205,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('wagmi_zksync_base_trades_seed')
-          
+
   - name: zkswap_finance_zksync_base_trades
     meta:
       blockchain: zksync
@@ -201,7 +222,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('zkswap_finance_zksync_base_trades_seed')
-          
+
   - name: gemswap_zksync_base_trades
     meta:
       blockchain: zksync
@@ -218,7 +239,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('gemswap_zksync_base_trades_seed')
-          
+
   - name: vesync_v1_zksync_base_trades
     meta:
       blockchain: zksync
@@ -235,7 +256,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('vesync_zksync_base_trades_seed')
-          
+
   - name: dracula_finance_zksync_base_trades
     meta:
       blockchain: zksync
