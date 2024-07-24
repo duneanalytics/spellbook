@@ -345,14 +345,10 @@ models:
             - tx_hash
             - index
     columns:
-      - *blockchain
-      - *version
+      - name: blockchain
+      - name: version
       - name: contract_address
-        tests:
-          - not_null
       - *tx_hash
-        tests:
-          - not_null
       - *index
         tests:
           - not_null
