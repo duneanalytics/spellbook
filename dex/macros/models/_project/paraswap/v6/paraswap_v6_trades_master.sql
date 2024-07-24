@@ -9,6 +9,12 @@
           swapExactAmountInOnCurveV1 as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOnCurveV1'), 'swapExactAmountInOnCurveV1', 'curveV1Data') }}),
           swapExactAmountInOnCurveV2 as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOnCurveV2'), 'swapExactAmountInOnCurveV2', 'curveV2Data') }}),
           swapExactAmountInOnBalancerV2 as ({{ paraswap_v6_balancer_v2_method('swapExactAmountInOnBalancerV2_decoded', 'swapExactAmountInOnBalancerV2_raw', source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOnBalancerV2'), 'in', 'swapExactAmountInOnBalancerV2') }})
+          -- TODO: should be possible to improve this conditional code
+          {% if contract_details['version'] == '6.2' %},
+            swapOnAugustusRFQTryBatchFill as ({{ paraswap_v6_rfq_method( source(project + '_' + blockchain, contract_name + '_call_swapOnAugustusRFQTryBatchFill'), 'swapOnAugustusRFQTryBatchFill', 'data') }}), -- RFQ ONLY SELL?
+            swapExactAmountInOutOnMakerPSM as ({{ paraswap_v6_maker_psm_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOutOnMakerPSM')) }}) -- PSM ONLY SELL?
+          {% endif %}
+
 select
   *,
   fromAmount as spentAmount,
@@ -44,6 +50,11 @@ from
               *
             from
               swapExactAmountInOnBalancerV2
+            -- TODO: should be possible to improve this conditional code
+            {% if contract_details['version'] == '6.2' %}
+            union select * from swapOnAugustusRFQTryBatchFill
+            union select * from swapExactAmountInOutOnMakerPSM
+            {% endif %}
           )
       ),
       buy_trades as (
@@ -148,12 +159,12 @@ select
               "version":    "6.1",
           },
           "AugustusV6_2": {
-              "version":    "6.2",
+              "version":    "6.2",              
           }
     } 
   %}
-  {% for contract_name, contract_details in contracts.items() %}
-    select * from ({{ paraswap_v6_trades_by_contract(blockchain, project, contract_name, contract_details) }})
+  {% for contract_name, contract_details in contracts.items() %}  
+    select * from ({{ paraswap_v6_trades_by_contract(blockchain, project, contract_name, contract_details) }})    
     {% if not loop.last %}
       union all
     {% endif %}

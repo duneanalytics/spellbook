@@ -1,0 +1,37 @@
+{% macro paraswap_v6_rfq_method(table_name, method_name, data_field, extra_field=None) %}
+                SELECT 
+                  -- TODO: check if 2 idential calls will be squashed into a single one? Edge case
+                  -- sequence_number,
+                  call_block_time,
+                  call_block_number,
+                  call_tx_hash,                  
+                  contract_address as project_contract_address,
+                  call_trace_address,
+                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[sequence_number], '$.order'), '$.makerAsset') as srcToken, 
+                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[sequence_number], '$.order'), '$.takerAsset') as destToken, 
+                  try_cast(
+                    JSON_EXTRACT_SCALAR({{ data_field }}, '$.fromAmount') as uint256
+                  ) AS fromAmount,
+                  try_cast(
+                    JSON_EXTRACT_SCALAR({{ data_field }}, '$.toAmount') as uint256
+                  ) AS toAmount,
+                  try_cast(
+                    JSON_EXTRACT_SCALAR({{ data_field }}, '$.toAmount') as uint256 -- no slippage when RFQ
+                  ) AS quotedAmount,
+                  output_receivedAmount,
+                  JSON_EXTRACT_SCALAR({{ data_field }}, '$.metadata') AS metadata,
+                  JSON_EXTRACT_SCALAR({{ data_field }}, '$.beneficiary') AS beneficiary,
+                  0 as partnerAndFee,
+                  0 as output_partnerShare,
+                  0 as output_paraswapShare,
+                  '{{ method_name }}' as method{% if extra_field %},
+                  {{ extra_field }}{% endif %}                  
+                FROM
+                     {{ table_name }}                                    
+                    CROSS JOIN UNNEST(sequence(1, cardinality(orders))) AS t(sequence_number)               
+                WHERE
+                  call_success = TRUE
+                  {% if is_incremental() %}
+                    AND call_block_time >= date_trunc('day', now() - interval '7' day)
+                  {% endif %}
+{% endmacro %}
