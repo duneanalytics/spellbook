@@ -70,4 +70,4 @@ sources:
       - name: trades
   - name: gyroscope
     tables:
-      - name: gyrotokens      
+      - name: gyro_tokens      
