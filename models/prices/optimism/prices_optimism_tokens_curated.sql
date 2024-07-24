@@ -123,5 +123,12 @@ FROM
     ('tux-magicaltux', 'TUX',  0x17aabf6838a6303fc6e9c5a227dc1eb6d95c829a, 18),
     ('sonne-sonne-finance', 'SONNE', 0x1db2466d9f5e10d7090e7152b68d62703a2245f0, 18),
     ('reth-rocket-pool-eth', 'rETH', 0x9bcef72be871e61ed4fbbc7630889bee758eb81d, 18),
-    ('weeth-wrapped-eeth', 'WEETH',0x5a7facb970d094b6c7ff1df0ea68d99e6e73cbff, 18)
+    ('weeth-wrapped-eeth', 'WEETH',0x5a7facb970d094b6c7ff1df0ea68d99e6e73cbff, 18),
+    ('next-connext-eth', 'NEXT', 0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8, 18),
+    ('ezeth-renzo-restaked-eth', 'ezETH', 0x2416092f143378750bb29b79ed961ab195cceea5, 18),
+    ('usde-ethena-usde', 'USDe', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 18),
+    ('kuji-kujira', 'KUJI', 0x3a18dcc9745edcd1ef33ecb93b0b6eba5671e7ca, 6),
+    ('usdv-verified-usd', 'USDV', 0x323665443cef804a3b5206103304bd4872ea4253, 6),
+    ('zro-layerzero', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
+    ('rseth-rseth', 'rsETH', 0x4186bfc76e2e237523cbc30fd220fe055156b41f, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
