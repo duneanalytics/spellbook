@@ -1797,7 +1797,18 @@ FROM
     ('zro-layerzero', 'ethereum', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
     ('quartz-sandclock', 'ethereum', 'QUARTZ', 0xba8a621b4a54e61c442f5ec623687e2a942225ef, 18),
     ('wcomai-wrapped-commune-ai', 'ethereum', 'WCOMAI', 0xc78b628b060258300218740b1a7a5b3c82b3bd9f, 18),
-    ('wbeth-wrapped-beacon-eth', 'ethereum', 'WBETH', 0xa2E3356610840701BDf5611a53974510Ae27E2e1, 18)
+    ('wbeth-wrapped-beacon-eth', 'ethereum', 'WBETH', 0xa2E3356610840701BDf5611a53974510Ae27E2e1, 18),
+    ('hoppy2-hoppy', 'ethereum', 'HOPPY', 0x6e79b51959cf968d87826592f46f819f92466615, 9),
+    ('peipei1-peipei', 'ethereum', 'PEIPEI', 0x3ffeea07a27fab7ad1df5297fa75e77a43cb5790, 9),
+    ('draggy-draggy-cto', 'ethereum', 'DRAGGY', 0xd12a99dbc40036cec6f1b776dccd2d36f5953b94, 9),
+    ('maga-maga-hat', 'ethereum', 'MAGA', 0xd29da236dd4aac627346e1bba06a619e8c22d7c5, 9),
+    ('flappy2-flappy', 'ethereum', 'FLAPPY', 0x590246bfbf89b113d8ac36faeea12b7589f7fe5b, 9),
+    ('kendu-kendu-inu', 'ethereum', 'KENDU', 0xaa95f26e30001251fb905d264aa7b00ee9df6c18, 18),
+    ('maganomics-maganomics', 'ethereum', 'MAGANOMICS ', 0x7e744bbb1a49a44dfcc795014a4ba618e418fbbe, 9),
+    ('wojak-wojak', 'ethereum', 'WOJAK ', 0x5026f006b85729a8b14553fae6af249ad16c9aab, 18),
+    ('kai-kai-ken', 'ethereum', 'KAI ', 0xa045fe936e26e1e1e1fb27c1f2ae3643acde0171, 9),
+    ('gme-gme-ethereum', 'ethereum', 'GME ', 0xc56c7a0eaa804f854b536a5f3d5f49d2ec4b12b8, 9),
+    ('birddog-birddog', 'ethereum', 'BIRDDOG ', 0x70fd93fb088150e203d2243b9bd3190276f80c70, 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
