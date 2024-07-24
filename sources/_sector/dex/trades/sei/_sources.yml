@@ -4,6 +4,7 @@ sources:
   - name: jelly_swap_sei
     tables:
       - name: Vault_evt_Swap
+      - name: Vault_evt_PoolRegistered
       - name: ComposableStablePoolFactory_evt_PoolCreated
       - name: WeightedPoolFactory_evt_PoolCreated
       - name: OfficialPoolsRegister_evt_OfficialPoolRegistered
