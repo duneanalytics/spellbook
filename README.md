@@ -65,6 +65,8 @@ In order to scale Spellbook, the repo has introduced sub-projects to break out c
   - `tokens`
     - token metadata, transfers, balances
 
+For further information on sub-projects, please visit [this discussion](https://github.com/duneanalytics/spellbook/discussions/6037) and ask any questions there.
+
 ## Ways to contribute to Spellbook
 
 - **Build** spells - if you want to write code, simply clone the repo, write your code, and open a PR
