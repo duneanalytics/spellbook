@@ -12,8 +12,11 @@
 
 {{
     balancer_compatible_v2_trades(
-        blockchain = 'sei',
+        blockchain = 'fantom',
         project = 'jelly_swap',
-        version = '2'
+        version = '2',
+        project_decoded_as = 'jelly_swap',
+        Vault_evt_Swap = 'Vault_evt_Swap',
+        pools_fees = 'pools_fees'
     )
 }}
