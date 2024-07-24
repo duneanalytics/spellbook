@@ -10,3 +10,4 @@ sources:
       - name: ComposableStablePoolFactory_evt_PoolCreated
       - name: Vault_evt_TokensRegistered
       - name: Vault_evt_Swap
+      - name: Vault_evt_PoolRegistered
