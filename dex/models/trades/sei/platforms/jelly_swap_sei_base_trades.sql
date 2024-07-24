@@ -12,7 +12,7 @@
 
 {{
     balancer_compatible_v2_trades(
-        blockchain = 'fantom',
+        blockchain = 'sei',
         project = 'jelly_swap',
         version = '2',
         project_decoded_as = 'jelly_swap',
