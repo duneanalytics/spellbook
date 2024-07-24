@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: jelly_swap_sei
+    tables:
+      - name: Vault_evt_Swap
+      - name: ComposableStablePoolFactory_evt_PoolCreated
+      - name: WeightedPoolFactory_evt_PoolCreated
+      - name: OfficialPoolsRegister_evt_OfficialPoolRegistered
