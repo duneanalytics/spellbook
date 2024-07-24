@@ -26,4 +26,6 @@ FROM
     ,('dai-dai', 'linea', 'DAI', 0x4AF15ec2A0BD43Db75dd04E62FAA3B8EF36b00d5, 18)
     ,('m-btc-merlins-seal-btc', 'linea', 'M-BTC',0xe4D584ae9b753e549cAE66200A6475d2f00705f7, 18)
     ,('solvbtc-solv-protocol-solvbtc', 'linea', 'solvBTC', 0x5FFcE65A40f6d3de5332766ffF6A28BF491C868c, 18)
+    ,('ezeth-renzo-restaked-eth', 'linea', 'ezETH', 0x2416092f143378750bb29b79ed961ab195cceea5, 18)
+    ,('usde-ethena-usde', 'linea', 'USDe', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

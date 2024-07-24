@@ -159,6 +159,7 @@ FROM (VALUES
     , ('lynex', 'Lynex', 'Direct', 'Lynex')
     , ('nile', 'Nile', 'Direct', 'Nile')
     , ('nuri', 'Nuri', 'Direct', 'nuriexchange')
+    , ('merchant_moe', 'Merchant Moe', 'Direct', 'MerchantMoe_xyz')
     , ('icecreamswap', 'IceCreamSwap', 'Direct', 'icecream_swap')
     , ('thruster', 'Thruster Finance', 'Direct', 'ThrusterFi')
     , ('blasterswap', 'BlasterSwap', 'Direct', 'BlasterSwap')
