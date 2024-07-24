@@ -93,6 +93,7 @@ FROM
     ('ush-unsheth', 'arbitrum', 'unshETH', 0x0ae38f7e10a43b5b2fb064b42a2f4514cba909ef, 18),
     ('wad-warden','arbitrum','WAD',0x6374d87c5a48c41b309a1ab7b12eeb4fe30d8d8a,18),
     ('wbtc-wrapped-bitcoin', 'arbitrum', 'WBTC', 0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f, 8),
+    ('weeth-wrapped-eeth','arbitrum','weETH',0x35751007a407ca6feffe80b3cb397736d2cf4dbe,18),
     ('weth-weth','arbitrum','WETH',0x82af49447d8a07e3bd95bd0d56f35241523fbab1,18),
     ('wis-experty-wisdom-token','arbitrum','WIS',0xa0459edcad5aac14dc32775d22ff7bd33027cac7,18),
     ('wsteth-wrapped-liquid-staked-ether-20','arbitrum','wstETH',0x5979d7b546e38e414f7e9822514be443a4800529,18),
