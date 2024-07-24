@@ -33,6 +33,7 @@ ref('prices_native_tokens')
 ,ref('prices_zkevm_tokens')
 ,ref('prices_mantle_tokens')
 ,ref('prices_blast_tokens')
+,ref('prices_sei_tokens')
 ] %}
 
 
