@@ -73,7 +73,8 @@ from (
 tbl_all_logs as (
 select  logs.tx_hash, logs.block_time, logs.block_number,
     row_number() over (partition by logs.tx_hash order by index) rn_first, index,
-    case when varbinary_substring(logs.topic1, 13, 20) = st.contract_address then 0 
+    case when varbinary_substring(logs.topic2, 13, 20) = logs.tx_from then 1 
+        when varbinary_substring(logs.topic1, 13, 20) = st.contract_address then 0 
         when first_value(logs.contract_address) over (partition by logs.tx_hash order by index) = logs.contract_address then 0 
         else 1 end maker_tkn, 
     bytearray_to_int256(bytearray_substring(DATA, 23,10)) value,
