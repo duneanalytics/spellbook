@@ -1,6 +1,6 @@
-#Welcome to your Spellbook!
+#Welcome to the NFT Spellbook!
 
-name: "daily_spellbook"
+name: "nft"
 version: "1.0.0"
 config-version: 2
 
@@ -17,16 +17,15 @@ vars:
   DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
   DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '1') }}"
   DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'day') }}"
+  ETH_ERC20_ADDRESS: '0x0000000000000000000000000000000000000000'
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
-model-paths: ["models", "../sources"]
-analysis-paths: ["analyses"]
+model-paths: ["models", "../../sources"]
 # ../tests/* should be added to a separate shared folder
 test-paths: ["tests"]
 seed-paths: ["seeds"]
-macro-paths: ["../macros", "macros"]
-snapshot-paths: ["snapshots"]
+macro-paths: ["macros", "../../macros"]
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
@@ -36,16 +35,15 @@ clean-targets: # directories to be removed by `dbt clean`
 # Configuring tests
 # Full documentation: https://docs.getdbt.com/reference/test-configs
 tests:
-  daily_spellbook:
+  nft:
     +store_failures: true  # store failures for all tests
 
 # Configuring seeds
 # Full documentation: https://docs.getdbt.com/reference/seed-configs
 # For configuring individual seeds (e.g. overriding column types) we recommend a yml file nested in the same folder as the seed
 # example: seeds/cryptopunks/schema.yml
-# TODO: uncomment when seeds are added
 seeds:
-  daily_spellbook:
+  nft:
     +schema: test_data
 
 # defining search order of macro invokation
@@ -56,7 +54,7 @@ dispatch:
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
-  daily_spellbook:
+  nft:
     +post-hook:
       - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_scaling_min_data_processed', model.config.get('writer_min_size', '500MB')) }}"
         transaction: true
@@ -70,23 +68,20 @@ models:
     +schema: no_schema    # this should be overriden in model specific configs
     +view_security: invoker
 
-    chainlink:
-      +schema: chainlink
-      arbitrum:
-        +schema: chainlink_arbitrum
-      avalanche_c:
-        +schema: chainlink_avalanche_c
-      base:
-        +schema: chainlink_base
-      bnb:
-        +schema: chainlink_bnb
+
+    seaport:
+      +schema: seaport
       ethereum:
-        +schema: chainlink_ethereum
-      fantom:
-        +schema: chainlink_fantom
-      gnosis:
-        +schema: chainlink_gnosis
+        +schema: seaport_ethereum
+      bnb:
+        +schema: seaport_bnb
+      arbitrum:
+        +schema: seaport_arbitrum
       optimism:
-        +schema: chainlink_optimism
+        +schema: seaport_optimism
+      avalanche_c:
+        +schema: seaport_avalanche_c
       polygon:
-        +schema: chainlink_polygon
+        +schema: seaport_polygon
+      base:
+        +schema: seaport_base

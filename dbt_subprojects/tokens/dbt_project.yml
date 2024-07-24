@@ -1,6 +1,6 @@
-#Welcome to the NFT Spellbook!
+#Welcome to your Spellbook!
 
-name: "hourly_spellbook"
+name: "tokens"
 version: "1.0.0"
 config-version: 2
 
@@ -21,30 +21,15 @@ vars:
 
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
-model-paths: ["models", "../sources"]
-# ../tests/* should be added to a separate shared folder
-test-paths: ["tests"]
-seed-paths: ["seeds"]
-macro-paths: ["../macros", "macros"]
+model-paths: ["models", "../../sources"]
+# test-paths: ["tests"]
+# seed-paths: ["seeds"]
+macro-paths: ["../../macros"]
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
-
-# Configuring tests
-# Full documentation: https://docs.getdbt.com/reference/test-configs
-tests:
-  hourly_spellbook:
-    +store_failures: true  # store failures for all tests
-
-# Configuring seeds
-# Full documentation: https://docs.getdbt.com/reference/seed-configs
-# For configuring individual seeds (e.g. overriding column types) we recommend a yml file nested in the same folder as the seed
-# example: seeds/cryptopunks/schema.yml
-seeds:
-  hourly_spellbook:
-    +schema: test_data
 
 # defining search order of macro invokation
 dispatch:
@@ -54,7 +39,7 @@ dispatch:
 # Configuring models
 # Full documentation: https://docs.getdbt.com/docs/configuring-models
 models:
-  hourly_spellbook:
+  tokens:
     +post-hook:
       - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_scaling_min_data_processed', model.config.get('writer_min_size', '500MB')) }}"
         transaction: true
@@ -68,33 +53,64 @@ models:
     +schema: no_schema    # this should be overriden in model specific configs
     +view_security: invoker
 
-    _project:
-      safe:
-        +schema: safe
-        ethereum:
-          +schema: safe_ethereum
-        optimism:
-          +schema: safe_optimism
-        gnosis:
-          +schema: safe_gnosis
-        polygon:
-          +schema: safe_polygon
-        bnb:
-          +schema: safe_bnb
-        avalanche_c:
-          +schema: safe_avalanche_c
-        fantom:
-          +schema: safe_fantom
-        arbitrum:
-          +schema: safe_arbitrum
-        goerli:
-          +schema: safe_goerli
-        base:
-          +schema: safe_base
-      cow_protocol:
-        +schema: cow_protocol
-        ethereum:
-          +schema: cow_protocol_ethereum
-        gnosis:
-          +schema: cow_protocol_gnosis
+    aave:
+      +schema: aave
 
+    tokens:
+      +schema: tokens
+      +materialized: table
+      +file_format: delta
+      ethereum:
+        +schema: tokens_ethereum
+        +materialized: table
+        +file_format: delta
+      optimism:
+        +schema: tokens_optimism
+        +materialized: table
+        +file_format: delta
+      avalanche_c:
+        +schema: tokens_avalanche_c
+        +materialized: table
+        +file_format: delta
+      bnb:
+        +schema: tokens_bnb
+        +materialized: table
+        +file_format: delta
+      goerli:
+        +schema: tokens_goerli
+        +materialized: table
+        +file_format: delta
+      gnosis:
+        +schema: tokens_gnosis
+        +materialized: table
+        +file_format: delta
+      arbitrum:
+        +schema: tokens_arbitrum
+        +materialized: table
+        +file_format: delta
+      polygon:
+        +schema: tokens_polygon
+        +materialized: table
+        +file_format: delta
+      fantom:
+        +schema: tokens_fantom
+        +materialized: table
+        +file_format: delta
+      base:
+        +schema: tokens_base
+        +materialized: table
+        +file_format: delta
+      celo:
+        +schema: tokens_celo
+        +materialized: table
+        +file_format: delta
+
+    ovm:
+      +schema: ovm
+      optimism:
+        +schema: ovm_optimism
+
+    the_granary:
+      +schema: the_granary
+      optimism:
+        +schema: the_granary_optimism
