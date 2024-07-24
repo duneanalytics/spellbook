@@ -132,7 +132,11 @@ FROM
     ('ice-decentral-games-ice', 'polygon', 'ICE', 0xc6c855ad634dcdad23e64da71ba85b8c51e5ad7c,18),
     ('bonsai-bonsai-token', 'polygon', 'BONSAI', 0x3d2bd0e15829aa5c362a4144fdf4a1112fa29b5c, 18),
     ('wifi-wifi', 'polygon', 'WIFI', 0xe238ecb42c424e877652ad82d8a939183a04c35f, 18),
-    ('dfx-dfx-finance', 'polygon', 'DFX', 0x27f485b62c4a7e635f561a87560adf5090239e93, 18)
+    ('dfx-dfx-finance', 'polygon', 'DFX', 0x27f485b62c4a7e635f561a87560adf5090239e93, 18),
+    ('usdv-verified-usd', 'polygon', 'USDV', 0x323665443cef804a3b5206103304bd4872ea4253, 6),
+    ('zro-layerzero', 'polygon', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
+    ('next-connext-eth', 'polygon', 'NEXT', 0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8, 18),
+    ('usdm-mountain-protocol-usd', 'polygon', 'USDM', 0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0xef938b6da8576a896f6e0321ef80996f4890f9c4 -- DG, bad price feed
