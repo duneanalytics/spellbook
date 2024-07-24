@@ -365,7 +365,21 @@
                 "taker_max_amount": "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*4 + 1, 32)",
                 "deadline":         "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*5 + 24 + 1, 8)",
                 "fee_amount":       "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*7 + 1, 32)",
-                "making_amount":    "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*9 + 1, 32)",
+                "_executed_amount": "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*9 + 1, 32)",
+                "making_amount":    "if(
+                                        bitwise_and(
+                                            bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*8 + 31 + 1, 1))
+                                            , bytearray_to_bigint(0x01)
+                                        ) = 0
+                                        , substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*9 + 1, 32)
+                                    )",
+                "taking_amount":    "if(
+                                        bitwise_and(
+                                            bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*8 + 31 + 1, 1))
+                                            , bytearray_to_bigint(0x01)
+                                        ) > 0
+                                        , substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*9 + 1, 32)
+                                    )",
                 "condition":        "bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 24 + 1, 8)) > 0",
             },
         },
