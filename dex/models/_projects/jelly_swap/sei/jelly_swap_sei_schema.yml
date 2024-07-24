@@ -345,9 +345,9 @@ models:
             - tx_hash
             - index
     columns:
-      - *blockchain
-      - *version
-      - *contract_address
+      - name: blockchain
+      - name: version
+      - name: contract_address
       - name: tx_hash
       - name: index
       - &tx_index
