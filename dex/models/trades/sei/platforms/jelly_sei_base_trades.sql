@@ -13,13 +13,9 @@
 WITH trades AS (
     SELECT * FROM (
         SELECT
-            swaps.poolId,
-            swaps.evt_tx_hash,
-            swaps.evt_index,
-            swaps.evt_block_number,
-            bytearray_substring(swaps.poolId, 1, 20) AS contract_address,
-            fees.swap_fee_percentage,
-            ROW_NUMBER() OVER (PARTITION BY poolId, evt_tx_hash, evt_index ORDER BY block_number DESC, index DESC) AS rn
+            swaps.*,
+            bytearray_substring(swaps.poolId, 1, 20) AS pool_address,
+            ROW_NUMBER() OVER (PARTITION BY poolId, evt_tx_hash, evt_index ORDER BY evt_block_number DESC, evt_tx_index DESC) AS rn
         FROM {{ source('jelly_swap_sei', 'Vault_evt_Swap') }} swaps
         {% if is_incremental() %}
         WHERE {{ incremental_predicate('swaps.evt_block_time') }}
@@ -28,13 +24,6 @@ WITH trades AS (
     WHERE t.rn = 1
 )
 
--- , pools AS (
---     SELECT
---         'sei' AS blockchain,
---         poolId,
---         poolAddress AS pool_address,
---     FROM {{ source('jelly_swap_sei', 'Vault_evt_PoolRegistered') }}
--- )
 
 , dexs AS (
     SELECT
@@ -50,8 +39,6 @@ WITH trades AS (
         trade.evt_tx_hash AS tx_hash,
         trade.evt_index
     FROM trades trade
-    LEFT JOIN pools p
-        ON p.poolId = trade.poolId
 )
 
 SELECT
