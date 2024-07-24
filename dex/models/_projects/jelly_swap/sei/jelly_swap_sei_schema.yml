@@ -425,13 +425,13 @@ models:
             - tx_hash
             - evt_index
     columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_month
-      - *block_date
-      - *block_time
-      - *block_number
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_month
+      - name: block_date
+      - name: block_time
+      - name: block_number
       - &token_bought_symbol
         name: token_bought_symbol
         description: "Token symbol for token bought in the trade"
@@ -471,11 +471,11 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "Pool address"
-      - *tx_hash
+      - name: tx_hash
       - &tx_from
         name: tx_from
         description: "transaction.from"
       - &tx_to
         name: tx_to
         description: "transaction.to"
-      - *evt_index     
+      - name: evt_index     
