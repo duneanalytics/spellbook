@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'address', 'block_date'],
+        unique_key = ['blockchain', 'address', 'block_date', 'token_address', 'token_symbol'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
         post_hook = '{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "gnosis", "optimism", "polygon", "scroll", "zksync"]\',
                                     "sector",
@@ -19,6 +19,9 @@ select
     l.blockchain
     ,l.address
     ,t.block_date
+    ,coalesce(t.contract_address,0x0000000000000000000000000000000000000000) as token_address
+    ,t.symbol as token_symbol
+    ,t.token_standard
     ,count(*) as transfers_in
     ,sum(amount_usd) as usd_in
 from {{source('labels','owner_addresses')}} l
@@ -29,7 +32,7 @@ on t.blockchain = l.blockchain
  {% if is_incremental() %}
  and {{ incremental_predicate('block_time') }}
  {% endif %}
-group by 1,2,3
+group by 1,2,3,4,5,6
 )
 
 ,stats_out as (
@@ -37,6 +40,9 @@ select
     l.blockchain
     ,l.address
     ,t.block_date
+    ,coalesce(t.contract_address,0x0000000000000000000000000000000000000000) as token_address
+    ,t.symbol as token_symbol
+    ,t.token_standard
     ,count(*) as transfers_out
     ,sum(amount_usd)  as usd_out
 from {{source('labels','owner_addresses')}} l
@@ -47,7 +53,7 @@ on t.blockchain = l.blockchain
  {% if is_incremental() %}
  and {{ incremental_predicate('block_time') }}
  {% endif %}
-group by 1,2,3
+group by 1,2,3,4,5,6
 )
 
 select
@@ -56,6 +62,9 @@ select
     ,l.custody_owner
     ,l.account_owner
     ,coalesce(stats_in.block_date,stats_out.block_date) as block_date
+    ,coalesce(stats_in.token_address,stats_out.token_address) as token_address
+    ,coalesce(stats_in.token_symbol,stats_out.token_symbol) as token_symbol
+    ,coalesce(stats_in.token_standard,stats_out.token_standard) as token_standard
     ,transfers_in
     ,transfers_out
     ,usd_in
@@ -68,4 +77,6 @@ left join stats_out
 on l.blockchain = stats_out.blockchain
     and l.address = stats_out.address
     and (stats_in.block_date is null or stats_in.block_date = stats_out.block_date)
+    and (stats_in.block_date is null or stats_in.token_address = stats_out.token_address)
+    and (stats_in.block_date is null or stats_in.token_symbol = stats_out.token_symbol)
 where coalesce(stats_in.block_date,stats_out.block_date) is not null
