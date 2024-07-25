@@ -207,5 +207,13 @@ FROM
     ('sx-sx-network', 'arbitrum', 'SX', 0x8cf7e3aa6faf6ae180e5ec3f0fb95081c2086ebe, 18),
     ('zro-layerzero', 'arbitrum', 'ZRO', 0x6985884C4392D348587B19cb9eAAf157F13271cd, 18),
     ('pickle-pickle-finance', 'arbitrum', 'PICKLE', 0x965772e0e9c84b6f359c8597c891108dcf1c5b1a, 18),
-    ('opul-opuloustoken-via-chainportio', 'arbitrum', 'OPUL', 0x0c5fa0E07949F941A6c2C29a008252db1527d6EE, 18)
+    ('opul-opuloustoken-via-chainportio', 'arbitrum', 'OPUL', 0x0c5fa0E07949F941A6c2C29a008252db1527d6EE, 18),
+    ('weeth-wrapped-eeth', 'arbitrum', 'weETH', 0x35751007a407ca6feffe80b3cb397736d2cf4dbe, 18),
+    ('rsr-reserve-rights', 'arbitrum', 'RSR', 0xca5ca9083702c56b481d1eec86f1776fdbd2e594, 18),
+    ('usdm-mountain-protocol-usd', 'arbitrum', 'USDM', 0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 18),
+    ('matic-polygon', 'arbitrum', 'MATIC', 0x561877b6b3dd7651313794e5f2894b2f18be0766, 18),
+    -- ('reserve-electronic-usd', 'arbitrum', 'eUSD', 0x12275dcb9048680c4be40942ea4d92c74c63b844, 18), -- not yet in coinpaprika
+    -- ('reserve-eth-plus', 'arbitrum', 'ETH+', 0x18c14c2d707b2212e17d1579789fc06010cfca23, 18), -- not yet in coinpaprika
+    ('ethfi-etherfi', 'arbitrum', 'ETHFI', 0x7189fb5b6504bbff6a852b13b7b82a3c118fdc27, 18),
+    ('ens-ethereum-name-service', 'arbitrum', 'ENS', 0xfea31d704deb0975da8e77bf13e04239e70d7c28, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

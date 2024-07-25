@@ -3,7 +3,7 @@ version: 2
 sources:
   # Base Tables
   - name: mantle
-    description: "mantle raw tables including transactions, traces and logs."
+    description: "Mantle raw tables including transactions, traces and logs."
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
