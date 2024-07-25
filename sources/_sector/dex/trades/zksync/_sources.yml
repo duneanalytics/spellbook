@@ -9,6 +9,7 @@ sources:
     tables:
       - name: V2Pool_evt_PoolSwap
       - name: V2Factory_evt_PoolCreated
+      - name: MaverickV2Factory_evt_PoolCreated
   - name: pancakeswap_v2_zksync
     tables:
       - name: PancakePair_evt_Swap
