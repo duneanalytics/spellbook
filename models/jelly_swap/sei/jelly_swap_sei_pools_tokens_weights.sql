@@ -18,7 +18,7 @@ WITH registered AS (
         evt_block_time
     FROM {{ source('jelly_swap_sei', 'Vault_evt_PoolRegistered') }}
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('call_create.evt_block_time') }}
+    WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ),
 weighted_pool_factory AS (
