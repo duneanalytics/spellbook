@@ -245,4 +245,6 @@ models:
       - *type
       - *swap_flag
       - *contract_address
-      - *fills_within
+      - &fills_within
+        name: fills_within
+        description: "fills in then multihop, if present" 
