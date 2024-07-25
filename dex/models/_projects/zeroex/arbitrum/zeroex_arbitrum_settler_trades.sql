@@ -26,8 +26,6 @@ WITH tbl_addresses AS (
         AND blockchain = 'arbitrum'
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
-        {% else %}
-            AND block_time >= cast('{{zeroex_settler_start_date}}' as date)
         {% endif %}  
 ),
 
