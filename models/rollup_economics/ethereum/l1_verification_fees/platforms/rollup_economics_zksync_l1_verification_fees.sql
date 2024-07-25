@@ -1,11 +1,11 @@
 {{ config(
-    schema = 'rollup_economics_zksync',
-    alias = 'l1_verification_fees',    
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'tx_hash'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    schema = 'rollup_economics_zksync'
+    , alias = 'l1_verification_fees' 
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['name', 'tx_hash']
+    , post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "rollup_economics",
                                     \'["niftytable", "lgingerich"]\') }}'

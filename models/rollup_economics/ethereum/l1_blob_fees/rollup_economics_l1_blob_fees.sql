@@ -1,11 +1,11 @@
 {{ config(
-    schema = 'rollup_economics_ethereum',
-    alias = 'l1_blob_fees',    
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['name', 'tx_hash'],
-    post_hook='{{ expose_spells(\'["ethereum"]\',
+    schema = 'rollup_economics_ethereum'
+    , alias = 'l1_blob_fees'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['name', 'tx_hash']
+    , post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "rollup_economics",
                                     \'["niftytable", "maybeYonas", "lgingerich"]\') }}'
