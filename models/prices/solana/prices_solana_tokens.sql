@@ -677,6 +677,7 @@ FROM
         ('cwif-catwifhat', 'solana', 'CWIF', '7atgF8KQo4wJrD5ATGX7t1V2zVvykPJbFfNeVf1icFv1', 2),
         ('sc-shark-cat', 'solana', 'SC', '6D7NaB2xsLd7cauWu1wKk6KBsJohJmP2qZH9GEfVi5Ui', 6),
         ('io-ionet', 'solana', 'IO', 'BZLbGTNCSFfoth2GYDtwr7e4imWzpR5jqcUuGEwr646K', 8),
+        ('kama-kamala-horris', 'solana', 'KAMA', 'HnKkzR1YtFbUUxM6g3iVRS2RY68KHhGV7bNdfF1GCsJB', 9),
         ('hehe7-hehe', 'solana', 'hehe', 'BreuhVohXX5fv6q41uyb3sojtAuGoGaiAhKBMtcrpump', 6),
         ('peanie-peanie', 'solana', 'peanie', 'dekNoN3D8mXa4JHLwTbVXz8aPAyJUkk443UjcSpJKi4', 6),
         ('moai-moai', 'solana', 'MOAI', '7NQSHjuEGENZDWfSvPZz7oP2D6c5Jc3LjFC6uh179ufr', 9),
