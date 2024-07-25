@@ -12,7 +12,6 @@
 
 WITH 
 
-
 suicide AS (
     SELECT 
          cast(date_trunc('day', block_time) as date) AS block_date
