@@ -28,8 +28,9 @@ gas_fee as (
         , gas_used * gas_price AS amount_raw
     FROM 
     {{ source('gnosis', 'transactions') }}
-    WHERE   
-        success
+    WHERE 
+        1=1  
+        --success
     {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
     {% endif %}
@@ -55,8 +56,9 @@ gas_fee_collection as (
         {{ source('gnosis', 'blocks') }} t2
         ON
         t2.number = t1.block_number
-    WHERE   
-        t1.success
+    WHERE 
+        1=1
+        --t1.success
     {% if is_incremental() %}
         AND {{incremental_predicate('t1.block_time')}}
         AND {{incremental_predicate('t2.time')}}
@@ -87,7 +89,8 @@ gas_fee_rewards as (
         ON
         t2.number = t1.block_number
     WHERE   
-        t1.success
+        1=1
+        --t1.success
      {% if is_incremental() %}
         AND {{incremental_predicate('t1.block_time')}}
         AND {{incremental_predicate('t2.time')}}
