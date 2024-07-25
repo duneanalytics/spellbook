@@ -1,11 +1,7 @@
 {{ config(
         schema = 'jelly_swap',
         alias = 'trades',
-        materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["sei"]\',
-                                      spell_type = "project", 
-                                      spell_name = "jelly_swap", 
-                                      contributors = \'["viniabussafi"]\') }}'
+        materialized = 'view'
         )
 }}
 

@@ -68,6 +68,3 @@ sources:
   - name: cow_protocol_arbitrum
     tables:
       - name: trades
-  - name: labels
-    tables:
-      - name: jelly_swap_pools_sei

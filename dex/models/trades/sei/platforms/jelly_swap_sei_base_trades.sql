@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'jelly_swap_v2_sei',
+        schema = 'jelly_swap_sei',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',

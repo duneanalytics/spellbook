@@ -5,7 +5,8 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['block_number', 'tx_hash', 'index']
+        unique_key = ['block_number', 'tx_hash', 'index'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
@@ -35,7 +36,6 @@ FROM
 WHERE logs.topic0 = {{ event_signature }}
     {% if not is_incremental() %}
     AND logs.block_time >= TIMESTAMP '{{ project_start_date }}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND logs.block_time >= DATE_TRUNC('day', NOW() - interval '7' day)
+    {% else %}
+    AND {{ incremental_predicate('logs.block_time') }}
     {% endif %}

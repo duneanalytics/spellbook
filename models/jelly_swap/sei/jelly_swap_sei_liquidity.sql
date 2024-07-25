@@ -2,7 +2,7 @@
 
 {{
     config(
-        schema = 'jelly_swap_sei',
+        schema = 'jelly_swap_' + blockchain,
         alias = 'liquidity',
         materialized = 'table',
         file_format = 'delta'

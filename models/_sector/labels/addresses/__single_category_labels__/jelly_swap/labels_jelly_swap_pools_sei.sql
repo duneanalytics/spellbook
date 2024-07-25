@@ -1,10 +1,6 @@
 {{config(
   schema = 'labels',
-  alias = 'jelly_swap_pools_sei',
-  post_hook = '{{ expose_spells(\'["sei"]\',
-                               "sector",
-                               "labels",
-                               \'["viniabussafi"]\') }}'
+  alias = 'jelly_swap_pools_sei'
 )}}
 
 WITH pools AS (

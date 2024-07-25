@@ -18,7 +18,7 @@ WITH registered AS (
         evt_block_time
     FROM {{ source('jelly_swap_sei', 'Vault_evt_PoolRegistered') }}
     {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('call_create.evt_block_time') }}
     {% endif %}
 ),
 weighted_pool_factory AS (
@@ -32,7 +32,7 @@ weighted_pool_factory AS (
     CROSS JOIN UNNEST(call_create.normalizedWeights) WITH ORDINALITY t2(normalized_weight, pos)
     WHERE t.pos = t2.pos
     {% if is_incremental() %}
-    AND call_create.call_block_time >= date_trunc('day', now() - interval '7' day)
+    AND {{ incremental_predicate('call_create.call_block_time') }}
     {% endif %}
 ),
 
