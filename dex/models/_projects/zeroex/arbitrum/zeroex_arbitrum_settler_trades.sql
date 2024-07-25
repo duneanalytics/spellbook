@@ -24,6 +24,11 @@ WITH tbl_addresses AS (
     WHERE 
         contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae 
         AND blockchain = 'arbitrum'
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('block_time') }}
+        {% else %}
+            AND block_time >= cast('{{zeroex_settler_start_date}}' as date)
+        {% endif %}  
 ),
 
 tbl_end_times AS (
