@@ -54,12 +54,12 @@ settler_txs AS (
         tx_hash,
         block_time,
         block_number,
-        methodID,
+        method_id,
         contract_address,
         MAX(varbinary_substring(tracker,1,12)) AS zid,
         CASE 
-            WHEN methodID = 0x1fff991f THEN MAX(varbinary_substring(tracker,14,3))
-            WHEN methodID = 0xfd3ad6d4 THEN MAX(varbinary_substring(tracker,13,3))
+            WHEN method_id = 0x1fff991f THEN MAX(varbinary_substring(tracker,14,3))
+            WHEN method_id = 0xfd3ad6d4 THEN MAX(varbinary_substring(tracker,13,3))
         END AS tag
     FROM (
         SELECT
@@ -103,7 +103,7 @@ tbl_all_logs AS (
         logs.contract_address AS token, 
         zid, 
         st.contract_address,
-        methodID, 
+        method_id, 
         tag
     FROM 
         {{ source('ethereum', 'logs') }} AS logs
@@ -140,7 +140,7 @@ tbl_trades AS (
         ta.block_time, 
         ta.block_number,
         zid,
-        methodID,
+        method_id,
         tag, 
         contract_address,
         SUM(value) FILTER (WHERE rn_first = 1) AS taker_amount,
