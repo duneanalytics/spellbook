@@ -51,16 +51,16 @@ l1_blobs AS (
 )
 
 SELECT
-    d.day
-    , d.name
-    , data_fee_native
-    , data_fee_usd
-    , verification_fee_native
-    , verification_fee_usd
-    , blob_fee_native
-    , blob_fee_usd
-    , data_fee_native + verification_fee_native + blob_fee_native AS l1_fee_native
-    , data_fee_usd + verification_fee_usd + blob_fee_usd AS l1_fee_usd
+    COALESCE(d.day, v.day, b.day) as day
+    , COALESCE(d.name, v.name, b.name) as name
+    , COALESCE(data_fee_native, 0) AS data_fee_native
+    , COALESCE(data_fee_usd, 0) AS data_fee_usd
+    , COALESCE(verification_fee_native, 0) AS verification_fee_native
+    , COALESCE(verification_fee_usd, 0) AS verification_fee_usd
+    , COALESCE(blob_fee_native, 0) AS blob_fee_native
+    , COALESCE(blob_fee_usd, 0) AS blob_fee_usd
+    , COALESCE(data_fee_native, 0) + COALESCE(verification_fee_native, 0) + COALESCE(blob_fee_native, 0) AS l1_fee_native
+    , COALESCE(data_fee_usd, 0) + COALESCE(verification_fee_usd, 0) + COALESCE(blob_fee_usd, 0) AS l1_fee_usd
 FROM l1_data d
 FULL OUTER JOIN l1_verification v
     ON d.day = v.day 
