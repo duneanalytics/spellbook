@@ -27,3 +27,4 @@ WHERE blockchain IN ('arbitrum', 'base', 'blast', 'linea', 'mantle', 'optimism',
 {% if is_incremental() %}
 AND {{ incremental_predicate('block_time') }}
 {% endif %}
+GROUP BY 1, 2
