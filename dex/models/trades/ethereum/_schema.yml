@@ -62,7 +62,7 @@ models:
           filter:
             version: 3
 
-  
+
   - name: defiswap_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -80,7 +80,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('defiswap_ethereum_base_trades_seed')
 
-  
+
   - name: airswap_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -232,7 +232,7 @@ models:
           seed_file: ref('pancakeswap_ethereum_base_trades_seed')
           filter:
             version: 3
-  
+
   - name: balancer_v1_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -340,7 +340,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('swapr_ethereum_base_trades_seed')
-          
+
   - name: mauve_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -357,7 +357,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('mauve_ethereum_base_trades_seed')
-          
+
   - name: dfx_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -374,7 +374,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('dfx_ethereum_base_trades_seed')
-          
+
   - name: dodo_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -398,7 +398,7 @@ models:
               - 2_dpp
               - 2_dsp
 
-     
+
   - name: integral_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -433,7 +433,27 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('maverick_ethereum_base_trades_seed')
+          filter:
+            version: 1
 
+  - name: maverick_v2_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: maverick
+      contributors: get620v
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'maverick' ]
+    description: "Maverick ethereum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('maverick_ethereum_base_trades_seed')
+          filter:
+            version: 2
 
   - name: clipper_ethereum_base_trades
     meta:
@@ -576,6 +596,6 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swaap_ethereum_base_trades_seed') 
+          seed_file: ref('swaap_ethereum_base_trades_seed')
           filter:
             version: 2

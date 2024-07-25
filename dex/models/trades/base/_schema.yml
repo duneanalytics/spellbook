@@ -100,7 +100,7 @@ models:
           seed_file: ref('pancakeswap_base_base_trades_seed')
           filter:
             version: 2
-            
+
   - name: balancer_v2_base_base_trades
     meta:
       blockchain: base
@@ -157,7 +157,7 @@ models:
           seed_file: ref('dodo_base_base_trades_seed')
           filter:
             version: 2_dpp
-            
+
   - name: maverick_base_base_trades
     meta:
       blockchain: base
@@ -174,6 +174,27 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('maverick_base_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: maverick_v2_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: maverick
+      contributors: get620v
+    config:
+      tags: [ 'base', 'dex', 'trades', 'maverick' ]
+    description: "Maverick Base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('maverick_base_base_trades_seed')
+          filter:
+            version: 2
 
   - name: smardex_base_base_trades
     meta:
@@ -209,7 +230,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('baseswap_base_base_trades_seed')
 
-  
+
   - name: dackieswap_base_base_trades
     meta:
       blockchain: base
@@ -226,7 +247,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('dackieswap_base_base_trades_seed')
-  
+
   - name: scale_base_base_trades
     meta:
       blockchain: base
@@ -300,7 +321,7 @@ models:
           seed_file: ref('woofi_base_base_trades_seed')
           filter:
             version: 2
-  
+
 
   - name: velocimeter_v2_base_base_trades
     meta:
@@ -320,8 +341,8 @@ models:
           seed_file: ref('velocimeter_v2_base_base_trades_seed')
           filter:
             version: 2
-  
-  
+
+
   - name: moonbase_base_base_trades
     meta:
       blockchain: base
@@ -340,8 +361,8 @@ models:
           seed_file: ref('moonbase_base_base_trades_seed')
           filter:
             version: 1
-            
-            
+
+
   - name: sobal_base_base_trades
     meta:
       blockchain: base
@@ -380,8 +401,8 @@ models:
           seed_file: ref('plantbaseswap_base_base_trades_seed')
           filter:
             version: 2
-            
-            
+
+
   - name: derpdex_base_base_trades
     meta:
       blockchain: base
@@ -401,8 +422,8 @@ models:
           filter:
             version: 1
 
-  
-  
+
+
   - name: torus_base_base_trades
     meta:
       blockchain: base
@@ -459,7 +480,7 @@ models:
           seed_file: ref('sharkswap_base_base_trades_seed')
           filter:
             version: 1
-            
+
 
   - name: throne_exchange_v3_base_base_trades
     meta:
@@ -520,7 +541,7 @@ models:
           filter:
             version: 1
 
-  
+
   - name: autotronic_base_base_trades
     meta:
       blockchain: base
@@ -619,14 +640,14 @@ models:
           seed_file: ref('oasisswap_base_base_trades_seed')
           filter:
             version: 1
-  
+
 
   - name: leetswap_v2_base_base_trades
     meta:
       blockchain: base
       sector: dex
       project: leetswap_v2
-      contributors: archie 
+      contributors: archie
     config:
       tags: [ 'base', 'dex', 'trades', 'leetswap' ]
     description: "leetswap_v2 base base trades"
@@ -730,7 +751,7 @@ models:
           seed_file: ref('alienbase_base_base_trades_seed')
           filter:
             version: 1
-            
+
   - name: swapbased_base_base_trades
     meta:
       blockchain: base
@@ -749,7 +770,7 @@ models:
           seed_file: ref('swapbased_base_base_trades_seed')
           filter:
             version: 1
-            
+
   - name: gridex_base_base_trades
     meta:
       blockchain: base
@@ -806,7 +827,7 @@ models:
           seed_file: ref('synthswap_base_base_trades_seed')
           filter:
             version: 2
-            
+
   - name: solidly_v3_base_base_trades
     meta:
       blockchain: base
@@ -825,7 +846,7 @@ models:
           seed_file: ref('solidly_base_base_trades_seed')
           filter:
             version: 3
-            
+
   - name: energon_base_base_trades
     meta:
       blockchain: base
@@ -844,7 +865,7 @@ models:
           seed_file: ref('energon_base_base_trades_seed')
           filter:
             version: 1
-            
+
   - name: voltswap_base_base_trades
     meta:
       blockchain: base
@@ -863,7 +884,7 @@ models:
           seed_file: ref('voltswap_base_base_trades_seed')
           filter:
             version: 2
-            
+
   - name: crescentswap_base_base_trades
     meta:
       blockchain: base
@@ -935,6 +956,6 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swaap_base_base_trades_seed') 
+          seed_file: ref('swaap_base_base_trades_seed')
           filter:
             version: 2

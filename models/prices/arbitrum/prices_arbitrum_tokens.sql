@@ -56,6 +56,7 @@ FROM
     ('lrc-loopring','arbitrum','LRC',0x46d0ce7de6247b0a95f67b43b589b4041bae7fbe,18),
     ('luna-terra','arbitrum','LUNC',0x1a4da80967373fd929961e976b4b53ceec063a15,6),
     ('magic-magic-arbitrum', 'arbitrum', 'MAGIC', 0x539bde0d7dbd336b79148aa742883198bbf60342, 18),
+    ('mav-maverick-token','arbitrum','MAV',0x7448c7456a97769F6cD04F1E83A4a23cCdC46aBD,18),
     ('math-math','arbitrum','MATH',0x99f40b01ba9c469193b360f72740e416b17ac332,18),
     ('mcb-mcdex-token','arbitrum','MCB',0x4e352cf164e64adcbad318c3a1e222e9eba4ce42,18),
     ('mim-magic-internet-money','arbitrum','MIM',0xfea7a6a0b346362bf88a9e4a88416b77a57d6c2a,18),
