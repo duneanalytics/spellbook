@@ -32,7 +32,7 @@ where contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae and blockcha
     alias = 'settler_trades',
     materialized='incremental',
     partition_by = ['block_month'],
-    unique_key = ['block_date', 'tx_hash', 'evt_index'],
+    unique_key = ['block_month', 'block_date', 'tx_hash', 'evt_index'],
     on_schema_change='sync_all_columns',
     file_format ='delta',
     incremental_strategy='merge',
@@ -132,7 +132,7 @@ where topic0 in (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081
 =======
     SELECT      
         tx_hash,
-        block_time AS block_time,
+        block_time,
         block_number,
         methodID,
         contract_address,
@@ -147,7 +147,7 @@ where topic0 in (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081
             block_number, 
             block_time, 
             "to" AS contract_address,
-            varbinary_substring(input,1,4) AS methodID,
+            varbinary_substring(input,1,4) AS method_id,
             varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker
         FROM 
             {{ source('arbitrum', 'traces') }} AS tr
@@ -158,8 +158,7 @@ where topic0 in (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081
             AND varbinary_substring(input,1,4) IN (0x1fff991f, 0xfd3ad6d4)
             {% if is_incremental() %}
                 AND {{ incremental_predicate('block_time') }}
-            {% endif %}
-            {% if not is_incremental() %}
+            {% else %}
                 AND block_time >= DATE '{{zeroex_settler_start_date}}'
             {% endif %}
     ) 
@@ -196,8 +195,7 @@ tbl_all_logs AS (
         0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
-        {% endif %}
-        {% if not is_incremental() %}
+        {% else %}
             AND logs.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
 ),
@@ -296,8 +294,7 @@ prices AS (
         pu.blockchain = 'arbitrum'
         {% if is_incremental() %}
             AND {{ incremental_predicate('minute') }}
-        {% endif %}
-        {% if not is_incremental() %}
+        {% else %}
             AND minute >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
 ),
@@ -372,8 +369,7 @@ results AS (
 ), 
 results_usd as (
 =======
-        {% endif %}
-        {% if not is_incremental() %}
+        {% else %}
             AND tr.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
 ),
