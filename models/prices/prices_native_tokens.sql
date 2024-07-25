@@ -79,7 +79,7 @@ FROM
     ('zel-zelcash', null, 'FLUX', null, null),
     ('myria-myria', null, 'MYRIA', null, null),
     ('mode-mode', null, 'MODE', null,null),
+    ('ton-toncoin', null, 'TON', null,null),
     ('strk-starknet', null, 'STRK', null,null),
     ('kda-kadena', null, 'KDA', null, null)
-
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
