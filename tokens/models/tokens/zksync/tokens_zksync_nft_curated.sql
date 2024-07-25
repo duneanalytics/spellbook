@@ -2774,7 +2774,6 @@ FROM (VALUES
     (0x2d07f86931286887451e8cc1f8cdc95318340b4d, 'MPGBR', 'MONEY PRINTER GOES BRRRR'),
     (0xa2c40011573ca55c0302b1a80a451d3584779a67, 'MPH', 'Pixeled Humans'),
     (0xfd54762d435a490405dda0fbc92b7168934e8525, 'MPN', 'Maverick Position NFT'),
-    (0x4D93c58B348d99969257cec007cFb31B410b21A0, 'MPv2', 'Maverick v2 Position'),
     (0xf7417387033fed6748bf3c813fd8c2182eacc238, 'MPN', 'MetaElfLandV2 Profit NFT'),
     (0xa70554f06df7a8cd3d0dcb2a9536d274a8fbc050, 'MPW', 'parallel world'),
     (0x4d93c58b348d99969257cec007cfb31b410b21a0, 'MPv2', 'Maverick v2 Position'),
