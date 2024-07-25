@@ -20,6 +20,11 @@ select blockchain, token_id, to as settler_address, block_time as begin_block_ti
 
 from {{ source('nft', 'transfers') }} 
 where contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae and blockchain = 'arbitrum'
+            {% if is_incremental() %}
+            AND {{ incremental_predicate('block_time') }}
+            {% else %}
+            AND block_time >= cast('{{zeroex_settler_start_date}}' as date)
+            {% endif %}  
            
 ),
 
@@ -38,20 +43,20 @@ LEAD(begin_block_number) over (partition BY blockchain, token_id order by begin_
 
 settler_txs AS (
 SELECT      tx_hash,
-            block_time as block_time,
+            block_time,
             block_number,
-            methodID,
+            method_id,
             contract_address,
            max(varbinary_substring(tracker,1,12)) as zid,
-            case when methodID = 0x1fff991f then max(varbinary_substring(tracker,14,3))
-                when methodID = 0xfd3ad6d4 then max(varbinary_substring(tracker,13,3)) 
+            case when method_id = 0x1fff991f then max(varbinary_substring(tracker,14,3))
+                when method_id = 0xfd3ad6d4 then max(varbinary_substring(tracker,13,3)) 
                 end as tag
 
 from (
  
   SELECT
     tr.tx_hash, block_number, block_time, "to" as contract_address,
-    varbinary_substring(input,1,4) as methodID,
+    varbinary_substring(input,1,4) as method_id,
      varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker
     
   FROM {{ source('arbitrum', 'traces') }} AS tr
@@ -61,8 +66,7 @@ from (
     and varbinary_substring(input,1,4) in (0x1fff991f, 0xfd3ad6d4)
     {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
-            {% endif %}
-            {% if not is_incremental() %}
+            {% else %}
             AND block_time >= cast('{{zeroex_settler_start_date}}' as date)
             {% endif %}  
     
@@ -79,7 +83,7 @@ select  logs.tx_hash, logs.block_time, logs.block_number,
         else 1 end maker_tkn, 
     bytearray_to_int256(bytearray_substring(DATA, 23,10)) value,
     logs.contract_address as token, zid, st.contract_address,
-        methodID, tag
+        method_id, tag
 from {{ source('arbitrum', 'logs') }} as logs 
 join settler_txs st on st.tx_hash = logs.tx_hash and logs.block_time = st.block_time and st.block_number = logs.block_number 
 where topic0 in (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65, 
@@ -87,8 +91,7 @@ where topic0 in (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081
     0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
     {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
-            {% endif %}
-            {% if not is_incremental() %}
+            {% else %}
             AND logs.block_time >= cast('{{zeroex_settler_start_date}}' as date)
             {% endif %}
     ) ,
@@ -101,7 +104,7 @@ tbl_maker_token as (
 
 tbl_trades as (
 select 
-    ta.tx_hash, ta.block_time, ta.block_number,zid,methodID,tag, contract_address,
+    ta.tx_hash, ta.block_time, ta.block_number,zid,method_id,tag, contract_address,
         
     sum(value) filter (where rn_first = 1) as taker_amount,
     max(token) filter (where rn_first = 1) as taker_token,
@@ -127,8 +130,7 @@ prices as (
            where pu.blockchain = 'arbitrum' 
            {% if is_incremental() %}
             AND {{ incremental_predicate('minute') }}
-            {% endif %}
-            {% if not is_incremental() %}
+            {% else %}
             AND minute >= cast('{{zeroex_settler_start_date}}' as date)
             {% endif %}
         ), 
@@ -138,7 +140,7 @@ results as (
         trades.block_number,
         zid,
         trades.contract_address,
-        methodID,
+        method_id,
         trades.tx_hash,
         "from" as tx_from,
         "to" as tx_to,
@@ -186,8 +188,7 @@ results as (
     left join prices pm on pm.blockchain = 'arbitrum' and pm.contract_address = maker_token and pm.minute = date_trunc('minute', trades.block_time)
     where 1=1 {% if is_incremental() %}
             AND {{ incremental_predicate('tr.block_time') }}
-            {% endif %}
-            {% if not is_incremental() %}
+            {% else %}
             AND tr.block_time >= cast('{{zeroex_settler_start_date}}' as date)
             {% endif %}
 ), 
