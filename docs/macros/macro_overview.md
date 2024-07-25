@@ -16,7 +16,7 @@ There are various use cases for macros in DBT, but the main focus for wizards in
 
 ## Design Principles for Macros
 
-Following [this](/macros/models/_sector/dex/uniswap_compatible_trades.sql) example, where uniswap compatible projects code lives, the key design principles include:
+Following [this](/dbt_macros/models/_sector/dex/uniswap_compatible_trades.sql) example, where uniswap compatible projects code lives, the key design principles include:
 
 - **Assign Arguments**
   - Define arguments expected to be passed in via each model that calls the macro.
@@ -51,7 +51,7 @@ Within models, such as uniswap v2, call macro code with [this approach](/models/
 2. **Universal Use Cases in Spellbook**
    - incremental predicates, containing the incremental filter which can be controlled in one location and called across multiple models.
    - incremental days forward, which can chunk data from the source into smaller time frames to help bypass performance limitations.
-   - Macros with lists for for-loops in models, like [`all_evm_chains`](/macros/public/all_evm_chains.sql).
+   - Macros with lists for for-loops in models, like [`all_evm_chains`](/dbt_macros/public/all_evm_chains.sql).
 3. **Dune Team Specific Cases**
    - Overriding dbt-trino core macros for Spellbook-specific scenarios.
    - Backend database specific code in pre or post hooks for spell optimization.
