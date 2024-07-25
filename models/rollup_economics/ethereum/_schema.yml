@@ -14,7 +14,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name
-            - tx_hash
+            - day
     columns:
       - &name
         name: name
