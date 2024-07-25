@@ -1799,7 +1799,7 @@ FROM
     ('wcomai-wrapped-commune-ai', 'ethereum', 'WCOMAI', 0xc78b628b060258300218740b1a7a5b3c82b3bd9f, 18),
     ('wbeth-wrapped-beacon-eth', 'ethereum', 'WBETH', 0xa2E3356610840701BDf5611a53974510Ae27E2e1, 18),
     ('hoppy2-hoppy', 'ethereum', 'HOPPY', 0x6e79b51959cf968d87826592f46f819f92466615, 9),
-    ('peipei1-peipei', 'ethereum', 'PEIPEI', 0x3ffeea07a27fab7ad1df5297fa75e77a43cb5790, 9),
+    ('peipei1-peipei', 'ethereum', 'PEIPEI', 0x3ffeea07a27fab7ad1df5297fa75e77a43cb5790, 18),
     ('draggy-draggy-cto', 'ethereum', 'DRAGGY', 0xd12a99dbc40036cec6f1b776dccd2d36f5953b94, 9),
     ('maga-maga-hat', 'ethereum', 'MAGA', 0xd29da236dd4aac627346e1bba06a619e8c22d7c5, 9),
     ('flappy2-flappy', 'ethereum', 'FLAPPY', 0x590246bfbf89b113d8ac36faeea12b7589f7fe5b, 9),
