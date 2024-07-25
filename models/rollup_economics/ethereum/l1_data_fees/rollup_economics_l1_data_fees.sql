@@ -27,7 +27,7 @@ WITH base_union AS (
             , block_time
             , block_number
             , tx_hash
-            , evt_index
+            , tx_index
             , gas_price
             , gas_used
             , data_fee_native
