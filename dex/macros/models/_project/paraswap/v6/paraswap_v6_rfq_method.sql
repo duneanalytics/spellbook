@@ -16,7 +16,7 @@
                     JSON_EXTRACT_SCALAR({{ data_field }}, '$.toAmount') as uint256
                   ) AS toAmount,
                   try_cast(
-                    JSON_EXTRACT_SCALAR({{ data_field }}, '$.toAmount') as uint256 -- no slippage when RFQ
+                    JSON_EXTRACT_SCALAR({{ data_field }}, '$.toAmount') as uint256 -- no slippage when RFQ? Actually under the hood there _could be_ slippages in the underlying orders fills
                   ) AS quotedAmount,
                   output_receivedAmount,
                   JSON_EXTRACT_SCALAR({{ data_field }}, '$.metadata') AS metadata,
@@ -27,8 +27,7 @@
                   '{{ method_name }}' as method{% if extra_field %},
                   {{ extra_field }}{% endif %}                  
                 FROM
-                     {{ table_name }}                                    
-                    CROSS JOIN UNNEST(sequence(1, cardinality(orders))) AS t(sequence_number)               
+                     {{ table_name }}                                                        
                 WHERE
                   call_success = TRUE
                   {% if is_incremental() %}
