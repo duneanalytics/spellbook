@@ -32,6 +32,10 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: maverick_v2_base
+    tables:
+      - name: V2Pool_evt_PoolSwap
+      - name: V2Factory_evt_PoolCreated
   - name: smardex_base
     tables:
       - name: SmardexPair_evt_Swap
