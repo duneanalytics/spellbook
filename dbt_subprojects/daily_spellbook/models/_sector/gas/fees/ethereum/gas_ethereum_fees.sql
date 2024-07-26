@@ -55,7 +55,7 @@ SELECT
      type AS transaction_type
 FROM {{ source('ethereum','transactions') }} txns
 JOIN {{ source('ethereum','blocks') }} blocks ON blocks.number = txns.block_number
-JOIN {{ ref('ethereum_blob_submissions')}} blob ON txns.number = blob.block_number
+JOIN {{ source('ethereum_blob_submissions')}} blob ON txns.number = blob.block_number
 {% if is_incremental() %}
 AND {{ incremental_predicate('txns.block_time') }}
 AND {{ incremental_predicate('blocks.time') }}
