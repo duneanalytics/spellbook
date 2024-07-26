@@ -25,10 +25,12 @@ SELECT
      CASE WHEN type = 'Legacy' THEN (cast(gas_price as double)/1e18 * cast(txns.gas_used as double))
           WHEN type = 'AccessList' THEN (cast(gas_price as double)/1e18 * cast(txns.gas_used as double))
           WHEN type = 'DynamicFee' THEN ((cast(base_fee_per_gas as double)/1e18 + cast(priority_fee_per_gas as double)/1e18)* cast(txns.gas_used as double))
+          WHEN type = '3' THEN ((gas_price as double)/1e18 * cast(txns.gas_usd as double) + (b.blob_base_fee as double)/1e18 * cast(txns.blob_gas_used as double))
           END AS tx_fee_native,
      CASE WHEN type = 'Legacy' THEN (cast(gas_price as double)/1e18 * cast(txns.gas_used as double)) * p.price
           WHEN type = 'AccessList' THEN (cast(gas_price as double)/1e18 * cast(txns.gas_used as double)) * p.price
           WHEN type = 'DynamicFee' THEN ((cast(base_fee_per_gas as double)/1e18 + cast(priority_fee_per_gas as double)/1e18)* cast(txns.gas_used as double))  * p.price
+          WHEN type = '3' THEN ((gas_price as double)/1e18 * cast(txns.gas_usd as double) + (b.blob_base_fee as double)/1e18 * cast(txns.blob_gas_used as double)) * p.price
           END AS tx_fee_usd,
      base_fee_per_gas / 1e18 * txns.gas_used AS burned_native,
      base_fee_per_gas / 1e18 * txns.gas_used * p.price AS burned_usd,
@@ -53,16 +55,19 @@ SELECT
      type AS transaction_type
 FROM {{ source('ethereum','transactions') }} txns
 JOIN {{ source('ethereum','blocks') }} blocks ON blocks.number = txns.block_number
+JOIN {{ ref('ethereum_blob_submissions')}} blob ON txns.number = blob.block_number
 {% if is_incremental() %}
-AND {{ incremental_predicate('block_time') }}
+AND {{ incremental_predicate('txns.block_time') }}
 AND {{ incremental_predicate('blocks.time') }}
+AND {{ incremental_predicate('blob.block_time') }}
 {% endif %}
 LEFT JOIN {{ source('prices','usd') }} p ON p.minute = date_trunc('minute', block_time)
 AND p.blockchain = 'ethereum'
 AND p.symbol = 'WETH'
 {% if is_incremental() %}
 AND {{ incremental_predicate('p.minute') }}
-WHERE {{ incremental_predicate('block_time') }}
+WHERE {{ incremental_predicate('txns.block_time') }}
 AND {{ incremental_predicate('blocks.time') }}
+AND {{ incremental_predicate('blobs.block_time') }}
 AND {{ incremental_predicate('p.minute') }}
 {% endif %}
