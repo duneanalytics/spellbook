@@ -7,6 +7,7 @@
 
 {% set base_models = [
     ref('maverick_zksync_base_trades')
+    , ref('maverick_v2_zksync_base_trades')
     , ref('pancakeswap_v2_zksync_base_trades')
     , ref('pancakeswap_v3_zksync_base_trades')
     , ref('syncswap_v1_zksync_base_trades')

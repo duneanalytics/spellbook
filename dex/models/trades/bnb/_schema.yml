@@ -322,7 +322,7 @@ models:
               - 2_dvm
               - 2_dpp
               - 2_dsp
-              
+
   - name: iziswap_bnb_base_trades
     meta:
       blockchain: bnb
@@ -339,7 +339,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('iziswap_bnb_base_trades_seed')
-          
+
   - name: maverick_bnb_base_trades
     meta:
       blockchain: bnb
@@ -356,7 +356,28 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('maverick_bnb_base_trades_seed')
-          
+          filter:
+            version: 1
+
+  - name: maverick_v2_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: maverick
+      contributors: get620v
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'maverick' ]
+    description: "Maverick bnb base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('maverick_bnb_base_trades_seed')
+          filter:
+            version: 2
+
   - name: nomiswap_bnb_base_trades
     meta:
       blockchain: bnb
@@ -411,7 +432,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('xchange_bnb_base_trades_seed')
-          
+
   - name: thena_bnb_base_trades
     meta:
       blockchain: bnb
@@ -432,7 +453,7 @@ models:
             version:
               - 1
               - fusion
-              
+
   - name: ellipsis_finance_bnb_base_trades
     meta:
       blockchain: bnb
@@ -449,7 +470,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('ellipsis_finance_bnb_base_trades_seed')
-          
+
   - name: onepunchswap_bnb_base_trades
     meta:
       blockchain: bnb

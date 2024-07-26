@@ -2,7 +2,11 @@
   config(
     schema = 'nexusmutual_ethereum',
     alias = 'covers_v2',
-    materialized = 'view',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['cover_id', 'staking_pool'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook = '{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "nexusmutual",
@@ -36,6 +40,9 @@ cover_sales as (
   from {{ source('nexusmutual_ethereum', 'Cover_call_buyCover') }} c
     cross join unnest(c.poolAllocationRequests) as t(pool_allocation)
   where c.call_success
+    {% if is_incremental() %}
+    and {{ incremental_predicate('c.call_block_time') }}
+    {% endif %}
 ),
 
 staking_product_premiums as (
@@ -63,6 +70,9 @@ staking_product_premiums as (
   from {{ source('nexusmutual_ethereum', 'StakingProducts_call_getPremium') }}
   where call_success
     and contract_address = 0xcafea573fbd815b5f59e8049e71e554bde3477e4
+    {% if is_incremental() %}
+    and {{ incremental_predicate('call_block_time') }}
+    {% endif %}
 ),
 
 cover_premiums as (
@@ -77,6 +87,7 @@ cover_premiums as (
     p.cover_amount / 100.0 as partial_cover_amount, -- partial_cover_amount_in_nxm
     p.premium / 1e18 as premium,
     c.commission_ratio / 10000.0 as commission_ratio,
+    (c.commission_ratio / 10000.0) * p.premium / 1e18 as commission,
     (1.0 + (c.commission_ratio / 10000.0)) * p.premium / 1e18 as premium_incl_commission,
     case c.cover_asset
       when 0 then 'ETH'
@@ -129,6 +140,7 @@ covers_v2 as (
     cp.premium,
     cp.premium_incl_commission,
     cp.cover_owner,
+    cp.commission,
     cp.commission_destination,
     cp.tx_hash
   from cover_premiums cp
@@ -151,10 +163,15 @@ covers_v1_migrated as (
     cv1.cover_asset,
     cv1.premium_asset,
     cm.newOwner as cover_owner,
+    cast(null as double) as commission,
+    cast(null as varbinary) as commission_destination,
     cm.evt_index,
     cm.evt_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'CoverMigrator_evt_CoverMigrated') }} cm
     inner join {{ ref('nexusmutual_ethereum_covers_v1') }} cv1 on cm.coverIdV1 = cv1.cover_id
+  {% if is_incremental() %}
+  where {{ incremental_predicate('cm.evt_block_time') }}
+  {% endif %}
 ),
 
 covers as (
@@ -165,6 +182,7 @@ covers as (
     cover_start_time,
     cover_end_time,
     cast(pool_id as varchar) as staking_pool,
+    cast(product_id as int) as product_id,
     product_type,
     product_name,
     cover_asset,
@@ -175,6 +193,8 @@ covers as (
     sum_assured,
     partial_cover_amount, -- in NXM
     cover_owner,
+    commission,
+    commission_destination,
     false as is_migrated,
     tx_hash
   from covers_v2
@@ -186,6 +206,7 @@ covers as (
     cover_start_time,
     cover_end_time,
     syndicate as staking_pool,
+    cast(null as int) as product_id,
     product_type,
     product_name,
     cover_asset,
@@ -196,6 +217,8 @@ covers as (
     sum_assured,
     sum_assured as partial_cover_amount, -- No partial covers in v1 migrated covers
     cover_owner,
+    commission,
+    commission_destination,
     true as is_migrated,
     tx_hash
   from covers_v1_migrated
@@ -211,6 +234,7 @@ select
   date_trunc('day', cover_start_time) as cover_start_date,
   date_trunc('day', cover_end_time) as cover_end_date,
   staking_pool,
+  product_id,
   product_type,
   product_name,
   cover_asset,
@@ -221,6 +245,8 @@ select
   premium_nxm,
   premium_incl_commission,
   cover_owner,
+  commission,
+  commission_destination,
   is_migrated,
   tx_hash
 from covers

@@ -70,8 +70,6 @@ models:
       - &product_id
         name: product_id
         description: "product id"
-        tests:
-          - not_null
       - &product_name
         name: product_name
         description: "product name"
@@ -141,7 +139,7 @@ models:
         description: "block date"
       - *block_number
       - &cover_id
-        name: block_date
+        name: cover_id
         description: "cover id"
         tests:
           - not_null
@@ -166,6 +164,7 @@ models:
         description: "product contract"
       - name: syndicate
         description: "syndicate"
+      - *product_id
       - *product_name
       - *product_type
       - &cover_asset
@@ -214,6 +213,7 @@ models:
       - &staking_pool
         name: staking_pool
         description: "staking pool id"
+      - *product_id
       - *product_type
       - *product_name
       - *cover_asset
@@ -228,10 +228,82 @@ models:
         name: premium_incl_commission
         description: "premium incl commission"
       - *cover_owner
+      - &commission
+        name: commission
+        description: "commission"
+      - &commission_destination
+        name: commission_destination
+        description: "commission destination (recipient wallet)"
       - &is_migrated
         name: is_migrated
         description: "is migrated flag"
       - *tx_hash
+
+  - name: nexusmutual_ethereum_active_covers
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Nexus Mutual Active Covers"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cover_id
+            - staking_pool_id
+    columns:
+      - *cover_id
+      - *cover_start_time
+      - *cover_end_time
+      - *cover_start_date
+      - *cover_end_date
+      - *cover_owner
+      - &staking_pool_id
+        name: staking_pool_id
+        description: "staking pool id"
+      - *product_type
+      - *product_name
+      - *cover_asset
+      - *sum_assured
+      - *partial_cover_amount
+      - name: total_cover_amount
+      - name: eth_cover_amount
+      - name: eth_usd_cover_amount
+      - name: dai_eth_cover_amount
+      - name: dai_usd_cover_amount
+      - name: usdc_eth_cover_amount
+      - name: usdc_usd_cover_amount
+
+  - name: nexusmutual_ethereum_covers_daily_agg
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Daily Covers aggregates"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+
+  - name: nexusmutual_ethereum_cover_owners_agg
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Cover Owners aggregates"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cover_owner
+    columns:
+      - *cover_owner
 
 
   # to be deprecated:

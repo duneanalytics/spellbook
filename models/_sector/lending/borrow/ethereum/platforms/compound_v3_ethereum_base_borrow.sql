@@ -1,6 +1,5 @@
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'compound_v3_ethereum',
     alias = 'base_borrow',
     materialized = 'incremental',
@@ -13,7 +12,7 @@
 
 {%
   set config_sources = [
-    {'contract': 'Comet'},
+    {'contract': 'cUSDCv3'},
     {'contract': 'cWETHv3'},
   ]
 %}

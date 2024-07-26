@@ -47,7 +47,7 @@ FROM
     ('neo-neo', null, 'NEO', null, null),
     ('ont-ontology', null, 'ONT', null, null),
     ('osmo-osmosis', null, 'OSMO', null, null),
-    ('sei-sei', null, 'SEI', null, null),
+    ('sei-sei', null, 'SEI', null, null), --note: SEI already added to native tokens, commenting for history in PR to initiate SEI
     ('sol-solana', null, 'SOL', null, null),
     ('stx-blockstack', null, 'STX', null, null),
     ('sui-sui', null, 'SUI', null, null),
@@ -78,6 +78,8 @@ FROM
     ('fuse-fuse-network', null, 'FUSE', null, null),
     ('zel-zelcash', null, 'FLUX', null, null),
     ('myria-myria', null, 'MYRIA', null, null),
-    ('mode-mode', null, 'MODE', null,null)    
-    
+    ('mode-mode', null, 'MODE', null,null),
+    ('ton-toncoin', null, 'TON', null,null),
+    ('strk-starknet', null, 'STRK', null,null),
+    ('kda-kadena', null, 'KDA', null, null)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
