@@ -1,0 +1,356 @@
+#Welcome to your Spellbook!
+
+name: "daily_spellbook"
+version: "1.0.0"
+config-version: 2
+
+quoting:
+  database: false
+  schema: false
+  identifier: false
+
+# This setting configures which "profile" dbt uses for this project.
+# profile: "spellbook-poc-tokens"
+profile: "spellbook-local"
+
+vars:
+  DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
+  DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '1') }}"
+  DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'day') }}"
+  ETH_ERC20_ADDRESS: '0x0000000000000000000000000000000000000000'
+
+# These configurations specify where dbt should look for different types of files.
+# You don't need to change these!
+model-paths: ["models", "../../sources"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros", "../../macros"]
+
+target-path: "target" # directory which will store compiled SQL files
+clean-targets: # directories to be removed by `dbt clean`
+  - "target"
+  - "dbt_packages"
+
+# Configuring tests
+# Full documentation: https://docs.getdbt.com/reference/test-configs
+tests:
+  daily_spellbook:
+    +store_failures: true  # store failures for all tests
+
+# Configuring seeds
+# Full documentation: https://docs.getdbt.com/reference/seed-configs
+# For configuring individual seeds (e.g. overriding column types) we recommend a yml file nested in the same folder as the seed
+# example: seeds/cryptopunks/schema.yml
+seeds:
+  daily_spellbook:
+    +schema: test_data
+
+# defining search order of macro invokation
+dispatch:
+  - macro_namespace: dbt_utils
+    search_order: ['trino_utils', 'dbt_utils']
+
+# Configuring models
+# Full documentation: https://docs.getdbt.com/docs/configuring-models
+models:
+  daily_spellbook:
+    +post-hook:
+      - sql: "{{ set_trino_session_property(is_materialized(model), 'writer_scaling_min_data_processed', model.config.get('writer_min_size', '500MB')) }}"
+        transaction: true
+      - sql: "{{ set_trino_session_property(is_materialized(model), 'task_scale_writers_enabled', false) }}"
+        transaction: true
+      - sql: "{{ optimize_spell(this, model.config.materialized) }}"
+        transaction: true
+      - sql: "{{ mark_as_spell(this, model.config.materialized) }}"
+        transaction: true
+    +materialized: view
+    +schema: no_schema    # this should be overriden in model specific configs
+    +view_security: invoker
+
+    chainlink:
+      +schema: chainlink
+      arbitrum:
+        +schema: chainlink_arbitrum
+      avalanche_c:
+        +schema: chainlink_avalanche_c
+      base:
+        +schema: chainlink_base
+      bnb:
+        +schema: chainlink_bnb
+      ethereum:
+        +schema: chainlink_ethereum
+      fantom:
+        +schema: chainlink_fantom
+      gnosis:
+        +schema: chainlink_gnosis
+      optimism:
+        +schema: chainlink_optimism
+      polygon:
+        +schema: chainlink_polygon
+
+    dex:
+      +schema: dex
+
+    balances:
+      +schema: balances
+      ethereum:
+        +schema: balances_ethereum
+      arbitrum:
+        +schema: balances_arbitrum
+      bnb:
+        +schema: balances_bnb
+      polygon:
+        +schema: balances_polygon
+
+    _sector:
+      labels:
+        +schema: labels
+        +materialized: table
+        +file_format: delta
+
+    dao:
+      +schema: dao
+
+    addresses:
+      +schema: addresses
+      ethereum:
+        +schema: addresses_ethereum
+
+    transfers:
+      +schema: transfers
+      ethereum:
+        +schema: transfers_ethereum
+      optimism:
+        +schema: transfers_optimism
+      bnb:
+        +schema: transfers_bnb
+      arbitrum:
+        +schema: transfers_arbitrum
+      polygon:
+        +schema: transfers_polygon
+      base:
+        +schema: transfers_base
+      celo:
+        +schema: transfers_celo
+
+    sudoswap:
+      +schema: sudoswap
+      ethereum:
+        +schema: sudoswap_ethereum
+
+    aragon:
+      +schema: aragon
+      ethereum:
+        +schema: aragon_ethereum
+      gnosis:
+        +schema: aragon_gnosis
+      polygon:
+        +schema: aragon_polygon
+      base:
+        +schema: aragon_base
+      arbitrum:
+        +schema: aragon_arbitrum
+
+    jarvis_network:
+      +schema: jarvis_network
+      polygon:
+        +schema: jarvis_network_polygon
+
+    cryptopunks:
+      +schema: cryptopunks
+      ethereum:
+        +schema: cryptopunks_ethereum
+
+    spaceid:
+      +schema: spaceid
+      bnb:
+        +schema: spaceid_bnb
+
+    tornado_cash:
+      +schema: tornado_cash
+      arbitrum:
+        +schema: tornado_cash_arbitrum
+      avalanche_c:
+        +schema: tornado_cash_avalanche_c
+      bnb:
+        +schema: tornado_cash_bnb
+      ethereum:
+        +schema: tornado_cash_ethereum
+      gnosis:
+        +schema: tornado_cash_gnosis
+      optimism:
+        +schema: tornado_cash_optimism
+      polygon:
+        +schema: tornado_cash_polygon
+
+    synapse:
+      +schema: synapse
+      arbitrum:
+        +schema: synapse_arbitrum
+      avalanche_c:
+        +schema: synapse_avalanche_c
+      bnb:
+        +schema: synapse_bnb
+      ethereum:
+        +schema: synapse_ethereum
+      fantom:
+        +schema: synapse_fantom
+      optimism:
+        +schema: synapse_optimism
+      polygon:
+        +schema: synapse_polygon
+
+    fiat_dao:
+      +schema: fiat_dao
+      ethereum:
+        +schema: fiat_dao_ethereum
+
+
+
+    ironbank:
+      +schema: ironbank
+      ethereum:
+        +schema: ironbank_ethereum
+      optimism:
+        +schema: ironbank_optimism
+
+    camelot:
+      +schema: camelot
+      arbitrum:
+        +schema: camelot_arbitrum
+
+    reaper:
+      +schema: reaper
+      optimism:
+        +schema: reaper_optimism
+
+    yield_yak:
+      +schema: yield_yak
+      avalanche_c:
+        +schema: yield_yak_avalanche_c
+
+    hashflow:
+      +schema: hashflow
+      ethereum:
+        +schema: hashflow_ethereum
+      avalanche_c:
+        +schema: hashflow_avalanche_c
+      bnb:
+        +schema: hashflow_bnb
+
+    nexusmutual:
+      +schema: nexusmutual
+      ethereum:
+        +schema: nexusmutual_ethereum
+
+    galxe:
+      +schema: galxe
+      optimism:
+        +schema: galxe_optimism
+
+    hop_protocol:
+      +schema: hop_protocol
+      optimism:
+        +schema: hop_protocol_optimism
+
+
+    chain_info:
+      +schema: chain_info
+
+    bridge:
+      +schema: bridge
+      optimism:
+        +schema: bridge_optimism
+
+    tessera:
+      +schema: tessera
+      ethereum:
+        +schema: tessera_ethereum
+
+    maker:
+      +schema: maker
+      ethereum:
+        +schema: maker_ethereum
+
+    ovm:
+      +schema: ovm
+      optimism:
+        +schema: ovm_optimism
+
+    rubicon:
+      +schema: rubicon
+      optimism:
+        +schema: rubicon_optimism
+      arbitrum:
+        +schema: rubicon_arbitrum
+
+    beethoven_x:
+      +schema: beethoven_x
+      fantom:
+        +schema: beethoven_x_fantom
+
+    rocifi:
+      +schema: rocifi
+      polygon:
+        +schema: rocifi_polygon
+
+    pooltogether:
+      +schema: pooltogether
+      ethereum:
+        +schema: pooltogether_ethereum
+
+    coinbase_wallet_quests:
+      +schema: coinbase_wallet_quests
+      optimism:
+        +schema: coinbase_wallet_quests_optimism
+
+    optimism_quests:
+      +schema: optimism_quests
+      optimism:
+        +schema: optimism_quests_optimism
+
+    dydx:
+      +schema: dydx
+      ethereum:
+        +schema: dydx_ethereum
+
+    layerzero:
+      +schema: layerzero
+      ethereum:
+        +schema: layerzero_ethereum
+      avalanche_c:
+        +schema: layerzero_avalanche_c
+      gnosis:
+        +schema: layerzero_gnosis
+      arbitrum:
+        +schema: layerzero_arbitrum
+      fantom:
+        +schema: layerzero_fantom
+      optimism:
+        +schema: layerzero_optimism
+      polygon:
+        +schema: layerzero_polygon
+      bnb:
+        +schema: layerzero_bnb
+      celo:
+        +schema: layerzero_celo
+      base:
+        +schema: layerzero_base
+
+    tokemak:
+      +schema: tokemak
+      ethereum:
+        +schema: tokemak_ethereum
+
+    quests:
+      +schema: quests
+
+    worldcoin:
+      +schema: worldcoin
+      optimism:
+        +schema: worldcoin_optimism
+
+    aerodrome:
+      +schema: aerodrome
+      base:
+        +schema: aerodrome_base
