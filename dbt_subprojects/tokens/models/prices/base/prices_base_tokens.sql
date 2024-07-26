@@ -127,11 +127,11 @@ FROM
     ('normus-normus','base','NORMUS',0xba5ede8d98ab88cea9f0d69918dde28dc23c2553, 18),
     ('balt-brett39s-cat','base','BALT',0xc9b6ef062fab19d3f1eabc36b1f2e852af1acd18, 18),
     ('summer-onchain-summer','base','SUMMER',0xf7ccb8a6e3400eb8eb0c47619134f7516e025215, 8),
-    ('apetardio-apetardio','base','APETADRIO',0xe161be4a74ab8fa8706a2d03e67c02318d0a0ad6, 18),
+    ('apetardio-apetardio','base','APETADRDIO',0xe161be4a74ab8fa8706a2d03e67c02318d0a0ad6, 18),
     ('crash-crash-on-base','base','CRASH',0x4dd9077269dd08899f2a9e73507125962b5bc87f, 18),
     ('babycrash-babycrash','base','BABYCRASH',0x74ff3cbf86f95fea386f79633d7bc4460d415f34, 18),
     ('workie-workie','base','$WORKIE',0x7480527815ccae421400da01e052b120cc4255e9, 18),
-    ('chrett-chinese-brett','base','CHRETT',0xf8a99f2bf2ce5bb6ce4aafcf070d8723bc904aa2, 18),
+    --('chrett-chinese-brett','base','CHRETT',0xf8a99f2bf2ce5bb6ce4aafcf070d8723bc904aa2, 18), --token inactive
     ('miggles-mister-miggles','base','MIGGLES',0xb1a03eda10342529bbf8eb700a06c60441fef25d, 18),
     ('brish-brish','base','BRISH',0x37f24b26bcefbfac7f261b97f8036da98f81a299, 18),
     ('gme5-gme-base','base','GME',0xbeb0fd48c2ba0f1aacad2814605f09e08a96b94e, 9)
