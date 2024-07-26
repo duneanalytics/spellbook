@@ -1171,5 +1171,6 @@ FROM (VALUES
         (0xff6f59d8ece9238d6968f00420e8031857c2709a, 'Camelot staking position NFT', 'spNFT'),
         (0xff7fe747aa96c80c1ab5f120a5478a8b84e60532, 'TroveStreetPunks', 'TSP'),
         (0xffa2b0b7f612e2c3325d1c0070380e5c187dc629, 'Camelot staking position NFT', 'spNFT'),
+        (0x116193c58B40D50687c0433B2aa0cC4AE00bC32c, 'Maverick v2 Position', 'MPv2'),
         (0xffeeade7d2d28ace7f4691c690bc149a1fc06453, 'CHEERFUL PIRATE', 'CPRT')
   ) AS temp_table (contract_address, name, symbol)

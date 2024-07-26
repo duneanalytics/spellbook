@@ -12,7 +12,7 @@
 
 {%
   set config_sources = [
-    {'contract': 'Comet'},
+    {'contract': 'cUSDCv3'},
     {'contract': 'cUSDbCv3Comet'},
   ]
 %}

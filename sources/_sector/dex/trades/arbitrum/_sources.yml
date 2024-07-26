@@ -146,3 +146,7 @@ sources:
     tables:
       - name: DackieFactory_evt_PairCreated
       - name: DackiePair_evt_Swap
+  - name: maverick_v2_arbitrum
+    tables:
+      - name: V2Pool_evt_PoolSwap
+      - name: V2Factory_evt_PoolCreated

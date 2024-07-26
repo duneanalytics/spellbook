@@ -587,4 +587,5 @@ FROM (VALUES
     , (0x188738e1177a994fd3f1a1daa07c14e148ef03d0, 'CHOPIN', 18)
     , (0x1cebf8735c8d1365cb4c2117787dc811ea6148e0, 'DUSD', 18)
     , (0xefc41e176a20ae15c7c20da48d40d83d098845d8, 'SPRT', 18)
+    , (0xd691d9a68C887BDF34DA8c36f63487333ACfD103, 'MAV', 18)
 ) AS temp_table (contract_address, symbol, decimals)

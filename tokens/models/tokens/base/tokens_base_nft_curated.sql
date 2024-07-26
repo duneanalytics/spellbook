@@ -10,5 +10,6 @@ FROM
   ,(0xF882c982a95F4D3e8187eFE12713835406d11840, 'Merkly ONFT',  'MERK')
   ,(0x36a358b3Ba1FB368E35b71ea40c7f4Ab89bFd8e1, 'l2telegraph.xyz', 'l2t')
   ,(0x29D24B2AC84E51F842fb8c1533CD972eb83c65Ce, 'L2Marathon', 'MarathonRunner')
+  ,(0x116193c58B40D50687c0433B2aa0cC4AE00bC32c, 'Maverick v2 Position', 'MPv2')
 
 ) as temp_table (contract_address, name, symbol)

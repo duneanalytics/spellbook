@@ -26,6 +26,7 @@
     , ref('dodo_bnb_base_trades')
     , ref('iziswap_bnb_base_trades')
     , ref('maverick_bnb_base_trades')
+    , ref('maverick_v2_bnb_base_trades')
     , ref('nomiswap_bnb_base_trades')
     , ref('kyberswap_bnb_base_trades')
     , ref('xchange_bnb_base_trades')

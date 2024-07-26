@@ -77,6 +77,7 @@ FROM
     ('luna-luna-wormhole', 'bnb', 'LUNA', 0x156ab3346823b651294766e23e6cf87254d68962, 6),
     ('maha-mahadao', 'bnb', 'MAHA', 0xce86f7fcd3b40791f63b86c3ea3b8b355ce2685b, 18),
     ('math-math', 'bnb', 'MATH', 0xf218184af829cf2b0019f8e6f0b2423498a36983, 18),
+    ('mav-maverick-token','bnb','MAV',0xd691d9a68C887BDF34DA8c36f63487333ACfD103,18),
     ('matic-polygon', 'bnb', 'MATIC', 0xcc42724c6683b7e57334c4e856f4c9965ed682bd, 18),
     ('mbox-mobox', 'bnb', 'MBOX', 0x3203c9e46ca618c8c1ce5dc67e7e9d75f5da2377, 18),
     ('mdx-mdex', 'bnb', 'MDX', 0x9c65ab58d8d978db963e63f2bfb7121627e3a739, 18),
@@ -268,7 +269,8 @@ FROM
     ('trump-maga', 'bnb', 'TRUMP', 0x4ea98c1999575aaadfb38237dd015c5e773f75a2,9),
     ('wsm-wall-street-memes', 'bnb', 'WSM', 0xb62e45c3df611dce236a6ddc7a493d79f9dfadef, 18),
     ('the-thena', 'bnb', 'THE', 0xf4c8e32eadec4bfe97e0f595add0f4450a863a11, 18),
-    ('lista-lista-dao', 'bnb', 'LISTA', 0xfceb31a79f71ac9cbdcf853519c1b12d379edc46, 18)
+    ('lista-lista-dao', 'bnb', 'LISTA', 0xfceb31a79f71ac9cbdcf853519c1b12d379edc46, 18),
+    ('opul-opuloustoken-via-chainportio', 'bnb', 'OPUL', 0x686318000d982bc8dcc1cdcf8ffd22322f0960ed, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.
