@@ -24,12 +24,12 @@
                         try_cast(
                           bitwise_and(
                             try_cast(
-                              JSON_EXTRACT_SCALAR(balancerData, '$.beneficiaryAndApproveFlag') AS UINT256
+                              JSON_EXTRACT_SCALAR(makerPSMData, '$.beneficiaryAndApproveFlag') AS UINT256
                             ),
                             varbinary_to_uint256 (0xffffffffffffffffffffffffffffffffffffffff)
                           ) as VARBINARY
                         )
-                      ) as beneficiary
+                      ) as beneficiary,
                   0 as partnerAndFee,
                   0 as output_partnerShare,
                   0 as output_paraswapShare,
