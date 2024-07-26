@@ -221,7 +221,7 @@ FROM
     ('arbi-arbiswap', 'arbitrum', 'ARBI', 0x9db8a10c7fe60d84397860b3af2e686d4f90c2b7, 18),
     ('celr-celer-network', 'arbitrum', 'CELR', 0x3a8b787f78d775aecfeea15706d4221b40f345ab, 18),
     ('plx-plexus', 'arbitrum', 'PLX', 0x153516904bc7e28ae7c526e8aee4ec5eae878edb, 18),
-    ('astradao-astra-dao', 'arbitrum', 'ASTRADAO', 0xd3188e0df68559c0b63361f6160c57ad88b239d8, 18),
+    ('astradao-astra-dao', 'arbitrum', ' ASTRADAO', 0xd3188e0df68559c0b63361f6160c57ad88b239d8, 18),
     ('fuse-fuse-network', 'arbitrum', 'FUSE', 0x6b021b3f68491974be6d4009fee61a4e3c708fd6, 18),
     ('catch-spacecatch', 'arbitrum', 'CATCH', 0xf0a479c9c3378638ec603b8b6b0d75903902550b, 18),
     ('tap-taptoken', 'arbitrum', 'TAP', 0x2c650dab03a59332e2e0c0c4a7f726913e5028c1, 18),
