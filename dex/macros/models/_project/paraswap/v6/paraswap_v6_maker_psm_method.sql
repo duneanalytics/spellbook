@@ -16,12 +16,20 @@
                     JSON_EXTRACT_SCALAR(makerPSMData, '$.toAmount') as uint256
                   ) AS toAmount,
                   try_cast(
-                    JSON_EXTRACT_SCALAR(makerPSMData, '$.toAmount') as uint256 -- no slippage when MakerPSM?
+                    JSON_EXTRACT_SCALAR(makerPSMData, '$.toAmount') as uint256
                   ) AS quotedAmount,
                   output_receivedAmount,
                   JSON_EXTRACT_SCALAR(makerPSMData, '$.metadata') AS metadata,
-                  -- @TODO
-                  '@TODO' as beneficiary,                  
+                  to_hex(
+                        try_cast(
+                          bitwise_and(
+                            try_cast(
+                              JSON_EXTRACT_SCALAR(balancerData, '$.beneficiaryAndApproveFlag') AS UINT256
+                            ),
+                            varbinary_to_uint256 (0xffffffffffffffffffffffffffffffffffffffff)
+                          ) as VARBINARY
+                        )
+                      ) as beneficiary
                   0 as partnerAndFee,
                   0 as output_partnerShare,
                   0 as output_paraswapShare,
