@@ -173,7 +173,7 @@ valued_trades as (
                 WHEN sell_price IS NOT NULL THEN
                     -- Choose the larger of two prices when both not null.
                     CASE
-                        WHEN buy_price IS NOT NULL and buy_price * units_bought > sell_price * units_sold
+                        WHEN buy_price IS NOT NULL and buy_price * COALESCE(units_bought,0) > sell_price * COALESCE(units_sold,0)
                             then buy_price * units_bought
                         ELSE sell_price * units_sold
                         END
@@ -188,7 +188,7 @@ valued_trades as (
            (CASE
                 WHEN sell_price IS NOT NULL THEN
                     CASE
-                        WHEN buy_price IS NOT NULL and buy_price * units_bought > sell_price * units_sold
+                        WHEN buy_price IS NOT NULL and buy_price * COALESCE(units_bought,0) > sell_price * COALESCE(units_sold,0)
                             then buy_price * units_bought * fee / units_sold
                         ELSE sell_price * fee
                         END

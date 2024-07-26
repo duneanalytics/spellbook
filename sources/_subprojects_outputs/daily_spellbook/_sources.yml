@@ -20,3 +20,4 @@ sources:
   - name: labels
     tables:
       - name: addresses
+      - name: jelly_swap_pools_sei

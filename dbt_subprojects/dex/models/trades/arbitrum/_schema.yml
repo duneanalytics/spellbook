@@ -62,7 +62,7 @@ models:
           filter:
             version: 1
 
-    
+
   - name: sushiswap_v2_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -406,7 +406,7 @@ models:
             version:
               - 1
               - 2
-  
+
   - name: fraxswap_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -423,7 +423,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('fraxswap_arbitrum_base_trades_seed')
-  
+
   - name: chronos_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -440,7 +440,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('chronos_arbitrum_base_trades_seed')
-  
+
   - name: zyberswap_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -457,7 +457,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('zyberswap_arbitrum_base_trades_seed')
-  
+
   - name: solidlizard_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -492,7 +492,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('rubicon_arbitrum_base_trades_seed')
-  
+
   - name: woofi_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -508,8 +508,8 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('woofi_arbitrum_base_trades_seed')   
-      
+          seed_file: ref('woofi_arbitrum_base_trades_seed')
+
   - name: smardex_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -525,7 +525,7 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('smardex_arbitrum_base_trades_seed')   
+          seed_file: ref('smardex_arbitrum_base_trades_seed')
 
   - name: oasisswap_arbitrum_base_trades
     meta:
@@ -542,7 +542,7 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('oasisswap_arbitrum_base_trades_seed')   
+          seed_file: ref('oasisswap_arbitrum_base_trades_seed')
 
   - name: swaap_v2_arbitrum_base_trades
     meta:
@@ -559,10 +559,10 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('swaap_arbitrum_base_trades_seed') 
+          seed_file: ref('swaap_arbitrum_base_trades_seed')
           filter:
             version: 2
-  
+
   - name: apeswap_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -597,7 +597,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('zigzag_arbitrum_base_trades_seed')
-  
+
   - name: gridex_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -614,7 +614,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('gridex_arbitrum_base_trades_seed')
-  
+
   - name: sterling_finance_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -630,7 +630,7 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('sterling_finance_arbitrum_base_trades_seed') 
+          seed_file: ref('sterling_finance_arbitrum_base_trades_seed')
 
   - name: sharkyswap_arbitrum_base_trades
     meta:
@@ -648,7 +648,7 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('sharkyswap_arbitrum_base_trades_seed')
-  
+
   - name: auragi_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -665,13 +665,13 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('auragi_arbitrum_base_trades_seed')
-          
+
   - name: wombat_exchange_arbitrum_base_trades
     meta:
       blockchain: arbitrum
       sector: dex
       project: wombatexchange
-      contributors: 
+      contributors:
     config:
       tags: [ 'arbitrum', 'dex', 'trades', 'wombat_exchange' ]
     description: "wombatexchange arbitrum base trades"
@@ -718,7 +718,7 @@ models:
           seed_file: ref('dackieswap_v3_arbitrum_base_trades_seed')
           filter:
             version: 3
-            
+
   - name: dackieswap_v2_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -735,5 +735,24 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('dackieswap_v2_arbitrum_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: maverick_v2_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: maverick
+      contributors: get620v
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'maverick' ]
+    description: "Maverick arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('maverick_arbitrum_base_trades_seed')
           filter:
             version: 2

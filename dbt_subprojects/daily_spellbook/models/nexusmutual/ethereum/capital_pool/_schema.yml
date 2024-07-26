@@ -229,6 +229,30 @@ models:
         name: mcr_cover_min_total
         description: "MCR ETH cover minimum"
 
+  - name: nexusmutual_ethereum_capital_pool_prices
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "capital_pool"]
+    description: "Combined daily avg prices for base assets: ETH, DAI, USDC and NXM"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+      - *avg_eth_usd_price
+      - *avg_dai_usd_price
+      - *avg_usdc_usd_price
+      - &avg_nxm_eth_price
+        name: avg_nxm_eth_price
+        description: "Daily average NXM/ETH price"
+      - &avg_nxm_usd_price
+        name: avg_nxm_usd_price
+        description: "Daily average NXM/USD price"
+
 
   # to be deprecated:
   - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary

@@ -73,6 +73,10 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: maverick_v2_bnb
+    tables:
+      - name: V2Pool_evt_PoolSwap
+      - name: V2Factory_evt_PoolCreated
   - name: nomiswap_bnb
     tables:
       - name: NomiswapPair_evt_Swap
