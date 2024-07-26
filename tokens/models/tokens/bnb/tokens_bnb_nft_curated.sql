@@ -306,4 +306,5 @@ FROM
   ,('StarArk',0xd4fcaf215cf55828148d64677c58277177acf49e)
   ,('FateOrigin BOX NFT',0x8b0b26b97aa4b907dd8dfe71fd0b602d71bb7df4)
   ,('PAD Pack',0xf18b9cdd3083eb1d84ee3cdcca418923ceb5455d)
+  ,('Maverick v2 Position',0x116193c58B40D50687c0433B2aa0cC4AE00bC32c)
     ) AS temp_table (name, contract_address)

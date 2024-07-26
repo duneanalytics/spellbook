@@ -36,6 +36,7 @@ WITH pool_labels AS (
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ source('dex', 'prices') }}
+        WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -67,7 +68,7 @@ WITH pool_labels AS (
             SUM(protocol_liquidity_usd / supply) AS price
         FROM {{ ref(base_spells_namespace + '_liquidity') }} l
         LEFT JOIN {{ ref(base_spells_namespace + '_bpt_supply') }} s ON s.token_address = l.pool_address 
-        AND l.blockchain = s.blockchain AND s.day = l.day AND s.supply > 0
+        AND l.blockchain = s.blockchain AND s.day = l.day AND s.supply > 1e-4
         WHERE l.blockchain = '{{blockchain}}'
         AND l.version = '{{version}}'
         GROUP BY 1, 2, 3

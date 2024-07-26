@@ -16,6 +16,10 @@ sources:
     tables:
       - name: disperse_contracts
       - name: contract_creator_project_mapping
+      
+  - name: labels
+    tables:
+      - name: jelly_swap_pools_sei            
 
   - name: b_cow_amm_ethereum
     tables:
