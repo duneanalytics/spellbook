@@ -1,7 +1,7 @@
-{% macro 
+{% macro
     balancer_v2_compatible_liquidity_macro(
         blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
-    ) 
+    )
 %}
 
 WITH pool_labels AS (
@@ -31,21 +31,22 @@ WITH pool_labels AS (
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ source('dex', 'prices') }}
-        WHERE 
-        ('{{blockchain}}' != 'fantom' OR 
+        WHERE
+        ('{{blockchain}}' != 'fantom' OR
         ('{{blockchain}}' = 'fantom' AND contract_address NOT IN (0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757))) --broken price feeds
+        AND blockchain = '{{blockchain}}'
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
 
     dex_prices_2 AS(
-        SELECT 
+        SELECT
             day,
             token,
             price,
             lag(price) OVER(PARTITION BY token ORDER BY day) AS previous_price
         FROM dex_prices_1
-    ),    
+    ),
 
     dex_prices AS (
         SELECT
@@ -67,9 +68,9 @@ WITH pool_labels AS (
         WHERE blockchain = '{{blockchain}}'
         AND version = '{{version}}'
     ),
-    
+
     eth_prices AS (
-        SELECT 
+        SELECT
             DATE_TRUNC('day', minute) as day,
             AVG(price) as eth_price
         FROM {{ source('prices', 'usd') }}
@@ -82,7 +83,7 @@ WITH pool_labels AS (
             token_address,
             decimals,
             price
-        FROM {{ ref('gyroscope_gyro_tokens') }}
+        FROM {{ source('gyroscope','gyro_tokens') }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
@@ -124,7 +125,7 @@ WITH pool_labels AS (
         CROSS JOIN UNNEST (tokens) WITH ORDINALITY as t(tokens,i)
         CROSS JOIN UNNEST (deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
-        WHERE t.i = d.i 
+        WHERE t.i = d.i
         AND d.i = p.i
         ORDER BY 1,2,3
     ),
@@ -222,7 +223,7 @@ WITH pool_labels AS (
         LEFT JOIN dex_prices p2 ON p2.day <= c.day
         AND c.day < p2.day_of_next_change
         AND p2.token = b.token
-        LEFT JOIN bpt_prices p3 ON p3.day = b.day 
+        LEFT JOIN bpt_prices p3 ON p3.day = b.day
         AND p3.token = b.token
         LEFT JOIN gyro_prices p4 ON p4.token_address = b.token
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
@@ -238,19 +239,19 @@ WITH pool_labels AS (
             SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity,
             SUM(b.pool_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1)  AS pool_liquidity
         FROM cumulative_usd_balance b
-        LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+        LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
         AND b.token = w.token_address
         AND b.pool_liquidity_usd > 0
-        LEFT JOIN {{ ref('balancer_token_whitelist') }} q ON b.token = q.address 
+        LEFT JOIN {{ source('balancer','token_whitelist') }} q ON b.token = q.address
         AND b.blockchain = q.chain
         LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
-        WHERE q.name IS NOT NULL 
+        WHERE q.name IS NOT NULL
         AND p.pool_type IN ('weighted') -- filters for weighted pools with pricing assets
         AND w.blockchain = '{{blockchain}}'
-        AND w.version = '{{version}}'        
+        AND w.version = '{{version}}'
         GROUP BY 1, 2, 3, 4
     ),
-    
+
     weighted_pool_liquidity_estimates_2 AS(
     SELECT  e.day,
             e.pool_id,
@@ -259,7 +260,7 @@ WITH pool_labels AS (
     FROM weighted_pool_liquidity_estimates e
     GROUP BY 1,2
     )
-    
+
     SELECT
         c.day,
         c.pool_id,
@@ -279,10 +280,10 @@ WITH pool_labels AS (
     FROM cumulative_usd_balance c
     FULL OUTER JOIN weighted_pool_liquidity_estimates_2 b ON c.day = b.day
     AND c.pool_id = b.pool_id
-    LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+    LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
     AND w.blockchain = '{{blockchain}}'
-    AND w.version = '{{version}}'     
+    AND w.version = '{{version}}'
     AND w.token_address = c.token
-    LEFT JOIN eth_prices e ON e.day = c.day 
+    LEFT JOIN eth_prices e ON e.day = c.day
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(c.pool_id, 1, 20)
     {% endmacro %}
