@@ -1,17 +1,17 @@
 {{
     config(
-        materialized='incremental',
-        alias='eth_safes_balances',
-        partition_by=['day'],
-        unique_key=['day', 'blockchain', 'address', 'balance', 'token_address'],
-        on_schema_change='sync_all_columns',
-        file_format='delta',
-        incremental_strategy='merge',
-        post_hook="{{ expose_spells(
-           '[\"ethereum\"]', 
-           'project', 
-           'safe', 
-           '[\"safeintern\"]') }}"
+        schema = 'safe_ethereum',
+        alias = 'balances',
+        partition_by = ['day'],
+        materialized = 'incremental',
+        incremental_strategy = 'merge',
+        file_format = 'delta',
+        unique_key = ['day', 'blockchain', 'address', 'balance', 'token_address'],
+        on_schema_change = 'sync_all_columns',
+        post_hook = '{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "safe",
+                                    \'["safeintern"]\') }}'
     )
 }}
 
@@ -26,17 +26,19 @@ with changed_balances as (
         token_id,
         balance,
         lead(cast(day as timestamp)) over (partition by token_address, a.address, token_id order by day asc) as next_update_day
-    from {{ ref('tokens_ethereum_balances_daily_agg') }} a
+    from {{ source('tokens_ethereum', 'balances_daily_agg') }} a
     join (
         select
-            address, blockchain
+            address
+            , blockchain
         from {{ ref('safe_ethereum_safes') }} s
         where blockchain = 'ethereum'
     ) q on q.address = a.address
-    where day >= date('2021-07-01') and token_standard in ('native', 'erc20')
-    {% if is_incremental() %}
+    where day >= date('2021-07-01')
+        and token_standard in ('native', 'erc20')
+        {% if is_incremental() %}
         and {{ incremental_predicate('day') }}
-    {% endif %}
+        {% endif %}
 ),
 days as (
     select *
@@ -59,6 +61,9 @@ forward_fill as (
         on d.day >= b.day
         and (b.next_update_day is null OR d.day < b.next_update_day) 
     where d.day >= cast('2021-07-01' as date)
+        {% if is_incremental() %}
+        and {{ incremental_predicate('d.day') }}
+        {% endif %}
 )
 select
     b.day,
@@ -75,13 +80,17 @@ from (
     where balance > 0
 ) b
 left join {{ ref('prices_usd_daily') }} p
-    on (token_standard = 'erc20'
-    and b.blockchain = p.blockchain
-    and b.token_address = p.contract_address
-    and b.day = p.day)
-    or (token_standard = 'native'
-    and p.blockchain is null
-    and p.contract_address is null
-    and p.symbol = 'ETH'
-    and b.day = p.day)
+    on (
+        token_standard = 'erc20'
+        and b.blockchain = p.blockchain
+        and b.token_address = p.contract_address
+        and b.day = p.day
+    )
+    or (
+        token_standard = 'native'
+        and p.blockchain is null
+        and p.contract_address is null
+        and p.symbol = 'ETH'
+        and b.day = p.day
+    )
 group by 1, 2, 3, 4, 5, 6, 7
