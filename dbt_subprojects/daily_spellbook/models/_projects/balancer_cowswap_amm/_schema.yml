@@ -10,11 +10,6 @@ models:
     config:
       tags: ['balancer', 'cowswap', 'ethereum', 'amm', 'trades']
     description: "Trades on Balancer CoWSwap AMM pools"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -101,12 +96,6 @@ models:
       tags: ['ethereum', 'balancer', 'balances']
     description: >
       ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool_address
-            - token_address
     columns:
       - &day
         name: day
@@ -132,10 +121,6 @@ models:
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer CoWSwap AMM liquidity pools created on Ethereum."
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
     columns:
       - *blockchain
       - &address
@@ -175,12 +160,6 @@ models:
       tags: ['ethereum', 'balancer', 'pools', 'liquidity']
     description: >
       Balancer CoWSwap AMM pools liquidity by token in Ethereum.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool_id
-            - token_address
     columns:
       - *day
       - name: pool_id

@@ -2,8 +2,7 @@
 
 {{
     config(
-
-        schema = 'balancer_cowswap_amm_ethereum',
+        schema = 'balancer_cowswap_amm_' + blockchain,
         alias = 'trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -46,30 +45,29 @@
     FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} trade
     INNER JOIN {{ source('b_cow_amm_ethereum', 'BCoWFactory_evt_LOG_NEW_POOL') }} pool
         ON trade.owner = pool.bPool
-             LEFT JOIN {{ source('prices', 'usd') }} AS ps
-                             ON sellToken = ps.contract_address
-                                 AND ps.minute = date_trunc('minute', trade.evt_block_time)
-                                 AND ps.blockchain = '{{blockchain}}'
-                                 {% if is_incremental() %}
-                                 AND {{ incremental_predicate('ps.minute') }}
-                                 {% endif %}
-             LEFT JOIN {{ source('prices', 'usd') }} AS pb
-                             ON pb.contract_address = buyToken
-                                 AND pb.minute = date_trunc('minute', trade.evt_block_time)
-                                 AND pb.blockchain = '{{blockchain}}'
-                                 {% if is_incremental() %}
-                                 AND {{ incremental_predicate('pb.minute') }}
-                                 {% endif %}
-             LEFT JOIN {{ source('tokens', 'erc20') }} AS ts
-                             ON trade.sellToken = ts.contract_address
-                                 AND ts.blockchain = '{{blockchain}}'
-             LEFT JOIN {{ source('tokens', 'erc20') }} AS tb
-                             ON trade.buyToken = tb.contract_address
-                                 AND tb.blockchain = '{{blockchain}}'   
-             LEFT JOIN {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} AS settlement
-                             ON trade.evt_tx_hash = settlement.evt_tx_hash  
-             LEFT JOIN {{ ref('labels_balancer_cowswap_amm_pools_ethereum') }} p ON p.address = trade.owner                                                                             
+    LEFT JOIN {{ source('prices', 'usd') }} AS ps
+                    ON sellToken = ps.contract_address
+                        AND ps.minute = date_trunc('minute', trade.evt_block_time)
+                        AND ps.blockchain = '{{blockchain}}'
+                        {% if is_incremental() %}
+                        AND {{ incremental_predicate('ps.minute') }}
+                        {% endif %}
+    LEFT JOIN {{ source('prices', 'usd') }} AS pb
+                    ON pb.contract_address = buyToken
+                        AND pb.minute = date_trunc('minute', trade.evt_block_time)
+                        AND pb.blockchain = '{{blockchain}}'
+                        {% if is_incremental() %}
+                        AND {{ incremental_predicate('pb.minute') }}
+                        {% endif %}
+    LEFT JOIN {{ source('tokens', 'erc20') }} AS ts
+                    ON trade.sellToken = ts.contract_address
+                        AND ts.blockchain = '{{blockchain}}'
+    LEFT JOIN {{ source('tokens', 'erc20') }} AS tb
+                    ON trade.buyToken = tb.contract_address
+                        AND tb.blockchain = '{{blockchain}}'   
+    LEFT JOIN {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} AS settlement
+                    ON trade.evt_tx_hash = settlement.evt_tx_hash  
+    LEFT JOIN {{ ref('labels_balancer_cowswap_amm_pools_ethereum') }} p ON p.address = trade.owner                                                                             
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('trade.evt_block_time') }}
     {% endif %}
-

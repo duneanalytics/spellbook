@@ -2,7 +2,7 @@
 
 {{config(
     schema = 'labels',
-    alias = 'balancer_cowswap_amm_pools_ethereum',
+    alias = 'balancer_cowswap_amm_pools_' + blockchain,
     materialized = 'table',
     file_format = 'delta'
     )
@@ -39,14 +39,14 @@ state_with_gaps AS (
 
 settings AS (
     SELECT pool,
-    coalesce(t.symbol,'?') AS symbol,
-    denorm,
-    next_block_number
+        coalesce(t.symbol,'?') AS symbol,
+        denorm,
+        next_block_number
     FROM state_with_gaps s
     LEFT JOIN {{ source('tokens', 'erc20') }} t ON s.token = t.contract_address
-    AND t.blockchain = '{{blockchain}}'
+        AND t.blockchain = '{{blockchain}}'
     WHERE next_block_number = 99999999
-    AND denorm > uint256 '0'
+        AND denorm > uint256 '0'
 ),
 
 final AS (

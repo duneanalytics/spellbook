@@ -7,7 +7,6 @@
     )
 }}
 
-
 WITH pools AS (
     SELECT 
         bPool AS pools
@@ -61,17 +60,17 @@ cumulative_balance_by_token AS (
     FROM daily_delta_balance_by_token
 ),
 
-    calendar AS (
-        SELECT 
-            date_sequence AS day
-        FROM unnest(sequence(date('2024-07-01'), date(now()), interval '1' day)) AS t(date_sequence)
-    )
-
+calendar AS (
     SELECT 
-        c.day, 
-        b.pool AS pool_address, 
-        b.token AS token_address, 
-        b.cumulative_amount AS token_balance_raw
-    FROM calendar c
-    LEFT JOIN cumulative_balance_by_token b ON b.day <= c.day AND c.day < b.day_of_next_change
-    WHERE b.pool IS NOT NULL
+        date_sequence AS day
+    FROM unnest(sequence(date('2024-07-01'), date(now()), interval '1' day)) AS t(date_sequence)
+)
+
+SELECT
+    c.day, 
+    b.pool AS pool_address, 
+    b.token AS token_address, 
+    b.cumulative_amount AS token_balance_raw
+FROM calendar c
+LEFT JOIN cumulative_balance_by_token b ON b.day <= c.day AND c.day < b.day_of_next_change
+WHERE b.pool IS NOT NULL

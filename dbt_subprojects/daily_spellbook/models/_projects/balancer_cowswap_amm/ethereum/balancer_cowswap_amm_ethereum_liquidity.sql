@@ -2,8 +2,8 @@
 
 {{
     config(
-        schema='balancer_cowswap_amm_ethereum',
-        alias = 'liquidity',       
+        schema='balancer_cowswap_amm_' + blockchain,
+        alias = 'liquidity',
         materialized = 'table',
         file_format = 'delta'
     )
@@ -62,21 +62,21 @@ WITH pool_labels AS (
         AND p1.token = b.token_address
     )
     
-        SELECT
-            c.day,
-            c.pool_address AS pool_id,
-            c.pool_address,
-            p.name AS pool_symbol,
-            '1' AS version,
-            '{{blockchain}}' AS blockchain,
-            'balancer_cowswap_amm' AS pool_type,
-            c.token_address,
-            c.symbol AS token_symbol,
-            c.token_balance_raw,
-            c.token_balance,
-            c.protocol_liquidity_usd,
-            (c.protocol_liquidity_usd) / e.eth_price AS protocol_liquidity_eth
-        FROM cumulative_usd_balance c
-        LEFT JOIN pool_labels p ON p.address = c.pool_address
-        LEFT JOIN eth_prices e ON e.day = c.day
-        WHERE c.pool_address IS NOT NULL
+SELECT
+    c.day,
+    c.pool_address AS pool_id,
+    c.pool_address,
+    p.name AS pool_symbol,
+    '1' AS version,
+    '{{blockchain}}' AS blockchain,
+    'balancer_cowswap_amm' AS pool_type,
+    c.token_address,
+    c.symbol AS token_symbol,
+    c.token_balance_raw,
+    c.token_balance,
+    c.protocol_liquidity_usd,
+    (c.protocol_liquidity_usd) / e.eth_price AS protocol_liquidity_eth
+FROM cumulative_usd_balance c
+LEFT JOIN pool_labels p ON p.address = c.pool_address
+LEFT JOIN eth_prices e ON e.day = c.day
+WHERE c.pool_address IS NOT NULL

@@ -2,11 +2,7 @@
     config(
         schema='balancer_cowswap_amm',
         alias = 'liquidity',     
-        materialized = 'view',  
-        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                    spell_type = "project",
-                                    spell_name = "balancer_cowswap_amm",
-                                    contributors = \'["viniabussafi"]\') }}'
+        materialized = 'view'
     )
 }}
 
