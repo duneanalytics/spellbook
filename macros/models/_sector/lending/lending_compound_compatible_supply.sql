@@ -313,7 +313,7 @@ collateral as (
     cast(null as varbinary) as on_behalf_of,
     withdraw_dst as withdrawn_to,
     cast(null as varbinary) as liquidator,
-    cast(amount_withdrawn as double) as amount,
+    -1 * cast(amount_withdrawn as double) as amount,
     contract_address,
     evt_tx_hash,
     evt_index,
