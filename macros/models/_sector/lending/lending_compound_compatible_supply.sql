@@ -240,7 +240,7 @@ base_supply_actions as (
   {% endfor %}
 ),
 
-collateral as (
+base_supply as (
   select
     'supply' as transaction_type,
     asset as token_address,
@@ -304,6 +304,8 @@ collateral as (
     join (
       select distinct comet_contract_address, asset_address from ctokens
     ) ctokens on base_supply_actions.contract_address = ctokens.comet_contract_address
+  where amount_supplied is not null 
+    and amount_supplied > 0
 
   union all
   select
@@ -323,6 +325,8 @@ collateral as (
     join (
       select distinct comet_contract_address, asset_address from ctokens
     ) ctokens on base_withdraw_actions.contract_address = ctokens.comet_contract_address
+  where amount_withdrawn is not null 
+    and amount_withdrawn > 0
 )
 
 select
