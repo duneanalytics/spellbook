@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave, compound
-      contributors: tomfutago, hildobby
+      contributors: tomfutago, hildobby, maybeyonas, pyor_xyz
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'ethereum']
     description: "All lending supply transactions on Ethereum"
@@ -244,7 +244,7 @@ models:
       blockchain: ethereum
       sector: lending
       project: compound
-      contributors: tomfutago
+      contributors: tomfutago, maybeyonas, pyor_xyz
     config:
       tags: ['lending', 'supply', 'compound', 'ethereum']
     description: "Compound v3 supply transactions on Ethereum"
