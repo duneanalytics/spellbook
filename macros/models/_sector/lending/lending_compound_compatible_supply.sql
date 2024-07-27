@@ -291,7 +291,7 @@ collateral as (
     'supply' as transaction_type,
     ctokens.asset_address as token_address,
     supply_from as depositor,
-    cast(null as varbinary) as on_behalf_of,
+    supply_dst as on_behalf_of,
     cast(null as varbinary) as withdrawn_to,
     cast(null as varbinary) as liquidator,
     cast(amount_supplied as double) as amount,
