@@ -15,7 +15,7 @@ jobs:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
     strategy:
       matrix:
-        project: [ 'tokens', 'spellbook', 'daily_spellbook', 'nft', 'dex', 'solana']
+        project: [ 'tokens', 'daily_spellbook', 'nft', 'dex', 'solana', 'hourly_spellbook']
       max-parallel: 1
 
     steps:
@@ -33,11 +33,8 @@ jobs:
         echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
         echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
         echo "S3_LOCATION=s3://manifest-spellbook-dunesql/${{matrix.project}}" >> $GITHUB_ENV
-          PROJECT_DIR=${{ matrix.project }}
-          if [[ "$PROJECT_DIR" == "spellbook" ]]; then
-            PROJECT_DIR="."
-          fi
-          echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
+        PROJECT_DIR=dbt_subprojects/${{ matrix.project }}
+        echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
 
     - name: dbt dependencies
       working-directory: ${{env.PROJECT_DIR}}
