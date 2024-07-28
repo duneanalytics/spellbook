@@ -6,7 +6,7 @@
         materialized = 'incremental',
         incremental_strategy = 'merge',
         file_format = 'delta',
-        unique_key = ['day', 'blockchain', 'address', 'token_balance', 'token_address'],
+        unique_key = ['day', 'blockchain', 'address', 'token_address'],
         on_schema_change = 'sync_all_columns',
         post_hook = '{{ expose_spells(\'["ethereum"]\',
                                     "project",
