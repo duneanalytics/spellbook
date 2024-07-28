@@ -36,7 +36,6 @@ with
                 or "from" = {{ deployer_4 }}
             )
             and block_time >= timestamp '{{project_start_date}}'
-
     ),
     bot_trades as (
         select
@@ -61,9 +60,12 @@ with
         join bot_contracts on trades.tx_to = bot_contracts.address
         where
             trades.blockchain = '{{blockchain}}'
-            and trades.block_time >= timestamp '{{project_start_date}}'
             and (tx_from != {{ fee_recipient_1 }} and tx_from != {{ fee_recipient_2 }})
-        order by trades.block_time desc, trades.evt_index desc
+            {% if is_incremental() %}
+            and {{ incremental_predicate('trades.block_time') }}
+            {% else %}
+            and trades.block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
     ),
     highest_event_index_for_each_trade as (
         select tx_hash, max(evt_index) as highest_event_index
@@ -78,12 +80,16 @@ with
         from {{ source('erc20_avalanche_c', 'evt_transfer') }}
         where
             (to = {{ fee_recipient_1 }} or to = {{ fee_recipient_2 }})
-            and evt_block_time >= timestamp '{{project_start_date}}'
             and value > 0
             and (
                 contract_address = {{ wavax_contract_address }}
                 or contract_address = {{ usdc_contract_address }}
             )
+            {% if is_incremental() %}
+            and {{ incremental_predicate('evt_block_time') }}
+            {% else %}
+            and evt_block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
         union all
         select
             tx_hash,
@@ -92,9 +98,12 @@ with
         from {{ source('avalanche_c', 'traces') }}
         where
             (to = {{ fee_recipient_1 }} or to = {{ fee_recipient_2 }})
-            and block_time >= timestamp '{{project_start_date}}'
             and value > 0
-
+            {% if is_incremental() %}
+            and {{ incremental_predicate('block_time') }}
+            {% else %}
+            and block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
     )
 select distinct
     block_time,
