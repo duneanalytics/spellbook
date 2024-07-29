@@ -1,7 +1,7 @@
-{% macro 
+{% macro
     balancer_v2_compatible_bpt_prices_macro(
         blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
-    ) 
+    )
 %}
 
 WITH pool_labels AS (
@@ -31,7 +31,7 @@ WITH pool_labels AS (
             token_address,
             decimals,
             price
-        FROM {{ ref('gyroscope_gyro_tokens') }}
+        FROM {{ source('gyroscope','gyro_tokens') }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
@@ -73,7 +73,7 @@ WITH pool_labels AS (
         CROSS JOIN UNNEST (tokens) WITH ORDINALITY as t(tokens,i)
         CROSS JOIN UNNEST (deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (protocolFeeAmounts) WITH ORDINALITY as p(protocolFeeAmounts,i)
-        WHERE t.i = d.i 
+        WHERE t.i = d.i
         AND d.i = p.i
         ORDER BY 1,2,3
     ),
@@ -177,19 +177,19 @@ WITH pool_labels AS (
             ROW_NUMBER() OVER (partition by b.day, b.pool_id ORDER BY SUM(b.protocol_liquidity_usd) ASC) AS pricing_count, --to avoid double count in pools with multiple pricing assets
             SUM(b.protocol_liquidity_usd) / COALESCE(SUM(w.normalized_weight), 1) AS protocol_liquidity
         FROM cumulative_usd_balance b
-        LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+        LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
         AND b.token = w.token_address
         AND b.protocol_liquidity_usd > 0
-        LEFT JOIN {{ ref('balancer_token_whitelist') }} q ON b.token = q.address 
+        LEFT JOIN {{ source('balancer','token_whitelist') }} q ON b.token = q.address
         AND b.blockchain = q.chain
         LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
-        WHERE q.name IS NOT NULL 
+        WHERE q.name IS NOT NULL
         AND p.pool_type IN ('weighted') -- filters for weighted pools with pricing assets
         AND w.blockchain = '{{blockchain}}'
         AND w.version = '{{version}}'
         GROUP BY 1, 2, 3, 4
     ),
-    
+
     weighted_pool_liquidity_estimates_2 AS(
     SELECT  e.day,
             e.pool_id,
@@ -197,7 +197,7 @@ WITH pool_labels AS (
     FROM weighted_pool_liquidity_estimates e
     GROUP BY 1,2
     ),
-    
+
     tvl AS(
     SELECT
         c.day,
@@ -208,9 +208,9 @@ WITH pool_labels AS (
     FROM cumulative_usd_balance c
     FULL OUTER JOIN weighted_pool_liquidity_estimates_2 b ON c.day = b.day
     AND c.pool_id = b.pool_id
-    LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id 
+    LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
     AND w.blockchain = '{{blockchain}}'
-    AND w.version = '{{version}}'    
+    AND w.version = '{{version}}'
     AND w.token_address = c.token
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(c.pool_id, 1, 20)
     GROUP BY 1, 2, 3, 4
@@ -219,11 +219,11 @@ WITH pool_labels AS (
 -- trade based formulation, for Linear Pools (former BPT prices spell)
 
     bpt_trades AS (
-        SELECT * 
+        SELECT *
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} v
         LEFT JOIN pool_labels l ON bytearray_substring(v.poolId, 1, 20) = l.pool_id
         WHERE v.tokenIn = bytearray_substring(v.poolId, 1, 20) OR v.tokenOut = bytearray_substring(v.poolId, 1, 20)
-    ), 
+    ),
 
     all_trades_info AS (
         SELECT
@@ -328,7 +328,7 @@ WITH pool_labels AS (
         GROUP BY 1, 2, 3
     )
 
-    SELECT 
+    SELECT
         l.day,
         l.blockchain,
         l.version,
@@ -337,12 +337,12 @@ WITH pool_labels AS (
         pl.pool_type,
         CASE WHEN median_price IS NOT NULL
         THEN p.median_price
-        ELSE l.liquidity / s.supply 
+        ELSE l.liquidity / s.supply
         END AS bpt_price
     FROM tvl l
     LEFT JOIN {{ ref(base_spells_namespace + '_bpt_supply') }} s ON l.pool_address = s.token_address
     AND l.blockchain = s.blockchain
-    AND l.version = s.version  
+    AND l.version = s.version
     AND l.day = s.day
     LEFT JOIN price_formulation p ON p.day = l.day AND p.contract_address = l.pool_address
     LEFT JOIN pool_labels pl ON pl.pool_id = l.pool_address
