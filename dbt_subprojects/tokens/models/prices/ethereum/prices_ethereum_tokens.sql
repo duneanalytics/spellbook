@@ -1810,7 +1810,17 @@ FROM
     ('wojak-wojak', 'ethereum', 'WOJAK ', 0x5026f006b85729a8b14553fae6af249ad16c9aab, 18),
     ('kai-kai-ken', 'ethereum', 'KAI ', 0xa045fe936e26e1e1e1fb27c1f2ae3643acde0171, 9),
     ('gme-gme-ethereum', 'ethereum', 'GME ', 0xc56c7a0eaa804f854b536a5f3d5f49d2ec4b12b8, 9),
-    ('birddog-birddog', 'ethereum', 'BIRDDOG ', 0x70fd93fb088150e203d2243b9bd3190276f80c70, 9)
+    ('birddog-birddog', 'ethereum', 'BIRDDOG ', 0x70fd93fb088150e203d2243b9bd3190276f80c70, 9),
+    ('strump-super-trump', 'ethereum', '$STRUMP ', 0x7039cd6d7966672f194e8139074c3d5c4e6dcf65, 9),
+    ('molly2-molly', 'ethereum', 'MOLLY ', 0xbdbe9f26918918bd3f43a0219d54e5fda9ce1bb3, 9),
+    ('win-connect', 'ethereum', 'WIN ', 0xb10cb07ca2cdac77fbb5707f6690301f9d036f45, 8),
+    ('omikami-amaterasu-omikami', 'ethereum', 'OMIKAMI ', 0x9e18d5bab2fa94a6a95f509ecb38f8f68322abd3, 9),
+    ('lovely-lovely-inu-finance', 'ethereum', 'LOELY ', 0x9e24415d1e549ebc626a13a482bb117a2b43e9cf, 8),
+    ('kas-wrapped-kaspa', 'ethereum', 'KAS ', 0x112b08621e27e10773ec95d250604a041f36c582, 8),
+    ('ryu-ryujin', 'ethereum', 'RYU ', 0xca530408c3e552b020a2300debc7bd18820fb42f, 18),
+    ('biao-biaoqing', 'ethereum', 'BIAL ', 0x9fd9278f04f01c6a39a9d1c1cd79f7782c6ade08, 9),
+    ('matt-matt-furie', 'ethereum', 'MATT ', 0x790814Cd782983FaB4d7B92CF155187a865d9F18, 9),
+    ('spurdo-spurdo-on-eth', 'ethereum', 'SPURDO ', 0x3927fb89f34bbee63351a6340558eebf51a19fb8, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
