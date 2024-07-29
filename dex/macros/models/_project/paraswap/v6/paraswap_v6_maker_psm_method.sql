@@ -1,5 +1,3 @@
--- select * from "paraswap_ethereum"."AugustusV6_2_call_swapExactAmountInOutOnMakerPSM"
-
 {% macro paraswap_v6_maker_psm_method(table_name ) %}
                 SELECT                   
                   call_block_time,
