@@ -1,21 +1,18 @@
 version: 2
 
 models:
-  - name: lending_supply
+  - name: lending_sei_base_supply
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, sei
+      blockchain: sei
       sector: lending
-      project: aave, compound
-      contributors: tomfutago, hildobby, hosuke
+      project: yei
+      contributors: hosuke
     config:
-      tags: ['lending', 'supply', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync']
-    description: "All lending transactions involving supply transactions"
+      tags: ['lending', 'supply', 'yei', 'compound', 'sei']
+    description: "All lending supply transactions on sei"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - project
-            - version
             - transaction_type
             - token_address
             - tx_hash
@@ -41,9 +38,6 @@ models:
         description: "Transaction type"
         tests:
           - not_null
-      - &symbol
-        name: symbol
-        description: "Token symbol"
       - &token_address
         name: token_address
         description: "Token contract address"
@@ -64,12 +58,9 @@ models:
       - &amount
         name: amount
         description: "Token amount present in the transaction"
-      - &usd_amount
-        name: usd_amount
-        description: "Token amount in USD"
       - &block_month
         name: block_month
-        description: "Block Month column used to partition data in this table"
+        description: "Block month column used to partition data in this table"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
@@ -95,3 +86,39 @@ models:
         description: "Event index"
         tests:
           - not_null
+
+  - name: yei_sei_base_supply
+    meta:
+      blockchain: sei
+      sector: lending
+      project: yei
+      contributors: hosuke
+    config:
+      tags: ['lending', 'supply', 'yei', 'sei']
+    description: "YEI supply transactions on sei"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+#      - check_lending_base_supply_seed:
+#          seed_file: ref('aave_sei_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *on_behalf_of
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index

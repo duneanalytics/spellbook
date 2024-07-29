@@ -13,18 +13,19 @@
 
 {%
   set models = [
-    ref('lending_arbitrum_base_supply'),
-    ref('lending_base_base_supply'),
-    ref('lending_bnb_base_supply'),
-    ref('lending_celo_base_supply'),
-    ref('lending_ethereum_base_supply'),
-    ref('lending_optimism_base_supply'),
-    ref('lending_polygon_base_supply'),
-    ref('lending_avalanche_c_base_supply'),
-    ref('lending_fantom_base_supply'),
-    ref('lending_gnosis_base_supply'),
-    ref('lending_zksync_base_supply'),
-    ref('lending_scroll_base_supply')
+    ref('lending_arbitrum_base_supply')
+    , ref('lending_base_base_supply')
+    , ref('lending_bnb_base_supply')
+    , ref('lending_celo_base_supply')
+    , ref('lending_ethereum_base_supply')
+    , ref('lending_optimism_base_supply')
+    , ref('lending_polygon_base_supply')
+    , ref('lending_avalanche_c_base_supply')
+    , ref('lending_fantom_base_supply')
+    , ref('lending_gnosis_base_supply')
+    , ref('lending_zksync_base_supply')
+    , ref('lending_scroll_base_supply')
+    , ref('lending_yei_base_supply')
   ]
 %}
 

@@ -3,10 +3,10 @@ version: 2
 models:
   - name: lending_borrow
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, sei
       sector: lending
       project: aave, compound
-      contributors: tomfutago, hildobby
+      contributors: tomfutago, hildobby, hosuke
     config:
       tags: ['lending', 'borrow', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync']
     description: "All lending transactions involving borrow transactions"
