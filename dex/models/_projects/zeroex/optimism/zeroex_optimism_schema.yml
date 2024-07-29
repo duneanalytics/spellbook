@@ -199,6 +199,7 @@ models:
       - &protocol_fee_paid_eth
         name: protocol_fee_paid_eth
         description: "The protocol fee paid in ETH"
+
   - name: zeroex_optimism_settler_trades 
     meta:
       blockchain: optimism

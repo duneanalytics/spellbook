@@ -55,7 +55,8 @@ seeds:
         volume_usd: double
         tx_from: varbinary
         tx_to: varbinary
-        fills_within: int 
+        fills_within: int
+
   - name: zeroex_optimism_settler_trades_sample
     config:
       column_types:
