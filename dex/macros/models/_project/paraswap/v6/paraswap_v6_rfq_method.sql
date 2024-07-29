@@ -1,29 +1,28 @@
-{% macro paraswap_v6_rfq_method(table_name, method_name, data_field, extra_field=None) %}
+{% macro paraswap_v6_rfq_method(table_name, method_name) %}
                 SELECT 
                   call_block_time,
                   call_block_number,
                   call_tx_hash,                  
                   contract_address as project_contract_address,
                   call_trace_address,
-                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[sequence_number], '$.order'), '$.makerAsset') as srcToken, 
-                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[sequence_number], '$.order'), '$.takerAsset') as destToken, 
+                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[1], '$.order'), '$.makerAsset') as srcToken, 
+                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[1], '$.order'), '$.takerAsset') as destToken, 
                   try_cast(
-                    JSON_EXTRACT_SCALAR({{ data_field }}, '$.fromAmount') as uint256
+                    JSON_EXTRACT_SCALAR(data, '$.fromAmount') as uint256
                   ) AS fromAmount,
                   try_cast(
-                    JSON_EXTRACT_SCALAR({{ data_field }}, '$.toAmount') as uint256
+                    JSON_EXTRACT_SCALAR(data, '$.toAmount') as uint256
                   ) AS toAmount,
                   try_cast(
-                    JSON_EXTRACT_SCALAR({{ data_field }}, '$.toAmount') as uint256
+                    JSON_EXTRACT_SCALAR(data, '$.toAmount') as uint256
                   ) AS quotedAmount,
                   output_receivedAmount,
-                  JSON_EXTRACT_SCALAR({{ data_field }}, '$.metadata') AS metadata,
-                  JSON_EXTRACT_SCALAR({{ data_field }}, '$.beneficiary') AS beneficiary,
+                  JSON_EXTRACT_SCALAR(data, '$.metadata') AS metadata,
+                  JSON_EXTRACT_SCALAR(data, '$.beneficiary') AS beneficiary,
                   0 as partnerAndFee,
                   0 as output_partnerShare,
                   0 as output_paraswapShare,
-                  '{{ method_name }}' as method{% if extra_field %},
-                  {{ extra_field }}{% endif %}                  
+                  '{{ method_name }}' as method
                 FROM
                      {{ table_name }}                                                        
                 WHERE
