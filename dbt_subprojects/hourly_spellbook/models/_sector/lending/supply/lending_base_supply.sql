@@ -25,7 +25,7 @@
     , ref('lending_gnosis_base_supply')
     , ref('lending_zksync_base_supply')
     , ref('lending_scroll_base_supply')
-    , ref('lending_yei_base_supply')
+    , ref('lending_sei_base_supply')
   ]
 %}
 
