@@ -17,7 +17,7 @@ Some exceptions to the project specific path are listed in [other macro use case
 ### My Multi Word Header
 ## Design Principles for Macros
 
-Following [this](dbt_subprojects/dex/macros/models/_project/uniswap_compatible_trades.sql) example, where uniswap compatible projects code lives, the key design principles include:
+Following [this](/dbt_subprojects/dex/macros/models/_project/uniswap_compatible_trades.sql) example, where uniswap compatible projects code lives, the key design principles include:
 
 - **Assign Arguments**
   - Define arguments expected to be passed in via each model that calls the macro.
@@ -28,7 +28,7 @@ Following [this](dbt_subprojects/dex/macros/models/_project/uniswap_compatible_t
 - **Multiple Macros in One File**
   - It's common to have multiple macros within a single file, such as various versions of the uniswap contract code. Group similar macros together logically.
 
-Within models, such as uniswap v2, call macro code with [this approach](dbt_subprojects/dex/target/compiled/dex/models/trades/ethereum/platforms/uniswap_v2_ethereum_base_trades.sql).
+Within models, such as uniswap v2, call macro code with [this approach](/dbt_subprojects/dex/target/compiled/dex/models/trades/ethereum/platforms/uniswap_v2_ethereum_base_trades.sql).
 
 ## When to Use a Macro
 
@@ -52,7 +52,7 @@ Within models, such as uniswap v2, call macro code with [this approach](dbt_subp
 2. **Universal Use Cases in Spellbook** (`dbt_macros/shared`)
    - incremental predicates, containing the incremental filter which can be controlled in one location and called across multiple models.
    - incremental days forward, which can chunk data from the source into smaller time frames to help bypass performance limitations.
-   - Macros with lists for for-loops in models, like [`all_evm_chains`](/dbt_macros/public/all_evm_chains.sql).
+   - Macros with lists for for-loops in models, like [`all_evm_chains`](/dbt_macros/shared/all_evm_chains.sql).
 3. **Dune Team Specific Cases** (`dbt_macros/dune`)
    - Overriding dbt-trino core macros for Spellbook-specific scenarios.
    - Backend database specific code in pre or post hooks for spell optimization.
