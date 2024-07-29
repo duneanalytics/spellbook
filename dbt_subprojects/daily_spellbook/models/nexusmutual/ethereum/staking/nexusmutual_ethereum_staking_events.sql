@@ -110,7 +110,7 @@ select
   init_tranche_id,
   new_tranche_id,
   tranche_expiry_date,
-  if(tranche_expiry_date < current_date, false, true) as is_active,
+  if(tranche_expiry_date > current_date, true, false) as is_active,
   amount,
   topup_amount,
   user,

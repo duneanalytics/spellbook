@@ -220,14 +220,57 @@
             },
         },
         "Native": {
-            "0xd025fdfa": {
-                "name":             "swap",
-                "event":            "0xe3a54b69726c85299f4e794bac96150af56af801be76cafd11947a1103b6308a",
-                "maker":            "substr(input   , 4 + 32*7 + 12 + 1         , 20)",
-                "maker_asset":      "substr(input   , 4 + 32*10 + 12 + 1        , 20)",
-                "taker_asset":      "substr(input   , 4 + 32*11 + 12 + 1        , 20)",
-                "making_amount":    "cast(abs(bytearray_to_int256(substr(output, 32*0 + 1, 32))) as varbinary)",
-                "taking_amount":    "substr(output  , 32*1 + 1                  , 32)",
+            "0xe525b10b": {
+                "name":             "tradeRFQT",
+                "event":            "0x32f38ef2842789f9cd8fd5ae2497e7acfd3ca27d341fa0878305c3072b63a06d",
+                "maker":            "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
+                "taker":            "substr(input   , 4 + 32*3 + 12 + 1         , 20)",
+                "maker_asset":      "substr(input   , 4 + 32*5 + 12 + 1         , 20)",
+                "taker_asset":      "substr(input   , 4 + 32*4 + 12 + 1         , 20)",
+                "maker_max_amount": "substr(input   , 4 + 32*8 + 1              , 32)",
+                "taker_max_amount": "substr(input   , 4 + 32*6 + 1              , 32)",
+                "order_hash":       "substr(input   , 4 + 32*11 + 1             , 16)",
+            },
+            "0xc7cd9748": {
+                "name":             "exactInputSingle",
+                "event":            "0x0c3ca67555399daacbfbeef89219bf4eca6380fdc58f2ed80cdc0841616c5818",
+                "taker":            "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
+                "maker_asset":      "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 20*3 + 1, 20)",
+                "taker_asset":      "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 20*4 + 1, 20)",
+                "maker_min_amount": "substr(input   , 4 + 32*4 + 1              , 32)",
+                "taker_max_amount": "substr(input   , 4 + 32*3 + 1              , 32)",
+                "making_amount":    "substr(output  , 32*0 + 1                  , 32)",
+                "order_hash":       "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*8 + 24 + 1, 16)",
+            },
+            "0x2794949c": {
+                "name":             "exactInputSingle",
+                "event":            "null",
+                "taker":            "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
+                "maker_asset":      "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 20*3 + 1, 20)",
+                "taker_asset":      "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 20*4 + 1, 20)",
+                "taker_max_amount": "substr(input   , 4 + 32*3 + 1              , 32)",
+                "making_amount":    "substr(output  , 32*0 + 1                  , 32)",
+                "taking_amount":    "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 20*5 + 32*1 + 1, 32)",
+            },
+            "0x5dc7b981": {
+                "name":             "exactInput",
+                "event":            "null",
+                "maker":            "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 1, 20)",
+                "taker":            "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
+                "maker_asset":      "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 20*3 + 1, 20)",
+                "taker_asset":      "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 20*4 + 1, 20)",
+                "making_amount":    "substr(output  , 32*0 + 1                  , 32)",
+                "taking_amount":    "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 20*5 + 32*1 + 1, 32)",
+            },
+            "0x68ab0bdb": {
+                "name":             "exactInput",
+                "event":            "null",
+                "maker":            "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 1, 20)",
+                "taker":            "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
+                "maker_asset":      "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*14 + 5 + 1, 20)",
+                "taker_asset":      "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 20*4 + 1, 20)",
+                "making_amount":    "substr(output  , 32*0 + 1                  , 32)",
+                "taking_amount":    "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 20*5 + 32*1 + 1, 32)",
             },
         },
         "Clipper": {
@@ -322,7 +365,21 @@
                 "taker_max_amount": "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*4 + 1, 32)",
                 "deadline":         "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*5 + 24 + 1, 8)",
                 "fee_amount":       "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*7 + 1, 32)",
-                "making_amount":    "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*9 + 1, 32)",
+                "_executed_amount": "substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*9 + 1, 32)",
+                "making_amount":    "if(
+                                        bitwise_and(
+                                            bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*8 + 31 + 1, 1))
+                                            , bytearray_to_bigint(0x01)
+                                        ) = 0
+                                        , substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*9 + 1, 32)
+                                    )",
+                "taking_amount":    "if(
+                                        bitwise_and(
+                                            bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*8 + 31 + 1, 1))
+                                            , bytearray_to_bigint(0x01)
+                                        ) > 0
+                                        , substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 32*x + 24 + 1, 8)) + 32*9 + 1, 32)
+                                    )",
                 "condition":        "bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 32*2 + 24 + 1, 8)) + 24 + 1, 8)) > 0",
             },
         },
