@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: labels_transfer_summary
+    config:
+      tags: ['labels', 'transfer', 'summary']
+    description: "a summary of transfers in/out of labeled addresses"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - address
+            - token_address
+            - token_symbol
+
+  - name: labels_transfer_summary_daily
+    config:
+      tags: [ 'labels', 'transfer', 'summary', 'daily']
+    description: "a daily summary of transfers in/out of labeled addresses"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - address
+            - block_date
+            - token_address
+            - token_symbol
+
+  - name: labels_counterparty_activity_daily
+    config:
+      tags: [ 'labels', 'counterparty', 'activity', 'daily']
+    description: "a daily activity of the counterparties of labeled addresses"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - address
+            - block_date
+            - counterparty
+            - token_address
+            - token_symbol
