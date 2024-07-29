@@ -8,7 +8,7 @@
 
 {%
   set models = [
-    ref('aave_v3_arbitrum_base_borrow')
+    ref('yei_sei_base_borrow')
   ]
 %}
 
