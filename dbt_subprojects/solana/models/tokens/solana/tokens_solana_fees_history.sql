@@ -12,7 +12,7 @@
                                     "tokens",
                                     \'["ilemi"]\') }}')
 }}
-
+-- change to trigger CI
 --we need the fee basis points and maximum fee for token2022 transfers because the fee amount is not emitted in transferChecked
 SELECT
 call_account_arguments[1] as account_mint
