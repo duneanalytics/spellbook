@@ -1810,7 +1810,8 @@ FROM
     ('wojak-wojak', 'ethereum', 'WOJAK ', 0x5026f006b85729a8b14553fae6af249ad16c9aab, 18),
     ('kai-kai-ken', 'ethereum', 'KAI ', 0xa045fe936e26e1e1e1fb27c1f2ae3643acde0171, 9),
     ('gme-gme-ethereum', 'ethereum', 'GME ', 0xc56c7a0eaa804f854b536a5f3d5f49d2ec4b12b8, 9),
-    ('birddog-birddog', 'ethereum', 'BIRDDOG ', 0x70fd93fb088150e203d2243b9bd3190276f80c70, 9)
+    ('birddog-birddog', 'ethereum', 'BIRDDOG ', 0x70fd93fb088150e203d2243b9bd3190276f80c70, 9),
+    ('dola-dola','ethereum','DOLA',0x865377367054516e17014ccded1e7d814edc9ce4, 18)   
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
