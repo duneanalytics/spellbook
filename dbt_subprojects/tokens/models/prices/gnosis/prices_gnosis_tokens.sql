@@ -39,5 +39,6 @@ FROM
     ('crvusd-curvefi-usd-stablecoin', 'gnosis', 'CRVUSD', 0xaBEf652195F98A91E490f047A5006B71c85f058d, 18),
     ('safe-safe', 'gnosis', 'SAFE', 0x4d18815d14fe5c3304e87b3fa18318baa5c23820, 18),
     ('giv-giv', 'gnosis', 'GIV', 0x4f4F9b8D5B4d0Dc10506e5551B0513B61fD59e75, 18),
-    ('usdc-usd-coin', 'gnosis', 'USDC.e', 0x2a22f9c3b484c3629090feed35f17ff8f88f76f0, 6)
+    ('usdc-usd-coin', 'gnosis', 'USDC.e', 0x2a22f9c3b484c3629090feed35f17ff8f88f76f0, 6),
+    ('ageur-ageur', 'gnosis', 'agEUR', 0x4b1e2c2762667331bc91648052f646d1b0d35984, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
