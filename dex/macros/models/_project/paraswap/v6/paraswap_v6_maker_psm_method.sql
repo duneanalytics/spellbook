@@ -20,16 +20,22 @@
                   ) AS quotedAmount,
                   output_receivedAmount,
                   JSON_EXTRACT_SCALAR(makerPSMData, '$.metadata') AS metadata,
-                  to_hex(
+                  concat(
+                    '0x',
+                    regexp_replace(
+                      try_cast(
                         try_cast(
                           bitwise_and(
                             try_cast(
-                              JSON_EXTRACT_SCALAR(makerPSMData, '$.beneficiaryAndApproveFlag') AS UINT256
+                              JSON_EXTRACT_SCALAR(makerPSMData, '$.beneficiaryDirectionApproveFlag') AS UINT256
                             ),
                             varbinary_to_uint256 (0xffffffffffffffffffffffffffffffffffffffff)
                           ) as VARBINARY
-                        )
-                      ) as beneficiary,
+                        ) as VARCHAR
+                      ),
+                      '^(0x)?(00){12}' -- shrink hex to get address format (bytes20)
+                    ) 
+                  ) as beneficiary,
                   0 as partnerAndFee,
                   0 as output_partnerShare,
                   0 as output_paraswapShare,
