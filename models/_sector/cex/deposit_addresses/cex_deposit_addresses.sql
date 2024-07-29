@@ -57,4 +57,4 @@ FROM (
     {% endfor %}
     )
 GROUP BY address
-HAVING COUNT(*) = 1
+HAVING COUNT(DISTINCT cex_name) = 1
