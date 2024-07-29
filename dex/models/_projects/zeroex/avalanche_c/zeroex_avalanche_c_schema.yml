@@ -148,7 +148,8 @@ models:
       - *contract_address
       - &fills_within
         name: fills_within
-        description: "fills in then multihop, if present"       
+        description: "fills in then multihop, if present" 
+    
   - name: zeroex_avalanche_c_settler_trades 
     meta:
       blockchain: avalanche_c
