@@ -189,9 +189,13 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
             - txHash
             - method
-            - calltraceaddress       
+            - callTraceAddress                        
     columns:
       - name: blockTime
         description: "Block time"        
