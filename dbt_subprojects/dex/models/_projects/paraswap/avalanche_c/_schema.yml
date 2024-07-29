@@ -193,19 +193,19 @@ models:
             - blockchain
             - project
             - version
-            - txHash
+            - call_tx_hash
             - method
-            - callTraceAddress                        
+            - call_trace_address                        
     columns:
       - name: blockTime
         description: "Block time"        
       - name: blockNumber
         description: "Block number"        
-      - name: txHash
+      - name: call_tx_hash
         description: "Transaction hash"        
       - name: projectContractAddress
         description: "Project contract address"        
-      - name: callTraceAddress
+      - name: call_trace_address
         description: "Call trace address"        
       - name: srcToken
         description: "Source token"        
