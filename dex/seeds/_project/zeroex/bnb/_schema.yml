@@ -57,6 +57,7 @@ seeds:
         tx_from: varbinary
         tx_to: varbinary
         fills_within: int
+
   - name: zeroex_bnb_settler_trades_sample
     config:
       column_types:
