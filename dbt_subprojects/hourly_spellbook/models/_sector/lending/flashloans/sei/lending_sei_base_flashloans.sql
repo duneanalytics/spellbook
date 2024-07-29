@@ -1,14 +1,14 @@
 {{
   config(
     schema = 'lending_sei',
-    alias = 'base_borrow',
+    alias = 'base_flashloans',
     materialized = 'view'
   )
 }}
 
 {%
   set models = [
-    ref('yei_sei_base_borrow')
+    ref('yei_sei_base_flashloans')
   ]
 %}
 
@@ -17,18 +17,14 @@ select
   blockchain,
   project,
   version,
-  transaction_type,
-  loan_type,
-  token_address,
-  borrower,
-  on_behalf_of,
-  repayer,
-  liquidator,
+  recipient,
   amount,
+  fee,
+  token_address,
+  project_contract_address,
   block_month,
   block_time,
   block_number,
-  project_contract_address,
   tx_hash,
   evt_index
 from {{ model }}

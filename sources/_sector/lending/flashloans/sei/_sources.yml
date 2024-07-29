@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: yei_sei
+    tables:
+      - name: Pool_evt_FlashLoan
