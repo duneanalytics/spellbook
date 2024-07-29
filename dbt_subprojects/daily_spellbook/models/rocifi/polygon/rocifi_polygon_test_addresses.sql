@@ -5,7 +5,7 @@
         expose_spells(\'["polygon"]\',
         "project", 
         "rocifi",
-        \'["maybeyonas"]\') }}'
+        \'["maybeYonas"]\') }}'
 ) }}
 
 
