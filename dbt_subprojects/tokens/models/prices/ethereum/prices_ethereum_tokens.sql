@@ -1811,6 +1811,7 @@ FROM
     ('kai-kai-ken', 'ethereum', 'KAI ', 0xa045fe936e26e1e1e1fb27c1f2ae3643acde0171, 9),
     ('gme-gme-ethereum', 'ethereum', 'GME ', 0xc56c7a0eaa804f854b536a5f3d5f49d2ec4b12b8, 9),
     ('birddog-birddog', 'ethereum', 'BIRDDOG ', 0x70fd93fb088150e203d2243b9bd3190276f80c70, 9),
+    ('dola-dola','ethereum','DOLA',0x865377367054516e17014ccded1e7d814edc9ce4, 18),
     ('strump-super-trump', 'ethereum', '$STRUMP ', 0x7039cd6d7966672f194e8139074c3d5c4e6dcf65, 9),
     ('molly2-molly', 'ethereum', 'MOLLY ', 0xbdbe9f26918918bd3f43a0219d54e5fda9ce1bb3, 9),
     ('win-connect', 'ethereum', 'WIN ', 0xb10cb07ca2cdac77fbb5707f6690301f9d036f45, 8),
