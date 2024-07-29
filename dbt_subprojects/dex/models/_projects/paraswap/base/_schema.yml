@@ -193,33 +193,33 @@ models:
             - blockchain
             - project
             - version
-            - tx_hash
+            - txHash
             - method
-            - call_trace_address
+            - callTraceAddress
     columns:
-      - name: block_time
+      - name: blockTime
         description: "Block time"
-      - name: block_number
+      - name: blockNumber
         description: "Block number"
-      - name: tx_hash
+      - name: txHash
         description: "Transaction hash"
       - name: projectContractAddress
         description: "Project contract address"
-      - name: call_trace_address
+      - name: callTraceAddress
         description: "Call trace address"
-      - name: src_token
+      - name: srcToken
         description: "Source token"
-      - name: dest_token
+      - name: destToken
         description: "Destination token"
-      - name: from_amount
+      - name: fromAmount
         description: "From amount"
-      - name: spent_amount
+      - name: spentAmount
         description: "Spent amount"
-      - name: to_amount
+      - name: toAmount
         description: "To amount"
-      - name: quoted_amount
+      - name: quotedAmount
         description: "Quoted amount"
-      - name: received_amount
+      - name: receivedAmount
         description: "Received amount"
       - name: metadata
         description: "Metadata"
@@ -229,17 +229,17 @@ models:
         description: "Method"
       - name: side
         description: "Side"
-      - name: fee_code
+      - name: feeCode
         description: "Fee code"
-      - name: partner_share
+      - name: partnerShare
         description: "Partner share"
-      - name: paraswap_share
+      - name: paraswapShare
         description: "Paraswap share"
-      - name: partner_address
+      - name: partnerAddress
         description: "Partner address"
-      - name: fee_bps
+      - name: feeBps
         description: "Fee in basis points"
-      - name: is_referral
+      - name: isReferral
         description: "Is referral"
-      - name: is_take_surplus
+      - name: isTakeSurplus
         description: "Is take surplus"

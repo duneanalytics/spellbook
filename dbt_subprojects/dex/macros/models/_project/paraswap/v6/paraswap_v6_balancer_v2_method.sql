@@ -23,7 +23,7 @@ WITH
                         WHEN balancerV2Selector = '0x52bbbe29' THEN substr(try_cast(data as varchar), 587, 64)
                         ----------------------- BalancerV2Vault.batchSwap()
                         WHEN balancerV2Selector = '0x945bcec9' THEN (
-                          --- pick src_token from data[assetOffset + 1] (+1 since indices start from 1)
+                          --- pick srcToken from data[assetOffset + 1] (+1 since indices start from 1)
                           sData[
                             (
                               /* start of assetsOffset */
@@ -35,11 +35,11 @@ WITH
                           ]
                         )
                         ELSE '000000000000000000000000000000000000000000000000000000000000dead' -- placeholder, contract logic prevents hitting this case. Same applies later
-                      END AS src_token,
+                      END AS srcToken,
                       CASE
                         WHEN balancerV2Selector = '0x52bbbe29' THEN substr(try_cast(data as varchar), 651, 64)
                         WHEN balancerV2Selector = '0x945bcec9' THEN (
-                          --- pick dest_token from data[assetOffset + assetsSize]
+                          --- pick destToken from data[assetOffset + assetsSize]
                           sData[
                             (
                               /* start of assetsOffset */
@@ -67,11 +67,11 @@ WITH
                           ]
                         )
                         ELSE '000000000000000000000000000000000000000000000000000000000000dead'
-                      END as dest_token,{% elif inOrOut == 'out' %}
+                      END as destToken,{% elif inOrOut == 'out' %}
                       CASE
                         WHEN balancerV2Selector = '0x52bbbe29' THEN substr(try_cast(data as varchar), 587, 64)
                         WHEN balancerV2Selector = '0x945bcec9' THEN (
-                          --- pick dest_token from data[assetOffset + assetsSize]
+                          --- pick destToken from data[assetOffset + assetsSize]
                           sData[
                             (
                               /* start of assetsOffset */
@@ -99,11 +99,11 @@ WITH
                           ]
                         )
                         ELSE '000000000000000000000000000000000000000000000000000000000000dead'
-                      END AS src_token,
+                      END AS srcToken,
                       CASE
                         WHEN balancerV2Selector = '0x52bbbe29' THEN substr(try_cast(data as varchar), 651, 64)
                         WHEN balancerV2Selector = '0x945bcec9' THEN (
-                        --- pick src_token from data[assetOffset + 1]
+                        --- pick srcToken from data[assetOffset + 1]
                           sData[
                             (
                               /* start of assetsOffset */
@@ -115,13 +115,13 @@ WITH
                           ]
                         )
                         ELSE '000000000000000000000000000000000000000000000000000000000000dead'
-                      END as dest_token,{% endif %}
+                      END as destToken,{% endif %}
                       try_cast(
-                        JSON_EXTRACT_SCALAR(balancerData, '$.from_amount') as UINT256
-                      ) AS from_amount,
+                        JSON_EXTRACT_SCALAR(balancerData, '$.fromAmount') as UINT256
+                      ) AS fromAmount,
                       try_cast(
-                        JSON_EXTRACT_SCALAR(balancerData, '$.to_amount') as UINT256
-                      ) AS to_amount,
+                        JSON_EXTRACT_SCALAR(balancerData, '$.toAmount') as UINT256
+                      ) AS toAmount,
                       to_hex(
                         try_cast(
                           bitwise_and(
@@ -142,33 +142,33 @@ select
                           contract_address as project_contract_address,
                           call_trace_address,
                           case
-                            when try_cast(src_token as uint256) = uint256 '0' then '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                            when try_cast(srcToken as uint256) = uint256 '0' then '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
                             else try_cast(
-                              from_hex(regexp_replace(src_token, '^(0x)?(00){12}')) as varchar
+                              from_hex(regexp_replace(srcToken, '^(0x)?(00){12}')) as varchar
                             ) -- shrink hex to get address format (bytes20)
-                          end as src_token,
+                          end as srcToken,
                           case
-                            when try_cast(dest_token as uint256) = uint256 '0' then '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                            when try_cast(destToken as uint256) = uint256 '0' then '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
                             else try_cast(
-                              from_hex(regexp_replace(dest_token, '^(0x)?(00){12}')) as varchar
+                              from_hex(regexp_replace(destToken, '^(0x)?(00){12}')) as varchar
                             ) -- shrink hex to get address format (bytes20)
-                          end as dest_token,
-                          from_amount,
-                          to_amount,
+                          end as destToken,
+                          fromAmount,
+                          toAmount,
                           try_cast(
-                            JSON_EXTRACT_SCALAR(balancerData, '$.quoted_amount') as uint256
-                          ) AS quoted_amount,
-                          output_received_amount,
+                            JSON_EXTRACT_SCALAR(balancerData, '$.quotedAmount') as uint256
+                          ) AS quotedAmount,
+                          output_receivedAmount,
                           JSON_EXTRACT_SCALAR(balancerData, '$.metadata') AS metadata,
                           try_cast(
                             from_hex(regexp_replace(beneficiary, '^(0x)?(00){12}')) as varchar
                             -- shrink hex to get address format (bytes20)
                           ) as beneficiary,
                           partnerAndFee,
-                          output_partner_share,
-                          output_paraswap_share,
+                          output_partnerShare,
+                          output_paraswapShare,
                           '{{ method }}' as method{% if inOrOut == 'out' %},
-                          output_spent_amount as spent_amount{% endif %}
+                          output_spentAmount as spentAmount{% endif %}
             from
               {{tableOuter}}
 {% endmacro %}

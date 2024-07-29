@@ -36,18 +36,18 @@ dexs as (
             evt_block_number as block_number,
             beneficiary as taker,
             initiator as maker,
-            received_amount as token_bought_amount_raw,
+            receivedAmount as token_bought_amount_raw,
             srcAmount as token_sold_amount_raw,
             CAST(NULL as double) as amount_usd,
             CASE
-                WHEN dest_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                WHEN destToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 THEN 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7 -- wavax
-                ELSE dest_token
+                ELSE destToken
             END as token_bought_address,
             CASE
-                WHEN src_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                WHEN srcToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 THEN 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7 -- wavax
-                ELSE src_token
+                ELSE srcToken
             END as token_sold_address,
             contract_address as project_contract_address,
             evt_tx_hash as tx_hash,

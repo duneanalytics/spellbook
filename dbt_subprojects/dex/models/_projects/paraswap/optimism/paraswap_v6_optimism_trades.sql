@@ -19,31 +19,31 @@
 
 with dexs AS (
         SELECT
-            block_time AS block_time,
-            block_number AS block_number,
+            blockTime AS block_time,
+            blockNumber AS block_number,
             from_hex(beneficiary) AS taker,
             null AS maker,  -- TODO: can parse from traces
-            received_amount AS token_bought_amount_raw,
-            from_amount AS token_sold_amount_raw,
+            receivedAmount AS token_bought_amount_raw,
+            fromAmount AS token_sold_amount_raw,
             CAST(NULL AS double) AS amount_usd,
             method,
             CASE
-                WHEN from_hex(dest_token) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                WHEN from_hex(destToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 THEN 0x4200000000000000000000000000000000000006 -- WETH
-                ELSE from_hex(dest_token)
+                ELSE from_hex(destToken)
             END AS token_bought_address,
             CASE
-                WHEN from_hex(src_token) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                WHEN from_hex(srcToken) = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
                 THEN 0x4200000000000000000000000000000000000006 -- WETH
-                ELSE from_hex(src_token)
+                ELSE from_hex(srcToken)
             END AS token_sold_address,
             projectContractAddress as project_contract_address,
-            tx_hash AS tx_hash,
-            call_trace_address AS trace_address,
+            txHash AS tx_hash,
+            callTraceAddress AS trace_address,
             CAST(-1 as integer) AS evt_index
         FROM {{ ref('paraswap_v6_optimism_trades_decoded') }}
         {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_time') }}
+        WHERE {{ incremental_predicate('blockTime') }}
         {% endif %}
 )
 

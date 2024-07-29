@@ -17,7 +17,7 @@
 
 select
   *,
-  from_amount as spent_amount,
+  fromAmount as spentAmount,
   'sell' as side
 from
           (
@@ -59,9 +59,9 @@ from
       ),
       buy_trades as (
             with            
-              swapExactAmountOut as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountOut'), 'swapExactAmountOut', 'swapData', 'output_spent_amount as spent_amount') }}),
-              swapExactAmountOutOnUniswapV2 as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountOutOnUniswapV2'), 'swapExactAmountOutOnUniswapV2', 'uniData', 'output_spent_amount as spent_amount' ) }}),
-              swapExactAmountOutOnUniswapV3 as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountOutOnUniswapV3'), 'swapExactAmountOutOnUniswapV3', 'uniData', 'output_spent_amount as spent_amount') }}),
+              swapExactAmountOut as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountOut'), 'swapExactAmountOut', 'swapData', 'output_spentAmount as spentAmount') }}),
+              swapExactAmountOutOnUniswapV2 as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountOutOnUniswapV2'), 'swapExactAmountOutOnUniswapV2', 'uniData', 'output_spentAmount as spentAmount' ) }}),
+              swapExactAmountOutOnUniswapV3 as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountOutOnUniswapV3'), 'swapExactAmountOutOnUniswapV3', 'uniData', 'output_spentAmount as spentAmount') }}),
               swapExactAmountOutOnBalancerV2 as ({{ paraswap_v6_balancer_v2_method('swapexactAmountOutOnBalancerV2_decoded', 'swapexactAmountOutOnBalancerV2_raw', source(project + '_' + blockchain, contract_name + '_call_swapExactAmountOutOnBalancerV2'), 'out', 'swapExactAmountOutOnBalancerV2')}} )              
             select
               *,
@@ -110,25 +110,25 @@ select
   cast(date_trunc('month', call_block_time) as date) as block_month,
   'paraswap' AS project,
   '{{ contract_details['version'] }}' as version,
-  call_block_time as block_time,
-  call_block_number as block_number,
-  call_tx_hash as tx_hash,
+  call_block_time as blockTime,
+  call_block_number as blockNumber,
+  call_tx_hash as txHash,
   project_contract_address as projectContractAddress,
-  call_trace_address as call_trace_address,
-  src_token,
-  dest_token,
-  from_amount,
-  spent_amount,
-  to_amount,
-  quoted_amount,
-  output_received_amount as received_amount,
+  call_trace_address as callTraceAddress,
+  srcToken,
+  destToken,
+  fromAmount,
+  spentAmount,
+  toAmount,
+  quotedAmount,
+  output_receivedAmount as receivedAmount,
   metadata,
   beneficiary,
   method,
   side,
-  partnerAndFee as fee_code,
-  output_partner_share as partner_share,
-  output_paraswap_share as paraswap_share,
+  partnerAndFee as feeCode,
+  output_partnerShare as partnerShare,
+  output_paraswapShare as paraswapShare,
   '0x' || regexp_replace(
                 try_cast(
                   TRY_CAST(
@@ -136,19 +136,19 @@ select
                   ) as VARCHAR
                 ),
                 '0x(00){12}'
-              ) AS partner_address,
+              ) AS partnerAddress,
               BITWISE_AND(
                 try_cast(partnerAndFee as UINT256),
                 varbinary_to_uint256 (0x3FFF)
-              ) as fee_bps,              
+              ) as feeBps,              
               BITWISE_AND(
                 try_cast(partnerAndFee as uint256),
                 bitwise_left_shift(TRY_CAST(1 as uint256), 94)
-              ) <> 0 AS is_referral,
+              ) <> 0 AS isReferral,
               BITWISE_AND(
                 try_cast(partnerAndFee as uint256),
                 bitwise_left_shift(TRY_CAST(1 as uint256), 95)
-              ) <> 0 AS is_take_surplus
+              ) <> 0 AS isTakeSurplus
   from 
     v6_trades{% endmacro %}
 

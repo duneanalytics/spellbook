@@ -5,23 +5,23 @@
                   call_tx_hash,                  
                   contract_address as project_contract_address,
                   call_trace_address,
-                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[1], '$.order'), '$.makerAsset') as src_token, 
-                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[1], '$.order'), '$.takerAsset') as dest_token, 
+                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[1], '$.order'), '$.makerAsset') as srcToken, 
+                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[1], '$.order'), '$.takerAsset') as destToken, 
                   try_cast(
-                    JSON_EXTRACT_SCALAR(data, '$.from_amount') as uint256
-                  ) AS from_amount,
+                    JSON_EXTRACT_SCALAR(data, '$.fromAmount') as uint256
+                  ) AS fromAmount,
                   try_cast(
-                    JSON_EXTRACT_SCALAR(data, '$.to_amount') as uint256
-                  ) AS to_amount,
+                    JSON_EXTRACT_SCALAR(data, '$.toAmount') as uint256
+                  ) AS toAmount,
                   try_cast(
-                    JSON_EXTRACT_SCALAR(data, '$.to_amount') as uint256
-                  ) AS quoted_amount,
-                  output_received_amount,
+                    JSON_EXTRACT_SCALAR(data, '$.toAmount') as uint256
+                  ) AS quotedAmount,
+                  output_receivedAmount,
                   JSON_EXTRACT_SCALAR(data, '$.metadata') AS metadata,
                   JSON_EXTRACT_SCALAR(data, '$.beneficiary') AS beneficiary,
                   0 as partnerAndFee,
-                  0 as output_partner_share,
-                  0 as output_paraswap_share,
+                  0 as output_partnerShare,
+                  0 as output_paraswapShare,
                   'swapOnAugustusRFQTryBatchFill' as method
                 FROM
                      {{ table_name }}                                                        
