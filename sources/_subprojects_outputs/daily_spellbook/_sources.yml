@@ -24,4 +24,4 @@ sources:
 
   - name: ethereum
     tables:
-      - name: blob_submissions
+      - name: blobs_submissions
