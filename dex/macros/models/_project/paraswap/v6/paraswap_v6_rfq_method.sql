@@ -1,7 +1,5 @@
 {% macro paraswap_v6_rfq_method(table_name, method_name, data_field, extra_field=None) %}
                 SELECT 
-                  -- TODO: check if 2 idential calls will be squashed into a single one? Edge case
-                  -- sequence_number,
                   call_block_time,
                   call_block_number,
                   call_tx_hash,                  
@@ -16,7 +14,7 @@
                     JSON_EXTRACT_SCALAR({{ data_field }}, '$.toAmount') as uint256
                   ) AS toAmount,
                   try_cast(
-                    JSON_EXTRACT_SCALAR({{ data_field }}, '$.toAmount') as uint256 -- no slippage when RFQ? Actually under the hood there _could be_ slippages in the underlying orders fills
+                    JSON_EXTRACT_SCALAR({{ data_field }}, '$.toAmount') as uint256
                   ) AS quotedAmount,
                   output_receivedAmount,
                   JSON_EXTRACT_SCALAR({{ data_field }}, '$.metadata') AS metadata,
