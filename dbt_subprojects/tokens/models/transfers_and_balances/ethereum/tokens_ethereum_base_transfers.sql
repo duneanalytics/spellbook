@@ -16,6 +16,7 @@
     transactions = source('ethereum','transactions'),
     erc20_transfers = source('erc20_ethereum','evt_Transfer'),
     native_contract_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+    include_traces = 'true'
 )}}
 
 UNION ALL

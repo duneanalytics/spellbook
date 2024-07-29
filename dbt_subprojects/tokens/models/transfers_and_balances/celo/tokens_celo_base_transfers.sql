@@ -15,6 +15,7 @@
     traces = source('celo','traces'),
     transactions = source('celo','transactions'),
     erc20_transfers = source('erc20_celo','evt_transfer'),
-    native_contract_address = null
+    native_contract_address = null,
+    include_traces = 'true'
 )
 }}

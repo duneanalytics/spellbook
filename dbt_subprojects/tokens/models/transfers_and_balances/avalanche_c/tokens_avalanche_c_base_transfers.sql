@@ -15,6 +15,7 @@
     traces = source('avalanche_c','traces'),
     transactions = source('avalanche_c','transactions'),
     erc20_transfers = source('erc20_avalanche_c','evt_transfer'),
-    native_contract_address = null
+    native_contract_address = null,
+    include_traces = 'true'
 )
 }}
