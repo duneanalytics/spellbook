@@ -242,33 +242,33 @@ models:
             - blockchain
             - project
             - version
-            - txHash
+            - tx_hash
             - method
-            - callTraceAddress                        
+            - call_trace_address                        
     columns:
-      - name: blockTime
+      - name: block_time
         description: "Block time"        
-      - name: blockNumber
+      - name: block_number
         description: "Block number"        
-      - name: txHash
+      - name: tx_hash
         description: "Transaction hash"        
       - name: projectContractAddress
         description: "Project contract address"        
-      - name: callTraceAddress
+      - name: call_trace_address
         description: "Call trace address"        
-      - name: srcToken
+      - name: src_token
         description: "Source token"        
-      - name: destToken
+      - name: dest_token
         description: "Destination token"        
-      - name: fromAmount
+      - name: from_amount
         description: "From amount"        
-      - name: spentAmount
+      - name: spent_amount
         description: "Spent amount"        
-      - name: toAmount
+      - name: to_amount
         description: "To amount"        
-      - name: quotedAmount
+      - name: quoted_amount
         description: "Quoted amount"        
-      - name: receivedAmount
+      - name: received_amount
         description: "Received amount"        
       - name: metadata
         description: "Metadata"        
@@ -278,18 +278,18 @@ models:
         description: "Method"
       - name: side
         description: "Side"        
-      - name: feeCode
+      - name: fee_code
         description: "Fee code"
-      - name: partnerShare
+      - name: partner_share
         description: "Partner share"
-      - name: paraswapShare
+      - name: paraswap_share
         description: "Paraswap share"
-      - name: partnerAddress
+      - name: partner_address
         description: "Partner address"
-      - name: feeBps
+      - name: fee_bps
         description: "Fee in basis points"
-      - name: isReferral
+      - name: is_referral
         description: "Is referral"
-      - name: isTakeSurplus
+      - name: is_take_surplus
         description: "Is take surplus"
 

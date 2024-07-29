@@ -5,18 +5,18 @@
                   call_tx_hash,                  
                   contract_address as project_contract_address,
                   call_trace_address,
-                  JSON_EXTRACT_SCALAR(makerPSMData, '$.srcToken') as srcToken, 
-                  JSON_EXTRACT_SCALAR(makerPSMData, '$.destToken') as destToken, 
+                  JSON_EXTRACT_SCALAR(makerPSMData, '$.src_token') as src_token, 
+                  JSON_EXTRACT_SCALAR(makerPSMData, '$.dest_token') as dest_token, 
                   try_cast(
-                    JSON_EXTRACT_SCALAR(makerPSMData, '$.fromAmount') as uint256
-                  ) AS fromAmount,
+                    JSON_EXTRACT_SCALAR(makerPSMData, '$.from_amount') as uint256
+                  ) AS from_amount,
                   try_cast(
-                    JSON_EXTRACT_SCALAR(makerPSMData, '$.toAmount') as uint256
-                  ) AS toAmount,
+                    JSON_EXTRACT_SCALAR(makerPSMData, '$.to_amount') as uint256
+                  ) AS to_amount,
                   try_cast(
-                    JSON_EXTRACT_SCALAR(makerPSMData, '$.toAmount') as uint256
-                  ) AS quotedAmount,
-                  output_receivedAmount,
+                    JSON_EXTRACT_SCALAR(makerPSMData, '$.to_amount') as uint256
+                  ) AS quoted_amount,
+                  output_received_amount,
                   JSON_EXTRACT_SCALAR(makerPSMData, '$.metadata') AS metadata,
                   concat(
                     '0x',
@@ -35,8 +35,8 @@
                     ) 
                   ) as beneficiary,
                   0 as partnerAndFee,
-                  0 as output_partnerShare,
-                  0 as output_paraswapShare,
+                  0 as output_partner_share,
+                  0 as output_paraswap_share,
                   'swapExactAmountInOutOnMakerPSM' as method
                 FROM
                      {{ table_name }}                                                        
