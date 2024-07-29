@@ -29,7 +29,7 @@
 ] %}
 
 SELECT address
-, cex_name
+, MAX(cex_name) AS cex_name
 , array_agg(blockchain) AS blockchains
 , MIN_BY(blockchain, creation_block_time) AS first_used_blockchain
 , MIN(creation_block_time) AS creation_block_time
@@ -56,4 +56,5 @@ FROM (
     {% endif %}
     {% endfor %}
     )
-GROUP BY address, cex_name
+GROUP BY address
+HAVING COUNT(*) = 1
