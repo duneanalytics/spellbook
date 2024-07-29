@@ -31,7 +31,7 @@ SELECT
     , t.evt_block_number AS block_number
     , 'zksync' AS project
     , 1 AS airdrop_number
-    , t.recipient
+    , t.account AS recipient
     , t.contract_address
     , t.evt_tx_hash AS tx_hash
     , t.amount as amount_raw
