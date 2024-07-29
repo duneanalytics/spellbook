@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: addresses_info
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, gnosis, optimism, polygon, scroll, zksync
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address across EVM chains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - &address
+        name: address
+        description: "Address"
+      - &blockchains
+        name: blockchains
+        description: "The list of blockchains this address appeared on"
+      - &number_of_chains_where_seen
+        name: number_of_chains_where_seen
+        description: "The number of different chains this address was seen on"
+      - &executed_tx_count
+        name: executed_tx_count
+        description: "The number of transactions executed by the address across all chains"
+      - &max_nonce
+        name: max_nonce
+        description: "The highest nonce value across all chains"
+      - &is_smart_contract
+        name: is_smart_contract
+        description: "Is the address a smart contract on any chain"
+      - &namespace
+        name: namespace
+        description: "If the address is a smart contract on any chain that is decoded on Dune, here is the associated Dune namespace on the first chain it was deployed on"
+      - &name
+        name: name
+        description: "If the address is a smart contract on any chain that is decoded on Dune, here is the associated Dune smart contract name on the first chain it was deployed on"
+      - &first_funded_by
+        name: first_funded_by
+        description: "Which other address first ever funded this address across all chains"
+      - &first_tx_block_time
+        name: first_tx_block_time
+        description: "The block time of the first transaction executed by this address across all chains"
+      - &last_tx_block_time
+        name: last_tx_block_time
+        description: "The block time of the last transaction executed by this address across all chains"
+      - &first_tx_block_number
+        name: first_tx_block_number
+        description: "The block number of the first transaction executed by this address across all chains"
+      - &last_tx_block_number
+        name: last_tx_block_number
+        description: "The block number of the last transaction executed by this address across all chains"
+      - &first_received_block_time
+        name: first_received_block_time
+        description: "The block time of the first token (native or ERC20) received by this address across all chains"
+      - &first_received_block_number
+        name: first_received_block_number
+        description: "The block number of the first token (native or ERC20) received by this address across all chains"
+      - &last_transfer_block_time
+        name: last_transfer_block_time
+        description: "The block time of the last token (native or ERC20) received by this address across all chains"
+      - &last_transfer_block_number
+        name: last_transfer_block_number
+        description: "The block number of the last token (native or ERC20) received by this address across all chains"
+      - &last_seen
+        name: last_seen
+        description: "The time at which this address last appeared in any form on the blockchain across all chains"

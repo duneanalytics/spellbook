@@ -64,37 +64,6 @@ models:
         name: last_seen
         description: "The time at which this address last appeared in any form on the blockchain"
 
-  - name: addresses_arbitrum_info
-    meta:
-      blockchain: arbitrum
-      sector: addresses
-      project: addresses
-      contributors: hildobby
-    config:
-      tags: ['table', 'address', 'info']
-    description: "High level information about every address on Arbitrum"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-    columns:
-      - *address
-      - *executed_tx_count
-      - *max_nonce
-      - *is_smart_contract
-      - *namespace
-      - *name
-      - *first_funded_by
-      - *first_tx_block_time
-      - *last_tx_block_time
-      - *first_tx_block_number
-      - *last_tx_block_number
-      - *first_received_block_time
-      - *first_received_block_number
-      - *last_transfer_block_time
-      - *last_transfer_block_number
-      - *last_seen
-
   - name: addresses_avalanche_c_info
     meta:
       blockchain: avalanche_c
