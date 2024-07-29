@@ -25,12 +25,12 @@ SELECT
      CASE WHEN type = 'Legacy' THEN (cast(gas_price as double)/1e18 * cast(txns.gas_used as double))
           WHEN type = 'AccessList' THEN (cast(gas_price as double)/1e18 * cast(txns.gas_used as double))
           WHEN type = 'DynamicFee' THEN ((cast(base_fee_per_gas as double)/1e18 + cast(priority_fee_per_gas as double)/1e18)* cast(txns.gas_used as double))
-          WHEN type = '3' THEN ((gas_price as double)/1e18 * cast(txns.gas_usd as double) + (b.blob_base_fee as double)/1e18 * cast(txns.blob_gas_used as double))
+          WHEN type = '3' THEN ((cast(gas_price as double)/1e18 * cast(txns.gas_used as double)) + (cast(b.blob_base_fee as double)/1e18 * cast(txns.blob_gas_used as double)))
           END AS tx_fee_native,
      CASE WHEN type = 'Legacy' THEN (cast(gas_price as double)/1e18 * cast(txns.gas_used as double)) * p.price
           WHEN type = 'AccessList' THEN (cast(gas_price as double)/1e18 * cast(txns.gas_used as double)) * p.price
           WHEN type = 'DynamicFee' THEN ((cast(base_fee_per_gas as double)/1e18 + cast(priority_fee_per_gas as double)/1e18)* cast(txns.gas_used as double))  * p.price
-          WHEN type = '3' THEN ((gas_price as double)/1e18 * cast(txns.gas_usd as double) + (b.blob_base_fee as double)/1e18 * cast(txns.blob_gas_used as double)) * p.price
+          WHEN type = '3' THEN ((cast(gas_price as double)/1e18 * cast(txns.gas_used as double)) + (cast(b.blob_base_fee as double)/1e18 * cast(txns.blob_gas_used as double))) * p.price
           END AS tx_fee_usd,
      base_fee_per_gas / 1e18 * txns.gas_used AS burned_native,
      base_fee_per_gas / 1e18 * txns.gas_used * p.price AS burned_usd,
