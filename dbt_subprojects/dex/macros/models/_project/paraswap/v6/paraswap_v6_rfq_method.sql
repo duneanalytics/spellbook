@@ -1,4 +1,4 @@
-{% macro paraswap_v6_rfq_method(table_name, method_name) %}
+{% macro paraswap_v6_rfq_method(table_name) %}
                 SELECT 
                   call_block_time,
                   call_block_number,
@@ -22,7 +22,7 @@
                   0 as partnerAndFee,
                   0 as output_partnerShare,
                   0 as output_paraswapShare,
-                  '{{ method_name }}' as method
+                  'swapOnAugustusRFQTryBatchFill' as method
                 FROM
                      {{ table_name }}                                                        
                 WHERE
