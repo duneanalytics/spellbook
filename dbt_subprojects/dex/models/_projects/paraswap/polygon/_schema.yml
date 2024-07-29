@@ -241,9 +241,9 @@ models:
             - blockchain
             - project
             - version
-            - txHash
+            - txhash
             - method
-            - callTraceAddress                        
+            - calltraceaddress                        
     columns:
       - name: blockTime
         description: "Block time"        
