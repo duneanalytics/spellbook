@@ -9,14 +9,14 @@ sources:
 
   - name: compound_v3_arbitrum
     tables:
-      - name: Comet_evt_Supply
-      - name: cUSDCv3Native_evt_Supply
-      - name: Comet_evt_Withdraw
-      - name: cUSDCv3Native_evt_Withdraw
-      - name: Comet_evt_Transfer
-      - name: cUSDCv3Native_evt_Transfer
-      - name: Comet_evt_AbsorbDebt
-      - name: cUSDCv3Native_evt_AbsorbDebt
+      - name: cUSDCev3_evt_Supply
+      - name: cUSDCv3_evt_Supply
+      - name: cUSDCev3_evt_Withdraw
+      - name: cUSDCv3_evt_Withdraw
+      - name: cUSDCev3_evt_Transfer
+      - name: cUSDCv3_evt_Transfer
+      - name: cUSDCev3_evt_AbsorbDebt
+      - name: cUSDCv3_evt_AbsorbDebt
 
   - name: radiant_capital_arbitrum
     tables:
