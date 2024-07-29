@@ -22,10 +22,7 @@ jobs:
           echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
           echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
           echo "S3_LOCATION=s3://manifest-spellbook-dunesql/${{inputs.project}}" >> $GITHUB_ENV
-          PROJECT_DIR=${{ inputs.project }}
-          if [[ "$PROJECT_DIR" == "spellbook" ]]; then
-            PROJECT_DIR="."
-          fi
+          PROJECT_DIR=dbt_subprojects/${{ inputs.project }}
           echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_dunesql_$GIT_SHA"
@@ -42,7 +39,8 @@ jobs:
         run: "./scripts/ensure_cluster.sh"
 
       - name: dbt compile to create manifest to compare to
-        run: "dbt --warn-error compile --project-dir ${PROJECT_DIR}"
+        working-directory: ${{env.PROJECT_DIR}}
+        run: "dbt --warn-error compile"
 
       - name: check schemas
         run: "./scripts/check_schema.sh"
