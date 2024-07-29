@@ -64,7 +64,7 @@ FROM executed_txs
 LEFT JOIN fungible_received USING (address)
 LEFT JOIN fungible_sent USING (address)
 LEFT JOIN is_contract USING (address)
-LEFT JOIN {{ source('addresses_events_ethereum', 'first_funded_by')}} USING (address)
+LEFT JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} USING (address)
 
 
 
@@ -146,7 +146,7 @@ WITH executed_txs AS (
     LEFT JOIN fungible_received USING (address)
     LEFT JOIN fungible_sent USING (address)
     LEFT JOIN is_contract USING (address)
-    LEFT JOIN {{ source('addresses_events_ethereum', 'first_funded_by')}} USING (address)
+    LEFT JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} USING (address)
     )
 
 SELECT nd.address
