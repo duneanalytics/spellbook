@@ -12,7 +12,7 @@
 )}}
 
 {% set base_models = [
-    , ref('rollup_economics_arbitrum_l1_data_fees')
+    ref('rollup_economics_arbitrum_l1_data_fees')
     , ref('rollup_economics_imx_l1_data_fees')
     , ref('rollup_economics_linea_l1_data_fees')
     , ref('rollup_economics_loopring_l1_data_fees')
