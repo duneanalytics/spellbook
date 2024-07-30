@@ -36,7 +36,7 @@ AND t."from" IN (
 AND bytearray_substring(t.data, 1, 4) IN (
     0x45269298 -- Commit Block
 )
-AND t.block_time >= TIMESTAMP '2021-29-09'
+AND t.block_time >= TIMESTAMP '2021-02-09'
 {% if is_incremental() %}
 AND {{incremental_predicate('t.block_time')}}
 {% endif %}
