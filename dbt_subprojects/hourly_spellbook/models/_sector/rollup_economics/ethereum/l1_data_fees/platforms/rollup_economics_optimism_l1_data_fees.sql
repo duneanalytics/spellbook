@@ -43,7 +43,7 @@ FROM (
         ON t."from" = op.l2_output_oracle_from_address
         AND t.to = op.l2_output_oracle_to_address
     WHERE t.block_time >= timestamp '2020-01-01'
-) b
+) t
 {% if is_incremental() %}
-WHERE {{incremental_predicate('b.block_time')}}
+WHERE {{incremental_predicate('t.block_time')}}
 {% endif %}
