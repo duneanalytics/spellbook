@@ -2,7 +2,7 @@
         schema = 'addresses',
         alias = 'info',
         unique_key = ['blockchain', 'address', 'dex_name', 'distinct_name'],
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "gnosis", "optimism", "polygon", "scroll", "zksync"]\',
+        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "optimism", "polygon", "scroll", "zksync"]\',
                                 "sector",
                                 "dex",
                                 \'["hildobby"]\') }}'
@@ -17,7 +17,6 @@
     , ref('addresses_bnb_info')
     , ref('addresses_celo_info')
     , ref('addresses_ethereum_info')
-    , ref('addresses_gnosis_info')
     , ref('addresses_optimism_info')
     , ref('addresses_polygon_info')
     , ref('addresses_scroll_info')

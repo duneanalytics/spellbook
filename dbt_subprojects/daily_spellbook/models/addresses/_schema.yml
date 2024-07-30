@@ -3,7 +3,7 @@ version: 2
 models:
   - name: addresses_info
     meta:
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, gnosis, optimism, polygon, scroll, zksync
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, optimism, polygon, scroll, zksync
       sector: addresses
       project: addresses
       contributors: hildobby

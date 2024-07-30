@@ -219,37 +219,6 @@ models:
       - *last_transfer_block_number
       - *last_seen
 
-  - name: addresses_gnosis_info
-    meta:
-      blockchain: gnosis
-      sector: addresses
-      project: addresses
-      contributors: hildobby
-    config:
-      tags: ['table', 'address', 'info']
-    description: "High level information about every address on Gnosis"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-    columns:
-      - *address
-      - *executed_tx_count
-      - *max_nonce
-      - *is_smart_contract
-      - *namespace
-      - *name
-      - *first_funded_by
-      - *first_tx_block_time
-      - *last_tx_block_time
-      - *first_tx_block_number
-      - *last_tx_block_number
-      - *first_received_block_time
-      - *first_received_block_number
-      - *last_transfer_block_time
-      - *last_transfer_block_number
-      - *last_seen
-
   - name: addresses_optimism_info
     meta:
       blockchain: optimism
