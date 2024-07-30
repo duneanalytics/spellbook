@@ -1,5 +1,6 @@
 {{
     config(
+        tags = ['prod_exclude'],
         schema = 'maverick_v2_zksync',
         alias = 'base_trades',
         materialized = 'incremental',
@@ -16,6 +17,6 @@
         project = 'maverick',
         version = '2',
         source_evt_swap = source('maverick_v2_zksync', 'V2Pool_evt_PoolSwap'),
-        source_evt_pool = source('maverick_v2_zksync', 'MaverickV2Factory_evt_PoolCreated')
+        source_evt_pool = source('maverick_v2_zksync', 'V2Factory_evt_PoolCreated')
     )
 }}
