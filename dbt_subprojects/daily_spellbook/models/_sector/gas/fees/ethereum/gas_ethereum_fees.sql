@@ -53,21 +53,15 @@ SELECT
      END AS gas_usage_percent,
      blocks.difficulty,
      txns.type AS transaction_type
-FROM {{ source('ethereum','transactions') }} txns
-JOIN {{ source('ethereum','blocks') }} blocks ON blocks.number = txns.block_number
-JOIN {{ source('ethereum', 'blobs_submissions') }} blob ON txns.block_number = blob.block_number
+FROM {{ source('ethereum', 'transactions') }} txns
+INNER JOIN {{ source('ethereum', 'blocks') }} blocks ON txns.block_number = blocks.number
+INNER JOIN {{ source('ethereum', 'blobs_submissions') }} blob ON txns.hash = blob.tx_hash
+LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', txns.block_time)
+     AND p.blockchain = 'ethereum'
+     AND p.symbol = 'WETH'
 {% if is_incremental() %}
-AND {{ incremental_predicate('txns.block_time') }}
-AND {{ incremental_predicate('blocks.time') }}
-AND {{ incremental_predicate('blob.block_time') }}
-{% endif %}
-LEFT JOIN {{ source('prices','usd') }} p ON p.minute = date_trunc('minute', txns.block_time)
-AND p.blockchain = 'ethereum'
-AND p.symbol = 'WETH'
-{% if is_incremental() %}
-AND {{ incremental_predicate('p.minute') }}
 WHERE {{ incremental_predicate('txns.block_time') }}
 AND {{ incremental_predicate('blocks.time') }}
-AND {{ incremental_predicate('blobs.block_time') }}
+AND {{ incremental_predicate('blob.block_time') }}
 AND {{ incremental_predicate('p.minute') }}
 {% endif %}
