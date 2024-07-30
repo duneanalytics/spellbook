@@ -44,12 +44,9 @@ FROM (
       tx_to  as tx_to,
       trace_address,
       evt_index  as evt_index
-
     FROM {{ model }}
     {% if not loop.last %}
-
     UNION ALL
-
     {% endif %}
     {% endfor %}
 )
