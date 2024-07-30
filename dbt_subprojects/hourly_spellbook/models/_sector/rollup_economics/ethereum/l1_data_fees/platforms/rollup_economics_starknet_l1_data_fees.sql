@@ -32,7 +32,7 @@ AND bytearray_substring(t.data, 1, 4) IN (
     0x77552641 -- updateState
     , 0xb72d42a1 -- updateStateKzgDA
 )
-AND t.block_time >= TIMESTAMP '2022-01-26'
+AND t.block_time >= TIMESTAMP '2021-10-23'
 {% if is_incremental() %}
 AND {{incremental_predicate('t.block_time')}}
 {% endif %}
