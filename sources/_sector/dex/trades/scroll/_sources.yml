@@ -34,4 +34,8 @@ sources:
     tables:
       - name: UniswapV2Factory_evt_PairCreated
       - name: UniswapV2Pair_evt_Swap
+  - name: maverick_v2_scroll
+    tables:
+      - name: V2Pool_evt_PoolSwap
+      - name: V2Factory_evt_PoolCreated
 
