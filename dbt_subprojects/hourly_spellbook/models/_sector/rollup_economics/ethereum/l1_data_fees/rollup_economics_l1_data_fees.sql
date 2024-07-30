@@ -1,19 +1,35 @@
+-- {{ config(
+--     schema = 'rollup_economics'
+--     , alias = 'l1_data_fees'
+--     , materialized = 'incremental'
+--     , file_format = 'delta'
+--     , incremental_strategy = 'merge'
+--     , unique_key = ['name', 'tx_hash']
+--     , post_hook='{{ expose_spells(\'["ethereum"]\',
+--                                     "project",
+--                                     "rollup_economics",
+--                                     \'["lgingerich"]\') }}'
+-- )}}
+
 {{ config(
-    schema = 'rollup_economics'
-    , alias = 'l1_data_fees'
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['name', 'tx_hash']
-    , post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "rollup_economics",
-                                    \'["lgingerich"]\') }}'
-)}}
+    schema = 'rollup_economics',
+    alias = 'l1_data_fees',
+    materialized = 'view'
+    )
+}}
 
 {% set base_models = [
-    ref('rollup_economics_linea_l1_data_fees')
+    , ref('rollup_economics_arbitrum_l1_data_fees')
+    , ref('rollup_economics_imx_l1_data_fees')
+    , ref('rollup_economics_linea_l1_data_fees')
+    , ref('rollup_economics_loopring_l1_data_fees')
+    , ref('rollup_economics_mantle_l1_data_fees')
+    , ref('rollup_economics_optimism_l1_data_fees')
+    , ref('rollup_economics_scroll_l1_data_fees')
+    , ref('rollup_economics_starknet_l1_data_fees')
+    , ref('rollup_economics_zkevm_l1_data_fees')
     , ref('rollup_economics_zksync_l1_data_fees')
+    , ref('rollup_economics_zksync_lite_l1_data_fees')
 ] %}
 
 WITH base_union AS (
@@ -64,7 +80,7 @@ INNER JOIN {{ source('prices', 'usd') }} p
     ON p.minute = date_trunc('minute', b.block_time)
     AND p.blockchain IS NULL
     AND p.symbol = 'ETH'
-    AND p.minute >= TIMESTAMP '2024-03-13'
+    AND p.minute >= TIMESTAMP '2020-01-01'
 {% if is_incremental() %}
 WHERE {{incremental_predicate('b.block_time')}}
 AND {{incremental_predicate('p.minute')}}

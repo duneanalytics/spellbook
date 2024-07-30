@@ -11,6 +11,13 @@
                                     \'["niftytable", "maybeYonas", "lgingerich"]\') }}'
 )}}
 
+{{ config(
+    schema = 'rollup_economics',
+    alias = 'l1_data_fees',
+    materialized = 'view'
+    )
+}}
+
 WITH blob_txs AS (
     SELECT 
         lower(b.blob_submitter_label) AS name
@@ -30,7 +37,7 @@ WITH blob_txs AS (
         ON p.minute = date_trunc('minute', b.block_time)
         AND p.blockchain IS NULL
         AND p.symbol = 'ETH'
-        AND p.minute >= TIMESTAMP '2024-03-13'
+        AND p.minute >= TIMESTAMP '2024-03-13' -- EIP-4844 launch date
     {% if is_incremental() %}
     WHERE {{incremental_predicate('b.block_time')}}
     AND {{incremental_predicate('p.minute')}}

@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'rollup_economics_zksync'
+    schema = 'rollup_economics_zksync_lite'
     , alias = 'l1_data_fees'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -12,7 +12,7 @@
 )}}
 
 SELECT
-    'zksync' AS name
+    'zksync_lite' AS name
     , cast(date_trunc('month', t.block_time) AS date) AS block_month
     , cast(date_trunc('day', t.block_time) AS date) AS block_date
     , t.block_time
@@ -26,17 +26,17 @@ SELECT
     , (length(t.data)) AS data_length
 FROM {{ source('ethereum', 'transactions') }} t
 WHERE t.to IN (
-    0x3dB52cE065f728011Ac6732222270b3F2360d919 -- L1 transactions settle here pre-Boojum
-    , 0xa0425d71cB1D6fb80E65a5361a04096E0672De03 -- L1 transactions settle here post-Boojum
-    , 0xa8CB082A5a689E0d594d7da1E2d72A3D63aDc1bD -- L1 transactions settle here post-EIP4844
+    0xabea9132b05a70803a4e85094fd0e1800777fbef
+)
+AND t."from" IN (
+    0xda7357bbce5e8c616bc7b0c3c86f0c71c5b4eabb -- Old L2 Operator
+    , 0x18c208921F7a741510a7fc0CfA51E941735DAE54 -- L2 Operator
+    , 0x01c3a1a6890a146ac187a019f9863b3ab2bff91e -- L2 Operator V1
 )
 AND bytearray_substring(t.data, 1, 4) IN (
-    0x0c4dd810 -- Commit Block, pre-Boojum
-    , 0xce9dcf16 -- Execute Block, pre-Boojum
-    , 0x701f58c5 -- Commit Batches, post-Boojum
-    , 0xc3d93e7c -- Execute Batches, post-Boojum
+    0x45269298 -- Commit Block
 )
-AND t.block_time >= TIMESTAMP '2023-02-14'
+AND t.block_time >= TIMESTAMP '2021-29-09'
 {% if is_incremental() %}
 AND {{incremental_predicate('t.block_time')}}
 {% endif %}

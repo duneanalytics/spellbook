@@ -25,7 +25,9 @@ SELECT
     , {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     , (length(t.data)) AS data_length
 FROM {{ source('ethereum', 'transactions') }} t
-WHERE t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F -- Linea, L1 Message Service
+WHERE t.to IN (
+    0xd19d4B5d358258f05D7B411E21A1460D11B0876F -- Linea, L1 Message Service
+)
 AND bytearray_substring(t.data, 1, 4) IN (
     0x7a776315 -- submitData (Aplha v2 Release at block. 19222438)
     , 0x2d3c12e5 -- submitBlobData
