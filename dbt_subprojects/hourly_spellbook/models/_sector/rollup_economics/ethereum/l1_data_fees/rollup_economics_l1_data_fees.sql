@@ -1,22 +1,15 @@
--- {{ config(
---     schema = 'rollup_economics'
---     , alias = 'l1_data_fees'
---     , materialized = 'incremental'
---     , file_format = 'delta'
---     , incremental_strategy = 'merge'
---     , unique_key = ['name', 'tx_hash']
---     , post_hook='{{ expose_spells(\'["ethereum"]\',
---                                     "project",
---                                     "rollup_economics",
---                                     \'["lgingerich"]\') }}'
--- )}}
-
 {{ config(
-    schema = 'rollup_economics',
-    alias = 'l1_data_fees',
-    materialized = 'view'
-    )
-}}
+    schema = 'rollup_economics'
+    , alias = 'l1_data_fees'
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['name', 'tx_hash']
+    , post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "rollup_economics",
+                                    \'["lgingerich"]\') }}'
+)}}
 
 {% set base_models = [
     , ref('rollup_economics_arbitrum_l1_data_fees')
