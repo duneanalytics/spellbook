@@ -149,7 +149,8 @@ WITH executed_txs AS (
     LEFT JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} USING (address)
     )
 
-SELECT nd.address
+SELECT '{{blockchain}}' AS blockchain
+, nd.address
 , nd.executed_tx_count + t.executed_tx_count AS executed_tx_count
 , COALESCE(nd.max_nonce, t.max_nonce) AS max_nonce
 , COALESCE(COALESCE(nd.is_smart_contract, t.is_smart_contract), false) AS is_smart_contract

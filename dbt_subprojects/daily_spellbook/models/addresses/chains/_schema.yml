@@ -15,6 +15,9 @@ models:
           combination_of_columns:
             - address
     columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
       - &address
         name: address
         description: "Address"
@@ -78,6 +81,7 @@ models:
           combination_of_columns:
             - address
     columns:
+      - *blockchain
       - *address
       - *executed_tx_count
       - *max_nonce
@@ -109,6 +113,7 @@ models:
           combination_of_columns:
             - address
     columns:
+      - *blockchain
       - *address
       - *executed_tx_count
       - *max_nonce
@@ -140,6 +145,7 @@ models:
           combination_of_columns:
             - address
     columns:
+      - *blockchain
       - *address
       - *executed_tx_count
       - *max_nonce
@@ -171,6 +177,7 @@ models:
           combination_of_columns:
             - address
     columns:
+      - *blockchain
       - *address
       - *executed_tx_count
       - *max_nonce
@@ -202,6 +209,7 @@ models:
           combination_of_columns:
             - address
     columns:
+      - *blockchain
       - *address
       - *executed_tx_count
       - *max_nonce
@@ -233,6 +241,7 @@ models:
           combination_of_columns:
             - address
     columns:
+      - *blockchain
       - *address
       - *executed_tx_count
       - *max_nonce
@@ -264,6 +273,7 @@ models:
           combination_of_columns:
             - address
     columns:
+      - *blockchain
       - *address
       - *executed_tx_count
       - *max_nonce
@@ -295,6 +305,7 @@ models:
           combination_of_columns:
             - address
     columns:
+      - *blockchain
       - *address
       - *executed_tx_count
       - *max_nonce
@@ -326,6 +337,7 @@ models:
           combination_of_columns:
             - address
     columns:
+      - *blockchain
       - *address
       - *executed_tx_count
       - *max_nonce
