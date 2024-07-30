@@ -22,7 +22,7 @@ FROM (
     SELECT
       blockchain  as blockchain,
       '0x API'  as project,
-      version as version,
+      '1' as version,
       block_month as block_month,
       block_date  as block_date,
       block_time  as block_time,
