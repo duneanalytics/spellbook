@@ -33,7 +33,29 @@ SELECT *
 FROM (
     {% for model in zeroex_models %}
     SELECT
-      *
+      blockchain
+      ,version
+      ,block_month
+      ,block_date
+      ,block_time
+      ,maker_symbol
+      ,taker_symbol
+      ,token_pair
+      ,maker_token_amount
+      ,taker_token_amount
+      ,maker_token_amount_raw
+      ,taker_token_amount_raw
+      ,volume_usd
+      ,maker_token
+      ,taker_token
+      ,taker
+      ,maker
+      ,contract_address
+      ,tx_hash
+      ,tx_from
+      ,tx_to
+      ,trace_address
+      ,evt_index
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
