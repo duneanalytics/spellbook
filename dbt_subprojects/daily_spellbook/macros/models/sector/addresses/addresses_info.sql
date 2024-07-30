@@ -60,7 +60,7 @@ SELECT '{{blockchain}}' AS blockchain
 , first_received_block_number AS first_received_block_number
 , GREATEST(last_sent_block_time, last_received_block_time) AS last_transfer_block_time
 , GREATEST(last_sent_block_number, last_received_block_number) AS last_transfer_block_number
-, GREATEST(GREATEST(last_sent_block_time, last_received_block_time), last_tx_block_time) AS last_updated
+, GREATEST(GREATEST(last_sent_block_time, last_received_block_time), last_tx_block_time) AS last_seen
 FROM executed_txs
 LEFT JOIN fungible_received USING (address)
 LEFT JOIN fungible_sent USING (address)
