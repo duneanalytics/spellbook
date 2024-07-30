@@ -21,7 +21,7 @@ SELECT
     END AS name
     , SUM(tx_fee_native) AS l2_rev
     , SUM(tx_fee_usd) AS l2_rev_usd
-FROM {{ ref('gas_fees')}}
+FROM {{ source('gas', 'fees') }}
 WHERE blockchain IN ('arbitrum', 'base', 'blast', 'linea', 'mantle', 'optimism', 'scroll', 'zksync', 'zkevm', 'zora')
 {% if is_incremental() %}
 AND {{ incremental_predicate('block_time') }}
