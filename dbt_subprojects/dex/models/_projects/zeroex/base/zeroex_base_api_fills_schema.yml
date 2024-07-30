@@ -13,7 +13,6 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_month
             - block_date
             - tx_hash
             - evt_index
@@ -100,9 +99,6 @@ models:
     columns:
       - *blockchain
       - *block_date
-      - &block_month
-        name: block_month
-        description: "UTC event block month of each trade"
       - *block_time
       - &taker_symbol
         name: taker_symbol
@@ -133,54 +129,4 @@ models:
       - &fills_within
         name: fills_within
         description: "fills in then multihop, if present"          
-
-  - name: zeroex_base_settler_trades 
-    meta:
-      blockchain: base
-      project: zeroex
-      contributors: rantum, bakabhai993
-    config:
-      tags: ['base','0x','dex_aggregator','dex','aggregator']
-    description: >
-        0x API erc20 trades through 0x Settler contracts. No fills, only deduped transactions.
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_date
-            - tx_hash
-            - evt_index
-      - check_seed:
-          seed_file: ref('zeroex_base_settler_trades_sample')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - taker
-            - maker_token
-            - taker_token
-    columns:
-      - *blockchain
-      - *block_date
-      - *block_month
-      - *block_time
-      - *taker_symbol
-      - *maker_symbol
-      - *token_pair
-      - *taker_token_amount
-      - *maker_token_amount
-      - *taker_token_amount_raw
-      - *maker_token_amount_raw
-      - *volume_usd
-      - *taker_token
-      - *maker_token
-      - *taker
-      - *maker
-      - *affiliate_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *evt_index
-      - *type
-      - *swap_flag
-      - *contract_address
-      - *fills_within
+ 
