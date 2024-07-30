@@ -24,4 +24,3 @@
         , blockchain = 'gnosis'
     )
 }}
-
