@@ -188,11 +188,7 @@ models:
     description: "Paraswap V6 trades decoded"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
+          combination_of_columns:            
             - call_tx_hash
             - method
             - call_trace_address                        
