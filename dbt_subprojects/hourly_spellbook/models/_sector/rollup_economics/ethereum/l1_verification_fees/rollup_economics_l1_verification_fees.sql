@@ -13,6 +13,9 @@
 
 {% set base_models = [
     ref('rollup_economics_linea_l1_verification_fees')
+    , ref('rollup_economics_scroll_l1_verification_fees')
+    , ref('rollup_economics_starknet_l1_verification_fees')
+    , ref('rollup_economics_zkevm_l1_verification_fees')
     , ref('rollup_economics_zksync_l1_verification_fees')
 ] %}
 
@@ -64,7 +67,7 @@ INNER JOIN {{ source('prices', 'usd') }} p
     ON p.minute = date_trunc('minute', b.block_time)
     AND p.blockchain IS NULL
     AND p.symbol = 'ETH'
-    AND p.minute >= TIMESTAMP '2024-03-13'
+    AND p.minute >= TIMESTAMP '2021-05-29'
 {% if is_incremental() %}
 WHERE {{incremental_predicate('b.block_time')}}
 AND {{incremental_predicate('p.minute')}}

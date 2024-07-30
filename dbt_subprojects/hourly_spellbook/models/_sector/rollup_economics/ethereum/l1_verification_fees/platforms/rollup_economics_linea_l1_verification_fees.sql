@@ -25,10 +25,12 @@ SELECT
     , {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
     , 44*32 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
 FROM {{ source('ethereum', 'transactions') }} t
-WHERE t.to = 0xd19d4B5d358258f05D7B411E21A1460D11B0876F -- Linea, L1 Message Service
+WHERE t.to IN (
+    0xd19d4B5d358258f05D7B411E21A1460D11B0876F -- Linea, L1 Message Service
+)
 AND bytearray_substring(t.data, 1, 4) IN (
-    0x7a776315 -- submitData (Aplha v2 Release at block. 19222438)
-    , 0x2d3c12e5 -- submitBlobData
+    0x4165d6dd -- Finalize Blocks (proof verified immediately)
+    , 0xd630280f -- finalizeCompressedBlocksWithProof (Aplha v2 Release at block. 19222438)
 )
 AND t.block_time >= TIMESTAMP '2023-07-12'
 {% if is_incremental() %}
