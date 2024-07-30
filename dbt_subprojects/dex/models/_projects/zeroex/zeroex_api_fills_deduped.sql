@@ -19,6 +19,7 @@
   ,ref('zeroex_optimism_api_fills_deduped')
   ,ref('zeroex_polygon_api_fills_deduped')
   ,ref('zeroex_bnb_api_fills_deduped')
+  ,ref('zeroex_base_settler_trades')
   ,ref('zeroex_polygon_settler_trades')
   ,ref('zeroex_optimism_settler_trades')
   ,ref('zeroex_bnb_settler_trades')
