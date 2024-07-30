@@ -44,7 +44,8 @@ WITH executed_txs AS (
     LEFT JOIN {{contracts}} c ON ct.address=c.address
     )
 
-SELECT address
+SELECT '{{blockchain}}' AS blockchain
+, address
 , executed_tx_count
 , max_nonce
 , COALESCE(is_smart_contract, false) AS is_smart_contract
