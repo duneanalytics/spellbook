@@ -11,13 +11,6 @@
                                     \'["niftytable", "maybeYonas", "lgingerich"]\') }}'
 )}}
 
-{{ config(
-    schema = 'rollup_economics',
-    alias = 'l1_data_fees',
-    materialized = 'view'
-    )
-}}
-
 WITH blob_txs AS (
     SELECT 
         lower(b.blob_submitter_label) AS name
