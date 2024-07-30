@@ -74,6 +74,7 @@ settler_txs AS (
         WHERE 
             (a.settler_address IS NOT NULL OR tr.to = 0xca11bde05977b3631167028862be2a173976ca11)
             AND varbinary_substring(input,1,4) IN (0x1fff991f, 0xfd3ad6d4)
+            AND tr."from" != 0xef37ad2bacd70119f141140f7b5e46cd53a65fc4
             {% if is_incremental() %}
                 AND {{ incremental_predicate('block_time') }}
             {% else %}
@@ -92,7 +93,7 @@ tbl_all_logs AS (
         ROW_NUMBER() OVER (PARTITION BY logs.tx_hash ORDER BY index) rn_first, 
         index,
         CASE 
-            WHEN varbinary_substring(logs.topic2, 13, 20) = logs.tx_from THEN 1
+            WHEN topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65 and varbinary_substring(logs.topic1, 13, 20) = st.contract_address then 1 
             WHEN varbinary_substring(logs.topic1, 13, 20) = st.contract_address THEN 0
             WHEN FIRST_VALUE(logs.contract_address) OVER (PARTITION BY logs.tx_hash ORDER BY index) = logs.contract_address THEN 0
             ELSE 1 
