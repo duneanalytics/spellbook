@@ -67,7 +67,7 @@ FROM
     WHERE evt_block_time >= timestamp '2022-01-01'
     )
     {% if is_incremental() %}
-    AND c{{incremental_predicate('call_block_time')}}
+    AND {{incremental_predicate('call_block_time')}}
     {% endif %}
 
     UNION ALL
