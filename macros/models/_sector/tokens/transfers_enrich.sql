@@ -14,6 +14,7 @@ END
     , evms_info_model = null
     , transfers_start_date = '2000-01-01'
     , blockchain = null
+    , usd_amount_threshold = 1000000000 -- USD amount threshold
     )
 %}
 
@@ -90,4 +91,6 @@ LEFT JOIN
             prices.blockchain = '{{ blockchain }}'
             AND t.contract_address = prices.contract_address
         END
+WHERE
+    amount_usd < {{ usd_amount_threshold }} -- Select only transfers where USD amount is less than the threshold
 {%- endmacro %}
