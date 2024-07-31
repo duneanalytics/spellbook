@@ -269,7 +269,7 @@ results_usd AS (
         taker_token_amount,
         maker_token_amount,
         cast(taker_token_amount_raw as uint256) as taker_token_amount_raw,
-        cast(maker_token_amount_raw as uint356) as maker_token_amount_raw,
+        cast(maker_token_amount_raw as uint256) as maker_token_amount_raw,
         CASE WHEN maker_token IN    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2,
                                     0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48,
                                     0xdac17f958d2ee523a2206206994597c13d831ec7,
