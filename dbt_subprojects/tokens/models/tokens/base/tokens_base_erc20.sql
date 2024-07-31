@@ -245,4 +245,5 @@ FROM (VALUES
     , (0x62a52757b580e7fd97203bd0408a7445741b5d5f, 'DT', 18)
     , (0x6985884c4392d348587b19cb9eaaf157f13271cd, 'ZRO', 18)
     , (0x64b88c73A5DfA78D1713fE1b4c69a22d7E0faAa7, 'MAV', 18)
+    , (0x0f1D1b7abAeC1Df25f2C4Db751686FC5233f6D3f, 'IMO', 18)    
 ) AS temp_table (contract_address, symbol, decimals)
