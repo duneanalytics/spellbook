@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: jelly_swap_sei
+    tables:
+      - name: WeightedPoolFactory_call_create
+      - name: Vault_evt_PoolBalanceChanged
+      - name: Vault_evt_PoolBalanceManaged
+      - name: Vault_evt_FlashLoan
+      - name: ComposableStablePoolFactory_evt_PoolCreated
+      - name: Vault_evt_TokensRegistered
+      - name: Vault_evt_Swap
+      - name: Vault_evt_PoolRegistered
+      - name: ComposableStablePoolFactory_call_create
