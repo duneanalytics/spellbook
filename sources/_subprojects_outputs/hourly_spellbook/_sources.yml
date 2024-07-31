@@ -42,7 +42,3 @@ sources:
   - name: perpetual
     tables:
       - name: trades
-
-  - name: gas
-    tables:
-      - name: fees
