@@ -98,7 +98,7 @@ tbl_all_logs AS (
             WHEN FIRST_VALUE(logs.contract_address) OVER (PARTITION BY logs.tx_hash ORDER BY index) = logs.contract_address THEN 0
             ELSE 1 
         END maker_tkn,
-        bytearray_to_int256(bytearray_substring(DATA, 23,10)) value,
+        (bytearray_substring(DATA, 23,10)) value,
         logs.contract_address AS token, 
         zid, 
         st.contract_address,
@@ -130,7 +130,7 @@ tbl_maker_token AS (
     FROM 
         tbl_all_logs
     WHERE 
-        maker_tkn = 1
+        maker_tkn = 1 and bytearray_to_int256(value) > 0 
 ),
 
 tbl_trades AS (
@@ -142,14 +142,20 @@ tbl_trades AS (
         method_id,
         tag, 
         contract_address,
-        SUM(value) FILTER (WHERE rn_first = 1) AS taker_amount,
+        MAX(bytearray_to_int256(value)) FILTER (WHERE rn_first = 1) AS taker_amount,
         MAX(token) FILTER (WHERE rn_first = 1) AS taker_token,
-        SUM(value) FILTER (WHERE rn_last = 1) AS maker_amount,
+        MAX(bytearray_to_int256(value)) FILTER (WHERE rn_last = 1) AS maker_amount,
         MAX(maker_token) FILTER (WHERE rn_last = 1) AS maker_token
     FROM 
         tbl_all_logs ta
     LEFT JOIN 
-        tbl_maker_token mkr ON ta.tx_hash = mkr.tx_hash AND ta.block_time = mkr.block_time AND ta.block_number = mkr.block_number AND ta.index = mkr.index AND mkr.rn_last = 1
+        tbl_maker_token mkr 
+            ON ta.tx_hash = mkr.tx_hash 
+                AND ta.block_time = mkr.block_time 
+                AND ta.block_number = mkr.block_number 
+                AND ta.index = mkr.index 
+                AND mkr.rn_last = 1
+        WHERE  bytearray_to_int256(value) > 0   
     GROUP BY 
         1,2,3,4,5,6,7
 ),
