@@ -143,9 +143,9 @@ tbl_trades AS (
         method_id,
         tag, 
         contract_address,
-        MAX(bytearray_to_int256((bytearray_substring(value, 23,10)) ))) FILTER (WHERE rn_first = 1) AS taker_amount,
+        MAX(bytearray_to_int256((bytearray_substring(value, 23,10)) )) FILTER (WHERE rn_first = 1) AS taker_amount,
         MAX(token) FILTER (WHERE rn_first = 1) AS taker_token,
-        MAX(bytearray_to_int256((bytearray_substring(value, 23,10)) ))) FILTER (WHERE rn_last = 1) AS maker_amount,
+        MAX(bytearray_to_int256((bytearray_substring(value, 23,10)) )) FILTER (WHERE rn_last = 1) AS maker_amount,
         MAX(maker_token) FILTER (WHERE rn_last = 1) AS maker_token
     FROM 
         tbl_all_logs ta
