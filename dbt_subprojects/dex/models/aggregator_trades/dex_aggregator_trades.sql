@@ -31,6 +31,7 @@
     ,ref('odos_trades')
 ] %}
 
+
 {% for aggregator_model in dex_aggregator_models %}
 SELECT
     blockchain
