@@ -164,5 +164,7 @@ FROM (VALUES
     , ('thruster', 'Thruster Finance', 'Direct', 'ThrusterFi')
     , ('blasterswap', 'BlasterSwap', 'Direct', 'BlasterSwap')
     , ('fenix', 'Fenix Finance', 'Direct', 'FenixFinance')
-    , ('jelly_swap', 'JellySwap', 'Direct', 'JellySwap')    
+    , ('jelly_swap', 'JellySwap', 'Direct', 'JellySwap')
+    , ('oku', 'oku', 'Direct', 'okutrade')
+    , ('dragon_swap', 'DragonSwap', 'Direct', 'dragonswap_dex')
     ) AS temp_table (project, name, marketplace_type, x_username)

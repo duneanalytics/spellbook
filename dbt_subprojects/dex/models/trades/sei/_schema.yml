@@ -40,3 +40,18 @@ models:
             - evt_index
 #      - check_dex_base_trades_seed:
 #          seed_file: ref('oku_sei_base_trades_seed')
+
+  - name: dragon_swap_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: dragon_swap
+      contributors: hosuke
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'dragon_swap', 'v2' ]
+    description: "DragonSwap sei base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
