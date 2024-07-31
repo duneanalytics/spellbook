@@ -8,7 +8,7 @@
                     WHEN CARDINALITY(call_trace_address) = 0
                     THEN ARRAY[-1]
                     ELSE call_trace_address
-                  END AS call_trace_address
+                  END AS call_trace_address,
                   -- call_trace_address,
                   JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[1], '$.order'), '$.makerAsset') as srcToken, 
                   JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[1], '$.order'), '$.takerAsset') as destToken, 
