@@ -52,4 +52,4 @@ FROM (
 
     {% endif %}
     {% endfor %}
-)
+) 

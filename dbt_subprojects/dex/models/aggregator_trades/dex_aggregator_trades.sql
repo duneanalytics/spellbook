@@ -65,3 +65,4 @@ WHERE block_date >= date_trunc('day', now() - interval '7' day)
 UNION ALL
 {% endif %}
 {% endfor %}
+ 
