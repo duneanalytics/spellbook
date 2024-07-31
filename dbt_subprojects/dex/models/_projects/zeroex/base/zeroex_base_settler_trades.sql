@@ -98,7 +98,7 @@ tbl_all_logs AS (
             WHEN FIRST_VALUE(logs.contract_address) OVER (PARTITION BY logs.tx_hash ORDER BY index) = logs.contract_address THEN 0
             ELSE 1 
         END maker_tkn,
-        (bytearray_substring(DATA, 23,10)) value,
+        data as value,
         logs.contract_address AS token, 
         zid, 
         st.contract_address,
@@ -143,9 +143,9 @@ tbl_trades AS (
         method_id,
         tag, 
         contract_address,
-        MAX(bytearray_to_int256(value)) FILTER (WHERE rn_first = 1) AS taker_amount,
+        MAX(bytearray_to_int256((bytearray_substring(value, 23,10)) ))) FILTER (WHERE rn_first = 1) AS taker_amount,
         MAX(token) FILTER (WHERE rn_first = 1) AS taker_token,
-        MAX(bytearray_to_int256(value)) FILTER (WHERE rn_last = 1) AS maker_amount,
+        MAX(bytearray_to_int256((bytearray_substring(value, 23,10)) ))) FILTER (WHERE rn_last = 1) AS maker_amount,
         MAX(maker_token) FILTER (WHERE rn_last = 1) AS maker_token
     FROM 
         tbl_all_logs ta
