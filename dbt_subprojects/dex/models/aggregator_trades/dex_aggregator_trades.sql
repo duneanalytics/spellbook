@@ -30,7 +30,7 @@
     ,ref('unidex_optimism_trades')
     ,ref('odos_trades')
 ] %}
-
+ 
 {% for aggregator_model in dex_aggregator_models %}
 SELECT
     blockchain
