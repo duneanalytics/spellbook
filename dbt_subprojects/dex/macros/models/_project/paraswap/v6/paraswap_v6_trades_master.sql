@@ -10,7 +10,8 @@
           swapExactAmountInOnCurveV2 as ({{ paraswap_v6_uniswaplike_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOnCurveV2'), 'swapExactAmountInOnCurveV2', 'curveV2Data') }}),
           swapExactAmountInOnBalancerV2 as ({{ paraswap_v6_balancer_v2_method('swapExactAmountInOnBalancerV2_decoded', 'swapExactAmountInOnBalancerV2_raw', source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOnBalancerV2'), 'in', 'swapExactAmountInOnBalancerV2') }})
           -- TODO: should be possible to improve this conditional code
-          {% if contract_details['version'] == '6.2' %}            
+          {% if contract_details['version'] == '6.2' %}
+               ,swapOnAugustusRFQTryBatchFill as ({{ paraswap_v6_rfq_method( source(project + '_' + blockchain, contract_name + '_call_swapOnAugustusRFQTryBatchFill')) }}) -- RFQ - not distinguishing between buy/sell
                ,swapExactAmountInOutOnMakerPSM as ({{ paraswap_v6_maker_psm_method( source(project + '_' + blockchain, contract_name + '_call_swapExactAmountInOutOnMakerPSM')) }}) -- Maker PSM - not distinguishing between buy/sell
           {% endif %}
 
@@ -51,7 +52,7 @@ from
               swapExactAmountInOnBalancerV2
             -- TODO: should be possible to improve this conditional code
             {% if contract_details['version'] == '6.2' %}
-            -- union select * from swapOnAugustusRFQTryBatchFill
+            union select * from swapOnAugustusRFQTryBatchFill
             union select * from swapExactAmountInOutOnMakerPSM
             {% endif %}
           )
