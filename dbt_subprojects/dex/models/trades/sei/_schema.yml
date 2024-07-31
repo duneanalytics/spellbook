@@ -23,3 +23,20 @@ models:
           seed_file: ref('jelly_swap_sei_base_trades_seed')
           filter:
             version: 2
+            
+  - name: oku_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: oku
+      contributors: hosuke
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'oku', 'v3' ]
+    description: "Oku sei base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+#      - check_dex_base_trades_seed:
+#          seed_file: ref('oku_sei_base_trades_seed')
