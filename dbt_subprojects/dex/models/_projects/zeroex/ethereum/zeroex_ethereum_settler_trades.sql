@@ -94,11 +94,12 @@ tbl_all_logs AS (
         index,
         CASE 
             WHEN topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65 and varbinary_substring(logs.topic1, 13, 20) = st.contract_address then 1 
+            WHEN varbinary_substring(logs.topic2, 13, 20) = logs.tx_from THEN 1
             WHEN varbinary_substring(logs.topic1, 13, 20) = st.contract_address THEN 0
             WHEN FIRST_VALUE(logs.contract_address) OVER (PARTITION BY logs.tx_hash ORDER BY index) = logs.contract_address THEN 0
             ELSE 1 
         END maker_tkn,
-        bytearray_to_int256(bytearray_substring(DATA, 23,10)) value,
+        bytearray_to_uint256(bytearray_substring(DATA, 23,10)) value,
         logs.contract_address AS token, 
         zid, 
         st.contract_address,
@@ -112,6 +113,7 @@ tbl_all_logs AS (
         topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
         0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
         0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
+        and bytearray_to_uint256(bytearray_substring(DATA, 23,10)) > 0 
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
@@ -142,14 +144,19 @@ tbl_trades AS (
         method_id,
         tag, 
         contract_address,
-        SUM(value) FILTER (WHERE rn_first = 1) AS taker_amount,
+        MAX(value) FILTER (WHERE rn_first = 1) AS taker_amount,
         MAX(token) FILTER (WHERE rn_first = 1) AS taker_token,
-        SUM(value) FILTER (WHERE rn_last = 1) AS maker_amount,
+        MAX(value) FILTER (WHERE rn_last = 1) AS maker_amount,
         MAX(maker_token) FILTER (WHERE rn_last = 1) AS maker_token
     FROM 
         tbl_all_logs ta
     LEFT JOIN 
-        tbl_maker_token mkr ON ta.tx_hash = mkr.tx_hash AND ta.block_time = mkr.block_time AND ta.block_number = mkr.block_number AND ta.index = mkr.index AND mkr.rn_last = 1
+        tbl_maker_token mkr 
+            ON ta.tx_hash = mkr.tx_hash 
+            AND ta.block_time = mkr.block_time 
+            AND ta.block_number = mkr.block_number 
+            AND ta.index = mkr.index 
+            AND mkr.rn_last = 1
     GROUP BY 
         1,2,3,4,5,6,7
 ),
@@ -212,12 +219,12 @@ results AS (
         taker_token,
         pt.price,
         COALESCE(tt.symbol, pt.symbol) AS taker_symbol,
-        taker_amount AS taker_token_amount_raw,
+        cast(taker_amount as int256) AS taker_token_amount_raw,
         taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) AS taker_token_amount,
         taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) * pt.price AS taker_amount,
         maker_token,
         COALESCE(tm.symbol, pm.symbol)  AS maker_symbol,
-        maker_amount AS maker_token_amount_raw,
+        cast(maker_amount as int256) AS maker_token_amount_raw,
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS maker_token_amount,
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) * pm.price AS maker_amount,
         tag,
