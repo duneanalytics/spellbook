@@ -21,7 +21,7 @@ FROM {{token_transfers}} tt
 {% if is_incremental() %}
 INNER JOIN threshold t ON tt.block_time>t.latest_block_time
 LEFT JOIN {{this}} t ON tt.to=t.address
-    AND t.address IS NULL
+    AND t.first_funded_by IS NULL
 WHERE {{ incremental_predicate('tt.block_time') }}
 AND tt.token_standard = 'native'
 {% else %}
