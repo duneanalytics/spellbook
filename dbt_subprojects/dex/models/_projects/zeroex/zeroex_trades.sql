@@ -14,8 +14,7 @@
 {% set zeroex_models = [
   ref('zeroex_api_fills_deduped')
 ] %}
-
-
+  
 SELECT *
 FROM (
     {% for model in zeroex_models %}
