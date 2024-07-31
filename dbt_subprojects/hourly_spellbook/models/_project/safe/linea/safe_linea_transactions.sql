@@ -15,7 +15,7 @@
     )
 }}
 
-{% set project_start_date = '2024-02-24' %}
+{% set project_start_date = '2024-07-11' %}
 
 select
     'linea' as blockchain,
