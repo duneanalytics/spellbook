@@ -93,8 +93,8 @@ tbl_all_logs AS (
         ROW_NUMBER() OVER (PARTITION BY logs.tx_hash ORDER BY index) rn_first, 
         index,
         CASE 
-            WHEN varbinary_substring(logs.topic2, 13, 20) = logs.tx_from THEN 1
             WHEN topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65 and varbinary_substring(logs.topic1, 13, 20) = st.contract_address then 1 
+            WHEN varbinary_substring(logs.topic2, 13, 20) = logs.tx_from THEN 1
             WHEN varbinary_substring(logs.topic1, 13, 20) = st.contract_address THEN 0
             WHEN FIRST_VALUE(logs.contract_address) OVER (PARTITION BY logs.tx_hash ORDER BY index) = logs.contract_address THEN 0
             ELSE 1 
@@ -144,14 +144,19 @@ tbl_trades AS (
         method_id,
         tag, 
         contract_address,
-        SUM(value) FILTER (WHERE rn_first = 1) AS taker_amount,
+        MAX(value) FILTER (WHERE rn_first = 1) AS taker_amount,
         MAX(token) FILTER (WHERE rn_first = 1) AS taker_token,
-        SUM(value) FILTER (WHERE rn_last = 1) AS maker_amount,
+        MAX(value) FILTER (WHERE rn_last = 1) AS maker_amount,
         MAX(maker_token) FILTER (WHERE rn_last = 1) AS maker_token
     FROM 
         tbl_all_logs ta
     LEFT JOIN 
-        tbl_maker_token mkr ON ta.tx_hash = mkr.tx_hash AND ta.block_time = mkr.block_time AND ta.block_number = mkr.block_number AND ta.index = mkr.index AND mkr.rn_last = 1
+        tbl_maker_token mkr 
+            ON ta.tx_hash = mkr.tx_hash 
+            AND ta.block_time = mkr.block_time 
+            AND ta.block_number = mkr.block_number 
+            AND ta.index = mkr.index 
+            AND mkr.rn_last = 1
     GROUP BY 
         1,2,3,4,5,6,7
 ),
