@@ -10,6 +10,10 @@ models:
     config:
       tags: ['table', 'funded', 'addresses_events', 'mainnets']
     description: "Table showing who first funded each address in its native asset on every chain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     columns:
       - &blockchain
         name: blockchain
