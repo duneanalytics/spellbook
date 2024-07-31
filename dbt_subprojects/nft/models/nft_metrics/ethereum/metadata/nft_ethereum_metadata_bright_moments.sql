@@ -9,6 +9,7 @@
 
 select contract_address, project_id, project_id_base_value, collection_name, artist_name, bright_moments_city, art_collection_unique_id
 from (VALUES
+        -- main bright moments contract 
         (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 1, 1000000, 'Stellaraum', 'Alida Sun', 'Berlin', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-1')
         , (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 2, 1000000, 'Parnassus', 'mpkoz', 'Berlin', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-2')
         , (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 3, 1000000, 'Inflection', 'Jeff Davis', 'Berlin', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-3')
@@ -95,7 +96,7 @@ from (VALUES
         , (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 84, 1000000, 'Culmination', 'Jeff Davis', 'Paris', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-84')
         , (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 85, 1000000, '89 Bright x Empty Rooms', 'Casey REAS', 'All', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-85')
 
-
+        -- bright moments flex contract
         , (0x7c3ea2b7b3befa1115ab51c09f0c9f245c500b18, 1, 1000000, 'Spongenuity''s Portrait Lab', 'Spongenuity', 'All', '0x7c3ea2b7b3befa1115ab51c09f0c9f245c500b18-1')
         , (0x7c3ea2b7b3befa1115ab51c09f0c9f245c500b18, 2, 1000000, 'paracosm', 'Claire Silver', 'Tokyo', '0x7c3ea2b7b3befa1115ab51c09f0c9f245c500b18-2')
         , (0x7c3ea2b7b3befa1115ab51c09f0c9f245c500b18, 3, 1000000, 'Cenotaphs', 'Ganbrood', 'Tokyo', '0x7c3ea2b7b3befa1115ab51c09f0c9f245c500b18-3')
@@ -125,6 +126,32 @@ from (VALUES
         , (0x7c3ea2b7b3befa1115ab51c09f0c9f245c500b18, 28, 1000000, 'Whispering Sands', 'Obvious', 'Paris', '0x7c3ea2b7b3befa1115ab51c09f0c9f245c500b18-28')
         , (0x7c3ea2b7b3befa1115ab51c09f0c9f245c500b18, 29, 1000000, 'Flore Perdue', 'Linda Dounia', 'Paris', '0x7c3ea2b7b3befa1115ab51c09f0c9f245c500b18-29')
 
+        -- separate contracts
+        , (0x381233d5584fdb42e46b4d9ba91876479aab7acd, 0, 1000000, 'Finale', 'Various', 'Venezia', '0x381233d5584fdb42e46b4d9ba91876479aab7acd-0')
+        , (0x97003dcc35329701e80187d3275b489ddff18602, 0, 1000000, 'Death.exe', 'neurocolor', 'Mexico City', '0x97003dcc35329701e80187d3275b489ddff18602-0')
+        , (0x49c804f27153ec24c332a5aed3a8823a7a44c900, 0, 1000000, 'Venster', 'Harm van den Dorpel', 'Paris', '0x49c804f27153ec24c332a5aed3a8823a7a44c900-0')
+        , (0x6f784f596d62fd092a8d4e9f389c2db29de6c95e, 0, 1000000, 'HASHMARKS', '0xDEAFBEEF', 'Buenos Aires', '0x6f784f596d62fd092a8d4e9f389c2db29de6c95e-0')
+        , (0x13f2202d6ef84e3774abb8c712efaf61f87679ab, 0, 1000000, 'Misalignment', 'A-Mashiro', 'Tokyo', '0x13f2202d6ef84e3774abb8c712efaf61f87679ab-0')
+        , (0x507dc20c0ea952063aF7D5Bbde46ab065E260125, 0, 1000000, 'Bright Girls', 'Saeko Ehara', 'Tokyo', '0x507dc20c0ea952063aF7D5Bbde46ab065E260125-0')
+        , (0x68E23700E1ba3770263831FD97266382178B2Fd8, 0, 1000000, 'AI Imagined Faces : On-Chain', 'Van Arman', 'Tokyo', '0x68E23700E1ba3770263831FD97266382178B2Fd8-0')
+        , (0xF20ca66b7b9D103ee666088CC18161C7dAe5b78E, 0, 1000000, 'PSY15', 'Kazuhiro Aihara', 'Tokyo', '0xF20ca66b7b9D103ee666088CC18161C7dAe5b78E-0')
+        , (0x145789247973c5d612bf121e9e4eef84b63eb707, 0, 1000000, 'Metropolis', 'mpkoz', 'Galaxy', '0x145789247973c5d612bf121e9e4eef84b63eb707-0')
+        , (0x606dd88afcbdd5d5009ceb64b5581a876f996550, 0, 1000000, 'Waterfall', 'Nicolas Sassoon', 'London', '0x606dd88afcbdd5d5009ceb64b5581a876f996550-0')
+        , (0x559545131685cbbaf051f85475f8e96aba1ca3fb, 0, 1000000, 'Ephemeros', 'Boreta', 'Berlin', '0x559545131685cbbaf051f85475f8e96aba1ca3fb-0')
+        , (0x37e534fd1b87bfb97a20192dc1550992ecab5e2d, 0, 1000000, 'Reverse Zoology', 'Ellie Pritts', 'Berlin', '0x37e534fd1b87bfb97a20192dc1550992ecab5e2d-0')
+        , (0xfbeb56ae776e22de177765c1b315088f5d2c7584, 0, 1000000, 'Nondescriptives', 'Ivona Tau', 'Berlin', '0xfbeb56ae776e22de177765c1b315088f5d2c7584-0')
+        , (0x0466fbd45d873447511a99eb95d6790ec7510611, 0, 1000000, 'Non-Living', 'Gabriel Massan', 'Berlin', '0x0466fbd45d873447511a99eb95d6790ec7510611-0')
+        , (0x3bc11937b33bc27cf730961b93dc3beef2e3a2d5, 0, 1000000, 'RadarScope', 'Holger Lippmann', 'Berlin', '0x3bc11937b33bc27cf730961b93dc3beef2e3a2d5-0')
+
+        -- crypto citizens 
+        , (0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0, 0, 1000000, 'CryptoGalactican', 'Qian Qian', 'Galaxy', '0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0-0')
+        , (0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0, 3, 1000000, 'CryptoBerliner', 'Qian Qian', 'Berlin', '0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0-3')
+        , (0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0, 4, 1000000, 'CryptoLondoner', 'Qian Qian', 'London', '0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0-4')
+        , (0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0, 5, 1000000, 'CryptoMexa', 'Qian Qian', 'Mexico City', '0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0-5')
+        , (0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0, 6, 1000000, 'CryptoTokyoite', 'Qian Qian', 'Tokyo', '0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0-6')
+        , (0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0, 7, 1000000, 'CryptoPatagonian', 'Qian Qian', 'Buenos Aires', '0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0-7')
+        , (0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0, 8, 1000000, 'CryptoParisian', 'Qian Qian', 'Paris', '0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0-8')
+        , (0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0, 9, 1000000, 'CryptoVenezian', 'Qian Qian', 'Venezia', '0xbdde08bd57e5c9fd563ee7ac61618cb2ecdc0ce0-9')
 
 ) as temp_table (contract_address, project_id, project_id_base_value, collection_name, artist_name, bright_moments_city, art_collection_unique_id)
 
