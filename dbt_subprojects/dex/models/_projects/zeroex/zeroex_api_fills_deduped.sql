@@ -10,8 +10,7 @@
 
 
 {% set zeroex_models = [  
-  ref('zeroex_bnb_api_fills_deduped')
-  ,ref('zeroex_base_settler_trades')
+  ref('zeroex_base_settler_trades')
 
 ] %}
 
