@@ -1,3 +1,4 @@
+
 {{ config(
         
         schema ='dex_aggregator',
@@ -29,7 +30,7 @@
     ,ref('unidex_optimism_trades')
     ,ref('odos_trades')
 ] %}
-
+ 
 {% for aggregator_model in dex_aggregator_models %}
 SELECT
     blockchain
@@ -63,4 +64,4 @@ WHERE block_date >= date_trunc('day', now() - interval '7' day)
 {% if not loop.last %}
 UNION ALL
 {% endif %}
-{% endfor %}
+{% endfor %}  
