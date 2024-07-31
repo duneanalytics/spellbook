@@ -60,7 +60,7 @@ INNER JOIN {{ transactions }} et ON et.block_number=t.block_number
     AND et.hash=t.tx_hash
 LEFT JOIN {{ source('prices','usd_forward_fill') }} pu ON pu.blockchain = '{{blockchain}}'
     AND (pu.contract_address=t.contract_address
-        OR t.contract_address IS NULL AND pu.contract_address=(SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
+        OR t.contract_address IS NULL AND pu.contract_address=(SELECT wrapped_native_token_address FROM {{ source('evms','info') }} WHERE blockchain='{{blockchain}}')
         )
     AND pu.minute = date_trunc('minute', t.block_time)
 
