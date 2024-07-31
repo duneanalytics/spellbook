@@ -1,13 +1,6 @@
 {% macro addresses_events_first_funded_by(blockchain, token_transfers) %}
 
 
-{% if is_incremental() %}
-WITH threshold AS (
-    SELECT MAX(block_time) AS latest_block_time
-    FROM {{this}}
-    )
-{% endif %}
-
 SELECT '{{blockchain}}' as blockchain
 , tt.to AS address
 , MIN_BY(tt."from", (tt.block_number, tt.tx_index)) AS first_funded_by
@@ -19,11 +12,9 @@ SELECT '{{blockchain}}' as blockchain
 , MIN_BY(tt.unique_key, (tt.block_number, tt.tx_index)) AS unique_key
 FROM {{token_transfers}} tt
 {% if is_incremental() %}
-INNER JOIN threshold t ON tt.block_time>t.latest_block_time
-LEFT JOIN {{this}} t ON tt.to=t.address
-    AND t.first_funded_by IS NULL
 WHERE {{ incremental_predicate('tt.block_time') }}
 AND tt.token_standard = 'native'
+AND tt.to NOT IN (SELECT address FROM {{this}})
 {% else %}
 WHERE tt.token_standard = 'native'
 {% endif %}
