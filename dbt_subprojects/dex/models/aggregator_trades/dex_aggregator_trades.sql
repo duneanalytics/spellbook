@@ -64,5 +64,4 @@ WHERE block_date >= date_trunc('day', now() - interval '7' day)
 {% if not loop.last %}
 UNION ALL
 {% endif %}
-{% endfor %}
- 
+{% endfor %}  
