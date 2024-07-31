@@ -59,9 +59,9 @@ INNER JOIN {{ source('ethereum', 'blobs_submissions') }} blob ON txns.hash = blo
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', txns.block_time)
      AND p.blockchain = 'ethereum'
      AND p.symbol = 'WETH'
-{% if is_incremental() %}
+ {% if is_incremental() %}
+     AND {{ incremental_predicate('p.minute') }}
 WHERE {{ incremental_predicate('txns.block_time') }}
-AND {{ incremental_predicate('blocks.time') }}
-AND {{ incremental_predicate('blob.block_time') }}
-AND {{ incremental_predicate('p.minute') }}
+    AND {{ incremental_predicate('blocks.time') }}
+    AND {{ incremental_predicate('blob.block_time') }}
 {% endif %}
