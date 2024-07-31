@@ -144,9 +144,9 @@ tbl_trades AS (
         method_id,
         tag, 
         contract_address,
-        MAX(bytearray_to_int256((bytearray_substring(value, 23,10)) )) FILTER (WHERE rn_first = 1) AS taker_amount,
+        MAX(value) FILTER (WHERE rn_first = 1) AS taker_amount,
         MAX(token) FILTER (WHERE rn_first = 1) AS taker_token,
-        MAX(bytearray_to_int256((bytearray_substring(value, 23,10)) )) FILTER (WHERE rn_last = 1) AS maker_amount,
+        MAX(value) FILTER (WHERE rn_last = 1) AS maker_amount,
         MAX(maker_token) FILTER (WHERE rn_last = 1) AS maker_token
     FROM 
         tbl_all_logs ta
@@ -219,12 +219,12 @@ results AS (
         taker_token,
         pt.price,
         COALESCE(tt.symbol, pt.symbol) AS taker_symbol,
-        taker_amount AS taker_token_amount_raw,
+        cast(taker_amount as int256) AS taker_token_amount_raw,
         taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) AS taker_token_amount,
         taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) * pt.price AS taker_amount,
         maker_token,
         COALESCE(tm.symbol, pm.symbol)  AS maker_symbol,
-        maker_amount AS maker_token_amount_raw,
+        cast(maker_amount as int256) AS maker_token_amount_raw,
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS maker_token_amount,
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) * pm.price AS maker_amount,
         tag,
