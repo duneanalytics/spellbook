@@ -155,6 +155,9 @@ select
 {% macro paraswap_v6_trades_master(blockchain, project) %}
   {% 
     set contracts = {
+          "AugustusV6_1": {
+              "version":    "6.1",
+          },
           "AugustusV6_2": {
               "version":    "6.2",              
           }
