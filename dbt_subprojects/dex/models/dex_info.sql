@@ -167,4 +167,5 @@ FROM (VALUES
     , ('jelly_swap', 'JellySwap', 'Direct', 'JellySwap')
     , ('oku', 'oku', 'Direct', 'okutrade')
     , ('dragon_swap', 'DragonSwap', 'Direct', 'dragonswap_dex')
+    , ('xei_finance', 'Xei Finance', 'Direct', 'XeiFinance')
     ) AS temp_table (project, name, marketplace_type, x_username)
