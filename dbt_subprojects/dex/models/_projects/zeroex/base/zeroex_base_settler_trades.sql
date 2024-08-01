@@ -99,7 +99,8 @@ tbl_all_logs AS (
             WHEN FIRST_VALUE(logs.contract_address) OVER (PARTITION BY logs.tx_hash ORDER BY index) = logs.contract_address THEN 0
             ELSE 1 
         END maker_tkn,
-        bytearray_to_uint256(bytearray_substring(DATA, 23,10)) value,
+        case when topic0 != 0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925 
+                then bytearray_to_uint256(bytearray_substring(DATA, 23,10)) end as value,
         logs.contract_address AS token, 
         zid, 
         st.contract_address,
@@ -113,7 +114,8 @@ tbl_all_logs AS (
         topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
         0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
         0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
-        and bytearray_to_uint256(bytearray_substring(DATA, 23,10)) > 0 
+        and topic0 != 0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925
+        
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
@@ -132,7 +134,7 @@ tbl_maker_token AS (
     FROM 
         tbl_all_logs
     WHERE 
-        maker_tkn = 1  
+        maker_tkn = 1  and value > 0 
 ),
 
 tbl_trades AS (
@@ -157,6 +159,7 @@ tbl_trades AS (
                 AND ta.block_number = mkr.block_number 
                 AND ta.index = mkr.index 
                 AND mkr.rn_last = 1
+    WHERE value > 0 
     GROUP BY 
         1,2,3,4,5,6,7
 ),

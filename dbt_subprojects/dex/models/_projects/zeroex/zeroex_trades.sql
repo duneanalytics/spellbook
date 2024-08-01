@@ -12,9 +12,11 @@
 -- https://dune.com/queries/2329953
 
 {% set zeroex_models = [
-  ref('zeroex_api_fills_deduped')
-] %}
+  ref('zeroex_api_fills_deduped'),
   
+] %}
+
+
 SELECT *
 FROM (
     {% for model in zeroex_models %}
@@ -30,8 +32,8 @@ FROM (
       token_pair  as token_pair,
       maker_token_amount  as token_bought_amount,
       taker_token_amount  as token_sold_amount,
-      try_cast(maker_token_amount_raw as int256) as token_bought_amount_raw,
-      try_cast(taker_token_amount_raw as int256) as token_sold_amount_raw,
+      maker_token_amount_raw  as token_bought_amount_raw,
+      taker_token_amount_raw  as token_sold_amount_raw,
       volume_usd  as amount_usd,
       maker_token  as token_bought_address,
       taker_token as token_sold_address,
@@ -51,4 +53,4 @@ FROM (
 
     {% endif %}
     {% endfor %}
-) 
+)
