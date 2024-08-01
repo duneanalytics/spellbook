@@ -44,8 +44,8 @@ SELECT
     , token_pair
     , token_bought_amount
     , token_sold_amount
-    , token_bought_amount_raw
-    , token_sold_amount_raw
+    , try_cast(token_bought_amount_raw as int256) as token_bought_amount_raw
+    , try_cast(token_sold_amount_raw as int256) as token_sold_amount_raw
     , amount_usd
     , token_bought_address
     , token_sold_address
