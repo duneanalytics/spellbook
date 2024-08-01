@@ -140,12 +140,12 @@ select
               call_block_number,
               call_tx_hash,
               contract_address as project_contract_address,
-              -- CASE
-              --   WHEN CARDINALITY(call_trace_address) = 0
-              --   THEN ARRAY[-1]
-              --   ELSE call_trace_address
-              -- END AS call_trace_address,
-              call_trace_address,
+              CASE
+                WHEN CARDINALITY(call_trace_address) = 0
+                THEN ARRAY[-1]
+                ELSE call_trace_address
+              END AS call_trace_address,
+              -- call_trace_address,
               case
                 when try_cast(srcToken as uint256) = uint256 '0' then '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
                 else try_cast(
