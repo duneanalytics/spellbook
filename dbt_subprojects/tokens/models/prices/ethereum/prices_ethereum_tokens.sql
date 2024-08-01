@@ -1816,7 +1816,6 @@ FROM
     ('molly2-molly', 'ethereum', 'MOLLY ', 0xbdbe9f26918918bd3f43a0219d54e5fda9ce1bb3, 9),
     ('win-connect', 'ethereum', 'WIN ', 0xb10cb07ca2cdac77fbb5707f6690301f9d036f45, 8),
     ('omikami-amaterasu-omikami', 'ethereum', 'OMIKAMI ', 0x9e18d5bab2fa94a6a95f509ecb38f8f68322abd3, 9),
-    ('lovely-lovely-inu-finance', 'ethereum', 'LOELY ', 0x9e24415d1e549ebc626a13a482bb117a2b43e9cf, 8),
     ('kas-wrapped-kaspa', 'ethereum', 'KAS ', 0x112b08621e27e10773ec95d250604a041f36c582, 8),
     ('ryu-ryujin', 'ethereum', 'RYU ', 0xca530408c3e552b020a2300debc7bd18820fb42f, 18),
     ('biao-biaoqing', 'ethereum', 'BIAL ', 0x9fd9278f04f01c6a39a9d1c1cd79f7782c6ade08, 9),
@@ -1847,4 +1846,5 @@ where contract_address not in (
     ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
     ,0x630d98424efe0ea27fb1b3ab7741907dffeaad78   -- PEAKDEFI
     ,0xee06a81a695750e71a662b51066f2c74cf4478a0   -- DG, bad price feed
+    ,0x9e24415d1e549ebc626a13a482bb117a2b43e9cf   -- LOVELY, rugpull
 )
