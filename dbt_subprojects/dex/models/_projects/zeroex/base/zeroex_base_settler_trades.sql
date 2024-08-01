@@ -100,7 +100,7 @@ tbl_all_logs AS (
             ELSE 1 
         END maker_tkn,
         case when topic0 != 0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925 
-                then bytearray_to_uint256(bytearray_substring(DATA, 23,10)) end as value,
+                then bytearray_to_int256(bytearray_substring(DATA, 23,10)) end as value,
         logs.contract_address AS token, 
         zid, 
         st.contract_address,
