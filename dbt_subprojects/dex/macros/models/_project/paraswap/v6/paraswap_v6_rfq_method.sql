@@ -4,7 +4,7 @@
                   call_block_number,
                   call_tx_hash,                  
                   contract_address as project_contract_address,
-                   CASE
+                  CASE
                     WHEN CARDINALITY(call_trace_address) = 0
                     THEN ARRAY[-1]
                     ELSE call_trace_address
