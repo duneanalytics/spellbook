@@ -48,7 +48,7 @@ days as (
 forward_fill as (
     select
         blockchain,
-        cast(d.day as timestamp) as day,
+        cast(d.day as date) as day,
         address,
         token_symbol,
         token_address,
