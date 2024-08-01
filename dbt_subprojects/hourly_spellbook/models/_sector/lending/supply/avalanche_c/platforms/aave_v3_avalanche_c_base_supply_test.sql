@@ -11,10 +11,4 @@
 }}
 
 -- just a test to trigger re-run
-{{
-  lending_aave_v3_compatible_supply(
-    blockchain = 'avalanche_c',
-    project = 'aave',
-    version = '7'
-  )
-}}
+select 1 where 1=0
