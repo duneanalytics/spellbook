@@ -54,3 +54,4 @@ where {{ incremental_predicate('block_time') }}
 union all
 {% endif %}
 {% endfor %}
+
