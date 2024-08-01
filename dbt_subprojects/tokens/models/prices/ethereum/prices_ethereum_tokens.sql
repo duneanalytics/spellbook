@@ -1806,7 +1806,6 @@ FROM
     ('maga-maga-hat', 'ethereum', 'MAGA', 0xd29da236dd4aac627346e1bba06a619e8c22d7c5, 9),
     ('flappy2-flappy', 'ethereum', 'FLAPPY', 0x590246bfbf89b113d8ac36faeea12b7589f7fe5b, 9),
     ('kendu-kendu-inu', 'ethereum', 'KENDU', 0xaa95f26e30001251fb905d264aa7b00ee9df6c18, 18),
-    ('maganomics-maganomics', 'ethereum', 'MAGANOMICS', 0x7e744bbb1a49a44dfcc795014a4ba618e418fbbe, 9),
     ('wojak-wojak', 'ethereum', 'WOJAK', 0x5026f006b85729a8b14553fae6af249ad16c9aab, 18),
     ('kai-kai-ken', 'ethereum', 'KAI', 0xa045fe936e26e1e1e1fb27c1f2ae3643acde0171, 9),
     ('gme-gme-ethereum', 'ethereum', 'GME', 0xc56c7a0eaa804f854b536a5f3d5f49d2ec4b12b8, 9),
