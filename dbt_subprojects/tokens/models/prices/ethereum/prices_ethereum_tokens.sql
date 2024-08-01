@@ -1816,13 +1816,15 @@ FROM
     ('molly2-molly', 'ethereum', 'MOLLY', 0xbdbe9f26918918bd3f43a0219d54e5fda9ce1bb3, 9),
     ('win-connect', 'ethereum', 'WIN', 0xb10cb07ca2cdac77fbb5707f6690301f9d036f45, 8),
     ('omikami-amaterasu-omikami', 'ethereum', 'OMIKAMI', 0x9e18d5bab2fa94a6a95f509ecb38f8f68322abd3, 9),
-    ('lovely-lovely-inu-finance', 'ethereum', 'LOELY', 0x9e24415d1e549ebc626a13a482bb117a2b43e9cf, 8),
     ('kas-wrapped-kaspa', 'ethereum', 'KAS', 0x112b08621e27e10773ec95d250604a041f36c582, 8),
     ('ryu-ryujin', 'ethereum', 'RYU', 0xca530408c3e552b020a2300debc7bd18820fb42f, 18),
     ('biao-biaoqing', 'ethereum', 'BIAL', 0x9fd9278f04f01c6a39a9d1c1cd79f7782c6ade08, 9),
     ('matt-matt-furie', 'ethereum', 'MATT', 0x790814Cd782983FaB4d7B92CF155187a865d9F18, 9),
     ('spurdo-spurdo-on-eth', 'ethereum', 'SPURDO', 0x3927fb89f34bbee63351a6340558eebf51a19fb8, 18),
-    ('alph-alephium', 'ethereum', 'ALPH', 0x590f820444fa3638e022776752c5eef34e2f89a6, 18)
+    ('alph-alephium', 'ethereum', 'ALPH', 0x590f820444fa3638e022776752c5eef34e2f89a6, 18),
+    ('apex-apex-token', 'ethereum', 'APEX', 0x52A8845DF664D76C69d2EEa607CD793565aF42B8, 18),
+    ('puff-puff-token', 'ethereum', 'PUFF', 0x18fa05ee5e478eed8925946abb41d09aec5d34d6, 18),
+    ('usdy-ondo-us-dollar-yield', 'ethereum', 'USDY', 0x96f6ef951840721adbf46ac996b59e0235cb985c, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
@@ -1848,4 +1850,5 @@ where contract_address not in (
     ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
     ,0x630d98424efe0ea27fb1b3ab7741907dffeaad78   -- PEAKDEFI
     ,0xee06a81a695750e71a662b51066f2c74cf4478a0   -- DG, bad price feed
+    ,0x9e24415d1e549ebc626a13a482bb117a2b43e9cf   -- LOVELY, rugpull
 )
