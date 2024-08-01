@@ -1822,7 +1822,7 @@ FROM
     ('biao-biaoqing', 'ethereum', 'BIAL ', 0x9fd9278f04f01c6a39a9d1c1cd79f7782c6ade08, 9),
     ('matt-matt-furie', 'ethereum', 'MATT ', 0x790814Cd782983FaB4d7B92CF155187a865d9F18, 9),
     ('spurdo-spurdo-on-eth', 'ethereum', 'SPURDO ', 0x3927fb89f34bbee63351a6340558eebf51a19fb8, 18)
-    ('alph-alephium', 'ethereum', 'ALPH', '0x590f820444fa3638e022776752c5eef34e2f89a6', 18)
+    ('alph-alephium', 'ethereum', 'ALPH', 0x590f820444fa3638e022776752c5eef34e2f89a6 , 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
