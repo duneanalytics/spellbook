@@ -33,6 +33,6 @@
                 WHERE
                   call_success = TRUE
                   {% if is_incremental() %}
-                    AND call_block_time >= date_trunc('day', now() - interval '7' day)
+                    AND {{ incremental_predicate('call_block_time') }}
                   {% endif %}
 {% endmacro %}
