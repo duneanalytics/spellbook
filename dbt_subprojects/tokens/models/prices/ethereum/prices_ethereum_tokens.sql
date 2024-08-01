@@ -1820,7 +1820,10 @@ FROM
     ('ryu-ryujin', 'ethereum', 'RYU ', 0xca530408c3e552b020a2300debc7bd18820fb42f, 18),
     ('biao-biaoqing', 'ethereum', 'BIAL ', 0x9fd9278f04f01c6a39a9d1c1cd79f7782c6ade08, 9),
     ('matt-matt-furie', 'ethereum', 'MATT ', 0x790814Cd782983FaB4d7B92CF155187a865d9F18, 9),
-    ('spurdo-spurdo-on-eth', 'ethereum', 'SPURDO ', 0x3927fb89f34bbee63351a6340558eebf51a19fb8, 18)
+    ('spurdo-spurdo-on-eth', 'ethereum', 'SPURDO ', 0x3927fb89f34bbee63351a6340558eebf51a19fb8, 18),
+    ('apex-apex-token', 'ethereum', 'APEX', 0x52A8845DF664D76C69d2EEa607CD793565aF42B8, 18),
+    ('puff-puff-token', 'ethereum', 'PUFF', 0x18fa05ee5e478eed8925946abb41d09aec5d34d6, 18),
+    ('usdy-ondo-us-dollar-yield', 'ethereum', 'USDY', 0x96f6ef951840721adbf46ac996b59e0235cb985c, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
