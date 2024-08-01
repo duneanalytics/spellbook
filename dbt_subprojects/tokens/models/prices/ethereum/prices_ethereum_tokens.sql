@@ -1818,7 +1818,7 @@ FROM
     ('omikami-amaterasu-omikami', 'ethereum', 'OMIKAMI', 0x9e18d5bab2fa94a6a95f509ecb38f8f68322abd3, 9),
     ('kas-wrapped-kaspa', 'ethereum', 'KAS', 0x112b08621e27e10773ec95d250604a041f36c582, 8),
     ('ryu-ryujin', 'ethereum', 'RYU', 0xca530408c3e552b020a2300debc7bd18820fb42f, 18),
-    ('biao-biaoqing', 'ethereum', 'BIAL', 0x9fd9278f04f01c6a39a9d1c1cd79f7782c6ade08, 9),
+    ('biao-biaoqing', 'ethereum', 'BIAO', 0x9fd9278f04f01c6a39a9d1c1cd79f7782c6ade08, 9),
     ('matt-matt-furie', 'ethereum', 'MATT', 0x790814Cd782983FaB4d7B92CF155187a865d9F18, 9),
     ('spurdo-spurdo-on-eth', 'ethereum', 'SPURDO', 0x3927fb89f34bbee63351a6340558eebf51a19fb8, 18),
     ('alph-alephium', 'ethereum', 'ALPH', 0x590f820444fa3638e022776752c5eef34e2f89a6, 18),
