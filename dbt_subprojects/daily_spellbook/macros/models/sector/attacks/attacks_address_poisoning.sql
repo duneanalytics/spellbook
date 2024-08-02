@@ -5,10 +5,9 @@ WITH transfer_recipients AS (
     , varbinary_substring(to, 1, 3) AS address_start
     , varbinary_substring(to, 18, 3) AS address_end
     , COUNT(*) AS address_occurence
-    FROM {{token_transfers}}
-    WHERE block_time > NOW() - interval '1' month
+    FROM {{ source('tokens_'~blockchain, 'transfers')}}
     {% if is_incremental() %}
-    AND {{ incremental_predicate('block_time') }}
+    WHERE {{ incremental_predicate('block_time') }}
     {% endif %} 
     GROUP BY 1, 2, 3
     )
@@ -42,20 +41,18 @@ WITH transfer_recipients AS (
     , attack.tx_index
     , attack.evt_index
     FROM matching_addresses ma
-    INNER JOIN {{token_transfers}} attack ON attack.to = ma.address_attack
+    INNER JOIN {{ source('tokens_'~blockchain, 'transfers')}} attack ON attack.to = ma.address_attack
         AND attack.tx_from=attack."from"
-        AND attack.block_time > NOW() - interval '1' month
         {% if is_incremental() %}
         AND {{ incremental_predicate('attack.block_time') }}
         {% endif %}
-    INNER JOIN {{token_transfers}} normal ON normal.to = ma.address_normal
+    INNER JOIN {{ source('tokens_'~blockchain, 'transfers')}} normal ON normal.to = ma.address_normal
         AND normal.tx_from=normal."from"
-        AND normal.block_time > NOW() - interval '1' month
         {% if is_incremental() %}
         AND {{ incremental_predicate('normal.block_time') }} - interval '14' day
         {% endif %}
         AND attack.block_number > normal.block_number
-    INNER JOIN {{token_transfers}} attack_probe ON attack_probe.to = ma.address_attack
+    INNER JOIN {{ source('tokens_'~blockchain, 'transfers')}} attack_probe ON attack_probe.to = ma.address_attack
         AND attack_probe.block_time > NOW() - interval '1' month
         AND attack_probe.tx_from<>attack_probe."from"
         AND attack_probe.block_number BETWEEN normal.block_number AND attack.block_number
