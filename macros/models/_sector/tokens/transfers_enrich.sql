@@ -14,7 +14,7 @@ END
     , evms_info_model = null
     , transfers_start_date = '2000-01-01'
     , blockchain = null
-    , usd_amount_threshold = 1000000000 -- USD amount threshold
+    , usd_amount_threshold = 25000000000 -- USD amount threshold
     )
 %}
 
