@@ -29,7 +29,7 @@ gas_fee as (
     FROM 
     {{ source('gnosis', 'transactions') }}
     WHERE 
-        1=1  
+        VARBINARY_SUBSTRING(data, 1, 4) != 0xfe7d567d --Reveal Number
         --success
     {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
@@ -57,7 +57,7 @@ gas_fee_collection as (
         ON
         t2.number = t1.block_number
     WHERE 
-        1=1
+         VARBINARY_SUBSTRING(t1.data, 1, 4) != 0xfe7d567d --Reveal Number
         --t1.success
     {% if is_incremental() %}
         AND {{incremental_predicate('t1.block_time')}}
@@ -89,7 +89,7 @@ gas_fee_rewards as (
         ON
         t2.number = t1.block_number
     WHERE   
-        1=1
+         VARBINARY_SUBSTRING(t1.data, 1, 4) != 0xfe7d567d --Reveal Number
         --t1.success
      {% if is_incremental() %}
         AND {{incremental_predicate('t1.block_time')}}
