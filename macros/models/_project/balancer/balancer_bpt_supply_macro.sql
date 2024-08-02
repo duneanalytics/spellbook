@@ -1,6 +1,6 @@
 {% macro 
-    balancer_bpt_supply_macro(
-        blockchain, version
+    balancer_v2_compatible_bpt_supply_macro(
+        blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell
     ) 
 %}
 
@@ -11,7 +11,7 @@ WITH pool_labels AS (
                 name,
                 pool_type,
                 ROW_NUMBER() OVER (PARTITION BY address ORDER BY MAX(updated_at) DESC) AS num
-            FROM {{ source('labels', 'balancer_v2_pools') }}
+            FROM {{ pool_labels_spell }}
             WHERE blockchain = '{{blockchain}}'
             GROUP BY 1, 2, 3) 
         WHERE num = 1
@@ -24,7 +24,7 @@ WITH pool_labels AS (
             contract_address AS token,
             COALESCE(SUM(CASE WHEN t."from" = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS mints,
             COALESCE(SUM(CASE WHEN t.to = 0x0000000000000000000000000000000000000000 THEN value / POWER(10, 18) ELSE 0 END), 0) AS burns
-        FROM  {{ ref('balancer_transfers_bpt') }} t
+        FROM  {{ ref(base_spells_namespace + '_transfers_bpt') }} t
         WHERE blockchain = '{{blockchain}}'   
         AND version = '{{version}}'
         GROUP BY 1, 2
@@ -47,7 +47,7 @@ WITH pool_labels AS (
             t.token,
             d.delta,
             ROW_NUMBER() OVER (PARTITION BY poolId ORDER BY evt_block_time ASC) AS rn
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_PoolBalanceChanged') }} pb
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolBalanceChanged') }} pb
         CROSS JOIN UNNEST (pb.deltas) WITH ORDINALITY d(delta, i)
         CROSS JOIN UNNEST (pb.tokens) WITH ORDINALITY t(token, i)
         WHERE d.i = t.i 
@@ -85,7 +85,7 @@ WITH pool_labels AS (
             THEN 0
             ELSE SUM(amountOut / POWER(10, 18)) 
             END AS ajoins
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} 
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} 
         LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
         WHERE tokenOut = BYTEARRAY_SUBSTRING(poolId, 1, 20)       
         GROUP BY 1, 2, 3
@@ -100,7 +100,7 @@ WITH pool_labels AS (
             THEN 0
             ELSE SUM(amountIn / POWER(10, 18)) 
             END AS aexits
-        FROM {{ source('balancer_v2_' + blockchain, 'Vault_evt_Swap') }} 
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} 
         LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
         WHERE tokenIn = BYTEARRAY_SUBSTRING(poolId, 1, 20)        
         GROUP BY 1, 2, 3

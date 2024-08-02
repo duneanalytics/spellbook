@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: dao_transactions
+    meta:
+      blockchain: ethereum, gnosis, polygon, base, arbitrum, zksync
+      sector: dao
+      contributors: Henrystats 
+    config:
+      tags: [ 'ethereum','gnosis', 'polygon', 'arbitrum', 'base', 'zksync', 'dao', 'dao creator tools', 'henrystats' ]
+    description: >
+      transactions from DAO wallets 
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which transaction happened"
+      - &dao_creator_tool
+        name: dao_creator_tool
+        description: "Name of creator tool used to create DAO"
+      - &dao
+        name: dao
+        description: "address of the dao deployed"
+      - &dao_wallet_address
+        name: dao_wallet_address
+        desciption: "wallet address used by DAO to receive & transfer funds"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of tramsaction"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of transaction"
+      - &tx_type
+        name: tx_type
+        description: "transaction type (deposit or withdrawal)"
+      - &asset_contract_address
+        name: asset
+        description: "contract address of token/asset transferred or received"
+      - &asset
+        name: asset
+        description: "token or asset transferred or received"
+      - &raw_value
+        name: raw_value
+        description: "raw value of asset/token transferred"
+      - &value
+        name: value 
+        description: "converted value of asset/token transferred"
+      - &usd_value
+        name: usd_value
+        description: "usd value of asset/token transferred"
+      - &tx_hash
+        name: tx_hash
+        description: "transaction hash"
+      - &tx_index
+        name: tx_index
+        description: "transaction index"
+      - &trace_address
+        name: trace_address
+        description: "trace address from traces table, empty for erc20 txs"
+      - &address_interacted_with
+        name: address_interacted_with
+        description: "address the dao wallet interacted with"
