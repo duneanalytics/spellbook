@@ -55,7 +55,7 @@ SELECT
      txns.type AS transaction_type
 FROM {{ source('ethereum', 'transactions') }} txns
 INNER JOIN {{ source('ethereum', 'blocks') }} blocks ON txns.block_number = blocks.number
-INNER JOIN {{ source('ethereum', 'blobs_submissions') }} blob ON txns.hash = blob.tx_hash
+LEFT JOIN {{ source('ethereum', 'blobs_submissions') }} blob ON txns.hash = blob.tx_hash
 LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', txns.block_time)
      AND p.blockchain = 'ethereum'
      AND p.symbol = 'WETH'
