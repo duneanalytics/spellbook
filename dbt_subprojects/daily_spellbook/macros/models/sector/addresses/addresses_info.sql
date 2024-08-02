@@ -6,6 +6,7 @@ WITH executed_txs AS (
     SELECT "from" AS address
     , COUNT(*) AS executed_tx_count
     , COALESCE(MAX(nonce), 0) AS max_nonce
+    , MAX(block_time) AS last_tx_block_time
     FROM {{transactions}}
     GROUP BY 1
     )
@@ -40,6 +41,7 @@ WITH executed_txs AS (
     SELECT txs."from" AS address
     , COUNT(*) AS executed_tx_count
     , MAX(txs.nonce) AS max_nonce
+    , MAX(txs.block_time) AS last_tx_block_time
     FROM {{transactions}} txs
     LEFT JOIN {{this}} t ON txs."from"=t.address
         AND txs.block_number>t.last_tx_block_number
