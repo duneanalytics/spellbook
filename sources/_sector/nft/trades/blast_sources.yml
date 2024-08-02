@@ -11,3 +11,10 @@ sources:
     tables:
       - name: Exchange_evt_Buy
       - name: Exchange_evt_Sell
+
+  - name: element_ex_blast
+    tables:
+        - name: ElementEx_evt_ERC721SellOrderFilled
+        - name: ElementEx_evt_ERC721BuyOrderFilled
+        - name: ElementEx_evt_ERC1155SellOrderFilled
+        - name: ElementEx_evt_ERC1155BuyOrderFilled
