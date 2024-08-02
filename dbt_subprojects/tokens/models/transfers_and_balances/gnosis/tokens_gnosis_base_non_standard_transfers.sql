@@ -29,7 +29,7 @@ gas_fee as (
     FROM 
     {{ source('gnosis', 'transactions') }}
     WHERE 
-       CAST(t1.gas_price AS UINT256) > UINT256 '0'
+       CAST(gas_price AS UINT256) > UINT256 '0'
         --success
     {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
