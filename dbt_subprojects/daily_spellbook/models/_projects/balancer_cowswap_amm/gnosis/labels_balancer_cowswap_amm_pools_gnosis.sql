@@ -68,3 +68,4 @@ settings AS (
         ORDER BY 1 ASC , 3 DESC, 2 ASC
     ) s
     GROUP BY 1, 2
+    
