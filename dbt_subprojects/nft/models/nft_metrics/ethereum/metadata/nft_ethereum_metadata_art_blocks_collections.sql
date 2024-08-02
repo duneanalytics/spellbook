@@ -104,7 +104,7 @@
         , (0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270, 92, 1000000, 'Libertad Parametrizada', 'zJorge', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-92')
         , (0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270, 93, 1000000, 'Sigils', 'espina', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-93')
         , (0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270, 94, 1000000, 'Portal', 'Jeff Davis', 'Playground', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-94')
-        , (0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270, 95, 1000000, 'CryptoVenetian', 'Bright Moments', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-95')
+        , (0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270, 95, 1000000, 'CryptoVenetian', 'Qian Qian', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-95')
         , (0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270, 96, 1000000, 'Gravity 12', 'Jimmy Herdberg', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-96')
         , (0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270, 97, 1000000, '[Dis]entanglement', 'onlygenerated', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-97')
         , (0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270, 98, 1000000, 'sail-o-bots', 'sturec', 'Factory', 'N/A', '0xa7d8d9ef8d8ce8992df33d8b8cf4aebabd5bd270-98')
