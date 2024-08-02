@@ -42,8 +42,7 @@ from (
         and et.value > UINT256 '0' -- et.value is uint256 type
     {% if not is_incremental() %}
     where et.block_time > timestamp '{{project_start_date}}' -- for initial query optimisation
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     -- to prevent potential counterfactual safe deployment issues we take a bigger interval
     where et.block_time > date_trunc('day', now() - interval '10' day)
     {% endif %}
