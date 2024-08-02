@@ -1,0 +1,5 @@
+version: 2
+sources:
+  - name: tokens_ethereum
+    tables:
+      - name: balances_daily_agg
