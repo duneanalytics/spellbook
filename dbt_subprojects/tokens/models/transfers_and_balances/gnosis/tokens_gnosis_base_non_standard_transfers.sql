@@ -29,10 +29,7 @@ gas_fee as (
     FROM 
     {{ source('gnosis', 'transactions') }}
     WHERE 
-       -- These are Free Transactions
-         VARBINARY_SUBSTRING(data, 1, 4) != 0xfe7d567d --Reveal Number
-         AND
-         VARBINARY_SUBSTRING(data, 1, 4) != 0x0b61ba85 --Commit Hash
+       CAST(t1.gas_price AS UINT256) > UINT256 '0'
         --success
     {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
@@ -60,10 +57,7 @@ gas_fee_collection as (
         ON
         t2.number = t1.block_number
     WHERE 
-         -- These are Free Transactions
-         VARBINARY_SUBSTRING(t1.data, 1, 4) != 0xfe7d567d --Reveal Number
-         AND
-         VARBINARY_SUBSTRING(t1.data, 1, 4) != 0x0b61ba85 --Commit Hash
+        CAST(t1.gas_price AS UINT256) > UINT256 '0'
         --t1.success
     {% if is_incremental() %}
         AND {{incremental_predicate('t1.block_time')}}
@@ -95,10 +89,7 @@ gas_fee_rewards as (
         ON
         t2.number = t1.block_number
     WHERE   
-        -- These are Free Transactions
-         VARBINARY_SUBSTRING(t1.data, 1, 4) != 0xfe7d567d --Reveal Number
-         AND
-         VARBINARY_SUBSTRING(t1.data, 1, 4) != 0x0b61ba85 --Commit Hash
+       CAST(t1.gas_price AS UINT256) > UINT256 '0'
         --t1.success
      {% if is_incremental() %}
         AND {{incremental_predicate('t1.block_time')}}
