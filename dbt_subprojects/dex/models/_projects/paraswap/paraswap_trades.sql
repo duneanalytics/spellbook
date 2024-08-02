@@ -10,6 +10,13 @@
 
 {% set paraswap_models = [
 ref('paraswap_avalanche_c_trades')
+,ref('paraswap_fantom_trades')
+,ref('paraswap_arbitrum_trades')
+,ref('paraswap_bnb_trades')
+,ref('paraswap_ethereum_trades')
+,ref('paraswap_optimism_trades')
+,ref('paraswap_polygon_trades')
+,ref('paraswap_base_trades')
 ] %}
 
 
