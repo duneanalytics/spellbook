@@ -78,3 +78,7 @@ from (
 left join {{ source('prices', 'usd') }} p on p.blockchain is null
     and p.symbol = t.symbol
     and p.minute = date_trunc('minute', t.block_time)
+    {% if is_incremental() %}
+    -- to prevent potential counterfactual safe deployment issues we take a bigger interval
+    and p.minute > date_trunc('day', now() - interval '10' day)
+    {% endif %}
