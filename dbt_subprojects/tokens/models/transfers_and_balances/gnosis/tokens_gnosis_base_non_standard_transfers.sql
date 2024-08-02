@@ -57,7 +57,7 @@ gas_fee_collection as (
         ON
         t2.number = t1.block_number
     WHERE 
-        1=1
+        t1.type != 'Legacy' AND t1.type != 'AccessList'
         --t1.success
     {% if is_incremental() %}
         AND {{incremental_predicate('t1.block_time')}}
