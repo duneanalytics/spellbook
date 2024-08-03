@@ -12,6 +12,7 @@
 SELECT MIN_BY(blockchain, block_time) AS blockchain
 , address
 , MIN_BY(first_funded_by, block_time) AS first_funded_by
+, array_distinct(array_agg(blockchain)) AS chains_funded_on
 , MIN_BY(first_funding_executed_by, block_time) AS first_funding_executed_by
 , MIN(block_time) AS block_time
 , MIN(block_number) AS block_number
