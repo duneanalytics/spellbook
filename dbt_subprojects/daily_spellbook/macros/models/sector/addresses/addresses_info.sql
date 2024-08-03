@@ -7,6 +7,7 @@ WITH executed_txs AS (
     , COUNT(*) AS executed_tx_count
     , COALESCE(MAX(nonce), 0) AS max_nonce
     , MAX(block_time) AS last_tx_block_time
+    , MAX(block_number) AS last_tx_block_number
     FROM {{transactions}}
     GROUP BY 1
     )
@@ -28,6 +29,7 @@ SELECT '{{blockchain}}' AS blockchain
 , namespace
 , name
 , last_tx_block_time AS last_seen
+, last_tx_block_number
 FROM executed_txs
 LEFT JOIN is_contract USING (address)
 
@@ -42,6 +44,7 @@ WITH executed_txs AS (
     , COUNT(*) AS executed_tx_count
     , MAX(txs.nonce) AS max_nonce
     , MAX(txs.block_time) AS last_tx_block_time
+    , MAX(txs.block_number) AS last_tx_block_number
     FROM {{transactions}} txs
     LEFT JOIN {{this}} t ON txs."from"=t.address
         AND txs.block_number>t.last_tx_block_number
@@ -68,6 +71,8 @@ WITH executed_txs AS (
     , is_smart_contract
     , namespace
     , name
+    , last_tx_block_time
+    , last_tx_block_number
     FROM executed_txs
     LEFT JOIN is_contract USING (address)
     )
@@ -80,6 +85,7 @@ SELECT '{{blockchain}}' AS blockchain
 , COALESCE(nd.namespace, t.namespace) AS namespace
 , COALESCE(nd.name, t.name) AS name
 , GREATEST(nd.last_tx_block_time, t.last_tx_block_time) AS last_seen
+, GREATEST(nd.last_tx_block_number, t.last_tx_block_number) AS last_tx_block_number
 FROM new_data nd
 LEFT JOIN {{this}} t ON t.address=nd.address
 
