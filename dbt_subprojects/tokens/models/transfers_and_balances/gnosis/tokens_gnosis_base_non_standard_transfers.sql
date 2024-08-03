@@ -78,10 +78,7 @@ gas_fee_rewards as (
         , 'native' AS token_standard
         , CAST(NULL AS varbinary) AS "from"
         , t2.miner AS to 
-        , IF(t1.gas_price = CAST(0 AS UINT256),
-            CAST(0 AS UINT256),
-            t1.gas_used * ( t1.gas_price - COALESCE(t2.base_fee_per_gas,CAST(0 AS UINT256)) )
-        ) AS amount_raw
+        , t1.gas_used * ( t1.gas_price - COALESCE(t2.base_fee_per_gas,CAST(0 AS UINT256)) ) AS amount_raw
     FROM 
         {{ source('gnosis', 'transactions') }} t1
     INNER JOIN
