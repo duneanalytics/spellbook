@@ -29,7 +29,7 @@ gas_fee as (
     FROM 
     {{ source('gnosis', 'transactions') }}
     WHERE 
-       CAST(gas_price AS UINT256) > UINT256 '0'
+       CAST(gas_price AS UINT256) != UINT256 '0'
         --success
     {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
@@ -57,7 +57,7 @@ gas_fee_collection as (
         ON
         t2.number = t1.block_number
     WHERE 
-        CAST(t1.gas_price AS UINT256) > UINT256 '0'
+        CAST(t1.gas_price AS UINT256) != UINT256 '0'
         --t1.success
     {% if is_incremental() %}
         AND {{incremental_predicate('t1.block_time')}}
@@ -78,7 +78,7 @@ gas_fee_rewards as (
         , 'native' AS token_standard
         , CAST(NULL AS varbinary) AS "from"
         , t2.miner AS to 
-        , t1.gas_used * ( t1.gas_price - COALESCE(t2.base_fee_per_gas,CAST(0 AS UINT256)) ) AS amount_raw
+        ,t1.gas_used * ( t1.gas_price - COALESCE(t2.base_fee_per_gas,CAST(0 AS UINT256)) ) AS amount_raw
     FROM 
         {{ source('gnosis', 'transactions') }} t1
     INNER JOIN
@@ -86,7 +86,7 @@ gas_fee_rewards as (
         ON
         t2.number = t1.block_number
     WHERE   
-       CAST(t1.gas_price AS UINT256) > UINT256 '0'
+       CAST(t1.gas_price AS UINT256) != UINT256 '0'
         --t1.success
      {% if is_incremental() %}
         AND {{incremental_predicate('t1.block_time')}}
