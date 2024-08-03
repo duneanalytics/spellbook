@@ -1,0 +1,9 @@
+version: 2
+sources:
+  - name: b_cow_amm_gnosis
+    tables:
+      - name: BCoWFactory_evt_LOG_NEW_POOL
+      - name: BCoWFactory_evt_COWAMMPoolCreated
+      - name: BCoWFactory_call_logBCoWPool
+      - name: BCoWPool_call_bind    
+      - name: BCoWPool_call_unbind
