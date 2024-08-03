@@ -85,6 +85,9 @@ models:
       - *blockchain
       - *address
       - *first_funded_by
+      - &chains_funded_on
+        name: chains_funded_on
+        description: "Name of all the blockchains it was funded on"
       - *first_funding_executed_by
       - *block_time
       - *block_number
