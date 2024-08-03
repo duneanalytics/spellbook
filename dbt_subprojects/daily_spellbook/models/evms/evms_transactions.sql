@@ -5,7 +5,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
                                     "sector",
                                     "evms",
-                                    \'["hildobby"]\') }}'
+                                    \'["hildobby", "synthquest"]\') }}'
         )
 }}
 

@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei
       sector: evms
-      contributors: hildobby
+      contributors: [hildobby, synthquest]
     config:
       tags:   ['evms', 'transactions']
     description: "An EVM transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
@@ -78,7 +78,7 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei
       sector: evms
-      contributors: hildobby
+      contributors: [hildobby, synthquest]
     config:
       tags:   ['evms', 'traces']
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
@@ -129,7 +129,7 @@ models:
     meta:
       blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
       sector: evms
-      contributors: hildobby
+      contributors: [hildobby, synthquest]
     config:
       tags:   ['evms', 'traces', 'decoded']
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
