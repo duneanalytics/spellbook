@@ -84,7 +84,7 @@ SELECT '{{blockchain}}' AS blockchain
 , COALESCE(COALESCE(nd.is_smart_contract, t.is_smart_contract), false) AS is_smart_contract
 , COALESCE(nd.namespace, t.namespace) AS namespace
 , COALESCE(nd.name, t.name) AS name
-, GREATEST(nd.last_tx_block_time, t.last_tx_block_time) AS last_seen
+, GREATEST(nd.last_tx_block_time, t.last_seen) AS last_seen
 , GREATEST(nd.last_tx_block_number, t.last_tx_block_number) AS last_tx_block_number
 FROM new_data nd
 LEFT JOIN {{this}} t ON t.address=nd.address
