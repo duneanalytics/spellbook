@@ -47,13 +47,12 @@ settings AS (
         AND t.blockchain = '{{blockchain}}'
     WHERE next_block_number = 99999999
         AND denorm > uint256 '0'
-),
+)
 
-final AS (
     SELECT
       '{{blockchain}}' AS blockchain,
       pool AS address,
-      CONCAT('BCowAMM: ', array_join(array_agg(symbol), '/')) AS name,
+      CONCAT('BCowAMM: ', array_join(array_agg(symbol), '/'), ' ', array_join(array_agg(cast(norm_weight AS varchar)), '/')) AS name,
       'Balancer CoWSwap AMM' AS pool_type,
       'balancer_cowswap_amm_pool' AS category,
       'balancerlabs' AS contributor,
@@ -63,11 +62,9 @@ final AS (
       'balancer_cowswap_amm_pools_ethereum' AS model_name,
       'identifier' as label_type
     FROM   (
-        SELECT s1.pool, symbol FROM settings s1
+        SELECT s1.pool, symbol, cast(100*denorm/total_denorm AS integer) AS norm_weight FROM settings s1
+        INNER JOIN (SELECT pool, sum(denorm) AS total_denorm FROM settings GROUP BY pool) s2
+        ON s1.pool = s2.pool
+        ORDER BY 1 ASC , 3 DESC, 2 ASC
     ) s
-
     GROUP BY 1, 2
-)
-
-SELECT *
-FROM final

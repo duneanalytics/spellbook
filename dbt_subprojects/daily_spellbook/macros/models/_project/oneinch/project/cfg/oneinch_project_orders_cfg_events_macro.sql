@@ -112,11 +112,11 @@
         "0x4be05c8d54f5e056ab2cfa033e9f582057001268c3e28561bb999d35d2c8f2c8": {
             "project":          "Clipper",
             "name":             "Swapped",
-            "taker":            "substr(topic3  , 12 + 1                , 20)",
-            "maker_asset":      "substr(topic2  , 12 + 1                , 20)",
-            "taker_asset":      "substr(topic1  , 12 + 1                , 20)",
-            "making_amount":    "substr(data    , 32*1 + 1              , 32)",
-            "taking_amount":    "substr(data    , 32*0 + 1              , 32)",
+            "taker":            "coalesce(substr(topic3, 12 + 1, 20), substr(data, 32*2 + 12 + 1, 20))",
+            "maker_asset":      "coalesce(substr(topic2, 12 + 1, 20), substr(data, 32*1 + 12 + 1, 20))",
+            "taker_asset":      "coalesce(substr(topic1, 12 + 1, 20), substr(data, 32*0 + 12 + 1, 20))",
+            "making_amount":    "substr(data, 32*if(topic1 is null, 4, 1) + 1, 32)",
+            "taking_amount":    "substr(data, 32*if(topic1 is null, 3, 0) + 1, 32)",
         },
         "0x2170c741c41531aec20e7c107c24eecfdd15e69c9bb0a8dd37b1840b9e0b207b": {
             "project":          "Swaap",
