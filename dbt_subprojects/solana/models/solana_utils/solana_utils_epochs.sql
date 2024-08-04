@@ -38,4 +38,4 @@ SELECT
     , epoch_start_slot
     , epoch_end_slot
 FROM base
-order by time desc
+order by block_time desc
