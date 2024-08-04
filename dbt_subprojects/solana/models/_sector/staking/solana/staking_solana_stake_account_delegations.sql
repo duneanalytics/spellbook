@@ -47,11 +47,12 @@ with
                             , del.account_voteAccount
                             , del.filled_block_time as call_block_time --fill in nulls with fake date
                             , del.filled_block_slot as call_block_slot
-                        FROM {{ ref('staking_solana.stake_actions') }} a
+                        FROM {{ ref('staking_solana_stake_actions') }} a
                         LEFT JOIN (SELECT *
                                         , COALESCE(call_block_time, timestamp '2000-01-01 00:00:00') as filled_block_time
                                         , call_block_slot as filled_block_slot
-                                    FROM stake_program_solana.stake_call_DelegateStake) del
+                                    FROM {{ source ('stake_program_solana','stake_call_DelegateStake') }}
+                                    ) del
                             ON del.account_stakeAccount = a.source
                             AND del.filled_block_time <= a.block_time
                         WHERE action = 'split'
