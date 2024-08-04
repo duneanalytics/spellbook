@@ -27,7 +27,6 @@ with
         {% if is_incremental() %}
         WHERE {{incremental_predicate('time')}}
         {% endif %}
-        and slot % 432000 < 100
     )
     
 SELECT 
