@@ -45,4 +45,4 @@ SELECT
     , vote_account
 FROM base
 WHERE last_delegation = 1
-and vote_account_raw is not null
+and vote_account is not null

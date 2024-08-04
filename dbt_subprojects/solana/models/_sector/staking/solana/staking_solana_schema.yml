@@ -75,8 +75,8 @@ models:
             - epoch_time
             - epoch_start_slot
             - epoch_end_slot
-            - stake_account_raw
-            - vote_account_raw
+            - stake_account
+            - vote_account
     columns:
       - name: stake_account
         description: the stake account address
