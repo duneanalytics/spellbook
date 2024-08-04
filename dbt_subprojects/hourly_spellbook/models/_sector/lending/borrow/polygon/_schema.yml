@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: polygon
       sector: lending
-      project: aave, compound
+      project: aave, compound, maybeYonas, pyor_xyz
       contributors: tomfutago
     config:
       tags: ['lending', 'borrow', 'aave', 'compound', 'polygon']
@@ -168,7 +168,7 @@ models:
       blockchain: polygon
       sector: lending
       project: compound
-      contributors: tomfutago
+      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'borrow', 'compound', 'polygon']
     description: "Compound v3 borrow transactions on Ethereum"

@@ -6,7 +6,7 @@ models:
       blockchain: arbitrum
       sector: lending
       project: aave, compound, radiant
-      contributors: tomfutago
+      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'borrow', 'aave', 'compound', 'arbitrum']
     description: "All lending borrow transactions on Arbitrum"
@@ -128,7 +128,7 @@ models:
       blockchain: arbitrum
       sector: lending
       project: compound
-      contributors: tomfutago
+      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'borrow', 'compound', 'arbitrum']
     description: "Compound v3 borrow transactions on Ethereum"
