@@ -45,7 +45,7 @@ with
             , b.vote_account
             , bal.sol_balance
             , bal.day
-            , row_number() over (partition by b.stake_account order by b.day desc) as latest_bal
+            , row_number() over (partition by b.stake_account order by bal.day desc) as latest_bal
         FROM base b
         LEFT JOIN solana_utils.daily_balances bal ON bal.address = b.stake_account 
             AND bal.token_mint_address is null
