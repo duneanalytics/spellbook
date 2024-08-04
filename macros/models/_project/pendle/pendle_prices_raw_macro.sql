@@ -3,15 +3,13 @@
     blockchain = '',
     project = '',
     version = '',
-    project_decoded_as = ''
     markets = '',
-    create_yield_table = '',
     start_date = '2022-11-23'
   )
 %}
 
 markets as (
-    select * from {{ ref(market) }}
+    select * from {{ ref(markets) }}
     where chain = '{{blockchain}}'
     -- https://dune.com/queries/3506956
 ),
