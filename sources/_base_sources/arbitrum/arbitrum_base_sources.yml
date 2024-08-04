@@ -1,18 +1,18 @@
 version: 2
 
 sources:
-  # mantle Tables
-  - name: mantle
+  # Blast Tables
+  - name: arbitrum
     description: "raw tables for the chain"
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
       - name: transactions
         meta:
-          docs_slug: /evm/mantle/raw/transactions
+          docs_slug: /evm/arbitrum/raw/transactions
           short_description: The transactions table contains detailed information about transactions on the network. 
         loaded_at_field: block_time
-        description: '{{ doc("mantle_transactions_doc") }}'
+        description: '{{ doc("arbitrum_transactions_doc") }}'
         
         columns:
           - &block_date
@@ -34,10 +34,10 @@ sources:
           - name: gas_used
             description: "Actual amount of gas units consumed by this transaction's execution"
           - name: max_fee_per_gas
-            description: "Maximum total amount per gas unit the initiator is willing to pay, including mantle fee and priority fee"
+            description: "Maximum total amount per gas unit the initiator is willing to pay, including arbitrum fee and priority fee"
           - name: max_priority_fee_per_gas
             description: "Maximum additional fee per gas unit the initiator is willing to pay as a tip to validators"
-          - name: mantle_fee_per_gas
+          - name: arbitrum_fee_per_gas
             description: "Minimum fee per gas unit required for transaction inclusion"
           - name: nonce
             description: "Sequential number representing the count of transactions sent from the sender's address"
@@ -66,7 +66,7 @@ sources:
           - name: effective_gas_price
             description: "Actual price per gas unit paid for this transaction, calculated post-execution"
           - name: l1_block_number
-            description: "Block number on the L1 where this L2 transaction was batch submitted (may be deprecated in mantle)"
+            description: "Block number on the L1 where this L2 transaction was batch submitted (may be deprecated in Blast)"
           - name: l1_fee
             description: "L1 Fees that the network pays to submit L2 transactions to Ethereum L1 "
           - name: l1_fee_scalar
@@ -82,10 +82,10 @@ sources:
 
       - name: traces
         meta:
-          docs_slug: /evm/mantle/raw/traces
+          docs_slug: /evm/arbitrum/raw/traces
           short_description: The traces table contains information about traces on the network.
         loaded_at_field: block_time
-        description: '{{ doc("mantle_traces_doc") }}'
+        description: '{{ doc("arbitrum_traces_doc") }}'
         columns:
           - *block_date
           - *block_time
@@ -133,10 +133,10 @@ sources:
 
       - name: traces_decoded
         meta:
-          docs_slug: /evm/mantle/decoded/traces_decoded
-          short_description: The `mantle.traces_decoded` table contains decoded traces, including additional information mantled on submitted smart contracts and their ABIs.
+          docs_slug: /evm/arbitrum/decoded/traces_decoded
+          short_description: The `arbitrum.traces_decoded` table contains decoded traces, including additional information arbitrumd on submitted smart contracts and their ABIs.
         loaded_at_field: block_time
-        description: '{{ doc("mantle_traces_decoded_doc") }}'
+        description: '{{ doc("arbitrum_traces_decoded_doc") }}'
         columns:
           - *block_date
           - *block_time
@@ -157,10 +157,10 @@ sources:
 
       - name: logs
         meta:
-          docs_slug: /evm/mantle/raw/logs
-          short_description: The `mantle.logs` table contains information about event logs emitted by smart contracts on the mantle blockchain.
+          docs_slug: /evm/arbitrum/raw/logs
+          short_description: The `arbitrum.logs` table contains information about event logs emitted by smart contracts on the Blast blockchain.
         loaded_at_field: block_time
-        description: '{{ doc("mantle_logs_doc") }}'
+        description: '{{ doc("arbitrum_logs_doc") }}'
         columns:
           - *block_date
           - *block_time
@@ -185,10 +185,10 @@ sources:
 
       - name: logs_decoded
         meta:
-          docs_slug: /evm/mantle/decoded/logs_decoded
-          short_description: The `mantle.logs_decoded` table contains a subset of all logs for which Dune has the ABI.
+          docs_slug: /evm/arbitrum/decoded/logs_decoded
+          short_description: The `arbitrum.logs_decoded` table contains a subset of all logs for which Dune has the ABI.
         loaded_at_field: block_time
-        description: '{{ doc("mantle_logs_decoded_doc") }}'
+        description: '{{ doc("arbitrum_logs_decoded_doc") }}'
         columns:
           - *block_date
           - *block_time
@@ -209,19 +209,19 @@ sources:
 
       - name: blocks
         meta:
-          docs_slug: /evm/mantle/raw/blocks
-          short_description: The `mantle.blocks` table contains information about mantle blocks. Each row represents a single block.
+          docs_slug: /evm/arbitrum/raw/blocks
+          short_description: The `arbitrum.blocks` table contains information about Blast blocks. Each row represents a single block.
         freshness:
           warn_after: { count: 1, period: day }
         loaded_at_field: time
-        description: '{{ doc("mantle_blocks_doc") }}'
+        description: '{{ doc("arbitrum_blocks_doc") }}'
         columns:
-          - name: mantle_fee_per_gas
-            description: "Minimum fee per gas unit required for transaction inclusion in this block in the mantle unit wei"
+          - name: arbitrum_fee_per_gas
+            description: "Minimum fee per gas unit required for transaction inclusion in this block in the arbitrum unit wei"
           - name: difficulty
-            description: "Measure of how difficult it was to produce this block (deprecated in mantle)"
+            description: "Measure of how difficult it was to produce this block (deprecated in Blast)"
           - name: total_difficulty
-            description: "Total chain difficulty up to this block (deprecated in mantle)"
+            description: "Total chain difficulty up to this block (deprecated in Blast)"
           - name: gas_limit
             description: "Maximum amount of gas that can be used by all transactions in this block"
           - name: gas_used
@@ -231,7 +231,7 @@ sources:
           - name: miner
             description: "Address of the sequencer who produced this block (currently just one sequencer)"
           - name: nonce
-            description: "A block's nonce value, used in the consensus mechanism (may be deprecated in mantle)"
+            description: "A block's nonce value, used in the consensus mechanism (may be deprecated in Blast)"
           - name: number
             description: "Sequential position of this block in the blockchain"
           - name: parent_hash
@@ -241,20 +241,20 @@ sources:
           - name: time
             description: "Timestamp when this block was added to the chain"
           - name: blob_gas_used
-            description: "The total amount of blob gas consumed by transactions in the block (not in use for mantle)"
+            description: "The total amount of blob gas consumed by transactions in the block (not in use for Blast)"
           - name: excess_blob_gas
-            description: "A running total of blob gas consumed in excess of the target, prior to the block. This is used to set blob gas pricing(not in use for mantle)." 
+            description: "A running total of blob gas consumed in excess of the target, prior to the block. This is used to set blob gas pricing(not in use for Blast)." 
           
 
       - name: contracts
         meta:
-          docs_slug: /evm/mantle/raw/contracts
-          short_description: The `mantle.contracts` table tracks decoded contracts on mantle, including associated metadata such as namespace, name, address, ABI. It is populated manually by the Dune Community via [contract decoding submissions](https://dune.com/contracts/new).
+          docs_slug: /evm/arbitrum/raw/contracts
+          short_description: The `arbitrum.contracts` table tracks decoded contracts on Blast, including associated metadata such as namespace, name, address, ABI. It is populated manually by the Dune Community via [contract decoding submissions](https://dune.com/contracts/new).
         freshness:
           warn_after: { count: 1, period: day }
           error_after: { count: 3, period: day }
         loaded_at_field: created_at
-        description: '{{ doc("mantle_contracts_doc") }}'
+        description: '{{ doc("arbitrum_contracts_doc") }}'
         columns:
           - name: abi_id
             description: "Unique identifier for the contract's ABI. This is used to identify the contract across all chains."
@@ -272,21 +272,21 @@ sources:
             description: "Categorical grouping or project name associated with the contract"
           - name: dynamic
             description: "Boolean indicating if this contract was submitted to Dune with the "dynamic" flag enabled. If yes, our decoder will search for exact matches of the contract's bytecode and decode them into the same namespace as the initial contract."
-          - name: mantle
+          - name: arbitrum
             description: "Boolean indicating if this is a manual individual submission of a contract."
           - name: factory
             description: "Boolean indicating if this submission was submitted to Dune with the "factory" flag enabled. If yes, our decoder will search for contract's deployed by the same factory and decode them into the same namespace as the initial contract." 
           - name: detection_source
-            description: "Method used to detect and decode this contract: 'factory', 'mantle', or 'dynamic'. "
+            description: "Method used to detect and decode this contract: 'factory', 'arbitrum', or 'dynamic'. "
           - name: created_at
             description: "Timestamp of when this contract was first decoded on Dune. This is not the contract creation timestamp." 
           
       - name: creation_traces
         meta:
-          docs_slug: /evm/mantle/raw/creation_traces
-          short_description: The `mantle.creation_traces` table contains information about contract creation traces on the mantle blockchain. It includes details about newly created contracts, their creators, and the contract code.
+          docs_slug: /evm/arbitrum/raw/creation_traces
+          short_description: The `arbitrum.creation_traces` table contains information about contract creation traces on the Blast blockchain. It includes details about newly created contracts, their creators, and the contract code.
         loaded_at_field: block_time
-        description: '{{ doc("mantle_creation_traces_doc") }}'
+        description: '{{ doc("arbitrum_creation_traces_doc") }}'
         columns:
           - *block_time
           - *block_number
@@ -299,15 +299,15 @@ sources:
             description: "Deployed bytecode of the contract"
 
   # ERC Transfer Tables
-  - name: erc20_mantle
-    description: "Transfer events for ERC20 tokens on mantle"
+  - name: erc20_arbitrum
+    description: "Transfer events for ERC20 tokens on Blast"
     tables:
       - name: evt_transfer
         meta:
-          docs_slug: /evm/mantle/decoded/interfaces/erc20/evt_transfer
-          short_description: This table contains individual transfer events for ERC20 tokens on the mantle blockchain. Each row represents a single token transfer event.
+          docs_slug: /evm/arbitrum/decoded/interfaces/erc20/evt_transfer
+          short_description: This table contains individual transfer events for ERC20 tokens on the Blast blockchain. Each row represents a single token transfer event.
         loaded_at_field: evt_block_time
-        description: '{{ doc("erc20_mantle_evt_transfer_doc") }}'
+        description: '{{ doc("erc20_arbitrum_evt_transfer_doc") }}'
         freshness:
           warn_after: { count: 12, period: hour }
           error_after: { count: 24, period: hour }
@@ -329,14 +329,14 @@ sources:
           - *from
           - *to
           - name: value
-            description: "Amount of ERC20 tokens transferred, in the token's mantle unit"
+            description: "Amount of ERC20 tokens transferred, in the token's arbitrum unit"
 
       - name: evt_Approval
         meta:
-          docs_slug: /evm/mantle/decoded/interfaces/erc20/evt_approval
-          short_description: The `mantle.evt_approval` table contains approval events for ERC20 tokens on mantle, allowing an address to spend tokens on behalf of the owner.
+          docs_slug: /evm/arbitrum/decoded/interfaces/erc20/evt_approval
+          short_description: The `arbitrum.evt_approval` table contains approval events for ERC20 tokens on Blast, allowing an address to spend tokens on behalf of the owner.
         loaded_at_field: evt_block_time
-        description: '{{ doc("erc20_mantle_evt_approval_doc") }}'
+        description: '{{ doc("erc20_arbitrum_evt_approval_doc") }}'
         columns:
           - name: contract_address
             description: "Address of the ERC20 token contract"
@@ -351,15 +351,15 @@ sources:
           - name: value
             description: "Amount of ERC20 tokens approved for spending, in the token's smallest unit"
 
-  - name: erc1155_mantle
+  - name: erc1155_arbitrum
     description: "events related to ERC1155 tokens"
     tables:
     - name: evt_transfersingle
       meta:
-        docs_slug: /evm/mantle/decoded/interfaces/erc1155/evt_transfersingle
+        docs_slug: /evm/arbitrum/decoded/interfaces/erc1155/evt_transfersingle
         short_description: This table contains single transfer events for ERC1155 tokens on the network.
       loaded_at_field: evt_block_time
-      description: '{{ doc("erc1155_mantle_evt_transfersingle_doc") }}'
+      description: '{{ doc("erc1155_arbitrum_evt_transfersingle_doc") }}'
       columns:
         - name: contract_address
           description: "address of the ERC1155 token contract"
@@ -377,10 +377,10 @@ sources:
           description: "Quantity of the ERC1155 token transferred"
     - name: evt_transferbatch
       meta:
-        docs_slug: /evm/mantle/decoded/interfaces/erc1155/evt_transferbatch
+        docs_slug: /evm/arbitrum/decoded/interfaces/erc1155/evt_transferbatch
         short_description: This table contains all batch transfer events for ERC1155 tokens on the network.
       loaded_at_field: evt_block_time
-      description: '{{ doc("erc1155_mantle_evt_transferbatch_doc") }}'
+      description: '{{ doc("erc1155_arbitrum_evt_transferbatch_doc") }}'
       columns:
         - name: contract_address
           description: "Contract address of the ERC1155 token contract"
@@ -398,13 +398,13 @@ sources:
           description: "Array of quantities for each ERC1155 token transferred, corresponding to the ids array"
     - name: evt_ApprovalForAll
       meta:
-        docs_slug: /evm/mantle/decoded/interfaces/erc1155/evt_ApprovalForAll
+        docs_slug: /evm/arbitrum/decoded/interfaces/erc1155/evt_ApprovalForAll
         short_description: This table contains approval events for all tokens of an ERC1155 contract on this network.
       loaded_at_field: evt_block_time
-      description: '{{ doc("erc1155_mantle_evt_ApprovalForAll_doc") }}'
+      description: '{{ doc("erc1155_arbitrum_evt_ApprovalForAll_doc") }}'
       columns:
         - name: contract_address
-          description: "mantle address of the ERC1155 token contract"
+          description: "Blast address of the ERC1155 token contract"
         - *evt_tx_hash
         - *evt_index
         - *evt_block_time
@@ -414,12 +414,12 @@ sources:
           description: "Boolean indicating whether approval is granted (true) or revoked (false)"
         - &owner
           name: owner
-          description: "mantle address of the token owner granting or revoking approval"
+          description: "Blast address of the token owner granting or revoking approval"
         - name: operator
-          description: "mantle address being granted or revoked permission to operate all tokens"
+          description: "Blast address being granted or revoked permission to operate all tokens"
           
-  - name: erc721_mantle
-    description: '{{ doc("erc721_mantle_evt_transfer_doc") }}'
+  - name: erc721_arbitrum
+    description: '{{ doc("erc721_arbitrum_evt_transfer_doc") }}'
     tables:
     - name: evt_transfer
       loaded_at_field: evt_block_time
@@ -437,10 +437,10 @@ sources:
           description: "Unique identifier of the ERC721 token (NFT) being transferred"
     - name: evt_Approval
       meta:
-        docs_slug: /evm/mantle/decoded/interfaces/erc721/evt_Approval
+        docs_slug: /evm/arbitrum/decoded/interfaces/erc721/evt_Approval
         short_description: "Approval events for ERC721 tokens on this network"
       loaded_at_field: evt_block_time
-      description: '{{ doc("erc721_mantle_evt_Approval_doc") }}'
+      description: '{{ doc("erc721_arbitrum_evt_Approval_doc") }}'
       columns:
         - name: contract_address
           description: "Contract address of the ERC721 token contract"
@@ -454,10 +454,10 @@ sources:
           description: "Unique identifier of the ERC721 token (NFT) for which approval is granted or revoked"
     - name: evt_ApprovalForAll
       meta:
-        docs_slug: /evm/mantle/decoded/interfaces/erc721/evt_ApprovalForAll
-        short_description: The `mantle.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the mantle blockchain.
+        docs_slug: /evm/arbitrum/decoded/interfaces/erc721/evt_ApprovalForAll
+        short_description: The `arbitrum.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the Blast blockchain.
       loaded_at_field: evt_block_time
-      description: '{{ doc("erc721_mantle_evt_ApprovalForAll_doc") }}'
+      description: '{{ doc("erc721_arbitrum_evt_ApprovalForAll_doc") }}'
       columns:
         - name: contract_address
           description: "Address of the ERC721 token contract"

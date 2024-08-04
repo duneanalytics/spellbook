@@ -1,0 +1,434 @@
+version: 2
+
+sources:
+  # Base Tables
+  - name: zora
+    description: "Zora raw tables including transactions, traces and logs."
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: transactions
+        loaded_at_field: block_time
+        description: "A Zora transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
+        columns:
+          - &block_date
+            name: block_date
+            description: "Block event date in UTC"
+          - &block_time
+            name: block_time
+            description: "Timestamp for block event time in UTC"
+          - &value
+            name: value
+            description: "Amount of Ether transferred from sender to recipient"
+          - &block_number
+            name: block_number
+            description: "Block number"
+          - name: gas_limit
+            description: "Maximum amount of gas units that can be consumed by the transaction"
+          - name: gas_price
+            description: "Gas price denoted in gwei, which itself is a denomination of Ether - each gwei is equal to 10-9 Ether"
+          - name: gas_used
+            description: "Number of gas units consumed by the transaction"
+          - name: max_fee_per_gas
+            description: "Maximum amount of gas willing to be paid for the transaction"
+          - name: max_priority_fee_per_gas
+            description: "Maximum amount of gas to be included as a tip to the miner"
+          - name: base_fee_per_gas
+            description: "Market price for gas"
+          - name: nonce
+            description: "Number of confirmed transactions previously sent by this account"
+          - name: index
+            description: "Transaction index"
+          - &success
+            name: success
+            description: "Whether the transaction was completed successfully"
+          - &from
+            name: from
+            description: "Wallet address that initiated the transaction"
+          - &to
+            name: to
+            description: "Wallet address that received the transaction"
+          - &block_hash
+            name: block_hash
+            description: "Primary key of the block"
+          - name: data
+            description: "Any binary data payload"
+          - name: hash
+            description: "Primary key of the transaction"
+            tests:
+              - unique
+              - not_null
+          - name: type
+            description: "Transaction type"
+          - name: access_list
+            description: "Specifies a list of addresses and storage keys"
+
+      - name: traces
+        loaded_at_field: block_time
+        description: "A Zora trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - *value
+          - name: gas
+            description: "Amount of gas consumed by the trace"
+          - name: gas_used
+            description: "Number of gas units used by the trace"
+          - *block_hash
+          - name: success
+            description: "Whether the trace was completed successfully"
+          - &tx_index
+            name: tx_index
+            description: "Transaction index"
+          - name: subtraces
+            description: "Number of subtraces (i.e, number of calls at a particular level within a transaction)"
+          - name: error
+            description: "Error log"
+          - name: tx_success
+            description: "Whether the transaction was completed sucessfully"
+          - &tx_hash
+            name: tx_hash
+            description: "Primary key of the transaction"
+          - name: from
+            description: "Wallet address that initiated the trace"
+          - name: to
+            description: "Wallet address that received the trace"
+          - name: trace_address
+            description: "All returned traces, gives the exact location in the call trace"
+          - name: type
+            description: "Type of trace (e.g., call, create, suicide)"
+          - name: address
+            description: "Address of the trace creator"
+          - name: code
+            description: "Raw EVM code for the trace"
+          - name: call_type
+            description: "Hexadecimal representations of the trace's call type"
+          - name: input
+            description: "Input data for the trace"
+          - name: output
+            description: "Output data for the trace"
+          - name: refund_address
+            description: "Refund Address"
+
+      - name: traces_decoded
+        loaded_at_field: block_time
+        description: "A Zora trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - name: contract_name
+            description: "Name of the Zora smart contract generating the log"
+          - name: function_name
+            description: "Name of the Zora smart contract function generating the log"
+          - name: namespace
+            description: "Namespace of the Zora smart contract generating the log"
+          - name: signature
+            description: "Signature of the event"
+          - name: to
+            description: "Wallet address that received the trace"
+          - name: trace_address
+            description: "All returned traces, gives the exact location in the call trace"
+          - *tx_hash
+
+      - name: logs
+        loaded_at_field: block_time
+        description: "A Zora log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - *block_hash
+          - name: contract_address
+            description: "Address of the Zora smart contract generating the log"
+          - name: topic1
+            description: "Topics are 32-byte (256 bit) “words” that are used to describe what’s going on in an event. The first topic usually consists of the signature of the name of the event that occurred, including the types (uint256, string, etc.) of its parameters."
+          - name: topic2
+            description: "Second topic"
+          - name: topic3
+            description: "Third topic"
+          - name: topic4
+            description: "Fourth topic"
+          - name: data
+            description: "Additional data for the log. Data is not searchable (while topics are), but is a lot cheaper and can include large or complicated data like arrays or strings."
+          - *tx_hash
+          - name: index
+            description: "Log index"
+          - *tx_index
+
+      - name: logs_decoded
+        loaded_at_field: block_time
+        description: "A Zora log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
+        columns:
+          - *block_date
+          - *block_time
+          - *block_number
+          - name: index
+            description: "Log index"
+          - name: contract_address
+            description: "Address of the Zora smart contract generating the log"
+          - name: contract_name
+            description: "Name of the Zora smart contract generating the log"
+          - name: event_name
+            description: "Name of the Zora smart contract event generating the log"
+          - name: namespace
+            description: "Namespace of the Zora smart contract generating the log"
+          - name: signature
+            description: "Signature of the event"
+          - *tx_hash
+
+      - name: blocks
+        freshness:
+          warn_after: { count: 1, period: day }
+        loaded_at_field: time
+        description: "Blocks are batches of transactions with a hash of the previous block in the chain. This links blocks together (in a chain) because hashes are cryptographically derived from the block data."
+        columns:
+          - name: base_fee_per_gas
+          - name: difficulty
+          - name: gas_limit
+          - name: gas_used
+          - name: hash
+          - name: miner
+          - name: nonce
+          - name: number
+          - name: parent_hash
+          - name: size
+          - name: time
+          - name: total_difficulty
+
+      - name: contracts
+        freshness:
+          warn_after: { count: 1, period: day }
+          error_after: { count: 3, period: day }
+        loaded_at_field: created_at
+        description: "A view keeping track of what contracts are decoded on Dune on Zora; contains information associated with the decoded contract such as namespace, name, address, ABI."
+        columns:
+          - name: abi
+            description: "ABI of the decoded contract"
+          - name: address
+            description: "Address of the decoded contract"
+          - name: from
+            description: "Address that created/deployed this contract"
+          - name: code
+            description: "Code for contract creation"
+          - name: name
+            description: "Name of the decoded contract"
+          - name: namespace
+            description: "Namesapce of the decoded contract"
+          - name: dynamic
+            description: "Boolean indicating whether the contract is dynamic or not"
+          - name: base
+            description: "Boolean indicating whether the contract is the base contract or not"
+          - name: factory
+            description: "Boolean indicating whether the contract is a factory contract or not"
+          - name: detection_source
+            description: "Detection source: 'factory', 'base', or 'dynamic'"
+            tests:
+              - accepted_values:
+                  values: ["factory", "base", "dynamic"]
+          - name: created_at
+            description: "Timestamp for contract creation"
+
+      - name: creation_traces
+        loaded_at_field: block_time
+        description: "Zora creation traces"
+        columns:
+          - *block_time
+          - *block_number
+          - *tx_hash
+          - name: address
+            description: "Contract address created"
+          - name: from
+            description: "Contract creator address"
+          - name: code
+            description: "Contract code"
+
+  # ERC Transfer Tables
+  - name: erc20_zora
+    description: "Transfers events for ERC20 tokens on Zora."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for ERC20 tokens on Zora."
+        freshness:
+          warn_after: { count: 12, period: hour }
+          error_after: { count: 24, period: hour }
+        columns:
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Transaction hash of the event"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Event block number"
+          - *from
+          - *to
+          - name: value
+            description: "Amount of ERC20 token transferred"
+          - &evt_tx_from
+            name: evt_tx_from
+            description: "transaction from address"
+          - &evt_tx_to
+            name: evt_tx_to
+            description: "transaction to address"
+          - &evt_tx_index
+            name: evt_tx_index
+            description: "transaction index"
+
+      - name: evt_approval
+        loaded_at_field: evt_block_time
+        description: "Approval events for ERC20 tokens on Zora."
+        columns:
+          - name: contract_address
+            description: "ERC20 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_from
+          - *evt_tx_to
+          - *evt_tx_index
+          - name: approved
+            description: "Approved"
+          - name: owner
+            description: "Owner"
+          - name: spender
+            description: "Spender"
+          - name: value
+            description: "Amount of ERC20 token transferred"
+
+  - name: erc1155_zora
+    description: "Transfers events for ERC1155 tokens on Zora."
+    tables:
+      - name: evt_transfersingle
+        loaded_at_field: evt_block_time
+        description: "Single transfers events for ERC1155 tokens on Zora."
+        columns:
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_from
+          - *evt_tx_to
+          - *evt_tx_index
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+          - *from
+          - *to
+          - name: id
+            description: "ERC1155 token ID"
+          - name: value
+            description: "Amount of ERC1155 token transferred"
+
+      - name: evt_transferbatch
+        loaded_at_field: evt_block_time
+        description: "Batch transfers events for ERC1155 tokens on Zora."
+        columns:
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_from
+          - *evt_tx_to
+          - *evt_tx_index
+          - name: operator
+            description: "Addresses authorized (or approved) by a NFT owner to spend all of his token Ids."
+          - *from
+          - *to
+          - name: ids
+            description: "ERC1155 token IDs"
+          - name: values
+            description: "Amounts of ERC1155 token transferred"
+
+      - name: evt_ApprovalForAll
+        loaded_at_field: evt_block_time
+        description: "Approval for all events for ERC1155 tokens on Zora."
+        columns:
+          - name: contract_address
+            description: "ERC1155 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_from
+          - *evt_tx_to
+          - *evt_tx_index
+          - &approved
+            name: approved
+            description: "Is approved"
+          - &owner
+            name: owner
+            description: "Owner"
+          - name: account
+            description: "Account"
+          - &operator
+            name: operator
+            description: "Opperator"
+
+  - name: erc721_zora
+    description: "Transfers events for ERC721 tokens on Zora."
+    tables:
+      - name: evt_transfer
+        loaded_at_field: evt_block_time
+        description: "Transfers events for ERC721 tokens on Zora."
+        columns:
+          - name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_from
+          - *evt_tx_to
+          - *evt_tx_index
+          - *from
+          - *to
+          - name: tokenId
+            description: "ERC721 token ID."
+
+      - name: evt_Approval
+        loaded_at_field: evt_block_time
+        description: "Approval events for ERC721 tokens on Zora."
+        columns:
+          - name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_from
+          - *evt_tx_to
+          - *evt_tx_index
+          - *approved
+          - *owner
+          - name: tokenId
+            description: "ERC721 token ID."
+
+      - name: evt_ApprovalForAll
+        loaded_at_field: evt_block_time
+        description: "Approval for all events for ERC721 tokens on Zora."
+        columns:
+          - name: contract_address
+            description: "ERC721 token contract address"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *evt_tx_from
+          - *evt_tx_to
+          - *evt_tx_index
+          - *approved
+          - *owner
+          - *operator

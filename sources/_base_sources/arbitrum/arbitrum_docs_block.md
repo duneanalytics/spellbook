@@ -1,6 +1,6 @@
 {% docs arbitrum_transactions_doc %}
 
-The `arbitrum.transactions` table contains detailed information about transactions on the arbitrum blockchain. It includes:
+The `arbitrum.transactions` table contains detailed information about transactions on the Blast blockchain. It includes:
 
 - Block information: number, timestamp, hash
 - Transaction details: hash, from_address, to_address, value
@@ -10,13 +10,13 @@ The `arbitrum.transactions` table contains detailed information about transactio
 - Nonce
 - Transaction type
 
-This table is used for analyzing transaction patterns, gas usage, value transfers, and overall network activity on arbitrum.
+This table is used for analyzing transaction patterns, gas usage, value transfers, and overall network activity on Blast.
 
 {% enddocs %}
 
 {% docs arbitrum_traces_doc %}
 
-The `arbitrum.traces` table contains records of execution steps for transactions on the arbitrum blockchain. Each trace represents an atomic operation that modifies the state of the Ethereum Virtual Machine (EVM). Key components include:
+The `arbitrum.traces` table contains records of execution steps for transactions on the Blast blockchain. Each trace represents an atomic operation that modifies the state of the Ethereum Virtual Machine (EVM). Key components include:
 
 - Transaction hash
 - Block number and timestamp
@@ -26,13 +26,13 @@ The `arbitrum.traces` table contains records of execution steps for transactions
 - Gas used
 - Error information (if applicable)
 
-This table is used for analyzing transaction execution paths, internal contract calls, and state changes within the arbitrum network.
+This table is used for analyzing transaction execution paths, internal contract calls, and state changes within the Blast network.
 
 {% enddocs %}
 
 {% docs arbitrum_traces_decoded_doc %}
 
-The `arbitrum.traces_decoded` table contains a subset of decoded traces from the arbitrum blockchain dependent on submitted smart contracts and their ABIs. It includes:
+The `arbitrum.traces_decoded` table contains a subset of decoded traces from the Blast blockchain dependent on submitted smart contracts and their ABIs. It includes:
 
 - All fields from the `arbitrum.traces` table
 - Decoded function names and signature (first four bytes of the calldata)
@@ -44,7 +44,7 @@ This table is used for high level analysis of smart contract interactions. For f
 
 {% docs arbitrum_logs_doc %}
 
-The `arbitrum.logs` table contains event logs emitted by smart contracts on the arbitrum blockchain. It includes:
+The `arbitrum.logs` table contains event logs emitted by smart contracts on the Blast blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -52,13 +52,13 @@ The `arbitrum.logs` table contains event logs emitted by smart contracts on the 
 - Topic hashes
 - Raw data
 
-This table is used for tracking contract events and state changes on the arbitrum network.
+This table is used for tracking contract events and state changes on the Blast network.
 
 {% enddocs %}
 
 {% docs arbitrum_logs_decoded_doc %}
 
-The `arbitrum.logs_decoded` table contains a subset of decoded logs from the arbitrum blockchain dependent on submitted smart contracts and their ABIs. It includes:
+The `arbitrum.logs_decoded` table contains a subset of decoded logs from the Blast blockchain dependent on submitted smart contracts and their ABIs. It includes:
 
 - All fields from the `arbitrum.logs` table
 - Decoded event names and signature (topic0 of the log)
@@ -70,7 +70,7 @@ This table is used for high level analysis of smart contract events. For fully d
 
 {% docs arbitrum_blocks_doc %}
 
-The `arbitrum.blocks` table contains information about arbitrum blocks. It provides essential data about each block in the arbitrum blockchain, including timestamps, gas metrics, and block identifiers. This table is fundamental for analyzing blockchain structure, block production rates, and overall network performance.
+The `arbitrum.blocks` table contains information about Blast blocks. It provides essential data about each block in the Blast blockchain, including timestamps, gas metrics, and block identifiers. This table is fundamental for analyzing blockchain structure, block production rates, and overall network performance.
 
 {% enddocs %}
 
@@ -85,7 +85,7 @@ The `arbitrum.contracts` table tracks all contracts that have been submitted to 
 
 {% docs arbitrum_creation_traces_doc %}
 
-The `arbitrum.creation_traces` table contains data about contract creation events on the arbitrum blockchain. It includes:
+The `arbitrum.creation_traces` table contains data about contract creation events on the Blast blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -94,13 +94,13 @@ The `arbitrum.creation_traces` table contains data about contract creation event
 - deployed contract bytecode
 - Gas used for deployment
 
-This table is used for analyzing contract deployment patterns and tracking the origin of smart contracts on the arbitrum network. It's essentially a filtered version of the `arbitrum.traces` table for the condition that `type = create`.
+This table is used for analyzing contract deployment patterns and tracking the origin of smart contracts on the Blast network. It's essentially a filtered version of the `arbitrum.traces` table for the condition that `type = create`.
 
 {% enddocs %}
 
 {% docs erc20_arbitrum_evt_transfer_doc %}
 
-The `erc20_arbitrum.evt_transfer` table contains Transfer events for ERC20 tokens on the arbitrum blockchain. It includes:
+The `erc20_arbitrum.evt_transfer` table contains Transfer events for ERC20 tokens on the Blast blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -108,7 +108,7 @@ The `erc20_arbitrum.evt_transfer` table contains Transfer events for ERC20 token
 - From and to addresses
 - Amount transferred
 
-This table is used for tracking ERC20 token movements on the arbitrum network.
+This table is used for tracking ERC20 token movements on the Blast network.
 
 Please be aware that this table is the raw ERC20 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `tokens.transfers` for a more complete and curated view of token transfers.
 
@@ -116,7 +116,7 @@ Please be aware that this table is the raw ERC20 event data, and does not includ
 
 {% docs erc20_arbitrum_evt_approval_doc %}
 
-The `erc20_arbitrum.evt_approval` table contains Approval events for ERC20 tokens on the arbitrum blockchain. It includes:
+The `erc20_arbitrum.evt_approval` table contains Approval events for ERC20 tokens on the Blast blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -124,13 +124,13 @@ The `erc20_arbitrum.evt_approval` table contains Approval events for ERC20 token
 - Owner and spender addresses
 - Approved amount
 
-This table is used for analyzing ERC20 token approvals and spending permissions on the arbitrum network.
+This table is used for analyzing ERC20 token approvals and spending permissions on the Blast network.
 
 {% enddocs %}
 
 {% docs erc1155_arbitrum_evt_transfersingle_doc %}
 
-The `erc1155_arbitrum.evt_transfersingle` table contains TransferSingle events for ERC1155 tokens on the arbitrum blockchain. It includes:
+The `erc1155_arbitrum.evt_transfersingle` table contains TransferSingle events for ERC1155 tokens on the Blast blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -139,7 +139,7 @@ The `erc1155_arbitrum.evt_transfersingle` table contains TransferSingle events f
 - Token ID
 - Amount transferred
 
-This table is used for tracking individual ERC1155 token transfers on the arbitrum network.
+This table is used for tracking individual ERC1155 token transfers on the Blast network.
 
 Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
 
@@ -147,7 +147,7 @@ Please be aware that this table is the raw ERC1155 event data, and does not incl
 
 {% docs erc1155_arbitrum_evt_transferbatch_doc %}
 
-The `erc1155_arbitrum.evt_transferbatch` table contains TransferBatch events for ERC1155 tokens on the arbitrum blockchain. It includes:
+The `erc1155_arbitrum.evt_transferbatch` table contains TransferBatch events for ERC1155 tokens on the Blast blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -156,7 +156,7 @@ The `erc1155_arbitrum.evt_transferbatch` table contains TransferBatch events for
 - Array of token IDs
 - Array of amounts transferred
 
-This table is used for tracking batch transfers of multiple ERC1155 tokens on the arbitrum network.
+This table is used for tracking batch transfers of multiple ERC1155 tokens on the Blast network.
 
 Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use nft.transfers for a more complete and curated view of NFT transfers.
 
@@ -164,7 +164,7 @@ Please be aware that this table is the raw ERC1155 event data, and does not incl
 
 {% docs erc1155_arbitrum_evt_ApprovalForAll_doc %}
 
-The `erc1155_arbitrum.evt_ApprovalForAll` table contains ApprovalForAll events for ERC1155 tokens on the arbitrum blockchain. It includes:
+The `erc1155_arbitrum.evt_ApprovalForAll` table contains ApprovalForAll events for ERC1155 tokens on the Blast blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -172,13 +172,13 @@ The `erc1155_arbitrum.evt_ApprovalForAll` table contains ApprovalForAll events f
 - Account and operator addresses
 - Approved status (boolean)
 
-This table is used for analyzing blanket approvals for ERC1155 token collections on the arbitrum network.
+This table is used for analyzing blanket approvals for ERC1155 token collections on the Blast network.
 
 {% enddocs %}
 
 {% docs erc721_arbitrum_evt_transfer_doc %}
 
-The `erc721_arbitrum.evt_transfer` table contains Transfer events for ERC721 tokens on the arbitrum blockchain. It includes:
+The `erc721_arbitrum.evt_transfer` table contains Transfer events for ERC721 tokens on the Blast blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -186,7 +186,7 @@ The `erc721_arbitrum.evt_transfer` table contains Transfer events for ERC721 tok
 - From and to addresses
 - Token ID
 
-This table is used for tracking ERC721 token (NFT) transfers on the arbitrum network.
+This table is used for tracking ERC721 token (NFT) transfers on the Blast network.
 
 Please be aware that this table is the raw ERC721 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
 
@@ -194,7 +194,7 @@ Please be aware that this table is the raw ERC721 event data, and does not inclu
 
 {% docs erc721_arbitrum_evt_Approval_doc %}
 
-The `erc721_arbitrum.evt_Approval` table contains Approval events for ERC721 tokens on the arbitrum blockchain. It includes:
+The `erc721_arbitrum.evt_Approval` table contains Approval events for ERC721 tokens on the Blast blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -202,13 +202,13 @@ The `erc721_arbitrum.evt_Approval` table contains Approval events for ERC721 tok
 - Owner and approved addresses
 - Token ID
 
-This table is used for analyzing approvals for individual ERC721 tokens (NFTs) on the arbitrum network.
+This table is used for analyzing approvals for individual ERC721 tokens (NFTs) on the Blast network.
 
 {% enddocs %}
 
 {% docs erc721_arbitrum_evt_ApprovalForAll_doc %}
 
-The `erc721_arbitrum.evt_ApprovalForAll` table contains ApprovalForAll events for ERC721 tokens on the arbitrum blockchain. It includes:
+The `erc721_arbitrum.evt_ApprovalForAll` table contains ApprovalForAll events for ERC721 tokens on the Blast blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
@@ -216,6 +216,6 @@ The `erc721_arbitrum.evt_ApprovalForAll` table contains ApprovalForAll events fo
 - Owner and operator addresses
 - Approved status (boolean)
 
-This table is used for analyzing blanket approvals for ERC721 token collections on the arbitrum network.
+This table is used for analyzing blanket approvals for ERC721 token collections on the Blast network.
 
 {% enddocs %}

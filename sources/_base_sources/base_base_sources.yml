@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  # Base Tables
+  # base Tables
   - name: base
     description: "raw tables for the chain"
     freshness:
@@ -66,7 +66,7 @@ sources:
           - name: effective_gas_price
             description: "Actual price per gas unit paid for this transaction, calculated post-execution"
           - name: l1_block_number
-            description: "Block number on the L1 where this L2 transaction was batch submitted (may be deprecated in Base)"
+            description: "Block number on the L1 where this L2 transaction was batch submitted (may be deprecated in base)"
           - name: l1_fee
             description: "L1 Fees that the network pays to submit L2 transactions to Ethereum L1 "
           - name: l1_fee_scalar
@@ -158,7 +158,7 @@ sources:
       - name: logs
         meta:
           docs_slug: /evm/base/raw/logs
-          short_description: The `base.logs` table contains information about event logs emitted by smart contracts on the Base blockchain.
+          short_description: The `base.logs` table contains information about event logs emitted by smart contracts on the base blockchain.
         loaded_at_field: block_time
         description: '{{ doc("base_logs_doc") }}'
         columns:
@@ -210,7 +210,7 @@ sources:
       - name: blocks
         meta:
           docs_slug: /evm/base/raw/blocks
-          short_description: The `base.blocks` table contains information about Base blocks. Each row represents a single block.
+          short_description: The `base.blocks` table contains information about base blocks. Each row represents a single block.
         freshness:
           warn_after: { count: 1, period: day }
         loaded_at_field: time
@@ -219,9 +219,9 @@ sources:
           - name: base_fee_per_gas
             description: "Minimum fee per gas unit required for transaction inclusion in this block in the base unit wei"
           - name: difficulty
-            description: "Measure of how difficult it was to produce this block (deprecated in Base)"
+            description: "Measure of how difficult it was to produce this block (deprecated in base)"
           - name: total_difficulty
-            description: "Total chain difficulty up to this block (deprecated in Base)"
+            description: "Total chain difficulty up to this block (deprecated in base)"
           - name: gas_limit
             description: "Maximum amount of gas that can be used by all transactions in this block"
           - name: gas_used
@@ -231,7 +231,7 @@ sources:
           - name: miner
             description: "Address of the sequencer who produced this block (currently just one sequencer)"
           - name: nonce
-            description: "A block's nonce value, used in the consensus mechanism (may be deprecated in Base)"
+            description: "A block's nonce value, used in the consensus mechanism (may be deprecated in base)"
           - name: number
             description: "Sequential position of this block in the blockchain"
           - name: parent_hash
@@ -241,15 +241,15 @@ sources:
           - name: time
             description: "Timestamp when this block was added to the chain"
           - name: blob_gas_used
-            description: "The total amount of blob gas consumed by transactions in the block (not in use for Base)"
+            description: "The total amount of blob gas consumed by transactions in the block (not in use for base)"
           - name: excess_blob_gas
-            description: "A running total of blob gas consumed in excess of the target, prior to the block. This is used to set blob gas pricing(not in use for Base)." 
+            description: "A running total of blob gas consumed in excess of the target, prior to the block. This is used to set blob gas pricing(not in use for base)." 
           
 
       - name: contracts
         meta:
           docs_slug: /evm/base/raw/contracts
-          short_description: The `base.contracts` table tracks decoded contracts on Base, including associated metadata such as namespace, name, address, ABI. It is populated manually by the Dune Community via [contract decoding submissions](https://dune.com/contracts/new).
+          short_description: The `base.contracts` table tracks decoded contracts on base, including associated metadata such as namespace, name, address, ABI. It is populated manually by the Dune Community via [contract decoding submissions](https://dune.com/contracts/new).
         freshness:
           warn_after: { count: 1, period: day }
           error_after: { count: 3, period: day }
@@ -284,7 +284,7 @@ sources:
       - name: creation_traces
         meta:
           docs_slug: /evm/base/raw/creation_traces
-          short_description: The `base.creation_traces` table contains information about contract creation traces on the Base blockchain. It includes details about newly created contracts, their creators, and the contract code.
+          short_description: The `base.creation_traces` table contains information about contract creation traces on the base blockchain. It includes details about newly created contracts, their creators, and the contract code.
         loaded_at_field: block_time
         description: '{{ doc("base_creation_traces_doc") }}'
         columns:
@@ -300,12 +300,12 @@ sources:
 
   # ERC Transfer Tables
   - name: erc20_base
-    description: "Transfer events for ERC20 tokens on Base"
+    description: "Transfer events for ERC20 tokens on base"
     tables:
       - name: evt_transfer
         meta:
           docs_slug: /evm/base/decoded/interfaces/erc20/evt_transfer
-          short_description: This table contains individual transfer events for ERC20 tokens on the Base blockchain. Each row represents a single token transfer event.
+          short_description: This table contains individual transfer events for ERC20 tokens on the base blockchain. Each row represents a single token transfer event.
         loaded_at_field: evt_block_time
         description: '{{ doc("erc20_base_evt_transfer_doc") }}'
         freshness:
@@ -334,7 +334,7 @@ sources:
       - name: evt_Approval
         meta:
           docs_slug: /evm/base/decoded/interfaces/erc20/evt_approval
-          short_description: The `base.evt_approval` table contains approval events for ERC20 tokens on Base, allowing an address to spend tokens on behalf of the owner.
+          short_description: The `base.evt_approval` table contains approval events for ERC20 tokens on base, allowing an address to spend tokens on behalf of the owner.
         loaded_at_field: evt_block_time
         description: '{{ doc("erc20_base_evt_approval_doc") }}'
         columns:
@@ -404,7 +404,7 @@ sources:
       description: '{{ doc("erc1155_base_evt_ApprovalForAll_doc") }}'
       columns:
         - name: contract_address
-          description: "Base address of the ERC1155 token contract"
+          description: "base address of the ERC1155 token contract"
         - *evt_tx_hash
         - *evt_index
         - *evt_block_time
@@ -414,9 +414,9 @@ sources:
           description: "Boolean indicating whether approval is granted (true) or revoked (false)"
         - &owner
           name: owner
-          description: "Base address of the token owner granting or revoking approval"
+          description: "base address of the token owner granting or revoking approval"
         - name: operator
-          description: "Base address being granted or revoked permission to operate all tokens"
+          description: "base address being granted or revoked permission to operate all tokens"
           
   - name: erc721_base
     description: '{{ doc("erc721_base_evt_transfer_doc") }}'
@@ -455,7 +455,7 @@ sources:
     - name: evt_ApprovalForAll
       meta:
         docs_slug: /evm/base/decoded/interfaces/erc721/evt_ApprovalForAll
-        short_description: The `base.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the Base blockchain.
+        short_description: The `base.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the base blockchain.
       loaded_at_field: evt_block_time
       description: '{{ doc("erc721_base_evt_ApprovalForAll_doc") }}'
       columns:
