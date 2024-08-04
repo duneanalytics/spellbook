@@ -59,3 +59,30 @@ models:
         description: the vote account address being delegated to
       - name: block_time
       - name: block_slot
+
+  - name: staking_solana_validator_stake_account_epochs
+    meta:
+      blockchain: solana
+      sector: staking
+      contributors: ilemi
+    config:
+      tags: ['solana', 'staking', 'delegate']
+    description: Solana validator stake accounts delegated for each epoch (includes only accounts delegated BEFORE epoch started)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - epoch
+            - epoch_time
+            - epoch_start_slot
+            - epoch_end_slot
+            - stake_account_raw
+            - vote_account_raw
+    columns:
+      - name: stake_account
+        description: the stake account address
+      - name: vote_account
+        description: the vote account address being delegated to
+      - name: epoch
+      - name: epoch_time
+      - name: epoch_start_slot
+      - name: epoch_end_slot
