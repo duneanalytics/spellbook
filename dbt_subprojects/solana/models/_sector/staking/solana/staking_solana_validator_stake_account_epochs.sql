@@ -10,12 +10,7 @@
                                 \'["ilemi"]\') }}')
 }}
 
---https://dune.com/queries/3267749
---3962860 
-
 --we want to get all epochs and the latest delegated vote before epoch started. then get the rewards from accounts per epoch.
---need to debug the empty vote accounts latest to check they are indeed inactive (order by staked amount)
-  --also debug empty block_slots
 with 
     base as (
         SELECT 
@@ -27,11 +22,11 @@ with
             , vote.vote_account
             , vote.block_time as vote_block_time
             , vote.block_slot as vote_block_slot
-            , row_number() over (partition by vote.stake_account order by vote.block_time desc) as last_delegation
+            , row_number() over (partition by epoch.epoch, vote.stake_account order by vote.block_time desc) as last_delegation_epoch
         FROM {{ ref('staking_solana_stake_account_delegations') }} vote
         LEFT JOIN {{ ref('solana_utils_epochs') }} epoch ON first_block_epoch = true --cross join
-        WHERE vote.block_slot< epoch.block_slot --only get changes to accounts before start of epoch
-        -- no incremental since we technically need incremental by epoch not by time/day
+        WHERE vote.block_slot < epoch.block_slot --only get changes to accounts before start of epoch
+        -- no incremental since we technically need incremental by epoch not by time/day, fix later
     )
 
     , bal as (
@@ -50,7 +45,7 @@ with
         LEFT JOIN solana_utils.daily_balances bal ON bal.address = b.stake_account 
             AND bal.token_mint_address is null
             AND bal.day <= date_trunc('day', b.epoch_time)
-        WHERE b.last_delegation = 1
+        WHERE b.last_delegation_epoch = 1
         and b.vote_account is not null
     )
 
