@@ -23,36 +23,14 @@ with
             , call_block_slot
         FROM (
             SELECT 
-                b.account_stakeAccount
-                , del.account_voteAccount
-                , COALESCE(del.call_block_time, timestamp '1990-01-01 00:00:00') as call_block_time --fill in nulls, at a fake earlier date than split thing below
-                , del.call_block_slot
-            FROM (
-                SELECT account_stakeAccount FROM {{ source ('stake_program_solana','stake_call_Initialize') }}
-                UNION ALL 
-                SELECT account_stakeAccount FROM {{ source ('stake_program_solana','stake_call_InitializeChecked') }}
-                UNION ALL
-                SELECT 
-                    case when action = 'withdraw' then source --if withdraw, then stake account is the withdraw account.
-                        else destination --if merge or split, then both are stake accounts.
-                        end as account_stakeAccount
-                FROM {{ ref( 'staking_solana_stake_actions') }}
-
-                UNION ALL 
-
-                SELECT 
-                    account_stakeAccount
-                FROM unnest(
-                    array[
-                    --these three are part of a set of accounts that somehow have no "create" or "init" tx.
-                    '2YPQaJk2x74yaW3jQuDzkcpgo3Vz99BpEtAcUbDRc5Pb'
-                    ,'HzpGLJ1v1vf1ptr79iJN8zCjf4eUMDs7VQNibNAsZeVL'
-                    ,'AneKQ22L1ymJXQ46zLL5tuQn2s5uFcvH3dXw44uVhZdJ'
-                    --deep splits 
-                    ,'LzrsqaJ6beDX1GGK4m4YobJ2Vpw3HVCD4j1d2thDHF9']
-                    ) as a(account_stakeAccount)
-            ) b
-            LEFT JOIN {{ source ('stake_program_solana','stake_call_DelegateStake') }} del ON del.account_stakeAccount = b.account_stakeAccount
+                account_stakeAccount
+                , account_voteAccount
+                , COALESCE(call_block_time, timestamp '1990-01-01 00:00:00') as call_block_time --fill in nulls, at a fake earlier date than split thing below
+                , call_block_slot
+            FROM {{ source ('stake_program_solana','stake_call_DelegateStake') }}
+            {% if is_incremental() %}
+            WHERE {{incremental_predicate('call_block_time')}}
+            {% endif %}
 
             UNION ALL
             
@@ -82,15 +60,17 @@ with
                     AND old_vote.call_block_time <= a.block_time --before the split, not after
             --get newly delegated vote accounts
             LEFT JOIN {{ source ('stake_program_solana','stake_call_DelegateStake') }} del ON del.account_stakeAccount = a.destination
-            --select only split accounts to do these nasty joins on
             WHERE a.action = 'split'
+            {% if is_incremental() %}
+            and {{incremental_predicate('a.block_time')}}
+            {% endif %}
         )
     )
 
 SELECT 
     account_stakeAccount as stake_account_raw 
     , account_voteAccount as vote_account_raw
-    , call_block_time
-    , call_block_slot
+    , call_block_time as block_time
+    , call_block_slot as block_slot
     , row_number() over (partition by account_stakeAccount order by call_block_time desc) as latest
 FROM all_delegates
