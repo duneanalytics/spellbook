@@ -50,8 +50,8 @@ models:
           combination_of_columns:
             - block_time
             - block_slot
-            - stake_account_raw
-            - vote_account_raw
+            - stake_account
+            - vote_account
     columns:
       - name: stake_account
         description: the stake account address
