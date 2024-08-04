@@ -82,6 +82,8 @@ models:
         description: the stake account address
       - name: vote_account
         description: the vote account address being delegated to
+      - name: sol_balance
+        description: the SOL balance of the stake account at the start of the epoch
       - name: epoch
       - name: epoch_time
       - name: epoch_start_slot

@@ -34,14 +34,33 @@ with
         -- no incremental since we technically need incremental by epoch not by time/day
     )
 
---get all stake accounts for each epoch
-SELECT
+    , bal as (
+        --get all stake accounts for each epoch and their balance
+        SELECT
+            b.epoch
+            , b.epoch_time
+            , b.epoch_start_slot
+            , b.epoch_end_slot
+            , b.stake_account
+            , b.vote_account
+            , bal.sol_balance
+            , bal.day
+            , row_number() over (partition by b.stake_account order by b.day desc) as latest_bal
+        FROM base b
+        LEFT JOIN solana_utils.daily_balances bal ON bal.address = b.stake_account 
+            AND bal.token_mint_address is null
+            AND bal.day <= date_trunc('day', b.epoch_time)
+        WHERE b.last_delegation = 1
+        and b.vote_account is not null
+    )
+
+SELECT 
     epoch
     , epoch_time
     , epoch_start_slot
     , epoch_end_slot
     , stake_account
     , vote_account
-FROM base
-WHERE last_delegation = 1
-and vote_account is not null
+    , sol_balance
+FROM bal
+WHERE latest_bal = 1
