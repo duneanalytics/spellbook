@@ -39,3 +39,4 @@ from {{ model }}
 union all
 {% endif %}
 {% endfor %}
+
