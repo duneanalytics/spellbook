@@ -37,3 +37,25 @@ models:
       - name: outer_instruction_index
       - name: inner_instruction_index
       - name: tx_id
+  - name: staking_solana_stake_account_delegations
+    meta:
+      blockchain: solana
+      sector: staking
+      contributors: ilemi
+    config:
+      tags: ['solana', 'staking', 'delegate']
+    description: Solana stake account vote delegations over time
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - block_slot
+            - stake_account_raw
+            - vote_account_raw
+    columns:
+      - name: stake_account
+        description: the stake account address
+      - name: vote_account
+        description: the vote account address being delegated to
+      - name: block_time
+      - name: block_slot
