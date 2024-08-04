@@ -69,8 +69,8 @@ with
     )
 
 SELECT 
-    account_stakeAccount as stake_account_raw 
-    , account_voteAccount as vote_account_raw
+    account_stakeAccount as stake_account
+    , account_voteAccount as vote_account
     , call_block_time as block_time
     , call_block_slot as block_slot
     , row_number() over (partition by account_stakeAccount order by call_block_time desc) as latest
