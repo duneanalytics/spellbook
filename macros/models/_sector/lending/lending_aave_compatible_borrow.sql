@@ -256,9 +256,8 @@ src_LendingPool_evt_Borrow as (
 src_LendingPool_evt_Repay as (
   select *
   from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_Repay') }}
-  where useATokens = false -- ref: https://github.com/duneanalytics/spellbook/issues/6417
   {% if is_incremental() %}
-  and {{ incremental_predicate('evt_block_time') }}
+  where {{ incremental_predicate('evt_block_time') }}
   {% endif %}
 ),
 
