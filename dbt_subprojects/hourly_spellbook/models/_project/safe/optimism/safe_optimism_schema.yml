@@ -159,11 +159,11 @@ models:
             - address
             - token_address
     meta:
-      blockchain: ethereum
+      blockchain: optimism
       project: safe
       contributors: safeintern
     config:
-      tags: ['safe', 'ethereum']
+      tags: ['safe', 'optimism']
     description: “Safe addresses balances”
     columns:
       - name: day
