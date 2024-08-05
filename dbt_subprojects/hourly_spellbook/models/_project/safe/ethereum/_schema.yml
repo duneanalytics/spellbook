@@ -6,9 +6,6 @@ models:
       blockchain: ethereum
       project: safe
       contributors: scherbovich, tschubotz, frankmaseo, danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'ethereum']
     description: "Safe addresses"
@@ -37,9 +34,6 @@ models:
       blockchain: ethereum
       project: safe
       contributors: scherbovich, tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'transfers', 'ethereum']
     description: "Eth transfers for safes"
@@ -75,9 +69,6 @@ models:
       blockchain: ethereum
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'singletons', 'ethereum']
     description: "Singletons addresses used with Safes"
@@ -93,9 +84,6 @@ models:
       blockchain: ethereum
       project: safe
       contributors: tschubotz, danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'ethereum']
     description: "Safe transactions"
@@ -157,9 +145,6 @@ models:
       blockchain: ethereum
       project: safe
       contributors: gentrexha
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'ethereum']
     description: "Safe signer thresholds"
@@ -169,3 +154,29 @@ models:
       - &threshold
         name: threshold
         description: "Number of signer threshold"
+
+  - name: safe_ethereum_balances
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - address
+            - token_address
+    meta:
+      blockchain: ethereum
+      project: safe
+      contributors: safeintern
+    config:
+      tags: ['safe', 'ethereum']
+    description: “Safe addresses balances”
+    columns:
+      - name: day
+      - name: blockchain
+      - name: address
+      - name: token_address
+      - name: token_standard
+      - name: token_id
+      - name: token_symbol
+      - name: token_balance
+      - name: balance_usd
