@@ -17,16 +17,15 @@ with
             , epoch.epoch_start_slot
             , epoch.epoch_end_slot
             , vote.stake_account
-            , vote.vote_account
-            , vote.block_time as vote_block_time
-            , vote.block_slot as vote_block_slot
-            , row_number() over (partition by epoch.epoch, vote.stake_account order by vote.block_time desc) as last_delegation_epoch
+            , max_by(vote.vote_account, vote.block_time) as vote_account
         FROM {{ ref('staking_solana_stake_account_delegations') }} vote
         LEFT JOIN {{ ref('solana_utils_epochs') }} epoch ON first_block_epoch = true --cross join
         WHERE vote.block_slot < epoch.block_slot --only get changes to accounts before start of epoch
+        and vote.vote_account is not null
         {% if is_incremental() %}
         AND {{incremental_predicate('epoch.block_time')}}
         {% endif %}
+        GROUP BY 1,2,3,4,5
     )
 
 SELECT
@@ -37,5 +36,3 @@ SELECT
     , stake_account
     , vote_account
 FROM base
-WHERE last_delegation_epoch = 1
-and vote_account is not null
