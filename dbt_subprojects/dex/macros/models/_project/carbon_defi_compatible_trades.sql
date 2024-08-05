@@ -2,7 +2,7 @@
     blockchain = null,
     project = null,
     CarbonController_evt_TokensTraded = null,
-    weth_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+    wrapped_native_token = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
     )
 %}
 
@@ -15,11 +15,11 @@ WITH dexs AS (
         t.targetAmount AS token_bought_amount_raw,
         t.sourceAmount AS token_sold_amount_raw,
         CASE
-            WHEN t.targetToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN {{weth_address}}
+            WHEN t.targetToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN {{ wrapped_native_token }}
             ELSE t.targetToken
         END AS token_bought_address, --Using WETH for easier joining with USD price table
         CASE
-            WHEN t.sourceToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN {{weth_address}}
+            WHEN t.sourceToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN {{ wrapped_native_token }}
             ELSE t.sourceToken
         END AS token_sold_address, --Using WETH for easier joining with USD price table
         t.contract_address AS project_contract_address,

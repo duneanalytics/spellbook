@@ -10,13 +10,13 @@
     )
 }}
 
-{% set weth_address = '0x160345fc359604fc6e70e3c5facbde5f7a9342d8' %}
+{% set wsei_address = '0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7' %}
 
 {{
     carbon_defi_compatible_trades(
         blockchain = 'sei',
         project = 'carbon_defi',
         CarbonController_evt_TokensTraded = source('carbon_defi_sei', 'CarbonController_evt_TokensTraded'),
-        weth_address = weth_address
+        wrapped_native_token = weth_address
     )
 }}

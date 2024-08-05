@@ -17,6 +17,6 @@
         blockchain = 'ethereum',
         project = 'carbon_defi',
         CarbonController_evt_TokensTraded = source('carbon_defi_ethereum', 'CarbonController_evt_TokensTraded'),
-        weth_address = weth_address
+        wrapped_native_token = weth_address
     )
 }}
