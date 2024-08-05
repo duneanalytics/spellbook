@@ -8,7 +8,8 @@
 
 
 {% set b_cow_amm_models = [
-    ref('balancer_cowswap_amm_ethereum_balances')
+    ref('balancer_cowswap_amm_ethereum_balances'),
+    ref('balancer_cowswap_amm_gnosis_balances')
 ] %}
 
 SELECT *
