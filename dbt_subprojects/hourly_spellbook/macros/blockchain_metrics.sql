@@ -4,7 +4,7 @@ WITH blocks as (
     select
     '{{ blockchain }}' as blockchain
     ,date_trunc('hour',time) as block_hour
-    ,avg(date_diff('second'lag(time) over (order by time asc),time)) as avg_block_time_seconds
+    ,avg(date_diff('second',lag(time) over (order by time asc),time)) as avg_block_time_seconds
 from {{source(blockchain,'blocks')}}
 {% if is_incremental() %}
 where {{ incremental_predicate(time) }}
