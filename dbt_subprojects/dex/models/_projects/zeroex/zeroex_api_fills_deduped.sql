@@ -56,6 +56,8 @@ FROM (
       ,tx_to
       ,trace_address
       ,evt_index
+      ,zid
+      ,coalesce(affiliate_address,tag) as affiliate_address 
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
