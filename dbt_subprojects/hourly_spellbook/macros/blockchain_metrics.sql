@@ -3,15 +3,15 @@
 WITH blocks as (
     select
     '{{ blockchain }}' as blockchain
-    ,date_trunc('hour',time) as block_hour
-    ,avg(date_diff('second',lag_time,time)) as avg_block_time_seconds
+    ,date_trunc('hour',"time") as block_hour
+    ,avg(date_diff('second',lag_time,"time")) as avg_block_time_seconds
 from (
     select
     time
-    ,lag(time) over (order by time asc) as lag_time
+    ,lag(time) over (order by "time" asc) as lag_time
     from {{source(blockchain,'blocks')}}
     {% if is_incremental() %}
-    where {{ incremental_predicate(time) }}
+    where {{ incremental_predicate('time') }}
     {% endif %}
 )
 group by 1,2
@@ -28,7 +28,7 @@ group by 1,2
     ,count(distinct "to") filter (where "data" != 0x) as active_contracts
 from {{source(blockchain,'transactions')}}
 {% if is_incremental() %}
-where {{ incremental_predicate(time) }}
+where {{ incremental_predicate('time') }}
 {% endif %}
 group by 1,2
 )
@@ -40,7 +40,7 @@ group by 1,2
     ,count(distinct address) as new_addresses
 from {{ref(blockchain ~ '_address_metrics')}}
 {% if is_incremental() %}
-where {{ incremental_predicate(min_block_time) }}
+where {{ incremental_predicate('min_block_time') }}
 {% endif %}
 group by 1,2
 )
@@ -52,7 +52,7 @@ group by 1,2
     ,count(distinct address) as new_contracts
 from {{source(blockchain,'creation_traces')}}
 {% if is_incremental() %}
-where {{ incremental_predicate(time) }}
+where {{ incremental_predicate('time') }}
 {% endif %}
 group by 1,2
 )

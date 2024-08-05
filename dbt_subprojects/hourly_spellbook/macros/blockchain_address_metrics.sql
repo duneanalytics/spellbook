@@ -7,7 +7,7 @@ select
     ,min(block_time) as min_block_time
 from {{ source(blockchain,'transactions') }} tx
 {% if is_incremental() %}
-where {{ incremental_predicate(block_time) }}
+where {{ incremental_predicate('block_time') }}
 {% endif %}
 group by 1,2
 )
