@@ -1,15 +1,20 @@
 version: 2
 
 models:
-  - name: balancer_cowswap_amm_trades
+  - name: balancer_cowswap_amm_gnosis_trades
     meta:
-      blockchain: ethereum, gnosis
+      blockchain: gnosis
       sector: trades
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['balancer', 'cowswap', 'ethereum', 'gnosis', 'amm', 'trades']
+      tags: ['balancer', 'cowswap', 'gnosis', 'amm', 'trades']
     description: "Trades on Balancer CoWSwap AMM pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -87,15 +92,21 @@ models:
       - name: pool_symbol
       - name: swap_fee
 
-  - name: balancer_cowswap_amm_balances
+  - name: balancer_cowswap_amm_gnosis_balances
     meta:
-      blockchain: ethereum, gnosis
+      blockchain: gnosis
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'gnosis', 'balancer', 'balances']
+      tags: ['gnosis', 'balancer', 'balances']
     description: >
       ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_address
+            - token_address
     columns:
       - &day
         name: day
@@ -112,15 +123,19 @@ models:
         name: token_balance_raw
         description: "Balance of a token"
 
-  - name: labels_balancer_cowswap_amm_pools
+  - name: labels_balancer_cowswap_amm_pools_gnosis
     meta:
-      blockchain: ethereum, gnosis
+      blockchain: gnosis
       sector: labels
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['labels', 'ethereum', 'gnosis', 'balancer', 'pools']
-    description: "Balancer CoWSwap AMM liquidity pools created on Ethereum."
+      tags: ['labels', 'gnosis', 'balancer', 'pools']
+    description: "Balancer CoWSwap AMM liquidity pools created on gnosis."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     columns:
       - *blockchain
       - &address
@@ -129,6 +144,7 @@ models:
       - &name
         name: name
         description: "Label name of pool containing the token symbols and their respective weights (if applicable)"
+      - name: pool_type
       - &category
         name: category
         description: "Label category"
@@ -151,15 +167,21 @@ models:
         name: label_type
         description: "Type of label (see labels overall readme)"
 
-  - name: balancer_cowswap_amm_liquidity
+  - name: balancer_cowswap_amm_gnosis_liquidity
     meta:
-      blockchain: ethereum, gnosis
+      blockchain: gnosis
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'gnosis', 'balancer', 'pools', 'liquidity']
+      tags: ['gnosis', 'balancer', 'pools', 'liquidity']
     description: >
-      Balancer CoWSwap AMM pools liquidity by token in Ethereum.
+      Balancer CoWSwap AMM pools liquidity by token in gnosis.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
     columns:
       - *day
       - name: pool_id
