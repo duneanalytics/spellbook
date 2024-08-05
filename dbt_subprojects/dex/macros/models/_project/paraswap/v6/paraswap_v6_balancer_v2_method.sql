@@ -137,38 +137,38 @@ WITH
                   )
 select
               call_block_time,
-                          call_block_number,
-                          call_tx_hash,
-                          contract_address as project_contract_address,
-                          call_trace_address,
-                          case
-                            when try_cast(srcToken as uint256) = uint256 '0' then '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                            else try_cast(
-                              from_hex(regexp_replace(srcToken, '^(0x)?(00){12}')) as varchar
-                            ) -- shrink hex to get address format (bytes20)
-                          end as srcToken,
-                          case
-                            when try_cast(destToken as uint256) = uint256 '0' then '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
-                            else try_cast(
-                              from_hex(regexp_replace(destToken, '^(0x)?(00){12}')) as varchar
-                            ) -- shrink hex to get address format (bytes20)
-                          end as destToken,
-                          fromAmount,
-                          toAmount,
-                          try_cast(
-                            JSON_EXTRACT_SCALAR(balancerData, '$.quotedAmount') as uint256
-                          ) AS quotedAmount,
-                          output_receivedAmount,
-                          JSON_EXTRACT_SCALAR(balancerData, '$.metadata') AS metadata,
-                          try_cast(
-                            from_hex(regexp_replace(beneficiary, '^(0x)?(00){12}')) as varchar
-                            -- shrink hex to get address format (bytes20)
-                          ) as beneficiary,
-                          partnerAndFee,
-                          output_partnerShare,
-                          output_paraswapShare,
-                          '{{ method }}' as method{% if inOrOut == 'out' %},
-                          output_spentAmount as spentAmount{% endif %}
+              call_block_number,
+              call_tx_hash,
+              contract_address as project_contract_address,              
+              call_trace_address,
+              case
+                when try_cast(srcToken as uint256) = uint256 '0' then '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                else try_cast(
+                  from_hex(regexp_replace(srcToken, '^(0x)?(00){12}')) as varchar
+                ) -- shrink hex to get address format (bytes20)
+              end as srcToken,
+              case
+                when try_cast(destToken as uint256) = uint256 '0' then '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+                else try_cast(
+                  from_hex(regexp_replace(destToken, '^(0x)?(00){12}')) as varchar
+                ) -- shrink hex to get address format (bytes20)
+              end as destToken,
+              fromAmount,
+              toAmount,
+              try_cast(
+                JSON_EXTRACT_SCALAR(balancerData, '$.quotedAmount') as uint256
+              ) AS quotedAmount,
+              output_receivedAmount,
+              JSON_EXTRACT_SCALAR(balancerData, '$.metadata') AS metadata,
+              try_cast(
+                from_hex(regexp_replace(beneficiary, '^(0x)?(00){12}')) as varchar
+                -- shrink hex to get address format (bytes20)
+              ) as beneficiary,
+              partnerAndFee,
+              output_partnerShare,
+              output_paraswapShare,
+              '{{ method }}' as method{% if inOrOut == 'out' %},
+              output_spentAmount as spentAmount{% endif %}
             from
               {{tableOuter}}
 {% endmacro %}
