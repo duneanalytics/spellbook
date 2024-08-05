@@ -9,7 +9,7 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                 "sector",
                 "metrics",
-                \'[""0xRob"]\') }}')
+                \'["0xRob"]\') }}')
 }}
 
 {{blockchain_metrics('ethereum')}}
