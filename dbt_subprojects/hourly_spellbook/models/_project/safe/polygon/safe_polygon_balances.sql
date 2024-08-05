@@ -24,7 +24,7 @@ with changed_balances as (
         token_standard,
         token_id,
         balance,
-        lead(cast(day as date)) over (partition by token_address, a.address, token_id order by day asc) as next_update_day
+        lead(cast(day as date)) over (partition by token_address, a.address, token_id order by day asc) as next_update_day 
     from {{ source('tokens_polygon', 'balances_daily_agg') }} a
     join (
         select
