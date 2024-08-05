@@ -29,8 +29,7 @@ gas_fee as (
     FROM 
     {{ source('gnosis', 'transactions') }}
     WHERE 
-       CAST(gas_price AS UINT256) != UINT256 '0'
-        --success
+       gas_price != UINT256 '0'
     {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
     {% endif %}
@@ -57,8 +56,7 @@ gas_fee_collection as (
         ON
         t2.number = t1.block_number
     WHERE 
-        CAST(t1.gas_price AS UINT256) != UINT256 '0'
-        --t1.success
+        t1.gas_price != UINT256 '0'
     {% if is_incremental() %}
         AND {{incremental_predicate('t1.block_time')}}
         AND {{incremental_predicate('t2.time')}}
@@ -86,8 +84,7 @@ gas_fee_rewards as (
         ON
         t2.number = t1.block_number
     WHERE   
-       CAST(t1.gas_price AS UINT256) != UINT256 '0'
-        --t1.success
+       t1.gas_price != UINT256 '0'
      {% if is_incremental() %}
         AND {{incremental_predicate('t1.block_time')}}
         AND {{incremental_predicate('t2.time')}}
