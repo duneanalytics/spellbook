@@ -13,14 +13,19 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - transaction_type
-            - token_address
-            - tx_hash
-            - evt_index
+          - blockchain 
+          - project 
+          - version 
+          - market 
+          - pt 
+          - sy 
+          - yt
       - check_lending_base_borrow_seed:
           seed_file: ref('pendle_market_seed')
           filter:
+            blockchain: ethereum
             version: 2
+
     columns:
       - &blockchain
         name: blockchain
