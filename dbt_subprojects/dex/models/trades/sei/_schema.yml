@@ -91,4 +91,3 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('carbon_defi_sei_base_trades_seed')
-
