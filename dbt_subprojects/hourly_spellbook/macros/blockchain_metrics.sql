@@ -28,7 +28,7 @@ group by 1,2
     ,count(distinct "to") filter (where "data" != 0x) as active_contracts
 from {{source(blockchain,'transactions')}}
 {% if is_incremental() %}
-where {{ incremental_predicate('time') }}
+where {{ incremental_predicate('block_time') }}
 {% endif %}
 group by 1,2
 )
@@ -52,7 +52,7 @@ group by 1,2
     ,count(distinct address) as new_contracts
 from {{source(blockchain,'creation_traces')}}
 {% if is_incremental() %}
-where {{ incremental_predicate('time') }}
+where {{ incremental_predicate('block_time') }}
 {% endif %}
 group by 1,2
 )
