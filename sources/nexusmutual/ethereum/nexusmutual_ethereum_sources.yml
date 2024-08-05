@@ -29,3 +29,10 @@ sources:
       - name: StakingProducts_call_getPremium
       - name: CoverMigrator_evt_CoverMigrated
       - name: Ramm_call_getInternalPriceAndUpdateTwap
+      - name: ClaimsData_evt_ClaimRaise
+      - name: Claims_call_submitPartialClaim
+      - name: ClaimsData_call_setClaimStatus
+      - name: IndividualClaims_evt_ClaimSubmitted
+      - name: IndividualClaims_call_submitClaimFor
+      - name: IndividualClaims_call_submitClaim
+      - name: IndividualClaims_call_redeemClaimPayout

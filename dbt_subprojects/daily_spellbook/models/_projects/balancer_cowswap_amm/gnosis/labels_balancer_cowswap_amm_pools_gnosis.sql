@@ -1,4 +1,4 @@
-{% set blockchain = 'ethereum' %}
+{% set blockchain = 'gnosis' %}
 
 {{config(
     schema = 'labels',
@@ -14,7 +14,7 @@ WITH events AS (
            contract_address  AS pool,
            token,
            denorm
-    FROM {{ source('b_cow_amm_ethereum', 'BCoWPool_call_bind') }}
+    FROM {{ source('b_cow_amm_gnosis', 'BCoWPool_call_bind') }}
     WHERE call_success
 
     UNION all
@@ -24,7 +24,7 @@ WITH events AS (
             contract_address AS pool,
             token,
             uint256 '0' AS denorm
-    FROM {{ source('b_cow_amm_ethereum', 'BCoWPool_call_unbind') }}
+    FROM {{ source('b_cow_amm_gnosis', 'BCoWPool_call_unbind') }}
     WHERE call_success
 ),
 
@@ -68,3 +68,4 @@ settings AS (
         ORDER BY 1 ASC , 3 DESC, 2 ASC
     ) s
     GROUP BY 1, 2
+    
