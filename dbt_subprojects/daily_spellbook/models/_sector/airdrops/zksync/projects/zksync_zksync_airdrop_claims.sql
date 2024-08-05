@@ -44,6 +44,6 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} pu ON pu.blockchain = 'zksyn
     AND pu.contract_address = {{token_address}}
     AND pu.minute = date_trunc('minute', t.evt_block_time)
 {% if is_incremental() %}
+    AND {{incremental_predicate('pu.minute')}}
 WHERE {{incremental_predicate('t.evt_block_time')}}
-AND {{incremental_predicate('pu.minute')}}
 {% endif %}
