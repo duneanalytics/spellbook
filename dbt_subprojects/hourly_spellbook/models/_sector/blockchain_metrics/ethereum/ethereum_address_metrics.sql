@@ -5,6 +5,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['address']
+  )
 }}
 
 {{blockchain_address_metrics('ethereum')}}
