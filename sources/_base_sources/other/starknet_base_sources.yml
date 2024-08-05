@@ -1,0 +1,208 @@
+version: 2
+sources:
+  - name: starknet
+    description: tables in the starknet schema
+    freshness:
+      warn_after:
+        count: 12
+        period: hour
+    tables:
+      - name: transactions
+        meta:
+          docs_slug: starknet/transactions
+          short_description: ''
+        loaded_at_field: block_time
+        description: '{{ doc("starknet_transactions_doc") }}'
+        columns:
+          - name: block_date
+            description: ''
+          - name: block_time
+            description: ''
+          - name: block_number
+            description: ''
+          - name: block_l1_da_mode
+            description: ''
+          - name: block_l1_data_gas_price_in_fri
+            description: ''
+          - name: block_l1_data_gas_price_in_wei
+            description: ''
+          - name: block_l1_gas_price_in_fri
+            description: ''
+          - name: block_l1_gas_price_in_wei
+            description: ''
+          - name: block_starknet_version
+            description: ''
+          - name: block_status
+            description: ''
+          - name: fee_data_availability_mode
+            description: ''
+          - name: index
+            description: ''
+          - name: max_fee
+            description: ''
+          - name: nonce
+            description: ''
+          - name: nonce_data_availability_mode
+            description: ''
+          - name: resource_bounds_l1_gas_max_amount
+            description: ''
+          - name: resource_bounds_l1_gas_max_price_per_unit
+            description: ''
+          - name: tip
+            description: ''
+          - name: type
+            description: ''
+          - name: version
+            description: ''
+          - name: actual_fee_amount
+            description: ''
+          - name: actual_fee_unit
+            description: ''
+          - name: execution_resources_bitwise_builtin_applications
+            description: ''
+          - name: execution_resources_data_availability_l1_gas
+            description: ''
+          - name: execution_resources_data_availability_l1_data_gas
+            description: ''
+          - name: execution_resources_ec_op_builtin_applications
+            description: ''
+          - name: execution_resources_ecdsa_builtin_applications
+            description: ''
+          - name: execution_resources_keccak_builtin_applications
+            description: ''
+          - name: execution_resources_memory_holes
+            description: ''
+          - name: execution_resources_pedersen_builtin_applications
+            description: ''
+          - name: execution_resources_poseidon_builtin_applications
+            description: ''
+          - name: execution_resources_range_check_builtin_applications
+            description: ''
+          - name: execution_resources_segment_arena_builtin
+            description: ''
+          - name: execution_resources_steps
+            description: ''
+          - name: execution_status
+            description: ''
+          - name: finality_status
+            description: ''
+          - name: receipt_type
+            description: ''
+          - name: block_hash
+            description: ''
+          - name: block_new_root
+            description: ''
+          - name: block_parent_hash
+            description: ''
+          - name: block_sequencer_address
+            description: ''
+          - name: calldata
+            description: ''
+          - name: class_hash
+            description: ''
+          - name: compiled_class_hash
+            description: ''
+          - name: constructor_calldata
+            description: ''
+          - name: contract_address
+            description: ''
+          - name: contract_address_salt
+            description: ''
+          - name: entry_point_selector
+            description: ''
+          - name: hash
+            description: ''
+          - name: sender_address
+            description: ''
+          - name: signature
+            description: ''
+          - name: message_hash
+            description: ''
+          - name: messages_sent
+            description: ''
+          - name: revert_reason
+            description: ''
+          - name: transaction_hash
+            description: ''
+          - name: state_diff
+            description: ''
+      - name: blocks
+        meta:
+          docs_slug: starknet/blocks
+          short_description: ''
+        loaded_at_field: block_time
+        description: '{{ doc("starknet_blocks_doc") }}'
+        columns:
+          - name: date
+            description: ''
+          - name: number
+            description: ''
+          - name: time
+            description: ''
+          - name: l1_da_mode
+            description: ''
+          - name: l1_data_gas_price_in_fri
+            description: ''
+          - name: l1_data_gas_price_in_wei
+            description: ''
+          - name: l1_gas_price_in_fri
+            description: ''
+          - name: l1_gas_price_in_wei
+            description: ''
+          - name: starknet_version
+            description: ''
+          - name: tx_count
+            description: ''
+          - name: hash
+            description: ''
+          - name: new_root
+            description: ''
+          - name: parent_hash
+            description: ''
+          - name: sequencer_address
+            description: ''
+      - name: events
+        meta:
+          docs_slug: starknet/events
+          short_description: ''
+        loaded_at_field: block_time
+        description: '{{ doc("starknet_events_doc") }}'
+        columns:
+          - name: block_date
+            description: ''
+          - name: block_time
+            description: ''
+          - name: block_number
+            description: ''
+          - name: block_l1_da_mode
+            description: ''
+          - name: block_l1_data_gas_price_in_fri
+            description: ''
+          - name: block_l1_data_gas_price_in_wei
+            description: ''
+          - name: block_l1_gas_price_in_fri
+            description: ''
+          - name: block_l1_gas_price_in_wei
+            description: ''
+          - name: block_starknet_version
+            description: ''
+          - name: block_status
+            description: ''
+          - name: event_index
+            description: ''
+          - name: block_hash
+            description: ''
+          - name: block_new_root
+            description: ''
+          - name: block_parent_hash
+            description: ''
+          - name: block_sequencer_address
+            description: ''
+          - name: data
+            description: ''
+          - name: keys
+            description: ''
+          - name: from_address
+            description: ''
+          - name: class_hash
+            description: ''

@@ -1,0 +1,119 @@
+version: 2
+sources:
+  - name: tron
+    description: tables in the tron schema
+    tables:
+      - name: transactions
+        meta:
+          docs_slug: tron/transactions
+          short_description:
+        description: '{{ doc("tron_transactions_doc") }}'
+        columns:
+          - name: block_time
+            description: ''
+          - name: block_number
+            description: ''
+          - name: value
+            description: ''
+          - name: gas_limit
+            description: ''
+          - name: gas_price
+            description: ''
+          - name: gas_used
+            description: ''
+          - name: max_fee_per_gas
+            description: ''
+          - name: max_priority_fee_per_gas
+            description: ''
+          - name: priority_fee_per_gas
+            description: ''
+          - name: nonce
+            description: ''
+          - name: index
+            description: ''
+          - name: success
+            description: ''
+          - name: from
+            description: ''
+          - name: to
+            description: ''
+          - name: block_hash
+            description: ''
+          - name: data
+            description: ''
+          - name: hash
+            description: ''
+          - name: type
+            description: ''
+          - name: access_list
+            description: ''
+          - name: block_date
+            description: ''
+      - name: blocks
+        meta:
+          docs_slug: tron/blocks
+          short_description:
+        description: '{{ doc("tron_blocks_doc") }}'
+        columns:
+          - name: time
+            description: ''
+          - name: number
+            description: ''
+          - name: gas_limit
+            description: ''
+          - name: gas_used
+            description: ''
+          - name: difficulty
+            description: ''
+          - name: total_difficulty
+            description: ''
+          - name: size
+            description: ''
+          - name: base_fee_per_gas
+            description: ''
+          - name: hash
+            description: ''
+          - name: parent_hash
+            description: ''
+          - name: miner
+            description: ''
+          - name: nonce
+            description: ''
+          - name: date
+            description: ''
+      - name: logs
+        meta:
+          docs_slug: tron/logs
+          short_description:
+        description: '{{ doc("tron_logs_doc") }}'
+        columns:
+          - name: block_time
+            description: ''
+          - name: block_number
+            description: ''
+          - name: block_hash
+            description: ''
+          - name: contract_address
+            description: ''
+          - name: topic0
+            description: ''
+          - name: topic1
+            description: ''
+          - name: topic2
+            description: ''
+          - name: topic3
+            description: ''
+          - name: data
+            description: ''
+          - name: tx_hash
+            description: ''
+          - name: index
+            description: ''
+          - name: tx_index
+            description: ''
+          - name: block_date
+            description: ''
+          - name: tx_from
+            description: ''
+          - name: tx_to
+            description: ''

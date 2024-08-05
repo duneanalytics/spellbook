@@ -1,0 +1,553 @@
+version: 2
+sources:
+  - name: aptos
+    description: tables in the aptos schema
+    freshness:
+      warn_after:
+        count: 12
+        period: hour
+    tables:
+      - name: blocks
+        meta:
+          docs_slug: aptos/blocks
+          short_description: no description yet for aptos.blocks. TBD
+        loaded_at_field: block_time
+        description: '{{ doc("aptos_blocks_doc") }}'
+        columns:
+          - name: block_height
+            description: No description provided. TBD
+          - name: block_timestamp
+            description: No description provided. TBD
+          - name: block_date
+            description: No description provided. TBD
+          - name: block_hash
+            description: No description provided. TBD
+          - name: first_version
+            description: No description provided. TBD
+          - name: last_version
+            description: No description provided. TBD
+          - name: proposer
+            description: No description provided. TBD
+          - name: round
+            description: No description provided. TBD
+          - name: epoch
+            description: No description provided. TBD
+          - name: metadata_id
+            description: No description provided. TBD
+          - name: failed_proposer_indices
+            description: No description provided. TBD
+          - name: previous_block_votes_bitvec
+            description: No description provided. TBD
+          - name: transactions_count
+            description: No description provided. TBD
+      - name: events
+        meta:
+          docs_slug: aptos/events
+          short_description: no description yet for aptos.events. TBD
+        loaded_at_field: block_time
+        description: '{{ doc("aptos_events_doc") }}'
+        columns:
+          - name: block_height
+            description: No description provided. TBD
+          - name: block_date
+            description: No description provided. TBD
+          - name: block_timestamp
+            description: No description provided. TBD
+          - name: block_hash
+            description: No description provided. TBD
+          - name: block_first_version
+            description: No description provided. TBD
+          - name: block_last_version
+            description: No description provided. TBD
+          - name: block_proposer
+            description: No description provided. TBD
+          - name: block_round
+            description: No description provided. TBD
+          - name: block_epoch
+            description: No description provided. TBD
+          - name: block_metadata_id
+            description: No description provided. TBD
+          - name: block_failed_proposer_indices
+            description: No description provided. TBD
+          - name: block_previous_block_votes_bitvec
+            description: No description provided. TBD
+          - name: tx_index
+            description: No description provided. TBD
+          - name: tx_type
+            description: No description provided. TBD
+          - name: tx_hash
+            description: No description provided. TBD
+          - name: tx_version
+            description: No description provided. TBD
+          - name: tx_gas_used
+            description: No description provided. TBD
+          - name: tx_vm_status
+            description: No description provided. TBD
+          - name: tx_success
+            description: No description provided. TBD
+          - name: tx_state_change_hash
+            description: No description provided. TBD
+          - name: tx_event_root_hash
+            description: No description provided. TBD
+          - name: tx_state_checkpoint_hash
+            description: No description provided. TBD
+          - name: tx_accumulator_root_hash
+            description: No description provided. TBD
+          - name: event_index
+            description: No description provided. TBD
+          - name: event_type
+            description: No description provided. TBD
+          - name: guid_account_address
+            description: No description provided. TBD
+          - name: guid_creation_number
+            description: No description provided. TBD
+          - name: event_sequence_number
+            description: No description provided. TBD
+          - name: data
+            description: No description provided. TBD
+      - name: move_modules
+        meta:
+          docs_slug: aptos/move_modules
+          short_description: no description yet for aptos.move_modules. TBD
+        loaded_at_field: block_time
+        description: '{{ doc("aptos_move_modules_doc") }}'
+        columns:
+          - name: block_height
+            description: No description provided. TBD
+          - name: block_date
+            description: No description provided. TBD
+          - name: block_timestamp
+            description: No description provided. TBD
+          - name: block_hash
+            description: No description provided. TBD
+          - name: block_first_version
+            description: No description provided. TBD
+          - name: block_last_version
+            description: No description provided. TBD
+          - name: block_proposer
+            description: No description provided. TBD
+          - name: block_round
+            description: No description provided. TBD
+          - name: block_epoch
+            description: No description provided. TBD
+          - name: block_metadata_id
+            description: No description provided. TBD
+          - name: block_failed_proposer_indices
+            description: No description provided. TBD
+          - name: block_previous_block_votes_bitvec
+            description: No description provided. TBD
+          - name: tx_index
+            description: No description provided. TBD
+          - name: tx_type
+            description: No description provided. TBD
+          - name: tx_hash
+            description: No description provided. TBD
+          - name: tx_version
+            description: No description provided. TBD
+          - name: tx_gas_used
+            description: No description provided. TBD
+          - name: tx_vm_status
+            description: No description provided. TBD
+          - name: tx_success
+            description: No description provided. TBD
+          - name: tx_state_change_hash
+            description: No description provided. TBD
+          - name: tx_event_root_hash
+            description: No description provided. TBD
+          - name: tx_state_checkpoint_hash
+            description: No description provided. TBD
+          - name: tx_accumulator_root_hash
+            description: No description provided. TBD
+          - name: write_set_change_index
+            description: No description provided. TBD
+          - name: write_set_change_type
+            description: No description provided. TBD
+          - name: move_state_key_hash
+            description: No description provided. TBD
+          - name: move_is_deletion
+            description: No description provided. TBD
+          - name: move_address
+            description: No description provided. TBD
+          - name: move_module_address
+            description: No description provided. TBD
+          - name: move_module_bytecode
+            description: No description provided. TBD
+          - name: move_module_module_name
+            description: No description provided. TBD
+          - name: move_module_friends
+            description: No description provided. TBD
+          - name: move_module_exposed_functions
+            description: No description provided. TBD
+          - name: move_module_structs
+            description: No description provided. TBD
+      - name: move_resources
+        meta:
+          docs_slug: aptos/move_resources
+          short_description: no description yet for aptos.move_resources. TBD
+        loaded_at_field: block_time
+        description: '{{ doc("aptos_move_resources_doc") }}'
+        columns:
+          - name: block_height
+            description: No description provided. TBD
+          - name: block_date
+            description: No description provided. TBD
+          - name: block_timestamp
+            description: No description provided. TBD
+          - name: block_hash
+            description: No description provided. TBD
+          - name: block_first_version
+            description: No description provided. TBD
+          - name: block_last_version
+            description: No description provided. TBD
+          - name: block_proposer
+            description: No description provided. TBD
+          - name: block_round
+            description: No description provided. TBD
+          - name: block_epoch
+            description: No description provided. TBD
+          - name: block_metadata_id
+            description: No description provided. TBD
+          - name: block_failed_proposer_indices
+            description: No description provided. TBD
+          - name: block_previous_block_votes_bitvec
+            description: No description provided. TBD
+          - name: tx_index
+            description: No description provided. TBD
+          - name: tx_type
+            description: No description provided. TBD
+          - name: tx_hash
+            description: No description provided. TBD
+          - name: tx_version
+            description: No description provided. TBD
+          - name: tx_gas_used
+            description: No description provided. TBD
+          - name: tx_vm_status
+            description: No description provided. TBD
+          - name: tx_success
+            description: No description provided. TBD
+          - name: tx_state_change_hash
+            description: No description provided. TBD
+          - name: tx_event_root_hash
+            description: No description provided. TBD
+          - name: tx_state_checkpoint_hash
+            description: No description provided. TBD
+          - name: tx_accumulator_root_hash
+            description: No description provided. TBD
+          - name: write_set_change_index
+            description: No description provided. TBD
+          - name: write_set_change_type
+            description: No description provided. TBD
+          - name: move_state_key_hash
+            description: No description provided. TBD
+          - name: move_is_deletion
+            description: No description provided. TBD
+          - name: move_data
+            description: No description provided. TBD
+          - name: move_address
+            description: No description provided. TBD
+          - name: move_module_address
+            description: No description provided. TBD
+          - name: move_resource_module
+            description: No description provided. TBD
+          - name: move_resource_name
+            description: No description provided. TBD
+          - name: move_resource_generic_type_params
+            description: No description provided. TBD
+      - name: move_table_items
+        meta:
+          docs_slug: aptos/move_table_items
+          short_description: no description yet for aptos.move_table_items. TBD
+        loaded_at_field: block_time
+        description: '{{ doc("aptos_move_table_items_doc") }}'
+        columns:
+          - name: block_height
+            description: No description provided. TBD
+          - name: block_date
+            description: No description provided. TBD
+          - name: block_timestamp
+            description: No description provided. TBD
+          - name: block_hash
+            description: No description provided. TBD
+          - name: block_first_version
+            description: No description provided. TBD
+          - name: block_last_version
+            description: No description provided. TBD
+          - name: block_proposer
+            description: No description provided. TBD
+          - name: block_round
+            description: No description provided. TBD
+          - name: block_epoch
+            description: No description provided. TBD
+          - name: block_metadata_id
+            description: No description provided. TBD
+          - name: block_failed_proposer_indices
+            description: No description provided. TBD
+          - name: block_previous_block_votes_bitvec
+            description: No description provided. TBD
+          - name: tx_index
+            description: No description provided. TBD
+          - name: tx_type
+            description: No description provided. TBD
+          - name: tx_hash
+            description: No description provided. TBD
+          - name: tx_version
+            description: No description provided. TBD
+          - name: tx_gas_used
+            description: No description provided. TBD
+          - name: tx_vm_status
+            description: No description provided. TBD
+          - name: tx_success
+            description: No description provided. TBD
+          - name: tx_state_change_hash
+            description: No description provided. TBD
+          - name: tx_event_root_hash
+            description: No description provided. TBD
+          - name: tx_state_checkpoint_hash
+            description: No description provided. TBD
+          - name: tx_accumulator_root_hash
+            description: No description provided. TBD
+          - name: write_set_change_index
+            description: No description provided. TBD
+          - name: write_set_change_type
+            description: No description provided. TBD
+          - name: move_state_key_hash
+            description: No description provided. TBD
+          - name: move_is_deletion
+            description: No description provided. TBD
+          - name: move_table_item_handle
+            description: No description provided. TBD
+          - name: move_table_item_key
+            description: No description provided. TBD
+          - name: move_table_item_value
+            description: No description provided. TBD
+          - name: move_data
+            description: No description provided. TBD
+      - name: signatures
+        meta:
+          docs_slug: aptos/signatures
+          short_description: no description yet for aptos.signatures. TBD
+        loaded_at_field: block_time
+        description: '{{ doc("aptos_signatures_doc") }}'
+        columns:
+          - name: block_height
+            description: No description provided. TBD
+          - name: block_date
+            description: No description provided. TBD
+          - name: block_timestamp
+            description: No description provided. TBD
+          - name: block_hash
+            description: No description provided. TBD
+          - name: block_first_version
+            description: No description provided. TBD
+          - name: block_last_version
+            description: No description provided. TBD
+          - name: block_proposer
+            description: No description provided. TBD
+          - name: block_round
+            description: No description provided. TBD
+          - name: block_epoch
+            description: No description provided. TBD
+          - name: block_metadata_id
+            description: No description provided. TBD
+          - name: block_failed_proposer_indices
+            description: No description provided. TBD
+          - name: block_previous_block_votes_bitvec
+            description: No description provided. TBD
+          - name: tx_index
+            description: No description provided. TBD
+          - name: tx_type
+            description: No description provided. TBD
+          - name: tx_hash
+            description: No description provided. TBD
+          - name: tx_version
+            description: No description provided. TBD
+          - name: tx_gas_used
+            description: No description provided. TBD
+          - name: tx_vm_status
+            description: No description provided. TBD
+          - name: tx_success
+            description: No description provided. TBD
+          - name: tx_state_change_hash
+            description: No description provided. TBD
+          - name: tx_event_root_hash
+            description: No description provided. TBD
+          - name: tx_state_checkpoint_hash
+            description: No description provided. TBD
+          - name: tx_accumulator_root_hash
+            description: No description provided. TBD
+          - name: tx_timestamp
+            description: No description provided. TBD
+          - name: tx_sender
+            description: No description provided. TBD
+          - name: tx_max_gas_amount
+            description: No description provided. TBD
+          - name: tx_gas_unit_price
+            description: No description provided. TBD
+          - name: tx_sequence_number
+            description: No description provided. TBD
+          - name: tx_expiration_timestamp_secs
+            description: No description provided. TBD
+          - name: type
+            description: No description provided. TBD
+          - name: signer_type
+            description: No description provided. TBD
+          - name: signer_signature_type
+            description: No description provided. TBD
+          - name: is_single_sender
+            description: No description provided. TBD
+          - name: signer_address
+            description: No description provided. TBD
+          - name: secondary_signer_index
+            description: No description provided. TBD
+          - name: public_key
+            description: No description provided. TBD
+          - name: signature
+            description: No description provided. TBD
+          - name: bitmap
+            description: No description provided. TBD
+          - name: bitmap_public_key_index
+            description: No description provided. TBD
+          - name: threshold
+            description: No description provided. TBD
+      - name: transactions
+        meta:
+          docs_slug: aptos/transactions
+          short_description: no description yet for aptos.transactions. TBD
+        loaded_at_field: block_time
+        description: '{{ doc("aptos_transactions_doc") }}'
+        columns:
+          - name: block_height
+            description: No description provided. TBD
+          - name: block_date
+            description: No description provided. TBD
+          - name: block_timestamp
+            description: No description provided. TBD
+          - name: block_hash
+            description: No description provided. TBD
+          - name: block_first_version
+            description: No description provided. TBD
+          - name: block_last_version
+            description: No description provided. TBD
+          - name: block_proposer
+            description: No description provided. TBD
+          - name: block_round
+            description: No description provided. TBD
+          - name: block_epoch
+            description: No description provided. TBD
+          - name: block_metadata_id
+            description: No description provided. TBD
+          - name: block_failed_proposer_indices
+            description: No description provided. TBD
+          - name: block_previous_block_votes_bitvec
+            description: No description provided. TBD
+          - name: tx_index
+            description: No description provided. TBD
+          - name: tx_type
+            description: No description provided. TBD
+          - name: hash
+            description: No description provided. TBD
+          - name: version
+            description: No description provided. TBD
+          - name: gas_used
+            description: No description provided. TBD
+          - name: vm_status
+            description: No description provided. TBD
+          - name: success
+            description: No description provided. TBD
+          - name: state_change_hash
+            description: No description provided. TBD
+          - name: event_root_hash
+            description: No description provided. TBD
+          - name: state_checkpoint_hash
+            description: No description provided. TBD
+          - name: accumulator_root_hash
+            description: No description provided. TBD
+          - name: events_count
+            description: No description provided. TBD
+          - name: changes_count
+            description: No description provided. TBD
+      - name: user_transactions
+        meta:
+          docs_slug: aptos/user_transactions
+          short_description: no description yet for aptos.user_transactions. TBD
+        loaded_at_field: block_time
+        description: '{{ doc("aptos_user_transactions_doc") }}'
+        columns:
+          - name: block_height
+            description: No description provided. TBD
+          - name: block_date
+            description: No description provided. TBD
+          - name: block_timestamp
+            description: No description provided. TBD
+          - name: block_hash
+            description: No description provided. TBD
+          - name: block_first_version
+            description: No description provided. TBD
+          - name: block_last_version
+            description: No description provided. TBD
+          - name: block_proposer
+            description: No description provided. TBD
+          - name: block_round
+            description: No description provided. TBD
+          - name: block_epoch
+            description: No description provided. TBD
+          - name: block_metadata_id
+            description: No description provided. TBD
+          - name: block_failed_proposer_indices
+            description: No description provided. TBD
+          - name: block_previous_block_votes_bitvec
+            description: No description provided. TBD
+          - name: tx_index
+            description: No description provided. TBD
+          - name: tx_type
+            description: No description provided. TBD
+          - name: hash
+            description: No description provided. TBD
+          - name: version
+            description: No description provided. TBD
+          - name: gas_used
+            description: No description provided. TBD
+          - name: vm_status
+            description: No description provided. TBD
+          - name: success
+            description: No description provided. TBD
+          - name: state_change_hash
+            description: No description provided. TBD
+          - name: event_root_hash
+            description: No description provided. TBD
+          - name: state_checkpoint_hash
+            description: No description provided. TBD
+          - name: accumulator_root_hash
+            description: No description provided. TBD
+          - name: timestamp
+            description: No description provided. TBD
+          - name: sender
+            description: No description provided. TBD
+          - name: max_gas_amount
+            description: No description provided. TBD
+          - name: gas_unit_price
+            description: No description provided. TBD
+          - name: sequence_number
+            description: No description provided. TBD
+          - name: expiration_timestamp_secs
+            description: No description provided. TBD
+          - name: events_count
+            description: No description provided. TBD
+          - name: changes_count
+            description: No description provided. TBD
+          - name: payload_type
+            description: No description provided. TBD
+          - name: entry_function_name
+            description: No description provided. TBD
+          - name: entry_function_module_name
+            description: No description provided. TBD
+          - name: entry_function_module_address
+            description: No description provided. TBD
+          - name: script_bytecode
+            description: No description provided. TBD
+          - name: script_abi
+            description: No description provided. TBD
+          - name: type_arguments
+            description: No description provided. TBD
+          - name: arguments
+            description: No description provided. TBD
