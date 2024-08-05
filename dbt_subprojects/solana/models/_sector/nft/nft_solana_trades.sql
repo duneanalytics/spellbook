@@ -17,7 +17,6 @@
     , ref('magiceden_mmm_solana_trades')
     , ref('tensorswap_v1_solana_trades')
     , ref('tensorswap_v2_solana_trades')
-    , ref('nft_solana_old_trades')
 ] %}
 
 
