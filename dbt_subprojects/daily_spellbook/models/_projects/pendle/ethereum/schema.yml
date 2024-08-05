@@ -20,11 +20,18 @@ models:
           - pt 
           - sy 
           - yt
-      - check_lending_base_borrow_seed:
+      - check_seed:
           seed_file: ref('pendle_market_seed')
           filter:
             blockchain: ethereum
             version: 2
+          match_columns:
+            - market
+            - pt
+          check_columns:
+            - sy
+            - yt
+            - expiry
 
     columns:
       - &blockchain
