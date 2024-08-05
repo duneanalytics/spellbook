@@ -32,7 +32,7 @@ with
 SELECT
     epoch
     , epoch_time
-    , bpoch_start_slot
+    , epoch_start_slot
     , epoch_end_slot
     , stake_account
     , vote_account
