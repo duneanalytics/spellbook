@@ -42,6 +42,7 @@ from {{ref(blockchain ~ '_address_metrics')}}
 {% if is_incremental() %}
 where {{ incremental_predicate(min_block_time) }}
 {% endif %}
+group by 1,2
 )
 
 , new_contracts as (
