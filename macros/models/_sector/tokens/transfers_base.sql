@@ -1,7 +1,8 @@
-{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, native_contract_address = null) %}
+{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, native_contract_address = null, include_traces = true) %}
 {%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
 
 WITH transfers AS (
+    {% if include_traces %}
     SELECT
         block_date
         , block_time
@@ -27,6 +28,7 @@ WITH transfers AS (
         {% endif %}
 
     UNION ALL
+    {% endif %}
 
     SELECT 
         cast(date_trunc('day', t.evt_block_time) as date) AS block_date

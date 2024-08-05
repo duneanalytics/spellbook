@@ -15,6 +15,7 @@
     traces = source('mantle','traces'),
     transactions = source('mantle','transactions'),
     erc20_transfers = source('erc20_mantle','evt_transfer'),
-    native_contract_address = null
+    native_contract_address = null,
+    include_traces = 'true'
 )
 }}

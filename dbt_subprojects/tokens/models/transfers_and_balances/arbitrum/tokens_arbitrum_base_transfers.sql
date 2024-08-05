@@ -16,5 +16,6 @@
     transactions = source('arbitrum','transactions'),
     erc20_transfers = source('erc20_arbitrum','evt_transfer'),
     native_contract_address = null,
+    include_traces = 'true'
 )
 }}
