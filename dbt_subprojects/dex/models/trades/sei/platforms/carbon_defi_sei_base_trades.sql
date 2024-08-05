@@ -10,7 +10,7 @@
     )
 }}
 
-{% set weth_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+{% set weth_address = '0x160345fc359604fc6e70e3c5facbde5f7a9342d8' %}
 
 WITH dexs AS (
     SELECT
