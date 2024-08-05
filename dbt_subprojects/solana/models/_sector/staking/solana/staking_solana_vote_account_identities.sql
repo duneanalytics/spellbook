@@ -16,7 +16,7 @@ SELECT
     ix.account_arguments[1] as vote_account
     , ix.account_arguments[4] as vote_identity
     , tx.block_time
-FROM solana.vote_transactions tx
+FROM {{ source('solana','vote_transactions') }} tx
 LEFT JOIN unnest(instructions) as ix ON true
 WHERE ix.executing_account = 'Vote111111111111111111111111111111111111111'
 AND cardinality(ix.account_arguments) >= 4
@@ -32,7 +32,7 @@ SELECT
     ix.account_arguments[1] as vote_account
     , ix.account_arguments[2] as vote_identity
     , tx.block_time
-FROM solana.vote_transactions tx
+FROM {{ source('solana','vote_transactions') }} tx
 LEFT JOIN unnest(instructions) as ix ON true
 WHERE ix.executing_account = 'Vote111111111111111111111111111111111111111'
 AND cardinality(ix.account_arguments) >= 3
