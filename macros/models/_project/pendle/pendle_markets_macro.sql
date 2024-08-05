@@ -3,7 +3,7 @@
     blockchain = '',
     project = '',
     version = '',
-    project_decoded_as = ''
+    project_decoded_as = '',
     create_market_table = '',
     create_yield_table = '',
     start_date = '2022-11-23'
