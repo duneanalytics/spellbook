@@ -74,4 +74,4 @@ SELECT
     , call_block_time as block_time
     , call_block_slot as block_slot
 FROM all_delegates
-WHERE vote_account is not null --see note about split recursion above for why there are nulls
+WHERE account_voteAccount is not null --see note about split recursion above for why there are nulls
