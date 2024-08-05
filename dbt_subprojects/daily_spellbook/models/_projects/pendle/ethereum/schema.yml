@@ -1,0 +1,57 @@
+version: 2
+
+models:
+  - name: pendle_v2_ethereum_markets
+    meta:
+      blockchain: ethereum
+      sector: pools
+      project: pendle
+      contributors: maybeYonas, pyor_xyz
+    config:
+      tags: ['pendle', 'ethereum']
+    description: "Pendle Markets"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('pendle_market_seed')
+          filter:
+            version: 2
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project name (balancer)"
+      - &version
+        name: version
+        description: "Version of the project"
+      - &market
+        name: market
+        description: "Market contract"
+      - &expiry
+        name: expiry
+        description: "Expiry date of Market"
+      - &sy
+        name: sy
+        description: "SY token"
+      - &pt
+        name: pt
+        description: "Principal Token"
+      - &yt
+        name: yt
+        description: "Yield Token"
+      - &asset
+        name: asset
+        description: "Underlying Asset"
+      - &decimals
+        name: decimals
+        description: "Decimals of Underlying Asset"
+      - &sy_symbol
+        name: sy_symbol
+        description: "Symbol of SY Token (can be used to approximate the Market Symbol)"

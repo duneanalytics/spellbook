@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: pendle_ethereum
+    description: "Ethereum decoded tables related to Pendle v2 contract"
+    tables:
+      - name: PendleMarketFactory_evt_CreateNewMarket
+
+      - name: PendleYieldContractFactory_evt_CreateYieldContract
