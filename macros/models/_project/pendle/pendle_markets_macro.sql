@@ -84,7 +84,7 @@ joined_data as (
         u.decimals,
         u.symbol as sy_symbol
     from markets m 
-        join underlying_map u 
+        join asset_info_calls u 
             on m.sy = u.contract_address
 ),
 market_list as (
