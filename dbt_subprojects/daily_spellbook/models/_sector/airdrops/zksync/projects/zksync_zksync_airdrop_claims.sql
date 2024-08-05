@@ -6,11 +6,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['recipient', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["zksync"]\',
-                                "project",
-                                "zksync",
-                                \'["lgingerich"]\') }}'
+        unique_key = ['recipient', 'tx_hash', 'evt_index']
     )
 }}
 
