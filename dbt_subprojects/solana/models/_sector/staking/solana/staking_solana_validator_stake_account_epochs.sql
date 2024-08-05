@@ -1,8 +1,9 @@
 {{ config(
     schema = 'staking_solana'
     , alias = 'validator_stake_account_epochs'
-    , materialized = 'table'
+    , materialized = 'incremental'
     , file_format = 'delta'
+    , incremental_strategy = 'merge'
     , unique_key = ['epoch', 'stake_account', 'vote_account']
     , post_hook='{{ expose_spells(\'["solana"]\',
                                 "sector",
@@ -27,6 +28,9 @@ with
         LEFT JOIN solana_utils.daily_balances bal ON bal.address = b.stake_account 
             AND bal.token_mint_address is null
             AND bal.day <= date_trunc('day', b.epoch_time)
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('b.epoch_time')}}
+        {% endif %}
     )
 
 SELECT 
