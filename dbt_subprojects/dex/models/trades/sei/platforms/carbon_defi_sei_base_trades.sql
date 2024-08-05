@@ -17,6 +17,6 @@
         blockchain = 'sei',
         project = 'carbon_defi',
         CarbonController_evt_TokensTraded = source('carbon_defi_sei', 'CarbonController_evt_TokensTraded'),
-        wrapped_native_token = weth_address
+        wrapped_native_token = wsei_address
     )
 }}
