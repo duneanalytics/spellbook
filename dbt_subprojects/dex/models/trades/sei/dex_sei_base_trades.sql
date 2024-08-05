@@ -7,6 +7,10 @@
 
 {% set base_models = [
     ref('jelly_swap_sei_base_trades')
+    , ref('oku_sei_base_trades')
+    , ref('dragon_swap_sei_base_trades')
+    , ref('xei_finance_sei_base_trades')
+    , ref('carbon_defi_sei_base_trades')
 ] %}
 
 WITH base_union AS (
