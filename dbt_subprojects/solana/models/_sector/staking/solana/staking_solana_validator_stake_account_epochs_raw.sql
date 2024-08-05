@@ -8,7 +8,6 @@
 }}
 
 --don't expose this table in DE
---we want to get all epochs and the latest delegated vote before epoch started. then get the rewards from accounts per epoch.
 with 
     base as (
         SELECT 
@@ -17,11 +16,10 @@ with
             , epoch.epoch_start_slot
             , epoch.epoch_end_slot
             , vote.stake_account
-            , max_by(vote.vote_account, vote.block_time) as vote_account
+            , max_by(vote.vote_account, vote.block_time) as vote_account --latest delegated vote before epoch started. then get the rewards from accounts per epoch.
         FROM {{ ref('staking_solana_stake_account_delegations') }} vote
         LEFT JOIN {{ ref('solana_utils_epochs') }} epoch ON first_block_epoch = true --cross join
         WHERE vote.block_slot < epoch.block_slot --only get changes to accounts before start of epoch
-        and vote.vote_account is not null
         {% if is_incremental() %}
         AND {{incremental_predicate('epoch.block_time')}}
         {% endif %}
@@ -36,3 +34,4 @@ SELECT
     , stake_account
     , vote_account
 FROM base
+WHERE vote_account is not null
