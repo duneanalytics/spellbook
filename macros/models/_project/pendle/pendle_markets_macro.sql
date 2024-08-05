@@ -86,7 +86,27 @@ joined_data as (
     from markets m 
         join underlying_map u 
             on m.sy = u.contract_address
+),
+market_list as (
+    {#
+        all markets are manually deployed, so there are duplicating issues
+    #}
+    select distinct * from joined_data
+    where asset is not null
+    {% if is_incremental() %}
+    and m.market not in (select m.market from {{ this }})
+    {% endif %} 
 )
 
-select distinct * from joined_data
-where asset is not null
+select 
+    '{{blockchain}}' as blockchain,
+    '{{project}}' as project,
+    '{{version}}' as version,
+    market,
+    sy,
+    pt,
+    yt,
+    asset,
+    decimals,
+    sy_symbol
+from market_list
