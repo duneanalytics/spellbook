@@ -60,9 +60,9 @@ tokens_gnosis_base_without_suicide_transfers AS (
         WHERE  
             t1.token_standard = 'native'
             AND 
-            (t1.block_time >= t2.previous_block_time OR t2.previous_block_time IS NULL)
+            (t1.block_time > t2.previous_block_time OR t2.previous_block_time IS NULL)
             AND 
-            t1.block_time < t2.block_time
+            t1.block_time <= t2.block_time
 
         UNION ALL
 
