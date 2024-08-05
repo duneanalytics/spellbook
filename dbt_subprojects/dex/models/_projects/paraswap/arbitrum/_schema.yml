@@ -190,28 +190,24 @@ models:
     description: "Paraswap V6 trades decoded"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:            
-            - call_tx_hash
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - txHash
             - method
-            - call_trace_address                        
+            - callTraceAddress                        
     columns:
-      - *blockchain
-      - *project
-      - *version  
-      - *block_date
-      - *method
-      - &blockTime
-        name: blockTime
+      - name: blockTime
         description: "Block time"        
       - name: blockNumber
         description: "Block number"        
-      - &call_tx_hash
-        name: call_tx_hash
+      - name: txHash
         description: "Transaction hash"        
       - name: projectContractAddress
         description: "Project contract address"        
-      - &call_trace_address
-        name: call_trace_address
+      - name: callTraceAddress
         description: "Call trace address"        
       - name: srcToken
         description: "Source token"        
@@ -230,7 +226,9 @@ models:
       - name: metadata
         description: "Metadata"        
       - name: beneficiary
-        description: "Beneficiary"      
+        description: "Beneficiary"
+      - name: method
+        description: "Method"
       - name: side
         description: "Side"        
       - name: feeCode

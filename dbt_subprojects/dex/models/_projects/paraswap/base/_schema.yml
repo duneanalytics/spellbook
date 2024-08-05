@@ -188,49 +188,47 @@ models:
     description: "Paraswap V6 trades decoded"
     tests:
       - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:            
-            - call_tx_hash
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - txHash
             - method
-            - call_trace_address                        
+            - callTraceAddress
     columns:
-      - *blockchain
-      - *project
-      - *version  
-      - *block_date
-      - *method
-      - &blockTime
-        name: blockTime
-        description: "Block time"        
+      - name: blockTime
+        description: "Block time"
       - name: blockNumber
-        description: "Block number"        
-      - &call_tx_hash
-        name: call_tx_hash
-        description: "Transaction hash"        
+        description: "Block number"
+      - name: txHash
+        description: "Transaction hash"
       - name: projectContractAddress
-        description: "Project contract address"        
-      - &call_trace_address
-        name: call_trace_address
-        description: "Call trace address"        
+        description: "Project contract address"
+      - name: callTraceAddress
+        description: "Call trace address"
       - name: srcToken
-        description: "Source token"        
+        description: "Source token"
       - name: destToken
-        description: "Destination token"        
+        description: "Destination token"
       - name: fromAmount
-        description: "From amount"        
+        description: "From amount"
       - name: spentAmount
-        description: "Spent amount"        
+        description: "Spent amount"
       - name: toAmount
-        description: "To amount"        
+        description: "To amount"
       - name: quotedAmount
-        description: "Quoted amount"        
+        description: "Quoted amount"
       - name: receivedAmount
-        description: "Received amount"        
+        description: "Received amount"
       - name: metadata
-        description: "Metadata"        
+        description: "Metadata"
       - name: beneficiary
-        description: "Beneficiary"      
+        description: "Beneficiary"
+      - name: method
+        description: "Method"
       - name: side
-        description: "Side"        
+        description: "Side"
       - name: feeCode
         description: "Fee code"
       - name: partnerShare
