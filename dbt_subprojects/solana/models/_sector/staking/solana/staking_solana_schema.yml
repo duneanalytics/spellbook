@@ -37,26 +37,6 @@ models:
       - name: outer_instruction_index
       - name: inner_instruction_index
       - name: tx_id
-  - name: staking_solana_vote_account_identities
-    meta:
-      blockchain: solana
-      sector: staking
-      contributors: ilemi
-    config:
-      tags: ['solana', 'staking', 'identity','vote']
-    description: get identities behind vote accounts (needed to calculate fee rewards correctly)
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_time
-            - vote_identity
-            - vote_account
-    columns:
-      - name: vote_identity
-        description: the identity account behind the vote account (will recieve the fees)
-      - name: vote_account
-        description: the vote account address
-      - name: block_time
   - name: staking_solana_stake_account_delegations
     meta:
       blockchain: solana
