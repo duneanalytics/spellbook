@@ -110,3 +110,5 @@ select
     decimals,
     sy_symbol
 from market_list
+
+{% endmacro %}

@@ -67,3 +67,5 @@ select i.*,
     -- (1-i.pt_to_asset)*p.price as yt_price,
 -- from underlying_manual
 from implied_rate_updates i
+
+{% endmacro %}

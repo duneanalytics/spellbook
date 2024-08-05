@@ -124,3 +124,5 @@ swap_actions as (
 
 select *
 from swap_actions
+
+{% endmacro %}
