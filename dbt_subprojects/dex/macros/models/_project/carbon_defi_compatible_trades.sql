@@ -49,3 +49,5 @@ SELECT
     dexs.tx_hash,
     dexs.evt_index
 FROM dexs
+
+{% endmacro %}
