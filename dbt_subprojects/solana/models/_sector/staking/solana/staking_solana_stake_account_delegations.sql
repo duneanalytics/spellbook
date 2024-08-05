@@ -58,7 +58,7 @@ with
                     ) as old_vote
                     ON old_vote.source = a.source --get source of split's delegated validator
                     AND old_vote.call_block_time <= a.block_time --before the split, not after
-            --get newly delegated vote accounts
+            --get newly delegated vote accounts. some will still having missing vote accounts because of multiple splits - should have some sort of recursive split detection in the future.
             LEFT JOIN {{ source ('stake_program_solana','stake_call_DelegateStake') }} del ON del.account_stakeAccount = a.destination
             WHERE a.action = 'split'
             {% if is_incremental() %}
@@ -68,9 +68,10 @@ with
     )
 
 SELECT 
+    distinct 
     account_stakeAccount as stake_account
     , account_voteAccount as vote_account
     , call_block_time as block_time
     , call_block_slot as block_slot
-    , row_number() over (partition by account_stakeAccount order by call_block_time desc) as latest
 FROM all_delegates
+WHERE vote_account is not null --see note about split recursion above for why there are nulls
