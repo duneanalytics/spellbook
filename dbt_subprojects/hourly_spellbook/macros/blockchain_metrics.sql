@@ -4,11 +4,16 @@ WITH blocks as (
     select
     '{{ blockchain }}' as blockchain
     ,date_trunc('hour',time) as block_hour
-    ,avg(date_diff('second',lag(time) over (order by time asc),time)) as avg_block_time_seconds
-from {{source(blockchain,'blocks')}}
-{% if is_incremental() %}
-where {{ incremental_predicate(time) }}
-{% endif %}
+    ,avg(date_diff('second',lag_time,time)) as avg_block_time_seconds
+from (
+    select
+    time
+    ,lag(time) over (order by time asc) as lag_time
+    from {{source(blockchain,'blocks')}}
+    {% if is_incremental() %}
+    where {{ incremental_predicate(time) }}
+    {% endif %}
+)
 group by 1,2
 )
 
