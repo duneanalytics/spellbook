@@ -12,6 +12,7 @@ with
 markets as (
     select * from {{ ref(markets) }}
     where chain = '{{blockchain}}'
+    and version = '{{version}}'
     -- https://dune.com/queries/3506956
 ),
 event_logs as (
