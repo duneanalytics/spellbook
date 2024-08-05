@@ -103,6 +103,7 @@ select
     '{{project}}' as project,
     '{{version}}' as version,
     market,
+    expiry,
     sy,
     pt,
     yt,
