@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: butter_mantle
+    tables:
+      - name: ButterFactory_evt_PoolCreated
+  - name: fusionx_mantle
+    tables:
+      - name: FusionXV3Factory_evt_PoolCreated
+  - name: merchant_moe_mantle
+    tables:
+      - name: MoeFactory_evt_PairCreated
+      - name: MoePair_evt_Swap

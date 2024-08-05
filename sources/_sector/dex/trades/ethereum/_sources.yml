@@ -87,6 +87,10 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: maverick_v2_ethereum
+    tables:
+      - name: V2Pool_evt_PoolSwap
+      - name: V2Factory_evt_PoolCreated
   - name: kyber_ethereum
     tables:
       - name: DMMPool_evt_Swap
@@ -107,3 +111,10 @@ sources:
     tables:
       - name: XchangePair_evt_Swap
       - name: XchangeFactory_evt_PairCreated
+  - name: solidly_v3_ethereum
+    tables:
+      - name: SolidlyV3Factory_evt_PoolCreated
+      - name: SolidlyV3Pool_evt_Swap
+  - name: swaap_v2_ethereum
+    tables:
+      - name: Vault_evt_Swap
