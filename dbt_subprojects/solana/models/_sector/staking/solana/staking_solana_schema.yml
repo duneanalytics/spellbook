@@ -73,8 +73,6 @@ models:
           combination_of_columns:
             - epoch
             - epoch_time
-            - epoch_start_slot
-            - epoch_end_slot
             - stake_account
             - vote_account
     columns:
@@ -85,7 +83,7 @@ models:
       - name: epoch
       - name: epoch_time
       - name: epoch_start_slot
-      - name: epoch_end_slot
+      - name: epoch_next_start_slot
 
   - name: staking_solana_validator_stake_account_epochs
     meta:
@@ -100,8 +98,6 @@ models:
           combination_of_columns:
             - epoch
             - epoch_time
-            - epoch_start_slot
-            - epoch_end_slot
             - stake_account
             - vote_account
     columns:
@@ -114,4 +110,4 @@ models:
       - name: epoch
       - name: epoch_time
       - name: epoch_start_slot
-      - name: epoch_end_slot
+      - name: epoch_next_start_slot

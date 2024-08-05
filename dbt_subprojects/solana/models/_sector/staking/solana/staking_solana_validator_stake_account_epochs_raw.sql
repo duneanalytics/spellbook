@@ -14,7 +14,7 @@ with
             epoch.epoch
             , epoch.block_time as epoch_time
             , epoch.epoch_start_slot
-            , epoch.epoch_end_slot
+            , epoch.epoch_next_start_slot
             , vote.stake_account
             , max_by(vote.vote_account, vote.block_time) as vote_account --latest delegated vote before epoch started. then get the rewards from accounts per epoch.
         FROM {{ ref('staking_solana_stake_account_delegations') }} vote
@@ -30,7 +30,7 @@ SELECT
     epoch
     , epoch_time
     , epoch_start_slot
-    , epoch_end_slot
+    , epoch_next_start_slot
     , stake_account
     , vote_account
 FROM base

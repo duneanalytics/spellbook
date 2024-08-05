@@ -15,7 +15,7 @@ SELECT
     b.epoch
     , b.epoch_time
     , b.epoch_start_slot
-    , b.epoch_end_slot
+    , b.epoch_next_start_slot
     , b.stake_account
     , b.vote_account
     , max_by(bal.sol_balance, bal.day) as sol_balance

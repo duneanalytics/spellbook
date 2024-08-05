@@ -34,7 +34,7 @@ models:
       - name: first_block_epoch
       - name: epoch_progress
       - name: epoch_start_slot
-      - name: epoch_end_slot
+      - name: epoch_next_start_slot
       
   - name: solana_utils_daily_balances
     meta:
