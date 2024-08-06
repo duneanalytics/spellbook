@@ -1,0 +1,15 @@
+version: 2
+
+seeds:
+  - name: pendle_market_seed
+    config:
+      column_types:
+        blockchain : varchar
+        project : varchar
+        version : varchar
+        market : varbinary
+        sy : varbinary
+        pt : varbinary
+        yt : varbinary
+        expiry : uint256
+        asset : varbinary
