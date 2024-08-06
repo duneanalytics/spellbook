@@ -24,7 +24,7 @@ SELECT
     , t.evt_index
     , t.contract_address
 FROM {{ base_trades }} t
-INNER JOIN {{ref('evms_info')}} info
+INNER JOIN {{ source('evms','info') }} info
     ON info.blockchain = t.blockchain
 LEFT JOIN {{source('tokens', 'erc20')}} tok
     ON tok.blockchain = t.blockchain
