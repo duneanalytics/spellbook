@@ -58,6 +58,7 @@ group by 1,2
 
 select
     blockchain
+    ,chain_id
     ,block_hour
     ,tx_count
     ,tx_success_count
@@ -70,4 +71,5 @@ from blocks
 left join transactions using (blockchain, block_hour)
 left join new_addresses using (blockchain, block_hour)
 left join new_contracts using (blockchain, block_hour)
+left join {{ source('evms','info') }} using blockchain
 {% endmacro %}
