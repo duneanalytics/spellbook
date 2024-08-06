@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'carbon_defi_ethereum',
+        schema = 'carbon_defi_sei',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -10,13 +10,13 @@
     )
 }}
 
-{% set weth_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
+{% set wsei_address = '0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7' %}
 
 {{
     carbon_defi_compatible_trades(
-        blockchain = 'ethereum',
+        blockchain = 'sei',
         project = 'carbon_defi',
-        CarbonController_evt_TokensTraded = source('carbon_defi_ethereum', 'CarbonController_evt_TokensTraded'),
-        wrapped_native_token = weth_address
+        CarbonController_evt_TokensTraded = source('carbon_defi_sei', 'CarbonController_evt_TokensTraded'),
+        wrapped_native_token = wsei_address
     )
 }}
