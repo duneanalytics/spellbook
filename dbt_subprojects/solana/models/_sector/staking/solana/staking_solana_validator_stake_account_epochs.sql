@@ -18,7 +18,7 @@ SELECT
     , b.epoch_next_start_slot
     , b.stake_account
     , b.vote_account
-    , max_by(bal.sol_balance, bal.day) as sol_balance
+    , max_by(bal.sol_balance, bal.day) as sol_balance 
 FROM {{ ref('staking_solana_validator_stake_account_epochs_raw')}} b
 LEFT JOIN solana_utils.daily_balances bal ON bal.address = b.stake_account 
     AND bal.token_mint_address is null
