@@ -3,7 +3,7 @@
                   call_block_time,
                   call_block_number,
                   call_tx_hash,
-                  contract_address as project_contract_address,
+                  contract_address as project_contract_address,                  
                   call_trace_address,
                   JSON_EXTRACT_SCALAR({{ data_field }}, '$.srcToken') AS srcToken,
                   JSON_EXTRACT_SCALAR({{ data_field }}, '$.destToken') AS destToken,
