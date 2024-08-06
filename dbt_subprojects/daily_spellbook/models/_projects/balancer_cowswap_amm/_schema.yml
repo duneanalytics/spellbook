@@ -3,12 +3,12 @@ version: 2
 models:
   - name: balancer_cowswap_amm_trades
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, gnosis
       sector: trades
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['balancer', 'cowswap', 'ethereum', 'amm', 'trades']
+      tags: ['balancer', 'cowswap', 'ethereum', 'gnosis', 'amm', 'trades']
     description: "Trades on Balancer CoWSwap AMM pools"
     columns:
       - &blockchain
@@ -89,11 +89,11 @@ models:
 
   - name: balancer_cowswap_amm_balances
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, gnosis
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'balancer', 'balances']
+      tags: ['ethereum', 'gnosis', 'balancer', 'balances']
     description: >
       ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
     columns:
@@ -114,12 +114,12 @@ models:
 
   - name: labels_balancer_cowswap_amm_pools
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, gnosis
       sector: labels
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['labels', 'ethereum', 'balancer', 'pools']
+      tags: ['labels', 'ethereum', 'gnosis', 'balancer', 'pools']
     description: "Balancer CoWSwap AMM liquidity pools created on Ethereum."
     columns:
       - *blockchain
@@ -153,11 +153,11 @@ models:
 
   - name: balancer_cowswap_amm_liquidity
     meta:
-      blockchain: ethereum
+      blockchain: ethereum, gnosis
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'balancer', 'pools', 'liquidity']
+      tags: ['ethereum', 'gnosis', 'balancer', 'pools', 'liquidity']
     description: >
       Balancer CoWSwap AMM pools liquidity by token in Ethereum.
     columns:

@@ -21,3 +21,19 @@ sources:
     tables:
       - name: jelly_swap_pools_sei     
       - name: addresses
+      
+  - name: evms
+    description: "Cross-chain EVM raw data"
+    tables:
+      - name: info
+        description: "Blockchain metadata for all EVM compatible chains"
+      - name: evm_smart_account_method_ids
+      - name: base_evm_smart_account_method_ids
+
+  - name: ethereum
+    tables:
+      - name: blobs_submissions
+      
+  - name: gas
+    tables:
+      - name: fees
