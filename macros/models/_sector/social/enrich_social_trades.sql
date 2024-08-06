@@ -1,8 +1,9 @@
 {% macro enrich_social_trades(base_trades) %}
 
-SELECT 
+SELECT
     t.blockchain AS blockchain
     , CAST(date_trunc('month', t.block_time) AS date) AS block_month
+    , t.block_date
     , t.block_time
     , t.block_number
     , t.project
@@ -23,12 +24,12 @@ SELECT
     , t.evt_index
     , t.contract_address
 FROM {{ base_trades }} t
-INNER JOIN {{ref('evms_info')}} info
+INNER JOIN {{ source('evms','info') }} info
     ON info.blockchain = t.blockchain
 LEFT JOIN {{source('tokens', 'erc20')}} tok
     ON tok.blockchain = t.blockchain
     AND tok.contract_address = t.currency_contract
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu
+LEFT JOIN {{ source('prices','usd_forward_fill') }} pu
     ON pu.blockchain = t.blockchain
     AND (
         pu.contract_address=info.wrapped_native_token_address
