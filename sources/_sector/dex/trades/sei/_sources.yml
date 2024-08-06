@@ -24,3 +24,6 @@ sources:
     tables:
       - name: XeiV3Factory_evt_PoolCreated
       - name: XeiV3Pool_evt_Swap
+  - name: carbon_defi_sei
+    tables:
+      - name: CarbonController_evt_TokensTraded
