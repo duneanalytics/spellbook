@@ -5,8 +5,8 @@
                   call_tx_hash,                  
                   contract_address as project_contract_address,                  
                   call_trace_address,
-                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[1], '$.order'), '$.makerAsset') as srcToken, 
-                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[1], '$.order'), '$.takerAsset') as destToken, 
+                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[1], '$.order'), '$.takerAsset') as srcToken, 
+                  JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(orders[1], '$.order'), '$.makerAsset') as destToken, 
                   try_cast(
                     JSON_EXTRACT_SCALAR(data, '$.fromAmount') as uint256
                   ) AS fromAmount,
