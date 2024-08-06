@@ -4,7 +4,9 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['epoch', 'stake_account', 'vote_account'])
+    , unique_key = ['epoch', 'epoch_time', 'stake_account', 'vote_account']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.epoch_time')]
+)
 }}
 
 --don't expose this table in DE
@@ -18,11 +20,12 @@ with
             , vote.stake_account
             , max_by(vote.vote_account, vote.block_time) as vote_account --latest delegated vote before epoch started. then get the rewards from accounts per epoch.
         FROM {{ ref('staking_solana_stake_account_delegations') }} vote
-        LEFT JOIN {{ ref('solana_utils_epochs') }} epoch ON first_block_epoch = true --cross join
+        LEFT JOIN {{ ref('solana_utils_epochs') }} epoch
+            ON first_block_epoch = true --cross join
+            {% if is_incremental() %}
+            AND {{incremental_predicate('epoch.block_time')}}
+            {% endif %}
         WHERE vote.block_slot < epoch.block_slot --only get changes to accounts before start of epoch
-        {% if is_incremental() %}
-        AND {{incremental_predicate('epoch.block_time')}}
-        {% endif %}
         GROUP BY 1,2,3,4,5
     )
 

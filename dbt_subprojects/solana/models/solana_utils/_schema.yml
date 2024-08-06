@@ -30,6 +30,8 @@ models:
     columns:
       - name: block_time
       - name: block_slot
+        tests:
+          - unique
       - name: epoch
       - name: first_block_epoch
       - name: epoch_progress
