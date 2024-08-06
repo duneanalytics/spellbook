@@ -94,7 +94,7 @@ market_list as (
     select distinct * from joined_data
     where asset is not null
     {% if is_incremental() %}
-    and m.market not in (select m.market from {{ this }})
+    and market not in (select market from {{ this }})
     {% endif %} 
 )
 
