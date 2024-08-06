@@ -11,6 +11,9 @@ models:
       tags: ['table', 'funded', 'addresses_events', 'celo']
     description: "Table showing who first funded each Celo address in CELO"
     tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
       - check_seed:
           seed_file: ref('first_funded_by_seed')
           filter:
@@ -29,6 +32,8 @@ models:
         description: "Concerned Celo address"
         tests:
           - unique
+      - name: first_funding_executed_by
+        description: "Which address executed the first funding tx"
       - name: first_funded_by
         description: "Which Celo address first funded the address with CELO"
       - name: block_time

@@ -11,6 +11,9 @@ models:
       tags: ['table', 'funded', 'addresses_events', 'optimism']
     description: "Table showing who first funded each Optimism address in ETH"
     tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
       - check_seed:
           seed_file: ref('first_funded_by_seed')
           filter:
@@ -28,6 +31,8 @@ models:
         description: "Concerned Optimism address"
         tests:
           - unique
+      - name: first_funding_executed_by
+        description: "Which address executed the first funding tx"
       - name: first_funded_by
         description: "Which Optimism address first funded the address with ETH"
       - name: block_time
@@ -36,6 +41,10 @@ models:
         description: "The block number on which the address was first funded with ETH"
       - name: tx_hash
         description: "The transaction hash on which the address was first funded with ETH"
+      - name: tx_index
+        description: "The transaction index within the block on which the address was first funded with ETH"
+      - name: unique_key
+        description: "Unique transfer identifier key"
 
   - name: addresses_events_optimism_first_activity
     meta:

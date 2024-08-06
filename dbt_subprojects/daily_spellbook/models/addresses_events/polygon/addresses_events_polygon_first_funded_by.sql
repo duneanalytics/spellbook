@@ -1,5 +1,7 @@
+{% set blockchain = 'polygon' %}
+
 {{ config(
-    schema = 'addresses_events_polygon'
+    schema = 'addresses_events_' + blockchain
     
     , alias = 'first_funded_by'
     , materialized = 'incremental'
@@ -11,5 +13,6 @@
 
 
 {{addresses_events_first_funded_by(
-    blockchain='polygon'
+    blockchain = blockchain
+    , token_transfers = source('tokens_' + blockchain, 'transfers')
 )}}
