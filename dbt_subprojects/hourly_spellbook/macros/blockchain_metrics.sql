@@ -24,8 +24,6 @@ group by 1,2
     ,count(hash) as tx_count
     ,count_if(success) as tx_success_count
     ,cast(count(hash) as double)/(60.0*60.0) as tx_per_second
-    ,count(distinct "from") as active_addresses
-    ,count(distinct "to") filter (where "data" != 0x) as active_contracts
 from {{source(blockchain,'transactions')}}
 {% if is_incremental() %}
 where {{ incremental_predicate('block_time') }}
@@ -66,10 +64,7 @@ select
     ,cast(tx_success_count as double)/cast(tx_count as double) as tx_success_rate
     ,avg_block_time_seconds
     ,tx_per_second
-    ,active_addresses
     ,new_addresses
-    ,active_addresses - coalesce(new_addresses,0) as returning_addresses
-    ,active_contracts
     ,new_contracts
 from blocks
 left join transactions using (blockchain, block_hour)
