@@ -43,7 +43,6 @@ where et.success = true
     and et.gas_used > 10000  -- to ensure the setup call was successful. excludes e.g. setup calls with missing params that fallback
     {% if not is_incremental() %}
     and et.block_time > TIMESTAMP '{{project_start_date}}' -- for initial query optimisation
-    {% endif %}
-    {% if is_incremental() %}
-    and et.block_time > date_trunc('day', now() - interval '7' day)
+    {% else %}
+    and {{ incremental_predicate('et.block_time') }}
     {% endif %}
