@@ -60,7 +60,7 @@ where bytearray_substring(tr.input, 1, 4) in (
     and tr.call_type = 'delegatecall'
     {% if not is_incremental() %}
     and tr.block_time > TIMESTAMP '{{project_start_date}}' -- for initial query optimisation
-    {% endif %}
+    {% else %}
     {% if is_incremental() %}
     and tr.block_time > date_trunc('day', now() - interval '7' day)
     {% endif %}
