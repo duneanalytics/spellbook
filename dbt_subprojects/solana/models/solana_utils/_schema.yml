@@ -18,7 +18,26 @@ models:
         name: account_type
       - &updated_at
         name: updated_at
-  
+
+  - name: solana_utils_epochs
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','epoch']
+    description: >
+        epochs by block slot (432000 slots per epoch)
+    columns:
+      - name: block_time
+      - name: block_slot
+        tests:
+          - unique
+      - name: epoch
+      - name: first_block_epoch
+      - name: epoch_progress
+      - name: epoch_start_slot
+      - name: epoch_next_start_slot
+      
   - name: solana_utils_daily_balances
     meta:
       blockchain: solana
