@@ -26,18 +26,18 @@ AND tx.success
 WHERE {{incremental_predicate('tx.block_time')}}
 {% endif %}
 
---UNION ALL 
+UNION ALL 
 
---SELECT 
-    --ix.account_arguments[1] as vote_account
-    --, ix.account_arguments[2] as vote_identity
-    --, tx.block_time
---FROM {{ source('solana','vote_transactions') }} tx
---LEFT JOIN unnest(instructions) as ix ON true
---WHERE ix.executing_account = 'Vote111111111111111111111111111111111111111'
---AND cardinality(ix.account_arguments) >= 3
---AND bytearray_substring(from_base58(ix.data),1,1) = 0x04 --UpdateValidatorIdentity
---AND tx.success
---{% if is_incremental() %}
---WHERE {{incremental_predicate('tx.block_time')}}
---{% endif %}
+SELECT 
+    ix.account_arguments[1] as vote_account
+    , ix.account_arguments[2] as vote_identity
+    , tx.block_time
+FROM {{ source('solana','vote_transactions') }} tx
+LEFT JOIN unnest(instructions) as ix ON true
+WHERE ix.executing_account = 'Vote111111111111111111111111111111111111111'
+AND cardinality(ix.account_arguments) >= 3
+AND bytearray_substring(from_base58(ix.data),1,1) = 0x04 --UpdateValidatorIdentity
+AND tx.success
+{% if is_incremental() %}
+WHERE {{incremental_predicate('tx.block_time')}}
+{% endif %}
