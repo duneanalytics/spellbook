@@ -5,7 +5,6 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['epoch', 'epoch_time', 'stake_account', 'vote_account']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.epoch_time')]
 )
 }}
 
