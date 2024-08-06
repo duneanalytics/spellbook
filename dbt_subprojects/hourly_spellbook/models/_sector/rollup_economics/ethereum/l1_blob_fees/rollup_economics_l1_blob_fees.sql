@@ -1,9 +1,7 @@
 {{ config(
     schema = 'rollup_economics_ethereum'
     , alias = 'l1_blob_fees'
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy = 'merge'
+    , materialized = 'view'
     , unique_key = ['name', 'tx_hash']
 )}}
 
@@ -27,11 +25,7 @@ WITH blob_txs AS (
         AND p.blockchain IS NULL
         AND p.symbol = 'ETH'
         AND p.minute >= TIMESTAMP '2024-03-13' -- EIP-4844 launch date
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('b.block_time')}}
-    AND {{incremental_predicate('p.minute')}}
-    {% endif %}
-    AND b.blob_submitter_label IN (
+    WHERE b.blob_submitter_label IN (
         'Arbitrum'
         , 'Linea'
         , 'zkSync Era'

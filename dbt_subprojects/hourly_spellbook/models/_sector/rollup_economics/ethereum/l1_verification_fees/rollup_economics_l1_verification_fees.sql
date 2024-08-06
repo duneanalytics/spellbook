@@ -1,9 +1,7 @@
 {{ config(
     schema = 'rollup_economics'
     , alias = 'l1_verification_fees'
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy = 'merge'
+    , materialized = 'view'
     , unique_key = ['name', 'tx_hash']
 )}}
 
@@ -34,9 +32,6 @@ WITH base_union AS (
             , proof_size_mb
         FROM 
             {{ base_model }}
-        {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_time') }}
-        {% endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -64,7 +59,3 @@ INNER JOIN {{ source('prices', 'usd') }} p
     AND p.blockchain IS NULL
     AND p.symbol = 'ETH'
     AND p.minute >= TIMESTAMP '2021-05-29'
-{% if is_incremental() %}
-WHERE {{incremental_predicate('b.block_time')}}
-AND {{incremental_predicate('p.minute')}}
-{% endif %}
