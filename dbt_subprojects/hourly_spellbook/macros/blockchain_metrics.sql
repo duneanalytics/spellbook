@@ -71,5 +71,5 @@ from blocks
 left join transactions using (blockchain, block_hour)
 left join new_addresses using (blockchain, block_hour)
 left join new_contracts using (blockchain, block_hour)
-left join {{ source('evms','info') }} using blockchain
+left join {{ source('evms','info') }} using (blockchain)
 {% endmacro %}
