@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'gas_mantle',
     alias = 'fees',
     partition_by = ['block_month'],
