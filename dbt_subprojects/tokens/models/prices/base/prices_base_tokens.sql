@@ -137,6 +137,6 @@ FROM
     ('gme5-gme-base','base','GME',0xbeb0fd48c2ba0f1aacad2814605f09e08a96b94e, 9),
     ('brrr-bucci','base','BRRR',0x1e0bb24ed6c806c01ef2f880a4b91adb90099ea7, 18),
     ('bps-base-pro-shops','base','BPS',0xda761a290e01c69325d12d82ac402e5a73d62e81, 18),
-    ('trump-maga','base','MAGA',0x2e1d332893dc16124194e598a29866d2d5e8786b, 18),
+    ('trump-maga','base','TRUMP',0x2e1d332893dc16124194e598a29866d2d5e8786b, 18),
     ('donuts-the-simpsons','base','DONUTS',0xcc0733b7ba63b446624002441c4816d7fec8f4e0, 18) 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
