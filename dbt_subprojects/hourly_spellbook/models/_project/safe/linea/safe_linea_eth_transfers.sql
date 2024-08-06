@@ -42,8 +42,7 @@ from (
         and et.value > UINT256 '0' -- et.value is uint256 type
     {% if not is_incremental() %}
     where et.block_time > timestamp '{{project_start_date}}' -- for initial query optimisation
-    {% endif %}
-    {% if is_incremental() %}
+    {% else %}
     -- to prevent potential counterfactual safe deployment issues we take a bigger interval
     where et.block_time > date_trunc('day', now() - interval '10' day)
     {% endif %}
@@ -78,3 +77,7 @@ from (
 left join {{ source('prices', 'usd') }} p on p.blockchain is null
     and p.symbol = t.symbol
     and p.minute = date_trunc('minute', t.block_time)
+    {% if is_incremental() %}
+    -- to prevent potential counterfactual safe deployment issues we take a bigger interval
+    and p.minute > date_trunc('day', now() - interval '10' day)
+    {% endif %}
