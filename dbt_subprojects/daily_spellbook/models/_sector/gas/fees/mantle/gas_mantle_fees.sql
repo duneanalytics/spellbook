@@ -37,17 +37,18 @@ SELECT
      END AS gas_usage_percent,
      type as transaction_type
 FROM {{ source('mantle','transactions') }} txns
-JOIN {{ source('mantle','blocks') }} blocks ON blocks.number = txns.block_number
+INNER JOIN {{ source('mantle','blocks') }} blocks
+    ON blocks.number = txns.block_number
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('blocks.time') }}
+    {% endif %}
+LEFT JOIN {{ source('prices','usd') }} p
+    ON p.minute = date_trunc('minute', txns.block_time)
+    AND p.blockchain = 'mantle'
+    AND p.symbol = 'WETH'
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('p.minute') }}
+    {% endif %}
 {% if is_incremental() %}
-AND {{ incremental_predicate('txns.block_time') }}
-AND {{ incremental_predicate('blocks.time') }}
-{% endif %}
-LEFT JOIN {{ source('prices','usd') }} p ON p.minute = date_trunc('minute', block_time)
-AND p.blockchain = 'mantle'
-AND p.symbol = 'WETH'
-{% if is_incremental() %}
-AND {{ incremental_predicate('p.minute') }}
 WHERE {{ incremental_predicate('txns.block_time') }}
-AND {{ incremental_predicate('blocks.time') }}
-AND {{ incremental_predicate('p.minute') }}
 {% endif %}
