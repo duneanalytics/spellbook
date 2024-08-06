@@ -5,10 +5,6 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['name', 'tx_hash']
-    , post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "rollup_economics",
-                                    \'["lgingerich"]\') }}'
 )}}
 
 {% set base_models = [
