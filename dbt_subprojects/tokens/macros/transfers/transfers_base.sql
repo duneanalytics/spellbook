@@ -1,4 +1,4 @@
-{% macro transfers_base_new(blockchain, traces, transactions, erc20_transfers, native_contract_address = null) %}
+{% macro transfers_base(blockchain, traces, transactions, erc20_transfers, native_contract_address = null) %}
 {%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
 
 WITH transfers AS (
