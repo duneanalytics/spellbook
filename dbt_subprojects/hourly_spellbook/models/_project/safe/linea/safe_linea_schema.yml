@@ -9,6 +9,11 @@ models:
     config:
       tags: ['safe', 'linea']
     description: "Safe addresses"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
     columns:
       - &blockchain
         name: blockchain
@@ -37,6 +42,13 @@ models:
     config:
       tags: ['safe', 'transfers', 'linea']
     description: "Eth transfers for safes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+            - tx_hash
+            - trace_address
     columns:
       - *blockchain
       - &symbol
@@ -81,6 +93,12 @@ models:
     config:
       tags: ['safe', 'linea']
     description: "Safe transactions"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - trace_address
     columns:
       - *blockchain
       - *block_date
