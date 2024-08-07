@@ -2,11 +2,9 @@
   config(
         schema = 'solana_utils',
         alias = 'epochs',
-        materialized='incremental',
+        materialized='table',
         file_format = 'delta',
-        incremental_strategy = 'merge',
         unique_key = ['block_slot'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
@@ -25,9 +23,6 @@ with
                 order by slot desc) as last_block_epoch
             , slot % 432000 as epoch_progress --blocks into epoch. might not always start at 0 because of skipped block slots. remember "height" shows actual non-skipped blocks but epoch follows total blocks.
         FROM {{ source('solana','blocks') }}
-        {% if is_incremental() %}
-        WHERE {{incremental_predicate('time')}}
-        {% endif %}
     )
     
 SELECT 
