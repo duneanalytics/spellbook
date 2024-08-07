@@ -124,6 +124,7 @@
         , ('0x7dae51bd3e3376b8c7c4900e9107f12be3af1ba8', 'true', 'Mdex'                 , 'MdexRouter'              , ['bnb'])
         , ('0x80a64c6d7f12c47b7c66c5b4e20e72bc1fcd5d9e', 'true', 'Maestro'              , 'MaestroSniperBot'        , ['ethereum'])
         , ('0x013bb8a204499523ddf717e0abaa14e6dc849060', 'true', 'Maestro'              , 'MaestroSniperBot'        , ['base','bnb'])
+        , ('0xa6a147946facac9e0b99824870b36088764f969f', 'true', 'Maestro'              , 'MaestroSniperBot'        , ['arbitrum'])
         , ('0xbbf1ee38152e9d8e3470dc47947eaa65dca94913', 'true', 'Maverick'             , 'Router'                  , ['ethereum'])
         , ('0x39e098a153ad69834a9dac32f0fca92066ad03f4', 'true', 'Maverick'             , 'Router'                  , ['zksync'])
         , ('0xd53a9f3fae2bd46d35e9a30ba58112a585542869', 'true', 'Maverick'             , 'Router'                  , ['bnb'])
