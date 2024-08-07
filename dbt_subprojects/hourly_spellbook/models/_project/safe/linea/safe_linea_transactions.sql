@@ -1,7 +1,7 @@
 {{
     config(
         materialized='incremental',
-
+schema = 'safe_linea',
         alias= 'transactions',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'tx_hash', 'trace_address'],
