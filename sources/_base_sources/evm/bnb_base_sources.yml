@@ -4,14 +4,12 @@ sources:
   # bnb Tables
   - name: bnb
     description: "raw tables for the chain"
-    freshness:
-      warn_after: { count: 12, period: hour }
+    
     tables:
       - name: transactions
         meta:
           docs_slug: /evm/bnb/raw/transactions
           short_description: The transactions table contains detailed information about transactions on the network. 
-        loaded_at_field: block_time
         description: '{{ doc("bnb_transactions_doc") }}'
         
         columns:
@@ -84,7 +82,6 @@ sources:
         meta:
           docs_slug: /evm/bnb/raw/traces
           short_description: The traces table contains information about traces on the network.
-        loaded_at_field: block_time
         description: '{{ doc("bnb_traces_doc") }}'
         columns:
           - *block_date
@@ -135,7 +132,6 @@ sources:
         meta:
           docs_slug: /evm/bnb/decoded/traces_decoded
           short_description: The `bnb.traces_decoded` table contains decoded traces, including additional information bnbd on submitted smart contracts and their ABIs.
-        loaded_at_field: block_time
         description: '{{ doc("bnb_traces_decoded_doc") }}'
         columns:
           - *block_date
@@ -159,7 +155,6 @@ sources:
         meta:
           docs_slug: /evm/bnb/raw/logs
           short_description: The `bnb.logs` table contains information about event logs emitted by smart contracts on the bnb blockchain.
-        loaded_at_field: block_time
         description: '{{ doc("bnb_logs_doc") }}'
         columns:
           - *block_date
@@ -187,7 +182,6 @@ sources:
         meta:
           docs_slug: /evm/bnb/decoded/logs_decoded
           short_description: The `bnb.logs_decoded` table contains a subset of all logs for which Dune has the ABI.
-        loaded_at_field: block_time
         description: '{{ doc("bnb_logs_decoded_doc") }}'
         columns:
           - *block_date
@@ -285,7 +279,6 @@ sources:
         meta:
           docs_slug: /evm/bnb/raw/creation_traces
           short_description: The `bnb.creation_traces` table contains information about contract creation traces on the bnb blockchain. It includes details about newly created contracts, their creators, and the contract code.
-        loaded_at_field: block_time
         description: '{{ doc("bnb_creation_traces_doc") }}'
         columns:
           - *block_time

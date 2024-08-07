@@ -4,14 +4,12 @@ sources:
   # base Tables
   - name: base
     description: "raw tables for the chain"
-    freshness:
-      warn_after: { count: 12, period: hour }
+    
     tables:
       - name: transactions
         meta:
           docs_slug: /evm/base/raw/transactions
           short_description: The transactions table contains detailed information about transactions on the network. 
-        loaded_at_field: block_time
         description: '{{ doc("base_transactions_doc") }}'
         
         columns:
@@ -84,7 +82,6 @@ sources:
         meta:
           docs_slug: /evm/base/raw/traces
           short_description: The traces table contains information about traces on the network.
-        loaded_at_field: block_time
         description: '{{ doc("base_traces_doc") }}'
         columns:
           - *block_date
@@ -135,7 +132,6 @@ sources:
         meta:
           docs_slug: /evm/base/decoded/traces_decoded
           short_description: The `base.traces_decoded` table contains decoded traces, including additional information based on submitted smart contracts and their ABIs.
-        loaded_at_field: block_time
         description: '{{ doc("base_traces_decoded_doc") }}'
         columns:
           - *block_date
@@ -159,7 +155,6 @@ sources:
         meta:
           docs_slug: /evm/base/raw/logs
           short_description: The `base.logs` table contains information about event logs emitted by smart contracts on the base blockchain.
-        loaded_at_field: block_time
         description: '{{ doc("base_logs_doc") }}'
         columns:
           - *block_date
@@ -187,7 +182,6 @@ sources:
         meta:
           docs_slug: /evm/base/decoded/logs_decoded
           short_description: The `base.logs_decoded` table contains a subset of all logs for which Dune has the ABI.
-        loaded_at_field: block_time
         description: '{{ doc("base_logs_decoded_doc") }}'
         columns:
           - *block_date
@@ -285,7 +279,6 @@ sources:
         meta:
           docs_slug: /evm/base/raw/creation_traces
           short_description: The `base.creation_traces` table contains information about contract creation traces on the base blockchain. It includes details about newly created contracts, their creators, and the contract code.
-        loaded_at_field: block_time
         description: '{{ doc("base_creation_traces_doc") }}'
         columns:
           - *block_time

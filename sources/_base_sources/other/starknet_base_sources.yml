@@ -9,7 +9,7 @@ sources:
     tables:
       - name: transactions
         meta:
-          docs_slug: starknet/transactions
+          docs_slug: /starknet/transactions
           short_description: ''
         loaded_at_field: block_time
         description: '{{ doc("starknet_transactions_doc") }}'
@@ -128,7 +128,7 @@ sources:
             description: ''
       - name: blocks
         meta:
-          docs_slug: starknet/blocks
+          docs_slug: /starknet/blocks
           short_description: ''
         loaded_at_field: block_time
         description: '{{ doc("starknet_blocks_doc") }}'
@@ -163,7 +163,7 @@ sources:
             description: ''
       - name: events
         meta:
-          docs_slug: starknet/events
+          docs_slug: /starknet/events
           short_description: ''
         loaded_at_field: block_time
         description: '{{ doc("starknet_events_doc") }}'

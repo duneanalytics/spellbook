@@ -4,14 +4,12 @@ sources:
   # ethereum Tables
   - name: ethereum
     description: "raw tables for the chain"
-    freshness:
-      warn_after: { count: 12, period: hour }
+    
     tables:
       - name: transactions
         meta:
           docs_slug: /evm/ethereum/raw/transactions
           short_description: The transactions table contains detailed information about transactions on the network.
-        loaded_at_field: block_time
         description: '{{ doc("ethereum_transactions_doc") }}'
 
         columns:
@@ -84,7 +82,6 @@ sources:
         meta:
           docs_slug: /evm/ethereum/raw/traces
           short_description: The traces table contains information about traces on the network.
-        loaded_at_field: block_time
         description: '{{ doc("ethereum_traces_doc") }}'
         columns:
           - *block_date
@@ -135,7 +132,6 @@ sources:
         meta:
           docs_slug: /evm/ethereum/decoded/traces_decoded
           short_description: The `ethereum.traces_decoded` table contains decoded traces, including additional information ethereumd on submitted smart contracts and their ABIs.
-        loaded_at_field: block_time
         description: '{{ doc("ethereum_traces_decoded_doc") }}'
         columns:
           - *block_date
@@ -159,7 +155,6 @@ sources:
         meta:
           docs_slug: /evm/ethereum/raw/logs
           short_description: The `ethereum.logs` table contains information about event logs emitted by smart contracts on the ethereum blockchain.
-        loaded_at_field: block_time
         description: '{{ doc("ethereum_logs_doc") }}'
         columns:
           - *block_date
@@ -187,7 +182,6 @@ sources:
         meta:
           docs_slug: /evm/ethereum/decoded/logs_decoded
           short_description: The `ethereum.logs_decoded` table contains a subset of all logs for which Dune has the ABI.
-        loaded_at_field: block_time
         description: '{{ doc("ethereum_logs_decoded_doc") }}'
         columns:
           - *block_date
@@ -284,7 +278,6 @@ sources:
         meta:
           docs_slug: /evm/ethereum/raw/creation_traces
           short_description: The `ethereum.creation_traces` table contains information about contract creation traces on the ethereum blockchain. It includes details about newly created contracts, their creators, and the contract code.
-        loaded_at_field: block_time
         description: '{{ doc("ethereum_creation_traces_doc") }}'
         columns:
           - *block_time
@@ -301,7 +294,6 @@ sources:
         meta:
           docs_slug: /ethereum/withdrawals
           short_description: "This table contains information about withdrawals from the beacon chain to Ethereum Mainnet."
-        loaded_at_field: block_time
         description: '{{ doc("ethereum_withdrawals_doc") }}'
         columns:
           - name: block_time

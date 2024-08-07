@@ -4,14 +4,12 @@ sources:
   # Blast Tables
   - name: blast
     description: "raw tables for the chain"
-    freshness:
-      warn_after: { count: 12, period: hour }
+    
     tables:
       - name: transactions
         meta:
           docs_slug: /evm/blast/raw/transactions
           short_description: The transactions table contains detailed information about transactions on the network. 
-        loaded_at_field: block_time
         description: '{{ doc("blast_transactions_doc") }}'
         
         columns:
@@ -84,7 +82,6 @@ sources:
         meta:
           docs_slug: /evm/blast/raw/traces
           short_description: The traces table contains information about traces on the network.
-        loaded_at_field: block_time
         description: '{{ doc("blast_traces_doc") }}'
         columns:
           - *block_date
@@ -135,7 +132,6 @@ sources:
         meta:
           docs_slug: /evm/blast/decoded/traces_decoded
           short_description: The `blast.traces_decoded` table contains decoded traces, including additional information blastd on submitted smart contracts and their ABIs.
-        loaded_at_field: block_time
         description: '{{ doc("blast_traces_decoded_doc") }}'
         columns:
           - *block_date
@@ -159,7 +155,6 @@ sources:
         meta:
           docs_slug: /evm/blast/raw/logs
           short_description: The `blast.logs` table contains information about event logs emitted by smart contracts on the Blast blockchain.
-        loaded_at_field: block_time
         description: '{{ doc("blast_logs_doc") }}'
         columns:
           - *block_date
@@ -187,7 +182,6 @@ sources:
         meta:
           docs_slug: /evm/blast/decoded/logs_decoded
           short_description: The `blast.logs_decoded` table contains a subset of all logs for which Dune has the ABI.
-        loaded_at_field: block_time
         description: '{{ doc("blast_logs_decoded_doc") }}'
         columns:
           - *block_date
@@ -285,7 +279,6 @@ sources:
         meta:
           docs_slug: /evm/blast/raw/creation_traces
           short_description: The `blast.creation_traces` table contains information about contract creation traces on the Blast blockchain. It includes details about newly created contracts, their creators, and the contract code.
-        loaded_at_field: block_time
         description: '{{ doc("blast_creation_traces_doc") }}'
         columns:
           - *block_time

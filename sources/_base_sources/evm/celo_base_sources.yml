@@ -4,14 +4,12 @@ sources:
   # celo Tables
   - name: celo
     description: "raw tables for the chain"
-    freshness:
-      warn_after: { count: 12, period: hour }
+    
     tables:
       - name: transactions
         meta:
           docs_slug: /evm/celo/raw/transactions
           short_description: The transactions table contains detailed information about transactions on the network. 
-        loaded_at_field: block_time
         description: '{{ doc("celo_transactions_doc") }}'
         
         columns:
@@ -84,7 +82,6 @@ sources:
         meta:
           docs_slug: /evm/celo/raw/traces
           short_description: The traces table contains information about traces on the network.
-        loaded_at_field: block_time
         description: '{{ doc("celo_traces_doc") }}'
         columns:
           - *block_date
@@ -135,7 +132,6 @@ sources:
         meta:
           docs_slug: /evm/celo/decoded/traces_decoded
           short_description: The `celo.traces_decoded` table contains decoded traces, including additional information celod on submitted smart contracts and their ABIs.
-        loaded_at_field: block_time
         description: '{{ doc("celo_traces_decoded_doc") }}'
         columns:
           - *block_date
@@ -159,7 +155,6 @@ sources:
         meta:
           docs_slug: /evm/celo/raw/logs
           short_description: The `celo.logs` table contains information about event logs emitted by smart contracts on the celo blockchain.
-        loaded_at_field: block_time
         description: '{{ doc("celo_logs_doc") }}'
         columns:
           - *block_date
@@ -187,7 +182,6 @@ sources:
         meta:
           docs_slug: /evm/celo/decoded/logs_decoded
           short_description: The `celo.logs_decoded` table contains a subset of all logs for which Dune has the ABI.
-        loaded_at_field: block_time
         description: '{{ doc("celo_logs_decoded_doc") }}'
         columns:
           - *block_date
@@ -285,7 +279,6 @@ sources:
         meta:
           docs_slug: /evm/celo/raw/creation_traces
           short_description: The `celo.creation_traces` table contains information about contract creation traces on the celo blockchain. It includes details about newly created contracts, their creators, and the contract code.
-        loaded_at_field: block_time
         description: '{{ doc("celo_creation_traces_doc") }}'
         columns:
           - *block_time
