@@ -10,7 +10,7 @@
 )
 }}
 
-{{transfers_base_new(
+{{transfers_base(
     blockchain='gnosis',
     traces = source('gnosis','traces'),
     transactions = source('gnosis','transactions'),
