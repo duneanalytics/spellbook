@@ -28,6 +28,7 @@
      , ('zkevm', source('erc721_zkevm', 'evt_Approval'))
      , ('blast', source('erc721_blast', 'evt_Approval'))
      , ('mantle', source('erc721_mantle', 'evt_Approval'))
+     , ('sei', source('erc721_sei', 'evt_Approval'))
 ] %}
 
 SELECT *
