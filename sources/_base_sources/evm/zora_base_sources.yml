@@ -207,9 +207,6 @@ sources:
         meta:
           docs_slug: /evm/zora/raw/blocks
           short_description: The `zora.blocks` table contains information about zora blocks. Each row represents a single block.
-        freshness:
-          warn_after: { count: 1, period: day }
-        loaded_at_field: time
         description: '{{ doc("zora_blocks_doc") }}'
         columns:
           - name: zora_fee_per_gas
@@ -245,10 +242,6 @@ sources:
         meta:
           docs_slug: /evm/zora/raw/contracts
           short_description: The `zora.contracts` table tracks decoded contracts on zora, including associated metadata such as namespace, name, address, ABI. It is populated manually by the Dune Community via [contract decoding submissions](https://dune.com/contracts/new).
-        freshness:
-          warn_after: { count: 1, period: day }
-          error_after: { count: 3, period: day }
-        loaded_at_field: created_at
         description: '{{ doc("zora_contracts_doc") }}'
         columns:
           - name: abi_id
@@ -301,11 +294,7 @@ sources:
         meta:
           docs_slug: /evm/zora/decoded/interfaces/erc20/evt_transfer
           short_description: This table contains individual transfer events for ERC20 tokens on the zora blockchain. Each row represents a single token transfer event.
-        loaded_at_field: evt_block_time
         description: '{{ doc("erc20_zora_evt_transfer_doc") }}'
-        freshness:
-          warn_after: { count: 12, period: hour }
-          error_after: { count: 24, period: hour }
         columns:
           - name: contract_address
             description: "Address of the ERC20 token contract that emitted this event"
@@ -330,7 +319,6 @@ sources:
         meta:
           docs_slug: /evm/zora/decoded/interfaces/erc20/evt_approval
           short_description: The `zora.evt_approval` table contains approval events for ERC20 tokens on zora, allowing an address to spend tokens on behalf of the owner.
-        loaded_at_field: evt_block_time
         description: '{{ doc("erc20_zora_evt_approval_doc") }}'
         columns:
           - name: contract_address
@@ -353,7 +341,6 @@ sources:
         meta:
           docs_slug: /evm/zora/decoded/interfaces/erc1155/evt_transfersingle
           short_description: This table contains single transfer events for ERC1155 tokens on the network.
-        loaded_at_field: evt_block_time
         description: '{{ doc("erc1155_zora_evt_transfersingle_doc") }}'
         columns:
           - name: contract_address
@@ -374,7 +361,6 @@ sources:
         meta:
           docs_slug: /evm/zora/decoded/interfaces/erc1155/evt_transferbatch
           short_description: This table contains all batch transfer events for ERC1155 tokens on the network.
-        loaded_at_field: evt_block_time
         description: '{{ doc("erc1155_zora_evt_transferbatch_doc") }}'
         columns:
           - name: contract_address
@@ -395,7 +381,6 @@ sources:
         meta:
           docs_slug: /evm/zora/decoded/interfaces/erc1155/evt_ApprovalForAll
           short_description: This table contains approval events for all tokens of an ERC1155 contract on this network.
-        loaded_at_field: evt_block_time
         description: '{{ doc("erc1155_zora_evt_ApprovalForAll_doc") }}'
         columns:
           - name: contract_address
@@ -417,7 +402,6 @@ sources:
     description: '{{ doc("erc721_zora_evt_transfer_doc") }}'
     tables:
       - name: evt_transfer
-        loaded_at_field: evt_block_time
         description: "Transfer events for ERC721 tokens on this network"
         columns:
           - name: contract_address
@@ -434,7 +418,6 @@ sources:
         meta:
           docs_slug: /evm/zora/decoded/interfaces/erc721/evt_Approval
           short_description: "Approval events for ERC721 tokens on this network"
-        loaded_at_field: evt_block_time
         description: '{{ doc("erc721_zora_evt_Approval_doc") }}'
         columns:
           - name: contract_address
@@ -451,7 +434,6 @@ sources:
         meta:
           docs_slug: /evm/zora/decoded/interfaces/erc721/evt_ApprovalForAll
           short_description: The `zora.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the zora blockchain.
-        loaded_at_field: evt_block_time
         description: '{{ doc("erc721_zora_evt_ApprovalForAll_doc") }}'
         columns:
           - name: contract_address

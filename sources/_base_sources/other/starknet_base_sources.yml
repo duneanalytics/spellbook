@@ -2,16 +2,11 @@ version: 2
 sources:
   - name: starknet
     description: tables in the starknet schema
-    freshness:
-      warn_after:
-        count: 12
-        period: hour
     tables:
       - name: transactions
         meta:
           docs_slug: /starknet/transactions
           short_description: 'Table containing detailed information about Starknet transactions'
-        loaded_at_field: block_time
         description: '{{ doc("starknet_transactions_doc") }}'
         columns:
           - name: block_date
@@ -130,7 +125,6 @@ sources:
         meta:
           docs_slug: /starknet/blocks
           short_description: 'Table containing information about Starknet blocks'
-        loaded_at_field: block_time
         description: '{{ doc("starknet_blocks_doc") }}'
         columns:
           - name: date
@@ -165,7 +159,6 @@ sources:
         meta:
           docs_slug: /starknet/events
           short_description: 'Table containing information about events emitted on Starknet'
-        loaded_at_field: block_time
         description: '{{ doc("starknet_events_doc") }}'
         columns:
           - name: block_date

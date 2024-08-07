@@ -3,14 +3,11 @@ version: 2
 sources:
   # Base Tables
   - name: solana
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: transactions
         meta:
           docs_slug: /solana/transactions
           short_description: The 'solana.transactions' table contains detailed information about transactions on the Solana blockchain, including account keys, block data, transaction data, and more.
-        loaded_at_field: block_time
         description: '{{ doc("solana_transactions_doc") }}'
         columns:
           - name: account_keys
@@ -63,7 +60,6 @@ sources:
             description: "Success"
 
       - name: rewards
-        loaded_at_field: block_time
         description: '{{ doc("solana_rewards_doc") }}'
         meta:
           docs_slug: /solana/rewards
@@ -87,7 +83,6 @@ sources:
             description: "Vote account commission when the reward was credited, only present for voting and staking rewards"
 
       - name: account_activity
-        loaded_at_field: block_time
         description: '{{ doc("solana_account_activity_doc") }}'
         meta:
           docs_slug: /solana/account_activity
@@ -127,7 +122,6 @@ sources:
             description: "The address of the mint token associated with this account"
 
       - name: instruction_calls
-        loaded_at_field: block_time
         description: '{{ doc("solana_instruction_calls_doc") }}'
         columns:
           - *block_slot

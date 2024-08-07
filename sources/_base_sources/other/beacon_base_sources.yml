@@ -4,14 +4,11 @@ sources:
   # Beacon chain tables
   - name: beacon
     description: "Ethereum mainnet beacon chain raw tables."
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: blobs
         meta:
           docs_slug: /evm/ethereum/beacon/blobs
           short_description: The `beacon.blobs` table contains information about blobs on the Ethereum mainnet beacon chain, introduced with EIP-4844.
-        loaded_at_field: block_time
         description: '{{ doc("beacon_blobs_doc") }}'
         columns:
           - &block_date
@@ -43,9 +40,6 @@ sources:
         meta:
           docs_slug: /evm/ethereum/beacon/beacon_blocks
           short_description: The `beacon.blocks` table contains information about blocks on the Ethereum mainnet beacon chain.
-        freshness:
-          warn_after: { count: 1, period: day }
-        loaded_at_field: block_time
         description: '{{ doc("beacon_blocks_doc") }}'
         columns:
           - *block_date
@@ -67,7 +61,6 @@ sources:
         meta:
           docs_slug: /evm/ethereum/beacon/beacon_attestations
           short_description: The `beacon.attestations` table contains information about attestations on the Ethereum mainnet beacon chain.
-        loaded_at_field: block_time
         description: '{{ doc("beacon_attestations_doc") }}'
         columns:
           - *block_date
@@ -89,10 +82,6 @@ sources:
         meta:
           docs_slug: /evm/ethereum/beacon/beacon_validators
           short_description: The `beacon.validators` table contains information about validators on the Ethereum mainnet beacon chain.
-        freshness:
-          warn_after: { count: 1, period: day }
-          error_after: { count: 3, period: day }
-        loaded_at_field: last_update_time
         description: '{{ doc("beacon_validators_doc") }}'
         columns:
           - name: validator_index
