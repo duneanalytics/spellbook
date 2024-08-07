@@ -7,6 +7,5 @@ sources:
       - name: stake_call_Merge
       - name: stake_call_Withdraw
       - name: stake_call_Split
-        loaded_at_field: evt_block_time
       - name: stake_call_Initialize
       - name: stake_call_InitializeChecked
