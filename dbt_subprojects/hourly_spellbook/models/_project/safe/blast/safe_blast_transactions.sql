@@ -51,6 +51,9 @@ join {{ ref('safe_blast_singletons') }} ss
     on tr.to = ss.address
 join {{ source('blast', 'transactions') }} et
     on tr.tx_hash = et.hash
+    {% if is_incremental() %}
+    and {{ incremental_predicate('et.block_time') }}
+    {% endif %}
     and tr.block_number = et.block_number
 where bytearray_substring(tr.input, 1, 4) in (
         0x6a761202, -- execTransaction
