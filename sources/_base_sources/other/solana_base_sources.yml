@@ -4,6 +4,8 @@ sources:
   # Base Tables
   - name: solana
     tables:
+      - name: blocks
+        loaded_at_field: time
       - name: transactions
         meta:
           docs_slug: /solana/transactions

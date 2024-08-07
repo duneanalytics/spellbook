@@ -25,7 +25,7 @@ model-paths: ["models", "../../sources"]
 # ../tests/* should be added to a separate shared folder
 test-paths: ["tests"]
 seed-paths: ["seeds"]
-macro-paths: ["macros", "../../macros"]
+macro-paths: ["macros", "../../dbt_macros"]
 
 target-path: "target" # directory which will store compiled SQL files
 clean-targets: # directories to be removed by `dbt clean`
