@@ -56,7 +56,6 @@ FROM (
       ,tx_to
       ,trace_address
       ,evt_index
-      ,type
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
