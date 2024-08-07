@@ -1,10 +1,6 @@
 {{ config(
         schema = 'airdrop_zksync',
-        alias = 'claims',
-        post_hook='{{ expose_spells(\'["zksync"]\',
-                                      "sector",
-                                      "airdrop",
-                                    \'["lgingerich"]\') }}'
+        alias = 'claims'
     )
 }}
 
