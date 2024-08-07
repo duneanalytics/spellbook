@@ -14,3 +14,7 @@ sources:
         loaded_at_field: evt_block_time
       - name: stake_call_Split
         loaded_at_field: evt_block_time
+      - name: stake_call_Initialize
+        loaded_at_field: evt_block_time
+      - name: stake_call_InitializeChecked
+        loaded_at_field: evt_block_time
