@@ -2,11 +2,8 @@ version: 2
 
 sources:
   - name: erc20_bnb
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: evt_Transfer
-        loaded_at_field: evt_block_time
         description: "WBNB deposits"
         columns:
           - &contract_address
@@ -35,11 +32,8 @@ sources:
             description: "Raw amount of BEP20 token"
 
   - name: bnb_bnb
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: WBNB_evt_Deposit
-        loaded_at_field: evt_block_time
         description: "WBNB deposits"
         columns:
           - *contract_address
@@ -55,7 +49,6 @@ sources:
             description: "Raw amount of WBNB"
 
       - name: WBNB_evt_Withdrawal
-        loaded_at_field: evt_block_time
         description: "WBNB withdrawals"
         columns:
           - *contract_address

@@ -2,11 +2,8 @@ version: 2
 
 sources:
   - name: wavax_avalanche_c
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: wavax_evt_deposit
-        loaded_at_field: evt_block_time
         description: "wavax deposits"
         columns:
           - &contract_address
@@ -32,7 +29,6 @@ sources:
             description: "Raw amount of wavax"
             
       - name: wavax_evt_withdrawal
-        loaded_at_field: evt_block_time
         description: "wavax withdrawals"
         columns:
           - *contract_address

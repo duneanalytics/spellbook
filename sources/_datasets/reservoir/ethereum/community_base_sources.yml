@@ -7,7 +7,7 @@ sources:
     tables:
       - name: collections
       - name: collection_floor_ask_events
-        loaded_at_field: created_at
+
         description: "todo: add reservoir table description!"
         columns:
           - name: created_at

@@ -5,7 +5,6 @@ sources:
     description: "Transfers events for ERC20 tokens on gnosis."
     tables:
       - name: evt_Transfer
-        loaded_at_field: evt_block_time
         description: "Transfers events for ERC20 tokens on gnosis."
         columns:
           - &contract_address
