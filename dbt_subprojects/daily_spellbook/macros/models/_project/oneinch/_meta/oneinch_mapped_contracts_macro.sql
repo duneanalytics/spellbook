@@ -351,6 +351,7 @@
         , ('0x41d7b3abcfecf1f1b4b1b962da8f086114b6cc5a', 'false', 'Native'              , 'NativeRouterV1'          , ['base'])
         , ('0xc6f7a7ba5388bfb5774bfaa87d350b7793fd9ef1', 'false', 'Native'              , 'NativeRouterV1'          , ['mantle'])
         , ('0xd315a9c38ec871068fec378e4ce78af528c76293', 'false', 'Swaap'               , 'Vault'                   , ['ethereum','polygon','arbitrum'])
+        , ('0x03C01Acae3D0173a93d819efDc832C7C4F153B06', 'false', 'Swaap'               , 'Vault'                   , ['bnb','base'])
         , ('0xa57bd00134b2850b2a1c55860c9e9ea100fdd6cf', 'false', 'MEVBot'              , 'MEVBot'                  , ['ethereum'])
         , ('0xa69babef1ca67a37ffaf7a485dfff3382056e78c', 'false', 'MEVBot'              , 'MEVBot'                  , ['ethereum'])
         , ('0x00000000003b3cc22af3ae1eac0440bcee416b40', 'false', 'MEVBot'              , 'MEVBot'                  , ['ethereum'])

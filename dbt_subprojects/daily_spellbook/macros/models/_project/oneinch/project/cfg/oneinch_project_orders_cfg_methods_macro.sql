@@ -255,6 +255,8 @@
             "0x5dc7b981": {
                 "name":             "exactInput",
                 "event":            "null",
+                "_order_beginning": "4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8))",
+                "_order_length":    "bytearray_to_bigint(substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 24 + 1, 8))",
                 "maker":            "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 1, 20)",
                 "taker":            "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
                 "maker_asset":      "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 24 + 1, 8)) / 32 * 32 - 32*6 - 18 + 1, 20)",
