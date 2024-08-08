@@ -288,6 +288,7 @@ results_usd AS (
             THEN varbinary_substring(taker_indicator_string, 18,20) ELSE taker END AS taker,
         maker,
         tag,
+        zid,
         tx_hash,
         tx_from,
         tx_to,

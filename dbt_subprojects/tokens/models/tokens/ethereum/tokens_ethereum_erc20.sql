@@ -4587,4 +4587,5 @@ FROM (VALUES
     , ( 0x63a0964A36c34E81959da5894ad888800e17405b, 'ShezETH', 18)
     , ( 0xDfFb77dB95E16B791178D28CF994b13E84036076, 'BLU', 18)
     , ( 0x866a2bf4e572cbcf37d5071a7a58503bfb36be1b, 'M', 6)
+    , ( 0x20157dbabb84e3bbfe68c349d0d44e48ae7b5ad2, 'dlcBTC', 8)    
 ) AS temp_table (contract_address, symbol, decimals)
