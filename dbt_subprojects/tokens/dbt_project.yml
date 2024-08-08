@@ -31,12 +31,6 @@ clean-targets: # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
-# Configuring tests
-# Full documentation: https://docs.getdbt.com/reference/test-configs
-tests:
-  tokens:
-    +store_failures: true  # store failures for all tests
-
 # defining search order of macro invokation
 dispatch:
   - macro_namespace: dbt_utils
