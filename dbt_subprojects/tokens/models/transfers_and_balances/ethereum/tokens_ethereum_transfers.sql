@@ -14,6 +14,8 @@
 )
 }}
 
+--trigger CI
+
 {{
     transfers_enrich(
         base_transfers = ref('tokens_ethereum_base_transfers')
