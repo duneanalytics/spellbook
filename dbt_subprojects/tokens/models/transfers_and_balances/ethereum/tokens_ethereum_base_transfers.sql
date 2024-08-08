@@ -10,6 +10,8 @@
     )
 }}
 
+-- trigger CI as well
+
 {{transfers_base(
     blockchain='ethereum',
     traces = source('ethereum','traces'),
