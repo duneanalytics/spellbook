@@ -275,7 +275,7 @@
         , ('0xe80bf394d190851e215d5f67b67f8f5a52783f1e', 'true', 'Uniswap'              , 'UniswapX'                , ['ethereum'])
         , ('0x6000da47483062a0d734ba3dc7576ce6a0b645c4', 'true', 'Uniswap'              , 'UniswapX'                , ['ethereum'])
         , ('0x00000011f84b9aa48e5f8aa8b9897600006289be', 'true', 'Uniswap'              , 'UniswapX'                , ['ethereum'])
-        
+        , ('0x1bd1aAdc9E230626C44a139d7E70d842749351eb', 'true', 'Uniswap'              , 'UniswapX'                , ['arbitrum'])
         , ('0x9c12939390052919af3155f41bf4160fd3666a6f', 'true', 'Velodrome'            , 'Router'                  , ['optimism'])
         , ('0xa132dab612db5cb9fc9ac426a0cc215a3423f9c9', 'true', 'Velodrome'            , 'Router'                  , ['optimism'])
         , ('0x777777773fdd8b28bb03377d10fcea75ad9768da', 'true', 'Viarouter'            , 'ViaRouter'               , ['polygon','arbitrum','optimism'])
