@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: paintswap_fantom
+    tables:
+      - name: PaintSwapMarketplaceV3_evt_Sold
