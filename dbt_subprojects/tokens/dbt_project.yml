@@ -37,14 +37,6 @@ tests:
   tokens:
     +store_failures: true  # store failures for all tests
 
-# Configuring seeds
-# Full documentation: https://docs.getdbt.com/reference/seed-configs
-# For configuring individual seeds (e.g. overriding column types) we recommend a yml file nested in the same folder as the seed
-# example: seeds/cryptopunks/schema.yml
-seeds:
-  tokens:
-    +schema: test_data
-
 # defining search order of macro invokation
 dispatch:
   - macro_namespace: dbt_utils
