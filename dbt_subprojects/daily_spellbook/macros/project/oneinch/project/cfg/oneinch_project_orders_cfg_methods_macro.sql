@@ -255,9 +255,11 @@
             "0x5dc7b981": {
                 "name":             "exactInput",
                 "event":            "null",
+                "_order_beginning": "4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8))",
+                "_order_length":    "bytearray_to_bigint(substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 24 + 1, 8))",
                 "maker":            "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 1, 20)",
                 "taker":            "substr(input   , 4 + 32*2 + 12 + 1         , 20)",
-                "maker_asset":      "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*14 + 5 + 1, 20)",
+                "maker_asset":      "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 24 + 1, 8)) / 32 * 32 - 32*6 - 18 + 1, 20)",
                 "taker_asset":      "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 20*4 + 1, 20)",
                 "making_amount":    "substr(output  , 32*0 + 1                  , 32)",
                 "taking_amount":    "substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*1 + 24 + 1, 8)) + 32*2 + 20*5 + 32*1 + 1, 32)",
