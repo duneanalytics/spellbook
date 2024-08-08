@@ -4,7 +4,6 @@ sources:
   - name: tornado_cash_polygon
     tables:
       - name: TornadoCashMatic_evt_Deposit
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
           - name: evt_tx_hash
@@ -15,7 +14,6 @@ sources:
           - name: leafIndex
           - name: timestamp
       - name: TornadoCashMatic_evt_Withdrawal
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
           - name: evt_tx_hash

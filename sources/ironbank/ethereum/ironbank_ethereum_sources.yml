@@ -5,7 +5,6 @@ sources:
     description: "decoded events and function calls for ironbank on ethereum"
     tables:
       - name: CErc20Delegator_evt_Borrow
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - &contract_address
@@ -36,7 +35,6 @@ sources:
             name: totalBorrows
             description: "The total borrows with interest"
       - name: CErc20Delegator_evt_Mint
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - *contract_address
@@ -54,7 +52,6 @@ sources:
             name: mintTokens
             description: "the number of iTokens to be minted"
       - name: CErc20Delegator_evt_RepayBorrow
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - *contract_address
@@ -72,7 +69,6 @@ sources:
           - *accountBorrows
           - *totalBorrows
       - name: CErc20Delegator_evt_Redeem
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - *contract_address
@@ -90,7 +86,6 @@ sources:
             name: redeemTokens
             description: "The number of iTokens to redeem into underlying"
       - name: CErc20Delegator_evt_LiquidateBorrow
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - *contract_address

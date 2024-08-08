@@ -4,4 +4,3 @@ sources:
   - name: stakewise_v3_ethereum
     tables:
       - name: VaultsRegistry_evt_VaultAdded
-        loaded_at_field: evt_block_time

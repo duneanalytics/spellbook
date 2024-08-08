@@ -3,8 +3,5 @@ version: 2
 sources:
   - name: arrakis_finance_ethereum
     description: "Ethereum decoded tables related to Arrakis Finance contracts"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: ArrakisV2Factory_evt_VaultCreated
-        loaded_at_field: evt_block_time

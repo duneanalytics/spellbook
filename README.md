@@ -199,7 +199,6 @@ models:
       error_after: { count: 24, period: hour }
     tables:
       - name: traces
-        loaded_at_field: block_time
 ```
 
 See links to more docs on dbt below.

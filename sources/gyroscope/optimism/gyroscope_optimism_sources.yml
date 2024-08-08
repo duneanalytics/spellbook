@@ -8,7 +8,6 @@ sources:
       - name: GyroECLPPoolFactory_evt_PoolCreated
         description: >
           Decoded table of gyroscope pool created
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'creator address'

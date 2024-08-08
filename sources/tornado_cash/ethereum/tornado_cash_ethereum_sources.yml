@@ -4,7 +4,6 @@ sources:
   - name: tornado_cash_ethereum
     tables:
       - name: erc20_evt_Deposit
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
           - name: evt_tx_hash
@@ -13,7 +12,6 @@ sources:
           - name: evt_block_number
           - name: commitment
       - name: eth_evt_Deposit
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
           - name: evt_tx_hash
@@ -22,7 +20,6 @@ sources:
           - name: evt_block_number
           - name: commitment
       - name: erc20_evt_Withdrawal
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
           - name: evt_tx_hash
@@ -34,7 +31,6 @@ sources:
           - name: relayer
           - name: to
       - name: eth_evt_Withdrawal
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
           - name: evt_tx_hash
@@ -46,7 +42,6 @@ sources:
           - name: relayer
           - name: to
       - name: ERC20Tornado_evt_Deposit
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
           - name: evt_tx_hash
@@ -58,7 +53,6 @@ sources:
           - name: relayer
           - name: to
       - name: ERC20Tornado_evt_Withdrawal
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
           - name: evt_tx_hash

@@ -3,11 +3,8 @@ version: 2
 sources:
   - name: mento_celo
     description: "Celo decoded tables related to Mento Protocol contacts"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: Exchange_evt_StableTokenSet
-        loaded_at_field: evt_block_time
         description: "Mento v1 cUSD"
         columns:
           - &contract_address
@@ -29,7 +26,6 @@ sources:
             description: "cUSD token address"
           
       - name: ExchangeEUR_evt_StableTokenSet
-        loaded_at_field: evt_block_time
         description: "Mento v1 cEUR"
         columns:
           - *contract_address
@@ -41,7 +37,6 @@ sources:
             description: "cEUR token address"
       
       - name: ExchangeBRL_evt_StableTokenSet
-        loaded_at_field: evt_block_time
         description: "Mento v1 cREAL"
         columns:
           - *contract_address
@@ -53,7 +48,6 @@ sources:
             description: "cREAL token address"
       
       - name: BiPoolManager_evt_ExchangeCreated
-        loaded_at_field: evt_block_time
         description: "Mento v2 BiPoolManager - exchange created event"
         columns:
           - &asset0
@@ -76,7 +70,6 @@ sources:
             description: "vAMM pricing module contract address"
       
       - name: BiPoolManager_evt_ExchangeDestroyed
-        loaded_at_field: evt_block_time
         description: "Mento v2 BiPoolManager - exchange destroyed event"
         columns:
           - *asset0

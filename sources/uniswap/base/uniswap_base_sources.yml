@@ -3,11 +3,8 @@ version: 2
 sources: 
   - name: uniswap_v3_base
     description: "Base decoded tables related to Uniswap v3 contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: UniswapV3Pool_evt_Swap
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - &amount1
@@ -36,7 +33,6 @@ sources:
             name: tick
 
       - name: UniswapV3Factory_evt_PoolCreated
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - *contract_address
@@ -57,11 +53,8 @@ sources:
 
   - name: uniswap_v2_base
     description: "base decoded tables related to Uniswap v2 contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: UniswapV2Pair_evt_Swap
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - &amount0In
@@ -82,7 +75,6 @@ sources:
             name: to
 
       - name: UniswapV2Factory_evt_PairCreated
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - &_0

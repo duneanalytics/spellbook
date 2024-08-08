@@ -3,35 +3,20 @@ version: 2
 sources:    
   - name: syncswap_zksync
     description: "Zksync decoded tables related to SyncSwap contract"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: SyncSwapClassicPool_evt_Mint
-        loaded_at_field: evt_block_time
       - name: SyncSwapClassicPool_evt_Burn
-        loaded_at_field: evt_block_time  
 
   - name: syncswap_v2_zksync
     description: "Zksync decoded tables related to SyncSwap V2 contract"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: SyncSwapAquaPool_evt_Mint
-        loaded_at_field: evt_block_time
       - name: SyncSwapAquaPool_evt_Burn
-        loaded_at_field: evt_block_time 
       
   - name: maverick_v1_zksync
     description: "Zksync decoded tables related to Maverick DEX contracts"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: pool_call_addLiquidity
-        loaded_at_field: call_block_time
       - name: pool_call_removeLiquidity
-        loaded_at_field: call_block_time
 
       

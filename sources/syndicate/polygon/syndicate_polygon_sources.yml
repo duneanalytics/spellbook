@@ -5,8 +5,5 @@ sources:
     description: "syndicate club created event"
     tables:
       - name: ERC20ClubFactory_evt_ERC20ClubCreated
-        loaded_at_field: evt_block_time
       - name: PolygonClubFactoryMATIC_evt_ERC20ClubCreated
-        loaded_at_field: evt_block_time
       - name: PolygonERC20ClubFactory_evt_ERC20ClubCreated
-        loaded_at_field: evt_block_time

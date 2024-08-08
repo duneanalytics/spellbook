@@ -8,7 +8,6 @@ sources:
       - name: Vault_evt_PoolRegistered
         description: >
           Decoded table of registered pools on the Balancer Vault contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
@@ -34,7 +33,6 @@ sources:
       - name: WeightedPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - &call_block_number
             name: call_block_number
@@ -77,7 +75,6 @@ sources:
       - name: Vault_evt_PoolBalanceChanged
         description: >
           Decoded table of pool balances changes record on the Balancer Vault contract on zkevm.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
@@ -99,7 +96,6 @@ sources:
       - name: Vault_evt_PoolBalanceManaged
         description: >
           Decoded table of transactions performed by asset managers on the Balancer Vault contract on zkevm.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
@@ -121,7 +117,6 @@ sources:
       - name: NoProtocolFeeLiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled
         description: >
           Decoded table related to scheduled gradual weight updates on the Balancer NoProtocolFeeLiquidityBootstrappingPool contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'LBP contract address'
@@ -135,12 +130,10 @@ sources:
           - name: startWeights
 
       - name: Vault_evt_FlashLoan
-        loaded_at_field: evt_block_time
 
       - name: ComposableStablePoolFactory_evt_PoolCreated
         description: >
           Decoded table of Composable Stable Pools created by the Composable Stable Pool Factory contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Composable Stable Pool Factory contract address.'
@@ -154,7 +147,6 @@ sources:
       - name: Vault_evt_TokensRegistered
         description: >
           Decoded table of tokens registered by pool with the Balancer Vault contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
@@ -169,7 +161,6 @@ sources:
             description: 'Address of the contract which managed the asset from the vault'
 
       - name: Vault_evt_Swap
-        loaded_at_field: evt_block_time
         description: ""
         columns:
           - name: amountIn

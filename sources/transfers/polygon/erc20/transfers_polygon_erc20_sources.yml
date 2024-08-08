@@ -2,11 +2,8 @@ version: 2
 
 sources:
   - name: mahadao_polygon
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: wmatic_evt_deposit
-        loaded_at_field: evt_block_time
         description: "wmatic deposits"
         columns:
           - &contract_address
@@ -32,7 +29,6 @@ sources:
             description: "Raw amount of wmatic"
             
       - name: wmatic_evt_withdrawal
-        loaded_at_field: evt_block_time
         description: "wmatic withdrawals"
         columns:
           - *contract_address

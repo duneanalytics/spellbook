@@ -1,0 +1,106 @@
+version: 2
+
+sources:
+  # Beacon chain tables
+  - name: beacon
+    description: "Ethereum mainnet beacon chain raw tables."
+    tables:
+      - name: blobs
+        meta:
+          docs_slug: /evm/ethereum/beacon/blobs
+          short_description: The `beacon.blobs` table contains information about blobs on the Ethereum mainnet beacon chain, introduced with EIP-4844.
+        description: '{{ doc("beacon_blobs_doc") }}'
+        columns:
+          - &block_date
+            name: block_date
+            description: "The UTC date of the block in which this blob was included"
+          - &block_time
+            name: block_time
+            description: "The exact UTC timestamp when the block containing this blob was proposed"
+          - &block_slot
+            name: block_slot
+            description: "The slot number in which this blob was included"
+          - &block_epoch
+            name: block_epoch
+            description: "The epoch number in which this blob was included"
+          - name: index
+            description: "Index of the blob within its block"
+          - name: proposer_index
+            description: "Index of the validator that proposed the block containing this blob"
+          - name: kzg_commitment
+            description: "KZG commitment for this blob, used for data availability and integrity verification"
+          - name: kzg_commitment_inclusion_proof
+            description: "Proof of inclusion for the KZG commitment in the block"
+          - name: kzg_proof
+            description: "KZG proof associated with this blob"
+          - name: blob
+            description: "The actual content of the blob"
+
+      - name: blocks
+        meta:
+          docs_slug: /evm/ethereum/beacon/beacon_blocks
+          short_description: The `beacon.blocks` table contains information about blocks on the Ethereum mainnet beacon chain.
+        description: '{{ doc("beacon_blocks_doc") }}'
+        columns:
+          - *block_date
+          - *block_time
+          - *block_slot
+          - *block_epoch
+          - name: proposer_index
+            description: "Index of the validator that proposed this block"
+          - name: parent_root
+            description: "Root hash of the parent block"
+          - name: state_root
+            description: "Root hash of the state after this block"
+          - name: body_root
+            description: "Root hash of the block body"
+          - name: signature
+            description: "BLS signature of the block proposer"
+
+      - name: attestations
+        meta:
+          docs_slug: /evm/ethereum/beacon/beacon_attestations
+          short_description: The `beacon.attestations` table contains information about attestations on the Ethereum mainnet beacon chain.
+        description: '{{ doc("beacon_attestations_doc") }}'
+        columns:
+          - *block_date
+          - *block_time
+          - *block_slot
+          - *block_epoch
+          - name: aggregation_bits
+            description: "Bitfield representing which validators have attested"
+          - name: beacon_block_root
+            description: "Root hash of the beacon block being attested to"
+          - name: source_epoch
+            description: "Source epoch for the attestation (previous justified epoch)"
+          - name: target_epoch
+            description: "Target epoch for the attestation (current epoch)"
+          - name: signature
+            description: "Aggregate signature of all attesters"
+
+      - name: validators
+        meta:
+          docs_slug: /evm/ethereum/beacon/beacon_validators
+          short_description: The `beacon.validators` table contains information about validators on the Ethereum mainnet beacon chain.
+        description: '{{ doc("beacon_validators_doc") }}'
+        columns:
+          - name: validator_index
+            description: "Unique index assigned to the validator"
+          - name: public_key
+            description: "BLS public key of the validator"
+          - name: balance
+            description: "Current balance of the validator in Gwei"
+          - name: effective_balance
+            description: "Effective balance used for rewards and penalties, capped at 32 ETH"
+          - name: slashed
+            description: "Boolean indicating if the validator has been slashed"
+          - name: activation_eligibility_epoch
+            description: "Epoch when the validator became eligible for activation"
+          - name: activation_epoch
+            description: "Epoch when the validator was activated"
+          - name: exit_epoch
+            description: "Epoch when the validator exited or will exit"
+          - name: withdrawable_epoch
+            description: "Epoch when the validator's funds become withdrawable"
+          - name: last_update_time
+            description: "Timestamp of the last update to this validator's information"
