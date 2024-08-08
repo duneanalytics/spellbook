@@ -24,7 +24,7 @@ SELECT *
 FROM (
     {% for dex_model in paraswap_models %}
     SELECT
-        blockchain,
+        blockchain, -- 
         project,
         version,
         block_month,
