@@ -168,4 +168,5 @@ FROM (VALUES
     , ('oku', 'oku', 'Direct', 'okutrade')
     , ('dragon_swap', 'DragonSwap', 'Direct', 'dragonswap_dex')
     , ('xei_finance', 'Xei Finance', 'Direct', 'XeiFinance')
+    , ('fusionx', 'FusionX Finance', 'Direct', 'FusionX_Finance')
     ) AS temp_table (project, name, marketplace_type, x_username)
