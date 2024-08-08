@@ -9,11 +9,11 @@ sources:
 
   - name: compound_v3_base
     tables:
-      - name: Comet_evt_SupplyCollateral
+      - name: cUSDCv3_evt_SupplyCollateral
       - name: cUSDbCv3Comet_evt_SupplyCollateral
-      - name: Comet_evt_WithdrawCollateral
+      - name: cUSDCv3_evt_WithdrawCollateral
       - name: cUSDbCv3Comet_evt_WithdrawCollateral
-      - name: Comet_evt_AbsorbCollateral
+      - name: cUSDCv3_evt_AbsorbCollateral
       - name: cUSDbCv3Comet_evt_AbsorbCollateral
 
   - name: seamlessprotocol_base

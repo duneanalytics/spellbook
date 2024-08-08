@@ -1,0 +1,278 @@
+version: 2
+
+models:
+  - name: nexusmutual_ethereum_capital_pool_transfers
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "capital_pool"]
+    description: "Token transfers in the Nexus Mutual Capital Pool"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - transfer_type
+            - symbol
+            - unique_key
+            - tx_hash
+    columns:
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each transfer"
+        tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: "Block number of each transfer"
+        tests:
+          - not_null
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each transfer"
+        tests:
+          - not_null
+      - &transfer_type
+        name: transfer_type
+        description: "Transfer type: in/out (inflow/outflow)"
+        tests:
+          - not_null
+      - &symbol
+        name: symbol
+        description: "Token symbol for transferred token"
+        tests:
+          - not_null
+      - &amount
+        name: amount
+        description: "Token amount for transferred token"
+      - &contract_address
+        name: contract_address
+        description: "Contract address of the transferred token"
+      - &unique_key
+        name: unique_key
+        description: "Generated unique key of the corresponding token transfer"
+      - &tx_hash
+        name: tx_hash
+        description: "unique transaction hash value tied to each token transfer"
+        tests:
+          - not_null
+
+  - name: nexusmutual_ethereum_capital_pool_totals
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "capital_pool"]
+    description: "Daily running totals for core tokens in the Nexus Mutual Capital Pool"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+      - &avg_eth_usd_price
+        name: avg_eth_usd_price
+        description: "Daily average ETH/USD price"
+      - &avg_dai_usd_price
+        name: avg_dai_usd_price
+        description: "Daily average DAI/USD price"
+      - &avg_usdc_usd_price
+        name: avg_usdc_usd_price
+        description: "Daily average USDC/USD price"
+      - &avg_capital_pool_eth_total
+        name: avg_capital_pool_eth_total
+        description: "Daily average Capital Pool total expressed in ETH"
+      - &avg_capital_pool_usd_total
+        name: avg_capital_pool_usd_total
+        description: "Daily average Capital Pool total expressed in USD"
+      - &eth_total
+        name: eth_total
+        description: "Daily ETH total in the Capital Pool"
+      - &avg_eth_usd_total
+        name: avg_eth_usd_total
+        description: "Daily average ETH total in the Capital Pool expressed in USD"
+      - &dai_total
+        name: dai_total
+        description: "Daily DAI total in the Capital Pool"
+      - &avg_dai_usd_total
+        name: avg_dai_usd_total
+        description: "Daily average DAI total in the Capital Pool expressed in USD"
+      - &avg_dai_eth_total
+        name: avg_dai_eth_total
+        description: "Daily average DAI total in the Capital Pool expressed in ETH"
+      - &nxmty_total
+        name: nxmty_total
+        description: "Daily NXMTY total in the Capital Pool"
+      - &nxmty_eth_total
+        name: nxmty_eth_total
+        description: "Daily average NXMTY total in the Capital Pool expressed in ETH"
+      - &avg_nxmty_usd_total
+        name: avg_nxmty_usd_total
+        description: "Daily average NXMTY total in the Capital Pool expressed in USD"
+      - &steth_total
+        name: steth_total
+        description: "Daily stETH total in the Capital Pool"
+      - &avg_steth_usd_total
+        name: avg_steth_usd_total
+        description: "Daily average stETH total in the Capital Pool expressed in USD"
+      - &reth_total
+        name: reth_total
+        description: "Daily rETH total in the Capital Pool"
+      - &avg_reth_usd_total
+        name: avg_reth_usd_total
+        description: "Daily average rETH total in the Capital Pool expressed in USD"
+      - &avg_reth_eth_total
+        name: avg_reth_eth_total
+        description: "Daily average rETH total in the Capital Pool expressed in ETH"
+      - &usdc_total
+        name: usdc_total
+        description: "Daily USDC total in the Capital Pool"
+      - &avg_usdc_usd_total
+        name: avg_usdc_usd_total
+        description: "Daily average USDC total in the Capital Pool expressed in USD"
+      - &avg_usdc_eth_total
+        name: avg_usdc_eth_total
+        description: "Daily average USDC total in the Capital Pool expressed in ETH"
+      - &cover_re_usdc_total
+        name: cover_re_usdc_total
+        description: "Daily Cover Re USDC Investment total"
+      - &avg_cover_re_usdc_usd_total
+        name: avg_cover_re_usdc_usd_total
+        description: "Daily average Cover Re USDC Investment expressed in USD"
+      - &avg_cover_re_usdc_eth_total
+        name: avg_cover_re_usdc_eth_total
+        description: "Daily average Cover Re USDC Investment expressed in ETH"
+      - &aave_collateral_weth_total
+        name: aave_collateral_weth_total
+        description: "Daily AAVE WETH collateral (supply position)"
+      - &avg_aave_collateral_weth_usd_total
+        name: avg_aave_collateral_weth_usd_total
+        description: "Daily average AAVE WETH collateral expressed in USD"
+      - &aave_debt_usdc_total
+        name: aave_debt_usdc_total
+        description: "Daily AAVE USDC debt (borrow position)"
+      - &avg_aave_debt_usdc_usd_total
+        name: avg_aave_debt_usdc_usd_total
+        description: "Daily average AAVE USDC debt expressed in USD"
+      - &avg_aave_debt_usdc_eth_total
+        name: avg_aave_debt_usdc_eth_total
+        description: "Daily average AAVE USDC debt expressed in ETH"
+
+  - name: nexusmutual_ethereum_capital_pool_latest
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "capital_pool"]
+    description: "Latest totals for core tokens in the Nexus Mutual Capital Pool"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+      - *avg_eth_usd_price
+      - *avg_dai_usd_price
+      - *avg_usdc_usd_price
+      - *avg_capital_pool_eth_total
+      - *avg_capital_pool_usd_total
+      - *eth_total
+      - *avg_eth_usd_total
+      - *dai_total
+      - *avg_dai_usd_total
+      - *avg_dai_eth_total
+      - *nxmty_total
+      - *nxmty_eth_total
+      - *avg_nxmty_usd_total
+      - *steth_total
+      - *avg_steth_usd_total
+      - *reth_total
+      - *avg_reth_usd_total
+      - *avg_reth_eth_total
+      - *usdc_total
+      - *avg_usdc_usd_total
+      - *avg_usdc_eth_total
+      - *cover_re_usdc_total
+      - *avg_cover_re_usdc_usd_total
+      - *avg_cover_re_usdc_eth_total
+      - *aave_collateral_weth_total
+      - *avg_aave_collateral_weth_usd_total
+      - *aave_debt_usdc_total
+      - *avg_aave_debt_usdc_usd_total
+      - *avg_aave_debt_usdc_eth_total
+
+  - name: nexusmutual_ethereum_capital_pool_mcr
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "capital_pool"]
+    description: "Minimum Capital Requirement (MCR) in the Nexus Mutual Capital Pool"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+      - *avg_eth_usd_price
+      - &mcr_eth_total
+        name: mcr_eth_total
+        description: "MCR ETH total"
+      - &mcr_floor_total
+        name: mcr_floor_total
+        description: "MCR ETH floor"
+      - &mcr_cover_min_total
+        name: mcr_cover_min_total
+        description: "MCR ETH cover minimum"
+
+  - name: nexusmutual_ethereum_capital_pool_prices
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "capital_pool"]
+    description: "Combined daily avg prices for base assets: ETH, DAI, USDC and NXM"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+      - *avg_eth_usd_price
+      - *avg_dai_usd_price
+      - *avg_usdc_usd_price
+      - &avg_nxm_eth_price
+        name: avg_nxm_eth_price
+        description: "Daily average NXM/ETH price"
+      - &avg_nxm_usd_price
+        name: avg_nxm_usd_price
+        description: "Daily average NXM/USD price"
+
+
+  # to be deprecated:
+  - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: [guyhow]
+    config:
+      tags: ["ethereum","nexusmutual","trades"]
+    description: >
+        Daily summary for ethereum entering and leaving the nexus mutual capital pool contracts
+    columns:
+      - &day
+        name: day
+        description: "Table primary key: day of summarised transctions"
+        tests:
+          - unique
+      - &eth_ingress
+        name: ingress ethereum
+        description: "Sum of incoming transctions over the time covered by day"
+      - &eth_egress
+        name: egress ethereum
+        description: "Sum of outgoing transctions over the time covered by day"

@@ -87,6 +87,10 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: maverick_v2_ethereum
+    tables:
+      - name: V2Pool_evt_PoolSwap
+      - name: V2Factory_evt_PoolCreated
   - name: kyber_ethereum
     tables:
       - name: DMMPool_evt_Swap

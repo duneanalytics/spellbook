@@ -7,6 +7,8 @@ sources:
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
+      - name: blocks
+        loaded_at_field: time
       - name: transactions
         loaded_at_field: block_time
         description: "A Solana transaction contains a compact-array of signatures, followed by a message. Each item in the signatures array is a digital signature of the given message.."
