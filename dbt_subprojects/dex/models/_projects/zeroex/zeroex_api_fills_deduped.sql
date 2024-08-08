@@ -61,6 +61,7 @@ FROM (
       ,evt_index
       ,affiliate_address
       ,null as zid 
+      ,type 
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
@@ -99,6 +100,7 @@ FROM (
       ,evt_index
       ,tag as affiliate_address 
       ,zid
+      ,type
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL

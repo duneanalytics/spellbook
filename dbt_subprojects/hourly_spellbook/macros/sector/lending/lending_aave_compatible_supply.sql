@@ -247,6 +247,15 @@ src_LendingPool_evt_Withdraw as (
   {% endif %}
 ),
 
+src_LendingPool_evt_Repay as (
+  select *
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_Repay') }}
+  where useATokens -- ref: https://github.com/duneanalytics/spellbook/issues/6417
+  {% if is_incremental() %}
+  and {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
+),
+
 src_LendingPool_evt_LiquidationCall as (
   select *
   from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_LiquidationCall') }}
@@ -285,6 +294,21 @@ base_supply as (
     evt_block_time,
     evt_block_number
   from src_LendingPool_evt_Withdraw
+  union all
+  select
+    'repay_with_atokens' as transaction_type,
+    reserve as token_address,
+    user as depositor,
+    cast(null as varbinary) as on_behalf_of,
+    repayer as withdrawn_to,
+    cast(null as varbinary) as liquidator,
+    -1 * cast(amount as double) as amount,
+    contract_address,
+    evt_tx_hash,
+    evt_index,
+    evt_block_time,
+    evt_block_number
+  from src_LendingPool_evt_Repay
   union all
   select
     'deposit_liquidation' as transaction_type,
