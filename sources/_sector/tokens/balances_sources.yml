@@ -50,7 +50,7 @@ sources:
     description: "Prices tables across blockchains"
     tables:
       - name: balances_bnb
-        identifier: balances_bnb_0002
+        identifier: balances_bnb_0003
         description: "Raw balances data"
         columns:
           - name: block_number
@@ -111,6 +111,21 @@ sources:
     tables:
       - name: balances_avalanche_c
         identifier: balances_avalanche_c_0001
+        description: "Raw balances data"
+        columns:
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+  
+  - name: tokens_linea
+    description: "Prices tables across blockchains"
+    tables:
+      - name: balances_linea
+        identifier: balances_linea_0001
         description: "Raw balances data"
         columns:
           - name: block_number

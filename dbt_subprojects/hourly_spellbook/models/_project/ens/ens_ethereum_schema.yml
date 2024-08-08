@@ -1,0 +1,235 @@
+version: 2
+
+models:
+  - name: ens_view_expirations
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: mewwts, antonio-mendes
+    config:
+      tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice']
+    description: >
+        View expirations of ENS registrations
+    columns:
+      - &label
+        name: label
+        description: "Hashed individual component of ENS name"
+      - name: min_expires
+        description: "Minimum expiration date UTC for domain"
+      - name: max_expires
+        description: "Maximum expiration date UTC for domain"
+      - name: min_evt_block_time
+        description: "Block time UTC of first name registration"
+      - name: max_evt_block_time
+        description: "Block time UTC of last name renewal"
+      - name: count
+        description: "Number of times expiration was extended"
+
+  - name: ens_view_registrations
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: mewwts, antonio-mendes
+    config:
+      tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice']
+    description: >
+        View ENS registrations
+    columns:
+      - *label
+      - &name
+        name: name
+        description: "Name component of ENS"
+      - name: owner
+        description: "Address that owns the ENS name"
+      - &cost
+        name: cost
+        description: "Registration cost in Wei"
+      - &expires
+        name: expires
+        description: "Expiry data in epoch time"
+      - &contract_address
+        name: contract_address
+        description: "Address of smart contract interacted with"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Index of event in transaction"
+      - &evt_block_time
+        name: evt_block_time
+        description: "Block time UTC"
+      - &evt_block_number
+        name: evt_block_number
+        description: "Block number"
+
+  - name: ens_view_renewals
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: mewwts, antonio-mendes
+    config:
+      tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice']
+    description: >
+        View ENS renewals
+    columns:
+      - *name
+      - *label
+      - *cost
+      - *expires
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+
+  - name: ens_view_registries
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: mewwts, antonio-mendes
+    config:
+      tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice']
+    description: >
+        View ENS registry
+    columns:
+      - *label
+      - name: node
+        description: "A cryptographic hash uniquely identifying a name"
+      - name: min_evt_block_time
+        description: "Block time UTC of first registry for node"
+      - name: max_evt_block_time
+        description: "Block time UTC of latest registry for node"
+      - name: count
+        description: "Total number of node registries"
+
+  - name: ens_reverse_latest
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','ens','ethereum_name_service','ethereumnameservice','reverse','latest']
+    description: >
+      View the latest ENS reverse records
+    columns:
+      - name: address
+        description: "The ETH address"
+        tests:
+          - unique
+      - name: name
+        description: "The reverse ENS name"
+      - name: address_node
+        description: "The node (namehash) of the address reverse record"
+        tests:
+          - unique
+      - name: latest_tx_hash
+        description: "Latest transaction hash setting the reverse ENS"
+      - name: latest_tx_block_time
+        description: "Block time of the latest transaction hash setting the reverse ENS"
+
+  - name: ens_node_names
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','ens','ethereum_name_service','ethereumnameservice','node_names','0xRob' ]
+    description: >
+      A table that links a node (namehash) to a readable ENS name.
+    columns:
+      - name: node
+        description: "The node, the namehash of the ENS name"
+        tests:
+          - unique
+      - name: name
+        description: "The ENS name"
+      - name: label_name
+        description: "The name of the ENS label"
+      - name: label_hash
+        description: "The namehash of the ENS label"
+      - name: initial_address
+        description: "The initial resolver address when registering the ENS"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: block_number
+        description: "block number"
+      - name: block_time
+        description: "block time"
+      - name: evt_index
+        description: "event index of the registration event"
+
+  - name: ens_resolver_records
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','ens','ethereum_name_service','ethereumnameservice','resolver_records','0xRob' ]
+    description: >
+      A table that shows the resolver addresses for known ENS names.
+    columns:
+      - name: name
+        description: "The ENS name"
+      - name: node
+        description: "The node, the namehash of the ENS name"
+      - name: address
+        description: "The resolver address of the ENS name"
+      - name: block_time
+        description: "block time of update"
+      - name: tx_hash
+        description: "transaction hash update"
+      - name: evt_index
+        description: "event index of node record update"
+
+  - name: ens_resolver_latest
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','ens','ethereum_name_service','ethereumnameservice','resolver_latest','0xRob' ]
+    description: >
+      A table that shows the latest resolver addresses for known ENS names.
+    columns:
+      - name: name
+        description: "The ENS name"
+        tests:
+          - unique
+      - name: node
+        description: "The node, the namehash of the ENS name"
+        tests:
+          - unique
+      - name: address
+        description: "The resolver address of the ENS name"
+      - name: block_time
+        description: "block time of last update"
+      - name: tx_hash
+        description: "transaction hash of last update"
+      - name: evt_index
+        description: "event index of node record update"
+
+  - name: ens_set_name_latest
+    meta:
+      blockchain: ethereum
+      project: ethereum_name_service
+      contributors: sankinyue
+    config:
+      tags: ['ethereum','ens','ethereum_name_service','ethereumnameservice','setname','latest']
+    description: "View the latest ENS set name records"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name
+    columns:
+      - name: last_block_time
+        description: "Block time of the latest transaction hash ENS set name record"
+      - name: address
+        description: "The ETH address"
+      - name: name
+        description: "The ENS set name"
+      - name: registrar
+        description: "The registrar contract address of the address set name record"
+      - name: last_tx_hash
+        description: "Latest transaction hash of the ENS set name"
