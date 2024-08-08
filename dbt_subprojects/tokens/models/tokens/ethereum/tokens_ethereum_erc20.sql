@@ -5016,4 +5016,5 @@ FROM (VALUES
     , (0x09db87a538bd693e9d08544577d5ccfaa6373a48, 'ynETH', 18)
     , (0xddaf27167929cd045a7d97d09a4fa1046ece3d89, 'MELLSTROY', 18)
     , (0x3ad4f189f08cdc60496eebb3bd70b90df28b7455, 'NEIRO', 18)
+    , ( 0x20157dbabb84e3bbfe68c349d0d44e48ae7b5ad2, 'dlcBTC', 8)    
 ) AS temp_table (contract_address, symbol, decimals)
