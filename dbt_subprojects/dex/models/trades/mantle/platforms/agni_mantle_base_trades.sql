@@ -15,7 +15,7 @@ WITH pools AS (
         f.output_pool AS pool
         , token0
         , token1
-    FROM {{ source('agni_mantle', 'AgniPool_evt_Swap') }} f
+    FROM {{ source('agni_mantle', 'AgniPoolDeployer_call_deploy') }} f
 )
 
 , dexs AS (
