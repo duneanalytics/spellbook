@@ -33,7 +33,7 @@
 {% for aggregator_model in dex_aggregator_models %}
 SELECT
     blockchain
-    , project --
+    , project
     , version
     , block_date
     , block_month
