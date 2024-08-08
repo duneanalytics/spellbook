@@ -26,6 +26,7 @@ WITH pools AS (
             , version = '3'
             , Pair_evt_Swap = source('agni_mantle', 'AgniPool_evt_Swap')
             , Factory_evt_PoolCreated = 'pools'
+            , optional_columns = null
         )
     }}
 )
