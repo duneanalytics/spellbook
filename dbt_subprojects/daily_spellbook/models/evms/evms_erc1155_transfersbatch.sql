@@ -28,6 +28,7 @@
      , ('zkevm', source('erc1155_zkevm', 'evt_transferbatch'))
      , ('blast', source('erc1155_blast', 'evt_transferbatch'))
      , ('mantle', source('erc1155_mantle', 'evt_transferbatch'))
+     , ('sei', source('erc1155_sei', 'evt_transferbatch'))
 ] %}
 
 SELECT *
