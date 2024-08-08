@@ -301,7 +301,7 @@ results_usd AS (
     FROM 
         results
 )
-
+ 
 SELECT DISTINCT 
     * 
 FROM 
