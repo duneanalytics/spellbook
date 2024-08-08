@@ -1,0 +1,64 @@
+{{
+    config(
+        schema = 'bot_trades',
+        alias = 'banana_gun_evm',
+        materialized = 'view',
+        post_hook = '{{ expose_spells(
+                        blockchains = \'["ethereum", "base", "avalanche_c", "blast", "bnb"]\',
+                        spell_type = "sector",
+                        spell_name = "banana_gun",
+                        contributors = \'["whale_hunter"]\') }}'
+    )
+}}
+
+
+
+{% set banana_gun_blockchains = [
+  ref('banana_gun_avalanche_c_bot_trades')
+  , ref('banana_gun_ethereum_bot_trades')
+  , ref('banana_gun_base_bot_trades')
+  , ref('banana_gun_blast_bot_trades')
+  , ref('banana_gun_bnb_bot_trades')
+] %}
+
+{% for blockchain in banana_gun_blockchains %}
+SELECT block_time,
+       block_date,
+       block_month,
+       block_number,
+       blockchain,
+       -- Trade
+       amount_usd,
+       type,
+       token_bought_amount,
+       token_bought_symbol,
+       token_bought_address,
+       token_sold_amount,
+       token_sold_symbol,
+       token_sold_address,
+       -- Fees
+       fee_percentage_fraction,
+       fee_usd,
+       fee_token_amount,
+       fee_token_symbol,
+       fee_token_address,
+       -- Bribes
+       bribe_usd,
+       bribe_token_amount,
+       bribe_token_symbol,
+       bribe_token_address,
+       -- Dex
+       project,
+       version,
+       token_pair,
+       project_contract_address,
+       -- User
+       user,
+       tx_hash,
+       evt_index,
+       is_last_trade_in_transaction
+FROM {{ blockchain }}
+{% if not loop.last %}
+UNION ALL
+{% endif %}
+{% endfor %}
