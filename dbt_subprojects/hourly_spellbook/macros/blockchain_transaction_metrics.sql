@@ -1,4 +1,4 @@
-{% macro blockchain_metrics(blockchain) %}
+{% macro blockchain_transaction_metrics(blockchain) %}
 
 WITH blocks as (
     select
