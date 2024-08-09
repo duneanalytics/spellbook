@@ -6,7 +6,7 @@ models:
       blockchain: polygon
       sector: lending
       project: aave, compound
-      contributors: tomfutago
+      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'supply', 'aave', 'polygon']
     description: "All lending supply transactions on Polygon"
@@ -168,7 +168,7 @@ models:
       blockchain: polygon
       sector: lending
       project: compound
-      contributors: tomfutago
+      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'supply', 'compound', 'v3', 'polygon']
     description: "Compound v3 supply transactions on Polygon"

@@ -32,10 +32,13 @@ sources:
     tables:
       - name: cUSDCv3_evt_SupplyCollateral
       - name: cWETHv3_evt_SupplyCollateral
+      - name: cUSDTv3_evt_SupplyCollateral
       - name: cUSDCv3_evt_WithdrawCollateral
       - name: cWETHv3_evt_WithdrawCollateral
+      - name: cUSDTv3_evt_WithdrawCollateral
       - name: cUSDCv3_evt_AbsorbCollateral
       - name: cWETHv3_evt_AbsorbCollateral
+      - name: cUSDTv3_evt_AbsorbCollateral
 
   - name: radiant_capital_ethereum
     tables:

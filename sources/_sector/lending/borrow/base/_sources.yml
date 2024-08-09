@@ -11,12 +11,16 @@ sources:
     tables:
       - name: cUSDCv3_evt_Supply
       - name: cUSDbCv3Comet_evt_Supply
+      - name: cWETHv3_evt_Supply
       - name: cUSDCv3_evt_Withdraw
       - name: cUSDbCv3Comet_evt_Withdraw
+      - name: cWETHv3_evt_Withdraw
       - name: cUSDCv3_evt_Transfer
       - name: cUSDbCv3Comet_evt_Transfer
+      - name: cWETHv3_evt_Transfer
       - name: cUSDCv3_evt_AbsorbDebt
       - name: cUSDbCv3Comet_evt_AbsorbDebt
+      - name: cWETHv3_evt_AbsorbDebt
 
   - name: seamlessprotocol_base
     tables:

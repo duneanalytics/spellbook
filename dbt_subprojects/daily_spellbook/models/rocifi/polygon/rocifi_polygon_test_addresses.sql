@@ -1,11 +1,7 @@
 {{ config (
     tags=['static'],
-    alias = 'test_addresses',
-    post_hook = '{{ 
-        expose_spells(\'["polygon"]\',
-        "project", 
-        "rocifi",
-        \'["maybeyonas"]\') }}'
+    schema = 'rocifi_polygon',
+    alias = 'test_addresses'
 ) }}
 
 
