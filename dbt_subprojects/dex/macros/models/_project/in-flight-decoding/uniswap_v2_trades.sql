@@ -12,7 +12,7 @@ WITH dexs AS
 (
     SELECT
         t.block_number
-        t.block_time
+        , t.block_time
         , t.to AS taker
         , t.contract_address AS maker
         , CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
