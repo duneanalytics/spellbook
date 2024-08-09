@@ -7,7 +7,27 @@
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum", "fantom", "gnosis", "linea", "optimism", "polygon", "scroll", "zkevm", "zksync", "zora"]\',
+    , post_hook='{{ expose_spells(\'[
+                                        "arbitrum"
+                                        , "avalanche_c"
+                                        , "base"
+                                        , "blast"
+                                        , "bnb"
+                                        , "celo"
+                                        , "ethereum"
+                                        , "fantom"
+                                        , "gnosis"
+                                        , "linea"
+                                        , "mantle"
+                                        , "nova"
+                                        , "optimism"
+                                        , "polygon"
+                                        , "scroll"
+                                        , "sei"
+                                        , "zkevm"
+                                        , "zksync"
+                                        , "zora"
+                                    ]\',
                                     "sector",
                                     "dex",
                                     \'["hosuke", "0xrob", "jeff-dude", "tomfutago"]\') }}')
