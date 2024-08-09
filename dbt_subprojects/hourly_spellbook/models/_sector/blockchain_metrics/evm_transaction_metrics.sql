@@ -19,7 +19,6 @@
     'ethereum',
     'fantom',
     'gnosis',
-    'goerli',
     'linea',
     'mantle',
     'optimism',
