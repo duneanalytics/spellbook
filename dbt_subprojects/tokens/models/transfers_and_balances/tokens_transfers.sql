@@ -1,27 +1,49 @@
 {{ config(
         schema = 'tokens'
         , alias = 'transfers'
+        , post_hook='{{ expose_spells(\'[
+                                            "arbitrum"
+                                            ,"avalanche_c"
+                                            ,"base"
+                                            ,"blast"
+                                            ,"bnb"
+                                            ,"celo"
+                                            ,"ethereum"
+                                            ,"fantom"
+                                            ,"gnosis"
+                                            ,"linea"
+                                            ,"mantle"
+                                            ,"optimism"
+                                            ,"polygon"
+                                            ,"scroll"
+                                            ,"zkevm"
+                                            ,"zksync"
+                                            ,"zora"
+                                        ]\',
+                                        "sector",
+                                        "tokens",
+                                        \'["aalan3", "jeff-dude"]\') }}'
         )
 }}
 
 {% set chains = [
-     'ethereum'
-    ,'optimism'
-    ,'polygon'
-    ,'bnb'
+     'arbitrum'
     ,'avalanche_c'
-    ,'gnosis'
-    ,'fantom'
-    ,'arbitrum'
-    ,'celo'
     ,'base'
-    ,'zksync'
-    ,'zora'
-    ,'scroll'
-    ,'zkevm'
+    ,'blast'
+    ,'bnb'
+    ,'celo'
+    ,'ethereum'
+    ,'fantom'
+    ,'gnosis'
     ,'linea'
     ,'mantle'
-    ,'blast'
+    ,'optimism'
+    ,'polygon'
+    ,'scroll'
+    ,'zkevm'
+    ,'zksync'
+    ,'zora'
 ] %}
 
 SELECT *

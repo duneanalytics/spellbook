@@ -2,15 +2,12 @@
   config(
     schema = 'nexusmutual_ethereum',
     alias = 'covers_v2',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
+    materialized = 'view',
     unique_key = ['cover_id', 'staking_pool'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
@@ -40,9 +37,6 @@ cover_sales as (
   from {{ source('nexusmutual_ethereum', 'Cover_call_buyCover') }} c
     cross join unnest(c.poolAllocationRequests) as t(pool_allocation)
   where c.call_success
-    {% if is_incremental() %}
-    and {{ incremental_predicate('c.call_block_time') }}
-    {% endif %}
 ),
 
 staking_product_premiums as (
@@ -70,9 +64,6 @@ staking_product_premiums as (
   from {{ source('nexusmutual_ethereum', 'StakingProducts_call_getPremium') }}
   where call_success
     and contract_address = 0xcafea573fbd815b5f59e8049e71e554bde3477e4
-    {% if is_incremental() %}
-    and {{ incremental_predicate('call_block_time') }}
-    {% endif %}
 ),
 
 cover_premiums as (
@@ -169,9 +160,6 @@ covers_v1_migrated as (
     cm.evt_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'CoverMigrator_evt_CoverMigrated') }} cm
     inner join {{ ref('nexusmutual_ethereum_covers_v1') }} cv1 on cm.coverIdV1 = cv1.cover_id
-  {% if is_incremental() %}
-  where {{ incremental_predicate('cm.evt_block_time') }}
-  {% endif %}
 ),
 
 covers as (
