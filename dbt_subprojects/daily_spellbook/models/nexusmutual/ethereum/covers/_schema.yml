@@ -230,10 +230,16 @@ models:
       - &premium_incl_commission
         name: premium_incl_commission
         description: "premium incl commission"
+      - &premium_period_ratio
+        name: premium_period_ratio
+        description: "premium period ratio"
       - *cover_owner
       - &commission
         name: commission
         description: "commission"
+      - &commission_ratio
+        name: commission_ratio
+        description: "commission ratio"
       - &commission_destination
         name: commission_destination
         description: "commission destination (recipient wallet)"
