@@ -289,11 +289,6 @@ models:
       fantom:
         +schema: beethoven_x_fantom
 
-    rocifi:
-      +schema: rocifi
-      polygon:
-        +schema: rocifi_polygon
-
     pooltogether:
       +schema: pooltogether
       ethereum:
