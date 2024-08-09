@@ -46,6 +46,8 @@ SELECT address
         , (0x000000633b68f5d8d3a86593ebb815b4663bcbe0, 'Taiko')
         , (0x52ee324F2bCD0c5363d713eb9f62D1eE47266ac1, 'Rari')
         , (0x7ab7da0c3117d7dfe0abfaa8d8d33883f8477c74, 'Debank Chain') 
+        , (0xe27f3f6db6824def1738b2aace2672ac59046a39, 'Kinto')
+        , (0xb1b676357de100c5bd846299cf6c85436803e839, 'Nal')
         , (0x90680f0f6d63060fb7a16bdc722a85b992dd5047, 'XGA')
         , (0xaf1e4f6a47af647f87c0ec814d8032c4a4bff145, 'Zircuit')
         ) AS x(address, entity)

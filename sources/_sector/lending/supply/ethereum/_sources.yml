@@ -17,6 +17,9 @@ sources:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
       - name: Pool_evt_ReserveDataUpdated
+      - name: LidoPool_evt_Supply
+      - name: LidoPool_evt_Withdraw
+      - name: LidoPool_evt_ReserveDataUpdated
 
   - name: compound_v2_ethereum
     tables:
