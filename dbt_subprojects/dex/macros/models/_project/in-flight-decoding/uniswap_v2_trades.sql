@@ -11,8 +11,8 @@
 WITH dexs AS
 (
     SELECT
-        block_number
-        block_time
+        t.block_number
+        t.block_time
         , t.to AS taker
         , t.contract_address AS maker
         , CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
@@ -20,7 +20,7 @@ WITH dexs AS
         , CASE WHEN amount0Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_bought_address
         , CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         , t.contract_address AS project_contract_address
-        , tx_hash
+        , t.tx_hash
         , t.index AS evt_index
         , m.project_name
     FROM
