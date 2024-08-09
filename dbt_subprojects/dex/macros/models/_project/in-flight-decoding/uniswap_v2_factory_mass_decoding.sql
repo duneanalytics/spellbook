@@ -10,6 +10,7 @@ token0
 ,pair
 ,block_time
 ,block_number
+,block_date
 FROM TABLE (
     decode_evm_event (
       abi => '{

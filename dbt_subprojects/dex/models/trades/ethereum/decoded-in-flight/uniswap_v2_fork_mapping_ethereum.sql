@@ -48,4 +48,4 @@ FROM
     , (0xA40ec8A93293A3179D4b544239916C1B68cB47B6, 'SunflowerSwap')
     , (0x5fa0060fcfea35b31f7a5f6025f0ff399b98edf1, 'OrionProtocol')
 
-) AS t (factory_address, project)
+) AS t (factory_address, project_name)

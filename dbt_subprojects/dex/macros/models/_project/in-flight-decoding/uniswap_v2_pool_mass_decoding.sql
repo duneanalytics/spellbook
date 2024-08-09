@@ -13,6 +13,7 @@ block_time
 ,amount0In
 ,amount1Out
 ,amount1In
+,block_date
 FROM TABLE (
     decode_evm_event (
       abi => '{
