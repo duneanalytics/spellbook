@@ -150,3 +150,29 @@ models:
         name: amount_usd
         description: "USD amount of transferred ETH"
 
+  - name: safe_optimism_balances
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - address
+            - token_address
+    meta:
+      blockchain: optimism
+      project: safe
+      contributors: safeintern
+    config:
+      tags: ['safe', 'optimism']
+    description: “Safe addresses balances”
+    columns:
+      - name: day
+      - name: blockchain
+      - name: address
+      - name: token_address
+      - name: token_standard
+      - name: token_id
+      - name: token_symbol
+      - name: token_balance
+      - name: balance_usd
+
