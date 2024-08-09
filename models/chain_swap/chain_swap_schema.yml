@@ -1,0 +1,204 @@
+version: 2
+
+models:
+  - name: chain_swap_trades
+    meta:
+      blockchain: ethereum
+      sector: project
+      contributors: ["whale_hunter", "clizzard"]
+    config:
+      tags: ["ethereum", "dex", "bot", "trades"]
+      description: >
+        Trades by trading bots on Ethereum
+      columns:
+        - &blockchain
+          name: blockchain
+          description: "Blockchain which the DEX is deployed"
+        - &block_time
+          name: block_time
+          description: "UTC event block time of each DEX trade"
+        - &block_date
+          name: block_date
+          description: "UTC event block date of each DEX trade"
+        - &block_month
+          name: block_month
+          description: "UTC event block month of each DEX trade"
+        - &amount_usd
+          name: amount_usd
+          description: "USD value of the trade at time of execution"
+        - &type
+          name: type
+          description: "Wether the trade is a buy or sell"
+        - &token_bought_amount
+          name: token_bought_amount
+          description: "Value of the token bought at time of execution in the original currency"
+        - &token_bought_symbol
+          name: token_bought_symbol
+          description: "Token symbol for token bought in the trade"
+        - &token_bought_address
+          name: token_bought_address
+          description: "Contract address of the token bought"
+        - &token_sold_amount
+          name: token_sold_amount
+          description: "Value of the token sold at time of execution in the original currency"
+        - &token_sold_symbol
+          name: token_sold_symbol
+          description: "Token symbol for token sold in the trade"
+        - &token_sold_address
+          name: token_sold_address
+          description: "Contract address of the token sold"
+        - &fee_usd
+          name: fee_usd
+          description: "USD value of the fee at time of execution"
+        - &fee_token_amount
+          name: fee_token_amount
+          description: "Value of the fee paid at time of execution in the original currency"
+        - &fee_token_symbol
+          name: fee_token_symbol
+          description: "Token symbol for fee token"
+        - &fee_token_address
+          name: fee_token_address
+          description: "Contract address of the fee token"
+        - &project
+          name: project
+          description: "Project name of the DEX"
+        - &version
+          name: version
+          description: "Version of the contract built and deployed by the DEX project"
+        - &token_pair
+          name: token_pair
+          description: "Token symbol pair for each token involved in the trade"
+        - &project_contract_address
+          name: project_contract_address
+          description: "Project contract address which executed the trade on the blockchain"
+        - &user
+          name: user
+          description: "Address which initiated the trade"
+        - &tx_hash
+          name: tx_hash
+          description: "Unique transaction hash value tied to each transaction on the DEX"
+        - &evt_index
+          name: evt_index
+          description: "Index of the corresponding trade event"
+        - &is_last_trade_in_transaction
+          name: is_last_trade_in_transaction
+          description: "Wether the trade is the last hop of the trade transaction, in case of a multi-hop trade"
+
+  - name: chain_swap_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["ethereum", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+
+  - name: chain_swap_arbitrum_trades
+    meta:
+      blockchain: arbitrum
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["arbitrum", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+
+  - name: chain_swap_base_trades
+    meta:
+      blockchain: base
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["base", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+
+  - name: chain_swap_optimism_trades
+    meta:
+      blockchain: optimism
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["optimism", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+
+  - name: chain_swap_bnb_trades
+    meta:
+      blockchain: bnb
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["bnb", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Bnb
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+
+  - name: chain_swap_polygon_trades
+    meta:
+      blockchain: polygon
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["polygon", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Polygon
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+
+  - name: chain_swap_avalanche_c_trades
+    meta:
+      blockchain: avalanche_c
+      sector: project
+      project: chain_swap
+      contributors: whale_hunter
+    config:
+      tags: ["avalanche_c", "dex", "chain_swap", "trades"]
+    description: >
+      ChainSwap trades on Avalanche_c
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
