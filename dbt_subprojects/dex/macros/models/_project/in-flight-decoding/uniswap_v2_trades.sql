@@ -54,12 +54,10 @@ SELECT
     , dexs.evt_index
 FROM
     dexs
-    LEFT JOIN 
+    INNER JOIN
         {{Fork_Mapping}} m
         ON  dexs.factory_address = m.factory_address
-    LEFT JOIN
-        {{contracts}} c 
-        ON dexs.factory_address = c.address
+    -- easy to spoof swap events so we use an allowlist of known forks
      
     
 
