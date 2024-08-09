@@ -47,5 +47,7 @@ FROM
     , (0x35113a300ca0D7621374890ABFEAC30E88f214b1, 'SaitaSwap')
     , (0xA40ec8A93293A3179D4b544239916C1B68cB47B6, 'SunflowerSwap')
     , (0x5fa0060fcfea35b31f7a5f6025f0ff399b98edf1, 'OrionProtocol')
+    , (0xcbae5c3f8259181eb7e2309bc4c72fdf02dd56d8, '9inch')
+    , (0x52fba58f936833f8b643e881ad308b2e37713a86, 'pepex')
 
 ) AS t (factory_address, project_name)

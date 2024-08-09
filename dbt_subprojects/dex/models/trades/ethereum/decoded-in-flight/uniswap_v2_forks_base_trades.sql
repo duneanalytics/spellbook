@@ -18,4 +18,5 @@
         , Factory_evt_PairCreated = ref('uniswap_v2_factory_decoding_ethereum')
         , pair_column_name = 'pair'
         , Fork_Mapping = ref('uniswap_v2_fork_mapping_ethereum')
+        , contracts = source('ethereum', 'contracts')
 )}}

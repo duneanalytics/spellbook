@@ -6,6 +6,7 @@
     , Factory_evt_PairCreated = null
     , pair_column_name = 'pair'
     , Fork_Mapping = null
+    , contracts = null
     )
 %}
 WITH dexs AS
@@ -28,9 +29,12 @@ WITH dexs AS
     INNER JOIN
         {{ Factory_evt_PairCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
-    INNER JOIN 
+    LEFT JOIN 
         {{Fork_Mapping}} m
-        ON  m.factory_address = f.contract_address
+        ON  f.factory_address = f.contract_address
+    LEFT JOIN
+        {{contracts}} c 
+        ON f.contract_address = f.contract_address
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('t.block_time') }}
@@ -39,7 +43,7 @@ WITH dexs AS
 
 SELECT
     '{{ blockchain }}' AS blockchain
-    , project_name AS project
+    , coalesce(c.namespace, m.project_name, concat(cast(varbinary_substring(l.contract_address, 1, 3) as varchar),'-unidentified-fork')) AS project
     , '{{ version }}' AS version
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
