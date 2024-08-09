@@ -8,7 +8,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - evt_index
+            - index
 
   - name: uniswap_v2_pool_decoding_ethereum
     description: >
@@ -17,7 +17,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - evt_index
+            - index
 
   - name: uniswap_v2_fork_mapping_ethereum
     description: >
