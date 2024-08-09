@@ -14,6 +14,7 @@ token0
 ,block_date
 ,tx_hash
 ,index
+,contract_address
 
 -- could grab abi from our database instead to make this more dynamic
 FROM TABLE (
