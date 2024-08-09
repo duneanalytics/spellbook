@@ -8,6 +8,7 @@ SELECT
 token0
 ,token1
 ,pair
+,contract_address
 ,block_time
 ,block_number
 ,block_date
