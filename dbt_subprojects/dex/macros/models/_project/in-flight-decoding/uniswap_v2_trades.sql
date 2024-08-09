@@ -36,7 +36,7 @@ WITH dexs AS
 
 SELECT
     '{{ blockchain }}' AS blockchain
-    , coalesce(c.namespace, m.project_name, concat(cast(varbinary_substring(dexs.factory_address, 1, 3) as varchar),'-unidentified-univ2-fork')) AS project
+    , coalesce(m.project_name, concat(cast(varbinary_substring(dexs.factory_address, 1, 3) as varchar),'-unidentified-univ2-fork')) AS project
     , dexs.factory_address
     , '{{ version }}' AS version
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
@@ -57,8 +57,6 @@ FROM
     INNER JOIN
         {{Fork_Mapping}} m
         ON  dexs.factory_address = m.factory_address
-    -- easy to spoof swap events so we use an allowlist of known forks
+    -- easy to spoof swap events so we use an allowlist  
      
-    
-
 {% endmacro %}
