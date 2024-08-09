@@ -13,14 +13,14 @@
                                 \'["aalan3", "jeff-dude"]\') }}'
 )
 }}
-
+--2015-08-07
 {{
     transfers_enrich(
         base_transfers = ref('tokens_ethereum_base_transfers')
         , tokens_erc20_model = source('tokens', 'erc20')
         , prices_model = source('prices', 'usd')
         , evms_info_model = source('evms','info')
-        , transfers_start_date = '2015-08-07'
+        , transfers_start_date = '2018-04-25'
         , blockchain = 'ethereum'
     )
 }}
