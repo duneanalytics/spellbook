@@ -16,7 +16,7 @@ WITH transfers AS (
         {% endif %}
         , 'native' AS token_standard
         , "from"
-        , to
+        , COALESCE(to,address) AS to -- Contract Creation has NULL "to" address, but transaction might have value that goes to contract created
         , value AS amount_raw
     FROM {{ traces }}
     WHERE success
