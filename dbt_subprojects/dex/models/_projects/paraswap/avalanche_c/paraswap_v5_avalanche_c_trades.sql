@@ -134,11 +134,6 @@ SELECT
     dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount,
     dexs.token_bought_amount_raw,
     dexs.token_sold_amount_raw,
-    coalesce(
-        dexs.amount_usd
-        ,(dexs.token_bought_amount_raw / power(10, erc20a.decimals)) * coalesce(p_bought.price, p_prev1.price, p_next1.price)
-        ,(dexs.token_sold_amount_raw / power(10, erc20b.decimals)) * coalesce(p_sold.price, p_prev2.price, p_next2.price)
-    ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
     coalesce(dexs.taker, tx."from") AS taker,
