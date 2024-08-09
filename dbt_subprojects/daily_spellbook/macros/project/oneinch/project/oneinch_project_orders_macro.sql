@@ -213,7 +213,7 @@ logs as (
         , count(*) over(partition by block_number, tx_hash, call_trace_address, call_trade) as call_trade_logs -- logs for each trade
         , count(*) over(partition by block_number, tx_hash, index) as log_call_trades -- trades for each log
     from calls
-    left join logs using(blockchain, block_number, block_time, tx_hash, topic0)
+    full join logs using(blockchain, block_number, block_time, tx_hash, topic0)
     join (
         select * from {{ source('oneinch', 'blockchains') }}
         where blockchain = '{{blockchain}}'
@@ -245,7 +245,7 @@ select
     , project
     , tag
     , map_concat(flags, map_from_entries(array[
-        ('auction', coalesce(order_end - order_start, uint256 '0') > uint256 '0' or project in ('CoWSwap', 'Bebop'))
+        ('auction', coalesce(try(order_end - order_start), uint256 '0') > uint256 '0' or project in ('CoWSwap', 'Bebop'))
     ])) as flags
     , block_number
     , block_time
@@ -272,8 +272,8 @@ select
     , taker_max_amount
     , maker_min_amount
     , taker_min_amount
-    , if(tx_success and call_success, coalesce(making_amount, if(order_start = uint256 '0' or order_start = order_end, maker_max_amount, maker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double))), maker_max_amount, maker_min_amount)) as making_amount
-    , if(tx_success and call_success, coalesce(taking_amount, if(order_start = uint256 '0' or order_start = order_end, taker_max_amount, taker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double))), taker_max_amount, taker_min_amount)) as taking_amount
+    , try(coalesce(making_amount, if(order_start = uint256 '0' or order_start = order_end, maker_max_amount, maker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double))), maker_max_amount, maker_min_amount)) as making_amount
+    , try(coalesce(taking_amount, if(order_start = uint256 '0' or order_start = order_end, taker_max_amount, taker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double))), taker_max_amount, taker_min_amount)) as taking_amount
     , order_start
     , order_end
     , order_deadline
