@@ -14,6 +14,8 @@ block_time
 ,amount1Out
 ,amount1In
 ,block_date
+,tx_hash
+,index
 FROM TABLE (
     decode_evm_event (
       abi => '{

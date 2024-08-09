@@ -12,6 +12,8 @@ token0
 ,block_time
 ,block_number
 ,block_date
+,tx_hash
+,index
 FROM TABLE (
     decode_evm_event (
       abi => '{
