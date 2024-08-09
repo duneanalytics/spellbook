@@ -112,7 +112,7 @@ WITH curve AS (
         , tx_hash
         , tx_from
         , tx_to
-        , evt_index 
+        , evt_index
     FROM
         {{ cte }}
     {% if not loop.last %}

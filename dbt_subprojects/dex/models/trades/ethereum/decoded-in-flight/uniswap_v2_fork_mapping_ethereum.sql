@@ -10,7 +10,7 @@
 SELECT factory_address, project_name
 FROM
 (VALUES
-    , (0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f, 'uniswap_v2')
+    (0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f, 'uniswap_v2')
     , (0xc0aee478e3658e2610c5f7a4a2e1777ce9e4f2ac, 'sushi')
     , (0xb8900621b03892c2d030e05cb9e01f6474814f6a, 'sweepnflip')
     , (0x115934131916c8b277dd010ee02de363c09d037c, 'shibaswap')
