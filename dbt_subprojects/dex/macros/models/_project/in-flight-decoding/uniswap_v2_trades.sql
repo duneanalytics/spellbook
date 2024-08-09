@@ -23,19 +23,12 @@ WITH dexs AS
         , t.contract_address AS project_contract_address
         , t.tx_hash
         , t.index AS evt_index
-        , m.project_name
         , f.contract_address as factory_address
     FROM
         {{ Pair_evt_Swap }} t
     INNER JOIN
         {{ Factory_evt_PairCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
-    LEFT JOIN 
-        {{Fork_Mapping}} m
-        ON  m.factory_address = f.contract_address
-    LEFT JOIN
-        {{contracts}} c 
-        ON f.contract_address = f.contract_address
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('t.block_time') }}
@@ -44,7 +37,7 @@ WITH dexs AS
 
 SELECT
     '{{ blockchain }}' AS blockchain
-    , coalesce(c.namespace, m.project_name, concat(cast(varbinary_substring(factory_address, 1, 3) as varchar),'-unidentified-fork')) AS project
+    , coalesce(c.namespace, m.project_name, concat(cast(varbinary_substring(dexs.factory_address, 1, 3) as varchar),'-unidentified-univ2-fork')) AS project
     , '{{ version }}' AS version
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
@@ -61,5 +54,11 @@ SELECT
     , dexs.evt_index
 FROM
     dexs
+    LEFT JOIN 
+        {{Fork_Mapping}} m
+        ON  dexs.factory_address = m.factory_address
+    LEFT JOIN
+        {{contracts}} c 
+        ON dexs.factory_address = c.contract_address
 
 {% endmacro %}
