@@ -59,6 +59,6 @@ FROM
         ON  dexs.factory_address = m.factory_address
     LEFT JOIN
         {{contracts}} c 
-        ON dexs.factory_address = c.contract_address
+        ON dexs.factory_address = c.address
 
 {% endmacro %}
