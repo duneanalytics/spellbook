@@ -1,0 +1,38 @@
+version: 2
+
+models:
+  - name: restaking_ethereum_token_labels
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: henrystats, blocklytics
+    config:
+      tags: ['restaking', 'ethereum']
+    description: >
+        This table labels the various tokens used in the restaking sector into various categories (LST, LRT etc..)
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_address
+            - blockchain
+    columns:
+      - &blockchain
+        name: blockchain
+      - &token_address
+        name: token_address
+        description: "ERC20 Token Address"
+      - &token_decimals
+        name: token_decimals
+        description: "Decimals of the Token Address"
+      - &token_symbol
+        name: token_symbol
+        description: "Symbol of the Token"
+      - &token_category
+        name: token_category
+        description: "Category of the Token, usually LST or LRT"
+      - &token_project
+        name: token_project
+        description: "Protocol or Project that issued the Token"
+      - &lrt_project
+        name: lrt_project
+        description: "Restaking project Token is associated with if it's an LRT"
