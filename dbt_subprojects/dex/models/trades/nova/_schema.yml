@@ -19,8 +19,8 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-#      - check_dex_base_trades_seed:
-#          seed_file: ref('sushiswap_nova_base_trades_seed')
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_nova_base_trades_seed')
 
   - name: rcpswap_nova_base_trades
     meta:
@@ -36,3 +36,5 @@ models:
            combination_of_columns:
               - tx_hash
               - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('rcpswap_nova_base_trades_seed')
