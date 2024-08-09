@@ -1,15 +1,15 @@
 {{ config(
-        schema='arbitrum',
-        alias = 'metrics',
+        schema='zkevm',
+        alias = 'transaction_metrics',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain','block_hour'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_hour')],
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
+        post_hook='{{ expose_spells(\'["zkevm"]\',
                 "sector",
                 "metrics",
                 \'["0xRob"]\') }}')
 }}
 
-{{blockchain_metrics('arbitrum')}}
+{{blockchain_transaction_metrics('zkevm')}}
