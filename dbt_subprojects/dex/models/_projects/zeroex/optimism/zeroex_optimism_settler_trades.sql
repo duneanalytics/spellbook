@@ -24,9 +24,7 @@ WITH tbl_addresses AS (
     WHERE 
         contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae 
         AND blockchain = 'optimism'
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
-        {% endif %}  
+        and block_time > TIMESTAMP '2024-05-23'
 ),
 
 tbl_end_times AS (
