@@ -246,6 +246,7 @@ models:
       - &is_migrated
         name: is_migrated
         description: "is migrated flag"
+      - name: trace_address
       - *tx_hash
 
   - name: nexusmutual_ethereum_active_covers

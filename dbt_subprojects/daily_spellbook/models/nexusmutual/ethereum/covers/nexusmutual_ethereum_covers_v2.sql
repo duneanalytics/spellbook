@@ -32,7 +32,7 @@ cover_sales as (
     from_hex(json_query(c.params, 'lax $.commissionDestination' omit quotes)) as commission_destination,
     cast(json_query(t.pool_allocation, 'lax $.coverAmountInAsset') as uint256) as cover_amount_in_asset,
     cast(json_query(t.pool_allocation, 'lax $.skip') as boolean) as pool_allocation_skip,
-    c.call_trace_address,
+    c.call_trace_address as trace_address,
     c.call_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'Cover_call_buyCover') }} c
     cross join unnest(c.poolAllocationRequests) as t(pool_allocation)
@@ -97,6 +97,7 @@ cover_premiums as (
     end as premium_asset,
     c.cover_owner,
     c.commission_destination,
+    c.trace_address,
     c.tx_hash
   from cover_sales c
     inner join staking_product_premiums p on c.tx_hash = p.tx_hash and c.block_number = p.block_number
@@ -135,6 +136,7 @@ covers_v2 as (
     cp.commission,
     cp.commission_ratio,
     cp.commission_destination,
+    cp.trace_address,
     cp.tx_hash
   from cover_premiums cp
     left join products p on cp.product_id = p.product_id
@@ -191,6 +193,7 @@ covers as (
     commission_ratio,
     commission_destination,
     false as is_migrated,
+    trace_address,
     tx_hash
   from covers_v2
   union all
@@ -218,6 +221,7 @@ covers as (
     commission_ratio,
     commission_destination,
     true as is_migrated,
+    null as trace_address,
     tx_hash
   from covers_v1_migrated
 )
@@ -249,5 +253,6 @@ select
   commission_ratio,
   commission_destination,
   is_migrated,
+  trace_address,
   tx_hash
 from covers
