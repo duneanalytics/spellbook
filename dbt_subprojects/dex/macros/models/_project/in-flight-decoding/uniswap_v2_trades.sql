@@ -1,6 +1,5 @@
 {% macro uniswap_v2_forks_trades(
-    blockchain = null
-    , project = null
+    blockchain = 'ethereum'
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PairCreated = null
@@ -38,6 +37,7 @@ WITH dexs AS
 SELECT
     '{{ blockchain }}' AS blockchain
     , coalesce(c.namespace, m.project_name, concat(cast(varbinary_substring(dexs.factory_address, 1, 3) as varchar),'-unidentified-univ2-fork')) AS project
+    , dexs.factory_address
     , '{{ version }}' AS version
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
@@ -60,5 +60,7 @@ FROM
     LEFT JOIN
         {{contracts}} c 
         ON dexs.factory_address = c.address
+     
+    
 
 {% endmacro %}
