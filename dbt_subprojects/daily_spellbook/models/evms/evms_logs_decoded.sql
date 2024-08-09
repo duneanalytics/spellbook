@@ -28,6 +28,7 @@
      , ('zkevm', source('zkevm', 'logs_decoded'))
      , ('blast', source('blast', 'logs_decoded'))
      , ('mantle', source('mantle', 'logs_decoded'))
+     , ('sei', source('sei', 'logs_decoded'))
 ] %}
 
 SELECT *
