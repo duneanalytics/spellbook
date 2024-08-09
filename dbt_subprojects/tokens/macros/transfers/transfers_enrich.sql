@@ -23,9 +23,8 @@ WITH base_transfers as (
         *
     FROM
         {{ base_transfers }}
-    WHERE block_date = date '{{ transfers_start_date }}' --for testing, small sample size
     {% if is_incremental() %}
-    AND
+    WHERE
         {{ incremental_predicate('block_date') }}
     {% endif %}
 )
