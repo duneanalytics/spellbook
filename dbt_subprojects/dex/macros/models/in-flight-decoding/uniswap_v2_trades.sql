@@ -36,7 +36,7 @@ WITH dexs AS
 
 SELECT
     blockchain
-    , concat(cast(varbinary_substring(dexs.factory_address, 1, 3) as varchar),'-univ2-fork')) AS project
+    , concat(cast(varbinary_substring(dexs.factory_address, 1, 3) as varchar),'-univ2-fork') AS project
     , dexs.factory_address
     , '{{ version }}' AS version
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
