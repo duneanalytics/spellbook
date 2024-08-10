@@ -354,8 +354,3 @@ models:
       +schema: aerodrome
       base:
         +schema: aerodrome_base
-
-    restaking:
-      +schema: restaking
-      ethereum:
-        +schema: restaking_ethereum
