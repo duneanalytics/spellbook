@@ -16,7 +16,7 @@ select
 from (
     values 
     -- lsts 
-        (0xa2e3356610840701bdf5611a53974510ae27e2e1, 18, 'wBETH', 'LST', 'Binance', 'Null')
+         (0xa2e3356610840701bdf5611a53974510ae27e2e1, 18, 'wBETH', 'LST', 'Binance', 'Null')
         ,(0xe95a203b1a91a908f9b9ce46459d101078c2c3cb, 18, 'ankrETH', 'LST', 'Unidentified', 'Null')
         ,(0xf1c9acdc66974dfb6decb12aa385b9cd01190e38, 18, 'osETH', 'LST', 'Unidentified', 'Null')
         ,(0x8c1bed5b9a0928467c9b1341da1d7bd5e10b6549, 18, 'LsETH', 'LST', 'Unidentified', 'Null')
@@ -41,7 +41,7 @@ from (
         ,(0x49446a0874197839d15395b908328a74ccc96bc0, 18, 'mstETH', 'LRT', 'Unidentified', 'eigenlayer')
         ,(0xd05728038681bcc79b2d5aeb4d9b002e66c93a40, 18, 'mrETH', 'LRT', 'Unidentified', 'eigenlayer')
         ,(0x8a053350ca5f9352a16ded26ab333e2d251dad7c, 18, 'mmETH', 'LRT', 'Unidentified', 'eigenlayer')
-        ,(0x879054273cb2dad631980fa4efe6d25eef08aa4, 18, 'msfrxETH', 'LRT', 'Unidentified', 'eigenlayer')
+        ,(0x879054273cb2DAD631980Fa4efE6d25eeFe08AA4, 18, 'msfrxETH', 'LRT', 'Unidentified', 'eigenlayer')
         ,(0xe46a5e19b19711332e33f33c2db3ea143e86bc10, 18, 'mwBETH', 'LRT', 'Unidentified', 'eigenlayer')
         ,(0x32bd822d615a3658a68b6fdd30c2fcb2c996d678, 18, 'mswETH', 'LRT', 'Unidentified', 'eigenlayer')
         ,(0xd09124e8a1e3d620e8807ad1d968021a5495cee8, 18, 'mcbETH', 'LRT', 'Unidentified', 'eigenlayer')
