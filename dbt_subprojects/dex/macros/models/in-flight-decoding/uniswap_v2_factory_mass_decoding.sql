@@ -12,7 +12,7 @@ blockchain
 ,contract_address
 ,block_time
 ,block_number
-,block_date
+,date_trunc('day', block_time) as block_date
 ,tx_hash
 ,index
 
@@ -54,7 +54,7 @@ FROM TABLE (
         SELECT l.* 
         FROM {{logs}} l
         WHERE topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9
-        and block_date > now() - interval '10' day
+        and date_trunc('day', block_time) > now() - interval '10' day
       )
     )
   )
