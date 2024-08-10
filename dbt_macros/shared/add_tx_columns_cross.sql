@@ -1,4 +1,4 @@
-{% macro add_tx_columns(
+{% macro add_tx_columns_cross_chain(
     model_cte
     , blockchain
     , columns = []
@@ -16,6 +16,7 @@ inner join {{source(blockchain, 'transactions')}} tx
     model.block_date = tx.block_date
     and model.block_number = tx.block_number
     and model.tx_hash = tx.hash
+    and model.blockchain = tx.blockchain
     {% if is_incremental() %}
     and {{incremental_predicate('tx.block_time')}}
     {% endif %}
