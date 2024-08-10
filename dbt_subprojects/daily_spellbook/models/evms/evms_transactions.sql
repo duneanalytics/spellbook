@@ -49,6 +49,7 @@ FROM (
         , to
         , block_number
         , block_time
+        , block_date
         , gas_limit
         , CAST(gas_price AS double) AS gas_price
         , gas_used

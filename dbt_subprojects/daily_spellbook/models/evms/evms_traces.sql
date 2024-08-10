@@ -38,6 +38,7 @@ FROM (
         SELECT
         '{{ traces_model[0] }}' AS blockchain
         , block_time
+        , block_date
         , block_number
         , value
         , gas
