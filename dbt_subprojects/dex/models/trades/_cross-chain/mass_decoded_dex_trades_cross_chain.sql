@@ -41,7 +41,7 @@ WITH base_union AS (
 )
 
 {{
-    add_tx_columns(
+    add_tx_columns_cross_chain(
         model_cte = 'base_union'
         , blockchain = 'evms'
         , columns = ['from', 'to', 'index']
