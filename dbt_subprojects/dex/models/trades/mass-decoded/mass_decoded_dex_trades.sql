@@ -17,7 +17,7 @@
 with dexs AS (
     {{
         enrich_dex_trades(
-            base_trades = ref('dex_base_trades')
+            base_trades = ref('mass_decoded_dex_trades_ethereum')
             , filter = "project != 'curve'"
             , tokens_erc20_model = source('tokens', 'erc20')
         )
