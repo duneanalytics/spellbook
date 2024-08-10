@@ -27,6 +27,8 @@ sources:
             description: Block number
           - name: block_time
             description: Timestamp for block event time in UTC
+          - name: block_date
+            description: UTC event block date of transaction
           - name: gas_limit
             description: Maximum amount of gas units that can be consumed by the transaction
           - name: gas_price
@@ -83,6 +85,8 @@ sources:
             description: Name of the blockchain
           - name: block_time
             description: Timestamp for block event time in UTC
+          - name: block_date
+            description: UTC event block date of transaction
           - name: block_number
             description: Block number
           - name: block_hash
@@ -120,6 +124,8 @@ sources:
             description: Name of the blockchain
           - name: block_time
             description: Timestamp for block event time in UTC
+          - name: block_date
+            description: UTC event block date of transaction
           - name: block_number
             description: Block number
           - name: value
