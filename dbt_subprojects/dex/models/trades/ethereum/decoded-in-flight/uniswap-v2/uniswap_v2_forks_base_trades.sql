@@ -12,7 +12,7 @@
 }}
 
 {{uniswap_v2_forks_trades(
-        blockchain = ethereum
+        blockchain = 'ethereum'
         , version = 'unknown'
         , Pair_evt_Swap = ref('uniswap_v2_pool_decoding_ethereum')
         , Factory_evt_PairCreated = ref('uniswap_v2_factory_decoding_ethereum')
