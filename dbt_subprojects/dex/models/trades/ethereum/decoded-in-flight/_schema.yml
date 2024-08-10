@@ -48,5 +48,12 @@ models:
             - evt_index
             - project_contract_address
     
-
+  - name: mass_decoded_dex_trades_ethereum
+    description: "all dex trades on ethereum, mass decoded"
+    tests: 
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - project_contract_address
   
