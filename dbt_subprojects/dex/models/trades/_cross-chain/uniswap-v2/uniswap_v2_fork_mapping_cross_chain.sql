@@ -1,7 +1,7 @@
 -- this should probably live somewhere else, just for testing purposes for now
 
 {{ config(
-    schema = 'dex_mass_decoding_ethereum',
+    schema = 'dex_mass_decoding',
     alias = 'uniswap_v2_fork_mapping',
     tags = ['static'],
     unique_key = ['factory_address'])

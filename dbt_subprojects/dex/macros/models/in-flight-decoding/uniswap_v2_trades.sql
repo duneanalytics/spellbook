@@ -1,6 +1,5 @@
 {% macro uniswap_v2_forks_trades(
-    blockchain = 'ethereum'
-    , version = null
+    version = null
     , Pair_evt_Swap = null
     , Factory_evt_PairCreated = null
     , pair_column_name = 'pair'
@@ -23,11 +22,12 @@ WITH dexs AS
         , t.tx_hash
         , t.index AS evt_index
         , f.contract_address as factory_address
+        , t.blockchain
     FROM
         {{ Pair_evt_Swap }} t
     INNER JOIN
         {{ Factory_evt_PairCreated }} f
-        ON f.{{ pair_column_name }} = t.contract_address
+        ON f.{{ pair_column_name }} = t.contract_address and f.blockchain = t.blockchain
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('t.block_time') }}
@@ -35,8 +35,8 @@ WITH dexs AS
 )
 
 SELECT
-    '{{ blockchain }}' AS blockchain
-    , coalesce(m.project_name, concat(cast(varbinary_substring(dexs.factory_address, 1, 3) as varchar),'-unidentified-univ2-fork')) AS project
+    blockchain
+    , concat(cast(varbinary_substring(dexs.factory_address, 1, 3) as varchar),'-univ2-fork')) AS project
     , dexs.factory_address
     , '{{ version }}' AS version
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
@@ -54,9 +54,9 @@ SELECT
     , dexs.evt_index
 FROM
     dexs
-    INNER JOIN
-        {{Fork_Mapping}} m
-        ON  dexs.factory_address = m.factory_address
+    -- INNER JOIN
+    --    {{Fork_Mapping}} m
+    --    ON  dexs.factory_address = m.factory_address
     -- easy to spoof swap events so we use an allowlist  
      
 {% endmacro %}

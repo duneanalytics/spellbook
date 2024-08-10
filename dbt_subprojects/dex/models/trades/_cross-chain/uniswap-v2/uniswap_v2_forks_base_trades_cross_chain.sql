@@ -1,6 +1,6 @@
 {{ config(
 
-        schema = 'dex_mass_decoding_ethereum',
+        schema = 'dex_mass_decoding',
         alias = 'uniswap_v2_base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -12,11 +12,8 @@
 }}
 
 {{uniswap_v2_forks_trades(
-        blockchain = 'ethereum'
-        , version = 'unknown'
-        , Pair_evt_Swap = ref('uniswap_v2_pool_decoding_ethereum')
-        , Factory_evt_PairCreated = ref('uniswap_v2_factory_decoding_ethereum')
+        version = null
+        , Pair_evt_Swap = ref('uniswap_v2_pool_decoding_cross_chain')
+        , Factory_evt_PairCreated = ref('uniswap_v2_factory_decoding_cross_chain')
         , pair_column_name = 'pair'
-        , Fork_Mapping = ref('uniswap_v2_fork_mapping_ethereum')
-        , contracts = source('ethereum', 'contracts')
 )}}

@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'dex_ethereum'
-    , alias = 'mass_decoded_trades'
+    schema = 'dex_mass_decoding_cross_chain'
+    , alias = 'trades'
     , materialized = 'view'
     )
 }}
@@ -43,7 +43,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'ethereum'
+        , blockchain = 'evms'
         , columns = ['from', 'to', 'index']
     )
 }}

@@ -1,7 +1,7 @@
 {{ config(
     schema = 'mass_decoded_dex_trades'
     , alias = 'trades'
-    , partition_by = ['block_month', 'blockchain', 'project']
+    , partition_by = ['block_month', 'blockchain']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
@@ -17,7 +17,7 @@
 with dexs AS (
     {{
         enrich_dex_trades(
-            base_trades = ref('mass_decoded_dex_trades_ethereum')
+            base_trades = ref("mass_decoded_dex_trades_cross_chain")
             , filter = "1=1"
             , tokens_erc20_model = source('tokens', 'erc20')
         )

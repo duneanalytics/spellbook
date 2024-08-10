@@ -1,27 +1,29 @@
 version: 2
 
 models:
-  - name: uniswap_v2_factory_decoding_ethereum 
+  - name: uniswap_v2_factory_decoding_cross_chain
     description: >
-      mass decoding of all forks of uniswap v2 factory contract on ethereum 
+      mass decoding of all forks of uniswap v2 factory contract  
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - index
+            - blockchain
 
-  - name: uniswap_v2_pool_decoding_ethereum
+  - name: uniswap_v2_pool_decoding_cross_chain
     description: >
-      mass decoding of all forks of uniswap v2 pool contracts on ethereum
+      mass decoding of all forks of uniswap v2 pool contracts 
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - index
+            - blockchain
 
-  - name: uniswap_v2_fork_mapping_ethereum
+  - name: uniswap_v2_fork_mapping_cross_chain
     description: >
-      mapping of all forks of uniswap v2 factory contract on ethereum 
+      mapping of all forks of uniswap v2 factory contract  
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -32,28 +34,23 @@ models:
       - name: project_name
         description: "name of the project associated with the factory"
 
-  - name: uniswap_v2_forks_base_trades
-    meta:
-      blockchain: ethereum
-      sector: dex
-      project: uniswap
-      contributors: 0xboxer
-    config:
-      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v2', 'forks' ]
-    description: "base trades for all forks of uniswap v2 on ethereum"
+  - name: uniswap_v2_forks_base_trades_cross_chain
+    description: "base trades for all forks of uniswap v2 "
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
             - project_contract_address
+            - blockchain
     
-  - name: mass_decoded_dex_trades_ethereum
-    description: "all dex trades on ethereum, mass decoded"
+  - name: mass_decoded_dex_trades_cross_chain
+    description: "all dex trades , mass decoded"
     tests: 
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
             - project_contract_address
+            - blockchain
   

@@ -5,7 +5,8 @@
 
 
 SELECT
-token0
+blockchain
+,token0
 ,token1
 ,pair
 ,contract_address
@@ -53,7 +54,7 @@ FROM TABLE (
         SELECT l.* 
         FROM {{logs}} l
         WHERE topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9
-        and block_date > (Select min(block_date) from {{logs}} where topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9) -- take out limit if you want to use in prod
+        and block_date > now() - interval '10' day
       )
     )
   )

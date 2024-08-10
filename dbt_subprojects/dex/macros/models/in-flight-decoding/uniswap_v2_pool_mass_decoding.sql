@@ -5,7 +5,8 @@
 
 
 SELECT 
-block_time 
+blockchain
+,block_time 
 ,block_number
 ,to
 ,contract_address
@@ -65,7 +66,7 @@ FROM TABLE (
         SELECT l.* 
         FROM {{logs}} l
         WHERE topic0 = 0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822
-        and block_date > (Select min(block_date) from {{logs}} where topic0 = 0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822)
+        and block_date > now() - interval '10' day
       )
     )
   )
