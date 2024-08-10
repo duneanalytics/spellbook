@@ -7,7 +7,7 @@
 
 {% set base_models = [
     
-    ref('uniswap_v2_forks_base_trades')
+    ref('uniswap_v2_forks_base_trades_cross_chain')
 ] %}
 
 WITH base_union AS (
