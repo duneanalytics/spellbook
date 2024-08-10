@@ -40,7 +40,7 @@ SELECT 'ethereum' AS blockchain
 , 'X2Y2' AS token_symbol
 , t.evt_index
 FROM x2y2_ethereum.X2Y2Drop_evt_Airdrop t
-LEFT JOIN prices.usd_forward_fill pu ON pu.blockchain = 'ethereum'
+LEFT JOIN {{ source('prices', 'usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{xtyt_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN timestamp '2022-02-15' AND timestamp '2022-03-31'
