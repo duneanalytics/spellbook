@@ -18,7 +18,7 @@
 WITH early_price AS (
     SELECT MIN(minute) AS minute
     , MIN_BY(price, minute) AS price
-    FROM prices.usd
+    FROM {{ source('prices', 'usd') }}
     WHERE blockchain = 'ethereum'
     AND contract_address= {{xtyt_token_address}}
     )
