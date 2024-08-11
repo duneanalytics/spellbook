@@ -66,7 +66,7 @@ FROM TABLE (
         SELECT l.* 
         FROM {{logs}} l
         WHERE topic0 = 0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822
-        and date_trunc('day', block_time) > now() - interval '10' day
+        and date_trunc('day', block_time) > now() - interval '5' day
       )
     )
   )
