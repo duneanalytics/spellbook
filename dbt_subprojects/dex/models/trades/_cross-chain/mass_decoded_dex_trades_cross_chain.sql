@@ -29,6 +29,7 @@ WITH base_union AS (
             , taker
             , maker
             , project_contract_address
+            , factory_address
             , tx_hash
             , evt_index
         FROM
