@@ -30,7 +30,7 @@ WITH transfers AS (
     UNION ALL
     {% endif %}
 
-    SELECT 
+    SELECT
         cast(date_trunc('day', t.evt_block_time) as date) AS block_date
         , t.evt_block_time AS block_time
         , t.evt_block_number AS block_number
@@ -61,6 +61,7 @@ SELECT
     -- We have to create this unique key because evt_index and trace_address can be null
     {{dbt_utils.generate_surrogate_key(['t.block_number', 'tx.index', 't.evt_index', "array_join(t.trace_address, ',')"])}} as unique_key
     , '{{blockchain}}' as blockchain
+    , cast(date_trunc('month', t.block_date) as date) AS block_month
     , t.block_date
     , t.block_time
     , t.block_number
