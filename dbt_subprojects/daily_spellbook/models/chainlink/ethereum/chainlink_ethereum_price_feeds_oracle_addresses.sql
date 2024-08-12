@@ -1,11 +1,11 @@
 {{
   config(
-    
+    schema = 'chainlink_ethereum',
     alias='price_feeds_oracle_addresses',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "chainlink",
-                                \'["linkpool_ryan","linkpool_jon"]\') }}'
+                                \'["linkpool_ryan","linkpool_jon","tomfutago"]\') }}'
   )
 }}
 
