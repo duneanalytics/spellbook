@@ -25,6 +25,7 @@ WITH
                   , block_slot
                   , row_number() OVER (partition by address order by day desc) as latest_balance
             FROM {{ ref('solana_utils_daily_balances') }}
+            WHERE day >= date '2024-08-01'
             {% if is_incremental() %}
             WHERE {{incremental_predicate('day')}}
             {% endif %}
