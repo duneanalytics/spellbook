@@ -1,21 +1,3 @@
-{% macro zeroex_config(blockchain, schema, alias) %}
-    {{
-        config(
-            schema = schema,
-            alias = alias,
-            materialized = 'incremental',
-            partition_by = ['block_month'],
-            unique_key = ['block_date', 'tx_hash', 'evt_index'],
-            on_schema_change = 'sync_all_columns',
-            file_format = 'delta',
-            incremental_strategy = 'merge',
-            incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-            post_hook = '{{ expose_spells(blockchains = \'["' ~ blockchain ~ '"]\', spell_type = "project", spell_name = "zeroex", contributors = \'["rantum", "hosuke"]\') }}'
-        )
-    }}
-{% endmacro %}
-
-
 {% macro zeroex_tx_cte(blockchain, start_date) %}
     SELECT
         tx_hash,
