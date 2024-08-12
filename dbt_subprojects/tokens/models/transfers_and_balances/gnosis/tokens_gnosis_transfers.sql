@@ -16,7 +16,7 @@
 
 {{
     transfers_enrich(
-        base_transfers = ref('tokens_gnosis_base_transfers')
+        base_transfers = ref('tokens_gnosis_base_full_transfers')
         , tokens_erc20_model = source('tokens', 'erc20')
         , prices_model = source('prices', 'usd')
         , evms_info_model = source('evms','info')
