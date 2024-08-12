@@ -15,6 +15,6 @@
     traces = source('scroll','traces'),
     transactions = source('scroll','transactions'),
     erc20_transfers = source('erc20_scroll','evt_transfer'),
-    native_contract_address = '0x000000000000000000000000000000000000800a'
+    native_contract_address = null
 )
 }}

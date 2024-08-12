@@ -15,6 +15,7 @@
     traces = source('zksync','traces'),
     transactions = source('zksync','transactions'),
     erc20_transfers = source('erc20_zksync','evt_transfer'),
-    native_contract_address = '0x000000000000000000000000000000000000800a'
+    native_contract_address = '0x000000000000000000000000000000000000800a',
+    include_traces = false
 )
 }}
