@@ -1,7 +1,7 @@
 {{config(
     schema = 'tokens_gnosis',
     alias = 'base_non_standard_transfers',
-    partition_by = ['block_month'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
