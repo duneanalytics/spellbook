@@ -94,12 +94,23 @@ SELECT
     max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
     swap_flag,
     matcha_limit_order_flag,
-    CASE WHEN maker_token IN {{ stablecoin_addresses }}
-         THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
-         WHEN taker_token IN {{ stablecoin_addresses }}
-         THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
-         ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
+
+    CASE
+        WHEN maker_token IN (
+            {% for address in stablecoin_addresses %}
+                {{ "0x" + address[2:] }}{% if not loop.last %},{% endif %}
+            {% endfor %}
+        )
+        THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
+        WHEN taker_token IN (
+            {% for address in stablecoin_addresses %}
+                {{ "0x" + address[2:] }}{% if not loop.last %},{% endif %}
+            {% endfor %}
+        )
+        THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
+        ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
     END AS volume_usd,
+
     tx."from" AS tx_from,
     tx.to AS tx_to,
     '{{ blockchain }}' AS blockchain

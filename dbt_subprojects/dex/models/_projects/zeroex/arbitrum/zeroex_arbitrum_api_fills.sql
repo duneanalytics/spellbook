@@ -30,7 +30,7 @@ WITH zeroex_tx AS (
         zeroex_main_events_cte(
             blockchain = 'arbitrum',
             start_date = zeroex_v4_start_date,
-            contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
+            contract_address = '0xdb6f1920a889355780af7570773609bd8cb1f498'
         )
     }}
 )
@@ -38,12 +38,12 @@ WITH zeroex_tx AS (
 {{
     zeroex_api_fills(
         blockchain = 'arbitrum',
-        native_token_address = 0x0000000000000000000000000000000000000000,
-        wrapped_native_token_address = 0x82af49447d8a07e3bd95bd0d56f35241523fbab1,
-        stablecoin_addresses = (
-                0xff970a61a04b1ca14834a43f5de4533ebddb5cc8
-                , 0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9
-                , 0xda10009cbd5d07dd0cecc66161fc93d7c9000da1
-        )
+        native_token_address = '0x0000000000000000000000000000000000000000',
+        wrapped_native_token_address = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+        stablecoin_addresses = [
+            '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+            '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9',
+            '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1'
+        ]
     )
 }}
