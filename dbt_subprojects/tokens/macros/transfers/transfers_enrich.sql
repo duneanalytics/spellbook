@@ -50,6 +50,7 @@ WITH base_transfers as (
     SELECT
         t.unique_key
         , t.blockchain
+        , t.block_month
         , t.block_date
         , t.block_time
         , t.block_number
@@ -96,6 +97,7 @@ WITH base_transfers as (
 SELECT
     unique_key
     , blockchain
+    , block_month
     , block_date
     , block_time
     , block_number
