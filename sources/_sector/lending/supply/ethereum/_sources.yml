@@ -17,6 +17,9 @@ sources:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
       - name: Pool_evt_ReserveDataUpdated
+      - name: LidoPool_evt_Supply
+      - name: LidoPool_evt_Withdraw
+      - name: LidoPool_evt_ReserveDataUpdated
 
   - name: compound_v2_ethereum
     tables:
@@ -27,11 +30,11 @@ sources:
 
   - name: compound_v3_ethereum
     tables:
-      - name: Comet_evt_SupplyCollateral
+      - name: cUSDCv3_evt_SupplyCollateral
       - name: cWETHv3_evt_SupplyCollateral
-      - name: Comet_evt_WithdrawCollateral
+      - name: cUSDCv3_evt_WithdrawCollateral
       - name: cWETHv3_evt_WithdrawCollateral
-      - name: Comet_evt_AbsorbCollateral
+      - name: cUSDCv3_evt_AbsorbCollateral
       - name: cWETHv3_evt_AbsorbCollateral
 
   - name: radiant_capital_ethereum
@@ -73,3 +76,8 @@ sources:
     tables:
       - name: LendingPool_evt_Deposit
       - name: LendingPool_evt_Withdraw
+
+  - name: morpho_blue_ethereum
+    tables:
+      - name: MorphoBlue_evt_Supply
+      - name: MorphoBlue_evt_Withdraw
