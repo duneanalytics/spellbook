@@ -30,7 +30,7 @@ WITH indexed_sandwich_trades AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('back.block_time') }}
         {% else %}
-        AND back.block_time > NOW() - interval '1' month
+        -- AND back.block_time > NOW() - interval '1' month
         {% endif %}
     INNER JOIN {{ ref('dex_solana_trades') }} victim ON victim.blockchain='{{blockchain}}'
         AND front.block_time=victim.block_time
@@ -41,14 +41,14 @@ WITH indexed_sandwich_trades AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('victim.block_time') }}
         {% else %}
-        AND victim.block_time > NOW() - interval '1' month
+        -- AND victim.block_time > NOW() - interval '1' month
         {% endif %}
     CROSS JOIN UNNEST(ARRAY[front.tx_id, back.tx_id]) AS t(tx_id_unwrapped)
     WHERE front.blockchain='{{blockchain}}'
     {% if is_incremental() %}
     AND {{ incremental_predicate('front.block_time') }}
     {% else %}
-    AND front.block_time > NOW() - interval '1' month
+    -- AND front.block_time > NOW() - interval '1' month
     {% endif %}
     )
 
@@ -90,11 +90,11 @@ INNER JOIN {{source('solana','transactions')}} tx ON tx.block_time=s.block_time
     {% if is_incremental() %}
     AND {{ incremental_predicate('tx.block_time') }}
     {% else %}
-    AND tx.block_time > NOW() - interval '1' month
+    -- AND tx.block_time > NOW() - interval '1' month
     {% endif %}
 WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
 {% else %}
-AND dt.block_time > NOW() - interval '1' month
+-- AND dt.block_time > NOW() - interval '1' month
 {% endif %}

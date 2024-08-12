@@ -33,7 +33,7 @@ WITH sandwich_bounds AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('front.block_time') }}
     {% else %}
-    WHERE front.block_time>NOW() - interval '1' month
+    -- WHERE front.block_time> NOW() - interval '1' month
     {% endif %}
     )
 
@@ -79,5 +79,5 @@ WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
 {% else %}
-AND dt.block_time > NOW() - interval '1' month
+-- AND dt.block_time > NOW() - interval '1' month
 {% endif %}
