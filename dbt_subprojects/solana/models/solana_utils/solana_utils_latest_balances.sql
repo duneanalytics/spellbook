@@ -27,7 +27,7 @@ WITH
             FROM {{ ref('solana_utils_daily_balances') }}
             WHERE day >= date '2024-08-01'
             {% if is_incremental() %}
-            AND {{incremental_predicate('day')}}
+            WHERE {{incremental_predicate('day')}}
             {% endif %}
 
       )
