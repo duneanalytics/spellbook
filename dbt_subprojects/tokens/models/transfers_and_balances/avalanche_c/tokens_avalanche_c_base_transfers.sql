@@ -1,7 +1,7 @@
 {{config(
     schema = 'tokens_avalanche_c',
     alias = 'base_transfers',
-    partition_by = ['block_month'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
