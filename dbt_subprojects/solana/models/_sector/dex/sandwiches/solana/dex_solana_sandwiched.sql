@@ -79,5 +79,5 @@ WHERE dt.blockchain='{{blockchain}}'
 {% if is_incremental() %}
 AND {{ incremental_predicate('dt.block_time') }}
 {% else %}
-AND dt.blockchain > NOW() - interval '1' month
+AND dt.block_time > NOW() - interval '1' month
 {% endif %}
