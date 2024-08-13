@@ -14,7 +14,8 @@ WITH
 
 suicide AS (
     SELECT 
-         cast(date_trunc('day', block_time) as date) AS block_date
+         cast(date_trunc('month', block_time) as date) AS block_month
+        , cast(date_trunc('day', block_time) as date) AS block_date
         , block_time
         , block_number
         , tx_hash
@@ -101,6 +102,7 @@ suicide_balances AS (
 SELECT 
     {{dbt_utils.generate_surrogate_key(['t2.block_number', 'tx.index', 'NULL', "array_join(t2.trace_address, ',')"])}} as unique_key
     , 'gnosis' as blockchain
+    , t2.block_month
     , t2.block_date
     , t2.block_time
     , t2.block_number
