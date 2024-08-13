@@ -22,6 +22,8 @@ WITH fee_wallets as (
      ,Seaport_call_matchAdvancedOrders = source('oneplanet_polygon','Seaport_call_matchAdvancedOrders')
      ,Seaport_call_matchOrders = source('oneplanet_polygon','Seaport_call_matchOrders')
      ,fee_wallet_list_cte = 'fee_wallets'
+     ,start_date = '2023-09-03'
+     ,native_currency_contract = '0x0000000000000000000000000000000000001010'
      ,seaport_fork_address = '0xcbbecf690e030d096794f7685a1bf4a58378a575'
      ,project = 'oneplanet'
      ,version = 'v1'
