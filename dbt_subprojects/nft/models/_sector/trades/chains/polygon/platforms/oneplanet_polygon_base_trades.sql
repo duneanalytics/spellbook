@@ -1,6 +1,6 @@
 {{ config(
     schema = 'oneplanet_polygon',
-    alias = 'events',
+    alias = 'base_trades',
 
     materialized = 'incremental',
     file_format = 'delta',
