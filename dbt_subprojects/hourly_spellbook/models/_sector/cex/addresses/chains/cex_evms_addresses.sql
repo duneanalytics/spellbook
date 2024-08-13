@@ -954,6 +954,7 @@ FROM (VALUES
     , (0x8d6f396d210d385033b348bcae9e4f9ea4e045bd, 'Gemini', 'Gemini 6', 'hildobby', date '2022-08-28')
     , (0xd69b0089d9ca950640f5dc9931a41a5965f00303, 'Gemini', 'Gemini 7', 'hildobby', date '2022-08-28')
     , (0x183b1ffb0aa9213b9335adfad82e47bfb02f8d24, 'Gemini', 'Gemini 8', 'hildobby', date '2023-09-05')
+    , (0xf51710015536957a01f32558402902a2d9c35d82, 'Gemini', 'Gemini 9', 'hildobby', date '2024-08-12')
     , (0xdd51f01d9fc0fd084c1a4737bbfa5becb6ced9bc, 'Gemini', 'Gemini Deployer', 'hildobby', date '2023-08-31')
     , (0x4c2f150fc90fed3d8281114c2349f1906cde5346, 'Gemini', 'Gemini Deployer 2', 'hildobby', date '2023-08-31')
     , (0x07ee55aa48bb72dcc6e9d78256648910de513eca, 'Gemini', 'Gemini Contract 1', 'hildobby', date '2023-08-31')
