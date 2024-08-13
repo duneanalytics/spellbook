@@ -1,0 +1,98 @@
+version: 2
+
+sources:
+  - name: wxdai_gnosis
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: WXDAI_evt_Deposit
+        loaded_at_field: evt_block_time
+        description: "WXDAI deposits"
+        columns:
+          - &contract_address
+            name: contract_address
+            description: "Contract address for token"
+          - &dst
+            name: dst
+            description: "Wallet address for WXDAI deposits"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block event number"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Event index"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Event transaction hash"
+          - &wad
+            name: wad
+            description: "Raw amount of WXDAI"
+            
+      - name: WXDAI_evt_Withdrawal
+        loaded_at_field: evt_block_time
+        description: "WXDAI withdrawals"
+        columns:
+          - *contract_address
+          - &src
+            name: src
+            description: "Wallet address for WXDAI withdrawals"
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *wad
+
+  - name: xdai_bridge_gnosis
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: HomeBridgeErcToNative_evt_UserRequestForSignature
+        loaded_at_field: evt_block_time
+        description: "HomeBridgeErcToNative"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &evt_tx_from
+            name: evt_tx_from
+            description: "Address of sender of transaction"
+          - &evt_tx_to
+            name: evt_tx_to
+            description: "Address of transaction receiver"
+          - &recipient
+            name: recipient
+            description: "Recipient"
+          - &value
+            name: value
+            description: "value"
+            
+  - name: xdai_gnosis
+    freshness:
+      warn_after: { count: 12, period: hour }
+    tables:
+      - name: RewardByBlock_evt_AddedReceiver
+        loaded_at_field: evt_block_time
+        description: "HomeBridgeErcToNative"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - *evt_tx_from
+          - *evt_tx_to
+          - &receiver
+            name: receiver
+            description: "Receiver"
+          - &bridge
+            name: bridge
+            description: "Bridge"
+          - &amount
+            name: amount
+            description: "amount"
+            
