@@ -11,8 +11,8 @@
         ,'0x00000000000000adc04c56bf30ac9d3c0aaf14dc'
         ,'0x0000000000000068F116a894984e2DB1123eB395'
      ]
-     ,project = 'seaport_fork'
-     ,version = 'seaport'
+     ,project = 'opensea'
+     ,version = 'v4'
 ) %}
 
 with source_ethereum_transactions as (
