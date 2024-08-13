@@ -16,6 +16,7 @@ tokens_gnosis_base_transfers AS (
     SELECT 
         unique_key
         , blockchain
+        , block_month
         , block_date
         , block_time
         , block_number
@@ -41,6 +42,7 @@ tokens_gnosis_base_non_standard_transfers AS (
     SELECT 
         unique_key
         , blockchain
+        , block_month
         , block_date
         , block_time
         , block_number
