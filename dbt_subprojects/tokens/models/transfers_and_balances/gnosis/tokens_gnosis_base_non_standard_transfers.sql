@@ -15,7 +15,8 @@ WITH
 gas_fee as (
     SELECT 
         'gas_fee' as transfer_type
-        ,cast(date_trunc('day', block_time) as date) AS block_date
+        , cast(date_trunc('month', block_time) as date) AS block_month
+        , cast(date_trunc('day', block_time) as date) AS block_date
         , block_time AS block_time
         , block_number AS block_number
         , hash AS tx_hash
@@ -38,7 +39,8 @@ gas_fee as (
 gas_fee_collection as (
     SELECT 
         'gas_fee_collection' as transfer_type
-        ,cast(date_trunc('day', t1.block_time) as date) AS block_date
+        , cast(date_trunc('month', t1.block_time) as date) AS block_month
+        , cast(date_trunc('day', t1.block_time) as date) AS block_date
         , t1.block_time AS block_time
         , t1.block_number AS block_number
         , t1.hash AS tx_hash
@@ -66,7 +68,8 @@ gas_fee_collection as (
 gas_fee_rewards as (
     SELECT 
         'gas_fee_rewards' as transfer_type
-        ,cast(date_trunc('day', t1.block_time) as date) AS block_date
+        , cast(date_trunc('month', t1.block_time) as date) AS block_month
+        , cast(date_trunc('day', t1.block_time) as date) AS block_date
         , t1.block_time AS block_time
         , t1.block_number AS block_number
         , t1.hash AS tx_hash
@@ -94,7 +97,8 @@ gas_fee_rewards as (
 block_reward AS (
     SELECT 
         'block_reward' as transfer_type
-        ,cast(date_trunc('day', evt_block_time) as date) AS block_date
+        , cast(date_trunc('month', evt_block_time) as date) AS block_month
+        , cast(date_trunc('day', evt_block_time) as date) AS block_date
         , evt_block_time AS block_time
         , evt_block_number AS block_number
         , evt_tx_hash AS tx_hash
@@ -115,6 +119,7 @@ block_reward AS (
 
     SELECT 
         'block_reward' as transfer_type
+        , cast(date_trunc('month', evt_block_time) as date) AS block_month
         , cast(date_trunc('day', evt_block_time) as date) AS block_date
         , evt_block_time AS block_time
         , evt_block_number AS block_number
@@ -149,6 +154,7 @@ SELECT
     {{dbt_utils.generate_surrogate_key(['t.block_number', 'tx.index', 't.transfer_type', "array_join(t.trace_address, ',')"])}} as unique_key
     , t.transfer_type
     , 'gnosis' as blockchain
+    , t.block_month
     , t.block_date
     , t.block_time
     , t.block_number
