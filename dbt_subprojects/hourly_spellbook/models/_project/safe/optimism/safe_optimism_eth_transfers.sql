@@ -39,7 +39,8 @@ erc20_eth_transfers AS (
         r.evt_block_time as block_time,
         CAST(r.value AS INT256) as amount_raw,
         r.evt_tx_hash as tx_hash,
-        cast(r.evt_index as varchar) as trace_address
+        cast(r.evt_index as varchar) as trace_address,
+        'erc20' as transfer_type
     FROM {{ source('erc20_optimism', 'evt_Transfer') }} r
     INNER JOIN {{ ref('safe_optimism_safes') }} s
         ON r.to = s.address
@@ -64,7 +65,8 @@ erc20_eth_transfers AS (
         r.evt_block_time as block_time,
         -CAST(r.value AS INT256) as amount_raw,
         r.evt_tx_hash as tx_hash,
-        cast(r.evt_index as varchar) as trace_address
+        cast(r.evt_index as varchar) as trace_address,
+        'erc20' as transfer_type
     FROM {{ source('erc20_optimism', 'evt_Transfer') }} r
     INNER JOIN {{ ref('safe_optimism_safes') }} s
         ON r."from" = s.address
@@ -81,7 +83,10 @@ erc20_eth_transfers AS (
 
 -- Combine both types of transfers
 combined_transfers AS (
-    SELECT * FROM standard_transfers
+    SELECT
+        *,
+        'standard' as transfer_type
+    FROM standard_transfers
     UNION ALL
     SELECT * FROM erc20_eth_transfers
 )
