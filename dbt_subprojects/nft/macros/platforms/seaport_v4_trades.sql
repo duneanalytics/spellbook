@@ -420,7 +420,7 @@ select
         -- basic info
          '{{blockchain}}' as blockchain
         ,'{{project}}' as project
-        ,'{{version}}' as version
+        ,'{{version}}' as project_version
 
         -- order info
         ,block_time
