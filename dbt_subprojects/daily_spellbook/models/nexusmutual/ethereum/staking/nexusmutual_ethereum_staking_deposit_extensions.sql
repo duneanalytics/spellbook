@@ -4,10 +4,10 @@
     alias = 'staking_deposit_extensions',
     materialized = 'view',
     unique_key = ['pool_address', 'token_id', 'init_tranche_id', 'current_tranche_id'],
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
