@@ -11,7 +11,7 @@
 
 select
     blockchain
-    , '1inch LOP' as project
+    , '1inch-LOP' as project
     , protocol_version as version
     , date(block_time) as block_date
     , block_month
