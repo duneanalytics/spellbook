@@ -1,7 +1,7 @@
 {{ 
     config(
         materialized='incremental',
-        schema = 'safe_arbitrum'
+        schema = 'safe_arbitrum',
         alias = 'eth_transfers',
         partition_by = ['block_month'],
         unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
