@@ -9,4 +9,7 @@ sources:
   - name: tokens_polygon
     tables:
       - name: balances_daily_agg
+  - name: tokens_base
+    tables:
+      - name: balances_daily_agg
   
