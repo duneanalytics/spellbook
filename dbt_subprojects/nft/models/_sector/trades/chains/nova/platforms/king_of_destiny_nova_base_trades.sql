@@ -29,7 +29,7 @@ select
    ,s.quantityBought as nft_amount
    ,s.totalPricePaid as price_raw
    ,from_hex(json_extract_scalar(l.listing, '$.currency')) as currency_contract
-   ,r.output_amounts as royalty_fee_amount_raw
+   ,element_at(r.output_amounts,1) as royalty_fee_amount_raw
    ,cast(null as decimal(38)) as platform_fee_amount_raw
    ,cast(null as varbinary) as platform_fee_address
    ,element_at(r.output_recipients,1) as royalty_fee_address
