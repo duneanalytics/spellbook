@@ -22,7 +22,9 @@ models:
         description: "UTC event block time truncated to the day mark"
         tests:
           - not_null
-      - name: blockchain          
+      - &blockchain
+        name: blockchain   
+        description: "Blockchain"       
       - &pool_address
         name: pool_address
         description: "Balancer CoWSwap AMM pool contract address"
@@ -54,7 +56,7 @@ models:
       - *pool_address
       - name: pool_symbol
       - name: version
-      - *blockchain
+      - blockchain
       - name: pool_type
       - *token_address
       - &token_symbol
