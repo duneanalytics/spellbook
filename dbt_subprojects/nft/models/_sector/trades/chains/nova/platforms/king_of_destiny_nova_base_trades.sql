@@ -48,7 +48,7 @@ left join  {{source('king_of_destiny_nova','MarketplaceV3_call_GetRoyalty')}}  r
     and s.assetContract = r.tokenAddress
     and s.tokenId = r.tokenId
     {% if is_incremental() %}
-    and {{incremental_predicate('r.evt_block_time')}}
+    and {{incremental_predicate('r.call_block_time')}}
     {% endif %}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('s.evt_block_time')}}
