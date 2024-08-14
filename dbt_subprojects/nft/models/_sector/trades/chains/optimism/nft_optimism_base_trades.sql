@@ -16,6 +16,8 @@
      ,ref('element_optimism_base_trades')
      ,ref('opensea_v3_optimism_base_trades')
      ,ref('opensea_v4_optimism_base_trades')
+     ,ref('quix_seaport_optimism_base_trades')
+     ,ref('nftearth_optimism_base_trades')
 ] %}
 
 with base_union as (
