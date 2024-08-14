@@ -68,6 +68,7 @@ calendar AS (
 
 SELECT
     c.day, 
+    'ethereum' AS blockchain,
     b.pool AS pool_address, 
     b.token AS token_address, 
     b.cumulative_amount AS token_balance_raw

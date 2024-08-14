@@ -22,6 +22,7 @@ models:
         description: "UTC event block time truncated to the day mark"
         tests:
           - not_null
+      - name: blockchain
       - &pool_address
         name: pool_address
         description: "Balancer CoWSwap AMM pool contract address"
@@ -31,7 +32,7 @@ models:
       - &token_balance_raw
         name: token_balance_raw
         description: "Balance of a token"
-        
+
   - name: balancer_cowswap_amm_gnosis_liquidity
     meta:
       blockchain: gnosis
@@ -52,7 +53,7 @@ models:
       - name: pool_id
       - *pool_address
       - name: pool_symbol
-      - *version
+      - name: version
       - *blockchain
       - name: pool_type
       - *token_address
