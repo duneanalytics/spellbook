@@ -140,6 +140,7 @@ models:
             - init_tranche_id
             - current_tranche_id
     columns:
+      - *block_time
       - *pool_address
       - *token_id
       - *init_tranche_id
@@ -148,3 +149,5 @@ models:
       - name: total_amount
         description: "total staking amount (initial deposit + all top-up amounts)"
       - *is_active
+      - *evt_index
+      - *tx_hash

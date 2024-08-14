@@ -97,7 +97,7 @@ meta_calls AS (
     SELECT
         *
     FROM (
-        SELECT         
+        SELECT
             _name,
             _symbol,
             output_0,
@@ -105,18 +105,18 @@ meta_calls AS (
             _base_pool,
             _coin,
             _A,
-            _fee 
-        FROM 
+            _fee
+        FROM
         {{ source(
             'curvefi_ethereum',
-            'CurveFactory_call_deploy_metapool' 
+            'CurveFactory_call_deploy_metapool'
         ) }} --https://etherscan.io/address/0xb9fc157394af804a3578134a6585c0dc9cc990d4
         WHERE
         call_success
 
-        UNION ALL 
+        UNION ALL
 
-        SELECT         
+        SELECT
             _name,
             _symbol,
             output_0,
@@ -124,11 +124,11 @@ meta_calls AS (
             _base_pool,
             _coin,
             _A,
-            _fee 
-        FROM 
+            _fee
+        FROM
         {{ source(
             'curvefi_ethereum',
-            'MetaPoolFactory_call_deploy_metapool' 
+            'MetaPoolFactory_call_deploy_metapool'
         ) }} --https://etherscan.io/address/0x0959158b6040d32d04c301a72cbfd6b39e21c9ae
         WHERE
         call_success
@@ -155,7 +155,7 @@ meta_pools_deployed AS (
         r.coin1 as undercoin2,
         r.coin2 as undercoin3
     FROM
-        meta_calls mc 
+        meta_calls mc
     LEFT JOIN regular_pools r ON r.pool_address = mc._base_pool
 
     UNION ALL
@@ -182,8 +182,8 @@ meta_pools_deployed AS (
     FROM
         {{ source(
             'curvefi_ethereum',
-            'crvUSD_StableswapFactory_call_deploy_metapool' 
-        ) }} mc 
+            'crvUSD_StableswapFactory_call_deploy_metapool'
+        ) }} mc
     LEFT JOIN regular_pools r ON r.pool_address = mc._base_pool
 ),
 
@@ -225,7 +225,7 @@ v1_stableswap_ng as (
         dp._name AS name,
         dp._symbol AS symbol,
         dp.output_0 AS pool_address,
-        dp._A AS A,        
+        dp._A AS A,
         dp._fee AS mid_fee,
         dp._fee AS out_fee,
         dp.output_0 AS token_address,
@@ -370,6 +370,7 @@ v2_pools_deployed AS (
         ) }}
         ON p.evt_block_time = call_block_time
         AND p.evt_tx_hash = call_tx_hash
+        AND p.coins = _coins
 ),
 
 v2_updated_pools_deployed AS (
@@ -403,6 +404,7 @@ v2_updated_pools_deployed AS (
         ) }} dp
         ON p.evt_block_time = dp.call_block_time
         AND p.evt_tx_hash = dp.call_tx_hash
+        AND p.coins = _coins
 ),
 
 
@@ -412,7 +414,7 @@ twocrypto as (
         dp._name AS name,
         dp._symbol AS symbol,
         dp.output_0 AS pool_address,
-        dp.A AS A,        
+        dp.A AS A,
         dp.mid_fee AS mid_fee,
         dp.out_fee AS out_fee,
         dp.output_0 AS token_address,
@@ -436,6 +438,7 @@ twocrypto as (
         ) }} dp
         ON dp.call_block_time = p.evt_block_time
         AND dp.call_tx_hash = p.evt_tx_hash
+        AND p.coins = _coins
 ),
 ---------------------------------------------------------------- unioning all 3 together ----------------------------------------------------------------
 pools AS (
@@ -486,7 +489,7 @@ pools AS (
         'curvefi_ethereum',
         'CurveTwocryptoFactory_evt_LiquidityGaugeDeployed'
         ) }} as g3
-        ON pd3u.pool_address = g3.pool       
+        ON pd3u.pool_address = g3.pool
 ),
 
 contract_name AS (
