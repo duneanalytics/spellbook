@@ -157,7 +157,6 @@ FROM
     ('fx-function-x', 'ethereum', 'FX', 0x8c15ef5b4b21951d50e53e4fbda8298ffad25057, 18),
     ('fxc-flexacoin', 'ethereum', 'FXC', 0x4a57e687b9126435a9b19e4a802113e266adebde, 18),
     ('fxs-frax-share', 'ethereum', 'FXS', 0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0, 18),
-    ('gala-gala', 'ethereum', 'GALA', 0x15d4c048f83bd7e37d49ea4c83a07267ec4203da, 8),
     ('gbp-pound-sterling-token', 'ethereum', 'ibGBP', 0x69681f8fde45345c3870bcd5eaf4a05a60e7d227, 18),
     ('gcr-global-coin-research', 'ethereum', 'GCR', 0x6307b25a665efc992ec1c1bc403c38f3ddd7c661, 4),
     ('gen-daostack', 'ethereum', 'GEN', 0x543ff227f64aa17ea132bf9886cab5db55dcaddf, 18),

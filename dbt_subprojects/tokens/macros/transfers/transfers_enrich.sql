@@ -14,6 +14,7 @@ END
     , evms_info_model = null
     , transfers_start_date = '2000-01-01'
     , blockchain = null
+    , usd_amount_threshold = 25000000000
     )
 %}
 
@@ -45,49 +46,80 @@ WITH base_transfers as (
         minute >= TIMESTAMP '{{ transfers_start_date }}'
     {% endif %}
 )
+, transfers as (
+    SELECT
+        t.unique_key
+        , t.blockchain
+        , t.block_month
+        , t.block_date
+        , t.block_time
+        , t.block_number
+        , t.tx_hash
+        , t.evt_index
+        , t.trace_address
+        , t.token_standard
+        , t.tx_from
+        , t.tx_to
+        , t.tx_index
+        , t."from"
+        , t.to
+        , t.contract_address
+        , {{case_when_token_standard('evms_info.native_token_symbol', 'tokens_erc20.symbol', 'NULL')}} AS symbol
+        , t.amount_raw
+        , {{case_when_token_standard('t.amount_raw / power(10, 18)', 't.amount_raw / power(10, tokens_erc20.decimals)', 'cast(t.amount_raw as double)')}} AS amount
+        , prices.price AS price_usd
+        , {{case_when_token_standard('(t.amount_raw / power(10, 18)) * prices.price',
+            '(t.amount_raw / power(10, tokens_erc20.decimals)) * prices.price',
+            'NULL')}} AS amount_usd
+    FROM
+        base_transfers as t
+    INNER JOIN
+        {{ evms_info_model }} as evms_info
+        ON evms_info.blockchain = t.blockchain
+    LEFT JOIN
+        {{ tokens_erc20_model }} as tokens_erc20
+        ON tokens_erc20.blockchain = t.blockchain
+        AND tokens_erc20.contract_address = t.contract_address
+    LEFT JOIN
+        prices
+        ON date_trunc('minute', t.block_time) = prices.minute
+        AND CASE
+            WHEN t.token_standard = 'native'
+                THEN
+                prices.blockchain IS NULL
+                AND prices.contract_address IS NULL
+                AND evms_info.native_token_symbol = prices.symbol
+            ELSE
+                prices.blockchain = '{{ blockchain }}'
+                AND t.contract_address = prices.contract_address
+            END
+)
 SELECT
-    t.unique_key
-    , t.blockchain
-    , t.block_date
-    , t.block_time
-    , t.block_number
-    , t.tx_hash
-    , t.evt_index
-    , t.trace_address
-    , t.token_standard
-    , t.tx_from
-    , t.tx_to
-    , t.tx_index
-    , t."from"
-    , t.to
-    , t.contract_address
-    , {{case_when_token_standard('evms_info.native_token_symbol', 'tokens_erc20.symbol', 'NULL')}} AS symbol
-    , t.amount_raw
-    , {{case_when_token_standard('t.amount_raw / power(10, 18)', 't.amount_raw / power(10, tokens_erc20.decimals)', 'cast(t.amount_raw as double)')}} AS amount
-    , prices.price AS price_usd
-    , {{case_when_token_standard('(t.amount_raw / power(10, 18)) * prices.price',
-        '(t.amount_raw / power(10, tokens_erc20.decimals)) * prices.price',
-        'NULL')}} AS amount_usd
+    unique_key
+    , blockchain
+    , block_month
+    , block_date
+    , block_time
+    , block_number
+    , tx_hash
+    , evt_index
+    , trace_address
+    , token_standard
+    , tx_from
+    , tx_to
+    , tx_index
+    , "from"
+    , to
+    , contract_address
+    , symbol
+    , amount_raw
+    , amount
+    , price_usd
+    , CASE
+        WHEN amount_usd >= {{ usd_amount_threshold }}
+            THEN CAST(NULL as double)
+            ELSE amount_usd -- Select only transfers where USD amount is less than the threshold
+        END AS amount_usd
 FROM
-    base_transfers as t
-INNER JOIN
-    {{ evms_info_model }} as evms_info
-    ON evms_info.blockchain = t.blockchain
-LEFT JOIN
-    {{ tokens_erc20_model }} as tokens_erc20
-    ON tokens_erc20.blockchain = t.blockchain
-    AND tokens_erc20.contract_address = t.contract_address
-LEFT JOIN
-    prices
-    ON date_trunc('minute', t.block_time) = prices.minute
-    AND CASE
-        WHEN t.token_standard = 'native'
-            THEN
-            prices.blockchain IS NULL
-            AND prices.contract_address IS NULL
-            AND evms_info.native_token_symbol = prices.symbol
-        ELSE
-            prices.blockchain = '{{ blockchain }}'
-            AND t.contract_address = prices.contract_address
-        END
+    transfers
 {%- endmacro %}
