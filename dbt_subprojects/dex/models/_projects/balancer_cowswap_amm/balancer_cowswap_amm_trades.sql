@@ -36,7 +36,6 @@ FROM (
        , maker
        , project_contract_address
        , pool_id
-       , pool_type
        , tx_hash
        , tx_from
        , tx_to
