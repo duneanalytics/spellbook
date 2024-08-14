@@ -13,18 +13,7 @@
 
 WITH dex AS (
     SELECT
-        blockchain
-        , project
-        , version
-        , block_month
-        , block_time
-        , block_slot
-        , project_program_id
-        , trader_id
-        , tx_id
-        , tx_index
-        , token_sold_mint_address
-        , token_bought_mint_address
+        *
     FROM
         {{ ref('dex_solana_trades') }}
     WHERE
