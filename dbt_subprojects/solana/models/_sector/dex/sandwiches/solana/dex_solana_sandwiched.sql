@@ -24,7 +24,8 @@ WITH sandwiches AS (
 ),
 sandwich_bounds AS (
     SELECT
-        front.block_time
+        front.block_month
+        , front.block_time
         , front.tx_id AS min_tx_id
         , back.tx_id AS max_tx_id
         , front.project_program_id    
