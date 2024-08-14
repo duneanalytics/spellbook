@@ -34,6 +34,7 @@ select
    ,cast(null as varbinary) as platform_fee_address
    ,r.output_recipients as royalty_fee_address
    ,s.listingId as listing_id
+   ,s.evt_index as sub_tx_trade_id
 from {{source('king_of_destiny_nova','MarketplaceV3_DirectListingsLogic_evt_NewSale')}} s
 left join  {{source('king_of_destiny_nova','MarketplaceV3_DirectListingsLogic_evt_NewListing')}} l
     on s.listingId = l.listingId
