@@ -12,6 +12,7 @@
 ,ref('opensea_v4_nova_base_trades')
 ] %}
 
+with base_union as (
 SELECT * FROM  (
 {% for nft_model in nft_models %}
     SELECT
@@ -38,8 +39,8 @@ SELECT * FROM  (
         platform_fee_address,   -- optional
         royalty_fee_address,    -- optional
         sub_tx_trade_id,
-        tx_from,
-        tx_to,
+--        tx_from,
+--        tx_to,
         row_number() over (partition by tx_hash, sub_tx_trade_id order by tx_hash) as duplicates_rank   -- duplicates protection
     FROM {{ nft_model }}
     {% if not loop.last %}
@@ -48,3 +49,7 @@ SELECT * FROM  (
     {% endfor %}
     )
 where duplicates_rank = 1
+)
+
+-- this will be removed once tx_from and tx_to are available in the base event tables
+{{ add_nft_tx_data('base_union', 'nova') }}
