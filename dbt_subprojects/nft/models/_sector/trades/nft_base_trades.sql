@@ -26,6 +26,7 @@
  ,ref('nft_zora_base_trades')
  ,ref('nft_blast_base_trades')
  ,ref('nft_fantom_base_trades')
+ ,ref('nft_nova_base_trades')
 ] %}
 
 with base_union as (
