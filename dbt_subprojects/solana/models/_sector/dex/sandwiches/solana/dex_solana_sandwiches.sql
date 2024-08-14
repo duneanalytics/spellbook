@@ -21,6 +21,7 @@ WITH dex AS (
         , block_slot
         , project_program_id
         , trader_id
+        , tx_id
         , tx_index
         , token_sold_mint_address
         , token_bought_mint_address
