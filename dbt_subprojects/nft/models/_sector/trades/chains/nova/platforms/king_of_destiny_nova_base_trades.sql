@@ -32,13 +32,13 @@ select
    ,r.output_amounts as royalty_fee_amount_raw
    ,cast(null as decimal(38)) as platform_fee_amount_raw
    ,s.listingId as listing_id
-from king_of_destiny_nova.MarketplaceV3_DirectListingsLogic_evt_NewSale s
-left join king_of_destiny_nova.MarketplaceV3_DirectListingsLogic_evt_NewListing l
+from {{source('king_of_destiny_nova','MarketplaceV3_DirectListingsLogic_evt_NewSale')}} s
+left join  {{source('king_of_destiny_nova','MarketplaceV3_DirectListingsLogic_evt_NewListing')}} l
     on s.listingId = l.listingId
     {% if is_incremental() %}
     and {{incremental_predicate('l.evt_block_time')}}
     {% endif %}
-left join king_of_destiny_nova.MarketplaceV3_call_GetRoyalty  r
+left join  {{source('king_of_destiny_nova','MarketplaceV3_call_GetRoyalty')}}  r
     on s.evt_tx_hash = r.call_tx_hash
     and s.evt_block_number = r.call_block_number
     and s.totalPricePaid = r.value
