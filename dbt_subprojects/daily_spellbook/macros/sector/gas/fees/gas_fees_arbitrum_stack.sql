@@ -1,4 +1,4 @@
-{% macro gas_fees_op_stack(
+{% macro gas_fees_arbitrum_stack(
     blockchain = 'arbitrum'
     ,token_symbol = 'ETH') %}
 -- Arbitrum stack chains expose a effective_gas_price column that should be used in the calculations
