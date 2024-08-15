@@ -1,14 +1,14 @@
 {{
     config(
         tags = ['prod_exclude'],
-        materialized='incremental',
         schema = 'safe_zksync',
         alias = 'eth_transfers',
         partition_by = ['block_month'],
-        unique_key = ['block_date', 'tx_hash', 'trace_address', 'amount_raw'],
         on_schema_change='fail',
+        materialized='incremental',
         file_format ='delta',
         incremental_strategy='merge',
+        unique_key = ['block_date', 'tx_hash', 'trace_address', 'amount_raw'],
         post_hook='{{ expose_spells(\'["zksync"]\',
                                     "project",
                                     "safe",
