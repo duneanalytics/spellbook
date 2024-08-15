@@ -37,8 +37,10 @@ WITH
             , COALESCE(trs_1.token_mint_address, cast(null as varchar)) as token_sold_mint_address
             , trs_2.from_token_account as token_bought_vault
             , trs_1.to_token_account as token_sold_vault
-        FROM {{ source('meteora_solana','lb_clmm_call_swap') }}  sp
-        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_1 
+        FROM 
+            {{ source('meteora_solana','lb_clmm_call_swap') }}  sp
+        INNER JOIN 
+            {{ ref('tokens_solana_transfers') }} trs_1 
             ON trs_1.tx_id = sp.call_tx_id 
             AND trs_1.block_date = sp.call_block_date
             AND trs_1.block_time = sp.call_block_time
@@ -49,7 +51,8 @@ WITH
             {% else %}
             AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_2 
+        INNER JOIN 
+            {{ ref('tokens_solana_transfers') }} trs_2 
             ON trs_2.tx_id = sp.call_tx_id 
             AND trs_2.block_date = sp.call_block_date
             AND trs_2.block_time = sp.call_block_time
@@ -60,7 +63,8 @@ WITH
             {% else %}
             AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        WHERE 1=1
+        WHERE 
+            1=1
     )
     
 SELECT

@@ -11,13 +11,17 @@
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "dex",
-                                    \'["ilemi,0xRob"]\') }}')
+                                    \'["ilemi","0xRob","jeff-dude"]\') }}')
 }}
 
 with base_trades as (
-    select * from {{ ref('dex_solana_base_trades')}}
+    SELECT
+        *
+    FROM
+        {{ ref('dex_solana_base_trades')}}
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_time')}}
+    WHERE
+        {{incremental_predicate('block_time')}}
     {% endif %}
 )
 
@@ -67,17 +71,24 @@ SELECT bt.blockchain
       , bt.outer_instruction_index
       , bt.inner_instruction_index
       , bt.tx_index
-FROM base_trades bt
-LEFT JOIN {{ ref('tokens_solana_fungible') }} token_bought ON token_bought.token_mint_address = bt.token_bought_mint_address
-LEFT JOIN {{ ref('tokens_solana_fungible') }} token_sold ON token_sold.token_mint_address = bt.token_sold_mint_address
-LEFT JOIN {{ source('prices', 'usd') }} p_bought
+FROM
+    base_trades bt
+LEFT JOIN
+    {{ ref('tokens_solana_fungible') }} token_bought
+    ON token_bought.token_mint_address = bt.token_bought_mint_address
+LEFT JOIN 
+    {{ ref('tokens_solana_fungible') }} token_sold 
+    ON token_sold.token_mint_address = bt.token_sold_mint_address
+LEFT JOIN 
+    {{ source('prices', 'usd') }} p_bought
     ON p_bought.blockchain = 'solana'
     AND date_trunc('minute', bt.block_time) = p_bought.minute
     AND bt.token_bought_mint_address = toBase58(p_bought.contract_address)
     {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
     {% endif %}
-LEFT JOIN {{ source('prices', 'usd') }} p_sold
+LEFT JOIN 
+    {{ source('prices', 'usd') }} p_sold
     ON p_sold.blockchain = 'solana'
     AND date_trunc('minute', bt.block_time) = p_sold.minute
     AND bt.token_sold_mint_address = toBase58(p_sold.contract_address)
@@ -85,6 +96,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
     AND {{incremental_predicate('p_sold.minute')}}
     {% endif %}
 -- if bought token is trusted, prefer that price, else default to sold token then bought token.
-LEFT JOIN {{ source('prices','trusted_tokens') }} tt_bought
+LEFT JOIN 
+    {{ source('prices','trusted_tokens') }} tt_bought
     ON bt.token_bought_mint_address = toBase58(tt_bought.contract_address)
     AND bt.blockchain = tt_bought.blockchain

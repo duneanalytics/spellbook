@@ -42,8 +42,10 @@ WITH
                 sp.*
                 , dp.call_inner_instruction_index as deposit_index
                 , row_number() over (partition by sp.call_tx_id, sp.call_outer_instruction_index, sp.call_inner_instruction_index order by dp.call_inner_instruction_index asc) as first_deposit
-            FROM {{ source('meteora_pools_solana', 'amm_call_swap') }} sp
-            LEFT JOIN {{ source('meteora_vault_solana', 'vault_call_deposit') }} dp ON sp.call_tx_id = dp.call_tx_id 
+            FROM 
+                {{ source('meteora_pools_solana', 'amm_call_swap') }} sp
+            LEFT JOIN 
+                {{ source('meteora_vault_solana', 'vault_call_deposit') }} dp ON sp.call_tx_id = dp.call_tx_id 
                 AND sp.call_block_slot = dp.call_block_slot
                 AND sp.call_outer_instruction_index = dp.call_outer_instruction_index 
                 and COALESCE(sp.call_inner_instruction_index, 0) < dp.call_inner_instruction_index
@@ -52,14 +54,16 @@ WITH
                 {% else %}
                 AND dp.call_block_time >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
-            WHERE 1=1 
+            WHERE 
+                1=1 
                 {% if is_incremental() %}
                 AND {{incremental_predicate('sp.call_block_time')}}
                 {% else %}
                 AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
         ) sp
-        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_1 
+        INNER JOIN 
+            {{ ref('tokens_solana_transfers') }} trs_1 
             ON trs_1.tx_id = sp.call_tx_id 
             AND trs_1.block_date = sp.call_block_date
             AND trs_1.block_time = sp.call_block_time
@@ -70,7 +74,8 @@ WITH
             {% else %}
             AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        INNER JOIN {{ ref('tokens_solana_transfers') }} trs_2 
+        INNER JOIN 
+            {{ ref('tokens_solana_transfers') }} trs_2 
             ON trs_2.tx_id = sp.call_tx_id 
             AND trs_2.block_date = sp.call_block_date
             AND trs_2.block_time = sp.call_block_time
@@ -81,8 +86,9 @@ WITH
             {% else %}
             AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        WHERE 1=1
-        and first_deposit = 1 --keep only the first deposit after swap invoke
+        WHERE
+            1=1
+            and first_deposit = 1 --keep only the first deposit after swap invoke
     )
     
 SELECT

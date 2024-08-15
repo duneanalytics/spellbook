@@ -11,7 +11,7 @@
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "dex",
-                                    \'["ilemi","0xRob"]\') }}')
+                                    \'["ilemi","0xRob","jeff-dude"]\') }}')
 }}
 
 {% set solana_dexes = [
@@ -50,9 +50,11 @@ SELECT
       , outer_instruction_index
       , inner_instruction_index
       , tx_index
-FROM {{ dex }}
+FROM
+      {{ dex }}
 {% if is_incremental() %}
-WHERE {{incremental_predicate('block_time')}}
+WHERE 
+      {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not loop.last %}
 UNION ALL

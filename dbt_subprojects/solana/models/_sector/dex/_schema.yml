@@ -22,6 +22,9 @@ models:
       tags: ['solana','dex']
     description: >
         enriched dex trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']
     columns:
       - &blockchain
         name: blockchain
