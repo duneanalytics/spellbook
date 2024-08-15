@@ -28,6 +28,8 @@
      , ('zkevm', source('zkevm', 'logs'))
      , ('blast', source('blast', 'logs'))
      , ('mantle', source('mantle', 'logs'))
+     , ('mode', source('mode', 'logs'))
+     , ('sei', source('sei', 'logs'))
 ] %}
 
 SELECT *
