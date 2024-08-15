@@ -252,4 +252,5 @@ FROM (VALUES
     , (0x420b0fa3de2efcf2b2fd04152eb1df36a09717cd, 'KING', 18)    
     , (0x190b2aA820495c0e92840E8FA699741976cd6439, 'rETH', 18)
     , (0x85e90a5430af45776548adb82ee4cd9e33b08077, 'DINO', 18)
+    , (0x7c6b91D9Be155A6Db01f749217d76fF02A7227F2, 'BAL', 18)
 ) AS temp_table (contract_address, symbol, decimals)
