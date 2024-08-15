@@ -21,9 +21,9 @@
     , ref('phoenix_v1_base_trades')
     , ref('lifinity_v1_base_trades')
     , ref('lifinity_v2_base_trades')
-    , ref('meteora_v1_solana_trades')
-    , ref('meteora_v2_solana_trades')
-    , ref('goosefx_ssl_v2_solana_trades')
+    , ref('meteora_v1_solana_base_trades')
+    , ref('meteora_v2_solana_base_trades')
+    , ref('goosefx_ssl_v2_solana_base_trades')
     , ref('pumpdotfun_solana_base_trades')
 ] %}
 
@@ -36,16 +36,9 @@ SELECT
       , block_time
       , block_slot
       , trade_source
---      , token_bought_symbol
---      , token_sold_symbol
---      , token_pair
---      , token_bought_amount
---      , token_sold_amount
       , token_bought_amount_raw
       , token_sold_amount_raw
---      , amount_usd
       , fee_tier
---      , fee_usd
       , token_bought_mint_address
       , token_sold_mint_address
       , token_bought_vault
