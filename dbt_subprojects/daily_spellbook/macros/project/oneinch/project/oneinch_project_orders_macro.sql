@@ -168,7 +168,7 @@ logs as (
                 where
                     blockchain = '{{ blockchain }}'
                     and '{{ project }}' = project
-                    and coalesce('{{ method_data.get("tag", "null") }}' = tag, true)
+                    and coalesce({{ method_data.get("tag", "null") }} = tag, true)
             ) using("to")
             where
                 {% if is_incremental() %}{{ incremental_predicate('block_time') }}

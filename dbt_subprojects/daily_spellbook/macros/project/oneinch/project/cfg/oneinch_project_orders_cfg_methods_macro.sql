@@ -387,7 +387,7 @@
         },
         "Uniswap": {
             "0x3f62192e": {
-                "tag":              "UniswapXV1",
+                "tag":              "'UniswapXV1'",
                 "name":             "execute",
                 "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
                 "maker":            "substr(input, 4 + 32*15 + 12 + 1       , 20)",
@@ -408,7 +408,7 @@
                 "fee_receiver":     "if(bytearray_to_bigint(substr(input, 4 + 32*4 + bytearray_to_bigint(substr(input, 4 + 32*13 + 24 + 1, 8)) + 32*1 + 24 + 1, 8)) > 1, substr(input, 4 + 32*4 + bytearray_to_bigint(substr(input, 4 + 32*13 + 24 + 1, 8)) + 32*9 + 12 + 1, 20))",
             },
             "0x0d335884": {
-                "tag":              "UniswapXV1",
+                "tag":              "'UniswapXV1'",
                 "name":             "executeWithCallback",
                 "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
                 "maker":            "substr(input, 4 + 32*16 + 12 + 1       , 20)",
@@ -429,7 +429,7 @@
                 "fee_receiver":     "if(bytearray_to_bigint(substr(input, 4 + 32*5 + bytearray_to_bigint(substr(input, 4 + 32*14 + 24 + 1, 8)) + 32*1 + 24 + 1, 8)) > 1, substr(input, 4 + 32*5 + bytearray_to_bigint(substr(input, 4 + 32*14 + 24 + 1, 8)) + 32*9 + 12 + 1, 20))",
             },
             "0x0d7a16c3": {
-                "tag":              "UniswapXV1",
+                "tag":              "'UniswapXV1'",
                 "name":             "executeBatch",
                 "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
                 "number":           "coalesce(try(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 24 + 1, 8))), 1)",
@@ -452,7 +452,7 @@
                 "fee_receiver":     "if(bytearray_to_bigint(substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8)) + 32*12 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) > 1, substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*2 + 32*(x - 1) + 24 + 1, 8)) + 32*12 + 24 + 1, 8)) + 32*12 + 12 + 1, 20))",
             },
             "0x13fb72c7": {
-                "tag":              "UniswapXV1",
+                "tag":              "'UniswapXV1'",
                 "name":             "executeBatchWithCallback",
                 "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
                 "number":           "coalesce(try(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 24 + 1, 8))), 1)",
@@ -475,7 +475,7 @@
                 "fee_receiver":     "if(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 32*(x - 1) + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 32*(x - 1) + 24 + 1, 8)) + 32*12 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) > 1, substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 32*(x - 1) + 24 + 1, 8)) + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 32*1 + 32*(x - 1) + 24 + 1, 8)) + 32*12 + 24 + 1, 8)) + 32*12 + 12 + 1, 20))",
             },
             "0x3f62192e": {
-                "tag":              "UniswapXV2",
+                "tag":              "'UniswapXV2'",
                 "name":             "execute",
                 "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
                 "_to_taker_data":   "bytearray_to_bigint(substr(input, 4 + 32*10 + 24 + 1, 8))",
@@ -498,7 +498,7 @@
                 "fee_receiver":     "if(bytearray_to_bigint(substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*10 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) > 1, substr(input, 4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*10 + 24 + 1, 8)) + 32*12 + 12 + 1, 20))",
             },
             "0x0d335884": {
-                "tag":              "UniswapXV2",
+                "tag":              "'UniswapXV2'",
                 "name":             "executeWithCallback",
                 "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
                 "_to_taker_data":   "bytearray_to_bigint(substr(input, 4 + 32*11 + 24 + 1, 8))",
@@ -521,7 +521,7 @@
                 "fee_receiver":     "if(bytearray_to_bigint(substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*11 + 24 + 1, 8)) + 32*4 + 24 + 1, 8)) > 1, substr(input, 4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*11 + 24 + 1, 8)) + 32*12 + 12 + 1, 20))",
             },
             "0x13fb72c7": {
-                "tag":              "UniswapXV2",
+                "tag":              "'UniswapXV2'",
                 "name":             "executeBatchWithCallback",
                 "event":            "0x78ad7ec0e9f89e74012afa58738b6b661c024cb0fd185ee2f616c0a28924bd66",
                 "number":           "coalesce(try(bytearray_to_bigint(substr(input, 4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8)) + 24 + 1, 8))), 1)",
