@@ -93,4 +93,7 @@ FROM (VALUES
     , (0x777cf5ba9c291a1a8f57ff14836f6f9dc5c0f9dd, 'SOLID', 18)
     , (0x7448c7456a97769F6cD04F1E83A4a23cCdC46aBD, 'MAV', 18)
     , (0x17A8541B82BF67e10B0874284b4Ae66858cb1fd5, 'PSM', 18)
+    , (0xD9FBA68D89178e3538e708939332c79efC540179, 'stataArbGHO', 18)    
+    , (0x89AEc2023f89E26Dbb7eaa7a98fe3996f9d112A8, 'stataArbFRAX', 18)      
+    , (0xbC404429558292eE2D769E57d57D6E74bbd2792d, 'sUSX', 18)              
 ) AS temp_table (contract_address, symbol, decimals)
