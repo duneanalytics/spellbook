@@ -4,7 +4,7 @@
         post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","zksync","zora","base","scroll","mantle"]\',
                                 "sector",
                                 "gas",
-                                \'["soispoke", "ilemi", "0xRob", "jeff-dude"]\') }}'
+                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "bh2smith"]\') }}'
         )
 }}
 
@@ -14,8 +14,6 @@
     'gas_base_fees',
     'gas_bnb_fees',
     'gas_ethereum_fees',
---     'gas_fantom_fees',
---     'gas_gnosis_fees',
     'gas_mantle_fees',
     'gas_optimism_fees',
     'gas_polygon_fees',
@@ -23,6 +21,10 @@
     'gas_zksync_fees',
     'gas_zora_fees',
 ] %}
+
+-- temporarily exclude
+--     'gas_fantom_fees',
+--     'gas_gnosis_fees',
 
 SELECT *
 FROM (
