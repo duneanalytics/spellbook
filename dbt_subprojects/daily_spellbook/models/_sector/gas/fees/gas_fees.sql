@@ -14,6 +14,7 @@
     'gas_base_fees',
     'gas_bnb_fees',
     'gas_ethereum_fees',
+    'gas_gnosis_fees',
     'gas_mantle_fees',
     'gas_optimism_fees',
     'gas_polygon_fees',
@@ -24,7 +25,7 @@
 
 -- temporarily exclude
 --     'gas_fantom_fees',
---     'gas_gnosis_fees',
+
 
 SELECT *
 FROM (
