@@ -25,12 +25,14 @@ SELECT
      CASE WHEN type = 'Legacy' THEN (cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double))
           WHEN type = 'AccessList' THEN (cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double))
           WHEN type = 'DynamicFee' THEN ((cast(blocks.base_fee_per_gas as double)/1e18 + cast(txns.priority_fee_per_gas as double)/1e18)* cast(txns.gas_used as double))
-          WHEN type = '3' THEN ((cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double)) + (cast(blob.blob_base_fee as double)/1e18 * cast(blob.blob_gas_used as double)))
+       -- TODO:  source named 'gnosis.blobs_submissions' which was not found
+--           WHEN type = '3' THEN ((cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double)) + (cast(blob.blob_base_fee as double)/1e18 * cast(blob.blob_gas_used as double)))
           END AS tx_fee_native,
      CASE WHEN type = 'Legacy' THEN (cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double))
           WHEN type = 'AccessList' THEN (cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double))
           WHEN type = 'DynamicFee' THEN ((cast(blocks.base_fee_per_gas as double)/1e18 + cast(txns.priority_fee_per_gas as double)/1e18)* cast(txns.gas_used as double))
-          WHEN type = '3' THEN ((cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double)) + (cast(blob.blob_base_fee as double)/1e18 * cast(blob.blob_gas_used as double)))
+       -- TODO: source named 'gnosis.blobs_submissions' which was not found
+--           WHEN type = '3' THEN ((cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double)) + (cast(blob.blob_base_fee as double)/1e18 * cast(blob.blob_gas_used as double)))
           END AS tx_fee_usd,
      blocks.base_fee_per_gas / 1e18 * txns.gas_used AS burned_native,
      blocks.base_fee_per_gas / 1e18 * txns.gas_used AS burned_usd,
@@ -59,11 +61,11 @@ INNER JOIN {{ source('gnosis', 'blocks') }} blocks
     {% if is_incremental() %}
     AND {{ incremental_predicate('blocks.time') }}
     {% endif %}
-LEFT JOIN {{ source('gnosis', 'blobs_submissions') }} blob
-    ON txns.hash = blob.tx_hash
-    {% if is_incremental() %}
-    AND {{ incremental_predicate('blob.block_time') }}
-    {% endif %}
+-- LEFT JOIN {{ source('gnosis', 'blobs_submissions') }} blob
+--     ON txns.hash = blob.tx_hash
+--     {% if is_incremental() %}
+--     AND {{ incremental_predicate('blob.block_time') }}
+--     {% endif %}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('txns.block_time') }}
 {% endif %}
