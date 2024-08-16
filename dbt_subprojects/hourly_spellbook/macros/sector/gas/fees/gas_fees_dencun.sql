@@ -40,12 +40,12 @@ SELECT
      ,txns.gas_price / 1e18 * p.price AS gas_price_usd
      ,txns.gas_used
      ,txns.gas_limit
-     CASE
+     ,CASE
         WHEN txns.gas_limit = 0 THEN NULL
         WHEN txns.gas_limit != 0 THEN txns.gas_used / txns.gas_limit * 100
-     END AS gas_usage_percent,
-     blocks.difficulty,
-     txns.type AS transaction_type
+     END AS gas_usage_percent
+     ,blocks.difficulty
+     ,txns.type AS transaction_type
 FROM {{ source( blockchain, 'transactions') }} txns
 INNER JOIN {{ source( blockchain, 'blocks') }} blocks
     ON txns.block_number = blocks.number
@@ -64,7 +64,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p
     {% if is_incremental() %}
     AND {{ incremental_predicate('p.minute') }}
     {% else %}
-    WHERE p.minute >= date '2024-08-01'
+    AND p.minute >= date '2024-08-01'
     {% endif %}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('txns.block_time') }}
