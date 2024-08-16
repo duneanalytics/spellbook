@@ -17,7 +17,7 @@
     'gas_mantle_fees',
     'gas_optimism_fees',
     'gas_polygon_fees',
-    'gas_scroll_fees'
+    'gas_scroll_fees',
     'gas_zksync_fees',
     'gas_zora_fees',
 ] %}
