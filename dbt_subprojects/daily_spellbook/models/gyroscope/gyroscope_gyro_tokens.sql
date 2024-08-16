@@ -9,6 +9,8 @@ WITH gyro_tokens as (
     SELECT * FROM (values
     (0x7CFaDFD5645B50bE87d546f42699d863648251ad, 'stataArbUSDCn', 6, 'arbitrum'),
     (0xb165a74407fE1e519d6bCbDeC1Ed3202B35a4140, 'stataArbUSDT', 6, 'arbitrum'),
+    (0xD9FBA68D89178e3538e708939332c79efC540179, 'stataArbGHO', 18, 'arbitrum'),    
+    (0x89AEc2023f89E26Dbb7eaa7a98fe3996f9d112A8, 'stataArbFRAX', 18, 'arbitrum'),      
     (0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc, 'stataBasUSDC', 6, 'base'),
     (0x270ba1f35d8b87510d24f693fccc0da02e6e4eeb, 'stataGnoUSDC', 6, 'base'),
     (0x862c57d48becB45583AEbA3f489696D22466Ca1b, 'stataEthUSDT', 6, 'ethereum'),
