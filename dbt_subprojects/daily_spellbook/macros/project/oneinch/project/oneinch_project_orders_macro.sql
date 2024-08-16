@@ -167,7 +167,8 @@ logs as (
                 from {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
                 where
                     blockchain = '{{ blockchain }}'
-                    and '{{ project }}' in (project, tag)
+                    and '{{ project }}' = project
+                    and coalesce(method_data.get("tag", "null") = tag, true)
             ) using("to")
             where
                 {% if is_incremental() %}{{ incremental_predicate('block_time') }}
