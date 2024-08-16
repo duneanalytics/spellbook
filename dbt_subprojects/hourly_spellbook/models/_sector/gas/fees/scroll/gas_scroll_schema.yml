@@ -13,12 +13,19 @@ models:
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
+            - block_month
             - block_number
             - tx_hash
     columns:
       - &blockchain
         name: blockchain
         description: "Blockchain name"    
+      - &block_month
+        name: block_month
+        description: "Month for block event time in UTC"
+      - &block_day
+        name: block_day
+        description: "Day for block event time in UTC"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"

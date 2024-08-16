@@ -3,17 +3,20 @@ version: 2
 models:
   - name: gas_fees
     meta:
-      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, zksync, zora, base, scroll, mantle
       sector: gas
       contributors: soispoke, ilemi, 0xRob, jeff-dude
-    config:
-      tags: ['ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum','zksync','zora','scroll','mantle','gas','fees']
     description: >
         Gas Fees across chains
     columns:
       - &blokchain
         name: blockchain
         description: "Blockchain name"
+      - &block_month
+        name: block_month
+        description: "Month for block event time in UTC"
+      - &block_day
+        name: block_day
+        description: "Day for block event time in UTC"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"

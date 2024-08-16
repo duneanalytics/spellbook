@@ -10,22 +10,31 @@ models:
       tags: ['bnb', 'gas', 'fees']
     description: >
         Gas Fees on BNB chain
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_number
+            - tx_hash
     columns:
       - &blokchain
         name: blockchain
         description: "Blockchain name"    
-      - &block_number
-        name: block_number
-        description: "Block number"
+      - &block_month
+        name: block_month
+        description: "Month for block event time in UTC"
+      - &block_day
+        name: block_day
+        description: "Day for block event time in UTC"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
+      - &block_number
+        name: block_number
+        description: "Block number"
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
-        tests:
-          - unique
-          - not_null
       - &tx_sender
         name: tx_sender
         description: "Initiated the transaction"
