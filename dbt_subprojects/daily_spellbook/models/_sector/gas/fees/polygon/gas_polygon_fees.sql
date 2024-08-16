@@ -22,8 +22,9 @@ SELECT
      'MATIC' as native_token_symbol,
      value/1e18 AS tx_amount_native,
      value/1e18 * p.price AS tx_amount_usd,
-     (l1_fee/1e18 + ((txns.gas_used/1e18) * txns.gas_price)) as tx_fee_native,
-     (l1_fee/1e18 + ((txns.gas_used/1e18) * txns.gas_price)) * p.price AS tx_fee_usd,
+     -- This is just a guess to compile.
+     (cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double)) as tx_fee_native,
+     (cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double)) * p.price AS tx_fee_usd,
      -- TODO: Determine how polygon handles these fields.
      cast(NULL as double) AS burned_native,
      cast(NULL as double) AS burned_usd,
