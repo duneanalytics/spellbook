@@ -61,11 +61,6 @@ INNER JOIN {{ source('gnosis', 'blocks') }} blocks
     {% if is_incremental() %}
     AND {{ incremental_predicate('blocks.time') }}
     {% endif %}
--- LEFT JOIN {{ source('gnosis', 'blobs_submissions') }} blob
---     ON txns.hash = blob.tx_hash
---     {% if is_incremental() %}
---     AND {{ incremental_predicate('blob.block_time') }}
---     {% endif %}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('txns.block_time') }}
 {% endif %}
