@@ -57,3 +57,7 @@ sources:
         loaded_at_field: call_block_time
       - name: AugustusV6_2_call_swapExactAmountOutOnBalancerV2
         loaded_at_field: call_block_time
+      - name: AugustusV6_2_call_swapOnAugustusRFQTryBatchFill
+        loaded_at_field: call_block_time  
+      - name: AugustusV6_2_call_swapExactAmountInOutOnMakerPSM
+        loaded_at_field: call_block_time  
