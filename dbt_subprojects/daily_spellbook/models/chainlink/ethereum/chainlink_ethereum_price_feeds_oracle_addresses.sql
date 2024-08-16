@@ -1,11 +1,11 @@
 {{
   config(
-    
+    schema = 'chainlink_ethereum',
     alias='price_feeds_oracle_addresses',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "chainlink",
-                                \'["linkpool_ryan","linkpool_jon"]\') }}'
+                                \'["linkpool_ryan","linkpool_jon","tomfutago"]\') }}'
   )
 }}
 
@@ -317,6 +317,7 @@ FROM (values
   ('{{msft_usd}}', 8, 0x021Fb44bfeafA0999C7b07C4791cf4B859C3b431, 0x99a9422bdBf888fAd917b3a714103E896D3e2011),
   ('{{metis_healthcheck}}', 8, 0x3425455fe737cdaE8564640df27bbF2eCD56E584, 0x31c8b5A8F0d286a4Bfcf669E18393b18E22B140D),
   ('{{moonbirds_floor_price}}', 18, 0x9cd36E0E8D3C27d630D00406ACFC3463154951Af, 0x8d0003e5c1C8EB67e04023a21291cf01CFd2E4a1),
+  ('{{nexus_weth_reserves}}', 18, 0xCc72039A141c6e34a779eF93AEF5eB4C82A893c7, 0xEA530C83AFa51A66f80935c78aB9BB574d7DdfCb),
   ('{{nexus_weth_reserves}}', 18, 0xCc72039A141c6e34a779eF93AEF5eB4C82A893c7, 0xCA71bBe491079E138927f3f0AB448Ae8782d1DCa),
   ('{{ohm_eth}}', 18, 0x90c2098473852E2F07678Fe1B6d595b1bd9b16Ed, 0x87831da9319260B0B38dD39A73EBD4c2C10C588c),
   ('{{ohm_eth}}', 18, 0x90c2098473852E2F07678Fe1B6d595b1bd9b16Ed, 0x7009033C0d6702fd2dfAD3478d2AE4e3b6aCB966),
