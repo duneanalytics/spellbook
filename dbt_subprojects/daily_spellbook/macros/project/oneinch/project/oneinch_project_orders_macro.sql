@@ -129,7 +129,7 @@ logs as (
                 , call_type
                 , error as call_error
                 , '{{ item["name"] }}' as method
-                , {{ item["event"] }} as topic0
+                , {{ item.get("event", "null") }} as topic0
                 , coalesce({{ item.get("number", "1") }}, 1) as call_trades -- total trades in the call
                 , transform(sequence(1, coalesce({{ item.get("number", "1") }}, 1)), x -> map_from_entries(array[
                       ('trade',             try(to_big_endian_64(x)))
@@ -270,8 +270,8 @@ select
     , taker_max_amount
     , maker_min_amount
     , taker_min_amount
-    , try(coalesce(making_amount, if(order_start = uint256 '0' or order_start = order_end, maker_max_amount, maker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double))), maker_max_amount, maker_min_amount)) as making_amount
-    , try(coalesce(taking_amount, if(order_start = uint256 '0' or order_start = order_end, taker_max_amount, taker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double))), taker_max_amount, taker_min_amount)) as taking_amount
+    , coalesce(making_amount, try(if(order_start = uint256 '0' or order_start = order_end, maker_max_amount, maker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double)))), maker_max_amount, maker_min_amount) as making_amount
+    , coalesce(taking_amount, try(if(order_start = uint256 '0' or order_start = order_end, taker_max_amount, taker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double)))), taker_max_amount, taker_min_amount) as taking_amount
     , order_start
     , order_end
     , order_deadline

@@ -680,8 +680,8 @@
 }] %}
 {% set _beginning = "4 + bytearray_to_bigint(substr(input, 4 + 24 + 1, 8))" %}
 {% set _maker_data = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*5 + 24 + 1, 8))" %}
-{% set _maker_parts = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + " ~ _maker_data ~ " + 24 + 1, 8))" %}
 {% set _taker_data = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + 32*4 + 24 + 1, 8))" %}
+{% set _maker_parts = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + " ~ _maker_data ~ " + 24 + 1, 8))" %}
 {% set _taker_parts = "bytearray_to_bigint(substr(input, " ~ _beginning ~ " + " ~ _taker_data ~ " + 24 + 1, 8))" %}
 {% set methods = methods + [{
     "project":          "Bebop",
