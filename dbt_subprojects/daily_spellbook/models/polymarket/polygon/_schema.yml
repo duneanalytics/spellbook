@@ -51,8 +51,24 @@ models:
       contributors: tomfutago
     config:
       tags: ['polygon','prediction_market','polymarket','markets']
-    description: "Polymarket: market outcomes"
+    description: "Polymarket: market conditions (helper table)"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - question_id
+            - condition_id
+
+  - name: polymarket_polygon_ctf_tokens
+    meta:
+      blockchain: polygon
+      sector: prediction_market
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_market','polymarket','markets']
+    description: "Polymarket: CTF tokens (helper table)"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - condition_id
+            - token0
+            - token1

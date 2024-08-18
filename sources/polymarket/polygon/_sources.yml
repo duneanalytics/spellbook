@@ -15,3 +15,5 @@ sources:
       - name: NegRiskAdapter_evt_QuestionPrepared
       - name: NegRiskAdapter_evt_OutcomeReported
       - name: ctf_evt_ConditionPreparation
+      - name: CTFExchange_evt_TokenRegistered
+      - name: NegRiskCtfExchange_evt_TokenRegistered
