@@ -47,4 +47,4 @@ select
   t.evt_index,
   t.tx_hash
 from ctf_tokens t
-  inner join {{ ref('polymarket_polygon_market_conditions') }} mc on t.condition_id = m.condition_id
+  inner join {{ ref('polymarket_polygon_market_conditions') }} mc on t.condition_id = mc.condition_id
