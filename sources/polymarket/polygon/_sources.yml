@@ -14,3 +14,4 @@ sources:
       - name: NegRiskAdapter_evt_MarketPrepared
       - name: NegRiskAdapter_evt_QuestionPrepared
       - name: NegRiskAdapter_evt_OutcomeReported
+      - name: ctf_evt_ConditionPreparation
