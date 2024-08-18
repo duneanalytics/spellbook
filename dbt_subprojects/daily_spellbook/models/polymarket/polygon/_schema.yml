@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: polymarket_polygon_market_categories
+    meta:
+      blockchain: polygon
+      sector: prediction_market
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_market','polymarket','markets']
+    description: "Polymarket: market categories"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - market_id
+
+  - name: polymarket_polygon_markets
+    meta:
+      blockchain: polygon
+      sector: prediction_market
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_market','polymarket','markets']
+    description: "Polymarket: markets"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - question_id

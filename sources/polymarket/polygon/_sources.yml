@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: minereum_polygon
+    tables:
+      - name: UmaConditionalTokensBinaryAdapter_evt_QuestionInitialized
+  
+  - name: polymarket_polygon
+    tables:
+      - name: NegRiskAdapter_evt_MarketPrepared
+      - name: NegRiskAdapter_evt_QuestionPrepared
+      - name: UmaCtfAdapter_evt_QuestionInitialized
+      - name: UmaCtfAdapter_v3_evt_QuestionInitialized
