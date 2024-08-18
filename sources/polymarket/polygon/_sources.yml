@@ -4,10 +4,13 @@ sources:
   - name: minereum_polygon
     tables:
       - name: UmaConditionalTokensBinaryAdapter_evt_QuestionInitialized
+      - name: UmaConditionalTokensBinaryAdapter_evt_QuestionSettled
   
   - name: polymarket_polygon
     tables:
+      - name: UmaCtfAdapter_evt_QuestionInitialized
+      - name: UmaCtfAdapter_evt_QuestionResolved
+      - name: UmaCtfAdapter_v3_evt_QuestionInitialized
       - name: NegRiskAdapter_evt_MarketPrepared
       - name: NegRiskAdapter_evt_QuestionPrepared
-      - name: UmaCtfAdapter_evt_QuestionInitialized
-      - name: UmaCtfAdapter_v3_evt_QuestionInitialized
+      - name: NegRiskAdapter_evt_OutcomeReported

@@ -28,3 +28,17 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - question_id
+
+  - name: polymarket_polygon_market_outcomes
+    meta:
+      blockchain: polygon
+      sector: prediction_market
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_market','polymarket','markets']
+    description: "Polymarket: market outcomes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - question_id
