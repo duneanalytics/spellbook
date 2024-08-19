@@ -1,18 +1,14 @@
 {{ config(
-    schema = 'rollup_economics_scroll'
+    schema = 'rollup_economics_zkevm'
     , alias = 'l1_data_fees'
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['name', 'tx_hash']
-    , post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "rollup_economics",
-                                    \'["niftytable", "lgingerich"]\') }}'
 )}}
 
 SELECT
-    'scroll' AS name
+    'zkevm' AS name
     , cast(date_trunc('month', t.block_time) AS date) AS block_month
     , cast(date_trunc('day', t.block_time) AS date) AS block_date
     , t.block_time
@@ -26,12 +22,15 @@ SELECT
     , (length(t.data)) AS data_length
 FROM {{ source('ethereum', 'transactions') }} t
 WHERE t.to IN (
-    0xa13BAF47339d63B743e7Da8741db5456DAc1E556
+    0x5132a183e9f3cb7c848b0aac5ae0c4f0491b7ab2 -- old proxy
+    , 0x519E42c24163192Dca44CD3fBDCEBF6be9130987 -- new proxy (as of block 19218878)
 )
 AND bytearray_substring(t.data, 1, 4) IN (
-    0x1325aca0 -- Commit Batch
+    0x5e9145c9 -- sequenceBatches
+    , 0xecef3f99 -- sequenceBatches (as of block 19218878)
+    , 0xdef57e54 -- sequenceBatches
 )
-AND t.block_time >= TIMESTAMP '2023-10-07'
+AND t.block_time >= TIMESTAMP '2023-03-01'
 {% if is_incremental() %}
 AND {{incremental_predicate('t.block_time')}}
 {% endif %}

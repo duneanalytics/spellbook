@@ -1,18 +1,14 @@
 {{ config(
-    schema = 'rollup_economics_linea'
+    schema = 'rollup_economics_scroll'
     , alias = 'l1_verification_fees'  
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['name', 'tx_hash']
-    , post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "rollup_economics",
-                                    \'["niftytable", "lgingerich"]\') }}'
 )}}
 
 SELECT
-    'linea' AS name
+    'scroll' AS name
     , cast(date_trunc('month', t.block_time) AS date) AS block_month
     , cast(date_trunc('day', t.block_time) AS date) AS block_date
     , t.block_time
@@ -26,13 +22,13 @@ SELECT
     , 44*32 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
 FROM {{ source('ethereum', 'transactions') }} t
 WHERE t.to IN (
-    0xd19d4B5d358258f05D7B411E21A1460D11B0876F -- Linea, L1 Message Service
+    0xa13BAF47339d63B743e7Da8741db5456DAc1E556
 )
 AND bytearray_substring(t.data, 1, 4) IN (
-    0x4165d6dd -- Finalize Blocks (proof verified immediately)
-    , 0xd630280f -- finalizeCompressedBlocksWithProof (Aplha v2 Release at block. 19222438)
+    0x31fa742d -- finalizeBatchWithProof
+    , 0x00b0f4d7 -- finalizeBatchWithProof4844
 )
-AND t.block_time >= TIMESTAMP '2023-07-12'
+AND t.block_time >= TIMESTAMP '2023-10-07'
 {% if is_incremental() %}
 AND {{incremental_predicate('t.block_time')}}
 {% endif %}

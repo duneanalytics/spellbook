@@ -1,18 +1,14 @@
 {{ config(
-    schema = 'rollup_economics_starknet'
+    schema = 'rollup_economics_linea'
     , alias = 'l1_verification_fees'  
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['name', 'tx_hash']
-    , post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "rollup_economics",
-                                    \'["niftytable", "lgingerich"]\') }}'
 )}}
 
 SELECT
-    'starkware' AS name -- SHARPVerify used collectively by: Starknet, Sorare, ImmutableX, Apex, Myria, rhino.fi and Canvas Connect
+    'linea' AS name
     , cast(date_trunc('month', t.block_time) AS date) AS block_month
     , cast(date_trunc('day', t.block_time) AS date) AS block_date
     , t.block_time
@@ -26,12 +22,13 @@ SELECT
     , 44*32 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
 FROM {{ source('ethereum', 'transactions') }} t
 WHERE t.to IN (
-    0x47312450B3Ac8b5b8e247a6bB6d523e7605bDb60
+    0xd19d4B5d358258f05D7B411E21A1460D11B0876F -- Linea, L1 Message Service
 )
 AND bytearray_substring(t.data, 1, 4) IN (
-    0x9b3b76cc -- Verify Availability Proof, imx committee
+    0x4165d6dd -- Finalize Blocks (proof verified immediately)
+    , 0xd630280f -- finalizeCompressedBlocksWithProof (Aplha v2 Release at block. 19222438)
 )
-AND t.block_time >= TIMESTAMP '2021-10-23'
+AND t.block_time >= TIMESTAMP '2023-07-12'
 {% if is_incremental() %}
 AND {{incremental_predicate('t.block_time')}}
 {% endif %}

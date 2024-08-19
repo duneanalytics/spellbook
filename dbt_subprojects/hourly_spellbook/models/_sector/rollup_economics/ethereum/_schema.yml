@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: l1_fees
+  - name: rollup_economics_ethereum_l1_fees
     meta:
       blockchain: ethereum
       sector: rollup_economics
@@ -47,7 +47,7 @@ models:
         name: l1_fee_usd
         description: "Total amount paid in gas fees (in USD)"
 
-  - name: l2_revenue
+  - name: rollup_economics_ethereum_l2_revenue
     meta:
       blockchain: ethereum
       sector: rollup_economics

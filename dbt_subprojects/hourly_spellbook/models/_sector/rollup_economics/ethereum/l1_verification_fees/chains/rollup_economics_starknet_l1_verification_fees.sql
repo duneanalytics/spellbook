@@ -1,18 +1,14 @@
 {{ config(
-    schema = 'rollup_economics_linea'
-    , alias = 'l1_data_fees'
+    schema = 'rollup_economics_starknet'
+    , alias = 'l1_verification_fees'  
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['name', 'tx_hash']
-    , post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "rollup_economics",
-                                    \'["niftytable", "lgingerich"]\') }}'
 )}}
 
 SELECT
-    'linea' AS name
+    'starkware' AS name -- SHARPVerify used collectively by: Starknet, Sorare, ImmutableX, Apex, Myria, rhino.fi and Canvas Connect
     , cast(date_trunc('month', t.block_time) AS date) AS block_month
     , cast(date_trunc('day', t.block_time) AS date) AS block_date
     , t.block_time
@@ -21,18 +17,17 @@ SELECT
     , t.index AS tx_index
     , t.gas_price
     , t.gas_used
-    , (t.gas_price / 1e18) * t.gas_used AS data_fee_native
+    , (t.gas_price / 1e18) * t.gas_used AS verification_fee_native
     , {{ evm_get_calldata_gas_from_data('t.data') }} AS calldata_gas_used
-    , (length(t.data)) AS data_length
+    , 44*32 / cast(1024 AS double) / cast(1024 AS double) AS proof_size_mb
 FROM {{ source('ethereum', 'transactions') }} t
 WHERE t.to IN (
-    0xd19d4B5d358258f05D7B411E21A1460D11B0876F -- Linea, L1 Message Service
+    0x47312450B3Ac8b5b8e247a6bB6d523e7605bDb60
 )
 AND bytearray_substring(t.data, 1, 4) IN (
-    0x7a776315 -- submitData (Aplha v2 Release at block. 19222438)
-    , 0x2d3c12e5 -- submitBlobData
+    0x9b3b76cc -- Verify Availability Proof, imx committee
 )
-AND t.block_time >= TIMESTAMP '2023-07-12'
+AND t.block_time >= TIMESTAMP '2021-10-23'
 {% if is_incremental() %}
 AND {{incremental_predicate('t.block_time')}}
 {% endif %}
