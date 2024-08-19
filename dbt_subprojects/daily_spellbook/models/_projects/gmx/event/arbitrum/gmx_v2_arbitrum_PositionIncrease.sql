@@ -6,7 +6,7 @@
     post_hook = '{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "gmx_v2",
-                                    \'["ai_data_master"\') }}'
+                                    \'["AIDataMaster"\') }}'
   )
 }}
 
