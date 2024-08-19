@@ -1,0 +1,232 @@
+version: 2
+
+models:
+  - name: gmx_v2_arbitrum_PositionIncrease
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master
+    config:
+      tags: ['arbitrum','gmx','event','position_increase']
+    description: |
+      This model extracts and parses `PositionIncrease` events from the Arbitrum blockchain.
+      It includes transaction details, addresses, and various metrics related to the event, 
+      such as market data, collateral amounts, price impacts, and more.
+
+    columns:
+      - &blockchain
+        name: blockchain
+        description: The blockchain network where the event occurred (Arbitrum)
+        tests:
+          - not_null
+
+      - &block_time
+        name: block_time
+        description: The timestamp of the block when the event was recorded
+        tests:
+          - not_null
+
+      - &block_date
+        name: block_date
+        description: The date of the block when the event was recorded
+        tests:
+          - not_null
+          
+      - &block_number
+        name: block_number
+        description: The block number where the event is included
+        tests:
+          - not_null
+
+      - &contract_address
+        name: contract_address
+        description: The contract address associated with the event
+        tests:
+          - not_null
+
+      - &account
+        name: account
+        description: The account related to the event, extracted from the `topic2` field
+        tests:
+          - not_null
+
+      - &tx_hash
+        name: tx_hash
+        description: The hash of the transaction where the event was logged
+        tests:
+          - not_null
+
+      - &index
+        name: index
+        description: The position of the event within the transaction
+        tests:
+          - not_null
+
+      - &tx_index
+        name: tx_index
+        description: The position of the transaction within the block
+        tests:
+          - not_null
+
+      - &tx_from
+        name: tx_from
+        description: The address initiating the transaction
+        tests:
+          - not_null
+
+      - &tx_to
+        name: tx_to
+        description: The address receiving the transaction
+        tests:
+          - not_null
+
+      - &event_name
+        name: event_name
+        description: The type of event recorded, always 'PositionIncrease' for this model
+        tests:
+          - not_null
+
+      - &market
+        name: market
+        description: The market identifier associated with the position increase
+        tests:
+          - not_null
+
+      - &collateral_token
+        name: collateral_token
+        description: The collateral token used in the position increase
+        tests:
+          - not_null
+
+      - &size_in_usd
+        name: size_in_usd
+        description: The size of the position in USD
+        tests:
+          - not_null
+
+      - &size_in_tokens
+        name: size_in_tokens
+        description: The size of the position in tokens
+        tests:
+          - not_null
+
+      - &collateral_amount
+        name: collateral_amount
+        description: The amount of collateral used
+        tests:
+          - not_null
+
+      - &borrowing_factor
+        name: borrowing_factor
+        description: The borrowing factor applied to the position
+        tests:
+          - not_null
+
+      - &funding_fee_amount_per_size
+        name: funding_fee_amount_per_size
+        description: The funding fee amount per size
+        tests:
+          - not_null
+
+      - &long_token_claimable_funding_amount_per_size
+        name: long_token_claimable_funding_amount_per_size
+        description: The claimable funding amount per size for long tokens
+        tests:
+          - not_null
+
+      - &short_token_claimable_funding_amount_per_size
+        name: short_token_claimable_funding_amount_per_size
+        description: The claimable funding amount per size for short tokens
+        tests:
+          - not_null
+
+      - &execution_price
+        name: execution_price
+        description: The execution price of the position
+        tests:
+          - not_null
+
+      - &index_token_price_max
+        name: index_token_price_max
+        description: The maximum price of the index token during the event
+        tests:
+          - not_null
+
+      - &index_token_price_min
+        name: index_token_price_min
+        description: The minimum price of the index token during the event
+        tests:
+          - not_null
+
+      - &collateral_token_price_max
+        name: collateral_token_price_max
+        description: The maximum price of the collateral token during the event
+        tests:
+          - not_null
+
+      - &collateral_token_price_min
+        name: collateral_token_price_min
+        description: The minimum price of the collateral token during the event
+        tests:
+          - not_null
+
+      - &size_delta_usd
+        name: size_delta_usd
+        description: The change in position size in USD
+        tests:
+          - not_null
+
+      - &size_delta_in_tokens
+        name: size_delta_in_tokens
+        description: The change in position size in tokens
+        tests:
+          - not_null
+
+      - &order_type
+        name: order_type
+        description: The type of order executed
+        tests:
+          - not_null
+
+      - &increased_at_time
+        name: increased_at_time
+        description: The Unix timestamp when the position was increased
+        tests:
+          - not_null
+
+      - &collateral_delta_amount
+        name: collateral_delta_amount
+        description: The change in collateral amount
+        tests:
+          - not_null
+
+      - &price_impact_usd
+        name: price_impact_usd
+        description: The impact on price in USD
+        tests:
+          - not_null
+
+      - &price_impact_amount
+        name: price_impact_amount
+        description: The impact on price in token amount
+        tests:
+          - not_null
+
+      - &is_long
+        name: is_long
+        description: A boolean indicating whether the position is long
+        tests:
+          - not_null
+
+      - &order_key
+        name: order_key
+        description: A unique key identifying the order
+        tests:
+          - not_null
+
+      - &position_key
+        name: position_key
+        description: A unique key identifying the position
+        tests:
+          - not_null
