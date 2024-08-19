@@ -5,6 +5,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['name', 'tx_hash']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )}}
 
 SELECT
