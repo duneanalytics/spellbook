@@ -16,7 +16,6 @@
  ,ref('nft_base_base_trades')
  ,ref('nft_bnb_base_trades')
  ,ref('nft_ethereum_base_trades')
- ,ref('nft_old_base_trades')
  ,ref('nft_optimism_base_trades')
  ,ref('nft_polygon_base_trades')
  ,ref('nft_zksync_base_trades')
@@ -27,6 +26,7 @@
  ,ref('nft_zora_base_trades')
  ,ref('nft_blast_base_trades')
  ,ref('nft_fantom_base_trades')
+ ,ref('nft_nova_base_trades')
 ] %}
 
 with base_union as (
