@@ -20,6 +20,6 @@ select a.title
         , category
         , link
         , mint_date_date_format
-from query_3961807 a -- full list 
-full outer join query_3965956 b
+from {{ ref('nft_ethereum_metadata_xcopy_collections') }} a
+full outer join {{ ref('nft_ethereum_metadata_xcopy_nonsequential_tokens') }} b
 on a.title = b.title and a.art_type = b.art_type
