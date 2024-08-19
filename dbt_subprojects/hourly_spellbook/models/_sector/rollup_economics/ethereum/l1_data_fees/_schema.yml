@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: rollup_economics_l1_data_fees
+  - name: rollup_economics_ethereum_l1_data_fees
     meta:
       blockchain: ethereum
       sector: rollup_economics

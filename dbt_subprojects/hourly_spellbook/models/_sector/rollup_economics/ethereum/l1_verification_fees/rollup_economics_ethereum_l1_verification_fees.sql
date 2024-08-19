@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'rollup_economics'
+    schema = 'rollup_economics_ethereum'
     , alias = 'l1_verification_fees'
     , materialized = 'view'
     , unique_key = ['name', 'tx_hash']
