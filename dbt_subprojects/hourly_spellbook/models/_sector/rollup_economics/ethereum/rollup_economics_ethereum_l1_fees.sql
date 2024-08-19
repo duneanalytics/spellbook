@@ -43,7 +43,7 @@ l1_blobs AS (
         , name
         , SUM(blob_fee_native) as blob_fee_native
         , SUM(blob_fee_usd) as blob_fee_usd
-    FROM {{ ref('rollup_economics_l1_blob_fees')}}
+    FROM {{ ref('rollup_economics_ethereum_l1_blob_fees')}}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('block_time')}}
     {% endif %}
