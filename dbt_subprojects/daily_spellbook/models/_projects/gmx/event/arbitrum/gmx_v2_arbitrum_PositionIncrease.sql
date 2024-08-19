@@ -24,7 +24,7 @@ SELECT
     tx_to,
 
     -- Extracting Addresses
-    {{event_name}},
+    '{{event_name}}' as event_name,
     varbinary_substring(data, varbinary_position(data, to_utf8('market')) - 52, 20) AS market, -- market_decimals (index token, long token, short token)
     varbinary_substring(data, varbinary_position(data, to_utf8('collateralToken')) - 52, 20) AS collateral_token, -- coll_token_decimals (long token or short token)
 
