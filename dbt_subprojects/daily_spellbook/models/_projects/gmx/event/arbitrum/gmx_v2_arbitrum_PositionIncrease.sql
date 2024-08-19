@@ -4,11 +4,10 @@
     alias = 'position_increase',
     materialized = 'table',
     post_hook = '{{ expose_spells(
-                    \'["arbitrum"]\', 
-                    "project", 
-                    "gmx_v2", 
-                    \'["AIDataMaster"]\'
-                ) }}'
+        '["arbitrum"]', 
+        "project", 
+        "gmx_v2", 
+        '["ai_data_master"]') }}'
   )
 }}
 
