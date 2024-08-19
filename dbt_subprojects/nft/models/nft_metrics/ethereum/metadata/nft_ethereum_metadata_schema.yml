@@ -525,9 +525,9 @@ models:
         description: "Platform minted on"
       - name: edition_count
         description: "Edition count"
-       - name: blockchain
+      - name: blockchain
         description: "Blockchain"       
-       - name: token_standard
+      - name: token_standard
         description: "Token standard"     
       - name: contract_address
         description: "Collection contract address"  
