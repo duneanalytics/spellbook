@@ -1,4 +1,18 @@
+{{
+  config(
+    schema = 'gmx_v2_arbitrum',
+    alias = 'position_increase',
+    materialized = 'table',
+    post_hook = '{{ expose_spells(\'["arbitrum"]\',
+                                    "project",
+                                    "gmx_v2",
+                                    \'["ai_data_master"\') }}'
+  )
+}}
+
+
 {% set event_name = 'PositionIncrease' %}
+
 
 SELECT
     'arbitrum' as blockchain,
