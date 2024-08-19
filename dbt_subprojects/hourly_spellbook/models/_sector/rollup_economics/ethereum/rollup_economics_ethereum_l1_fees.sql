@@ -30,7 +30,7 @@ WITH l1_data AS (
         , name
         , SUM(verification_fee_native) as verification_fee_native
         , SUM(verification_fee_usd) as verification_fee_usd
-    FROM {{ ref('rollup_economics_etheruem_l1_verification_fees')}}
+    FROM {{ ref('rollup_economics_ethereum_l1_verification_fees')}}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('block_time')}}
     {% endif %}
