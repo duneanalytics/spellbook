@@ -1,6 +1,6 @@
 {{config(
     schema = 'labels',
-    alias = 'balancer_cowswap_amm_pool',
+    alias = 'balancer_cowswap_amm_pools',
     materialized = 'view'
     )
 }}

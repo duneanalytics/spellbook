@@ -1,4 +1,4 @@
-{% set blockchain = 'gnosis' %}
+{% set blockchain = 'ethereum' %}
 
 {{
     config(
@@ -13,7 +13,7 @@ WITH pool_labels AS (
     SELECT
         address,
         name
-    FROM {{ ref('labels_balancer_cowswap_amm_pools_gnosis') }}
+    FROM {{ ref('labels_balancer_cowswap_amm_pools_ethereum') }}
     ),
 
     prices AS (
@@ -43,7 +43,7 @@ WITH pool_labels AS (
             pool_address,
             token_address,
             token_balance_raw
-        FROM {{ ref('balancer_cowswap_amm_gnosis_balances') }} b
+        FROM {{ ref('balancer_cowswap_amm_ethereum_balances') }} b
     ),
     
    cumulative_usd_balance AS (
