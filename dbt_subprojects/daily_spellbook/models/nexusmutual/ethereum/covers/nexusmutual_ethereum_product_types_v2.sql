@@ -3,10 +3,11 @@
     schema = 'nexusmutual_ethereum',
     alias = 'product_types_v2',
     materialized = 'view',
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    unique_key = ['product_type_id'],
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
@@ -22,6 +23,16 @@ product_type_events as (
     evt_tx_hash as tx_hash,
     row_number() over (partition by evt_block_time, evt_tx_hash order by evt_index) as evt_rn
   from {{ source('nexusmutual_ethereum', 'Cover_evt_ProductTypeSet') }}
+  union all
+  select
+    evt_block_time as block_time,
+    evt_block_number as block_number,
+    id as product_type_id,
+    cast(null as varchar) as evt_product_type_ipfs_metadata,
+    evt_index,
+    evt_tx_hash as tx_hash,
+    row_number() over (partition by evt_block_time, evt_tx_hash order by evt_index) as evt_rn
+  from {{ source('nexusmutual_ethereum', 'CoverProducts_evt_ProductTypeSet') }}
 ),
 
 product_type_calls as (
@@ -32,6 +43,15 @@ product_type_calls as (
     call_tx_hash as tx_hash,
     row_number() over (partition by call_block_time, call_tx_hash order by call_trace_address desc) as tx_call_rn
   from {{ source('nexusmutual_ethereum', 'Cover_call_setProductTypes') }}
+  where call_success
+  union all
+  select
+    call_block_time as block_time,
+    call_block_number as block_number,
+    productTypeParams,
+    call_tx_hash as tx_hash,
+    row_number() over (partition by call_block_time, call_tx_hash order by call_trace_address desc) as tx_call_rn
+  from {{ source('nexusmutual_ethereum', 'CoverProducts_call_setProductTypes') }}
   where call_success
 ),
 

@@ -7,10 +7,10 @@
     incremental_strategy = 'merge',
     unique_key = ['block_date'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
@@ -18,6 +18,7 @@ with
 
 transfer_combined as (
   select * from {{ ref('nexusmutual_ethereum_capital_pool_transfers') }}
+  where block_time >= timestamp '2019-05-23'
 ),
 
 lido_oracle as (
@@ -379,4 +380,5 @@ select
 from daily_running_totals_enriched
 {% if is_incremental() %}
 where {{ incremental_predicate('block_date') }}
+  and 1=1 -- dummy change to trigger re-run
 {% endif %}
