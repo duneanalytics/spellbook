@@ -54,11 +54,10 @@ LEFT JOIN
     AND p.symbol = '{{token_symbol}}'
     {% if is_incremental() %}
     AND {{ incremental_predicate('p.minute') }}
-    {% else %}
-    AND p.minute >= date '2024-08-01'
     {% endif %}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('txns.block_time') }}
 {% else %}
 WHERE txns.block_time >= date '2024-08-01'
+OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
 {% endif %}
