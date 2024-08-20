@@ -196,7 +196,6 @@ models:
         tests:
           - not_null
 
-models:
   - name: gmx_v2_arbitrum_PositionDecrease
     meta:
       blockchain: arbitrum
@@ -264,5 +263,100 @@ models:
       - &uncappedBasePnlUsd
         name: uncappedBasePnlUsd
         description: The uncapped base profit and loss in USD, without any limits or caps applied
+        tests:
+          - not_null
+
+models:
+  - name: gmx_v2_arbitrum_MarketCreated
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'market_created']
+    description: |
+      This model extracts and parses `MarketCreated` events from the Arbitrum blockchain.
+      It includes transaction details, addresses, and other relevant metrics related to 
+      the creation of markets within the GMX protocol.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *contract_address
+      - *account
+      - *eventName
+      - *market
+      
+      - &marketToken
+        name: marketToken
+        description: The token used to represent the market
+        tests:
+          - not_null
+      - &indexToken
+        name: indexToken
+        description: The token used as the index in the market
+        tests:
+          - not_null
+      - &longToken
+        name: longToken
+        description: The token used for long positions in the market
+        tests:
+          - not_null
+      - &shortToken
+        name: shortToken
+        description: The token used for short positions in the market
+        tests:
+          - not_null
+      - &salt
+        name: salt
+        description: A unique value used to prevent hash collisions
+        tests:
+          - not_null
+      - &marketTokenSymbol
+        name: marketTokenSymbol
+        description: The symbol of the market token (hardcoded as 'GM' in this model)
+        tests:
+          - not_null
+      - &marketTokenDecimal
+        name: marketTokenDecimal
+        description: The decimal precision of the market token (hardcoded as 18 in this model)
+        tests:
+          - not_null
+      - &indexTokenSymbol
+        name: indexTokenSymbol
+        description: The symbol of the index token
+        tests:
+          - not_null
+      - &indexTokenDecimals
+        name: indexTokenDecimals
+        description: The decimal precision of the index token
+        tests:
+          - not_null
+      - &longTokenSymbol
+        name: longTokenSymbol
+        description: The symbol of the long token
+        tests:
+          - not_null
+      - &longTokenDecimals
+        name: longTokenDecimals
+        description: The decimal precision of the long token
+        tests:
+          - not_null
+      - &shortTokenSymbol
+        name: shortTokenSymbol
+        description: The symbol of the short token
+        tests:
+          - not_null
+      - &shortTokenDecimals
+        name: shortTokenDecimals
+        description: The decimal precision of the short token
         tests:
           - not_null
