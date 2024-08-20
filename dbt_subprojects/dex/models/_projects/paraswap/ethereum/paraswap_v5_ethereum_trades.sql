@@ -122,8 +122,10 @@ call_swap_without_event AS (
             SELECT c.call_tx_hash,
             c.call_block_number,
             (case when tx.value > 0 then true else false end) as is_eth,
-            tx."from"
+            tx."from",
+            tr."from" as caller
             FROM {{ call_table }} c
+
             INNER JOIN {{ source('ethereum', 'transactions') }} tx ON c.call_block_number = tx.block_number
                 AND c.call_tx_hash = tx.hash
                 AND tx.block_number >= {{ trade_call_start_block_number }}
@@ -133,6 +135,19 @@ call_swap_without_event AS (
                 {% if not is_incremental() %}
                 AND tx.block_time >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
+
+            INNER JOIN {{ source('ethereum', 'traces') }} tr ON tr.block_number = c.call_block_number
+                AND tr.tx_hash = c.call_tx_hash
+                AND tr.trace_address = c.call_trace_address
+                AND tr.call_type = 'call'
+                AND tr.success = true
+                {% if is_incremental() %}
+                AND {{ incremental_predicate('tr.block_time') }}
+                {% endif %}
+                {% if not is_incremental() %}
+                AND t.block_time >= TIMESTAMP '{{project_start_date}}'
+                {% endif %}
+
             WHERE c.call_success = true
             {% if is_incremental() %}
             AND {{ incremental_predicate('c.call_block_time') }}
@@ -165,7 +180,7 @@ call_swap_without_event AS (
             FROM no_event_call_transaction c
             INNER JOIN {{ source('erc20_ethereum','evt_transfer') }} t ON c.call_block_number = t.evt_block_number
                 AND c.call_tx_hash = t.evt_tx_hash
-                AND t."from" = c."from"
+                AND t."from" = c.caller
                 AND t.evt_block_number >= {{ trade_call_start_block_number }}
                 {% if is_incremental() %}
                 AND {{ incremental_predicate('t.evt_block_time') }}
@@ -186,7 +201,7 @@ call_swap_without_event AS (
             c."from" AS user_address,
             0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS tokenIn, -- WETH
             SUM(case
-                when t."from" = c."from" then try_cast(t.value AS int256)
+                when t."from" = c.caller then try_cast(t.value AS int256)
                 else -1 * try_cast(t.value AS int256)
             end) AS amountIn,
             MAX(t.trace_address) AS trace_address,
@@ -194,7 +209,7 @@ call_swap_without_event AS (
         FROM no_event_call_transaction c
         INNER JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
-            AND (t."from" = c."from" or t."to" = c."from")
+            AND (t."from" = c.caller or t."to" = c.caller)
             AND t.block_number >= {{ trade_call_start_block_number }}
             AND t.call_type = 'call'
             AND t.value > uint256 '0'
@@ -230,7 +245,7 @@ call_swap_without_event AS (
             FROM no_event_call_transaction c
             INNER JOIN {{ source('erc20_ethereum','evt_transfer') }} t ON c.call_block_number = t.evt_block_number
                 AND c.call_tx_hash = t.evt_tx_hash
-                AND t."to" = c."from"
+                AND t."to" = c.caller
                 AND t.evt_block_number >= {{ trade_call_start_block_number }}
                 {% if is_incremental() %}
                 AND {{ incremental_predicate('t.evt_block_time') }}
@@ -255,7 +270,7 @@ call_swap_without_event AS (
         FROM no_event_call_transaction c
         INNER JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
-            AND t."to" = c."from"
+            AND t."to" = c.caller
             AND t.block_number >= {{ trade_call_start_block_number }}
             AND t.call_type = 'call'
             AND t.value > uint256 '0'
@@ -265,7 +280,7 @@ call_swap_without_event AS (
             {% if not is_incremental() %}
             AND t.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
-        where c.is_eth = false --  Swap ERC20 token to ETH
+        where c.is_eth = false -- Swap ERC20 token to ETH
     )
 
     SELECT i.block_time,
