@@ -106,5 +106,4 @@ FROM (VALUES
     , (0xBaf07cF91D413C0aCB2b7444B9Bf13b4e03c9D71, 'STX', 6)
     , (0xc14e065b0067dE91534e032868f5Ac6ecf2c6868, 'XRP', 6)
     , (0xC4da4c24fd591125c3F47b340b6f4f76111883d8, 'DOGE', 8)
-
 ) AS temp_table (contract_address, symbol, decimals)
