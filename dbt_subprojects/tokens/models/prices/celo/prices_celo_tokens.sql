@@ -31,5 +31,10 @@ FROM
     ('sushi-sushi', 'celo', 'SUSHI', 0xd15ec721c2a896512ad29c671997dd68f9593226, 18),
     ('pact-impactmarket', 'celo', 'PACT', 0x46c9757c5497c5b1f2eb73ae79b6b67d119b0b58, 18),
     ('usdc-usd-coin', 'celo', 'USDC', 0xceba9300f2b948710d2653dd7b07f33a8b32118c, 6),
-    ('usdt-tether', 'celo', 'USDT', 0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e, 6)
+    ('usdt-tether', 'celo', 'USDT', 0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e, 6),
+    ('plastik-plastiks', 'celo', 'PLASTIK', 0x27cd006548df7c8c8e9fdc4a67fa05c2e3ca5cf9, 9),
+    ('scelo-savings-celo', 'celo', 'SCELO', 0x2879bfd5e7c4ef331384e908aaa3bd3014b703fa, 18),
+    ('btcbr-bitcoinbr', 'celo', 'BTCBR', 0xe9dc987b939a7b33270e56532297cf82716c79a3, 18),
+    ('usdglo-glo-dollar', 'celo', 'USDGLO', 0x4f604735c1cf31399c6e711d5962b2b3e0225ad3, 18),
+    ('abr-allbridge', 'celo', 'ABR', 0x6e512bfc33be36f2666754e996ff103ad1680cc9, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

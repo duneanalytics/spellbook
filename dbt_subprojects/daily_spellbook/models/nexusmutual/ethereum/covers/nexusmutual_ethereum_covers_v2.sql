@@ -32,7 +32,7 @@ cover_sales as (
     from_hex(json_query(c.params, 'lax $.commissionDestination' omit quotes)) as commission_destination,
     cast(json_query(t.pool_allocation, 'lax $.coverAmountInAsset') as uint256) as cover_amount_in_asset,
     cast(json_query(t.pool_allocation, 'lax $.skip') as boolean) as pool_allocation_skip,
-    c.call_trace_address,
+    c.call_trace_address as trace_address,
     c.call_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'Cover_call_buyCover') }} c
     cross join unnest(c.poolAllocationRequests) as t(pool_allocation)
@@ -77,6 +77,7 @@ cover_premiums as (
     c.product_id,
     p.cover_amount / 100.0 as partial_cover_amount, -- partial_cover_amount_in_nxm
     p.premium / 1e18 as premium,
+    p.premium_period_ratio,
     c.commission_ratio / 10000.0 as commission_ratio,
     (c.commission_ratio / 10000.0) * p.premium / 1e18 as commission,
     (1.0 + (c.commission_ratio / 10000.0)) * p.premium / 1e18 as premium_incl_commission,
@@ -96,6 +97,7 @@ cover_premiums as (
     end as premium_asset,
     c.cover_owner,
     c.commission_destination,
+    c.trace_address,
     c.tx_hash
   from cover_sales c
     inner join staking_product_premiums p on c.tx_hash = p.tx_hash and c.block_number = p.block_number
@@ -124,15 +126,17 @@ covers_v2 as (
     p.product_type,
     p.product_name,
     cp.partial_cover_amount,
-    cp.commission_ratio,
     cp.cover_asset,
     cp.sum_assured,
     cp.premium_asset,
+    cp.premium_period_ratio,
     cp.premium,
     cp.premium_incl_commission,
     cp.cover_owner,
     cp.commission,
+    cp.commission_ratio,
     cp.commission_destination,
+    cp.trace_address,
     cp.tx_hash
   from cover_premiums cp
     left join products p on cp.product_id = p.product_id
@@ -153,8 +157,10 @@ covers_v1_migrated as (
     cv1.product_type,
     cv1.cover_asset,
     cv1.premium_asset,
+    cast(null as double) as premium_period_ratio,
     cm.newOwner as cover_owner,
     cast(null as double) as commission,
+    cast(null as double) as commission_ratio,
     cast(null as varbinary) as commission_destination,
     cm.evt_index,
     cm.evt_tx_hash as tx_hash
@@ -169,6 +175,7 @@ covers as (
     cover_id,
     cover_start_time,
     cover_end_time,
+    pool_id as staking_pool_id,
     cast(pool_id as varchar) as staking_pool,
     cast(product_id as int) as product_id,
     product_type,
@@ -178,12 +185,15 @@ covers as (
     premium,
     premium as premium_nxm,
     premium_incl_commission,
+    premium_period_ratio,
     sum_assured,
     partial_cover_amount, -- in NXM
     cover_owner,
     commission,
+    commission_ratio,
     commission_destination,
     false as is_migrated,
+    trace_address,
     tx_hash
   from covers_v2
   union all
@@ -193,6 +203,7 @@ covers as (
     cover_id,
     cover_start_time,
     cover_end_time,
+    cast(null as uint256) as staking_pool_id,
     syndicate as staking_pool,
     cast(null as int) as product_id,
     product_type,
@@ -202,12 +213,15 @@ covers as (
     premium,
     premium_nxm,
     premium_nxm as premium_incl_commission,
+    premium_period_ratio,
     sum_assured,
     sum_assured as partial_cover_amount, -- No partial covers in v1 migrated covers
     cover_owner,
     commission,
+    commission_ratio,
     commission_destination,
     true as is_migrated,
+    null as trace_address,
     tx_hash
   from covers_v1_migrated
 )
@@ -221,6 +235,7 @@ select
   cover_end_time,
   date_trunc('day', cover_start_time) as cover_start_date,
   date_trunc('day', cover_end_time) as cover_end_date,
+  staking_pool_id,
   staking_pool,
   product_id,
   product_type,
@@ -232,9 +247,12 @@ select
   premium,
   premium_nxm,
   premium_incl_commission,
+  premium_period_ratio,
   cover_owner,
   commission,
+  commission_ratio,
   commission_destination,
   is_migrated,
+  trace_address,
   tx_hash
 from covers

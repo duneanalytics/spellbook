@@ -121,3 +121,4 @@ from transfer_nxmty_in
 union all
 select block_time, block_number, block_date, transfer_type, symbol, amount, contract_address, unique_key, tx_hash
 from transfer_nxmty_out
+where 1=1 -- dummy change to trigger re-run
