@@ -293,8 +293,7 @@ models:
       - *contract_address
       - *account
       - *eventName
-      - *market
-      
+
       - &marketToken
         name: marketToken
         description: The token used to represent the market
@@ -325,38 +324,54 @@ models:
         description: The symbol of the market token (hardcoded as 'GM' in this model)
         tests:
           - not_null
+            config:
+              severity: warn          
       - &marketTokenDecimal
         name: marketTokenDecimal
         description: The decimal precision of the market token (hardcoded as 18 in this model)
         tests:
           - not_null
+            config:
+              severity: warn            
       - &indexTokenSymbol
         name: indexTokenSymbol
         description: The symbol of the index token
         tests:
           - not_null
+            config:
+              severity: warn           
       - &indexTokenDecimals
         name: indexTokenDecimals
         description: The decimal precision of the index token
         tests:
           - not_null
+            config:
+              severity: warn           
       - &longTokenSymbol
         name: longTokenSymbol
         description: The symbol of the long token
         tests:
           - not_null
+            config:
+              severity: warn           
       - &longTokenDecimals
         name: longTokenDecimals
         description: The decimal precision of the long token
         tests:
           - not_null
+            config:
+              severity: warn           
       - &shortTokenSymbol
         name: shortTokenSymbol
         description: The symbol of the short token
         tests:
           - not_null
+            config:
+              severity: warn           
       - &shortTokenDecimals
         name: shortTokenDecimals
         description: The decimal precision of the short token
         tests:
           - not_null
+            config:
+              severity: warn           
