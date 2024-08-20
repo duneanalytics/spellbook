@@ -24,7 +24,7 @@ models:
             - blockchain
             - tx_hash
           check_columns:
-            - tx_fee_native
+            - tx_fee
     columns:
       - &blockchain
         name: blockchain
