@@ -1,5 +1,6 @@
 {{ config(
         schema = 'gas',
+        tags = 'prod_exclude',
         alias = 'fees',
         post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","ethereum","optimism","scroll","zksync","zora"]\',
                                 "sector",
