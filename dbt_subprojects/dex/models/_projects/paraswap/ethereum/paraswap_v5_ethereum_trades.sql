@@ -133,9 +133,9 @@ uniswap_v2_call_swap_without_event AS (
             INNER JOIN {{ source('ethereum', 'traces') }} t ON t.block_number = c.call_block_number
                 AND t.tx_hash = c.call_tx_hash
                 AND t.trace_address = c.call_trace_address
-                AND t.block_number >= {{ trade_call_start_block_number }}
                 AND t.call_type = 'call'
                 AND t.success = true
+                AND t.block_number >= {{ trade_call_start_block_number }}
                 {% if is_incremental() %}
                 AND {{ incremental_predicate('t.block_time') }}
                 {% endif %}
@@ -154,41 +154,64 @@ uniswap_v2_call_swap_without_event AS (
     ),
 
     swap_detail_in AS (
-        SELECT coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
-            coalesce(e.evt_block_number, t.block_number) AS block_number,
-            coalesce(e.evt_block_time, t.block_time) AS block_time,
-            coalesce(e."from", t."from") AS user_address,
-            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */) AS tokenIn,
-            try_cast(coalesce(e.value, t.value) AS int256) AS amountIn,
-            coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
-            coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index
-        FROM no_event_call_transaction c
-    
-        LEFT JOIN {{ source('erc20_ethereum', 'evt_transfer') }} e ON c.call_block_number = e.evt_block_number
-            AND c.call_tx_hash = e.evt_tx_hash
-            AND e."from" = c.caller
-            AND cast(e."to" AS varchar) = c.swap_in_pair
-            AND e.evt_block_number >= {{ trade_call_start_block_number }}
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('e.evt_block_time') }}
-            {% endif %}
-            {% if not is_incremental() %}
-            AND e.evt_block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
-            
-        LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
-            AND c.call_tx_hash = t.tx_hash
-            AND ((t."from" = c.caller AND t."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */ )
-                OR (t."to" = c.caller AND t."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */))
-            AND t.call_type = 'call'
-            AND t.value > uint256 '0'
-            AND t.block_number >= {{ trade_call_start_block_number }}
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('t.block_time') }}
-            {% endif %}
-            {% if not is_incremental() %}
-            AND t.block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
+        SELECT tx_hash,
+            block_number,
+            block_time,
+            user_address,
+            tokenIn,
+            amountIn,
+            trace_address,
+            evt_index
+        FROM (
+            SELECT coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
+                coalesce(e.evt_block_number, t.block_number) AS block_number,
+                coalesce(e.evt_block_time, t.block_time) AS block_time,
+                coalesce(e."from", t."from") AS user_address,
+                coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */) AS tokenIn,
+                coalesce(
+                    try_cast(e.value AS int256), 
+                    sum(
+                        CASE WHEN t."from" = c.caller THEN try_cast(t.value AS int256)
+                        ELSE -1 * try_cast(t.value AS int256)
+                    END) OVER (PARTITION BY t.tx_hash)
+                ) AS amountIn,
+                row_number() OVER (
+                    PARTITION BY coalesce(t.tx_hash, e.evt_tx_hash)
+                    ORDER BY coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) ASC
+                ) AS row_num,
+                coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
+                coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index
+            FROM no_event_call_transaction c
+        
+            LEFT JOIN {{ source('erc20_ethereum', 'evt_transfer') }} e ON c.call_block_number = e.evt_block_number
+                AND c.call_tx_hash = e.evt_tx_hash
+                AND e."from" = c.caller
+                AND cast(e."to" AS varchar) = c.swap_in_pair
+                AND e.evt_block_number >= {{ trade_call_start_block_number }}
+                {% if is_incremental() %}
+                AND {{ incremental_predicate('e.evt_block_time') }}
+                {% endif %}
+                {% if not is_incremental() %}
+                AND e.evt_block_time >= TIMESTAMP '{{project_start_date}}'
+                {% endif %}
+                
+            LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
+                AND c.call_tx_hash = t.tx_hash
+                AND (
+                    (t."from" = c.caller AND t."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */ )
+                    OR (t."to" = c.caller AND t."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */)
+                )
+                AND t.call_type = 'call'
+                AND t.value > uint256 '0'
+                AND t.block_number >= {{ trade_call_start_block_number }}
+                {% if is_incremental() %}
+                AND {{ incremental_predicate('t.block_time') }}
+                {% endif %}
+                {% if not is_incremental() %}
+                AND t.block_time >= TIMESTAMP '{{project_start_date}}'
+                {% endif %}
+        ) swap_detail_in_with_slippage
+        WHERE row_num = 1
     ),
 
     swap_detail_out AS (
@@ -282,41 +305,64 @@ uniswap_call_swap_without_event AS (
     ),
 
     swap_detail_in AS (
-        SELECT coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
-            coalesce(e.evt_block_number, t.block_number) AS block_number,
-            coalesce(e.evt_block_time, t.block_time) AS block_time,
-            coalesce(e."from", t."from") AS user_address,
-            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */) AS tokenIn,
-            try_cast(coalesce(e.value, t.value) AS int256) AS amountIn,
-            coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
-            coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index
-        FROM no_event_call_transaction c
-    
-        LEFT JOIN {{ source('erc20_ethereum', 'evt_transfer') }} e ON c.call_block_number = e.evt_block_number
-            AND c.call_tx_hash = e.evt_tx_hash
-            AND e."from" = c.caller
-            AND e.contract_address = c.token_in
-            AND e.evt_block_number >= {{ trade_call_start_block_number }}
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('e.evt_block_time') }}
-            {% endif %}
-            {% if not is_incremental() %}
-            AND e.evt_block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
-            
-        LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
-            AND c.call_tx_hash = t.tx_hash
-            AND ((t."from" = c.caller AND t."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */ )
-                OR (t."to" = c.caller AND t."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */))
-            AND t.call_type = 'call'
-            AND t.block_number >= {{ trade_call_start_block_number }}
-            AND t.value > uint256 '0'
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('t.block_time') }}
-            {% endif %}
-            {% if not is_incremental() %}
-            AND t.block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
+        SELECT tx_hash,
+            block_number,
+            block_time,
+            user_address,
+            tokenIn,
+            amountIn,
+            trace_address,
+            evt_index
+        FROM (
+            SELECT coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
+                coalesce(e.evt_block_number, t.block_number) AS block_number,
+                coalesce(e.evt_block_time, t.block_time) AS block_time,
+                coalesce(e."from", t."from") AS user_address,
+                coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */) AS tokenIn,
+                coalesce(
+                    try_cast(e.value AS int256), 
+                    sum(
+                        CASE WHEN t."from" = c.caller THEN try_cast(t.value AS int256)
+                        ELSE -1 * try_cast(t.value AS int256)
+                    END) OVER (PARTITION BY t.tx_hash)
+                ) AS amountIn,
+                row_number() OVER (
+                    PARTITION BY coalesce(t.tx_hash, e.evt_tx_hash)
+                    ORDER BY coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) ASC
+                ) AS row_num,
+                coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
+                coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index
+            FROM no_event_call_transaction c
+        
+            LEFT JOIN {{ source('erc20_ethereum', 'evt_transfer') }} e ON c.call_block_number = e.evt_block_number
+                AND c.call_tx_hash = e.evt_tx_hash
+                AND e."from" = c.caller
+                AND e.contract_address = c.token_in
+                AND e.evt_block_number >= {{ trade_call_start_block_number }}
+                {% if is_incremental() %}
+                AND {{ incremental_predicate('e.evt_block_time') }}
+                {% endif %}
+                {% if not is_incremental() %}
+                AND e.evt_block_time >= TIMESTAMP '{{project_start_date}}'
+                {% endif %}
+                
+            LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
+                AND c.call_tx_hash = t.tx_hash
+                AND (
+                    (t."from" = c.caller AND t."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */ )
+                    OR (t."to" = c.caller AND t."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */)
+                )
+                AND t.call_type = 'call'
+                AND t.value > uint256 '0'
+                AND t.block_number >= {{ trade_call_start_block_number }}
+                {% if is_incremental() %}
+                AND {{ incremental_predicate('t.block_time') }}
+                {% endif %}
+                {% if not is_incremental() %}
+                AND t.block_time >= TIMESTAMP '{{project_start_date}}'
+                {% endif %}
+        ) swap_detail_in_with_slippage
+        WHERE row_num = 1
     ),
 
     swap_detail_out AS (
@@ -346,9 +392,9 @@ uniswap_call_swap_without_event AS (
             AND c.call_tx_hash = t.tx_hash
             AND t."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */
             AND t."to" = c.caller
-            AND t.block_number >= {{ trade_call_start_block_number }}
             AND t.call_type = 'call'
             AND t.value > uint256 '0'
+            AND t.block_number >= {{ trade_call_start_block_number }}
             {% if is_incremental() %}
             AND {{ incremental_predicate('t.block_time') }}
             {% endif %}
@@ -410,41 +456,64 @@ zero_x_call_swap_without_event AS (
     ),
 
     swap_detail_in AS (
-        SELECT coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
-            coalesce(e.evt_block_number, t.block_number) AS block_number,
-            coalesce(e.evt_block_time, t.block_time) AS block_time,
-            coalesce(e."from", t."from") AS user_address,
-            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */) AS tokenIn,
-            try_cast(coalesce(e.value, t.value) AS int256) AS amountIn,
-            coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
-            coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index
-        FROM no_event_call_transaction c
-    
-        LEFT JOIN {{ source('erc20_ethereum', 'evt_transfer') }} e ON c.call_block_number = e.evt_block_number
-            AND c.call_tx_hash = e.evt_tx_hash
-            AND e."from" = c.caller
-            AND e.contract_address = c.token_in
-            AND e.evt_block_number >= {{ trade_call_start_block_number }}
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('e.evt_block_time') }}
-            {% endif %}
-            {% if not is_incremental() %}
-            AND e.evt_block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
-            
-        LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
-            AND c.call_tx_hash = t.tx_hash
-            AND ((t."from" = c.caller AND t."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */ )
-                OR (t."to" = c.caller AND t."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */))
-            AND t.call_type = 'call'
-            AND t.success = true
-            AND t.block_number >= {{ trade_call_start_block_number }}
-            {% if is_incremental() %}
-            AND {{ incremental_predicate('t.block_time') }}
-            {% endif %}
-            {% if not is_incremental() %}
-            AND t.block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
+        SELECT tx_hash,
+            block_number,
+            block_time,
+            user_address,
+            tokenIn,
+            amountIn,
+            trace_address,
+            evt_index
+        FROM (
+            SELECT coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
+                coalesce(e.evt_block_number, t.block_number) AS block_number,
+                coalesce(e.evt_block_time, t.block_time) AS block_time,
+                coalesce(e."from", t."from") AS user_address,
+                coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */) AS tokenIn,
+                coalesce(
+                    try_cast(e.value AS int256), 
+                    sum(
+                        CASE WHEN t."from" = c.caller THEN try_cast(t.value AS int256)
+                        ELSE -1 * try_cast(t.value AS int256)
+                    END) OVER (PARTITION BY t.tx_hash)
+                ) AS amountIn,
+                row_number() OVER (
+                    PARTITION BY coalesce(t.tx_hash, e.evt_tx_hash)
+                    ORDER BY coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) ASC
+                ) AS row_num,
+                coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
+                coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index
+            FROM no_event_call_transaction c
+        
+            LEFT JOIN {{ source('erc20_ethereum', 'evt_transfer') }} e ON c.call_block_number = e.evt_block_number
+                AND c.call_tx_hash = e.evt_tx_hash
+                AND e."from" = c.caller
+                AND e."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */
+                AND e.contract_address = c.token_in
+                AND e.evt_block_number >= {{ trade_call_start_block_number }}
+                {% if is_incremental() %}
+                AND {{ incremental_predicate('e.evt_block_time') }}
+                {% endif %}
+                {% if not is_incremental() %}
+                AND e.evt_block_time >= TIMESTAMP '{{project_start_date}}'
+                {% endif %}
+                
+            LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
+                AND c.call_tx_hash = t.tx_hash
+                AND (
+                    (t."from" = c.caller AND t."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */ )
+                    OR (t."to" = c.caller AND t."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */)
+                )
+                AND t.call_type = 'call'
+                AND t.block_number >= {{ trade_call_start_block_number }}
+                {% if is_incremental() %}
+                AND {{ incremental_predicate('t.block_time') }}
+                {% endif %}
+                {% if not is_incremental() %}
+                AND t.block_time >= TIMESTAMP '{{project_start_date}}'
+                {% endif %}
+        ) swap_detail_in_with_slippage
+        WHERE row_num = 1
     ),
 
     swap_detail_out AS (
@@ -460,6 +529,7 @@ zero_x_call_swap_without_event AS (
     
         LEFT JOIN {{ source('erc20_ethereum', 'evt_transfer') }} e ON c.call_block_number = e.evt_block_number
             AND c.call_tx_hash = e.evt_tx_hash
+            AND e."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */
             AND e."to" = c.caller
             AND e.contract_address = c.token_out
             AND e.evt_block_number >= {{ trade_call_start_block_number }}
@@ -475,7 +545,7 @@ zero_x_call_swap_without_event AS (
             AND t."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */
             AND t."to" = c.caller
             AND t.call_type = 'call'
-            AND t.success = true
+            AND t.value > uint256 '0'
             AND t.block_number >= {{ trade_call_start_block_number }}
             {% if is_incremental() %}
             AND {{ incremental_predicate('t.block_time') }}
