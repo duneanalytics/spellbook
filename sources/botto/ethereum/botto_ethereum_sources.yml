@@ -6,4 +6,3 @@ sources:
       Botto ethereum contracts
     tables:
       - name: BottoAirdrop_evt_AirdropTransfer
-        loaded_at_field: evt_block_time

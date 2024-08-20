@@ -3,14 +3,8 @@ version: 2
 sources: 
   - name: uniswap_ethereum
     description: "Ethereum decoded tables related to Uniswap v1 contract"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: Exchange_evt_TokenPurchase
-        freshness:
-          warn_after: { count: 12, period: hour }
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - &buyer
@@ -41,9 +35,6 @@ sources:
             description: "Raw amount of tokens bought during transaction with the contract"
 
       - name: Factory_evt_NewExchange
-        loaded_at_field: evt_block_time
-        freshness: # default freshness
-          warn_after: { count: 84, period: hour }
         description: "" # to-do
         columns:
           - name: contract_address # appears to be used differently here than the exchange event tables in uniswap v1
@@ -60,7 +51,6 @@ sources:
             description: "Token bought contract address"
 
       - name: Exchange_evt_EthPurchase
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - *buyer
@@ -76,15 +66,11 @@ sources:
             name: tokens_sold
             description: "Raw amount of tokens sold during transaction with the contract"
       - name: MerkleDistributor_evt_Claimed
-        loaded_at_field: evt_block_time
 
   - name: uniswap_v2_ethereum
     description: "Ethereum decoded tables related to Uniswap v2 contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: Pair_evt_Swap
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - &amount0In
@@ -106,7 +92,6 @@ sources:
             name: to
 
       - name: Factory_evt_PairCreated
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - &_0
@@ -125,11 +110,8 @@ sources:
 
   - name: uniswap_v3_ethereum
     description: "Ethereum decoded tables related to Uniswap v3 contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: Pair_evt_Swap
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - &amount1
@@ -152,7 +134,6 @@ sources:
             name: tick
 
       - name: Factory_evt_PoolCreated
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - *contract_address
@@ -170,7 +151,6 @@ sources:
           - *token1
 
       - name: GovernorBravoDelegate_evt_VoteCast
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - *evt_block_number
@@ -187,7 +167,6 @@ sources:
             name: votes
 
       - name: GovernorBravoDelegate_evt_ProposalCreated
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - *evt_block_number
@@ -214,7 +193,6 @@ sources:
             name: values
 
       - name: GovernorBravoDelegate_evt_ProposalCanceled
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - *evt_block_number
@@ -224,7 +202,6 @@ sources:
           - *id
 
       - name: GovernorBravoDelegate_evt_ProposalExecuted
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - *evt_block_number
@@ -234,7 +211,6 @@ sources:
           - *id
 
       - name: GovernorBravoDelegate_evt_ProposalQueued
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - &eta
@@ -246,4 +222,3 @@ sources:
           - *id
 
       - name: Pair_evt_Flash
-        loaded_at_field: evt_block_time
