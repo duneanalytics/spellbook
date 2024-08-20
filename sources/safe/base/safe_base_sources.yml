@@ -2,11 +2,8 @@ version: 2
 
 sources:
   - name: gnosis_safe_base
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: GnosisSafeProxyFactoryv_1_3_0_evt_ProxyCreation
-        loaded_at_field: evt_block_time
         description: "Safe v1.3.0 factory ProxyCreation events"
         columns:
           - &contract_address
@@ -32,7 +29,6 @@ sources:
             description: "Singleton"
 
       - name: SafeProxyFactory_v_1_4_1_evt_ProxyCreation
-        loaded_at_field: evt_block_time
         description: "Safe v1.4.1 factory ProxyCreation events"
         columns:
           - *contract_address

@@ -5,4 +5,3 @@ sources:
     description: Avalanche decoded tables related to Synapse
     tables:
       - name: SwapFlashLoan_evt_FlashLoan
-        loaded_at_field: evt_block_time
