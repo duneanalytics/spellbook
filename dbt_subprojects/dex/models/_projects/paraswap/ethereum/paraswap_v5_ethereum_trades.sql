@@ -27,7 +27,7 @@
 ] %}
 {% set trade_call_start_block_number = 13056913 %}
 {% set uniswap_v2_trade_call_tables = [
-    ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_buyOnUniswapV2Fork')
+    source('paraswap_ethereum', 'AugustusSwapper6_0_call_buyOnUniswapV2Fork')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_buyOnUniswapV2ForkWithPermit')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnUniswapV2Fork')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnUniswapV2ForkWithPermit')
@@ -39,7 +39,7 @@
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnUniswapFork')
 ] %}
 {% set zero_x_trade_call_tables = [
-    ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnZeroXv4')
+    source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnZeroXv4')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnZeroXv4WithPermit')
 ] %}
 
