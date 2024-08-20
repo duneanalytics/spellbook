@@ -55,7 +55,7 @@ models:
       - name: pool_id
       - *pool_address
       - name: pool_symbol
-      - *version
+      - name: version
       - *blockchain
       - name: pool_type
       - *token_address
