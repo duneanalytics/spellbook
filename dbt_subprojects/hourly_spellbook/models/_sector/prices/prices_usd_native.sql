@@ -29,4 +29,3 @@ FROM {{ source('prices', 'usd') }} pu
 INNER JOIN blockchains b
 ON b.symbol = pu.symbol
 and pu.blockchain is null
-)
