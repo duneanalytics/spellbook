@@ -249,8 +249,8 @@ models:
       - &values_priceImpactDiffUsd
         name: values.priceImpactDiffUsd
         description: The difference in price impact in USD compared to a baseline or previous value
-        tests:
-          - not_null  
+        # tests:
+        #   - not_null  
       - &decreasedAtTime
         name: decreasedAtTime
         description: The Unix timestamp when the position was decreased

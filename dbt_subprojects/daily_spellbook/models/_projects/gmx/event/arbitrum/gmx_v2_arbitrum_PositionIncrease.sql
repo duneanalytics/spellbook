@@ -7,13 +7,10 @@
 }}
 
 {%- set event_name = 'PositionIncrease' -%}
-
--- Create Arrays for Each Variable Type
 {%- set addresses = [
     'market',
     'collateralToken'
 ] -%}
-
 {%- set unsigned_integers = [
     'sizeInUsd',
     'sizeInTokens',
@@ -32,17 +29,14 @@
     'orderType',
     'increasedAtTime'
 ] -%}
-
 {%- set integers = [
     'collateralDeltaAmount',
     'priceImpactUsd',
     'priceImpactAmount'
 ] -%}
-
 {%- set booleans = [
     'isLong'
 ] -%}
-
 {%- set bytes32 = [
     'orderKey',
     'positionKey'
