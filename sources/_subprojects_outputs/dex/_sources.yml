@@ -56,6 +56,7 @@ sources:
       - name: balancer_v2_pools_optimism
       - name: balancer_v2_pools_polygon
       - name: balancer_v2_pools_zkevm
+      - name: balancer_cowswap_amm_pools     
   - name: uniswap_v3_optimism
     tables:
       - name: ovm1_pool_mapping
