@@ -25,7 +25,7 @@ SELECT
 , b.symbol
 , p.minute
 , p.price
-FROM {{ source('prices', 'usd') }} pu
+FROM {{ source('prices', 'usd') }} p
 INNER JOIN blockchains b
-ON b.symbol = pu.symbol
-and pu.blockchain is null
+ON b.symbol = p.symbol
+and p.blockchain is null
