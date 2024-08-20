@@ -76,7 +76,9 @@ SELECT
     c.token_balance_raw,
     c.token_balance,
     c.protocol_liquidity_usd,
-    (c.protocol_liquidity_usd) / e.eth_price AS protocol_liquidity_eth
+    (c.protocol_liquidity_usd) / e.eth_price AS protocol_liquidity_eth,
+    c.protocol_liquidity_usd AS pool_liquidity_usd,
+    (c.protocol_liquidity_usd) / e.eth_price AS pool_liquidity_eth
 FROM cumulative_usd_balance c
 LEFT JOIN pool_labels p ON p.address = c.pool_address
 LEFT JOIN eth_prices e ON e.day = c.day
