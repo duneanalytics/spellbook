@@ -15,6 +15,11 @@ SELECT
      ,'{{token_symbol}}' as native_token_symbol
      ,txns.value/1e18 AS tx_amount_native
      ,txns.value/1e18 * p.price AS tx_amount_usd
+     ,CASE WHEN type = 'Legacy' THEN (cast(txns.gas_price as uint256) * cast(txns.gas_used as uint256))
+          WHEN type = 'AccessList' THEN (cast(txns.gas_price as uint256) * cast(txns.gas_used as uint256))
+          WHEN type = 'DynamicFee' THEN ((cast(blocks.base_fee_per_gas as uint256) + cast(txns.priority_fee_per_gas as uint256))* cast(txns.gas_used as uint256))
+          WHEN type = '3' THEN ((cast(txns.gas_price as uint256) * cast(txns.gas_used as uint256)) + (cast(blob.blob_base_fee as uint256) * cast(blob.blob_gas_used as uint256)))
+          END AS tx_fee_raw
      ,CASE WHEN type = 'Legacy' THEN (cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double))
           WHEN type = 'AccessList' THEN (cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double))
           WHEN type = 'DynamicFee' THEN ((cast(blocks.base_fee_per_gas as double)/1e18 + cast(txns.priority_fee_per_gas as double)/1e18)* cast(txns.gas_used as double))

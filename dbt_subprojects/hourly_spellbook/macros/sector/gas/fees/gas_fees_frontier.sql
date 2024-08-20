@@ -15,6 +15,7 @@ SELECT
      ,'{{token_symbol}}' as native_token_symbol
      ,txns.value/1e18 AS tx_amount_native
      ,txns.value/1e18 * p.price AS tx_amount_usd
+     ,cast(txns.gas_price as uint256) * cast(txns.gas_used as uint256) AS tx_fee_raw
      ,cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double) AS tx_fee_native
      ,cast(txns.gas_price as double)/1e18 * cast(txns.gas_used as double) * p.price AS tx_fee_usd
      ,blocks.miner AS validator -- or block_proposer since Proposer Builder Separation (PBS) happened ?

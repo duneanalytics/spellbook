@@ -15,6 +15,7 @@ SELECT
      ,'{{token_symbol}}' as native_token_symbol
      ,value/1e18 AS tx_amount_native
      ,value/1e18 * p.price AS tx_amount_usd
+     ,(effective_gas_price) * txns.gas_used as tx_fee_raw
      ,(effective_gas_price / 1e18) * txns.gas_used as tx_fee_native
      ,(effective_gas_price / 1e18) * txns.gas_used * p.price AS tx_fee_usd
      ,txns.effective_gas_price/1e9 as gas_price_gwei

@@ -25,6 +25,7 @@ SELECT
      ,'{{token_symbol}}' as native_token_symbol
      ,value/1e18 AS tx_amount_native
      ,value/1e18 * p.price AS tx_amount_usd
+     ,(gas_price) * txns.gas_used as tx_fee_raw
      ,(gas_price / 1e18) * txns.gas_used as tx_fee_native
      ,(gas_price / 1e18) * txns.gas_used * p.price AS tx_fee_usd
      ,cast(NULL as double) AS burned_native -- Not applicable for L2s
