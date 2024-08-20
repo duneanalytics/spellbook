@@ -3,7 +3,7 @@
         ,schema = 'nft_ethereum_metadata'
         ,alias = 'xcopy_nonsequential_tokens'
         ,materialized = 'table'
-        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+        ,post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
                                     spell_type = "nft",
                                     spell_name = "metadata",
                                     contributors = \'["cat"]\') }}'
