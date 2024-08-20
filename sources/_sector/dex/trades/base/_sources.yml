@@ -178,3 +178,7 @@ sources:
   - name: swaap_v2_base
     tables:
       - name: Vault_evt_Swap
+  - name: xchange_base
+    tables:
+      - name: XchangePair_evt_Swap
+      - name: XchangeFactory_evt_PairCreated
