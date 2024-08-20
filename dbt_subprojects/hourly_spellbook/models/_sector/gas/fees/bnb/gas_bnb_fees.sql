@@ -25,7 +25,7 @@ SELECT
     ,'{{token_symbol}}' as native_token_symbol
     ,value/1e18 AS tx_amount_native
     ,value/1e18 * p.price AS tx_amount_usd
-    ,gas_price * txns.gas_used AS tx_fee_raw
+    ,cast(gas_price as uint256) * cast(txns.gas_used as uint256) AS tx_fee_raw
     ,gas_price / 1e18 * txns.gas_used AS tx_fee_native
     ,gas_price / 1e18 * txns.gas_used * p.price  AS tx_fee_usd
     ,CASE WHEN block_number >= 13082000 AND txns.to = 0x0000000000000000000000000000000000001000 THEN value/1e18 * 10 / 100
