@@ -61,10 +61,15 @@ WITH market_created_events AS (
         {{ source('tokens', 'erc20') }}
     WHERE 
         blockchain = '{{ blockchain_name }}'
-        AND EXISTS (
-            SELECT 1
+        AND contract_address IN (
+            SELECT indexToken
             FROM market_created_events
-            WHERE contract_address IN (indexToken, longToken, shortToken)
+            UNION DISTINCT
+            SELECT longToken
+            FROM market_created_events
+            UNION DISTINCT
+            SELECT shortToken
+            FROM market_created_events
         )
 )
 
