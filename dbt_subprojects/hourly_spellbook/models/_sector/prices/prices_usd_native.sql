@@ -13,7 +13,7 @@ select
     ,evm.native_token_symbol as symbol
     ,{{var('ETH_ERC20_ADDRESS')}} as contract_address -- 0x00..00
     ,18 as decimals
-from {{ref('evms','info')}} evm
+from {{source('evms','info')}} evm
 inner join {{source('prices_native','tokens')}} p
 on native_token_symbol = p.symbol
 )

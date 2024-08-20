@@ -352,3 +352,7 @@ sources:
     tables:
       - name: trusted_tokens
       - name: tokens
+
+  - name: prices_native
+    tables:
+      - name: tokens
