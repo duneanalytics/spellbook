@@ -3,10 +3,10 @@
     schema = 'nexusmutual_ethereum',
     alias = 'active_covers',
     materialized = 'view',
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 

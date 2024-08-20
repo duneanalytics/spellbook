@@ -22,6 +22,10 @@ sources:
       - name: Cover_call_setProductTypes
       - name: Cover_evt_ProductSet
       - name: Cover_call_setProducts
+      - name: CoverProducts_evt_ProductTypeSet
+      - name: CoverProducts_call_setProductTypes
+      - name: CoverProducts_evt_ProductSet
+      - name: CoverProducts_call_setProducts
       - name: Quotation_call_buyCoverWithMetadata
       - name: Quotation_call_makeCoverUsingNXMTokens
       - name: QuotationData_call_addCover
