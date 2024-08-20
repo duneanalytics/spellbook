@@ -446,3 +446,102 @@ models:
         description: "Name of artist"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
+
+  - name: nft_ethereum_metadata_xcopy_collections
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'xcopy', 'metadata']
+    description: >
+        Details for all XCOPY collections
+    columns:
+      - name: title
+        description: "Unique identifier - title of piece"
+        tests:
+          - unique
+      - name: art_type
+        description: "Type - 1/1, edition, etc."
+      - name: platform
+        description: "Platform minted on"
+      - name: edition_count
+        description: "Edition count"
+      - name: blockchain
+        description: "Blockchain"       
+      - name: token_standard
+        description: "Token standard"     
+      - name: contract_address
+        description: "Collection contract address"  
+      - name: min_token_id
+        description: "Min token id in series"
+      - name: max_token_id
+        description: "Max token id in series"
+      - name: category
+        description: "Category. Optional field"
+      - name: link
+        description: "Link"
+      - name: mint_date
+        description: "Mint date. Varchar"
+      - name: mint_date_date
+        description: "Mint date. Date"
+      - name: mint_date_date_format
+        description: "Mint date. Date formatted"
+
+  - name: nft_ethereum_metadata_xcopy_nonsequential_tokens
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'xcopy', 'metadata']
+    description: >
+        Token IDs for XCOPY collections that aren't in a range (e.g. id 3, 11, 19 instead of 1, 2, 3)
+    columns:
+      - name: title
+        description: "Title of piece"
+      - name: art_type
+        description: "Type - 1/1, edition, etc."
+      - name: nonsequential_token_id
+        description: "Actual token id"
+      - name: clean_token_id
+        description: "Token id for display purposes to match what is shown on marketplaces"
+
+  - name: nft_ethereum_metadata_xcopy_full_list
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: cat
+    config:
+      tags: ['nft', 'ethereum', 'xcopy', 'metadata']
+    description: >
+        Details for all XCOPY collections w/ all token IDs (either range or nonsequential tokens). Used for joining with any other talbe (e.g. nft.trades)
+    columns:
+      - name: title
+        description: "Title of piece"
+      - name: art_type
+        description: "Type - 1/1, edition, etc."
+      - name: platform
+        description: "Platform minted on"
+      - name: edition_count
+        description: "Edition count"
+      - name: blockchain
+        description: "Blockchain"       
+      - name: token_standard
+        description: "Token standard"     
+      - name: contract_address
+        description: "Collection contract address"  
+      - name: min_token_id
+        description: "Min token id in series"
+      - name: max_token_id
+        description: "Max token id in series"
+      - name: nonsequential_token_id
+        description: "Actual token id"
+      - name: clean_token_id
+        description: "Token id for display purposes to match what is shown on marketplaces"
+      - name: category
+        description: "Category. Optional field"
+      - name: link
+        description: "Link"
+      - name: mint_date_date_format
+        description: "Mint date. Date formatted"
