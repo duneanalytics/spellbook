@@ -13,7 +13,7 @@ WITH pool_labels AS (
     SELECT
         address,
         name
-    FROM {{ source('labels', '_balancer_cowswap_amm_pools') }}
+    FROM {{ source('labels', 'balancer_cowswap_amm_pools') }}
     WHERE blockchain = '{{blockchain}}'
     ),
 
