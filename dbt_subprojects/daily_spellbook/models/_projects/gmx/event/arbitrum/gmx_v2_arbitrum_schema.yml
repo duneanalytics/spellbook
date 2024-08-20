@@ -321,57 +321,25 @@ models:
           - not_null
       - &marketTokenSymbol
         name: marketTokenSymbol
-        description: The symbol of the market token (hardcoded as 'GM' in this model)
-        tests:
-          - not_null
-            config:
-              severity: warn          
+        description: The symbol of the market token (hardcoded as 'GM' in this model)      
       - &marketTokenDecimal
         name: marketTokenDecimal
-        description: The decimal precision of the market token (hardcoded as 18 in this model)
-        tests:
-          - not_null
-            config:
-              severity: warn            
+        description: The decimal precision of the market token (hardcoded as 18 in this model)          
       - &indexTokenSymbol
         name: indexTokenSymbol
-        description: The symbol of the index token
-        tests:
-          - not_null
-            config:
-              severity: warn           
+        description: The symbol of the index token          
       - &indexTokenDecimals
         name: indexTokenDecimals
-        description: The decimal precision of the index token
-        tests:
-          - not_null
-            config:
-              severity: warn           
+        description: The decimal precision of the index token        
       - &longTokenSymbol
         name: longTokenSymbol
-        description: The symbol of the long token
-        tests:
-          - not_null
-            config:
-              severity: warn           
+        description: The symbol of the long token           
       - &longTokenDecimals
         name: longTokenDecimals
-        description: The decimal precision of the long token
-        tests:
-          - not_null
-            config:
-              severity: warn           
+        description: The decimal precision of the long token          
       - &shortTokenSymbol
         name: shortTokenSymbol
-        description: The symbol of the short token
-        tests:
-          - not_null
-            config:
-              severity: warn           
+        description: The symbol of the short token          
       - &shortTokenDecimals
         name: shortTokenDecimals
-        description: The decimal precision of the short token
-        tests:
-          - not_null
-            config:
-              severity: warn           
+        description: The decimal precision of the short token          
