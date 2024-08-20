@@ -196,7 +196,6 @@ models:
         tests:
           - not_null
 
-models:
   - name: gmx_v2_avalanche_c_PositionDecrease
     meta:
       blockchain: avalanche_c
@@ -266,3 +265,80 @@ models:
         description: The uncapped base profit and loss in USD, without any limits or caps applied
         tests:
           - not_null
+
+  - name: gmx_v2_avalanche_c_MarketCreated
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master
+    config:
+      tags: ['avalanche_c', 'gmx', 'event', 'market_created']
+    description: |
+      This model extracts and parses `MarketCreated` events from the Avalanche blockchain.
+      It includes transaction details, addresses, and other relevant metrics related to 
+      the creation of markets within the GMX protocol.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *contract_address
+      - *account
+      - *eventName
+
+      - &marketToken
+        name: marketToken
+        description: The token used to represent the market
+        tests:
+          - not_null
+      - &indexToken
+        name: indexToken
+        description: The token used as the index in the market
+        tests:
+          - not_null
+      - &longToken
+        name: longToken
+        description: The token used for long positions in the market
+        tests:
+          - not_null
+      - &shortToken
+        name: shortToken
+        description: The token used for short positions in the market
+        tests:
+          - not_null
+      - &salt
+        name: salt
+        description: A unique value used to prevent hash collisions
+        tests:
+          - not_null
+      - &marketTokenSymbol
+        name: marketTokenSymbol
+        description: The symbol of the market token (hardcoded as 'GM' in this model)      
+      - &marketTokenDecimal
+        name: marketTokenDecimal
+        description: The decimal precision of the market token (hardcoded as 18 in this model)          
+      - &indexTokenSymbol
+        name: indexTokenSymbol
+        description: The symbol of the index token          
+      - &indexTokenDecimals
+        name: indexTokenDecimals
+        description: The decimal precision of the index token        
+      - &longTokenSymbol
+        name: longTokenSymbol
+        description: The symbol of the long token           
+      - &longTokenDecimals
+        name: longTokenDecimals
+        description: The decimal precision of the long token          
+      - &shortTokenSymbol
+        name: shortTokenSymbol
+        description: The symbol of the short token          
+      - &shortTokenDecimals
+        name: shortTokenDecimals
+        description: The decimal precision of the short token    

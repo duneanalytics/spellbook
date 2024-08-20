@@ -266,7 +266,6 @@ models:
         tests:
           - not_null
 
-models:
   - name: gmx_v2_arbitrum_MarketCreated
     meta:
       blockchain: arbitrum

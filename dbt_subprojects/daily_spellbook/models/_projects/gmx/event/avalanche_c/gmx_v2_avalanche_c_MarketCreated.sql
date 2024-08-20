@@ -1,13 +1,13 @@
 {{
   config(
-    schema = 'gmx_v2_arbitrum',
+    schema = 'gmx_v2_avalanche_c',
     alias = 'market_created',
     materialized = 'table'
   )
 }}
 
 {%- set event_name = 'MarketCreated' -%}
-{%- set blockchain_name = 'arbitrum' -%}
+{%- set blockchain_name = 'avalanche_c' -%}
 {%- set addresses = [
     'marketToken',
     'indexToken',
@@ -47,7 +47,7 @@ WITH market_created_events AS (
     FROM
       {{ source(blockchain_name, 'logs') }}
     WHERE
-      contract_address = 0xc8ee91a54287db53897056e12d9819156d3822fb
+      contract_address = 0xdb17b211c34240b014ab6d61d4a31fa0c0e20c26
       AND topic1 = keccak(to_utf8('{{ event_name }}'))
 )
 
