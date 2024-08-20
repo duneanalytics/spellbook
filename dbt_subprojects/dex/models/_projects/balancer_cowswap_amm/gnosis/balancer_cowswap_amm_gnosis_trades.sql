@@ -1,4 +1,4 @@
-{% set blockchain = 'ethereum' %}
+{% set blockchain = 'gnosis' %}
 
 {{
     config(
@@ -14,7 +14,7 @@
 
     SELECT 
     '{{blockchain}}' AS blockchain
-    , 'balancer_cowswap_amm' AS project
+    , 'balancer' AS project
     , '1' AS version
     , CAST(date_trunc('month', trade.evt_block_time) AS DATE) AS block_month
     , CAST(date_trunc('day', trade.evt_block_time) AS DATE) AS block_date
@@ -35,6 +35,7 @@
     ,CAST(NULL AS VARBINARY) AS taker
     ,CAST(NULL AS VARBINARY) AS maker
     , pool.bPool AS project_contract_address
+    , pool.bPool AS pool_id   
     , trade.evt_tx_hash AS tx_hash
     , settlement.solver AS tx_from
     , trade.contract_address AS tx_to
@@ -42,8 +43,8 @@
     , p.name AS pool_symbol
     , p.pool_type
     , (trade.feeAmount / POWER (10, ts.decimals)) AS swap_fee
-    FROM {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Trade') }} trade
-    INNER JOIN {{ source('b_cow_amm_ethereum', 'BCoWFactory_evt_LOG_NEW_POOL') }} pool
+    FROM {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Trade') }} trade
+    INNER JOIN {{ source('b_cow_amm_gnosis', 'BCoWFactory_evt_LOG_NEW_POOL') }} pool
         ON trade.owner = pool.bPool
     LEFT JOIN {{ source('prices', 'usd') }} AS ps
                     ON sellToken = ps.contract_address
@@ -65,9 +66,9 @@
     LEFT JOIN {{ source('tokens', 'erc20') }} AS tb
                     ON trade.buyToken = tb.contract_address
                         AND tb.blockchain = '{{blockchain}}'   
-    LEFT JOIN {{ source('gnosis_protocol_v2_ethereum', 'GPv2Settlement_evt_Settlement') }} AS settlement
+    LEFT JOIN {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Settlement') }} AS settlement
                     ON trade.evt_tx_hash = settlement.evt_tx_hash  
-    LEFT JOIN {{ ref('labels_balancer_cowswap_amm_pools_ethereum') }} p ON p.address = trade.owner                                                                             
+    LEFT JOIN {{ ref('labels_balancer_cowswap_amm_pools_gnosis') }} p ON p.address = trade.owner                                                                             
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('trade.evt_block_time') }}
     {% endif %}
