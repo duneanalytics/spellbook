@@ -7,10 +7,10 @@
         incremental_strategy = 'merge',
         file_format = 'delta',
         unique_key = ['day', 'blockchain', 'address', 'token_address'],
-        post_hook = '{{ expose_spells(\'["polygon"]\',
-                                    "project",
-                                    "safe",
-                                    \'["safeintern"]\') }}'
+        post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
+                                      spell_type = "project",
+                                      spell_name = "safe",
+                                      contributors = \'["safeintern"]\') }}'
     )
 }}
 
