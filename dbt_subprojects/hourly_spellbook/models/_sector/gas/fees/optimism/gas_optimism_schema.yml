@@ -16,6 +16,15 @@ models:
             - block_month
             - block_number
             - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: optimism
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_native
     columns:
       - &blokchain
         name: blockchain

@@ -16,10 +16,19 @@ models:
             - block_month
             - block_number
             - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: bnb
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_native
     columns:
       - &blokchain
         name: blockchain
-        description: "Blockchain name"    
+        description: "Blockchain name"
       - &block_month
         name: block_month
         description: "Month for block event time in UTC"
@@ -61,10 +70,10 @@ models:
         description: "Total amount of native tokens (BNB) burned for this transaction, Post BEP-95: 10% of transaction fee"
       - &burned_usd
         name: burned_usd
-        description: "Total amount of $USD burned for this transaction, Post BEP-95: 10% of transaction fee"   
+        description: "Total amount of $USD burned for this transaction, Post BEP-95: 10% of transaction fee"
       - &validator
         name: validator
-        description: "Address of blockchain validator for this transaction within the block"  
+        description: "Address of blockchain validator for this transaction within the block"
       - &gas_price_gwei
         name: gas_price_gwei
         description: "Gas price (per gas unit) denoted in gwei"

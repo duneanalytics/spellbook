@@ -16,10 +16,19 @@ models:
             - block_month
             - block_number
             - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: zora
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_native
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain name"    
+        description: "Blockchain name"
       - &block_month
         name: block_month
         description: "Month for block event time in UTC"
@@ -61,10 +70,10 @@ models:
         description: "Total amount of native tokens (ETH) burned for this transaction, not applicable to L2 because transactions only indirectly burn gas on L1"
       - &burned_usd
         name: burned_usd
-        description: "Total amount of $USD burned for this transaction, not applicable to L2 because transactions only indirectly burn gas on L1"    
+        description: "Total amount of $USD burned for this transaction, not applicable to L2 because transactions only indirectly burn gas on L1"
       - &validator
         name: validator
-        description: "Address of blockchain validator for this transaction within the block, also referred to as miner before the Merge when Ethereum's consensus mechanism was PoW"  
+        description: "Address of blockchain validator for this transaction within the block, also referred to as miner before the Merge when Ethereum's consensus mechanism was PoW"
       - &gas_price_gwei
         name: gas_price_gwei
         description: "Gas price (per gas unit) denoted in gwei"
