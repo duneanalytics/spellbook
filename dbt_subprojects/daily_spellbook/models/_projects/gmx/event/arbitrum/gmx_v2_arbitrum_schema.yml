@@ -20,213 +20,249 @@ models:
         description: The blockchain network where the event occurred (Arbitrum)
         tests:
           - not_null
-
       - &block_time
         name: block_time
         description: The timestamp of the block when the event was recorded
         tests:
           - not_null
-
       - &block_date
         name: block_date
         description: The date of the block when the event was recorded
         tests:
           - not_null
-          
       - &block_number
         name: block_number
         description: The block number where the event is included
         tests:
           - not_null
-
-      - &contract_address
-        name: contract_address
-        description: The contract address associated with the event
-        tests:
-          - not_null
-
-      - &account
-        name: account
-        description: The account related to the event, extracted from the `topic2` field
-        tests:
-          - not_null
-
       - &tx_hash
         name: tx_hash
         description: The hash of the transaction where the event was logged
         tests:
           - not_null
-
       - &index
         name: index
         description: The position of the event within the transaction
         tests:
           - not_null
-
       - &tx_index
         name: tx_index
         description: The position of the transaction within the block
         tests:
           - not_null
-
       - &tx_from
         name: tx_from
         description: The address initiating the transaction
         tests:
           - not_null
-
       - &tx_to
         name: tx_to
         description: The address receiving the transaction
         tests:
           - not_null
-
-      - &event_name
-        name: event_name
+      - &contract_address
+        name: contract_address
+        description: The contract address associated with the event
+        tests:
+          - not_null
+      - &account
+        name: account
+        description: The account related to the event, extracted from the `topic2` field
+        tests:
+          - not_null
+      - &eventName
+        name: eventName
         description: The type of event recorded, always 'PositionIncrease' for this model
         tests:
           - not_null
-
       - &market
         name: market
         description: The market identifier associated with the position increase
         tests:
           - not_null
-
-      - &collateral_token
-        name: collateral_token
+      - &collateralToken
+        name: collateralToken
         description: The collateral token used in the position increase
         tests:
           - not_null
-
-      - &size_in_usd
-        name: size_in_usd
+      - &sizeInUsd
+        name: sizeInUsd
         description: The size of the position in USD
         tests:
           - not_null
-
-      - &size_in_tokens
-        name: size_in_tokens
+      - &sizeInTokens
+        name: sizeInTokens
         description: The size of the position in tokens
         tests:
           - not_null
-
-      - &collateral_amount
-        name: collateral_amount
+      - &collateralAmount
+        name: collateralAmount
         description: The amount of collateral used
         tests:
           - not_null
-
-      - &borrowing_factor
-        name: borrowing_factor
+      - &borrowingFactor
+        name: borrowingFactor
         description: The borrowing factor applied to the position
         tests:
           - not_null
-
-      - &funding_fee_amount_per_size
-        name: funding_fee_amount_per_size
+      - &fundingFeeAmountPerSize
+        name: fundingFeeAmountPerSize
         description: The funding fee amount per size
         tests:
           - not_null
-
-      - &long_token_claimable_funding_amount_per_size
-        name: long_token_claimable_funding_amount_per_size
+      - &longTokenClaimableFundingAmountPerSize
+        name: longTokenClaimableFundingAmountPerSize
         description: The claimable funding amount per size for long tokens
         tests:
           - not_null
-
-      - &short_token_claimable_funding_amount_per_size
-        name: short_token_claimable_funding_amount_per_size
+      - &shortTokenClaimableFundingAmountPerSize
+        name: shortTokenClaimableFundingAmountPerSize
         description: The claimable funding amount per size for short tokens
         tests:
           - not_null
-
-      - &execution_price
-        name: execution_price
+      - &executionPrice
+        name: executionPrice
         description: The execution price of the position
         tests:
           - not_null
-
-      - &index_token_price_max
-        name: index_token_price_max
+      - &indexTokenPrice_max
+        name: indexTokenPrice_max
         description: The maximum price of the index token during the event
         tests:
           - not_null
-
-      - &index_token_price_min
-        name: index_token_price_min
+      - &indexTokenPrice_min
+        name: indexTokenPrice_min
         description: The minimum price of the index token during the event
         tests:
           - not_null
-
-      - &collateral_token_price_max
-        name: collateral_token_price_max
+      - &collateralTokenPrice_max
+        name: collateralTokenPrice_max
         description: The maximum price of the collateral token during the event
         tests:
           - not_null
-
-      - &collateral_token_price_min
-        name: collateral_token_price_min
+      - &collateralTokenPrice_min
+        name: collateralTokenPrice_min
         description: The minimum price of the collateral token during the event
         tests:
           - not_null
-
-      - &size_delta_usd
-        name: size_delta_usd
+      - &sizeDeltaUsd
+        name: sizeDeltaUsd
         description: The change in position size in USD
         tests:
           - not_null
-
-      - &size_delta_in_tokens
-        name: size_delta_in_tokens
+      - &sizeDeltaInTokens
+        name: sizeDeltaInTokens
         description: The change in position size in tokens
         tests:
           - not_null
-
-      - &order_type
-        name: order_type
+      - &orderType
+        name: orderType
         description: The type of order executed
         tests:
           - not_null
-
-      - &increased_at_time
-        name: increased_at_time
+      - &increasedAtTime
+        name: increasedAtTime
         description: The Unix timestamp when the position was increased
         tests:
           - not_null
-
-      - &collateral_delta_amount
-        name: collateral_delta_amount
+      - &collateralDeltaAmount
+        name: collateralDeltaAmount
         description: The change in collateral amount
         tests:
           - not_null
-
-      - &price_impact_usd
-        name: price_impact_usd
+      - &priceImpactUsd
+        name: priceImpactUsd
         description: The impact on price in USD
         tests:
           - not_null
-
-      - &price_impact_amount
-        name: price_impact_amount
+      - &priceImpactAmount
+        name: priceImpactAmount
         description: The impact on price in token amount
         tests:
           - not_null
-
-      - &is_long
-        name: is_long
+      - &isLong
+        name: isLong
         description: A boolean indicating whether the position is long
         tests:
           - not_null
-
-      - &order_key
-        name: order_key
+      - &orderKey
+        name: orderKey
         description: A unique key identifying the order
         tests:
           - not_null
-
-      - &position_key
-        name: position_key
+      - &positionKey
+        name: positionKey
         description: A unique key identifying the position
+        tests:
+          - not_null
+
+models:
+  - name: gmx_v2_arbitrum_PositionDecrease
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master
+    config:
+      tags: ['arbitrum','gmx','event','position_decrease']
+    description: |
+      This model extracts and parses `PositionDecrease` events from the Arbitrum blockchain.
+      It includes transaction details, addresses, and various metrics related to the event, 
+      such as market data, collateral amounts, price impacts, and more.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *contract_address
+      - *account
+      - *eventName
+      - *market
+      - *collateralToken
+      - *sizeInUsd
+      - *sizeInTokens
+      - *collateralAmount
+      - *borrowingFactor
+      - *fundingFeeAmountPerSize
+      - *longTokenClaimableFundingAmountPerSize
+      - *shortTokenClaimableFundingAmountPerSize
+      - *executionPrice
+      - *indexTokenPrice_max
+      - *indexTokenPrice_min
+      - *collateralTokenPrice_max
+      - *collateralTokenPrice_min
+      - *sizeDeltaUsd
+      - *sizeDeltaInTokens
+      - *collateralDeltaAmount
+      - *orderType 
+      - *priceImpactUsd
+      - *isLong
+      - *orderKey
+      - *positionKey
+
+      - &values_priceImpactDiffUsd
+        name: values.priceImpactDiffUsd
+        description: The difference in price impact in USD compared to a baseline or previous value
+        tests:
+          - not_null  
+      - &decreasedAtTime
+        name: decreasedAtTime
+        description: The Unix timestamp when the position was decreased
+        tests:
+          - not_null
+      - &basePnlUsd
+        name: basePnlUsd
+        description: The base profit and loss in USD for the position
+        tests:
+          - not_null
+      - &uncappedBasePnlUsd
+        name: uncappedBasePnlUsd
+        description: The uncapped base profit and loss in USD, without any limits or caps applied
         tests:
           - not_null

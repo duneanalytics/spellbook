@@ -1,13 +1,13 @@
 {{
   config(
     schema = 'gmx_v2_arbitrum',
-    alias = 'position_increase',
+    alias = 'position_decrease',
     materialized = 'table'
   )
 }}
 
-{%- set event_name = 'PositionIncrease' -%}
-
+{%- set event_name = 'PositionDecrease' -%}
+    
 -- Create Arrays for Each Variable Type
 {%- set addresses = [
     'market',
@@ -29,14 +29,16 @@
     'collateralTokenPrice.min',
     'sizeDeltaUsd',
     'sizeDeltaInTokens',
+    'collateralDeltaAmount',
+    'values.priceImpactDiffUsd',
     'orderType',
-    'increasedAtTime'
+    'decreasedAtTime'
 ] -%}
 
 {%- set integers = [
-    'collateralDeltaAmount',
     'priceImpactUsd',
-    'priceImpactAmount'
+    'basePnlUsd',
+    'uncappedBasePnlUsd'
 ] -%}
 
 {%- set booleans = [
@@ -93,5 +95,3 @@ FROM
 WHERE
     contract_address = 0xc8ee91a54287db53897056e12d9819156d3822fb
     AND topic1 = keccak(to_utf8('{{ event_name }}'))
-
-  
