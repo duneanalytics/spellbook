@@ -17,4 +17,4 @@ SELECT
     COALESCE(CAST(json_extract_scalar(token, '$.synthetic') AS BOOLEAN), false) AS synthetic,
     CURRENT_TIMESTAMP AS last_update_utc
 FROM
-    UNNEST(CAST(json_parse(http_get(tokens_url)) AS ARRAY(JSON))) AS t(token)
+    UNNEST(CAST(json_parse(http_get('{{tokens_url}}')) AS ARRAY(JSON))) AS t(token)
