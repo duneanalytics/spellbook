@@ -10,8 +10,8 @@
         unique_key = ['blockchain', 'contract_address', 'hour'],
         pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
         post_hook='{{ expose_spells(\'["solana"]\',
-                            "project",
-                            "dex",
+                            "sector",
+                            "dex_solana",
                             \'["get_nimbus"]\') }}')
 }}
 
