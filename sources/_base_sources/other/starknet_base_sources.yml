@@ -1,0 +1,201 @@
+version: 2
+sources:
+  - name: starknet
+    description: tables in the starknet schema
+    tables:
+      - name: transactions
+        meta:
+          docs_slug: /starknet/transactions
+          short_description: 'Table containing detailed information about Starknet transactions'
+        description: '{{ doc("starknet_transactions_doc") }}'
+        columns:
+          - name: block_date
+            description: "The UTC date of the block in which this transaction was included"
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this transaction"
+          - name: block_l1_da_mode
+            description: "The data availability mode for the block (BLOB or CALLDATA)"
+          - name: block_l1_data_gas_price_in_fri
+            description: "L1 data gas price in FRI (for v3+ transactions)"
+          - name: block_l1_data_gas_price_in_wei
+            description: "L1 data gas price in wei (for pre-v3 transactions)"
+          - name: block_l1_gas_price_in_fri
+            description: "L1 gas price in FRI (for v3+ transactions)"
+          - name: block_l1_gas_price_in_wei
+            description: "L1 gas price in wei (for pre-v3 transactions)"
+          - name: block_starknet_version
+            description: "Version of Starknet used for this block"
+          - name: block_status
+            description: "Status of the block (ACCEPTED_ON_L1 or ACCEPTED_ON_L2)"
+          - name: fee_data_availability_mode
+            description: "Storage domain of the account's balance for fee charging (L1 or L2)"
+          - name: index
+            description: "Position of this transaction within its containing block"
+          - name: max_fee
+            description: "Maximum fee the transaction initiator is willing to pay"
+          - name: nonce
+            description: "Sequential number representing the count of transactions sent from the sender's address"
+          - name: nonce_data_availability_mode
+            description: "Data availability mode for the nonce"
+          - name: resource_bounds_l1_gas_max_amount
+            description: "Maximum amount of L1 gas resources allowed for the transaction"
+          - name: resource_bounds_l1_gas_max_price_per_unit
+            description: "Maximum price per unit of L1 gas resources"
+          - name: tip
+            description: "Additional fee paid as a tip"
+          - name: type
+            description: "Type of transaction (INVOKE, L1_HANDLER, DECLARE, DEPLOY_ACCOUNT, or DEPLOY)"
+          - name: version
+            description: "Version of the transaction structure"
+          - name: actual_fee_amount
+            description: "Actual amount of fee paid for the transaction"
+          - name: actual_fee_unit
+            description: "Unit of the actual fee (wei or fri)"
+          - name: execution_resources_bitwise_builtin_applications
+            description: "Number of bitwise builtin applications used in execution"
+          - name: execution_resources_data_availability_l1_gas
+            description: "Amount of L1 gas used for data availability"
+          - name: execution_resources_data_availability_l1_data_gas
+            description: "Amount of L1 data gas used for data availability"
+          - name: execution_resources_ec_op_builtin_applications
+            description: "Number of EC operation builtin applications used in execution"
+          - name: execution_resources_ecdsa_builtin_applications
+            description: "Number of ECDSA builtin applications used in execution"
+          - name: execution_resources_keccak_builtin_applications
+            description: "Number of Keccak builtin applications used in execution"
+          - name: execution_resources_memory_holes
+            description: "Number of memory holes used in execution"
+          - name: execution_resources_pedersen_builtin_applications
+            description: "Number of Pedersen builtin applications used in execution"
+          - name: execution_resources_poseidon_builtin_applications
+            description: "Number of Poseidon builtin applications used in execution"
+          - name: execution_resources_range_check_builtin_applications
+            description: "Number of range check builtin applications used in execution"
+          - name: execution_resources_segment_arena_builtin
+            description: "Number of segment arena builtin applications used in execution"
+          - name: execution_resources_steps
+            description: "Number of steps used in execution"
+          - name: execution_status
+            description: "Status of the transaction execution"
+          - name: finality_status
+            description: "Finality status of the transaction"
+          - name: receipt_type
+            description: "Type of receipt for the transaction"
+          - name: block_hash
+            description: "Unique identifier (hash) of the block containing this transaction"
+          - name: block_new_root
+            description: "New state root after this block"
+          - name: block_parent_hash
+            description: "Hash of the previous block in the blockchain"
+          - name: block_sequencer_address
+            description: "Address of the sequencer who produced this block"
+          - name: calldata
+            description: "Input data for the transaction"
+          - name: class_hash
+            description: "Hash of the contract class"
+          - name: compiled_class_hash
+            description: "Hash of the compiled contract class"
+          - name: constructor_calldata
+            description: "Calldata for contract constructor"
+          - name: contract_address
+            description: "Address of the contract involved in the transaction"
+          - name: contract_address_salt
+            description: "Salt used in contract address generation"
+          - name: entry_point_selector
+            description: "Selector of the contract entry point"
+          - name: hash
+            description: "Unique identifier (hash) of this transaction"
+          - name: sender_address
+            description: "Address of the account that initiated this transaction"
+          - name: signature
+            description: "Signature of the transaction"
+          - name: message_hash
+            description: "Hash of the message in the transaction"
+          - name: messages_sent
+            description: "Messages sent during the transaction"
+          - name: revert_reason
+            description: "Reason for transaction revert, if applicable"
+          - name: transaction_hash
+            description: "Hash of the transaction"
+          - name: state_diff
+            description: "State difference caused by this transaction"
+      - name: blocks
+        meta:
+          docs_slug: /starknet/blocks
+          short_description: 'Table containing information about Starknet blocks'
+        description: '{{ doc("starknet_blocks_doc") }}'
+        columns:
+          - name: date
+            description: "The UTC date of this block"
+          - name: number
+            description: "The sequential number of this block in the blockchain"
+          - name: time
+            description: "The exact UTC timestamp when this block was added to the chain"
+          - name: l1_da_mode
+            description: "The data availability mode for the block (BLOB or CALLDATA)"
+          - name: l1_data_gas_price_in_fri
+            description: "L1 data gas price in FRI (for v3+ transactions)"
+          - name: l1_data_gas_price_in_wei
+            description: "L1 data gas price in wei (for pre-v3 transactions)"
+          - name: l1_gas_price_in_fri
+            description: "L1 gas price in FRI (for v3+ transactions)"
+          - name: l1_gas_price_in_wei
+            description: "L1 gas price in wei (for pre-v3 transactions)"
+          - name: starknet_version
+            description: "Version of Starknet used for this block"
+          - name: tx_count
+            description: "Number of transactions in this block"
+          - name: hash
+            description: "Unique identifier (hash) of this block"
+          - name: new_root
+            description: "New state root after this block"
+          - name: parent_hash
+            description: "Hash of the previous block in the blockchain"
+          - name: sequencer_address
+            description: "Address of the sequencer who produced this block"
+      - name: events
+        meta:
+          docs_slug: /starknet/events
+          short_description: 'Table containing information about events emitted on Starknet'
+        description: '{{ doc("starknet_events_doc") }}'
+        columns:
+          - name: block_date
+            description: "The UTC date of the block in which this event was emitted"
+          - name: block_time
+            description: "The exact UTC timestamp of the block in which this event was emitted"
+          - name: block_number
+            description: "The sequential number of the block containing this event"
+          - name: block_l1_da_mode
+            description: "The data availability mode for the block (BLOB or CALLDATA)"
+          - name: block_l1_data_gas_price_in_fri
+            description: "L1 data gas price in FRI for the block (for v3+ transactions)"
+          - name: block_l1_data_gas_price_in_wei
+            description: "L1 data gas price in wei for the block (for pre-v3 transactions)"
+          - name: block_l1_gas_price_in_fri
+            description: "L1 gas price in FRI for the block (for v3+ transactions)"
+          - name: block_l1_gas_price_in_wei
+            description: "L1 gas price in wei for the block (for pre-v3 transactions)"
+          - name: block_starknet_version
+            description: "Version of Starknet used for the block containing this event"
+          - name: block_status
+            description: "Status of the block containing this event (ACCEPTED_ON_L1 or ACCEPTED_ON_L2)"
+          - name: event_index
+            description: "Index of this event within the transaction"
+          - name: block_hash
+            description: "Unique identifier (hash) of the block containing this event"
+          - name: block_new_root
+            description: "New state root after the block containing this event"
+          - name: block_parent_hash
+            description: "Hash of the previous block in the blockchain"
+          - name: block_sequencer_address
+            description: "Address of the sequencer who produced the block containing this event"
+          - name: data
+            description: "The data associated with the event"
+          - name: keys
+            description: "The keys associated with the event"
+          - name: from_address
+            description: "The address of the L2 contract sending the message"
+          - name: class_hash
+            description: "Hash of the contract class that emitted this event"

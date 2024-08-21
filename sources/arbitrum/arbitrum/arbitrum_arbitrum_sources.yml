@@ -6,4 +6,3 @@ sources:
       Arbitrum contracts on Arbitrum
     tables:
       - name: TokenDistributor_evt_HasClaimed
-        loaded_at_field: evt_block_time

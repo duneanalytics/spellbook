@@ -6,4 +6,3 @@ sources:
       Genie ethereum contracts
     tables:
       - name: MerkleDistributorWithDeadline_evt_Claimed
-        loaded_at_field: evt_block_time

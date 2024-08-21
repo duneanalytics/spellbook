@@ -5,31 +5,22 @@ sources:
     description: Optimism decoded tables related to Pika Protocol v1
     tables:
       - name: PikaPerpV2_evt_NewPosition
-        loaded_at_field: evt_block_time
         description: "Details the new positions opened"
       - name: PikaPerpV2_evt_ClosePosition
-        loaded_at_field: evt_block_time
         description: "Details the swaps to close existing positions"
 
   - name: pika_perp_v2_optimism
     description: Optimism decoded tables related to Pika Protocol v2
     tables:
       - name: PikaPerpV2_evt_NewPosition
-        loaded_at_field: evt_block_time
         description: "Details the new positions opened"
       - name: PikaPerpV2_evt_ClosePosition
-        loaded_at_field: evt_block_time
         description: "Details the swaps to close existing positions"
         
-  - name: pika_perp_v3_optimism # since this is latest pika contract, freshness test can remain
+  - name: pika_perp_v3_optimism # since this is latest pika contract
     description: Optimism decoded tables related to Pika Protocol v3
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: PikaPerpV3_evt_NewPosition
-        loaded_at_field: evt_block_time
         description: "Details the new positions opened"
       - name: PikaPerpV3_evt_ClosePosition
-        loaded_at_field: evt_block_time
         description: "Details the swaps to close existing positions"
