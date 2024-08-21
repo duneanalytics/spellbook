@@ -20,6 +20,13 @@
     }}
 {% endmacro %}
 
+-- applicable on Celo
+{% macro has_fee_currency(blockchain) %}
+    {{ return(
+        blockchain in ['celo'])
+    }}
+{% endmacro %}
+
 {% macro gas_fees(blockchain) %}
 WITH base_model as (
     SELECT
@@ -42,6 +49,9 @@ WITH base_model as (
             {%- if has_effective_gas_price(blockchain) %} txns.effective_gas_price {% else %} txns.gas_price {%- endif %}
          as uint256) * cast(txns.gas_used as uint256)
         as tx_fee_raw
+        ,{%- if has_fee_currency(blockchain) -%}
+          coalesce(txns.fee_currency, {{var('ETH_ERC20_ADDRESS')}}) {%- else -%} {{var('ETH_ERC20_ADDRESS')}}
+        {%- endif %} as tx_fee_currency
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
         ,txns.priority_fee_per_gas
@@ -85,10 +95,11 @@ SELECT
     ,tx_to
     ,gas_price
     ,gas_used
-    ,p.symbol as token_symbol
-    ,tx_fee_raw
-    ,tx_fee_raw / pow(10,p.decimals) as tx_fee
-    ,tx_fee_raw / pow(10,p.decimals) * p.price as tx_fee_usd
+    ,p.symbol as currency_symbol
+    ,coalesce(tx_fee_raw, 0)
+    ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) as tx_fee
+    ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) * p.price as tx_fee_usd
+    ,tx_fee_currency
     ,block_proposer
     ,max_fee_per_gas
     ,priority_fee_per_gas
@@ -97,8 +108,8 @@ SELECT
     ,gas_limit
     ,gas_limit_usage
 FROM base_model
-LEFT JOIN {{ref('prices_usd_native')}} p
+LEFT JOIN {{ref('prices_usd_with_native')}} p
     ON p.blockchain = '{{blockchain}}'
-    AND p.contract_address = {{var('ETH_ERC20_ADDRESS')}}
+    AND p.contract_address = tx_fee_currency
     AND p.minute = date_trunc('minute', block_time)
 {% endmacro %}
