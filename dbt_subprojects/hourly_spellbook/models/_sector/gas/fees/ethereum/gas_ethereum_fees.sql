@@ -13,9 +13,5 @@
 }}
 
 {{
-    gas_fees_dencun
-    (
-        blockchain = blockchain
-        , token_symbol = 'ETH'
-    )
+    gas_fees(blockchain = blockchain)
 }}

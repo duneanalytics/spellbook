@@ -9,26 +9,18 @@
         )
 }}
 
-{% set gas_fees_models = [
-    'gas_arbitrum_fees'
-    ,'gas_avalanche_c_fees'
-    ,'gas_base_fees'
-    ,'gas_bnb_fees'
-    ,'gas_ethereum_fees'
-    ,'gas_optimism_fees'
-    ,'gas_scroll_fees'
-    ,'gas_zksync_fees'
-    ,'gas_zora_fees'
+{% set chains = [
+    "arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum",
+    "fantom", "gnosis", "linea", "mantle", "optimism", "polygon", "scroll",
+    "sei", "zkevm", "zksync", "zora"
 ] %}
 
---remove mantle for now:
-    --'gas_mantle_fees'
 
 SELECT
     *
 FROM
 (
-    {% for gas_model in gas_fees_models %}
+    {% for blockchain in chains %}
     SELECT
         blockchain
         ,block_month
@@ -53,7 +45,7 @@ FROM
         ,gas_usage_percent
         ,transaction_type
     FROM
-        {{ ref(gas_model) }}
+        {{ ref('gas_' ~ blockchain ~ '_fees') }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
