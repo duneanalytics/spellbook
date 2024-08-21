@@ -70,128 +70,126 @@ models:
         description: The account related to the event, extracted from the `topic2` field
         tests:
           - not_null
-      - &eventName
-        name: eventName
+      - &event_name
+        name: event_name
         description: The type of event recorded, always 'PositionIncrease' for this model
         tests:
-          - not_null
+          - not_null    
       - &market
         name: market
         description: The market identifier associated with the position increase
         tests:
           - not_null
-      - &collateralToken
-        name: collateralToken
+      - &collateral_token
+        name: collateral_token
         description: The collateral token used in the position increase
         tests:
           - not_null
-      - &sizeInUsd
-        name: sizeInUsd
+      - &size_in_usd
+        name: size_in_usd
         description: The size of the position in USD
         tests:
           - not_null
-      - &sizeInTokens
-        name: sizeInTokens
+      - &size_in_tokens
+        name: size_in_tokens
         description: The size of the position in tokens
         tests:
           - not_null
-      - &collateralAmount
-        name: collateralAmount
+      - &collateral_amount
+        name: collateral_amount
         description: The amount of collateral used
         tests:
           - not_null
-      - &borrowingFactor
-        name: borrowingFactor
+      - &borrowing_factor
+        name: borrowing_factor
         description: The borrowing factor applied to the position
         tests:
           - not_null
-      - &fundingFeeAmountPerSize
-        name: fundingFeeAmountPerSize
+      - &funding_fee_amount_per_size
+        name: funding_fee_amount_per_size
         description: The funding fee amount per size
         tests:
           - not_null
-      - &longTokenClaimableFundingAmountPerSize
-        name: longTokenClaimableFundingAmountPerSize
+      - &long_token_claimable_funding_amount_per_size
+        name: long_token_claimable_funding_amount_per_size
         description: The claimable funding amount per size for long tokens
         tests:
           - not_null
-      - &shortTokenClaimableFundingAmountPerSize
-        name: shortTokenClaimableFundingAmountPerSize
+      - &short_token_claimable_funding_amount_per_size
+        name: short_token_claimable_funding_amount_per_size
         description: The claimable funding amount per size for short tokens
         tests:
           - not_null
-      - &executionPrice
-        name: executionPrice
+      - &execution_price
+        name: execution_price
         description: The execution price of the position
         tests:
           - not_null
-      - &indexTokenPrice_max
-        name: indexTokenPrice_max
+      - &index_token_price_max
+        name: index_token_price_max
         description: The maximum price of the index token during the event
         tests:
           - not_null
-      - &indexTokenPrice_min
-        name: indexTokenPrice_min
+      - &index_token_price_min
+        name: index_token_price_min
         description: The minimum price of the index token during the event
         tests:
           - not_null
-      - &collateralTokenPrice_max
-        name: collateralTokenPrice_max
+      - &collateral_token_price_max
+        name: collateral_token_price_max
         description: The maximum price of the collateral token during the event
         tests:
           - not_null
-      - &collateralTokenPrice_min
-        name: collateralTokenPrice_min
+      - &collateral_token_price_min
+        name: collateral_token_price_min
         description: The minimum price of the collateral token during the event
         tests:
           - not_null
-      - &sizeDeltaUsd
-        name: sizeDeltaUsd
+      - &size_delta_usd
+        name: size_delta_usd
         description: The change in position size in USD
         tests:
           - not_null
-      - &sizeDeltaInTokens
-        name: sizeDeltaInTokens
+      - &size_delta_in_tokens
+        name: size_delta_in_tokens
         description: The change in position size in tokens
         tests:
           - not_null
-      - &orderType
-        name: orderType
+      - &order_type
+        name: order_type
         description: The type of order executed
         tests:
           - not_null
-      - &increasedAtTime
-        name: increasedAtTime
+      - &increased_at_time
+        name: increased_at_time
         description: The Unix timestamp when the position was increased
-        tests:
-          - not_null
-      - &collateralDeltaAmount
-        name: collateralDeltaAmount
+      - &collateral_delta_amount
+        name: collateral_delta_amount
         description: The change in collateral amount
         tests:
           - not_null
-      - &priceImpactUsd
-        name: priceImpactUsd
+      - &price_impact_usd
+        name: price_impact_usd
         description: The impact on price in USD
         tests:
           - not_null
-      - &priceImpactAmount
-        name: priceImpactAmount
+      - &price_impact_amount
+        name: price_impact_amount
         description: The impact on price in token amount
         tests:
           - not_null
-      - &isLong
-        name: isLong
+      - &is_long
+        name: is_long
         description: A boolean indicating whether the position is long
         tests:
           - not_null
-      - &orderKey
-        name: orderKey
+      - &order_key
+        name: order_key
         description: A unique key identifying the order
         tests:
           - not_null
-      - &positionKey
-        name: positionKey
+      - &position_key
+        name: position_key
         description: A unique key identifying the position
         tests:
           - not_null
@@ -221,50 +219,49 @@ models:
       - *tx_to
       - *contract_address
       - *account
-      - *eventName
+      - *event_name
       - *market
-      - *collateralToken
-      - *sizeInUsd
-      - *sizeInTokens
-      - *collateralAmount
-      - *borrowingFactor
-      - *fundingFeeAmountPerSize
-      - *longTokenClaimableFundingAmountPerSize
-      - *shortTokenClaimableFundingAmountPerSize
-      - *executionPrice
-      - *indexTokenPrice_max
-      - *indexTokenPrice_min
-      - *collateralTokenPrice_max
-      - *collateralTokenPrice_min
-      - *sizeDeltaUsd
-      - *sizeDeltaInTokens
-      - *collateralDeltaAmount
-      - *orderType 
-      - *priceImpactUsd
-      - *isLong
-      - *orderKey
-      - *positionKey
+      - *collateral_token
+      - *size_in_usd
+      - *size_in_tokens
+      - *collateral_amount
+      - *borrowing_factor
+      - *funding_fee_amount_per_size
+      - *long_token_claimable_funding_amount_per_size
+      - *short_token_claimable_funding_amount_per_size
+      - *execution_price
+      - *index_token_price_max
+      - *index_token_price_min
+      - *collateral_token_price_max
+      - *collateral_token_price_min
+      - *size_delta_usd
+      - *size_delta_in_tokens
+      - *collateral_delta_amount
+      - *order_type 
+      - *price_impact_usd
+      - *is_long
+      - *order_key
+      - *position_key
 
-      - &values_priceImpactDiffUsd
-        name: values_priceImpactDiffUsd
+      - &values_price_impact_diff_usd
+        name: values_price_impact_diff_usd
         description: The difference in price impact in USD compared to a baseline or previous value
         tests:
           - not_null  
-      - &decreasedAtTime
-        name: decreasedAtTime
+      - &decreased_at_time
+        name: decreased_at_time
         description: The Unix timestamp when the position was decreased
-        tests:
-          - not_null
-      - &basePnlUsd
-        name: basePnlUsd
+      - &base_pnl_usd
+        name: base_pnl_usd
         description: The base profit and loss in USD for the position
         tests:
           - not_null
-      - &uncappedBasePnlUsd
-        name: uncappedBasePnlUsd
+      - &uncapped_base_pnl_usd
+        name: uncapped_base_pnl_usd
         description: The uncapped base profit and loss in USD, without any limits or caps applied
         tests:
           - not_null
+
 
   - name: gmx_v2_avalanche_c_MarketCreated
     meta:
@@ -291,25 +288,25 @@ models:
       - *tx_to
       - *contract_address
       - *account
-      - *eventName
+      - *event_name
 
-      - &marketToken
-        name: marketToken
+      - &market_token
+        name: market_token
         description: The token used to represent the market
         tests:
           - not_null
-      - &indexToken
-        name: indexToken
+      - &index_token
+        name: index_token
         description: The token used as the index in the market
         tests:
           - not_null
-      - &longToken
-        name: longToken
+      - &long_token
+        name: long_token
         description: The token used for long positions in the market
         tests:
           - not_null
-      - &shortToken
-        name: shortToken
+      - &short_token
+        name: short_token
         description: The token used for short positions in the market
         tests:
           - not_null
@@ -318,27 +315,27 @@ models:
         description: A unique value used to prevent hash collisions
         tests:
           - not_null
-      - &marketTokenSymbol
-        name: marketTokenSymbol
+      - &market_token_symbol
+        name: market_token_symbol
         description: The symbol of the market token (hardcoded as 'GM' in this model)      
-      - &marketTokenDecimal
-        name: marketTokenDecimal
+      - &market_token_decimals
+        name: market_token_decimals
         description: The decimal precision of the market token (hardcoded as 18 in this model)          
-      - &indexTokenSymbol
-        name: indexTokenSymbol
+      - &index_token_symbol
+        name: index_token_symbol
         description: The symbol of the index token          
-      - &indexTokenDecimals
-        name: indexTokenDecimals
+      - &index_token_decimals
+        name: index_token_decimals
         description: The decimal precision of the index token        
-      - &longTokenSymbol
-        name: longTokenSymbol
+      - &long_token_symbol
+        name: long_token_symbol
         description: The symbol of the long token           
-      - &longTokenDecimals
-        name: longTokenDecimals
+      - &long_token_decimals
+        name: long_token_decimals
         description: The decimal precision of the long token          
-      - &shortTokenSymbol
-        name: shortTokenSymbol
+      - &short_token_symbol
+        name: short_token_symbol
         description: The symbol of the short token          
-      - &shortTokenDecimals
-        name: shortTokenDecimals
-        description: The decimal precision of the short token    
+      - &short_token_decimals
+        name: short_token_decimals
+        description: The decimal precision of the short token  

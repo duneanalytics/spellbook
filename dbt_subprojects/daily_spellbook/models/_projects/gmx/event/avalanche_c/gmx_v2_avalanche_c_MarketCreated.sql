@@ -32,7 +32,7 @@ WITH market_created_events AS (
         tx_to,    
         contract_address,
         varbinary_substring(topic2, 13, 20) as account,
-        '{{ event_name }}' as eventName,
+        '{{ event_name }}' as event_name,
 
         -- Extracting Addresses
         {% for var in addresses -%}
@@ -62,31 +62,31 @@ WITH market_created_events AS (
     WHERE 
         blockchain = '{{ blockchain_name }}'
         AND contract_address IN (
-            SELECT indexToken
+            SELECT index_token
             FROM market_created_events
             UNION DISTINCT
-            SELECT longToken
+            SELECT long_token
             FROM market_created_events
             UNION DISTINCT
-            SELECT shortToken
+            SELECT short_token
             FROM market_created_events
         )
 )
 
 SELECT 
     GCA.*
-    ,'GM' AS marketTokenSymbol
-    , 18 AS marketTokenDecimals
-    , ERC20_IT.symbol AS indexTokenSymbol
-    , ERC20_IT.decimals AS indexTokenDecimals  
-    , ERC20_LT.symbol AS longTokenSymbol
-    , ERC20_LT.decimals AS longTokenDecimals  
-    , ERC20_ST.symbol AS shortTokenSymbol
-    , ERC20_ST.decimals AS shortTokenDecimals      
+    ,'GM' AS market_token_symbol
+    , 18 AS market_token_decimals
+    , ERC20_IT.symbol AS index_token_symbol
+    , ERC20_IT.decimals AS index_token_decimals  
+    , ERC20_LT.symbol AS long_token_symbol
+    , ERC20_LT.decimals AS long_token_decimals  
+    , ERC20_ST.symbol AS short_token_symbol
+    , ERC20_ST.decimals AS short_token_decimals     
 FROM market_created_events AS GCA
 LEFT JOIN relevant_erc20_tokens AS ERC20_IT
-    ON ERC20_IT.contract_address = GCA.indexToken
+    ON ERC20_IT.contract_address = GCA.index_token
 LEFT JOIN relevant_erc20_tokens AS ERC20_LT
-    ON ERC20_LT.contract_address = GCA.longToken 
+    ON ERC20_LT.contract_address = GCA.long_token 
 LEFT JOIN relevant_erc20_tokens AS ERC20_ST
-    ON ERC20_ST.contract_address = GCA.shortToken 
+    ON ERC20_ST.contract_address = GCA.short_token 
