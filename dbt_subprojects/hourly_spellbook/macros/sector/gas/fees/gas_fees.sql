@@ -13,11 +13,15 @@
     }}
 {% endmacro %}
 
--- applicable for arbitrum stack
-{% macro has_effective_gas_price(blockchain) %}
-    {{ return(
-        blockchain in ['arbitrum'])
-    }}
+-- applicable for arbitrum stack and celo
+{% macro select_gas_price(blockchain) %}
+    {%- if blockchain in ['arbitrum']-%}
+    txns.effective_gas_price
+    {%- elif blockchain in ['celo'] -%}
+    coalesce(txns.priority_fee_per_gas, txns.gas_price) -- pretty weird setup for celo here..
+    {%- else -%}
+    txns.gas_price
+    {%- endif -%}
 {% endmacro %}
 
 -- applicable on Celo
@@ -40,14 +44,12 @@ WITH base_model as (
         {%- endif %} as gas_price
         ,txns.gas_used as gas_used
         ,{%- if has_l1_fee(blockchain) -%}
-        cast(coalesce(l1_fee,0) as uint256) +
+          cast(coalesce(l1_fee,0) as uint256) +
         {%- endif -%}
         {%- if has_blob_fee(blockchain) -%}
-        cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256) +
+          cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256) +
         {%- endif -%}
-        cast(
-            {%- if has_effective_gas_price(blockchain) %} txns.effective_gas_price {% else %} txns.gas_price {%- endif %}
-         as uint256) * cast(txns.gas_used as uint256)
+          cast({{ select_gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
         as tx_fee_raw
         ,{%- if has_fee_currency(blockchain) -%}
           coalesce(txns.fee_currency, {{var('ETH_ERC20_ADDRESS')}}) {%- else -%} {{var('ETH_ERC20_ADDRESS')}}
