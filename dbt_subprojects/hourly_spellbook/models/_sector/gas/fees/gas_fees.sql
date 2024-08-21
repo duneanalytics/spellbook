@@ -27,22 +27,22 @@ FROM
         ,block_time
         ,block_number
         ,tx_hash
-        ,tx_sender
-        ,tx_receiver
-        ,native_token_symbol
-        ,tx_amount_native
-        ,tx_amount_usd
-        ,tx_fee_native
-        ,tx_fee_usd
-        ,burned_native
-        ,burned_usd
-        ,validator
-        ,gas_price_gwei
-        ,gas_price_usd
+        ,tx_from
+        ,tx_to
+        ,gas_price
         ,gas_used
+        ,currency_symbol
+        ,tx_fee_raw
+        ,tx_fee
+        ,tx_fee_usd
+        ,tx_fee_currency
+        ,block_proposer
+        ,max_fee_per_gas
+        ,priority_fee_per_gas
+        ,max_priority_fee_per_gas
+        ,base_fee_per_gas
         ,gas_limit
-        ,gas_usage_percent
-        ,transaction_type
+        ,gas_limit_usage
     FROM
         {{ ref('gas_' ~ blockchain ~ '_fees') }}
     {% if not loop.last %}
