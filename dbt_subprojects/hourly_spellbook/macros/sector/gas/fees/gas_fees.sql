@@ -30,7 +30,7 @@ WITH base_model as (
         ,txns.to AS tx_to
         ,{%- if has_effective_gas_price(blockchain) -%}
           txns.effective_gas_price {%- else -%} txns.gas_price
-        {%- endif -%} as gas_price
+        {%- endif %} as gas_price
         ,txns.gas_used as gas_used
         ,{%- if has_l1_fee(blockchain) -%}
         cast(l1_fee as uint256) +
