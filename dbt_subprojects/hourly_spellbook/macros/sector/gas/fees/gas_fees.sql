@@ -96,7 +96,7 @@ SELECT
     ,gas_price
     ,gas_used
     ,p.symbol as currency_symbol
-    ,coalesce(tx_fee_raw, 0)
+    ,coalesce(tx_fee_raw, 0) as tx_fee_raw
     ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) as tx_fee
     ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) * p.price as tx_fee_usd
     ,tx_fee_currency
