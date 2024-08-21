@@ -6,4 +6,3 @@ sources:
       Galxe ethereum contracts
     tables:
       - name: MerkleDistributor_Airdrop_evt_Claimed
-        loaded_at_field: evt_block_time
