@@ -3,11 +3,8 @@ version: 2
 sources:
   - name: beethoven_x_fantom
     description: "fantom decoded tables related to beethoven x's contracts"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: Vault_evt_Swap
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - name: amountIn
@@ -28,7 +25,6 @@ sources:
       - name: Vault_evt_PoolRegistered
         description: >
           Decoded table of registered pools on the Balancer Vault contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
@@ -50,7 +46,6 @@ sources:
       - name: WeightedPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - name: call_block_number
             description: 'Block number which processed the unique transaction hash'
@@ -82,7 +77,6 @@ sources:
       - name: WeightedPoolFactoryV2_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - name: call_block_number
             description: 'Block number which processed the unique transaction hash'
@@ -114,7 +108,6 @@ sources:
       - name: WeightedPool2TokensFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - name: call_block_number
           - name: call_block_time
@@ -135,7 +128,6 @@ sources:
       - name: Vault_evt_PoolBalanceChanged
         description: >
           Decoded table of pool balances changes record on the Balancer Vault contract on Fantom.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
@@ -157,7 +149,6 @@ sources:
       - name: Vault_evt_PoolBalanceManaged
         description: >
           Decoded table of transactions performed by asset managers on the Balancer Vault contract on Fantom.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
@@ -179,7 +170,6 @@ sources:
       - name: ComposableStablePoolFactory_call_create
         description: >
           Decoded table of Composable Stable Pools created by the Composable Stable Pool Factory contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Composable Stable Pool Factory contract address.'

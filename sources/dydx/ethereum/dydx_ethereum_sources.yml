@@ -6,7 +6,6 @@ sources:
 
     tables:
       - name: DydxGovernor_evt_VoteEmitted
-        loaded_at_field: evt_block_time
         columns:
           - &contract_address
             name: contract_address
@@ -32,7 +31,6 @@ sources:
           - &votes
             name: votes
       - name: DydxGovernor_evt_ProposalCreated
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: "DAO governor contract address"
@@ -60,7 +58,6 @@ sources:
           - &values
             name: values
       - name: DydxGovernor_evt_ProposalCanceled
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - *evt_block_number
@@ -69,7 +66,6 @@ sources:
           - *evt_tx_hash
           - *id
       - name: DydxGovernor_evt_ProposalExecuted
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - *evt_block_number
@@ -78,7 +74,6 @@ sources:
           - *evt_tx_hash
           - *id
       - name: DydxGovernor_evt_ProposalQueued
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - &eta
@@ -94,6 +89,4 @@ sources:
 
     tables:
       - name: SoloMargin_evt_LogDeposit
-        loaded_at_field: evt_block_time
       - name: SoloMargin_evt_LogWithdraw
-        loaded_at_field: evt_block_time

@@ -8,7 +8,6 @@ sources:
       - name: Vault_evt_PoolRegistered
         description: >
           Decoded table of registered pools on the Balancer Vault contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
@@ -34,7 +33,6 @@ sources:
       - name: WeightedPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - &call_block_number
             name: call_block_number
@@ -77,7 +75,6 @@ sources:
       - name: WeightedPool2TokensFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -98,7 +95,6 @@ sources:
       - name: WeightedPoolV2Factory_call_create
         description: >
           Decoded table of registered pools on the Balancer WeightedPool2TokensFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -120,7 +116,6 @@ sources:
       - name: Vault_evt_PoolBalanceChanged
         description: >
           Decoded table of pool balances changes record on the Balancer Vault contract on Ethereum.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
@@ -142,7 +137,6 @@ sources:
       - name: Vault_evt_PoolBalanceManaged
         description: >
           Decoded table of transactions performed by asset managers on the Balancer Vault contract on Ethereum.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
@@ -164,7 +158,6 @@ sources:
       - name: LiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled
         description: >
           Decoded table related to scheduled gradual weight updates on the Balancer LiquidityBootstrappingPool contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'LBP contract address'
@@ -188,7 +181,6 @@ sources:
       - name: NoProtocolFeeLiquidityBootstrappingPool_evt_GradualWeightUpdateScheduled
         description: >
           Decoded table related to scheduled gradual weight updates on the Balancer NoProtocolFeeLiquidityBootstrappingPool contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'LBP contract address'
@@ -202,12 +194,10 @@ sources:
           - *startWeights
           
       - name: Vault_evt_FlashLoan
-        loaded_at_field: evt_block_time
 
       - name: ComposableStablePoolFactory_evt_PoolCreated
         description: >
           Decoded table of Composable Stable Pools created by the Composable Stable Pool Factory contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Composable Stable Pool Factory contract address.'
@@ -221,7 +211,6 @@ sources:
       - name: Vault_evt_TokensRegistered
         description: >
           Decoded table of tokens registered by pool with the Balancer Vault contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v2 Vault contract address'
@@ -242,7 +231,6 @@ sources:
       - name: BFactory_evt_LOG_NEW_POOL
         description: >
           Decoded table related to the Balancer BFactory contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Balancer v1 BFactory contract address'
@@ -258,7 +246,6 @@ sources:
       - name: BPool_call_bind
         description: >
           Decoded table related to the Balancer BPool contract.
-        loaded_at_field: evt_block_time
         columns:
           - &balance
             name: balance
@@ -280,7 +267,6 @@ sources:
       - name: BPool_call_rebind
         description: >
           Decoded table related to the Balancer BPool contract.
-        loaded_at_field: evt_block_time
         columns:
           - *balance
           - *call_block_number
@@ -296,7 +282,6 @@ sources:
       - name: BPool_call_unbind
         description: >
           Decoded table related to the Balancer BPool contract.
-        loaded_at_field: evt_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -312,7 +297,6 @@ sources:
       Decoded tables related to Balancer, an automated portfolio manager and trading platform, on Ethereum.
     tables:
       - name: veBAL_call_create_lock
-        loaded_at_field: call_block_time
         description: "Function to create a veBAL lock"
         columns:
           - name: _unlock_time
@@ -321,7 +305,6 @@ sources:
             description: "Amount to deposit"
 
       - name: veBAL_evt_Deposit
-        loaded_at_field: evt_block_time
         description: "Emitted when user deposits tokens in their lock or extends its unlock time"
         columns:
           - name: locktime
@@ -343,7 +326,6 @@ sources:
             description: "Amount of base tokens added to the lock"
 
       - name: veBAL_evt_Withdraw
-        loaded_at_field: evt_block_time
         description: "Emitted when user withdraws tokens from their lock"
         columns:
           - name: provider
@@ -354,7 +336,6 @@ sources:
             description: "Block timestamp"
 
       - name: GaugeController_evt_VoteForGauge
-        loaded_at_field: evt_block_time
         description: "Emitted when veBAL holder votes for a gauge"
         columns:
           - name: contract_address

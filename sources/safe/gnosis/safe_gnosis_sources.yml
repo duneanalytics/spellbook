@@ -2,11 +2,8 @@ version: 2
 
 sources:
   - name: gnosis_safe_gnosis
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: ProxyFactory_v1_1_1_call_createProxy
-        loaded_at_field: call_block_time
         description: "Safe v1.1.1 factory createProxy calls"
         columns:
           - &call_block_number
@@ -37,7 +34,6 @@ sources:
             name: output_proxy
             description: "Address of created Safe proxy"
       - name: ProxyFactory_v1_1_1_call_createProxyWithNonce
-        loaded_at_field: call_block_time
         description: "Safe v1.1.1 factory createProxyWithNonce calls"
         columns:
           - &_mastercopy
@@ -57,7 +53,6 @@ sources:
             name: saltNonce
             description: "Salt nonce"
       - name: ProxyFactory_v1_1_1_call_createProxyWithCallback
-        loaded_at_field: call_block_time
         description: "Safe v1.1.1 factory createProxyWithCallback calls"
         columns:
           - *_mastercopy
@@ -71,7 +66,6 @@ sources:
           - *output_proxy
           - *saltNonce
       - name: GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation
-        loaded_at_field: evt_block_time
         description: "Safe v1.3.0 factory ProxyCreation events"
         columns:
           - *contract_address
@@ -96,7 +90,6 @@ sources:
   - name: xdai_gnosis
     tables:
       - name: BlockRewardAuRa_evt_AddedReceiver
-        loaded_at_field: evt_block_time
         description: "Blockreward receptions"
         columns:
           - *contract_address

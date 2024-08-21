@@ -5,9 +5,7 @@ sources:
     description: cipher base
     tables:
       - name: Cipher_evt_Trade
-        loaded_at_field: evt_block_time
   - name: post_tech_v1_arbitrum
     description: post.tech base
     tables:
       - name: PostTechProfile_evt_Trade
-        loaded_at_field: evt_block_time
