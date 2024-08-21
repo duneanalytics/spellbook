@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: gas_zksync_fees
+    meta:
+      blockchain: zksync
+      sector: gas
+      contributors: 0xRob, soispoke
+    config:
+      tags: ['zksync', 'gas', 'fees']
+    description: >
+        Gas Fees on Ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_number
+            - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: zksync
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_raw
