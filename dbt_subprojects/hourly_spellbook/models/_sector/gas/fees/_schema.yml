@@ -7,6 +7,14 @@ models:
       contributors: soispoke, ilemi, 0xRob, jeff-dude
     description: >
         Gas Fees across chains
+    tests:
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_raw
     columns:
       - &blokchain
         name: blockchain
@@ -52,10 +60,10 @@ models:
         description: "Total amount of native tokens burned for this transaction"
       - &burned_usd
         name: burned_usd
-        description: "Total amount of $USD burned for this transaction"   
+        description: "Total amount of $USD burned for this transaction"
       - &validator
         name: validator
-        description: "Address of blockchain validator for this transaction within the block"  
+        description: "Address of blockchain validator for this transaction within the block"
       - &gas_price_gwei
         name: gas_price_gwei
         description: "Gas price (per gas unit) denoted in gwei"
