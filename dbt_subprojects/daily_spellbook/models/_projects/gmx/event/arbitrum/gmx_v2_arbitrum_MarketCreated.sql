@@ -9,13 +9,13 @@
 {%- set event_name = 'MarketCreated' -%}
 {%- set blockchain_name = 'arbitrum' -%}
 {%- set addresses = [
-    'marketToken',
-    'indexToken',
-    'longToken',
-    'shortToken'
+    ['marketToken','market_token'],
+    ['indexToken','index_token'],
+    ['longToken','long_token'],
+    ['shortToken','short_token']
 ] -%}
 {%- set bytes32 = [
-    'salt'
+    ['salt','salt']
 ] %}
 
 WITH market_created_events AS (
@@ -36,12 +36,12 @@ WITH market_created_events AS (
 
         -- Extracting Addresses
         {% for var in addresses -%}
-            {{ process_variable(var, 'address', 52, 20) }},
+            {{ process_variable(var[0], var[1], 'address', 52, 20) }},
         {% endfor -%}      
     
         -- Extracting Bytes32
         {% for var in bytes32 -%}
-            {{ process_variable(var, 'bytes32', 64, 32) }}{%- if not loop.last -%},{%- endif %}
+            {{ process_variable(var[0], var[1], 'bytes32', 64, 32) }}{%- if not loop.last -%},{%- endif %}
         {% endfor %}    
         
     FROM
@@ -76,7 +76,7 @@ WITH market_created_events AS (
 SELECT 
     GCA.*
     ,'GM' AS marketTokenSymbol
-    , 18 AS marketTokenDecimal
+    , 18 AS marketTokenDecimals
     , ERC20_IT.symbol AS indexTokenSymbol
     , ERC20_IT.decimals AS indexTokenDecimals  
     , ERC20_LT.symbol AS longTokenSymbol

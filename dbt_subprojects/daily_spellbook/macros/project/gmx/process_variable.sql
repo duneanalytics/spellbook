@@ -1,18 +1,17 @@
-{% macro process_variable(var, data_type, offset=64, length=32) %}
-    {%- set underscored_var = var | replace('.', '_') -%}
+{% macro process_variable(var1, var2, data_type, offset=64, length=32) %}
     {%- if data_type == 'address' -%}
-        varbinary_substring(data, varbinary_position(data, to_utf8('{{ var }}')) - {{ offset }}, {{ length }}) AS {{ underscored_var }}
+        varbinary_substring(data, varbinary_position(data, to_utf8('{{ var1 }}')) - {{ offset }}, {{ length }}) AS {{ var2 }}
     {%- elif data_type == 'unsigned_integer' -%}
-        varbinary_to_uint256(varbinary_substring(data, varbinary_position(data, to_utf8('{{ var }}')) - {{ offset }}, {{ length }})) AS {{ underscored_var }}
+        varbinary_to_uint256(varbinary_substring(data, varbinary_position(data, to_utf8('{{ var1 }}')) - {{ offset }}, {{ length }})) AS {{ var2 }}
     {%- elif data_type == 'integer' -%}
-        varbinary_to_int256(varbinary_substring(data, varbinary_position(data, to_utf8('{{ var }}')) - {{ offset }}, {{ length }})) AS {{ underscored_var }}
+        varbinary_to_int256(varbinary_substring(data, varbinary_position(data, to_utf8('{{ var1 }}')) - {{ offset }}, {{ length }})) AS {{ var2 }}
     {%- elif data_type == 'boolean' -%}
     CASE 
-        WHEN varbinary_to_uint256(varbinary_substring(data, varbinary_position(data, to_utf8('{{ var }}')) - {{ offset }}, {{ length }})) = 1                 
+        WHEN varbinary_to_uint256(varbinary_substring(data, varbinary_position(data, to_utf8('{{ var1 }}')) - {{ offset }}, {{ length }})) = 1                 
             THEN true
         ELSE false
-    END AS {{ underscored_var }}
+    END AS {{ var2 }}
     {%- elif data_type == 'bytes32' -%}
-        varbinary_substring(data, varbinary_position(data, to_utf8('{{ var }}')) - {{ offset }}, {{ length }}) AS {{ underscored_var }}
+        varbinary_substring(data, varbinary_position(data, to_utf8('{{ var1 }}')) - {{ offset }}, {{ length }}) AS {{ var2 }}
     {%- endif -%}
 {% endmacro %}
