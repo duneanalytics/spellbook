@@ -315,28 +315,51 @@ models:
         description: A unique value used to prevent hash collisions
         tests:
           - not_null
+        &spot_only
+      - name: spot_only
+        description: Indicates if the market is spot-only (true when index_token is the zero address)
+        tests:
+          - not_null          
       - &market_token_symbol
         name: market_token_symbol
-        description: The symbol of the market token (hardcoded as 'GM' in this model)      
+        description: The symbol of the market token (hardcoded as 'GM' in this model)  
+        tests:
+          - not_null    
       - &market_token_decimals
         name: market_token_decimals
         description: The decimal precision of the market token (hardcoded as 18 in this model)          
+        tests:
+          - not_null      
       - &index_token_symbol
         name: index_token_symbol
-        description: The symbol of the index token          
+        description: The symbol of the index token 
+        tests:
+          - not_null:
+              condition: "{{ index_token != '0x0000000000000000000000000000000000000000' }}"                 
       - &index_token_decimals
         name: index_token_decimals
-        description: The decimal precision of the index token        
+        description: The decimal precision of the index token 
+        tests:
+          - not_null:
+              condition: "{{ index_token != '0x0000000000000000000000000000000000000000' }}"              
       - &long_token_symbol
         name: long_token_symbol
-        description: The symbol of the long token           
+        description: The symbol of the long token       
+        tests:
+          - not_null             
       - &long_token_decimals
         name: long_token_decimals
-        description: The decimal precision of the long token          
+        description: The decimal precision of the long token  
+        tests:
+          - not_null                 
       - &short_token_symbol
         name: short_token_symbol
-        description: The symbol of the short token          
+        description: The symbol of the short token    
+        tests:
+          - not_null               
       - &short_token_decimals
         name: short_token_decimals
         description: The decimal precision of the short token  
+        tests:
+          - not_null                   
         
