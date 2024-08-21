@@ -2,22 +2,22 @@
 -- applicable for multiple L2s that expose this in their tx receipt
 {% macro has_l1_fee(blockchain) %}
     {{ return(
-        blockchain in all_op_chains() + ['scroll']
-    ) }}
+        blockchain in all_op_chains() + ('scroll',))
+    }}
 {% endmacro %}
 
 -- only possible if we've built out the blob_submissions model
 {% macro has_blob_fee(blockchain) %}
     {{ return(
         blockchain in ['ethereum'])
-    ) }}
+    }}
 {% endmacro %}
 
 -- applicable for arbitrum stack
 {% macro has_effective_gas_price(blockchain) %}
     {{ return(
         blockchain in ['arbitrum'])
-    ) }}
+    }}
 {% endmacro %}
 
 {% macro gas_fees(blockchain) %}
