@@ -10,7 +10,7 @@
         unique_key = ['tx_id','outer_instruction_index','inner_instruction_index', 'block_slot'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
-                                    "tokens",
+                                    "tokens_solana",
                                     \'["ilemi"]\') }}')
 }}
 

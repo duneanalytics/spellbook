@@ -1,19 +1,15 @@
  {{
   config(
-
-        schema = 'phoenix_v1',
-        alias = 'base_trades',
-        partition_by = ['block_month'],
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
-        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "phoenix",
-                                    \'["ilemi","jarryx"]\') }}')
+    schema = 'phoenix_v1',
+    alias = 'base_trades',
+    partition_by = ['block_month'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
+    pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
+  )
 }}
 
 {% set project_start_date = '2023-02-15' %} --grabbed program deployed at time (account created at)

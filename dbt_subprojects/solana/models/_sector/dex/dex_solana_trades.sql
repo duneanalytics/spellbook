@@ -9,8 +9,8 @@
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index','block_month'],
         post_hook='{{ expose_spells(\'["solana"]\',
-                                    "project",
-                                    "dex",
+                                    "sector",
+                                    "dex_solana",
                                     \'["ilemi","0xRob","jeff-dude"]\') }}')
 }}
 

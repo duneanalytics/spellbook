@@ -10,7 +10,7 @@
         unique_key = ['account_mint','fee_time'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
-                                    "tokens",
+                                    "tokens_solana",
                                     \'["ilemi"]\') }}')
 }}
 --we need the fee basis points and maximum fee for token2022 transfers because the fee amount is not emitted in transferChecked
