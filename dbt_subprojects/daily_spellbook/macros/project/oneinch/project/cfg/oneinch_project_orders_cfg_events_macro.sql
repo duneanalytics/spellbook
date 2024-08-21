@@ -138,6 +138,17 @@
             "taking_amount":    "substr(data    , 32*3 + 1              , 32)",
             "order_hash":       "substr(topic1  , 1                     , 32)",
         },
+        "0xece0e513cbaa408206d1b097118463feab4b263a1c43dd6896e8951cdb53e7d9": {
+            "project":          "Paraswap",
+            "name":             "OrderSettled",
+            "maker":            "substr(topic1  , 12 + 1                , 20)",
+            "receiver":         "substr(topic3  , 12 + 1                , 20)",
+            "maker_asset":      "substr(data    , 32*0 + 12 + 1         , 20)",
+            "taker_asset":      "substr(data    , 32*1 + 12 + 1         , 20)",
+            "making_amount":    "substr(data    , 32*2 + 1              , 32)",
+            "taker_min_amount": "substr(data    , 32*3 + 1              , 32)",
+            "taking_amount":    "substr(data    , 32*4 + 1              , 32)",
+        },
         "0xa07a543ab8a018198e99ca0184c93fe9050a79400a0a723441f84de1d972cc17": {
             "project":          "CoWSwap",
             "name":             "Trade",

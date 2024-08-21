@@ -191,6 +191,7 @@
         , ('0x135896de8421be2ec868e0b811006171d9df802a', 'true', 'Paraswap'             , 'LiquiditySwapAdapter'    , ['ethereum'])
         , ('0x6a000f20005980200259b80c5102003040001068', 'true', 'Paraswap'             , 'AugustusV6v2'            , ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base'])
         , ('0x30030701590a20B0Fb08000010400A034050C860', 'true', 'Paraswap'             , 'AugustusV6v2'            , ['bnb','optimism'])
+        , ('0x1d7405df25fd2fe80390da3a696dcfd5120ca9ce', 'true', 'Paraswap'             , 'ParaswapDeltaV1'         , ['ethereum'])
         , ('0xe92b586627cca7a83dc919cc7127196d70f55a06', 'true', 'Paraswap'             , 'AugustusRFQ'             , ['ethereum'])
         , ('0x0927fd43a7a87e3e8b81df2c44b03c4756849f6d', 'true', 'Paraswap'             , 'AugustusRFQ'             , ['arbitrum','optimism'])
         , ('0x2DF17455B96Dde3618FD6B1C3a9AA06D6aB89347', 'true', 'Paraswap'             , 'AugustusRFQ'             , ['fantom'])
