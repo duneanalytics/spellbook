@@ -33,10 +33,10 @@ WITH trusted_tokens AS (
 SELECT
     bt.*
     , COALESCE(
-        CASE WHEN tt_bought.contract_address IS NOT NULL THEN bt.token_bought_amount * pb.price END,
         CASE WHEN tt_sold.contract_address IS NOT NULL THEN bt.token_sold_amount * ps.price END,
-        bt.token_bought_amount * pb.price,
-        bt.token_sold_amount * ps.price
+        CASE WHEN tt_bought.contract_address IS NOT NULL THEN bt.token_bought_amount * pb.price END,
+        bt.token_sold_amount * ps.price,
+        bt.token_bought_amount * pb.price
     ) AS amount_usd
 FROM
     {{ trades_cte }} bt
