@@ -1,0 +1,22 @@
+version: 2
+
+sources: 
+  - name: seaport_polygon
+    tables:
+      - name: Seaport_evt_OrderFulfilled
+        description: "" # to-do
+        columns:
+          - name: consideration
+          - name: contract_address
+          - name: evt_block_number
+          - name: evt_block_time
+          - name: evt_index
+          - name: evt_tx_hash
+          - name: offer
+          - name: offerer
+          - name: orderHash
+          - name: recipient
+          - name: zone
+      - name: Seaport_evt_OrdersMatched
+      - name: Seaport_call_matchAdvancedOrders
+      - name: Seaport_call_matchOrders

@@ -23,7 +23,6 @@ sources:
         - name: NFTransfersFeature_evt_ERC1155BuyOrderFilled
         - name: NFTransfersFeature_evt_ERC1155SellOrderFilled
   - name: sudoswap_v2_arbitrum
-    freshness:
     tables:
       - name: LSSVMPairFactory_call_createPairERC721ETH
       - name: LSSVMPairFactory_call_createPairERC1155ETH

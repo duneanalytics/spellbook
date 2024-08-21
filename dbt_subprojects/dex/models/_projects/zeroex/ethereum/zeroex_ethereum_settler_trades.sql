@@ -24,9 +24,7 @@ WITH tbl_addresses AS (
     WHERE 
         contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae 
         AND blockchain = 'ethereum'
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
-        {% endif %}  
+        and block_time > TIMESTAMP '2024-05-23'  
 ),
 
 tbl_end_times AS (
@@ -112,7 +110,7 @@ tbl_all_logs AS (
         0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
         0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
         {% if is_incremental() %}
-        and tag != 0x000000 and zid != 0xa00000000000000000000000 
+        and  not(tag = 0x000000 and zid = 0xa00000000000000000000000)
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
             AND logs.block_time >= DATE '{{zeroex_settler_start_date}}'

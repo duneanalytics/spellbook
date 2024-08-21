@@ -3,11 +3,14 @@ version: 2
 models:
   - name: dex_trades
     meta:
+      docs_slug: /curated/DEX/dex-trades
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei
       sector: dex
+      short_description: The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs). This table contains a detailed breakdown of trade execution containing one or many trades per transaction. 
       contributors: 0xRob, hosuke, jeff-dude, tomfutago
     config:
-      tags: [ 'dex', 'trades', 'beta' ]
+      tags: [ 'dex', 'trades']
+    description: '{{ doc("dex_trades_doc") }}'
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -19,53 +22,53 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the DEX is deployed"
+        description: "Blockchain on which this trade occurred"
       - &project
         name: project
-        description: "Project name of the DEX"
+        description: "Name of the dex on which the trade occurred"
         tests:
           - relationships:
               to: ref('dex_info')
               field: project
       - &version
         name: version
-        description: "Version of the contract built and deployed by the DEX project"
+        description: "Version of the DEX protocol/contract"
       - &block_month
         name: block_month
-        description: "UTC event block month of each DEX trade"
+        description: "UTC event block month"
       - &block_date
         name: block_date
-        description: "UTC event block date of each DEX trade"
+        description: "UTC event block date"
       - &block_time
         name: block_time
-        description: "UTC event block time of each DEX trade"
+        description: "UTC event block time"
       - &block_number
         name: block_number
-        description: "Block number of each DEX trade"
+        description: "Block number of the block in which the trade occurred"
       - &token_bought_symbol
         name: token_bought_symbol
-        description: "Token symbol for token bought in the trade"
+        description: "Symbol of the token bought in the trade"
       - &token_sold_symbol
         name: token_sold_symbol
-        description: "Token symbol for token sold in the trade"
+        description: "Symbol of the token sold in the trade"
       - &token_pair
         name: token_pair
-        description: "Token symbol pair for each token involved in the trade"
+        description: "symbol pair for the tokens involved in the trade. e.g. 'ETH/USDC'. Always alphabetical order, not trade order."
       - &token_bought_amount
         name: token_bought_amount
-        description: "Value of the token bought at time of execution in the original currency"
+        description: "Amount of the token bought in the display unit"
       - &token_sold_amount
         name: token_sold_amount
-        description: "Value of the token sold at time of execution in the original currency"
+        description: "Amount of the token sold in the display unit"
       - &token_bought_amount_raw
         name: token_bought_amount_raw
-        description: "Raw value of the token bought at time of execution in the original currency"
+        description: "Amount of the token bought in the base unit"
       - &token_sold_amount_raw
         name: token_sold_amount_raw
-        description: "Raw value of the token sold at time of execution in the original currency"
+        description: "Amount of the token sold in the base unit"
       - &amount_usd
         name: amount_usd
-        description: "USD value of the trade at time of execution"
+        description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
         tests:
           - dbt_utils.accepted_range:
               max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
@@ -77,25 +80,25 @@ models:
         description: "Contract address of the token sold"
       - &taker
         name: taker
-        description: "Address of trader who purchased a token"
+        description: "Address of account which purchased tokens. Can be contracts or EOA addresses. "
       - &maker
         name: maker
-        description: "Address of trader who sold a token"
+        description: "Address of account which sold tokens. Can be contracts or EOA addresses."
       - &project_contract_address
         name: project_contract_address
-        description: "Project contract address which executed the trade on the blockchain"
+        description: "Smart contract address which emitted the event associated with this trade. Can be the a Pool Contract, Router Contract, or other contract associated with the DEX."
       - &tx_hash
         name: tx_hash
-        description: "Unique transaction hash value tied to each transaction on the DEX"
+        description: "The hash of the transaction that this trade was included in"
       - &tx_from
         name: tx_from
-        description: "Address which initiated the trade"
+        description: "EOA address that sent the trade transaction, usually the trader's address, but can also be keeper bots, arbitrage bots, etc."
       - &tx_to
         name: tx_to
-        description: "Address which received the trade"
+        description: "Address that got called in the first call of this transaction"
       - &evt_index
         name: evt_index
-        description: "Index of the corresponding trade event"
+        description: "Index of the event in the transaction. Can be used to uniquely identify the order of trades within in a transaction"
 
   - name: dex_base_trades
     meta:

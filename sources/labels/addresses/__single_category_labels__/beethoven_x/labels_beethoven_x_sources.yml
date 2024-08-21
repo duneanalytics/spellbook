@@ -6,7 +6,6 @@ sources:
       - name: StablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Beethoven X StablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - name: call_block_number
           - name: call_block_time
@@ -28,7 +27,6 @@ sources:
       - name: MetaStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Beethoven X MetaStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - name: call_block_number
           - name: call_block_time
@@ -55,7 +53,6 @@ sources:
       - name: YearnLinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Beethoven X YearnLinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - name: call_block_number
           - name: call_block_time
@@ -77,7 +74,6 @@ sources:
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Beethoven X NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - name: call_block_number
           - name: call_block_time
@@ -99,7 +95,6 @@ sources:
       - name: StablePhantomPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Beethoven X StablePhantomPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - name: call_block_number
           - name: call_block_time
