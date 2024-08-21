@@ -14,6 +14,8 @@
     )
 }}
 
+{% set project_start_date = '2021-07-01' %}
+
 with changed_balances as (
     select
         a.blockchain,
@@ -33,7 +35,7 @@ with changed_balances as (
         from {{ ref('safe_polygon_safes') }} s
         where blockchain = 'polygon'
     ) q on q.address = a.address
-    where day >= date('2021-07-01')
+    where day >= date '{{ project_start_date }}'
         and token_standard in ('native', 'erc20')
         {% if is_incremental() %}
         and {{ incremental_predicate('day') }}
@@ -42,7 +44,7 @@ with changed_balances as (
 days as (
     select *
     from unnest(
-        sequence(cast('2021-07-01' as date), date(date_trunc('day', now())), interval '1' day)
+        sequence(cast('{{ project_start_date }}' as date), date(date_trunc('day', now())), interval '1' day)
     ) as foo(day)
 ),
 forward_fill as (
@@ -59,7 +61,7 @@ forward_fill as (
     left join changed_balances b
         on d.day >= b.day
         and (b.next_update_day is null OR d.day < b.next_update_day) 
-    where d.day >= cast('2021-07-01' as date)
+    where d.day >= date '{{ project_start_date }}'
         {% if is_incremental() %}
         and {{ incremental_predicate('d.day') }}
         {% endif %}
