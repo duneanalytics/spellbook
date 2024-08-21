@@ -39,8 +39,8 @@ WITH base_model as (
         cast(blob.blob_base_fee as uint256) * cast(blob.blob_gas_used as uint256) +
         {%- endif -%}
         cast(
-            {%- if has_effective_gas_price(blockchain) -%} txns.effective_gas_price {%- else -%} txns.gas_price {%- endif -%}
-        as uint256) * cast(txns.gas_used as uint256)
+            {%- if has_effective_gas_price(blockchain) %} txns.effective_gas_price {% else %} txns.gas_price {%- endif %}
+         as uint256) * cast(txns.gas_used as uint256)
         as tx_fee_raw
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
