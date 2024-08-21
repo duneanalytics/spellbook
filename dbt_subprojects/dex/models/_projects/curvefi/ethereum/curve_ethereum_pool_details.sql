@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'curvefi_ethereum'
+    schema = 'curve_ethereum'
     , alias = 'pool_details'
 ) }}
 

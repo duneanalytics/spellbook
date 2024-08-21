@@ -45,8 +45,8 @@ WITH curve AS (
         enrich_curve_dex_trades(
             base_trades = ref('dex_base_trades')
             , filter = "project = 'curve'"
-            , curve_ethereum = ref('curvefi_ethereum_base_trades')
-            , curve_optimism = ref('curvefi_optimism_base_trades')
+            , curve_ethereum = ref('curve_ethereum_base_trades')
+            , curve_optimism = ref('curve_optimism_base_trades')
             , tokens_erc20_model = source('tokens', 'erc20')
         )
     }}

@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'curvefi_optimism',
+    schema = 'curve_optimism',
     alias = 'pools',
     materialized = 'incremental',
     file_format = 'delta',
@@ -7,7 +7,7 @@
     unique_key = ['version', 'tokenid', 'token', 'pool'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "project",
-                                "curvefi",
+                                "curve",
                                 \'["msilb7"]\') }}'
     )
 }}

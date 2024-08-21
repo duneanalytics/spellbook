@@ -382,15 +382,15 @@ models:
           seed_file: ref('rubicon_optimism_base_trades_seed')
 
 
-  - name: curvefi_optimism_base_trades
+  - name: curve_optimism_base_trades
     meta:
       blockchain: optimism
       sector: dex
-      project: curvefi
+      project: curve
       contributors: msilb7, tomfutago
     config:
-      tags: ['optimism', 'dex', 'trades', 'curvefi']
-    description: "Curvefi optimism base trades"
+      tags: ['optimism', 'dex', 'trades', 'curve']
+    description: "Curve optimism base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

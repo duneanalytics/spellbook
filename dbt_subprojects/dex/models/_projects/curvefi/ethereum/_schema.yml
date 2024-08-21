@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: curvefi_ethereum_pool_details
+  - name: curve_ethereum_pool_details
     meta:
       blockchain: ethereum
-      project: curvefi
+      project: curve
       contributors: [agaperste, yulesa]
     config:
-      tags: ["ethereum", "curvefi", "view"]
+      tags: ["ethereum", "curve", "view"]
     description: >
       a dictionary view of pool details for a lot of regular pools on Curve.fi on Ethereum
     columns:
@@ -66,13 +66,13 @@ models:
         name: undercoin3
         description: "Address for third underlying coin, when applicable"
 
-  - name: curvefi_ethereum_view_pools
+  - name: curve_ethereum_view_pools
     meta:
       blockchain: ethereum
-      project: curvefi
+      project: curve
       contributors: [agaperste, yulesa, ilemi, viniabussafi]
     config:
-      tags: ["ethereum", "curvefi", "view_pools", "view"]
+      tags: ["ethereum", "curve", "view_pools", "view"]
     description: >
       view details of pools for Curve.fi on Ethereum
     columns:

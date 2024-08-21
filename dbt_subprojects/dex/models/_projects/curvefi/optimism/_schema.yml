@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: curvefi_optimism_pools
+  - name: curve_optimism_pools
     meta:
       blockchain: optimism
-      project: curvefi
+      project: curve
       contributors: msilb7
     config:
-      tags: ['optimism','curvefi','curve','dex']
+      tags: ['optimism','curve','dex']
     description: >
-        A table containing all known pools of curvefi on optimism (i.e. metapool, basicpool). Additional types should be monitored to ensure they're accurately shown.
+        A table containing all known pools of curve on optimism (i.e. metapool, basicpool). Additional types should be monitored to ensure they're accurately shown.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
