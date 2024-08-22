@@ -151,3 +151,29 @@ models:
       - &output
         name: output
         description: "Output data"
+
+  - name: safe_polygon_balances
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - address
+            - token_address
+    meta:
+      blockchain: polygon
+      project: safe
+      contributors: safeintern
+    config:
+      tags: ['safe', 'polygon']
+    description: “Safe addresses balances”
+    columns:
+      - name: day
+      - name: blockchain
+      - name: address
+      - name: token_address
+      - name: token_standard
+      - name: token_id
+      - name: token_symbol
+      - name: token_balance
+      - name: balance_usd
