@@ -67,24 +67,31 @@ models:
           - not_null
       - &account
         name: account
-        description: The account related to the event, extracted from the `topic2` field
+        description: The trader's account
         tests:
           - not_null
-      - &event_name
-        name: event_name
+      - name: event_name
         description: The type of event recorded, always 'PositionIncrease' for this model
         tests:
           - not_null    
-      - &market
-        name: market
-        description: The market identifier associated with the position increase
+      - name: market
+        description: The market associated with the position increase
         tests:
           - not_null
-      - &collateral_token
-        name: collateral_token
+      - name: collateral_token
         description: The collateral token used in the position increase
         tests:
           - not_null
+      - &collateral_token_symbol
+        name: collateral_token_symbol
+        description: The symbol of the token used as collateral in the market. This token represents the asset that backs the position and is used to secure trades.
+        tests:
+          - not_null
+      - &market_name
+        name: market_name
+        description: |
+          The name of the market within the GMX protocol, formatted as a combination of the index token and the long/short tokens. 
+          The format is `index_token_symbol/USD [long_token_symbol-short_token_symbol]`, which represents the trading pair and the associated positions within the market.
       - &size_in_usd
         name: size_in_usd
         description: The size of the position in USD
@@ -92,37 +99,36 @@ models:
           - not_null
       - &size_in_tokens
         name: size_in_tokens
-        description: The size of the position in tokens
+        description: The size of the position in index tokens
         tests:
           - not_null
-      - &collateral_amount
-        name: collateral_amount
-        description: The amount of collateral used
+      - name: collateral_amount
+        description: The amount of collateral in the position after it was increased
         tests:
           - not_null
       - &borrowing_factor
         name: borrowing_factor
-        description: The borrowing factor applied to the position
+        description: The cumulative borrowing factor applied to the position over time
         tests:
           - not_null
       - &funding_fee_amount_per_size
         name: funding_fee_amount_per_size
-        description: The funding fee amount per size
+        description: The cumulative funding fee amount per size
         tests:
           - not_null
       - &long_token_claimable_funding_amount_per_size
         name: long_token_claimable_funding_amount_per_size
-        description: The claimable funding amount per size for long tokens
+        description: The cumulative claimable funding amount per size for long tokens
         tests:
           - not_null
       - &short_token_claimable_funding_amount_per_size
         name: short_token_claimable_funding_amount_per_size
-        description: The claimable funding amount per size for short tokens
+        description: The cumulative claimable funding amount per size for short tokens
         tests:
           - not_null
       - &execution_price
         name: execution_price
-        description: The execution price of the position
+        description: The execution price of the position after price impact
         tests:
           - not_null
       - &index_token_price_max
@@ -157,12 +163,21 @@ models:
           - not_null
       - &order_type
         name: order_type
-        description: The type of order executed
+        description: The type of order executed. The following table describes each order type:
+          | Order Type       | Description                                                                                           |
+          |------------------|-------------------------------------------------------------------------------------------------------|
+          | MarketSwap       | Swap token A to token B at the current market price. The order will be cancelled if the minOutputAmount cannot be fulfilled. |
+          | LimitSwap        | Swap token A to token B if the minOutputAmount can be fulfilled.                                     |
+          | MarketIncrease   | Increase position at the current market price. The order will be cancelled if the position cannot be increased at the acceptablePrice. |
+          | LimitIncrease    | Increase position if the triggerPrice is reached and the acceptablePrice can be fulfilled.           |
+          | MarketDecrease   | Decrease position at the current market price. The order will be cancelled if the position cannot be decreased at the acceptablePrice. |
+          | LimitDecrease    | Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.           |
+          | StopLossDecrease | Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.           |
+          | Liquidation      | Allows liquidation of positions if the criteria for liquidation are met.                             |
         tests:
           - not_null
-      - &increased_at_time
-        name: increased_at_time
-        description: The Unix timestamp when the position was increased
+      - name: increased_at_time
+        description: The block timestamp when the position was increased
       - &collateral_delta_amount
         name: collateral_delta_amount
         description: The change in collateral amount
@@ -175,7 +190,7 @@ models:
           - not_null
       - &price_impact_amount
         name: price_impact_amount
-        description: The impact on price in token amount
+        description: The impact on price in index token amount
         tests:
           - not_null
       - &is_long
@@ -193,6 +208,7 @@ models:
         description: A unique key identifying the position
         tests:
           - not_null
+
 
   - name: gmx_v2_arbitrum_PositionDecrease
     meta:
@@ -219,12 +235,26 @@ models:
       - *tx_to
       - *contract_address
       - *account
-      - *event_name
-      - *market
-      - *collateral_token
+      - name: event_name
+        description: The type of event recorded, always 'PositionDecrease' for this model
+        tests:
+          - not_null  
+      - name: market
+        description: The market associated with the position decrease
+        tests:
+          - not_null
+      - name: collateral_token
+        description: The collateral token used in the position decrease
+        tests:
+          - not_null
+      - *collateral_token_symbol
+      - *market_name
       - *size_in_usd
       - *size_in_tokens
-      - *collateral_amount
+      - name: collateral_amount
+        description: The amount of collateral in the position after it was decreased
+        tests:
+          - not_null
       - *borrowing_factor
       - *funding_fee_amount_per_size
       - *long_token_claimable_funding_amount_per_size
@@ -237,20 +267,16 @@ models:
       - *size_delta_usd
       - *size_delta_in_tokens
       - *collateral_delta_amount
-      - *order_type 
-      - *price_impact_usd
-      - *is_long
-      - *order_key
-      - *position_key
-
-      - &values_price_impact_diff_usd
-        name: values_price_impact_diff_usd
-        description: The difference in price impact in USD compared to a baseline or previous value
+      - &impact_diff_usd
+        name: impact_diff_usd
+        description: The difference in price impact in USD compared to a baseline or previous value, considering the maximum price impact limit
         tests:
-          - not_null  
+          - not_null       
+      - *order_type 
       - &decreased_at_time
         name: decreased_at_time
-        description: The Unix timestamp when the position was decreased
+        description: The block timestamp when the position was decreased             
+      - *price_impact_usd
       - &base_pnl_usd
         name: base_pnl_usd
         description: The base profit and loss in USD for the position
@@ -260,7 +286,10 @@ models:
         name: uncapped_base_pnl_usd
         description: The uncapped base profit and loss in USD, without any limits or caps applied
         tests:
-          - not_null
+          - not_null      
+      - *is_long
+      - *order_key
+      - *position_key
 
 
   - name: gmx_v2_arbitrum_MarketCreated
@@ -287,9 +316,14 @@ models:
       - *tx_from
       - *tx_to
       - *contract_address
-      - *account
-      - *event_name
-
+      - name: account
+        description: The account related to the event
+        tests:
+          - not_null        
+      - name: event_name
+        description: The type of event recorded, always 'MarketCreated' for this model
+        tests:
+          - not_null 
       - &market_token
         name: market_token
         description: The token used to represent the market
@@ -315,8 +349,8 @@ models:
         description: A unique value used to prevent hash collisions
         tests:
           - not_null
-        &spot_only
-      - name: spot_only
+      - &spot_only
+        name: spot_only
         description: Indicates if the market is spot-only (true when index_token is the zero address)
         tests:
           - not_null          
@@ -332,16 +366,10 @@ models:
           - not_null      
       - &index_token_symbol
         name: index_token_symbol
-        description: The symbol of the index token 
-        tests:
-          - not_null:
-              condition: "{{ index_token != '0x0000000000000000000000000000000000000000' }}"                 
+        description: The symbol of the index token                
       - &index_token_decimals
         name: index_token_decimals
-        description: The decimal precision of the index token 
-        tests:
-          - not_null:
-              condition: "{{ index_token != '0x0000000000000000000000000000000000000000' }}"              
+        description: The decimal precision of the index token           
       - &long_token_symbol
         name: long_token_symbol
         description: The symbol of the long token       

@@ -6,11 +6,7 @@
     {%- elif data_type == 'integer' -%}
         varbinary_to_int256(varbinary_substring(data, varbinary_position(data, to_utf8('{{ var1 }}')) - {{ offset }}, {{ length }})) AS {{ var2 }}
     {%- elif data_type == 'boolean' -%}
-    CASE 
-        WHEN varbinary_to_uint256(varbinary_substring(data, varbinary_position(data, to_utf8('{{ var1 }}')) - {{ offset }}, {{ length }})) = 1                 
-            THEN true
-        ELSE false
-    END AS {{ var2 }}
+        varbinary_to_uint256(varbinary_substring(data, varbinary_position(data, to_utf8('{{ var1 }}')) - {{ offset }}, {{ length }})) AS {{ var2 }}
     {%- elif data_type == 'bytes32' -%}
         varbinary_substring(data, varbinary_position(data, to_utf8('{{ var1 }}')) - {{ offset }}, {{ length }}) AS {{ var2 }}
     {%- endif -%}
