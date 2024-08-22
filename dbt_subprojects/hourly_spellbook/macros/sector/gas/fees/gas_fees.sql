@@ -18,7 +18,7 @@
     {%- if blockchain in ['arbitrum']-%}
     txns.effective_gas_price
     {%- elif blockchain in ['celo'] -%}
-    coalesce(txns.priority_fee_per_gas, txns.gas_price) -- pretty weird setup for celo here..
+    coalesce(txns.priority_fee_per_gas, txns.gas_price)
     {%- else -%}
     txns.gas_price
     {%- endif -%}
