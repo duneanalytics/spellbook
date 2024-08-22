@@ -7,14 +7,6 @@ models:
       contributors: soispoke, ilemi, 0xRob, jeff-dude
     description: >
         Gas Fees across chains
-    tests:
-      - check_seed:
-          seed_file: ref('evm_gas_fees')
-          match_columns:
-            - blockchain
-            - tx_hash
-          check_columns:
-            - tx_fee_raw
     columns:
       - &blokchain
         name: blockchain

@@ -3,6 +3,7 @@
 {{ config(
     schema = 'gas_' + blockchain
     ,alias = 'fees'
+    ,tags = ['prod_exclude']
     ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
