@@ -3,12 +3,8 @@ version: 2
 sources:
   - name: apeswap_polygon
     description: "Polygon decoded tables related to apeswap contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: ApePair_evt_Swap
-        loaded_at_field: evt_block_time
         description: "apeswap swap events table on Polygon"
         columns:
           - &amount0In
@@ -41,7 +37,6 @@ sources:
           - &to
             name: to
       - name: ApeFactory_evt_PairCreated
-        loaded_at_field: evt_block_time
         description: "apeswap Pool created events table"
         columns:
           - &_0
