@@ -49,6 +49,21 @@ WITH base_model as (
         {%- endif -%}
           cast({{ select_gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
         as tx_fee_raw
+        ,map_concat(map()
+            {%- if has_l1_fee(blockchain) -%}
+              ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])
+            {%- endif -%}
+            {%- if has_blob_fee(blockchain) -%}
+              ,map(array['blob_fee'],array[cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256)])
+            {%- endif -%}
+              ,case when txns.priority_fee_per_gas is null
+                    then map(array['base_fee'], array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))])
+                    else map(array['base_fee','priority_fee']
+                             array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                    ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                             )
+                    )
+        as tx_fee_breakdown_raw
         ,{%- if has_fee_currency(blockchain) -%}
           coalesce(txns.fee_currency, {{var('ETH_ERC20_ADDRESS')}}) {%- else -%} {{var('ETH_ERC20_ADDRESS')}}
         {%- endif %} as tx_fee_currency
@@ -99,6 +114,12 @@ SELECT
     ,coalesce(tx_fee_raw, 0) as tx_fee_raw
     ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) as tx_fee
     ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) * p.price as tx_fee_usd
+    ,transform_values(tx_fee_breakdown_raw,
+            (k,v) -> coalesce(v,0)) as tx_fee_breakdown_raw
+    ,transform_values(tx_fee_breakdown_raw,
+            (k,v) -> coalesce(v, 0) / pow(10,p.decimals) ) as tx_fee_breakdown
+    ,transform_values(tx_fee_breakdown_raw,
+            (k,v) -> coalesce(v, 0) / pow(10,p.decimals) * p.price) as tx_fee_breakdown_usd
     ,tx_fee_currency
     ,block_proposer
     ,max_fee_per_gas
