@@ -17,7 +17,8 @@
     'gas_zksync_fees',
     'gas_zora_fees',
     'gas_base_fees',
-    'gas_scroll_fees'
+    'gas_scroll_fees',
+    'gas_blast_fees'
 ] %}
 
 --remove mantle for now:
