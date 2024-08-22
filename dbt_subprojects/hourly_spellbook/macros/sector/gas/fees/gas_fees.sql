@@ -15,7 +15,7 @@
     {%- if blockchain in ('ethereum',) -%}
     cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256) +
     {%- endif -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(gas_used as uint256)
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
 {% endmacro %}
 
 -- include chain specific logic here
