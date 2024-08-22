@@ -56,7 +56,7 @@ WITH base_model as (
             {%- if has_blob_fee(blockchain) %}
               ,map(array['blob_fee'],array[cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256)])
             {%- endif %}
-              ,case when txns.priority_fee_per_gas is null
+              ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
                     then map(array['base_fee'], array[(cast(gas_price as uint256) * cast(txns.gas_used as uint256))])
                     else map(array['base_fee','priority_fee'],
                              array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
