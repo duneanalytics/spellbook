@@ -18,7 +18,7 @@ api_key = os.getenv("DUNE_API_KEY")
 manifests_dir = os.path.join(project_root, 'dbt_subprojects', 'manifests')
 
 # CSV file to store combined data
-csv_file_path = os.path.join(script_dir, 'combined_dbt_models_sources.csv')
+csv_file_path = os.path.join(project_root, 'dbt_subprojects', 'manifests' , 'combined_dbt_models_sources.csv')
 
 def parse_manifest(file_path):
     with open(file_path, 'r') as file:
@@ -120,8 +120,8 @@ with open(csv_file_path, 'r') as file:
 
     # Construct the payload for the API
     payload = {
-        "table_name": "dbt_models_sources_metadata",
-        "description": "Combined DBT models and sources metadata (without table descriptions)",
+        "table_name": "spellbook_table_infos",
+        "description": "Combined Spellbook models and sources metadata",
         "data": str(data),
         "is_private": False
     }

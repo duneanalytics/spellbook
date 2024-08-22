@@ -2,7 +2,7 @@ import os
 import subprocess
 import shutil
 
-### doesn't work because dbt deps are not installed
+# need to make sure dbt deps are installed for all subprojects
 
 # Define the base directory of the repo, adjusting for script's location
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'dbt_subprojects'))
