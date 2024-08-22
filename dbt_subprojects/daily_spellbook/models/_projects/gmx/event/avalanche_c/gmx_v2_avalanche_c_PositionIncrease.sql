@@ -2,7 +2,11 @@
   config(
     schema = 'gmx_v2_avalanche_c',
     alias = 'position_increase',
-    materialized = 'table'
+    materialized = 'table',
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
+                                "project",
+                                "gmx",
+                                \'["ai_data_master","gmx-io"]\') }}'
   )
 }}
 

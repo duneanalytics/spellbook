@@ -2,7 +2,11 @@
   config(
     schema = 'gmx_v2_arbitrum',
     alias = 'position_decrease',
-    materialized = 'table'
+    materialized = 'table',
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
+                                "project",
+                                "gmx",
+                                \'["ai_data_master","gmx-io"]\') }}'
   )
 }}
 

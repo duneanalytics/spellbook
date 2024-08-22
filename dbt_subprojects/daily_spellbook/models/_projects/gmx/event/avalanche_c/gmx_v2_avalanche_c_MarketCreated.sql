@@ -2,8 +2,12 @@
   config(
     schema = 'gmx_v2_avalanche_c',
     alias = 'market_created',
-    materialized = 'table'
-  )
+    materialized = 'table',
+    post_hook='{{ expose_spells(\'["arbitrum"]\',
+                                "project",
+                                "gmx",
+                                \'["ai_data_master","gmx-io"]\') }}'
+    )
 }}
 
 {%- set event_name = 'MarketCreated' -%}
