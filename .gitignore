@@ -149,6 +149,3 @@ logs/
 !target/run_results.json
 !target/sources.json
 
-dbt_subprojects/manifests/dex_manifest.json
-dbt_subprojects/manifests/hourly_spellbook_manifest.json
-dbt_subprojects/manifests/tokens_manifest.json

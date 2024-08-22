@@ -11,4 +11,10 @@ sources:
     description: >
       Decoded event table for erc1155 NFTs transfer on Optimism
     tables:
+      - name: evt_TransferBatch
+
+  - name: erc1155_optimism
+    description: >
+      Decoded event table for erc1155 NFTs transfer on Optimism
+    tables:
       - name: evt_TransferSingle
