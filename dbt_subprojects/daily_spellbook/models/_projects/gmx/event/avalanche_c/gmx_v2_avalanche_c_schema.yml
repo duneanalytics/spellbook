@@ -163,19 +163,20 @@ models:
           - not_null
       - &order_type
         name: order_type
-        description: The type of order executed. The following table describes each order type:
-          | Order Type       | Description                                                                                           |
-          |------------------|-------------------------------------------------------------------------------------------------------|
-          | MarketSwap       | Swap token A to token B at the current market price. The order will be cancelled if the minOutputAmount cannot be fulfilled. |
-          | LimitSwap        | Swap token A to token B if the minOutputAmount can be fulfilled.                                     |
-          | MarketIncrease   | Increase position at the current market price. The order will be cancelled if the position cannot be increased at the acceptablePrice. |
-          | LimitIncrease    | Increase position if the triggerPrice is reached and the acceptablePrice can be fulfilled.           |
-          | MarketDecrease   | Decrease position at the current market price. The order will be cancelled if the position cannot be decreased at the acceptablePrice. |
-          | LimitDecrease    | Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.           |
-          | StopLossDecrease | Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.           |
-          | Liquidation      | Allows liquidation of positions if the criteria for liquidation are met.                             |
+        description: |
+          The type of order executed. The following table describes each order type:
+          - MarketSwap: Swap token A to token B at the current market price. The order will be cancelled if the minOutputAmount cannot be fulfilled.
+          - LimitSwap: Swap token A to token B if the minOutputAmount can be fulfilled.
+          - MarketIncrease: Increase position at the current market price. The order will be cancelled if the position cannot be increased at the acceptablePrice.
+          - LimitIncrease: Increase position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
+          - MarketDecrease: Decrease position at the current market price. The order will be cancelled if the position cannot be decreased at the acceptablePrice.
+          - LimitDecrease: Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
+          - StopLossDecrease: Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
+          - Liquidation: Allows liquidation of positions if the criteria for liquidation are met.
         tests:
           - not_null
+          - accepted_values:
+              values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation']          
       - name: increased_at_time
         description: The block timestamp when the position was increased
       - &collateral_delta_amount
