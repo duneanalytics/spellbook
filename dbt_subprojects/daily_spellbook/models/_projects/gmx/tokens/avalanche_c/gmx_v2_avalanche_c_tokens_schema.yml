@@ -6,7 +6,7 @@ models:
       blockchain: avalanche_c
       sector: dex
       project: gmx
-      contributors: ai_data_master
+      contributors: ai_data_master, gmx-io
     config:
       tags: ['avalanche_c', 'gmx', 'tokens', 'erc20']
     description: |
@@ -35,6 +35,7 @@ models:
         description: The contract address of the ERC20 token
         tests:
           - not_null
+          - unique
       - &decimals
         name: decimals
         description: The number of decimal places the token supports

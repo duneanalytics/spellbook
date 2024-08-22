@@ -1,23 +1,23 @@
 version: 2
 
 models:
-  - name: gmx_v2_avalanche_c_PositionIncrease
+  - name: gmx_v2_arbitrum_PositionIncrease
     meta:
-      blockchain: avalanche_c
+      blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master
+      contributors: ai_data_master, gmx-io
     config:
-      tags: ['avalanche_c','gmx','event','position_increase']
+      tags: ['arbitrum','gmx','event','position_increase']
     description: |
-      This model extracts and parses `PositionIncrease` events from the Avalanche blockchain.
+      This model extracts and parses `PositionIncrease` events from the Arbitrum blockchain.
       It includes transaction details, addresses, and various metrics related to the event, 
       such as market data, collateral amounts, price impacts, and more.
-
+    
     columns:
       - &blockchain
         name: blockchain
-        description: The blockchain network where the event occurred (Avalanche)
+        description: The blockchain network where the event occurred (Arbitrum)
         tests:
           - not_null
       - &block_time
@@ -176,7 +176,7 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation']          
+              values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation']
       - name: increased_at_time
         description: The block timestamp when the position was increased
       - &collateral_delta_amount
@@ -204,6 +204,7 @@ models:
         description: A unique key identifying the order
         tests:
           - not_null
+          - unique
       - &position_key
         name: position_key
         description: A unique key identifying the position
@@ -211,16 +212,16 @@ models:
           - not_null
 
 
-  - name: gmx_v2_avalanche_c_PositionDecrease
+  - name: gmx_v2_arbitrum_PositionDecrease
     meta:
-      blockchain: avalanche_c
+      blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master
+      contributors: ai_data_master, gmx-io
     config:
-      tags: ['avalanche_c','gmx','event','position_decrease']
+      tags: ['arbitrum','gmx','event','position_decrease']
     description: |
-      This model extracts and parses `PositionDecrease` events from the Avalanche blockchain.
+      This model extracts and parses `PositionDecrease` events from the Arbitrum blockchain.
       It includes transaction details, addresses, and various metrics related to the event, 
       such as market data, collateral amounts, price impacts, and more.
 
@@ -293,16 +294,16 @@ models:
       - *position_key
 
 
-  - name: gmx_v2_avalanche_c_MarketCreated
+  - name: gmx_v2_arbitrum_MarketCreated
     meta:
-      blockchain: avalanche_c
+      blockchain: arbitrum
       sector: dex
       project: gmx
-      contributors: ai_data_master
+      contributors: ai_data_master, gmx-io
     config:
-      tags: ['avalanche_c', 'gmx', 'event', 'market_created']
+      tags: ['arbitrum', 'gmx', 'event', 'market_created']
     description: |
-      This model extracts and parses `MarketCreated` events from the Avalanche blockchain.
+      This model extracts and parses `MarketCreated` events from the Arbitrum blockchain.
       It includes transaction details, addresses, and other relevant metrics related to 
       the creation of markets within the GMX protocol.
 
@@ -320,7 +321,7 @@ models:
       - name: account
         description: The account related to the event
         tests:
-          - not_null
+          - not_null        
       - name: event_name
         description: The type of event recorded, always 'MarketCreated' for this model
         tests:
@@ -330,6 +331,7 @@ models:
         description: The token used to represent the market
         tests:
           - not_null
+          - unique
       - &index_token
         name: index_token
         description: The token used as the index in the market
@@ -370,7 +372,7 @@ models:
         description: The symbol of the index token                
       - &index_token_decimals
         name: index_token_decimals
-        description: The decimal precision of the index token              
+        description: The decimal precision of the index token           
       - &long_token_symbol
         name: long_token_symbol
         description: The symbol of the long token       
@@ -390,4 +392,5 @@ models:
         name: short_token_decimals
         description: The decimal precision of the short token  
         tests:
-          - not_null    
+          - not_null                   
+        
