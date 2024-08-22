@@ -62,8 +62,8 @@ WITH base_model as (
                              array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
                                     ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
                              )
-                    ) end
-        as tx_fee_breakdown_raw
+                    end
+         ) as tx_fee_breakdown_raw
         ,{%- if has_fee_currency(blockchain) -%}
           coalesce(txns.fee_currency, {{var('ETH_ERC20_ADDRESS')}}) {%- else -%} {{var('ETH_ERC20_ADDRESS')}}
         {%- endif %} as tx_fee_currency
