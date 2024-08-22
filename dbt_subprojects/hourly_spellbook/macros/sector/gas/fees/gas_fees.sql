@@ -2,7 +2,7 @@
 -- applicable for multiple L2s that expose this in their tx receipt
 {% macro has_l1_fee(blockchain) %}
     {{ return(
-        blockchain in all_op_chains() + ('scroll',))
+        blockchain in all_op_chains() + ('scroll','blast','mantle'))
     }}
 {% endmacro %}
 
