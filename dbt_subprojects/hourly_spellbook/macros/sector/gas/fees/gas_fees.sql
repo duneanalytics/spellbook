@@ -94,7 +94,7 @@ WITH base_model as (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     {% else %}
-    WHERE txns.block_time >= date '2024-08-01'
+    WHERE txns.block_time >= date '2024-08-10'
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% endif %}
     )
