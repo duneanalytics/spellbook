@@ -4,8 +4,8 @@
         ,alias = 'xcopy_nonsequential_tokens'
         ,materialized = 'table'
         ,post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
-                                    spell_type = "nft",
-                                    spell_name = "metadata",
+                                    spell_type = "sector",
+                                    spell_name = "nft_ethereum_metadata",
                                     contributors = \'["cat"]\') }}'
         )
 }}
