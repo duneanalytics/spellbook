@@ -14,6 +14,7 @@
 WITH trusted_tokens AS (
     SELECT contract_address
          , blockchain
+         , 1 as trusted
     FROM {{ source('prices','trusted_tokens') }}
 )
 , prices AS (
@@ -33,8 +34,10 @@ WITH trusted_tokens AS (
 SELECT
     bt.*
     , COALESCE(
-        CASE WHEN tt_sold.contract_address IS NOT NULL THEN bt.token_sold_amount * ps.price END,
-        CASE WHEN tt_bought.contract_address IS NOT NULL THEN bt.token_bought_amount * pb.price END,
+        GREATEST(tt_sold.trusted * bt.token_sold_amount * ps.price, tt_bought.trusted * bt.token_bought_amount * pb.price),
+        tt_sold.trusted * bt.token_sold_amount * ps.price,
+        tt_bought.trusted * bt.token_bought_amount * pb.price,
+        GREATEST(bt.token_sold_amount * ps.price, bt.token_bought_amount * pb.price),
         bt.token_sold_amount * ps.price,
         bt.token_bought_amount * pb.price
     ) AS amount_usd
