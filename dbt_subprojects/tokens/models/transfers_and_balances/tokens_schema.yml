@@ -6,8 +6,7 @@ sources:
       - name: transfers
         meta:
           docs_slug: /curated/asset-tracking/evm/token-transfers
-        
-        description: '{{ doc("tokens_transfers_doc") }}'
+        description: Transfers of all kinds of fungible tokens across all evm networks on dune
         columns:
           - name: unique_key
             description: "Surrogate key to identify unique row"
