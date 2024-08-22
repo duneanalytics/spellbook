@@ -1,11 +1,11 @@
 {{ config(
-    schema = 'curvefi_ethereum',
+    schema = 'curve_ethereum',
     alias = 'view_pools',
     materialized='table',
     file_format = 'delta',
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
-                                "curvefi",
+                                "curve",
                                 \'["yulesa", "agaperste", "ilemi", "viniabussafi"]\') }}'
     )
  }}
@@ -29,7 +29,7 @@ WITH regular_pools AS (
         deposit_contract,
         coin3
     FROM
-        {{ ref('curvefi_ethereum_pool_details') }}
+        {{ ref('curve_ethereum_pool_details') }}
 ),
 regular_pools_deployed AS (
     SELECT

@@ -17,6 +17,7 @@ FROM (
     {% for model in b_cow_amm_models %}
     SELECT
         day, 
+        blockchain,
         pool_address, 
         token_address, 
         token_balance_raw
