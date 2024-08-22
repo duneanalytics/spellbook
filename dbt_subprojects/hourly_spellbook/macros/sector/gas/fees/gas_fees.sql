@@ -1,34 +1,50 @@
-
--- applicable for multiple L2s that expose this in their tx receipt
-{% macro has_l1_fee(blockchain) %}
-    {{ return(
-        blockchain in all_op_chains() + ('scroll','blast','mantle'))
-    }}
-{% endmacro %}
-
--- only possible if we've built out the blob_submissions model
-{% macro has_blob_fee(blockchain) %}
-    {{ return(
-        blockchain in ['ethereum'])
-    }}
-{% endmacro %}
-
--- applicable for arbitrum stack and celo
-{% macro select_gas_price(blockchain) %}
+-- any modifications needed for getting the correct gas price
+{% macro gas_price(blockchain) %}
     {%- if blockchain in ['arbitrum']-%}
-    txns.effective_gas_price
-    {%- elif blockchain in ['celo'] -%}
-    case when txns.gas_price = 0 then txns.priority_fee_per_gas else txns.gas_price end
+    effective_gas_price
     {%- else -%}
-    txns.gas_price
+    gas_price
     {%- endif -%}
 {% endmacro %}
 
+-- include chain specific logic here
+{% macro tx_fee_raw(blockchain) %}
+    {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') -%}
+    cast(coalesce(l1_fee,0) as uint256) +
+    {%- endif -%}
+    {%- if blockchain in ('ethereum',) -%}
+    cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256) +
+    {%- endif -%}
+    cast({{ gas_price(blockchain) }} as uint256) * cast(gas_used as uint256)
+{% endmacro %}
+
+-- include chain specific logic here
+{% macro tx_fee_breakdown_raw(blockchain) %}
+    map_concat(
+    map()
+    {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') %}
+      ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])
+    {%- endif -%}
+    {%- if blockchain in ('ethereum',) %}
+      ,map(array['blob_fee'],array[cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256)])
+    {%- endif %}
+      ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+            then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+            else map(array['base_fee','priority_fee'],
+                     array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                            ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                     )
+            end
+    )
+{% endmacro %}
+
 -- applicable on Celo
-{% macro has_fee_currency(blockchain) %}
-    {{ return(
-        blockchain in ['celo'])
-    }}
+{% macro fee_currency(blockchain) %}
+    {%- if blockchain in ('celo',) -%}
+    coalesce(fee_currency, {{var('ETH_ERC20_ADDRESS')}})
+    {%- else -%}
+    {{var('ETH_ERC20_ADDRESS')}}
+    {%- endif %}
 {% endmacro %}
 
 {% macro gas_fees(blockchain) %}
@@ -39,34 +55,11 @@ WITH base_model as (
         ,txns.hash AS tx_hash
         ,txns."from" AS tx_from
         ,txns.to AS tx_to
-        ,cast({{ select_gas_price(blockchain) }} as uint256) as gas_price
+        ,cast({{ gas_price(blockchain) }} as uint256) as gas_price
         ,txns.gas_used as gas_used
-        ,{%- if has_l1_fee(blockchain) -%}
-          cast(coalesce(l1_fee,0) as uint256) +
-        {%- endif -%}
-        {%- if has_blob_fee(blockchain) -%}
-          cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256) +
-        {%- endif -%}
-          cast({{ select_gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-        as tx_fee_raw
-        ,map_concat(map()
-            {%- if has_l1_fee(blockchain) %}
-              ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])
-            {%- endif -%}
-            {%- if has_blob_fee(blockchain) %}
-              ,map(array['blob_fee'],array[cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256)])
-            {%- endif %}
-              ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
-                    then map(array['base_fee'], array[(cast(gas_price as uint256) * cast(txns.gas_used as uint256))])
-                    else map(array['base_fee','priority_fee'],
-                             array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
-                                    ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
-                             )
-                    end
-         ) as tx_fee_breakdown_raw
-        ,{%- if has_fee_currency(blockchain) -%}
-          coalesce(txns.fee_currency, {{var('ETH_ERC20_ADDRESS')}}) {%- else -%} {{var('ETH_ERC20_ADDRESS')}}
-        {%- endif %} as tx_fee_currency
+        ,{{tx_fee_raw(blockchain) }} as tx_fee_raw
+        ,{{tx_fee_breakdown_raw(blockchain)}} as tx_fee_breakdown_raw
+        ,{{fee_currency(blockchain)}} as tx_fee_currency
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
         ,txns.priority_fee_per_gas
@@ -83,7 +76,7 @@ WITH base_model as (
         {% if is_incremental() %}
         AND {{ incremental_predicate('blocks.time') }}
         {% endif %}
-    {%- if has_blob_fee(blockchain) -%}
+    {%- if blockchain in ('ethereum',)-%}
     LEFT JOIN {{ source( blockchain, 'blobs_submissions') }} blob
         ON txns.hash = blob.tx_hash
         AND txns.block_number = blob.block_number
