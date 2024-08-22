@@ -39,6 +39,9 @@ FROM
         ,tx_fee_raw
         ,tx_fee
         ,tx_fee_usd
+        ,tx_fee_breakdown_raw
+        ,tx_fee_breakdown
+        ,tx_fee_breakdown_usd
         ,tx_fee_currency
         ,block_proposer
         ,max_fee_per_gas
