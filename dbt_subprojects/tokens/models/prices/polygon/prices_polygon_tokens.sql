@@ -69,7 +69,6 @@ FROM
     ('dimo-dimo','polygon','DIMO',0xe261d618a959afffd53168cd07d12e37b26761db,18),
     ('gddy-giddy','polygon','GDDY',0x67eb41a14c0fe5cd701fc9d5a3d6597a72f641a6,18),
     ('val-valeria','polygon','VAL',0x456f931298065b1852647de005dd27227146d8b9,18),
-    ('truehn-true-human-nature','polygon','TRUEHN',0x9d9f8a6a6ad70d5670b7b5ca2042c7e106e2fb78,9),
     ('stg-stargatetoken','polygon','STG',0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590,18),
     ('titan-iron-titanium-token','polygon','IRON ',0xaaa5b9e6c589642f98a1cda99b9d024b8407285a,18),
     ('grt-the-graph','polygon','GRT',0x5fe2b58c013d7601147dcdd68c143a77499f5531,18),
