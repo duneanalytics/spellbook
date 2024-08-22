@@ -94,6 +94,14 @@ meta as (
     {% endif %}
 )
 
+, trusted as (
+    select
+        distinct blockchain
+        , contract_address
+        , true as trusted
+    from {{ source('prices', 'trusted_tokens') }}
+)
+
 , prices as (
     select
         blockchain
@@ -131,6 +139,8 @@ meta as (
         , any_value(taking_amount) as taking_amount
         , any_value(making_amount * price / pow(10, decimals)) filter(where contract_address = assets[1]) as making_amount_usd
         , any_value(taking_amount * price / pow(10, decimals)) filter(where contract_address = assets[2]) as taking_amount_usd
+        , any_value(making_amount * price / pow(10, decimals)) filter(where contract_address = assets[1] and trusted) as making_amount_usd_trusted
+        , any_value(taking_amount * price / pow(10, decimals)) filter(where contract_address = assets[2] and trusted) as taking_amount_usd_trusted
         , any_value(order_start) as order_start
         , any_value(order_end) as order_end
         , any_value(order_deadline) as order_deadline
@@ -139,6 +149,7 @@ meta as (
         , any_value(tag) as tag
     from (select * from orders, unnest(assets) as a(contract_address))
     left join prices using(blockchain, contract_address, minute)
+    left join trusted using(blockchain, contract_address)
     group by 1, 2, 3, 4, 5, 6
 )
 
@@ -164,7 +175,7 @@ select
     , taking_amount
     , making_amount_usd
     , taking_amount_usd
-    , greatest(coalesce(making_amount_usd, 0), coalesce(taking_amount_usd, 0)) as amount_usd
+    , coalesce(greatest(making_amount_usd_trusted, taking_amount_usd_trusted), making_amount_usd_trusted, taking_amount_usd_trusted, greatest(making_amount_usd, taking_amount_usd), making_amount_usd, taking_amount_usd) as amount_usd
     , order_hash
     , order_start
     , order_end
