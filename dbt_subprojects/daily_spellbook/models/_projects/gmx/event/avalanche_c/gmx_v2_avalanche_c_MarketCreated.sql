@@ -46,8 +46,8 @@ WITH market_created_events AS (
         -- Extracting Bytes32
         {% for var in bytes32 -%}
             {{ process_variable(var[0], var[1], 'bytes32', 64, 32) }}{%- if not loop.last -%},{%- endif %}
-        {% endfor %}    
-        
+        {% endfor %}         
+
     FROM
       {{ source(blockchain_name, 'logs') }}
     WHERE
@@ -55,34 +55,12 @@ WITH market_created_events AS (
       AND topic1 = keccak(to_utf8('{{ event_name }}'))
 )
 
--- get tokens metadata
-, relevant_erc20_tokens AS (
-    SELECT 
-        contract_address, 
-        symbol,
-        decimals
-    FROM 
-        {{ ref('gmx_v2_avalanche_c_erc20') }}
-)
-
 SELECT 
     MCE.*
     , CASE 
-        WHEN MCE.index_token = 0x0000000000000000000000000000000000000000 THEN true
+        WHEN index_token = 0x0000000000000000000000000000000000000000 THEN true
         ELSE false
     END AS spot_only
     ,'GM' AS market_token_symbol
-    , 18 AS market_token_decimals
-    , ERC20_IT.symbol AS index_token_symbol
-    , ERC20_IT.decimals AS index_token_decimals  
-    , ERC20_LT.symbol AS long_token_symbol
-    , ERC20_LT.decimals AS long_token_decimals  
-    , ERC20_ST.symbol AS short_token_symbol
-    , ERC20_ST.decimals AS short_token_decimals    
+    , 18 AS market_token_decimals  
 FROM market_created_events AS MCE
-LEFT JOIN relevant_erc20_tokens AS ERC20_IT
-    ON ERC20_IT.contract_address = MCE.index_token
-LEFT JOIN relevant_erc20_tokens AS ERC20_LT
-    ON ERC20_LT.contract_address = MCE.long_token 
-LEFT JOIN relevant_erc20_tokens AS ERC20_ST
-    ON ERC20_ST.contract_address = MCE.short_token

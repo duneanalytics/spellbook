@@ -366,33 +366,7 @@ models:
         name: market_token_decimals
         description: The decimal precision of the market token (hardcoded as 18 in this model)          
         tests:
-          - not_null      
-      - &index_token_symbol
-        name: index_token_symbol
-        description: The symbol of the index token                
-      - &index_token_decimals
-        name: index_token_decimals
-        description: The decimal precision of the index token           
-      - &long_token_symbol
-        name: long_token_symbol
-        description: The symbol of the long token       
-        tests:
-          - not_null             
-      - &long_token_decimals
-        name: long_token_decimals
-        description: The decimal precision of the long token  
-        tests:
-          - not_null                 
-      - &short_token_symbol
-        name: short_token_symbol
-        description: The symbol of the short token    
-        tests:
-          - not_null               
-      - &short_token_decimals
-        name: short_token_decimals
-        description: The decimal precision of the short token  
-        tests:
-          - not_null                   
+          - not_null         
         
 
   - name: gmx_v2_arbitrum_PositionFeesCollected
