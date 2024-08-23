@@ -34,7 +34,7 @@ sources:
             description: "Maximum total amount per gas unit the initiator is willing to pay, including arbitrum fee and priority fee"
           - name: max_priority_fee_per_gas
             description: "Maximum additional fee per gas unit the initiator is willing to pay as a tip to validators"
-          - name: arbitrum_fee_per_gas
+          - name: base_fee_per_gas
             description: "Minimum fee per gas unit required for transaction inclusion"
           - name: nonce
             description: "Sequential number representing the count of transactions sent from the sender's address"
@@ -206,7 +206,7 @@ sources:
           short_description: The `arbitrum.blocks` table contains information about arbitrum blocks. Each row represents a single block.
         description: '{{ doc("arbitrum_blocks_doc") }}'
         columns:
-          - name: arbitrum_fee_per_gas
+          - name: base_fee_per_gas
             description: "Minimum fee per gas unit required for transaction inclusion in this block in the arbitrum unit wei"
           - name: difficulty
             description: "Measure of how difficult it was to produce this block (deprecated in arbitrum)"
