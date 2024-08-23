@@ -11,6 +11,7 @@
 }}
 
 {%- set event_name = 'PositionIncrease' -%}
+{%- set blockchain_name = 'arbitrum' -%}
 {%- set addresses = [
     ['market', 'market'],
     ['collateralToken', 'collateral_token']
@@ -76,7 +77,7 @@ WITH markets_data AS (
 , event_data AS (
     SELECT
         -- Main Variables
-        'arbitrum' as blockchain,
+        '{{ blockchain_name }}' as blockchain,
         block_time,
         block_date,
         block_number, 
@@ -115,7 +116,7 @@ WITH markets_data AS (
         {% endfor %}
 
     FROM
-        {{ source('arbitrum', 'logs') }}
+        {{ source(blockchain_name, 'logs') }}
     WHERE
         contract_address = 0xc8ee91a54287db53897056e12d9819156d3822fb
         AND topic1 = keccak(to_utf8('{{ event_name }}'))

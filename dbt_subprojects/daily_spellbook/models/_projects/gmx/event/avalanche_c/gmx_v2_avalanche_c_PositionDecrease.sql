@@ -11,6 +11,7 @@
 }}
 
 {%- set event_name = 'PositionDecrease' -%}
+{%- set blockchain_name = 'avalanche_c' -%}
 {%- set addresses = [
     ['market', 'market'],
     ['collateralToken', 'collateral_token']
@@ -78,7 +79,7 @@ WITH markets_data AS (
 , event_data AS (
     SELECT
         -- Main Variables
-        'avalanche_c' as blockchain,
+        '{{ blockchain_name }}' as blockchain,
         block_time,
         block_date,
         block_number, 
@@ -117,7 +118,7 @@ WITH markets_data AS (
         {% endfor %}
 
     FROM
-        {{ source('avalanche_c', 'logs') }}
+        {{ source(blockchain_name, 'logs') }}
     WHERE
         contract_address = 0xdb17b211c34240b014ab6d61d4a31fa0c0e20c26
         AND topic1 = keccak(to_utf8('{{ event_name }}'))
