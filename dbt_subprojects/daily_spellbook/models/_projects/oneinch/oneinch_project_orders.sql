@@ -94,7 +94,7 @@ meta as (
     {% endif %}
 )
 
-, trusted as (
+, trusted_tokens as (
     select
         distinct blockchain
         , contract_address
@@ -149,7 +149,7 @@ meta as (
         , any_value(tag) as tag
     from (select * from orders, unnest(assets) as a(contract_address))
     left join prices using(blockchain, contract_address, minute)
-    left join trusted using(blockchain, contract_address)
+    left join trusted_tokens using(blockchain, contract_address)
     group by 1, 2, 3, 4, 5, 6
 )
 
@@ -175,7 +175,14 @@ select
     , taking_amount
     , making_amount_usd
     , taking_amount_usd
-    , coalesce(greatest(making_amount_usd_trusted, taking_amount_usd_trusted), making_amount_usd_trusted, taking_amount_usd_trusted, greatest(making_amount_usd, taking_amount_usd), making_amount_usd, taking_amount_usd) as amount_usd
+    , coalesce(
+        greatest(making_amount_usd_trusted, taking_amount_usd_trusted)
+        , making_amount_usd_trusted
+        , taking_amount_usd_trusted
+        , greatest(making_amount_usd,  taking_amount_usd)
+        , making_amount_usd
+        , taking_amount_usd
+    ) as amount_usd
     , order_hash
     , order_start
     , order_end

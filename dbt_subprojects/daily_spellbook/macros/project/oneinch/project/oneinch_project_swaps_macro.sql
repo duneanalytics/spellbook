@@ -126,7 +126,7 @@ meta as (
     where blockchain = '{{blockchain}}'
 )
 
-, trusted as (
+, trusted_tokens as (
     select
         distinct contract_address
         , true as trusted
@@ -193,9 +193,18 @@ meta as (
             ))
         ) over(partition by block_number, tx_hash) as tx_swaps
         , if(user_amount_usd_trusted is null or caller_amount_usd_trusted is null
-            , if(user_amount_usd is null or caller_amount_usd is null
-                , coalesce(user_amount_usd_trusted, caller_amount_usd_trusted, user_amount_usd, caller_amount_usd, call_amount_usd_trusted, call_amount_usd)
-                , greatest(user_amount_usd, caller_amount_usd)) -- the user_amount & caller_amount of untrusted tokens takes precedence over the call_amount of trusted tokens
+            , if(
+                user_amount_usd is null or caller_amount_usd is null
+                , coalesce(
+                    user_amount_usd_trusted, 
+                    caller_amount_usd_trusted, 
+                    user_amount_usd, 
+                    caller_amount_usd, 
+                    call_amount_usd_trusted, 
+                    call_amount_usd
+                )
+                , greatest(user_amount_usd, caller_amount_usd)
+            ) -- the user_amount & caller_amount of untrusted tokens takes precedence over the call_amount of trusted tokens
             , greatest(user_amount_usd_trusted, caller_amount_usd_trusted)
         ) as amount_usd
     from (
@@ -266,7 +275,7 @@ meta as (
             and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and maker in (transfer_from, transfer_to)) -- transfers related to the order only
         left join prices using(contract_address, minute)
         left join tokens using(contract_address)
-        left join trusted using(contract_address)
+        left join trusted_tokens using(contract_address)
         left join creations as creations_from on creations_from.address = transfers.transfer_from
         left join creations as creations_to on creations_to.address = transfers.transfer_to
         group by 1, 2, 3, 4, 5
