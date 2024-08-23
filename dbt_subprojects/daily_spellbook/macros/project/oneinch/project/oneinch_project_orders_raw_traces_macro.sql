@@ -1,6 +1,6 @@
 {% macro oneinch_project_orders_raw_traces_macro(
     blockchain
-    , date_from = '2024-08-20'
+    , date_from = '2019-01-01'
 )%}
 
 select 
