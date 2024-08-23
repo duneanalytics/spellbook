@@ -16,7 +16,7 @@
      , ('avalanche_c', source('erc721_avalanche_c', 'evt_transfer'))
      , ('gnosis', source('erc721_gnosis', 'evt_transfer'))
      , ('fantom', source('erc721_fantom', 'evt_transfer'))
-     , ('optimism', source('erc721_optimism', 'evt_transfer'))
+     , ('optimism', source('erc721_optimism', 'evt_Transfer'))
      , ('arbitrum', source('erc721_arbitrum', 'evt_transfer'))
      , ('celo', source('erc721_celo', 'evt_transfer'))
      , ('base', source('erc721_base', 'evt_transfer'))
