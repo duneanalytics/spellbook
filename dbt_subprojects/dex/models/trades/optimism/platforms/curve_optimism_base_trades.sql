@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'curvefi_optimism',
+        schema = 'curve_optimism',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -10,7 +10,7 @@
     )
 }}
 
--- This should depend on 'curvefi_optimism_pools' running first
+-- This should depend on 'curve_optimism_pools' running first
 -- Original Ref - Dune v1 Abstraction: https://github.com/duneanalytics/spellbook/blob/main/deprecated-dune-v1-abstractions/optimism2/dex/insert_curve.sql
 -- Start Time
 -- SELECT MIN(evt_block_time) FROM curvefi_optimism.StableSwap_evt_TokenExchange
@@ -152,10 +152,10 @@ SELECT
         AND {{ incremental_predicate('t.evt_block_time') }}
         {% endif %}
     ) cp
-    INNER JOIN {{ ref('curvefi_optimism_pools') }} ta
+    INNER JOIN {{ ref('curve_optimism_pools') }} ta
         ON cp.project_contract_address = ta.pool
         AND cp.bought_id = ta.tokenid
-    INNER JOIN {{ ref('curvefi_optimism_pools') }} tb
+    INNER JOIN {{ ref('curve_optimism_pools') }} tb
         ON cp.project_contract_address = tb.pool
         AND cp.sold_id = tb.tokenid
 )
