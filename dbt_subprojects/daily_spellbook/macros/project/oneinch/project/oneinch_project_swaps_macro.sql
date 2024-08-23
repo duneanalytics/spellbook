@@ -187,7 +187,7 @@ meta as (
             ) as row(
                 project varchar
                 , call_trace_address array(bigint)
-                , tokens array(varchar)
+                , tokens array(row(symbol varchar, contract_address_raw varbinary))
                 , amount_usd double
                 , intent boolean
             ))
@@ -231,9 +231,27 @@ meta as (
             , any_value(taker_asset) as taker_asset
             , any_value(taking_amount) as taking_amount
             , any_value(order_flags) as order_flags
-            , array_agg(distinct (if(native, native_symbol, symbol), contract_address_raw)) as tokens
-            , array_agg(distinct (if(native, native_symbol, symbol), contract_address_raw)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_tokens
-            , array_agg(distinct (if(native, native_symbol, symbol), contract_address_raw)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_tokens
+            ,  array_agg(
+                distinct cast(row(
+                    if(native, native_symbol, symbol), contract_address_raw
+                ) as row(
+                    symbol varchar, contract_address_raw varbinary
+                ))
+             ) as tokens
+            , array_agg(
+                distinct cast(row(
+                    if(native, native_symbol, symbol), contract_address_raw
+                ) as row(
+                    symbol varchar, contract_address_raw varbinary
+                ))
+            ) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_tokens
+            , array_agg(
+                distinct cast(row(
+                    if(native, native_symbol, symbol), contract_address_raw
+                ) as row(
+                    symbol varchar, contract_address_raw varbinary
+                ))
+            ) filter(where transfer_from = call_from or transfer_to = call_from) as caller_tokens
             , max(amount * price / pow(10, decimals)) as call_amount_usd
             , max(amount * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
             , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
