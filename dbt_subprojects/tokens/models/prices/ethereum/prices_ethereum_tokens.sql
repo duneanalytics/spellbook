@@ -1823,6 +1823,7 @@ FROM
     ('apex-apex-token', 'ethereum', 'APEX', 0x52A8845DF664D76C69d2EEa607CD793565aF42B8, 18),
     ('puff-puff-token', 'ethereum', 'PUFF', 0x18fa05ee5e478eed8925946abb41d09aec5d34d6, 18),
     ('usdy-ondo-us-dollar-yield', 'ethereum', 'USDY', 0x96f6ef951840721adbf46ac996b59e0235cb985c, 18),
+    ('pzeth-renzo-restaked-lst', 'ethereum', 'pzETH', 0x8c9532a60E0E7C6BbD2B2c1303F63aCE1c3E9811, 18),
     ('sx-sx-network', 'ethereum', 'SX', 0xbe9f61555f50dd6167f2772e9cf7519790d96624, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (

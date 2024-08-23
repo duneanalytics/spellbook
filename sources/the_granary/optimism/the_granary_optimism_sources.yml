@@ -6,11 +6,7 @@ sources:
 
     tables:
     - name: AToken_evt_Initialized
-      loaded_at_field: evt_block_time
       description: "aToken initialization events, supply tokens."
-      freshness:
-        warn_after: { count: 12, period: hour }
-        error_after: { count: 24, period: hour }
       columns:
       - &contract_address
         name: contract_address
@@ -41,11 +37,7 @@ sources:
         description: "Name of the aToken"
 
     - name: DebtToken_evt_Initialized
-      loaded_at_field: evt_block_time
       description: "aToken initialization events, stable debt tokens."
-      freshness:
-        warn_after: { count: 12, period: hour }
-        error_after: { count: 24, period: hour }
       columns:
       - *contract_address  
       - *evt_block_number
