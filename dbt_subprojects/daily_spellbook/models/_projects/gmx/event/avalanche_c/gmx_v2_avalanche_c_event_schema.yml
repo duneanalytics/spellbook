@@ -82,16 +82,6 @@ models:
         description: The collateral token used in the position increase
         tests:
           - not_null
-      - &collateral_token_symbol
-        name: collateral_token_symbol
-        description: The symbol of the token used as collateral in the market. This token represents the asset that backs the position and is used to secure trades.
-        tests:
-          - not_null
-      - &market_name
-        name: market_name
-        description: |
-          The name of the market within the GMX protocol, formatted as a combination of the index token and the long/short tokens. 
-          The format is `index_token_symbol/USD [long_token_symbol-short_token_symbol]`, which represents the trading pair and the associated positions within the market.
       - &size_in_usd
         name: size_in_usd
         description: The size of the position in USD
@@ -249,8 +239,6 @@ models:
         description: The collateral token used in the position decrease
         tests:
           - not_null
-      - *collateral_token_symbol
-      - *market_name
       - *size_in_usd
       - *size_in_tokens
       - name: collateral_amount
@@ -409,7 +397,6 @@ models:
         description: The collateral token used in the position fees collected event
         tests:
           - not_null
-      - *collateral_token_symbol
       - &affiliate
         name: affiliate
         description: The affiliate address
@@ -611,7 +598,6 @@ models:
         description: The collateral token used in the position fees info event
         tests:
           - not_null
-      - *collateral_token_symbol
       - *affiliate
       - *trader
       - *ui_fee_receiver

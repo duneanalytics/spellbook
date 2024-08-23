@@ -60,25 +60,24 @@
 
 -- get all markets
 WITH markets_data AS (
-  SELECT
-    market_token AS market,
-    index_token,
-    long_token,
-    short_token,
-    index_token_symbol,
-    index_token_decimals,
-    long_token_symbol,
-    long_token_decimals,
-    short_token_symbol,
-    short_token_decimals
-  FROM {{ ref('gmx_v2_avalanche_c_MarketCreated') }}
+    SELECT
+        MCE.market_token AS market,
+        ERC20_IT.decimals AS index_token_decimals,
+        ERC20_LT.decimals AS long_token_decimals,
+        ERC20_ST.decimals AS short_token_decimals  
+    FROM {{ ref('gmx_v2_avalanche_c_MarketCreated') }} AS MCE
+    LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_IT
+        ON ERC20_IT.contract_address = MCE.index_token
+    LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_LT
+        ON ERC20_LT.contract_address = MCE.long_token 
+    LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_ST
+        ON ERC20_ST.contract_address = MCE.short_token
 )
 
 -- Filter relevant tokens
 , collateral_tokens_data AS (
     SELECT 
         contract_address AS collateral_token, 
-        symbol AS collateral_token_symbol,
         decimals AS collateral_token_decimals
     FROM 
         {{ ref('gmx_v2_avalanche_c_erc20') }}
@@ -149,7 +148,6 @@ SELECT
     
     ED.market AS market,
     ED.collateral_token,
-    collateral_token_symbol,
     affiliate,
     trader,
     ui_fee_receiver,
