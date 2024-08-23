@@ -46,8 +46,8 @@ with contracts as (
     select
         '{{ blockchain }}' as blockchain
         , date_trunc('hour', block_time) as block_hour
-        , "from"
-        , to
+        , "from" as from_address
+        , to as to_address
         , count(hash) as tx_count
         , count_if(success) as tx_success_count
     from
@@ -68,8 +68,8 @@ select
     tx.blockchain
     , ei.chain_id
     , tx.block_hour
-    , tx."from"
-    , tx.to
+    , tx.from_address
+    , tx.to_address
     , tx.tx_count
     , cast(tx.tx_success_count as double)/cast(tx.tx_count as double) as tx_success_rate
     , case
@@ -95,15 +95,15 @@ inner join
     on '{{ blockchain }}' = ei.blockchain
 inner join
     from_new_address
-    on tx."from" = from_new_address.address
+    on tx.from_address = from_new_address.address
 inner join
     to_new_address
-    on tx.to = to_new_address.address
+    on tx.to_address = to_new_address.address
 left join
     contracts as from_contract
-    on tx."from" = from_contract.address
+    on tx.from_address = from_contract.address
 left join
     contracts as to_contract
-    on tx.to = to_contract.address
+    on tx.to_address = to_contract.address
     
 {% endmacro %}
