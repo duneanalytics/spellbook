@@ -16,7 +16,7 @@
     ['key', 'key'],
 ] -%}
 {%- set addresses = [
-    ['account', 'account'],
+    ['account', 'account_'],
 ] -%}
 {%- set unsigned_integers = [
     ['secondaryOrderType', 'secondary_order_type'],

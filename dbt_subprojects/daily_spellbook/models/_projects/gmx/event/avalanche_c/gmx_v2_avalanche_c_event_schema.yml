@@ -671,7 +671,11 @@ models:
         description: The key associated with the executed order. Extracted as a bytes32 value.
         tests:
           - not_null
-          - unique        
+          - unique     
+      - name: account_
+        description: An additional address associated with the order
+        tests:
+          - not_null               
       - name: secondary_order_type
         description: |
           The type of secondary order associated with the executed order. 
