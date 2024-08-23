@@ -222,7 +222,9 @@ meta as (
             , any_value(taker_asset) as taker_asset
             , any_value(taking_amount) as taking_amount
             , any_value(order_flags) as order_flags
-            , array_agg(distinct if(native, native_symbol, symbol)) as tokens
+            , array_agg(distinct (if(native, native_symbol, symbol), contract_address_raw)) as tokens
+            , array_agg(distinct (if(native, native_symbol, symbol), contract_address_raw)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_tokens
+            , array_agg(distinct (if(native, native_symbol, symbol), contract_address_raw)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_tokens
             , max(amount * price / pow(10, decimals)) as call_amount_usd
             , max(amount * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
             , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
@@ -238,6 +240,7 @@ meta as (
                 , block_time
                 , tx_hash
                 , transfer_trace_address
+                , contract_address as contract_address_raw
                 , if(type = 'native', wrapped_native_token_address, contract_address) as contract_address
                 , type = 'native' as native
                 , amount
@@ -295,6 +298,7 @@ select
     , taking_amount
     , order_flags
     , tokens
+    , if(cardinality(user_tokens) = 0, if(cardinality(caller_tokens) = 0, tokens, caller_tokens), user_tokens) as customer_tokens
     , amount_usd
     , user_amount_usd
     , user_amount_usd_trusted
