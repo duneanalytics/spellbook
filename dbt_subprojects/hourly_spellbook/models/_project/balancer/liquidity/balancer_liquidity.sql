@@ -19,6 +19,7 @@ ref('balancer_v1_ethereum_liquidity')
 , ref('balancer_v2_avalanche_c_liquidity')
 , ref('balancer_v2_base_liquidity')
 , ref('balancer_v2_zkevm_liquidity')
+, ref('balancer_cowswap_amm_liquidity')
 ] %}
 
 

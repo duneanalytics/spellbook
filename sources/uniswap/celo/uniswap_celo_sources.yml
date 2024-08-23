@@ -3,11 +3,8 @@ version: 2
 sources:
   - name: uniswap_v3_celo
     description: "Celo decoded tables related to Uniswap v3 contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: Pair_evt_Swap
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - &amount1
@@ -49,7 +46,6 @@ sources:
             description: the log base 1.0001 of price of the pool after the swap"
 
       - name: UniswapV3Factory_evt_PoolCreated
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - name: contract_address
@@ -75,4 +71,3 @@ sources:
             description: "The second of the two tokens in the pool"
 
       - name: Pair_evt_Flash
-        loaded_at_field: evt_block_time

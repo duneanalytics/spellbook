@@ -9,7 +9,6 @@ sources:
       - name: ERC1155OrdersFeature_evt_ERC1155BuyOrderFilled
 
   - name: zonic_scroll
-    freshness:
     tables:
       - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled
 

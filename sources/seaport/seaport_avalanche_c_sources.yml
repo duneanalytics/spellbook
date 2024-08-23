@@ -2,11 +2,8 @@ version: 2
 
 sources: 
   - name: seaport_avalanche_c
-    freshness:
-      warn_after: { count: 24, period: hour }
     tables:
       - name: Seaport_evt_OrderFulfilled
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - name: consideration
@@ -21,8 +18,5 @@ sources:
           - name: recipient
           - name: zone
       - name: Seaport_call_matchAdvancedOrders
-        loaded_at_field: evt_block_time
       - name: Seaport_call_matchOrders
-        loaded_at_field: evt_block_time
       - name: Seaport_evt_OrdersMatched
-        loaded_at_field: evt_block_time
