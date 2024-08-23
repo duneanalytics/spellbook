@@ -1,0 +1,127 @@
+version: 2
+
+models:
+  - name: balancer_cowswap_amm_trades
+    meta:
+      blockchain: ethereum, gnosis
+      sector: trades
+      project: balancer_cowswap_amm
+      contributors: viniabussafi
+    config:
+      tags: ['balancer', 'cowswap', 'ethereum', 'gnosis', 'amm', 'trades']
+    description: "Trades on Balancer CoWSwap AMM pools"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project name (balancer)"
+      - &version
+        name: version
+        description: "Version of the project"
+      - &block_month
+        name: block_month
+        description: "Block month in UTC"
+      - &block_date
+        name: block_date
+        description: "Block date in UTC"
+      - &block_time
+        name: block_time
+        description: 'Block time in UTC'
+      - &block_number
+        name: block_number
+        description: 'Block number'
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Pool address"
+      - &tx_hash
+        name: tx_hash
+        description: "Tx. Hash"
+      - &tx_from
+        name: tx_from
+        description: "transaction.from"
+      - &tx_to
+        name: tx_to
+        description: "transaction.to"
+      - &evt_index
+        name: evt_index
+        description: 'Event index'
+      - name: pool_type
+      - name: pool_symbol
+      - name: swap_fee
+
+  - name: labels_balancer_cowswap_amm_pools
+    meta:
+      blockchain: ethereum, gnosis
+      sector: labels
+      project: balancer_cowswap_amm
+      contributors: viniabussafi
+    config:
+      tags: ['labels', 'ethereum', 'gnosis', 'balancer', 'pools']
+    description: "Balancer CoWSwap AMM liquidity pools created on Ethereum."
+    columns:
+      - *blockchain
+      - &address
+        name: address
+        description: "Address of liquidity pool"
+      - &name
+        name: name
+        description: "Label name of pool containing the token symbols and their respective weights (if applicable)"
+      - &category
+        name: category
+        description: "Label category"
+      - &contributor
+        name: contributor
+        description: "Wizard(s) contributing to labels"
+      - &source
+        name: source
+        description: "How were labels generated (could be static or query)"
+      - &created_at
+        name: created_at
+        description: "When were labels created"
+      - &updated_at
+        name: updated_at
+        description: "When were labels updated for the last time"
+      - &model_name
+        name: model_name
+        description: "Name of the label model sourced from"
+      - &label_type
+        name: label_type
+        description: "Type of label (see labels overall readme)"
