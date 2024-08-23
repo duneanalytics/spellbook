@@ -231,26 +231,17 @@ meta as (
             , any_value(taker_asset) as taker_asset
             , any_value(taking_amount) as taking_amount
             , any_value(order_flags) as order_flags
-            ,  array_agg(
-                distinct cast(row(
-                    if(native, native_symbol, symbol), contract_address_raw
-                ) as row(
-                    symbol varchar, contract_address_raw varbinary
-                ))
-             ) as tokens
-            , array_agg(
-                distinct cast(row(
-                    if(native, native_symbol, symbol), contract_address_raw
-                ) as row(
-                    symbol varchar, contract_address_raw varbinary
-                ))
+            ,  array_agg(distinct
+                cast(row(if(native, native_symbol, symbol), contract_address_raw)
+                  as row(symbol varchar, contract_address_raw varbinary))
+            ) as tokens
+            , array_agg(distinct
+                cast(row(if(native, native_symbol, symbol), contract_address_raw)
+                  as row(symbol varchar, contract_address_raw varbinary))
             ) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_tokens
-            , array_agg(
-                distinct cast(row(
-                    if(native, native_symbol, symbol), contract_address_raw
-                ) as row(
-                    symbol varchar, contract_address_raw varbinary
-                ))
+            , array_agg(distinct
+                cast(row(if(native, native_symbol, symbol), contract_address_raw)
+                  as row(symbol varchar, contract_address_raw varbinary))
             ) filter(where transfer_from = call_from or transfer_to = call_from) as caller_tokens
             , max(amount * price / pow(10, decimals)) as call_amount_usd
             , max(amount * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
