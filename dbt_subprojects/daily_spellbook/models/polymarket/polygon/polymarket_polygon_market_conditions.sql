@@ -44,9 +44,8 @@ markets as (
     evt_index,
     tx_hash
   from {{ ref('polymarket_polygon_markets') }}
-  where market_id is not null
   {% if is_incremental() %}
-  and {{ incremental_predicate('block_time') }}
+  where {{ incremental_predicate('block_time') }}
   {% endif %}
 ),
 
@@ -55,6 +54,7 @@ q_split_by_words as (
     market_id,
     split(question, ' ') as words
   from markets
+  where market_id is not null
 ),
 
 q_common_words as (
@@ -89,8 +89,9 @@ q_keywords as (
 select
   c.block_time,
   c.block_number,
-  c.question_id,
-  qk.question,
+  m.market_id,
+  m.question_id,
+  m.question,
   c.condition_id,
   c.condition_token,
   c.condition_status,
@@ -101,4 +102,5 @@ select
   c.evt_index,
   c.tx_hash
 from conditions c
+  inner join markets m on c.question_id = m.question_id
   left join q_keywords qk on c.question_id = qk.question_id
