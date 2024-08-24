@@ -96,12 +96,12 @@ select
     when coalesce(json_value(data_decoded, 'lax $.title' null on error), json_value(data_decoded, 'lax $.question' null on error)) is not null
     then coalesce(json_extract_scalar(data_decoded, '$.title'), json_extract_scalar(data_decoded, '$.question'))
     else regexp_extract(data_decoded, '(?i)(?:title|question):\s*(.*?),\s*description:', 1)
-  end as title,
+  end as question,
   case
     when json_value(data_decoded, 'lax $.description' null on error) is not null
     then json_extract_scalar(data_decoded, '$.description')
     else substr(data_decoded, strpos(data_decoded, 'description: ') + length('description: '))
-  end as description,
+  end as question_description,
   reward,
   reward_token,
   evt_index,

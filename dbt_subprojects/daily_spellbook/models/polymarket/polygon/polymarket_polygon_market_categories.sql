@@ -38,12 +38,12 @@ select
     when json_value(data_decoded, 'lax $.title' null on error) is not null
     then json_extract_scalar(data_decoded, '$.title')
     else regexp_extract(data_decoded, 'title:\s*(.*?),\s*description:', 1)
-  end as title,
+  end as market,
   case
     when json_value(data_decoded, 'lax $.description' null on error) is not null
     then json_extract_scalar(data_decoded, '$.description')
     else substr(data_decoded, strpos(data_decoded, 'description: ') + length('description: '))
-  end as description,
+  end as market_description,
   oracle,
   fee_bips, 
   evt_index,

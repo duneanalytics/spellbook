@@ -4,11 +4,11 @@ models:
   - name: polymarket_polygon_market_categories
     meta:
       blockchain: polygon
-      sector: prediction_market
+      sector: prediction_markets
       project: polymarket
       contributors: tomfutago
     config:
-      tags: ['polygon','prediction_market','polymarket','markets']
+      tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Polymarket: market categories"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -18,11 +18,11 @@ models:
   - name: polymarket_polygon_markets
     meta:
       blockchain: polygon
-      sector: prediction_market
+      sector: prediction_markets
       project: polymarket
       contributors: tomfutago
     config:
-      tags: ['polygon','prediction_market','polymarket','markets']
+      tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Polymarket: markets"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -32,39 +32,39 @@ models:
   - name: polymarket_polygon_market_outcomes
     meta:
       blockchain: polygon
-      sector: prediction_market
+      sector: prediction_markets
       project: polymarket
       contributors: tomfutago
     config:
-      tags: ['polygon','prediction_market','polymarket','markets']
+      tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Polymarket: market outcomes"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - question_id
 
-  - name: polymarket_polygon_market_conditions
+  - name: polymarket_polygon_base_market_conditions
     meta:
       blockchain: polygon
-      sector: prediction_market
+      sector: prediction_markets
       project: polymarket
       contributors: tomfutago
     config:
-      tags: ['polygon','prediction_market','polymarket','markets']
+      tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Polymarket: market conditions (helper table)"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - condition_id
 
-  - name: polymarket_polygon_ctf_tokens
+  - name: polymarket_polygon_base_ctf_tokens
     meta:
       blockchain: polygon
-      sector: prediction_market
+      sector: prediction_markets
       project: polymarket
       contributors: tomfutago
     config:
-      tags: ['polygon','prediction_market','polymarket','markets']
+      tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Polymarket: CTF tokens (helper table)"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -72,3 +72,19 @@ models:
             - condition_id
             - token0
             - token1
+
+  - name: polymarket_polygon_market_conditions
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Polymarket: market conditions"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - question_id
+            - condition_id
+            - condition_token
