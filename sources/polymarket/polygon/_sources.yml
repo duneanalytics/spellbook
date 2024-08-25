@@ -17,3 +17,11 @@ sources:
       - name: ctf_evt_ConditionPreparation
       - name: CTFExchange_evt_TokenRegistered
       - name: NegRiskCtfExchange_evt_TokenRegistered
+      - name: fedinterestrate_evt_FPMMSell
+      - name: fedinterestrate_evt_FPMMBuy
+      - name: CTFExchange_evt_OrderFilled
+      - name: NegRiskCtfExchange_evt_OrderFilled
+
+  - name: polymarketfactory_polygon
+    tables:
+      - name: FixedProductMarketMakerFactory_evt_FixedProductMarketMakerCreation
