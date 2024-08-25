@@ -103,4 +103,5 @@ models:
           combination_of_columns:
             - block_time
             - asset_id
+            - evt_index
             - tx_hash
