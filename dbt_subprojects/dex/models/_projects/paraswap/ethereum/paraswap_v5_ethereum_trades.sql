@@ -185,7 +185,7 @@ uniswap_v2_call_swap_without_event AS (
         
             LEFT JOIN {{ source('erc20_ethereum', 'evt_transfer') }} e ON c.call_block_number = e.evt_block_number
                 AND c.call_tx_hash = e.evt_tx_hash
-                AND e."from" = c.caller
+                AND (e."from" = c.caller OR e."from" = 0x216B4B4Ba9F3e719726886d34a177484278Bfcae /* TokenTransferProxy */)
                 AND cast(e."to" AS varchar) = c.swap_in_pair
                 AND e.evt_block_number >= {{ trade_call_start_block_number }}
                 {% if is_incremental() %}
@@ -336,7 +336,7 @@ uniswap_call_swap_without_event AS (
         
             LEFT JOIN {{ source('erc20_ethereum', 'evt_transfer') }} e ON c.call_block_number = e.evt_block_number
                 AND c.call_tx_hash = e.evt_tx_hash
-                AND e."from" = c.caller
+                AND (e."from" = c.caller OR e."from" = 0x216B4B4Ba9F3e719726886d34a177484278Bfcae /* TokenTransferProxy */)
                 AND e.contract_address = c.token_in
                 AND e.evt_block_number >= {{ trade_call_start_block_number }}
                 {% if is_incremental() %}
@@ -487,7 +487,7 @@ zero_x_call_swap_without_event AS (
         
             LEFT JOIN {{ source('erc20_ethereum', 'evt_transfer') }} e ON c.call_block_number = e.evt_block_number
                 AND c.call_tx_hash = e.evt_tx_hash
-                AND e."from" = c.caller
+                AND (e."from" = c.caller OR e."from" = 0x216B4B4Ba9F3e719726886d34a177484278Bfcae /* TokenTransferProxy */)
                 AND e."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */
                 AND e.contract_address = c.token_in
                 AND e.evt_block_number >= {{ trade_call_start_block_number }}
