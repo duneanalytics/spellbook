@@ -28,6 +28,9 @@ models:
     - &version
       name: version
       description: "Version for the token"
+    - &day
+      name: day
+      description: "Date on which the token balance is logged"
     - &address
       name: address
       description: "Address for the token holder"
