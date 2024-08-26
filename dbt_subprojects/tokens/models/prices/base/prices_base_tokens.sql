@@ -147,7 +147,7 @@ FROM
     ('berf-berf','base','BERF',0xfc5462143a3178cf044e97c491f6bcb5e38f173e, 18),
     ('boda-based-yoda','base','BODA',0x6bd81aad9b25ad1e0b99c47ed01b34eacf4b8be7, 18),
     ('loa-law-of-attraction','base','LOA',0x8d3419b9a18651f3926a205ee0b1acea1e7192de, 18),
-    ('brett4-brett-20','base','BRETT',0x1a475d06d967aeb686c98de80d079d72097aeacf, 9),
+    --('brett4-brett-20','base','BRETT',0x1a475d06d967aeb686c98de80d079d72097aeacf, 9), --token inactive
     ('bchb-bitcoin-cash-on-base','base','BCHB',0x1791b55e734df69b4906a4178a83dbe63c4f8421, 18),
     ('brogg-brett39s-dog','base','BROGG',0xc36f19bccd51e3f1163eff07b5edf9d2850acec4, 18),
     --('maba-make-america-based-again','base','MABA',0xd9ea93a38d1771c870128f9134d4622d331c04c8, 18), --token inactive
