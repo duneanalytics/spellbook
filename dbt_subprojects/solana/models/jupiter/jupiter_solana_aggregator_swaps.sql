@@ -164,7 +164,7 @@ l.amm
 , l.tx_id
 , l.block_slot
 , l.block_time
-, date_trunc('month', l.block_time) as block_month
+, CAST(date_trunc('month', l.block_time) as DATE) as block_month
 , l.tx_signer
 , l.jup_version
 FROM (

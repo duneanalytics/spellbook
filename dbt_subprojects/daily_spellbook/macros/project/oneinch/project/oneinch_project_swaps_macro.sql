@@ -126,6 +126,14 @@ meta as (
     where blockchain = '{{blockchain}}'
 )
 
+, trusted_tokens as (
+    select
+        distinct contract_address
+        , true as trusted
+    from {{ source('prices', 'trusted_tokens') }}
+    where blockchain = '{{blockchain}}'
+)
+
 , prices as (
     select
         contract_address
@@ -179,15 +187,25 @@ meta as (
             ) as row(
                 project varchar
                 , call_trace_address array(bigint)
-                , tokens array(varchar)
+                , tokens array(row(symbol varchar, contract_address_raw varbinary))
                 , amount_usd double
                 , intent boolean
             ))
         ) over(partition by block_number, tx_hash) as tx_swaps
-        , if(
-            user_amount_usd is null or caller_amount_usd is null
-            , coalesce(user_amount_usd, caller_amount_usd, call_amount_usd)
-            , greatest(user_amount_usd, caller_amount_usd)
+        , if(user_amount_usd_trusted is null or caller_amount_usd_trusted is null
+            , if(
+                user_amount_usd is null or caller_amount_usd is null
+                , coalesce(
+                    user_amount_usd_trusted, 
+                    caller_amount_usd_trusted, 
+                    user_amount_usd, 
+                    caller_amount_usd, 
+                    call_amount_usd_trusted, 
+                    call_amount_usd
+                )
+                , greatest(user_amount_usd, caller_amount_usd)
+            ) -- the user_amount & caller_amount of untrusted tokens takes precedence over the call_amount of trusted tokens
+            , greatest(user_amount_usd_trusted, caller_amount_usd_trusted)
         ) as amount_usd
     from (
         select
@@ -213,10 +231,24 @@ meta as (
             , any_value(taker_asset) as taker_asset
             , any_value(taking_amount) as taking_amount
             , any_value(order_flags) as order_flags
-            , array_agg(distinct if(native, native_symbol, symbol)) as tokens
+            , array_agg(distinct
+                cast(row(if(native, native_symbol, symbol), contract_address_raw)
+                  as row(symbol varchar, contract_address_raw varbinary))
+            ) as tokens
+            , array_agg(distinct
+                cast(row(if(native, native_symbol, symbol), contract_address_raw)
+                  as row(symbol varchar, contract_address_raw varbinary))
+            ) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_tokens
+            , array_agg(distinct
+                cast(row(if(native, native_symbol, symbol), contract_address_raw)
+                  as row(symbol varchar, contract_address_raw varbinary))
+            ) filter(where transfer_from = call_from or transfer_to = call_from) as caller_tokens
             , max(amount * price / pow(10, decimals)) as call_amount_usd
+            , max(amount * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
             , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
+            , max(amount * price / pow(10, decimals)) filter(where (creations_from.block_number is null or creations_to.block_number is null) and trusted) as user_amount_usd_trusted
             , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
+            , max(amount * price / pow(10, decimals)) filter(where (transfer_from = call_from or transfer_to = call_from) and trusted) as caller_amount_usd_trusted
             , array_agg(distinct transfer_from) filter(where creations_from.block_number is null) as senders
             , array_agg(distinct transfer_to) filter(where creations_to.block_number is null) as receivers
         from calls
@@ -226,6 +258,7 @@ meta as (
                 , block_time
                 , tx_hash
                 , transfer_trace_address
+                , contract_address as contract_address_raw
                 , if(type = 'native', wrapped_native_token_address, contract_address) as contract_address
                 , type = 'native' as native
                 , amount
@@ -251,6 +284,7 @@ meta as (
             and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and maker in (transfer_from, transfer_to)) -- transfers related to the order only
         left join prices using(contract_address, minute)
         left join tokens using(contract_address)
+        left join trusted_tokens using(contract_address)
         left join creations as creations_from on creations_from.address = transfers.transfer_from
         left join creations as creations_to on creations_to.address = transfers.transfer_to
         group by 1, 2, 3, 4, 5
@@ -282,10 +316,14 @@ select
     , taking_amount
     , order_flags
     , tokens
+    , if(cardinality(user_tokens) = 0, if(cardinality(caller_tokens) = 0, tokens, caller_tokens), user_tokens) as customer_tokens
     , amount_usd
     , user_amount_usd
+    , user_amount_usd_trusted
     , caller_amount_usd
+    , caller_amount_usd_trusted
     , call_amount_usd
+    , call_amount_usd_trusted
     , tx_swaps
     , if(cardinality(users) = 0 or order_hash is null, array_union(users, array[tx_from]), users) as users
     , users as direct_users
