@@ -17,7 +17,6 @@
 %}
 
 
-with 
 tokens as (
     select 
         category,
@@ -25,7 +24,7 @@ tokens as (
         version,
         address,
         token_address
-    from {ref(something)}
+    from {{something}}
 ),
 changed_balances as (
     select
@@ -43,7 +42,7 @@ changed_balances as (
         and address in (select address from tokens)
         and token_address in (select token_address from tokens)
     {% if is_incremental() %}
-        and {{ incremental_predicate('evt_block_time') }}
+        and {{ incremental_predicate('day') }}
     {% endif %}
 ),
 days as (
@@ -81,6 +80,7 @@ select
     b.token_address,
     b.token_standard,
     b.token_id,
+    b.balance,
     b.balance * p.price as balance_usd
 from(
     select * from forward_fill

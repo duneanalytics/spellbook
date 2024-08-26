@@ -7,7 +7,7 @@ models:
       blockchain: arbitrum
       sector: rwa
       project: rwa
-      contributors: maybeYonas
+      contributors: maybeYonas, pyor_xyz
 
     config:
       tags: ['rwa', 'tokens']
@@ -37,7 +37,7 @@ models:
       blockchain: arbitrum
       sector: rwa
       project: rwa
-      contributors: maybeYonas
+      contributors: maybeYonas, pyor_xyz
 
     config:
       tags: ['rwa', 'balances']
@@ -78,3 +78,33 @@ models:
     - &balance_usd
       name: balance_usd
       description: "USD value of balance for the user"
+
+  - name: rwa_arbitrum_dex_balances
+
+    meta:
+      blockchain: arbitrum
+      sector: rwa
+      project: rwa
+      contributors: maybeYonas, pyor_xyz
+
+    config:
+      tags: ['rwa', 'balances']
+    description: "Balances of RWA token DEXes"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+    - *blockchain
+    - *project
+    - *version
+    - *day
+    - *address
+    - *token_symbol
+    - *token_address
+    - *token_standard
+    - *token_id
+    - *balance
+    - *balance_usd
