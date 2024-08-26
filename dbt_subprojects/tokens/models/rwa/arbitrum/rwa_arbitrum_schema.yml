@@ -1,0 +1,53 @@
+version: 2
+
+models : 
+
+models:
+  - name: rwa_arbitrum_assets
+
+    meta:
+      blockchain: arbitrum
+      sector: rwa
+      project: rwa
+      contributors: maybeYonas
+
+    config:
+      tags: ['rwa', 'balances']
+    description: "Balances of RWA token holders"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+    - &blockchain
+      name: blockchain
+      description: "Blockchain for the token"
+    - &project
+      name: project
+      description: "Project for the token"
+    - &version
+      name: version
+      description: "Version for the token"
+    - &address
+      name: address
+      description: "Address for the token holder"
+    - &token_symbol
+      name: token_symbol
+      description: "Symbol for the token"
+    - &token_address
+      name: token_address
+      description: "Address for the token"
+    - &token_standard
+      name: token_standard
+      description: "Standard for the token"
+    - &token_id
+      name: token_id
+      description: "ID for the token"
+    - &balance
+      name: balance
+      description: "Balance for the user"
+    - &balance_usd
+      name: balance_usd
+      description: "USD value of balance for the user"
