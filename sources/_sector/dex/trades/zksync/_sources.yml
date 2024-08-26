@@ -89,6 +89,3 @@ sources:
   - name: velocore_v2_zksync
     tables:
       - name: VaultStorage_evt_Swap
-  - name: clipper_zksync
-    tables:
-      - name: ClipperPackedOracleVerifiedExchange_evt_Swapped
