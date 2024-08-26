@@ -6,10 +6,11 @@ models:
       blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
       sector: dex_aggregator
       contributors: bh2smith, Henrystats, jeff-dude, rantum
+      docs_slug: /curated/trading/DEX/dex-aggregator-trades
     config:
       tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
     description: >
-      Aggregator trades on all chains across all contracts and versions
+      The dex_aggregator.trades table captures data on actions taken on aggregators - recording all events across various aggregators and blockchains.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
