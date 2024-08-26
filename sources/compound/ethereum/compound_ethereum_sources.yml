@@ -3,11 +3,8 @@ version: 2
 sources: 
   - name: compound_v2_ethereum
     description: "Ethereum decoded tables related to Compound v2 contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: GovernorBravoDelegate_evt_VoteCast
-        loaded_at_field: evt_block_time
         columns:
           - &contract_address
             name: contract_address
@@ -33,7 +30,6 @@ sources:
           - &votes
             name: votes
       - name: GovernorBravoDelegate_evt_ProposalCreated
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - *evt_block_number
@@ -59,7 +55,6 @@ sources:
           - &values
             name: values
       - name: GovernorBravoDelegate_evt_ProposalCanceled
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - *evt_block_number
@@ -68,7 +63,6 @@ sources:
           - *evt_tx_hash
           - *id
       - name: GovernorBravoDelegate_evt_ProposalExecuted
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - *evt_block_number
@@ -77,7 +71,6 @@ sources:
           - *evt_tx_hash
           - *id
       - name: GovernorBravoDelegate_evt_ProposalQueued
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - &eta
