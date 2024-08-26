@@ -97,11 +97,27 @@ models:
       contributors: tomfutago
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
-    description: "Polymarket: market conditions"
+    description: "Polymarket: market trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
             - asset_id
+            - evt_index
+            - tx_hash
+
+  - name: polymarket_polygon_capital_actions
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Polymarket: user capital actions"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
             - evt_index
             - tx_hash
