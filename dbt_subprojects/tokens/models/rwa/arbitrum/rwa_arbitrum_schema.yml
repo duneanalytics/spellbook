@@ -16,7 +16,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - token_address
-    
+
     columns:
     - &token_address
       name: token_address
@@ -52,9 +52,7 @@ models:
     - &blockchain
       name: blockchain
       description: "Blockchain for the token"
-    - &project
-      name: project
-      description: "Project for the token"
+    - *project
     - &version
       name: version
       description: "Version for the token"
@@ -67,9 +65,7 @@ models:
     - &token_symbol
       name: token_symbol
       description: "Symbol for the token"
-    - &token_address
-      name: token_address
-      description: "Address for the token"
+    - *token_address
     - &token_standard
       name: token_standard
       description: "Standard for the token"
