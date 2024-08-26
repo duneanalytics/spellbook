@@ -1,10 +1,10 @@
 {#  @DEV here
 
-    @NOTICE this macro constructs the address level token balances table for given input table
-    @NOTICE aka, you give a list of tokens and address, it generates table with daily balances of each address token pair (useful for TVL calculations)
+    @NOTICE this macro constructs the user level token table for given input table
+    @NOTICE aka, you give a list of tokens, it generates table with daily balances of each user holding that token (useful for holder analysis)
 
     @PARAM balances_raw             -- raw_balances source
-    @PARAM something                -- must have the following columns [category,project,version,address,token_address]
+    @PARAM something                -- must have the following columns [category,project,version,token_address]
     
 #}
 
@@ -26,7 +26,6 @@ tokens as (
         category,
         project,
         version,
-        address,
         token_address
     from {ref(something)}
 ),
@@ -43,7 +42,6 @@ changed_balances as (
         ,lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day
     from {{balances_daily_agg}}
     where day > cast('{{start_date}}' as date)
-        and address in (select address from tokens)
         and token_address in (select token_address from tokens)
     {% if is_incremental() %}
         {{incremental_logic}}
@@ -105,6 +103,5 @@ left join {{source('prices','usd')}} p
     and b.day = p.minute)
 join tokens t 
     on b.token_address = t.token_address
-    and b.address = t.address
 
 {% endmacro %}
