@@ -8,7 +8,7 @@
     
 #}
 
-{%- macro balances_daily(
+{%- macro balances_something_user_daily(
         balances_daily_agg, 
         something,
         start_date, 
@@ -19,15 +19,14 @@
 {% set incremental_logic = """
     and date_trunc('day',evt_block_time) > date(now()) - interval '""" + aave_incremental_overlap_window() + """ days'
 """%}
-
-with 
+ 
 tokens as (
     select 
         category,
         project,
         version,
         token_address
-    from {ref(something)}
+    from {{something}}
 ),
 changed_balances as (
     select
@@ -43,13 +42,13 @@ changed_balances as (
     from {{balances_daily_agg}}
     where day > cast('{{start_date}}' as date)
         and token_address in (select token_address from tokens)
-    {% if is_incremental() %}
-        {{incremental_logic}}
-    {% endif %}
     -- {% if is_incremental() %}
-    -- WHERE
-    --     {{ incremental_predicate('t.evt_block_time') }}
+    --     {{incremental_logic}}
     -- {% endif %}
+    {% if is_incremental() %}
+    WHERE
+        {{ incremental_predicate('day') }}
+    {% endif %}
 ),
 days as (
     select *
