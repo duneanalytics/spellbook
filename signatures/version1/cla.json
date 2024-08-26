@@ -1991,6 +1991,14 @@
       "created_at": "2024-08-23T19:30:21Z",
       "repoId": 237392204,
       "pullRequestNo": 6602
+    },
+    {
+      "name": "ktemo",
+      "id": 660153,
+      "comment_id": 2310855075,
+      "created_at": "2024-08-26T18:52:00Z",
+      "repoId": 237392204,
+      "pullRequestNo": 6613
     }
   ]
 }
