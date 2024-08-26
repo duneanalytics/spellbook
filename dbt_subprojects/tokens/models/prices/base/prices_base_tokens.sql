@@ -157,5 +157,5 @@ FROM
     ('aerobud-aerobud','base','AEROBUD',0xfad8cb754230dbfd249db0e8eccb5142dd675a0d, 18),
     --('normie1-normie','base','NORMIE',0x7f12d13b34f5f4f0a9449c16bcd42f0da47af200, 9), --token inactive
     ('ethb-ethereum-on-base','base','ETHB',0x8d285df5be4570097e84241090fca8034ab18547, 18),
-    ('pepe-pepe-on-base','base','PEPE',0x8d285df5be4570097e84241090fca8034ab18547, 18)  
+    ('pepe-pepe-on-base','base','PEPE',0x80f45eacf6537498ecc660e4e4a2d2f99e195cf4, 18)  
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
