@@ -198,3 +198,34 @@ models:
            - block_number
            - tx_hash
            - sub_tx_trade_id
+
+ - name: quix_seaport_optimism_base_trades
+   meta:
+     blockchain: optimism
+     project: quix
+     contributors: chuxin
+   config:
+     tags: [ 'optimism','seaport','events','chuxin' ]
+   description: >
+     Quix Seaport events on Optimism
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+
+ - name: nftearth_optimism_base_trades
+   meta:
+     blockchain: optimism
+     project: nftearth
+   config:
+     tags: [ 'optimism','nftearth','trades' ]
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id

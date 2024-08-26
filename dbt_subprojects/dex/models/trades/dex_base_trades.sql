@@ -45,8 +45,8 @@ with base_union as (
             , block_date
             , block_time
             , block_number
-            , token_bought_amount_raw
-            , token_sold_amount_raw
+            , cast(token_bought_amount_raw as uint256) as token_bought_amount_raw
+            , cast(token_sold_amount_raw as uint256) as token_sold_amount_raw
             , token_bought_address
             , token_sold_address
             , taker
@@ -59,9 +59,10 @@ with base_union as (
             , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
         FROM
             {{ model }}
-        {% if is_incremental() %}
         WHERE
-            {{ incremental_predicate('block_time') }}
+           token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not loop.last %}
         UNION ALL

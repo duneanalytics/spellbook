@@ -6,10 +6,11 @@ models:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, optimism, polygon, zksync, base, scroll, zora, blast, fantom
       sector: nft
       contributors: hildobby
+      docs_slug: /curated/trading/NFT/nft-wash-trades
     config:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'optimism', 'polygon', 'wash_trades', 'zksync', 'base', 'scroll', 'zora']
     description: >
-        NFT wash trades labelling
+        Dataset for identifying and analyzing potential wash trading activities in NFT transactions across various marketplaces and blockchains
     columns:
       - &blockchain
         name: blockchain

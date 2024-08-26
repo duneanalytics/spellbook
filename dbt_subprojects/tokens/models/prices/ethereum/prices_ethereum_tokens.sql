@@ -157,7 +157,6 @@ FROM
     ('fx-function-x', 'ethereum', 'FX', 0x8c15ef5b4b21951d50e53e4fbda8298ffad25057, 18),
     ('fxc-flexacoin', 'ethereum', 'FXC', 0x4a57e687b9126435a9b19e4a802113e266adebde, 18),
     ('fxs-frax-share', 'ethereum', 'FXS', 0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0, 18),
-    ('gala-gala', 'ethereum', 'GALA', 0x15d4c048f83bd7e37d49ea4c83a07267ec4203da, 8),
     ('gbp-pound-sterling-token', 'ethereum', 'ibGBP', 0x69681f8fde45345c3870bcd5eaf4a05a60e7d227, 18),
     ('gcr-global-coin-research', 'ethereum', 'GCR', 0x6307b25a665efc992ec1c1bc403c38f3ddd7c661, 4),
     ('gen-daostack', 'ethereum', 'GEN', 0x543ff227f64aa17ea132bf9886cab5db55dcaddf, 18),
@@ -1823,7 +1822,9 @@ FROM
     ('alph-alephium', 'ethereum', 'ALPH', 0x590f820444fa3638e022776752c5eef34e2f89a6, 18),
     ('apex-apex-token', 'ethereum', 'APEX', 0x52A8845DF664D76C69d2EEa607CD793565aF42B8, 18),
     ('puff-puff-token', 'ethereum', 'PUFF', 0x18fa05ee5e478eed8925946abb41d09aec5d34d6, 18),
-    ('usdy-ondo-us-dollar-yield', 'ethereum', 'USDY', 0x96f6ef951840721adbf46ac996b59e0235cb985c, 18)
+    ('usdy-ondo-us-dollar-yield', 'ethereum', 'USDY', 0x96f6ef951840721adbf46ac996b59e0235cb985c, 18),
+    ('pzeth-renzo-restaked-lst', 'ethereum', 'pzETH', 0x8c9532a60E0E7C6BbD2B2c1303F63aCE1c3E9811, 18),
+    ('sx-sx-network', 'ethereum', 'SX', 0xbe9f61555f50dd6167f2772e9cf7519790d96624, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
