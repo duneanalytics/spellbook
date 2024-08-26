@@ -2,6 +2,7 @@ import json
 import csv
 import os
 import requests
+import dotenv
 from dotenv import load_dotenv
 
 # Load environment variables

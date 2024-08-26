@@ -335,7 +335,7 @@ sources:
   - name: erc1155_optimism
     description: "events related to ERC1155 tokens"
     tables:
-    - name: evt_transfersingle
+    - name: evt_TransferSingle
       meta:
         docs_slug: /evm/optimism/decoded/interfaces/erc1155/evt_transfersingle
         short_description: This table contains single transfer events for ERC1155 tokens on the network.
@@ -399,7 +399,7 @@ sources:
   - name: erc721_optimism
     description: '{{ doc("erc721_optimism_evt_transfer_doc") }}'
     tables:
-    - name: evt_transfer
+    - name: evt_Transfer
       description: "Transfer events for ERC721 tokens on this network"
       columns:
         - name: contract_address
