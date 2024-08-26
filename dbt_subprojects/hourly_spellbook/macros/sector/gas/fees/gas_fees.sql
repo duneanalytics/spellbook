@@ -38,6 +38,27 @@
     )
 {% endmacro %}
 
+-- include chain specific columns here
+{% macro select_extra_columns(blockchain) %}
+    {%- if blockchain in ('scroll') %}
+      ,l1_fee
+    {%- endif %}
+    {%- if blockchain in all_op_chains() + ('blast','mantle') %}
+      ,l1_fee
+      ,l1_gas_used
+      ,l1_gas_price
+      ,l1_fee_scalar
+    {%- endif %}
+    {%- if blockchain in ('arbitrum',) %}
+      ,effective_gas_price
+      ,gas_used_for_l1
+    {%- endif %}
+    {%- if blockchain in ('ethereum',) %}
+      ,blob_base_fee
+      ,blob_gas_used
+    {%- endif %}
+{% endmacro %}
+
 -- applicable on Celo
 {% macro fee_currency(blockchain) %}
     {%- if blockchain in ('celo',) -%}
@@ -70,6 +91,7 @@ WITH base_model as (
             WHEN txns.gas_limit = 0 THEN NULL
             WHEN txns.gas_limit != 0 THEN cast(txns.gas_used as double) / cast(txns.gas_limit as double)
         END AS gas_limit_usage
+        {{ select_extra_columns(blockchain) }}
     FROM {{ source( blockchain, 'transactions') }} txns
     INNER JOIN {{ source( blockchain, 'blocks') }} blocks
         ON txns.block_number = blocks.number
