@@ -18,7 +18,7 @@ select
     token_address,
     token_is_rwa,
     symbol,
-    project,
+    protocol,
     type
 from (values
     ('curve', 'stableswap-ng', 0x4bD135524897333bec344e50ddD85126554E58B4, 0xaf88d065e77c8cC2239327C5EDb3A432268e5831, 0, 'USDC', 'Mountain Protocol', 'RWA'),
@@ -34,6 +34,6 @@ from (values
     token_address,
     token_is_rwa,
     symbol,
-    project,
+    protocol,
     type
 )
