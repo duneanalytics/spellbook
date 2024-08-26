@@ -8,7 +8,7 @@
     
 #}
 
-{%- macro balances_daily(
+{%- macro balances_something_daily(
         balances_daily_agg, 
         something,
         start_date, 
