@@ -31,6 +31,35 @@ models:
       name: type
       description: "Type of Asset"
 
+  - name: rwa_arbitrum_dex_pools
+
+    meta:
+      blockchain: arbitrum
+      sector: rwa
+      project: rwa
+      contributors: maybeYonas, pyor_xyz
+
+    config:
+      tags: ['rwa', 'tokens']
+    description: "RWA tokens DEX Pools"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_address, pool
+
+    columns:
+    - *project
+    - &version
+      name: version
+      description: "Version for the token"
+    - &token_is_rwa
+      name: token_is_rwa
+      description: "Is the token the RWA ?"
+    - *token_address
+    - *symbol
+    - *project
+    - *type
+
   - name: rwa_arbitrum_asset_user_balances
 
     meta:
@@ -53,9 +82,7 @@ models:
       name: blockchain
       description: "Blockchain for the token"
     - *project
-    - &version
-      name: version
-      description: "Version for the token"
+    - *version
     - &day
       name: day
       description: "Date on which the token balance is logged"

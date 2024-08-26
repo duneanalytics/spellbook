@@ -26,20 +26,8 @@ dex_pools as (
         project,
         version,
         pool as address,
-        token0 as token_address
-    from {{source('dex', 'pools')}}
-    where blockchain = 'arbitrum' 
-    and token0 in (select token_address from rwa_assets)
-    union all
-    select 
-        'dex_tvl' as category,
-        project,
-        version,
-        pool as address,
-        token1 as token_address
-    from {{source('dex', 'pools')}}
-    where blockchain = 'arbitrum' 
-    and token1 in (select token_address from rwa_assets)
+        token_address
+    from {{ref('rwa_arbitrum_dex_pools')}}
 ),
 
 {{
