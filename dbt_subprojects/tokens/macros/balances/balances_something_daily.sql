@@ -43,7 +43,7 @@ changed_balances as (
         and address in (select address from tokens)
         and token_address in (select token_address from tokens)
     {% if is_incremental() %}
-        and {{ incremental_predicate('t.evt_block_time') }}
+        and {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ),
 days as (
