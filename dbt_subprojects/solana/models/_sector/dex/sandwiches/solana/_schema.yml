@@ -5,7 +5,7 @@ models:
     meta: 
       blockchain: solana
       sector: dex
-      contributors: hildobby
+      contributors: hildobby, ilemi
     config:
       tags: ['dex', 'mev', 'sandwiches', 'solana']
     description: >
@@ -98,7 +98,7 @@ models:
     meta: 
       blockchain: solana
       sector: dex
-      contributors: hildobby
+      contributors: hildobby, ilemi
     config:
       tags: ['dex', 'mev', 'sandwiched', 'solana']
     description: >
