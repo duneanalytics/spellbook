@@ -1127,7 +1127,7 @@ FROM (VALUES
     , (0x637c86b5f2c8399716964c702bcaeabc69b900df, 'ChangeNOW', 'ChangeNOW Deposit Funder 3', 'hildobby', date '2023-11-20')
     , (0x6cb399d73ca29859d795c68a68f0dbf6a74f55d4, 'ChangeNOW', 'ChangeNOW Deposit Funder 4', 'hildobby', date '2024-05-04')
     , (0xba1955c198fca20834340414f0ea951452bdc7de, 'ChangeNOW', 'ChangeNOW Deposit Funder 5', 'hildobby', date '2024-05-25')
-    , (0x754993c330e8ae2ce276a9c792b40047ba9f8b1f, 'ChangeNOW', 'ChangeNOW Deposit Funder 5', 'hildobby', date '2024-08-13')
+    , (0x754993c330e8ae2ce276a9c792b40047ba9f8b1f, 'ChangeNOW', 'ChangeNOW Deposit Funder 6', 'hildobby', date '2024-08-13')
     , (0x6ba7fe01eec4c6a4308c8e2b35970e0488ce9a86, 'ChangeNOW', 'ChangeNOW HTX Deposit', 'hildobby', date '2023-11-20')
     -- Bitstamp
     , (0x00bdb5699745f5b860228c8f939abf1b9ae374ed, 'Bitstamp', 'Bitstamp 1', 'hildobby', date '2022-08-28')
