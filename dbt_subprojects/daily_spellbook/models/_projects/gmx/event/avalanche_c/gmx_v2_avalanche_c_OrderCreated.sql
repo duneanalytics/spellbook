@@ -155,7 +155,7 @@ SELECT
     ED.market,
     ED.initial_collateral_token,
 
-    COALESCE(CAST(SMD.swap_path AS VARCHAR), '[]') AS swap_path
+    COALESCE(CAST(SMD.swap_path AS VARCHAR), '[]') AS swap_path,
     swap_path_n, 
     
     CASE 
