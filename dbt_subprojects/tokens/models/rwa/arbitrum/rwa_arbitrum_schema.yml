@@ -10,6 +10,36 @@ models:
       contributors: maybeYonas
 
     config:
+      tags: ['rwa', 'tokens']
+    description: "RWA tokens"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_address
+    
+    columns:
+    - &token_address
+      name: token_address
+      description: "Address for the token"
+    - &symbol
+      name: symbol
+      description: "Symbol for the token"
+    - &project
+      name: project
+      description: "Project for the token"
+    - &type
+      name: type
+      description: "Type of Asset"
+
+  - name: rwa_arbitrum_asset_user_balances
+
+    meta:
+      blockchain: arbitrum
+      sector: rwa
+      project: rwa
+      contributors: maybeYonas
+
+    config:
       tags: ['rwa', 'balances']
     description: "Balances of RWA token holders"
     tests:
