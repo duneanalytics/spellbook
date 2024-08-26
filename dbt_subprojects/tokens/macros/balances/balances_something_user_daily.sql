@@ -40,8 +40,7 @@ changed_balances as (
     where day > cast('{{start_date}}' as date)
         and token_address in (select token_address from tokens)
     {% if is_incremental() %}
-    WHERE
-        {{ incremental_predicate('day') }}
+        and {{ incremental_predicate('day') }}
     {% endif %}
 ),
 days as (
