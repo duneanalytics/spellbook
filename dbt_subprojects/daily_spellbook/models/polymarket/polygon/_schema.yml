@@ -14,6 +14,25 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - market_id
+    columns:
+      - &block_time
+        name: block_time
+      - &block_number
+        name: block_number
+      - &market_id
+        name: market_id
+      - &market
+        name: market
+      - &market_description
+        name: market_description
+      - &oracle
+        name: oracle
+      - &fee_bips
+        name: fee_bips
+      - &evt_index
+        name: evt_index
+      - &tx_hash
+        name: tx_hash
 
   - name: polymarket_polygon_markets
     meta:
@@ -28,6 +47,24 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - question_id
+    columns:
+      - *block_time
+      - *block_number
+      - &source
+        name: source
+      - *market_id
+      - &question_id
+        name: question_id
+      - &question
+        name: question
+      - &question_description
+        name: question_description
+      - &reward
+        name: reward
+      - &reward_token
+        name: reward_token
+      - *evt_index
+      - *tx_hash
 
   - name: polymarket_polygon_market_outcomes
     meta:
@@ -42,6 +79,15 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - question_id
+    columns:
+      - *block_time
+      - *block_number
+      - *source
+      - *question_id
+      - &outcome
+        name: outcome
+      - *evt_index
+      - *tx_hash
 
   - name: polymarket_polygon_base_market_conditions
     meta:
@@ -56,6 +102,27 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - condition_id
+    columns:
+      - *block_time
+      - *block_number
+      - *market_id
+      - *question_id
+      - *question
+      - &condition_id
+        name: condition_id
+      - &condition_token
+        name: condition_token
+      - &condition_status
+        name: condition_status
+      - &keyword
+        name: keyword
+      - &condition
+        name: condition
+      - &outcome_slot_count
+        name: outcome_slot_count
+      - *oracle
+      - *evt_index
+      - *tx_hash
 
   - name: polymarket_polygon_base_ctf_tokens
     meta:
@@ -72,6 +139,16 @@ models:
             - condition_id
             - token0
             - token1
+    columns:
+      - *block_time
+      - *block_number
+      - *condition_id
+      - &token0
+        name: token0
+      - &token1
+        name: token1
+      - *evt_index
+      - *tx_hash
 
   - name: polymarket_polygon_market_conditions
     meta:
@@ -88,6 +165,15 @@ models:
             - question_id
             - condition_id
             - condition_token
+    columns:
+      - *block_time
+      - *block_number
+      - *condition_id
+      - *question_id
+      - *outcome_slot_count
+      - *oracle
+      - *evt_index
+      - *tx_hash
 
   - name: polymarket_polygon_market_trades
     meta:
@@ -105,6 +191,32 @@ models:
             - asset_id
             - evt_index
             - tx_hash
+    columns:
+      - *block_time
+      - *block_number
+      - &action
+        name: action
+      - *condition_id
+      - &asset_id
+        name: asset_id
+      - &amount
+        name: amount
+      - &price
+        name: price
+      - &fee
+        name: fee
+      - &maker
+        name: maker
+      - &taker
+        name: taker
+      - &maker_amount_raw
+        name: maker_amount_raw
+      - &taker_amount_raw
+        name: taker_amount_raw
+      - &contract_address
+        name: contract_address
+      - *evt_index
+      - *tx_hash
 
   - name: polymarket_polygon_capital_actions
     meta:
@@ -121,3 +233,20 @@ models:
             - block_time
             - evt_index
             - tx_hash
+    columns:
+      - *block_time
+      - *block_number
+      - *action
+      - &from_address
+        name: from_address
+      - &to_address
+        name: to_address
+      - &symbol
+        name: symbol
+      - &amount_raw
+        name: amount_raw
+      - *amount
+      - &amount_usd
+        name: amount_usd
+      - *evt_index
+      - *tx_hash
