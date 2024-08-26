@@ -49,3 +49,21 @@ sources:
     tables:
       - name: signatures
         description: "signatures from ABIs on this chain"
+  - name: nova
+    tables:
+      - name: signatures
+  - name: blast
+    tables:
+      - name: signatures
+  - name: linea
+    tables:
+      - name: signatures
+  - name: mantle
+    tables:
+      - name: signatures
+  - name: zkevm
+    tables:
+      - name: signatures
+  - name: sei
+    tables:
+      - name: signatures
