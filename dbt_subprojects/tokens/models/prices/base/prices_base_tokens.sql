@@ -150,12 +150,12 @@ FROM
     ('brett4-brett-20','base','BRETT',0x1a475d06d967aeb686c98de80d079d72097aeacf, 9),
     ('bchb-bitcoin-cash-on-base','base','BCHB',0x1791b55e734df69b4906a4178a83dbe63c4f8421, 18),
     ('brogg-brett39s-dog','base','BROGG',0xc36f19bccd51e3f1163eff07b5edf9d2850acec4, 18),
-    ('maba-make-america-based-again','base','MABA',0xd9ea93a38d1771c870128f9134d4622d331c04c8, 18),
+    --('maba-make-america-based-again','base','MABA',0xd9ea93a38d1771c870128f9134d4622d331c04c8, 18), --token inactive
     ('peepo1-peepo','base','PEEPO',0x9409c81d5bf8fd6e651f08e1c81c8b175a1e64f7, 18),
     ('polluk-jasse-polluk','base','POLLUK',0x22222bd682745cf032006394750739684e45a5f8, 18),
     ('boys-boysclubbase','base','$BOYS',0x4d58608eff50b691a3b76189af2a7a123df1e9ba, 9),
     ('aerobud-aerobud','base','AEROBUD',0xfad8cb754230dbfd249db0e8eccb5142dd675a0d, 18),
-    ('normie1-normie','base','NORMIE',0x7f12d13b34f5f4f0a9449c16bcd42f0da47af200, 9),
+    --('normie1-normie','base','NORMIE',0x7f12d13b34f5f4f0a9449c16bcd42f0da47af200, 9), --token inactive
     ('ethb-ethereum-on-base','base','ETHB',0x8d285df5be4570097e84241090fca8034ab18547, 18),
     ('pepe-pepe-on-base','base','PEPE',0x8d285df5be4570097e84241090fca8034ab18547, 18)  
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
