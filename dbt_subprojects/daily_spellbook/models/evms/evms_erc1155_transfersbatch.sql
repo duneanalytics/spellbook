@@ -16,7 +16,7 @@
      , ('avalanche_c', source('erc1155_avalanche_c', 'evt_transferbatch'))
      , ('gnosis', source('erc1155_gnosis', 'evt_transferbatch'))
      , ('fantom', source('erc1155_fantom', 'evt_transferbatch'))
-     , ('optimism', source('erc1155_optimism', 'evt_transferbatch'))
+     , ('optimism', source('erc1155_optimism', 'evt_TransferBatch'))
      , ('arbitrum', source('erc1155_arbitrum', 'evt_transferbatch'))
      , ('celo', source('erc1155_celo', 'evt_transferbatch'))
      , ('base', source('erc1155_base', 'evt_transferbatch'))
@@ -28,6 +28,7 @@
      , ('zkevm', source('erc1155_zkevm', 'evt_transferbatch'))
      , ('blast', source('erc1155_blast', 'evt_transferbatch'))
      , ('mantle', source('erc1155_mantle', 'evt_transferbatch'))
+     , ('sei', source('erc1155_sei', 'evt_transferbatch'))
 ] %}
 
 SELECT *

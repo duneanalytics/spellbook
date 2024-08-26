@@ -3,12 +3,12 @@ version: 2
 models:
   - name: airdrop_claims
     meta:
-      blockchain: ethereum, optimism, arbitrum, avalanche_c, bnb, gnosis
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, bnb, gnosis, zksync
       sector: airdrop
       project: addresses
-      contributors: hildobby
+      contributors: hildobby, lgingerich
     config:
-      tags: ['table', 'airdrop', 'ethereum', 'optimism', 'arbitrum', 'avalanche_c', 'bnb', 'gnosis', 'claim']
+      tags: ['table', 'airdrop', 'ethereum', 'optimism', 'arbitrum', 'avalanche_c', 'bnb', 'gnosis', 'zksync', 'claim']
     description: "List of claim transactions for all airdrops"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -67,11 +67,11 @@ models:
 
   - name: airdrop_info
     meta:
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum
-      sector: dex
-      contributors: hildobby
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, zksync
+      sector: airdrop
+      contributors: hildobby, lgingerich
     config:
-      tags: ['airdrop', 'ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'info']
+      tags: ['airdrop', 'ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'zksync', 'info']
     description: >
         Airdrop info
     tests:

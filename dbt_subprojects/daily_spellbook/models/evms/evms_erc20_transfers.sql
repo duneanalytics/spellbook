@@ -28,6 +28,7 @@
      , ('zkevm', source('erc20_zkevm', 'evt_transfer'))
      , ('blast', source('erc20_blast', 'evt_transfer'))
      , ('mantle', source('erc20_mantle', 'evt_transfer'))
+     , ('sei', source('erc20_sei', 'evt_transfer'))
 ] %}
 
 SELECT *

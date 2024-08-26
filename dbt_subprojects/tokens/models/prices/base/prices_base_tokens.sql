@@ -136,5 +136,11 @@ FROM
     ('brish-brish','base','BRISH',0x37f24b26bcefbfac7f261b97f8036da98f81a299, 18),
     ('gme5-gme-base','base','GME',0xbeb0fd48c2ba0f1aacad2814605f09e08a96b94e, 9),
     ('brrr-bucci','base','BRRR',0x1e0bb24ed6c806c01ef2f880a4b91adb90099ea7, 18),
-    ('bps-base-pro-shops','base','BPS',0xda761a290e01c69325d12d82ac402e5a73d62e81, 18)
+    ('bps-base-pro-shops','base','BPS',0xda761a290e01c69325d12d82ac402e5a73d62e81, 18),
+    ('timi-this-is-my-iguana','base','TIMI',0x9beec80e62aa257ced8b0edd8692f79ee8783777, 18),
+    ('french-french-on-base','base','FRENCH',0x013b6451e2b2131052d3473593bd786df5143faf, 18),
+    ('mrsmiggles-mrs-miggles','base','MRSMIGGLES',0x31b28012f61fc3600e1c076bafc9fd997fb2da90, 18),
+    ('king-king-of-memes','base','KING',0x420b0fa3de2efcf2b2fd04152eb1df36a09717cd, 18),
+    ('trump-maga','base','TRUMP',0x2e1d332893dc16124194e598a29866d2d5e8786b, 18),
+    ('donuts-the-simpsons','base','DONUTS',0xcc0733b7ba63b446624002441c4816d7fec8f4e0, 18) 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

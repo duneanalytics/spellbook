@@ -1,7 +1,7 @@
 {{config(
     schema = 'tokens_linea',
     alias = 'base_transfers',
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -15,6 +15,6 @@
     traces = source('linea','traces'),
     transactions = source('linea','transactions'),
     erc20_transfers = source('erc20_linea','evt_transfer'),
-    native_contract_address = '0x000000000000000000000000000000000000800a'
+    native_contract_address = null
 )
 }}

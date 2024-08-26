@@ -7,6 +7,8 @@
 
 {% set base_models = [
     ref('merchant_moe_mantle_base_trades')
+    , ref('fusionx_mantle_base_trades')
+    , ref('agni_mantle_base_trades')
 ] %}
 
 WITH base_union AS (

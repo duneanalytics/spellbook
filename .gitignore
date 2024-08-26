@@ -1,8 +1,8 @@
 .DS_Store
 .vscode
 manifest.json
-macros/dune/create_views_of_dependencies.sql
-macros/dune/alter_table_locations.sql
+dbt_macros/dune/create_views_of_dependencies.sql
+dbt_macros/dune/alter_table_locations.sql
 scripts/integration_test/test_diffs_tokens/*
 .vs
 

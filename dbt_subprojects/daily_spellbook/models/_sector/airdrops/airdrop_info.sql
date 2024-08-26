@@ -2,10 +2,10 @@
         tags = [ 'static'],
         schema='airdrop',
         alias = 'info',
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "lgingerich"]\',
                                     "sector",
-                                    "dex",
-                                    \'["hildobby"]\') }}')
+                                    "airdrop",
+                                    \'["hildobby", "lgingerich"]\') }}')
 }}
 
 SELECT project, name, eligible_addresses, airdropped_total, circulating_supply_on_drop, max_supply, token_issued_by_protocol, x_username, CAST(airdrop_start AS TIMESTAMP) AS airdrop_start, CAST(airdrop_end AS TIMESTAMP) AS airdrop_end
@@ -60,5 +60,5 @@ FROM (VALUES
     , ('jupiter', 'Jupiter', 957935, 2700000000, NULL, NULL, TRUE, 'JupiterExchange', '2024-01-01 00:00', NULL)
     , ('aptos', 'Aptos', 124828, 450000000, NULL, NULL, TRUE, 'Aptos', '2022-10-01 00:00', NULL)
     , ('jito', 'Jito', 13133, 439000000, NULL, NULL, TRUE, 'jito_sol', '2023-12-01 00:00', NULL)
-
-    ) AS temp_table (project, name, eligible_addresses, circulating_supply_on_drop, max_supply, airdropped_total, token_issued_by_protocol, x_username, airdrop_start, airdrop_end)
+    , ('zksync', 'ZKsync Era', 693268, 3675000000, 3675000000, 21000000000, TRUE, 'zksync', '2024-06-17 06:45', NULL)
+) AS temp_table (project, name, eligible_addresses, circulating_supply_on_drop, max_supply, airdropped_total, token_issued_by_protocol, x_username, airdrop_start, airdrop_end)

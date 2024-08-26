@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: ethereum_address_metrics
+    columns:
+      - name: blockchain
+      - name: address
+        tests:
+          - unique
+      - name: min_block_time
+        description: "block_time of the first transaction initiated by the address"
+
+  - name: ethereum_transaction_metrics
+    meta:
+      blockchain: ethereum
+      sector: metrics
+      contributors: 0xRob
+    config:
+      tags: [ 'ethereum','metrics' ]
+    description: "fundamental blockchain transaction metrics"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_hour

@@ -2,11 +2,8 @@ version: 2
 
 sources:
   - name: attestationstation_optimism
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: AttestationStation_evt_AttestationCreated
-        loaded_at_field: evt_block_time
         description: "Attestation created events on Optimism."
         columns:
           - &about

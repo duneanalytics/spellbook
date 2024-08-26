@@ -21,3 +21,37 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('merchant_moe_mantle_base_trades_seed')
+
+  - name: fusionx_mantle_base_trades
+    meta:
+      blockchain: mantle
+      sector: dex
+      project: fusionx
+      contributors: hosuke
+    config:
+      tags: [ 'mantle', 'dex', 'trades', 'fusionx' ]
+    description: "FusionX Finance mantle base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fusionx_mantle_base_trades_seed')
+
+  - name: agni_mantle_base_trades
+    meta:
+      blockchain: mantle
+      sector: dex
+      project: agni
+      contributors: hosuke
+    config:
+      tags: [ 'mantle', 'dex', 'trades', 'agni' ]
+    description: "AGNI Finance mantle base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('agni_mantle_base_trades_seed')

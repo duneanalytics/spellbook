@@ -74,7 +74,7 @@ Adoption of the `base_` prefix for table aliases and `uniswap_` for macro names.
 
 ### Macro Usage Example
 
-One of the key components in the dex.trades redesign is the utilization of dbt macros to standardize and simplify the process of data transformation across different blockchains and projects. Below is an example of how to use the [`uniswap_compatible_v2_trades` macro](/macros/models/_sector/dex/uniswap_compatible_trades.sql) macro within our project. This macro is designed to standardize the trades data for projects compatible with Uniswap V2 on various blockchains.
+One of the key components in the dex.trades redesign is the utilization of dbt macros to standardize and simplify the process of data transformation across different blockchains and projects. Below is an example of how to use the [`uniswap_compatible_v2_trades` macro](/dbt_subprojects/dex/macros/models/_project/uniswap_compatible_trades.sql) macro within our project. This macro is designed to standardize the trades data for projects compatible with Uniswap V2 on various blockchains.
 
 ```sql
 {{

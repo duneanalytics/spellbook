@@ -54,14 +54,23 @@ SELECT
      blocks.difficulty,
      txns.type AS transaction_type
 FROM {{ source('ethereum', 'transactions') }} txns
-INNER JOIN {{ source('ethereum', 'blocks') }} blocks ON txns.block_number = blocks.number
-LEFT JOIN {{ source('ethereum', 'blobs_submissions') }} blob ON txns.hash = blob.tx_hash
-LEFT JOIN {{ source('prices', 'usd') }} p ON p.minute = date_trunc('minute', txns.block_time)
-     AND p.blockchain = 'ethereum'
-     AND p.symbol = 'WETH'
- {% if is_incremental() %}
-     AND {{ incremental_predicate('p.minute') }}
-WHERE {{ incremental_predicate('txns.block_time') }}
+INNER JOIN {{ source('ethereum', 'blocks') }} blocks
+    ON txns.block_number = blocks.number
+    {% if is_incremental() %}
     AND {{ incremental_predicate('blocks.time') }}
+    {% endif %}
+LEFT JOIN {{ source('ethereum', 'blobs_submissions') }} blob
+    ON txns.hash = blob.tx_hash
+    {% if is_incremental() %}
     AND {{ incremental_predicate('blob.block_time') }}
+    {% endif %}
+LEFT JOIN {{ source('prices', 'usd') }} p
+    ON p.minute = date_trunc('minute', txns.block_time)
+    AND p.blockchain = 'ethereum'
+    AND p.symbol = 'WETH'
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('p.minute') }}
+    {% endif %}
+{% if is_incremental() %}
+WHERE {{ incremental_predicate('txns.block_time') }}
 {% endif %}
