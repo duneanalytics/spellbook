@@ -2750,9 +2750,6 @@ FROM (VALUES
     , (0xe1e5f8cacc6b9ace0894fe7ba467328587e60be7, 'BitVenus', 'BitVenus 8', 'hildobby', date '2024-04-20')
     -- YOOBTC
     , (0x8f3ab2c3b651382b07a76653d2be9eb4b87e1630, 'YOOBTC', 'YOOBTC 1', 'hildobby', date '2024-05-25')
-<<<<<<< HEAD
-=======
     -- Mbcbit
     , (0x5e6ad578fe3a2da7bbd0255f04179e1e77317d1a, 'Mbcbit', 'Mbcbit 1', 'hildobby', date '2024-07-05')
->>>>>>> upstream/main
     ) AS x (address, cex_name, distinct_name, added_by, added_date)
