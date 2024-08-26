@@ -139,7 +139,7 @@ SELECT
     block_time,
     block_date,
     block_number,
-    tx_hash,
+    ED.tx_hash,
     index,
     tx_index,
     tx_from,

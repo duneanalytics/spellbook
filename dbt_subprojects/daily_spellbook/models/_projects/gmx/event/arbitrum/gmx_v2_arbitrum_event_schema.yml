@@ -736,3 +736,117 @@ models:
         description: The reason for the cancellation in string format.
         tests:
           - not_null
+
+
+  - name: gmx_v2_arbitrum_OrderCreated
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'order_created']
+    description: |
+      Extracts and decodes the `OrderCreated` event log data from the Arbitrum blockchain. 
+      This model processes log entries related to created orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for cancellation.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *tx_index
+      - *tx_from
+      - *tx_to
+      - *contract_address    
+      - name: account
+        description: The address associated with the order
+        tests:
+          - not_null
+      - name: event_name
+        description: The type of event recorded, always 'OrderCreated' for this model.
+        tests:
+          - not_null
+      - name: account_
+        description: An additional address associated with the order.
+        tests:
+          - not_null
+      - name: receiver
+        description: The address designated as the receiver in the order.
+        tests:
+          - not_null
+      - name: callback_contract
+        description: The contract address for callback functions.
+        tests:
+          - not_null        
+      - name: ui_fee_receiver
+        description: The address designated to receive UI fees.
+        tests:
+          - not_null        
+      - name: market
+        description: The market in which the order was created.
+        tests:
+          - not_null        
+      - name: initial_collateral_token
+        description: The token used as initial collateral in the order.
+        tests:
+          - not_null        
+      - name: swap_path
+        description: JSON array of markets through which the swap was routed.
+        tests:
+          - not_null        
+      - name: swap_path_n
+        description: The number of elements in the `swap_path` array.
+        tests:
+          - not_null        
+      - *order_type
+      - name: decrease_position_swap_type
+        description: |
+          The type of swap for decreasing position, with possible values:
+          - 'NoSwap'
+          - 'SwapPnlTokenToCollateralToken'
+          - 'SwapCollateralTokenToPnlToken'
+      - *size_delta_usd
+      - name: initial_collateral_delta_amount
+        description: The change in initial collateral amount.
+        tests:
+          - not_null
+      - name: trigger_price
+        description: The price that triggers the order execution.
+        tests:
+          - not_null        
+      - name: acceptable_price
+        description: The minimum acceptable price for order execution.
+        tests:
+          - not_null        
+      - name: execution_fee
+        description: The fee paid for executing the order in native tokens
+        tests:
+          - not_null        
+      - name: callback_gas_limit
+        description: The gas limit set for callback functions.
+        tests:
+          - not_null        
+      - name: min_output_amount
+        description: The minimum amount of output tokens expected from the order, based on the markets in the swap path.
+        tests:
+          - not_null        
+      - name: updated_at_block
+        description: The block number at which the order was last updated.
+        tests:
+          - not_null        
+      - name: updated_at_time
+        description: The timestamp when the order was last updated.
+      - *is_long 
+      - name: should_unwrap_native_token
+        description: Boolean indicating if the native token should be unwrapped.
+      - name: is_frozen
+        description: Boolean indicating if the order is frozen.
+      - name: key
+        description: The unique identifier for the order, stored as a bytes32 value.
+        tests:
+          - not_null
+          - unique
