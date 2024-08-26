@@ -33,6 +33,7 @@ orders as (
                 , {{ method_data.get("order_remains", "0x0000000000") }} as order_remains
                 , fusion_settlement_addresses as _settlements
                 , reduce(fusion_settlement_addresses, false, (r, x) -> r or coalesce(varbinary_position({{ method_data.get("args", "null")}}, x), 0) > 0, r -> r) as _with_settlement
+                , reduce(escrow_factory_addresses, false, (r, x) -> r or coalesce(varbinary_position({{ method_data.get("args", "null")}}, x), 0) > 0, r -> r) as _with_factory
                 , {% if 'partial_bit' in method_data %}
                     try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
                         bytearray_to_bigint(substr({{ method_data.maker_traits }}, {{ method_data.partial_bit }} / 8 + 1, 1)) -- current byte: partial_bit / 8 + 1 -- integer division
@@ -118,6 +119,7 @@ select
         ('partial', _partial)
         , ('multiple', _multiple)
         , ('fusion', _with_settlement or array_position(_settlements, call_from) > 0)
+        , ('atomic', _with_factory)
         , ('first', row_number() over(partition by coalesce(order_hash, tx_hash) order by block_number, tx_index, call_trace_address) = 1)
     ]) as flags
     , concat(
@@ -132,7 +134,6 @@ select
     ) as remains
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
-
 from (
     {{
         add_tx_columns(
