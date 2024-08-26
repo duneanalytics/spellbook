@@ -1,7 +1,5 @@
 version: 2
 
-models : 
-
 models:
   - name: rwa_arbitrum_assets
 

@@ -19,7 +19,7 @@ rwa_assets as (
     token_address
   from {{ref('rwa_arbitrum_assets')}}
   where type = 'RWA'
-)
+),
 
 {{
   balances_something_user_daily(

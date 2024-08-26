@@ -16,9 +16,6 @@
     ) 
 %}
 
-{% set incremental_logic = """
-    and date_trunc('day',evt_block_time) > date(now()) - interval '""" + aave_incremental_overlap_window() + """ days'
-"""%}
 
 with 
 tokens as (
@@ -46,12 +43,9 @@ changed_balances as (
         and address in (select address from tokens)
         and token_address in (select token_address from tokens)
     {% if is_incremental() %}
-        {{incremental_logic}}
+    WHERE
+        {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
-    -- {% if is_incremental() %}
-    -- WHERE
-    --     {{ incremental_predicate('t.evt_block_time') }}
-    -- {% endif %}
 ),
 days as (
     select *
