@@ -87,31 +87,6 @@ models:
       - name: pool_symbol
       - name: swap_fee
 
-  - name: balancer_cowswap_amm_balances
-    meta:
-      blockchain: ethereum, gnosis
-      project: balancer_cowswap_amm
-      contributors: viniabussafi
-    config:
-      tags: ['ethereum', 'gnosis', 'balancer', 'balances']
-    description: >
-      ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
-    columns:
-      - &day
-        name: day
-        description: "UTC event block time truncated to the day mark"
-        tests:
-          - not_null
-      - &pool_address
-        name: pool_address
-        description: "Balancer CoWSwap AMM pool contract address"
-      - &token_address
-        name: token_address
-        description: "Token contract address"
-      - &token_balance_raw
-        name: token_balance_raw
-        description: "Balance of a token"
-
   - name: labels_balancer_cowswap_amm_pools
     meta:
       blockchain: ethereum, gnosis
@@ -150,35 +125,3 @@ models:
       - &label_type
         name: label_type
         description: "Type of label (see labels overall readme)"
-
-  - name: balancer_cowswap_amm_liquidity
-    meta:
-      blockchain: ethereum, gnosis
-      project: balancer_cowswap_amm
-      contributors: viniabussafi
-    config:
-      tags: ['ethereum', 'gnosis', 'balancer', 'pools', 'liquidity']
-    description: >
-      Balancer CoWSwap AMM pools liquidity by token in Ethereum.
-    columns:
-      - *day
-      - name: pool_id
-      - *pool_address
-      - name: pool_symbol
-      - *version
-      - *blockchain
-      - name: pool_type
-      - *token_address
-      - &token_symbol
-        name: token_symbol
-        description: "Token symbol"
-      - *token_balance_raw
-      - &token_balance
-        name: token_balance
-        description: "Balance of the token in the pool"
-      - &protocol_liquidity_usd
-        name: protocol_liquidity_usd
-        description: "Protocol liquidity in USD"
-      - &protocol_liquidity_eth
-        name: protocol_liquidity_eth
-        description: "Protocol liquidity in ETH"

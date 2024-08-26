@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'curvefi_ethereum',
+        schema = 'curve_ethereum',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -51,7 +51,7 @@ WITH dexs AS
         , l.tx_hash 
         , l.index as evt_index
     FROM {{ source('ethereum', 'logs') }} l
-    JOIN  {{ ref('curvefi_ethereum_view_pools') }} p
+    JOIN  {{ ref('curve_ethereum_view_pools') }} p
         ON l.contract_address = p.pool_address
         AND p.version IN ('Factory V1 Meta', 'Factory V1 Plain', 'Regular', 'Factory V1 Stableswap Plain', 'Factory V1 Stableswap Meta', 'Factory V1 Stableswap Plain NG') --note Plain only has TokenExchange.
     WHERE l.topic0 IN
@@ -82,7 +82,7 @@ WITH dexs AS
         , l.tx_hash 
         , l.index as evt_index
     FROM {{ source('ethereum', 'logs') }} l
-    JOIN {{ ref('curvefi_ethereum_view_pools') }} p
+    JOIN {{ ref('curve_ethereum_view_pools') }} p
         ON l.contract_address = p.pool_address
         AND (p.version = 'Factory V2' or p.version = 'Factory V2 updated' or p.version = 'Regular' or p.version = 'Factory Twocrypto') --some Regular pools are new and use the below topic instead
     WHERE (l.topic0 = 0xb2e76ae99761dc136e598d4a629bb347eccb9532a5f8bbd72e18467c3c34cc98 --TokenExchange

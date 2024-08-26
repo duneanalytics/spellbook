@@ -1,10 +1,10 @@
 {{ config(
-        schema = 'curvefi',
+        schema = 'curve',
         alias = 'trades',
         materialized = 'view',
         post_hook='{{ expose_spells(blockchains = \'["ethereum","avalanche_c","optimism","fantom","celo"]\',
                                       spell_type = "project", 
-                                      spell_name = "curvefi", 
+                                      spell_name = "curve", 
                                       contributors = \'["jeff-dude","yulesa","dsalv","Henrystats","msilb7","ilemi","agaperste","tomfutago"]\') }}'
         )
 }}
@@ -35,4 +35,4 @@ SELECT  blockchain
         , tx_to
         , evt_index
 FROM {{ ref('dex_trades') }}
-WHERE project = 'curvefi'
+WHERE project = 'curve'
