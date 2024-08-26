@@ -231,7 +231,7 @@ meta as (
             , any_value(taker_asset) as taker_asset
             , any_value(taking_amount) as taking_amount
             , any_value(order_flags) as order_flags
-            ,  array_agg(distinct
+            , array_agg(distinct
                 cast(row(if(native, native_symbol, symbol), contract_address_raw)
                   as row(symbol varchar, contract_address_raw varbinary))
             ) as tokens
