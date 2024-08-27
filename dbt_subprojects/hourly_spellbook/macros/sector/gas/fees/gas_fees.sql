@@ -57,9 +57,9 @@
       ,gas_used_for_l1
     {%- endif %}
     {%- if blockchain in ('ethereum',) %}
-      ,blob_base_fee
+      ,blob.blob_base_fee
       ,blob.blob_gas_used
-      ,max_fee_per_blob_gas
+      ,blob.max_fee_per_blob_gas
     {%- endif %}
 {% endmacro %}
 
