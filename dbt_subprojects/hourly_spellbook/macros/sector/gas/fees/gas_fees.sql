@@ -155,6 +155,7 @@ SELECT
     ,base_fee_per_gas
     ,gas_limit
     ,gas_limit_usage
+    {{ select_extra_columns(blockchain) }}
 FROM base_model
 LEFT JOIN {{ref('prices_usd_with_native')}} p
     ON p.blockchain = '{{blockchain}}'

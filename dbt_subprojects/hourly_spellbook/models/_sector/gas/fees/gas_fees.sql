@@ -36,18 +36,14 @@ FROM
         ,gas_price
         ,gas_used
         ,currency_symbol
-        ,tx_fee_raw
         ,tx_fee
         ,tx_fee_usd
-        ,tx_fee_breakdown_raw
+        ,tx_fee_raw
         ,tx_fee_breakdown
         ,tx_fee_breakdown_usd
+        ,tx_fee_breakdown_raw
         ,tx_fee_currency
         ,block_proposer
-        ,max_fee_per_gas
-        ,priority_fee_per_gas
-        ,max_priority_fee_per_gas
-        ,base_fee_per_gas
         ,gas_limit
         ,gas_limit_usage
     FROM
