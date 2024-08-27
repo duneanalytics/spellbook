@@ -206,15 +206,6 @@ WITH evt_data AS (
             AND ED.index = EDP.index
 )
 
--- Filter relevant tokens
-, collateral_tokens_data AS (
-    SELECT 
-        contract_address AS collateral_token, 
-        decimals AS collateral_token_decimals
-    FROM 
-        {{ source("ai_data_master", "result_token_information_from_arbitrum_api", database="dune") }}
-)
-
 SELECT 
     blockchain,
     block_time,
@@ -272,7 +263,7 @@ SELECT
     key
 
 FROM event_data AS ED
-LEFT JOIN collateral_tokens_data AS CTD
+LEFT JOIN {{ ref('gmx_v2_arbitrum_CollateralTokensData') }} AS CTD
     ON ED.initial_collateral_token = TRY_CAST(CTD.collateral_token AS VARCHAR)
 
 
