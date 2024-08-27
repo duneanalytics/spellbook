@@ -196,12 +196,12 @@ meta as (
             , if(
                 user_amount_usd is null or caller_amount_usd is null
                 , coalesce(
-                    user_amount_usd_trusted, 
-                    caller_amount_usd_trusted, 
-                    user_amount_usd, 
-                    caller_amount_usd, 
-                    call_amount_usd_trusted, 
-                    call_amount_usd
+                    user_amount_usd_trusted
+                    , caller_amount_usd_trusted
+                    , user_amount_usd
+                    , caller_amount_usd
+                    , call_amount_usd_trusted
+                    , call_amount_usd
                 )
                 , greatest(user_amount_usd, caller_amount_usd)
             ) -- the user_amount & caller_amount of untrusted tokens takes precedence over the call_amount of trusted tokens
