@@ -50,7 +50,7 @@
 {% endmacro %}
 
 -- include chain specific columns here
-{% macro select_extra_columns(blockchain) %}
+{% macro select_extra_columns(blockchain, include_ref = TRUE) %}
     {%- if blockchain in ('scroll') %}
       ,l1_fee
     {%- endif %}
@@ -65,9 +65,9 @@
       ,gas_used_for_l1
     {%- endif %}
     {%- if blockchain in ('ethereum',) %}
-      ,blob.blob_base_fee
-      ,blob.blob_gas_used
-      ,blob.max_fee_per_blob_gas
+      ,{%- if include_ref %}blob.{%- endif %}blob_base_fee
+      ,{%- if include_ref %}blob.{%- endif %}blob_gas_used
+      ,{%- if include_ref %}blob.{%- endif %}max_fee_per_blob_gas
     {%- endif %}
 {% endmacro %}
 
@@ -155,7 +155,7 @@ SELECT
     ,base_fee_per_gas
     ,gas_limit
     ,gas_limit_usage
-    {{ select_extra_columns(blockchain) }}
+    {{ select_extra_columns(blockchain=blockchain, include_ref=FALSE) }}
 FROM base_model
 LEFT JOIN {{ref('prices_usd_with_native')}} p
     ON p.blockchain = '{{blockchain}}'
