@@ -10,6 +10,7 @@
                                     "rollup_economics",
                                     \'["niftytable", "maybeYonas", "lgingerich"]\') }}'
 )}}
+--trigger CI
 
 SELECT
     date_trunc('day', block_time) AS day
