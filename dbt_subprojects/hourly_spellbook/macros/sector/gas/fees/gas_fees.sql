@@ -19,25 +19,29 @@
 {% endmacro %}
 
 -- include chain specific logic here
+-- arbitrum is a bit special as they have eip1559 but ignore tips (priority fees)
 {% macro tx_fee_breakdown_raw(blockchain) %}
     map_concat(
     map()
-    {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') %}
-      ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])
-    {%- endif -%}
     {%- if blockchain in ('arbitrum',) %}
-      ,map(array['l1_fee'], array[cast(coalesce(gas_used_for_l1,0) * coalesce(gas_used_for_l1,effective_gas_price) as uint256)])
+      ,map(array['l1_fee','base_fee']
+        , array[cast(coalesce(gas_used_for_l1,0) * effective_gas_price as uint256)
+                ,cast(txns.gas_used - coalesce(gas_used_for_l1,0) * txns.effective_gas_price as uint256)])
+    {%- else -%}
+        {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') %}
+          ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])
+        {%- endif -%}
+        {%- if blockchain in ('ethereum',) %}
+          ,map(array['blob_fee'],array[cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256)])
+        {%- endif %}
+          ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
     {%- endif -%}
-    {%- if blockchain in ('ethereum',) %}
-      ,map(array['blob_fee'],array[cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256)])
-    {%- endif %}
-      ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
-            then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
-            else map(array['base_fee','priority_fee'],
-                     array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
-                            ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
-                     )
-            end
     )
 {% endmacro %}
 
