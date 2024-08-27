@@ -10,7 +10,6 @@
                                     "rollup_economics",
                                     \'["niftytable", "maybeYonas", "lgingerich"]\') }}'
 )}}
---trigger CI
 
 SELECT
     date_trunc('day', block_time) AS day
@@ -22,7 +21,7 @@ SELECT
     END AS name
     , SUM(tx_fee_native) AS l2_rev
     , SUM(tx_fee_usd) AS l2_rev_usd
-FROM {{ source('gas', 'fees') }}
+FROM {{ ref('gas_fees') }}
 WHERE blockchain IN ('arbitrum', 'base', 'blast', 'linea', 'mantle', 'optimism', 'scroll', 'zksync', 'zkevm', 'zora')
 {% if is_incremental() %}
 AND {{ incremental_predicate('block_time') }}
