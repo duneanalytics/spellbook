@@ -32,7 +32,7 @@
 SELECT block_time,
        block_date,
        block_month,
-       bot, -- Test if this works now
+       bot,
        blockchain,
        amount_usd,
        type,
