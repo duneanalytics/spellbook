@@ -96,4 +96,5 @@ FROM (VALUES
     , (0xD9FBA68D89178e3538e708939332c79efC540179, 'stataArbGHO', 18)    
     , (0x89AEc2023f89E26Dbb7eaa7a98fe3996f9d112A8, 'stataArbFRAX', 18)      
     , (0xbC404429558292eE2D769E57d57D6E74bbd2792d, 'sUSX', 18)              
+    , (0x90364aa61234b85251ad943681433904c35fa5ce, 'METIS', 18)            
 ) AS temp_table (contract_address, symbol, decimals)
