@@ -46,7 +46,7 @@ where bytearray_substring(tr.input, 1, 4) in (
     and tr.block_time > TIMESTAMP '{{ project_start_date }}' -- for initial query optimisation
     {% else %}
     and {{ incremental_predicate('tr.block_time') }}
-    and {{ incremental_predicate('et.block_time')
+    and {{ incremental_predicate('et.block_time') }}
     {% endif %}
 
 {% endmacro %}
