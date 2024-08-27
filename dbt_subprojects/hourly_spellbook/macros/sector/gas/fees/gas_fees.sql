@@ -28,7 +28,7 @@
     {%- if blockchain in ('arbitrum',) %}
       ,map(array['l1_fee','base_fee']
         , array[cast(coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)
-                ,cast(txns.gas_used - coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)])
+                ,cast((txns.gas_used - coalesce(gas_used_for_l1,0)) * {{gas_price(blockchain)}} as uint256)])
     {%- elif blockchain in ('zksync',) %}
       ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
     {%- else -%}
