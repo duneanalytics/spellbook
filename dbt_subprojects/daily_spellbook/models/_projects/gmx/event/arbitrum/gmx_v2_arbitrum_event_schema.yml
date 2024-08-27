@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: gmx_v2_arbitrum_OrderCreated
+  - name: gmx_v2_arbitrum_order_created
     meta:
       blockchain: arbitrum
       sector: dex

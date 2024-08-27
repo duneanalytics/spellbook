@@ -1,14 +1,13 @@
 version: 2
 
 models:
-  - name: gmx_v2_arbitrum_CollateralTokensData
+  - name: gmx_v2_arbitrum_collateral_tokens_data
     meta:
       blockchain: arbitrum
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      materialized: view
       tags: ['arbitrum', 'gmx', 'event', 'collateral_tokens']
     description: |
       Extracts token information related to collateral from the Arbitrum API.

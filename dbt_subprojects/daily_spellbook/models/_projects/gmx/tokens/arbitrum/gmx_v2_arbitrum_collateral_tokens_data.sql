@@ -2,11 +2,7 @@
   config(
     schema = 'gmx_v2_arbitrum',
     alias = 'collateral_tokens_data',    
-    materialized = 'view',
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                "project",
-                                "gmx",
-                                \'["ai_data_master","gmx-io"]\') }}'
+    materialized = 'view'
     )
 }}
 

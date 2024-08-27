@@ -2,11 +2,7 @@
   config(
     schema = 'gmx_v2_arbitrum',
     alias = 'order_created',
-    materialized = 'table',
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                "project",
-                                "gmx",
-                                \'["ai_data_master","gmx-io"]\') }}'
+    materialized = 'table'
     )
 }}
 
@@ -263,7 +259,7 @@ SELECT
     key
 
 FROM event_data AS ED
-LEFT JOIN {{ ref('gmx_v2_arbitrum_CollateralTokensData') }} AS CTD
+LEFT JOIN {{ ref('gmx_v2_arbitrum_collateral_tokens_data') }} AS CTD
     ON ED.initial_collateral_token = TRY_CAST(CTD.collateral_token AS VARCHAR)
 
 
