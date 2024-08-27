@@ -25,6 +25,9 @@
     {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') %}
       ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])
     {%- endif -%}
+    {%- if blockchain in ('arbitrum',) %}
+      ,map(array['l1_fee'], array[cast(coalesce(gas_used_for_l1,0) * coalesce(gas_used_for_l1,effective_gas_price) as uint256)])
+    {%- endif -%}
     {%- if blockchain in ('ethereum',) %}
       ,map(array['blob_fee'],array[cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256)])
     {%- endif %}
@@ -55,7 +58,8 @@
     {%- endif %}
     {%- if blockchain in ('ethereum',) %}
       ,blob_base_fee
-      ,blob_gas_used
+      ,blob.blob_gas_used
+      ,max_fee_per_blob_gas
     {%- endif %}
 {% endmacro %}
 
