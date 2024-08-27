@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'gmx_v2_avalanche_c',
-    alias = 'position_fees_info',
+    alias = 'position_fees_info_copy',
     materialized = 'table',
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
@@ -65,7 +65,7 @@ WITH markets_data AS (
         ERC20_IT.decimals AS index_token_decimals,
         ERC20_LT.decimals AS long_token_decimals,
         ERC20_ST.decimals AS short_token_decimals  
-    FROM {{ ref('gmx_v2_avalanche_c_MarketCreated') }} AS MCE
+    FROM {{ ref('gmx_v2_avalanche_c_MarketCreated_copy') }} AS MCE
     LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_IT
         ON ERC20_IT.contract_address = MCE.index_token
     LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_LT

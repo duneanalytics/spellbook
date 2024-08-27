@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'gmx_v2_avalanche_c',
-    alias = 'order_created',
+    alias = 'order_created_copy',
     materialized = 'table',
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",

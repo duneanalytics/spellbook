@@ -12,117 +12,198 @@
 
 {%- set event_name = 'OrderCreated' -%}
 {%- set blockchain_name = 'arbitrum' -%}
-{%- set addresses = [
-    ['account', 'account_'],
-    ['receiver', 'receiver'],
-    ['callbackContract', 'callback_contract'],
-    ['uiFeeReceiver', 'ui_fee_receiver'],
-    ['market', 'market'],
-    ['initialCollateralToken', 'initial_collateral_token'],
-] -%}
-{%- set address_array_items = [
-    ['swapPath', 'swap_path'],
-] -%}
-{%- set unsigned_integers = [
-    ['orderType', 'order_type'],
-    ['decreasePositionSwapType', 'decrease_position_swap_type'],
-    ['sizeDeltaUsd', 'size_delta_usd'],
-    ['initialCollateralDeltaAmount', 'initial_collateral_delta_amount'],
-    ['triggerPrice', 'trigger_price'],
-    ['acceptablePrice', 'acceptable_price'],
-    ['executionFee', 'execution_fee'],
-    ['callbackGasLimit', 'callback_gas_limit'],
-    ['minOutputAmount', 'min_output_amount'],
-    ['updatedAtBlock', 'updated_at_block'],
-    ['updatedAtTime', 'updated_at_time'],
-] -%}
-{%- set booleans = [
-    ['isLong', 'is_long'],
-    ['shouldUnwrapNativeToken', 'should_unwrap_native_token'],
-    ['isFrozen', 'is_frozen'],
-] -%}
-{%- set bytes32 = [
-    ['key', 'key'],
-] -%}
 
-WITH event_data AS (
-    SELECT
+WITH evt_data AS (
+    SELECT 
         -- Main Variables
-        '{{ blockchain_name }}' as blockchain,
-        block_time,
-        block_date,
-        block_number, 
+        '{{ blockchain_name }}' AS blockchain,
+        evt_block_time AS block_time,
+        evt_block_number AS block_number, 
+        evt_tx_hash AS tx_hash,
+        evt_index AS index,
+        contract_address,
+        eventName AS event_name,
+        eventData AS data,
+        msgSender AS msg_sender,
+        topic1,
+        topic2
+    FROM gmx_v2_arbitrum.EventEmitter_evt_EventLog2
+    WHERE eventName = '{{ event_name }}'
+    ORDER BY evt_block_time ASC
+)
+
+, parsed_data AS (
+    SELECT
+        tx_hash,
+        index, 
+        json_query(data, 'lax $.addressItems' OMIT QUOTES) AS address_items,
+        json_query(data, 'lax $.uintItems' OMIT QUOTES) AS uint_items,
+        json_query(data, 'lax $.boolItems' OMIT QUOTES) AS bool_items,
+        json_query(data, 'lax $.bytes32Items' OMIT QUOTES) AS bytes32_items
+    FROM
+        evt_data
+)
+
+, address_items_parsed AS (
+    SELECT 
         tx_hash,
         index,
-        tx_index,
-        tx_from,
-        tx_to,    
-        contract_address,
-        varbinary_substring(topic2, 13, 20) as account,
-        '{{ event_name }}' as event_name,
-        
-        -- Extracting Address
-        {% for var in addresses -%}
-            {{ process_variable(var[0], var[1], 'address', 52, 20) }},
-        {% endfor -%}   
-
-        -- Extracting Unsigned Integers
-        {% for var in unsigned_integers -%}
-            {{ process_variable(var[0], var[1], 'unsigned_integer', 64, 32) }},
-        {% endfor -%} 
-
-        -- Extracting Booleans
-        {% for var in booleans -%}
-            {{ process_variable(var[0], var[1], 'boolean', 64, 32) }},
-        {% endfor -%} 
-        
-        -- Extracting Bytes32
-        {% for var in bytes32 -%}
-            {{ process_variable(var[0], var[1], 'bytes32', 64, 32) }},
-        {% endfor -%}         
-
-        -- Extracting Address Array Items
-        {% for var in address_array_items -%}
-            {{ process_variable(var[0], var[1], 'address_array_items', 32, 32) }},
-        {% endfor -%} 
-        data
-    
-    FROM
-        {{ source(blockchain_name, 'logs') }}
-    WHERE
-        contract_address = 0xc8ee91a54287db53897056e12d9819156d3822fb
-        AND topic1 = keccak(to_utf8('{{ event_name }}'))
-    ORDER BY block_time ASC
+        json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
+    FROM 
+        parsed_data,
+        UNNEST(
+            CAST(json_extract(address_items, '$.items') AS ARRAY(JSON))
+        ) AS t(item)
 )
 
-, sequence_data AS (
+, address_array_items_parsed AS (
+    SELECT 
+        tx_hash,
+        index,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
+        json_format(json_extract(CAST(item AS VARCHAR), '$.value')) AS value
+    FROM 
+        parsed_data,
+        UNNEST(
+            CAST(json_extract(address_items, '$.arrayItems') AS ARRAY(JSON))
+        ) AS t(item)
+)
+
+, uint_items_parsed AS (
+    SELECT 
+        tx_hash,
+        index,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
+    FROM 
+        parsed_data,
+        UNNEST(
+            CAST(json_extract(uint_items, '$.items') AS ARRAY(JSON))
+        ) AS t(item)
+)
+
+, bool_items_parsed AS (
+    SELECT 
+        tx_hash,
+        index,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
+    FROM 
+        parsed_data,
+        UNNEST(
+            CAST(json_extract(bool_items, '$.items') AS ARRAY(JSON))
+        ) AS t(item)
+)
+
+, bytes32_items_parsed AS (
+    SELECT 
+        tx_hash,
+        index,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
+    FROM 
+        parsed_data,
+        UNNEST(
+            CAST(json_extract(bytes32_items, '$.items') AS ARRAY(JSON))
+        ) AS t(item)
+)
+
+, combined AS (
+    SELECT *
+    FROM address_items_parsed
+    UNION ALL
+    SELECT *
+    FROM address_array_items_parsed
+    UNION ALL    
+    SELECT *
+    FROM uint_items_parsed
+    UNION ALL
+    SELECT *
+    FROM bool_items_parsed
+    UNION ALL
+    SELECT *
+    FROM bytes32_items_parsed
+
+)
+
+, evt_data_parsed AS (
     SELECT
         tx_hash,
-        key,
-        SEQUENCE(1, TRY_CAST(swap_path_n AS INTEGER), 1) AS market_indices, 
-        data
-    FROM event_data
-    WHERE swap_path_n > 0
-    ORDER BY key ASC
+        index,
+        MAX(CASE WHEN key_name = 'account' THEN value END) AS account,
+        MAX(CASE WHEN key_name = 'receiver' THEN value END) AS receiver,
+        MAX(CASE WHEN key_name = 'callbackContract' THEN value END) AS callback_contract,
+        MAX(CASE WHEN key_name = 'uiFeeReceiver' THEN value END) AS ui_fee_receiver,
+        MAX(CASE WHEN key_name = 'market' THEN value END) AS market,  
+        MAX(CASE WHEN key_name = 'initialCollateralToken' THEN value END) AS initial_collateral_token,
+
+        MAX(CASE WHEN key_name = 'swapPath' THEN value END) AS swap_path,  
+        MAX(CASE WHEN key_name = 'orderType' THEN value END) AS order_type,
+        MAX(CASE WHEN key_name = 'decreasePositionSwapType' THEN value END) AS decrease_position_swap_type,
+        MAX(CASE WHEN key_name = 'sizeDeltaUsd' THEN value END) AS size_delta_usd,
+        MAX(CASE WHEN key_name = 'initialCollateralDeltaAmount' THEN value END) AS initial_collateral_delta_amount,
+        MAX(CASE WHEN key_name = 'triggerPrice' THEN value END) AS trigger_price,
+        MAX(CASE WHEN key_name = 'acceptablePrice' THEN value END) AS acceptable_price,
+        MAX(CASE WHEN key_name = 'executionFee' THEN value END) AS execution_fee,
+        MAX(CASE WHEN key_name = 'callbackGasLimit' THEN value END) AS callback_gas_limit,
+        MAX(CASE WHEN key_name = 'minOutputAmount' THEN value END) AS min_output_amount,
+    
+        MAX(CASE WHEN key_name = 'updatedAtBlock' THEN value END) AS updated_at_block,
+        MAX(CASE WHEN key_name = 'updatedAtTime' THEN value END) AS updated_at_time,
+    
+        MAX(CASE WHEN key_name = 'isLong' THEN value END) AS is_long,
+        MAX(CASE WHEN key_name = 'shouldUnwrapNativeToken' THEN value END) AS should_unwrap_native_token,
+        MAX(CASE WHEN key_name = 'isFrozen' THEN value END) AS is_frozen,
+    
+        MAX(CASE WHEN key_name = 'key' THEN value END) AS key
+    FROM
+        combined
+    GROUP BY tx_hash, index
 )
 
-, swap_markets_data AS (
+-- full data 
+, event_data AS (
     SELECT 
-        tx_hash, 
-        key,
-        JSON_FORMAT(CAST(ARRAY_AGG(market) AS JSON)) AS swap_path
-    FROM (
-        SELECT
-            tx_hash, 
-            key, 
-            TRY_CAST(
-                varbinary_substring(
-                    varbinary_substring(data, varbinary_position(data, to_utf8('swapPath')) + 32 + market_index * 32, 32), 
-                    13, 20)
-            AS VARCHAR) AS market
-        FROM sequence_data, UNNEST(market_indices) AS t(market_index)    
-    )
-    GROUP BY tx_hash, key
+        blockchain,
+        block_time,
+        block_number,
+        ED.tx_hash,
+        ED.index,
+        contract_address,
+        event_name,
+        msg_sender,
+        topic1, 
+        topic2,
+        
+        account,
+        receiver,
+        callback_contract,
+        ui_fee_receiver,
+        market,
+        TRY_CAST(initial_collateral_token AS VARCHAR) AS initial_collateral_token,
+        
+        swap_path,
+        TRY_CAST(order_type AS INTEGER) AS order_type,
+        TRY_CAST(decrease_position_swap_type AS INTEGER) AS decrease_position_swap_type,
+        TRY_CAST(size_delta_usd AS DECIMAL) AS size_delta_usd,
+        TRY_CAST(initial_collateral_delta_amount AS DECIMAL) AS initial_collateral_delta_amount,
+        TRY_CAST(trigger_price AS DECIMAL) AS trigger_price,
+        TRY_CAST(acceptable_price AS DECIMAL) AS acceptable_price,
+        TRY_CAST(execution_fee AS DECIMAL) AS execution_fee,
+        TRY_CAST(callback_gas_limit AS DECIMAL) AS callback_gas_limit,
+        TRY_CAST(min_output_amount AS DECIMAL) AS min_output_amount,
+        updated_at_block,
+        TRY_CAST(updated_at_time AS DECIMAL) AS updated_at_time,
+        TRY_CAST(is_long AS BOOLEAN) AS is_long,
+        TRY_CAST(should_unwrap_native_token AS BOOLEAN) AS should_unwrap_native_token,
+        TRY_CAST(is_frozen AS BOOLEAN) AS is_frozen,
+        key
+        
+    FROM evt_data AS ED
+    LEFT JOIN evt_data_parsed AS EDP
+        ON ED.tx_hash = EDP.tx_hash
+            AND ED.index = EDP.index
 )
 
 -- Filter relevant tokens
@@ -137,26 +218,22 @@ WITH event_data AS (
 SELECT 
     blockchain,
     block_time,
-    block_date,
     block_number,
-    ED.tx_hash,
+    tx_hash,
     index,
-    tx_index,
-    tx_from,
-    tx_to,
     contract_address,
-    account,
     event_name,
+    msg_sender,
+    topic1,
+    topic2,
     
-    account_,
+    account,
     receiver,
     callback_contract,
     ui_fee_receiver,
-    ED.market,
+    market,
     ED.initial_collateral_token,
-
-    COALESCE(CAST(SMD.swap_path AS VARCHAR), '[]') AS swap_path,
-    swap_path_n, 
+    swap_path,
     
     CASE 
         WHEN order_type = 0 THEN 'MarketSwap'
@@ -189,26 +266,14 @@ SELECT
         WHEN updated_at_time = 0 THEN NULL
         ELSE updated_at_time
     END AS updated_at_time,
-    CASE 
-        WHEN is_long = 1 THEN true
-        ELSE false
-    END AS is_long,
-    CASE 
-        WHEN should_unwrap_native_token = 1 THEN true
-        ELSE false
-    END AS should_unwrap_native_token,
-    CASE 
-        WHEN is_frozen = 1 THEN true
-        ELSE false
-    END AS is_frozen,    
-    
-    ED.key
-    
+    is_long,
+    should_unwrap_native_token,
+    is_frozen,
+    key
+
 FROM event_data AS ED
-LEFT JOIN swap_markets_data AS SMD
-    ON TRY_CAST(ED.key AS VARCHAR) = TRY_CAST(SMD.key AS VARCHAR)
-        AND ED.tx_hash = SMD.tx_hash
 LEFT JOIN collateral_tokens_data AS CTD
-    ON ED.initial_collateral_token = CTD.collateral_token
+    ON ED.initial_collateral_token = TRY_CAST(CTD.collateral_token AS VARCHAR)
+
 
 

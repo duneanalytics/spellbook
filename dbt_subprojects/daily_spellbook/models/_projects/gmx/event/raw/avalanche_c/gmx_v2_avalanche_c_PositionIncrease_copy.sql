@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'gmx_v2_avalanche_c',
-    alias = 'position_decrease',
+    alias = 'position_increase_copy',
     materialized = 'table',
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
@@ -10,7 +10,7 @@
   )
 }}
 
-{%- set event_name = 'PositionDecrease' -%}
+{%- set event_name = 'PositionIncrease' -%}
 {%- set blockchain_name = 'avalanche_c' -%}
 {%- set addresses = [
     ['market', 'market'],
@@ -31,15 +31,13 @@
     ['collateralTokenPrice.min', 'collateral_token_price_min'],
     ['sizeDeltaUsd', 'size_delta_usd'],
     ['sizeDeltaInTokens', 'size_delta_in_tokens'],
-    ['collateralDeltaAmount', 'collateral_delta_amount'],
-    ['values.priceImpactDiffUsd', 'values_price_impact_diff_usd'],
     ['orderType', 'order_type'],
-    ['decreasedAtTime', 'decreased_at_time']
+    ['increasedAtTime', 'increased_at_time']
 ] -%}
 {%- set integers = [
+    ['collateralDeltaAmount', 'collateral_delta_amount'],
     ['priceImpactUsd', 'price_impact_usd'],
-    ['basePnlUsd', 'base_pnl_usd'],
-    ['uncappedBasePnlUsd', 'uncapped_base_pnl_usd']
+    ['priceImpactAmount', 'price_impact_amount']
 ] -%}
 {%- set booleans = [
     ['isLong', 'is_long']
@@ -56,7 +54,7 @@ WITH markets_data AS (
         ERC20_IT.decimals AS index_token_decimals,
         ERC20_LT.decimals AS long_token_decimals,
         ERC20_ST.decimals AS short_token_decimals  
-    FROM {{ ref('gmx_v2_avalanche_c_MarketCreated') }} AS MCE
+    FROM {{ ref('gmx_v2_avalanche_c_MarketCreated_copy') }} AS MCE
     LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_IT
         ON ERC20_IT.contract_address = MCE.index_token
     LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_LT
@@ -155,8 +153,6 @@ SELECT
     collateral_token_price_min / POWER(10, 30 - collateral_token_decimals) AS collateral_token_price_min,
     size_delta_usd / POWER(10, 30) AS size_delta_usd,
     size_delta_in_tokens / POWER(10, index_token_decimals) AS size_delta_in_tokens,
-    collateral_delta_amount / POWER(10, collateral_token_decimals) AS collateral_delta_amount,
-    values_price_impact_diff_usd / POWER(10, 30 - index_token_decimals) AS impact_diff_usd,
     CASE 
         WHEN order_type = 0 THEN 'MarketSwap'
         WHEN order_type = 1 THEN 'LimitSwap'
@@ -169,21 +165,21 @@ SELECT
         ELSE NULL
     END AS order_type,
     CASE 
-        WHEN decreased_at_time = 0 THEN NULL
-        ELSE decreased_at_time
-    END AS decreased_at_time,
+        WHEN increased_at_time = 0 THEN NULL
+        ELSE increased_at_time
+    END AS increased_at_time,
+    collateral_delta_amount / POWER(10, collateral_token_decimals) AS collateral_delta_amount,
     price_impact_usd / POWER(10, 30) AS price_impact_usd,
-    base_pnl_usd / POWER(10, 30) AS base_pnl_usd,
-    uncapped_base_pnl_usd / POWER(10, 30) AS uncapped_base_pnl_usd,    
+    price_impact_amount / POWER(10, index_token_decimals) AS price_impact_amount,  
     CASE 
         WHEN is_long = 1 THEN true
         ELSE false
     END AS is_long,
     order_key,
     position_key
-
+    
 FROM event_data AS ED
 LEFT JOIN markets_data AS MD
     ON ED.market = MD.market
 LEFT JOIN collateral_tokens_data AS CTD
-    ON ED.collateral_token = CTD.collateral_token
+    ON ED.collateral_token = CTD.collateral_token  

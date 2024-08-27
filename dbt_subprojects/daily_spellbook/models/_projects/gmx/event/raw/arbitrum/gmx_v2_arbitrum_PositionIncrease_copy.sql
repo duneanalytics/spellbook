@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'gmx_v2_avalanche_c',
-    alias = 'position_increase',
+    schema = 'gmx_v2_arbitrum',
+    alias = 'position_increase_copy',
     materialized = 'table',
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
@@ -11,7 +11,7 @@
 }}
 
 {%- set event_name = 'PositionIncrease' -%}
-{%- set blockchain_name = 'avalanche_c' -%}
+{%- set blockchain_name = 'arbitrum' -%}
 {%- set addresses = [
     ['market', 'market'],
     ['collateralToken', 'collateral_token']
@@ -54,12 +54,12 @@ WITH markets_data AS (
         ERC20_IT.decimals AS index_token_decimals,
         ERC20_LT.decimals AS long_token_decimals,
         ERC20_ST.decimals AS short_token_decimals  
-    FROM {{ ref('gmx_v2_avalanche_c_MarketCreated') }} AS MCE
-    LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_IT
+    FROM {{ ref('gmx_v2_arbitrum_MarketCreated_copy') }} AS MCE
+    LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20_IT
         ON ERC20_IT.contract_address = MCE.index_token
-    LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_LT
+    LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20_LT
         ON ERC20_LT.contract_address = MCE.long_token 
-    LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_ST
+    LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20_ST
         ON ERC20_ST.contract_address = MCE.short_token
 )
 
@@ -69,7 +69,7 @@ WITH markets_data AS (
         contract_address AS collateral_token, 
         decimals AS collateral_token_decimals
     FROM 
-        {{ ref('gmx_v2_avalanche_c_erc20') }}
+        {{ ref('gmx_v2_arbitrum_erc20') }}
 )
 
 -- get event data
@@ -117,7 +117,7 @@ WITH markets_data AS (
     FROM
         {{ source(blockchain_name, 'logs') }}
     WHERE
-        contract_address = 0xdb17b211c34240b014ab6d61d4a31fa0c0e20c26
+        contract_address = 0xc8ee91a54287db53897056e12d9819156d3822fb
         AND topic1 = keccak(to_utf8('{{ event_name }}'))
 )
 

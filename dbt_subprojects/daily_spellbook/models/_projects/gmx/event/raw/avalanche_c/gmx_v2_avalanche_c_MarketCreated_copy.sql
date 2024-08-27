@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'gmx_v2_avalanche_c',
-    alias = 'market_created',
+    alias = 'market_created_copy',
     materialized = 'table',
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",

@@ -1,9 +1,9 @@
 {{
   config(
-    schema = 'gmx_v2_arbitrum',
-    alias = 'order_cancelled',
+    schema = 'gmx_v2_avalanche_c',
+    alias = 'order_cancelled_copy',
     materialized = 'table',
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
+    post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "project",
                                 "gmx",
                                 \'["ai_data_master","gmx-io"]\') }}'
@@ -11,7 +11,7 @@
 }}
 
 {%- set event_name = 'OrderCancelled' -%}
-{%- set blockchain_name = 'arbitrum' -%}
+{%- set blockchain_name = 'avalanche_c' -%}
 {%- set bytes32 = [
     ['key', 'key'],
 ] -%}
@@ -63,5 +63,5 @@ SELECT
 FROM
     {{ source(blockchain_name, 'logs') }}
 WHERE
-    contract_address = 0xc8ee91a54287db53897056e12d9819156d3822fb
+    contract_address = 0xdb17b211c34240b014ab6d61d4a31fa0c0e20c26
     AND topic1 = keccak(to_utf8('{{ event_name }}'))
