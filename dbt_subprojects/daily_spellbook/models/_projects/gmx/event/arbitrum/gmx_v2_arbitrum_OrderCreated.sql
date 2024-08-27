@@ -212,7 +212,7 @@ WITH evt_data AS (
         contract_address AS collateral_token, 
         decimals AS collateral_token_decimals
     FROM 
-        {{ ref('gmx_v2_arbitrum_erc20') }}
+        {{ source("ai_data_master", "result_token_information_from_arbitrum_api", database="dune") }}
 )
 
 SELECT 

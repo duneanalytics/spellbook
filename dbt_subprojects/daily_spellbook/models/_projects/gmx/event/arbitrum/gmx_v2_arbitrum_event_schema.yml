@@ -23,10 +23,6 @@ models:
         description: The timestamp of the block when the event was recorded
         tests:
           - not_null
-      - name: block_date
-        description: The date of the block when the event was recorded
-        tests:
-          - not_null
       - name: block_number
         description: The block number where the event is included
         tests:
