@@ -316,7 +316,8 @@ select
     , taking_amount
     , order_flags
     , tokens
-    , if(cardinality(user_tokens) = 0, if(cardinality(caller_tokens) = 0, tokens, caller_tokens), user_tokens) as customer_tokens
+    , user_tokens
+    , caller_tokens
     , amount_usd
     , user_amount_usd
     , user_amount_usd_trusted
