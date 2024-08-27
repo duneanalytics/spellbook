@@ -134,6 +134,7 @@ select
     ) as remains
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
+    , cast(1 as varbinary) as temp -- a temporary intentional error in order not to load the prod
 from (
     {{
         add_tx_columns(
