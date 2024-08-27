@@ -13,9 +13,4 @@ sources:
     description: Tables with all decoded events for GMX v2 on the Arbitrum blockchain
     tables:
       - name: EventEmitter_evt_EventLog1
-      - name: EventEmitter_evt_EventLog2
-
-  - name: ai_data_master
-    description: Materialized view that extracts token information from the Arbitrum API, including symbol, contract address, decimals, and synthetic status
-    tables:
-      - name: result_token_information_from_arbitrum_api        
+      - name: EventEmitter_evt_EventLog2    
