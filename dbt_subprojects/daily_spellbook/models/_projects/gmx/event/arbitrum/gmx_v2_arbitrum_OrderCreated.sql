@@ -27,7 +27,7 @@ WITH evt_data AS (
         msgSender AS msg_sender,
         topic1,
         topic2
-    FROM gmx_v2_arbitrum.EventEmitter_evt_EventLog2
+    FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
 )

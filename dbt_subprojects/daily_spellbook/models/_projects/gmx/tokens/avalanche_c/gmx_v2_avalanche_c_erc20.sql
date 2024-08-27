@@ -2,7 +2,7 @@
   config(
     schema = 'gmx_v2_avalanche_c',
     alias = 'erc20',
-    materialized = 'table',
+    materialized = 'view',
     post_hook='{{ expose_spells(\'["arbitrum"]\',
                                 "project",
                                 "gmx",
