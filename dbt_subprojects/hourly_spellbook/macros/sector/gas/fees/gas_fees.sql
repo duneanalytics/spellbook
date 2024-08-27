@@ -20,13 +20,17 @@
 
 -- include chain specific logic here
 -- arbitrum is a bit special as they have eip1559 but ignore tips (priority fees)
+-- https://docs.arbitrum.io/how-arbitrum-works/gas-fees#tips-in-l2
+-- zksync doesn't provide an easy way to track which part of the fee is L1 fee and which is the L2 base fee
 {% macro tx_fee_breakdown_raw(blockchain) %}
     map_concat(
     map()
     {%- if blockchain in ('arbitrum',) %}
       ,map(array['l1_fee','base_fee']
-        , array[cast(coalesce(gas_used_for_l1,0) * effective_gas_price as uint256)
-                ,cast(txns.gas_used - coalesce(gas_used_for_l1,0) * txns.effective_gas_price as uint256)])
+        , array[cast(coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)
+                ,cast(txns.gas_used - coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)])
+    {%- elif blockchain in ('zksync',) %}
+      ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
     {%- else -%}
         {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') %}
           ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])
