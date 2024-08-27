@@ -102,20 +102,20 @@ models:
           - 'SwapCollateralTokenToPnlToken'
       - name: size_delta_usd
         description: The change in position size in USD
-        # tests:
-        #   - not_null
+        tests:
+          - not_null
       - name: initial_collateral_delta_amount
         description: The change in initial collateral amount.
-        # tests:
-        #   - not_null
+        tests:
+          - not_null
       - name: trigger_price
         description: The price that triggers the order execution.
         tests:
           - not_null        
       - name: acceptable_price
         description: The minimum acceptable price for order execution.
-        # tests:
-        #   - not_null        
+        tests:
+          - not_null        
       - name: execution_fee
         description: The fee paid for executing the order in native tokens
         tests:
@@ -126,8 +126,8 @@ models:
           - not_null        
       - name: min_output_amount
         description: The minimum amount of output tokens expected from the order, based on the markets in the swap path.
-        # tests:
-        #   - not_null        
+        tests:
+          - not_null        
       - name: updated_at_block
         description: The block number at which the order was last updated.
         tests:
