@@ -6,10 +6,11 @@ models:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora
       sector: dex
       contributors: hildobby
+      docs_slug: /curated/trading/DEX/dex-sandwiches
     config:
       tags: ["dex", "mev", "sandwiches"]
     description: >
-      DEX MEV Sandwich Trades across chains
+      The dex.sandwiches table captures detailed data on the outer trades of sandwich attacks in decentralized exchanges (DEXs), recording front-running and back-running trades across various EVM networks.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -96,10 +97,11 @@ models:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zksync, scroll, zora
       sector: dex
       contributors: hildobby
+      docs_slug: /curated/trading/DEX/dex-sandwiched
     config:
       tags: ["dex", "mev", "sandwiched"]
     description: >
-      DEX MEV Sandwiched Trades across chains
+      The dex.sandwiched table captures detailed data on the victim trades of sandwich attacks in decentralized exchanges (DEXs), recording transactions that have been sandwiched across various EVM networks.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
