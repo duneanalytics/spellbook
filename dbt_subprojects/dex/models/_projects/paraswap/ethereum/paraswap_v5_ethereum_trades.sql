@@ -269,6 +269,8 @@ uniswap_v2_call_swap_without_event AS (
 
     INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
         AND i.tx_hash = o.tx_hash
+
+    WHERE cast(i.amountIn AS int256) >= 0
 ),
 
 uniswap_call_swap_without_event AS (
@@ -420,6 +422,8 @@ uniswap_call_swap_without_event AS (
 
     INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
         AND i.tx_hash = o.tx_hash
+
+    WHERE cast(i.amountIn AS int256) >= 0
 ),
 
 zero_x_call_swap_without_event AS (
@@ -572,6 +576,8 @@ zero_x_call_swap_without_event AS (
 
         INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
             AND i.tx_hash = o.tx_hash
+        
+    WHERE cast(i.amountIn AS int256) >= 0
 ),
         
 call_swap_without_event AS (
@@ -580,37 +586,6 @@ call_swap_without_event AS (
     SELECT * FROM uniswap_call_swap_without_event
     UNION ALL
     SELECT * FROM zero_x_call_swap_without_event
-),
-
-non_nft_call_swap_without_event AS (
-    SELECT c.block_time,
-        c.block_number,
-        c.taker,
-        c.maker,
-        c.token_bought_amount_raw,
-        c.token_sold_amount_raw,
-        c.amount_usd,
-        c.token_bought_address,
-        c.token_sold_address,
-        c.project_contract_address,
-        c.tx_hash,
-        c.trace_address,
-        c.evt_index 
-    FROM call_swap_without_event c
-     
-    LEFT JOIN {{ source('erc721_ethereum', 'evt_transfer') }} e ON e.evt_block_number = c.block_number
-        AND e.evt_tx_hash = c.tx_hash
-        AND e.evt_block_number >= 13056913
-        AND e.evt_block_time > date '2024-07-11'
-        AND e.evt_block_time < date '2024-07-13'
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('e.evt_block_time') }}
-        {% endif %}
-        {% if not is_incremental() %}
-        AND e.evt_block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
-    
-    WHERE e.evt_tx_hash IS NULL
 ),
 
 dexs AS (
@@ -663,7 +638,7 @@ dexs AS (
         c.tx_hash,
         c.trace_address,
         c.evt_index
-    FROM non_nft_call_swap_without_event c
+    FROM call_swap_without_event c
     LEFT JOIN dex_swap d ON c.block_number = d.block_number AND c.tx_hash = d.tx_hash
     LEFT JOIN liqudity_swap l ON c.block_number = l.block_number AND c.tx_hash = l.tx_hash
     WHERE d.tx_hash IS NULL
