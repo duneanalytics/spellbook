@@ -90,7 +90,11 @@ select
     , transfer_to as transfer_from
     , transfer_from as transfer_to
 from transfers
-join (select wrapped_native_token_address as transfer_to from ({{ oneinch_blockchain_macro(blockchain) }})) using(transfer_to)
+join (
+    select wrapped_native_token_address as transfer_to
+    from {{ source('oneinch', 'blockchains') }}
+    where blockchain = '{{blockchain}}'
+) using(transfer_to)
 where
     type = 'deposit'
 
