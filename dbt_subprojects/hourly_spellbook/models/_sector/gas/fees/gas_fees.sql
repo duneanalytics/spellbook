@@ -1,7 +1,7 @@
 {{ config(
         schema = 'gas',
         alias = 'fees',
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","ethereum","optimism","scroll","zksync","zora"]\',
+        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "ethereum", "fantom", "gnosis", "linea", "mantle", "optimism", "polygon", "scroll", "sei", "zkevm", "zksync", "zora"]\',
                                 "sector",
                                 "gas",
                                 \'["soispoke", "ilemi", "0xRob", "jeff-dude"]\') }}'
