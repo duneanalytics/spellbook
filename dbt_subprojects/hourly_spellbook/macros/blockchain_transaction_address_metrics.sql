@@ -5,9 +5,6 @@ with contracts as (
         distinct address
     from
         {{ source(blockchain, 'creation_traces') }}
-    where
-        1 = 1
-        and block_time >= timestamp '2024-08-01'
 )
 , from_new_address as (
     select
@@ -17,7 +14,6 @@ with contracts as (
         {{ source(blockchain, 'transactions') }}
     where
         1 = 1
-        and block_time >= timestamp '2024-08-01'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -32,7 +28,6 @@ with contracts as (
         {{ source(blockchain, 'transactions') }}
     where
         1 = 1
-        and block_time >= timestamp '2024-08-01'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -51,7 +46,6 @@ with contracts as (
         {{ source(blockchain, 'transactions') }}
     where
         1 = 1
-        and block_time >= timestamp '2024-08-01'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
         {% endif %}
