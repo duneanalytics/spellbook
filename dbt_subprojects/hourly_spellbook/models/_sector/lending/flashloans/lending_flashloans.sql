@@ -2,7 +2,7 @@
   config(
     schema = 'lending',
     alias = 'flashloans',
-    partition_by = ['blockchain', 'project', 'block_month'],
+    partition_by = ['blockchain', 'project'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
