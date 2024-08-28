@@ -16,8 +16,7 @@ meta as (
         chain_id
         , wrapped_native_token_address
         , native_token_symbol as native_symbol
-    from {{ source('oneinch', 'blockchains') }}
-    where blockchain = '{{blockchain}}'
+    from ({{ oneinch_blockchain_macro(blockchain) }})
 )
 
 , orders as (
@@ -213,7 +212,7 @@ meta as (
             , calls.block_number
             , calls.tx_hash
             , calls.call_trace_address
-            , call_trade_id
+            , calls.call_trade_id
             , any_value(block_time) as block_time
             , any_value(tx_from) as tx_from
             , any_value(tx_to) as tx_to
@@ -267,8 +266,13 @@ meta as (
                 , transfer_to
                 , date_trunc('minute', block_time) as minute
             from (
-                select * from {{ source('oneinch', 'parsed_transfers_from_calls') }}
-                where blockchain = '{{blockchain}}'
+                select * from ({{ oneinch_parsed_transfers_from_calls_macro(blockchain) }})
+                where
+                    {% if is_incremental() %}
+                        {{ incremental_predicate('block_time') }}
+                    {% else %}
+                        block_time >= timestamp '{{date_from}}'
+                    {% endif %}
             ), meta
             where
                 {% if is_incremental() %}
