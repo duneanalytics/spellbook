@@ -270,7 +270,7 @@ uniswap_v2_call_swap_without_event AS (
     INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
         AND i.tx_hash = o.tx_hash
 
-    WHERE cast(i.amountIn AS int256) >= 0 -- Filter NFTs and transactions where tokenIn didn't emit transfer event
+    WHERE i.amountIn >= 0 -- Filter NFTs and transactions where tokenIn didn't emit transfer event
 ),
 
 uniswap_call_swap_without_event AS (
@@ -423,7 +423,7 @@ uniswap_call_swap_without_event AS (
     INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
         AND i.tx_hash = o.tx_hash
 
-    WHERE cast(i.amountIn AS int256) >= 0 -- Filter NFTs and transactions where tokenIn didn't emit transfer event
+    WHERE i.amountIn >= 0 -- Filter NFTs and transactions where tokenIn didn't emit transfer event
 ),
 
 zero_x_call_swap_without_event AS (
@@ -577,7 +577,7 @@ zero_x_call_swap_without_event AS (
         INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
             AND i.tx_hash = o.tx_hash
         
-    WHERE cast(i.amountIn AS int256) >= 0 -- Filter NFTs and transactions where tokenIn didn't emit transfer event
+    WHERE i.amountIn >= 0 -- Filter NFTs and transactions where tokenIn didn't emit transfer event
 ),
         
 call_swap_without_event AS (
