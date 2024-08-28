@@ -8,14 +8,11 @@ with contracts as (
     where
         1 = 1
         and block_time >= timestamp '2024-08-01'
-        {% if is_incremental() %}
-        and {{ incremental_predicate('block_time') }}
-        {% endif %}
 )
 , from_new_address as (
     select
         "from" as address
-        , min(block_time) as min_block_hour
+        , min(date_trunc('hour', block_time)) as min_block_hour
     from
         {{ source(blockchain, 'transactions') }}
     where
@@ -30,7 +27,7 @@ with contracts as (
 , to_new_address as (
     select
         to as address
-        , min(block_time) as min_block_hour
+        , min(date_trunc('hour', block_time)) as min_block_hour
     from
         {{ source(blockchain, 'transactions') }}
     where
