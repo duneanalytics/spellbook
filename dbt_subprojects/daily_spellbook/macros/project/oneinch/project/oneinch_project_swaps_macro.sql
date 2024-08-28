@@ -259,7 +259,7 @@ meta as (
                 , block_time
                 , tx_hash
                 , transfer_trace_address
-                , if(type = 'native', {{native_address}}, contract_address) as contract_address_raw
+                , contract_address as contract_address_raw
                 , if(type = 'native', wrapped_native_token_address, contract_address) as contract_address
                 , type = 'native' as native
                 , amount
@@ -268,7 +268,7 @@ meta as (
                 , transfer_to
                 , date_trunc('minute', block_time) as minute
             from (
-                select * from {{ source('oneinch_' + blockchain, 'parsed_transfers_from_calls') }}
+                select * from ({{ oneinch_project_ptfc_macro(blockchain) }})
                 where
                     {% if is_incremental() %}
                         {{ incremental_predicate('block_time') }}
