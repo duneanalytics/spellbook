@@ -260,8 +260,8 @@ meta as (
                 , tx_hash
                 , transfer_trace_address
                 , contract_address as contract_address_raw
-                , if(type = 'native', wrapped_native_token_address, contract_address) as contract_address
-                , type = 'native' as native
+                , if(contract_address = {{ native_address }}, wrapped_native_token_address, contract_address) as contract_address
+                , contract_address = {{ native_address }} as native
                 , amount
                 , native_symbol
                 , transfer_from
