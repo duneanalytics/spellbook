@@ -16,6 +16,6 @@
         project = 'baseswap',
         version = '3',
         Pair_evt_Swap = source('baseswap_v3_base', 'UniswapV3Pool_evt_Swap'),
-        Factory_evt_PairCreated = source('baseswap_v3_base', 'UniswapV3Factory_evt_PoolCreated')
+        Factory_evt_PoolCreated = source('baseswap_v3_base', 'UniswapV3Factory_evt_PoolCreated')
     )
 }}
