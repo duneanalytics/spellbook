@@ -2,7 +2,6 @@ version: 2
 
 sources:
   - name: oneinch_zksync
-    description: "decoded events and function calls for 1inch on ethereum"
     tables:
       - name: AggregationRouterV5_call_swap
       - name: AggregationRouterV5_call_unoswap
@@ -40,3 +39,5 @@ sources:
       - name: AggregationRouterV6_call_fillOrderArgs
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
+      - name: lop
+      - name: parsed_transfers_from_calls

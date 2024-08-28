@@ -6,6 +6,8 @@
 %}
 
 {% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
+{% set native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+{% set zero_address = '0x0000000000000000000000000000000000000000' %}
 
 
 
@@ -58,15 +60,14 @@ meta as (
         , flags as order_flags
     from (
         select *, row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
-        from {{ source('oneinch', 'lop') }}
+        from {{ source('oneinch_' + blockchain, 'lop') }}
         where
-            blockchain = '{{blockchain}}'
+            call_success
             {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
             {% else %}
                 and block_time >= timestamp '{{date_from}}'
             {% endif %}
-            and call_success
     )
 )
 
@@ -88,9 +89,9 @@ meta as (
         , order_hash
         , order_flags
         , maker
-        , maker_asset
+        , if(maker_asset = {{zero_address}}, {{native_address}}, maker_asset) as maker_asset
         , making_amount
-        , taker_asset
+        , if(taker_asset = {{zero_address}}, {{native_address}}, taker_asset) as taker_asset
         , taking_amount
         , array_agg(call_trace_address) over(partition by block_number, tx_hash, project) as call_trace_addresses -- to update the array after filtering nested calls of the project
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
@@ -258,7 +259,7 @@ meta as (
                 , block_time
                 , tx_hash
                 , transfer_trace_address
-                , contract_address as contract_address_raw
+                , if(type = 'native', {{native_address}}, contract_address) as contract_address_raw
                 , if(type = 'native', wrapped_native_token_address, contract_address) as contract_address
                 , type = 'native' as native
                 , amount
