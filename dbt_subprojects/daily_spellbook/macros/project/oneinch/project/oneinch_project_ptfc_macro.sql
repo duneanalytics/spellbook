@@ -36,7 +36,7 @@ transfers as (
             when {{ selector }} = {{ withdraw_selector }} then 'withdraw'
             else 'native'
         end as type
-        , if(value > uint256 '0', {{native_address}}, "to") as contract_address
+        , if(value > uint256 '0', {{ native_address }}, "to") as contract_address
         , case
             when {{ selector }} in ({{ transfer_selector }}, {{ mint_selector }}, {{ burn_selector }}) then bytearray_to_uint256(substr(input, 37, 32)) -- transfer, mint, burn
             when {{ selector }} = {{ transferFrom_selector }} then bytearray_to_uint256(substr(input, 69, 32)) -- transferFrom
