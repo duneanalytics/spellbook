@@ -267,14 +267,13 @@ meta as (
                 , transfer_to
                 , date_trunc('minute', block_time) as minute
             from (
-                select * from {{ source('oneinch', 'parsed_transfers_from_calls') }}
+                select * from {{ source('oneinch_' + blockchain, 'parsed_transfers_from_calls') }}
                 where
                     {% if is_incremental() %}
                         {{ incremental_predicate('block_time') }}
                     {% else %}
                         block_time >= timestamp '{{date_from}}'
                     {% endif %}
-                    and blockchain = '{{blockchain}}'
             ), meta
             where
                 {% if is_incremental() %}
