@@ -9,10 +9,29 @@
 {%- set event_name = 'OrderCreated' -%}
 {%- set blockchain_name = 'arbitrum' -%}
 
-WITH evt_data AS (
+WITH evt_data_1 AS (
     SELECT 
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
+        evt_block_time AS block_time,
+        evt_block_number AS block_number, 
+        evt_tx_hash AS tx_hash,
+        evt_index AS index,
+        contract_address,
+        eventName AS event_name,
+        eventData AS data,
+        msgSender AS msg_sender,
+        topic1,
+        CAST(NULL AS varbinary) AS topic2  -- Ensure topic2 is treated as varbinary
+    FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog1')}}
+    WHERE eventName = '{{ event_name }}'
+    ORDER BY evt_block_time ASC
+)
+
+, evt_data_2 AS (
+    SELECT 
+        -- Main Variables
+        'arbitrum' AS blockchain,
         evt_block_time AS block_time,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
@@ -26,6 +45,15 @@ WITH evt_data AS (
     FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
+)
+
+-- unite 2 tables
+, evt_data AS (
+    SELECT * 
+    FROM evt_data_1
+    UNION DISTINCT
+    SELECT *
+    FROM evt_data_2
 )
 
 , parsed_data AS (
