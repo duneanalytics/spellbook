@@ -16,7 +16,8 @@ meta as (
         chain_id
         , wrapped_native_token_address
         , native_token_symbol as native_symbol
-    from ({{ oneinch_blockchain_macro(blockchain) }})
+    from {{ source('oneinch', 'blockchains') }}
+    where blockchain = '{{blockchain}}'
 )
 
 , orders as (
@@ -266,13 +267,14 @@ meta as (
                 , transfer_to
                 , date_trunc('minute', block_time) as minute
             from (
-                select * from ({{ oneinch_parsed_transfers_from_calls_macro(blockchain) }})
+                select * from {{ source('oneinch', 'parsed_transfers_from_calls') }}
                 where
                     {% if is_incremental() %}
                         {{ incremental_predicate('block_time') }}
                     {% else %}
                         block_time >= timestamp '{{date_from}}'
                     {% endif %}
+                    and blockchain = '{{blockchain}}'
             ), meta
             where
                 {% if is_incremental() %}
