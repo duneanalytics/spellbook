@@ -23,15 +23,7 @@ sources:
       - name: LBPair_evt_Swap
       - name: LBFactory_evt_LBPairCreated
   - name: trader_joe_v2_1_avalanche_c
-    tables:
-      - name: LBPair_evt_Swap
-      - name: LBFactory_evt_LBPairCreated
   - name: trader_joe_avalanche_c
-    tables:
-      - name: LBPair_evt_Swap
-      - name: LBFactory_evt_LBPairCreated
-      - name: JoePair_evt_Swap
-      - name: JoeFactory_evt_PairCreated
   - name: balancer_v2_avalanche_c
     tables:
       - name: Vault_evt_Swap

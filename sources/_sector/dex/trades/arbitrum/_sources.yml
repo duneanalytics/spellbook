@@ -33,13 +33,7 @@ sources:
       - name: LBPair_evt_Swap
       - name: LBFactory_evt_LBPairCreated
   - name: trader_joe_v2_1_arbitrum
-    tables:
-      - name: LBPair_evt_Swap
-      - name: LBFactory_evt_LBPairCreated
   - name: trader_joe_arbitrum
-    tables:
-      - name: LBPair_evt_Swap
-      - name: LBFactory_evt_LBPairCreated
   - name: pancakeswap_v2_arbitrum
     tables:
       - name: PancakePair_evt_Swap
