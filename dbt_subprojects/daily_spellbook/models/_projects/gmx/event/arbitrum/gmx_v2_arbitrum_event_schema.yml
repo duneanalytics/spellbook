@@ -529,3 +529,199 @@ models:
       - *is_long
       - *order_key
       - *position_key
+
+
+  - name: gmx_v2_arbitrum_position_fees_collected
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'position_fees_collected']
+    description: |
+      This model extracts and parses `PositionFeesCollected` events from the Arbitrum blockchain.
+      It includes details about the transaction, addresses involved, and various metrics related to 
+      fees collected from positions, including fee amounts and related market data.
+    
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: event_name
+        description: The type of event recorded, always 'PositionFeesCollected' for this model
+        tests:
+          - not_null 
+      - *msg_sender
+      - *topic1
+      - *topic2
+      - name: market
+        description: The market associated with the position fees collected event
+        tests:
+          - not_null
+      - name: collateral_token
+        description: The collateral token used in the position fees collected event
+        tests:
+          - not_null
+      - &affiliate
+        name: affiliate
+        description: The affiliate address
+        tests:
+          - not_null
+      - &trader
+        name: trader
+        description: The trader's address
+        tests:
+          - not_null
+      - &ui_fee_receiver
+        name: ui_fee_receiver
+        description: The address receiving the UI fee
+        tests:
+          - not_null
+      - *collateral_token_price_min
+      - *collateral_token_price_max      
+      - &trade_size_usd
+        name: trade_size_usd
+        description: The size of the trade in USD
+        tests:
+          - not_null        
+      - &total_rebate_factor
+        name: total_rebate_factor
+        description: The total rebate factor for the position
+        tests:
+          - not_null
+      - &trader_discount_factor
+        name: trader_discount_factor
+        description: The discount factor applied to the trader
+        tests:
+          - not_null
+      - &total_rebate_amount
+        name: total_rebate_amount
+        description: The total amount of rebate given
+        tests:
+          - not_null
+      - &trader_discount_amount
+        name: trader_discount_amount
+        description: The amount of discount given to the trader
+        tests:
+          - not_null
+      - &affiliate_reward_amount
+        name: affiliate_reward_amount
+        description: The reward amount given to the affiliate
+        tests:
+          - not_null
+      - &funding_fee_amount
+        name: funding_fee_amount
+        description: The amount of funding fee charged
+        tests:
+          - not_null
+      - &claimable_long_token_amount
+        name: claimable_long_token_amount
+        description: The amount of long tokens claimable
+        tests:
+          - not_null
+      - &claimable_short_token_amount
+        name: claimable_short_token_amount
+        description: The amount of short tokens claimable
+        tests:
+          - not_null
+      - &latest_funding_fee_amount_per_size
+        name: latest_funding_fee_amount_per_size
+        description: The latest funding fee amount per size
+        tests:
+          - not_null
+      - &latest_long_token_claimable_funding_amount_per_size
+        name: latest_long_token_claimable_funding_amount_per_size
+        description: The latest claimable long token funding amount per size
+        tests:
+          - not_null
+      - &latest_short_token_claimable_funding_amount_per_size
+        name: latest_short_token_claimable_funding_amount_per_size
+        description: The latest claimable short token funding amount per size
+        tests:
+          - not_null
+      - &borrowing_fee_usd
+        name: borrowing_fee_usd
+        description: The borrowing fee amount in USD
+        tests:
+          - not_null
+      - &borrowing_fee_amount
+        name: borrowing_fee_amount
+        description: The amount of borrowing fee charged
+        tests:
+          - not_null
+      - &borrowing_fee_receiver_factor
+        name: borrowing_fee_receiver_factor
+        description: The factor used to calculate the borrowing fee amount for the fee receiver
+        tests:
+          - not_null
+      - &borrowing_fee_amount_for_fee_receiver
+        name: borrowing_fee_amount_for_fee_receiver
+        description: The amount of borrowing fee allocated for the fee receiver
+        tests:
+          - not_null
+      - &position_fee_factor
+        name: position_fee_factor
+        description: The fee factor for the position
+        tests:
+          - not_null
+      - &protocol_fee_amount
+        name: protocol_fee_amount
+        description: The amount of protocol fee charged
+        tests:
+          - not_null
+      - &position_fee_receiver_factor
+        name: position_fee_receiver_factor
+        description: The factor used to calculate the position fee amount for the receiver
+        tests:
+          - not_null
+      - &fee_receiver_amount
+        name: fee_receiver_amount
+        description: The amount of fee received by the fee receiver
+        tests:
+          - not_null
+      - &fee_amount_for_pool
+        name: fee_amount_for_pool
+        description: The amount of fee allocated for the pool
+        tests:
+          - not_null
+      - &position_fee_amount_for_pool
+        name: position_fee_amount_for_pool
+        description: The amount of position fee allocated for the pool
+        tests:
+          - not_null
+      - &position_fee_amount
+        name: position_fee_amount
+        description: The total position fee amount
+        tests:
+          - not_null
+      - &total_cost_amount
+        name: total_cost_amount
+        description: The total cost amount for the position
+        tests:
+          - not_null
+      - &ui_fee_receiver_factor
+        name: ui_fee_receiver_factor
+        description: The factor used to calculate the UI fee amount for the receiver
+        tests:
+          - not_null
+      - &ui_fee_amount
+        name: ui_fee_amount
+        description: The total amount of UI fee collected
+        tests:
+          - not_null
+      - &is_increase
+        name: is_increase
+        description: Indicates whether the position is increased (true) or decreased (false)
+        tests:
+          - not_null
+      - *order_key
+      - *position_key
+      - &referral_code
+        name: referral_code
+        description: The referral code associated with the position
+        tests:
+          - not_null   
