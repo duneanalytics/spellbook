@@ -74,3 +74,34 @@ models:
         description: The timestamp of when the data was last updated
         tests:
           - not_null
+
+
+  - name: gmx_v2_arbitrum_markets_data
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'markets']
+    description: |
+      This model retrieves market data for GMX on the Arbitrum blockchain, including information
+      about the index token, long token, and short token. The data is extracted from various tables
+      containing market creation events and ERC-20 token details, providing insights into the 
+      market tokens used within the GMX perpetual trading DEX.
+
+    columns:
+      - name: market
+        description: The contract address of the market token.
+        tests:
+          - not_null
+      - name: index_token_decimals
+        description: The number of decimal places for the index token used in the market.
+      - name: long_token_decimals
+        description: The number of decimal places for the long token used in the market.
+        tests:
+          - not_null
+      - name: short_token_decimals
+        description: The number of decimal places for the short token used in the market.
+        tests:
+          - not_null
