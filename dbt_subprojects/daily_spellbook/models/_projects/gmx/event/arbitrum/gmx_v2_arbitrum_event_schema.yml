@@ -62,12 +62,8 @@ models:
       - &topic2
         name: topic2
         description: The value corresponding to the third indexed event parameter.
-        tests:
-          - not_null
       - name: account
-        description: An additional address associated with the order.
-        tests:
-          - not_null
+        description: The address associated with the order.
       - name: receiver
         description: The address designated as the receiver in the order.
         tests:
@@ -199,8 +195,6 @@ models:
           - unique 
       - name: account
         description: The address associated with the order
-        tests:
-          - not_null   
       - name: secondary_order_type
         description: |
           The type of secondary order associated with the executed order. 
@@ -246,9 +240,7 @@ models:
           - not_null
           - unique
       - name: account
-        description: The address associated with the order
-        tests:
-          - not_null   
+        description: The address associated with the order 
       - name: reason_bytes
         description: The reason for the cancellation in byte format.
         tests:
