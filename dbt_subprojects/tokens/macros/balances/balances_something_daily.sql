@@ -1,10 +1,14 @@
 {#  @DEV here
 
     @NOTICE this macro constructs the address level token balances table for given input table
-    @NOTICE aka, you give a list of tokens and address, it generates table with daily balances of each address token pair (useful for TVL calculations)
+    @NOTICE aka, you give a list of tokens and/or address, it generates table with daily balances of address-token pair 
+    @NOTICE if you want to get the balances for only a subset of addresses, pass `has_address = 1` and ensure something has a address column 
+    @NOTICE else pass `has_address=0`
+    @NOTICE passing `has_address=0` generates the balances of all the users for a specific token, with non-zero balance
+    @NOTICE passing `has_address=` generates the balances of listed addresses only, for a specific token, with non-zero balance
 
     @PARAM balances_raw             -- raw_balances source
-    @PARAM something                -- must have the following columns [category,project,version,address,token_address]
+    @PARAM something                -- must have the following columns [category,project,version,<address>,token_address]
     @PARAM start_date               -- start date from which data needs to be populated
     @PARAM has_address              -- does the tokens list have a address column, to only balances of specific addresses are selected
     
