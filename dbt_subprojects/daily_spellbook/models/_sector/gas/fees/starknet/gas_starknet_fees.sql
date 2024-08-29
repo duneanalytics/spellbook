@@ -27,7 +27,7 @@ SELECT
      cast(NULL as double) AS tx_amount_native,
      cast(NULL as double) AS tx_amount_usd,
      (actual_fee_amount/1e18) AS tx_fee_native,
-     (actual_fee_amount/1e18) * p.price AS tx_fee_native,
+     (actual_fee_amount/1e18) * p.price AS tx_fee_usd,
      cast(NULL as double) AS burned_native, -- Not applicable for L2s
      cast(NULL as double) AS burned_usd, -- Not applicable for L2s
      cast(NULL as VARBINARY) as validator, -- Not applicable for L2s
