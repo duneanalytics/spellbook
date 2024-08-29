@@ -10,8 +10,10 @@
     )
 }}
 
+-- trigger CI
+
 {% set config_markets %}
-    WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS 
+    WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS
     (
         VALUES
         (0xFE176A2b1e1F67250d2903B8d25f56C0DaBcd6b2, 'WETH', 'USDC', 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1, 0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8),
