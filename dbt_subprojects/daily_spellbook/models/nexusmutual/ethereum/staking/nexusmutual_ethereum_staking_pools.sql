@@ -4,40 +4,14 @@
     alias = 'staking_pools',
     materialized = 'view',
     unique_key = ['pool_id', 'product_id'],
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
 with
-
-staking_pool_names (pool_id, pool_name) as (
-  values
-  (1, 'Nexus Foundation'),
-  (2, 'Hugh'),
-  (3, 'Ease AAA Low Risk Pool'),
-  (4, 'Ease AA Medium Risk Pool'),
-  (5, 'Unity Cover'),
-  (6, 'Safe Invest'),
-  (7, 'ShieldX Staking Pool'),
-  (8, 'DeFiSafety X OpenCover Blue Chip Protocol Pool'),
-  (9, 'My Conservative Pool'),
-  (10, 'SAFU Pool'),
-  (11, 'Sherlock'),
-  (12, 'Gm Exit Here (GLP) Pool'),
-  (13, 'My Nexus Pool'),
-  (14, 'My Private Pool'),
-  (15, 'Reflection'),
-  (16, 'Good KarMa Capital'),
-  (17, 'High Trust Protocols'),
-  (18, 'UnoRe WatchDog Pool'),
-  (19, 'Broad And Diversified'),
-  (20, 'Lowest Risk'),
-  (21, 'Crypto Plaza'),
-  (22, 'BraveNewDeFi''s Pool')
-),
 
 staking_pools_created as (
   select
@@ -177,7 +151,6 @@ staking_pool_fee_updates as (
 select
   sp.pool_id,
   sp.pool_address,
-  spn.pool_name,
   spm.manager_address,
   spm.manager_ens,
   spm.manager,
@@ -194,6 +167,5 @@ select
   if(spc.is_product_added, spc.updated_time, sp.block_time) as product_added_time
 from staking_pools_created sp
   inner join staking_pool_products_combined spc on sp.pool_id = spc.pool_id
-  left join staking_pool_names spn on sp.pool_id = spn.pool_id
   left join staking_pool_managers spm on sp.pool_id = spm.pool_id
   left join staking_pool_fee_updates spf on sp.pool_id = spf.pool_id

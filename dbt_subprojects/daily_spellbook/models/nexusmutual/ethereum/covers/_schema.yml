@@ -210,9 +210,12 @@ models:
       - *cover_end_time
       - *cover_start_date
       - *cover_end_date
+      - &staking_pool_id
+        name: staking_pool_id
+        description: "staking pool id"
       - &staking_pool
         name: staking_pool
-        description: "staking pool id"
+        description: "staking pool"
       - *product_id
       - *product_type
       - *product_name
@@ -227,16 +230,23 @@ models:
       - &premium_incl_commission
         name: premium_incl_commission
         description: "premium incl commission"
+      - &premium_period_ratio
+        name: premium_period_ratio
+        description: "premium period ratio"
       - *cover_owner
       - &commission
         name: commission
         description: "commission"
+      - &commission_ratio
+        name: commission_ratio
+        description: "commission ratio"
       - &commission_destination
         name: commission_destination
         description: "commission destination (recipient wallet)"
       - &is_migrated
         name: is_migrated
         description: "is migrated flag"
+      - name: trace_address
       - *tx_hash
 
   - name: nexusmutual_ethereum_active_covers
@@ -259,9 +269,7 @@ models:
       - *cover_start_date
       - *cover_end_date
       - *cover_owner
-      - &staking_pool_id
-        name: staking_pool_id
-        description: "staking pool id"
+      - *staking_pool_id
       - *product_type
       - *product_name
       - *cover_asset

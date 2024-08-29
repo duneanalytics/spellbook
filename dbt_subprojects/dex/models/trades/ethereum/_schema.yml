@@ -539,15 +539,15 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('xchange_ethereum_base_trades_seed')
 
-  - name: curvefi_ethereum_base_trades
+  - name: curve_ethereum_base_trades
     meta:
       blockchain: ethereum
       sector: dex
-      project: curvefi
+      project: curve
       contributors: dsalv, yulesa, ilemi, jeff-dude, tomfutago
     config:
-      tags: ['ethereum', 'dex', 'trades', 'curvefi']
-    description: "Curvefi ethereum base trades"
+      tags: ['ethereum', 'dex', 'trades', 'curve']
+    description: "Curve ethereum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
