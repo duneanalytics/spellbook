@@ -211,3 +211,50 @@ models:
           - `1`: **Adl (Auto-Deleveraging)** - Indicates that the order is associated with the Auto-Deleveraging mechanism. ADL is used to manage risk by automatically reducing or closing positions that are at risk of liquidation due to insufficient margin or other factors. This mechanism helps in maintaining the stability of the trading platform.
         tests:
           - not_null
+
+
+  - name: gmx_v2_arbitrum_order_cancelled
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'order_cancelled']
+    description: |
+      Extracts and decodes the `OrderCancelled` event log data from the Arbitrum blockchain. 
+      This model processes log entries related to cancelled orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for cancellation.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: event_name
+        description: The type of event recorded, always 'OrderCancelled' for this model
+        tests:
+          - not_null 
+      - *msg_sender
+      - *topic1
+      - *topic2          
+      - name: key
+        description: The key associated with the cancelled order. Extracted as a bytes32 value
+        tests:
+          - not_null
+          - unique
+      - name: account
+        description: The address associated with the order
+        tests:
+          - not_null   
+      - name: reason_bytes
+        description: The reason for the cancellation in byte format.
+        tests:
+          - not_null
+      - name: reason
+        description: The reason for the cancellation in string format.
+        tests:
+          - not_null
+
