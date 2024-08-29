@@ -1,50 +1,57 @@
+
 {% macro uniswap_v3_forks_trades(
-    blockchain = 'ethereum'
+    blockchain = null
+    , project = null
+    , dex_type = 'uni-v3'
     , version = null
     , Pair_evt_Swap = null
-    , Factory_evt_PairCreated = null
-    , pair_column_name = 'pair'
-    , Fork_Mapping = null
-    , contracts = null
+    , Factory_evt_PoolCreated = null
+    , taker_column_name = 'recipient'
+    , maker_column_name = null
+    , pair_column_name = 'pool'
     )
 %}
 WITH dexs AS
 (
     SELECT
-        t.block_number
-        , t.block_time
-        , t.to AS taker
-        , t.contract_address AS maker
-        , CASE WHEN amount0Out = UINT256 '0' THEN amount1Out ELSE amount0Out END AS token_bought_amount_raw
-        , CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN amount1In ELSE amount0In END AS token_sold_amount_raw
-        , CASE WHEN amount0Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_bought_address
-        , CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
-        , t.contract_address AS project_contract_address
-        , t.tx_hash
-        , t.index AS evt_index
+        t.evt_block_number AS block_number
+        , t.evt_block_time AS block_time
+        , t.{{ taker_column_name }} AS taker
+        , {% if maker_column_name %}
+                t.{{ maker_column_name }}
+            {% else %}
+                cast(null as varbinary)
+            {% endif %} as maker
+        , CASE WHEN amount0 < INT256 '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw -- when amount0 is negative it means trader_a is buying token0 from the pool
+        , CASE WHEN amount0 < INT256 '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
+        , CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
+        , CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
+        , t.contract_address as project_contract_address
+        , t.evt_tx_hash AS tx_hash
+        , t.evt_index
         , f.contract_address as factory_address
     FROM
         {{ Pair_evt_Swap }} t
     INNER JOIN
-        {{ Factory_evt_PairCreated }} f
+        {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
     {% if is_incremental() %}
     WHERE
-        {{ incremental_predicate('t.block_time') }}
+        {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
 )
 
 SELECT
     '{{ blockchain }}' AS blockchain
-    , coalesce(m.project_name, concat(cast(varbinary_substring(dexs.factory_address, 1, 3) as varchar),'-unidentified-univ2-fork')) AS project
-    , dexs.factory_address
+    , '{{ project }}' AS project
     , '{{ version }}' AS version
+    , '{{dex_type}}' AS dex_type
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     , dexs.block_time
     , dexs.block_number
-    , dexs.token_bought_amount_raw
-    , dexs.token_sold_amount_raw
+    , CAST(dexs.token_bought_amount_raw AS UINT256) AS token_bought_amount_raw
+    , CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw
     , dexs.token_bought_address
     , dexs.token_sold_address
     , dexs.taker
@@ -52,11 +59,7 @@ SELECT
     , dexs.project_contract_address
     , dexs.tx_hash
     , dexs.evt_index
+    , dexs.factory_address
 FROM
     dexs
-    INNER JOIN
-        {{Fork_Mapping}} m
-        ON  dexs.factory_address = m.factory_address
-    -- easy to spoof swap events so we use an allowlist  
-     
 {% endmacro %}

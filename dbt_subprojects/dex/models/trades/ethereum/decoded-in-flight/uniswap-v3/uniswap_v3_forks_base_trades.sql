@@ -11,12 +11,11 @@
         )
 }}
 
-{{uniswap_v2_forks_trades(
-        blockchain = 'ethereum'
-        , version = 'unknown'
-        , Pair_evt_Swap = ref('uniswap_v3_pool_decoding_ethereum')
-        , Factory_evt_PairCreated = ref('uniswap_v3_factory_decoding_ethereum')
-        , pair_column_name = 'pair'
-        , Fork_Mapping = ref('uniswap_v3_fork_mapping_ethereum')
-        , contracts = source('ethereum', 'contracts')
+{{uniswap_v3_forks_trades(
+    blockchain = 'ethereum'
+    , project = 'null'
+    , version = 'unknown'
+    , Pair_evt_Swap = ref('uniswap_v3_pool_decoding_ethereum')
+    , Factory_evt_PoolCreated = ref('uniswap_v3_factory_decoding_ethereum')
 )}}
+

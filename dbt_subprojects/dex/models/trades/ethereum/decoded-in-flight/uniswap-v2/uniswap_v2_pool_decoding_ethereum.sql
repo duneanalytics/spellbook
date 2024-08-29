@@ -1,6 +1,6 @@
 {{ config(
 
-        schema = 'dex_mass_decoding_ethereum',
+        schema = 'mass_decoding_ethereum',
         alias = 'uniswap_v2_pool_evt_Swap',
         partition_by = ['block_date'],
         materialized = 'incremental',

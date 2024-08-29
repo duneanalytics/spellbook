@@ -1,61 +1,12 @@
-{% macro uniswap_v3_factory_mass_decoding(
-    logs = null
-    )
-%}
+{% macro uniswap_v3_factory_mass_decoding(logs) %}
 
+{% set abi = '
+{"name":"PoolCreated","type":"event","inputs":[{"name":"token0","type":"address","indexed":true,"internalType":"address"},{"name":"token1","type":"address","indexed":true,"internalType":"address"},{"name":"fee","type":"uint24","indexed":true,"internalType":"uint24"},{"name":"tickSpacing","type":"int24","indexed":false,"internalType":"int24"},{"name":"pool","type":"address","indexed":false,"internalType":"address"}],"anonymous":false}
+' %}
 
-SELECT
-token0
-,token1
-,pair
-,contract_address
-,block_time
-,block_number
-,block_date
-,tx_hash
-,index
+{% set topic0 = '0x783cca1c0412dd0d695e784568c96da2e9c22ff989357a2e8b1d9b2b4e6b7118' %}
 
--- could grab abi from our database instead to make this more dynamic
-FROM TABLE (
-    decode_evm_event (
-      abi => '{
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "token0",
-                "type": "address"
-            },
-            {
-                "indexed": true,
-                "internalType": "address",
-                "name": "token1",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "address",
-                "name": "pair",
-                "type": "address"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "name": "PairCreated",
-        "type": "event"
-    }',
-      input => TABLE (
-        SELECT l.* 
-        FROM {{logs}} l
-        WHERE topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9
-        and block_date > (Select min(block_date) from {{logs}} where topic0 = 0x0d3648bd0f6ba80134a33ba9275ac585d9d315f0ad8355cddefde31afa28d0e9) -- take out limit if you want to use in prod
-      )
-    )
-  )
+{{ evm_event_decoding_base(logs, abi, topic0) }}
 
 {% endmacro %}
+

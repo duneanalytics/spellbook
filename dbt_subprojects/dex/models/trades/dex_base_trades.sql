@@ -73,6 +73,6 @@ with base_union as (
         duplicates_rank = 1
 )
 select
-     *
+    *
 from
     base_union

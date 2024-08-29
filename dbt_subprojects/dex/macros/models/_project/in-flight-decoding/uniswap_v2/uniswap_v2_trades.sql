@@ -1,13 +1,13 @@
 {% macro uniswap_v2_forks_trades(
-    blockchain = 'ethereum'
+    blockchain = null
+    , dex_type = 'uni-v2'
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PairCreated = null
     , pair_column_name = 'pair'
-    , Fork_Mapping = null
-    , contracts = null
     )
 %}
+
 WITH dexs AS
 (
     SELECT
@@ -36,8 +36,6 @@ WITH dexs AS
 
 SELECT
     '{{ blockchain }}' AS blockchain
-    , coalesce(m.project_name, concat(cast(varbinary_substring(dexs.factory_address, 1, 3) as varchar),'-unidentified-univ2-fork')) AS project
-    , dexs.factory_address
     , '{{ version }}' AS version
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
@@ -52,11 +50,8 @@ SELECT
     , dexs.project_contract_address
     , dexs.tx_hash
     , dexs.evt_index
+    , dexs.factory_address
 FROM
     dexs
-    INNER JOIN
-        {{Fork_Mapping}} m
-        ON  dexs.factory_address = m.factory_address
-    -- easy to spoof swap events so we use an allowlist  
      
 {% endmacro %}
