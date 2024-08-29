@@ -9,23 +9,7 @@
 {%- set event_name = 'PositionFeesInfo' -%}
 {%- set blockchain_name = 'arbitrum' -%}
 
--- get all markets
-WITH markets_data AS (
-    SELECT
-        MCE.market_token AS market,
-        ERC20_IT.decimals AS index_token_decimals,
-        ERC20_LT.decimals AS long_token_decimals,
-        ERC20_ST.decimals AS short_token_decimals  
-    FROM {{ ref('gmx_v2_arbitrum_market_created') }} AS MCE
-    LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20_IT
-        ON ERC20_IT.contract_address = MCE.index_token
-    LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20_LT
-        ON ERC20_LT.contract_address = MCE.long_token 
-    LEFT JOIN {{ ref('gmx_v2_arbitrum_erc20') }} AS ERC20_ST
-        ON ERC20_ST.contract_address = MCE.short_token
-)
-
-, evt_data_1 AS (
+WITH evt_data_1 AS (
     SELECT 
         -- Main Variables
         '{{ blockchain_name }}' AS blockchain,
@@ -309,7 +293,7 @@ SELECT
     referral_code
     
 FROM event_data AS ED
-LEFT JOIN markets_data AS MD
+LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
     ON ED.market = TRY_CAST(MD.market AS VARCHAR)
 LEFT JOIN {{ ref('gmx_v2_arbitrum_collateral_tokens_data') }} AS CTD
     ON ED.collateral_token = TRY_CAST(CTD.collateral_token AS VARCHAR)
