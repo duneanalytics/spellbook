@@ -68,7 +68,7 @@ transfers as (
         and call_type = 'call'
         and (tx_success or tx_success is null)
         and success
-        and {% if is_incremental() %}{{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 -- the wrapper deposit includes two transfers: native and wrapper
 
