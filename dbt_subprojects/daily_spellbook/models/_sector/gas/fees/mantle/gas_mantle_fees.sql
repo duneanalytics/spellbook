@@ -20,11 +20,11 @@ SELECT
      txns.hash AS tx_hash,
      txns."from" AS tx_sender,
      txns.to AS tx_receiver,
-     'ETH' as native_token_symbol,
+     'MNT' as native_token_symbol,
      value/1e18 AS tx_amount_native,
      value/1e18 * p.price AS tx_amount_usd,
-     (l1_fee/1e18 + ((txns.gas_used/1e18) * txns.gas_price)) as tx_fee_native,
-     (l1_fee/1e18 + ((txns.gas_used/1e18) * txns.gas_price)) * p.price AS tx_fee_usd,
+     COALESCE((l1_fee/1e18 + ((txns.gas_used/1e18) * txns.gas_price)), 0) as tx_fee_native,
+     COALESCE((l1_fee/1e18 + ((txns.gas_used/1e18) * txns.gas_price)), 0) * p.price AS tx_fee_usd,
      cast(NULL as double) AS burned_native, -- Not applicable for L2s
      cast(NULL as double) AS burned_usd, -- Not applicable for L2s
      cast(NULL as VARBINARY) as validator, -- Not applicable for L2s
@@ -45,8 +45,8 @@ INNER JOIN {{ source('mantle','blocks') }} blocks
     {% endif %}
 LEFT JOIN {{ source('prices','usd') }} p
     ON p.minute = date_trunc('minute', txns.block_time)
-    AND p.blockchain = 'mantle'
-    AND p.symbol = 'WETH'
+    AND p.blockchain IS NULL
+    AND p.symbol = 'MNT'
     {% if is_incremental() %}
     AND {{ incremental_predicate('p.minute') }}
     {% endif %}

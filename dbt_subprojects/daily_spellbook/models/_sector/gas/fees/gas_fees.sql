@@ -17,11 +17,9 @@
     'gas_zksync_fees',
     'gas_zora_fees',
     'gas_base_fees',
-    'gas_scroll_fees'
+    'gas_scroll_fees',
+    'gas_mantle_fees'
 ] %}
-
---remove mantle for now:
-    --'gas_mantle_fees'
 
 SELECT *
 FROM (
