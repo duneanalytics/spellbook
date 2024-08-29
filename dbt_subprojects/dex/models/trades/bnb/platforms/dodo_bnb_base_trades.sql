@@ -1,6 +1,5 @@
 {{
     config(
-        tags = ['prod_exclude'],
         schema = 'dodo_bnb',
         alias = 'base_trades',
         materialized = 'incremental',
@@ -15,7 +14,7 @@
 --please check git history for PR which explains in more detail
 
 {% set config_markets %}
-    WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS 
+    WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS
     (
         VALUES
         (0x327134dE48fcDD75320f4c32498D1980470249ae, 'WBNB', 'BUSD', 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c, 0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56),
@@ -33,11 +32,11 @@
 
 {%
     set config_other_sources = [
-        {'version': '2_dvm', 'source': 'DVM_evt_DODOSwap'},
-        {'version': '2_dpp', 'source': 'DPP_evt_DODOSwap'},
-        {'version': '2_dpp', 'source': 'DPPAdvanced_evt_DODOSwap'},
-        {'version': '2_dpp', 'source': 'DPPOracle_evt_DODOSwap'},
-        {'version': '2_dsp', 'source': 'DSP_evt_DODOSwap'},
+        {'version': '2', 'source': 'DVM_evt_DODOSwap'},
+        {'version': '2', 'source': 'DPP_evt_DODOSwap'},
+        {'version': '2', 'source': 'DPPAdvanced_evt_DODOSwap'},
+        {'version': '2', 'source': 'DPPOracle_evt_DODOSwap'},
+        {'version': '2', 'source': 'DSP_evt_DODOSwap'},
     ]
 %}
 

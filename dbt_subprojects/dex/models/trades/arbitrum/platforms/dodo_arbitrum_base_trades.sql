@@ -10,8 +10,6 @@
     )
 }}
 
--- trigger CI
-
 {% set config_markets %}
     WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS
     (
@@ -25,9 +23,9 @@
 
 {%
     set config_other_sources = [
-        {'version': '2_dvm', 'source': 'DVM_evt_DODOSwap'},
-        {'version': '2_dpp', 'source': 'DPPOracle_evt_DODOSwap'},
-        {'version': '2_dsp', 'source': 'DSP_evt_DODOSwap'},
+        {'version': '2', 'source': 'DVM_evt_DODOSwap'},
+        {'version': '2', 'source': 'DPPOracle_evt_DODOSwap'},
+        {'version': '2', 'source': 'DSP_evt_DODOSwap'},
     ]
 %}
 
