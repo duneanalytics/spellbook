@@ -5,6 +5,8 @@
 
     @PARAM balances_raw             -- raw_balances source
     @PARAM something                -- must have the following columns [category,project,version,address,token_address]
+    @PARAM start_date               -- start date from which data needs to be populated
+    @PARAM has_address              -- does the tokens list have a address column, to only balances of specific addresses are selected
     
 #}
 
@@ -12,6 +14,7 @@
         balances_daily_agg, 
         something,
         start_date, 
+        has_address = 0,
         native_token='ETH'
     ) 
 %}
@@ -22,7 +25,9 @@ tokens as (
         category,
         project,
         version,
-        address,
+        {% if !has_address %}
+          address,
+        {% endif %}
         token_address
     from {{something}}
 ),
@@ -39,7 +44,9 @@ changed_balances as (
         ,lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day
     from {{balances_daily_agg}}
     where day > cast('{{start_date}}' as date)
+        {% if !has_address %}
         and address in (select address from tokens)
+        {% endif %}
         and token_address in (select token_address from tokens)
     {% if is_incremental() %}
         and {{ incremental_predicate('day') }}
@@ -98,6 +105,8 @@ left join {{source('prices','usd')}} p
     and b.day = p.minute)
 join tokens t 
     on b.token_address = t.token_address
+    {% if !has_address %}
     and b.address = t.address
+    {% endif %}
 
 {% endmacro %}

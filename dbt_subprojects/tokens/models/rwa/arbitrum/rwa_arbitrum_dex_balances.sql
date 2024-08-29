@@ -35,6 +35,7 @@ dex_pools as (
         balances_daily_agg = ref('tokens_arbitrum_balances_daily_agg'), 
         something = 'dex_pools',
         start_date = '2023-11-17', 
+        has_address = 1,
         native_token='ETH'
   )
 }}

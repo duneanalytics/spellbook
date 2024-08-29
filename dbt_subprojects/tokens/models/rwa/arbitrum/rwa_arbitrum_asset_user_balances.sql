@@ -22,10 +22,11 @@ rwa_assets as (
 ),
 
 {{
-  balances_something_user_daily(
+  balances_something_daily(
         balances_daily_agg = ref('tokens_arbitrum_balances_daily_agg'), 
         something = 'rwa_assets',
         start_date = '2023-11-17', 
+        has_address = 0,
         native_token='ETH'
   )
 }}
