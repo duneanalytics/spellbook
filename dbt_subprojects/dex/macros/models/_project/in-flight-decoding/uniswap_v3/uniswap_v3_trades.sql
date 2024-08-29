@@ -14,8 +14,8 @@
 WITH dexs AS
 (
     SELECT
-        t.evt_block_number AS block_number
-        , t.evt_block_time AS block_time
+        block_number
+        block_time AS block_time
         , t.{{ taker_column_name }} AS taker
         , {% if maker_column_name %}
                 t.{{ maker_column_name }}
@@ -27,8 +27,8 @@ WITH dexs AS
         , CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
         , CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         , t.contract_address as project_contract_address
-        , t.evt_tx_hash AS tx_hash
-        , t.evt_index
+        , t.tx_hash AS tx_hash
+        , t.index as evt_index
         , f.contract_address as factory_address
     FROM
         {{ Pair_evt_Swap }} t
