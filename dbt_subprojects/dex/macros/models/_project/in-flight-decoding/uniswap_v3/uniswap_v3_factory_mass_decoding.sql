@@ -1,4 +1,4 @@
-{% macro uniswap_v2_factory_mass_decoding(
+{% macro uniswap_v3_factory_mass_decoding(
     logs = null
     )
 %}
