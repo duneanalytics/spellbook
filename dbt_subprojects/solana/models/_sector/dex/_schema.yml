@@ -18,10 +18,11 @@ models:
     meta:
       blockchain: solana
       contributors: ["ilemi", "0xRob"]
+      docs_slug: /curated/trading/solana/dex-solana-trades
     config:
       tags: ['solana','dex']
     description: >
-        enriched dex trades on Solana
+        The dex_solana.trades table captures detailed data on decentralized exchange (DEX) trades on the Solana blockchain, recording all trade events across various protocols.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month']

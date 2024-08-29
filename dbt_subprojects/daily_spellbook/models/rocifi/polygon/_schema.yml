@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: polygon
       project: rocifi
-      contributors: maybeyonas
+      contributors: maybeYonas
     config:
       tags: ['table', 'addresses', 'polygon', 'rocifi']
     description: "Test addresses used to test in Production"

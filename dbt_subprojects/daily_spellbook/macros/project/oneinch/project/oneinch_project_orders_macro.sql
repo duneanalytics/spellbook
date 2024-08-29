@@ -80,6 +80,7 @@ logs as (
             , call_type
             , call_error
             , method
+            , auction
             , topic0
             , trade['trade'] as call_trade
             , trade['maker'] as call_maker
@@ -129,6 +130,7 @@ logs as (
                 , call_type
                 , error as call_error
                 , '{{ item["name"] }}' as method
+                , {{ item.get("auction", "false") }} as auction
                 , {{ item.get("event", "null") }} as topic0
                 , coalesce({{ item.get("number", "1") }}, 1) as call_trades -- total trades in the call
                 , transform(sequence(1, coalesce({{ item.get("number", "1") }}, 1)), x -> map_from_entries(array[
@@ -243,7 +245,7 @@ select
     , project
     , tag
     , map_concat(flags, map_from_entries(array[
-        ('auction', coalesce(try(order_end - order_start), uint256 '0') > uint256 '0' or project in ('CoWSwap', 'Bebop'))
+        ('auction', coalesce(auction, false) and coalesce(try(order_end - order_start > uint256 '0'), true))
     ])) as flags
     , block_number
     , block_time
