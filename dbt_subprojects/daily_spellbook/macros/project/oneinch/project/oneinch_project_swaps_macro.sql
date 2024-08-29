@@ -89,9 +89,9 @@ meta as (
         , order_hash
         , order_flags
         , maker
-        , if(maker_asset = {{zero_address}}, {{native_address}}, maker_asset) as maker_asset
+        , replace(maker_asset, {{ zero_address }}, {{ native_address }}) as maker_asset
         , making_amount
-        , if(taker_asset = {{zero_address}}, {{native_address}}, taker_asset) as taker_asset
+        , replace(taker_asset, {{ zero_address }}, {{ native_address }}) as taker_asset
         , taking_amount
         , array_agg(call_trace_address) over(partition by block_number, tx_hash, project) as call_trace_addresses -- to update the array after filtering nested calls of the project
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset

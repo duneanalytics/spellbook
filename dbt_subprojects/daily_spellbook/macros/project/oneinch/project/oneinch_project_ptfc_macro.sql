@@ -36,6 +36,7 @@ transfers as (
             when {{ selector }} = {{ withdraw_selector }} then 'withdraw'
             else 'native'
         end as type
+        , if(value > uint256 '0', 'native', 'erc20') as token_standard
         , if(value > uint256 '0', {{ native_address }}, "to") as contract_address
         , case
             when {{ selector }} in ({{ transfer_selector }}, {{ mint_selector }}, {{ burn_selector }}) then bytearray_to_uint256(substr(input, 37, 32)) -- transfer, mint, burn
@@ -59,14 +60,15 @@ transfers as (
     from {{ source(blockchain, 'traces') }}
     where
         (
-            length(input) = 68 and {{ selector }} in ({{ transfer_selector }}, {{ mint_selector }}, {{ burn_selector }}) -- transfer, mint, burn
-            or length(input) = 100 and {{ selector }} = {{ transferFrom_selector }} -- transferFrom
-            or length(input) = 36 and {{ selector }} = {{ withdraw_selector }}  -- withdraw
+            length(input) >= 68 and {{ selector }} in ({{ transfer_selector }}, {{ mint_selector }}, {{ burn_selector }}) -- transfer, mint, burn
+            or length(input) >= 100 and {{ selector }} = {{ transferFrom_selector }} -- transferFrom
+            or length(input) >= 36 and {{ selector }} = {{ withdraw_selector }}  -- withdraw
             or value > uint256 '0' -- native, deposit
         )
         and call_type = 'call'
         and (tx_success or tx_success is null)
         and success
+        and {% if is_incremental() %}{{ incremental_predicate('block_time') }}{% endif %}
 )
 -- the wrapper deposit includes two transfers: native and wrapper
 
@@ -85,6 +87,7 @@ select
     , tx_hash
     , transfer_trace_address
     , type
+    , token_standard
     , transfer_to as contract_address
     , amount
     , transfer_to as transfer_from
