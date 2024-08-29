@@ -70,7 +70,10 @@ forward_fill as (
         token_address,
         token_standard,
         token_id,
-        balance
+        balance,
+        -- helps with forward filling rebasing tokens
+        b.day as last_updated,
+        b.next_update_day as next_update
     from days d
         left join changed_balances b
             ON  d.day >= b.day
@@ -88,7 +91,9 @@ select
     b.token_standard,
     b.token_id,
     b.balance,
-    b.balance * p.price as balance_usd
+    b.balance * p.price as balance_usd,
+    b.last_updated,
+    b.next_update
 from(
     select * from forward_fill
     where balance > 0

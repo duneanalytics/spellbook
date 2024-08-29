@@ -105,6 +105,12 @@ models:
     - &balance_usd
       name: balance_usd
       description: "USD value of balance for the user"
+    - &last_updated
+      name: last_updated
+      description: "UTC timestamp when data was last updated"
+    - &next_update
+      name: next_update
+      description: "UTC timestamp when data is next updated"
 
   - name: rwa_arbitrum_dex_balances
 
@@ -135,3 +141,5 @@ models:
     - *token_id
     - *balance
     - *balance_usd
+    - *last_updated
+    - *next_update
