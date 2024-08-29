@@ -1,13 +1,13 @@
 {{
   config(
-    schema = 'gmx_v2_arbitrum',
-    alias = 'order_executed',
+    schema = 'gmx_v2_avalanche_c',
+    alias = 'market_created',
     materialized = 'table'
     )
 }}
 
-{%- set event_name = 'OrderExecuted' -%}
-{%- set blockchain_name = 'arbitrum' -%}
+{%- set event_name = 'MarketCreated' -%}
+{%- set blockchain_name = 'avalanche_c' -%}
 
 WITH evt_data_1 AS (
     SELECT 
@@ -23,7 +23,7 @@ WITH evt_data_1 AS (
         msgSender AS msg_sender,
         topic1,
         CAST(NULL AS varbinary) AS topic2  -- Ensure topic2 is treated as varbinary
-    FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog1')}}
+    FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
 )
@@ -42,7 +42,7 @@ WITH evt_data_1 AS (
         msgSender AS msg_sender,
         topic1,
         topic2
-    FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog2')}}
+    FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
 )
@@ -61,7 +61,6 @@ WITH evt_data_1 AS (
         tx_hash,
         index, 
         json_query(data, 'lax $.addressItems' OMIT QUOTES) AS address_items,
-        json_query(data, 'lax $.uintItems' OMIT QUOTES) AS uint_items,
         json_query(data, 'lax $.bytes32Items' OMIT QUOTES) AS bytes32_items
     FROM
         evt_data
@@ -77,19 +76,6 @@ WITH evt_data_1 AS (
         parsed_data,
         UNNEST(
             CAST(json_extract(address_items, '$.items') AS ARRAY(JSON))
-        ) AS t(item)
-)
-
-, uint_items_parsed AS (
-    SELECT 
-        tx_hash,
-        index,
-        json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
-        json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
-    FROM 
-        parsed_data,
-        UNNEST(
-            CAST(json_extract(uint_items, '$.items') AS ARRAY(JSON))
         ) AS t(item)
 )
 
@@ -109,22 +95,20 @@ WITH evt_data_1 AS (
 , combined AS (
     SELECT *
     FROM address_items_parsed
-    UNION ALL    
-    SELECT *
-    FROM uint_items_parsed
-    UNION ALL
+    UNION ALL 
     SELECT *
     FROM bytes32_items_parsed
-
 )
 
 , evt_data_parsed AS (
     SELECT
         tx_hash,
         index,
-        MAX(CASE WHEN key_name = 'key' THEN value END) AS key,
-        MAX(CASE WHEN key_name = 'account' THEN value END) AS account,
-        MAX(CASE WHEN key_name = 'secondaryOrderType' THEN value END) AS secondary_order_type
+        MAX(CASE WHEN key_name = 'marketToken' THEN value END) AS market_token,
+        MAX(CASE WHEN key_name = 'indexToken' THEN value END) AS index_token,
+        MAX(CASE WHEN key_name = 'longToken' THEN value END) AS long_token,
+        MAX(CASE WHEN key_name = 'shortToken' THEN value END) AS short_token,
+        MAX(CASE WHEN key_name = 'salt' THEN value END) AS salt
     FROM
         combined
     GROUP BY tx_hash, index
@@ -143,10 +127,17 @@ SELECT
     topic1, 
     topic2,
     
-    key,
-    account,
-    TRY_CAST(secondary_order_type AS INTEGER) AS secondary_order_type
-
+    market_token,
+    index_token,
+    long_token,
+    short_token,
+    salt,
+    CASE 
+        WHEN index_token = '0x0000000000000000000000000000000000000000' THEN true
+        ELSE false
+    END AS spot_only,
+    'GM' AS market_token_symbol,
+    18 AS market_token_decimals
 FROM evt_data AS ED
 LEFT JOIN evt_data_parsed AS EDP
     ON ED.tx_hash = EDP.tx_hash

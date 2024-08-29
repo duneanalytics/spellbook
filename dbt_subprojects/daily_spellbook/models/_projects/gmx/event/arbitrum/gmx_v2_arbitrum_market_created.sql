@@ -22,7 +22,7 @@ WITH evt_data_1 AS (
         eventData AS data,
         msgSender AS msg_sender,
         topic1,
-        CAST(NULL AS varbinary) AS topic2  -- Ensure topic2 is treated as varbinary
+        CAST(NULL AS varbinary) AS topic2
     FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
