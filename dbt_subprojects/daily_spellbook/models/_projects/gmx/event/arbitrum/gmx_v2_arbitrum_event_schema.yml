@@ -15,39 +15,52 @@ models:
       account addresses, event keys, and strings representing the reason for cancellation.
 
     columns:
-      - name: blockchain
+      - &blockchain  
+        name: blockchain
         description: The blockchain network where the event occurred (Arbitrum)
         tests:
           - not_null
-      - name: block_time
+      - &block_time
+        name: block_time
         description: The timestamp of the block when the event was recorded
         tests:
           - not_null
-      - name: block_number
+      - &block_number
+        name: block_number
         description: The block number where the event is included
         tests:
           - not_null
-      - name: tx_hash
+      - &tx_hash
+        name: tx_hash
         description: The hash of the transaction where the event was logged
         tests:
           - not_null
-      - name: index
+      - &index
+        name: index
         description: The position of the event within the transaction
         tests:
-          - not_null  
+          - not_null 
+      - &contract_address
+        name: contract_address
+        description: The contract address associated with the event
+        tests:
+          - not_null          
       - name: event_name
         description: The type of event recorded, always 'OrderCreated' for this model.
         tests:
           - not_null
-      - name: msg_sender
+      - &msg_sender
+        name: msg_sender
         description: The address of the sender of the message or transaction.
         tests:
           - not_null
-      - name: topic1
+      - &topic1
+        name: topic1
         description: The value corresponding to the second indexed event parameter.
         tests:
           - not_null
-      - name: topic2
+      - &topic2
+        name: topic2
         description: The value corresponding to the third indexed event parameter.
         tests:
           - not_null
@@ -78,8 +91,9 @@ models:
       - name: swap_path
         description: JSON array of markets through which the swap was routed.
         tests:
-          - not_null      
-      - name: order_type
+          - not_null  
+      - &order_type    
+        name: order_type
         description: |
           The type of order executed. The following table describes each order type:
           - MarketSwap: Swap token A to token B at the current market price. The order will be cancelled if the minOutputAmount cannot be fulfilled.
@@ -100,7 +114,8 @@ models:
           - 'NoSwap'
           - 'SwapPnlTokenToCollateralToken'
           - 'SwapCollateralTokenToPnlToken'
-      - name: size_delta_usd
+      - &size_delta_usd
+        name: size_delta_usd
         description: The change in position size in USD
         tests:
           - not_null
@@ -134,7 +149,8 @@ models:
           - not_null        
       - name: updated_at_time
         description: The timestamp when the order was last updated.
-      - name: is_long
+      - &is_long
+        name: is_long
         description: A boolean indicating whether the position is long
         tests:
           - not_null
@@ -147,3 +163,51 @@ models:
         tests:
           - not_null
           - unique
+
+
+  - name: gmx_v2_arbitrum_order_executed
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'order_executed']
+    description: |      
+      Extracts and decodes the `OrderExecuted` event log data from the Arbitrum blockchain. 
+      This model processes log entries related to executed orders, extracting key variables such as 
+      account addresses, event keys, and integer values.
+    
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: event_name
+        description: The type of event recorded, always 'OrderExecuted' for this model
+        tests:
+          - not_null 
+      - *msg_sender
+      - *topic1
+      - *topic2
+      - name: key
+        description: The key associated with the executed order. Extracted as a bytes32 value.
+        tests:
+          - not_null
+          - unique 
+      - name: account
+        description: The address associated with the order
+        tests:
+          - not_null   
+      - name: secondary_order_type
+        description: |
+          The type of secondary order associated with the executed order. 
+          This column indicates the nature of any additional order handling or adjustments made. 
+          
+          The `secondary_order_type` is represented as an unsigned integer with the following possible values:
+          - `0`: **None** - No secondary order type is applied.
+          - `1`: **Adl (Auto-Deleveraging)** - Indicates that the order is associated with the Auto-Deleveraging mechanism. ADL is used to manage risk by automatically reducing or closing positions that are at risk of liquidation due to insufficient margin or other factors. This mechanism helps in maintaining the stability of the trading platform.
+        tests:
+          - not_null
