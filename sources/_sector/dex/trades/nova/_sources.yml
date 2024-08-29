@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: sushi_nova
+    tables:
+      - name: uniswapv2pair_evt_swap
+      - name: uniswapv2factory_evt_paircreated
+  - name: rcpswap_nova
+    tables:
+      - name: swappair_evt_swap
+      - name: swapfactory_evt_paircreated

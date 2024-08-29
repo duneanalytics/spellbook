@@ -2,11 +2,8 @@ version: 2
 
 sources:
   - name: gnosis_safe_ethereum
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: GnosisSafev1_3_0_evt_SafeSetup
-        loaded_at_field: evt_block_time
         description: "Safe v1.3.0 setup events"
         columns:
           - &contract_address
@@ -40,7 +37,6 @@ sources:
             name: threshold
             description: "Number of required confirmations for a Safe transaction"
       - name: ProxyFactoryv1_0_0_call_createProxy
-        loaded_at_field: call_block_time
         description: "Safe v1.0.0 factory createProxy calls"
         columns:
           - &call_block_number
@@ -69,7 +65,6 @@ sources:
             name: output_proxy
             description: "Address of created Safe proxy"
       - name: ProxyFactoryv1_0_0_call_createProxyWithNonce
-        loaded_at_field: call_block_time
         description: "Safe v1.0.0 factory createProxyWithNonce calls"
         columns:
           - &_mastercopy
@@ -87,7 +82,6 @@ sources:
             name: saltNonce
             description: "Salt nonce"
       - name: ProxyFactoryv1_1_0_call_createProxy
-        loaded_at_field: call_block_time
         description: "Safe v1.1.0 factory createProxy calls"
         columns:
           - *call_block_number
@@ -100,7 +94,6 @@ sources:
           - *masterCopy
           - *output_proxy
       - name: ProxyFactoryv1_1_0_call_createProxyWithNonce
-        loaded_at_field: call_block_time
         description: "Safe v1.1.0 factory createProxyWithNonce calls"
         columns:
           - *_mastercopy
@@ -114,7 +107,6 @@ sources:
           - *output_proxy
           - *saltNonce
       - name: ProxyFactoryv1_1_1_call_createProxy
-        loaded_at_field: call_block_time
         description: "Safe v1.1.1 factory createProxy calls"
         columns:
           - *call_block_number
@@ -127,7 +119,6 @@ sources:
           - *masterCopy
           - *output_proxy
       - name: ProxyFactoryv1_1_1_call_createProxyWithNonce
-        loaded_at_field: call_block_time
         description: "Safe v1.1.1 factory createProxyWithNonce calls"
         columns:
           - *_mastercopy
@@ -141,7 +132,6 @@ sources:
           - *output_proxy
           - *saltNonce
       - name: ProxyFactoryv1_1_1_call_createProxyWithCallback
-        loaded_at_field: call_block_time
         description: "Safe v1.1.1 factory createProxyWithCallback calls"
         columns:
           - *_mastercopy
@@ -155,7 +145,6 @@ sources:
           - *output_proxy
           - *saltNonce
       - name: GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation
-        loaded_at_field: evt_block_time
         description: "Safe v1.3.0 factory ProxyCreation events"
         columns:
           - *contract_address
@@ -170,7 +159,6 @@ sources:
             name: singleton
             description: "Singleton"
       - name: SafeProxyFactory_v_1_4_1_evt_ProxyCreation
-        loaded_at_field: evt_block_time
         description: "Safe v1.4.1 factory ProxyCreation events"
         columns:
           - *contract_address
@@ -183,7 +171,6 @@ sources:
           - name: singleton
             description: "Singleton"
       - name: Safev0_1_0_call_setup
-        loaded_at_field: call_block_time
         description: "Safe v0.1.0 setup events"
         columns:
           - &_owners
@@ -203,7 +190,6 @@ sources:
           - *call_success
           - *call_trace_address
       - name: Safev0_1_0_evt_ChangedThreshold
-        loaded_at_field: call_block_time
         description: "Safe v0.1.0 changed threshold events"
         columns:
           - *call_block_number
@@ -214,7 +200,6 @@ sources:
           - *contract_address
           - *_threshold
       - name: Safev1_0_0_call_setup
-        loaded_at_field: call_block_time
         description: "Safe v1.0.0 setup events"
         columns:
           - *_owners
@@ -237,7 +222,6 @@ sources:
           - *call_success
           - *call_trace_address
       - name: Safev1_0_0_evt_ChangedThreshold
-        loaded_at_field: call_block_time
         description: "Safe v1.0.0 changed threshold events"
         columns:
           - *call_block_number
@@ -248,7 +232,6 @@ sources:
           - *contract_address
           - *threshold
       - name: Safev1_1_0_call_setup
-        loaded_at_field: call_block_time
         description: "Safe v1.1.0 setup events"
         columns:
           - *_owners
@@ -266,7 +249,6 @@ sources:
           - *call_success
           - *call_trace_address
       - name: Safev1_1_0_evt_ChangedThreshold
-        loaded_at_field: call_block_time
         description: "Safe v1.1.0 changed threshold events"
         columns:
           - *call_block_number
@@ -277,7 +259,6 @@ sources:
           - *contract_address
           - *threshold
       - name: Safev1_1_1_call_setup
-        loaded_at_field: call_block_time
         description: "Safe v1.1.1 setup events"
         columns:
           - *_owners
@@ -295,7 +276,6 @@ sources:
           - *call_success
           - *call_trace_address
       - name: Safev1_1_1_evt_ChangedThreshold
-        loaded_at_field: call_block_time
         description: "Safe v1.1.1 changed threshold events"
         columns:
           - *call_block_number
@@ -306,7 +286,6 @@ sources:
           - *contract_address
           - *threshold
       - name: GnosisSafev1_3_0_evt_ChangedThreshold
-        loaded_at_field: call_block_time
         description: "Safe v1.3.0 changed threshold events"
         columns:
           - *contract_address

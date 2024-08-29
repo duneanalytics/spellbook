@@ -261,3 +261,31 @@ models:
            - nft_contract_address
            - nft_token_id
            - price_raw
+
+ - name: mooar_polygon_base_trades
+   meta:
+     blockchain: polygon
+     project: mooar
+     contributors: springzh
+   config:
+     tags: [ 'polygon','mooar','events','springzh' ]
+   description: >
+     Mooar events on Polygon
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: oneplanet_polygon_base_trades
+   meta:
+     blockchain: polygon
+     project: oneplanet
+     contributors: springzh
+   config:
+     tags: [ 'polygon','oneplanet','events','springzh' ]
+   description: >
+     OnePlanet events on Polygon
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]

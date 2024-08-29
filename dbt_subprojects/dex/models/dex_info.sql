@@ -169,4 +169,6 @@ FROM (VALUES
     , ('dragon_swap', 'DragonSwap', 'Direct', 'dragonswap_dex')
     , ('xei_finance', 'Xei Finance', 'Direct', 'XeiFinance')
     , ('fusionx', 'FusionX Finance', 'Direct', 'FusionX_Finance')
+    , ('agni', 'AGNI Finance', 'Direct', 'Agnidex')
+    , ('rcpswap', 'RCPswap', 'Direct', 'RCPswap')
     ) AS temp_table (project, name, marketplace_type, x_username)
