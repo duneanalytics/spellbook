@@ -725,3 +725,75 @@ models:
         description: The referral code associated with the position
         tests:
           - not_null   
+
+
+  - name: gmx_v2_arbitrum_position_fees_info
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'position_fees_info']
+    description: |
+      This model extracts and parses `PositionFeesInfo` events from the Arbitrum blockchain.
+      It includes details about the transaction, addresses involved, and various metrics related to 
+      position fees, including fee amounts and related market data.
+    
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address  
+      - name: event_name
+        description: The type of event recorded, always 'PositionFeesInfo' for this model
+        tests:
+          - not_null
+      - *msg_sender
+      - *topic1
+      - *topic2           
+      - name: market
+        description: The market associated with the position fees info event
+        tests:
+          - not_null
+      - name: collateral_token
+        description: The collateral token used in the position fees info event
+        tests:
+          - not_null
+      - *affiliate
+      - *trader
+      - *ui_fee_receiver
+      - *collateral_token_price_min
+      - *collateral_token_price_max
+      - *trade_size_usd
+      - *total_rebate_factor
+      - *trader_discount_factor
+      - *total_rebate_amount
+      - *trader_discount_amount
+      - *affiliate_reward_amount
+      - *funding_fee_amount
+      - *claimable_long_token_amount
+      - *claimable_short_token_amount
+      - *latest_funding_fee_amount_per_size
+      - *latest_long_token_claimable_funding_amount_per_size
+      - *latest_short_token_claimable_funding_amount_per_size
+      - *borrowing_fee_usd
+      - *borrowing_fee_amount
+      - *borrowing_fee_receiver_factor
+      - *borrowing_fee_amount_for_fee_receiver
+      - *position_fee_factor
+      - *protocol_fee_amount
+      - *position_fee_receiver_factor
+      - *fee_receiver_amount
+      - *fee_amount_for_pool
+      - *position_fee_amount_for_pool
+      - *position_fee_amount
+      - *total_cost_amount
+      - *ui_fee_receiver_factor
+      - *ui_fee_amount
+      - *is_increase
+      - *order_key
+      - *position_key
+      - *referral_code
