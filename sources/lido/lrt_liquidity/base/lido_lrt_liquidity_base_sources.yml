@@ -1,0 +1,9 @@
+version: 2
+
+sources:    
+  - name: tokens_base
+    description: "Base tokens daily balances"
+    tables:
+      - name: balances_daily
+      
+version: 2

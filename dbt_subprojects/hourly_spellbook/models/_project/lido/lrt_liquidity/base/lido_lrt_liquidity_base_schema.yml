@@ -1,0 +1,102 @@
+version: 2
+
+models:
+  - name: tokens
+    meta:
+      blockchain: base
+      sector: liquid_staking
+      project: lido
+      contributors: [ pipistrella ]
+    config:
+      tags: [ 'base', 'lido', 'lrt' ]
+    description: "LRT tokens on Base blockchain"
+    columns:
+      - name: address
+        description: "LRTs contract address"
+      - name: symbol
+        description: "LRTs symbol"
+      - name: blockchain
+        description: "Blockchain"
+      - name: project
+        description: "LRTs project name"
+
+  - name: holders
+    meta:
+      blockchain: base
+      sector: liquid_staking
+      project: lido
+      contributors: [ pipistrella ]
+    config:
+      tags: [ 'base', 'lido', 'lrt' ]
+    description: "LRT known holders on Base blockchain"
+    columns:
+      - name: address
+        description: "Holders contract address"
+      - name: namespace
+        description: "Holders label"
+      - name: category
+        description: "Holders category"  
+      - name: blockchain
+        description: "Blockchain"
+      - name: paired_token
+        description: "Paired token symbol if LP, null if no"    
+
+  - name: holdings
+    meta:
+      blockchain: base
+      sector: liquid_staking
+      project: lido
+      contributors: [ pipistrella ]
+    config:
+      tags: [ 'base', 'lido', 'lrt' ]
+    description: "LRT holdings on Base blockchain"
+    columns:
+      - name: day
+        description: "Timestamp"
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Holders address"
+      - name: namespace
+        description: "Holders label"
+      - name: category
+        description: "Holders category"  
+      - name: paired_token
+        description: "Paired token symbol if LP, null if no"  
+      - name: symbol
+        description: "LRTs symbol"  
+      - name: project
+        description: "LRTs project"  
+      - name: balance
+        description: "LRTs balance"  
+      - name: balance_usd
+        description: "LRTs balance in USD"        
+
+  - name: exit_liquidity
+    meta:
+      blockchain: base
+      sector: liquid_staking
+      project: lido
+      contributors: [ pipistrella ]
+    config:
+      tags: [ 'base', 'lido', 'lrt' ]
+    description: "LRT exit liquidity on Base blockchain"
+    columns:
+      - name: day
+        description: "Timestamp"
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Holders address"
+      - name: namespace
+        description: "Holders label"
+      - name: category
+        description: "Holders category"  
+      - name: paired_token_symbol
+        description: "Paired token symbol if LP, null if no"  
+      - name: balance
+        description: "LRTs balance"  
+      - name: balance_usd
+        description: "LRTs balance in USD"             
+
+    
