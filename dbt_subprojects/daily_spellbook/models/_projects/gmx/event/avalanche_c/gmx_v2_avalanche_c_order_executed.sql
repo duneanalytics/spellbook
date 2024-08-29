@@ -1,13 +1,13 @@
 {{
   config(
-    schema = 'gmx_v2_arbitrum',
+    schema = 'gmx_v2_avalanche_c',
     alias = 'order_executed',
     materialized = 'table'
     )
 }}
 
 {%- set event_name = 'OrderExecuted' -%}
-{%- set blockchain_name = 'arbitrum' -%}
+{%- set blockchain_name = 'avalanche_c' -%}
 
 WITH evt_data_1 AS (
     SELECT 
@@ -23,7 +23,7 @@ WITH evt_data_1 AS (
         msgSender AS msg_sender,
         topic1,
         CAST(NULL AS varbinary) AS topic2  -- Ensure topic2 is treated as varbinary
-    FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog1')}}
+    FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
 )
@@ -42,7 +42,7 @@ WITH evt_data_1 AS (
         msgSender AS msg_sender,
         topic1,
         topic2
-    FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog2')}}
+    FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
 )
