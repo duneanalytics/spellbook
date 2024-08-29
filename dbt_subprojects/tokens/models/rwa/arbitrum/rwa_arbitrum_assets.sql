@@ -7,7 +7,7 @@
         ,post_hook='{{ expose_spells(\'["arbitrum"]\',
                         "sector",
                         "rwa",
-                        \'["maybeYonas"]\') }}'
+                        \'["maybeYonas", "pyor_xyz"]\') }}'
     )
 }}
 
