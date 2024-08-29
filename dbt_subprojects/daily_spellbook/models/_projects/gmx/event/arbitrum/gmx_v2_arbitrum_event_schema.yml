@@ -250,3 +250,72 @@ models:
         tests:
           - not_null
 
+
+  - name: gmx_v2_arbitrum_market_created
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'market_created']
+    description: |
+      This model extracts and parses `MarketCreated` events from the Arbitrum blockchain.
+      It includes transaction details, addresses, and other relevant metrics related to 
+      the creation of markets within the GMX protocol.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: event_name
+        description: The type of event recorded, always 'MarketCreated' for this model
+        tests:
+          - not_null 
+      - *msg_sender
+      - *topic1
+      - *topic2
+      - &market_token
+        name: market_token
+        description: The token used to represent the market
+        tests:
+          - not_null
+          - unique
+      - &index_token
+        name: index_token
+        description: The token used as the index in the market
+        tests:
+          - not_null
+      - &long_token
+        name: long_token
+        description: The token used for long positions in the market
+        tests:
+          - not_null
+      - &short_token
+        name: short_token
+        description: The token used for short positions in the market
+        tests:
+          - not_null
+      - &salt
+        name: salt
+        description: A unique value used to prevent hash collisions
+        tests:
+          - not_null
+      - &spot_only
+        name: spot_only
+        description: Indicates if the market is spot-only (true when index_token is the zero address)
+        tests:
+          - not_null          
+      - &market_token_symbol
+        name: market_token_symbol
+        description: The symbol of the market token (hardcoded as 'GM' in this model)  
+        tests:
+          - not_null    
+      - &market_token_decimals
+        name: market_token_decimals
+        description: The decimal precision of the market token (hardcoded as 18 in this model)          
+        tests:
+          - not_null         
