@@ -1,7 +1,7 @@
 {{ config(
         schema = 'gas',
         alias = 'fees',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","zksync","zora","base","scroll","mantle","linea","mode","blast"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","zksync","zora","base","scroll","mantle","linea","mode","blast","starknet"]\',
                                 "sector",
                                 "gas",
                                 \'["soispoke", "ilemi", "0xRob", "jeff-dude"]\') }}'
@@ -21,7 +21,8 @@
     'gas_mantle_fees',
     'gas_linea_fees',
     'gas_mode_fees',
-    'gas_blast_fees'
+    'gas_blast_fees',
+    'gas_starknet_fees'
 ] %}
 
 SELECT *
