@@ -10,8 +10,6 @@
     )
 }}
 
---note: this model has been excluded due to tx_hash and evt_index being non-unique in the source data
---please check git history for PR which explains in more detail
 
 {% set config_markets %}
     WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS
