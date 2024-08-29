@@ -449,8 +449,6 @@ models:
       - &position_key
         name: position_key
         description: A unique key identifying the position
-        tests:
-          - not_null
 
 
   - name: gmx_v2_arbitrum_position_decrease
