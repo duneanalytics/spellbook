@@ -12,7 +12,6 @@
 
 {% set models = [
     ref('mass_decoded_dex_trades_ethereum')
-    , ref('mass_decoded_dex_trades_mode')
     , ref('mass_decoded_dex_trades_arbitrum')
 ] %}
 
