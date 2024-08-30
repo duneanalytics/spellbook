@@ -1,6 +1,7 @@
 {% macro uniswap_v2_forks_trades(
     blockchain = null
     , dex_type = 'uni-v2'
+    , project = null
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PairCreated = null
@@ -36,7 +37,9 @@ WITH dexs AS
 
 SELECT
     '{{ blockchain }}' AS blockchain
+    , '{{project}}' AS project
     , '{{ version }}' AS version
+    , '{{dex_type}}' AS dex_type
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
     , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
     , dexs.block_time

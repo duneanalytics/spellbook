@@ -1,14 +1,14 @@
 
 {% macro uniswap_v3_forks_trades(
     blockchain = null
-    , project = null
     , dex_type = 'uni-v3'
+    , project = null
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PoolCreated = null
+    , pair_column_name = 'pool'
     , taker_column_name = 'recipient'
     , maker_column_name = null
-    , pair_column_name = 'pool'
     )
 %}
 WITH dexs AS
