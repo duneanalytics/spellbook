@@ -11,7 +11,7 @@
 }}
 
 {% set config_markets %}
-    WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS 
+    WITH dodo_view_markets (market_contract_address, base_token_symbol, quote_token_symbol, base_token_address, quote_token_address) AS
     (
         VALUES
         (0x75c23271661d9d143dcb617222bc4bec783eff34, 'WETH', 'USDC', 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2, 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48),
@@ -36,9 +36,9 @@
 
 {%
     set config_other_sources = [
-        {'version': '2_dvm', 'source': 'DVM_evt_DODOSwap'},
-        {'version': '2_dpp', 'source': 'DPP_evt_DODOSwap'},
-        {'version': '2_dsp', 'source': 'DSP_evt_DODOSwap'},
+        {'version': '2', 'source': 'DVM_evt_DODOSwap'},
+        {'version': '2', 'source': 'DPP_evt_DODOSwap'},
+        {'version': '2', 'source': 'DSP_evt_DODOSwap'},
     ]
 %}
 

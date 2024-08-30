@@ -23,3 +23,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_hour
+
+  - name: ethereum_transaction_address_metrics
+    meta:
+      blockchain: ethereum
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: [ 'ethereum','metrics', 'address' ]
+    description: "fundamental blockchain transaction address metrics"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_hour
+            - from_address
+            - to_address
