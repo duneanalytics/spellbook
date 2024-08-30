@@ -15,6 +15,11 @@ models:
       in the GMX perpetual trading DEX on the Arbitrum blockchain.
 
     columns:
+      - &blockchain
+        name: blockchain
+        description: The blockchain network where the token information was retrieved
+        tests:
+          - not_null    
       - name: collateral_token
         description: The contract address of the token used as collateral.
         tests:
@@ -38,11 +43,7 @@ models:
       The data reflects all available tokens on the decentralized exchange.
       
     columns:
-      - &blockchain
-        name: blockchain
-        description: The blockchain network where the token information was retrieved
-        tests:
-          - not_null
+      - *blockchain
       - &project
         name: project
         description: The project related to the tokens (GMX v2)
@@ -91,6 +92,7 @@ models:
       market tokens used within the GMX perpetual trading DEX.
 
     columns:
+      - *blockchain
       - name: market
         description: The contract address of the market token.
         tests:

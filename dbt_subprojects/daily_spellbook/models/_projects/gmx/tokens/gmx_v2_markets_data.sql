@@ -17,8 +17,14 @@
 SELECT
     '{{ chain }}' AS "blockchain",
     market,
+    market_name,
+    market_token_symbol,
+    market_token_decimals,
+    index_token_symbol, 
     index_token_decimals,
+    long_token_symbol,
     long_token_decimals,
+    short_token_symbol,
     short_token_decimals  
 FROM {{ ref('gmx_v2_' ~ chain ~ '_markets_data') }}
 {% if not loop.last %}

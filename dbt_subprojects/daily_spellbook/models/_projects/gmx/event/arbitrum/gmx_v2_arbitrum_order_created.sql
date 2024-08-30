@@ -200,12 +200,12 @@ WITH evt_data_1 AS (
         topic1, 
         topic2,
         
-        account,
-        receiver,
-        callback_contract,
-        ui_fee_receiver,
-        market,
-        TRY_CAST(initial_collateral_token AS VARCHAR) AS initial_collateral_token,
+        from_hex(account) AS account,
+        from_hex(receiver) AS receiver,
+        from_hex(callback_contract) AS callback_contract,
+        from_hex(ui_fee_receiver) AS ui_fee_receiver,
+        from_hex(market) AS market,
+        from_hex(initial_collateral_token) AS initial_collateral_token,
         
         swap_path,
         TRY_CAST(order_type AS INTEGER) AS order_type,
@@ -217,12 +217,12 @@ WITH evt_data_1 AS (
         TRY_CAST(execution_fee AS DOUBLE) AS execution_fee,
         TRY_CAST(callback_gas_limit AS DOUBLE) AS callback_gas_limit,
         TRY_CAST(min_output_amount AS DOUBLE) AS min_output_amount,
-        updated_at_block,
+        TRY_CAST(updated_at_block AS BIGINT) AS updated_at_block,
         TRY_CAST(updated_at_time AS DOUBLE) AS updated_at_time,
         TRY_CAST(is_long AS BOOLEAN) AS is_long,
         TRY_CAST(should_unwrap_native_token AS BOOLEAN) AS should_unwrap_native_token,
         TRY_CAST(is_frozen AS BOOLEAN) AS is_frozen,
-        key
+        from_hex(key) AS key
         
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -288,7 +288,7 @@ SELECT
 
 FROM event_data AS ED
 LEFT JOIN {{ ref('gmx_v2_arbitrum_collateral_tokens_data') }} AS CTD
-    ON ED.initial_collateral_token = TRY_CAST(CTD.collateral_token AS VARCHAR)
+    ON ED.initial_collateral_token = CTD.collateral_token
 
 
 

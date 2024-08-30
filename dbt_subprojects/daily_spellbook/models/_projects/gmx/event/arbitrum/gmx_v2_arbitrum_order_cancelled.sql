@@ -161,9 +161,9 @@ SELECT
     topic1, 
     topic2,
     
-    key,
-    account,
-    reason_bytes,
+    from_hex(key) AS key,
+    from_hex(account) AS account,
+    from_hex(reason_bytes) AS reason_bytes,
     reason
 
 FROM evt_data AS ED

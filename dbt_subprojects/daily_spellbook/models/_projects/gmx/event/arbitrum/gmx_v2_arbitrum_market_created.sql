@@ -127,11 +127,11 @@ SELECT
     topic1, 
     topic2,
     
-    market_token,
-    index_token,
-    long_token,
-    short_token,
-    salt,
+    from_hex(market_token) AS market_token,
+    from_hex(index_token) AS index_token,
+    from_hex(long_token) AS long_token,
+    from_hex(short_token) AS short_token,
+    from_hex(salt) AS salt,
     CASE 
         WHEN index_token = '0x0000000000000000000000000000000000000000' THEN true
         ELSE false

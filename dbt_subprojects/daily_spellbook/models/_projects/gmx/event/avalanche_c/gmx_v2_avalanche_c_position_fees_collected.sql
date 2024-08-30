@@ -196,11 +196,11 @@ WITH evt_data_1 AS (
         topic1, 
         topic2,
         
-        TRY_CAST(market AS VARCHAR) AS market,
-        TRY_CAST(collateral_token AS VARCHAR) AS collateral_token,
-        TRY_CAST(affiliate AS VARCHAR) AS affiliate,
-        TRY_CAST(trader AS VARCHAR) AS trader,
-        TRY_CAST(ui_fee_receiver AS VARCHAR) AS ui_fee_receiver,
+        from_hex(market) AS market,
+        from_hex(collateral_token) AS collateral_token,
+        from_hex(affiliate) AS affiliate,
+        from_hex(trader) AS trader,
+        from_hex(ui_fee_receiver) AS ui_fee_receiver,
         TRY_CAST(collateral_token_price_min AS DOUBLE) AS collateral_token_price_min,
         TRY_CAST(collateral_token_price_max AS DOUBLE) AS collateral_token_price_max,
         TRY_CAST(trade_size_usd AS DOUBLE) AS trade_size_usd,
@@ -230,9 +230,9 @@ WITH evt_data_1 AS (
         TRY_CAST(ui_fee_receiver_factor AS DOUBLE) AS ui_fee_receiver_factor,
         TRY_CAST(ui_fee_amount AS DOUBLE) AS ui_fee_amount,
         TRY_CAST(is_increase AS BOOLEAN) AS is_increase,
-        TRY_CAST(order_key AS VARCHAR) AS order_key,
-        TRY_CAST(position_key AS VARCHAR) AS position_key,
-        TRY_CAST(referral_code AS VARCHAR) AS referral_code
+        from_hex(order_key) AS order_key,
+        from_hex(position_key) AS position_key,
+        from_hex(referral_code) AS referral_code
         
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -294,8 +294,8 @@ SELECT
     
 FROM event_data AS ED
 LEFT JOIN {{ ref('gmx_v2_avalanche_c_markets_data') }} AS MD
-    ON ED.market = TRY_CAST(MD.market AS VARCHAR)
+    ON ED.market = MD.market
 LEFT JOIN {{ ref('gmx_v2_avalanche_c_collateral_tokens_data') }} AS CTD
-    ON ED.collateral_token = TRY_CAST(CTD.collateral_token AS VARCHAR)
+    ON ED.collateral_token = CTD.collateral_token
 
 

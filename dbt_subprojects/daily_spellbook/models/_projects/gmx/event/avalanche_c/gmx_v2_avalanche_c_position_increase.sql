@@ -199,8 +199,8 @@ WITH evt_data_1 AS (
         topic1, 
         topic2,
         
-        TRY_CAST(market AS VARCHAR) AS market,
-        TRY_CAST(collateral_token AS VARCHAR) AS collateral_token,
+        from_hex(market) AS market,
+        from_hex(collateral_token) AS collateral_token,
         TRY_CAST(size_in_usd AS DOUBLE) AS size_in_usd,
         TRY_CAST(size_in_tokens AS DOUBLE) AS size_in_tokens,
         TRY_CAST(collateral_amount AS DOUBLE) AS collateral_amount,
@@ -221,8 +221,8 @@ WITH evt_data_1 AS (
         TRY_CAST(price_impact_usd AS DOUBLE) AS price_impact_usd,
         TRY_CAST(price_impact_amount AS DOUBLE) AS price_impact_amount,
         TRY_CAST(is_long AS BOOLEAN) AS is_long,
-        TRY_CAST(order_key AS VARCHAR) AS order_key,
-        TRY_CAST(position_key AS VARCHAR) AS position_key
+        from_hex(order_key) AS order_key,
+        from_hex(position_key) AS position_key
         
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -283,8 +283,8 @@ SELECT
     
 FROM event_data AS ED
 LEFT JOIN {{ ref('gmx_v2_avalanche_c_markets_data') }} AS MD
-    ON ED.market = TRY_CAST(MD.market AS VARCHAR)
+    ON ED.market = MD.market
 LEFT JOIN {{ ref('gmx_v2_avalanche_c_collateral_tokens_data') }} AS CTD
-    ON ED.collateral_token = TRY_CAST(CTD.collateral_token AS VARCHAR)
+    ON ED.collateral_token = CTD.collateral_token
 
 

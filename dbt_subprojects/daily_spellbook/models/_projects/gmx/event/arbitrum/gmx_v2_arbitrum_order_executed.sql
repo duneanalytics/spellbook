@@ -143,8 +143,8 @@ SELECT
     topic1, 
     topic2,
     
-    key,
-    account,
+    from_hex(key) AS key,
+    from_hex(account) AS account,
     TRY_CAST(secondary_order_type AS INTEGER) AS secondary_order_type
 
 FROM evt_data AS ED
