@@ -23,5 +23,5 @@ select
   evt_tx_hash as tx_hash
 from {{ source('polymarket_polygon', 'SafeProxyFactory_evt_ProxyCreation') }}
 {% if is_incremental() %}
-and {{ incremental_predicate('evt_block_time') }}
+where {{ incremental_predicate('evt_block_time') }}
 {% endif %}
