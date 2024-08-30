@@ -68,10 +68,10 @@ FROM (VALUES
     , ('camelot', 'Camelot', 'Direct', 'CamelotDEX')
     , ('saddle', 'Saddle', 'Direct', 'saddlefinance')
     , ('oneinch', '1inch', 'Aggregator', '1inch')
-    , ('1inch', '1inch', 'Aggregator', '1inch') -- To Fix, should be just oneinch
-    , ('1inch LOP', '1inch Limit Order Protocol', 'Aggregator', '1inch') -- To Fix, should be just oneinch or maybe oneinch_limit_order_protocol
+    , ('1inch', '1inch', 'Aggregator', '1inch')
+    , ('1inch-LOP', '1inch Limit Order Protocol', 'Aggregator', '1inch')
     , ('zeroex', '0x', 'Aggregator', '0xProject')
-    , ('0x API', '0x API', 'Aggregator', '0xProject') -- To Fix, should be just zeroex
+    , ('0x-API', '0x API', 'Aggregator', '0xProject')
     , ('paraswap', 'ParaSwap', 'Aggregator', 'paraswap')
     , ('cow_protocol', 'CoW Swap', 'Aggregator', 'CoWSwap')
     , ('openocean', 'OpenOcean', 'Aggregator', 'OpenOceanGlobal')
