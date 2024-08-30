@@ -2,7 +2,7 @@
 
         schema = 'dex_mass_decoding_ethereum',
         alias = 'uniswap_v3_base_trades',
-        partition_by = ['block_month'],
+        partition_by = ['block_month', 'factory_address'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -13,8 +13,8 @@
 
 {{uniswap_v3_forks_trades(
     blockchain = 'ethereum'
+    , version = 'null'
     , project = 'null'
-    , version = 'unknown'
     , Pair_evt_Swap = ref('uniswap_v3_pool_decoding_ethereum')
     , Factory_evt_PoolCreated = ref('uniswap_v3_factory_decoding_ethereum')
 )}}
