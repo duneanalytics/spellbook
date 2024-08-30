@@ -16,3 +16,6 @@ sources:
     tables:
       - name: AgniPool_evt_Swap
       - name: AgniPoolDeployer_call_deploy
+  - name: swaap_v2_mantle
+    tables:
+      - name: Vault_evt_Swap
