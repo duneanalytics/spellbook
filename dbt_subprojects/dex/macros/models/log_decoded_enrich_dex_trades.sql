@@ -1,4 +1,4 @@
-{% macro enrich_dex_trades(
+{% macro log_decoded_enrich_dex_trades(
     base_trades = null
     , filter = null
     , tokens_erc20_model = null
