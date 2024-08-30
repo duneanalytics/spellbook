@@ -14,7 +14,20 @@
 ] -%}
 
 {%- for chain in chains -%}
-SELECT *
+SELECT 
+    blockchain,
+    block_time,
+    block_number,
+    tx_hash,
+    index,
+    contract_address,
+    event_name,
+    msg_sender,
+    topic1, 
+    topic2,    
+    key,
+    account,
+    secondary_order_type
 FROM {{ ref('gmx_v2_' ~ chain ~ '_order_executed') }}
 {% if not loop.last %}
 UNION ALL

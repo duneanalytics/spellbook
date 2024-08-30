@@ -14,7 +14,25 @@
 ] -%}
 
 {%- for chain in chains -%}
-SELECT *
+SELECT 
+    blockchain,
+    block_time,
+    block_number,
+    tx_hash,
+    index,
+    contract_address,
+    event_name,
+    msg_sender,
+    topic1, 
+    topic2,    
+    market_token,
+    index_token,
+    long_token,
+    short_token,
+    salt,
+    spot_only,
+    market_token_symbol,
+    market_token_decimals
 FROM {{ ref('gmx_v2_' ~ chain ~ '_market_created') }}
 {% if not loop.last %}
 UNION ALL

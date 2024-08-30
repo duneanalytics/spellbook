@@ -14,7 +14,14 @@
 ] -%}
 
 {%- for chain in chains -%}
-SELECT *
+SELECT
+    blockchain,
+    project,
+    symbol,
+    contract_address,
+    decimals,
+    synthetic,
+    last_update_utc
 FROM {{ ref('gmx_v2_' ~ chain ~ '_erc20') }}
 {% if not loop.last %}
 UNION ALL

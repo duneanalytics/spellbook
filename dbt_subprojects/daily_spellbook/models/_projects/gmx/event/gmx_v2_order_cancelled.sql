@@ -14,7 +14,21 @@
 ] -%}
 
 {%- for chain in chains -%}
-SELECT *
+SELECT
+    blockchain,
+    block_time,
+    block_number,
+    tx_hash,
+    index,
+    contract_address,
+    event_name,
+    msg_sender,
+    topic1, 
+    topic2,
+    key,
+    account,
+    reason_bytes,
+    reason
 FROM {{ ref('gmx_v2_' ~ chain ~ '_order_cancelled') }}
 {% if not loop.last %}
 UNION ALL

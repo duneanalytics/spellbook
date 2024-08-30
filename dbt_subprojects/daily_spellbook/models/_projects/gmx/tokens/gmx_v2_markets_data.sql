@@ -16,7 +16,10 @@
 {%- for chain in chains -%}
 SELECT
     '{{ chain }}' AS "blockchain",
-    *
+    market,
+    index_token_decimals,
+    long_token_decimals,
+    short_token_decimals  
 FROM {{ ref('gmx_v2_' ~ chain ~ '_markets_data') }}
 {% if not loop.last %}
 UNION ALL
