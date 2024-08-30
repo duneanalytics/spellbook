@@ -32,7 +32,7 @@ models:
       - name: project_name
         description: "name of the project associated with the factory"
 
-  - name: uniswap_v2_forks_base_trades
+  - name: uniswap_v2_forks_base_trades_ethereum
     meta:
       blockchain: ethereum
       sector: dex
@@ -41,6 +41,22 @@ models:
     config:
       tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v2', 'forks' ]
     description: "base trades for all forks of uniswap v2 on ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - project_contract_address
+  
+  - name: uniswap_v3_forks_base_trades_ethereum
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: 0xboxer
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v3', 'forks' ]
+    description: "base trades for all forks of uniswap v3 on ethereum"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
