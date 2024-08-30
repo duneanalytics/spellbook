@@ -44,4 +44,5 @@ with dexs AS (
 )
 
 Select * from dexs
+where block_date > now() - interval '10' day
 
