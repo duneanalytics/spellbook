@@ -34,7 +34,6 @@ WITH base_union AS (
             , project_contract_address
             , tx_hash
             , evt_index
-            , factory_address
         FROM
             {{ base_model }}
         {% if not loop.last %}
