@@ -35,6 +35,10 @@ WITH dexs AS
     INNER JOIN
         {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
+    --some scammers emitted events with established pair addresses, joining in the the creation trace to resolve to correct factory
+    INNER JOIN {{ source('ethereum', 'creation_traces') }} ct 
+        ON f.{{ pair_column_name }} = ct.address 
+        AND f.contract_address = ct."from"
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('t.evt_block_time') }}

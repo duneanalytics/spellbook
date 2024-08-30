@@ -24,7 +24,7 @@
         {
             "indexed": false,
             "internalType": "uint256",
-            "name": "",
+            "name": "pair_index",
             "type": "uint256"
         }
     ],
