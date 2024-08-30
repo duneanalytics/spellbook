@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: uniswap_v2_factory_decoding_arbitrum 
+    description: >
+      mass decoding of all forks of uniswap v2 factory contract on arbitrum 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
+
+  - name: uniswap_v2_pool_decoding_arbitrum
+    description: >
+      mass decoding of all forks of uniswap v2 pool contracts on arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
+
+  - name: uniswap_v2_fork_mapping_arbitrum
+    description: >
+      mapping of all forks of uniswap v2 factory contract on arbitrum 
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - factory_address
+    columns:
+      - name: factory_address
+        description: "address of the factory contract"
+      - name: project_name
+        description: "name of the project associated with the factory"
+
+  - name: uniswap_v2_forks_base_trades_arbitrum
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: uniswap
+      contributors: 0xboxer
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'uniswap', 'v2', 'forks' ]
+    description: "base trades for all forks of uniswap v2 on arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - project_contract_address
+  
+  - name: uniswap_v3_forks_base_trades_arbitrum
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: uniswap
+      contributors: 0xboxer
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'uniswap', 'v3', 'forks' ]
+    description: "base trades for all forks of uniswap v3 on arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - project_contract_address
+    
+  - name: mass_decoded_dex_trades_arbitrum
+    description: "all dex trades on arbitrum, mass decoded"
+    tests: 
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - project_contract_address
+  
