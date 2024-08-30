@@ -8,7 +8,7 @@
 
 SELECT
     MCE.market_token AS market,
-    CONCAT(ERC20_IT.index_token, '/USD [', ERC20_LT.long_token, '-', ERC20_ST.short_token, ']') AS market_name,
+    CONCAT(MCE.index_token, '/USD [', MCE.long_token, '-', MCE.short_token, ']') AS market_name,
     'GM' AS market_token_symbol,
     18 AS market_token_decimals,
     ERC20_IT.symbol AS index_token_symbol,
