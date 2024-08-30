@@ -1,7 +1,7 @@
 {{config(
         
         alias = 'contracts',
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom", "polygon"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom", "polygon","base","linea","scroll","mantle","blast","zksync"]\',
                                     "sector",
                                     "labels",
                                     \'["soispoke"]\') }}')
@@ -13,7 +13,7 @@ SELECT 'ethereum' as blockchain,
        'contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
-       date('2022-09-26') as created_at,
+       created_at,
        now() as updated_at,
         'contracts' as model_name,
        'identifier' as label_type
@@ -25,7 +25,7 @@ SELECT 'gnosis' as blockchain,
        'contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
-       date('2022-09-26') as created_at,
+       created_at,
        now() as updated_at,
         'contracts' as model_name,
        'identifier' as label_type
@@ -37,7 +37,7 @@ SELECT 'avalanche_c' as blockchain,
        'contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
-       date('2022-09-26') as created_at,
+       created_at,
        now() as updated_at,
         'contracts' as model_name,
        'identifier' as label_type
@@ -49,7 +49,7 @@ SELECT 'arbitrum' as blockchain,
        'contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
-       date('2022-09-26') as created_at,
+       created_at,
        now() as updated_at,
        'contracts' as model_name,
        'identifier' as label_type
@@ -61,7 +61,7 @@ SELECT 'bnb' as blockchain,
        'contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
-       date('2022-09-26') as created_at,
+       created_at,
        now() as updated_at,
        'contracts' as model_name,
        'identifier' as label_type
@@ -73,7 +73,7 @@ SELECT 'optimism' as blockchain,
        'contracts' as category,
        'soispoke' as contributor,
        'query' AS source,
-       date('2022-09-26') as created_at,
+       created_at,
        now() as updated_at,
        'contracts' as model_name,
        'identifier' as label_type
@@ -85,7 +85,7 @@ SELECT 'fantom' as blockchain,
        'contracts' as category,
        'Henrystats' as contributor,
        'query' AS source,
-       date('2022-12-18') as created_at,
+       created_at,
        now() as updated_at,
        'contracts' as model_name,
        'identifier' as label_type
@@ -97,8 +97,80 @@ SELECT 'polygon' as blockchain,
        'contracts' as category,
        'Henrystats' as contributor,
        'query' AS source,
-       date('2023-01-27') as created_at,
+       created_at,
        now() as updated_at,
        'contracts' as model_name,
        'identifier' as label_type
 FROM {{ source('polygon','contracts') }} 
+UNION
+SELECT 'base' as blockchain,
+       address, 
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
+       'contracts' as category,
+       'rantum' as contributor,
+       'query' AS source,
+       created_at,
+       now() as updated_at,
+        'contracts' as model_name,
+       'identifier' as label_type
+FROM {{ source('base','contracts') }} 
+UNION
+SELECT 'linea' as blockchain,
+       address, 
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
+       'contracts' as category,
+       'rantum' as contributor,
+       'query' AS source,
+       created_at,
+       now() as updated_at,
+        'contracts' as model_name,
+       'identifier' as label_type
+FROM {{ source('linea','contracts') }} 
+UNION
+SELECT 'mantle' as blockchain,
+       address, 
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
+       'contracts' as category,
+       'rantum' as contributor,
+       'query' AS source,
+       created_at,
+       now() as updated_at,
+        'contracts' as model_name,
+       'identifier' as label_type
+FROM {{ source('mantle','contracts') }} 
+UNION
+SELECT 'blast' as blockchain,
+       address, 
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
+       'contracts' as category,
+       'rantum' as contributor,
+       'query' AS source,
+       created_at,
+       now() as updated_at,
+        'contracts' as model_name,
+       'identifier' as label_type
+FROM {{ source('blast','contracts') }} 
+UNION
+SELECT 'scroll' as blockchain,
+       address, 
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
+       'contracts' as category,
+       'rantum' as contributor,
+       'query' AS source,
+       created_at,
+       now() as updated_at,
+        'contracts' as model_name,
+       'identifier' as label_type
+FROM {{ source('scroll','contracts') }} 
+UNION
+SELECT 'zksync' as blockchain,
+       address, 
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
+       'contracts' as category,
+       'rantum' as contributor,
+       'query' AS source,
+       created_at,
+       now() as updated_at,
+        'contracts' as model_name,
+       'identifier' as label_type
+FROM {{ source('zksync','contracts') }} 
