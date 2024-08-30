@@ -7,8 +7,8 @@
 
 {% set base_models = [
     
-      ref('uniswap_v2_forks_base_trades')
-    , ref('uniswap_v3_forks_base_trades')
+      ref('uniswap_v2_forks_base_trades_ethereum')
+    , ref('uniswap_v3_forks_base_trades_ethereum')
 ] %}
 
 WITH base_union AS (
