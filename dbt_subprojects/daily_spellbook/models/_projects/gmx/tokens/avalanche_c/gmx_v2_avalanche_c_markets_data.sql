@@ -19,8 +19,8 @@ SELECT
     ERC20_ST.decimals AS short_token_decimals 
 FROM {{ ref('gmx_v2_avalanche_c_market_created') }} AS MCE
 LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_IT
-    ON TRY_CAST(ERC20_IT.contract_address AS VARCHAR) = MCE.index_token
+    ON ERC20_IT.contract_address = MCE.index_token
 LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_LT
-    ON TRY_CAST(ERC20_LT.contract_address AS VARCHAR) = MCE.long_token 
+    ON ERC20_LT.contract_address = MCE.long_token 
 LEFT JOIN {{ ref('gmx_v2_avalanche_c_erc20') }} AS ERC20_ST
-    ON TRY_CAST(ERC20_ST.contract_address AS VARCHAR) = MCE.short_token
+    ON ERC20_ST.contract_address = MCE.short_token
