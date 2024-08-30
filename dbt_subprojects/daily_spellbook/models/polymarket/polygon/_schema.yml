@@ -218,6 +218,29 @@ models:
       - *evt_index
       - *tx_hash
 
+  - name: polymarket_polygon_safe_proxies
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Polymarket: safe proxies"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - proxy
+    columns:
+      - *block_time
+      - *block_number
+      - &owner
+        name: owner
+      - &proxy
+        name: proxy
+      - *evt_index
+      - *tx_hash
+
   - name: polymarket_polygon_capital_actions
     meta:
       blockchain: polygon

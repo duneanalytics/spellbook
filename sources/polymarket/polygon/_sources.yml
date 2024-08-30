@@ -5,6 +5,10 @@ sources:
     tables:
       - name: UmaConditionalTokensBinaryAdapter_evt_QuestionInitialized
       - name: UmaConditionalTokensBinaryAdapter_evt_QuestionSettled
+
+  - name: polymarketfactory_polygon
+    tables:
+      - name: FixedProductMarketMakerFactory_evt_FixedProductMarketMakerCreation
   
   - name: polymarket_polygon
     tables:
@@ -21,7 +25,4 @@ sources:
       - name: FixedProductMarketMaker_evt_FPMMBuy
       - name: CTFExchange_evt_OrderFilled
       - name: NegRiskCtfExchange_evt_OrderFilled
-
-  - name: polymarketfactory_polygon
-    tables:
-      - name: FixedProductMarketMakerFactory_evt_FixedProductMarketMakerCreation
+      - name: SafeProxyFactory_evt_ProxyCreation
