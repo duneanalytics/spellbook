@@ -1,0 +1,161 @@
+version: 2
+
+models:
+  - name: gmx_v2_order_created
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'event', 'order_created']
+    description: |
+      Extracts and decodes the `OrderCreated` event log data from the Arbitrum and Avalanche blockchains. 
+      This model processes log entries related to created orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for cancellation.
+
+    columns:
+      - &blockchain  
+        name: blockchain
+        description: The blockchain network where the event occurred
+        tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: The timestamp of the block when the event was recorded
+        tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: The block number where the event is included
+        tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: The hash of the transaction where the event was logged
+        tests:
+          - not_null
+      - &index
+        name: index
+        description: The position of the event within the transaction
+        tests:
+          - not_null 
+      - &contract_address
+        name: contract_address
+        description: The contract address associated with the event
+        tests:
+          - not_null          
+      - name: event_name
+        description: The type of event recorded, always 'OrderCreated' for this model.
+        tests:
+          - not_null
+      - &msg_sender
+        name: msg_sender
+        description: The address of the sender of the message or transaction.
+        tests:
+          - not_null
+      - &topic1
+        name: topic1
+        description: The value corresponding to the second indexed event parameter.
+        tests:
+          - not_null
+      - &topic2
+        name: topic2
+        description: The value corresponding to the third indexed event parameter.
+      - name: account
+        description: The address associated with the order.
+      - name: receiver
+        description: The address designated as the receiver in the order.
+        tests:
+          - not_null
+      - name: callback_contract
+        description: The contract address for callback functions.
+        tests:
+          - not_null        
+      - name: ui_fee_receiver
+        description: The address designated to receive UI fees.
+        tests:
+          - not_null        
+      - name: market
+        description: The market in which the order was created.
+        tests:
+          - not_null        
+      - name: initial_collateral_token
+        description: The token used as initial collateral in the order.
+        tests:
+          - not_null        
+      - name: swap_path
+        description: JSON array of markets through which the swap was routed.
+        tests:
+          - not_null  
+      - &order_type    
+        name: order_type
+        description: |
+          The type of order executed. The following table describes each order type:
+          - MarketSwap: Swap token A to token B at the current market price. The order will be cancelled if the minOutputAmount cannot be fulfilled.
+          - LimitSwap: Swap token A to token B if the minOutputAmount can be fulfilled.
+          - MarketIncrease: Increase position at the current market price. The order will be cancelled if the position cannot be increased at the acceptablePrice.
+          - LimitIncrease: Increase position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
+          - MarketDecrease: Decrease position at the current market price. The order will be cancelled if the position cannot be decreased at the acceptablePrice.
+          - LimitDecrease: Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
+          - StopLossDecrease: Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
+          - Liquidation: Allows liquidation of positions if the criteria for liquidation are met.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation']
+      - name: decrease_position_swap_type
+        description: |
+          The type of swap for decreasing position, with possible values:
+          - 'NoSwap'
+          - 'SwapPnlTokenToCollateralToken'
+          - 'SwapCollateralTokenToPnlToken'
+      - &size_delta_usd
+        name: size_delta_usd
+        description: The change in position size in USD
+        tests:
+          - not_null
+      - name: initial_collateral_delta_amount
+        description: The change in initial collateral amount.
+        tests:
+          - not_null
+      - name: trigger_price
+        description: The price that triggers the order execution.
+        tests:
+          - not_null        
+      - name: acceptable_price
+        description: The minimum acceptable price for order execution.
+        tests:
+          - not_null        
+      - name: execution_fee
+        description: The fee paid for executing the order in native tokens
+        tests:
+          - not_null        
+      - name: callback_gas_limit
+        description: The gas limit set for callback functions.
+        tests:
+          - not_null        
+      - name: min_output_amount
+        description: The minimum amount of output tokens expected from the order, based on the markets in the swap path.
+        tests:
+          - not_null        
+      - name: updated_at_block
+        description: The block number at which the order was last updated.
+        tests:
+          - not_null        
+      - name: updated_at_time
+        description: The timestamp when the order was last updated.
+      - &is_long
+        name: is_long
+        description: A boolean indicating whether the position is long
+        tests:
+          - not_null
+      - name: should_unwrap_native_token
+        description: Boolean indicating if the native token should be unwrapped.
+      - name: is_frozen
+        description: Boolean indicating if the order is frozen.
+      - name: key
+        description: The unique identifier for the order, stored as a bytes32 value.
+        tests:
+          - not_null
+          - unique
