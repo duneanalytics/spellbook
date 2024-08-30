@@ -17,4 +17,4 @@
 
 {% set project_start_date = '2024-02-24' %}
 
-{{ safe_transactions('base', project_start_date) }}
+{{ safe_transactions('blast', project_start_date) }}
