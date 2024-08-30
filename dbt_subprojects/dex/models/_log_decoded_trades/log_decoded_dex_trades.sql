@@ -35,7 +35,7 @@
 
 with dexs AS (
     {{
-        enrich_dex_trades(
+        log_decoded_enrich_dex_trades(
             base_trades = ref('log_decoded_dex_base_trades')
             , filter = "project != 'curve'"
             , tokens_erc20_model = source('tokens', 'erc20')
