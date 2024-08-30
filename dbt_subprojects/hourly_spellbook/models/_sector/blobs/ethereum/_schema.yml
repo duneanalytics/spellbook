@@ -85,9 +85,7 @@ models:
         description: "hash of the L1 transaction"
       - *beacon_slot_number
       - *beacon_epoch
-      - name: tx_from
-        description: "address of the sender"
-      - name: tx_to
+      - name: blob_receiver
         description: "address of the receiver"
       - name: blob_versioned_hashes
         description: "array of blob hashes in the transaction"
