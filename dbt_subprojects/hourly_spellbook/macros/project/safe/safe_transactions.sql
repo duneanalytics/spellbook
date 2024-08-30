@@ -1,5 +1,8 @@
 {% macro safe_transactions(blockchain, project_start_date) %}
 
+-- override param
+{% set project_start_date = '2024-07-31' %}
+
 select
     '{{ blockchain }}' as blockchain,
     try_cast(date_trunc('day', tr.block_time) as date) as block_date,
