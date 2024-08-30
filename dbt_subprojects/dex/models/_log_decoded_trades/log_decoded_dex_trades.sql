@@ -43,3 +43,5 @@ with dexs AS (
     }}
 )
 
+Select * from dexs
+
