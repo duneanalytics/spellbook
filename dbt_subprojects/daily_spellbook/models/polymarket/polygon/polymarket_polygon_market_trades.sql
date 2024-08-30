@@ -48,7 +48,7 @@ select
   t.contract_address,
   t.evt_index,
   t.evt_tx_hash as tx_hash
-from {{ source('polymarket_polygon', 'fedinterestrate_evt_FPMMSell') }} t
+from {{ source('polymarket_polygon', 'FixedProductMarketMaker_evt_FPMMSell') }} t
   inner join fpmm_markets m on t.contract_address = m.fpmm_contract_address
 {% if is_incremental() %}
 where {{ incremental_predicate('t.evt_block_time') }}
@@ -73,7 +73,7 @@ select
   t.contract_address,
   t.evt_index,
   t.evt_tx_hash as tx_hash
-from {{ source('polymarket_polygon', 'fedinterestrate_evt_FPMMBuy') }} t
+from {{ source('polymarket_polygon', 'FixedProductMarketMaker_evt_FPMMBuy') }} t
   inner join fpmm_markets m on t.contract_address = m.fpmm_contract_address
 {% if is_incremental() %}
 where {{ incremental_predicate('t.evt_block_time') }}
