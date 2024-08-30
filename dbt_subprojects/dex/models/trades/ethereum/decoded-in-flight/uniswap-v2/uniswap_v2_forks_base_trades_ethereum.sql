@@ -2,7 +2,7 @@
 
         schema = 'dex_mass_decoding_ethereum',
         alias = 'uniswap_v2_base_trades',
-        partition_by = ['block_month', 'factory_address'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
