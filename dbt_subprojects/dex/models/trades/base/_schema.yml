@@ -229,7 +229,27 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('baseswap_base_base_trades_seed')
+          filter:
+            version: 2
 
+  - name: baseswap_v3_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: baseswap
+      contributors: chef_seaweed
+    config:
+      tags: [ 'base', 'dex', 'trades', 'baseswap' ]
+    description: "baseswap base trades on base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('baseswap_base_base_trades_seed')
+          filter:
+            version: 3
 
   - name: dackieswap_base_base_trades
     meta:

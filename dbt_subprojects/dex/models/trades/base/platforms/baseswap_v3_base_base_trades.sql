@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'baseswap_base',
+        schema = 'baseswap_v3_base',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -11,11 +11,11 @@
 }}
 
 {{
-    uniswap_compatible_v2_trades(
+    uniswap_compatible_v3_trades(
         blockchain = 'base',
         project = 'baseswap',
-        version = '2',
-        Pair_evt_Swap = source('baseswap_base', 'PancakePair_evt_Swap'),
-        Factory_evt_PairCreated = source('baseswap_base', 'PancakeFactory_evt_PairCreated')
+        version = '3',
+        Pair_evt_Swap = source('baseswap_v3_base', 'UniswapV3Pool_evt_Swap'),
+        Factory_evt_PoolCreated = source('baseswap_v3_base', 'UniswapV3Factory_evt_PoolCreated')
     )
 }}
