@@ -94,7 +94,7 @@ Please note: the test tables built in the CI pipeline will exist for ~24 hours. 
 
 ### Connecting with other wizards
 
-We use Discord to connect with our community. Head over to spellbook channel on [Dune's Discord](https://discord.gg/dunecom) for questions or to ask for help with a particular PR. We encourage you to learn by doing, and leverage our vibrant community to help you get going.
+We use Discord to connect with our community. Head over to spellbook channel on [Dune's Discord](https://discord.com/invite/ErrzwBz) for questions or to ask for help with a particular PR. We encourage you to learn by doing, and leverage our vibrant community to help you get going.
 
 ## Setting up your Local Dev Environment
 
@@ -199,7 +199,6 @@ models:
       error_after: { count: 24, period: hour }
     tables:
       - name: traces
-        loaded_at_field: block_time
 ```
 
 See links to more docs on dbt below.
