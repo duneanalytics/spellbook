@@ -36,6 +36,9 @@ join {{ source(blockchain, 'transactions') }} et
     on tr.block_date = et.block_date
     and tr.tx_hash = et.hash
     and tr.block_number = et.block_number
+    {% if is_incremental() %}
+    and {{ incremental_predicate('et.block_time') }}
+    {% endif %}
 where bytearray_substring(tr.input, 1, 4) in (
         0x6a761202, -- execTransaction
         0x468721a7, -- execTransactionFromModule
@@ -46,7 +49,6 @@ where bytearray_substring(tr.input, 1, 4) in (
     and tr.block_time > TIMESTAMP '{{ project_start_date }}' -- for initial query optimisation
     {% else %}
     and {{ incremental_predicate('tr.block_time') }}
-    and {{ incremental_predicate('et.block_time') }}
     {% endif %}
 
 {% endmacro %}
