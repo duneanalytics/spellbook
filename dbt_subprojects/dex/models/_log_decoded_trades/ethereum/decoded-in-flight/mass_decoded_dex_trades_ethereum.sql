@@ -19,6 +19,8 @@ WITH base_union AS (
             blockchain
             , project
             , version
+            , dex_type
+            , factory_address
             , block_month
             , block_date
             , block_time
