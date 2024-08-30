@@ -2,7 +2,7 @@
         schema = 'xchange',
         alias = 'trades',
         materialized = 'view',
-        post_hook='{{ expose_spells(blockchains = \'["ethereum","arbitrum", "polygon", "bnb"]\',
+        post_hook='{{ expose_spells(blockchains = \'["ethereum", "arbitrum", "polygon", "bnb", "base"]\',
                                       spell_type = "project", 
                                       spell_name = "xchange", 
                                       contributors = \'["mike-x7f"]\') }}'

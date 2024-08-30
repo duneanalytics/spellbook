@@ -27,6 +27,12 @@
     ,source('base', 'signatures')
     ,source('zksync', 'signatures')
     ,source('scroll', 'signatures')
+    ,source('nova', 'signatures')
+    ,source('blast', 'signatures')
+    ,source('linea', 'signatures')
+    ,source('mantle', 'signatures')
+    ,source('zkevm', 'signatures')
+    ,source('sei', 'signatures')
 ] %}
 
 WITH

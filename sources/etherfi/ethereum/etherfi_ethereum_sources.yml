@@ -2,10 +2,7 @@ version: 2
 
 sources: 
   - name: ethfi_ethereum
-    freshness:
-          warn_after: { count: 12, period: hour }
     description: >
       Ether.Fi is a liquid restaking protocol on Ethereum.
     tables:
       - name: MerkleDistributorWithDeadline_evt_Claimed
-        loaded_at_field: evt_block_time
