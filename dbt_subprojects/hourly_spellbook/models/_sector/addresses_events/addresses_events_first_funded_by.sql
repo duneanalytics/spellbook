@@ -25,8 +25,6 @@ ref('addresses_events_arbitrum_first_funded_by')
 , ref('addresses_events_scroll_first_funded_by')
 , ref('addresses_events_zkevm_first_funded_by')
 , ref('addresses_events_linea_first_funded_by')
-, ref('addresses_events_mantle_first_funded_by')
-, ref('addresses_events_blast_first_funded_by')
 ] %}
 
 SELECT *
