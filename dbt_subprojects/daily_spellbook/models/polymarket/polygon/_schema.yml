@@ -201,6 +201,8 @@ models:
         name: asset_id
       - &amount
         name: amount
+      - &shares
+        name: shares
       - &price
         name: price
       - &fee

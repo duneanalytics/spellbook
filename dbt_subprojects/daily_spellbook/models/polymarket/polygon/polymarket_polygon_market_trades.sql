@@ -39,6 +39,7 @@ select
   m.asset_id,
   --t.outcomeIndex,
   t.returnAmount / 1e6 as amount,
+  t.outcomeTokensSold / 1e6 as shares,
   (t.outcomeTokensSold / 1e6) / (t.returnAmount / 1e6) as price,
   t.feeAmount / 1e6 as fee,
   t.seller as maker,
@@ -64,6 +65,7 @@ select
   m.asset_id,
   --t.outcomeIndex,
   t.investmentAmount / 1e6 as amount,
+  t.outcomeTokensBought / 1e6 as shares,
   (t.outcomeTokensBought / 1e6) / (t.investmentAmount / 1e6) as price,
   t.feeAmount / 1e6 as fee,
   t.contract_address as maker,
@@ -88,7 +90,12 @@ select
   ctf.condition_id,
   coalesce(nullif(t.makerAssetId, 0), nullif(t.takerAssetID, 0)) as asset_id,
   if(t.makerAssetId = 0, t.makerAmountFilled, t.takerAmountFilled) / 1e6 as amount,
-  (t.takerAmountFilled / 1e6) / (t.makerAmountFilled / 1e6) as price,
+  if(t.makerAssetId = 0, t.takerAmountFilled, t.makerAmountFilled) / 1e6 as shares,
+  if(
+    t.makerAssetId = 0,
+    (t.makerAmountFilled / 1e6) / (t.takerAmountFilled / 1e6),
+    (t.takerAmountFilled / 1e6) / (t.makerAmountFilled / 1e6)
+  ) as price,
   t.fee / 1e6 as fee,
   t.maker,
   t.taker,
@@ -112,7 +119,12 @@ select
   ctf.condition_id,
   coalesce(nullif(t.makerAssetId, 0), nullif(t.takerAssetID, 0)) as asset_id,
   if(t.makerAssetId = 0, t.makerAmountFilled, t.takerAmountFilled) / 1e6 as amount,
-  (t.takerAmountFilled / 1e6) / (t.makerAmountFilled / 1e6) as price,
+  if(t.makerAssetId = 0, t.takerAmountFilled, t.makerAmountFilled) / 1e6 as shares,
+  if(
+    t.makerAssetId = 0,
+    (t.makerAmountFilled / 1e6) / (t.takerAmountFilled / 1e6),
+    (t.takerAmountFilled / 1e6) / (t.makerAmountFilled / 1e6)
+  ) as price,
   t.fee / 1e6 as fee,
   t.maker,
   t.taker,
