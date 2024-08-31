@@ -111,8 +111,6 @@ models:
           - not_null
       - name: index_token_symbol
         description: The symbol representing the index token in the market.
-        tests:
-          - not_null
       - name: index_token_decimals
         description: The number of decimal places for the index token used in the market.
       - name: long_token_symbol
