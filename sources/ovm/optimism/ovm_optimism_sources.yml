@@ -5,11 +5,7 @@ sources:
     description: "Decoded contracts for Optimism precompiles and system contracts"
     tables:
     - name: L2StandardTokenFactory_call_createStandardL2Token
-      loaded_at_field: call_block_time
       description: "L2 Standard Token Factory - Creation Calls."
-      freshness:
-        warn_after: { count: 12, period: hour }
-        error_after: { count: 24, period: hour }
       columns:
         - &contract_address
           name: contract_address
@@ -37,11 +33,7 @@ sources:
           description: "Name of the token"
 
     - name: L2StandardTokenFactory_evt_StandardL2TokenCreated
-      loaded_at_field: evt_block_time
       description: "L2 Standard Token Factory - Creation Events."
-      freshness:
-        warn_after: { count: 12, period: hour }
-        error_after: { count: 24, period: hour }
       columns:
       - *contract_address
       - &evt_block_number
@@ -62,11 +54,7 @@ sources:
       - *_l1Token
 
     - name: OVM_L2StandardTokenFactory_call_createStandardL2Token
-      loaded_at_field: call_block_time
       description: "L2 Standard Token Factory - Creation Calls."
-      freshness:
-        warn_after: { count: 12, period: hour }
-        error_after: { count: 24, period: hour }
       columns:
       - *contract_address       
       - *call_block_number
@@ -78,11 +66,7 @@ sources:
       - *_name
       
     - name: OVM_L2StandardTokenFactory_evt_StandardL2TokenCreated
-      loaded_at_field: evt_block_time
       description: "L2 Standard Token Factory - Creation Events."
-      freshness:
-        warn_after: { count: 12, period: hour }
-        error_after: { count: 24, period: hour }
       columns:
       - *contract_address
       - *evt_block_number
@@ -93,11 +77,7 @@ sources:
       - *_l1Token
 
     - name: L2CrossDomainMessenger_evt_SentMessage
-      loaded_at_field: evt_block_time
       description: "Event logs for messages sent from Optimism to L1"
-      freshness:
-        warn_after: { count: 12, period: hour }
-        error_after: { count: 24, period: hour }
       columns:
       - *evt_block_time
       - *evt_block_number
@@ -112,11 +92,7 @@ sources:
       - *evt_index
 
     - name: L2CrossDomainMessenger_evt_RelayedMessage
-      loaded_at_field: evt_block_time
       description: "Event logs for messages relayed to Optimism from L1"
-      freshness:
-        warn_after: { count: 12, period: hour }
-        error_after: { count: 24, period: hour }
       columns:
       - *evt_block_time
       - *evt_block_number

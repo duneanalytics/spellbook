@@ -1,0 +1,797 @@
+version: 2
+
+models:
+  - name: gmx_v2_avalanche_c_order_created
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['avalanche_c', 'gmx', 'event', 'order_created']
+    description: |
+      Extracts and decodes the `OrderCreated` event log data from the Avalanche blockchain. 
+      This model processes log entries related to created orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for cancellation.
+
+    columns:
+      - &blockchain  
+        name: blockchain
+        description: The blockchain network where the event occurred (Avalanche)
+        tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: The timestamp of the block when the event was recorded
+        tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: The block number where the event is included
+        tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: The hash of the transaction where the event was logged
+        tests:
+          - not_null
+      - &index
+        name: index
+        description: The position of the event within the transaction
+        tests:
+          - not_null 
+      - &contract_address
+        name: contract_address
+        description: The contract address associated with the event
+        tests:
+          - not_null          
+      - name: event_name
+        description: The type of event recorded, always 'OrderCreated' for this model.
+        tests:
+          - not_null
+      - &msg_sender
+        name: msg_sender
+        description: The address of the sender of the message or transaction.
+        tests:
+          - not_null
+      - &topic1
+        name: topic1
+        description: The value corresponding to the second indexed event parameter.
+        tests:
+          - not_null
+      - &topic2
+        name: topic2
+        description: The value corresponding to the third indexed event parameter.
+      - name: account
+        description: The address associated with the order.
+      - name: receiver
+        description: The address designated as the receiver in the order.
+        tests:
+          - not_null
+      - name: callback_contract
+        description: The contract address for callback functions.
+        tests:
+          - not_null        
+      - name: ui_fee_receiver
+        description: The address designated to receive UI fees.
+        tests:
+          - not_null        
+      - name: market
+        description: The market in which the order was created.
+        tests:
+          - not_null        
+      - name: initial_collateral_token
+        description: The token used as initial collateral in the order.
+        tests:
+          - not_null        
+      - name: swap_path
+        description: JSON array of markets through which the swap was routed.
+        tests:
+          - not_null  
+      - &order_type    
+        name: order_type
+        description: |
+          The type of order executed. The following table describes each order type:
+          - MarketSwap: Swap token A to token B at the current market price. The order will be cancelled if the minOutputAmount cannot be fulfilled.
+          - LimitSwap: Swap token A to token B if the minOutputAmount can be fulfilled.
+          - MarketIncrease: Increase position at the current market price. The order will be cancelled if the position cannot be increased at the acceptablePrice.
+          - LimitIncrease: Increase position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
+          - MarketDecrease: Decrease position at the current market price. The order will be cancelled if the position cannot be decreased at the acceptablePrice.
+          - LimitDecrease: Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
+          - StopLossDecrease: Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
+          - Liquidation: Allows liquidation of positions if the criteria for liquidation are met.
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['MarketSwap','LimitSwap','MarketIncrease','LimitIncrease','MarketDecrease','LimitDecrease','StopLossDecrease','Liquidation']
+      - name: decrease_position_swap_type
+        description: |
+          The type of swap for decreasing position, with possible values:
+          - 'NoSwap'
+          - 'SwapPnlTokenToCollateralToken'
+          - 'SwapCollateralTokenToPnlToken'
+      - &size_delta_usd
+        name: size_delta_usd
+        description: The change in position size in USD
+        tests:
+          - not_null
+      - name: initial_collateral_delta_amount
+        description: The change in initial collateral amount.
+        tests:
+          - not_null
+      - name: trigger_price
+        description: The price that triggers the order execution.
+        tests:
+          - not_null        
+      - name: acceptable_price
+        description: The minimum acceptable price for order execution.
+        tests:
+          - not_null        
+      - name: execution_fee
+        description: The fee paid for executing the order in native tokens
+        tests:
+          - not_null        
+      - name: callback_gas_limit
+        description: The gas limit set for callback functions.
+        tests:
+          - not_null        
+      - name: min_output_amount
+        description: The minimum amount of output tokens expected from the order, based on the markets in the swap path.
+        tests:
+          - not_null        
+      - name: updated_at_block
+        description: The block number at which the order was last updated.
+        tests:
+          - not_null        
+      - name: updated_at_time
+        description: The timestamp when the order was last updated.
+      - &is_long
+        name: is_long
+        description: A boolean indicating whether the position is long
+        tests:
+          - not_null
+      - name: should_unwrap_native_token
+        description: Boolean indicating if the native token should be unwrapped.
+      - name: is_frozen
+        description: Boolean indicating if the order is frozen.
+      - name: key
+        description: The unique identifier for the order, stored as a bytes32 value.
+        tests:
+          - not_null
+          - unique
+
+
+  - name: gmx_v2_avalanche_c_order_executed
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['avalanche_c', 'gmx', 'event', 'order_executed']
+    description: |      
+      Extracts and decodes the `OrderExecuted` event log data from the Avalanche blockchain. 
+      This model processes log entries related to executed orders, extracting key variables such as 
+      account addresses, event keys, and integer values.
+    
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: event_name
+        description: The type of event recorded, always 'OrderExecuted' for this model
+        tests:
+          - not_null 
+      - *msg_sender
+      - *topic1
+      - *topic2
+      - name: key
+        description: The key associated with the executed order. Extracted as a bytes32 value.
+        tests:
+          - not_null
+          - unique 
+      - name: account
+        description: The address associated with the order
+      - name: secondary_order_type
+        description: |
+          The type of secondary order associated with the executed order. 
+          This column indicates the nature of any additional order handling or adjustments made. 
+          
+          The `secondary_order_type` is represented as an unsigned integer with the following possible values:
+          - `0`: **None** - No secondary order type is applied.
+          - `1`: **Adl (Auto-Deleveraging)** - Indicates that the order is associated with the Auto-Deleveraging mechanism. ADL is used to manage risk by automatically reducing or closing positions that are at risk of liquidation due to insufficient margin or other factors. This mechanism helps in maintaining the stability of the trading platform.
+        tests:
+          - not_null
+
+
+  - name: gmx_v2_avalanche_c_order_cancelled
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['avalanche_c', 'gmx', 'event', 'order_cancelled']
+    description: |
+      Extracts and decodes the `OrderCancelled` event log data from the Avalanche blockchain. 
+      This model processes log entries related to cancelled orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for cancellation.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: event_name
+        description: The type of event recorded, always 'OrderCancelled' for this model
+        tests:
+          - not_null 
+      - *msg_sender
+      - *topic1
+      - *topic2          
+      - name: key
+        description: The key associated with the cancelled order. Extracted as a bytes32 value
+        tests:
+          - not_null
+          - unique
+      - name: account
+        description: The address associated with the order 
+      - name: reason_bytes
+        description: The reason for the cancellation in byte format.
+        tests:
+          - not_null
+      - name: reason
+        description: The reason for the cancellation in string format.
+        tests:
+          - not_null
+
+
+  - name: gmx_v2_avalanche_c_market_created
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['avalanche_c', 'gmx', 'event', 'market_created']
+    description: |
+      This model extracts and parses `MarketCreated` events from the Avalanche blockchain.
+      It includes transaction details, addresses, and other relevant metrics related to 
+      the creation of markets within the GMX protocol.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: event_name
+        description: The type of event recorded, always 'MarketCreated' for this model
+        tests:
+          - not_null 
+      - *msg_sender
+      - *topic1
+      - *topic2
+      - &market_token
+        name: market_token
+        description: The token used to represent the market
+        tests:
+          - not_null
+          - unique
+      - &index_token
+        name: index_token
+        description: The token used as the index in the market
+        tests:
+          - not_null
+      - &long_token
+        name: long_token
+        description: The token used for long positions in the market
+        tests:
+          - not_null
+      - &short_token
+        name: short_token
+        description: The token used for short positions in the market
+        tests:
+          - not_null
+      - &salt
+        name: salt
+        description: A unique value used to prevent hash collisions
+        tests:
+          - not_null
+      - &spot_only
+        name: spot_only
+        description: Indicates if the market is spot-only (true when index_token is the zero address)
+        tests:
+          - not_null          
+      - &market_token_symbol
+        name: market_token_symbol
+        description: The symbol of the market token (hardcoded as 'GM' in this model)  
+        tests:
+          - not_null    
+      - &market_token_decimals
+        name: market_token_decimals
+        description: The decimal precision of the market token (hardcoded as 18 in this model)          
+        tests:
+          - not_null         
+
+
+  - name: gmx_v2_avalanche_c_position_increase
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['avalanche_c','gmx','event','position_increase']
+    description: |
+      This model extracts and parses `PositionIncrease` events from the Avalanche blockchain.
+      It includes transaction details, addresses, and various metrics related to the event, 
+      such as market data, collateral amounts, price impacts, and more.
+    
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address    
+      - name: event_name
+        description: The type of event recorded, always 'PositionIncrease' for this model
+        tests:
+          - not_null 
+      - *msg_sender
+      - *topic1
+      - *topic2
+      - name: market
+        description: The market associated with the position increase
+        tests:
+          - not_null
+      - name: collateral_token
+        description: The collateral token used in the position increase
+        tests:
+          - not_null
+      - &size_in_usd
+        name: size_in_usd
+        description: The size of the position in USD
+        tests:
+          - not_null
+      - &size_in_tokens
+        name: size_in_tokens
+        description: The size of the position in index tokens
+        tests:
+          - not_null
+      - name: collateral_amount
+        description: The amount of collateral in the position after it was increased
+        tests:
+          - not_null
+      - &borrowing_factor
+        name: borrowing_factor
+        description: The cumulative borrowing factor applied to the position over time
+        tests:
+          - not_null
+      - &funding_fee_amount_per_size
+        name: funding_fee_amount_per_size
+        description: The cumulative funding fee amount per size
+        tests:
+          - not_null
+      - &long_token_claimable_funding_amount_per_size
+        name: long_token_claimable_funding_amount_per_size
+        description: The cumulative claimable funding amount per size for long tokens
+        tests:
+          - not_null
+      - &short_token_claimable_funding_amount_per_size
+        name: short_token_claimable_funding_amount_per_size
+        description: The cumulative claimable funding amount per size for short tokens
+        tests:
+          - not_null
+      - &execution_price
+        name: execution_price
+        description: The execution price of the position after price impact
+        tests:
+          - not_null
+      - &index_token_price_max
+        name: index_token_price_max
+        description: The maximum price of the index token during the event
+        tests:
+          - not_null
+      - &index_token_price_min
+        name: index_token_price_min
+        description: The minimum price of the index token during the event
+        tests:
+          - not_null
+      - &collateral_token_price_max
+        name: collateral_token_price_max
+        description: The maximum price of the collateral token during the event
+        tests:
+          - not_null
+      - &collateral_token_price_min
+        name: collateral_token_price_min
+        description: The minimum price of the collateral token during the event
+        tests:
+          - not_null
+      - *size_delta_usd
+      - &size_delta_in_tokens
+        name: size_delta_in_tokens
+        description: The change in position size in tokens
+        tests:
+          - not_null
+      - *order_type
+      - name: increased_at_time
+        description: The block timestamp when the position was increased
+      - &collateral_delta_amount
+        name: collateral_delta_amount
+        description: The change in collateral amount
+        tests:
+          - not_null
+      - &price_impact_usd
+        name: price_impact_usd
+        description: The impact on price in USD
+        tests:
+          - not_null
+      - &price_impact_amount
+        name: price_impact_amount
+        description: The impact on price in index token amount
+        tests:
+          - not_null
+      - *is_long
+      - &order_key
+        name: order_key
+        description: A unique key identifying the order
+        tests:
+          - not_null
+          - unique
+      - &position_key
+        name: position_key
+        description: A unique key identifying the position
+
+
+  - name: gmx_v2_avalanche_c_position_decrease
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['avalanche_c','gmx','event','position_decrease']
+    description: |
+      This model extracts and parses `PositionDecrease` events from the Avalanche blockchain.
+      It includes transaction details, addresses, and various metrics related to the event, 
+      such as market data, collateral amounts, price impacts, and more.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: event_name
+        description: The type of event recorded, always 'PositionDecrease' for this model
+        tests:
+          - not_null  
+      - *msg_sender
+      - *topic1
+      - *topic2
+      - name: market
+        description: The market associated with the position decrease
+        tests:
+          - not_null
+      - name: collateral_token
+        description: The collateral token used in the position decrease
+        tests:
+          - not_null
+      - *size_in_usd
+      - *size_in_tokens
+      - name: collateral_amount
+        description: The amount of collateral in the position after it was decreased
+        tests:
+          - not_null
+      - *borrowing_factor
+      - *funding_fee_amount_per_size
+      - *long_token_claimable_funding_amount_per_size
+      - *short_token_claimable_funding_amount_per_size
+      - *execution_price
+      - *index_token_price_max
+      - *index_token_price_min
+      - *collateral_token_price_max
+      - *collateral_token_price_min
+      - *size_delta_usd
+      - *size_delta_in_tokens
+      - *collateral_delta_amount
+      - &impact_diff_usd
+        name: impact_diff_usd
+        description: The difference in price impact in USD compared to a baseline or previous value, considering the maximum price impact limit
+        tests:
+          - not_null       
+      - *order_type 
+      - &decreased_at_time
+        name: decreased_at_time
+        description: The block timestamp when the position was decreased             
+      - *price_impact_usd
+      - &base_pnl_usd
+        name: base_pnl_usd
+        description: The base profit and loss in USD for the position
+        tests:
+          - not_null
+      - &uncapped_base_pnl_usd
+        name: uncapped_base_pnl_usd
+        description: The uncapped base profit and loss in USD, without any limits or caps applied
+        tests:
+          - not_null      
+      - *is_long
+      - *order_key
+      - *position_key
+
+
+  - name: gmx_v2_avalanche_c_position_fees_collected
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['avalanche_c', 'gmx', 'event', 'position_fees_collected']
+    description: |
+      This model extracts and parses `PositionFeesCollected` events from the Avalanche blockchain.
+      It includes details about the transaction, addresses involved, and various metrics related to 
+      fees collected from positions, including fee amounts and related market data.
+    
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: event_name
+        description: The type of event recorded, always 'PositionFeesCollected' for this model
+        tests:
+          - not_null 
+      - *msg_sender
+      - *topic1
+      - *topic2
+      - name: market
+        description: The market associated with the position fees collected event
+        tests:
+          - not_null
+      - name: collateral_token
+        description: The collateral token used in the position fees collected event
+        tests:
+          - not_null
+      - &affiliate
+        name: affiliate
+        description: The affiliate address
+        tests:
+          - not_null
+      - &trader
+        name: trader
+        description: The trader's address
+        tests:
+          - not_null
+      - &ui_fee_receiver
+        name: ui_fee_receiver
+        description: The address receiving the UI fee
+        tests:
+          - not_null
+      - *collateral_token_price_min
+      - *collateral_token_price_max      
+      - &trade_size_usd
+        name: trade_size_usd
+        description: The size of the trade in USD
+        tests:
+          - not_null        
+      - &total_rebate_factor
+        name: total_rebate_factor
+        description: The total rebate factor for the position
+        tests:
+          - not_null
+      - &trader_discount_factor
+        name: trader_discount_factor
+        description: The discount factor applied to the trader
+        tests:
+          - not_null
+      - &total_rebate_amount
+        name: total_rebate_amount
+        description: The total amount of rebate given
+        tests:
+          - not_null
+      - &trader_discount_amount
+        name: trader_discount_amount
+        description: The amount of discount given to the trader
+        tests:
+          - not_null
+      - &affiliate_reward_amount
+        name: affiliate_reward_amount
+        description: The reward amount given to the affiliate
+        tests:
+          - not_null
+      - &funding_fee_amount
+        name: funding_fee_amount
+        description: The amount of funding fee charged
+        tests:
+          - not_null
+      - &claimable_long_token_amount
+        name: claimable_long_token_amount
+        description: The amount of long tokens claimable
+        tests:
+          - not_null
+      - &claimable_short_token_amount
+        name: claimable_short_token_amount
+        description: The amount of short tokens claimable
+        tests:
+          - not_null
+      - &latest_funding_fee_amount_per_size
+        name: latest_funding_fee_amount_per_size
+        description: The latest funding fee amount per size
+        tests:
+          - not_null
+      - &latest_long_token_claimable_funding_amount_per_size
+        name: latest_long_token_claimable_funding_amount_per_size
+        description: The latest claimable long token funding amount per size
+        tests:
+          - not_null
+      - &latest_short_token_claimable_funding_amount_per_size
+        name: latest_short_token_claimable_funding_amount_per_size
+        description: The latest claimable short token funding amount per size
+        tests:
+          - not_null
+      - &borrowing_fee_usd
+        name: borrowing_fee_usd
+        description: The borrowing fee amount in USD
+        tests:
+          - not_null
+      - &borrowing_fee_amount
+        name: borrowing_fee_amount
+        description: The amount of borrowing fee charged
+        tests:
+          - not_null
+      - &borrowing_fee_receiver_factor
+        name: borrowing_fee_receiver_factor
+        description: The factor used to calculate the borrowing fee amount for the fee receiver
+        tests:
+          - not_null
+      - &borrowing_fee_amount_for_fee_receiver
+        name: borrowing_fee_amount_for_fee_receiver
+        description: The amount of borrowing fee allocated for the fee receiver
+        tests:
+          - not_null
+      - &position_fee_factor
+        name: position_fee_factor
+        description: The fee factor for the position
+        tests:
+          - not_null
+      - &protocol_fee_amount
+        name: protocol_fee_amount
+        description: The amount of protocol fee charged
+        tests:
+          - not_null
+      - &position_fee_receiver_factor
+        name: position_fee_receiver_factor
+        description: The factor used to calculate the position fee amount for the receiver
+        tests:
+          - not_null
+      - &fee_receiver_amount
+        name: fee_receiver_amount
+        description: The amount of fee received by the fee receiver
+        tests:
+          - not_null
+      - &fee_amount_for_pool
+        name: fee_amount_for_pool
+        description: The amount of fee allocated for the pool
+        tests:
+          - not_null
+      - &position_fee_amount_for_pool
+        name: position_fee_amount_for_pool
+        description: The amount of position fee allocated for the pool
+        tests:
+          - not_null
+      - &position_fee_amount
+        name: position_fee_amount
+        description: The total position fee amount
+        tests:
+          - not_null
+      - &total_cost_amount
+        name: total_cost_amount
+        description: The total cost amount for the position
+        tests:
+          - not_null
+      - &ui_fee_receiver_factor
+        name: ui_fee_receiver_factor
+        description: The factor used to calculate the UI fee amount for the receiver
+        tests:
+          - not_null
+      - &ui_fee_amount
+        name: ui_fee_amount
+        description: The total amount of UI fee collected
+        tests:
+          - not_null
+      - &is_increase
+        name: is_increase
+        description: Indicates whether the position is increased (true) or decreased (false)
+        tests:
+          - not_null
+      - *order_key
+      - *position_key
+      - &referral_code
+        name: referral_code
+        description: The referral code associated with the position
+        tests:
+          - not_null   
+
+
+  - name: gmx_v2_avalanche_c_position_fees_info
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['avalanche_c', 'gmx', 'event', 'position_fees_info']
+    description: |
+      This model extracts and parses `PositionFeesInfo` events from the Avalanche blockchain.
+      It includes details about the transaction, addresses involved, and various metrics related to 
+      position fees, including fee amounts and related market data.
+    
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address  
+      - name: event_name
+        description: The type of event recorded, always 'PositionFeesInfo' for this model
+        tests:
+          - not_null
+      - *msg_sender
+      - *topic1
+      - *topic2           
+      - name: market
+        description: The market associated with the position fees info event
+        tests:
+          - not_null
+      - name: collateral_token
+        description: The collateral token used in the position fees info event
+        tests:
+          - not_null
+      - *affiliate
+      - *trader
+      - *ui_fee_receiver
+      - *collateral_token_price_min
+      - *collateral_token_price_max
+      - *trade_size_usd
+      - *total_rebate_factor
+      - *trader_discount_factor
+      - *total_rebate_amount
+      - *trader_discount_amount
+      - *affiliate_reward_amount
+      - *funding_fee_amount
+      - *claimable_long_token_amount
+      - *claimable_short_token_amount
+      - *latest_funding_fee_amount_per_size
+      - *latest_long_token_claimable_funding_amount_per_size
+      - *latest_short_token_claimable_funding_amount_per_size
+      - *borrowing_fee_usd
+      - *borrowing_fee_amount
+      - *borrowing_fee_receiver_factor
+      - *borrowing_fee_amount_for_fee_receiver
+      - *position_fee_factor
+      - *protocol_fee_amount
+      - *position_fee_receiver_factor
+      - *fee_receiver_amount
+      - *fee_amount_for_pool
+      - *position_fee_amount_for_pool
+      - *position_fee_amount
+      - *total_cost_amount
+      - *ui_fee_receiver_factor
+      - *ui_fee_amount
+      - *is_increase
+      - *order_key
+      - *position_key
+      - *referral_code
