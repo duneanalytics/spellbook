@@ -19,7 +19,9 @@
     ref('eas_optimism_schema_details'),
     ref('eas_polygon_schema_details'),
     ref('eas_scroll_schema_details'),
-    ref('eas_celo_schema_details')
+    ref('eas_celo_schema_details'),
+    ref('eas_linea_schema_details'),
+    ref('eas_nova_schema_details')
   ]
 %}
 
