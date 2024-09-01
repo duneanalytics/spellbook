@@ -2,7 +2,7 @@
   config(
 
         schema = 'orca_whirlpool',
-        alias = 'base_trades',
+        alias = 'base_trades_v2',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
