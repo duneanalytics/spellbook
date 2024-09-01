@@ -50,7 +50,7 @@ with
                     , ftd.fee_time
                     , ftd.fee_rate
                     , row_number() over (partition by fi.account_whirlpool order by ftd.fee_time desc) as recent_update
-                FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePooV2') }} fi
+                FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePoolV2') }} fi
                 LEFT JOIN fee_tiers_defaults ftd ON ftd.fee_tier = account_feeTier AND ftd.fee_time <= fi.call_block_time
             )
             WHERE recent_update = 1
