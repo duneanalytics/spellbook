@@ -1,8 +1,4 @@
-{% macro
-    oneinch_lop_macro(
-        blockchain
-    )
-%}
+{% macro oneinch_lop_macro(blockchain) %}
 
 
 
@@ -31,9 +27,7 @@ orders as (
                 , {{ method_data.get("taking_amount", "null") }} as taking_amount
                 , {{ method_data.get("order_hash", "null") }} as order_hash
                 , {{ method_data.get("order_remains", "0x0000000000") }} as order_remains
-                , fusion_settlement_addresses as _settlements
-                , reduce(fusion_settlement_addresses, false, (r, x) -> r or coalesce(varbinary_position({{ method_data.get("args", "null")}}, x), 0) > 0, r -> r) as _with_settlement
-                , reduce(escrow_factory_addresses, false, (r, x) -> r or coalesce(varbinary_position({{ method_data.get("args", "null")}}, x), 0) > 0, r -> r) as _with_factory
+                , {{ method_data.get("args", "null") }} as args
                 , {% if 'partial_bit' in method_data %}
                     try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
                         bytearray_to_bigint(substr({{ method_data.maker_traits }}, {{ method_data.partial_bit }} / 8 + 1, 1)) -- current byte: partial_bit / 8 + 1 -- integer division
@@ -49,7 +43,6 @@ orders as (
             from (
                 select *, cast(json_parse({{ method_data.get("order", '"order"') }}) as map(varchar, varchar)) as order_map
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
-                join ({{ oneinch_blockchain_macro(blockchain) }}) on true
                 {% if is_incremental() %}
                     where {{ incremental_predicate('call_block_time') }}
                 {% endif %}
@@ -118,8 +111,8 @@ select
     , map_from_entries(array[
         ('partial', _partial)
         , ('multiple', _multiple)
-        , ('fusion', _with_settlement or array_position(_settlements, call_from) > 0)
-        , ('atomic', _with_factory)
+        , ('fusion', array_position(fusion_settlement_addresses, call_from) > 0 or reduce(fusion_settlement_addresses, false, (r, x) -> r or coalesce(varbinary_position(args, x), 0) > 0, r -> r))
+        , ('factoryInArgs', reduce(escrow_factory_addresses, false, (r, x) -> r or coalesce(varbinary_position(args, x), 0) > 0, r -> r))
         , ('first', row_number() over(partition by coalesce(order_hash, tx_hash) order by block_number, tx_index, call_trace_address) = 1)
     ]) as flags
     , concat(
@@ -132,17 +125,15 @@ select
             , array[bytearray_to_bigint(order_remains)]
         )
     ) as remains
+    , if(reduce(escrow_factory_addresses, false, (r, x) -> r or coalesce(varbinary_position(args, x), 0) > 0, r -> r), args) as escrow_args
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
-    , cast(1 as varbinary) as temp -- a temporary intentional error in order not to load the prod
-from (
-    {{
-        add_tx_columns(
-            model_cte = 'orders'
-            , blockchain = blockchain
-            , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
-        )
-    }}
-)
+from ({{
+    add_tx_columns(
+        model_cte = 'orders'
+        , blockchain = blockchain
+        , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
+    )
+}}), ({{ oneinch_blockchain_macro(blockchain) }})
 
 {% endmacro %}
