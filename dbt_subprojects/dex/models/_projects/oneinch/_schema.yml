@@ -55,6 +55,19 @@ models:
       - name: order_hash
       - name: flags
       - name: remains
+      - name: escrow_args
+      - name: escrow_factory
+      - name: hashlock
+      - name: escrow
+      - name: withdraw_amount
+      - name: cancel_amount
+      - name: rescue_amount
+      - name: main_withdraw_time
+      - name: main_cancel_time
+      - name: main_rescue_time
+      - name: withdrawals
+      - name: cancels
+      - name: rescues
       - name: minute
       - name: block_month
 
