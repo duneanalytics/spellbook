@@ -17,6 +17,7 @@
 select
   evt_block_time as block_time,
   evt_block_number as block_number,
+  'safe' as type_of_wallet,
   owner,
   proxy,
   evt_index,

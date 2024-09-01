@@ -17,7 +17,8 @@
 select
   block_time,
   block_number,
-  null as owner,
+  'magic.link' as type_of_wallet,
+  cast(null as varbinary) as owner,
   address as proxy,
   tx_hash
 from {{ source('polygon', 'creation_traces') }}
