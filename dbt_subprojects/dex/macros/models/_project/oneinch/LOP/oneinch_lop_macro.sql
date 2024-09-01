@@ -178,13 +178,13 @@ from ({{
         , blockchain = blockchain
         , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
     )
-}}) as orders, ({{ oneinch_blockchain_macro(blockchain) }})
+}}) as t, ({{ oneinch_blockchain_macro(blockchain) }})
 left join creations on
-    creations.creation_block_number = orders.block_number
-    and creations.creation_tx_hash = orders.tx_hash
-    and slice(creations.trace_address, 1, cardinality(orders.call_trace_address)) = orders.call_trace_address
+    creations.creation_block_number = t.block_number
+    and creations.creation_tx_hash = t.tx_hash
+    and slice(creations.trace_address, 1, cardinality(t.call_trace_address)) = t.call_trace_address
 left join results on
     results.escrow = creations.escrow
-    and results.token = orders.maker_asset
+    and results.token = t.maker_asset
 
 {% endmacro %}
