@@ -220,29 +220,6 @@ models:
       - *evt_index
       - *tx_hash
 
-  - name: polymarket_polygon_safe_proxies
-    meta:
-      blockchain: polygon
-      sector: prediction_markets
-      project: polymarket
-      contributors: tomfutago
-    config:
-      tags: ['polygon','prediction_markets','polymarket','markets']
-    description: "Polymarket: safe proxies"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - proxy
-    columns:
-      - *block_time
-      - *block_number
-      - &owner
-        name: owner
-      - &proxy
-        name: proxy
-      - *evt_index
-      - *tx_hash
-
   - name: polymarket_polygon_capital_actions
     meta:
       blockchain: polygon
@@ -274,4 +251,47 @@ models:
       - &amount_usd
         name: amount_usd
       - *evt_index
+      - *tx_hash
+
+  - name: polymarket_polygon_safe_proxies
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Safes deployed by the SafeProxyFactory on behalf of Polymarket users that use their own EOA to sign transactions"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - proxy
+    columns:
+      - *block_time
+      - *block_number
+      - &owner
+        name: owner
+      - &proxy
+        name: proxy
+      - *evt_index
+      - *tx_hash
+
+  - name: polymarket_polygon_magic_wallet_proxies
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: 0xboxer
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Magic wallets deployed by the MagicWalletFactory on behalf of Polymarket users that use magic.link to sign up to polymarket"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - proxy
+    columns:
+      - *block_time
+      - *block_number
+      - name: owner
+      - *proxy
       - *tx_hash
