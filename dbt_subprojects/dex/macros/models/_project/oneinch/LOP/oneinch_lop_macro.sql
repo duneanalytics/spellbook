@@ -157,7 +157,7 @@ select
             , array[bytearray_to_bigint(order_remains)]
         )
     ) as remains
-    , if(reduce(escrow_factory_addresses, false, (r, x) -> r or coalesce(varbinary_position(args, x), 0) > 0, r -> r), args) as escrow_args
+    , if(reduce(escrow_factory_addresses, false, (r, x) -> r or coalesce(varbinary_position(args, x), 0) > 0, r -> r), args, cast(null as varbinary)) as escrow_args
     , factory as escrow_factory
     , hashlock
     , creations.escrow
