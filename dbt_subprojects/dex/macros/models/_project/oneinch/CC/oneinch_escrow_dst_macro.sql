@@ -35,7 +35,7 @@ factories as (
 
 , creations as (
     select *
-    from {{ source('oneinch_' + blockchain, 'escrow_creations') }}
+    from {{ ref('oneinch_' + blockchain + '_escrow_creations') }}
     {% if is_incremental() %}where {{ incremental_predicate('block_time') }}{% endif %}
 )
 
@@ -53,7 +53,7 @@ factories as (
         , array_agg(distinct tx_hash) filter(where method = 'cancel') as cancels
         , array_agg(distinct tx_hash) filter(where method = 'withdraw') as withdrawals
         , array_agg(distinct tx_hash) filter(where method = 'rescueFunds') as rescues
-    from {{ source('oneinch_' + blockchain, 'escrow_results') }}
+    from {{ ref('oneinch_' + blockchain + '_escrow_results') }}
     -- with an incremental predicate, as the results always come after the creations
     {% if is_incremental() %}where {{ incremental_predicate('block_time') }}{% endif %}
     group by 1, 2, 3

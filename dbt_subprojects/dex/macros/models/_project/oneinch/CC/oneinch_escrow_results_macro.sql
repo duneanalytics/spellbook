@@ -11,8 +11,8 @@
 with
 
 escrows as (
-    select escrow as "to"
-    from {{ source('oneinch_' + blockchain, 'escrow_creations') }}
+    select escrow
+    from {{ ref('oneinch_' + blockchain + '_escrow_creations') }}
     -- without an incremental predicate, as the results may be delayed
 )
 
