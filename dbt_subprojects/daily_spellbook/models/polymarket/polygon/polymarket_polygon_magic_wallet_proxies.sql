@@ -24,7 +24,7 @@ select
 from {{ source('polygon', 'creation_traces') }}
 where "from" = 0xaB45c5A4B0c941a2F231C04C3f49182e1A254052
 {% if is_incremental() %}
-  and {{ incremental_predicate('evt_block_time') }}
+  and {{ incremental_predicate('block_time') }}
 {% endif %}
 
 
