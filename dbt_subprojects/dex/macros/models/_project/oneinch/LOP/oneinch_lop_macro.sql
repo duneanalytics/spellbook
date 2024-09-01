@@ -8,8 +8,7 @@ orders as (
     {% for contract, contract_data in oneinch_lop_cfg_contracts_macro().items() if blockchain in contract_data['blockchains'] %}
         select * from ({% for method, method_data in contract_data.methods.items() %}
             select
-                blockchain
-                , call_block_number as block_number
+                call_block_number as block_number
                 , call_block_time as block_time
                 , date(date_trunc('day', call_block_time)) as block_date
                 , call_tx_hash as tx_hash
