@@ -41,3 +41,6 @@ sources:
       - name: AggregationRouterV6_call_fillContractOrderArgs
       - name: lop
       - name: ar
+      - name: escrow_creations
+      - name: escrow_results
+      - name: escrow_dst

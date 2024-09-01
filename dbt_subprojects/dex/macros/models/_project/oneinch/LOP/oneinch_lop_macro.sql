@@ -73,6 +73,39 @@ orders as (
     {% endfor %}
 )
 
+-- escrow creations --
+, creations as (
+    select
+        block_number as creation_block_number
+        , tx_hash as creation_tx_hash
+        , trace_address
+        , factory
+        , escrow
+    from {{ source('oneinch_' + blockchain, 'escrow_creations') }}
+    {% if is_incremental() %}where {{ incremental_predicate('block_time') }}{% endif %}
+)
+
+-- escrow results --
+, results as (
+    select
+        hashlock
+        , escrow
+        , token
+        , sum(amount) filter(where method = 'cancel') as cancel_amount
+        , sum(amount) filter(where method = 'withdraw') as withdraw_amount
+        , sum(amount) filter(where method = 'rescueFunds') as rescue_amount
+        , max_by(block_time, amount) filter(where method = 'cancel') as main_cancel_time
+        , max_by(block_time, amount) filter(where method = 'withdraw') as main_withdraw_time
+        , max_by(block_time, amount) filter(where method = 'rescueFunds') as main_rescue_time
+        , array_agg(distinct tx_hash) filter(where method = 'cancel') as cancels
+        , array_agg(distinct tx_hash) filter(where method = 'withdraw') as withdrawals
+        , array_agg(distinct tx_hash) filter(where method = 'rescueFunds') as rescues
+    from {{ source('oneinch_' + blockchain, 'escrow_results') }}
+    {% if is_incremental() %}where {{ incremental_predicate('block_time') }}{% endif %}
+    -- with an incremental predicate, as the results always come after the creations
+    group by 1, 2, 3
+)
+
 -- output --
 
 select
@@ -126,6 +159,18 @@ select
         )
     ) as remains
     , if(reduce(escrow_factory_addresses, false, (r, x) -> r or coalesce(varbinary_position(args, x), 0) > 0, r -> r), args) as escrow_args
+    , factory as escrow_factory
+    , hashlock
+    , creations.escrow
+    , withdraw_amount
+    , cancel_amount
+    , rescue_amount
+    , main_withdraw_time
+    , main_cancel_time
+    , main_rescue_time
+    , withdrawals
+    , cancels
+    , rescues
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
 from ({{
@@ -134,6 +179,13 @@ from ({{
         , blockchain = blockchain
         , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
     )
-}}), ({{ oneinch_blockchain_macro(blockchain) }})
+}}) as orders, ({{ oneinch_blockchain_macro(blockchain) }})
+left join creations on
+    creations.creation_block_number = orders.block_number
+    and creations.creation_tx_hash = orders.tx_hash
+    and slice(creations.trace_address, 1, cardinality(orders.call_trace_address)) = orders.call_trace_address
+left join results on
+    results.escrow = creations.escrow
+    and results.token = orders.maker_asset
 
 {% endmacro %}
