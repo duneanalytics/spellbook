@@ -31,6 +31,11 @@ polymarket_addresses as (
     (0xc288480574783BD7615170660d71753378159c47),  -- Polymarket Rewards
     (0x94a3db2f861b01c027871b08399e1ccecfc847f6)   -- liq mining merkle distributor
   ) as t(address)
+  UNION ALL 
+  select distinct 
+    contract_address as address
+  from {{ source('polymarket_polygon', 'fedinterestrate_evt_FPMMFundingAdded') }}
+  -- need to rename fed to FPMM in dune DB
 )
 
 select
