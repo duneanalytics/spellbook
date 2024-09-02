@@ -57,7 +57,7 @@ SELECT address
         , (0x4d875acfd836eb3d8a2f25ba03de16c97ec9fc0f, 'PandaSea', 'pandaseaweb3')
         , (0x4d875acfd836eb3d8a2f25ba03de16c97ec9fc0f, 'cheapETH', 'CheapEth')
         , (0xf7ca543d652e38692fd12f989eb55b5327ec9a20, 'Shape', 'Shape_L2')
-        , 0xde794bec196832474f2f218135bfd0f7ca7fb038, 'Swan Chain', 'swan_chain')
+        , (0xde794bec196832474f2f218135bfd0f7ca7fb038, 'Swan Chain', 'swan_chain')
         /*
         address: 0x40ea7581ed45bf55f255b465c59ccfd298fc3c89, chain_id: 1110
         address: 0x7720ba0b715f930f61b45bc22d6eb55bf5e3d91a, chain_id: 90000
