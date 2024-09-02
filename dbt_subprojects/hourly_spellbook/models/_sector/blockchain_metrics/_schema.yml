@@ -29,3 +29,18 @@ models:
             - block_hour
             - from_address
             - to_address
+
+  - name: evms_token_transfer_metrics
+    meta:
+      blockchain: evms
+      sector: metrics
+      contributors: 0xRob
+    config:
+      tags: [ 'evms','metrics', 'address' ]
+    description: "fundamental blockchain token transfer metrics"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_hour
+            - token_address
