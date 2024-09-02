@@ -39,3 +39,18 @@ models:
             - block_hour
             - from_address
             - to_address
+
+  - name: sei_token_transfer_metrics
+    meta:
+      blockchain: sei
+      sector: metrics
+      contributors: 0xRob
+    config:
+      tags: [ 'sei','metrics', 'address' ]
+    description: "fundamental blockchain token transfer metrics"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_hour
+            - token_address

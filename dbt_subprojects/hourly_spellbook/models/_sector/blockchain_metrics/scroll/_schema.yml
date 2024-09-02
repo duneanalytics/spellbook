@@ -39,3 +39,18 @@ models:
             - block_hour
             - from_address
             - to_address
+
+  - name: scroll_token_transfer_metrics
+    meta:
+      blockchain: scroll
+      sector: metrics
+      contributors: 0xRob
+    config:
+      tags: [ 'scroll','metrics', 'address' ]
+    description: "fundamental blockchain token transfer metrics"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_hour
+            - token_address
