@@ -15,6 +15,10 @@ sources:
     tables:
       - name: transfers
 
+  - name: tokens_blast
+    tables:
+      - name: transfers
+
   - name: tokens_bnb
     tables:
       - name: transfers
