@@ -6,7 +6,7 @@
         alias = 'info',
         materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy = 'merge',
+        incremental_strategy = 'delete+insert',
         unique_key = ['address'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.last_seen')]
     )
