@@ -270,8 +270,14 @@ SELECT
     
     size_delta_usd / POWER(10, 30) AS size_delta_usd,
     initial_collateral_delta_amount / POWER(10, collateral_token_decimals) AS initial_collateral_delta_amount,
-    trigger_price / POWER(10, 30 - index_token_decimals) AS trigger_price,
-    acceptable_price / POWER(10, 30 - index_token_decimals) AS acceptable_price,
+    CASE 
+        WHEN index_token_decimals IS NULL THEN trigger_price / POWER(10, 30)
+        ELSE trigger_price / POWER(10, 30 - index_token_decimals) 
+    END AS trigger_price,
+    CASE 
+        WHEN index_token_decimals IS NULL THEN acceptable_price / POWER(10, 30)
+        ELSE acceptable_price / POWER(10, 30 - index_token_decimals) 
+    END AS acceptable_price,
     execution_fee / POWER(10, 18) AS execution_fee,
     callback_gas_limit,
     min_output_amount AS min_output_amount, 
