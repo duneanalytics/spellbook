@@ -10,6 +10,7 @@
     )
 }}
 
+-- trigger CI
 with
 --- filtering out wash trades based on definition in this model https://github.com/duneanalytics/spellbook/blob/main/models/nft/nft_wash_trades.sql
 nft_trades_no_wash as
