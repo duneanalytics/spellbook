@@ -874,6 +874,7 @@ FROM
     ('kuma-kuma-inu', 'ethereum', 'KUMA', 0x48c276e8d03813224bb1e55f953adb6d02fd3e02, 18),
     ('cor-coreto', 'ethereum', 'COR', 0x9c2dc0c3cc2badde84b0025cf4df1c5af288d835, 18),
     ('cqt-covalent', 'ethereum', 'CQT', 0xd417144312dbf50465b1c641d016962017ef6240, 18),
+    ('cxt-covalent-x-token', 'ethereum', 'CXT', 0x7ABc8A5768E6bE61A6c693a6e4EAcb5B60602C4D, 18),
     ('glq-graphlinq', 'ethereum', 'GLQ', 0x9f9c8ec3534c3ce16f928381372bfbfbfb9f4d24, 18),
     ('dfyn-dfyn-network', 'ethereum', 'DFYN', 0x9695e0114e12c0d3a3636fab5a18e6b737529023, 18),
     ('woofy-woofy', 'ethereum', 'WOOFY', 0xd0660cd418a64a1d44e9214ad8e459324d8157f1, 12),

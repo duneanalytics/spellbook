@@ -2,7 +2,6 @@ version: 2
 
 sources:
   - name: oneinch_ethereum
-    description: "decoded events and function calls for 1inch on ethereum"
     tables:
       - name: ExchangeV1_call_aggregate
       - name: ExchangeV2_call_aggregate
@@ -84,6 +83,8 @@ sources:
       - name: AggregationRouterV6_call_fillOrderArgs
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
+      - name: lop
+      - name: ar
 
 
   - name: onesplit_ethereum

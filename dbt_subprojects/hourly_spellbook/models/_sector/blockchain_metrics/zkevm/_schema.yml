@@ -23,3 +23,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_hour
+
+  - name: zkevm_transaction_address_metrics
+    meta:
+      blockchain: zkevm
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: [ 'zkevm','metrics', 'address' ]
+    description: "fundamental blockchain transaction address metrics"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_hour
+            - from_address
+            - to_address

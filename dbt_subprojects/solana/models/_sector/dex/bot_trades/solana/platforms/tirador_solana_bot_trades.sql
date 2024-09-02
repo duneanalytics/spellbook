@@ -41,7 +41,6 @@ WITH
       CAST(date_trunc('day', trades.block_time) AS date) AS block_date,
       CAST(date_trunc('month', trades.block_time) AS date) AS block_month,
       'solana' AS blockchain,
-      'Tirador' AS bot,
       amount_usd,
       IF(
         token_sold_mint_address = '{{wsol_token}}',
@@ -112,6 +111,7 @@ SELECT
   block_time,
   block_date,
   block_month,
+  'Tirador' AS bot,
   blockchain,
   amount_usd,
   type,

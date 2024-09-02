@@ -142,6 +142,25 @@ models:
           filter:
             version: 2.1
 
+  - name: trader_joe_v2_2_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: trader_joe
+      contributors: chef_seaweed
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'trader_joe', 'v2.2' ]
+    description: "Trader Joe avalanche_c base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('trader_joe_avalanche_c_base_trades_seed')
+          filter:
+            version: 2.2
+
   - name: balancer_v2_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
