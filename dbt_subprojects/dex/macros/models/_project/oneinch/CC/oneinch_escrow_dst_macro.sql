@@ -25,7 +25,7 @@ factories as (
     from {{ source(blockchain, 'traces') }}
     where
         starts_with(input, 0xdea024e4) -- createDstEscrow
-        and "to" in (select * from factories)
+        and "to" in (select factory from factories)
         {% if is_incremental() %}
             and {{ incremental_predicate('block_time') }}
         {% else %}

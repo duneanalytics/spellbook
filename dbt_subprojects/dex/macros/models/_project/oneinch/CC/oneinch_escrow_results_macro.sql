@@ -50,7 +50,7 @@ select
 from {{ source(blockchain, 'traces') }}
 where
     {{ selector }} in ({{ withdraw }}, {{ cancel }}, {{ rescueFunds }})
-    and "to" in (select * from escrows)
+    and "to" in (select escrow from escrows)
     and tx_success
     and success
     and call_type = 'call'

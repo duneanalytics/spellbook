@@ -26,7 +26,7 @@ select
 from {{ source(blockchain, 'traces') }}
 where
     type = 'create'
-    and "from" in (select * from factories)
+    and "from" in (select factory from factories)
     {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
     {% else %}
