@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'polymarket_polygon',
-    alias = 'market_activity',
+    alias = 'market_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
