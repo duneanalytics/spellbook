@@ -18,6 +18,15 @@ sources:
       - name: Pool_evt_Borrow
       - name: Pool_evt_Repay
       - name: Pool_evt_LiquidationCall
+      - name: LidoPool_evt_Borrow
+      - name: LidoPool_evt_Repay
+      - name: LidoPool_evt_LiquidationCall
+
+  - name: compound_v1_ethereum
+    tables:
+      - name: MoneyMarket_evt_BorrowTaken
+      - name: MoneyMarket_evt_BorrowRepaid
+      - name: MoneyMarket_evt_BorrowLiquidated
 
   - name: compound_v2_ethereum
     tables:
@@ -32,12 +41,16 @@ sources:
     tables:
       - name: cUSDCv3_evt_Supply
       - name: cWETHv3_evt_Supply
+      - name: cUSDTv3_evt_Supply
       - name: cUSDCv3_evt_Withdraw
       - name: cWETHv3_evt_Withdraw
+      - name: cUSDTv3_evt_Withdraw
       - name: cUSDCv3_evt_Transfer
       - name: cWETHv3_evt_Transfer
+      - name: cUSDTv3_evt_Transfer
       - name: cUSDCv3_evt_AbsorbDebt
       - name: cWETHv3_evt_AbsorbDebt
+      - name: cUSDTv3_evt_AbsorbDebt
 
   - name: radiant_capital_ethereum
     tables:

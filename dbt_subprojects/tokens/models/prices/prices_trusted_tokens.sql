@@ -123,5 +123,10 @@ FROM (VALUES ('arbitrum', 'USDC.e', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8),
              ('sei', 'WSEI', 0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7),
              ('sei', 'USDC', 0x3894085Ef7Ff0f0aeDf52E2A2704928d1Ec074F1),
              ('sei', 'USDT', 0xB75D0B03c06A926e488e2659DF1A861F860bD3d1),
-             ('sei', 'WETH', 0x160345fC359604fC6e70E3c5fAcbdE5F7A9342d8)
+             ('sei', 'WETH', 0x160345fC359604fC6e70E3c5fAcbdE5F7A9342d8),
+             ('nova', 'USDC', 0x750ba8b76187092B0D1E87E28daaf484d1b5273b),
+             ('nova', 'WBTC', 0x1d05e4e72cD994cdF976181CfB0707345763564d),
+             ('nova', 'DAI', 0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1),
+             ('nova', 'WETH', 0x722E8BdD2ce80A4422E880164f2079488e115365),
+             ('nova', 'ARB', 0xf823C3cD3CeBE0a1fA952ba88Dc9EEf8e0Bf46AD)
 ) AS t (blockchain, symbol, contract_address)

@@ -4,7 +4,10 @@ models:
   - name: labels_transfer_summary
     config:
       tags: ['labels', 'transfer', 'summary']
+
     description: "a summary of transfers in/out of labeled addresses"
+    meta: 
+      docs_slug: /curated/labels/owners/value-flows/transfer-summary
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -17,6 +20,8 @@ models:
     config:
       tags: [ 'labels', 'transfer', 'summary', 'daily']
     description: "a daily summary of transfers in/out of labeled addresses"
+    meta: 
+      docs_slug: /curated/labels/owners/value-flows/transfer-summary-daily
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -30,6 +35,8 @@ models:
     config:
       tags: [ 'labels', 'counterparty', 'activity', 'daily']
     description: "a daily activity of the counterparties of labeled addresses"
+    meta: 
+      docs_slug: /curated/labels/owners/value-flows/counterparty-activity-daily
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

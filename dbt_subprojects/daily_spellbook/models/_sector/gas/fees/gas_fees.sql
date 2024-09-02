@@ -1,24 +1,27 @@
 {{ config(
         schema = 'gas',
         alias = 'fees',
-        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","zksync","zora","base","scroll"]\',
+        post_hook='{{ expose_spells(\'["ethereum","bnb","avalanche_c","optimism","arbitrum","zksync","zora","base","scroll","mantle"]\',
                                 "sector",
                                 "gas",
-                                \'["soispoke"]\') }}'
+                                \'["soispoke", "ilemi", "0xRob", "jeff-dude"]\') }}'
         )
 }}
 
 {% set gas_fees_models = [
-'gas_ethereum_fees',
-'gas_bnb_fees',
-'gas_avalanche_c_fees',
-'gas_optimism_fees',
-'gas_arbitrum_fees',
-'gas_zksync_fees',
-'gas_zora_fees',
-'gas_base_fees',
-'gas_scroll_fees'
+    'gas_ethereum_fees',
+    'gas_bnb_fees',
+    'gas_avalanche_c_fees',
+    'gas_optimism_fees',
+    'gas_arbitrum_fees',
+    'gas_zksync_fees',
+    'gas_zora_fees',
+    'gas_base_fees',
+    'gas_scroll_fees'
 ] %}
+
+--remove mantle for now:
+    --'gas_mantle_fees'
 
 SELECT *
 FROM (

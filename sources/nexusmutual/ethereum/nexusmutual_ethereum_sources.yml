@@ -22,6 +22,10 @@ sources:
       - name: Cover_call_setProductTypes
       - name: Cover_evt_ProductSet
       - name: Cover_call_setProducts
+      - name: CoverProducts_evt_ProductTypeSet
+      - name: CoverProducts_call_setProductTypes
+      - name: CoverProducts_evt_ProductSet
+      - name: CoverProducts_call_setProducts
       - name: Quotation_call_buyCoverWithMetadata
       - name: Quotation_call_makeCoverUsingNXMTokens
       - name: QuotationData_call_addCover
@@ -29,3 +33,10 @@ sources:
       - name: StakingProducts_call_getPremium
       - name: CoverMigrator_evt_CoverMigrated
       - name: Ramm_call_getInternalPriceAndUpdateTwap
+      - name: ClaimsData_evt_ClaimRaise
+      - name: Claims_call_submitPartialClaim
+      - name: ClaimsData_call_setClaimStatus
+      - name: IndividualClaims_evt_ClaimSubmitted
+      - name: IndividualClaims_call_submitClaimFor
+      - name: IndividualClaims_call_submitClaim
+      - name: IndividualClaims_call_redeemClaimPayout

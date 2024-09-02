@@ -3,11 +3,8 @@ version: 2
 sources:
   - name: hashflow_optimism
     description: "Optimism decoded tables related to Hashflow contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: Pool_evt_Trade
-        loaded_at_field: evt_block_time
         description: "Pool trades events table"
         columns:
           - &baseToken
@@ -44,7 +41,6 @@ sources:
             name: txid
 
       - name: Pool_evt_LzTrade
-        loaded_at_field: evt_block_time
         description: "Pool layer zero trades events table"
         columns:
           - *evt_block_time
@@ -69,7 +65,6 @@ sources:
           - *txid
 
       - name: Pool_evt_XChainTrade
-        loaded_at_field: evt_block_time
         description: "Pool XChain events table"
         columns:
           - *evt_block_time

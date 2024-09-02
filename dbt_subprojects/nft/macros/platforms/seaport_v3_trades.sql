@@ -7,6 +7,9 @@
      ,fee_wallet_list_cte
      ,start_date = '2023-02-01'
      ,native_currency_contract = '0x0000000000000000000000000000000000000000'
+     ,seaport_fork_address = '0x00000000006c3852cbef3e08e8df289169ede581'
+     ,project = 'opensea'
+     ,version = 'v3'
 ) %}
 
 with source_ethereum_transactions as (
@@ -81,7 +84,7 @@ with source_ethereum_transactions as (
             , offer_item
         from {{ Seaport_evt_OrderFulfilled }}
         cross join unnest(offer) with ordinality as foo(offer_item, offer_idx)
-        where contract_address = 0x00000000006c3852cbef3e08e8df289169ede581    -- seaport v1.1
+        where contract_address = {{ seaport_fork_address }}    -- seaport v1.1
          and recipient != 0x0000000000000000000000000000000000000000
         {% if not is_incremental() %}
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
@@ -148,7 +151,7 @@ with source_ethereum_transactions as (
             , consideration_idx
         from {{ Seaport_evt_OrderFulfilled }}
         cross join unnest(consideration) with ordinality as foo(consideration_item,consideration_idx)
-       where contract_address = 0x00000000006c3852cbef3e08e8df289169ede581 -- Seaport v1.1
+       where contract_address = {{ seaport_fork_address }} -- Seaport v1.1
          and recipient != 0x0000000000000000000000000000000000000000
         {% if not is_incremental() %}
         and evt_block_time >= TIMESTAMP '{{start_date}}'  -- seaport first txn
@@ -226,7 +229,7 @@ with source_ethereum_transactions as (
                     from {{ Seaport_call_matchAdvancedOrders }}
                     cross join unnest(output_executions) with ordinality as foo(execution,execution_idx)
                    where call_success
-                     and contract_address = 0x00000000006c3852cbef3e08e8df289169ede581  -- Seaport v1.1
+                     and contract_address = {{ seaport_fork_address }}  -- Seaport v1.1
                  {% if not is_incremental() %}
                      and call_block_time >= timestamp '{{start_date}}'  -- seaport first txn
                  {% else %}
@@ -255,7 +258,7 @@ with source_ethereum_transactions as (
                     from {{ Seaport_call_matchOrders }}
                     cross join unnest(output_executions) with ordinality as foo(execution,execution_idx)
                    where call_success
-                     and contract_address = 0x00000000006c3852cbef3e08e8df289169ede581  -- Seaport v1.1
+                     and contract_address = {{ seaport_fork_address }}  -- Seaport v1.1
                  {% if not is_incremental() %}
                      and call_block_time >= timestamp '{{start_date}}'  -- seaport first txn
                   {% else %}
@@ -576,8 +579,8 @@ with source_ethereum_transactions as (
 select
         -- basic info
          '{{blockchain}}' as blockchain
-        ,'opensea' as project
-        ,'v3' as project_version
+        ,'{{project}}' as project
+        ,'{{version}}' as project_version
 
         -- order info
         ,block_time

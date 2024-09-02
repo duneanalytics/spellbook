@@ -20,6 +20,7 @@ FROM
     ('apt-aptos', null, 'APT', null, null),
     ('ae-aeternity', null, 'AE', null, null),
     ('algo-algorand', null, 'ALGO', null, null),
+    ('arb-arbitrum', null, 'ARB', null, null),
     ('atom-cosmos', null, 'ATOM', null, null),
     ('avax-avalanche', null, 'AVAX', null, null),
     ('bch-bitcoin-cash', null, 'BCH', null, null),

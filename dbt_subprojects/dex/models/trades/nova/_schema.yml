@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: dex_nova_base_trades
+    tests:
+      - check_dex_info_relationship
+
+  - name: sushiswap_nova_base_trades
+    meta:
+      blockchain: nova
+      sector: dex
+      project: sushiswap
+      contributors: hosuke
+    config:
+      tags: [ 'nova', 'dex', 'trades', 'sushiswap' ]
+    description: "sushiswap nova base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_nova_base_trades_seed')
+
+  - name: rcpswap_nova_base_trades
+    meta:
+      blockchain: nova
+      sector: dex
+      project: rcpswap
+      contributors: hosuke
+    config:
+      tags: [ 'nova', 'dex', 'trades', 'rcpswap' ]
+    description: "rcpswap nova base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+           combination_of_columns:
+              - tx_hash
+              - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('rcpswap_nova_base_trades_seed')

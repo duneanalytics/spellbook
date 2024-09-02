@@ -3,11 +3,8 @@ version: 2
 sources:
   - name: uniswap_v3_bnb
     description: "BNB chain decoded tables related to Uniswap v3 contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: Pair_evt_Swap
-        loaded_at_field: evt_block_time
         description: "Uniswap v3 pair swap events table"
         columns:
           - &amount1
@@ -50,7 +47,6 @@ sources:
             description: the log base 1.0001 of price of the pool after the swap"
 
       - name: Factory_evt_PoolCreated
-        loaded_at_field: evt_block_time
         description: "Uniswap v3 Factory PoolCreated events table"
         columns:
           - name: contract_address
@@ -76,15 +72,11 @@ sources:
             description: "The second of the two tokens in the pool"
 
       - name: Pair_evt_Flash
-        loaded_at_field: evt_block_time
 
   - name: uniswap_v2_bnb
     description: "bnb decoded tables related to Uniswap v2 contract"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: UniswapV2Pair_evt_Swap
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - &amount0In
@@ -105,7 +97,6 @@ sources:
             name: to
 
       - name: UniswapV2Factory_evt_PairCreated
-        loaded_at_field: evt_block_time
         description: "" # to-do
         columns:
           - &_0

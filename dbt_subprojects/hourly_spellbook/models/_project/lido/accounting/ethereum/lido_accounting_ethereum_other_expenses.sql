@@ -99,7 +99,7 @@ dai_referral_payments_addr AS (
 steth_referral_payments_addr AS (
     SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
 ),
-
+/*
 stonks as (
     select * from (values
     ('STETH→DAI', 0x3e2D251275A92a8169A3B17A2C49016e2de492a7),
@@ -131,7 +131,7 @@ stonks_orders_txns as (
             )
     and to in (select address from cow_settlement)
 ),
-
+*/
 other_expenses_txns AS (
     SELECT
         evt_block_time,
@@ -161,7 +161,7 @@ other_expenses_txns AS (
             UNION ALL
             SELECT address FROM diversifications_addresses
         )
-        AND evt_tx_hash NOT IN (select evt_tx_hash from stonks_orders_txns)
+  --      AND evt_tx_hash NOT IN (select evt_tx_hash from stonks_orders_txns)
     UNION ALL
     --ETH outflow
     SELECT

@@ -1,7 +1,7 @@
 {{config(
     schema = 'tokens_zkevm',
     alias = 'base_transfers',
-    partition_by = ['block_date'],
+    partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -15,6 +15,6 @@
     traces = source('zkevm','traces'),
     transactions = source('zkevm','transactions'),
     erc20_transfers = source('erc20_zkevm','evt_transfer'),
-    native_contract_address = '0x000000000000000000000000000000000000800a'
+    native_contract_address = null
 )
 }}

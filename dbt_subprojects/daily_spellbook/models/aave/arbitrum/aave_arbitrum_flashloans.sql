@@ -2,11 +2,7 @@
   config(
     schema = 'aave_arbitrum',
     alias = 'flashloans',
-    materialized = 'view',
-    post_hook = '{{ expose_spells(\'["arbitrum"]\',
-                                    "project",
-                                    "aave",
-                                    \'["hildobby", "tomfutago"]\') }}'
+    materialized = 'view'
   )
 }}
 
