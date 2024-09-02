@@ -55,7 +55,6 @@ SELECT address
         , (0x8cda8351236199af7532bad53d683ddd9b275d89, 'RACE', 'RACEecosystem')
         , (0x7f9d9c1bce1062e1077845ea39a0303429600a06, 'Binary', 'binary_chain')
         , (0x4d875acfd836eb3d8a2f25ba03de16c97ec9fc0f, 'PandaSea', 'pandaseaweb3')
-        , (0x4d875acfd836eb3d8a2f25ba03de16c97ec9fc0f, 'cheapETH', 'CheapEth')
         , (0xf7ca543d652e38692fd12f989eb55b5327ec9a20, 'Shape', 'Shape_L2')
         , (0xde794bec196832474f2f218135bfd0f7ca7fb038, 'Swan Chain', 'swan_chain')
         /*
