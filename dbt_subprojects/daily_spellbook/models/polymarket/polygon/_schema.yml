@@ -183,7 +183,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
-    description: "Polymarket: market trades"
+    description: "All market activity including complementary matching (A buys shares from B), MINT matching (A wants to buy, but not enough sell orders in book, system mints shares if conditions are right), and MERGE matching (A wants to sell shares, but not enough buy orders in book, system matches yes and no shares to unlock collateral). Technically correct volume, but not directly comparable to dex volume or similar. The internal operations increase volume significantly."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -219,7 +219,7 @@ models:
         name: contract_address
       - *evt_index
       - *tx_hash
-
+  
   - name: polymarket_polygon_capital_actions
     meta:
       blockchain: polygon
