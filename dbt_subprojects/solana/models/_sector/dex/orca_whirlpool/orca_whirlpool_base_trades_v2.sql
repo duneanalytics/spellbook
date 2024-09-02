@@ -13,7 +13,9 @@
         )
 }}
 
-{% set project_start_date = '2022-03-10' %} --grabbed min block time from whirlpool_solana.whirlpool_call_swap
+-- delete_after_testing
+-- {% set project_start_date = '2022-03-10' %} --grabbed min block time from whirlpool_solana.whirlpool_call_swap
+{% set project_start_date = '2024-08-15' %} --grabbed min block time from whirlpool_solana.whirlpool_call_swap
 
 with
     whirlpools as (
@@ -92,6 +94,12 @@ with
             , call_block_slot
             , call_outer_executing_account
         FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwapV2') }} sp
+        WHERE 1=1
+        {% if is_incremental() %}
+        AND {{incremental_predicate('call_block_time')}}
+        {% else %}
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+        {% endif %}
 
         UNION ALL
 
@@ -108,6 +116,12 @@ with
             , call_block_slot
             , call_outer_executing_account
         FROM {{ source('whirlpool_solana', 'whirlpool_call_twoHopSwapV2') }} sp
+        WHERE 1=1
+        {% if is_incremental() %}
+        AND {{incremental_predicate('call_block_time')}}
+        {% else %}
+        AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+        {% endif %}
     )
 
     , all_swaps as (
