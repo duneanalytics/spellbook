@@ -12,19 +12,17 @@
 }}
 
 {% set solana_dexes = [
-    -- delete_after_testing
-    ref('orca_whirlpool_base_trades_v2')   
---     ref('orca_whirlpool_base_trades')
---     , ref('orca_whirlpool_base_trades_v2')
---     , ref('raydium_v3_base_trades')
---     , ref('raydium_v4_base_trades')
---     , ref('phoenix_v1_base_trades')
---     , ref('lifinity_v1_base_trades')
---     , ref('lifinity_v2_base_trades')
---     , ref('meteora_v1_solana_base_trades')
---     , ref('meteora_v2_solana_base_trades')
---     , ref('goosefx_ssl_v2_solana_base_trades')
---     , ref('pumpdotfun_solana_base_trades')
+    ref('orca_whirlpool_base_trades')
+    , ref('orca_whirlpool_base_trades_v2')
+    , ref('raydium_v3_base_trades')
+    , ref('raydium_v4_base_trades')
+    , ref('phoenix_v1_base_trades')
+    , ref('lifinity_v1_base_trades')
+    , ref('lifinity_v2_base_trades')
+    , ref('meteora_v1_solana_base_trades')
+    , ref('meteora_v2_solana_base_trades')
+    , ref('goosefx_ssl_v2_solana_base_trades')
+    , ref('pumpdotfun_solana_base_trades')
 ] %}
 
 {% for dex in solana_dexes %}
