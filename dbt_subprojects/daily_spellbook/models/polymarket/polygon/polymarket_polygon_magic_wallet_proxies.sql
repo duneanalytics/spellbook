@@ -17,7 +17,7 @@
 select
   block_time,
   block_number,
-  'magic.link' as type_of_wallet,
+  'magic_link' as type_of_wallet,
   cast(null as varbinary) as owner,
   address as proxy,
   tx_hash

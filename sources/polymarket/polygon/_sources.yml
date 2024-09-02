@@ -27,3 +27,5 @@ sources:
       - name: NegRiskCtfExchange_evt_OrderFilled
       - name: SafeProxyFactory_evt_ProxyCreation
       - name: fedinterestrate_evt_FPMMFundingAdded 
+      - name: NegRiskCTFExchange_evt_OrdersMatched
+      - name: CTFExchange_evt_OrdersMatched
