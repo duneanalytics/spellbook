@@ -246,7 +246,7 @@ SELECT
     receiver,
     callback_contract,
     ui_fee_receiver,
-    market,
+    ED.market,
     ED.initial_collateral_token,
     swap_path,
     
@@ -270,8 +270,8 @@ SELECT
     
     size_delta_usd / POWER(10, 30) AS size_delta_usd,
     initial_collateral_delta_amount / POWER(10, collateral_token_decimals) AS initial_collateral_delta_amount,
-    trigger_price / POWER(10, 30) AS trigger_price,
-    acceptable_price / POWER(10, 30) AS acceptable_price,
+    trigger_price / POWER(10, 30 - index_token_decimals) AS trigger_price,
+    acceptable_price / POWER(10, 30 - index_token_decimals) AS acceptable_price,
     execution_fee / POWER(10, 18) AS execution_fee,
     callback_gas_limit,
     min_output_amount AS min_output_amount, 
@@ -287,6 +287,8 @@ SELECT
     key
 
 FROM event_data AS ED
+LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
+    ON ED.market = MD.market
 LEFT JOIN {{ ref('gmx_v2_arbitrum_collateral_tokens_data') }} AS CTD
     ON ED.initial_collateral_token = CTD.collateral_token
 
