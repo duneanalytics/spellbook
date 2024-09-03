@@ -164,28 +164,21 @@ trades as (
         sd.trade_type as trade_category,
         'SOL' as trade_token_symbol,
         'So11111111111111111111111111111111111111112' as trade_token_mint,
-        coalesce(rl.total_price, cast(
-            case
-                when sd.trade_type = 'buy' then json_extract(sd.args, '$.SolFulfillBuyArgs.minPaymentAmount')
-                else json_extract(sd.args, '$.SolFulfillSellArgs.maxPaymentAmount')
-            end as double)) as price,
-        cast(json_extract(sd.args, '$.SolFulfillBuyArgs.makerFeeBp') as double) / 1e4 * coalesce(rl.total_price, cast(
-            case
-                when sd.trade_type = 'buy' then json_extract(sd.args, '$.SolFulfillBuyArgs.minPaymentAmount')
-                else json_extract(sd.args, '$.SolFulfillSellArgs.maxPaymentAmount')
-            end as double)) as maker_fee,
-        cast(json_extract(sd.args, '$.SolFulfillBuyArgs.takerFeeBp') as double) / 1e4 * coalesce(rl.total_price, cast(
-            case
-                when sd.trade_type = 'buy' then json_extract(sd.args, '$.SolFulfillBuyArgs.minPaymentAmount')
-                else json_extract(sd.args, '$.SolFulfillSellArgs.maxPaymentAmount')
-            end as double)) as taker_fee,
-        cast(
-            case
-                when sd.trade_type = 'buy' then json_extract(sd.args, '$.SolFulfillBuyArgs.assetAmount')
-                else json_extract(sd.args, '$.SolFulfillSellArgs.assetAmount')
-            end as double) as token_size,
-        coalesce(rl.royalty_paid, 0) as royalty_fee,
-        coalesce(rl.lp_fee, 0) as amm_fee,
+        rl.total_price as price,
+        case
+            when sd.trade_type = 'buy' then cast(json_extract(sd.args, '$.SolFulfillBuyArgs.makerFeeBp') as double)
+            else cast(json_extract(sd.args, '$.SolFulfillSellArgs.makerFeeBp') as double)
+        end / 1e4 * rl.total_price as maker_fee,
+        case
+            when sd.trade_type = 'buy' then cast(json_extract(sd.args, '$.SolFulfillBuyArgs.takerFeeBp') as double)
+            else cast(json_extract(sd.args, '$.SolFulfillSellArgs.takerFeeBp') as double)
+        end / 1e4 * rl.total_price as taker_fee,
+        case
+            when sd.trade_type = 'buy' then cast(json_extract(sd.args, '$.SolFulfillBuyArgs.assetAmount') as double)
+            else cast(json_extract(sd.args, '$.SolFulfillSellArgs.assetAmount') as double)
+        end as token_size,
+        rl.royalty_paid as royalty_fee,
+        rl.lp_fee as amm_fee,
         sd.call_instruction_name as instruction,
         sd.account_assetMint as account_tokenMint,
         case when sd.trade_type = 'buy' then sd.account_owner else sd.call_tx_signer end as account_buyer,
@@ -203,7 +196,6 @@ trades as (
         and sd.call_outer_instruction_index = rl.call_outer_instruction_index
         and sd.call_inner_instruction_index = rl.call_inner_instruction_index
 ),
-
 raw_nft_trades as (
     select
         'solana' as blockchain,
