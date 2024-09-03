@@ -151,18 +151,6 @@ SELECT 'blast' as blockchain,
        'identifier' as label_type
 FROM {{ source('blast','contracts') }} 
 UNION
-SELECT 'mantle' as blockchain,
-       address, 
-       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
-       'contracts' as category,
-       'rantum' as contributor,
-       'query' AS source,
-       date('2024-08-30') as created_at,
-       now() as updated_at,
-        'contracts' as model_name,
-       'identifier' as label_type
-FROM {{ source('mantle','contracts') }} 
-UNION
 SELECT 'scroll' as blockchain,
        address, 
        CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
