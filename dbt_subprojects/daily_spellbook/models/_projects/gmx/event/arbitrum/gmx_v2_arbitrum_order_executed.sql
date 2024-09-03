@@ -31,7 +31,7 @@ WITH evt_data_1 AS (
 , evt_data_2 AS (
     SELECT 
         -- Main Variables
-        'arbitrum' AS blockchain,
+        '{{ blockchain_name }}' AS blockchain,
         evt_block_time AS block_time,
         evt_block_number AS block_number, 
         evt_tx_hash AS tx_hash,
