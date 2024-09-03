@@ -119,6 +119,8 @@ models:
         description: "Blob submitting address"
       - name: entity
         description: "Entity name the address has been tagged as"
+      - name: x_username
+        description: "X Username of the tagged entity"
 
   - name: blobs_based_submitters
     meta:
