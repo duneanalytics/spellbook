@@ -18,7 +18,7 @@ WITH pool_labels AS (
             date_trunc('day', minute) AS day,
             contract_address AS token,
             decimals,
-            AVG(price) AS price
+            APPROX_PERCENTILE(price, 0.5) AS price
         FROM {{ source('prices', 'usd') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3
