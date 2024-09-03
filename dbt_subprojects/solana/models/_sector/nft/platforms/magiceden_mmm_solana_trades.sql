@@ -15,6 +15,7 @@
     )
 }}
 
+--run cI
 with
     royalty_logs as (
         with
