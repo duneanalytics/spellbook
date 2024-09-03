@@ -28,13 +28,11 @@ where
     {% endif %}
 
     and substr(input, 1, 4) in (
-        {% set selectors_array = [] %}
-        {% for selectors in oneinch_project_orders_cfg_methods_macro().values() %}
-            {% for selector in selectors.keys() %}
-                {% do selectors_array.append(selector) %}
-            {% endfor %}
+        {% set selectors = [] %}
+        {% for item in oneinch_project_orders_cfg_methods_macro() %}
+            {% do selectors.append(item["selector"]) %}
         {% endfor %}
-        {{ ','.join(selectors_array) }}
+        {{ ','.join(selectors) }}
     )
 
 {% endmacro %}

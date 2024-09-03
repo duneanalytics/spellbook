@@ -448,6 +448,8 @@ WITH raw_token_list AS (
     ,(0x43a502d7e947c8a2ebbaf7627e104ddcc253abc6, 's_aOptDAI', 18, 'receipt')
     ,(0x337b4b933d60f40cb57dd19ae834af103f049810, 's_aOptWETH', 18, 'receipt')
     ,(0xe62dda84e579e6a37296bcfc74c97349d2c59ce3, 'ysWETH', 18, 'receipt')
+    ,(0xd08C3F25862077056cb1b710937576Af899a4959, 'InstETH', 18, 'underlying')    
+    ,(0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 'wUSDM', 18, 'receipt')        
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
 SELECT
