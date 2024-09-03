@@ -166,12 +166,18 @@ royalty_logs as (
         call_inner_instruction_index,
         cast(json_extract_scalar(json_parse(split(logs, ' ')[3]), '$.royalty_paid') as double) as royalty_paid,
         cast(json_extract_scalar(json_parse(split(logs, ' ')[3]), '$.total_price') as double) as total_price,
-        cast(json_extract_scalar(json_parse(split(logs, ' ')[3]), '$.lp_fee') as double) as lp_fee
+        cast(json_extract_scalar(json_parse(split(logs, ' ')[3]), '$.lp_fee') as double) as lp_fee,
+        row_number() over (
+            partition by call_tx_id
+            order by call_outer_instruction_index asc, call_inner_instruction_index asc
+        ) as log_order
     from source_data
-    cross join unnest(call_log_messages) as t(logs)
+    left join unnest(call_log_messages) as log_messages (logs) on true
     where logs like 'Program log: {"lp_fee":%,"royalty_paid":%,"total_price":%}'
-      and try(json_parse(split(logs, ' ')[3])) is not null
+        and try(json_parse(split(logs, ' ')[3])) is not null
 ),
+
+-- Rest of the CTEs remain the same
 
 priced_tokens as (
     select
@@ -185,13 +191,22 @@ priced_tokens as (
 ),
 
 trades as (
+    with numbered_source_data as (
+        select
+            *,
+            row_number() over (
+                partition by call_tx_id
+                order by call_outer_instruction_index asc, call_inner_instruction_index asc
+            ) as row_num
+        from source_data
+    )
     select
         case when s.account_buyer = s.call_tx_signer then 'buy' else 'sell' end as trade_category,
         'SOL' as trade_token_symbol,
         'So11111111111111111111111111111111111111112' as trade_token_mint,
-        coalesce(rl.total_price, s.buyerPrice) as price,
-        s.makerFeeBp / 1e4 * coalesce(rl.total_price, s.buyerPrice) as maker_fee,
-        s.takerFeeBp / 1e4 * coalesce(rl.total_price, s.buyerPrice) as taker_fee,
+        rl.total_price as price,
+        s.makerFeeBp / 1e4 * rl.total_price as maker_fee,
+        s.takerFeeBp / 1e4 * rl.total_price as taker_fee,
         s.tokenSize as token_size,
         rl.royalty_paid as royalty_fee,
         rl.lp_fee as amm_fee,
@@ -206,10 +221,10 @@ trades as (
         s.call_tx_id,
         s.call_tx_signer,
         s.call_account_arguments
-    from source_data s
+    from numbered_source_data s
     left join royalty_logs rl on s.call_tx_id = rl.call_tx_id
-        and s.call_outer_instruction_index = rl.call_outer_instruction_index
-        and s.call_inner_instruction_index = rl.call_inner_instruction_index
+        and s.call_block_slot = rl.call_block_slot
+        and s.row_num = rl.log_order
     left join priced_tokens pt on contains(s.call_account_arguments, pt.token_mint_address)
 ),
 raw_nft_trades as (
