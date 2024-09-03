@@ -164,9 +164,9 @@ royalty_logs as (
         call_block_slot,
         call_outer_instruction_index,
         call_inner_instruction_index,
-        cast(json_value(json_parse(split(logs, ' ')[3]), '$.royalty_paid') as double) as royalty_paid,
-        cast(json_value(json_parse(split(logs, ' ')[3]), '$.total_price') as double) as total_price,
-        cast(json_value(json_parse(split(logs, ' ')[3]), '$.lp_fee') as double) as lp_fee,
+        cast(json_extract_scalar(json_parse(split(logs, ' ')[3]), '$.royalty_paid') as double) as royalty_paid,
+        cast(json_extract_scalar(json_parse(split(logs, ' ')[3]), '$.total_price') as double) as total_price,
+        cast(json_extract_scalar(json_parse(split(logs, ' ')[3]), '$.lp_fee') as double) as lp_fee,
         row_number() over (
             partition by call_tx_id
             order by call_outer_instruction_index asc, call_inner_instruction_index asc
