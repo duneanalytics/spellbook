@@ -11,6 +11,7 @@
 }}
 
 {% set base_trade_models = [
+    ref('lifi_base_trades')
 ] %}
 
 with base_union as (

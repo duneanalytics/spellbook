@@ -17,7 +17,6 @@
 {% set as_is_models = [
     ref('cow_protocol_trades')
     ,ref('paraswap_trades')
-    ,ref('lifi_trades')
     ,ref('yield_yak_trades')
     ,ref('bebop_trades')
     ,ref('dodo_aggregator_trades')
