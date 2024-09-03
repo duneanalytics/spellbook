@@ -1,4 +1,3 @@
-
 {{ config(
         schema ='dex_aggregator',
         alias = 'trades',

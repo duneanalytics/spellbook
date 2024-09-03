@@ -1,5 +1,5 @@
 {{ config(
-    schema ='dex_aggregator',
+    schema ='dex_aggregator'
     , alias = 'base_trades'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
