@@ -166,23 +166,23 @@ trades as (
         'So11111111111111111111111111111111111111112' as trade_token_mint,
         coalesce(rl.total_price, cast(
             case
-                when sd.trade_type = 'buy' then json_value(sd.args, '$.SolFulfillBuyArgs.minPaymentAmount')
-                else json_value(sd.args, '$.SolFulfillSellArgs.maxPaymentAmount')
+                when sd.trade_type = 'buy' then json_extract_scalar(sd.args, '$.SolFulfillBuyArgs.minPaymentAmount')
+                else json_extract_scalar(sd.args, '$.SolFulfillSellArgs.maxPaymentAmount')
             end as double)) as price,
-        cast(json_value(sd.args, '$.SolFulfillBuyArgs.makerFeeBp') as double) / 1e4 * coalesce(rl.total_price, cast(
+        cast(json_extract_scalar(sd.args, '$.SolFulfillBuyArgs.makerFeeBp') as double) / 1e4 * coalesce(rl.total_price, cast(
             case
-                when sd.trade_type = 'buy' then json_value(sd.args, '$.SolFulfillBuyArgs.minPaymentAmount')
-                else json_value(sd.args, '$.SolFulfillSellArgs.maxPaymentAmount')
+                when sd.trade_type = 'buy' then json_extract_scalar(sd.args, '$.SolFulfillBuyArgs.minPaymentAmount')
+                else json_extract_scalar(sd.args, '$.SolFulfillSellArgs.maxPaymentAmount')
             end as double)) as maker_fee,
-        cast(json_value(sd.args, '$.SolFulfillBuyArgs.takerFeeBp') as double) / 1e4 * coalesce(rl.total_price, cast(
+        cast(json_extract_scalar(sd.args, '$.SolFulfillBuyArgs.takerFeeBp') as double) / 1e4 * coalesce(rl.total_price, cast(
             case
-                when sd.trade_type = 'buy' then json_value(sd.args, '$.SolFulfillBuyArgs.minPaymentAmount')
-                else json_value(sd.args, '$.SolFulfillSellArgs.maxPaymentAmount')
+                when sd.trade_type = 'buy' then json_extract_scalar(sd.args, '$.SolFulfillBuyArgs.minPaymentAmount')
+                else json_extract_scalar(sd.args, '$.SolFulfillSellArgs.maxPaymentAmount')
             end as double)) as taker_fee,
         cast(
             case
-                when sd.trade_type = 'buy' then json_value(sd.args, '$.SolFulfillBuyArgs.assetAmount')
-                else json_value(sd.args, '$.SolFulfillSellArgs.assetAmount')
+                when sd.trade_type = 'buy' then json_extract_scalar(sd.args, '$.SolFulfillBuyArgs.assetAmount')
+                else json_extract_scalar(sd.args, '$.SolFulfillSellArgs.assetAmount')
             end as double) as token_size,
         coalesce(rl.royalty_paid, 0) as royalty_fee,
         coalesce(rl.lp_fee, 0) as amm_fee,
