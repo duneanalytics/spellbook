@@ -32,6 +32,10 @@
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnUniswapV2Fork')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnUniswapV2ForkWithPermit')
 ] %}
+{% set uniswap_v2_trade_call_swap_tables = [
+    source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnUniswapV2Fork')
+    ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnUniswapV2ForkWithPermit')
+] %}
 {% set uniswap_trade_call_tables = [
     source('paraswap_ethereum', 'AugustusSwapper6_0_call_buyOnUniswap')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_buyOnUniswapFork')
@@ -127,7 +131,16 @@ uniswap_v2_call_swap_without_event AS (
                 c.call_block_number,
                 t."from" AS caller,
                 '0x' || lower(substring(to_hex(cast(c.pools[1] AS varbinary)), -40)) AS swap_in_pair,
-                '0x' || lower(substring(to_hex(cast(c.pools[cardinality(pools)] AS varbinary)), -40)) AS swap_out_pair
+                '0x' || lower(substring(to_hex(cast(c.pools[cardinality(pools)] AS varbinary)), -40)) AS swap_out_pair,
+                row_number() OVER (
+                    PARTITION BY c.call_tx_hash, c.pools[cardinality(pools)]
+                    ORDER BY trace_address ASC
+                ) AS call_trace_address_row_num,
+                {% if call_table in uniswap_v2_trade_call_swap_tables %}
+                c.amountIn AS token_in_amount
+                {% else %}
+                0 AS token_in_amount
+                {% endif %}
             FROM {{ call_table }} c
 
             INNER JOIN {{ source('ethereum', 'traces') }} t ON t.block_number = c.call_block_number
@@ -161,12 +174,14 @@ uniswap_v2_call_swap_without_event AS (
             tokenIn,
             amountIn,
             trace_address,
-            evt_index
+            evt_index,
+            swap_in_pair,
+            token_in_amount
         FROM (
-            SELECT coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
+            SELECT c.caller AS user_address,
                 coalesce(e.evt_block_number, t.block_number) AS block_number,
                 coalesce(e.evt_block_time, t.block_time) AS block_time,
-                coalesce(e."from", t."from") AS user_address,
+                coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
                 coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */) AS tokenIn,
                 coalesce(
                     try_cast(e.value AS int256), 
@@ -175,12 +190,17 @@ uniswap_v2_call_swap_without_event AS (
                         ELSE -1 * try_cast(t.value AS int256)
                     END) OVER (PARTITION BY t.tx_hash)
                 ) AS amountIn,
-                row_number() OVER (
-                    PARTITION BY coalesce(t.tx_hash, e.evt_tx_hash)
-                    ORDER BY coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) ASC
-                ) AS row_num,
+                CASE WHEN t.tx_hash IS NOT NULL
+                    THEN row_number() OVER (
+                        PARTITION BY t.tx_hash
+                        ORDER BY t.trace_address ASC
+                    )
+                    ELSE 1
+                END AS row_num,
                 coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
-                coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index
+                coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index,
+                c.swap_in_pair,
+                c.token_in_amount
             FROM no_event_call_transaction c
         
             LEFT JOIN {{ source('erc20_ethereum', 'evt_transfer') }} e ON c.call_block_number = e.evt_block_number
@@ -188,6 +208,7 @@ uniswap_v2_call_swap_without_event AS (
                 AND (e."from" = c.caller OR e."from" = 0x216B4B4Ba9F3e719726886d34a177484278Bfcae /* TokenTransferProxy */)
                 AND cast(e."to" AS varchar) = c.swap_in_pair
                 AND e.evt_block_number >= {{ trade_call_start_block_number }}
+                AND (c.token_in_amount = 0 OR c.token_in_amount = e.value)
                 {% if is_incremental() %}
                 AND {{ incremental_predicate('e.evt_block_time') }}
                 {% endif %}
@@ -222,20 +243,30 @@ uniswap_v2_call_swap_without_event AS (
             coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */) AS tokenOut,
             try_cast(coalesce(e.value, t.value) AS int256) AS amountOut,
             coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
-            coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index
+            coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index,
+            c.swap_in_pair,
+            c.token_in_amount
         FROM no_event_call_transaction c
     
-        LEFT JOIN {{ source('erc20_ethereum', 'evt_transfer') }} e ON c.call_block_number = e.evt_block_number
-            AND c.call_tx_hash = e.evt_tx_hash
-            AND cast(e."from" as varchar) = c.swap_out_pair
-            AND e."to" = c.caller
-            AND e.evt_block_number >= {{ trade_call_start_block_number }}
+        LEFT JOIN (
+            SELECT *,
+                row_number() OVER (
+                    PARTITION BY evt_tx_hash, "from", to
+                    ORDER BY evt_index ASC
+                ) AS evt_row_num
+            FROM {{ source('erc20_ethereum', 'evt_transfer') }}
+            WHERE evt_block_number >= {{ trade_call_start_block_number }}
             {% if is_incremental() %}
-            AND {{ incremental_predicate('e.evt_block_time') }}
+            AND {{ incremental_predicate('evt_block_time') }}
             {% endif %}
             {% if not is_incremental() %}
-            AND e.evt_block_time >= TIMESTAMP '{{project_start_date}}'
+            AND evt_block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
+        ) e ON c.call_block_number = e.evt_block_number
+            AND c.call_tx_hash = e.evt_tx_hash
+            AND cast(e."from" AS varchar) = c.swap_out_pair
+            AND e."to" = c.caller
+            AND e.evt_row_num = c.call_trace_address_row_num
 
         LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
@@ -269,8 +300,10 @@ uniswap_v2_call_swap_without_event AS (
 
     INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
         AND i.tx_hash = o.tx_hash
+        AND i.swap_in_pair = o.swap_in_pair
+        AND (i.token_in_amount = 0 OR i.token_in_amount = o.token_in_amount)
 
-    WHERE i.amountIn >= 0 -- Filter NFTs and transactions where tokenIn didn't emit transfer event
+    WHERE i.amountIn >= 0 -- Filter NFTs and transactions where tokenIn didn't emit "transfer" event
 ),
 
 uniswap_call_swap_without_event AS (
@@ -316,10 +349,10 @@ uniswap_call_swap_without_event AS (
             trace_address,
             evt_index
         FROM (
-            SELECT coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
+            SELECT c.caller AS user_address,
+                coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
                 coalesce(e.evt_block_number, t.block_number) AS block_number,
                 coalesce(e.evt_block_time, t.block_time) AS block_time,
-                coalesce(e."from", t."from") AS user_address,
                 coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */) AS tokenIn,
                 coalesce(
                     try_cast(e.value AS int256), 
@@ -368,10 +401,11 @@ uniswap_call_swap_without_event AS (
     ),
 
     swap_detail_out AS (
-        SELECT coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
+        SELECT c.caller,
             coalesce(e.evt_block_number, t.block_number) AS block_number,
             coalesce(e.evt_block_time, t.block_time) AS block_time,
             coalesce(e."to", t."to") AS user_address,
+            coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
             coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */) AS tokenOut,
             try_cast(coalesce(e.value, t.value) AS int256) AS amountOut,
             coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
@@ -405,7 +439,7 @@ uniswap_call_swap_without_event AS (
             {% endif %}
     )
 
-    select i.block_time,
+    SELECT i.block_time,
         i.block_number,
         i.user_address AS taker,
         o.user_address AS maker,
@@ -572,10 +606,10 @@ zero_x_call_swap_without_event AS (
         i.tx_hash,
         greatest(i.trace_address, o.trace_address) AS trace_address,
         greatest(i.evt_index, o.evt_index) AS evt_index
-        FROM swap_detail_in i
+    FROM swap_detail_in i
 
-        INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
-            AND i.tx_hash = o.tx_hash
+    INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
+        AND i.tx_hash = o.tx_hash
         
     WHERE i.amountIn >= 0 -- Filter NFTs and transactions where tokenIn didn't emit transfer event
 ),

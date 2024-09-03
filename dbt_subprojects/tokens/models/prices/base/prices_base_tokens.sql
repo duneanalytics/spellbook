@@ -142,5 +142,20 @@ FROM
     ('mrsmiggles-mrs-miggles','base','MRSMIGGLES',0x31b28012f61fc3600e1c076bafc9fd997fb2da90, 18),
     ('king-king-of-memes','base','KING',0x420b0fa3de2efcf2b2fd04152eb1df36a09717cd, 18),
     ('trump-maga','base','TRUMP',0x2e1d332893dc16124194e598a29866d2d5e8786b, 18),
-    ('donuts-the-simpsons','base','DONUTS',0xcc0733b7ba63b446624002441c4816d7fec8f4e0, 18) 
+    ('donuts-the-simpsons','base','DONUTS',0xcc0733b7ba63b446624002441c4816d7fec8f4e0, 18),
+    ('bolt-bolt-on-base','base','BOLT',0x7cf7132ede0ca592a236b6198a681bb7b42dd5ae, 18),
+    ('berf-berf','base','BERF',0xfc5462143a3178cf044e97c491f6bcb5e38f173e, 18),
+    ('boda-based-yoda','base','BODA',0x6bd81aad9b25ad1e0b99c47ed01b34eacf4b8be7, 18),
+    ('loa-law-of-attraction','base','LOA',0x8d3419b9a18651f3926a205ee0b1acea1e7192de, 18),
+    --('brett4-brett-20','base','BRETT',0x1a475d06d967aeb686c98de80d079d72097aeacf, 9), --token inactive
+    ('bchb-bitcoin-cash-on-base','base','BCHB',0x1791b55e734df69b4906a4178a83dbe63c4f8421, 18),
+    ('brogg-brett39s-dog','base','BROGG',0xc36f19bccd51e3f1163eff07b5edf9d2850acec4, 18),
+    --('maba-make-america-based-again','base','MABA',0xd9ea93a38d1771c870128f9134d4622d331c04c8, 18), --token inactive
+    ('peepo1-peepo','base','PEEPO',0x9409c81d5bf8fd6e651f08e1c81c8b175a1e64f7, 18),
+    ('polluk-jasse-polluk','base','POLLUK',0x22222bd682745cf032006394750739684e45a5f8, 18),
+    ('boys-boysclubbase','base','$BOYS',0x4d58608eff50b691a3b76189af2a7a123df1e9ba, 9),
+    ('aerobud-aerobud','base','AEROBUD',0xfad8cb754230dbfd249db0e8eccb5142dd675a0d, 18),
+    --('normie1-normie','base','NORMIE',0x7f12d13b34f5f4f0a9449c16bcd42f0da47af200, 9), --token inactive
+    ('ethb-ethereum-on-base','base','ETHB',0x8d285df5be4570097e84241090fca8034ab18547, 18),
+    ('pepe-pepe-on-base','base','PEPE',0x80f45eacf6537498ecc660e4e4a2d2f99e195cf4, 18)  
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
