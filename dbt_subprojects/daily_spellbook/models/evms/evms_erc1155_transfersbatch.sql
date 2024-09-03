@@ -16,7 +16,7 @@
      , ('avalanche_c', source('erc1155_avalanche_c', 'evt_transferbatch'))
      , ('gnosis', source('erc1155_gnosis', 'evt_transferbatch'))
      , ('fantom', source('erc1155_fantom', 'evt_transferbatch'))
-     , ('optimism', source('erc1155_optimism', 'evt_transferbatch'))
+     , ('optimism', source('erc1155_optimism', 'evt_TransferBatch'))
      , ('arbitrum', source('erc1155_arbitrum', 'evt_transferbatch'))
      , ('celo', source('erc1155_celo', 'evt_transferbatch'))
      , ('base', source('erc1155_base', 'evt_transferbatch'))
