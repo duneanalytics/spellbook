@@ -84,7 +84,6 @@ WITH aggregator_base_trades AS (
 {% set cte_to_union = [
     'enrriched_aggregator_base_trades'
     , 'as_is_dexs'
-    , 'dexs'
     ]
 %}
 
