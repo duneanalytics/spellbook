@@ -5,9 +5,10 @@ models:
     meta:
       sector: prices
       contributors: hildobby, 0xRob
+      docs_slug: /curated/asset-tracking/prices/prices_latest
     config:
       tags: ['prices', 'usd', 'latest']
-    description: "Latest prices table across blockchains"
+    description: "Latest price data for tokens in USD"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -67,6 +68,7 @@ models:
     meta:
       sector: prices
       contributors: aalan3
+      docs_slug: /curated/asset-tracking/prices/prices_daily
     config:
       tags: ['prices', 'usd', 'daily']
     description: "Daily aggregated prices table across blockchains"

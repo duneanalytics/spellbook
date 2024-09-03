@@ -24,7 +24,7 @@
     , ref('openxswap_optimism_base_trades')
     , ref('openocean_optimism_base_trades')
     , ref('chainhop_optimism_base_trades')
-    , ref('curvefi_optimism_base_trades')
+    , ref('curve_optimism_base_trades')
     , ref('rubicon_optimism_base_trades')
     , ref('gridex_optimism_base_trades')
     , ref('solidly_v3_optimism_base_trades')
