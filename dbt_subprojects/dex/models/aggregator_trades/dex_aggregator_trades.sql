@@ -30,10 +30,10 @@
 
 WITH aggregator_base_trades AS (
     SELECT *
-    FROM ref('dex_aggregator_base_trades')
+    FROM {{ ref('dex_aggregator_base_trades') }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
-    {% endif %
+    {% endif %}
 )
 
 , enrriched_aggregator_base_trades AS (
