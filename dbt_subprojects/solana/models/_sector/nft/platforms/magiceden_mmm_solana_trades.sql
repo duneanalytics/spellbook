@@ -191,6 +191,15 @@ priced_tokens as (
 ),
 
 trades as (
+    with numbered_source_data as (
+        select
+            *,
+            row_number() over (
+                partition by call_tx_id
+                order by call_outer_instruction_index asc, call_inner_instruction_index asc
+            ) as row_num
+        from source_data
+    )
     select
         case when s.account_buyer = s.call_tx_signer then 'buy' else 'sell' end as trade_category,
         'SOL' as trade_token_symbol,
@@ -212,83 +221,80 @@ trades as (
         s.call_tx_id,
         s.call_tx_signer,
         s.call_account_arguments
-    from source_data s
+    from numbered_source_data s
     left join royalty_logs rl on s.call_tx_id = rl.call_tx_id
         and s.call_block_slot = rl.call_block_slot
-        and row_number() over (
-            partition by s.call_tx_id
-            order by s.call_outer_instruction_index asc, s.call_inner_instruction_index asc
-        ) = rl.log_order
+        and s.row_num = rl.log_order
     left join priced_tokens pt on contains(s.call_account_arguments, pt.token_mint_address)
 ),
-    raw_nft_trades as (
-        select
-            'solana' as blockchain,
-            'magiceden' as project,
-            'mmm' as version,
-            t.call_block_time as block_time,
-            'secondary' as trade_type,
-            token_size as number_of_items,
-            t.trade_category,
-            t.account_buyer as buyer,
-            t.account_seller as seller,
-            t.price as amount_raw,
-            t.price / pow(10, p.decimals) as amount_original,
-            t.price / pow(10, p.decimals) * p.price as amount_usd,
-            t.trade_token_symbol as currency_symbol,
-            t.trade_token_mint as currency_address,
-            cast(null as varchar) as account_merkle_tree,
-            cast(null as bigint) leaf_id,
-            t.account_tokenMint as account_mint,
-            'mmm3XBJg5gk8XJxEKBvdgptZz6SgK4tXvn36sodowMc' as project_program_id,
-            cast(null as varchar) as aggregator_name,
-            cast(null as varchar) as aggregator_address,
-            t.call_tx_id as tx_id,
-            t.call_block_slot as block_slot,
-            t.call_tx_signer as tx_signer,
-            t.taker_fee as taker_fee_amount_raw,
-            t.taker_fee / pow(10, p.decimals) as taker_fee_amount,
-            t.taker_fee / pow(10, p.decimals) * p.price as taker_fee_amount_usd,
-            case
-                when t.taker_fee = 0
-                or t.price = 0 then 0
-                else t.taker_fee / t.price
-            end as taker_fee_percentage,
-            t.maker_fee as maker_fee_amount_raw,
-            t.maker_fee / pow(10, p.decimals) as maker_fee_amount,
-            t.maker_fee / pow(10, p.decimals) * p.price as maker_fee_amount_usd,
-            case
-                when t.maker_fee = 0
-                or t.price = 0 then 0
-                else t.maker_fee / t.price
-            end as maker_fee_percentage,
-            t.amm_fee as amm_fee_amount_raw,
-            t.amm_fee / pow(10, p.decimals) as amm_fee_amount,
-            t.amm_fee / pow(10, p.decimals) * p.price as amm_fee_amount_usd,
-            case
-                when t.amm_fee = 0
-                or t.price = 0 then 0
-                else t.amm_fee / t.price
-            end as amm_fee_percentage,
-            t.royalty_fee as royalty_fee_amount_raw,
-            t.royalty_fee / pow(10, p.decimals) as royalty_fee_amount,
-            t.royalty_fee / pow(10, p.decimals) * p.price as royalty_fee_amount_usd,
-            case
-                when t.royalty_fee = 0
-                or t.price = 0 then 0
-                else t.royalty_fee / t.price
-            end as royalty_fee_percentage,
-            t.instruction,
-            t.outer_instruction_index,
-            coalesce(t.inner_instruction_index, 0) as inner_instruction_index
-        from
-            trades t
-            left join {{ source('prices', 'usd') }} p ON p.blockchain = 'solana'
-            and to_base58(p.contract_address) = t.trade_token_mint
-            and p.minute = date_trunc('minute', t.call_block_time)
-            {% if is_incremental() %}
-            and {{incremental_predicate('p.minute')}}
-            {% endif %}
+raw_nft_trades as (
+    select
+        'solana' as blockchain,
+        'magiceden' as project,
+        'mmm' as version,
+        t.call_block_time as block_time,
+        'secondary' as trade_type,
+        token_size as number_of_items,
+        t.trade_category,
+        t.account_buyer as buyer,
+        t.account_seller as seller,
+        t.price as amount_raw,
+        t.price / pow(10, p.decimals) as amount_original,
+        t.price / pow(10, p.decimals) * p.price as amount_usd,
+        t.trade_token_symbol as currency_symbol,
+        t.trade_token_mint as currency_address,
+        cast(null as varchar) as account_merkle_tree,
+        cast(null as bigint) leaf_id,
+        t.account_tokenMint as account_mint,
+        'mmm3XBJg5gk8XJxEKBvdgptZz6SgK4tXvn36sodowMc' as project_program_id,
+        cast(null as varchar) as aggregator_name,
+        cast(null as varchar) as aggregator_address,
+        t.call_tx_id as tx_id,
+        t.call_block_slot as block_slot,
+        t.call_tx_signer as tx_signer,
+        t.taker_fee as taker_fee_amount_raw,
+        t.taker_fee / pow(10, p.decimals) as taker_fee_amount,
+        t.taker_fee / pow(10, p.decimals) * p.price as taker_fee_amount_usd,
+        case
+            when t.taker_fee = 0
+            or t.price = 0 then 0
+            else t.taker_fee / t.price
+        end as taker_fee_percentage,
+        t.maker_fee as maker_fee_amount_raw,
+        t.maker_fee / pow(10, p.decimals) as maker_fee_amount,
+        t.maker_fee / pow(10, p.decimals) * p.price as maker_fee_amount_usd,
+        case
+            when t.maker_fee = 0
+            or t.price = 0 then 0
+            else t.maker_fee / t.price
+        end as maker_fee_percentage,
+        t.amm_fee as amm_fee_amount_raw,
+        t.amm_fee / pow(10, p.decimals) as amm_fee_amount,
+        t.amm_fee / pow(10, p.decimals) * p.price as amm_fee_amount_usd,
+        case
+            when t.amm_fee = 0
+            or t.price = 0 then 0
+            else t.amm_fee / t.price
+        end as amm_fee_percentage,
+        t.royalty_fee as royalty_fee_amount_raw,
+        t.royalty_fee / pow(10, p.decimals) as royalty_fee_amount,
+        t.royalty_fee / pow(10, p.decimals) * p.price as royalty_fee_amount_usd,
+        case
+            when t.royalty_fee = 0
+            or t.price = 0 then 0
+            else t.royalty_fee / t.price
+        end as royalty_fee_percentage,
+        t.instruction,
+        t.outer_instruction_index,
+        coalesce(t.inner_instruction_index, 0) as inner_instruction_index
+    from
+        trades t
+        left join {{ source('prices', 'usd') }} p ON p.blockchain = 'solana'
+        and to_base58(p.contract_address) = t.trade_token_mint
+        and p.minute = date_trunc('minute', t.call_block_time)
+        {% if is_incremental() %}
+        and {{incremental_predicate('p.minute')}}
+        {% endif %}
     )
 select
     *
