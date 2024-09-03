@@ -74,7 +74,8 @@ WITH pool_labels AS (
             DATE_TRUNC('day', minute) as day,
             AVG(price) as eth_price
         FROM {{ source('prices', 'usd') }}
-        WHERE symbol = 'ETH'
+        WHERE blockchain = 'ethereum'
+        AND contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
         GROUP BY 1
     ),
 
