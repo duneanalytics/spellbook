@@ -62,9 +62,6 @@ models:
       - &token_sold_amount_raw
         name: token_sold_amount_raw
         description: "Raw value of the token sold at time of execution in the original currency"
-      - &amount_usd
-        name: amount_usd
-        description: "USD value of the trade at time of execution"
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
@@ -99,7 +96,7 @@ models:
         name: block_month
         description: "UTC event block month of each DEX trade"
 
-  - name: lifi_optimism_trades
+  - name: lifi_optimism_base_trades
     meta:
       blockchain: optimism
       sector: dex
@@ -122,7 +119,6 @@ models:
       - *token_sold_amount
       - *token_bought_amount_raw
       - *token_sold_amount_raw
-      - *amount_usd
       - *token_bought_address
       - *token_sold_address
       - *taker

@@ -1,7 +1,7 @@
 
 {{ config(
         schema = 'lifi_optimism',
-        alias = 'trades'
+        alias = 'base_trades'
         )
 }}
 
@@ -27,7 +27,6 @@ FROM (
         token_sold_amount,
         token_bought_amount_raw,
         token_sold_amount_raw,
-        amount_usd,
         token_bought_address,
         token_sold_address,
         taker,

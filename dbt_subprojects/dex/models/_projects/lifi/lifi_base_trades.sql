@@ -1,12 +1,16 @@
-
 {{ config(
-        schema = 'lifi_fantom',
-        alias = 'base_trades'
+        schema = 'lifi',
+        alias = 'base_trades',
+        post_hook='{{ expose_spells(blockchains = \'["fantom", "optimism"]\',
+                                    spell_type = "project",
+                                    spell_name = "lifi",
+                                    contributors = \'["Henrystats", "hosuke"]\') }}'
         )
 }}
 
 {% set lifi_models = [
-ref('lifi_v2_fantom_trades')
+ref('lifi_fantom_base_trades')
+, ref('lifi_optimism_base_trades')
 ] %}
 
 
@@ -17,8 +21,8 @@ FROM (
         blockchain,
         project,
         version,
-        block_date,
         block_month,
+        block_date,
         block_time,
         token_bought_symbol,
         token_sold_symbol,
