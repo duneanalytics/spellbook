@@ -118,6 +118,12 @@ cd user\directory\github\spellbook
 # Change this to wherever spellbook is stored locally on your machine.
 ```
 
+Within Spellbook repo, there are multiple dbt projects, located in the root directory. Navigate to the correct project, depending on your use case.
+
+```console
+cd ../spellbook/dbt_subprojects/<subproject_name>/
+```
+
 Using the pipfile located in the spellbook repo, run the below install command to create a pipenv.
 
 ```console

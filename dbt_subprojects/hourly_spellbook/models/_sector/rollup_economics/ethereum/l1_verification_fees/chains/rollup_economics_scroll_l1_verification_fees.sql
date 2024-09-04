@@ -28,6 +28,7 @@ WHERE t.to IN (
 AND bytearray_substring(t.data, 1, 4) IN (
     0x31fa742d -- finalizeBatchWithProof
     , 0x00b0f4d7 -- finalizeBatchWithProof4844
+    , 0x4f099e3d -- finalizeBundleWithProof
 )
 AND t.block_time >= TIMESTAMP '2023-10-07'
 {% if is_incremental() %}
