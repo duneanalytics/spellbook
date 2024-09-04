@@ -147,7 +147,7 @@ WITH evt_data_1 AS (
 {{
     gmx_add_tx_columns(
         model_cte = 'full_data'
-        , blockchain = {{blockchain_name}}
+        , blockchain = blockchain_name
         , columns = ['from', 'to']
     )
 }}
