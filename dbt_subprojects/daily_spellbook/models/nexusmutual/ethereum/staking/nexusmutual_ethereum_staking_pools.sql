@@ -13,159 +13,244 @@
 
 with
 
-staking_pools_created as (
+staking_pool_base as (
   select
-    call_block_time as block_time,
-    output_0 as pool_id,
-    output_1 as pool_address,
-    isPrivatePool as is_private_pool,
-    initialPoolFee as initial_pool_fee,
-    maxPoolFee as max_management_fee,
-    productInitParams as params
-  from {{ source('nexusmutual_ethereum', 'Cover_call_createStakingPool') }}
-  where call_success
-    and contract_address = 0xcafeac0fF5dA0A2777d915531bfA6B29d282Ee62
-),
-
-staking_pools_and_products as (
-  select
-    sp.block_time,
     sp.pool_id,
     sp.pool_address,
-    sp.is_private_pool,
-    sp.initial_pool_fee,
-    sp.max_management_fee,
-    cast(json_query(t.json, 'lax $.productId') as int) as product_id,
-    cast(json_query(t.json, 'lax $.weight') as double) as weight,
-    cast(json_query(t.json, 'lax $.initialPrice') as double) as initial_price,
-    cast(json_query(t.json, 'lax $.targetPrice') as double) as target_price
-  from staking_pools_created as sp
-    left join unnest(params) as t(json) on true
+    sp.manager_address,
+    sp.manager_ens,
+    sp.manager,
+    if(sp.is_private_pool, 'Private', 'Public') as pool_type,
+    sp.initial_pool_fee / 100.00 as initial_pool_fee,
+    sp.current_pool_fee / 100.00 as current_management_fee,
+    sp.max_management_fee / 100.00 as max_management_fee,
+    sp.product_id,
+    sp.initial_price,
+    sp.target_price,
+    sp.initial_weight / 100.00 as initial_weight,
+    sp.target_weight / 100.00 as target_weight,
+    sp.pool_created_time,
+    sp.product_added_time
+  from nexusmutual_ethereum.staking_pools sp
 ),
 
-staking_pool_products_updated as (
+staking_pool_products as (
   select
-    *,
-    row_number() over (partition by pool_id, product_id order by block_time desc) as rn
-  from (
-    select
-      call_block_time as block_time,
-      poolId as pool_id,
-      cast(json_query(t.json, 'lax $.productId') as int) as product_id,
-      cast(json_query(t.json, 'lax $.recalculateEffectiveWeight') as boolean) as re_eval_eff_weight,
-      cast(json_query(t.json, 'lax $.setTargetWeight') as boolean) as set_target_weight,
-      cast(json_query(t.json, 'lax $.targetWeight') as double) as target_weight,
-      cast(json_query(t.json, 'lax $.setTargetPrice') as boolean) as set_target_price,
-      cast(json_query(t.json, 'lax $.targetPrice') as double) as target_price
-    from {{ source('nexusmutual_ethereum', 'StakingProducts_call_setProducts') }} as p
-      cross join unnest(params) as t(json)
-    where call_success
-      and contract_address = 0xcafea573fBd815B5f59e8049E71E554bde3477E4
-      and cast(json_query(t.json, 'lax $.setTargetWeight') as boolean) = true
-  ) t
+    pool_id,
+    pool_address,
+    product_id,
+    coalesce(target_weight, initial_weight) as target_weight
+  from staking_pool_base
 ),
 
-staking_pool_products_combined as (
-  select
-    coalesce(spp.pool_id, spu.pool_id) as pool_id,
-    coalesce(spp.product_id, spu.product_id) as product_id,
-    spp.initial_price,
-    spp.target_price,
-    spu.target_price as updated_target_price,
-    spp.weight as initial_weight,
-    spu.target_weight,
-    spu.block_time as updated_time,
-    if(spp.product_id is null, true, false) as is_product_added
-  from staking_pools_and_products spp
-    full outer join staking_pool_products_updated spu on spp.pool_id = spu.pool_id and spp.product_id = spu.product_id
-  where coalesce(spu.rn, 1) = 1
-),
-
-staking_pool_managers_history as (
-  select
-    call_block_time as block_time,
-    poolId as pool_id,
-    manager,
-    call_trace_address,
-    call_tx_hash as tx_hash
-  from {{ source('nexusmutual_ethereum', 'TokenController_call_assignStakingPoolManager') }}
-  where call_success
-  union all
-  select
-    call_block_time as block_time,
-    poolId as pool_id,
-    manager,
-    call_trace_address,
-    call_tx_hash as tx_hash
-  from {{ source('nexusmutual_ethereum', 'TokenController2_call_assignStakingPoolManager') }}
-  where call_success
-  union all
+staking_pools as (
   select distinct
-    m.call_block_time as block_time,
-    sp.poolId as pool_id,
-    m.output_0 as manager,
-    m.call_trace_address,
-    m.call_tx_hash as tx_hash
-  from {{ source('nexusmutual_ethereum', 'StakingProducts_evt_ProductUpdated') }} pu
-    inner join {{ source('nexusmutual_ethereum', 'StakingProducts_call_setProducts') }} sp on pu.evt_tx_hash = call_tx_hash and pu.evt_block_number = sp.call_block_number
-    inner join {{ source('nexusmutual_ethereum', 'StakingPool_call_manager') }} m on sp.call_tx_hash = m.call_tx_hash and sp.call_block_number = m.call_block_number
-  where sp.call_success
-    and m.call_success
-),
-
-staking_pool_managers as (
-  select
-    t.pool_id,
-    t.manager as manager_address,
-    ens.name as manager_ens,
-    coalesce(ens.name, cast(t.manager as varchar)) as manager
-  from (
+    sp.pool_id,
+    sp.pool_address,
+    sp.pool_created_time,
+    sp.pool_type,
+    sp.manager,
+    sp.initial_pool_fee,
+    sp.current_management_fee,
+    sp.max_management_fee,
+    spp.total_weight as leverage,
+    spp.product_count
+  from staking_pool_base sp
+    inner join (
       select
         pool_id,
-        manager,
-        row_number() over (partition by pool_id order by block_time, call_trace_address desc) as rn
-      from staking_pool_managers_history
-    ) t
-    left join labels.ens on t.manager = ens.address
-  where t.rn = 1
+        count(distinct product_id) filter (where target_weight > 0) as product_count,
+        sum(target_weight) as total_weight
+      from staking_pool_products
+      group by 1
+    ) spp on sp.pool_id = spp.pool_id
 ),
 
-staking_pool_fee_updates as (
+staked_nxm_per_pool as (
   select
     sp.pool_id,
-    t.pool_address,
-    t.new_fee
+    sum(t.total_amount) as total_nxm_staked
   from (
       select
-        evt_block_time as block_time,
-        contract_address as pool_address,
-        newFee as new_fee,
-        evt_tx_hash as tx_hash,
-        row_number() over (partition by contract_address order by evt_block_time desc, evt_index desc) as rn
-      from {{ source('nexusmutual_ethereum', 'StakingPool_evt_PoolFeeChanged') }}
+        pool_address,
+        sum(total_amount) as total_amount
+      from nexusmutual_ethereum.staking_deposit_extensions
+      where is_active
+      group by 1
+      union all
+      select
+        pool_address,
+        sum(amount) as total_amount
+      from nexusmutual_ethereum.staking_events
+      where is_active
+        --and flow_type in ('withdraw', 'stake burn')
+        and flow_type = 'withdraw' -- burn TBD
+      group by 1
     ) t
-    inner join staking_pools_created sp on t.pool_address = sp.pool_address
-  where t.rn = 1
+    inner join staking_pools sp on t.pool_address = sp.pool_address
+  group by 1
+),
+
+staked_nxm_allocated as (
+  select
+    w.pool_id,
+    sum(w.target_weight * s.total_nxm_staked) as total_nxm_allocated
+  from staking_pool_products w
+    inner join staked_nxm_per_pool s on w.pool_id = s.pool_id
+  group by 1
+),
+
+staking_pool_fee_history as (
+  select
+    sp.pool_id,
+    sp.pool_address,
+    t.start_time,
+    coalesce(
+      date_add('second', -1, lead(t.start_time) over (partition by t.pool_address order by t.start_time)),
+      now()
+    ) as end_time,
+    t.pool_fee
+  from staking_pools sp
+    inner join (
+      select
+        pool_address,
+        pool_created_time as start_time,
+        initial_pool_fee as pool_fee
+      from staking_pools
+      union all
+      select
+        contract_address as pool_address,
+        evt_block_time as start_time,
+        newFee / 100.00 as pool_fee
+      from nexusmutual_ethereum.StakingPool_evt_PoolFeeChanged
+    ) t on sp.pool_address = t.pool_address
+),
+
+covers as (
+  select
+    *,
+    date_diff('second', cover_start_time, cover_end_time) as cover_period_seconds
+  from nexusmutual_ethereum.covers_v2
+),
+
+cover_premiums as (
+  select
+    c.cover_id,
+    c.cover_start_time,
+    c.cover_end_time,
+    c.staking_pool_id,
+    c.product_id,
+    c.premium,
+    c.commission as cover_commision,
+    c.premium * 0.5 as commission,
+    c.commission_ratio * c.premium * 0.5 as commission_distibutor_fee,
+    c.premium * 0.5 * h.pool_fee as pool_manager_commission,
+    c.premium * 0.5 * (1 - h.pool_fee) as staker_commission,
+    c.premium_period_ratio * c.premium * 0.5 as commission_emitted,
+    c.premium_period_ratio * c.premium * 0.5 * h.pool_fee as pool_manager_commission_emitted,
+    c.premium_period_ratio * c.premium * 0.5 * (1 - h.pool_fee) as staker_commission_emitted
+  from covers c
+    inner join staking_pool_fee_history h on c.staking_pool_id = h.pool_id
+      and c.cover_start_time between h.start_time and h.end_time
+),
+
+cover_premium_commissions as (
+  select
+    staking_pool_id,
+    sum(commission) as total_commission,
+    sum(commission_emitted) as total_commission_emitted,
+    sum(commission_distibutor_fee) as pool_distributor_commission,
+    sum(pool_manager_commission) as pool_manager_commission,
+    sum(pool_manager_commission_emitted) as pool_manager_commission_emitted,
+    sum(staker_commission) as staker_commission,
+    sum(staker_commission_emitted) as staker_commission_emitted
+  from cover_premiums
+  group by 1
+),
+
+staking_rewards as (
+  select
+    mr.call_block_time as block_time,
+    mr.call_block_number as block_number,
+    date_trunc('day', mr.call_block_time) as block_date,
+    mr.poolId as pool_id,
+    c.product_id,
+    c.cover_id,
+    c.cover_start_date,
+    c.cover_end_date,
+    mr.amount / 1e18 as reward_amount_expected_total,
+    mr.amount / c.cover_period_seconds / 1e18 as reward_amount_per_second,
+    mr.amount / c.cover_period_seconds * 86400.0 / 1e18 as reward_amount_per_day,
+    mr.call_tx_hash as tx_hash
+  from (
+      select call_block_time, call_block_number, poolId, amount, call_trace_address, call_tx_hash
+      from nexusmutual_ethereum.TokenController_call_mintStakingPoolNXMRewards
+      where call_success
+      union all
+      select call_block_time, call_block_number, poolId, amount, call_trace_address, call_tx_hash
+      from nexusmutual_ethereum.TokenController2_call_mintStakingPoolNXMRewards
+      where call_success
+    ) mr
+    inner join covers c on mr.call_tx_hash = c.tx_hash and mr.call_block_number = c.block_number
+  where mr.poolId = c.staking_pool_id
+    and (c.trace_address is null
+      or slice(mr.call_trace_address, 1, cardinality(c.trace_address)) = c.trace_address)
+),
+
+staking_pool_day_sequence as (
+  select
+    sp.pool_id,
+    sp.pool_address,
+    s.block_date
+  from staking_pools sp
+    cross join unnest (
+      sequence(
+        cast(date_trunc('day', sp.pool_created_time) as timestamp),
+        cast(date_trunc('day', now()) as timestamp),
+        interval '1' day
+      )
+    ) as s(block_date)
+),
+
+daily_rewards as (
+  select distinct
+    d.pool_id,
+    d.block_date,
+    sum(r.reward_amount_per_day) over (partition by d.pool_id order by d.block_date) as reward_amount_current_total,
+    dense_rank() over (partition by d.pool_id order by d.block_date desc) as rn
+  from staking_pool_day_sequence d
+    left join staking_rewards r on d.pool_id = r.pool_id and d.block_date between date_add('day', 1, r.cover_start_date) and r.cover_end_date
+),
+
+expected_rewards as (
+  select
+    pool_id,
+    sum(reward_amount_expected_total) as reward_amount_expected_total
+  from staking_rewards
+  group by 1
 )
 
 select
   sp.pool_id,
-  sp.pool_address,
-  spm.manager_address,
-  spm.manager_ens,
-  spm.manager,
-  sp.is_private_pool,
-  sp.initial_pool_fee,
-  coalesce(spf.new_fee, sp.initial_pool_fee) as current_pool_fee,
+  sp.manager,
+  sp.pool_type,
+  sp.current_management_fee,
   sp.max_management_fee,
-  spc.product_id,
-  spc.initial_price,
-  coalesce(spc.updated_target_price, spc.target_price) as target_price,
-  spc.initial_weight,
-  spc.target_weight,
-  sp.block_time as pool_created_time,
-  if(spc.is_product_added, spc.updated_time, sp.block_time) as product_added_time
-from staking_pools_created sp
-  inner join staking_pool_products_combined spc on sp.pool_id = spc.pool_id
-  left join staking_pool_managers spm on sp.pool_id = spm.pool_id
-  left join staking_pool_fee_updates spf on sp.pool_id = spf.pool_id
+  sp.leverage,
+  sp.product_count,
+  coalesce(t.total_nxm_staked, 0) as total_nxm_staked,
+  coalesce(a.total_nxm_allocated, 0) as total_nxm_allocated,
+  dr.reward_amount_current_total,
+  er.reward_amount_expected_total,
+  c.pool_manager_commission + c.pool_distributor_commission + c.staker_commission as total_commission,
+  c.pool_distributor_commission,
+  c.staker_commission_emitted,
+  c.staker_commission - c.staker_commission_emitted as future_staker_commission,
+  c.pool_manager_commission_emitted,
+  c.pool_manager_commission - c.pool_manager_commission_emitted as future_pool_manager_commission
+from staking_pools sp
+  left join staked_nxm_per_pool t on sp.pool_id = t.pool_id
+  left join staked_nxm_allocated a on sp.pool_id = a.pool_id
+  left join daily_rewards dr on sp.pool_id = dr.pool_id and dr.rn = 1
+  left join expected_rewards er on sp.pool_id = er.pool_id
+  left join cover_premium_commissions c on sp.pool_id = c.staking_pool_id
