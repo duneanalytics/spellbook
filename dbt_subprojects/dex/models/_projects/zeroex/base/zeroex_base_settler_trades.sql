@@ -53,6 +53,7 @@ settler_txs AS (
         method_id,
         contract_address,
         MAX(varbinary_substring(tracker,1,12)) AS zid,
+        settler_address,
         CASE 
             WHEN method_id = 0x1fff991f THEN MAX(varbinary_substring(tracker,14,3))
             WHEN method_id = 0xfd3ad6d4 THEN MAX(varbinary_substring(tracker,13,3))
@@ -64,7 +65,8 @@ settler_txs AS (
             block_time, 
             "to" AS contract_address,
             varbinary_substring(input,1,4) AS method_id,
-            varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker
+            varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker,
+            a.settler_address
         FROM 
             {{ source('base', 'traces') }} AS tr
         JOIN 
@@ -79,7 +81,7 @@ settler_txs AS (
             {% endif %}
     ) 
     GROUP BY 
-        1,2,3,4,5
+        1,2,3,4,5,6
 ),
 
 tbl_all_logs AS (
