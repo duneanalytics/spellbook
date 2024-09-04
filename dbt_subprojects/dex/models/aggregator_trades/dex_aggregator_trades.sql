@@ -28,18 +28,12 @@
     ,ref('odos_trades')
 ] %}
 
-WITH aggregator_base_trades AS (
-    SELECT *
-    FROM {{ ref('dex_aggregator_base_trades') }}
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('block_time') }}
-    {% endif %}
-)
-
-, enriched_aggregator_base_trades AS (
+WITH enriched_aggregator_base_trades AS (
     {{
-        add_amount_usd(
-            trades_cte = 'aggregator_base_trades'
+        enrich_dex_aggregator_trades(
+            base_trades = ref('dex_aggregator_base_trades')
+            , filter = "1 = 1"
+            , tokens_erc20_model = source('tokens', 'erc20')
         )
     }}
 )

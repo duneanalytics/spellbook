@@ -26,11 +26,12 @@ with base_union as (
             , block_date
             , block_month
             , block_time
-            , token_bought_symbol
-            , token_sold_symbol
-            , token_pair
-            , token_bought_amount
-            , token_sold_amount
+            -- , block_number -- missing yet
+--             , token_bought_symbol
+--             , token_sold_symbol
+--             , token_pair
+--             , token_bought_amount
+--             , token_sold_amount
             , cast(token_bought_amount_raw as uint256) as token_bought_amount_raw
             , cast(token_sold_amount_raw as uint256) as token_sold_amount_raw
             , token_bought_address
