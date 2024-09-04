@@ -52,6 +52,7 @@ settler_txs AS (
         block_number,
         method_id,
         contract_address,
+        settler_address,
         MAX(varbinary_substring(tracker,1,12)) AS zid,
         CASE 
             WHEN method_id = 0x1fff991f THEN MAX(varbinary_substring(tracker,14,3))
@@ -63,6 +64,7 @@ settler_txs AS (
             block_number, 
             block_time, 
             "to" AS contract_address,
+            settler_address,
             varbinary_substring(input,1,4) AS method_id,
             varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker
         FROM 
@@ -79,7 +81,7 @@ settler_txs AS (
             {% endif %}
     ) 
     GROUP BY 
-        1,2,3,4,5
+        1,2,3,4,5,6
 ),
 
 tbl_all_logs AS (
@@ -90,6 +92,7 @@ tbl_all_logs AS (
         ROW_NUMBER() OVER (PARTITION BY logs.tx_hash ORDER BY index) rn_first, 
         index,
         CASE 
+            when varbinary_substring(logs.topic1, 13, 20)= st.settler_address  then 1 
             when topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65 
                     and varbinary_substring(logs.topic1, 13, 20) = st.contract_address then 1 
             WHEN varbinary_substring(logs.topic2, 13, 20) = logs.tx_from THEN 1
