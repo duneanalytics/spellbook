@@ -35,7 +35,7 @@ select
     ,b.*
 from balances b
 left join dex_pools p
-on b.address = p.address
-and b.token_address = p.token_address
+    on b.address = p.address
+    and b.token_address = p.token_address
 
 
