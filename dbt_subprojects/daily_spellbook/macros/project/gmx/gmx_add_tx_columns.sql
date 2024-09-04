@@ -1,7 +1,7 @@
 {%- macro gmx_add_tx_columns(model_cte, blockchain, columns = []) -%}
 
 SELECT 
-    model.*,
+    model.*
     {% for column in columns %}
     , tx."{{column}}" as tx_{{column}}
     {% endfor %}
