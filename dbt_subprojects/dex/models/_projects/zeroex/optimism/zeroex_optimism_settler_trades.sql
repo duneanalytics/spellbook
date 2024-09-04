@@ -90,6 +90,7 @@ tbl_all_logs AS (
         ROW_NUMBER() OVER (PARTITION BY logs.tx_hash ORDER BY index) rn_first, 
         index,
         CASE 
+            when varbinary_substring(logs.topic1, 13, 20)= st.settler_address  then 1 
             when topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65 
                     and varbinary_substring(logs.topic1, 13, 20) = st.contract_address then 1 
             WHEN varbinary_substring(logs.topic2, 13, 20) = logs.tx_from THEN 1
