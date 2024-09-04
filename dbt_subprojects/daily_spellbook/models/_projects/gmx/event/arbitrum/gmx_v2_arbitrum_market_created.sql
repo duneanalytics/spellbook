@@ -113,29 +113,33 @@ WITH evt_data_1 AS (
 )
 
 -- full data 
-SELECT 
-    blockchain,
-    block_time,
-    block_number,
-    ED.tx_hash,
-    ED.index,
-    contract_address,
-    event_name,
-    msg_sender,
-    account,
-    
-    from_hex(market_token) AS market_token,
-    from_hex(index_token) AS index_token,
-    from_hex(long_token) AS long_token,
-    from_hex(short_token) AS short_token,
-    from_hex(salt) AS salt,
-    CASE 
-        WHEN index_token = '0x0000000000000000000000000000000000000000' THEN true
-        ELSE false
-    END AS spot_only,
-    'GM' AS market_token_symbol,
-    18 AS market_token_decimals
-FROM evt_data AS ED
-LEFT JOIN evt_data_parsed AS EDP
-    ON ED.tx_hash = EDP.tx_hash
-        AND ED.index = EDP.index
+, AS full_data AS (
+    SELECT 
+        blockchain,
+        block_time,
+        block_number,
+        ED.tx_hash,
+        ED.index,
+        contract_address,
+        event_name,
+        msg_sender,
+        account,
+        
+        from_hex(market_token) AS market_token,
+        from_hex(index_token) AS index_token,
+        from_hex(long_token) AS long_token,
+        from_hex(short_token) AS short_token,
+        from_hex(salt) AS salt,
+        CASE 
+            WHEN index_token = '0x0000000000000000000000000000000000000000' THEN true
+            ELSE false
+        END AS spot_only,
+        'GM' AS market_token_symbol,
+        18 AS market_token_decimals
+    FROM evt_data AS ED
+    LEFT JOIN evt_data_parsed AS EDP
+        ON ED.tx_hash = EDP.tx_hash
+            AND ED.index = EDP.index
+)
+
+gmx_add_tx_columns(full_data, {{blockchain_name}}, columns=["from","to"])
