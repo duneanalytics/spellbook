@@ -51,7 +51,7 @@ filtered_daily_agg_balances as (
     and token_address in (select token_address from {{token_list}})
     {% endif %}
     {% if address_token_list is not none %}
-    and (address, token_address) in (select (address, token_address) from {{address_token_list}})
+    and (address, token_address) in (select address, token_address from {{address_token_list}})
     {% endif %}
 )
 ,changed_balances as (
