@@ -13,10 +13,10 @@
 
 {%- macro balances_incremental_subset_daily(
         blockchain,
-        address_list,
-        token_list,
-        address_token_list,
-        start_date
+        start_date,
+        address_list = none,
+        token_list = none,
+        address_token_list = none
     )
 %}
 

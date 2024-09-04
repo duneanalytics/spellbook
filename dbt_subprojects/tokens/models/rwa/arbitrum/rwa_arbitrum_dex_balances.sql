@@ -17,9 +17,9 @@ with dex_pools as (
         pool as address,
         token_address
     from {{ref('rwa_arbitrum_dex_pools')}}
-),
+)
 
-, balances as (
+,balances as (
     {{
       balances_incremental_subset_daily(
             blockchain = 'arbitrum',
@@ -31,8 +31,8 @@ with dex_pools as (
 
 select
     p.project
-    p.version
-    b.*
+    ,p.version
+    ,b.*
 from balances b
 left join dex_pools p
 using (address, token_address)

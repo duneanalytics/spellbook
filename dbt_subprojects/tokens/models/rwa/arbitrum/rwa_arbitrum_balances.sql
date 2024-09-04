@@ -17,9 +17,9 @@ rwa_tokens as (
     token_address
   from {{ref('rwa_arbitrum_tokens')}}
   where type = 'RWA'
-),
+)
 
-, balances as (
+,balances as (
     {{
       balances_incremental_subset_daily(
             blockchain = 'arbitrum',
@@ -31,7 +31,7 @@ rwa_tokens as (
 
 select
     t.project
-    b.*
+    ,b.*
 from balances b
 left join rwa_tokens t
 using (token_address)
