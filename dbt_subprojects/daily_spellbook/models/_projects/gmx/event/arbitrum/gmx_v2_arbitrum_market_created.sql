@@ -113,7 +113,7 @@ WITH evt_data_1 AS (
 )
 
 -- full data 
-, AS full_data AS (
+, full_data AS (
     SELECT 
         blockchain,
         block_time,
