@@ -3,7 +3,7 @@
 SELECT
     '{{ blockchain }}' as blockchain
     ,chain_id
-    ,date_trunc('hour',"time") as block_hour
+    ,date_trunc('hour',block_time) as block_hour
     ,contract_address as token_address
     ,symbol as token_symbol
     ,token_standard as token_standard
