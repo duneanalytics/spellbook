@@ -21,7 +21,40 @@
 %}
 
 WITH
-changed_balances as (
+filtered_daily_agg_balances as (
+    select
+        b.blockchain,
+        b.day,
+        b.block_number,
+        b.block_time,
+        b.address,
+        b.token_address,
+        b.token_standard,
+        b.balance_raw,
+        CASE
+            WHEN b.token_standard = 'erc20' THEN b.balance_raw / power(10, erc20_tokens.decimals)
+            WHEN b.token_standard = 'native' THEN b.balance_raw / power(10, 18)
+            ELSE b.balance_raw
+        END as balance,
+        erc20_tokens.symbol as token_symbol,
+        token_id
+    from {{ref('tokens_'~blockchain~'_balances_daily_agg_base')}} b
+    left join {{ source('tokens', 'erc20') }} erc20_tokens on
+        erc20_tokens.blockchain = '{{blockchain}}'
+        AND erc20_tokens.contract_address = b.token_address
+        AND b.token_standard = 'erc20'
+    where day >= cast('{{start_date}}' as date)
+    {% if address_list is not none %}
+    and address in (select address from {{address_list}})
+    {% endif %}
+    {% if token_list is not none %}
+    and token_address in (select token_address from {{token_list}})
+    {% endif %}
+    {% if address_token_list is not none %}
+    and (address, token_address) in (select (address, token_address) from {{address_token_list}})
+    {% endif %}
+)
+,changed_balances as (
     select *
      , lead(cast(day as timestamp)) over (partition by token_address,address,token_id order by day asc) as next_update_day
     from (
@@ -35,16 +68,7 @@ changed_balances as (
             ,token_standard
             ,token_id
             ,balance
-        from {{ref('tokens_'~blockchain~'_balances_daily_agg')}}
-        {% if address_list is not none %}
-        inner join (select distinct address from {{address_list}}) using (address)
-        {% endif %}
-        {% if token_list is not none %}
-        inner join (select distinct token_address from {{token_list}}) using (token_address)
-        {% endif %}
-        {% if address_token_list is not none %}
-        inner join (select distinct address, token_address from {{address_token_list}}) using (address, token_address)
-        {% endif %}
+        from filtered_daily_agg_balances
         where day >= cast('{{start_date}}' as date)
         {% if is_incremental() %}
             and {{ incremental_predicate('day') }}
@@ -64,16 +88,7 @@ changed_balances as (
             ,token_standard
             ,token_id
             ,max_by(balance, day) as balance
-        from {{ref('tokens_'~blockchain~'_balances_daily_agg')}}
-        {% if address_list is not none %}
-        inner join (select distinct address from {{address_list}}) using (address)
-        {% endif %}
-        {% if token_list is not none %}
-        inner join (select distinct token_address from {{token_list}}) using (token_address)
-        {% endif %}
-        {% if address_token_list is not none %}
-        inner join (select distinct address, token_address from {{address_token_list}}) using (address, token_address)
-        {% endif %}
+        from filtered_daily_agg_balances
         where day >= cast('{{start_date}}' as date)
         and not {{ incremental_predicate('day') }}
         group by 1,3,4,5,6,7
