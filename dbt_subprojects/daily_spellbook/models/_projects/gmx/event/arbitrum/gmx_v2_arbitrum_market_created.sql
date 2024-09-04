@@ -117,6 +117,7 @@ WITH evt_data_1 AS (
     SELECT 
         blockchain,
         block_time,
+        DATE(model.block_time) AS block_date,
         block_number,
         ED.tx_hash,
         ED.index,
@@ -145,7 +146,7 @@ WITH evt_data_1 AS (
 
 --can be removed once decoded tables are fully denormalized
 {{
-    gmx_add_tx_columns(
+    add_tx_columns(
         model_cte = 'full_data'
         , blockchain = blockchain_name
         , columns = ['from', 'to']
