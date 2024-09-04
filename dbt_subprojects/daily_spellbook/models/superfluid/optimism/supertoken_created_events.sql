@@ -3,6 +3,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge'
+    )
 }}
 
 {% set project_start_block_number = '4300000' %}
