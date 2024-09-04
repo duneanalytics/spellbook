@@ -117,7 +117,7 @@ WITH evt_data_1 AS (
     SELECT 
         blockchain,
         block_time,
-        DATE(model.block_time) AS block_date,
+        DATE(block_time) AS block_date,
         block_number,
         ED.tx_hash,
         ED.index,
