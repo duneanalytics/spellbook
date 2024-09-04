@@ -16,6 +16,7 @@
                                             ,"optimism"
                                             ,"polygon"
                                             ,"scroll"
+                                            ,"sei"
                                             ,"zkevm"
                                             ,"zksync"
                                             ,"zora"
@@ -41,6 +42,7 @@
     ,'optimism'
     ,'polygon'
     ,'scroll'
+    ,'sei'
     ,'zkevm'
     ,'zksync'
     ,'zora'

@@ -38,4 +38,6 @@ sources:
     tables:
       - name: V2Pool_evt_PoolSwap
       - name: V2Factory_evt_PoolCreated
-
+  - name: swaap_v2_scroll
+    tables:
+      - name: Vault_evt_Swap
