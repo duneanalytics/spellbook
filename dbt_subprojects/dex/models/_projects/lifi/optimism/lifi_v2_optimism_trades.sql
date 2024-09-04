@@ -61,14 +61,6 @@ SELECT
     cast(date_trunc('DAY', dexs.block_time) as date) as block_date,
     cast(date_trunc('MONTH', dexs.block_time) as date) as block_month,
     dexs.block_time,
-    erc20a.symbol as token_bought_symbol,
-    erc20b.symbol as token_sold_symbol,
-    case
-        when lower(erc20a.symbol) > lower(erc20b.symbol) then concat(erc20b.symbol, '-', erc20a.symbol)
-        else concat(erc20a.symbol, '-', erc20b.symbol)
-    end as token_pair,
-    dexs.token_bought_amount_raw / power(10, erc20a.decimals) AS token_bought_amount,
-    dexs.token_sold_amount_raw / power(10, erc20b.decimals) AS token_sold_amount,
     dexs.token_bought_amount_raw,
     dexs.token_sold_amount_raw,
     dexs.token_bought_address,
@@ -90,9 +82,3 @@ inner join {{ source('optimism', 'transactions') }} tx
     {% if is_incremental() %}
     and tx.block_time >= date_trunc('day', now() - interval '7' Day)
     {% endif %}
-left join {{ source('tokens', 'erc20') }} erc20a
-    on erc20a.contract_address = dexs.token_bought_address
-    and erc20a.blockchain = 'optimism'
-left join {{ source('tokens', 'erc20') }} erc20b
-    on erc20b.contract_address = dexs.token_sold_address
-    and erc20b.blockchain = 'optimism'
