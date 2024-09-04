@@ -23,8 +23,6 @@ SELECT
     contract_address,
     event_name,
     msg_sender,
-    topic1, 
-    topic2,
     key,
     account,
     reason_bytes,

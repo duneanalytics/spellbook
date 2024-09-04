@@ -20,9 +20,7 @@ WITH evt_data_1 AS (
         contract_address,
         eventName AS event_name,
         eventData AS data,
-        msgSender AS msg_sender,
-        topic1,
-        CAST(NULL AS varbinary) AS topic2  -- Ensure topic2 is treated as varbinary
+        msgSender AS msg_sender
     FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -39,9 +37,7 @@ WITH evt_data_1 AS (
         contract_address,
         eventName AS event_name,
         eventData AS data,
-        msgSender AS msg_sender,
-        topic1,
-        topic2
+        msgSender AS msg_sender
     FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -155,6 +151,7 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index,
+        MAX(CASE WHEN key_name = 'account' THEN value END) AS account,        
         MAX(CASE WHEN key_name = 'market' THEN value END) AS market,
         MAX(CASE WHEN key_name = 'collateralToken' THEN value END) AS collateral_token,
         MAX(CASE WHEN key_name = 'sizeInUsd' THEN value END) AS size_in_usd,
@@ -198,9 +195,8 @@ WITH evt_data_1 AS (
         contract_address,
         event_name,
         msg_sender,
-        topic1, 
-        topic2,
         
+        from_hex(account) AS account,
         from_hex(market) AS market,
         from_hex(collateral_token) AS collateral_token,
         TRY_CAST(size_in_usd AS DOUBLE) AS size_in_usd,
@@ -244,9 +240,8 @@ SELECT
     contract_address,
     event_name,
     msg_sender,
-    topic1,
-    topic2,
-    
+
+    account,
     ED.market AS market,
     ED.collateral_token AS collateral_token,
     size_in_usd / POWER(10, 30) AS size_in_usd,

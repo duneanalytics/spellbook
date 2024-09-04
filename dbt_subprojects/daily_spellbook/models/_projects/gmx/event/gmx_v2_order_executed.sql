@@ -22,9 +22,7 @@ SELECT
     index,
     contract_address,
     event_name,
-    msg_sender,
-    topic1, 
-    topic2,    
+    msg_sender,  
     key,
     account,
     secondary_order_type

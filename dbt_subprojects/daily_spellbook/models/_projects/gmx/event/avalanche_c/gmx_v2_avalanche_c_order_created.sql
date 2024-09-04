@@ -20,9 +20,7 @@ WITH evt_data_1 AS (
         contract_address,
         eventName AS event_name,
         eventData AS data,
-        msgSender AS msg_sender,
-        topic1,
-        CAST(NULL AS varbinary) AS topic2  -- Ensure topic2 is treated as varbinary
+        msgSender AS msg_sender
     FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -39,9 +37,7 @@ WITH evt_data_1 AS (
         contract_address,
         eventName AS event_name,
         eventData AS data,
-        msgSender AS msg_sender,
-        topic1,
-        topic2
+        msgSender AS msg_sender
     FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -197,8 +193,6 @@ WITH evt_data_1 AS (
         contract_address,
         event_name,
         msg_sender,
-        topic1, 
-        topic2,
         
         from_hex(account) AS account,
         from_hex(receiver) AS receiver,
@@ -239,8 +233,6 @@ SELECT
     contract_address,
     event_name,
     msg_sender,
-    topic1,
-    topic2,
     
     account,
     receiver,
