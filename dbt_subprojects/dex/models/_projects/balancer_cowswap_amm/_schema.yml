@@ -3,7 +3,7 @@ version: 2
 models:
   - name: balancer_cowswap_amm_trades
     meta:
-      blockchain: ethereum, gnosis
+      blockchain: arbitrum, ethereum, gnosis
       sector: trades
       project: balancer_cowswap_amm
       contributors: viniabussafi
@@ -89,7 +89,7 @@ models:
 
   - name: labels_balancer_cowswap_amm_pools
     meta:
-      blockchain: ethereum, gnosis
+      blockchain: arbitrum, ethereum, gnosis
       sector: labels
       project: balancer_cowswap_amm
       contributors: viniabussafi

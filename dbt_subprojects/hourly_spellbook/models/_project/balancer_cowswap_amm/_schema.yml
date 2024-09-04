@@ -3,7 +3,7 @@ version: 2
 models:
   - name: balancer_cowswap_amm_balances
     meta:
-      blockchain: ethereum, gnosis
+      blockchain: arbitrum, ethereum, gnosis
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
@@ -31,7 +31,7 @@ models:
 
   - name: balancer_cowswap_amm_liquidity
     meta:
-      blockchain: ethereum, gnosis
+      blockchain: arbitrum, ethereum, gnosis
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
