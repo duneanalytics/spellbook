@@ -39,20 +39,25 @@ filtered_daily_agg_balances as (
         erc20_tokens.symbol as token_symbol,
         token_id
     from {{ref('tokens_'~blockchain~'_balances_daily_agg_base')}} b
+    {% if address_list is not none %}
+    inner join (select distinct address from {{address_list}}) f1
+    on f1.address = b.address
+    {% endif %}
+    {% if token_list is not none %}
+    inner join (select distinct token_address from {{token_list}}) f2
+    on f2.token_address = b.token_address
+    {% endif %}
+    {% if address_token_list is not none %}
+    inner join (select distinct address, token_address from {{address_token_list}}) f3
+    on f3.token_address = b.token_address
+    and f3.address = b.address
+    {% endif %}
     left join {{ source('tokens', 'erc20') }} erc20_tokens on
         erc20_tokens.blockchain = '{{blockchain}}'
         AND erc20_tokens.contract_address = b.token_address
         AND b.token_standard = 'erc20'
     where day >= cast('{{start_date}}' as date)
-    {% if address_list is not none %}
-    and address in (select address from {{address_list}})
-    {% endif %}
-    {% if token_list is not none %}
-    and token_address in (select token_address from {{token_list}})
-    {% endif %}
-    {% if address_token_list is not none %}
-    and (address, token_address) in (select address, token_address from {{address_token_list}})
-    {% endif %}
+
 )
 ,changed_balances as (
     select *
