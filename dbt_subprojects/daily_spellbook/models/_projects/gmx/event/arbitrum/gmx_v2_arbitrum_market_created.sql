@@ -142,4 +142,7 @@ WITH evt_data_1 AS (
             AND ED.index = EDP.index
 )
 
-gmx_add_tx_columns(full_data, {{blockchain_name}}, columns=["from","to"])
+SELECT 
+    *
+FROM 
+    (gmx_add_tx_columns(full_data, {{blockchain_name}}, columns=["from","to"]))
