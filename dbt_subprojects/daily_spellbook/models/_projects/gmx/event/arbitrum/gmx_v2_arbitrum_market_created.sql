@@ -142,7 +142,12 @@ WITH evt_data_1 AS (
             AND ED.index = EDP.index
 )
 
-SELECT 
-    *
-FROM 
-    (gmx_add_tx_columns(full_data, {{blockchain_name}}, columns=["from","to"]))
+
+--can be removed once decoded tables are fully denormalized
+{{
+    gmx_add_tx_columns(
+        model_cte = 'full_data'
+        , blockchain = {{blockchain_name}}
+        , columns = ['from', 'to']
+    )
+}}
