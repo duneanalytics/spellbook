@@ -34,4 +34,4 @@ select
     ,b.*
 from balances b
 left join rwa_tokens t
-using (token_address)
+and b.token_address = t.token_address
