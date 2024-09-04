@@ -15,11 +15,11 @@ SELECT
 FROM {{source('tokens_' ~ blockchain, 'transfers')}}
 LEFT JOIN {{ source('evms','info') }} evm
     ON evm.blockchain = '{{ blockchain }}'
-WHERE token_standard != 'native'    --temporary untill we fix null address in native transfers
+WHERE token_standard != 'native'    --temporary until we fix null address in native transfers
 {% if is_incremental() %}
-AND {{ incremental_predicate('time') }}
+AND {{ incremental_predicate('block_time') }}
 {% else %}
-AND {{ incremental_predicate('time') }}   -- temp for fast CI
+AND {{ incremental_predicate('block_time') }}   -- temp for fast CI
 {% endif %}
 GROUP BY 1,2,3,4,5,6
 {% endmacro %}
