@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: rwa_arbitrum_assets
+  - name: rwa_arbitrum_tokens
 
     meta:
       blockchain: arbitrum
@@ -60,7 +60,7 @@ models:
     - *project
     - *type
 
-  - name: rwa_arbitrum_asset_user_balances
+  - name: rwa_arbitrum_balances
 
     meta:
       blockchain: arbitrum

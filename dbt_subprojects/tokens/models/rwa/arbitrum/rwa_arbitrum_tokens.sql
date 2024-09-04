@@ -2,7 +2,7 @@
 {{
     config(
         schema = 'rwa_arbitrum'
-        ,alias = 'assets'
+        ,alias = 'tokens'
         ,materialized = 'table'
         ,post_hook='{{ expose_spells(\'["arbitrum"]\',
                         "sector",
@@ -11,7 +11,7 @@
     )
 }}
 
-select  
+select
     token_address,
     symbol,
     project,

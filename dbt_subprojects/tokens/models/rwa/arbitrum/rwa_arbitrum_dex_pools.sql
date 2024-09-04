@@ -11,7 +11,7 @@
     )
 }}
 
-select  
+select
     project,
     version,
     pool,

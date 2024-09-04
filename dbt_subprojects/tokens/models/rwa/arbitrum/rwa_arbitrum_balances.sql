@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'rwa_arbitrum',
-    alias = 'dex_balances',
+    alias = 'balances',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -10,31 +10,28 @@
   )
 }}
 
-with dex_pools as (
-    select
-        project,
-        version,
-        pool as address,
-        token_address
-    from {{ref('rwa_arbitrum_dex_pools')}}
+with
+rwa_tokens as (
+  select
+    project,
+    token_address
+  from {{ref('rwa_arbitrum_tokens')}}
+  where type = 'RWA'
 ),
 
 , balances as (
     {{
       balances_incremental_subset_daily(
             blockchain = 'arbitrum',
-            address_token_list = 'dex_pools',
-            start_date = '2023-11-17',
+            token_list = 'rwa_tokens',
+            start_date = '2023-11-17'
       )
     }}
 )
 
 select
-    p.project
-    p.version
+    t.project
     b.*
 from balances b
-left join dex_pools p
-using (address, token_address)
-
-
+left join rwa_tokens t
+using (token_address)
