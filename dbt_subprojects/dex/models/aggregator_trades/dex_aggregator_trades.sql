@@ -36,7 +36,7 @@ WITH aggregator_base_trades AS (
     {% endif %}
 )
 
-, enrriched_aggregator_base_trades AS (
+, enriched_aggregator_base_trades AS (
     {{
         add_amount_usd(
             trades_cte = 'aggregator_base_trades'
@@ -58,8 +58,8 @@ WITH aggregator_base_trades AS (
         , token_pair
         , token_bought_amount
         , token_sold_amount
-        , try_cast(token_bought_amount_raw as uint256) as token_bought_amount_raw
-        , try_cast(token_sold_amount_raw as uint256) as token_sold_amount_raw
+        , cast(token_bought_amount_raw as uint256) as token_bought_amount_raw
+        , cast(token_sold_amount_raw as uint256) as token_sold_amount_raw
         , amount_usd
         , token_bought_address
         , token_sold_address
@@ -82,7 +82,7 @@ WITH aggregator_base_trades AS (
     {% endfor %}
 )
 {% set cte_to_union = [
-    'enrriched_aggregator_base_trades'
+    'enriched_aggregator_base_trades'
     , 'as_is_dexs'
     ]
 %}
