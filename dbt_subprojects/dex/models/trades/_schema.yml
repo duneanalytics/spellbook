@@ -6,7 +6,7 @@ models:
       docs_slug: /curated/trading/DEX/dex-trades
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei
       sector: dex
-      short_description: The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs). This table contains a detailed breakdown of trade execution containing one or many trades per transaction. 
+      short_description: The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs). This table contains a detailed breakdown of trade execution containing one or many trades per transaction.
       contributors: 0xRob, hosuke, jeff-dude, tomfutago
     config:
       tags: [ 'dex', 'trades']
@@ -57,9 +57,13 @@ models:
       - &token_bought_amount
         name: token_bought_amount
         description: "Amount of the token bought in the display unit"
+        tests:
+          - not_null
       - &token_sold_amount
         name: token_sold_amount
         description: "Amount of the token sold in the display unit"
+        tests:
+          - not_null
       - &token_bought_amount_raw
         name: token_bought_amount_raw
         description: "Amount of the token bought in the base unit"

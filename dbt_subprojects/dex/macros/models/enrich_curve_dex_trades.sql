@@ -37,15 +37,15 @@ WITH base_trades as (
         , case
             when curve_optimism.pool_type is not null
                 then base_trades.token_bought_amount_raw / power(10 , case when curve_optimism.pool_type = 'meta' and curve_optimism.bought_id = INT256 '0' then 18 else erc20_bought.decimals end)
-            else base_trades.token_bought_amount_raw / power(10, erc20_bought.decimals)
+            else base_trades.token_bought_amount_raw / power(10, coalesce(erc20_bought.decimals,18))
         end AS token_bought_amount
         , case
             when curve_ethereum.swap_type is not null
                 then base_trades.token_sold_amount_raw / power(10, case when curve_ethereum.swap_type = 'underlying_exchange_base' then 18 else erc20_sold.decimals end)
             when curve_optimism.pool_type is not null
                 then base_trades.token_sold_amount_raw / power(10 , case when curve_optimism.pool_type = 'meta' and curve_optimism.bought_id = INT256 '0' then erc20_bought.decimals else erc20_sold.decimals end)
-            else base_trades.token_sold_amount_raw / power(10, erc20_sold.decimals)
-        end as token_sold_amount        
+            else base_trades.token_sold_amount_raw / power(10, coalesce(erc20_sold.decimals,18))
+        end as token_sold_amount
         , base_trades.token_bought_amount_raw
         , base_trades.token_sold_amount_raw
         , base_trades.token_bought_address
@@ -117,5 +117,5 @@ select
     , evt_index
 from
     enrichments_with_prices
-    
+
 {% endmacro %}

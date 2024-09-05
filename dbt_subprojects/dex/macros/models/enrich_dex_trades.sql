@@ -33,8 +33,8 @@ WITH base_trades as (
             when lower(erc20_bought.symbol) > lower(erc20_sold.symbol) then concat(erc20_sold.symbol, '-', erc20_bought.symbol)
             else concat(erc20_bought.symbol, '-', erc20_sold.symbol)
             end AS token_pair
-        , base_trades.token_bought_amount_raw / power(10, erc20_bought.decimals) AS token_bought_amount
-        , base_trades.token_sold_amount_raw / power(10, erc20_sold.decimals) AS token_sold_amount
+        , base_trades.token_bought_amount_raw / power(10, coalesce(erc20_bought.decimals,18)) AS token_bought_amount
+        , base_trades.token_sold_amount_raw / power(10, coalesce(erc20_sold.decimals,18)) AS token_sold_amount
         , base_trades.token_bought_amount_raw
         , base_trades.token_sold_amount_raw
         , base_trades.token_bought_address
