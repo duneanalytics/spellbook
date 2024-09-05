@@ -73,8 +73,8 @@ WITH curve AS (
         , token_bought_symbol
         , token_sold_symbol
         , token_pair
-        , token_bought_amount
-        , token_sold_amount
+        , coalesce(token_bought_amount, token_bought_amount_raw/pow(10,18))
+        , coalesce(token_sold_amount, token_sold_amount_raw/pow(10,18))
         , token_bought_amount_raw
         , token_sold_amount_raw
         , amount_usd
