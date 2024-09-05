@@ -2,7 +2,6 @@ version: 2
 
 sources:
   - name: oneinch_polygon
-    description: "decoded events and function calls for 1inch on polygon"
     tables:
       - name: AggregationRouterV3_evt_Swapped
       - name: AggregationRouterV3_call_swap
@@ -66,3 +65,5 @@ sources:
       - name: AggregationRouterV6_call_fillOrderArgs
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
+      - name: lop
+      - name: ar

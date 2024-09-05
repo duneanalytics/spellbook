@@ -21,7 +21,9 @@
     ref('eas_optimism_schemas'),
     ref('eas_polygon_schemas'),
     ref('eas_scroll_schemas'),
-    ref('eas_celo_schemas')
+    ref('eas_celo_schemas'),
+    ref('eas_linea_schemas'),
+    ref('eas_nova_schemas')
   ]
 %}
 
