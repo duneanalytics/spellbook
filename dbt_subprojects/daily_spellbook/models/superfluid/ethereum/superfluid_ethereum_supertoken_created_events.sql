@@ -22,7 +22,7 @@ WITH wrapper_tokens as (
         topic0 = 0xb52c6d9d122e8c07769b96d7bb14e66db58ee03fdebaaa2f92547e9c7ef0e65f
         {% if is_incremental() %}
         AND 
-        {{ incremental_predicate('block_number') }}
+        {{ incremental_predicate('block_time') }}
         {% else %}
         AND block_number >= INTEGER '{{project_start_block_number}}'
         {% endif %}
@@ -40,7 +40,7 @@ custom_tokens as (
         topic0 = 0x437790724a6e97b75d23117f28cdd4b1beeafc34f7a0911ef256e9334f4369a5
         {% if is_incremental() %}
         AND 
-        {{ incremental_predicate('block_number') }}
+        {{ incremental_predicate('block_time') }}
         {% else %}
         AND block_number >= INTEGER '{{project_start_block_number}}'
         {% endif %}

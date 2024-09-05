@@ -27,7 +27,7 @@ WITH data as (
         topic0 = 0x6e8348961b299f365797c30cd18a91284b046858689eeb6150a5ba432fe6583e
         {% if is_incremental() %}
         AND 
-        {{ incremental_predicate('block_number') }}
+        {{ incremental_predicate('block_time') }}
         {% else %}
         AND block_number >= INTEGER '{{project_start_block_number}}'
         {% endif %}
