@@ -1,7 +1,7 @@
 {{ config(
     schema = 'dex'
     , alias = 'prices_beta'
-    , partition_by = ['block_month', 'blockchain']
+    , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'append'
