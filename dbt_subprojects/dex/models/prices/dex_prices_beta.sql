@@ -84,7 +84,7 @@ select
     , contract_address
     , symbol
     , decimals
-    , cast(date_trunc('month', block_time) as date) as block_month, -- for partitioning
+    , cast(date_trunc('month', block_time) as date) as block_month -- for partitioning
     , block_time
     , amount
     , price
