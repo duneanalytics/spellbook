@@ -158,7 +158,7 @@ fills as (
         {% if is_incremental() %}
             AND {{ incremental_predicate('l.block_time') }}
         {% else %}
-            AND tr.block_time >= DATE '{{zeroex_settler_start_date}}'
+            AND l.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
         )
         
@@ -170,7 +170,7 @@ fills as (
         {% if is_incremental() %}
             AND {{ incremental_predicate('tr.block_time') }}
         {% else %}
-            AND tr.block_time >= DATE '{{zeroex_settler_start_date}}'
+            AND l.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
         group by 1,2,3
         ),
