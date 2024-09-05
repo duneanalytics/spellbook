@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: nexusmutual_ethereum_staking_pools
+  - name: nexusmutual_ethereum_base_staking_pools
     meta:
       blockchain: ethereum
       project: nexusmutual
@@ -15,15 +15,22 @@ models:
             - pool_id
             - product_id
     columns:
+      - &block_time_created
+        name: block_time_created
+      - &block_time_product_updated
+        name: block_time_product_updated
+      - &block_time_manager_updated
+        name: block_time_manager_updated
+      - &block_time_fee_updated
+        name: block_time_fee_updated
+      - &block_time_updated
+        name: block_time_updated
       - &pool_id
         name: pool_id
         description: "pool id"
       - &pool_address
         name: pool_address
         description: "pool contract deployment address"
-      - &pool_name
-        name: pool_name
-        description: "pool name"
       - &manager_address
         name: manager_address
         description: "manager address"
@@ -39,8 +46,8 @@ models:
       - &initial_pool_fee
         name: initial_pool_fee
         description: "initial pool management fee"
-      - &current_pool_fee
-        name: current_pool_fee
+      - &current_management_fee
+        name: current_management_fee
         description: "current pool management fee"
       - &max_management_fee
         name: max_management_fee
@@ -48,6 +55,10 @@ models:
       - &product_id
         name: product_id
         description: "product id"
+      - &product_name
+        name: product_name
+      - &product_type
+        name: product_type
       - &initial_price
         name: initial_price
         description: "product initial price"
@@ -66,6 +77,16 @@ models:
       - &product_added_time
         name: product_added_time
         description: "product added datetime in UTC"
+      - &tx_hash_created
+        name: tx_hash_created
+      - &tx_hash_product_updated
+        name: tx_hash_product_updated
+      - &tx_hash_manager_updated
+        name: tx_hash_manager_updated
+      - &tx_hash_fee_updated
+        name: tx_hash_fee_updated
+      - &tx_hash_updated
+        name: tx_hash_updated
 
   - name: nexusmutual_ethereum_staking_events
     meta:
