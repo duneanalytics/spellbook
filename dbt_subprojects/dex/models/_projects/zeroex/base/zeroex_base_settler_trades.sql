@@ -154,13 +154,25 @@ fills as (
         from {{ source('base', 'logs_decoded') }}  l
         join tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
         and event_name in ('TokenExchange', 'OtcOrderFilled', 'SellBaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
-        
+        WHERE 1=1 
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('l.block_time') }}
+        {% else %}
+            AND l.block_time >= DATE '{{zeroex_settler_start_date}}'
+        {% endif %}
         )
         
         select tt.tx_hash, tt.block_number, tt.block_time, count(*) fills_within
         from {{ source('base', 'logs') }}  l
         join signatures on signature = topic0 
         join  tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
+        WHERE 1=1 
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('l.block_time') }}
+        {% else %}
+            AND l.block_time >= DATE '{{zeroex_settler_start_date}}'
+        {% endif %}
+
         group by 1,2,3
         ),
 
