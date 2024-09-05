@@ -157,10 +157,10 @@ SELECT nftt.block_time
 , nftt.amount_original AS token_amount
 , nftt.amount_usd AS price_usd
 , 0 AS tactics_bought
-FROM {{ ref('nft_trades') }} nftt
+FROM {{ source('nft', 'trades') }} nftt
 INNER JOIN {{ source('blast', 'transactions') }} txs ON txs.block_number=nftt.block_number
     AND txs.hash=nftt.tx_hash
-LEFT JOIN {{ref('nft_blast_wash_trades')}} wt ON wt.project = 'fantasy'
+LEFT JOIN {{source('nft_blast', 'wash_trades')}} wt ON wt.project = 'fantasy'
     AND wt.block_number=nftt.block_number
     AND wt.tx_hash=nftt.tx_hash
 WHERE nftt.blockchain = 'blast'
@@ -192,7 +192,7 @@ SELECT block_time
 , amount AS token_amount
 , amount_usd AS price_usd
 , ROUND(amount_usd/19.99) AS tactics_bought
-FROM {{ source('tokens_blast','transfers') }} tt
+FROM {{ source('tokens_blast', 'transfers') }} tt
 WHERE block_number >= 4917909
 AND to = 0x4af1f00f50efbfcdf7a8f2ac02e9bc24825438ac
 AND contract_address = 0x4300000000000000000000000000000000000004

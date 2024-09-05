@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: fantasy_blast_events
+  - name: fantasy_events
     meta:
       blockchain: blast
       project: fantasy
