@@ -4,9 +4,7 @@
     , partition_by = ['block_month', 'blockchain']
     , materialized = 'incremental'
     , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['block_month', 'blockchain', 'contract_address', 'block_time']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , incremental_strategy = 'append'
 )
 }}
 
@@ -27,7 +25,7 @@ with dex_trades as (
         1 = 1
         and amount_usd > 0
         {% if is_incremental() %}
-        and {{ incremental_predicate('block_time') }}
+        and block_time > (select max(block_time) from {{ this }})
         {% else %}
         and block_date >= date '2024-08-01'
         {% endif %}
