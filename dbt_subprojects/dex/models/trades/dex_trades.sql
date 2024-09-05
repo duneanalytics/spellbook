@@ -44,7 +44,7 @@ WITH curve AS (
     {{
         enrich_curve_dex_trades(
             base_trades = ref('dex_base_trades')
-            , filter = "project = 'curve'"
+            , filter = "project = 'curve' and block_time > now() - interval '7' day"
             , curve_ethereum = ref('curve_ethereum_base_trades')
             , curve_optimism = ref('curve_optimism_base_trades')
             , tokens_erc20_model = source('tokens', 'erc20')
@@ -55,7 +55,7 @@ WITH curve AS (
     {{
         enrich_dex_trades(
             base_trades = ref('dex_base_trades')
-            , filter = "project != 'curve'"
+            , filter = "project != 'curve' and block_time > now() - interval '7' day"
             , tokens_erc20_model = source('tokens', 'erc20')
         )
     }}
