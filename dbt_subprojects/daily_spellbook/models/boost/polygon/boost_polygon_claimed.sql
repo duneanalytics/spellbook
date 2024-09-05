@@ -41,7 +41,7 @@ select
         select avg(price)
         from (
             select price from {{source('prices','usd')}}
-            where blockchain = 'polygon' and symbol = 'MATIC'
+            where blockchain = 'polygon' and symbol = 'POL'
             order by minute desc
             limit 1440
         )

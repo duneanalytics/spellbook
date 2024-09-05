@@ -32,7 +32,7 @@ WITH gitcoin_donations AS (
         ELSE gd.token
         END AS currency_contract
     , CASE WHEN gd.token = {{eth_contract}}
-        THEN 'MATIC'
+        THEN 'POL'
         ELSE tok.symbol
         END AS currency_symbol
     , gd.evt_index

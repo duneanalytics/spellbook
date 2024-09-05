@@ -20,7 +20,7 @@ WITH
     FROM
       {{ source('prices', 'usd') }} price
     WHERE
-      symbol = 'MATIC'
+      symbol = 'POL'
       {% if is_incremental() %}
         AND {{ incremental_predicate('minute') }}
       {% endif %}

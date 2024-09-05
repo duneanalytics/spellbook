@@ -7,7 +7,7 @@
 
 {{fungible_transfers(
     blockchain='polygon'
-    , native_symbol='MATIC'
+    , native_symbol='POL'
     , traces = source('polygon','traces')
     , transactions = source('polygon','transactions')
     , erc20_transfers = source('erc20_polygon','evt_Transfer')

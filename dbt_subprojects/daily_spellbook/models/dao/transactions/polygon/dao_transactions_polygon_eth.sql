@@ -85,7 +85,7 @@ SELECT
     t.block_time, 
     t.tx_type,
     t.token as asset_contract_address,
-    'MATIC' asset,
+    'POL' asset,
     CAST(t.value AS double) as raw_value, 
     t.value/POW(10, 18) as value, 
     t.value/POW(10, 18) * p.price as usd_value,
@@ -101,7 +101,7 @@ dao_tmp dt
 LEFT JOIN 
 {{ source('prices', 'usd') }} p 
     ON p.minute = date_trunc('minute', t.block_time)
-    AND p.symbol = 'MATIC'
+    AND p.symbol = 'POL'
     AND p.blockchain = 'polygon'
     {% if not is_incremental() %}
     AND p.minute >= DATE '{{transactions_start_date}}'
