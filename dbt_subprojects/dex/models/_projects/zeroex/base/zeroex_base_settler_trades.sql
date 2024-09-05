@@ -53,7 +53,7 @@ settler_txs AS (
         method_id,
         contract_address,
         settler_address,
-        MAX(varbinary_substring(tracker,1,12)) AS zid,
+        MAX(varbinary_substring(tracker,2,12)) AS zid,
         CASE 
             WHEN method_id = 0x1fff991f THEN MAX(varbinary_substring(tracker,14,3))
             WHEN method_id = 0xfd3ad6d4 THEN MAX(varbinary_substring(tracker,13,3))
@@ -83,22 +83,20 @@ settler_txs AS (
     GROUP BY 
         1,2,3,4,5,6
 ),
+tbl_trades as (
 
-tbl_all_logs AS (
+with tbl_all_logs AS (
     SELECT  
         logs.tx_hash, 
         logs.block_time, 
         logs.block_number,
-        ROW_NUMBER() OVER (PARTITION BY logs.tx_hash ORDER BY index) rn_first, 
+        ROW_NUMBER() OVER (PARTITION BY logs.tx_hash ORDER BY index desc) rn, 
         index,
-        CASE 
-            WHEN varbinary_substring(logs.topic2, 13, 20) = logs.tx_from THEN 1
-            WHEN varbinary_substring(logs.topic1, 13, 20) = st.contract_address THEN 0
-            WHEN FIRST_VALUE(logs.contract_address) OVER (PARTITION BY logs.tx_hash ORDER BY index) = logs.contract_address THEN 0
-            ELSE 1 
-        END maker_tkn,
-        bytearray_to_int256(bytearray_substring(DATA, 22,11)) value,
-        logs.contract_address AS token, 
+        case when first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 then bytearray_substring(logs.topic2,13,20) end as taker,
+        case when first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 then logs.contract_address end as maker_token,
+        first_value(logs.contract_address) over (partition by logs.tx_hash order by index) as taker_token, 
+        first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) ) over (partition by logs.tx_hash order by index) as taker_amount,
+        case when first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 then try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) end as maker_amount,
         zid, 
         st.contract_address,
         method_id, 
@@ -118,42 +116,10 @@ tbl_all_logs AS (
         {% else %}
             AND logs.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
+)
+    select * from tbl_all_logs where rn = 1 
 ),
 
-tbl_maker_token AS (
-    SELECT 
-        ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY index DESC) rn_last, 
-        token AS maker_token, 
-        tx_hash, 
-        block_time, 
-        block_number, 
-        index
-    FROM 
-        tbl_all_logs
-    WHERE 
-        maker_tkn = 1
-),
-
-tbl_trades AS (
-    SELECT
-        ta.tx_hash, 
-        ta.block_time, 
-        ta.block_number,
-        zid,
-        method_id,
-        tag, 
-        contract_address,
-        SUM(value) FILTER (WHERE rn_first = 1) AS taker_amount,
-        MAX(token) FILTER (WHERE rn_first = 1) AS taker_token,
-        SUM(value) FILTER (WHERE rn_last = 1) AS maker_amount,
-        MAX(maker_token) FILTER (WHERE rn_last = 1) AS maker_token
-    FROM 
-        tbl_all_logs ta
-    LEFT JOIN 
-        tbl_maker_token mkr ON ta.tx_hash = mkr.tx_hash AND ta.block_time = mkr.block_time AND ta.block_number = mkr.block_number AND ta.index = mkr.index AND mkr.rn_last = 1
-    GROUP BY 
-        1,2,3,4,5,6,7
-),
 
 tokens AS (
     SELECT DISTINCT 
@@ -182,6 +148,22 @@ prices AS (
         {% endif %}
 ),
 
+fills as (
+        with signatures as (
+        select distinct signature  
+        from {{ source('base', 'logs_decoded') }}  l
+        join tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
+        and event_name in ('TokenExchange', 'OtcOrderFilled', 'SellBaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
+        
+        )
+        
+        select tt.tx_hash, tt.block_number, tt.block_time, count(*) fills_within
+        from {{ source('base', 'logs') }}  l
+        join signatures on signature = topic0 
+        join  tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
+        group by 1,2,3
+        ),
+
 results AS (
     SELECT
         trades.block_time,
@@ -193,22 +175,7 @@ results AS (
         "from" AS tx_from,
         "to" AS tx_to,
         index AS tx_index,
-        CASE
-            WHEN varbinary_substring(data,17,10) != 0x00000000000000000000 AND varbinary_substring(data,17,1) != 0x  THEN varbinary_substring(data,17,20)
-            WHEN varbinary_substring(data,177,10) != 0x00000000000000000000  THEN varbinary_substring(data,177,20)
-            WHEN varbinary_substring(data,277,10) != 0x00000000000000000000  THEN varbinary_substring(data,277,20)
-            WHEN varbinary_substring(data,629,10) != 0x00000000000000000000  THEN varbinary_substring(data,629,20)
-            WHEN varbinary_substring(data,693,10) != 0x00000000000000000000  THEN varbinary_substring(data,693,20)
-            WHEN varbinary_substring(data,917,10) != 0x00000000000000000000  THEN varbinary_substring(data,917,20)
-            WHEN varbinary_substring(data,949,10) != 0x00000000000000000000  THEN varbinary_substring(data,949,20)
-            WHEN varbinary_substring(data,981,10) != 0x00000000000000000000  THEN varbinary_substring(data,981,20)
-            WHEN varbinary_substring(data,1013,10) != 0x00000000000000000000  THEN varbinary_substring(data,1013,20)
-            WHEN varbinary_substring(data,1141,10) != 0x00000000000000000000  THEN varbinary_substring(data,1141,20)
-            WHEN varbinary_substring(data,1273,10) != 0x00000000000000000000  THEN varbinary_substring(data,1273,20)
-            WHEN varbinary_substring(data,1749,4) != 0x00000000  THEN varbinary_substring(data,1749,20)
-            WHEN varbinary_substring(data,1049,4) != 0x00000000  THEN varbinary_substring(data,1049,20)
-            WHEN varbinary_substring(data,17,4) != 0x00000000  THEN varbinary_substring(data,17,20)
-        END AS taker ,
+        taker ,
         CAST(NULL AS varbinary) AS maker,
         taker_token,
         pt.price,
@@ -222,16 +189,13 @@ results AS (
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS maker_token_amount,
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) * pm.price AS maker_amount,
         tag,
-        data,
-        varbinary_substring(data, varbinary_length(data) -  CASE
-            WHEN varbinary_position (data,0xc4103b48be) <> 0 THEN varbinary_position(REVERSE(data), REVERSE(0xc4103b48be))
-            WHEN varbinary_position (data,0xe48d68a156) <> 0 THEN varbinary_position(REVERSE(data), REVERSE(0xe48d68a156))
-            WHEN varbinary_position (data,0xe422ce6ede) <> 0 THEN varbinary_position(REVERSE(data), REVERSE(0xe422ce6ede))
-        END -3, 37)  taker_indicator_string
+        fills_within
     FROM 
         tbl_trades trades
     JOIN 
         {{ source('base', 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
+    LEFT JOIN 
+        fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number 
     LEFT JOIN 
         tokens tt ON tt.blockchain = 'base' AND tt.contract_address = taker_token
     LEFT JOIN 
@@ -280,13 +244,7 @@ results_usd AS (
             END AS volume_usd,
         taker_token,
         maker_token,
-        CASE WHEN (varbinary_substring(taker,1,4) = 0x00000000)
-                OR taker IS NULL
-                OR taker = taker_token
-                OR taker = contract_address
-                OR taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff
-                OR varbinary_substring(taker_indicator_string, 18,20) != contract_address
-            THEN varbinary_substring(taker_indicator_string, 18,20) ELSE taker END AS taker,
+        taker,
         maker,
         tag,
         zid,
@@ -297,7 +255,7 @@ results_usd AS (
         (ARRAY[-1]) AS trace_address,
         'settler' AS type,
         TRUE AS swap_flag,
-        -1 AS fills_within,
+        fills_within,
         contract_address
     FROM 
         results
