@@ -17,10 +17,13 @@
 SELECT 
     blockchain,
     block_time,
+    block_date,
     block_number,
     tx_hash,
     index,
     contract_address,
+    tx_from,
+    tx_to,
     event_name,
     msg_sender,
     account,   

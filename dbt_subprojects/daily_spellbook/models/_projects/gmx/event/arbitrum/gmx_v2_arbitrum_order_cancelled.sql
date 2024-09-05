@@ -145,23 +145,34 @@ WITH evt_data_1 AS (
 )
 
 -- full data 
-SELECT 
-    blockchain,
-    block_time,
-    block_number,
-    ED.tx_hash,
-    ED.index,
-    contract_address,
-    event_name,
-    msg_sender,
-    
-    from_hex(key) AS key,
-    from_hex(account) AS account,
-    from_hex(reason_bytes) AS reason_bytes,
-    reason
+, full_data AS (
+    SELECT 
+        blockchain,
+        block_time,
+        DATE(block_time) AS block_date,
+        block_number,
+        ED.tx_hash,
+        ED.index,
+        contract_address,
+        event_name,
+        msg_sender,
+        
+        from_hex(key) AS key,
+        from_hex(account) AS account,
+        from_hex(reason_bytes) AS reason_bytes,
+        reason
 
-FROM evt_data AS ED
-LEFT JOIN evt_data_parsed AS EDP
-    ON ED.tx_hash = EDP.tx_hash
-        AND ED.index = EDP.index
+    FROM evt_data AS ED
+    LEFT JOIN evt_data_parsed AS EDP
+        ON ED.tx_hash = EDP.tx_hash
+            AND ED.index = EDP.index
+)
 
+--can be removed once decoded tables are fully denormalized
+{{
+    add_tx_columns(
+        model_cte = 'full_data'
+        , blockchain = blockchain_name
+        , columns = ['from', 'to']
+    )
+}}

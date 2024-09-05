@@ -25,6 +25,11 @@ models:
         description: The timestamp of the block when the event was recorded
         tests:
           - not_null
+      - &block_date
+        name: block_date
+        description: The date extracted from the block timestamp, representing the day the block was created
+        tests:
+          - not_null             
       - &block_number
         name: block_number
         description: The block number where the event is included
@@ -44,7 +49,17 @@ models:
         name: contract_address
         description: The contract address associated with the event
         tests:
-          - not_null          
+          - not_null 
+      - &tx_from
+        name: tx_from
+        description: The originating address of the transaction, usually representing the sender
+        tests:
+          - not_null
+      - &tx_to
+        name: tx_to
+        description: The destination address of the transaction, representing the receiver
+        tests:
+          - not_null                    
       - name: event_name
         description: The type of event recorded, always 'OrderCreated' for this model.
         tests:
@@ -169,10 +184,13 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to
       - name: event_name
         description: The type of event recorded, always 'OrderExecuted' for this model
         tests:
@@ -213,10 +231,13 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to
       - name: event_name
         description: The type of event recorded, always 'OrderCancelled' for this model
         tests:
@@ -255,10 +276,13 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to
       - name: event_name
         description: The type of event recorded, always 'MarketCreated' for this model
         tests:
@@ -325,10 +349,13 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
-      - *contract_address    
+      - *contract_address
+      - *tx_from
+      - *tx_to   
       - name: event_name
         description: The type of event recorded, always 'PositionIncrease' for this model
         tests:
@@ -455,10 +482,13 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to
       - name: event_name
         description: The type of event recorded, always 'PositionDecrease' for this model
         tests:
@@ -533,10 +563,13 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to
       - name: event_name
         description: The type of event recorded, always 'PositionFeesCollected' for this model
         tests:
@@ -729,10 +762,13 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
-      - *contract_address  
+      - *contract_address
+      - *tx_from
+      - *tx_to 
       - name: event_name
         description: The type of event recorded, always 'PositionFeesInfo' for this model
         tests:

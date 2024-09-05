@@ -237,61 +237,71 @@ WITH evt_data_1 AS (
             AND ED.index = EDP.index
 )
 
--- process all columns
-SELECT 
-    blockchain,
-    block_time,
-    block_number,
-    tx_hash,
-    index,
-    contract_address,
-    event_name,
-    msg_sender,
-    account, 
-    
-    ED.market AS market,
-    ED.collateral_token,
-    affiliate,
-    trader,
-    ui_fee_receiver,
-    
-    collateral_token_price_min / POWER(10, 30 - collateral_token_decimals) AS collateral_token_price_min,
-    collateral_token_price_max / POWER(10, 30 - collateral_token_decimals) AS collateral_token_price_max,    
-    trade_size_usd / POWER(10, 30) AS trade_size_usd,
-    total_rebate_factor / POWER(10, 30) AS total_rebate_factor,
-    trader_discount_factor / POWER(10, 30) AS trader_discount_factor,
-    total_rebate_amount / POWER(10, collateral_token_decimals) AS total_rebate_amount,
-    trader_discount_amount / POWER(10, collateral_token_decimals) AS trader_discount_amount,
-    affiliate_reward_amount / POWER(10, collateral_token_decimals) AS affiliate_reward_amount,
-    funding_fee_amount / POWER(10, collateral_token_decimals + 15) AS funding_fee_amount,
-    claimable_long_token_amount / POWER(10, long_token_decimals + 15) AS claimable_long_token_amount,
-    claimable_short_token_amount / POWER(10, short_token_decimals + 15) AS claimable_short_token_amount,
-    latest_funding_fee_amount_per_size / POWER(10, collateral_token_decimals + 15) AS latest_funding_fee_amount_per_size,
-    latest_long_token_claimable_funding_amount_per_size / POWER(10, long_token_decimals + 15) AS latest_long_token_claimable_funding_amount_per_size,
-    latest_short_token_claimable_funding_amount_per_size / POWER(10, short_token_decimals + 15) AS latest_short_token_claimable_funding_amount_per_size,
-    borrowing_fee_usd / POWER(10, 30) AS borrowing_fee_usd,
-    borrowing_fee_amount / POWER(10, collateral_token_decimals) AS borrowing_fee_amount,
-    borrowing_fee_receiver_factor / POWER(10, 30) AS borrowing_fee_receiver_factor,
-    borrowing_fee_amount_for_fee_receiver / POWER(10, collateral_token_decimals) AS borrowing_fee_amount_for_fee_receiver,
-    position_fee_factor / POWER(10, 30) AS position_fee_factor,
-    protocol_fee_amount / POWER(10, collateral_token_decimals) AS protocol_fee_amount,
-    position_fee_receiver_factor / POWER(10, 30) AS position_fee_receiver_factor,
-    fee_receiver_amount / POWER(10, collateral_token_decimals) AS fee_receiver_amount,
-    fee_amount_for_pool / POWER(10, collateral_token_decimals) AS fee_amount_for_pool,
-    position_fee_amount_for_pool / POWER(10, collateral_token_decimals) AS position_fee_amount_for_pool,
-    position_fee_amount / POWER(10, collateral_token_decimals) AS position_fee_amount,
-    total_cost_amount / POWER(10, collateral_token_decimals) AS total_cost_amount,
-    ui_fee_receiver_factor / POWER(10, 30) AS ui_fee_receiver_factor,
-    ui_fee_amount / POWER(10, collateral_token_decimals) AS ui_fee_amount,
-    is_increase,
-    order_key,
-    position_key,
-    referral_code
-    
-FROM event_data AS ED
-LEFT JOIN {{ ref('gmx_v2_avalanche_c_markets_data') }} AS MD
-    ON ED.market = MD.market
-LEFT JOIN {{ ref('gmx_v2_avalanche_c_collateral_tokens_data') }} AS CTD
-    ON ED.collateral_token = CTD.collateral_token
+-- full data 
+, full_data AS (
+    SELECT 
+        blockchain,
+        block_time,
+        DATE(block_time) AS block_date,
+        block_number,
+        tx_hash,
+        index,
+        contract_address,
+        event_name,
+        msg_sender,
+        account, 
+        
+        ED.market AS market,
+        ED.collateral_token,
+        affiliate,
+        trader,
+        ui_fee_receiver,
+        
+        collateral_token_price_min / POWER(10, 30 - collateral_token_decimals) AS collateral_token_price_min,
+        collateral_token_price_max / POWER(10, 30 - collateral_token_decimals) AS collateral_token_price_max,    
+        trade_size_usd / POWER(10, 30) AS trade_size_usd,
+        total_rebate_factor / POWER(10, 30) AS total_rebate_factor,
+        trader_discount_factor / POWER(10, 30) AS trader_discount_factor,
+        total_rebate_amount / POWER(10, collateral_token_decimals) AS total_rebate_amount,
+        trader_discount_amount / POWER(10, collateral_token_decimals) AS trader_discount_amount,
+        affiliate_reward_amount / POWER(10, collateral_token_decimals) AS affiliate_reward_amount,
+        funding_fee_amount / POWER(10, collateral_token_decimals + 15) AS funding_fee_amount,
+        claimable_long_token_amount / POWER(10, long_token_decimals + 15) AS claimable_long_token_amount,
+        claimable_short_token_amount / POWER(10, short_token_decimals + 15) AS claimable_short_token_amount,
+        latest_funding_fee_amount_per_size / POWER(10, collateral_token_decimals + 15) AS latest_funding_fee_amount_per_size,
+        latest_long_token_claimable_funding_amount_per_size / POWER(10, long_token_decimals + 15) AS latest_long_token_claimable_funding_amount_per_size,
+        latest_short_token_claimable_funding_amount_per_size / POWER(10, short_token_decimals + 15) AS latest_short_token_claimable_funding_amount_per_size,
+        borrowing_fee_usd / POWER(10, 30) AS borrowing_fee_usd,
+        borrowing_fee_amount / POWER(10, collateral_token_decimals) AS borrowing_fee_amount,
+        borrowing_fee_receiver_factor / POWER(10, 30) AS borrowing_fee_receiver_factor,
+        borrowing_fee_amount_for_fee_receiver / POWER(10, collateral_token_decimals) AS borrowing_fee_amount_for_fee_receiver,
+        position_fee_factor / POWER(10, 30) AS position_fee_factor,
+        protocol_fee_amount / POWER(10, collateral_token_decimals) AS protocol_fee_amount,
+        position_fee_receiver_factor / POWER(10, 30) AS position_fee_receiver_factor,
+        fee_receiver_amount / POWER(10, collateral_token_decimals) AS fee_receiver_amount,
+        fee_amount_for_pool / POWER(10, collateral_token_decimals) AS fee_amount_for_pool,
+        position_fee_amount_for_pool / POWER(10, collateral_token_decimals) AS position_fee_amount_for_pool,
+        position_fee_amount / POWER(10, collateral_token_decimals) AS position_fee_amount,
+        total_cost_amount / POWER(10, collateral_token_decimals) AS total_cost_amount,
+        ui_fee_receiver_factor / POWER(10, 30) AS ui_fee_receiver_factor,
+        ui_fee_amount / POWER(10, collateral_token_decimals) AS ui_fee_amount,
+        is_increase,
+        order_key,
+        position_key,
+        referral_code
+        
+    FROM event_data AS ED
+    LEFT JOIN {{ ref('gmx_v2_avalanche_c_markets_data') }} AS MD
+        ON ED.market = MD.market
+    LEFT JOIN {{ ref('gmx_v2_avalanche_c_collateral_tokens_data') }} AS CTD
+        ON ED.collateral_token = CTD.collateral_token
+)
 
-
+--can be removed once decoded tables are fully denormalized
+{{
+    add_tx_columns(
+        model_cte = 'full_data'
+        , blockchain = blockchain_name
+        , columns = ['from', 'to']
+    )
+}}
