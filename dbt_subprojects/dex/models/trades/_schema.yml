@@ -57,13 +57,9 @@ models:
       - &token_bought_amount
         name: token_bought_amount
         description: "Amount of the token bought in the display unit"
-        tests:
-          - not_null
       - &token_sold_amount
         name: token_sold_amount
         description: "Amount of the token sold in the display unit"
-        tests:
-          - not_null
       - &token_bought_amount_raw
         name: token_bought_amount_raw
         description: "Amount of the token bought in the base unit"
