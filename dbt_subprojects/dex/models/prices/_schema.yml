@@ -1,6 +1,17 @@
 version: 2
 
 models:
+  - name: dex_prices_beta
+    description: >
+      obtain pricing info from dex.trades to feed into prices pipeline
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - blockchain
+            - contract_address
+            - block_time
+  
   - name: dex_prices
     meta:
       blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom
