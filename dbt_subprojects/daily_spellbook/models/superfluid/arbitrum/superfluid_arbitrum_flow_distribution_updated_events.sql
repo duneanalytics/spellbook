@@ -7,6 +7,7 @@
     )
 }}
 
+
 {% set project_start_block_number = '7600000' %}
 
 WITH data as (
