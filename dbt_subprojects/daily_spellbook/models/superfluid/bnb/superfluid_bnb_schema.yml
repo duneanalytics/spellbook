@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: flow_updated_events
+  - name: superfluid_bnb_flow_updated_events
     meta:
       blockchain: bnb
       sector: defi
@@ -37,7 +37,7 @@ models:
         name: flowRate
         description: "The new flow rate in nominal token amount per second"
 
-  - name: flow_distribution_updated_events
+  - name: superfluid_bnb_flow_distribution_updated_events
     meta:
       blockchain: bnb
       sector: defi
@@ -78,7 +78,7 @@ models:
         name: adjustmentFlowRate
         description: "The adjustment flow rate in nominal token amount per second"
     
-  - name: instant_distribution_updated_events
+  - name: superfluid_bnb_instant_distribution_updated_events
     meta:
       blockchain: bnb
       sector: defi
@@ -104,7 +104,7 @@ models:
         name: actualAmount
         description: "The actual amount in nominal token amount"
 
-  - name: index_updated_events
+  - name: superfluid_bnb_index_updated_events
     meta:
       blockchain: bnb
       sector: defi
@@ -139,7 +139,7 @@ models:
         name: totalUnitsApproved
         description: "The total number of index units approved"
 
-  - name: token_upgraded_events
+  - name: superfluid_bnb_token_upgraded_events
     meta:
       blockchain: bnb
       sector: defi
@@ -160,7 +160,7 @@ models:
       - name: amount
         description: "The nominal amount of tokens that were upgraded"
 
-  - name: token_downgraded_events
+  - name: superfluid_bnb_token_downgraded_events
     meta:
       blockchain: bnb
       sector: defi
@@ -181,7 +181,7 @@ models:
       - name: amount
         description: "The nominal amount of tokens that were downgraded"
   
-  - name: supertoken_created_events
+  - name: superfluid_bnb_supertoken_created_events
     meta:
       blockchain: bnb
       sector: defi
