@@ -174,7 +174,7 @@ results AS (
         trades.tx_hash,
         "from" AS tx_from,
         "to" AS tx_to,
-        index AS tx_index,
+        trades.index AS tx_index,
         taker ,
         CAST(NULL AS varbinary) AS maker,
         taker_token,
