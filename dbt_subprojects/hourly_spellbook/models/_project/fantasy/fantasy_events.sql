@@ -44,7 +44,6 @@ SELECT m.evt_block_time AS block_time
 , c.collection
 , CAST(m.lastTokenId-m.firstTokenId+1 AS double) AS cards_minted
 , CAST(0 AS double) AS cards_burned
-, m.totalMintedPacks AS minted_packs
 , filter(ARRAY[
     m.firstTokenId, m.firstTokenId+1, m.firstTokenId+2, m.firstTokenId+3, m.firstTokenId+4, m.firstTokenId+5, m.firstTokenId+6, m.firstTokenId+7, m.firstTokenId+8, m.firstTokenId+9
 , m.firstTokenId+10, m.firstTokenId+11, m.firstTokenId+12, m.firstTokenId+13, m.firstTokenId+14, m.firstTokenId+15, m.firstTokenId+16, m.firstTokenId+17, m.firstTokenId+18, m.firstTokenId+19
@@ -69,7 +68,7 @@ SELECT m.evt_block_time AS block_time
 , 0x4300000000000000000000000000000000000004 AS token_address
 , m.price/POWER(10, 18) AS token_amount
 , m.price/POWER(10, 18)*pu.price AS price_usd
-, 0 AS tickets_bought
+, 0 AS tactics_bought
 FROM {{ source('fantasy_blast', 'Minter_evt_Mint')}} m
 INNER JOIN fantasy_configs c ON m.mintConfigId=c.config_id
 LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='blast'
@@ -88,7 +87,6 @@ SELECT evt_block_time AS block_time
 , collection
 , CAST(1 AS double) AS cards_minted
 , CAST(cardinality(burntTokenIds) AS double) AS cards_burned
-, 1 AS minted_packs
 , ARRAY[mintedTokenId] AS minted_ids
 , burntTokenIds AS burned_ids
 , NULL AS traded_with
@@ -102,7 +100,7 @@ SELECT evt_block_time AS block_time
 , CAST(NULL AS varbinary) AS token_address
 , 0 AS token_amount
 , 0 AS price_usd
-, 0 AS tickets_bought
+, 0 AS tactics_bought
 FROM {{ source('fantasy_blast', 'Minter_evt_LevelUp')}}
 
 UNION ALL
@@ -117,7 +115,6 @@ SELECT evt_block_time AS block_time
 , collection
 , CAST(cardinality(mintedTokenIds) AS double) AS cards_minted
 , CAST(cardinality(burntTokenIds) AS double) AS cards_burned
-, 0 AS minted_packs
 , mintedTokenIds AS minted_ids
 , burntTokenIds AS burned_ids
 , NULL AS traded_with
@@ -131,7 +128,7 @@ SELECT evt_block_time AS block_time
 , CAST(NULL AS varbinary) AS token_address
 , 0 AS token_amount
 , 0 AS price_usd
-, 0 AS tickets_bought
+, 0 AS tactics_bought
 FROM {{ source('fantasy_blast', 'Minter_evt_BurnToDraw')}}
 
 UNION ALL
@@ -146,7 +143,6 @@ SELECT nftt.block_time
 , nftt.nft_contract_address AS collection
 , CAST(0 AS double) AS cards_minted
 , CAST(0 AS double) AS cards_burned
-, 0 AS minted_packs
 , NULL AS minted_ids
 , NULL AS burned_ids
 , CASE WHEN nftt.trade_category='Buy' THEN nftt.seller ELSE nftt.buyer END AS traded_with
@@ -160,7 +156,7 @@ SELECT nftt.block_time
 , nftt.currency_contract AS token_address
 , nftt.amount_original AS token_amount
 , nftt.amount_usd AS price_usd
-, 0 AS tickets_bought
+, 0 AS tactics_bought
 FROM {{ ref('nft_trades') }} nftt
 INNER JOIN {{ source('blast', 'transactions') }} txs ON txs.block_number=nftt.block_number
     AND txs.hash=nftt.tx_hash
@@ -182,7 +178,6 @@ SELECT block_time
 , NULL AS collection
 , CAST(0 AS double) AS cards_minted
 , CAST(0 AS double) AS cards_burned
-, CAST(0 AS double) AS minted_packs
 , NULL AS minted_ids
 , NULL AS burned_ids
 , NULL AS traded_with
@@ -196,7 +191,7 @@ SELECT block_time
 , contract_address AS token_address
 , amount AS token_amount
 , amount_usd AS price_usd
-, ROUND(amount_usd/19.99) AS tickets_bought
+, ROUND(amount_usd/19.99) AS tactics_bought
 FROM {{ source('tokens_blast','transfers') }} tt
 WHERE block_number >= 4917909
 AND to = 0x4af1f00f50efbfcdf7a8f2ac02e9bc24825438ac
