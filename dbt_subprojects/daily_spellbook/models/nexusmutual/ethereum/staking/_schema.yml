@@ -8,7 +8,7 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staking pools base data for Nexus Mutual on Ethereum"
+    description: "Staking pools base data (helper view)"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -87,6 +87,43 @@ models:
         name: tx_hash_fee_updated
       - &tx_hash_updated
         name: tx_hash_updated
+
+  - name: nexusmutual_ethereum_staking_pools
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking pools base data (materialised)"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - product_id
+    columns:
+      - *block_time_created
+      - *block_time_updated
+      - *pool_id
+      - *pool_address
+      - *manager_address
+      - *manager_ens
+      - *manager
+      - *is_private_pool
+      - *initial_pool_fee
+      - *current_management_fee
+      - *max_management_fee
+      - *product_id
+      - *product_name
+      - *product_type
+      - *initial_price
+      - *target_price
+      - *initial_weight
+      - *target_weight
+      - *pool_created_time
+      - *product_added_time
+      - *tx_hash_created
+      - *tx_hash_updated
 
   - name: nexusmutual_ethereum_staking_events
     meta:
