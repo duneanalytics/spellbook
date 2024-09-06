@@ -249,12 +249,12 @@ results_usd AS (
         maker_token_amount_raw,
         CASE WHEN maker_token IN  (0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f,
                                    0x176211869ca2b568f2a7d4ee941e073a821ee1ff,
-                                   0xa219439258ca9da29e9cc4ce5596924745e12b93
+                                   0xa219439258ca9da29e9cc4ce5596924745e12b93,
                                    0x3aab2285ddcddad8edf438c1bab47e1a9d05a9b4 ) AND  maker_amount IS NOT NULL
             THEN maker_amount
             WHEN taker_token IN   (0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f,
                                    0x176211869ca2b568f2a7d4ee941e073a821ee1ff,
-                                   0xa219439258ca9da29e9cc4ce5596924745e12b93
+                                   0xa219439258ca9da29e9cc4ce5596924745e12b93,
                                    0x3aab2285ddcddad8edf438c1bab47e1a9d05a9b4 )  AND taker_amount IS NOT NULL
             THEN taker_amount
             ELSE COALESCE(maker_amount, taker_amount)
