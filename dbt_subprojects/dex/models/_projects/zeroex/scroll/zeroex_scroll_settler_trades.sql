@@ -235,7 +235,7 @@ results AS (
 results_usd AS (
     SELECT
         'scroll' AS blockchain,
-        '0x API' AS project,
+        '0x-API' AS project,
         'settler' AS version,
         DATE_TRUNC('day', block_time) block_date,
         DATE_TRUNC('month', block_time) AS block_month,
