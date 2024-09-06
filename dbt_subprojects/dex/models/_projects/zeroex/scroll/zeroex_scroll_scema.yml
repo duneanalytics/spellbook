@@ -35,7 +35,7 @@ models:
       - &block_month
         name: block_month
         description: "UTC event block month of each trade"
-      - &block_month
+      - &block_time
         name: block_time
         description: "UTC event block time of each trade"
       - &taker_symbol
