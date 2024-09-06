@@ -91,14 +91,10 @@ tbl_all_logs AS (
         logs.block_number,
         ROW_NUMBER() OVER (PARTITION BY logs.tx_hash ORDER BY index) rn_first, 
         index,
-        CASE 
-            when varbinary_substring(logs.topic1, 13, 20)= st.settler_address  then 1 
-            when topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65 
-                    and varbinary_substring(logs.topic1, 13, 20) = st.contract_address then 1 
+        CASE
             WHEN varbinary_substring(logs.topic2, 13, 20) = logs.tx_from THEN 1
-            WHEN varbinary_substring(logs.topic1, 13, 20) = st.contract_address THEN 0
-            WHEN FIRST_VALUE(logs.contract_address) OVER (PARTITION BY logs.tx_hash ORDER BY index) = logs.contract_address THEN 0
-            ELSE 1 
+            WHEN first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 THEN 1 
+            ELSE 0 
         END maker_tkn,
         bytearray_to_int256(bytearray_substring(DATA, 22,11)) value,
         logs.contract_address AS token, 
