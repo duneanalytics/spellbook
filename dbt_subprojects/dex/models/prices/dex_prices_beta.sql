@@ -46,7 +46,9 @@ dex_bought as (
         and d.token_bought_address = t.contract_address
     where
         1 = 1
+        and d.token_bought_amount > 0
         and d.token_bought_amount_raw > UINT256 '0'
+        and t.symbol is not null
 ), 
 dex_sold as (
     select
@@ -64,7 +66,9 @@ dex_sold as (
         and d.token_sold_address = t.contract_address
     where
         1 = 1
+        and d.token_sold_amount > 0
         and d.token_sold_amount_raw > UINT256 '0'
+        and t.symbol is not null
 ),
 dex_prices as (
     select
@@ -88,6 +92,3 @@ select
     , price
 from
     dex_prices
-where
-    symbol is not null
-    and amount is not null
