@@ -90,35 +90,42 @@ with tbl_all_logs AS (
         logs.tx_hash, 
         logs.block_time, 
         logs.block_number,
-        ROW_NUMBER() OVER (PARTITION BY logs.tx_hash ORDER BY index desc) rn, 
-        index,
-        case when first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 then bytearray_substring(logs.topic2,13,20) end as taker,
-        case when first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 then logs.contract_address end as maker_token,
+        index, 
+        case when ( first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 OR varbinary_substring(logs.topic2, 13, 20) = logs.tx_from) then 1 end as valid,
+        bytearray_substring(logs.topic2,13,20) as taker,
+        logs.contract_address as maker_token,  
         first_value(logs.contract_address) over (partition by logs.tx_hash order by index) as taker_token, 
-        first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) ) over (partition by logs.tx_hash order by index) as taker_amount,
-        case when first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 then try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) end as maker_amount,
-        zid, 
-        st.contract_address,
+        first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) ) over (partition by logs.tx_hash order by index) as taker_amount, 
+        try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) as maker_amount, 
         method_id, 
-        tag
+        tag,  
+        st.settler_address, 
+        zid, 
+        st.settler_address as contract_address 
     FROM 
         {{ source('scroll', 'logs') }} AS logs
     JOIN 
         settler_txs st ON st.tx_hash = logs.tx_hash AND logs.block_time = st.block_time AND st.block_number = logs.block_number
             and (varbinary_substring(logs.topic2, 13, 20) = st.settler_address OR varbinary_substring(logs.topic1, 13, 20)= st.settler_address )
     WHERE 
-        topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
-        0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
-        0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
-        and topic1 != 0x0000000000000000000000000000000000000000000000000000000000000000
+        topic0 IN ( 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
+                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
+                    0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c ) 
+        and topic1 != 0x0000000000000000000000000000000000000000000000000000000000000000      
         and zid != 0xa00000000000000000000000
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
             AND logs.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
-)
-    select * from tbl_all_logs where rn = 1 
+    )
+    tbl_valid_logs as (
+        select * 
+            ,  row_number() over (partition by tx_hash order by index) rn 
+        from tbl_all_logs 
+        where valid = 1 
+    )
+    select * from tbl_valid_logs where rn = 1 
 ),
 
 
@@ -245,7 +252,7 @@ results_usd AS (
                                     0xf55bec9cafdbe8730f096aa55dad6d22d44099df,
                                     0xca77eb3fefe3725dc33bccb54edefc3d9f764f97) AND  maker_amount IS NOT NULL
             THEN maker_amount
-            WHEN taker_token IN  (0x5300000000000000000000000000000000000004,
+            WHEN taker_token IN   (0x5300000000000000000000000000000000000004,
                                     0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4,
                                     0xf55bec9cafdbe8730f096aa55dad6d22d44099df,
                                     0xca77eb3fefe3725dc33bccb54edefc3d9f764f97)  AND taker_amount IS NOT NULL
