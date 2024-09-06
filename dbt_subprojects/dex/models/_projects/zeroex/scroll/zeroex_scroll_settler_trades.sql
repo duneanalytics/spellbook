@@ -118,7 +118,7 @@ with tbl_all_logs AS (
         {% else %}
             AND logs.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
-    )
+    ),
     tbl_valid_logs as (
         select * 
             ,  row_number() over (partition by tx_hash order by index) rn 
