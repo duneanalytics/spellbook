@@ -106,7 +106,7 @@ with tbl_all_logs AS (
         {{ source('arbitrum', 'logs') }} AS logs
     JOIN 
         settler_txs st ON st.tx_hash = logs.tx_hash AND logs.block_time = st.block_time AND st.block_number = logs.block_number
-            and (varbinary_substring(logs.topic2, 13, 20) = st.settler_address OR varbinary_substring(logs.topic1, 13, 20)= st.settler_address )
+            
     WHERE 
         topic0 IN ( 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                     0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
@@ -118,8 +118,14 @@ with tbl_all_logs AS (
         {% else %}
             AND logs.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
-)
-    select * from tbl_all_logs where valid = 1 
+    ),
+    tbl_valid_logs as (
+        select * 
+            ,  row_number() over (partition by tx_hash order by index desc) rn 
+        from tbl_all_logs 
+        where valid = 1 
+    )
+    select * from tbl_valid_logs where rn = 1 
 ),
 
 
@@ -229,7 +235,7 @@ results AS (
 results_usd AS (
     SELECT
         'arbitrum' AS blockchain,
-        '0x API' AS project,
+        '0x-API' AS project,
         'settler' AS version,
         DATE_TRUNC('day', block_time) block_date,
         DATE_TRUNC('month', block_time) AS block_month,
@@ -241,13 +247,13 @@ results_usd AS (
         maker_token_amount,
         taker_token_amount_raw,
         maker_token_amount_raw,
-        CASE WHEN maker_token IN    (0x82af49447d8a07e3bd95bd0d56f35241523fbab1,
+        CASE WHEN maker_token IN  (0x82af49447d8a07e3bd95bd0d56f35241523fbab1,
                                 0xaf88d065e77c8cc2239327c5edb3a432268e5831,
                                 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,
                                 0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9,
                                 0x912ce59144191c1204e64559fe8253a0e49e6548) AND  maker_amount IS NOT NULL
             THEN maker_amount
-            WHEN taker_token IN     (0x82af49447d8a07e3bd95bd0d56f35241523fbab1,
+            WHEN taker_token IN   (0x82af49447d8a07e3bd95bd0d56f35241523fbab1,
                                 0xaf88d065e77c8cc2239327c5edb3a432268e5831,
                                 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,
                                 0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9,

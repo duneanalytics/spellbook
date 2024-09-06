@@ -1,5 +1,5 @@
 {{  config(
-    schema = 'zeroex_avalanche_c',
+    schema = 'zeroex_bnb',
     alias = 'settler_trades',
     materialized='incremental',
     partition_by = ['block_month'],
@@ -23,7 +23,7 @@ WITH tbl_addresses AS (
         {{ source('nft', 'transfers') }}
     WHERE 
         contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae 
-        AND blockchain = 'avalanche_c'
+        AND blockchain = 'bnb'
         and block_time > TIMESTAMP '2024-05-23'
 ),
 
@@ -68,9 +68,9 @@ settler_txs AS (
             varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker,
             a.settler_address
         FROM 
-            {{ source('avalanche_c', 'traces') }} AS tr
+            {{ source('bnb', 'traces') }} AS tr
         JOIN 
-            result_0x_settler_addresses a ON a.settler_address = tr.to AND a.blockchain = 'avalanche_c' AND tr.block_time > a.begin_block_time
+            result_0x_settler_addresses a ON a.settler_address = tr.to AND a.blockchain = 'bnb' AND tr.block_time > a.begin_block_time
         WHERE 
             (a.settler_address IS NOT NULL OR tr.to = 0xca11bde05977b3631167028862be2a173976ca11)
             AND varbinary_substring(input,1,4) IN (0x1fff991f, 0xfd3ad6d4)
@@ -103,10 +103,10 @@ with tbl_all_logs AS (
         zid, 
         st.settler_address as contract_address 
     FROM 
-        {{ source('avalanche_c', 'logs') }} AS logs
+        {{ source('bnb', 'logs') }} AS logs
     JOIN 
         settler_txs st ON st.tx_hash = logs.tx_hash AND logs.block_time = st.block_time AND st.block_number = logs.block_number
-            and (varbinary_substring(logs.topic2, 13, 20) = st.settler_address OR varbinary_substring(logs.topic1, 13, 20)= st.settler_address )
+            
     WHERE 
         topic0 IN ( 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                     0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
@@ -118,8 +118,14 @@ with tbl_all_logs AS (
         {% else %}
             AND logs.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
-)
-    select * from tbl_all_logs where valid = 1 
+    ),
+    tbl_valid_logs as (
+        select * 
+            ,  row_number() over (partition by tx_hash order by index desc) rn 
+        from tbl_all_logs 
+        where valid = 1 
+    )
+    select * from tbl_valid_logs where rn = 1 
 ),
 
 
@@ -131,7 +137,7 @@ tokens AS (
     JOIN 
         tbl_trades ON te.contract_address = taker_token OR te.contract_address = maker_token
     WHERE 
-        te.blockchain = 'avalanche_c'
+        te.blockchain = 'bnb'
 ),
 
 prices AS (
@@ -142,7 +148,7 @@ prices AS (
     JOIN 
         tbl_trades ON (pu.contract_address = taker_token  OR pu.contract_address = maker_token) AND date_trunc('minute',block_time) = minute
     WHERE 
-        pu.blockchain = 'avalanche_c'
+        pu.blockchain = 'bnb'
         {% if is_incremental() %}
             AND {{ incremental_predicate('minute') }}
         {% else %}
@@ -153,9 +159,9 @@ prices AS (
 fills as (
         with signatures as (
         select distinct signature  
-        from {{ source('avalanche_c', 'logs_decoded') }}  l
+        from {{ source('bnb', 'logs_decoded') }}  l
         join tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
-        and event_name in ('TokenExchange', 'OtcOrderFilled', 'Sellavalanche_cToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
+        and event_name in ('TokenExchange', 'OtcOrderFilled', 'SellbnbToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
         WHERE  1=1 
         {% if is_incremental() %}
             AND {{ incremental_predicate('l.block_time') }}
@@ -165,7 +171,7 @@ fills as (
         )
         
         select tt.tx_hash, tt.block_number, tt.block_time, count(*) fills_within
-        from {{ source('avalanche_c', 'logs') }}  l
+        from {{ source('bnb', 'logs') }}  l
         join signatures on signature = topic0 
         join  tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
         WHERE 1=1 
@@ -206,17 +212,17 @@ results AS (
     FROM 
         tbl_trades trades
     JOIN 
-        {{ source('avalanche_c', 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
+        {{ source('bnb', 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
     LEFT JOIN 
         fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number 
     LEFT JOIN 
-        tokens tt ON tt.blockchain = 'avalanche_c' AND tt.contract_address = taker_token
+        tokens tt ON tt.blockchain = 'bnb' AND tt.contract_address = taker_token
     LEFT JOIN 
-        tokens tm ON tm.blockchain = 'avalanche_c' AND tm.contract_address = maker_token
+        tokens tm ON tm.blockchain = 'bnb' AND tm.contract_address = maker_token
     LEFT JOIN 
-        prices pt ON pt.blockchain = 'avalanche_c' AND pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
+        prices pt ON pt.blockchain = 'bnb' AND pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
     LEFT JOIN 
-        prices pm ON pm.blockchain = 'avalanche_c' AND pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
+        prices pm ON pm.blockchain = 'bnb' AND pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
     WHERE 
         1=1 
         {% if is_incremental() %}
@@ -228,8 +234,8 @@ results AS (
 
 results_usd AS (
     SELECT
-        'avalanche_c' AS blockchain,
-        '0x API' AS project,
+        'bnb' AS blockchain,
+        '0x-API' AS project,
         'settler' AS version,
         DATE_TRUNC('day', block_time) block_date,
         DATE_TRUNC('month', block_time) AS block_month,
@@ -241,14 +247,14 @@ results_usd AS (
         maker_token_amount,
         taker_token_amount_raw,
         maker_token_amount_raw,
-        CASE WHEN maker_token IN   (0x55d398326f99059ff775485246999027b3197955,
+        CASE WHEN maker_token IN (0x55d398326f99059ff775485246999027b3197955,
                                     0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c,
                                     0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d,
                                     0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c,
                                     0x2170ed0880ac9a755fd29b2688956bd959f933f8,
                                     0xe9e7cea3dedca5984780bafc599bd69add087d56) AND  maker_amount IS NOT NULL
             THEN maker_amount
-            WHEN taker_token IN  (0x55d398326f99059ff775485246999027b3197955,
+            WHEN taker_token IN   (0x55d398326f99059ff775485246999027b3197955,
                                     0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c,
                                     0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d,
                                     0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c,

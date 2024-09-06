@@ -90,35 +90,42 @@ with tbl_all_logs AS (
         logs.tx_hash, 
         logs.block_time, 
         logs.block_number,
-        ROW_NUMBER() OVER (PARTITION BY logs.tx_hash ORDER BY index desc) rn, 
-        index,
-        case when first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 then bytearray_substring(logs.topic2,13,20) end as taker,
-        case when first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 then logs.contract_address end as maker_token,
+        index, 
+        case when ( first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 OR varbinary_substring(logs.topic2, 13, 20) = logs.tx_from) then 1 end as valid,
+        bytearray_substring(logs.topic2,13,20) as taker,
+        logs.contract_address as maker_token,  
         first_value(logs.contract_address) over (partition by logs.tx_hash order by index) as taker_token, 
-        first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) ) over (partition by logs.tx_hash order by index) as taker_amount,
-        case when first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 then try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) end as maker_amount,
-        zid, 
-        st.contract_address,
+        first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) ) over (partition by logs.tx_hash order by index) as taker_amount, 
+        try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) as maker_amount, 
         method_id, 
-        tag
+        tag,  
+        st.settler_address, 
+        zid, 
+        st.settler_address as contract_address 
     FROM 
         {{ source('optimism', 'logs') }} AS logs
     JOIN 
         settler_txs st ON st.tx_hash = logs.tx_hash AND logs.block_time = st.block_time AND st.block_number = logs.block_number
-            and (varbinary_substring(logs.topic2, 13, 20) = st.settler_address OR varbinary_substring(logs.topic1, 13, 20)= st.settler_address )
+            
     WHERE 
-        topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
-        0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
-        0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
-        and topic1 != 0x0000000000000000000000000000000000000000000000000000000000000000
+        topic0 IN ( 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
+                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
+                    0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c ) 
+        and topic1 != 0x0000000000000000000000000000000000000000000000000000000000000000      
         and zid != 0xa00000000000000000000000
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
             AND logs.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
-)
-    select * from tbl_all_logs where rn = 1 
+    ),
+    tbl_valid_logs as (
+        select * 
+            ,  row_number() over (partition by tx_hash order by index desc) rn 
+        from tbl_all_logs 
+        where valid = 1 
+    )
+    select * from tbl_valid_logs where rn = 1 
 ),
 
 
@@ -228,7 +235,7 @@ results AS (
 results_usd AS (
     SELECT
         'optimism' AS blockchain,
-        '0x API' AS project,
+        '0x-API' AS project,
         'settler' AS version,
         DATE_TRUNC('day', block_time) block_date,
         DATE_TRUNC('month', block_time) AS block_month,
@@ -240,7 +247,7 @@ results_usd AS (
         maker_token_amount,
         taker_token_amount_raw,
         maker_token_amount_raw,
-        CASE WHEN maker_token IN  (0x4200000000000000000000000000000000000006,
+        CASE WHEN maker_token IN (0x4200000000000000000000000000000000000006,
                                     0x7f5c764cbc14f9669b88837ca1490cca17c31607,
                                     0x4200000000000000000000000000000000000042,
                                     0x0b2c639c533813f4aa9d7837caf62653d097ff85,

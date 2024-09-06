@@ -106,7 +106,7 @@ with tbl_all_logs AS (
         {{ source('avalanche_c', 'logs') }} AS logs
     JOIN 
         settler_txs st ON st.tx_hash = logs.tx_hash AND logs.block_time = st.block_time AND st.block_number = logs.block_number
-            and (varbinary_substring(logs.topic2, 13, 20) = st.settler_address OR varbinary_substring(logs.topic1, 13, 20)= st.settler_address )
+            
     WHERE 
         topic0 IN ( 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                     0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
@@ -118,8 +118,14 @@ with tbl_all_logs AS (
         {% else %}
             AND logs.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
-)
-    select * from tbl_all_logs where valid = 1 
+    ),
+    tbl_valid_logs as (
+        select * 
+            ,  row_number() over (partition by tx_hash order by index desc) rn 
+        from tbl_all_logs 
+        where valid = 1 
+    )
+    select * from tbl_valid_logs where rn = 1 
 ),
 
 
@@ -229,7 +235,7 @@ results AS (
 results_usd AS (
     SELECT
         'avalanche_c' AS blockchain,
-        '0x API' AS project,
+        '0x-API' AS project,
         'settler' AS version,
         DATE_TRUNC('day', block_time) block_date,
         DATE_TRUNC('month', block_time) AS block_month,
@@ -241,7 +247,7 @@ results_usd AS (
         maker_token_amount,
         taker_token_amount_raw,
         maker_token_amount_raw,
-        CASE WHEN maker_token IN   (0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7,
+        CASE WHEN maker_token IN (0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7,
                                     0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e,
                                     0x152b9d0fdc40c096757f570a51e494bd4b943e50,
                                     0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab,
