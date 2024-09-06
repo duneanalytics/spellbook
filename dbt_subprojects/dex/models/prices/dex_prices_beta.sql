@@ -88,3 +88,6 @@ select
     , price
 from
     dex_prices
+where
+    symbol is not null
+    and amount is not null
