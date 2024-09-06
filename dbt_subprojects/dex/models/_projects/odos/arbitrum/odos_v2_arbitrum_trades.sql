@@ -22,12 +22,12 @@ with event_data AS (
         CAST(NULL as double) as amount_usd,
         CASE
             WHEN inputToken = 0x0000000000000000000000000000000000000000
-            THEN 0x4200000000000000000000000000000000000006 -- WETH
+            THEN 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1 -- WETH
             ELSE inputToken
         END AS token_sold_address,
         CASE
             WHEN outputToken = 0x0000000000000000000000000000000000000000
-            THEN 0x4200000000000000000000000000000000000006 -- WETH
+            THEN 0x82aF49447D8a07e3bd95BD0d56f35241523fBab1 -- WETH
             ELSE outputToken
         END AS token_bought_address,
         contract_address AS project_contract_address,
