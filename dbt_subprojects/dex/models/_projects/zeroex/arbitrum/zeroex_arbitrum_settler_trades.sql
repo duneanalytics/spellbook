@@ -168,7 +168,7 @@ fills as (
         join  tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
         WHERE 1=1 
         {% if is_incremental() %}
-            AND {{ incremental_predicate('tr.block_time') }}
+            AND {{ incremental_predicate('l.block_time') }}
         {% else %}
             AND l.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
