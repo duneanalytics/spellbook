@@ -1,23 +1,23 @@
 version: 2
 
 models:
-  - name: gmx_v2_avalanche_c_order_created
+  - name: gmx_v2_order_created
     meta:
-      blockchain: avalanche_c
+      blockchain: arbitrum, avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['avalanche_c', 'gmx', 'event', 'order_created']
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'event', 'order_created']
     description: |
-      Extracts and decodes the `OrderCreated` event log data from the Avalanche blockchain. 
+      Extracts and decodes the `OrderCreated` event log data from the Arbitrum and Avalanche blockchains. 
       This model processes log entries related to created orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for cancellation.
 
     columns:
       - &blockchain  
         name: blockchain
-        description: The blockchain network where the event occurred (Avalanche)
+        description: The blockchain network where the event occurred
         tests:
           - not_null
       - &block_time
@@ -29,7 +29,7 @@ models:
         name: block_date
         description: The date extracted from the block timestamp, representing the day the block was created
         tests:
-          - not_null           
+          - not_null             
       - &block_number
         name: block_number
         description: The block number where the event is included
@@ -49,7 +49,7 @@ models:
         name: contract_address
         description: The contract address associated with the event
         tests:
-          - not_null  
+          - not_null 
       - &tx_from
         name: tx_from
         description: The originating address of the transaction, usually representing the sender
@@ -59,7 +59,7 @@ models:
         name: tx_to
         description: The destination address of the transaction, representing the receiver
         tests:
-          - not_null                  
+          - not_null                    
       - name: event_name
         description: The type of event recorded, always 'OrderCreated' for this model.
         tests:
@@ -168,16 +168,16 @@ models:
           - unique
 
 
-  - name: gmx_v2_avalanche_c_order_executed
+  - name: gmx_v2_order_executed
     meta:
-      blockchain: avalanche_c
+      blockchain: arbitrum, avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['avalanche_c', 'gmx', 'event', 'order_executed']
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'event', 'order_executed']
     description: |      
-      Extracts and decodes the `OrderExecuted` event log data from the Avalanche blockchain. 
+      Extracts and decodes the `OrderExecuted` event log data from the Arbitrum and Avalanche blockchains. 
       This model processes log entries related to executed orders, extracting key variables such as 
       account addresses, event keys, and integer values.
     
@@ -215,16 +215,16 @@ models:
           - not_null
 
 
-  - name: gmx_v2_avalanche_c_order_cancelled
+  - name: gmx_v2_order_cancelled
     meta:
-      blockchain: avalanche_c
+      blockchain: arbitrum, avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['avalanche_c', 'gmx', 'event', 'order_cancelled']
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'event', 'order_cancelled']
     description: |
-      Extracts and decodes the `OrderCancelled` event log data from the Avalanche blockchain. 
+      Extracts and decodes the `OrderCancelled` event log data from the Arbitrum and Avalanche blockchains. 
       This model processes log entries related to cancelled orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for cancellation.
 
@@ -260,16 +260,16 @@ models:
           - not_null
 
 
-  - name: gmx_v2_avalanche_c_market_created
+  - name: gmx_v2_market_created
     meta:
-      blockchain: avalanche_c
+      blockchain: arbitrum, avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['avalanche_c', 'gmx', 'event', 'market_created']
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'event', 'market_created']
     description: |
-      This model extracts and parses `MarketCreated` events from the Avalanche blockchain.
+      This model extracts and parses `MarketCreated` events from the Arbitrum and Avalanche blockchains.
       It includes transaction details, addresses, and other relevant metrics related to 
       the creation of markets within the GMX protocol.
 
@@ -333,16 +333,16 @@ models:
           - not_null         
 
 
-  - name: gmx_v2_avalanche_c_position_increase
+  - name: gmx_v2_position_increase
     meta:
-      blockchain: avalanche_c
+      blockchain: arbitrum, avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['avalanche_c','gmx','event','position_increase']
+      tags: ['arbitrum','avalanche_c','gmx','event','position_increase']
     description: |
-      This model extracts and parses `PositionIncrease` events from the Avalanche blockchain.
+      This model extracts and parses `PositionIncrease` events from the Arbitrum and Avalanche blockchains.
       It includes transaction details, addresses, and various metrics related to the event, 
       such as market data, collateral amounts, price impacts, and more.
     
@@ -466,16 +466,16 @@ models:
         description: A unique key identifying the position
 
 
-  - name: gmx_v2_avalanche_c_position_decrease
+  - name: gmx_v2_position_decrease
     meta:
-      blockchain: avalanche_c
+      blockchain: arbitrum, avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['avalanche_c','gmx','event','position_decrease']
+      tags: ['arbitrum','avalanche_c','gmx','event','position_decrease']
     description: |
-      This model extracts and parses `PositionDecrease` events from the Avalanche blockchain.
+      This model extracts and parses `PositionDecrease` events from the Arbitrum and Avalanche blockchains.
       It includes transaction details, addresses, and various metrics related to the event, 
       such as market data, collateral amounts, price impacts, and more.
 
@@ -547,16 +547,16 @@ models:
       - *position_key
 
 
-  - name: gmx_v2_avalanche_c_position_fees_collected
+  - name: gmx_v2_position_fees_collected
     meta:
-      blockchain: avalanche_c
+      blockchain: arbitrum, avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['avalanche_c', 'gmx', 'event', 'position_fees_collected']
+      tags: ['arbitrum','avalanche_c', 'gmx', 'event', 'position_fees_collected']
     description: |
-      This model extracts and parses `PositionFeesCollected` events from the Avalanche blockchain.
+      This model extracts and parses `PositionFeesCollected` events from the Arbitrum and Avalanche blockchains.
       It includes details about the transaction, addresses involved, and various metrics related to 
       fees collected from positions, including fee amounts and related market data.
     
@@ -746,16 +746,16 @@ models:
           - not_null   
 
 
-  - name: gmx_v2_avalanche_c_position_fees_info
+  - name: gmx_v2_position_fees_info
     meta:
-      blockchain: avalanche_c
+      blockchain: arbitrum, avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['avalanche_c', 'gmx', 'event', 'position_fees_info']
+      tags: ['arbitrum','avalanche_c', 'gmx', 'event', 'position_fees_info']
     description: |
-      This model extracts and parses `PositionFeesInfo` events from the Avalanche blockchain.
+      This model extracts and parses `PositionFeesInfo` events from the Arbitrum and Avalanche blockchains.
       It includes details about the transaction, addresses involved, and various metrics related to 
       position fees, including fee amounts and related market data.
     
