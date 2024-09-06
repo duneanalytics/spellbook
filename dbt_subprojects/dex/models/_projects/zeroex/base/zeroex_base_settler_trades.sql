@@ -90,34 +90,36 @@ with tbl_all_logs AS (
         logs.tx_hash, 
         logs.block_time, 
         logs.block_number,
-        ROW_NUMBER() OVER (PARTITION BY logs.tx_hash ORDER BY index desc) rn, 
-        index,
-        case when first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 then bytearray_substring(logs.topic2,13,20) end as taker,
-        case when first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 then logs.contract_address end as maker_token,
+        index, 
+        case when ( first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 OR varbinary_substring(logs.topic2, 13, 20) = logs.tx_from) then 1 end as valid,
+        bytearray_substring(logs.topic2,13,20) as taker,
+        logs.contract_address as maker_token,  
         first_value(logs.contract_address) over (partition by logs.tx_hash order by index) as taker_token, 
-        first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) ) over (partition by logs.tx_hash order by index) as taker_amount,
-        case when first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 then try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) end as maker_amount,
-        zid, 
-        st.contract_address,
+        first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) ) over (partition by logs.tx_hash order by index) as taker_amount, 
+        try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) as maker_amount, 
         method_id, 
-        tag
+        tag,  
+        st.settler_address, 
+        zid, 
+        st.settler_address as contract_address 
     FROM 
         {{ source('base', 'logs') }} AS logs
     JOIN 
         settler_txs st ON st.tx_hash = logs.tx_hash AND logs.block_time = st.block_time AND st.block_number = logs.block_number
             and (varbinary_substring(logs.topic2, 13, 20) = st.settler_address OR varbinary_substring(logs.topic1, 13, 20)= st.settler_address )
     WHERE 
-        topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
-        0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
-        0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
-        and  not(tag = 0x000000 and zid = 0xa00000000000000000000000)
+        topic0 IN ( 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
+                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
+                    0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c ) 
+        and topic1 != 0x0000000000000000000000000000000000000000000000000000000000000000      
+        and zid != 0xa00000000000000000000000
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
             AND logs.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
 )
-    select * from tbl_all_logs where rn = 1 
+    select * from tbl_all_logs where valid = 1 
 ),
 
 
@@ -153,8 +155,8 @@ fills as (
         select distinct signature  
         from {{ source('base', 'logs_decoded') }}  l
         join tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
-        and event_name in ('TokenExchange', 'OtcOrderFilled', 'SellBaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
-        WHERE 1=1 
+        and event_name in ('TokenExchange', 'OtcOrderFilled', 'SellbaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
+        WHERE  1=1 
         {% if is_incremental() %}
             AND {{ incremental_predicate('l.block_time') }}
         {% else %}
@@ -172,7 +174,6 @@ fills as (
         {% else %}
             AND l.block_time >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
-
         group by 1,2,3
         ),
 
@@ -240,13 +241,13 @@ results_usd AS (
         maker_token_amount,
         taker_token_amount_raw,
         maker_token_amount_raw,
-        CASE WHEN maker_token IN    (0x4200000000000000000000000000000000000006,
+        CASE WHEN maker_token IN   (0x4200000000000000000000000000000000000006,
                                     0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,
                                     0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,
                                     0x5d0af35b4f6f4715961b56168de93bf0062b173d,
                                     0x50c5725949a6f0c72e6c4a641f24049a917db0cb) AND  maker_amount IS NOT NULL
             THEN maker_amount
-            WHEN taker_token IN     (0x4200000000000000000000000000000000000006,
+            WHEN taker_token IN   (0x4200000000000000000000000000000000000006,
                                     0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,
                                     0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,
                                     0x5d0af35b4f6f4715961b56168de93bf0062b173d,
