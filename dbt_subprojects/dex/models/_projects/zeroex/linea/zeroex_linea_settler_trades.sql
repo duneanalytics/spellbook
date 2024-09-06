@@ -121,7 +121,7 @@ with tbl_all_logs AS (
     ),
     tbl_valid_logs as (
         select * 
-            ,  row_number() over (partition by tx_hash order by index) rn 
+            ,  row_number() over (partition by tx_hash order by index desc) rn 
         from tbl_all_logs 
         where valid = 1 
     )
