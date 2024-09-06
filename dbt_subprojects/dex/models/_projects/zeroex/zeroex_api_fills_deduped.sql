@@ -29,6 +29,7 @@
   ,ref('zeroex_bnb_settler_trades')
   ,ref('zeroex_avalanche_c_settler_trades')
   ,ref('zeroex_arbitrum_settler_trades')
+  ,ref('zeroex_scroll_settler_trades')
 ] %}
 
 
