@@ -5,7 +5,7 @@
     {%- else -%}
     gas_price
     {%- endif -%}
-{% endmacro %}
+{% endmacro %} 
 
 -- include chain specific logic here
 {% macro tx_fee_raw(blockchain) %}
