@@ -148,7 +148,7 @@ prices AS (
             AND minute >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
 ),
-
+/*
 fills as (
         with signatures as (
         select distinct signature  
@@ -175,7 +175,7 @@ fills as (
         {% endif %}
         group by 1,2,3
         ),
-
+*/
 results AS (
     SELECT
         trades.block_time,
@@ -201,13 +201,13 @@ results AS (
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS maker_token_amount,
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) * pm.price AS maker_amount,
         tag,
-        fills_within
+        -1 as fills_within
     FROM 
         tbl_trades trades
     JOIN 
         {{ source('base', 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
-    LEFT JOIN 
-        fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number 
+--    LEFT JOIN 
+--        fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number 
     LEFT JOIN 
         tokens tt ON tt.blockchain = 'base' AND tt.contract_address = taker_token
     LEFT JOIN 
@@ -273,7 +273,7 @@ results_usd AS (
         results
 )
 
-SELECT DISTINCT 
+SELECT 
     * 
 FROM 
     results_usd
