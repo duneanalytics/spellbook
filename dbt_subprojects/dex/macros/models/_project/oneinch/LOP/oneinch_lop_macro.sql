@@ -97,7 +97,7 @@ orders as (
     from {{ source(blockchain, 'logs') }}
     where
         contract_address in (select factory from factories)
-        and topic0 = '0x0e534c62f0afd2fa0f0fa71198e8aa2d549f24daf2bb47de0d5486c7ce9288ca'
+        and topic0 = 0x0e534c62f0afd2fa0f0fa71198e8aa2d549f24daf2bb47de0d5486c7ce9288ca
         {% if is_incremental() %}
             and {{ incremental_predicate('block_time') }}
         {% else %}
