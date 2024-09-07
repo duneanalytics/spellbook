@@ -20,9 +20,7 @@ WITH evt_data_1 AS (
         contract_address,
         eventName AS event_name,
         eventData AS data,
-        msgSender AS msg_sender,
-        topic1,
-        CAST(NULL AS varbinary) AS topic2  -- Ensure topic2 is treated as varbinary
+        msgSender AS msg_sender
     FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -39,9 +37,7 @@ WITH evt_data_1 AS (
         contract_address,
         eventName AS event_name,
         eventData AS data,
-        msgSender AS msg_sender,
-        topic1,
-        topic2
+        msgSender AS msg_sender
     FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -197,15 +193,13 @@ WITH evt_data_1 AS (
         contract_address,
         event_name,
         msg_sender,
-        topic1, 
-        topic2,
         
-        account,
-        receiver,
-        callback_contract,
-        ui_fee_receiver,
-        market,
-        TRY_CAST(initial_collateral_token AS VARCHAR) AS initial_collateral_token,
+        from_hex(account) AS account,
+        from_hex(receiver) AS receiver,
+        from_hex(callback_contract) AS callback_contract,
+        from_hex(ui_fee_receiver) AS ui_fee_receiver,
+        from_hex(market) AS market,
+        from_hex(initial_collateral_token) AS initial_collateral_token,
         
         swap_path,
         TRY_CAST(order_type AS INTEGER) AS order_type,
@@ -217,12 +211,12 @@ WITH evt_data_1 AS (
         TRY_CAST(execution_fee AS DOUBLE) AS execution_fee,
         TRY_CAST(callback_gas_limit AS DOUBLE) AS callback_gas_limit,
         TRY_CAST(min_output_amount AS DOUBLE) AS min_output_amount,
-        updated_at_block,
+        TRY_CAST(updated_at_block AS BIGINT) AS updated_at_block,
         TRY_CAST(updated_at_time AS DOUBLE) AS updated_at_time,
         TRY_CAST(is_long AS BOOLEAN) AS is_long,
         TRY_CAST(should_unwrap_native_token AS BOOLEAN) AS should_unwrap_native_token,
         TRY_CAST(is_frozen AS BOOLEAN) AS is_frozen,
-        key
+        from_hex(key) AS key
         
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -230,65 +224,81 @@ WITH evt_data_1 AS (
             AND ED.index = EDP.index
 )
 
-SELECT 
-    blockchain,
-    block_time,
-    block_number,
-    tx_hash,
-    index,
-    contract_address,
-    event_name,
-    msg_sender,
-    topic1,
-    topic2,
-    
-    account,
-    receiver,
-    callback_contract,
-    ui_fee_receiver,
-    market,
-    ED.initial_collateral_token,
-    swap_path,
-    
-    CASE 
-        WHEN order_type = 0 THEN 'MarketSwap'
-        WHEN order_type = 1 THEN 'LimitSwap'
-        WHEN order_type = 2 THEN 'MarketIncrease'
-        WHEN order_type = 3 THEN 'LimitIncrease'
-        WHEN order_type = 4 THEN 'MarketDecrease'
-        WHEN order_type = 5 THEN 'LimitDecrease'
-        WHEN order_type = 6 THEN 'StopLossDecrease'
-        WHEN order_type = 7 THEN 'Liquidation'
-        ELSE NULL
-    END AS order_type,
-    CASE 
-        WHEN decrease_position_swap_type = 0 THEN 'NoSwap'
-        WHEN decrease_position_swap_type = 1 THEN 'SwapPnlTokenToCollateralToken'
-        WHEN decrease_position_swap_type = 2 THEN 'SwapCollateralTokenToPnlToken'
-        ELSE NULL
-    END AS decrease_position_swap_type,
-    
-    size_delta_usd / POWER(10, 30) AS size_delta_usd,
-    initial_collateral_delta_amount / POWER(10, collateral_token_decimals) AS initial_collateral_delta_amount,
-    trigger_price / POWER(10, 30) AS trigger_price,
-    acceptable_price / POWER(10, 30) AS acceptable_price,
-    execution_fee / POWER(10, 18) AS execution_fee,
-    callback_gas_limit,
-    min_output_amount AS min_output_amount, 
+-- full data 
+, full_data AS (
+    SELECT 
+        blockchain,
+        block_time,
+        DATE(block_time) AS block_date,
+        block_number,
+        tx_hash,
+        index,
+        contract_address,
+        event_name,
+        msg_sender,
+        
+        account,
+        receiver,
+        callback_contract,
+        ui_fee_receiver,
+        ED.market,
+        ED.initial_collateral_token,
+        swap_path,
+        
+        CASE 
+            WHEN order_type = 0 THEN 'MarketSwap'
+            WHEN order_type = 1 THEN 'LimitSwap'
+            WHEN order_type = 2 THEN 'MarketIncrease'
+            WHEN order_type = 3 THEN 'LimitIncrease'
+            WHEN order_type = 4 THEN 'MarketDecrease'
+            WHEN order_type = 5 THEN 'LimitDecrease'
+            WHEN order_type = 6 THEN 'StopLossDecrease'
+            WHEN order_type = 7 THEN 'Liquidation'
+            ELSE NULL
+        END AS order_type,
+        CASE 
+            WHEN decrease_position_swap_type = 0 THEN 'NoSwap'
+            WHEN decrease_position_swap_type = 1 THEN 'SwapPnlTokenToCollateralToken'
+            WHEN decrease_position_swap_type = 2 THEN 'SwapCollateralTokenToPnlToken'
+            ELSE NULL
+        END AS decrease_position_swap_type,
+        
+        size_delta_usd / POWER(10, 30) AS size_delta_usd,
+        initial_collateral_delta_amount / POWER(10, collateral_token_decimals) AS initial_collateral_delta_amount,
+        CASE 
+            WHEN index_token_decimals IS NULL THEN trigger_price / POWER(10, 30)
+            ELSE trigger_price / POWER(10, 30 - index_token_decimals) 
+        END AS trigger_price,
+        CASE 
+            WHEN index_token_decimals IS NULL THEN acceptable_price / POWER(10, 30)
+            ELSE acceptable_price / POWER(10, 30 - index_token_decimals) 
+        END AS acceptable_price,
+        execution_fee / POWER(10, 18) AS execution_fee,
+        callback_gas_limit,
+        min_output_amount AS min_output_amount, 
 
-    updated_at_block,
-    CASE 
-        WHEN updated_at_time = 0 THEN NULL
-        ELSE updated_at_time
-    END AS updated_at_time,
-    is_long,
-    should_unwrap_native_token,
-    is_frozen,
-    key
+        updated_at_block,
+        CASE 
+            WHEN updated_at_time = 0 THEN NULL
+            ELSE updated_at_time
+        END AS updated_at_time,
+        is_long,
+        should_unwrap_native_token,
+        is_frozen,
+        key
 
-FROM event_data AS ED
-LEFT JOIN {{ ref('gmx_v2_arbitrum_collateral_tokens_data') }} AS CTD
-    ON ED.initial_collateral_token = TRY_CAST(CTD.collateral_token AS VARCHAR)
+    FROM event_data AS ED
+    LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
+        ON ED.market = MD.market
+    LEFT JOIN {{ ref('gmx_v2_arbitrum_collateral_tokens_data') }} AS CTD
+        ON ED.initial_collateral_token = CTD.collateral_token
+)
 
-
-
+--can be removed once decoded tables are fully denormalized
+{{
+    add_tx_columns(
+        model_cte = 'full_data'
+        , blockchain = blockchain_name
+        , columns = ['from', 'to']
+    )
+}}
