@@ -14,6 +14,6 @@
 
 
 {% for blockchain in oneinch_exposed_blockchains_list() %}
-    {{ oneinch_escrow_dst_creations_macro(blockchain) }}
+    select * from ({{ oneinch_escrow_dst_creations_macro(blockchain) }})
     {% if not loop.last %} union all {% endif %}
 {% endfor %}
