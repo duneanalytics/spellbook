@@ -91,7 +91,6 @@ select
     , block_time
     , tx_hash
     , trace_address
-    , factory
     , escrow
     , hashlock
     , selector
@@ -102,6 +101,7 @@ select
     , amount
     , rescue_token
     , rescue_amount
+    , call_success
     , date_trunc('month', block_time) as block_month
 from results
 
