@@ -1,5 +1,6 @@
 {{
     config(
+        tags = ['prod_exclude'],
         schema = 'iziswap_scroll',
         alias = 'base_trades',
         materialized = 'incremental',

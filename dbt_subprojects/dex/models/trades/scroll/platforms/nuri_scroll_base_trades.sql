@@ -1,5 +1,6 @@
 {{
     config(
+        tags = ['prod_exclude'],
         schema = 'nuri_scroll',
         alias = 'base_trades',
         materialized = 'incremental',
