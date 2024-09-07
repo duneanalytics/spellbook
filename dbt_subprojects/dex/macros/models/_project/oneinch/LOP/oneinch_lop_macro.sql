@@ -138,7 +138,7 @@ orders as (
                 , lpad(token, 32, 0x00)
                 , cast(amount as varbinary)
                 , cast(safety_deposit as varbinary)
-                , to_big_endian_32(to_unixtime(block_time))
+                , to_big_endian_32(cast(to_unixtime(block_time) as int))
                 , substr(timelocks, 5) -- replace the first 4 bytes with current block time
             ))
             , keccak(concat(
