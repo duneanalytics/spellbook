@@ -201,9 +201,7 @@ orders as (
               as row(blockchain varchar, block_number bigint, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256))
         ) filter(where method = 'rescueFunds') as rescues
     from {{ ref('oneinch_escrow_results') }}
-    where
-        
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %} -- with an incremental predicate, as the results always come after the creations
+    {% if is_incremental() %}where {{ incremental_predicate('block_time') }}{% endif %} -- with an incremental predicate, as the results always come after the creations
     group by 1
 )
 

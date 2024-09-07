@@ -74,7 +74,7 @@ factories as (
     from {{ source(blockchain, 'traces') }}
     where
         {{ selector }} in ({{ withdraw }}, {{ cancel }}, {{ rescueFunds }})
-        and "to" in (select escrow from creations)
+        and "to" in (select address from creations)
         and call_type = 'call'
         {% if is_incremental() %}
             and {{ incremental_predicate('block_time') }}
