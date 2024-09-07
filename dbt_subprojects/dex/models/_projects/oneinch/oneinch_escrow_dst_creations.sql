@@ -1,11 +1,7 @@
-{% set blockchain = 'bnb' %}
-
-
-
 {{
     config(
-        schema = 'oneinch_' + blockchain,
-        alias = 'escrow_creations',
+        schema = 'oneinch',
+        alias = 'escrow_dst_creations',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -17,4 +13,7 @@
 
 
 
-{{ oneinch_escrow_creations_macro(blockchain) }}
+{% for blockchain in oneinch_exposed_blockchains_list() %}
+    {{ oneinch_escrow_dst_creations_macro(blockchain) }}
+    {% if not loop.last %} union all {% endif %}
+{% endfor %}

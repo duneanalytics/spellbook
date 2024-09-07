@@ -16,13 +16,20 @@ meta as (
 )
 
 , calls as (
-    select * from ({{ oneinch_calls_macro(blockchain) }})
+    select
+        *
+        , coalesce(withdrawal.blockchain, blockchain) as result_blockchain
+        , coalesce(withdrawal.block_number, block_number) as result_block_number
+        , coalesce(withdrawal.block_time, block_time) as result_block_time
+        , coalesce(withdrawal.tx_hash, tx_hash) as result_tx_hash
+        , coalesce(withdrawal.trace_address, call_trace_address) as result_trace_address
+    from ({{ oneinch_calls_macro(blockchain) }})
+    left join unnest(withdrawals) as w(withdrawal) on true
     where
         tx_success
         and call_success
-        {% if is_incremental() %}
-            and {{ incremental_predicate('block_time') }}
-        {% endif %}
+        and coalesce(withdrawal.blockchain, blockchain) = '{{ blockchain }}'
+        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
 , transfers as (
@@ -41,17 +48,24 @@ meta as (
         , calls.block_number
         , calls.block_time
         , calls.tx_hash
-        , call_trace_address
-        , transfer_trace_address
+        , calls.call_trace_address
+        , calls.dst_blockchain
+        , calls.hashlock
+        , calls.withdrawal
+        , transfers.blockchain as transfer_blockchain
+        , transfers.block_number as transfer_block_number
+        , transfers.block_time as transfer_block_time
+        , transfers.tx_hash as transfer_tx_hash
+        , transfers.transfer_trace_address
         , contract_address
         , amount
         , transfer_from
         , transfer_to
     from calls
     join transfers on 
-        calls.block_number = transfers.block_number
-        and calls.tx_hash = transfers.tx_hash
-        and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address
+        transfers.block_number = calls.result_block_number
+        and transfers.tx_hash = calls.result_tx_hash
+        and slice(transfer_trace_address, 1, cardinality(result_trace_address)) = result_trace_address
 )
 
 -- output --
@@ -62,6 +76,13 @@ select
     , block_time
     , tx_hash
     , call_trace_address
+    , dst_blockchain
+    , hashlock
+    , withdrawal
+    , transfer_blockchain
+    , transfer_block_number
+    , transfer_block_time
+    , transfer_tx_hash
     , transfer_trace_address
     , if(contract_address = 0xae, wrapped_native_token_address, contract_address) as contract_address
     , amount
@@ -72,8 +93,8 @@ select
         coalesce(transfer_from, transfer_to) is not null
         , count(*) over(partition by blockchain, tx_hash, call_trace_address, array_join(array_sort(array[transfer_from, transfer_to]), ''))
     ) as transfers_between_players
-    , date_trunc('minute', block_time) as minute
-    , date(date_trunc('month', block_time)) as block_month
+    , date_trunc('minute', transfer_block_time) as minute
+    , date(date_trunc('month', transfer_block_time)) as block_month
 from merging, meta
 
 {% endmacro %}

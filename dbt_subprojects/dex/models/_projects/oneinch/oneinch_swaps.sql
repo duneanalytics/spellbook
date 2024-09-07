@@ -48,6 +48,16 @@
         'remains',
         'native_token_symbol',
         '_call_trace_address',
+        'src_escrow',
+        'hashlock',
+        'dst_blockchain',
+        'dst_block_number',
+        'dst_block_time',
+        'dst_tx_hash',
+        'dst_escrow',
+        'withdrawals',
+        'cancels',
+        'rescues'
     ]
 %}
 
@@ -57,7 +67,7 @@ with
 
 tokens as (
     select
-        blockchain
+        blockchain as transfer_blockchain
         , contract_address
         , symbol as token_symbol
         , decimals as token_decimals
@@ -66,7 +76,7 @@ tokens as (
 
 , prices as (
     select
-        blockchain
+        blockchain as transfer_blockchain
         , contract_address
         , minute
         , price
@@ -83,7 +93,7 @@ tokens as (
         *
         , if(src_token_address in {{native_addresses}}, wrapped_native_token_address, src_token_address) as _src_token_address
         , if(src_token_address in {{native_addresses}}, true, false) as _src_token_native
-        , if(dst_token_address in {{native_addresses}}, wrapped_native_token_address, dst_token_address) as _dst_token_address
+        , if(dst_token_address in {{native_addresses}}, coalesce(dst_wrapper, wrapped_native_token_address), dst_token_address) as _dst_token_address
         , if(dst_token_address in {{native_addresses}}, true, false) as _dst_token_native
         , array_join(call_trace_address, '') as _call_trace_address
     from {{ ref('oneinch_calls') }}
@@ -150,10 +160,10 @@ tokens as (
         , second_side
 
         -- what the user actually gave and received, judging by the transfers
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_address_true
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from in (user, src_escrow)) as _src_token_address_true
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_address_to_user
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_address_to_receiver
-        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from = user) as _src_token_symbol_true
+        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from in (user, src_escrow)) as _src_token_symbol_true
         , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_symbol_to_user
         , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_symbol_to_receiver
         , any_value({{ decimals }}) filter(where {{ src_condition }}) as src_token_decimals
@@ -169,7 +179,7 @@ tokens as (
         , max(amount * price / pow(10, decimals)) as transfers_amount_usd
 
         -- src $ amount from user
-        , sum(amount * if(user = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_from_user
+        , sum(amount * if(transfer_from in (user, src_escrow), price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and cardinality(array_intersect(array[user, src_escrow], array[transfer_from, transfer_to])) > 0) as _amount_usd_from_user
         -- dst $ amount to user
         , sum(amount * if(user = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_to_user
         -- dst $ amount to receiver
@@ -184,8 +194,8 @@ tokens as (
             where {{ incremental_predicate('block_time') }}
         {% endif %}
     ) using(blockchain, block_number, tx_hash, call_trace_address) -- block_number is needed for performance
-    left join prices using(blockchain, contract_address, minute)
-    left join tokens using(blockchain, contract_address)
+    left join prices using(transfer_blockchain, contract_address, minute)
+    left join tokens using(transfer_blockchain, contract_address)
     group by 1, 2, 3, 4, 5
 )
 
@@ -218,12 +228,19 @@ select
         ('direct', cardinality(call_trace_address) = 0)
         , ('second_side', second_side)
         , ('contracts_only', contracts_only)
+        , ('cross-chain', hashlock is not null)
     ])) as flags
     , remains
     , coalesce(_src_token_address_true, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address
     , coalesce(_src_token_symbol_true, _src_token_symbol) as src_token_symbol
     , src_token_decimals
     , coalesce(_src_token_amount_true, src_token_amount) as src_token_amount
+    , src_escrow
+    , hashlock
+    , dst_blockchain
+    , dst_block_number
+    , dst_block_time
+    , dst_tx_hash
     , coalesce(_dst_token_address_to_user, _dst_token_address_to_receiver, if(_dst_token_native, {{ true_native_address }}, _dst_token_address)) as dst_token_address
     , coalesce(_dst_token_symbol_to_user, _dst_token_symbol_to_receiver, _dst_token_symbol) as dst_token_symbol
     , dst_token_decimals
@@ -234,6 +251,9 @@ select
     , greatest(coalesce(_amount_usd_from_user, 0), coalesce(_amount_usd_to_user, _amount_usd_to_receiver, 0)) as user_amount_usd -- actual user $ amount
     , tokens
     , transfers
+    , withdrawals
+    , cancels
+    , rescues
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
     , coalesce(order_hash, tx_hash || from_hex(if(mod(length(_call_trace_address), 2) = 1, '0' || _call_trace_address, _call_trace_address) || '0' || cast(cast(second_side as int) as varchar))) as swap_id
