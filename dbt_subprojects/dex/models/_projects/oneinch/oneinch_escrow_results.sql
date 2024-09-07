@@ -10,6 +10,6 @@
 
 
 {% for blockchain in oneinch_exposed_blockchains_list() %}
-    select * from {{ ref('oneinch_' + blockchain + '_esrow_results') }}
+    select * from {{ ref('oneinch_' + blockchain + '_escrow_results') }}
     {% if not loop.last %} union all {% endif %}
 {% endfor %}
