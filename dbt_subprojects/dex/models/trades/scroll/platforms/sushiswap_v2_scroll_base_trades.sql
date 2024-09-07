@@ -1,6 +1,5 @@
 {{
     config(
-        tags = ['prod_exclude'],
         schema = 'sushiswap_v2_scroll',
         alias = 'base_trades',
         materialized = 'incremental',

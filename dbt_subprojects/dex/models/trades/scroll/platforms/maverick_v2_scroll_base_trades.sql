@@ -1,6 +1,5 @@
 {{
     config(
-        tags = ['prod_exclude'],
         schema = 'maverick_v2_scroll',
         alias = 'base_trades',
         materialized = 'incremental',
