@@ -20,6 +20,7 @@
 {% set deployer_3 = '0xc1cc1a300Dcfe5359eBe37f2007A77d1F91533ba' %}
 {% set deployer_4 = '0x3A510C5a32bCb381c53704AED9c02b0c70041F7A' %}
 {% set deployer_5 = '0xb252f0ab7bdf1be4d5bbf607eb5c220b2d902a2c' %}
+{% set deployer_6 = '0xa24e8cE77D4A7Ce869DA3730e6560BfB66553F94' %}
 {% set weth_contract_address = '0x4200000000000000000000000000000000000006' %}
 {% set usdc_contract_address = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913' %}
 {% set fee_recipient_1 = '0x415EEc63c95e944D544b3088bc682B759edB8548' %}
@@ -36,9 +37,9 @@ with
                 or "from" = {{ deployer_3 }}
                 or "from" = {{ deployer_4 }}
                 or "from" = {{ deployer_5 }}
+                or "from" = {{ deployer_6 }}
             )
             and block_time >= timestamp '{{project_start_date}}'
-
     ),
     bot_trades as (
         select

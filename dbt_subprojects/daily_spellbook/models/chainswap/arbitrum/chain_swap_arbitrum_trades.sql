@@ -20,6 +20,8 @@
 {% set deployer_3 = '0xc1cc1a300Dcfe5359eBe37f2007A77d1F91533ba' %}
 {% set deployer_4 = '0x3A510C5a32bCb381c53704AED9c02b0c70041F7A' %}
 {% set deployer_5 = '0xb7b953e81612c57256ff0aebd62b6a2f0546f7da' %}
+{% set deployer_6 = '0xb252f0ab7bdf1be4d5bbf607eb5c220b2d902a2c' %}
+{% set deployer_7 = '0xa24e8cE77D4A7Ce869DA3730e6560BfB66553F94' %}
 {% set weth_contract_address = '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1' %}
 {% set usdc_contract_address = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831' %}
 {% set fee_recipient_1 = '0x415EEc63c95e944D544b3088bc682B759edB8548' %}
@@ -36,9 +38,10 @@ with
                 or "from" = {{ deployer_3 }}
                 or "from" = {{ deployer_4 }}
                 or "from" = {{ deployer_5 }}
+                or "from" = {{ deployer_6 }}
+                or "from" = {{ deployer_7 }}
             )
             and block_time >= timestamp '{{project_start_date}}'
-
     ),
     bot_trades as (
         select

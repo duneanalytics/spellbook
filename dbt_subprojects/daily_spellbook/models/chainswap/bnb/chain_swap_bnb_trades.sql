@@ -17,6 +17,7 @@
 {% set blockchain = 'bnb' %}
 {% set deployer_1 = '0x1d32cFeFd97de9D740714A31b2E8C7bc34825442' %}
 {% set deployer_2 = '0x3A510C5a32bCb381c53704AED9c02b0c70041F7A' %}
+{% set deployer_3 = '0xa24e8cE77D4A7Ce869DA3730e6560BfB66553F94' %}
 {% set wbnb_contract_address = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c' %}
 {% set usdc_contract_address = '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d' %}
 {% set fee_recipient_1 = '0x415EEc63c95e944D544b3088bc682B759edB8548' %}
@@ -30,6 +31,7 @@ with
             (
                 "from" = {{ deployer_1 }}
                 or "from" = {{ deployer_2 }}
+                or "from" = {{ deployer_3 }}
             
             )
             and block_time >= timestamp '{{project_start_date}}'
