@@ -66,9 +66,12 @@ with
         join bot_contracts on trades.tx_to = bot_contracts.address
         where
             trades.blockchain = '{{blockchain}}'
-            and trades.block_time >= timestamp '{{project_start_date}}'
             and (tx_from != {{ fee_recipient_1 }} and tx_from != {{ fee_recipient_2 }})
-        order by trades.block_time desc, trades.evt_index desc
+            {% if is_incremental() %}
+            and {{ incremental_predicate('trades.block_time') }}
+            {% else %}
+            and trades.block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
     ),
     highest_event_index_for_each_trade as (
         select tx_hash, max(evt_index) as highest_event_index
