@@ -113,7 +113,6 @@ orders as (
             , ('multiple', _multiple)
             , ('fusion', array_position(fusion_settlement_addresses, call_from) > 0 or reduce(fusion_settlement_addresses, false, (r, x) -> r or coalesce(varbinary_position(args, x), 0) > 0, r -> r))
             , ('factoryInArgs', reduce(escrow_factory_addresses, false, (r, x) -> r or coalesce(varbinary_position(args, x), 0) > 0, r -> r))
-            , ('first', row_number() over(partition by coalesce(orders.order_hash, orders.tx_hash) order by orders.block_number, orders.tx_index, orders.call_trace_address) = 1)
         ]) as flags
         , concat(
             cast(length(_remains) + length(order_remains) as bigint)
@@ -241,7 +240,9 @@ select
     , coalesce(dst_token, taker_asset) as taker_asset
     , coalesce(dst_amount, taking_amount) as taking_amount
     , order_hash
-    , flags
+    , map_concat(flags, map_from_entries(array[
+        ('first', row_number() over(partition by coalesce(order_hash, tx_hash) order by block_number, tx_index, call_trace_address) = 1)
+    ])) as flags
     , remains
     , src_escrow
     , coalesce(hashlock, cast(null as varbinary)) as hashlock
