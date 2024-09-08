@@ -136,7 +136,7 @@ models:
 
   - name: oneinch_blockchains
     meta:
-      blockchain: ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base']
+      blockchain: ['ethereum', 'bnb', 'polygon', 'arbitrum', 'avalanche_c', 'gnosis', 'optimism', 'fantom', 'base']
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
