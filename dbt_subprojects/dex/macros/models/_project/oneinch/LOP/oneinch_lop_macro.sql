@@ -179,7 +179,7 @@ orders as (
         , call_success as dst_creation_call_success
         , wrapped_native_token_address as dst_wrapper
         , row_number() over(partition by hashlock order by block_number, tx_hash, trace_address) as hashlockNum
-    from {{ ref('oneinch_escrow_dst_creations') }}
+    from {{ source('oneinch', 'escrow_dst_creations') }}
     join {{ ref('oneinch_blockchains') }} using(blockchain)
     {% if is_incremental() %}where {{ incremental_predicate('block_time') }}{% endif %}
 )

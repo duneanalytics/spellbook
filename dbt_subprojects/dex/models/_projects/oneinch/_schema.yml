@@ -140,7 +140,7 @@ models:
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['oneinch', 'calls', 'transfers']
+      tags: ['oneinch', 'blockchain']
     description: >
         1inch blockchains meta
     columns:
