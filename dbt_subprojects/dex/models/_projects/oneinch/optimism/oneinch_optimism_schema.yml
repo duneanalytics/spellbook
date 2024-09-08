@@ -183,3 +183,43 @@ models:
       - name: transfers_between_players
       - name: minute
       - name: block_month
+
+  - name: oneinch_optimism_escrow_results
+    meta:
+      blockchain: ['optimism']
+      sector: oneinch
+      contributors: ['max-morrow', 'grkhr']
+    config:
+      tags: ['oneinch', 'crosschain']
+    description: >
+        escrow results
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - trace_address
+    columns:
+      - name: blockchain
+        tests:
+          - not_null
+      - name: block_number
+      - name: block_time
+      - name: tx_hash
+        tests:
+          - not_null
+      - name: trace_address
+        tests:
+          - not_null
+      - name: escrow
+      - name: hashlock
+      - name: selector
+      - name: method
+      - name: secret
+      - name: order_hash
+      - name: token
+      - name: amount
+      - name: rescue_token
+      - name: rescue_amount
+      - name: call_success
+      - name: block_month
