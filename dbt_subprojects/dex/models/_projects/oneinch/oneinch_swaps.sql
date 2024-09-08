@@ -228,7 +228,7 @@ select
         ('direct', cardinality(call_trace_address) = 0)
         , ('second_side', second_side)
         , ('contracts_only', contracts_only)
-        , ('cross-chain', hashlock is not null)
+        , ('crosschain', hashlock is not null)
     ])) as flags
     , remains
     , coalesce(_src_token_address_true, if(_src_token_native, {{ true_native_address }}, _src_token_address)) as src_token_address

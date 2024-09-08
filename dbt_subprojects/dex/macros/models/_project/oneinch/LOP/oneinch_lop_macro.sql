@@ -113,7 +113,7 @@ orders as (
             , ('multiple', _multiple)
             , ('fusion', array_position(fusion_settlement_addresses, call_from) > 0 or reduce(fusion_settlement_addresses, false, (r, x) -> r or coalesce(varbinary_position(args, x), 0) > 0, r -> r))
             , ('factoryInArgs', reduce(escrow_factory_addresses, false, (r, x) -> r or coalesce(varbinary_position(args, x), 0) > 0, r -> r))
-            , ('first', row_number() over(partition by coalesce(order_hash, tx_hash) order by block_number, tx_index, call_trace_address) = 1)
+            , ('first', row_number() over(partition by coalesce(orders.order_hash, orders.tx_hash) order by orders.block_number, orders.tx_index, orders.call_trace_address) = 1)
         ]) as flags
         , concat(
             cast(length(_remains) + length(order_remains) as bigint)
@@ -256,9 +256,9 @@ select
     , dst_amount
     , dst_wrapper
     , dst_creation_call_success
-    , coalesce(withdrawals, cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256)))) as withdrawals
-    , coalesce(cancels, cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256)))) as cancels
-    , coalesce(rescues, cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256)))) as rescues
+    , coalesce(filter(withdrawals, x -> x.escrow in (src_escrow, dst_escrow)), cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256)))) as withdrawals
+    , coalesce(filter(cancels, x -> x.escrow in (src_escrow, dst_escrow)), cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256)))) as cancels
+    , coalesce(filter(rescues, x -> x.escrow in (src_escrow, dst_escrow)), cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256)))) as rescues
     , args
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month

@@ -147,6 +147,8 @@ models:
             - blockchain
             - tx_hash
             - call_trace_address
+            - transfer_blockchain
+            - transfer_tx_hash
             - transfer_trace_address
             - transfer_native
     columns:
@@ -164,6 +166,13 @@ models:
       - name: transfer_trace_address
         tests:
           - not_null
+      - name: dst_blockchain
+      - name: hashlock
+      - name: escrow_result
+      - name: transfer_blockchain
+      - name: transfer_block_number
+      - name: transfer_block_time
+      - name: transfer_tx_hash
       - name: contract_address
       - name: amount
       - name: transfer_native

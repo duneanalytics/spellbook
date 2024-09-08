@@ -4,7 +4,18 @@
     ) 
 %}
 
-
+-- base columns to not to duplicate in the union
+{% set
+    calls_base_columns = [
+        'blockchain',
+        'block_number',
+        'block_time',
+        'tx_hash',
+        'call_trace_address',
+        'dst_blockchain',
+        'hashlock'
+    ]
+%}
 
 with
 
@@ -17,18 +28,68 @@ meta as (
 
 , calls as (
     select
-        *
-        , coalesce(withdrawal.blockchain, blockchain) as result_blockchain
-        , coalesce(withdrawal.block_number, block_number) as result_block_number
-        , coalesce(withdrawal.block_time, block_time) as result_block_time
-        , coalesce(withdrawal.tx_hash, tx_hash) as result_tx_hash
-        , coalesce(withdrawal.trace_address, call_trace_address) as result_trace_address
+        {{ calls_base_columns | join(', ') }}
+        , blockchain as result_blockchain
+        , block_number as result_block_number
+        , block_time as result_block_time
+        , tx_hash as result_tx_hash
+        , call_trace_address as result_trace_address
+        , cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256))) as escrow_result
     from ({{ oneinch_calls_macro(blockchain) }})
-    left join unnest(withdrawals) as w(withdrawal) on true
     where
         tx_success
         and call_success
-        and coalesce(withdrawal.blockchain, blockchain) = '{{ blockchain }}'
+        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+    
+    union
+
+    select
+        {{ calls_base_columns | join(', ') }}
+        , withdrawal.blockchain as result_blockchain
+        , withdrawal.block_number as result_block_number
+        , withdrawal.block_time as result_block_time
+        , withdrawal.tx_hash as result_tx_hash
+        , withdrawal.trace_address as result_trace_address
+        , withdrawal as escrow_result
+    from ({{ ref('oneinch_calls') }}), unnest(withdrawals) as w(withdrawal) -- rows with withdrawals only
+    where
+        tx_success
+        and call_success
+        and withdrawal.blockchain = '{{ blockchain }}'
+        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+    
+    union
+
+    select
+        {{ calls_base_columns | join(', ') }}
+        , cancel.blockchain as result_blockchain
+        , cancel.block_number as result_block_number
+        , cancel.block_time as result_block_time
+        , cancel.tx_hash as result_tx_hash
+        , cancel.trace_address as result_trace_address
+        , cancel as escrow_result
+    from ({{ ref('oneinch_calls') }}), unnest(cancels) as c(cancel) -- rows with cancels only
+    where
+        tx_success
+        and call_success
+        and cancel.blockchain = '{{ blockchain }}'
+        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+    
+    union
+
+    select
+        {{ calls_base_columns | join(', ') }}
+        , rescue.blockchain as result_blockchain
+        , rescue.block_number as result_block_number
+        , rescue.block_time as result_block_time
+        , rescue.tx_hash as result_tx_hash
+        , rescue.trace_address as result_trace_address
+        , rescue as escrow_result
+    from ({{ ref('oneinch_calls') }}), unnest(rescues) as r(rescue) -- rows with rescues only
+    where
+        tx_success
+        and call_success
+        and rescue.blockchain = '{{ blockchain }}'
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
@@ -51,7 +112,7 @@ meta as (
         , calls.call_trace_address
         , calls.dst_blockchain
         , calls.hashlock
-        , calls.withdrawal
+        , calls.escrow_result
         , transfers.blockchain as transfer_blockchain
         , transfers.block_number as transfer_block_number
         , transfers.block_time as transfer_block_time
@@ -78,7 +139,7 @@ select
     , call_trace_address
     , dst_blockchain
     , hashlock
-    , withdrawal
+    , escrow_result
     , transfer_blockchain
     , transfer_block_number
     , transfer_block_time
