@@ -61,7 +61,7 @@ FROM (
         , "type"
         , CAST(value AS double) AS value
         --Logic for L2s
-                {% if transactions_model[0] in all_op_chains() or transactions_model[0] == 'scroll' %}
+                {% if transactions_model[0] in all_op_chains() + ('scroll','mantle','blast') %}
                 , l1_tx_origin
                 , l1_fee_scalar
                 , l1_block_number
