@@ -1,4 +1,4 @@
-{% set blockchain = 'gnosis' %} -- begin --
+{% set blockchain = 'gnosis' %}
 
 
 

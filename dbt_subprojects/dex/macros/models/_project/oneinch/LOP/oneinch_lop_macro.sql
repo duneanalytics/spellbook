@@ -158,7 +158,6 @@ orders as (
         and SrcEscrowCreated.maker = orders.maker
         and SrcEscrowCreated.taker = orders.call_from
         and SrcEscrowCreated.token = orders.maker_asset
-    left join dst on varbinary_position(args, hashlock) > 0
 )
 
 -- createDstEscrow calls on all blockchains --
