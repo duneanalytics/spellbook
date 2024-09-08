@@ -263,7 +263,7 @@ select
     , date(date_trunc('month', block_time)) as block_month
 from ({{
     add_tx_columns(
-        model_cte = 'orders'
+        model_cte = 'calculations'
         , blockchain = blockchain
         , columns = ['from', 'to', 'success', 'nonce', 'gas_price', 'priority_fee_per_gas', 'gas_used', 'index']
     )
