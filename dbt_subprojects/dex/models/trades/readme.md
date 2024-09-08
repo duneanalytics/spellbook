@@ -59,7 +59,7 @@ Adoption of the `base_` prefix for table aliases and `uniswap_` for macro names.
 ### Directory Structure
 
 - Macros/Models: `dbt_subprojects/dex/macros/`
-- Platforms: `dbt_subprojects/dex/models/trades/<blockchain>/platforms`
+- Platforms: `dbt_subprojects/dex/models/trades/<blockchain>/platforms/`
 
 ### Materialization Strategy
 
@@ -198,7 +198,7 @@ eg.
 
 ### Add the Corresponding Seed File
 
-Create and add the seed file in the [dbt_subprojects/dex/seeds/trades](/dbt_subprojects/dex/seeds/trades) directory. This file should contain the trades that verified on the blockchain explorers.
+Create and add the seed file in the [dbt_subprojects/dex/seeds/trades/](/dbt_subprojects/dex/seeds/trades) directory. This file should contain the trades that verified on the blockchain explorers.
 
 ### Add Tests to Model Schema
 
