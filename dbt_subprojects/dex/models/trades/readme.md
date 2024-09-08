@@ -162,7 +162,7 @@ Example config block:
 
 ## Dependency on dex.info
 
-It's crucial to add a corresponding entry in [`dex.info`](/models/dex/dex_info.sql) when adding a new `dex`.
+It's crucial to add a corresponding entry in [`dex.info`](dbt_subprojects/dex/models/dex_info.sql) when adding a new `dex`.
 
 Sample new entry:
 
@@ -176,7 +176,7 @@ Seed tests are vital for ensuring that the output of our models aligns with the 
 
 ### Define the Seed Schema
 
-Start by defining the schema of your seed in the [seeds/\_sector/dex/\_schema.yml](/seeds/_sector/dex/_schema.yml) file.
+Start by defining the schema of your seed in the [dbt_subprojects/dex/seeds/trades/\_schema.yml](dbt_subprojects/dex/seeds/trades/_schema.yml) file.
 eg.
 
 ```yaml
@@ -198,7 +198,7 @@ eg.
 
 ### Add the Corresponding Seed File
 
-Create and add the seed file in the [seeds/\_sector/dex/](/seeds/_sector/dex) directory. This file should contain the trades that verified on the blockchain explorers.
+Create and add the seed file in the [dbt_subprojects/dex/seeds/trades](/dbt_subprojects/dex/seeds/trades) directory. This file should contain the trades that verified on the blockchain explorers.
 
 ### Add Tests to Model Schema
 
