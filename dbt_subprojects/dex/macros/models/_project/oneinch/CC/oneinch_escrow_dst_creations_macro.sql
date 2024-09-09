@@ -57,7 +57,7 @@ factories as (
             {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
             {% else %}
-                and block_time > timestamp '{{ date_from }}'
+                and block_time > greatest(timestamp '{{ date_from }}', timestamp {{ oneinch_easy_date() }})
             {% endif %}
     )
 )

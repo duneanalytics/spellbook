@@ -198,7 +198,7 @@ models:
       sector: oneinch
       contributors: ['max-morrow', 'grkhr']
     config:
-      tags: ['oneinch', 'crosschain']
+      tags: ['oneinch', 'cross-chain']
     description: >
         escrow results
     tests:
