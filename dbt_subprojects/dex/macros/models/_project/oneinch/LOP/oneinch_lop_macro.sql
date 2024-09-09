@@ -172,6 +172,8 @@ orders as (
         , escrow as dst_escrow
         , order_hash as dst_order_hash
         , hashlock
+        , maker as dst_maker
+        , taker as dst_taker
         , token as dst_token
         , amount as dst_amount
         , timelocks
