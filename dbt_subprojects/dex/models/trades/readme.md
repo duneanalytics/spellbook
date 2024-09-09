@@ -1,6 +1,6 @@
 # README for `dex.trades`
 
-Welcome to the `models/_sector/dex/` directory of our project. This README provides essential information on contributing to the `dex` sector models, insights into our design choices, and outlines the next steps in the `dex.trades` redesign workstream.
+Welcome to the `dbt_subprojects/dex` directory of our project. This README provides essential information on contributing to the `dex` sector models, insights into our design choices, and outlines the next steps in the `dex.trades` redesign workstream.
 
 ## Table of Contents
 
@@ -58,8 +58,8 @@ Adoption of the `base_` prefix for table aliases and `uniswap_` for macro names.
 
 ### Directory Structure
 
-- Macros/Models: `macros/models/_sector/dex/`
-- Platforms: `models/_sector/dex/trades/<blockchain>/platforms/`
+- Macros/Models: `dbt_subprojects/dex/macros/`
+- Platforms: `dbt_subprojects/dex/models/trades/<blockchain>/platforms/`
 
 ### Materialization Strategy
 
@@ -109,7 +109,7 @@ When incorporating new data sources into the `dex` sector, it's essential to pro
 
 For each model in the DEX sector, we must define its schema. This schema outlines the structure of the model and the definitions of its columns. Here’s how to add a schema for a model:
 
-1. **Locate the Schema YML File**: Go to `models/_sector/dex/trades/[blockchain]` in the project directory.
+1. **Locate the Schema YML File**: Go to `dbt_subprojects/dex/models/trades/[blockchain]` in the project directory.
 
 2. **Edit the `_schema.yml` File**: Add the schema definition for your model. This includes specifying column names, types, descriptions, and any tests that should be applied to the columns. For example:
 
@@ -162,7 +162,7 @@ Example config block:
 
 ## Dependency on dex.info
 
-It's crucial to add a corresponding entry in [`dex.info`](/models/dex/dex_info.sql) when adding a new `dex`.
+It's crucial to add a corresponding entry in [`dex.info`](/dbt_subprojects/dex/models/dex_info.sql) when adding a new `dex`.
 
 Sample new entry:
 
@@ -176,7 +176,7 @@ Seed tests are vital for ensuring that the output of our models aligns with the 
 
 ### Define the Seed Schema
 
-Start by defining the schema of your seed in the [seeds/\_sector/dex/\_schema.yml](/seeds/_sector/dex/_schema.yml) file.
+Start by defining the schema of your seed in the [dbt_subprojects/dex/seeds/trades/\_schema.yml](/dbt_subprojects/dex/seeds/trades/_schema.yml) file.
 eg.
 
 ```yaml
@@ -198,7 +198,7 @@ eg.
 
 ### Add the Corresponding Seed File
 
-Create and add the seed file in the [seeds/\_sector/dex/](/seeds/_sector/dex) directory. This file should contain the trades that verified on the blockchain explorers.
+Create and add the seed file in the [dbt_subprojects/dex/seeds/trades/](/dbt_subprojects/dex/seeds/trades) directory. This file should contain the trades that verified on the blockchain explorers.
 
 ### Add Tests to Model Schema
 
