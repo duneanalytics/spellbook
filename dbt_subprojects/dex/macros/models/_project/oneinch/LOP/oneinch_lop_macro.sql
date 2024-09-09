@@ -26,7 +26,7 @@ orders as (
                 , {{ method_data.get("taking_amount", "null") }} as taking_amount
                 , {{ method_data.get("order_hash", "null") }} as order_hash
                 , {{ method_data.get("order_remains", "0x0000000000") }} as order_remains
-                , {{ method_data.get("args", "null") }} as args
+                , {{ method_data.get("args", "cast(null as varbinary)") }} as args
                 , {% if 'partial_bit' in method_data %}
                     try(bitwise_and( -- binary AND to allocate significant bit: necessary byte & mask (i.e. * bit weight)
                         bytearray_to_bigint(substr({{ method_data.maker_traits }}, {{ method_data.partial_bit }} / 8 + 1, 1)) -- current byte: partial_bit / 8 + 1 -- integer division
