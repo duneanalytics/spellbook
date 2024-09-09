@@ -92,7 +92,7 @@ volume_filter as (
         blockchain
         , contract_address
     having
-        sum(amount_usd) < 10000
+        sum(amount_usd) >= 10000
 )
 select
     dp.blockchain
