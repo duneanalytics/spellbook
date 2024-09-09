@@ -36,6 +36,7 @@ dex_bought as (
         , t.decimals as decimals
         , d.block_time as block_time
         , d.token_bought_amount as amount
+        , d.amount_usd
         , coalesce(d.amount_usd/d.token_bought_amount, d.amount_usd/(d.token_bought_amount_raw/POW(10, t.decimals))) as price
     from
         dex_trades as d
@@ -56,6 +57,7 @@ dex_sold as (
         , t.decimals as decimals
         , d.block_time as block_time
         , d.token_sold_amount as amount
+        , d.amount_usd
         , coalesce(d.amount_usd/d.token_sold_amount, d.amount_usd/(d.token_sold_amount_raw/POW(10, t.decimals))) as price
     from
         dex_trades as d
@@ -78,15 +80,32 @@ dex_prices as (
         *
     from
         dex_sold
+),
+volume_filter as (
+    --filter out tokens which have less than $10k in volume
+    select
+        blockchain
+        , contract_address
+    from
+        dex_prices
+    group by
+        blockchain
+        , contract_address
+    having
+        sum(amount_usd) < 10000
 )
 select
-    blockchain
-    , contract_address
-    , symbol
-    , decimals
-    , cast(date_trunc('month', block_time) as date) as block_month -- for partitioning
-    , block_time
-    , amount
-    , price
+    dp.blockchain
+    , dp.contract_address
+    , dp.symbol
+    , dp.decimals
+    , cast(date_trunc('month', dp.block_time) as date) as block_month -- for partitioning
+    , dp.block_time
+    , dp.amount
+    , dp.amount_usd
+    , dp.price
 from
-    dex_prices
+    dex_prices as dp
+inner join volume_filter as vf
+    on dp.blockchain = vf.blockchain
+    and dp.contract_address = vf.contract_address
