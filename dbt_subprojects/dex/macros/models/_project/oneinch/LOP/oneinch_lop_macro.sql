@@ -146,7 +146,7 @@ orders as (
                 , 0x5af43d82803e903d91602b57fd5bf3)
             )
         )), 13)) as src_escrow
-        , row_number() over(partition by hashlock order by block_number, tx_hash, trace_address) as hashlockNum
+        , row_number() over(partition by hashlock order by orders.block_number, orders.tx_hash, trace_address) as hashlockNum
     from orders
     join ({{ oneinch_blockchain_macro(blockchain) }}) on true
     left join SrcEscrowCreated on
