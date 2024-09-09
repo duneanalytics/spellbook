@@ -44,6 +44,8 @@ orders as (
                 from {{ source('oneinch_' + blockchain, contract + '_call_' + method) }}
                 {% if is_incremental() %}
                     where {{ incremental_predicate('call_block_time') }}
+                {% else %}
+                    where call_block_time >= greatest(timestamp '{{ contract_data['start'] }}', timestamp {{ oneinch_easy_date() }})
                 {% endif %}
             )
             {% if not loop.last %} union all {% endif %}
