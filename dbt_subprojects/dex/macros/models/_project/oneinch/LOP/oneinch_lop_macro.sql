@@ -146,7 +146,7 @@ orders as (
                 , 0x5af43d82803e903d91602b57fd5bf3)
             )
         )), 13)) as src_escrow
-        , row_number() over(partition by hashlock order by orders.block_number, orders.tx_hash, trace_address) as hashlockNum
+        , row_number() over(partition by hashlock order by orders.block_number, orders.tx_hash, call_trace_address) as hashlockNum
     from orders
     join ({{ oneinch_blockchain_macro(blockchain) }}) on true
     left join SrcEscrowCreated on
@@ -182,27 +182,6 @@ orders as (
     {% if is_incremental() %}
         where {{ incremental_predicate('block_time') }}
     {% endif %}
-)
-
--- calls with escrow results on all blockchains --
-, results as (
-    select
-        hashlock
-        , array_agg(distinct
-            cast(row(blockchain, block_number, block_time, tx_hash, trace_address, escrow, amount)
-              as row(blockchain varchar, block_number bigint, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256))
-        ) filter(where method = 'withdraw') as withdrawals
-        , array_agg(distinct
-            cast(row(blockchain, block_number, block_time, tx_hash, trace_address, escrow, amount)
-              as row(blockchain varchar, block_number bigint, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256))
-        ) filter(where method = 'cancel') as cancels
-        , array_agg(distinct
-            cast(row(blockchain, block_number, block_time, tx_hash, trace_address, escrow, amount)
-              as row(blockchain varchar, block_number bigint, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256))
-        ) filter(where method = 'rescueFunds') as rescues
-    from {{ ref('oneinch_escrow_results') }}
-    {% if is_incremental() %}where {{ incremental_predicate('block_time') }}{% endif %} -- with an incremental predicate, as the results always come after the creations
-    group by 1
 )
 
 -- output --
@@ -257,9 +236,6 @@ select
     , dst_amount
     , dst_wrapper
     , dst_creation_call_success
-    , coalesce(filter(withdrawals, x -> x.escrow in (src_escrow, dst_escrow)), cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256)))) as withdrawals
-    , coalesce(filter(cancels, x -> x.escrow in (src_escrow, dst_escrow)), cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256)))) as cancels
-    , coalesce(filter(rescues, x -> x.escrow in (src_escrow, dst_escrow)), cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256)))) as rescues
     , args
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
@@ -271,6 +247,5 @@ from ({{
     )
 }}) as orders
 left join dst using(hashlock, hashlockNum)
-left join results using(hashlock)
 
 {% endmacro %}

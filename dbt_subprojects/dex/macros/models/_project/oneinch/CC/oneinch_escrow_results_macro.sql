@@ -102,6 +102,7 @@ select
     , rescue_token
     , rescue_amount
     , call_success
+    , tx_success
     , date_trunc('month', block_time) as block_month
 from results
 

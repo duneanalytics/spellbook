@@ -56,19 +56,20 @@ models:
       - name: order_hash
       - name: flags
       - name: remains
-      - name: escrow_args
-      - name: escrow_factory
+      - name: src_escrow
       - name: hashlock
-      - name: escrow
-      - name: withdraw_amount
-      - name: cancel_amount
-      - name: rescue_amount
-      - name: main_withdraw_time
-      - name: main_cancel_time
-      - name: main_rescue_time
-      - name: withdrawals
-      - name: cancels
-      - name: rescues
+      - name: dst_blockchain
+      - name: dst_block_number
+      - name: dst_block_time
+      - name: dst_tx_hash
+      - name: dst_escrow
+      - name: dst_maker
+      - name: dst_taker
+      - name: dst_token
+      - name: dst_amount
+      - name: dst_wrapper
+      - name: dst_creation_call_success
+      - name: args
       - name: minute
       - name: block_month
 
@@ -163,19 +164,27 @@ models:
       - name: call_trace_address
         tests:
           - not_null
-      - name: transfer_trace_address
-        tests:
-          - not_null
       - name: dst_blockchain
       - name: hashlock
-      - name: escrow_result
+      - name: escrow_result_trace_address
+      - name: escrow_result_method
+      - name: escrow_result_amount
       - name: transfer_blockchain
+        tests:
+          - not_null
       - name: transfer_block_number
       - name: transfer_block_time
       - name: transfer_tx_hash
+        tests:
+          - not_null
+      - name: transfer_trace_address
+        tests:
+          - not_null
       - name: contract_address
       - name: amount
       - name: transfer_native
+        tests:
+          - not_null
       - name: transfer_from
       - name: transfer_to
       - name: transfers_between_players
@@ -220,4 +229,5 @@ models:
       - name: rescue_token
       - name: rescue_amount
       - name: call_success
+      - name: tx_success
       - name: block_month

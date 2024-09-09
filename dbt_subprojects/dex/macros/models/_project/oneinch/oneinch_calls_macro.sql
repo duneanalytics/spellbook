@@ -58,9 +58,6 @@ calls as (
             , cast(null as varbinary) as dst_tx_hash
             , cast(null as varbinary) as dst_escrow
             , cast(null as varbinary) as dst_wrapper
-            , cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256))) as withdrawals
-            , cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256))) as cancels
-            , cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256))) as rescues
             , cast(null as varbinary) as order_hash
             , map_concat(flags, map_from_entries(array[('fusion', false)])) as flags
         from {{ ref('oneinch_' + blockchain + '_ar') }}
@@ -83,13 +80,9 @@ calls as (
             , dst_tx_hash
             , dst_escrow
             , dst_wrapper
-            , withdrawals
-            , cancels
-            , rescues
             , order_hash
             , flags
-        from {{ ref('oneinch_lop') }}
-        where coalesce(reduce(withdrawals, false, (r, x) -> r or x.blockchain = '{{ blockchain }}', r -> r), blockchain = '{{ blockchain }}') -- withdrawals on the selected blockchain or regular calls on it
+        from {{ ref('oneinch_' + blockchain + '_lop') }}
     )
 )
 
@@ -135,9 +128,6 @@ select
     , dst_tx_hash
     , dst_escrow
     , dst_wrapper
-    , withdrawals
-    , cancels
-    , rescues
     , order_hash
     , flags
 from calls

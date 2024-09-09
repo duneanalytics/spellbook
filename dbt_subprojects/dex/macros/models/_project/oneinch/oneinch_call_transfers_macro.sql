@@ -13,7 +13,6 @@
         'tx_hash',
         'call_trace_address',
         'dst_blockchain',
-        'hashlock'
     ]
 %}
 
@@ -26,6 +25,26 @@ meta as (
     from ({{ oneinch_blockchain_macro(blockchain) }})
 )
 
+-- calls with escrow results on all blockchains --
+, results as (
+    select
+        blockchain as result_blockchain
+        , block_number as result_block_number
+        , block_time as result_block_time
+        , tx_hash as result_tx_hash
+        , trace_address as result_trace_address
+        , hashlock
+        , escrow
+        , method as result_method
+        , amount as result_amount
+    from {{ ref('oneinch_escrow_results') }}
+    where
+        call_success
+        and tx_success
+        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %} -- with an incremental predicate, as the results always come after the creations
+    group by 1
+)
+
 , calls as (
     select
         {{ calls_base_columns | join(', ') }}
@@ -34,62 +53,33 @@ meta as (
         , block_time as result_block_time
         , tx_hash as result_tx_hash
         , call_trace_address as result_trace_address
-        , cast(null as array(row(blockchain varchar, block_number bigint, block_time timestamp, block_time timestamp, tx_hash varbinary, trace_address array(bigint), escrow varbinary, amount uint256))) as escrow_result
+        , cast(null as varbinary) as hashlock
+        , null as result_method
+        , null as result_amount
     from ({{ oneinch_calls_macro(blockchain) }})
     where
         tx_success
         and call_success
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
     
-    union
+    union all -- add calls with escrow results
 
     select
         {{ calls_base_columns | join(', ') }}
-        , withdrawal.blockchain as result_blockchain
-        , withdrawal.block_number as result_block_number
-        , withdrawal.block_time as result_block_time
-        , withdrawal.tx_hash as result_tx_hash
-        , withdrawal.trace_address as result_trace_address
-        , withdrawal as escrow_result
-    from ({{ ref('oneinch_calls') }}), unnest(withdrawals) as w(withdrawal) -- rows with withdrawals only
+        , result_blockchain
+        , result_block_number
+        , result_block_time
+        , result_tx_hash
+        , result_trace_address
+        , hashlock
+        , result_method
+        , result_amount
+    from ({{ oneinch_calls_macro(blockchain) }})
+    join results using(hashlock) -- escrow results only
     where
         tx_success
         and call_success
-        and withdrawal.blockchain = '{{ blockchain }}'
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
-    
-    union
-
-    select
-        {{ calls_base_columns | join(', ') }}
-        , cancel.blockchain as result_blockchain
-        , cancel.block_number as result_block_number
-        , cancel.block_time as result_block_time
-        , cancel.tx_hash as result_tx_hash
-        , cancel.trace_address as result_trace_address
-        , cancel as escrow_result
-    from ({{ ref('oneinch_calls') }}), unnest(cancels) as c(cancel) -- rows with cancels only
-    where
-        tx_success
-        and call_success
-        and cancel.blockchain = '{{ blockchain }}'
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
-    
-    union
-
-    select
-        {{ calls_base_columns | join(', ') }}
-        , rescue.blockchain as result_blockchain
-        , rescue.block_number as result_block_number
-        , rescue.block_time as result_block_time
-        , rescue.tx_hash as result_tx_hash
-        , rescue.trace_address as result_trace_address
-        , rescue as escrow_result
-    from ({{ ref('oneinch_calls') }}), unnest(rescues) as r(rescue) -- rows with rescues only
-    where
-        tx_success
-        and call_success
-        and rescue.blockchain = '{{ blockchain }}'
+        and escrow in (src_escrow, dst_escrow)
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
@@ -112,7 +102,9 @@ meta as (
         , calls.call_trace_address
         , calls.dst_blockchain
         , calls.hashlock
-        , calls.escrow_result
+        , calls.result_trace_address
+        , calls.result_method
+        , calls.result_amount
         , transfers.blockchain as transfer_blockchain
         , transfers.block_number as transfer_block_number
         , transfers.block_time as transfer_block_time
@@ -139,7 +131,9 @@ select
     , call_trace_address
     , dst_blockchain
     , hashlock
-    , escrow_result
+    , result_trace_address as escrow_result_trace_address
+    , result_method as escrow_result_method
+    , result_amount as escrow_result_amount
     , transfer_blockchain
     , transfer_block_number
     , transfer_block_time
