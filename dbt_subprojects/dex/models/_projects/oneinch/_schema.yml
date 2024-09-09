@@ -360,9 +360,7 @@ models:
       - name: user_amount_usd
       - name: tokens
       - name: transfers
-      - name: withdrawals
-      - name: cancels
-      - name: rescues
+      - name: escrow_results
       - name: minute
       - name: block_month
       - name: swap_id

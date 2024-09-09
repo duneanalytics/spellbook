@@ -55,9 +55,6 @@
         'dst_block_time',
         'dst_tx_hash',
         'dst_escrow',
-        'withdrawals',
-        'cancels',
-        'rescues'
     ]
 %}
 
@@ -160,10 +157,10 @@ tokens as (
         , second_side
 
         -- what the user actually gave and received, judging by the transfers
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from in (user, src_escrow)) as _src_token_address_true
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user)) as _src_token_address_true
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_address_to_user
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_address_to_receiver
-        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from in (user, src_escrow)) as _src_token_symbol_true
+        , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from = user) as _src_token_symbol_true
         , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_symbol_to_user
         , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_symbol_to_receiver
         , any_value({{ decimals }}) filter(where {{ src_condition }}) as src_token_decimals
@@ -179,11 +176,19 @@ tokens as (
         , max(amount * price / pow(10, decimals)) as transfers_amount_usd
 
         -- src $ amount from user
-        , sum(amount * if(transfer_from in (user, src_escrow), price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and cardinality(array_intersect(array[user, src_escrow], array[transfer_from, transfer_to])) > 0) as _amount_usd_from_user
+        , sum(amount * if(user = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_from_user
         -- dst $ amount to user
         , sum(amount * if(user = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_to_user
         -- dst $ amount to receiver
         , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as _amount_usd_to_receiver
+
+        -- escrow results
+        , sum(amount) filter(where result_method = 'withdraw') as withdraw_amount
+        , sum(amount) filter(where result_method = 'cancel') as cancel_amount
+        , sum(amount) filter(where result_method = 'rescueFunds') as rescue_amount
+        , sum(amount * price / pow(10, decimals)) filter(where result_method = 'withdraw') as withdraw_amount_usd
+        , sum(amount * price / pow(10, decimals)) filter(where result_method = 'cancel') as cancel_amount_usd
+        , sum(amount * price / pow(10, decimals)) filter(where result_method = 'rescueFunds') as rescue_amount_usd
 
         , count(distinct (contract_address, transfer_native)) as tokens -- count distinct tokens in transfers
         , count(*) as transfers -- count transfers
@@ -251,9 +256,11 @@ select
     , greatest(coalesce(_amount_usd_from_user, 0), coalesce(_amount_usd_to_user, _amount_usd_to_receiver, 0)) as user_amount_usd -- actual user $ amount
     , tokens
     , transfers
-    , withdrawals
-    , cancels
-    , rescues
+    , map_from_entries(array[
+        ('withdraw', cast(row(withdraw_amount, withdraw_amount_usd) as row(amount uint256, amount_usd double)))
+        , ('cancel', cast(row(cancel_amount, cancel_amount_usd) as row(amount uint256, amount_usd double)))
+        , ('rescue', cast(row(rescue_amount, rescue_amount_usd) as row(amount uint256, amount_usd double)))
+    ]) as escrow_results
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month
     , coalesce(order_hash, tx_hash || from_hex(if(mod(length(_call_trace_address), 2) = 1, '0' || _call_trace_address, _call_trace_address) || '0' || cast(cast(second_side as int) as varchar))) as swap_id
