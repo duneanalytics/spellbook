@@ -42,7 +42,6 @@ meta as (
         call_success
         and tx_success
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %} -- with an incremental predicate, as the results always come after the creations
-    group by 1
 )
 
 , calls as (
