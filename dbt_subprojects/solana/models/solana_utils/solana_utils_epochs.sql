@@ -33,6 +33,7 @@ SELECT
     , b.epoch_progress
     , start.block_slot as epoch_start_slot
     , next.block_slot as epoch_next_start_slot
+    , 1 + 1 AS test_change  
 FROM base b 
 LEFT JOIN base start ON start.epoch = b.epoch AND start.first_block_epoch = 1
 LEFT JOIN base next ON next.epoch = b.epoch + 1 AND next.first_block_epoch = 1
