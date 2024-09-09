@@ -20,7 +20,7 @@ factories as (
     from {{ source(blockchain, 'creation_traces') }}
     where
         "from" in (select factory from factories)
-        and block_time > timestamp '{{ date_from }}' -- without an incremental predicate, as the results may be delayed
+        and block_time > greatest(timestamp '{{ date_from }}', timestamp {{ oneinch_easy_date() }}) -- without an incremental predicate, as the results may be delayed
 )
 
 , results as (
@@ -79,7 +79,7 @@ factories as (
         {% if is_incremental() %}
             and {{ incremental_predicate('block_time') }}
         {% else %}
-            and block_time > timestamp '{{ date_from }}'
+            and block_time > greatest(timestamp '{{ date_from }}', timestamp {{ oneinch_easy_date() }})
         {% endif %}
 )
 
