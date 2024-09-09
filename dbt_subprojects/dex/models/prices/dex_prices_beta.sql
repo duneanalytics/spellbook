@@ -75,7 +75,7 @@ dex_prices as (
         *
     from
         dex_bought
-    union
+    union all
     select
         *
     from
