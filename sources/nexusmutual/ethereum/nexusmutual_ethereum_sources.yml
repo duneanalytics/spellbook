@@ -8,10 +8,13 @@ sources:
       - name: StakingPool_evt_DepositExtended
       - name: StakingPool_evt_Withdraw
       - name: StakingPool_evt_StakeBurned
+      - name: StakingPoolFactory_evt_StakingPoolCreated
       - name: Cover_call_createStakingPool
+      - name: StakingProducts_call_createStakingPool
       - name: StakingProducts_call_setProducts
       - name: TokenController_call_assignStakingPoolManager
       - name: TokenController2_call_assignStakingPoolManager
+      - name: TokenController3_call_assignStakingPoolManager
       - name: StakingProducts_evt_ProductUpdated
       - name: StakingPool_call_manager
       - name: StakingPool_evt_PoolFeeChanged

@@ -21,7 +21,9 @@
     ref('eas_optimism_attestation_details'),
     ref('eas_polygon_attestation_details'),
     ref('eas_scroll_attestation_details'),
-    ref('eas_celo_attestation_details')
+    ref('eas_celo_attestation_details'),
+    ref('eas_linea_attestation_details'),
+    ref('eas_nova_attestation_details')
   ]
 %}
 

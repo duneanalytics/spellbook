@@ -114,3 +114,6 @@ sources:
       - name: WooPP_evt_WooSwap
       - name: WooRouter_evt_WooRouterSwap
       - name: WooRouterV2_evt_WooRouterSwap
+  - name: swaap_v2_bnb
+    tables:
+      - name: Vault_evt_Swap

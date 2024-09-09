@@ -1,8 +1,7 @@
 {{ config(
         schema='evms',
         alias = 'transaction_metrics',
-        unique_key=['blockchain', 'date_hour'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
+        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum", "fantom", "gnosis", "linea", "mantle", "optimism", "polygon", "scroll", "sei", "zkevm", "zksync", "zora"]\',
                                     "sector",
                                     "metrics",
                                     \'["0xRob"]\') }}'
