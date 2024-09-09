@@ -160,7 +160,6 @@ FROM
     ('pepe-pepe-on-base','base','PEPE',0x80f45eacf6537498ecc660e4e4a2d2f99e195cf4, 18),
     ('bum-willybumbum','base','BUM',0x4b8ec286fd218adb992e3df1a8d9fcf6de38d583, 18),
     ('nippy-cat-on-catnip','base','NIPPY',0x7a31512fb17be839b24276c211e941932c9d20e1, 18),
-    ('usdplus-usdplus','base','USD+',0xb79dd08ea68a908a97220c76d19a6aa9cbde4376, 6),
     ('roxy-roxy-frog','base','ROXY',0x10a7a84c91988138f8dbbc82a23b02c8639e2552, 18),
     ('pov-degen-pov','base','POV',0x4c96a67b0577358894407af7bc3158fc1dffbeb5, 18),
     ('chomp-chompcoin','base','CHOMP',0xebff2db643cf955247339c8c6bcd8406308ca437, 18),
