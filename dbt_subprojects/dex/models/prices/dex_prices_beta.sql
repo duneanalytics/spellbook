@@ -26,8 +26,6 @@ with dex_trades as (
         and amount_usd > 0
         {% if is_incremental() %}
         and block_time > (select max(block_time) from {{ this }})
-        {% else %}
-        and block_date >= date '2024-08-01'
         {% endif %}
 ),
 dex_bought as (
