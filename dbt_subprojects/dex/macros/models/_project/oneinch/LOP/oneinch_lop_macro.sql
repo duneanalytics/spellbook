@@ -107,7 +107,8 @@ orders as (
 
 , calculations as (
     select
-        orders.*
+        blockchain
+        , orders.*
         , map_from_entries(array[
             ('partial', _partial)
             , ('multiple', _multiple)

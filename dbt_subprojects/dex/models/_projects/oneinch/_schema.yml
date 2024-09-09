@@ -270,9 +270,10 @@ models:
           - not_null
       - name: dst_blockchain
       - name: hashlock
-      - name: escrow_result_trace_address
-      - name: escrow_result_method
-      - name: escrow_result_amount
+      - name: result_escrow
+      - name: result_trace_address
+      - name: result_method
+      - name: result_amount
       - name: transfer_blockchain
         tests:
           - not_null

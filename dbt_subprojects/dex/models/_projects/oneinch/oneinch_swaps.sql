@@ -157,7 +157,7 @@ tokens as (
         , second_side
 
         -- what the user actually gave and received, judging by the transfers
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user)) as _src_token_address_true
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_address_true
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_address_to_user
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_address_to_receiver
         , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from = user) as _src_token_symbol_true
@@ -183,12 +183,18 @@ tokens as (
         , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as _amount_usd_to_receiver
 
         -- escrow results
-        , sum(amount) filter(where result_method = 'withdraw') as withdraw_amount
-        , sum(amount) filter(where result_method = 'cancel') as cancel_amount
-        , sum(amount) filter(where result_method = 'rescueFunds') as rescue_amount
-        , sum(amount * price / pow(10, decimals)) filter(where result_method = 'withdraw') as withdraw_amount_usd
-        , sum(amount * price / pow(10, decimals)) filter(where result_method = 'cancel') as cancel_amount_usd
-        , sum(amount * price / pow(10, decimals)) filter(where result_method = 'rescueFunds') as rescue_amount_usd
+        , sum(amount) filter(where result_escrow = src_escrow and result_method = 'withdraw') as src_withdraw_amount
+        , sum(amount) filter(where result_escrow = src_escrow and result_method = 'cancel') as src_cancel_amount
+        , sum(amount) filter(where result_escrow = src_escrow and result_method = 'rescueFunds') as src_rescue_amount
+        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = src_escrow and result_method = 'withdraw') as src_withdraw_amount_usd
+        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = src_escrow and result_method = 'cancel') as src_cancel_amount_usd
+        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = src_escrow and result_method = 'rescueFunds') as src_rescue_amount_usd
+        , sum(amount) filter(where result_escrow = dst_escrow and result_method = 'withdraw') as dst_withdraw_amount
+        , sum(amount) filter(where result_escrow = dst_escrow and result_method = 'cancel') as dst_cancel_amount
+        , sum(amount) filter(where result_escrow = dst_escrow and result_method = 'rescueFunds') as dst_rescue_amount
+        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = dst_escrow and result_method = 'withdraw') as dst_withdraw_amount_usd
+        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = dst_escrow and result_method = 'cancel') as dst_cancel_amount_usd
+        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = dst_escrow and result_method = 'rescueFunds') as dst_rescue_amount_usd
 
         , count(distinct (contract_address, transfer_native)) as tokens -- count distinct tokens in transfers
         , count(*) as transfers -- count transfers
@@ -257,9 +263,9 @@ select
     , tokens
     , transfers
     , map_from_entries(array[
-        ('withdraw', cast(row(withdraw_amount, withdraw_amount_usd) as row(amount uint256, amount_usd double)))
-        , ('cancel', cast(row(cancel_amount, cancel_amount_usd) as row(amount uint256, amount_usd double)))
-        , ('rescue', cast(row(rescue_amount, rescue_amount_usd) as row(amount uint256, amount_usd double)))
+        ('withdraw', cast(row(src_withdraw_amount, src_withdraw_amount_usd, dst_withdraw_amount, dst_withdraw_amount_usd) as row(src_amount uint256, src_amount_usd double, dst_amount uint256, dst_amount_usd double)))
+        , ('cancel', cast(row(src_cancel_amount, src_cancel_amount_usd, dst_cancel_amount, dst_cancel_amount_usd) as row(src_amount uint256, src_amount_usd double, dst_amount uint256, dst_amount_usd double)))
+        , ('rescue', cast(row(src_rescue_amount, src_rescue_amount_usd, dst_rescue_amount, dst_rescue_amount_usd) as row(src_amount uint256, src_amount_usd double, dst_amount uint256, dst_amount_usd double)))
     ]) as escrow_results
     , date_trunc('minute', block_time) as minute
     , date(date_trunc('month', block_time)) as block_month

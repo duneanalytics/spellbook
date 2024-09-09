@@ -34,7 +34,7 @@ meta as (
         , tx_hash as result_tx_hash
         , trace_address as result_trace_address
         , hashlock
-        , escrow
+        , escrow as result_escrow
         , method as result_method
         , amount as result_amount
     from {{ ref('oneinch_escrow_results') }}
@@ -54,6 +54,7 @@ meta as (
         , tx_hash as result_tx_hash
         , call_trace_address as result_trace_address
         , cast(null as varbinary) as hashlock
+        , cast(null as varbinary) as result_escrow
         , null as result_method
         , null as result_amount
     from ({{ oneinch_calls_macro(blockchain) }})
@@ -72,6 +73,7 @@ meta as (
         , result_tx_hash
         , result_trace_address
         , hashlock
+        , result_escrow
         , result_method
         , result_amount
     from ({{ oneinch_calls_macro(blockchain) }})
@@ -79,7 +81,7 @@ meta as (
     where
         tx_success
         and call_success
-        and escrow in (src_escrow, dst_escrow)
+        and result_escrow in (src_escrow, dst_escrow)
         {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
 )
 
@@ -102,6 +104,7 @@ meta as (
         , calls.call_trace_address
         , calls.dst_blockchain
         , calls.hashlock
+        , calls.result_escrow
         , calls.result_trace_address
         , calls.result_method
         , calls.result_amount
@@ -131,9 +134,10 @@ select
     , call_trace_address
     , dst_blockchain
     , hashlock
-    , result_trace_address as escrow_result_trace_address
-    , result_method as escrow_result_method
-    , result_amount as escrow_result_amount
+    , result_escrow
+    , result_trace_address
+    , result_method
+    , result_amount
     , transfer_blockchain
     , transfer_block_number
     , transfer_block_time
