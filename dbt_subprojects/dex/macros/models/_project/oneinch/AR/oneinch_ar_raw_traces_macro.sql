@@ -1,8 +1,8 @@
 {% macro oneinch_ar_raw_traces_macro(
     blockchain
-    , date_from = '2024-08-20'
+    , date_from = '2019-06-01'
 )%}
--- date_from = '2019-06-01'
+
 with decoded_calls as (
     {% for contract, contract_data in oneinch_ar_cfg_contracts_macro().items() if blockchain in contract_data.blockchains %}
         {% set outer_loop = loop %}
