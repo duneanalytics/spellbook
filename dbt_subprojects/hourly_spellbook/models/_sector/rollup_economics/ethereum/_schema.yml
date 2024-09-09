@@ -28,6 +28,9 @@ models:
       - &data_fee_usd
         name: data_fee_usd
         description: "Fee spent on calldata gas by the transaction (in USD)"
+      - &calldata_gas_used
+        name: calldata_gas_used
+        description: "Calldata gas used by the transaction"
       - &verification_fee_native
         name: verification_fee_native
         description: "Fee spent on calldata gas for proof verification by the transaction (in ETH)"
