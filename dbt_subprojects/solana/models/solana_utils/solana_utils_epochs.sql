@@ -36,4 +36,4 @@ SELECT
 FROM base b 
 LEFT JOIN base start ON start.epoch = b.epoch AND start.first_block_epoch = 1
 LEFT JOIN base next ON next.epoch = b.epoch + 1 AND next.first_block_epoch = 1
-order by block_time desc 
+order by block_time desc  
