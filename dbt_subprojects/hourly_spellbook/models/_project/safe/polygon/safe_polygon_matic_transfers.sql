@@ -20,7 +20,7 @@
 {{
     safe_native_transfers(
         blockchain = 'polygon',
-        native_token_symbol = 'POL',
+        native_token_symbol = 'MATIC',
         project_start_date = project_start_date
     )
 }}

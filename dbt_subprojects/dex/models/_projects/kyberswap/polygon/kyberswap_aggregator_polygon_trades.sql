@@ -108,7 +108,7 @@ LEFT JOIN {{ source('prices', 'usd') }} p_sold
 LEFT JOIN {{ source('prices', 'usd') }} p_matic
     ON p_matic.minute = date_trunc('minute', meta_router.block_time)
     AND p_matic.blockchain IS NULL
-    AND p_matic.symbol = 'POL'
+    AND p_matic.symbol = 'MATIC'
     {% if is_incremental() %}
     AND p_matic.minute >= date_trunc('day', now() - INTERVAL '7' DAY)
     {% else %}

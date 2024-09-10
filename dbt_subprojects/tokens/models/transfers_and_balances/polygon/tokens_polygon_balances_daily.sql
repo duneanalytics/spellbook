@@ -14,6 +14,6 @@
 balances_daily(
     balances_daily_agg = ref('tokens_polygon_balances_daily_agg'),
     start_date = '2021-05-28',
-    native_token = 'POL'
+    native_token = 'MATIC'
 )
 }}
