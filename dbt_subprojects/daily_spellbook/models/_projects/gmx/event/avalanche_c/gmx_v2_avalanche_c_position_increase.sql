@@ -20,9 +20,7 @@ WITH evt_data_1 AS (
         contract_address,
         eventName AS event_name,
         eventData AS data,
-        msgSender AS msg_sender,
-        topic1,
-        CAST(NULL AS varbinary) AS topic2  -- Ensure topic2 is treated as varbinary
+        msgSender AS msg_sender
     FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -39,9 +37,7 @@ WITH evt_data_1 AS (
         contract_address,
         eventName AS event_name,
         eventData AS data,
-        msgSender AS msg_sender,
-        topic1,
-        topic2
+        msgSender AS msg_sender
     FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -155,6 +151,7 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index,
+        MAX(CASE WHEN key_name = 'account' THEN value END) AS account,
         MAX(CASE WHEN key_name = 'market' THEN value END) AS market,
         MAX(CASE WHEN key_name = 'collateralToken' THEN value END) AS collateral_token,
         MAX(CASE WHEN key_name = 'sizeInUsd' THEN value END) AS size_in_usd,
@@ -196,11 +193,10 @@ WITH evt_data_1 AS (
         contract_address,
         event_name,
         msg_sender,
-        topic1, 
-        topic2,
         
-        TRY_CAST(market AS VARCHAR) AS market,
-        TRY_CAST(collateral_token AS VARCHAR) AS collateral_token,
+        from_hex(account) AS account,
+        from_hex(market) AS market,
+        from_hex(collateral_token) AS collateral_token,
         TRY_CAST(size_in_usd AS DOUBLE) AS size_in_usd,
         TRY_CAST(size_in_tokens AS DOUBLE) AS size_in_tokens,
         TRY_CAST(collateral_amount AS DOUBLE) AS collateral_amount,
@@ -221,8 +217,8 @@ WITH evt_data_1 AS (
         TRY_CAST(price_impact_usd AS DOUBLE) AS price_impact_usd,
         TRY_CAST(price_impact_amount AS DOUBLE) AS price_impact_amount,
         TRY_CAST(is_long AS BOOLEAN) AS is_long,
-        TRY_CAST(order_key AS VARCHAR) AS order_key,
-        TRY_CAST(position_key AS VARCHAR) AS position_key
+        from_hex(order_key) AS order_key,
+        from_hex(position_key) AS position_key
         
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -230,61 +226,70 @@ WITH evt_data_1 AS (
             AND ED.index = EDP.index
 )
 
--- process all columns
-SELECT 
-    blockchain,
-    block_time,
-    block_number,
-    tx_hash,
-    index,
-    contract_address,
-    event_name,
-    msg_sender,
-    topic1,
-    topic2,
-    
-    ED.market AS market,
-    ED.collateral_token AS collateral_token,
-    size_in_usd / POWER(10, 30) AS size_in_usd,
-    size_in_tokens / POWER(10, index_token_decimals) AS size_in_tokens,
-    collateral_amount / POWER(10, collateral_token_decimals) AS collateral_amount,
-    borrowing_factor / POWER(10, 30) AS borrowing_factor,
-    funding_fee_amount_per_size / POWER(10, collateral_token_decimals + 15) AS funding_fee_amount_per_size, 
-    long_token_claimable_funding_amount_per_size / POWER(10, long_token_decimals + 15) AS long_token_claimable_funding_amount_per_size,
-    short_token_claimable_funding_amount_per_size / POWER(10, short_token_decimals + 15) AS short_token_claimable_funding_amount_per_size,
-    execution_price / POWER(10, 30 - index_token_decimals) AS execution_price, 
-    index_token_price_max / POWER(10, 30 - index_token_decimals) AS index_token_price_max, 
-    index_token_price_min / POWER(10, 30 - index_token_decimals) AS index_token_price_min, 
-    collateral_token_price_max / POWER(10, 30 - collateral_token_decimals) AS collateral_token_price_max,
-    collateral_token_price_min / POWER(10, 30 - collateral_token_decimals) AS collateral_token_price_min,
-    size_delta_usd / POWER(10, 30) AS size_delta_usd,
-    size_delta_in_tokens / POWER(10, index_token_decimals) AS size_delta_in_tokens,
-    CASE 
-        WHEN order_type = 0 THEN 'MarketSwap'
-        WHEN order_type = 1 THEN 'LimitSwap'
-        WHEN order_type = 2 THEN 'MarketIncrease'
-        WHEN order_type = 3 THEN 'LimitIncrease'
-        WHEN order_type = 4 THEN 'MarketDecrease'
-        WHEN order_type = 5 THEN 'LimitDecrease'
-        WHEN order_type = 6 THEN 'StopLossDecrease'
-        WHEN order_type = 7 THEN 'Liquidation'
-        ELSE NULL
-    END AS order_type,
-    CASE 
-        WHEN increased_at_time = 0 THEN NULL
-        ELSE increased_at_time
-    END AS increased_at_time,
-    collateral_delta_amount / POWER(10, collateral_token_decimals) AS collateral_delta_amount,
-    price_impact_usd / POWER(10, 30) AS price_impact_usd,
-    price_impact_amount / POWER(10, index_token_decimals) AS price_impact_amount,  
-    is_long,
-    order_key,
-    position_key
-    
-FROM event_data AS ED
-LEFT JOIN {{ ref('gmx_v2_avalanche_c_markets_data') }} AS MD
-    ON ED.market = TRY_CAST(MD.market AS VARCHAR)
-LEFT JOIN {{ ref('gmx_v2_avalanche_c_collateral_tokens_data') }} AS CTD
-    ON ED.collateral_token = TRY_CAST(CTD.collateral_token AS VARCHAR)
+-- full data 
+, full_data AS (
+    SELECT 
+        blockchain,
+        block_time,
+        DATE(block_time) AS block_date,
+        block_number,
+        tx_hash,
+        index,
+        contract_address,
+        event_name,
+        msg_sender,
 
+        account,    
+        ED.market AS market,
+        ED.collateral_token AS collateral_token,
+        size_in_usd / POWER(10, 30) AS size_in_usd,
+        size_in_tokens / POWER(10, index_token_decimals) AS size_in_tokens,
+        collateral_amount / POWER(10, collateral_token_decimals) AS collateral_amount,
+        borrowing_factor / POWER(10, 30) AS borrowing_factor,
+        funding_fee_amount_per_size / POWER(10, collateral_token_decimals + 15) AS funding_fee_amount_per_size, 
+        long_token_claimable_funding_amount_per_size / POWER(10, long_token_decimals + 15) AS long_token_claimable_funding_amount_per_size,
+        short_token_claimable_funding_amount_per_size / POWER(10, short_token_decimals + 15) AS short_token_claimable_funding_amount_per_size,
+        execution_price / POWER(10, 30 - index_token_decimals) AS execution_price, 
+        index_token_price_max / POWER(10, 30 - index_token_decimals) AS index_token_price_max, 
+        index_token_price_min / POWER(10, 30 - index_token_decimals) AS index_token_price_min, 
+        collateral_token_price_max / POWER(10, 30 - collateral_token_decimals) AS collateral_token_price_max,
+        collateral_token_price_min / POWER(10, 30 - collateral_token_decimals) AS collateral_token_price_min,
+        size_delta_usd / POWER(10, 30) AS size_delta_usd,
+        size_delta_in_tokens / POWER(10, index_token_decimals) AS size_delta_in_tokens,
+        CASE 
+            WHEN order_type = 0 THEN 'MarketSwap'
+            WHEN order_type = 1 THEN 'LimitSwap'
+            WHEN order_type = 2 THEN 'MarketIncrease'
+            WHEN order_type = 3 THEN 'LimitIncrease'
+            WHEN order_type = 4 THEN 'MarketDecrease'
+            WHEN order_type = 5 THEN 'LimitDecrease'
+            WHEN order_type = 6 THEN 'StopLossDecrease'
+            WHEN order_type = 7 THEN 'Liquidation'
+            ELSE NULL
+        END AS order_type,
+        CASE 
+            WHEN increased_at_time = 0 THEN NULL
+            ELSE increased_at_time
+        END AS increased_at_time,
+        collateral_delta_amount / POWER(10, collateral_token_decimals) AS collateral_delta_amount,
+        price_impact_usd / POWER(10, 30) AS price_impact_usd,
+        price_impact_amount / POWER(10, index_token_decimals) AS price_impact_amount,  
+        is_long,
+        order_key,
+        position_key
+        
+    FROM event_data AS ED
+    LEFT JOIN {{ ref('gmx_v2_avalanche_c_markets_data') }} AS MD
+        ON ED.market = MD.market
+    LEFT JOIN {{ ref('gmx_v2_avalanche_c_collateral_tokens_data') }} AS CTD
+        ON ED.collateral_token = CTD.collateral_token
+)
 
+--can be removed once decoded tables are fully denormalized
+{{
+    add_tx_columns(
+        model_cte = 'full_data'
+        , blockchain = blockchain_name
+        , columns = ['from', 'to']
+    )
+}}

@@ -88,20 +88,45 @@ models:
       This model retrieves market data for GMX on the Arbitrum blockchain, including information
       about the index token, long token, and short token. The data is extracted from various tables
       containing market creation events and ERC-20 token details, providing insights into the 
-      market tokens used within the GMX perpetual trading DEX.
+      market tokens used within the GMX perpetual trading DEX. The `market_name` column is 
+      constructed using the format `index_token/USD [long_token-short_token]`, which represents 
+      the market pair.    
 
     columns:
       - name: market
         description: The contract address of the market token.
         tests:
           - not_null
+      - name: market_name
+        description: |
+          The name of the market, formatted as `index_token/USD [long_token-short_token]`,
+          where `index_token` is the symbol of the index token, `short_token` is the symbol
+          of the short token used in the market, and `long_token` is the symbol of the long token used in the market.
+      - name: market_token_symbol
+        description: The symbol representing the market token.
+        tests:
+          - not_null
+      - name: market_token_decimals
+        description: The number of decimal places for the market token.
+        tests:
+          - not_null
+      - name: index_token_symbol
+        description: The symbol representing the index token in the market.
       - name: index_token_decimals
         description: The number of decimal places for the index token used in the market.
+      - name: long_token_symbol
+        description: The symbol representing the long token in the market.
+        tests:
+          - not_null
       - name: long_token_decimals
         description: The number of decimal places for the long token used in the market.
+        tests:
+          - not_null
+      - name: short_token_symbol
+        description: The symbol representing the short token in the market.
         tests:
           - not_null
       - name: short_token_decimals
         description: The number of decimal places for the short token used in the market.
         tests:
-          - not_null
+          - not_null  
