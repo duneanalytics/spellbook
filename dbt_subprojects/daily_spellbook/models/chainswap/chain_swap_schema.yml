@@ -100,6 +100,31 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_month
+      - *amount_usd
+      - *type
+      - *token_bought_amount
+      - *token_bought_symbol
+      - *token_bought_address
+      - *token_sold_amount
+      - *token_sold_symbol
+      - *token_sold_address
+      - *fee_usd
+      - *fee_token_amount
+      - *fee_token_symbol
+      - *fee_token_address
+      - *project
+      - *version
+      - *token_pair
+      - *project_contract_address
+      - *user
+      - *tx_hash
+      - *evt_index
+      - *is_last_trade_in_transaction
 
   - name: chain_swap_arbitrum_trades
     meta:
@@ -117,6 +142,31 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_month
+      - *amount_usd
+      - *type
+      - *token_bought_amount
+      - *token_bought_symbol
+      - *token_bought_address
+      - *token_sold_amount
+      - *token_sold_symbol
+      - *token_sold_address
+      - *fee_usd
+      - *fee_token_amount
+      - *fee_token_symbol
+      - *fee_token_address
+      - *project
+      - *version
+      - *token_pair
+      - *project_contract_address
+      - *user
+      - *tx_hash
+      - *evt_index
+      - *is_last_trade_in_transaction
 
   - name: chain_swap_base_trades
     meta:
@@ -134,6 +184,31 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_month
+      - *amount_usd
+      - *type
+      - *token_bought_amount
+      - *token_bought_symbol
+      - *token_bought_address
+      - *token_sold_amount
+      - *token_sold_symbol
+      - *token_sold_address
+      - *fee_usd
+      - *fee_token_amount
+      - *fee_token_symbol
+      - *fee_token_address
+      - *project
+      - *version
+      - *token_pair
+      - *project_contract_address
+      - *user
+      - *tx_hash
+      - *evt_index
+      - *is_last_trade_in_transaction
 
   - name: chain_swap_optimism_trades
     meta:
@@ -151,6 +226,31 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_month
+      - *amount_usd
+      - *type
+      - *token_bought_amount
+      - *token_bought_symbol
+      - *token_bought_address
+      - *token_sold_amount
+      - *token_sold_symbol
+      - *token_sold_address
+      - *fee_usd
+      - *fee_token_amount
+      - *fee_token_symbol
+      - *fee_token_address
+      - *project
+      - *version
+      - *token_pair
+      - *project_contract_address
+      - *user
+      - *tx_hash
+      - *evt_index
+      - *is_last_trade_in_transaction
 
   - name: chain_swap_bnb_trades
     meta:
@@ -168,6 +268,31 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_month
+      - *amount_usd
+      - *type
+      - *token_bought_amount
+      - *token_bought_symbol
+      - *token_bought_address
+      - *token_sold_amount
+      - *token_sold_symbol
+      - *token_sold_address
+      - *fee_usd
+      - *fee_token_amount
+      - *fee_token_symbol
+      - *fee_token_address
+      - *project
+      - *version
+      - *token_pair
+      - *project_contract_address
+      - *user
+      - *tx_hash
+      - *evt_index
+      - *is_last_trade_in_transaction
 
   - name: chain_swap_polygon_trades
     meta:
@@ -185,6 +310,31 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_month
+      - *amount_usd
+      - *type
+      - *token_bought_amount
+      - *token_bought_symbol
+      - *token_bought_address
+      - *token_sold_amount
+      - *token_sold_symbol
+      - *token_sold_address
+      - *fee_usd
+      - *fee_token_amount
+      - *fee_token_symbol
+      - *fee_token_address
+      - *project
+      - *version
+      - *token_pair
+      - *project_contract_address
+      - *user
+      - *tx_hash
+      - *evt_index
+      - *is_last_trade_in_transaction
 
   - name: chain_swap_avalanche_c_trades
     meta:
@@ -202,3 +352,29 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_month
+      - *amount_usd
+      - *type
+      - *token_bought_amount
+      - *token_bought_symbol
+      - *token_bought_address
+      - *token_sold_amount
+      - *token_sold_symbol
+      - *token_sold_address
+      - *fee_usd
+      - *fee_token_amount
+      - *fee_token_symbol
+      - *fee_token_address
+      - *project
+      - *version
+      - *token_pair
+      - *project_contract_address
+      - *user
+      - *tx_hash
+      - *evt_index
+      - *is_last_trade_in_transaction
