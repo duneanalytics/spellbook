@@ -3,6 +3,7 @@
     , date_from = '2019-06-01'
 )%}
 
+-- test in CI
 with decoded_calls as (
     {% for contract, contract_data in oneinch_ar_cfg_contracts_macro().items() if blockchain in contract_data.blockchains %}
         {% set outer_loop = loop %}
@@ -21,7 +22,7 @@ with decoded_calls as (
 )
 
 , traces as (
-    select 
+    select
         block_number
         , block_time
         , tx_hash
@@ -34,7 +35,7 @@ with decoded_calls as (
         , gas_used
         , call_type
         , error
-        , input 
+        , input
         , value
         , length(input) as input_length
         , output
@@ -49,7 +50,7 @@ with decoded_calls as (
 )
 
 
-select * from traces 
+select * from traces
 join decoded_calls using(tx_hash, block_number, trace_address, block_date)
 
 {% endmacro %}
