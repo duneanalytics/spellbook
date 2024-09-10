@@ -1,7 +1,7 @@
 {{  
     config(
         schema = 'oneinch',
-        alias = 'esrow_results',
+        alias = 'escrow_results',
         materialized = 'view',
         unique_key = ['blockchain', 'tx_hash', 'trace_address']
     )
