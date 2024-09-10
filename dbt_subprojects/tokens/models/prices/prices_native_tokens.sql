@@ -41,8 +41,8 @@ FROM
     ('kava-kava', null, 'KAVA', null, null),
     ('kuji-kujira', null, 'KUJI', null, null),
     ('ltc-litecoin', null, 'LTC', null, null),
-    ('matic-polygon', null, 'MATIC', null, null), --maintain legacy native token for historical data
-    ('pol-polygon-ecosystem-token', null, 'POL', null, null), --add new native token for future pricing
+    ('matic-polygon', null, 'MATIC', null, null), --maintain legacy native token for legacy queries
+    ('matic-polygon', null, 'POL', null, null), --no full history for 'pol-polygon-ecosystem-token' API ID on coinpaprika
     ('miota-iota', null, 'MIOTA', null, null),
     ('mnt-mantle', null, 'MNT', null, null),
     ('mona-monacoin', null, 'MONA', null, null),
