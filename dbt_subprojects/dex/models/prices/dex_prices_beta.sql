@@ -81,13 +81,27 @@ dex_prices as (
     from
         dex_sold
 ),
+dedupe_bought_sold as (
+    select
+        *
+    from
+    (
+        select
+            *
+            , row_number() over (partition by blockchain, contract_address, block_time order by block_time desc) as duplicates_rank
+        from
+            dex_prices
+    )
+    where
+        duplicates_rank = 1
+),
 volume_filter as (
     --filter out tokens which have less than $10k in volume
     select
         blockchain
         , contract_address
     from
-        dex_prices
+        dedupe_bought_sold
     group by
         blockchain
         , contract_address
@@ -105,7 +119,7 @@ select
     , dp.amount_usd
     , dp.price
 from
-    dex_prices as dp
+    dedupe_bought_sold as dp
 inner join volume_filter as vf
     on dp.blockchain = vf.blockchain
     and dp.contract_address = vf.contract_address
