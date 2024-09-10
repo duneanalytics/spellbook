@@ -22,6 +22,9 @@ sources:
     tables:
       - name: Pool_evt_Swap
       - name: Factory_evt_PoolCreated
+  - name: sushiswap_v3_pool_arbitrum
+    tables:
+      - name: UniswapV3Pool_evt_Swap
   - name: arbswap_arbitrum
     tables:
       - name: SwapPair_evt_Swap
