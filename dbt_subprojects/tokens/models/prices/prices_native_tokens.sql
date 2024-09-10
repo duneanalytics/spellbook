@@ -41,7 +41,7 @@ FROM
     ('kava-kava', null, 'KAVA', null, null),
     ('kuji-kujira', null, 'KUJI', null, null),
     ('ltc-litecoin', null, 'LTC', null, null),
-    ('matic-polygon', null, 'MATIC', null, null),
+    ('pol-polygon-ecosystem-token', null, 'POL', null, null),
     ('miota-iota', null, 'MIOTA', null, null),
     ('mnt-mantle', null, 'MNT', null, null),
     ('mona-monacoin', null, 'MONA', null, null),
