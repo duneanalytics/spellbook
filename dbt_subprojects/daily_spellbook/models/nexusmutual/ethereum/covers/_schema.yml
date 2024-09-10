@@ -270,6 +270,7 @@ models:
       - *cover_end_date
       - *cover_owner
       - *staking_pool_id
+      - *product_id
       - *product_type
       - *product_name
       - *cover_asset
