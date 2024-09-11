@@ -101,7 +101,7 @@
         },
         "AggregationRouterV6": {
             "version": "4",
-            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "fantom", "base"],
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "fantom", "base", "zksync"],
             "start": "2024-02-12",
             "methods": {
                 "fillOrder":             samples["v4"],
