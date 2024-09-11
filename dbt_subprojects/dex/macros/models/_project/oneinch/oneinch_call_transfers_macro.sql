@@ -4,17 +4,7 @@
     ) 
 %}
 
--- base columns to not to duplicate in the union
-{% set
-    calls_base_columns = [
-        'blockchain',
-        'block_number',
-        'block_time',
-        'tx_hash',
-        'call_trace_address',
-        'dst_blockchain',
-    ]
-%}
+
 
 with
 
@@ -25,63 +15,14 @@ meta as (
     from ({{ oneinch_blockchain_macro(blockchain) }})
 )
 
--- calls with escrow results on all blockchains --
-, results as (
-    select
-        blockchain as result_blockchain
-        , block_number as result_block_number
-        , block_time as result_block_time
-        , tx_hash as result_tx_hash
-        , trace_address as result_trace_address
-        , hashlock
-        , escrow as result_escrow
-        , method as result_method
-        , amount as result_amount
-    from {{ ref('oneinch_escrow_results') }}
-    where
-        call_success
-        and tx_success
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %} -- with an incremental predicate, as the results always come after the creations
-)
-
 , calls as (
-    select
-        {{ calls_base_columns | join(', ') }}
-        , blockchain as result_blockchain
-        , block_number as result_block_number
-        , block_time as result_block_time
-        , tx_hash as result_tx_hash
-        , call_trace_address as result_trace_address
-        , cast(null as varbinary) as hashlock
-        , cast(null as varbinary) as result_escrow
-        , null as result_method
-        , null as result_amount
-    from ({{ oneinch_calls_macro(blockchain) }})
+    select * from ({{ oneinch_calls_macro(blockchain) }})
     where
         tx_success
         and call_success
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
-    
-    union all -- add calls with escrow results
-
-    select
-        {{ calls_base_columns | join(', ') }}
-        , result_blockchain
-        , result_block_number
-        , result_block_time
-        , result_tx_hash
-        , result_trace_address
-        , hashlock
-        , result_escrow
-        , result_method
-        , result_amount
-    from ({{ oneinch_calls_macro(blockchain) }})
-    join results using(hashlock) -- escrow results only
-    where
-        tx_success
-        and call_success
-        and result_escrow in (src_escrow, dst_escrow)
-        {% if is_incremental() %}and {{ incremental_predicate('block_time') }}{% endif %}
+        {% if is_incremental() %}
+            and {{ incremental_predicate('block_time') }}
+        {% endif %}
 )
 
 , transfers as (
@@ -90,7 +31,7 @@ meta as (
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
         {% else %}
-            block_time >= greatest((select first_deploy_at from meta), timestamp {{ oneinch_easy_date() }})
+            block_time >= (select first_deploy_at from meta)
         {% endif %}
 )
 
@@ -100,27 +41,17 @@ meta as (
         , calls.block_number
         , calls.block_time
         , calls.tx_hash
-        , calls.call_trace_address
-        , calls.dst_blockchain
-        , calls.hashlock
-        , calls.result_escrow
-        , calls.result_trace_address
-        , calls.result_method
-        , calls.result_amount
-        , transfers.blockchain as transfer_blockchain
-        , transfers.block_number as transfer_block_number
-        , transfers.block_time as transfer_block_time
-        , transfers.tx_hash as transfer_tx_hash
-        , transfers.transfer_trace_address
+        , call_trace_address
+        , transfer_trace_address
         , contract_address
         , amount
         , transfer_from
         , transfer_to
     from calls
     join transfers on 
-        transfers.block_number = calls.result_block_number
-        and transfers.tx_hash = calls.result_tx_hash
-        and slice(transfer_trace_address, 1, cardinality(result_trace_address)) = result_trace_address
+        calls.block_number = transfers.block_number
+        and calls.tx_hash = transfers.tx_hash
+        and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address
 )
 
 -- output --
@@ -131,16 +62,6 @@ select
     , block_time
     , tx_hash
     , call_trace_address
-    , dst_blockchain
-    , hashlock
-    , result_escrow
-    , result_trace_address
-    , result_method
-    , result_amount
-    , transfer_blockchain
-    , transfer_block_number
-    , transfer_block_time
-    , transfer_tx_hash
     , transfer_trace_address
     , if(contract_address = 0xae, wrapped_native_token_address, contract_address) as contract_address
     , amount
@@ -151,8 +72,8 @@ select
         coalesce(transfer_from, transfer_to) is not null
         , count(*) over(partition by blockchain, tx_hash, call_trace_address, array_join(array_sort(array[transfer_from, transfer_to]), ''))
     ) as transfers_between_players
-    , date_trunc('minute', transfer_block_time) as minute
-    , date(date_trunc('month', transfer_block_time)) as block_month
+    , date_trunc('minute', block_time) as minute
+    , date(date_trunc('month', block_time)) as block_month
 from merging, meta
 
 {% endmacro %}

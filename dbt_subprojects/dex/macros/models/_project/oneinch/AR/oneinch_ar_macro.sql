@@ -47,7 +47,7 @@ pools_list as (
                 {% if is_incremental() %}
                     {{ incremental_predicate('block_time') }}
                 {% else %}
-                    block_time >= greatest(timestamp '{{ contract_data['start'] }}', timestamp {{ oneinch_easy_date() }})
+                    block_time >= timestamp '{{ contract_data['start'] }}'
                 {% endif %}
         )
 

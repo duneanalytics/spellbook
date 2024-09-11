@@ -42,4 +42,3 @@ where
     protocol = 'LOP'
     and not flags['fusion']
     and not flags['second_side']
-    and not flags['cross_chain']

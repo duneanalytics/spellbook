@@ -44,20 +44,12 @@ calls as (
     from (
         select
             {{ columns }}
-            , cast(null as varbinary) as maker
+            , null as maker
             , dst_receiver as receiver
             , src_token_address
             , src_token_amount
-            , cast(null as varbinary) as src_escrow
-            , cast(null as varbinary) as hashlock
             , dst_token_address
             , dst_token_amount
-            , blockchain as dst_blockchain
-            , cast(null as bigint) as dst_block_number
-            , cast(null as timestamp) as dst_block_time
-            , cast(null as varbinary) as dst_tx_hash
-            , cast(null as varbinary) as dst_escrow
-            , cast(null as varbinary) as dst_wrapper
             , cast(null as varbinary) as order_hash
             , map_concat(flags, map_from_entries(array[('fusion', false)])) as flags
         from {{ ref('oneinch_' + blockchain + '_ar') }}
@@ -70,16 +62,8 @@ calls as (
             , receiver
             , maker_asset as src_token_address
             , making_amount as src_token_amount
-            , src_escrow
-            , hashlock
             , taker_asset as dst_token_address
             , taking_amount as dst_token_amount
-            , dst_blockchain
-            , dst_block_number
-            , dst_block_time
-            , dst_tx_hash
-            , dst_escrow
-            , dst_wrapper
             , order_hash
             , flags
         from {{ ref('oneinch_' + blockchain + '_lop') }}
@@ -118,16 +102,8 @@ select
     , receiver
     , src_token_address
     , src_token_amount
-    , src_escrow
-    , hashlock
     , dst_token_address
     , dst_token_amount
-    , dst_blockchain
-    , dst_block_number
-    , dst_block_time
-    , dst_tx_hash
-    , dst_escrow
-    , dst_wrapper
     , order_hash
     , flags
 from calls
