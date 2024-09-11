@@ -25,6 +25,11 @@ models:
         description: The timestamp of the block when the event was recorded
         tests:
           - not_null
+      - &block_date
+        name: block_date
+        description: The date extracted from the block timestamp, representing the day the block was created
+        tests:
+          - not_null         
       - &block_number
         name: block_number
         description: The block number where the event is included
@@ -44,7 +49,17 @@ models:
         name: contract_address
         description: The contract address associated with the event
         tests:
-          - not_null          
+          - not_null  
+      - &tx_from
+        name: tx_from
+        description: The originating address of the transaction, usually representing the sender
+        tests:
+          - not_null
+      - &tx_to
+        name: tx_to
+        description: The destination address of the transaction, representing the receiver
+        tests:
+          - not_null                   
       - name: event_name
         description: The type of event recorded, always 'OrderCreated' for this model.
         tests:
@@ -54,14 +69,6 @@ models:
         description: The address of the sender of the message or transaction.
         tests:
           - not_null
-      - &topic1
-        name: topic1
-        description: The value corresponding to the second indexed event parameter.
-        tests:
-          - not_null
-      - &topic2
-        name: topic2
-        description: The value corresponding to the third indexed event parameter.
       - name: account
         description: The address associated with the order.
       - name: receiver
@@ -177,17 +184,18 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to
       - name: event_name
         description: The type of event recorded, always 'OrderExecuted' for this model
         tests:
           - not_null 
       - *msg_sender
-      - *topic1
-      - *topic2
       - name: key
         description: The key associated with the executed order. Extracted as a bytes32 value.
         tests:
@@ -223,17 +231,18 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'OrderCancelled' for this model
         tests:
           - not_null 
-      - *msg_sender
-      - *topic1
-      - *topic2          
+      - *msg_sender         
       - name: key
         description: The key associated with the cancelled order. Extracted as a bytes32 value
         tests:
@@ -267,17 +276,20 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'MarketCreated' for this model
         tests:
           - not_null 
       - *msg_sender
-      - *topic1
-      - *topic2
+      - name: account
+        description: The address associated with the event
       - &market_token
         name: market_token
         description: The token used to represent the market
@@ -337,17 +349,20 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
-      - *contract_address    
+      - *contract_address   
+      - *tx_from
+      - *tx_to       
       - name: event_name
         description: The type of event recorded, always 'PositionIncrease' for this model
         tests:
           - not_null 
       - *msg_sender
-      - *topic1
-      - *topic2
+      - name: account
+        description: The address associated with the event
       - name: market
         description: The market associated with the position increase
         tests:
@@ -467,17 +482,20 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'PositionDecrease' for this model
         tests:
           - not_null  
       - *msg_sender
-      - *topic1
-      - *topic2
+      - name: account
+        description: The address associated with the event
       - name: market
         description: The market associated with the position decrease
         tests:
@@ -545,17 +563,20 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'PositionFeesCollected' for this model
         tests:
           - not_null 
       - *msg_sender
-      - *topic1
-      - *topic2
+      - name: account
+        description: The address associated with the event
       - name: market
         description: The market associated with the position fees collected event
         tests:
@@ -741,17 +762,20 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
-      - *contract_address  
+      - *contract_address 
+      - *tx_from
+      - *tx_to       
       - name: event_name
         description: The type of event recorded, always 'PositionFeesInfo' for this model
         tests:
           - not_null
       - *msg_sender
-      - *topic1
-      - *topic2           
+      - name: account
+        description: The address associated with the event          
       - name: market
         description: The market associated with the position fees info event
         tests:

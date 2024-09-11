@@ -20,9 +20,7 @@ WITH evt_data_1 AS (
         contract_address,
         eventName AS event_name,
         eventData AS data,
-        msgSender AS msg_sender,
-        topic1,
-        CAST(NULL AS varbinary) AS topic2  -- Ensure topic2 is treated as varbinary
+        msgSender AS msg_sender
     FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -39,9 +37,7 @@ WITH evt_data_1 AS (
         contract_address,
         eventName AS event_name,
         eventData AS data,
-        msgSender AS msg_sender,
-        topic1,
-        topic2
+        msgSender AS msg_sender
     FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -131,23 +127,33 @@ WITH evt_data_1 AS (
 )
 
 -- full data 
-SELECT 
-    blockchain,
-    block_time,
-    block_number,
-    ED.tx_hash,
-    ED.index,
-    contract_address,
-    event_name,
-    msg_sender,
-    topic1, 
-    topic2,
-    
-    key,
-    account,
-    TRY_CAST(secondary_order_type AS INTEGER) AS secondary_order_type
+, full_data AS (
+    SELECT 
+        blockchain,
+        block_time,
+        DATE(block_time) AS block_date,
+        block_number,
+        ED.tx_hash,
+        ED.index,
+        contract_address,
+        event_name,
+        msg_sender,
+        
+        from_hex(key) AS key,
+        from_hex(account) AS account,
+        TRY_CAST(secondary_order_type AS INTEGER) AS secondary_order_type
 
-FROM evt_data AS ED
-LEFT JOIN evt_data_parsed AS EDP
-    ON ED.tx_hash = EDP.tx_hash
-        AND ED.index = EDP.index
+    FROM evt_data AS ED
+    LEFT JOIN evt_data_parsed AS EDP
+        ON ED.tx_hash = EDP.tx_hash
+            AND ED.index = EDP.index
+)
+
+--can be removed once decoded tables are fully denormalized
+{{
+    add_tx_columns(
+        model_cte = 'full_data'
+        , blockchain = blockchain_name
+        , columns = ['from', 'to']
+    )
+}}

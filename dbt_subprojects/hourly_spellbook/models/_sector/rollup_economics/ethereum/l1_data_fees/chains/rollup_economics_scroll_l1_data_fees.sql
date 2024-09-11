@@ -26,7 +26,8 @@ WHERE t.to IN (
     0xa13BAF47339d63B743e7Da8741db5456DAc1E556
 )
 AND bytearray_substring(t.data, 1, 4) IN (
-    0x1325aca0 -- Commit Batch
+    0x1325aca0, -- Commit Batch
+    0x86b053a9 -- commitBatchWithBlobProof
 )
 AND t.block_time >= TIMESTAMP '2023-10-07'
 {% if is_incremental() %}

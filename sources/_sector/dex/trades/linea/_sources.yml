@@ -39,4 +39,6 @@ sources:
     tables:
       - name: UniswapV3Pool_evt_Swap
       - name: UniswapV3Factory_evt_PoolCreated
-
+  - name: swaap_v2_linea
+    tables:
+      - name: Vault_evt_Swap
