@@ -27,5 +27,5 @@ SELECT
     fork_mapping.project_name as project
     , all_decoded_trades.*
 FROM all_decoded_trades
-INNER JOIN {{ ref('uniswap_v3_fork_mapping') }} AS fork_mapping
+INNER JOIN {{ ref('uniswap_v3_fork_mapping_ethereum') }} AS fork_mapping
 USING (factory_address)

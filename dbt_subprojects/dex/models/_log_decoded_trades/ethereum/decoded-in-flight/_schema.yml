@@ -63,6 +63,19 @@ models:
             - tx_hash
             - evt_index
             - project_contract_address
+
+  - name: uniswap_v3_fork_mapping_ethereum
+    description: >
+      mapping of all forks of uniswap v3 factory contract on ethereum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - factory_address
+    columns:
+      - name: factory_address
+        description: "address of the factory contract"
+      - name: project_name
+        description: "name of the project associated with the factory"
     
   - name: mass_decoded_dex_trades_ethereum
     description: "all dex trades on ethereum, mass decoded"
