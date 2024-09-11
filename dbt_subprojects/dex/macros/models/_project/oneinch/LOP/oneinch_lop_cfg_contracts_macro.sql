@@ -20,7 +20,6 @@
             "order_hash":    "output_2",
             "order_remains": "varbinary_concat(0x01, substr(cast(cast(order_map['salt'] as uint256) as varbinary), 1, 4))",
             "maker_traits":  "cast(cast(order_map['makerTraits'] as uint256) as varbinary)",
-            "taker_traits":  "cast(takerTraits as varbinary)",
             "partial_bit":   "1",
             "multiple_bit":  "2",
         }
@@ -108,7 +107,7 @@
                 "fillOrder":             samples["v4"],
                 "fillOrderArgs":         dict(samples["v4"], args="args"),
                 "fillContractOrder":     samples["v4"],
-                "fillContractOrderArgs": dict(samples["v4"], args="args"),
+                "fillContractOrderArgs": samples["v4"],
             },
         },
     }
