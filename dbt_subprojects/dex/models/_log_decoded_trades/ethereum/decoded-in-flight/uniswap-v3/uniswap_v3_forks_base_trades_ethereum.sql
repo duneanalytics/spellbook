@@ -11,11 +11,21 @@
         )
 }}
 
-{{uniswap_v3_forks_trades(
-    blockchain = 'ethereum'
-    , version = 'null'
-    , project = 'null'
-    , Pair_evt_Swap = ref('uniswap_v3_pool_decoding_ethereum')
-    , Factory_evt_PoolCreated = ref('uniswap_v3_factory_decoding_ethereum')
-)}}
+WITH all_decoded_trades(
+    {{
+        uniswap_v3_forks_trades(
+            blockchain = 'ethereum'
+            , version = 'null'
+            , project = 'null'
+            , Pair_evt_Swap = ref('uniswap_v3_pool_decoding_ethereum')
+            , Factory_evt_PoolCreated = ref('uniswap_v3_factory_decoding_ethereum')
+        )
+    }}
+)
 
+SELECT
+    fork_mapping.project_name as project
+    , all_decoded_trades.*
+FROM all_decoded_trades
+INNER JOIN {{ ref('uniswap_v3_fork_mapping') }} AS fork_mapping
+USING (factory_address)
