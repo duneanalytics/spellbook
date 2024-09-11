@@ -54,9 +54,6 @@
     source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnZeroXv4')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_swapOnZeroXv4WithPermit')
 ] %}
-{% set augustus_contract_address = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 %}
-{% set token_transfer_proxy_contract_address = 0x216B4B4Ba9F3e719726886d34a177484278Bfcae %}
-{% set weth_contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 %}
 
 /**
     Note: Used try_cast instead of cast to avoid throwing an overflow error on the special transaction.
@@ -76,12 +73,12 @@ WITH dex_swap AS (
             CAST(NULL AS double) AS amount_usd,
             CASE
                 WHEN destToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN {{ weth_contract_address }}
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 ELSE destToken
             END AS token_bought_address,
             CASE
                 WHEN srcToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN {{ weth_contract_address }}
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
                 ELSE srcToken
             END AS token_sold_address,
             contract_address AS project_contract_address,
@@ -109,12 +106,12 @@ liqudity_swap AS (
         CAST(NULL AS double) AS amount_usd,
         CASE
             WHEN toAsset = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-            THEN {{ weth_contract_address }}
+            THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
             ELSE toAsset
         END AS token_bought_address,
         CASE
             WHEN fromAsset = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-            THEN {{ weth_contract_address }}
+            THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
             ELSE fromAsset
         END AS token_sold_address,
         p.contract_address AS project_contract_address,
@@ -226,8 +223,8 @@ uniswap_v2_call_swap_without_event AS (
             AND c.call_tx_hash = e.evt_tx_hash
             AND (
                 e."from" = c.caller
-                OR e."from" = {{ token_transfer_proxy_contract_address }}
-                OR e."from" = {{ augustus_contract_address }}
+                OR e."from" = 0x216B4B4Ba9F3e719726886d34a177484278Bfcae /* Token Transfer Proxy */
+                OR e."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */
             )
             AND cast(e."to" AS varchar) = c.swap_in_pair
             AND e.evt_row_num = c.swap_in_row_number
@@ -253,7 +250,7 @@ uniswap_v2_call_swap_without_event AS (
             AND cast(e."from" AS varchar) = c.swap_out_pair
             AND (
                 e.to = c.caller
-                OR e.to = {{ augustus_contract_address }}
+                OR e.to = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
             )
             AND e.evt_row_num = c.swap_out_row_number
     )
@@ -267,7 +264,7 @@ uniswap_v2_call_swap_without_event AS (
         cast(NULL AS double) AS amount_usd,
         o.tokenOut AS token_bought_address,
         i.tokenIn AS token_sold_address,
-        {{ augustus_contract_address }} AS project_contract_address,
+        0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address,
         i.tx_hash,
         o.trace_address AS trace_address,
         greatest(i.evt_index, o.evt_index) AS evt_index
@@ -349,7 +346,7 @@ uniswap_call_swap_without_event AS (
             coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
             coalesce(e.evt_block_number, t.block_number) AS block_number,
             coalesce(e.evt_block_time, t.block_time) AS block_time,
-            coalesce(e.contract_address, {{ weth_contract_address }}) AS tokenIn,
+            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2) AS tokenIn,
             coalesce(try_cast(e.value AS int256), try_cast(t.value AS int256)) AS amountIn,
             coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
             coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index,
@@ -361,14 +358,14 @@ uniswap_call_swap_without_event AS (
         
         LEFT JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
             AND c.call_tx_hash = e.evt_tx_hash
-            AND (e."from" = c.caller OR e."from" = {{ token_transfer_proxy_contract_address }})
+            AND (e."from" = c.caller OR e."from" = 0x216B4B4Ba9F3e719726886d34a177484278Bfcae)
             AND e.contract_address = c.token_in
-            AND e.to != {{ augustus_contract_address }}
+            AND e.to != 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
             AND e.evt_row_num = c.swap_in_row_number
                 
         LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
-            AND t."from" = c.caller AND t."to" = {{ augustus_contract_address }}
+            AND t."from" = c.caller AND t."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
             AND t.call_type = 'call'
             AND t.value > uint256 '0'
             AND t.block_number >= {{ trade_call_start_block_number }}
@@ -385,7 +382,7 @@ uniswap_call_swap_without_event AS (
             coalesce(e.evt_block_number, t.block_number) AS block_number,
             coalesce(e.evt_block_time, t.block_time) AS block_time,
             coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
-            coalesce(e.contract_address, {{ weth_contract_address }}) AS tokenOut,
+            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2) AS tokenOut,
             try_cast(coalesce(e.value, t.value) AS int256) AS amountOut,
             coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
             coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index,
@@ -403,7 +400,7 @@ uniswap_call_swap_without_event AS (
 
         LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
-            AND t."from" = {{ augustus_contract_address }}
+            AND t."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
             AND t."to" = c.caller
             AND t.call_type = 'call'
             AND t.value > uint256 '0'
@@ -426,7 +423,7 @@ uniswap_call_swap_without_event AS (
             cast(NULL AS double) AS amount_usd,
             o.tokenOut AS token_bought_address,
             i.tokenIn AS token_sold_address,
-            {{ augustus_contract_address }} AS project_contract_address,
+            0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address,
             i.tx_hash,
             greatest(i.trace_address, o.trace_address) AS trace_address,
             greatest(i.evt_index, o.evt_index) AS evt_index,
@@ -508,7 +505,7 @@ zero_x_call_swap_without_event AS (
             coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
             coalesce(e.evt_block_number, t.block_number) AS block_number,
             coalesce(e.evt_block_time, t.block_time) AS block_time,
-            coalesce(e.contract_address, {{ weth_contract_address }}) AS tokenIn,
+            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2) AS tokenIn,
             coalesce(try_cast(e.value AS int256), try_cast(t.value AS int256)) AS amountIn,
             coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
             coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index,
@@ -519,14 +516,14 @@ zero_x_call_swap_without_event AS (
         LEFT JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
             AND c.call_tx_hash = e.evt_tx_hash
             AND e."from" = c.caller
-            AND e."to" = {{ augustus_contract_address }}
+            AND e."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
             AND e.contract_address = c.token_in
             AND e.evt_row_num = c.swap_in_row_number
                 
         LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
             AND t."from" = c.caller
-            AND t."to" = {{ augustus_contract_address }}
+            AND t."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
             AND t.call_type = 'call'
             AND t.block_number >= {{ trade_call_start_block_number }}
             {% if is_incremental() %}
@@ -542,7 +539,7 @@ zero_x_call_swap_without_event AS (
             coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
             coalesce(e.evt_block_number, t.block_number) AS block_number,
             coalesce(e.evt_block_time, t.block_time) AS block_time,
-            coalesce(e.contract_address, {{ weth_contract_address }}) AS tokenOut,
+            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2) AS tokenOut,
             try_cast(coalesce(e.value, t.value) AS int256) AS amountOut,
             coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
             coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index,
@@ -552,14 +549,14 @@ zero_x_call_swap_without_event AS (
     
         LEFT JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
             AND c.call_tx_hash = e.evt_tx_hash
-            AND e."from" = {{ augustus_contract_address }}
+            AND e."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
             AND e."to" = c.caller
             AND e.contract_address = c.token_out
             AND e.evt_row_num = c.swap_out_row_number
 
         LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
-            AND t."from" = {{ augustus_contract_address }}
+            AND t."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
             AND t."to" = c.caller
             AND t.call_type = 'call'
             AND t.value > uint256 '0'
@@ -581,7 +578,7 @@ zero_x_call_swap_without_event AS (
         cast(NULL AS double) AS amount_usd,
         o.tokenOut AS token_bought_address,
         i.tokenIn AS token_sold_address,
-        {{ augustus_contract_address }} AS project_contract_address,
+        0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address,
         i.tx_hash,
         greatest(i.trace_address, o.trace_address) AS trace_address,
         greatest(i.evt_index, o.evt_index) AS evt_index
