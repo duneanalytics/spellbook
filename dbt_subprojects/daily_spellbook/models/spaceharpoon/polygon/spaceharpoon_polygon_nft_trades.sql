@@ -21,8 +21,9 @@ fungible_transfers as (
         evt_block_time as block_time
     FROM 
     {{ ref('transfers_polygon_erc20') }}
+    WHERE 1 = 1
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_time')}}
+    AND {{incremental_predicate('block_time')}}
     {% endif %}
     AND transfer_type != 'gas_fee'
 
@@ -36,8 +37,9 @@ fungible_transfers as (
         block_time
     FROM 
     {{ ref('transfers_polygon_matic') }}
+    WHERE 1 = 1
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_time')}}
+    AND {{incremental_predicate('block_time')}}
     {% endif %}
     AND transfer_type != 'gas_fee'
 ), 
@@ -64,7 +66,8 @@ prices as (
         AVG(decimals) as decimals 
     FROM 
     {{ source('prices', 'usd_forward_fill') }} 
-    WHERE blockchain = 'polygon'
+    WHERE 1 = 1
+    AND blockchain = 'polygon'
     {% if is_incremental() %}
     AND {{incremental_predicate('minute')}}
     {% endif %}
@@ -101,7 +104,8 @@ nft_transfers as (
         evt_index
     FROM 
     {{ source('nft', 'transfers') }} 
-    WHERE blockchain = 'polygon'
+    WHERE 1 = 1
+    AND blockchain = 'polygon'
     {% if is_incremental() %}
     AND {{incremental_predicate('block_time')}}
     {% endif %}
