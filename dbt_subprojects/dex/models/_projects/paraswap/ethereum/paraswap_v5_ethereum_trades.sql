@@ -237,7 +237,7 @@ uniswap_v2_call_swap_without_event AS (
             c.caller AS user_address,
             e.contract_address AS tokenOut,
             try_cast(e.value AS int256) AS amountOut,
-            c.call_trace_address,
+            c.call_trace_address AS trace_address,
             e.evt_index AS evt_index,
             c.swap_in_pair,
             c.swap_in_row_number,
