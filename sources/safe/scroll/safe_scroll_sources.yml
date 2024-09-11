@@ -1,3 +1,5 @@
+version: 2
+
 sources:
   - name: gnosis_safe_scroll
     freshness:
