@@ -5,21 +5,16 @@
 {{
     config(
         schema = 'oneinch_' + blockchain,
-        alias = 'call_transfers',
+        alias = 'escrow_results',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_hash', 'call_trace_address', 'transfer_blockchain', 'transfer_tx_hash', 'transfer_trace_address', 'transfer_native'],
-        pre_hook='{{ enforce_join_distribution("PARTITIONED") }}'
+        unique_key = ['blockchain', 'tx_hash', 'trace_address']
     )
 }}
 
 
 
-{{
-    oneinch_call_transfers_macro(
-        blockchain = blockchain
-    )
-}}
+{{ oneinch_escrow_results_macro(blockchain) }}
