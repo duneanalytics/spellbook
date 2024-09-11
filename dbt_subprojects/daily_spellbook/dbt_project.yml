@@ -349,3 +349,8 @@ models:
       +schema: aerodrome
       base:
         +schema: aerodrome_base
+
+    spaceharpoon:
+      +schema: spaceharpoon
+      polygon:
+        +schema: spaceharpoon_polygon
