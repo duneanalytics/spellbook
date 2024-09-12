@@ -28,7 +28,7 @@ SELECT
     , fork_mapping.project_name as project
     , all_decoded_trades.version
     , all_decoded_trades.dex_type
-    , all_decoded_trades.factory_address
+    , factory_address
     , all_decoded_trades.block_month
     , all_decoded_trades.block_date
     , all_decoded_trades.block_time
