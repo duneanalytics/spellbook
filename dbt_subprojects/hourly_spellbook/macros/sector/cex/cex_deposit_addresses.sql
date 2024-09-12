@@ -16,22 +16,22 @@ WITH potential_addresses AS (
     FROM {{cex_flows}} f
     -- ignore addresses already found in previous incremental runs
     {% if is_incremental() %}
-    LEFT JOIN {{this}} this ON f."from" = this.address
-        AND eda.address IS NULL
+    LEFT JOIN {{this}} a ON a.address = f."from"
+        AND a.address IS NULL
     {% endif %}
     -- check that it's not another cex address
-    LEFT JOIN {{cex_addresses}} b ON b.address=f."from"
+    LEFT JOIN {{cex_addresses}} b ON b.address = f."from"
         AND b.address IS NULL
     -- make sure it was first funded recently
-    INNER JOIN {{first_funded_by}} ffb ON ffb.address=f."from"
+    INNER JOIN {{first_funded_by}} ffb ON ffb.address = f."from"
         AND ffb.block_time > ffb.block_time - interval '2' day
         {% if is_incremental() %}
         AND {{incremental_predicate('ffb.block_time')}}
         {% endif %}
     -- check if funder is the same cex
-    LEFT JOIN {{cex_addresses}} affb ON ffb.first_funded_by=affb.address
-        AND f.cex_name=affb.cex_name
-    WHERE f.flow_type='Inflow'
+    LEFT JOIN {{cex_addresses}} affb ON ffb.first_funded_by = affb.address
+        AND f.cex_name = affb.cex_name
+    WHERE f.flow_type = 'Inflow'
     {% if is_incremental() %}
     AND {{incremental_predicate('f.block_time')}}
     {% endif %}
@@ -53,9 +53,9 @@ WITH potential_addresses AS (
     , pa.distinct_transfer_hashes
     , SUM(tt.amount) AS inflow_amount
     FROM {{token_transfers}} tt
-    INNER JOIN potential_addresses pa ON pa.potential_deposit=tt.to
+    INNER JOIN potential_addresses pa ON pa.potential_deposit = tt.to
         AND tt.block_time BETWEEN pa.creation_block_time - INTERVAL '2' day AND pa.creation_block_time
-        AND pa.token_address=tt.contract_address
+        AND pa.token_address = tt.contract_address
         AND tt.amount <= pa.outflow_amount
     GROUP BY pa.potential_deposit,  pa.first_funded_by, pa.cex_address, pa.cex_name, pa.funded_by_same_cex, pa.creation_block_time, pa.creation_block_number, pa.token_address, pa.token_standard, pa.outflow_amount,  pa.distinct_transfer_hashes
     )
@@ -82,19 +82,19 @@ SELECT DISTINCT '{{blockchain}}' AS blockchain
 FROM inflows_and_outflows i
 INNER JOIN unique_cex_recipient ua USING (potential_deposit)
 -- check that it never sent to other addresses
-LEFT JOIN {{token_transfers}} tt ON tt."from"=potential_deposit
-    AND tt.to!=i.cex_address
+LEFT JOIN {{token_transfers}} tt ON tt."from" = potential_deposit
+    AND tt.to != i.cex_address
     AND tt.amount IS NULL
 -- check that it executed fewer or equal tx count to the number of outflow txs
-LEFT JOIN {{transactions}} txs ON txs."from"=potential_deposit
-    AND txs.nonce>ua.distinct_transfer_hashes_count
+LEFT JOIN {{transactions}} txs ON txs."from" = potential_deposit
+    AND txs.nonce > ua.distinct_transfer_hashes_count
     AND txs.block_number IS NULL
 -- check if it's a smart contract
-LEFT JOIN {{creation_traces}} ct ON ct.address=potential_deposit
+LEFT JOIN {{creation_traces}} ct ON ct.address = potential_deposit
 -- ensure non-zero amounts were flown in + out and only keep if outflow matches inflow (allows slightly less if it's the native gas token)
 WHERE i.inflow_amount > 0
 AND i.outflow_amount > 0
-AND (i.outflow_amount=i.inflow_amount OR
-    (i.token_standard='native' AND i.outflow_amount BETWEEN GREATEST(i.inflow_amount - 0.05, 0) AND i.inflow_amount)) -- Can lose some to gas if native token
+AND (i.outflow_amount = i.inflow_amount OR
+    (i.token_standard = 'native' AND i.outflow_amount BETWEEN GREATEST(i.inflow_amount - 0.05, 0) AND i.inflow_amount)) -- Can lose some to gas if native token
 GROUP BY potential_deposit, i.first_funded_by, i.cex_address, i.cex_name, i.funded_by_same_cex, i.creation_block_time, i.creation_block_number
 {% endmacro %}
