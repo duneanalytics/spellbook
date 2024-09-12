@@ -417,7 +417,6 @@ uniswap_call_swap_without_event AS (
     
         LEFT JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
             AND c.call_tx_hash = e.evt_tx_hash
-            AND c.call_tx_hash = e.evt_tx_hash
             AND e."to" = c.caller
             AND e.contract_address = c.token_out
             AND e.evt_row_num = c.swap_out_row_number
