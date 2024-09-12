@@ -1,5 +1,4 @@
 {{ config(
-
         schema = 'mass_decoding_arbitrum',
         alias = 'uniswap_v3_factory_evt_PoolCreated',
         partition_by = ['block_date'],
