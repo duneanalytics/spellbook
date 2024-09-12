@@ -98,7 +98,7 @@ left join {{ ref('prices_usd_daily') }} p
         b.token_standard = 'native'
         and p.blockchain is null
         and p.contract_address is null
-        and p.symbol = 'ETH'
+        and p.symbol = 'POL'
         and b.day = p.day
     )
 group by 1, 2, 3, 4, 5, 6, 7
