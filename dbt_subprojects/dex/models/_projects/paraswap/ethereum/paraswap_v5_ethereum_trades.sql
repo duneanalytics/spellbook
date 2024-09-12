@@ -287,8 +287,7 @@ uniswap_v2_call_swap_without_event AS (
         AND i.swap_in_row_number = o.swap_in_row_number
         AND i.swap_out_row_number = o.swap_out_row_number
         AND (i.token_in_amount = 0 OR i.token_in_amount = o.token_in_amount)
-
-    WHERE i.calls_count = i.final_in_calls_count
+        AND i.calls_count = i.final_in_calls_count
         AND i.calls_count = o.final_out_calls_count
 ),
 
@@ -424,8 +423,7 @@ uniswap_call_swap_without_event AS (
         AND (i.token_in_amount = 0 OR i.token_in_amount = o.token_in_amount)
         AND i.swap_in_row_number = o.swap_in_row_number
         AND i.swap_out_row_number = o.swap_out_row_number
-
-    WHERE i.calls_count = i.final_in_calls_count
+        AND i.calls_count = i.final_in_calls_count
         AND i.calls_count = o.final_out_calls_count
 ),
 
