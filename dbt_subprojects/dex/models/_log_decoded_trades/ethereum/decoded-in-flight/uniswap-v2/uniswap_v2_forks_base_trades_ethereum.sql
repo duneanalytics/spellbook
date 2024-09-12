@@ -11,7 +11,7 @@
         )
 }}
 
-WITH all_decoded_trades(
+WITH all_decoded_trades AS (
     {{
         uniswap_v2_forks_trades(
             blockchain = 'ethereum'
