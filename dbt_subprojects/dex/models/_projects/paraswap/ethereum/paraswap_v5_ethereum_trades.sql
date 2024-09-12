@@ -181,15 +181,14 @@ uniswap_v2_call_swap_without_event AS (
             '0x' || lower(substring(to_hex(cast(c.pools[1] AS varbinary)), -40)) AS swap_in_pair,
             '0x' || lower(substring(to_hex(cast(c.pools[cardinality(pools)] AS varbinary)), -40)) AS swap_out_pair,
             row_number() OVER (
-                PARTITION BY c.call_tx_hash, c.pools[1]
+                PARTITION BY c.call_tx_hash, c.pools[1], t."from"
                 ORDER BY c.call_trace_address ASC
             ) AS swap_in_row_number,
             row_number() OVER (
-                PARTITION BY c.call_tx_hash, c.pools[cardinality(pools)]
+                PARTITION BY c.call_tx_hash, c.pools[cardinality(pools)], t."from"
                 ORDER BY c.call_trace_address ASC
             ) AS swap_out_row_number,
-            token_in_amount,
-            count(c.call_tx_hash) OVER (PARTITION BY c.call_tx_hash) AS calls_count
+            token_in_amount
         FROM raw_no_event_call_transaction c
 
         INNER JOIN {{ source('ethereum', 'traces') }} t ON t.block_number = c.call_block_number
@@ -217,8 +216,7 @@ uniswap_v2_call_swap_without_event AS (
             c.swap_in_pair,
             c.token_in_amount,
             c.swap_in_row_number,
-            c.swap_out_row_number,
-            c.calls_count
+            c.swap_out_row_number
         FROM formatted_no_event_call_transaction c
     
         INNER JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
@@ -255,51 +253,29 @@ uniswap_v2_call_swap_without_event AS (
                 OR e.to = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
             )
             AND e.evt_row_num = c.swap_out_row_number
-    ),
-
-    final AS (
-        SELECT i.block_time,
-            i.block_number,
-            i.user_address AS taker,
-            o.user_address AS maker,
-            cast(o.amountOut AS uint256) AS token_bought_amount_raw,
-            cast(i.amountIn AS uint256) AS token_sold_amount_raw,
-            cast(NULL AS double) AS amount_usd,
-            o.tokenOut AS token_bought_address,
-            i.tokenIn AS token_sold_address,
-            0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address,
-            i.tx_hash,
-            o.trace_address AS trace_address,
-            greatest(i.evt_index, o.evt_index) AS evt_index,
-            i.calls_count,
-            count(i.tx_hash) OVER (PARTITION BY i.tx_hash) as final_calls_count
-        FROM swap_detail_in i
-
-        INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
-            AND i.tx_hash = o.tx_hash
-            AND i.swap_in_pair = o.swap_in_pair
-            AND i.swap_in_row_number = o.swap_in_row_number
-            AND i.swap_out_row_number = o.swap_out_row_number
-            AND (i.token_in_amount = 0 OR i.token_in_amount = o.token_in_amount)
     )
 
-    SELECT block_time,
-        block_number,
-        taker,
-        maker,
-        token_bought_amount_raw,
-        token_sold_amount_raw,
-        amount_usd,
-        token_bought_address,
-        token_sold_address,
-        project_contract_address,
-        tx_hash,
-        trace_address,
-        evt_index
-        
-    FROM final
-    
-    WHERE calls_count = final_calls_count
+    SELECT i.block_time,
+        i.block_number,
+        i.user_address AS taker,
+        o.user_address AS maker,
+        cast(o.amountOut AS uint256) AS token_bought_amount_raw,
+        cast(i.amountIn AS uint256) AS token_sold_amount_raw,
+        cast(NULL AS double) AS amount_usd,
+        o.tokenOut AS token_bought_address,
+        i.tokenIn AS token_sold_address,
+        0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address,
+        i.tx_hash,
+        o.trace_address AS trace_address,
+        greatest(i.evt_index, o.evt_index) AS evt_index
+    FROM swap_detail_in i
+
+    INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
+        AND i.tx_hash = o.tx_hash
+        AND i.swap_in_pair = o.swap_in_pair
+        AND i.swap_in_row_number = o.swap_in_row_number
+        AND i.swap_out_row_number = o.swap_out_row_number
+        AND (i.token_in_amount = 0 OR i.token_in_amount = o.token_in_amount)
 ),
 
 uniswap_call_swap_without_event AS (
