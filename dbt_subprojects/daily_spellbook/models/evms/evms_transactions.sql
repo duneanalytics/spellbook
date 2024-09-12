@@ -5,7 +5,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
                                     "sector",
                                     "evms",
-                                    \'["hildobby"]\') }}'
+                                    \'["hildobby", "synthquest"]\') }}'
         )
 }}
 
@@ -29,6 +29,11 @@
      , ('zkevm', source('zkevm', 'transactions'))
      , ('blast', source('blast', 'transactions'))
      , ('mantle', source('mantle', 'transactions'))
+     , ('sei', source('sei', 'transactions'))
+] %}
+
+{% set unstructured_transactions_models = [
+     ('mode', source('mode', 'transactions'))
 ] %}
 
 SELECT *
@@ -56,7 +61,7 @@ FROM (
         , "type"
         , CAST(value AS double) AS value
         --Logic for L2s
-                {% if transactions_model[0] in all_op_chains() or transactions_model[0] == 'scroll' %}
+                {% if transactions_model[0] in all_op_chains() + ('scroll','mantle','blast') %}
                 , l1_tx_origin
                 , l1_fee_scalar
                 , l1_block_number
@@ -87,6 +92,46 @@ FROM (
                 , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
                 {% endif %}
         FROM {{ transactions_model[1] }}
+        {% if not loop.last %}
+        UNION ALL
+        {% endif %}
+        {% endfor %}
+
+        UNION ALL
+
+        {% for unstructured_transactions_models in unstructured_transactions_models %}
+        {% if unstructured_transactions_models[0] == 'mode' %}
+        SELECT
+        '{{ unstructured_transactions_models[0] }}' AS blockchain
+        , CAST(NULL AS array(row(address varbinary, storagekeys array(varbinary)))) AS access_list
+        , block_hash
+        , data
+        , "from"
+        , hash
+        , to
+        , block_number
+        , block_time
+        , gas_limit
+        , CAST(gas_price AS double) AS gas_price
+        , gas_used
+        , index
+        , max_fee_per_gas
+        , max_priority_fee_per_gas
+        , nonce
+        , priority_fee_per_gas
+        , success
+        , "type"
+        , CAST(value AS double) AS value
+        , l1_tx_origin
+        , l1_fee_scalar
+        , l1_block_number
+        , l1_fee
+        , l1_gas_price
+        , l1_gas_used
+        , l1_timestamp
+        , CAST(NULL AS DECIMAL(38,0)) AS effective_gas_price
+        {% endif %}
+        FROM {{ unstructured_transactions_models[1] }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}

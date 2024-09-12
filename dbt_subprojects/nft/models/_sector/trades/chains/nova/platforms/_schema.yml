@@ -1,0 +1,51 @@
+version: 2
+
+models:
+ - name: king_of_destiny_nova_base_trades
+   meta:
+     blockchain: nova
+     sector: nft
+     project: king_of_destiny
+     contributors: ['0xRob' ]
+   config:
+     tags: [ 'nova', 'nft', 'trades', 'king_of_destiny' ]
+   description: "king_of_destiny base trades"
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+ - name: opensea_v3_nova_base_trades
+   meta:
+     blockchain: nova
+     project: opensea
+     contributors: sohwak, 0xRob
+   config:
+     tags: [ 'opensea','base_trades','seaport' ]
+   description: >
+     Opensea base trades from seaport (v3)
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+
+ - name: opensea_v4_nova_base_trades
+   meta:
+     blockchain: nova
+     project: opensea
+     contributors: sohwak, 0xRob
+   config:
+     tags: [ 'opensea','base_trades','seaport' ]
+   description: >
+     Opensea base trades from seaport (v4)
+   tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+

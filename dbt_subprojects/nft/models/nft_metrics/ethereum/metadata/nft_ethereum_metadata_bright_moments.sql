@@ -59,7 +59,7 @@ from (VALUES
         , (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 47, 1000000, 'Sparkling Goodbye', 'Licia He', 'Tokyo', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-47')
         , (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 48, 1000000, 'Undercurrents', 'Melissa Wiederrecht', 'Tokyo', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-48')
         , (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 49, 1000000, 'Margaret', 'qubibi', 'Tokyo', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-49')
-        , (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 50, 1000000, 'Nature finds a way.', 'Spongenuity.', 'Tokyo', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-50')
+        , (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 50, 1000000, 'Nature finds a way.', 'Spongenuity', 'Tokyo', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-50')
         , (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 51, 1000000, 'Marching Resonances', 'Shunsuke Takawo', 'Tokyo', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-51')
         , (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 52, 1000000, 'Kumono Shingou', 'zancan', 'Tokyo', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-52')
         , (0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676, 53, 1000000, 'Hanabi', 'ykxotkx', 'Tokyo', '0x0a1bbd57033f57e7b6743621b79fcb9eb2ce3676-53')

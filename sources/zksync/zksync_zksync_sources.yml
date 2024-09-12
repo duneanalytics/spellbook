@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: zksync_era_zksync
+    description: >
+      ZKsync contracts on ZKsync Era
+    tables:
+      - name: ZkMerkleDistributor_evt_Claimed
+        loaded_at_field: evt_block_time

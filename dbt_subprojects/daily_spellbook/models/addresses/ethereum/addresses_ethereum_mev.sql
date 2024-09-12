@@ -407,4 +407,8 @@ FROM (VALUES
     , (0xbf901f52aef5bb098f6f7918e1fa0c639720f409) -- Etherscan
     , (0xe4000004000bd8006e00720000d27d1fa000d43e) -- Etherscan
     , (0x0ddc6f9ce13b985dfd730b8048014b342d1b54f7) -- Etherscan
+    , (0x5ddf30555ee9545c8982626b7e3b6f70e5c2635f) -- Etherscan
+    , (0x01bd2da640345f1c29831b7cef9a434298408172) -- Etherscan
+    , (0x42183725df3be80bcefb3d12528417698c0c8a8c) -- Etherscan
+    , (0xca980f000771f70b15647069e9e541ef73f71f2f) -- Etherscan
     ) AS x (address)

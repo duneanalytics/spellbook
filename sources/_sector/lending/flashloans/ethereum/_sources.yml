@@ -12,6 +12,7 @@ sources:
   - name: aave_v3_ethereum
     tables:
       - name: Pool_evt_FlashLoan
+      - name: LidoPool_evt_FlashLoan
 
   - name: radiant_capital_ethereum
     tables:

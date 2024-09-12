@@ -28,20 +28,19 @@ SELECT 'ethereum' AS blockchain
 , t.evt_block_number AS block_number
 , 'x2y2' AS project
 , 1 AS airdrop_number
-, t.to AS recipient
+, t.receiver AS recipient
 , t.contract_address
 , t.evt_tx_hash AS tx_hash
-, t.value AS amount_raw
-, CAST(t.value/POWER(10, 18) AS double) AS amount_original
-, CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.value/POWER(10, 18) AS double)
-    ELSE CAST((SELECT price FROM early_price)*t.value/POWER(10, 18) AS double)
+, t.amount AS amount_raw
+, CAST(t.amount/POWER(10, 18) AS double) AS amount_original
+, CASE WHEN t.evt_block_time >= (SELECT minute FROM early_price) THEN CAST(pu.price*t.amount/POWER(10, 18) AS double)
+    ELSE CAST((SELECT price FROM early_price)*t.amount/POWER(10, 18) AS double)
     END AS amount_usd
 , {{xtyt_token_address}} AS token_address
 , 'X2Y2' AS token_symbol
 , t.evt_index
-FROM {{ source('erc20_ethereum', 'evt_transfer') }} t
-LEFT JOIN {{ source('prices','usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
+FROM {{ source('x2y2_ethereum', 'X2Y2Drop_evt_Airdrop') }} t
+LEFT JOIN {{ source('prices', 'usd_forward_fill') }} pu ON pu.blockchain = 'ethereum'
     AND pu.contract_address= {{xtyt_token_address}}
     AND pu.minute=date_trunc('minute', t.evt_block_time)
 WHERE t.evt_block_time BETWEEN timestamp '2022-02-15' AND timestamp '2022-03-31'
-    AND t.contract_address = {{xtyt_token_address}}

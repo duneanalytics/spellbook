@@ -72,7 +72,7 @@ class TableLocationManager:
         return rename_command
 
     def generate_macro_file(self, tables_dict):
-        f = open("../macros/dune/alter_table_locations.sql", 'w')
+        f = open("../dbt_macros/dune/alter_table_locations.sql", 'w')
         f.write("{% macro alter_table_locations() %}")
         for table, table_dict in tables_dict.items():
             # alter_command = self.get_alter_command(table_dict)

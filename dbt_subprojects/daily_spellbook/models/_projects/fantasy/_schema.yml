@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: fantasy_events
+    meta:
+      blockchain: blast
+      project: fantasy
+      contributors: hildobby
+    config:
+      tags: ['blast', 'fantasy', 'events']
+    description: >
+      All fantasy.top related events on Blast
+    columns:
+      - name: block_time
+        description: "UTC time of transaction"
+      - name: block_number
+        description: "Transaction block number on Blast"
+      - name: block_date
+        description: "UTC date of transaction"
+      - name: evt_type
+        description: "Type of fantasy event"
+      - name: user_address
+        description: "Address of fantasy.top user"
+      - name: whitelist
+        description: "Was this transaction only possible with a whitelist"
+      - name: collection
+        description: "The token address of the NFT involved in the transaction"
+      - name: cards_minted
+        description: "The number of minted fantasy.top cards"
+      - name: cards_burned
+        description: "The number of burned fantasy.top cards"
+      - name: minted_ids
+        description: "The list of minted fantasy.top card token ids"
+      - name: burned_ids
+        description: "The list of burned fantasy.top card token ids"
+      - name: traded_with
+        description: "Who was on the other side of this executed trade"
+      - name: tx_from
+        description: "Which address executed the transaction"
+      - name: tx_to
+        description: "The address towards which the transaction was pointed"
+      - name: tx_hash
+        description: "The hash of the transaction"
+      - name: tx_index
+        description: "The index of the transaction in the block"
+      - name: contract_address
+        description: "The address of the used smart contract"
+      - name: is_wash_trade
+        description: "Is this trade a wash trade?"
+      - name: token_symbol
+        description: "The token symbol of the used fungible"
+      - name: token_address
+        description: "The address of the used token"
+      - name: token_amount
+        description: "The amount of tokens involved in the transaction"
+      - name: price_usd
+        description: "The USD price of the fungibles used in the transaction"
+      - name: tactics_bought
+        description: "The amount of tactics tickets bought"
