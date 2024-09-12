@@ -1,5 +1,4 @@
 {{ config(
-
         schema = 'mass_decoding_ethereum',
         alias = 'uniswap_v2_factory_evt_PairCreated',
         partition_by = ['block_date'],
