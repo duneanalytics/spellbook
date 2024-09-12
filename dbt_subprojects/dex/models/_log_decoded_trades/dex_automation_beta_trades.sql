@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'dex'
-    , alias = 'log_decoded_trades'
+    schema = 'dex_automation_beta'
+    , alias = 'trades'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -36,7 +36,7 @@
 with dexs AS (
     {{
         log_decoded_enrich_dex_trades(
-            base_trades = ref('log_decoded_dex_base_trades')
+            base_trades = ref('dex_automation_beta_base_trades')
             , filter = "project != 'curve'"
             , tokens_erc20_model = source('tokens', 'erc20')
         )

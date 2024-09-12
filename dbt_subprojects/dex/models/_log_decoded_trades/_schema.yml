@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: log_decoded_dex_trades
+  - name: dex_automation_beta_trades
     meta:
       docs_slug: /curated/trading/DEX/dex-trades
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei
       sector: dex
       short_description: The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs). This table contains a detailed breakdown of trade execution containing one or many trades per transaction. 
-      contributors: 0xRob, hosuke, jeff-dude, tomfutago
+      contributors: 0xBoxer, hosuke
     config:
       tags: [ 'dex', 'trades']
     description: '{{ doc("dex_trades_doc") }}'
@@ -100,11 +100,11 @@ models:
         name: evt_index
         description: "Index of the event in the transaction. Can be used to uniquely identify the order of trades within in a transaction"
 
-  - name: log_decoded_dex_base_trades
+  - name: dex_automation_beta_base_trades
     meta:
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei
       sector: dex
-      contributors: 0xRob, hosuke, jeff-dude, tomfutago, viniabussafi
+      contributors: 0xBoxer, hosuke
     config:
       tags: [ 'dex' ]
     tests:

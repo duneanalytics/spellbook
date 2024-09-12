@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'dex'
-    , alias = 'log_decoded_dex_base_trades'
+    schema = 'dex_automation_beta'
+    , alias = 'base_trades'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
     , file_format = 'delta'
