@@ -344,6 +344,7 @@ uniswap_call_swap_without_event AS (
             t."from" AS caller,
             c.path[1] AS token_in,
             c.path[cardinality(c.path)] AS token_out,
+            c.call_trace_address,
             row_number() OVER (
                 PARTITION BY c.call_tx_hash, t."from", c.path[1], c.path[2], c.factory
                 ORDER BY c.call_trace_address ASC
@@ -373,13 +374,13 @@ uniswap_call_swap_without_event AS (
 
     swap_detail_in AS (
         SELECT c.caller AS user_address,
-            coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
-            coalesce(e.evt_block_number, t.block_number) AS block_number,
-            coalesce(e.evt_block_time, t.block_time) AS block_time,
-            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2) AS tokenIn,
-            coalesce(try_cast(e.value AS int256), try_cast(t.value AS int256)) AS amountIn,
-            coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
-            coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index,
+            e.evt_tx_hash AS tx_hash,
+            e.evt_block_number AS block_number,
+            e.evt_block_time AS block_time,
+            e.contract_address AS tokenIn,
+            try_cast(e.value AS int256) AS amountIn,
+            c.call_trace_address AS trace_address,
+            e.evt_index AS evt_index,
             c.swap_in_row_number,
             c.swap_out_row_number,
             c.calls_count,
@@ -397,13 +398,13 @@ uniswap_call_swap_without_event AS (
 
     swap_detail_out AS (
         SELECT c.caller AS user_address,
-            coalesce(e.evt_block_number, t.block_number) AS block_number,
-            coalesce(e.evt_block_time, t.block_time) AS block_time,
-            coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
-            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2) AS tokenOut,
-            try_cast(coalesce(e.value, t.value) AS int256) AS amountOut,
-            coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
-            coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index,
+            e.evt_block_number AS block_number,
+            e.evt_block_time AS block_time,
+            e.evt_tx_hash AS tx_hash,
+            e.contract_address AS tokenOut,
+            try_cast(e.value AS int256) AS amountOut,
+            c.call_trace_address AS trace_address,
+            e.evt_index AS evt_index,
             c.token_in_amount,
             c.swap_in_row_number,
             c.swap_out_row_number
