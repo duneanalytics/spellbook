@@ -14,7 +14,7 @@ Seeds will be required in these sector-level spell additions to ensure proper le
 3. Within the [model schema file](/models/_sector/dex/trades/arbitrum/_schema.yml#L20-L23), call the [generic seed test](/tests/generic/check_dex_base_trades_seed.sql) with parameters necessary:
    - Seed file name.
    - Filter(s) for project versions, if the spell is split into versions per project.
-4. Ultimately, following the above steps, the test query built and executed against seed files lives in the generic seed macro [here](/macros/generic-tests/check_seed_macro.sql).
+4. Ultimately, following the above steps, the test query built and executed against seed files lives in the generic seed macro [here](/dbt_macros/generic-tests/check_seed_macro.sql).
 
 ## How Do I Track Seed Tests Running During Development?
 

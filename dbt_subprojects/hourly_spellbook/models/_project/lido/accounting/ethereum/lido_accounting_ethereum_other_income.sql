@@ -107,7 +107,39 @@ dai_referral_payments_addr AS (
 steth_referral_payments_addr AS (
     SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
 ),
+/*
+stonks as (
+    select * from (values 
+    ('STETH→DAI', 0x3e2D251275A92a8169A3B17A2C49016e2de492a7),
+    ('STETH→USDC', 0xf4F6A03E3dbf0aA22083be80fDD340943d275Ea5),
+    ('STETH→USDT', 0x7C2a1E25cA6D778eCaEBC8549371062487846aAF),
+    ('DAI→USDC', 0x79f5E20996abE9f6a48AF6f9b13f1E55AED6f06D),
+    ('DAI→USDT', 0x8Ba6D367D15Ebc52f3eBBdb4a8710948C0918d42),
+    ('USDT→USDC', 0x281e6BB6F26A94250aCEb24396a8E4190726C97e),
+    ('USDT→DAI', 0x64B6aF9A108dCdF470E48e4c0147127F26221A7C),
+    ('USDC→USDT', 0x278f7B6CBB3Cc37374e6a40bDFEBfff08f65A5C7),
+    ('USDC→DAI', 0x2B5a3944A654439379B206DE999639508bA2e850)
+    ) as list(namespace, address)
+),
 
+cow_settlement as (
+    select * from (values 
+    (0x9008D19f58AAbD9eD0D60971565AA8510560ab41)
+    ) as list(address)    
+),
+
+stonks_orders_txns as (
+    select evt_tx_hash
+    from {{source('lido_ethereum', 'steth_evt_Transfer')}}
+    where "from" in (
+            select cast(replace(topic1, 0x000000000000000000000000, 0x) as varbinary) as order_addr
+            from {{source('ethereum', 'logs')}} l
+            join stonks s on l.contract_address = s.address 
+             and l.topic0 = 0x96a6d5477fba36522dca4102be8b3785435baf902ef6c4edebcb99850630c75f -- Stonks Deployed
+            ) 
+    and to in (select address from cow_settlement)
+),
+*/
 other_income_txns AS (
     SELECT
         evt_block_time,
@@ -133,8 +165,10 @@ other_income_txns AS (
         UNION ALL
         select 0x0000000000000000000000000000000000000000
         UNION ALL
-        SELECT address FROM diversifications_addresses
-    )
+        SELECT address FROM diversifications_addresses    
+    )    
+  --  AND evt_tx_hash NOT IN (select evt_tx_hash from stonks_orders_txns)   
+    
     UNION ALL
     --ETH staked by DAO
     SELECT

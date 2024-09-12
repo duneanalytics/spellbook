@@ -1,0 +1,70 @@
+version: 2
+
+models:
+  - name: prices_tokens
+    meta:
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm, blast, sei, nova
+      sector: prices
+      contributors: aalan3, hildobby, pipistrella, viniabussafi, jeff-dude
+    config:
+      tags: ['prices', 'tokens', 'usd']
+    description: "Price tokens"
+    columns:
+      - &token_id
+        name: token_id
+        description: "Id of the token at coinpaprika. This id is required to pull the price feed data. NOTE: Not all tokens are listed at coinpaprika - consider using price data from DEX sources in this case or submit a listing request at coinpaprika."
+      - &blockchain
+        name: blockchain
+        description: "Native blockchain of the token, if any"
+      - &contract_address
+        name: contract_address
+        description: "Contract address of the token, if any"
+        tests:
+          - not_zero_address
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+      - &decimals
+        name: decimals
+        description: "Number of decimals for the token contract"
+
+  - name: prices_native_tokens
+    meta:
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, zksync, zora, sei, nova
+      sector: prices
+      contributors: aalan3, jeff-dude
+    config:
+      tags: ['prices', 'tokens', 'usd']
+    description: "Price tokens for native tokens for all chains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - symbol
+    columns:
+      - *token_id
+      - *blockchain
+      - *contract_address
+      - *symbol
+      - *decimals
+
+  - name: prices_trusted_tokens
+    meta:
+      sector: prices
+      contributors: hosuke
+    config:
+      tags: [ 'prices', 'stability' ]
+    description: "List of trusted tokens across blockchains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+    columns:
+      - name: blockchain
+        description: "Native blockchain of the token"
+      - name: symbol
+        description: "Token symbol"
+      - name: contract_address
+        description: "Contract address of the token"

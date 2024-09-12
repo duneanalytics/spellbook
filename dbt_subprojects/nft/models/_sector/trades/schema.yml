@@ -145,13 +145,14 @@ models:
 
  - name: nft_trades
    meta:
-     blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon, blast, fantom
+     blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon, blast, fantom, nova
      sector: nft
-     contributors: soispoke, hildobby, ilemi, cat
+     contributors: soispoke, hildobby, ilemi, cat, 0xRob
+     docs_slug: curated/trading/NFT/nft-trades
    config:
      tags: [ 'nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'optimism', 'arbitrum', 'trades','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal' ]
    description: >
-     NFT trades
+     The nft.trades table on Dune captures Non-Fungible Token (NFT) trades and swaps across various marketplaces. 
    tests:
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns:
@@ -190,7 +191,7 @@ models:
    meta:
      blockchain: ethereum, solana, polygon
      sector: nft
-     contributors: soispoke, hildobby, ilemi, cat
+     contributors: soispoke, hildobby, ilemi, cat, 0xRob
    config:
      tags: [ 'nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'fees','superrare', 'polygon', 'rarible', 'aavegotchi', 'oneplanet', 'fractal' ]
    description: >

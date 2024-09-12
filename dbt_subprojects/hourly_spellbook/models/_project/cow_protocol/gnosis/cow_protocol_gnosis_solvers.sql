@@ -86,6 +86,7 @@ known_solver_metadata (address, environment, name) as (
                  (0x5D665472e2026C405aAc65cC652470a1B8FCff08, 'prod', 'Baseline'),
                  (0xe71D3324E17E99B56c294067370D45111bc968D6, 'prod', 'Quasimodo'),
                  (0xa7c4C18106e92Cea479627D02FAb583D987f17d9, 'prod', 'Gnosis_1inch'),
+                 (0xfaBBDf8a77005C00edBe0000bDC000644c024322, 'prod', 'CopiumCapital'),
                  (0x68dEE65bB88d919463495E5CeA9870a81f1e9413, 'service', 'Withdraw'),
                  (0xa03be496e67ec29bc62f01a428683d7f9c204930, 'service', 'Withdraw'),
                  (0x7524942F9283FBFa8F17b05CC0a9cBde397d25b3, 'test', 'Test 1')
