@@ -100,5 +100,3 @@ GROUP BY address
 HAVING COUNT(DISTINCT cex_name) = 1
 
 {% endif %}
-
-{% endmacro %}
