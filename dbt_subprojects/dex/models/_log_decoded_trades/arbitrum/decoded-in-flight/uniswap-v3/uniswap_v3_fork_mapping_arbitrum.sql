@@ -10,8 +10,7 @@
 SELECT factory_address, project_name
 FROM
 (VALUES
-    (0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f, 'uniswap_v2')
-    , (0xc0aee478e3658e2610c5f7a4a2e1777ce9e4f2ac, 'sushi')
+    (0x1F98431c8aD98523631AE4a59f267346ea31F984, 'uniswap_v3')
     
 ) AS t (factory_address, project_name)
 
