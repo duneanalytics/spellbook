@@ -396,7 +396,7 @@ uniswap_call_swap_without_event AS (
             count(e.evt_tx_hash) OVER (PARTITION BY e.evt_tx_hash) AS final_out_calls_count
         FROM formatted_no_event_call_transaction c
     
-        LEFT JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
+        INNER JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
             AND c.call_tx_hash = e.evt_tx_hash
             AND (e."to" = c.caller OR e.to = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57)
             AND e.contract_address = c.token_out
@@ -415,9 +415,7 @@ uniswap_call_swap_without_event AS (
         0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address,
         i.tx_hash,
         greatest(i.trace_address, o.trace_address) AS trace_address,
-        greatest(i.evt_index, o.evt_index) AS evt_index,
-        i.calls_count AS calls_count,
-        count(i.tx_hash) OVER (PARTITION BY i.tx_hash) AS final_calls_count
+        greatest(i.evt_index, o.evt_index) AS evt_index
     
     FROM swap_detail_in i
 
