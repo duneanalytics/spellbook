@@ -2,7 +2,7 @@
 (
     alias = 'first_funded_by',
     schema = 'addresses_events_crosschain',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zksync", "zora", "base", "scroll"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zora", "base", "scroll"]\',
                                     "sector",
                                     "addresses_events",
                                     \'["hildobby"]\') }}'

@@ -1,7 +1,8 @@
 {% set blockchain = 'zksync' %}
 
 {{ config(
-    schema = 'addresses_events_' + blockchain
+    tags = ['prod_exclude']
+    , schema = 'addresses_events_' + blockchain
     , alias = 'first_funded_by'
     , materialized = 'incremental'
     , file_format = 'delta'

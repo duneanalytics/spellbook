@@ -2,7 +2,7 @@
 (
     alias = 'first_funded_by',
     schema = 'addresses_events',
-    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zksync", "zora", "base", "scroll", "mantle", "blast"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "bnb", "ethereum", "fantom", "gnosis", "optimism", "polygon", "celo", "zora", "base", "scroll", "mantle", "blast"]\',
                                     "sector",
                                     "addresses_events",
                                     \'["hildobby", "Henrystats"]\') }}'
@@ -19,7 +19,6 @@ ref('addresses_events_arbitrum_first_funded_by')
 , ref('addresses_events_optimism_first_funded_by')
 , ref('addresses_events_polygon_first_funded_by')
 , ref('addresses_events_celo_first_funded_by')
-, ref('addresses_events_zksync_first_funded_by')
 , ref('addresses_events_zora_first_funded_by')
 , ref('addresses_events_base_first_funded_by')
 , ref('addresses_events_scroll_first_funded_by')
