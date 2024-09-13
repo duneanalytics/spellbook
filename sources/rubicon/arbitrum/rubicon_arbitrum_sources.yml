@@ -3,11 +3,8 @@ version: 2
 sources:
   - name: rubicon_arbitrum
     description: "Arbitrum decoded tables related to rubicon's implementation of OasisDEX"
-    freshness:
-      warn_after: { count: 12, period: hour } 
     tables:
       - name: RubiconMarket_evt_emitOffer
-        loaded_at_field: evt_block_time
         description: "a table of events triggered when a maker creates an offer" 
         columes: 
           - &contract_address
@@ -47,7 +44,6 @@ sources:
             description: "the amount of the token being bought"
           
       - name: RubiconMarket_evt_emitTake
-        loaded_at_field: evt_block_time
         description: "a table of events triggered when a taker fills an outstanding offer" 
         columes: 
           - *contract_address

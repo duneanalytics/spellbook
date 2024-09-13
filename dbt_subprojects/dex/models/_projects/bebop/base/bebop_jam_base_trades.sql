@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'bebop_jam_base',
     alias = 'trades',
     partition_by = ['block_month'],

@@ -9,3 +9,6 @@ sources:
     tables:
       - name: PancakeV3Pool_evt_Swap
       - name: PancakeV3Factory_evt_PoolCreated
+  - name: clipper_zkevm
+    tables:
+      - name: ClipperPackedOracleVerifiedExchange_evt_Swapped

@@ -4,7 +4,6 @@ sources:
   - name: tornado_cash_bnb
     tables:
       - name: TornadoCashBNB_evt_Deposit
-        loaded_at_field: evt_block_time
         columns:
           - name: evt_tx_hash
           - name: evt_index
@@ -14,7 +13,6 @@ sources:
           - name: leafIndex
           - name: timestamp
       - name: TornadoCashBNB_evt_Withdrawal
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
           - name: evt_tx_hash

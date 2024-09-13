@@ -5,7 +5,8 @@
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "project",
                                     "phoenix",
-                                    \'["ilemi","jarryx"]\') }}')
+                                    \'["ilemi","jarryx"]\') }}'
+      )
 }}
 
 -- backwards compatible view so we don't break any user queries

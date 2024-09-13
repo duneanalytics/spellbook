@@ -20,6 +20,7 @@
     , ref('dackieswap_base_base_trades')
     , ref('rubicon_base_base_trades')
     , ref('baseswap_base_base_trades')
+    , ref('baseswap_v3_base_base_trades')
     , ref('scale_base_base_trades')
     , ref('kyberswap_base_base_trades')
     , ref('woofi_base_base_trades')
@@ -48,6 +49,7 @@
     , ref('clipper_base_base_trades')
     , ref('solidly_v3_base_base_trades')
     , ref('swaap_v2_base_base_trades')
+    , ref('xchange_base_base_trades')
 ] %}
 
 WITH base_union AS (

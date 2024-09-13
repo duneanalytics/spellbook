@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: lending
       project: aave, compound
-      contributors: tomfutago, hildobby
+      contributors: tomfutago, hildobby, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'ethereum']
     description: "All lending supply transactions on Ethereum"
@@ -201,6 +201,44 @@ models:
       - *tx_hash
       - *evt_index
 
+  - name: aave_lido_v3_ethereum_base_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave_lido
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'lido', 'ethereum']
+    description: "Aave v3 supply transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('aave_lido_ethereum_base_supply_seed')
+          filter:
+            version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *on_behalf_of
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+
   - name: compound_v2_ethereum_base_supply
     meta:
       blockchain: ethereum
@@ -244,7 +282,7 @@ models:
       blockchain: ethereum
       sector: lending
       project: compound
-      contributors: tomfutago
+      contributors: tomfutago, maybeYonas, pyor_xyz
     config:
       tags: ['lending', 'supply', 'compound', 'ethereum']
     description: "Compound v3 supply transactions on Ethereum"

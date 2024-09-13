@@ -21,12 +21,86 @@
   ,ref('zeroex_bnb_api_fills_deduped')
 ] %}
 
+{% set settler_models = [  
+  ref('zeroex_ethereum_settler_trades')
+  ,ref('zeroex_base_settler_trades')
+  ,ref('zeroex_polygon_settler_trades')
+  ,ref('zeroex_optimism_settler_trades')
+  ,ref('zeroex_bnb_settler_trades')
+  ,ref('zeroex_avalanche_c_settler_trades')
+  ,ref('zeroex_arbitrum_settler_trades')
+] %}
+
 
 SELECT *
 FROM (
     {% for model in zeroex_models %}
     SELECT
-      *
+      blockchain
+      ,version
+      ,block_month
+      ,block_date
+      ,block_time
+      ,maker_symbol
+      ,taker_symbol
+      ,token_pair
+      ,maker_token_amount
+      ,taker_token_amount
+      ,maker_token_amount_raw
+      ,taker_token_amount_raw
+      ,volume_usd
+      ,maker_token
+      ,taker_token
+      ,taker
+      ,maker
+      ,contract_address
+      ,tx_hash
+      ,tx_from
+      ,tx_to
+      ,trace_address
+      ,evt_index
+      ,affiliate_address
+      ,null as zid 
+      ,type 
+    FROM {{ model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+)
+
+UNION ALL 
+
+SELECT *
+FROM (
+    {% for model in settler_models %}
+    SELECT
+      blockchain
+      ,version
+      ,block_month
+      ,block_date
+      ,block_time
+      ,maker_symbol
+      ,taker_symbol
+      ,token_pair
+      ,maker_token_amount
+      ,taker_token_amount
+      ,maker_token_amount_raw
+      ,taker_token_amount_raw
+      ,volume_usd
+      ,maker_token
+      ,taker_token
+      ,taker
+      ,maker
+      ,contract_address
+      ,tx_hash
+      ,tx_from
+      ,tx_to
+      ,trace_address
+      ,evt_index
+      ,tag as affiliate_address 
+      ,zid
+      ,type
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
