@@ -103,7 +103,7 @@ WITH new AS (
 SELECT n.address
 , MAX(n.cex_name) AS cex_name
 , array_distinct(concat(t.blockchains, array_agg(n.blockchain))) AS blockchains
-, COALESCE(t.first_used_blockchain, MIN_BY(n.blockchain, n.creation_block_time)) AS first_used_blockchain
+, COALESCE(t.first_used_blockchain, MIN_BY(n.first_used_blockchain, n.creation_block_time)) AS first_used_blockchain
 , COALESCE(t.creation_block_time, MIN(n.creation_block_time)) AS creation_block_time
 , COALESCE(t.creation_block_number, MIN(n.creation_block_number)) AS creation_block_number
 , COALESCE(t.funded_by_same_cex, MIN_BY(n.funded_by_same_cex, n.creation_block_time)) AS funded_by_same_cex
