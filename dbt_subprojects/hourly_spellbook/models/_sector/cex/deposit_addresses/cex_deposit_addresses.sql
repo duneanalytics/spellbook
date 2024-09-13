@@ -110,6 +110,7 @@ SELECT n.address
 , COALESCE(t.first_funded_by, MIN_BY(n.first_funded_by, n.creation_block_time)) AS first_funded_by
 , COALESCE(t.is_smart_contract, MIN_BY(n.is_smart_contract, n.creation_block_time)) AS is_smart_contract
 FROM new n
-LEFT JOIN {{this}} t ON t.address=n.address AND t.cex_name=n.cex_name 
+LEFT JOIN {{this}} t ON t.address=n.address AND t.cex_name=n.cex_name
+GROUP BY 1
 
 {% endif %}
