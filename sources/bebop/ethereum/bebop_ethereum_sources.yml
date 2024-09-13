@@ -3,69 +3,35 @@ version: 2
 sources:
   - name: bebop_v3_ethereum
     description: "Bebop decoded tables related to Bebop"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: BebopAggregationContract_call_SettleAggregateOrder
-        loaded_at_field: call_block_time
       - name: BebopAggregationContract_evt_AggregateOrderExecuted
-        loaded_at_field: evt_block_time
   - name: bebop_v4_ethereum
     description: "Bebop decoded tables related to Bebop"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: BebopSettlement_call_SettleAggregateOrder
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_SettleAggregateOrderWithTakerPermits
-        loaded_at_field: call_block_time
       - name: BebopSettlement_evt_AggregateOrderExecuted
-        loaded_at_field: evt_block_time
   - name: bebop_jam_ethereum
     description: "BebopJAM decoded tables related to Bebop"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: JamSettlement_call_settle
-        loaded_at_field: call_block_time
       - name: JamSettlement_call_settleWithPermitsSignatures
-        loaded_at_field: call_block_time
       - name: JamSettlement_evt_Settlement
-        loaded_at_field: evt_block_time
   - name: bebop_pmms_ethereum
     description: "Bebop decoded tables related to Bebop"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: BebopSettlement_call_settleSingle
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_settleSingleAndSignPermit
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_settleSingleAndSignPermit2
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_swapSingle
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_swapSingleFromContract
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_settleMulti
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_settleMultiAndSignPermit
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_settleMultiAndSignPermit2
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_swapMulti
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_settleAggregate
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_settleAggregateAndSignPermit
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_settleAggregateAndSignPermit2
-        loaded_at_field: call_block_time
       - name: BebopSettlement_call_swapAggregate
-        loaded_at_field: call_block_time
       - name: BebopSettlement_evt_BebopOrder
-        loaded_at_field: evt_block_time

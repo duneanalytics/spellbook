@@ -5,7 +5,6 @@ sources:
     description: "Ethereum decoded tables related to Gitcoin contract"
     tables:
       - name: GovernorAlpha_evt_VoteCast
-        loaded_at_field: evt_block_time
         columns:
           - &contract_address
             name: contract_address
@@ -29,7 +28,6 @@ sources:
           - &votes
             name: votes
       - name: GovernorAlpha_evt_ProposalCreated
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - *evt_block_number
@@ -55,7 +53,6 @@ sources:
           - &values
             name: values
       - name: GovernorAlpha_evt_ProposalCanceled
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - *evt_block_number
@@ -64,7 +61,6 @@ sources:
           - *evt_tx_hash
           - *id
       - name: GovernorAlpha_evt_ProposalExecuted
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - *evt_block_number
@@ -73,7 +69,6 @@ sources:
           - *evt_tx_hash
           - *id
       - name: GovernorAlpha_evt_ProposalQueued
-        loaded_at_field: evt_block_time
         columns:
           - *contract_address
           - &eta
@@ -85,4 +80,3 @@ sources:
           - *id
       - name: TokenDistributor_evt_Claimed
       - name: BulkCheckout_evt_DonationSent
-        loaded_at_field: evt_block_time

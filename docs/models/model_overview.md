@@ -68,7 +68,7 @@ Required for DBT to understand the models within the project. Key areas within s
     - If is incremental checks, done via jinja syntax
       - This needs to be applied on all sources which have events / transactions / any time-series data set
       - If no, full refresh and/or initial historical load on incremental model and bypass incremental filter, but apply filter for earliest date of activity for particular model
-      - If yes, apply [incremental predicate macro](/macros/incremental_predicate.sql) filter [on the source](/macros/models/_sector/dex/uniswap_compatible_trades.sql#L29-L32), to match incremental predicate filter on target in the config block
+      - If yes, apply [incremental predicate macro](/dbt_macros/dune/incremental_predicate.sql) filter [on the source](/dbt_subprojects/dex/macros/models/_project/uniswap_compatible_trades.sql#L29-L32), to match incremental predicate filter on target in the config block
   - Optional use cases:
     - Lookup to existing spell, within itself, using the {{ this }} syntax
 

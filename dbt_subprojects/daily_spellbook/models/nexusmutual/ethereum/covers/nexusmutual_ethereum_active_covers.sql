@@ -3,10 +3,10 @@
     schema = 'nexusmutual_ethereum',
     alias = 'active_covers',
     materialized = 'view',
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
@@ -20,7 +20,8 @@ covers as (
     cover_start_date,
     cover_end_date,
     cover_owner,
-    cast(staking_pool as int) as staking_pool_id,
+    staking_pool_id,
+    product_id,
     product_type,
     product_name,
     cover_asset,
@@ -40,6 +41,7 @@ covers_ext as (
     cover_end_date,
     cover_owner,
     staking_pool_id,
+    product_id,
     product_type,
     product_name,
     cover_asset,
@@ -90,6 +92,7 @@ select
   c.cover_end_date,
   c.cover_owner,
   c.staking_pool_id,
+  c.product_id,
   c.product_type,
   c.product_name,
   c.cover_asset,
