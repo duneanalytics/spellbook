@@ -287,8 +287,6 @@ uniswap_v2_call_swap_without_event AS (
             AND i.swap_in_row_number = o.swap_in_row_number
             AND i.swap_out_row_number = o.swap_out_row_number
             AND (i.token_in_amount = 0 OR i.token_in_amount = o.token_in_amount)
-            AND i.calls_count = i.final_in_calls_count
-            AND i.calls_count = o.final_out_calls_count
     )
 
     SELECT block_time,
@@ -442,8 +440,6 @@ uniswap_call_swap_without_event AS (
             AND (i.token_in_amount = 0 OR i.token_in_amount = o.token_in_amount)
             AND i.swap_in_row_number = o.swap_in_row_number
             AND i.swap_out_row_number = o.swap_out_row_number
-            AND i.calls_count = i.final_in_calls_count
-            AND i.calls_count = o.final_out_calls_count
     )
 
     SELECT block_time,
@@ -595,8 +591,6 @@ zero_x_call_swap_without_event AS (
         AND i.tx_hash = o.tx_hash
         AND i.swap_in_row_number = o.swap_in_row_number
         AND i.swap_out_row_number = o.swap_out_row_number
-        
-    WHERE i.amountIn >= 0 -- Filter NFTs and transactions where tokenIn didn't emit transfer event
 ),
         
 call_swap_without_event AS (
