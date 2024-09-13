@@ -68,6 +68,10 @@ SELECT m.evt_block_time AS block_time
 , 0x4300000000000000000000000000000000000004 AS token_address
 , m.price/POWER(10, 18) AS token_amount
 , m.price/POWER(10, 18)*pu.price AS price_usd
+, 0.1*m.price/POWER(10, 18) AS heroes_revenue
+, 0.1*m.price/POWER(10, 18)*pu.price AS heroes_revenue_usd
+, 0.9*m.price/POWER(10, 18) AS fantasy_revenue
+, 0.9*m.price/POWER(10, 18)*pu.price AS fantasy_revenue_usd
 , 0 AS tactics_bought
 FROM {{ source('fantasy_blast', 'Minter_evt_Mint')}} m
 INNER JOIN fantasy_configs c ON m.mintConfigId=c.config_id
@@ -100,6 +104,10 @@ SELECT evt_block_time AS block_time
 , CAST(NULL AS varbinary) AS token_address
 , 0 AS token_amount
 , 0 AS price_usd
+, 0 AS heroes_revenue
+, 0 AS heroes_revenue_usd
+, 0 AS fantasy_revenue
+, 0 AS fantasy_revenue_usd
 , 0 AS tactics_bought
 FROM {{ source('fantasy_blast', 'Minter_evt_LevelUp')}}
 
@@ -128,6 +136,10 @@ SELECT evt_block_time AS block_time
 , CAST(NULL AS varbinary) AS token_address
 , 0 AS token_amount
 , 0 AS price_usd
+, 0 AS heroes_revenue
+, 0 AS heroes_revenue_usd
+, 0 AS fantasy_revenue
+, 0 AS fantasy_revenue_usd
 , 0 AS tactics_bought
 FROM {{ source('fantasy_blast', 'Minter_evt_BurnToDraw')}}
 
@@ -156,6 +168,10 @@ SELECT nftt.block_time
 , nftt.currency_contract AS token_address
 , nftt.amount_original AS token_amount
 , nftt.amount_usd AS price_usd
+, royalty_fee_amount AS heroes_revenue
+, royalty_fee_amount_usd AS heroes_revenue_usd
+, platform_fee_amount AS fantasy_revenue
+, platform_fee_amount_usd AS fantasy_revenue_usd
 , 0 AS tactics_bought
 FROM {{ source('nft', 'trades') }} nftt
 INNER JOIN {{ source('blast', 'transactions') }} txs ON txs.block_number=nftt.block_number
@@ -191,6 +207,10 @@ SELECT block_time
 , contract_address AS token_address
 , amount AS token_amount
 , amount_usd AS price_usd
+, 0 AS heroes_revenue
+, 0 AS heroes_revenue_usd
+, 0 AS fantasy_revenue
+, 0 AS fantasy_revenue_usd
 , ROUND(amount_usd/19.99) AS tactics_bought
 FROM {{ source('tokens_blast', 'transfers') }} tt
 WHERE block_number >= 4917909

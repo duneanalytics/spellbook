@@ -55,5 +55,9 @@ models:
         description: "The amount of tokens involved in the transaction"
       - name: price_usd
         description: "The USD price of the fungibles used in the transaction"
+      - name: heroes_revenue
+        description: "The revenue generated for heroes"
+      - name: heroes_revenue_usd
+        description: "The revenue generated for heroes in USD"
       - name: tactics_bought
         description: "The amount of tactics tickets bought"
