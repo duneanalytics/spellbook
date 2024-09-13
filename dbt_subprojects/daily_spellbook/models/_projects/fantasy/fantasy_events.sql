@@ -70,8 +70,8 @@ SELECT m.evt_block_time AS block_time
 , m.price/POWER(10, 18)*pu.price AS price_usd
 , 0.1*m.price/POWER(10, 18) AS heroes_revenue
 , 0.1*m.price/POWER(10, 18)*pu.price AS heroes_revenue_usd
-, 0.9*m.price/POWER(10, 18) AS fantasy_revenue
-, 0.9*m.price/POWER(10, 18)*pu.price AS fantasy_revenue_usd
+, 0.9*m.price/POWER(10, 18) AS to_fantasy_treasury
+, 0.9*m.price/POWER(10, 18)*pu.price AS to_fantasy_treasury_usd
 , 0 AS tactics_bought
 FROM {{ source('fantasy_blast', 'Minter_evt_Mint')}} m
 INNER JOIN fantasy_configs c ON m.mintConfigId=c.config_id
@@ -106,8 +106,8 @@ SELECT evt_block_time AS block_time
 , 0 AS price_usd
 , 0 AS heroes_revenue
 , 0 AS heroes_revenue_usd
-, 0 AS fantasy_revenue
-, 0 AS fantasy_revenue_usd
+, 0 AS to_fantasy_treasury
+, 0 AS to_fantasy_treasury_usd
 , 0 AS tactics_bought
 FROM {{ source('fantasy_blast', 'Minter_evt_LevelUp')}}
 
@@ -138,8 +138,8 @@ SELECT evt_block_time AS block_time
 , 0 AS price_usd
 , 0 AS heroes_revenue
 , 0 AS heroes_revenue_usd
-, 0 AS fantasy_revenue
-, 0 AS fantasy_revenue_usd
+, 0 AS to_fantasy_treasury
+, 0 AS to_fantasy_treasury_usd
 , 0 AS tactics_bought
 FROM {{ source('fantasy_blast', 'Minter_evt_BurnToDraw')}}
 
@@ -170,8 +170,8 @@ SELECT nftt.block_time
 , nftt.amount_usd AS price_usd
 , royalty_fee_amount AS heroes_revenue
 , royalty_fee_amount_usd AS heroes_revenue_usd
-, platform_fee_amount AS fantasy_revenue
-, platform_fee_amount_usd AS fantasy_revenue_usd
+, platform_fee_amount AS to_fantasy_treasury
+, platform_fee_amount_usd AS to_fantasy_treasury_usd
 , 0 AS tactics_bought
 FROM {{ source('nft', 'trades') }} nftt
 INNER JOIN {{ source('blast', 'transactions') }} txs ON txs.block_number=nftt.block_number
@@ -207,10 +207,10 @@ SELECT block_time
 , contract_address AS token_address
 , amount AS token_amount
 , amount_usd AS price_usd
-, 0 AS heroes_revenue
-, 0 AS heroes_revenue_usd
-, 0 AS fantasy_revenue
-, 0 AS fantasy_revenue_usd
+, 0.015*amount AS heroes_revenue
+, 0.015*amount_usd AS heroes_revenue_usd
+, 0.06*amount AS to_fantasy_treasury
+, 0.06*amount_usd AS to_fantasy_revenue_usd
 , ROUND(amount_usd/19.99) AS tactics_bought
 FROM {{ source('tokens_blast', 'transfers') }} tt
 WHERE block_number >= 4917909
