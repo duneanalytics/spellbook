@@ -100,9 +100,19 @@ WITH new AS (
     HAVING COUNT(DISTINCT cex_name) = 1
     )
 
+SELECT address
+, MAX(cex_name) AS cex_name
+, array_agg(blockchain) AS blockchains
+, MIN_BY(blockchain, creation_block_time) AS first_used_blockchain
+, MIN(creation_block_time) AS creation_block_time
+, MIN(creation_block_number) AS creation_block_number
+, MIN_BY(funded_by_same_cex, creation_block_time) AS funded_by_same_cex
+, MIN_BY(first_funded_by, creation_block_time) AS first_funded_by
+, MIN_BY(is_smart_contract, creation_block_time) AS is_smart_contract
+
 SELECT n.address
 , MAX(n.cex_name) AS cex_name
-, array_distinct(concat(t.blockchains, array_agg(n.blockchains))) AS blockchains
+, array_union(t.blockchains, array_agg(n.blockchains)) AS blockchains
 , COALESCE(t.first_used_blockchain, MIN_BY(n.first_used_blockchain, n.creation_block_time)) AS first_used_blockchain
 , COALESCE(t.creation_block_time, MIN(n.creation_block_time)) AS creation_block_time
 , COALESCE(t.creation_block_number, MIN(n.creation_block_number)) AS creation_block_number
