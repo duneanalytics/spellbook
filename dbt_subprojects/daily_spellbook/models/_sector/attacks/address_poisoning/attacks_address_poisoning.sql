@@ -1,15 +1,12 @@
 {{ config(
-        
-        schema='attacks',
+        schema = 'attacks',
         alias = 'address_poisoning',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                "sector",
-                                "attacks",
-                                \'["hildobby"]\') }}'
+        materialized = 'view',
+        post_hook = '{{ expose_spells(
+                        blockchains = \'["arbitrum"]\',
+                        spell_type = "sector",
+                        spell_name = "attacks",
+                        contributors = \'["hildobby"]\') }}'
         )
 }}
 

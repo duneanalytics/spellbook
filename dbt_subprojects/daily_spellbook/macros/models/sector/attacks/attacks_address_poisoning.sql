@@ -6,8 +6,9 @@ WITH transfer_recipients AS (
     , varbinary_substring(to, 18, 3) AS address_end
     , COUNT(*) AS address_occurence
     FROM {{ source('tokens_'~blockchain, 'transfers')}}
+    WHERE block_time > NOW() - interval '3' month
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('block_time') }}
+    AND {{ incremental_predicate('block_time') }}
     {% endif %} 
     GROUP BY 1, 2, 3
     )
@@ -43,11 +44,13 @@ WITH transfer_recipients AS (
     FROM matching_addresses ma
     INNER JOIN {{ source('tokens_'~blockchain, 'transfers')}} attack ON attack.to = ma.address_attack
         AND attack.tx_from=attack."from"
+        AND attack.block_time > NOW() - interval '3' month
         {% if is_incremental() %}
         AND {{ incremental_predicate('attack.block_time') }}
         {% endif %}
     INNER JOIN {{ source('tokens_'~blockchain, 'transfers')}} normal ON normal.to = ma.address_normal
         AND normal.tx_from=normal."from"
+        AND normal.block_time > NOW() - interval '3' month
         {% if is_incremental() %}
         AND {{ incremental_predicate('normal.block_time') }} - interval '14' day
         {% endif %}
@@ -55,6 +58,7 @@ WITH transfer_recipients AS (
     INNER JOIN {{ source('tokens_'~blockchain, 'transfers')}} attack_probe ON attack_probe.to = ma.address_attack
         AND attack_probe.block_time > NOW() - interval '1' month
         AND attack_probe.tx_from<>attack_probe."from"
+        AND attack_probe.block_time > NOW() - interval '3' month
         AND attack_probe.block_number BETWEEN normal.block_number AND attack.block_number
     GROUP BY 2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17
     )
@@ -64,10 +68,10 @@ WITH transfer_recipients AS (
     FROM matching_addresses ma
     INNER JOIN {{first_funded_by}} ffb ON ffb.first_funded_by=ma.address_normal
     GROUP BY 1
-    HAVING COUNT(DISTINCT ffb.address) > 1000
+    HAVING COUNT(DISTINCT ffb.address) > 100
     )
 
-SELECT r.blockchain
+SELECT DISTINCT r.blockchain
 , r.block_time
 , r.block_number
 , r.attack_type
