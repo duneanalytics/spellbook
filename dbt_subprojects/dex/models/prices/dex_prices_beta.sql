@@ -48,6 +48,8 @@ dex_bought as (
         and d.token_bought_amount > 0
         and d.token_bought_amount_raw > UINT256 '0'
         and t.symbol is not null
+        -- filter out tokens that are already in the trusted_tokens table
+        and d.token_bought_address not in (select contract_address from prices.trusted_tokens)
 ), 
 dex_sold as (
     select
@@ -69,6 +71,8 @@ dex_sold as (
         and d.token_sold_amount > 0
         and d.token_sold_amount_raw > UINT256 '0'
         and t.symbol is not null
+        -- filter out tokens that are already in the trusted_tokens table
+        and d.token_sold_address not in (select contract_address from prices.trusted_tokens)
 ),
 dex_prices as (
     select
