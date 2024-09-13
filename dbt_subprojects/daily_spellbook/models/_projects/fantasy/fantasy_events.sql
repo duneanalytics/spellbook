@@ -210,7 +210,7 @@ SELECT block_time
 , 0.015*amount AS heroes_revenue
 , 0.015*amount_usd AS heroes_revenue_usd
 , 0.06*amount AS to_fantasy_treasury
-, 0.06*amount_usd AS to_fantasy_revenue_usd
+, 0.06*amount_usd AS to_fantasy_treasury_usd
 , ROUND(amount_usd/19.99) AS tactics_bought
 FROM {{ source('tokens_blast', 'transfers') }} tt
 WHERE block_number >= 4917909
