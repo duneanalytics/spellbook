@@ -112,14 +112,15 @@ SELECT address
 
 SELECT n.address
 , MAX(n.cex_name) AS cex_name
-, array_union(t.blockchains, array_agg(n.blockchains)) AS blockchains
-, COALESCE(t.first_used_blockchain, MIN_BY(n.first_used_blockchain, n.creation_block_time)) AS first_used_blockchain
-, COALESCE(t.creation_block_time, MIN(n.creation_block_time)) AS creation_block_time
-, COALESCE(t.creation_block_number, MIN(n.creation_block_number)) AS creation_block_number
-, COALESCE(t.funded_by_same_cex, MIN_BY(n.funded_by_same_cex, n.creation_block_time)) AS funded_by_same_cex
-, COALESCE(t.first_funded_by, MIN_BY(n.first_funded_by, n.creation_block_time)) AS first_funded_by
-, COALESCE(t.is_smart_contract, MIN_BY(n.is_smart_contract, n.creation_block_time)) AS is_smart_contract
+, array_union(MAX(t.blockchains), array_agg(n.blockchains)) AS blockchains
+, COALESCE(MAX(t.first_used_blockchain), MIN_BY(n.first_used_blockchain, n.creation_block_time)) AS first_used_blockchain
+, COALESCE(MAX(t.creation_block_time), MIN(n.creation_block_time)) AS creation_block_time
+, COALESCE(MAX(t.creation_block_number), MIN(n.creation_block_number)) AS creation_block_number
+, COALESCE(MAX(t.funded_by_same_cex), MIN_BY(n.funded_by_same_cex, n.creation_block_time)) AS funded_by_same_cex
+, COALESCE(MAX(t.first_funded_by), MIN_BY(n.first_funded_by, n.creation_block_time)) AS first_funded_by
+, COALESCE(MAX(t.is_smart_contract), MIN_BY(n.is_smart_contract, n.creation_block_time)) AS is_smart_contract
 FROM new n
-LEFT JOIN {{this}} t ON t.address=n.address AND t.cex_name=n.cex_name 
+LEFT JOIN {{this}} t ON t.address=n.address AND t.cex_name=n.cex_name
+GROUP BY 1
 
 {% endif %}
