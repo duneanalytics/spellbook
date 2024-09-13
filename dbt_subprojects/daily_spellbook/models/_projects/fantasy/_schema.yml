@@ -59,9 +59,9 @@ models:
         description: "The revenue generated for heroes"
       - name: heroes_revenue_usd
         description: "The revenue generated for heroes in USD"
-      - name: fantasy_revenue
-        description: "The revenue generated for fantasy"
-      - name: fantasy_revenue_usd
-        description: "The revenue generated for fantasy in USD"
+      - name: to_fantasy_treasury
+        description: "The amount going to fantasy's treasury excluding direct hero rewards"
+      - name: to_fantasy_treasury_usd
+        description: "The amount in USD going to fantasy's treasury excluding direct hero rewards"
       - name: tactics_bought
         description: "The amount of tactics tickets bought"
