@@ -150,6 +150,6 @@ LEFT JOIN (
 ) sig
     ON sig.id = f.function
 LEFT JOIN
-{{ ref('contracts_optimism_contract_mapping') }} cm
+{{ source('contracts_optimism', 'contract_mapping') }} cm
     ON f.to_address = cm.contract_address
 GROUP BY 1, 2
