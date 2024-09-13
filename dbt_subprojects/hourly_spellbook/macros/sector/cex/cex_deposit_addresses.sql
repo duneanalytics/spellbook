@@ -32,7 +32,7 @@ WITH potential_addresses AS (
     LEFT JOIN {{cex_addresses}} affb ON ffb.first_funded_by = affb.address
         AND f.cex_name = affb.cex_name
     WHERE f.flow_type = 'Inflow'
-                                                                        AND f.block_time > NOW - interval '3' month
+                                                                        AND f.block_time > NOW() - interval '3' month
     {% if is_incremental() %}
     AND {{incremental_predicate('f.block_time')}}
     {% endif %}
