@@ -96,7 +96,7 @@ tbl_all_logs AS (
             WHEN FIRST_VALUE(logs.contract_address) OVER (PARTITION BY logs.tx_hash ORDER BY index) = logs.contract_address THEN 0
             ELSE 1 
         END maker_tkn,
-        bytearray_to_int256(bytearray_substring(DATA, 23,10)) value,
+        bytearray_to_int256(bytearray_substring(DATA, 22,11)) value,
         logs.contract_address AS token, 
         zid, 
         st.contract_address,
