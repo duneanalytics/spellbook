@@ -12,41 +12,41 @@
 
 WITH 
 
-fungible_transfers as (
+fungible_transfers as ( 
     SELECT 
-        token_address, 
-        wallet_address, 
-        -amount_raw as amount_raw, 
-        evt_tx_hash as tx_hash, 
-        evt_block_time as block_time
-    FROM 
-    {{ ref('transfers_polygon_erc20') }}
-    WHERE 1 = 1
-    {% if is_incremental() %}
-    AND {{incremental_predicate('block_time')}}
-    {% endif %}
-    AND transfer_type != 'gas_fee'
-
-    UNION ALL 
-
-    SELECT 
-        token_address, 
-        wallet_address, 
-        -amount_raw as amount_raw, 
+        CASE WHEN token_standard = 'native' THEN 0x0000000000000000000000000000000000001010
+        else contract_address end as token_address, 
+        "from" as wallet_address,
+        amount as amount,
         tx_hash, 
         block_time
     FROM 
-    {{ ref('transfers_polygon_matic') }}
-    WHERE 1 = 1
+    {{ source('tokens_polygon', 'transfers') }} 
+    WHERE token_standard IN ('native', 'erc20')
     {% if is_incremental() %}
     AND {{incremental_predicate('block_time')}}
     {% endif %}
-    AND transfer_type != 'gas_fee'
+
+    union all
+
+    SELECT 
+        CASE WHEN token_standard = 'native' THEN 0x0000000000000000000000000000000000001010
+        else contract_address end as token_address, 
+        to as wallet_address,
+        -amount as amount,
+        tx_hash, 
+        block_time
+    FROM 
+    {{ source('tokens_polygon', 'transfers') }} 
+    WHERE token_standard IN ('native', 'erc20')
+    {% if is_incremental() %}
+    AND {{incremental_predicate('block_time')}}
+    {% endif %}
 ), 
 
 transfers_aggregated_tmp as (
     SELECT 
-        SUM(amount_raw) as cum_amt, 
+        SUM(amount) as cum_amt, 
         wallet_address,
         token_address, 
         tx_hash, 
@@ -76,8 +76,8 @@ prices as (
 
 transfers_aggregated as (
     SELECT 
-        SUM(ta.cum_amt/POW(10, p.decimals)) as amount, 
-        SUM(ta.cum_amt/POW(10, p.decimals) * p.price) as amount_usd,
+        SUM(ta.cum_amt) as amount, 
+        SUM(ta.cum_amt * p.price) as amount_usd,
         array_agg(ta.wallet_address) as interacting_addresses,
         ta.tx_hash, 
         ta.block_time 
