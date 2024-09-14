@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'ethereum',
     alias = 'blobs',
     materialized = 'incremental',
