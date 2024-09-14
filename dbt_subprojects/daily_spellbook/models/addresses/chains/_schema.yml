@@ -36,33 +36,9 @@ models:
       - &name
         name: name
         description: "If the address is a smart contract that is decoded on Dune, here is the associated smart contract name on Dune"
-      - &first_funded_by
-        name: first_funded_by
-        description: "Which other address first ever funded this address"
-      - &first_tx_block_time
-        name: first_tx_block_time
-        description: "The block time of the first transaction executed by this address"
-      - &last_tx_block_time
-        name: last_tx_block_time
-        description: "The block time of the last transaction executed by this address"
-      - &first_tx_block_number
-        name: first_tx_block_number
-        description: "The block number of the first transaction executed by this address"
-      - &last_tx_block_number
-        name: last_tx_block_number
-        description: "The block number of the last transaction executed by this address"
-      - &first_received_block_time
-        name: first_received_block_time
-        description: "The block time of the first token (native or ERC20) received by this address"
-      - &first_received_block_number
-        name: first_received_block_number
-        description: "The block number of the first token (native or ERC20) received by this address"
-      - &last_transfer_block_time
-        name: last_transfer_block_time
-        description: "The block time of the last token (native or ERC20) received by this address"
-      - &last_transfer_block_number
-        name: last_transfer_block_number
-        description: "The block number of the last token (native or ERC20) received by this address"
       - &last_seen
         name: last_seen
         description: "The time at which this address last appeared in any form on the blockchain"
+      - &last_tx_block_number
+        name: last_tx_block_number
+        description: "The block number of the last transaction executed by this address"
