@@ -54,7 +54,7 @@ transfers_aggregated_tmp as (
     FROM 
     fungible_transfers
     GROUP BY 2, 3, 4, 5
-    HAVING SUM(amount_raw) > 0 
+    HAVING SUM(amount) > 0 
 ),
 
 prices as (
