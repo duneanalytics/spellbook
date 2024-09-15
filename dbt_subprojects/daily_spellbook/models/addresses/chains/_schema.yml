@@ -78,3 +78,543 @@ models:
       - &last_seen
         name: last_seen
         description: "The time at which this address last appeared in any form on the blockchain"
+
+  - name: addresses_arbitrum_info
+    meta:
+      blockchain: arbitrum
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_avalanche_c_info
+    meta:
+      blockchain: avalanche_c
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Avalanche"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_base_info
+    meta:
+      blockchain: base
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_blast_info
+    meta:
+      blockchain: blast
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Blast"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_bnb_info
+    meta:
+      blockchain: bnb
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on BNB"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_celo_info
+    meta:
+      blockchain: celo
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_fantom_info
+    meta:
+      blockchain: fantom
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Fantom"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_gnosis_info
+    meta:
+      blockchain: gnosis
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Gnosis"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_linea_info
+    meta:
+      blockchain: linea
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Linea"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_optimism_info
+    meta:
+      blockchain: optimism
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Optimism"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_polygon_info
+    meta:
+      blockchain: polygon
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Polygon"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_scroll_info
+    meta:
+      blockchain: scroll
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Scroll"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_zkevm_info
+    meta:
+      blockchain: zkevm
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on zkEVM"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_zksync_info
+    meta:
+      blockchain: zksync
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on ZKsync"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+
+  - name: addresses_zora_info
+    meta:
+      blockchain: zora
+      sector: addresses
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Zora"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *received_count
+      - *sent_count
+      - *first_received_block_time
+      - *last_received_block_time
+      - *first_sent_block_time
+      - *last_sent_block_time
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
