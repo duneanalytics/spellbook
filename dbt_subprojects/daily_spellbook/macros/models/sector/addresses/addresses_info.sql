@@ -177,6 +177,14 @@ WITH executed_txs AS (
     , namespace
     , name
     , first_funded_by
+    , received_count
+    , sent_count
+    , first_received_block_time
+    , last_received_block_time
+    , first_sent_block_time
+    , last_sent_block_time
+    , received_volume_usd
+    , sent_volume_usd
     , first_tx_block_time
     , last_tx_block_time
     , first_tx_block_number
@@ -184,6 +192,7 @@ WITH executed_txs AS (
     FROM executed_txs
     LEFT JOIN is_contract USING (address)
     LEFT JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} USING (address)
+    LEFT JOIN transfers USING (address)
     )
 
 SELECT '{{blockchain}}' AS blockchain
