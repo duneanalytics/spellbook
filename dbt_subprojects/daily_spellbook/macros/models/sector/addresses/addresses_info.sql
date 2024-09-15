@@ -194,14 +194,14 @@ SELECT '{{blockchain}}' AS blockchain
 , COALESCE(nd.namespace, t.namespace) AS namespace
 , COALESCE(nd.name, t.name) AS name
 , GREATEST(nd.first_funded_by, t.first_funded_by) AS first_funded_by
-, n.received_count+t.received_count AS received_count
-, n.sent_count+t.sent_count AS sent_count
-, COALESCE(t.first_received_block_time, n.first_received_block_time) AS first_received_block_time
-, COALESCE(n.last_received_block_time, t.last_received_block_time) AS last_received_block_time
-, COALESCE(t.first_sent_block_time, n.first_sent_block_time) AS first_sent_block_time
-, COALESCE(n.last_sent_block_time, t.last_sent_block_time) AS last_sent_block_time
-, n.received_volume_usd+t.received_volume_usd AS received_volume_usd
-, n.sent_volume_usd+t.sent_volume_usd AS sent_volume_usd
+, nd.received_count+t.received_count AS received_count
+, nd.sent_count+t.sent_count AS sent_count
+, COALESCE(t.first_received_block_time, nd.first_received_block_time) AS first_received_block_time
+, COALESCE(nd.last_received_block_time, t.last_received_block_time) AS last_received_block_time
+, COALESCE(t.first_sent_block_time, nd.first_sent_block_time) AS first_sent_block_time
+, COALESCE(nd.last_sent_block_time, t.last_sent_block_time) AS last_sent_block_time
+, nd.received_volume_usd+t.received_volume_usd AS received_volume_usd
+, nd.sent_volume_usd+t.sent_volume_usd AS sent_volume_usd
 , COALESCE(t.first_tx_block_time, nd.first_tx_block_time) AS first_tx_block_time
 , COALESCE(t.last_tx_block_time, nd.last_tx_block_time) AS last_tx_block_time
 , COALESCE(t.first_tx_block_number, nd.first_tx_block_number) AS first_tx_block_number
