@@ -133,7 +133,7 @@ WITH executed_txs AS (
         , SUM(tt.amount_usd) AS sent_volume_usd
         FROM {{token_transfers}} tt
         LEFT JOIN {{this}} t ON tt."from"=t.address
-            AND tt.block_number>t.last_sent_block_time
+            AND tt.block_time>t.last_sent_block_time
         WHERE {{ incremental_predicate('tt.block_time') }}
         GROUP BY tt."from"
 
@@ -150,7 +150,7 @@ WITH executed_txs AS (
         , 0 AS sent_volume_usd
         FROM {{token_transfers}} tt
         LEFT JOIN {{this}} t ON tt."to"=t.address
-            AND tt.block_number>t.last_received_block_time
+            AND tt.block_time>t.last_received_block_time
         WHERE {{ incremental_predicate('tt.block_time') }}
         GROUP BY "to"
         )
