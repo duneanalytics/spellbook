@@ -16,7 +16,7 @@ WITH executed_txs AS (
 
 , transfers AS (
     SELECT address
-    , SUM(received_count) AS received_count
+    , SUM(received_count) AS received_countxt
     , SUM(sent_count) AS sent_count
     , MAX(first_received_block_time) AS first_received_block_time
     , MAX(last_received_block_time) AS last_received_block_time
@@ -122,20 +122,20 @@ WITH executed_txs AS (
     , MAX(received_volume_usd) AS received_volume_usd
     , MAX(sent_volume_usd) AS sent_volume_usd
     FROM (
-        SELECT "from" AS address
+        SELECT tt."from" AS address
         , 0 AS received_count
         , COUNT(*) AS sent_count
-        , MIN(block_time) AS first_received_block_time
-        , MAX(block_time) AS last_received_block_time
+        , MIN(tt.block_time) AS first_received_block_time
+        , MAX(tt.block_time) AS last_received_block_time
         , CAST(NULL AS timestamp) AS first_sent_block_time
         , CAST(NULL AS timestamp) AS last_sent_block_time
         , 0 AS received_volume_usd
-        , SUM(amount_usd) AS sent_volume_usd
-        FROM {{token_transfers}}
+        , SUM(tt.amount_usd) AS sent_volume_usd
+        FROM {{token_transfers}} tt
         LEFT JOIN {{this}} t ON tt."from"=t.address
             AND tt.block_number>t.last_sent_block_time
         WHERE {{ incremental_predicate('tt.block_time') }}
-        GROUP BY "from"
+        GROUP BY tt."from"
 
         UNION ALL
 
