@@ -16,7 +16,7 @@ WITH executed_txs AS (
 
 , transfers AS (
     SELECT address
-    , SUM(received_count) AS received_countxt
+    , SUM(received_count) AS received_count
     , SUM(sent_count) AS sent_count
     , MAX(first_received_block_time) AS first_received_block_time
     , MAX(last_received_block_time) AS last_received_block_time
