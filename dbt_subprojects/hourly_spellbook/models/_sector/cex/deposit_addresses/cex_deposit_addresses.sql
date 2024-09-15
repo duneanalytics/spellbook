@@ -7,7 +7,7 @@
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.creation_block_time')],
         unique_key = ['address'],
-        merge_update_columns = ['cex_name', 'blockchains', 'first_used_blockchain', 'creation_block_time', 'creation_block_number', 'funded_by_same_cex', 'first_funded_by', 'is_smart_contract'],
+        merge_update_columns = ['cex_name', 'blockchains', 'first_used_blockchain', 'creation_block_number', 'funded_by_same_cex', 'first_funded_by', 'is_smart_contract'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora"]\',
                                     "sector",
                                     "cex",
