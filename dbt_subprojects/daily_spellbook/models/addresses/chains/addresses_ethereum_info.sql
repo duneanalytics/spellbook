@@ -8,7 +8,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['address'],
-        merge_update_columns = ['executed_tx_count', 'max_nonce', 'is_smart_contract', 'namespace', 'name', 'last_seen', 'last_tx_block_number'],
+        merge_update_columns = ['executed_tx_count', 'max_nonce', 'is_smart_contract', 'namespace', 'name', 'first_funded_by', 'received_count', 'sent_count', 'first_received_block_time', 'last_received_block_time', 'first_sent_block_time', 'last_sent_block_time', 'received_volume_usd', 'sent_volume_usd', 'first_tx_block_time', 'last_tx_block_time', 'first_tx_block_number', 'last_tx_block_number', 'last_seen'],
     )
 }}
 

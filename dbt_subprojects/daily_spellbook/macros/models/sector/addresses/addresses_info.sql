@@ -14,6 +14,46 @@ WITH executed_txs AS (
     GROUP BY 1
     )
 
+, transfers AS (
+    SELECT address
+    , SUM(received_count) AS executed_tx_count
+    , SUM(sent_count) AS executed_tx_count
+    , MAX(first_received_block_time) AS first_received_block_time
+    , MAX(last_received_block_time) AS last_received_block_time
+    , MAX(first_sent_block_time) AS first_sent_block_time
+    , MAX(last_sent_block_time) AS last_sent_block_time
+    , MAX(received_volume_usd) AS received_volume_usd
+    , MAX(sent_volume_usd) AS sent_volume_usd
+    FROM (
+        SELECT "from" AS address
+        , 0 AS received_count
+        , COUNT(*) AS sent_count
+        , MIN(block_time) AS first_received_block_time
+        , MAX(block_time) AS last_received_block_time
+        , CAST(NULL AS timestamp) AS first_sent_block_time
+        , CAST(NULL AS timestamp) AS last_sent_block_time
+        , 0 AS received_volume_usd
+        , SUM(amount_usd) AS sent_volume_usd
+        FROM {{token_transfers}}
+        GROUP BY "from"
+
+        UNION ALL
+
+        SELECT "to" AS address
+        , COUNT(*) AS received_count
+        , 0 AS sent_count
+        , CAST(NULL AS timestamp) AS first_received_block_time
+        , CAST(NULL AS timestamp) AS last_received_block_time
+        , MIN(block_time) AS first_sent_block_time
+        , MAX(block_time) AS last_sent_block_time
+        , SUM(amount_usd) AS received_volume_usd
+        , 0 AS sent_volume_usd
+        FROM {{token_transfers}}
+        GROUP BY "to"
+        )
+    GROUP BY 1
+    )
+
 , is_contract AS (
     SELECT ct.address
     , true AS is_smart_contract
@@ -31,6 +71,14 @@ SELECT '{{blockchain}}' AS blockchain
 , namespace
 , name
 , first_funded_by
+, received_count
+, sent_count
+, first_received_block_time
+, last_received_block_time
+, first_sent_block_time
+, last_sent_block_time
+, received_volume_usd
+, sent_volume_usd
 , first_tx_block_time
 , last_tx_block_time
 , first_tx_block_number
@@ -38,6 +86,7 @@ SELECT '{{blockchain}}' AS blockchain
 , last_tx_block_time AS last_seen
 FROM executed_txs
 LEFT JOIN is_contract USING (address)
+LEFT JOIN transfers USING (address)
 LEFT JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} USING (address)
 
 
@@ -58,6 +107,53 @@ WITH executed_txs AS (
     LEFT JOIN {{this}} t ON txs."from"=t.address
         AND txs.block_number>t.last_tx_block_number
     WHERE {{ incremental_predicate('txs.block_time') }}
+    GROUP BY 1
+    )
+
+
+, transfers AS (
+    SELECT address
+    , SUM(received_count) AS executed_tx_count
+    , SUM(sent_count) AS executed_tx_count
+    , MAX(first_received_block_time) AS first_received_block_time
+    , MAX(last_received_block_time) AS last_received_block_time
+    , MAX(first_sent_block_time) AS first_sent_block_time
+    , MAX(last_sent_block_time) AS last_sent_block_time
+    , MAX(received_volume_usd) AS received_volume_usd
+    , MAX(sent_volume_usd) AS sent_volume_usd
+    FROM (
+        SELECT "from" AS address
+        , 0 AS received_count
+        , COUNT(*) AS sent_count
+        , MIN(block_time) AS first_received_block_time
+        , MAX(block_time) AS last_received_block_time
+        , CAST(NULL AS timestamp) AS first_sent_block_time
+        , CAST(NULL AS timestamp) AS last_sent_block_time
+        , 0 AS received_volume_usd
+        , SUM(amount_usd) AS sent_volume_usd
+        FROM {{token_transfers}}
+        LEFT JOIN {{this}} t ON tt."from"=t.address
+            AND tt.block_number>t.last_sent_block_time
+        WHERE {{ incremental_predicate('tt.block_time') }}
+        GROUP BY "from"
+
+        UNION ALL
+
+        SELECT tt."to" AS address
+        , COUNT(*) AS received_count
+        , 0 AS sent_count
+        , CAST(NULL AS timestamp) AS first_received_block_time
+        , CAST(NULL AS timestamp) AS last_received_block_time
+        , MIN(tt.block_time) AS first_sent_block_time
+        , MAX(tt.block_time) AS last_sent_block_time
+        , SUM(tt.amount_usd) AS received_volume_usd
+        , 0 AS sent_volume_usd
+        FROM {{token_transfers}} tt
+        LEFT JOIN {{this}} t ON tt."to"=t.address
+            AND tt.block_number>t.last_received_block_time
+        WHERE {{ incremental_predicate('tt.block_time') }}
+        GROUP BY "to"
+        )
     GROUP BY 1
     )
 
@@ -98,6 +194,14 @@ SELECT '{{blockchain}}' AS blockchain
 , COALESCE(nd.namespace, t.namespace) AS namespace
 , COALESCE(nd.name, t.name) AS name
 , GREATEST(nd.first_funded_by, t.first_funded_by) AS first_funded_by
+, n.received_count+t.received_count AS received_count
+, n.sent_count+t.sent_count AS sent_count
+, COALESCE(t.first_received_block_time, n.first_received_block_time) AS first_received_block_time
+, COALESCE(n.last_received_block_time, t.last_received_block_time) AS last_received_block_time
+, COALESCE(t.first_sent_block_time, n.first_sent_block_time) AS first_sent_block_time
+, COALESCE(n.last_sent_block_time, t.last_sent_block_time) AS last_sent_block_time
+, n.received_volume_usd+t.received_volume_usd AS received_volume_usd
+, n.sent_volume_usd+t.sent_volume_usd AS sent_volume_usd
 , COALESCE(t.first_tx_block_time, nd.first_tx_block_time) AS first_tx_block_time
 , COALESCE(t.last_tx_block_time, nd.last_tx_block_time) AS last_tx_block_time
 , COALESCE(t.first_tx_block_number, nd.first_tx_block_number) AS first_tx_block_number

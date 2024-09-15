@@ -36,9 +36,45 @@ models:
       - &name
         name: name
         description: "If the address is a smart contract that is decoded on Dune, here is the associated smart contract name on Dune"
-      - &last_seen
-        name: last_seen
-        description: "The time at which this address last appeared in any form on the blockchain"
+      - &first_funded_by
+        name: first_funded_by
+        description: "Address that first funded this address with this chains' native token"
+      - &received_count
+        name: received_count
+        description: "The number of times this address received tokens"
+      - &sent_count
+        name: sent_count
+        description: "The number of times this address sent tokens"
+      - &first_received_block_time
+        name: first_received_block_time
+        description: "The block time of the first time this address received tokens"
+      - &last_received_block_time
+        name: last_received_block_time
+        description: "The block time of the last time this address received tokens"
+      - &first_sent_block_time
+        name: first_sent_block_time
+        description: "The block time of the first time this address sent tokens"
+      - &last_sent_block_time
+        name: last_sent_block_time
+        description: "The block time of the last time this address sent tokens"
+      - &received_volume_usd
+        name: received_volume_usd
+        description: "The USD volume of tokens received by this address"
+      - &sent_volume_usd
+        name: sent_volume_usd
+        description: "The USD volume of tokens sent by this address"
+      - &first_tx_block_time
+        name: first_tx_block_time
+        description: "The block time of the first transaction executed by this address"
+      - &last_tx_block_time
+        name: last_tx_block_time
+        description: "The block time of the last transaction executed by this address"
+      - &first_tx_block_number
+        name: first_tx_block_number
+        description: "The block number of the first transaction executed by this address"
       - &last_tx_block_number
         name: last_tx_block_number
         description: "The block number of the last transaction executed by this address"
+      - &last_seen
+        name: last_seen
+        description: "The time at which this address last appeared in any form on the blockchain"
