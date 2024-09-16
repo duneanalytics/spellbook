@@ -24,7 +24,7 @@ FROM (VALUES
     (0x63ba74893621d3d12f13cec1e86517ec3d329837, 'LUSD', 18),
     (0xacb54d07ca167934f57f829bee2cc665e1a5ebef, 'CROAK', 18),
     (0x82cc61354d78b846016b559e3ccd766fa7e793d5, 'LINDA', 18),
-    (0x2416092f143378750bb29b79ed961ab195cceea5, 'RENZO', 18),
+    (0x2416092f143378750bb29b79ed961ab195cceea5, 'ezETH', 18),
     (0x3aab2285ddcddad8edf438c1bab47e1a9d05a9b4, 'WBTC', 8),
     (0x4af15ec2a0bd43db75dd04e62faa3b8ef36b00d5, 'DAI', 18),
     (0x894134a25a5fac1c2c26f1d8fbf05111a3cb9487, 'GRAI', 18),
