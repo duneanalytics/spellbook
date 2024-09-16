@@ -121,7 +121,7 @@ with tbl_all_logs AS (
         select *,
             row_number() over (partition by tx_hash order by index) rn 
         from tbl_all_logs 
-        where taker_token =! maker_token
+        where taker_token != maker_token
     )
     select * from tbl_valid_logs where rn = 1
 ),
