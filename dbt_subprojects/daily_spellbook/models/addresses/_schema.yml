@@ -1,0 +1,88 @@
+version: 2
+
+models:
+  - name: addresses_info
+    meta:
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, polygon, base, celo, scroll, zora, blast
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address across all EVM chains"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - &address
+        name: address
+        description: "Address"
+      - &blockchains
+        name: blockchains
+        description: ""
+      - &executed_tx_count
+        name: executed_tx_count
+        description: "The number of transactions executed by the address across EVM chains"
+      - &max_nonce
+        name: max_nonce
+        description: "The highest nonce value of this address"
+      - &max_nonce_blockchain
+        name: max_nonce_blockchain
+        description: "The blockchain with the highest nonce value for this address"
+      - &is_smart_contract
+        name: is_smart_contract
+        description: "Is the address a smart contract"
+      - &smart_contract_blockchains
+        name: smart_contract_blockchains
+        description: "The blockchains where the address is a smart contract"
+      - &namespace
+        name: namespace
+        description: "The smart contractnamespace of the address"
+      - &name 
+        name: name
+        description: "The name of the smart contract"
+      - &chain_stats
+        name: chain_stats
+        description: "Chain-specific stats"
+      - &first_funded_by
+        name: first_funded_by
+        description: "The first known address to fund this address"
+      - &first_funded_blockchain
+        name: first_funded_blockchain
+        description: "The blockchain where this address was first funded"
+      - &first_funded_by_block_time
+        name: first_funded_by_block_time
+        description: "The block time of the first known funding of this address"
+      - &sent_count
+        name: sent_count
+        description: "The number of times this address had tokens sent across EVM chains"
+      - &received_count
+        name: received_count
+        description: "The number of times this address had tokens received across EVM chains"
+      - &first_received_block_time
+        name: first_received_block_time
+        description: "The block time of the first known receipt of this address"
+      - &last_received_block_time
+        name: last_received_block_time
+        description: "The block time of the last known receipt of this address"
+      - &first_sent_block_time
+        name: first_sent_block_time
+        description: "The block time of the first known send of this address"
+      - &last_sent_block_time
+        name: last_sent_block_time
+        description: "The block time of the last known send of this address"
+      - &sent_volume_usd
+        name: sent_volume_usd
+        description: "The volume of tokens sent by this address in USD"
+      - &received_volume_usd
+        name: received_volume_usd 
+        description: "The volume of tokens received by this address in USD"
+      - &first_tx_block_time
+        name: first_tx_block_time
+        description: "The block time of the first transaction of this address"
+      - &last_tx_block_time
+        name: last_tx_block_time
+        description: "The block time of the last transaction of this address"
+      - &last_seen
+        name: last_seen
+        description: "The last time this address was seen"

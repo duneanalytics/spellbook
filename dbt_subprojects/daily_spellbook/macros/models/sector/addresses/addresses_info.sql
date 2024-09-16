@@ -71,6 +71,7 @@ SELECT '{{blockchain}}' AS blockchain
 , namespace
 , name
 , first_funded_by
+, ffb.block_time AS first_funded_by_block_time
 , received_count
 , sent_count
 , first_received_block_time
@@ -87,7 +88,7 @@ SELECT '{{blockchain}}' AS blockchain
 FROM executed_txs
 LEFT JOIN is_contract USING (address)
 LEFT JOIN transfers USING (address)
-LEFT JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} USING (address)
+LEFT JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} ffb USING (address)
 
 
 
@@ -177,6 +178,7 @@ WITH executed_txs AS (
     , namespace
     , name
     , first_funded_by
+, ffb.block_time AS first_funded_by_block_time
     , received_count
     , sent_count
     , first_received_block_time
@@ -191,7 +193,7 @@ WITH executed_txs AS (
     , last_tx_block_number
     FROM executed_txs
     LEFT JOIN is_contract USING (address)
-    LEFT JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} USING (address)
+    LEFT JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} ffb USING (address)
     LEFT JOIN transfers USING (address)
     )
 
@@ -203,6 +205,7 @@ SELECT '{{blockchain}}' AS blockchain
 , COALESCE(nd.namespace, t.namespace) AS namespace
 , COALESCE(nd.name, t.name) AS name
 , GREATEST(nd.first_funded_by, t.first_funded_by) AS first_funded_by
+, LEAST(nd.first_funded_by_block_time, t.first_funded_by_block_time) AS first_funded_by_block_time
 , nd.received_count+t.received_count AS received_count
 , nd.sent_count+t.sent_count AS sent_count
 , COALESCE(t.first_received_block_time, nd.first_received_block_time) AS first_received_block_time

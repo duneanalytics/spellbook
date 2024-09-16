@@ -5,7 +5,6 @@ models:
     meta:
       blockchain: ethereum
       sector: addresses
-      project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
@@ -39,6 +38,9 @@ models:
       - &first_funded_by
         name: first_funded_by
         description: "Address that first funded this address with this chains' native token"
+      - &first_funded_by_block_time
+        name: first_funded_by_block_time
+        description: "Block time at which the address was first funded with this chains' native token"
       - &received_count
         name: received_count
         description: "The number of times this address received tokens"
@@ -83,7 +85,6 @@ models:
     meta:
       blockchain: arbitrum
       sector: addresses
-      project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
@@ -101,6 +102,7 @@ models:
       - *namespace
       - *name
       - *first_funded_by
+      - *first_funded_by_block_time
       - *received_count
       - *sent_count
       - *first_received_block_time
@@ -119,7 +121,6 @@ models:
     meta:
       blockchain: avalanche_c
       sector: addresses
-      project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
@@ -137,6 +138,7 @@ models:
       - *namespace
       - *name
       - *first_funded_by
+      - *first_funded_by_block_time
       - *received_count
       - *sent_count
       - *first_received_block_time
@@ -155,7 +157,6 @@ models:
     meta:
       blockchain: base
       sector: addresses
-      project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
@@ -173,6 +174,7 @@ models:
       - *namespace
       - *name
       - *first_funded_by
+      - *first_funded_by_block_time
       - *received_count
       - *sent_count
       - *first_received_block_time
@@ -191,7 +193,6 @@ models:
     meta:
       blockchain: blast
       sector: addresses
-      project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
@@ -209,6 +210,7 @@ models:
       - *namespace
       - *name
       - *first_funded_by
+      - *first_funded_by_block_time
       - *received_count
       - *sent_count
       - *first_received_block_time
@@ -227,7 +229,6 @@ models:
     meta:
       blockchain: bnb
       sector: addresses
-      project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
@@ -245,6 +246,7 @@ models:
       - *namespace
       - *name
       - *first_funded_by
+      - *first_funded_by_block_time
       - *received_count
       - *sent_count
       - *first_received_block_time
@@ -263,7 +265,6 @@ models:
     meta:
       blockchain: celo
       sector: addresses
-      project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
@@ -281,6 +282,7 @@ models:
       - *namespace
       - *name
       - *first_funded_by
+      - *first_funded_by_block_time
       - *received_count
       - *sent_count
       - *first_received_block_time
@@ -299,7 +301,6 @@ models:
     meta:
       blockchain: gnosis
       sector: addresses
-      project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
@@ -317,6 +318,7 @@ models:
       - *namespace
       - *name
       - *first_funded_by
+      - *first_funded_by_block_time
       - *received_count
       - *sent_count
       - *first_received_block_time
@@ -335,7 +337,6 @@ models:
     meta:
       blockchain: optimism
       sector: addresses
-      project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
@@ -353,6 +354,7 @@ models:
       - *namespace
       - *name
       - *first_funded_by
+      - *first_funded_by_block_time
       - *received_count
       - *sent_count
       - *first_received_block_time
@@ -371,7 +373,6 @@ models:
     meta:
       blockchain: polygon
       sector: addresses
-      project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
@@ -389,6 +390,7 @@ models:
       - *namespace
       - *name
       - *first_funded_by
+      - *first_funded_by_block_time
       - *received_count
       - *sent_count
       - *first_received_block_time
@@ -407,7 +409,6 @@ models:
     meta:
       blockchain: scroll
       sector: addresses
-      project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
@@ -425,6 +426,7 @@ models:
       - *namespace
       - *name
       - *first_funded_by
+      - *first_funded_by_block_time
       - *received_count
       - *sent_count
       - *first_received_block_time
@@ -443,7 +445,6 @@ models:
     meta:
       blockchain: zora
       sector: addresses
-      project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'address', 'info']
@@ -461,6 +462,7 @@ models:
       - *namespace
       - *name
       - *first_funded_by
+      - *first_funded_by_block_time
       - *received_count
       - *sent_count
       - *first_received_block_time
