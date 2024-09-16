@@ -185,7 +185,7 @@ SELECT nd.address
 , GREATEST(t.max_nonce, nd.max_nonce) AS max_nonce
 , CASE WHEN GREATEST(t.max_nonce, nd.max_nonce) = t.max_nonce THEN t.max_nonce_blockchain
     ELSE nd.max_nonce_blockchain
-    AS max_nonce_blockchain
+    END AS max_nonce_blockchain
 , GREATEST(t.is_smart_contract, nd.is_smart_contract) AS is_smart_contract
 , array_union(t.smart_contract_blockchains, nd.smart_contract_blockchains) AS smart_contract_blockchains
 , COALESCE(nd.namespace, t.namespace) AS namespace
