@@ -73,7 +73,7 @@ WITH dex_swap AS (
             CAST(NULL AS double) AS amount_usd,
             CASE
                 WHEN destToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH
                 ELSE destToken
             END AS token_bought_address,
             CASE
@@ -341,10 +341,16 @@ uniswap_call_swap_without_event AS (
     formatted_no_event_call_transaction AS (
         SELECT c.call_tx_hash,
             c.call_block_number,
-            t."from" AS caller,
-            c.path[1] AS token_in,
-            c.path[cardinality(c.path)] AS token_out,
             c.call_trace_address,
+            t."from" AS caller,
+            CASE WHEN c.path[1] = 0xeeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                ELSE c.path[1]
+            END AS token_in,
+            CASE WHEN c.path[cardinality(c.path)] = 0xeeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                ELSE c.path[cardinality(c.path)]
+            END AS token_out,
             row_number() OVER (
                 PARTITION BY c.call_tx_hash, t."from", c.path[1], c.path[2], c.factory
                 ORDER BY c.call_trace_address ASC
