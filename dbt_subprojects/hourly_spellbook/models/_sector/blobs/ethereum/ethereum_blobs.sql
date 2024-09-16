@@ -1,5 +1,4 @@
 {{ config(
-    tags = ['prod_exclude'],
     schema = 'ethereum',
     alias = 'blobs',
     materialized = 'incremental',
@@ -22,8 +21,7 @@ SELECT
     , b.index AS blob_index
     , b.proposer_index AS beacon_proposer_index
     , b.kzg_commitment AS blob_kzg_commitment
-    -- belows expression is very slow
-    ,ceil(cast(length(regexp_replace(cast(blob as varchar), '0*$', '')) - 2 as double) /2 ) AS used_blob_byte_count -- handle for last byte having a 0 at the end
+    ,bytearray_length(varbinary_ltrim(varbinary_rtrim(blob))) as used_blob_byte_count
     ,bytearray_length(blob) AS blob_byte_count
     ,bytearray_length(blob) AS blob_gas_used
     -- GPT to the rescue
