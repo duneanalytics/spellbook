@@ -26,6 +26,7 @@
     , ref('sol_gun_solana_bot_trades')
     , ref('consortium_key_solana_bot_trades')
     , ref('tirador_solana_bot_trades')
+    , ref('mev_x_solana_bot_trades')
     , ref('alpha_dex_solana_bot_trades')
 ] %}
 
