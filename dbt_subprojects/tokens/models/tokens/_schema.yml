@@ -63,3 +63,24 @@ models:
         description: "NFT collection symbol"
       - name: standard
         description: "NFT collection standard"
+
+  - name: tokens_erc20_stablecoins
+    meta:
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, base
+      sector: tokens
+      contributors: hildobby, 0xManny, dot2dotseurat, soispoke
+    config:
+      tags: ['tokens','stablecoin', 'arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon','base']
+    description: >
+        Stablecoin (ERC20) tokens
+    columns:
+      - name: blockchain
+        description: blockchain name
+      - name: contract_address
+        description: token contract address
+      - name: name
+        description: token backing
+      - name: symbol
+        description: token symbol
+      - name: decimal
+        description: token decimals

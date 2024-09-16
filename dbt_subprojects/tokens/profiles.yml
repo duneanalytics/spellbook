@@ -1,12 +1,26 @@
 spellbook-local:
-  target: dev
   outputs:
+
     dev:
       type: trino
-      user: trino
-      password: trino
-      host: trino
-      port: 1234
-      database: hive
-      schema: wizard
-      threads: 1
+      method: none  # optional, one of {none | ldap | kerberos}
+      user: dev_user  # Replace with actual dev username
+      password: dev_password  # Replace with actual password, if needed
+      database: dev_database  # Replace with actual database name
+      host: dev_host  # Replace with actual hostname
+      port: 8080  # Replace with actual port number
+      schema: dev_schema  # Replace with actual schema name
+      threads: 1  # Set the number of threads you want
+
+    prod:
+      type: trino
+      method: none  # optional, one of {none | ldap | kerberos}
+      user: prod_user  # Replace with actual prod username
+      password: prod_password  # Replace with actual password, if needed
+      database: prod_database  # Replace with actual database name
+      host: prod_host  # Replace with actual hostname
+      port: 8080  # Replace with actual port number
+      schema: prod_schema  # Replace with actual schema name
+      threads: 1  # Set the number of threads you want
+
+  target: dev
