@@ -15,6 +15,7 @@
     , ref('iziswap_scroll_base_trades')
     , ref('icecreamswap_v2_scroll_base_trades')
     , ref('maverick_v2_scroll_base_trades')
+    , ref('swaap_v2_scroll_base_trades')
 ] %}
 
 WITH base_union AS (
