@@ -219,6 +219,7 @@ uniswap_v2_call_swap_without_event AS (
             c.caller AS user_address,
             e.contract_address AS tokenIn,
             try_cast(e.value AS int256) AS amountIn,
+            c.call_trace_address AS trace_address,
             e.evt_index AS evt_index,
             c.swap_in_pair,
             c.token_in_amount,
@@ -248,7 +249,6 @@ uniswap_v2_call_swap_without_event AS (
             c.caller AS user_address,
             e.contract_address AS tokenOut,
             try_cast(e.value AS int256) AS amountOut,
-            c.call_trace_address AS trace_address,
             e.evt_index AS evt_index,
             c.swap_in_pair,
             c.swap_in_row_number,
@@ -277,10 +277,11 @@ uniswap_v2_call_swap_without_event AS (
             o.tokenOut AS token_bought_address,
             i.tokenIn AS token_sold_address,
             i.tx_hash,
-            o.trace_address AS trace_address,
+            i.trace_address,
             greatest(i.evt_index, o.evt_index) AS evt_index,
             i.calls_count,
             count(i.tx_hash) OVER (PARTITION BY i.tx_hash) AS final_calls_count
+        
         FROM swap_detail_in i
 
         INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
@@ -387,16 +388,22 @@ uniswap_call_swap_without_event AS (
             e.evt_block_time AS block_time,
             e.contract_address AS tokenIn,
             try_cast(e.value AS int256) AS amountIn,
+            c.call_trace_address AS trace_address,
             e.evt_index AS evt_index,
             c.swap_in_row_number,
             c.swap_out_row_number,
             c.token_in_amount,
             c.calls_count
+
         FROM formatted_no_event_call_transaction c
         
         INNER JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
             AND c.call_tx_hash = e.evt_tx_hash
-            AND (e."from" = c.caller OR e."from" = 0x216B4B4Ba9F3e719726886d34a177484278Bfcae OR e."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57)
+            AND (
+                e."from" = c.caller
+                OR e."from" = 0x216B4B4Ba9F3e719726886d34a177484278Bfcae
+                OR e."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
+            )
             AND e.contract_address = c.token_in
             AND e.to != 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
             AND e.evt_row_num = c.swap_in_row_number
@@ -410,11 +417,11 @@ uniswap_call_swap_without_event AS (
             e.evt_tx_hash AS tx_hash,
             e.contract_address AS tokenOut,
             try_cast(e.value AS int256) AS amountOut,
-            c.call_trace_address AS trace_address,
             e.evt_index AS evt_index,
             c.token_in_amount,
             c.swap_in_row_number,
             c.swap_out_row_number
+
         FROM formatted_no_event_call_transaction c
     
         INNER JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
@@ -434,7 +441,7 @@ uniswap_call_swap_without_event AS (
             o.tokenOut AS token_bought_address,
             i.tokenIn AS token_sold_address,
             i.tx_hash,
-            o.trace_address AS trace_address,
+            i.trace_address,
             greatest(i.evt_index, o.evt_index) AS evt_index,
             i.calls_count,
             count(i.tx_hash) OVER (PARTITION BY i.tx_hash) AS final_calls_count
@@ -483,6 +490,7 @@ zero_x_call_swap_without_event AS (
                     PARTITION BY c.call_tx_hash, t."from", t.to, toToken
                     ORDER BY c.call_trace_address ASC
                 ) AS swap_out_row_number
+
             FROM {{ call_table }} c
 
             INNER JOIN {{ source('ethereum', 'traces') }} t ON t.block_number = c.call_block_number
@@ -519,6 +527,7 @@ zero_x_call_swap_without_event AS (
             coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index,
             c.swap_in_row_number,
             c.swap_out_row_number
+
         FROM no_event_call_transaction c
         
         LEFT JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
@@ -533,6 +542,7 @@ zero_x_call_swap_without_event AS (
             AND t."from" = c.caller
             AND t."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
             AND t.call_type = 'call'
+            AND t.value > uint256 '0'
             AND t.block_number >= {{ trade_call_start_block_number }}
             {% if is_incremental() %}
             AND {{ incremental_predicate('t.block_time') }}
