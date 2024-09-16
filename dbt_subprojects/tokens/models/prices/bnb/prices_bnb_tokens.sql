@@ -270,7 +270,13 @@ FROM
     ('wsm-wall-street-memes', 'bnb', 'WSM', 0xb62e45c3df611dce236a6ddc7a493d79f9dfadef, 18),
     ('the-thena', 'bnb', 'THE', 0xf4c8e32eadec4bfe97e0f595add0f4450a863a11, 18),
     ('lista-lista-dao', 'bnb', 'LISTA', 0xfceb31a79f71ac9cbdcf853519c1b12d379edc46, 18),
-    ('opul-opuloustoken-via-chainportio', 'bnb', 'OPUL', 0x686318000d982bc8dcc1cdcf8ffd22322f0960ed, 18)
+    ('opul-opuloustoken-via-chainportio', 'bnb', 'OPUL', 0x686318000d982bc8dcc1cdcf8ffd22322f0960ed, 18),
+    ('pepe-pepecoin-bsc', 'bnb', 'PEPE', 0xb46584e0efde3092e04010a13f2eae62adb3b9f0, 18),
+    ('babydoge-baby-doge-coin', 'bnb', 'BABYDOGE', 0xc748673057861a797275cd8a068abb95a902e8de, 9),
+    ('bwjup-bsc-wrapped-jupiter', 'bnb', 'bwJUP', 0x0231f91e02debd20345ae8ab7d71a41f8e140ce7, 18),
+    ('lovely-lovely-inu-finance', 'bnb', 'LOVELY', 0x9e24415d1e549ebc626a13a482bb117a2b43e9cf, 8),
+    --('pvc-pvc-meta','bnb','PVC',0x75ca521892de7f2ecfb070cab545c250d0ceb7e3, 9), --token_id not found 
+    ('bvsd-bvsd','bnb','BVSD',0x7f9ad7a5854658d984924e868187b2135514fb88, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.

@@ -1827,7 +1827,13 @@ FROM
     ('pzeth-renzo-restaked-lst', 'ethereum', 'pzETH', 0x8c9532a60E0E7C6BbD2B2c1303F63aCE1c3E9811, 18),
     ('sx-sx-network', 'ethereum', 'SX', 0xbe9f61555f50dd6167f2772e9cf7519790d96624, 18),
     ('rch-rch-token', 'ethereum', 'RCH', 0x57B96D4aF698605563A4653D882635da59Bf11AF, 18),
-    ('raft-raft', 'ethereum', 'RAFT', 0x4c5cb5d87709387f8821709f7a6664f00dcf0c93, 18)    
+    ('raft-raft', 'ethereum', 'RAFT', 0x4c5cb5d87709387f8821709f7a6664f00dcf0c93, 18), 
+    ('neiro3-neiro', 'ethereum', 'NEIRO', 0xee2a03aa6dacf51c18679c516ad5283d8e7c2637, 9),
+    ('neiro-first-neiro-on-ethereum', 'ethereum', 'NEIRO', 0x812ba41e071c7b7fa4ebcfb62df5f45f6fa853ee, 9),
+    ('fuku-fuku-kun', 'ethereum', 'FUKU', 0x1001271083c249bd771e1bb76c22d935809a61ee, 9),
+    ('elon-elon-memelord', 'ethereum', 'ELON', 0x69420e3a3aa9e17dea102bb3a9b3b73dcddb9528, 9),
+    ('bar-gold-standard', 'ethereum', 'BAR', 0x777be1c6075c20184c4fd76344b7b0b7c858fe6b, 18),
+    ('ftw-black-agnus', 'ethereum', 'FTW', 0x306fD3e7b169Aa4ee19412323e1a5995B8c1a1f4, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

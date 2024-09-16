@@ -1,30 +1,24 @@
 {{ config(
-        schema = 'odos',
-        alias = 'trades',
-        post_hook='{{ expose_spells(\'["optimism", "ethereum", "base", "arbitrum"]\',
-                                "project",
-                                "odos",
-                                \'["Henrystats", "amalashkevich","lequangphu"]\') }}'
+        schema = 'odos_arbitrum'
+        , alias = 'trades'
         )
 }}
 
 {% set odos_models = [
-  ref('odos_ethereum_trades'),
-  ref('odos_optimism_trades'),
-  ref('odos_arbitrum_trades'),
-  ref('odos_base_trades')
+ref('odos_v1_arbitrum_trades')
+, ref('odos_v2_arbitrum_trades')
 ] %}
 
 
 SELECT *
 FROM (
-    {% for aggregator_model in odos_models %}
+    {% for dex_model in odos_models %}
     SELECT
         blockchain,
         project,
         version,
-        block_date,
         block_month,
+        block_date,
         block_time,
         token_bought_symbol,
         token_sold_symbol,
@@ -42,11 +36,11 @@ FROM (
         tx_hash,
         tx_from,
         tx_to,
-        trace_address,
-        evt_index
-    FROM {{ aggregator_model }}
+        evt_index,
+        trace_address
+    FROM {{ dex_model }}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
-);
+)

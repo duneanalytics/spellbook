@@ -31,5 +31,8 @@ FROM
     ('pxeth-pirex-ether', 'scroll', 'pxETH ', 0x9e0d7d79735e1c63333128149c7b616a0dc0bbdb, 18),
     ('frxeth-frax-ether', 'scroll', 'frxETH ', 0xecc68d0451e20292406967fe7c04280e5238ac7d, 18),
     ('weeth-wrapped-eeth', 'scroll', 'weETH ', 0x01f0a31698C4d065659b9bdC21B3610292a1c506, 18),
-    ('solvbtc-solv-protocol-solvbtc', 'scroll', 'SolvBTC ', 0x3ba89d490ab1c0c9cc2313385b30710e838370a4, 18)
+    ('solvbtc-solv-protocol-solvbtc', 'scroll', 'SolvBTC ', 0x3ba89d490ab1c0c9cc2313385b30710e838370a4, 18),
+    ('pufeth-pufeth', 'scroll', 'pufETH ', 0xc4d46E8402F476F269c379677C99F18E22Ea030e, 18),
+    ('usde-ethena-usde', 'scroll', 'USDe', 0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34, 18),
+    ('susde-ethena-staked-usde', 'scroll', 'sUSDe', 0x211Cc4DD073734dA055fbF44a2b4667d5E5fE5d2, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
