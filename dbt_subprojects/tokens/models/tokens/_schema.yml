@@ -68,11 +68,16 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, base
       sector: tokens
-      contributors: hildobby, 0xManny, dot2dotseurat, soispoke
+      contributors: hildobby, synthquest
     config:
       tags: ['tokens','stablecoin', 'arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon','base']
     description: >
         Stablecoin (ERC20) tokens
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
     columns:
       - name: blockchain
         description: blockchain name
