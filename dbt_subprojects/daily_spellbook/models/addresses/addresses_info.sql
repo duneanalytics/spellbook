@@ -145,32 +145,32 @@ WITH new_data AS (
     , MAX(last_seen) AS last_seen
     FROM (
         {% for addresses_model in addresses_models %}
-        SELECT blockchain
-        , address
-        , executed_tx_count
-        , max_nonce
-        , is_smart_contract
-        , namespace
-        , name
-        , first_funded_by
-        , first_funded_by_block_time
-        , received_count
-        , sent_count
-        , first_received_block_time
-        , last_received_block_time
-        , first_sent_block_time
-        , last_sent_block_time
-        , received_volume_usd
-        , sent_volume_usd
-        , first_tx_block_time
-        , last_tx_block_time
-        , first_tx_block_number
-        , last_tx_block_number
-        , last_seen
+        SELECT am.blockchain
+        , am.address
+        , am.executed_tx_count
+        , am.max_nonce
+        , am.is_smart_contract
+        , am.namespace
+        , am.name
+        , am.first_funded_by
+        , am.first_funded_by_block_time
+        , am.received_count
+        , am.sent_count
+        , am.first_received_block_time
+        , am.last_received_block_time
+        , am.first_sent_block_time
+        , am.last_sent_block_time
+        , am.received_volume_usd
+        , am.sent_volume_usd
+        , am.first_tx_block_time
+        , am.last_tx_block_time
+        , am.first_tx_block_number
+        , am.last_tx_block_number
+        , am.last_seen
         FROM {{ addresses_model }} am
         LEFT JOIN {{ this }} t ON am.address = t.address
             AND (am.last_seen > t.last_seen OR contains(t.blockchains, am.blockchain) = FALSE)
-        WHERE {{incremental_predicate('last_seen')}}
+        WHERE {{incremental_predicate('am.last_seen')}}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
