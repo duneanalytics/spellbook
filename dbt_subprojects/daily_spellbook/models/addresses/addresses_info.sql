@@ -170,7 +170,7 @@ WITH new_data AS (
         FROM {{ addresses_model }} am
         LEFT JOIN {{ this }} t ON am.address = t.address
             AND (am.last_seen > t.last_seen OR contains(t.blockchains, am.blockchain) = FALSE)
-        WHERE {{incremental_predicate('creation_block_time')}}
+        WHERE {{incremental_predicate('last_seen')}}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
