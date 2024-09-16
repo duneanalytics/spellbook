@@ -294,43 +294,7 @@ models:
       - *first_tx_block_number
       - *last_tx_block_number
       - *last_seen
-
-  - name: addresses_fantom_info
-    meta:
-      blockchain: fantom
-      sector: addresses
-      project: addresses
-      contributors: hildobby
-    config:
-      tags: ['table', 'address', 'info']
-    description: "High level information about every address on Fantom"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-    columns:
-      - *blockchain
-      - *address
-      - *executed_tx_count
-      - *max_nonce
-      - *is_smart_contract
-      - *namespace
-      - *name
-      - *first_funded_by
-      - *received_count
-      - *sent_count
-      - *first_received_block_time
-      - *last_received_block_time
-      - *first_sent_block_time
-      - *last_sent_block_time
-      - *received_volume_usd
-      - *sent_volume_usd
-      - *first_tx_block_time
-      - *last_tx_block_time
-      - *first_tx_block_number
-      - *last_tx_block_number
-      - *last_seen
-
+      
   - name: addresses_gnosis_info
     meta:
       blockchain: gnosis
@@ -448,42 +412,6 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Scroll"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
-    columns:
-      - *blockchain
-      - *address
-      - *executed_tx_count
-      - *max_nonce
-      - *is_smart_contract
-      - *namespace
-      - *name
-      - *first_funded_by
-      - *received_count
-      - *sent_count
-      - *first_received_block_time
-      - *last_received_block_time
-      - *first_sent_block_time
-      - *last_sent_block_time
-      - *received_volume_usd
-      - *sent_volume_usd
-      - *first_tx_block_time
-      - *last_tx_block_time
-      - *first_tx_block_number
-      - *last_tx_block_number
-      - *last_seen
-
-  - name: addresses_zksync_info
-    meta:
-      blockchain: zksync
-      sector: addresses
-      project: addresses
-      contributors: hildobby
-    config:
-      tags: ['table', 'address', 'info']
-    description: "High level information about every address on ZKsync"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
