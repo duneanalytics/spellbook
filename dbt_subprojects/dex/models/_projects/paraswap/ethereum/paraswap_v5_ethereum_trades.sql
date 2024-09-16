@@ -298,7 +298,6 @@ uniswap_v2_call_swap_without_event AS (
         token_bought_amount_raw,
         token_sold_amount_raw,
         cast(NULL AS double) AS amount_usd,
-        amount_usd,
         token_bought_address,
         token_sold_address,
         0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address,
