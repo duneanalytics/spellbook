@@ -98,4 +98,6 @@ FROM (VALUES
     , (0xbC404429558292eE2D769E57d57D6E74bbd2792d, 'sUSX', 18)
     , (0xa1b91fe9fd52141ff8cac388ce3f10bfdc1de79d, '$WIF', 6)
     , (0x90364aa61234b85251ad943681433904c35fa5ce, 'METIS', 18)
+    , (0x4026affabd9032bcc87fa05c02f088905f3dc09b, 'SWISE', 18)
+    , (0xf6d22e29496313d89ad6261fbae8d118181561de, 'GT', 18)
 ) AS temp_table (contract_address, symbol, decimals)
