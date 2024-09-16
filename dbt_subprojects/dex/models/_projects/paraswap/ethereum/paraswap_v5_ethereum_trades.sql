@@ -192,9 +192,10 @@ uniswap_v2_call_swap_without_event AS (
                 PARTITION BY c.call_tx_hash, c.pools[cardinality(pools)], t."from"
                 ORDER BY c.call_trace_address ASC
             ) AS swap_out_row_number,
-            token_in_amount,
-            tokenIn,
+            c.token_in_amount,
+            c.tokenIn,
             count(c.call_tx_hash) OVER (PARTITION BY c.call_tx_hash) AS calls_count
+        
         FROM raw_no_event_call_transaction c
 
         INNER JOIN {{ source('ethereum', 'traces') }} t ON t.block_number = c.call_block_number
@@ -224,6 +225,7 @@ uniswap_v2_call_swap_without_event AS (
             c.swap_in_row_number,
             c.swap_out_row_number,
             c.calls_count
+
         FROM formatted_no_event_call_transaction c
     
         INNER JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
@@ -252,6 +254,7 @@ uniswap_v2_call_swap_without_event AS (
             c.swap_in_row_number,
             c.swap_out_row_number,
             c.token_in_amount
+
         FROM formatted_no_event_call_transaction c
     
         INNER JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
@@ -271,7 +274,6 @@ uniswap_v2_call_swap_without_event AS (
             o.user_address AS maker,
             cast(o.amountOut AS uint256) AS token_bought_amount_raw,
             cast(i.amountIn AS uint256) AS token_sold_amount_raw,
-            cast(NULL AS double) AS amount_usd,
             o.tokenOut AS token_bought_address,
             i.tokenIn AS token_sold_address,
             i.tx_hash,
@@ -295,6 +297,7 @@ uniswap_v2_call_swap_without_event AS (
         maker,
         token_bought_amount_raw,
         token_sold_amount_raw,
+        cast(NULL AS double) AS amount_usd,
         amount_usd,
         token_bought_address,
         token_sold_address,
@@ -385,7 +388,6 @@ uniswap_call_swap_without_event AS (
             e.evt_block_time AS block_time,
             e.contract_address AS tokenIn,
             try_cast(e.value AS int256) AS amountIn,
-            c.call_trace_address AS trace_address,
             e.evt_index AS evt_index,
             c.swap_in_row_number,
             c.swap_out_row_number,
@@ -430,11 +432,10 @@ uniswap_call_swap_without_event AS (
             o.user_address AS maker,
             cast(o.amountOut AS uint256) AS token_bought_amount_raw,
             cast(i.amountIn AS uint256) AS token_sold_amount_raw,
-            cast(NULL AS double) AS amount_usd,
             o.tokenOut AS token_bought_address,
             i.tokenIn AS token_sold_address,
             i.tx_hash,
-            greatest(i.trace_address, o.trace_address) AS trace_address,
+            o.trace_address AS trace_address,
             greatest(i.evt_index, o.evt_index) AS evt_index,
             i.calls_count,
             count(i.tx_hash) OVER (PARTITION BY i.tx_hash) AS final_calls_count
@@ -454,7 +455,7 @@ uniswap_call_swap_without_event AS (
         maker,
         token_bought_amount_raw,
         token_sold_amount_raw,
-        amount_usd,
+        cast(NULL AS double) AS amount_usd,
         token_bought_address,
         token_sold_address,
         0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address,
