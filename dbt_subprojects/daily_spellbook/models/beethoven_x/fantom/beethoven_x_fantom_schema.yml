@@ -347,7 +347,7 @@ models:
             - project_contract_address
     columns:
       - *blockchain
-      - *project
+      - name: project
       - *version
       - *block_date
       - &project_contract_address
