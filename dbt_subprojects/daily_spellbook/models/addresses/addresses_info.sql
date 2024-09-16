@@ -15,18 +15,18 @@
 }}
 
 {% set addresses_models = [
-    ref('addresses_arbitrum_info')
-    , ref('addresses_avalanche_c_info')
-    , ref('addresses_base_info')
-    , ref('addresses_blast_info')
-    , ref('addresses_bnb_info')
-    , ref('addresses_celo_info')
-    , ref('addresses_ethereum_info')
-    , ref('addresses_gnosis_info')
-    , ref('addresses_optimism_info')
-    , ref('addresses_polygon_info')
-    , ref('addresses_scroll_info')
-    , ref('addresses_zora_info')
+    ('arbitrum', ref('addresses_arbitrum_info'))
+    , ('avalanche_c', ref('addresses_avalanche_c_info'))
+    , ('base', ref('addresses_base_info'))
+    , ('blast', ref('addresses_blast_info'))
+    , ('bnb', ref('addresses_bnb_info'))
+    , ('celo', ref('addresses_celo_info'))
+    , ('ethereum', ref('addresses_ethereum_info'))
+    , ('gnosis', ref('addresses_gnosis_info'))
+    , ('optimism', ref('addresses_optimism_info'))
+    , ('polygon', ref('addresses_polygon_info'))
+    , ('scroll', ref('addresses_scroll_info'))
+    , ('zora', ref('addresses_zora_info'))
 ] %}
 
 {% if not is_incremental() %}
@@ -57,7 +57,7 @@ WITH data AS (
     , MAX(last_seen) AS last_seen
     FROM (
         {% for addresses_model in addresses_models %}
-        SELECT blockchain
+        SELECT '{{ addresses_model[0] }}' AS blockchain
         , address
         , executed_tx_count
         , max_nonce
@@ -79,7 +79,7 @@ WITH data AS (
         , first_tx_block_number
         , last_tx_block_number
         , last_seen
-        FROM {{ addresses_model }}
+        FROM {{ addresses_model[1] }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -145,7 +145,7 @@ WITH new_data AS (
     , MAX(last_seen) AS last_seen
     FROM (
         {% for addresses_model in addresses_models %}
-        SELECT am.blockchain
+        SELECT '{{ addresses_model[0] }}' AS blockchain
         , am.address
         , am.executed_tx_count
         , am.max_nonce
@@ -167,7 +167,7 @@ WITH new_data AS (
         , am.first_tx_block_number
         , am.last_tx_block_number
         , am.last_seen
-        FROM {{ addresses_model }} am
+        FROM {{ addresses_model[1] }} am
         LEFT JOIN {{ this }} t ON am.address = t.address
             AND (am.last_seen > t.last_seen OR contains(t.blockchains, am.blockchain) = FALSE)
         WHERE {{incremental_predicate('am.last_seen')}}
