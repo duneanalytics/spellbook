@@ -207,6 +207,6 @@ SELECT nd.address
 , GREATEST(t.last_tx_block_time, nd.last_tx_block_time) AS last_tx_block_time
 , GREATEST(t.last_seen, nd.last_seen) AS last_seen
 FROM new_data nd
-LEFT JOIN {{ this }} t ON am.address = t.address
+LEFT JOIN {{ this }} t ON nd.address = t.address
 
 {% endif %}
