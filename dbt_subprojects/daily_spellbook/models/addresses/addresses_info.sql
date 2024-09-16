@@ -180,7 +180,7 @@ WITH new_data AS (
     )
 
 SELECT nd.address
-, array_union(t.blockchains, nd.blockchain) AS blockchains
+, array_union(t.blockchains, '{{ addresses_model[0] }}') AS blockchains
 , t.executed_tx_count+nd.executed_tx_count AS executed_tx_count
 , GREATEST(t.max_nonce, nd.max_nonce) AS max_nonce
 , CASE WHEN GREATEST(t.max_nonce, nd.max_nonce) = t.max_nonce THEN t.max_nonce_blockchain
