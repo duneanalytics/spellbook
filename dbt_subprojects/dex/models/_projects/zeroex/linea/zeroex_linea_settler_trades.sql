@@ -91,7 +91,6 @@ with tbl_all_logs AS (
         logs.block_time, 
         logs.block_number,
         index, 
-        case when ( first_value(logs.topic1) over (partition by logs.tx_hash order by index) = logs.topic2 OR varbinary_substring(logs.topic2, 13, 20) = logs.tx_from) then 1 end as valid,
         bytearray_substring(logs.topic2,13,20) as taker,
         logs.contract_address as maker_token,  
         first_value(logs.contract_address) over (partition by logs.tx_hash order by index) as taker_token, 
@@ -121,11 +120,12 @@ with tbl_all_logs AS (
     ),
     tbl_valid_logs as (
         select * 
-            ,  row_number() over (partition by tx_hash order by index desc) rn 
+            , row_number() over (partition by tx_hash order by index desc) rn 
         from tbl_all_logs 
-        where valid = 1 
+        where maker_token != taker_token  
     )
-    select * from tbl_valid_logs where rn = 1 
+    select * from tbl_valid_logs
+    where rn = 1 
 ),
 
 
