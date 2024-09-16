@@ -354,7 +354,7 @@ models:
         name: project_contract_address
         description: "Pool address"
       - *pool_symbol
-      - *name: pool_type
+      - name: pool_type
       - &swap_amount_usd
         name: swap_amount_usd
         description: "Daily swap volume on a pool, in USD"
