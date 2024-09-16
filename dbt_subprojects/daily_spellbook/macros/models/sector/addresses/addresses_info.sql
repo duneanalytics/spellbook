@@ -178,7 +178,7 @@ WITH executed_txs AS (
     , namespace
     , name
     , first_funded_by
-, ffb.block_time AS first_funded_by_block_time
+    , ffb.block_time AS first_funded_by_block_time
     , received_count
     , sent_count
     , first_received_block_time

@@ -26,32 +26,7 @@
     , ref('addresses_zora_info')
 ] %}
 
-SELECT address
-, blockchains
-, executed_tx_count
-, max_nonce
-, max_nonce_blockchain
-, is_smart_contract
-, smart_contract_blockchains
-, namespace
-, name
-, chain_stats
-, first_funded_by
-, first_funded_blockchain
-, first_funded_by_block_time
-, sent_count
-, received_count
-, first_received_block_time
-, last_received_block_time
-, first_sent_block_time
-, last_sent_block_time
-, sent_volume_usd
-, received_volume_usd
-, first_tx_block_time
-, last_tx_block_time
-, last_seen
-FROM (
-    {% for addresses_model in addresses_models %}
+WITH data AS (
     SELECT address
     , array_agg(blockchain) AS blockchains
     , SUM(executed_tx_count) AS executed_tx_count
@@ -79,14 +54,65 @@ FROM (
     , MIN(first_tx_block_time) AS first_tx_block_time
     , MAX(last_tx_block_time) AS last_tx_block_time
     , MAX(last_seen) AS last_seen
-    FROM {{ addresses_model }}
-    {% if is_incremental() %}
-    WHERE {{incremental_predicate('creation_block_time')}}
-    {% endif %}
+    FROM (
+        {% for addresses_model in addresses_models %}
+        SELECT blockchain
+        , address
+        , executed_tx_count
+        , max_nonce
+        , is_smart_contract
+        , namespace
+        , name
+        , first_funded_by
+        , first_funded_by_block_time
+        , received_count
+        , sent_count
+        , first_received_block_time
+        , last_received_block_time
+        , first_sent_block_time
+        , last_sent_block_time
+        , received_volume_usd
+        , sent_volume_usd
+        , first_tx_block_time
+        , last_tx_block_time
+        , first_tx_block_number
+        , last_tx_block_number
+        , last_seen
+        FROM {{ addresses_model }}
+        {% if is_incremental() %}
+        WHERE {{incremental_predicate('creation_block_time')}}
+        {% endif %}
+        GROUP BY address
+        {% if not loop.last %}
+        UNION ALL
+        {% endif %}
+        {% endfor %}
+        )
     GROUP BY address
-    {% if not loop.last %}
-    UNION ALL
-    {% endif %}
-    {% endfor %}
     )
-GROUP BY address
+
+SELECT address
+, blockchains
+, executed_tx_count
+, max_nonce
+, max_nonce_blockchain
+, is_smart_contract
+, smart_contract_blockchains
+, namespace
+, name
+, chain_stats
+, first_funded_by
+, first_funded_blockchain
+, first_funded_by_block_time
+, sent_count
+, received_count
+, first_received_block_time
+, last_received_block_time
+, first_sent_block_time
+, last_sent_block_time
+, sent_volume_usd
+, received_volume_usd
+, first_tx_block_time
+, last_tx_block_time
+, last_seen
+FROM data
