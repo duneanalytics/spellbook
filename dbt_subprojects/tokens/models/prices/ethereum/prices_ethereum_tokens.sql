@@ -1826,7 +1826,8 @@ FROM
     ('usdy-ondo-us-dollar-yield', 'ethereum', 'USDY', 0x96f6ef951840721adbf46ac996b59e0235cb985c, 18),
     ('pzeth-renzo-restaked-lst', 'ethereum', 'pzETH', 0x8c9532a60E0E7C6BbD2B2c1303F63aCE1c3E9811, 18),
     ('sx-sx-network', 'ethereum', 'SX', 0xbe9f61555f50dd6167f2772e9cf7519790d96624, 18),
-    ('rch-rch-token', 'ethereum', 'RCH', 0x57B96D4aF698605563A4653D882635da59Bf11AF, 18)
+    ('rch-rch-token', 'ethereum', 'RCH', 0x57B96D4aF698605563A4653D882635da59Bf11AF, 18),
+    ('raft-raft', 'ethereum', 'RAFT', 0x4c5cb5d87709387f8821709f7a6664f00dcf0c93, 18)    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
