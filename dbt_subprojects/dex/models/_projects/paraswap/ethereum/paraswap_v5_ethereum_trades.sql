@@ -668,10 +668,6 @@ dexs AS (
         c.trace_address,
         c.evt_index
     FROM call_swap_without_event c
-    LEFT JOIN dex_swap d ON c.block_number = d.block_number AND c.tx_hash = d.tx_hash
-    LEFT JOIN liqudity_swap l ON c.block_number = l.block_number AND c.tx_hash = l.tx_hash
-    WHERE d.tx_hash IS NULL
-        AND l.tx_hash IS NULL
 )
 
 SELECT 'ethereum' AS blockchain,
