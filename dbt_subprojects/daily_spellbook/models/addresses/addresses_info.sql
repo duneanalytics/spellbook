@@ -54,6 +54,9 @@ WITH data AS (
     , SUM(received_volume_usd) AS received_volume_usd
     , MIN(first_tx_block_time) AS first_tx_block_time
     , MAX(last_tx_block_time) AS last_tx_block_time
+    , map_union(map_from_entries(array[
+            (blockchain, chain_stats)
+            ])) AS chain_stats
     , MAX(last_seen) AS last_seen
     FROM (
         {% for addresses_model in addresses_models %}
@@ -78,6 +81,13 @@ WITH data AS (
         , last_tx_block_time
         , first_tx_block_number
         , last_tx_block_number
+        , map_from_entries(array[
+            ('last_seen', CAST(am.last_seen AS varchar))
+            , ('executed_tx_count', CAST(am.executed_tx_count AS varchar))
+            , ('is_smart_contract', CAST(am.is_smart_contract AS varchar))
+            , ('sent_count', CAST(am.sent_count AS varchar))
+            , ('received_count', CAST(am.received_count AS varchar))
+            ) AS chain_stats
         , last_seen
         FROM {{ addresses_model[1] }}
         {% if not loop.last %}
@@ -110,6 +120,7 @@ SELECT address
 , received_volume_usd
 , first_tx_block_time
 , last_tx_block_time
+, chain_stats
 , last_seen
 FROM data
 
@@ -142,6 +153,9 @@ WITH new_data AS (
     , SUM(received_volume_usd) AS received_volume_usd
     , MIN(first_tx_block_time) AS first_tx_block_time
     , MAX(last_tx_block_time) AS last_tx_block_time
+    , map_union(map_from_entries(array[
+            (blockchain, chain_stats)
+            ])) AS chain_stats
     , MAX(last_seen) AS last_seen
     FROM (
         {% for addresses_model in addresses_models %}
@@ -166,6 +180,13 @@ WITH new_data AS (
         , am.last_tx_block_time
         , am.first_tx_block_number
         , am.last_tx_block_number
+        , map_from_entries(array[
+            ('last_seen', CAST(am.last_seen AS varchar))
+            , ('executed_tx_count', CAST(am.executed_tx_count AS varchar))
+            , ('is_smart_contract', CAST(am.is_smart_contract AS varchar))
+            , ('sent_count', CAST(am.sent_count AS varchar))
+            , ('received_count', CAST(am.received_count AS varchar))
+            ) AS chain_stats
         , am.last_seen
         FROM {{ addresses_model[1] }} am
         LEFT JOIN {{ this }} t ON am.address = t.address
@@ -206,6 +227,7 @@ SELECT nd.address
 , LEAST(t.first_tx_block_time, nd.first_tx_block_time) AS first_tx_block_time
 , GREATEST(t.last_tx_block_time, nd.last_tx_block_time) AS last_tx_block_time
 , GREATEST(t.last_seen, nd.last_seen) AS last_seen
+, t.chain_stats
 FROM new_data nd
 LEFT JOIN {{ this }} t ON nd.address = t.address
 
