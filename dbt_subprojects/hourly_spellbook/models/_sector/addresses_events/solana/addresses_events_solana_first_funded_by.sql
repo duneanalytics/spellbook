@@ -21,6 +21,7 @@ FROM {{ source('system_program_solana', 'system_program_call_Transfer') }} s
 LEFT JOIN {{this}} ffb ON s.account_to = ffb.address WHERE ffb.address IS NULL
 {% else %}
 WHERE 1 = 1
+AND s.call_block_time > NOW() - interval '1' month
 {% endif %}
 {% if is_incremental() %}
 AND {{incremental_predicate('s.call_block_time')}}
