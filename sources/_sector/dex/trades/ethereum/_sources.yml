@@ -118,3 +118,8 @@ sources:
   - name: swaap_v2_ethereum
     tables:
       - name: Vault_evt_Swap
+  - name: valantis_ethereum
+    tables:
+      - name: SovereignPool_evt_Swap
+      - name: ProtocolFactory_evt_SovereignPoolDeployed
+      - name: HOT_evt_HotSwap

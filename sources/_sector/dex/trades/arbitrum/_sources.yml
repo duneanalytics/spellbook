@@ -157,3 +157,8 @@ sources:
     tables:
       - name: V2Pool_evt_PoolSwap
       - name: V2Factory_evt_PoolCreated
+  - name: valantis_arbitrum
+    tables:
+      - name: SovereignPool_evt_Swap
+      - name: ProtocolFactory_evt_SovereignPoolDeployed
+      - name: HOT_evt_HotSwap
