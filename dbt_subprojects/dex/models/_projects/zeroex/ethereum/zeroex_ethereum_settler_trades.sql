@@ -91,6 +91,10 @@ with tbl_all_logs AS (
         logs.block_time, 
         logs.block_number,
         index, 
+        case when ( (varbinary_substring(logs.topic2, 13, 20) = logs.tx_from)  OR
+                    (varbinary_substring(logs.topic2, 13, 20) = first_value(bytearray_substring(logs.topic1,13,20)) over (partition by logs.tx_hash order by index) ) or
+                     topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65) 
+                then 1 end as valid,
         bytearray_substring(logs.topic2,13,20) as taker,
         logs.contract_address as maker_token,  
         first_value(logs.contract_address) over (partition by logs.tx_hash order by index) as taker_token, 
@@ -104,8 +108,14 @@ with tbl_all_logs AS (
     FROM 
         {{ source('ethereum', 'logs') }} AS logs
     JOIN 
-        settler_txs st ON st.tx_hash = logs.tx_hash AND logs.block_time = st.block_time AND st.block_number = logs.block_number
-            
+        settler_txs st ON st.tx_hash = logs.tx_hash 
+            AND logs.block_time = st.block_time 
+            AND st.block_number = logs.block_number
+            AND ( (st.settler_address = bytearray_substring(logs.topic1,13,20))  
+                or (st.settler_address= bytearray_substring(logs.topic2,13,20)) 
+                or logs.tx_from = bytearray_substring(logs.topic1,13,20) 
+                or logs.tx_from = bytearray_substring(logs.topic2,13,20) 
+                 )   
     WHERE 
         topic0 IN ( 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                     0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
@@ -120,7 +130,7 @@ with tbl_all_logs AS (
     ),
     tbl_valid_logs as (
         select * 
-            ,  row_number() over (partition by tx_hash order by index desc) rn 
+            ,  row_number() over (partition by tx_hash order by valid, index desc) rn 
         from tbl_all_logs 
         where taker_token != maker_token 
     )
