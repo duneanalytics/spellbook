@@ -87,7 +87,7 @@ WITH data AS (
             , ('is_smart_contract', CAST(am.is_smart_contract AS varchar))
             , ('sent_count', CAST(am.sent_count AS varchar))
             , ('received_count', CAST(am.received_count AS varchar))
-            ) AS chain_stats
+            ]) AS chain_stats
         , last_seen
         FROM {{ addresses_model[1] }}
         {% if not loop.last %}
@@ -186,7 +186,7 @@ WITH new_data AS (
             , ('is_smart_contract', CAST(am.is_smart_contract AS varchar))
             , ('sent_count', CAST(am.sent_count AS varchar))
             , ('received_count', CAST(am.received_count AS varchar))
-            ) AS chain_stats
+            ]) AS chain_stats
         , am.last_seen
         FROM {{ addresses_model[1] }} am
         LEFT JOIN {{ this }} t ON am.address = t.address
