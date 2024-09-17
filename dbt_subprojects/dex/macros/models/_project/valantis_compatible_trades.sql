@@ -9,7 +9,7 @@
 %}
 WITH dexs AS
 (
-    SELECT t.evt_block_number AS block_number
+    SELECT distinct t.evt_block_number AS block_number
         , t.evt_block_time AS block_time
         , amountOut AS token_bought_amount_raw
         , amountIn AS token_sold_amount_raw
