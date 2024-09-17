@@ -137,16 +137,27 @@ with tbl_all_logs AS (
     select * from tbl_valid_logs where rn = 1
 ),
 
-
 tokens AS (
-    SELECT DISTINCT 
-        te.* 
-    FROM 
-        {{ source('tokens', 'erc20') }} AS te
-    JOIN 
-        tbl_trades ON te.contract_address = taker_token OR te.contract_address = maker_token
-    WHERE 
-        te.blockchain = 'base'
+    with token_list as (
+        select 
+            distinct maker_token as token
+        from 
+            tbl_trades 
+        
+        union distinct 
+        
+        select 
+            distinct taker_token as token 
+        from tbl_trades 
+        ) 
+
+        select * 
+        from 
+            token_list tl 
+        join 
+            tokens.erc20 AS te ON te.contract_address = tl.token
+        WHERE 
+            te.blockchain = '{{blockchain}}'
 ),
 
 prices AS (
