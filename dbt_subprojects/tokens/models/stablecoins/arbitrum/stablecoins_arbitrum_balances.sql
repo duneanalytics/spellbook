@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'arbitrum',
+    schema = 'stablecoins_arbitrum',
     alias = 'balances',
     materialized = 'incremental',
     file_format = 'delta',
@@ -14,7 +14,7 @@ with
 stablecoin_tokens as (
   select
     symbol,
-    contract_address
+    contract_address as token_address
   from 
     {{ source('tokens_arbitrum', 'erc20_stablecoins')}}
 )
@@ -23,7 +23,7 @@ stablecoin_tokens as (
     {{
       balances_incremental_subset_daily(
             blockchain = 'arbitrum',
-            token_list = 'stablecoin_arbitrum_tokens',
+            token_list = 'stablecoin_tokens',
             start_date = '2021-05-26'
       )
     }}
@@ -34,4 +34,4 @@ select
     ,b.*
 from balances b
 left join stablecoin_tokens t
-    on b.token_address = t.contract_address
+    on b.token_address = t.token_address

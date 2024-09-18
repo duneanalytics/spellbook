@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stablecoin_arbitrum_balances
+  - name: stablecoins_arbitrum_balances
 
     meta:
       blockchain: arbitrum
