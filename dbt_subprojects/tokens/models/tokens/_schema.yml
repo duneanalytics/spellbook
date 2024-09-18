@@ -89,3 +89,5 @@ models:
         description: token symbol
       - name: decimal
         description: token decimals
+      - name: backing
+        description: token backing
