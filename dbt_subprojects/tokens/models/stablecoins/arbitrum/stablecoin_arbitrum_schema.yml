@@ -19,8 +19,12 @@ models:
             - address
             - token_address
     columns:
-    - *blockchain
-    - *symbol
+    - &blockchain
+      name: blockchain
+      description: "Blockchain for the token"
+    - &symbol
+      name: symbol
+      description: "Symbol for the token"
     - &version
       name: version
       description: "Version of the token"
