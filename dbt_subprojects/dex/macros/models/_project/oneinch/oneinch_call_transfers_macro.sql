@@ -74,7 +74,7 @@ meta as (
         , result_escrow
         , result_method
         , result_amount
-    from ({{ oneinch_calls_macro(blockchain) }})
+    from (select * from ({{ oneinch_calls_macro(blockchain) }}) where hashlock is not null)
     join results using(hashlock) -- escrow results only
     where
         tx_success
