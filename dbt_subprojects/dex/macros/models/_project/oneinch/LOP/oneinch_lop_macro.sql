@@ -74,36 +74,50 @@ orders as (
     {% endfor %}
 )
 
--- will be converted to submitted contracts
 , SrcEscrowCreated as (
-    with
-    
-    factories as (
-        select factory
-        from ({{ oneinch_blockchain_macro(blockchain) }}), unnest(escrow_factory_addresses) as f(factory)
-    )
-
-    select
-        block_number
-        , tx_hash
-        , contract_address as factory
-        , substr(data, 32*0 + 1, 32) as order_hash
-        , substr(data, 32*1 + 1, 32) as hashlock
-        , substr(data, 32*2 + 12 + 1, 20) as maker
-        , substr(data, 32*3 + 12 + 1, 20) as taker
-        , substr(data, 32*4 + 12 + 1, 20) as token
-        , bytearray_to_uint256(substr(data, 32*5 + 1, 32)) as amount
-        , bytearray_to_uint256(substr(data, 32*6 + 1, 32)) as safety_deposit
-        , substr(data, 32*7 + 1, 32) as timelocks
-    from {{ source(blockchain, 'logs') }}
-    where
-        contract_address in (select factory from factories)
-        and topic0 = 0x0e534c62f0afd2fa0f0fa71198e8aa2d549f24daf2bb47de0d5486c7ce9288ca
-        {% if is_incremental() %}
-            and {{ incremental_predicate('block_time') }}
-        {% else %}
-            and block_time > timestamp '2024-08-20'
-        {% endif %}
+    {% for factory, factory_data in oneinch_escrow_cfg_factories_macro().items() %}
+    {% if blockchain in factory_data.blockchains %}
+        select
+            evt_block_number as block_number
+            , evt_tx_hash as tx_hash
+            , contract_address as factory
+            , {{ factory_data.src_created.get("order_hash", "null") }} as order_hash
+            , {{ factory_data.src_created.get("hashlock", "null") }} as hashlock
+            , {{ factory_data.src_created.get("maker", "null") }} as maker
+            , {{ factory_data.src_created.get("taker", "null") }} as taker
+            , {{ factory_data.src_created.get("token", "null") }} as token
+            , {{ factory_data.src_created.get("amount", "null") }} as amount
+            , {{ factory_data.src_created.get("safety_deposit", "null") }} as safety_deposit
+            , {{ factory_data.src_created.get("timelocks", "null") }} as timelocks
+        from (
+            select
+                *
+                , cast(json_parse({{ factory_data.src_created.get("srcImmutables", '"srcImmutables"') }}) as map(varchar, varchar)) as creation_map
+                , cast(json_parse({{ factory_data.src_created.get("dstImmutablesComplement", '"dstImmutablesComplement"') }}) as map(varchar, varchar)) as dst_map
+            from {{ source('oneinch_' + blockchain, factory + '_evt_' + factory_data.src_created.event) }}
+            {% if is_incremental() %}
+                where {{ incremental_predicate('evt_block_time') }}
+            {% else %}
+                where evt_block_time >= greatest(timestamp '{{ factory_data['start'] }}', timestamp {{ oneinch_easy_date() }})
+            {% endif %}
+        )
+    {% else %}
+        select
+            null as block_number
+            , cast(null as varbinary) as tx_hash
+            , cast(null as varbinary) as factory
+            , cast(null as varbinary) as order_hash
+            , cast(null as varbinary) as hashlock
+            , cast(null as varbinary) as maker
+            , cast(null as varbinary) as taker
+            , cast(null as varbinary) as token
+            , null as amount
+            , null as safety_deposit
+            , cast(null as varbinary) as timelocks
+        where false
+    {% endif %}
+    {% if not loop.last %} union all {% endif %}
+    {% endfor %}
 )
 
 , calculations as (
