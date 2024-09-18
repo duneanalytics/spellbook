@@ -1,10 +1,12 @@
 {{ config(
-      alias = 'erc20_stablecoins'
+      schema = 'tokens_bnb'
+      , alias = 'erc20_stablecoins'
       , tags=['static']
       , post_hook='{{ expose_spells(\'["bnb"]\',
                                   "sector",
                                   "tokens_bnb",
                                   \'["synthquest"]\') }}'
+      , unique_key = ['contract_address']
   )
 }}
 

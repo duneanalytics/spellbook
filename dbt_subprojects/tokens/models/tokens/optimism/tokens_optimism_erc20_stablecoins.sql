@@ -1,10 +1,12 @@
 {{ config(
-      alias = 'erc20_stablecoins'
+      schema = 'tokens_optimism'
+      , alias = 'erc20_stablecoins'
       , tags=['static']
       , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "sector",
                                   "tokens_optimism",
                                   \'["msilb7", "synthquest"]\') }}'
+      , unique_key = ['contract_address']
   )
 }}
 

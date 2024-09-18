@@ -1,10 +1,12 @@
 {{ config(
-      alias = 'erc20_stablecoins'
+      schema = 'tokens_arbitrum'
+      , alias = 'erc20_stablecoins'
       , tags=['static']
       , post_hook='{{ expose_spells(\'["arbitrum"]\',
                                   "sector",
                                   "tokens_arbitrum",
                                   \'["synthquest"]\') }}'
+      , unique_key = ['contract_address']
   )
 }}
 

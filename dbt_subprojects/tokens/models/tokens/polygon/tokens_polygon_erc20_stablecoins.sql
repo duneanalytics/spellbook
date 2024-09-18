@@ -1,10 +1,12 @@
 {{ config(
-      alias = 'erc20_stablecoins'
+      schema = 'tokens_polygon'
+      , alias = 'erc20_stablecoins'
       , tags=['static']
       , post_hook='{{ expose_spells(\'["polygon"]\',
                                   "sector",
                                   "tokens_polygon",
                                   \'["synthquest"]\') }}'
+      , unique_key = ['contract_address']
   )
 }}
 

@@ -1,10 +1,12 @@
 {{ config(
-      alias = 'erc20_stablecoins'
+      schema = 'tokens_gnosis'
+      , alias = 'erc20_stablecoins'
       , tags=['static']
       , post_hook='{{ expose_spells(\'["gnosis"]\',
                                   "sector",
                                   "tokens_gnosis",
                                   \'["synthquest"]\') }}'
+      , unique_key = ['contract_address']
   )
 }}
 

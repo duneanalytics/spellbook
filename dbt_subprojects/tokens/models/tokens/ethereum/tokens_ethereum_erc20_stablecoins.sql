@@ -1,10 +1,12 @@
 {{ config(
-      alias = 'erc20_stablecoins'
+      schema = 'tokens_ethereum'
+      , alias = 'erc20_stablecoins'
       , tags=['static']
       , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "sector",
                                   "tokens_ethereum",
                                   \'["Henrystats", "synthquest"]\') }}'
+      , unique_key = ['contract_address']
   )
 }}
 
