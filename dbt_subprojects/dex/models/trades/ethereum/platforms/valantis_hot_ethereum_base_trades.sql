@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'hot_amm_ethereum'
+    schema = 'valantis_hot_ethereum'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'

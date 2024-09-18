@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'hot_amm_arbitrum'
+    schema = 'valantis_hot_arbitrum'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'

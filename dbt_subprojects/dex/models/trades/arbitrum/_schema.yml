@@ -758,7 +758,7 @@ models:
           filter:
             version: 2
 
-  - name: hot_amm_arbitrum_base_trades
+  - name: valantis_hot_arbitrum_base_trades
     meta:
       blockchain: arbitrum
       sector: dex
