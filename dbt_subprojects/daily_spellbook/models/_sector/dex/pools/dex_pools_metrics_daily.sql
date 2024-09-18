@@ -16,7 +16,7 @@
 {% set dex_pool_metrics_models = [
  source('balancer','pools_metrics_daily'),
  source('beethoven_x_fantom','pools_metrics_daily'),
- source('jelly_swap_sei','pools_metrics_daily'),
+ source('jelly_swap_sei','pools_metrics_daily')
 ] %}
 
 
