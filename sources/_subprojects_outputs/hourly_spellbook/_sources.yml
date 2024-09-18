@@ -43,8 +43,10 @@ sources:
     tables:
       - name: trades
 
-  - name: jelly_swap_sei
-        - name: pools_metrics_daily
-
   - name: beethoven_x_fantom
-        - name: pools_metrics_daily        
+    tables:
+      - name: pools_metrics_daily
+
+  - name: jelly_swap_sei
+    tables:
+      - name: pools_metrics_daily 

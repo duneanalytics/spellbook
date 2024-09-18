@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: tokens_linea_erc20
+    meta:
+      blockchain: linea
+      sector: tokens
+      project: erc20
+      contributors: rantum
+    config:
+      tags: ['table', 'erc20']
+    description: "ERC20 Token Addresses, Symbols and Decimals"
+    columns:
+      - name: contract_address
+        description: "ERC20 token contract address"
+        tests:
+          - unique
+      - name: symbol
+        description: "ERC20 token symbol"
+      - name: decimals
+        description: "Number of decimals, refers to how divisible an ERC20 token can be"

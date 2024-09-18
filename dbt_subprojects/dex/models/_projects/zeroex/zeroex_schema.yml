@@ -3,11 +3,11 @@ version: 2
 models:
   - name: zeroex_api_fills 
     meta:
-      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, scroll
       project: zeroex
       contributors: rantum, danning.sui, bakabhai993
     config:
-      tags: ['ethereum','0x','dex_aggregator','dex','aggregator','optimism','polygon','arbitrum','fantom','avalanche','bnb']
+      tags: ['ethereum','0x','dex_aggregator','dex','aggregator','optimism','polygon','arbitrum','fantom','avalanche','bnb','scroll']
     description: >
         0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on Ethereum
     tests:
