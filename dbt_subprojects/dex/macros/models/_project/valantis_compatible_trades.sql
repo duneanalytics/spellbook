@@ -11,18 +11,16 @@ WITH dexs AS
 (
     SELECT distinct t.evt_block_number AS block_number
         , t.evt_block_time AS block_time
-        , amountOut AS token_bought_amount_raw
-        , amountIn AS token_sold_amount_raw
-        , CASE WHEN isZeroToOne THEN f.token1 ELSE f.token0 END AS token_bought_address
-        , CASE WHEN isZeroToOne THEN f.token0 ELSE f.token1 END AS token_sold_address
+        , t.amountOut AS token_bought_amount_raw
+        , t.amountIn AS token_sold_amount_raw
+        , CASE WHEN t.isZeroToOne THEN f.token1 ELSE f.token0 END AS token_bought_address
+        , CASE WHEN t.isZeroToOne THEN f.token0 ELSE f.token1 END AS token_sold_address
         , t.sender AS taker
         , coalesce(h.contract_address, t.contract_address) AS maker -- HOT for HOTSwaps (solver orders), SovereignPool for AMM swaps (permissionless)
         , t.contract_address AS project_contract_address
         , t.evt_tx_hash AS tx_hash
         , t.evt_index AS evt_index
-    FROM {{ source('erc20_' + blockchain, 'evt_transfer') }} AS e
-    INNER JOIN {{ Pair_evt_Swap }} AS t
-        ON e.evt_block_number = t.evt_block_number AND e.evt_tx_hash = t.evt_tx_hash AND e.to = t.contract_address
+    FROM {{ Pair_evt_Swap }} AS t
     INNER JOIN {{ Factory_evt_PoolCreated }} AS f
         ON t.contract_address = f.pool
     LEFT JOIN {{ HOT_evt_Swap }} AS h
