@@ -137,6 +137,8 @@ WITH evm_trusted_tokens AS (
         SELECT
                 blockchain
                 , contract_address
+                , symbol
+                , decimals
         FROM (
                 VALUES
                 ('solana', from_base58('So11111111111111111111111111111111111111112'), 'SOL', 9)
