@@ -239,6 +239,44 @@ models:
       - *tx_hash
       - *evt_index
 
+  - name: aave_etherfi_v3_ethereum_base_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave_etherfi
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'etherfi', 'v3', 'ethereum']
+    description: "Aave v3 borrow transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('aave_etherfi_ethereum_base_borrow_seed')
+          filter:
+            version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *on_behalf_of
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+
   - name: compound_v1_ethereum_base_borrow
     meta:
       blockchain: ethereum

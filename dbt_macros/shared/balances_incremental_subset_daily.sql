@@ -38,7 +38,7 @@ filtered_daily_agg_balances as (
         END as balance,
         erc20_tokens.symbol as token_symbol,
         token_id
-    from {{ref('tokens_'~blockchain~'_balances_daily_agg_base')}} b
+    from {{source('tokens_'~blockchain,'balances_daily_agg_base')}} b
     {% if address_list is not none %}
     inner join (select distinct address from {{address_list}}) f1
     on f1.address = b.address
