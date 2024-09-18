@@ -37,7 +37,7 @@ models:
       blockchain: optimism
       sector: tokens
       project: erc20
-      contributors: msilb7
+      contributors: msilb7, rantum
     config:
       tags: ['table', 'erc20', 'optimism']
     description: "Manually identified ERC20 Token Addresses, Symbols and Decimals"
