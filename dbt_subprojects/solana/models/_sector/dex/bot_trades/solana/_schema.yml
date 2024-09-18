@@ -476,3 +476,62 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('unibot_solana_trades_seed')
           blockchain: solana
+
+  - name: mev_x_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: mev_x
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "mev_x", "trades"]
+    description: >
+      MevX trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('mev_x_solana_trades_seed')
+          blockchain: solana
+          
+  - name: alpha_dex_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: alpha_dex
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "alpha_dex", "trades"]
+    description: >
+      Alpha Dex trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('alpha_dex_solana_trades_seed')
+          blockchain: solana
+
+  - name: alpha_dex_solana_bot_users
+    meta:
+      blockchain: solana
+      sector: dex
+      project: alpha_dex
+      contributors: whale_hunter
+    description: >
+      alpha_dex users on Solana
+    config:
+      tags: ["solana", "dex", "bot_trades"]
+      columns:
+        - name: user
+          tests: unique        
+  
