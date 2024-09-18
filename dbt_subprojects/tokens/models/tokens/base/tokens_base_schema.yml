@@ -6,7 +6,7 @@ models:
       blockchain: base
       sector: tokens
       project: erc20
-      contributors: hildobby
+      contributors: hildobby, rantum
     config:
       tags: ['table', 'erc20', 'base']
     description: "All ERC20 Token Addresses on Base - with mapped Symbols and Decimals if known."
