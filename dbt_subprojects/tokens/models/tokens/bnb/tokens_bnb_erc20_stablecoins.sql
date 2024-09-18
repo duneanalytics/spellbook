@@ -1,5 +1,5 @@
 {{ config(
-      alias = 'stablecoins'
+      alias = 'erc20_stablecoins'
       , tags=['static']
       , post_hook='{{ expose_spells(\'["bnb"]\',
                                   "sector",
