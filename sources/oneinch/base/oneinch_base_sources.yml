@@ -39,7 +39,5 @@ sources:
       - name: AggregationRouterV6_call_fillOrderArgs
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
-      - name: EscrowFactoryV1_call_createDstEscrow
-      - name: EscrowFactoryV1_evt_SrcEscrowCreated
       - name: lop
       - name: ar
