@@ -155,7 +155,7 @@ tokens AS (
         from 
             token_list tl 
         join 
-            tokens.erc20 AS te ON te.contract_address = tl.token
+            {{ source('tokens', 'erc20') }} AS te ON te.contract_address = tl.token
         WHERE 
             te.blockchain = '{{blockchain}}'
 ),
