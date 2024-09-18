@@ -7,7 +7,7 @@
         )
 }}
 
-WITH evm_trusted_tokens AS (
+WITH trusted_tokens AS (
         -- Originally generated from https://dune.com/queries/3355223
         -- Maintained manually moving forward
         SELECT
@@ -120,6 +120,10 @@ WITH evm_trusted_tokens AS (
                 , ('sei', 0x3894085Ef7Ff0f0aeDf52E2A2704928d1Ec074F1)
                 , ('sei', 0xB75D0B03c06A926e488e2659DF1A861F860bD3d1)
                 , ('sei', 0x160345fC359604fC6e70E3c5fAcbdE5F7A9342d8)
+                , ('solana', from_base58('So11111111111111111111111111111111111111112'))
+                , ('solana', from_base58('mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So'))
+                , ('solana', from_base58('Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB'))
+                , ('solana', from_base58('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'))
                 , ('zkevm', 0x4f9a0e7fd2bf6067db6994cf12e4495df938e6e9)
                 , ('zkevm', 0x1e4a5963abfd975d8c9021ce480b42188849d41d)
                 , ('zkevm', 0x37eaa0ef3549a5bb7d431be78a3d99bd360d19e5)
@@ -133,36 +137,16 @@ WITH evm_trusted_tokens AS (
                 , ('zksync', 0xbbeb516fb02a01611cbbe0453fe3c580d7281011)
                 , ('zora', 0x4200000000000000000000000000000000000006)
         ) AS t (blockchain, contract_address)
-), non_evm_trusted_tokens AS (
-        SELECT
-                blockchain
-                , contract_address
-                , symbol
-                , decimals
-        FROM (
-                VALUES
-                ('solana', from_base58('So11111111111111111111111111111111111111112'), 'SOL', 9)
-                , ('solana', from_base58('mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So'), 'mSOL', 9)
-                , ('solana', from_base58('Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB'), 'USDT', 6)
-                , ('solana', from_base58('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'), 'USDC', 6)
-        ) AS t (blockchain, contract_address, symbol, decimals)
 )
 SELECT
-        tt.blockchain
-        , tt.contract_address
-        , erc20.symbol
-        , erc20.decimals
+        p.token_id
+        , p.blockchain
+        , p.contract_address
+        , p.symbol
+        , p.decimals
 FROM
-        evm_trusted_tokens AS tt
+        {{ ref('prices_tokens') }} AS p
 INNER JOIN
-        {{ ref('tokens_erc20') }} AS erc20
-        ON tt.blockchain = erc20.blockchain
-        AND tt.contract_address = erc20.contract_address
-UNION ALL
-SELECT
-        blockchain
-        , contract_address
-        , symbol
-        , decimals
-FROM
-        non_evm_trusted_tokens
+        trusted_tokens AS tt
+        ON p.blockchain = tt.blockchain
+        AND p.contract_address = tt.contract_address
