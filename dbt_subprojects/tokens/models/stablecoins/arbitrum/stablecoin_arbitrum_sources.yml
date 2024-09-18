@@ -1,7 +1,0 @@
-version: 2
-
-sources:
-  - name: tokens
-    description: stablecoin contract definitions
-    tables:
-      - name: erc20_stablecoins
