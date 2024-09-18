@@ -12,6 +12,7 @@
     ref('aave_v2_ethereum_base_flashloans'),
     ref('aave_v3_ethereum_base_flashloans'),
     ref('aave_lido_v3_ethereum_base_flashloans'),
+    ref('aave_etherfi_v3_ethereum_base_flashloans'),
     ref('radiant_ethereum_base_flashloans'),
     ref('uwulend_ethereum_base_flashloans'),
     ref('spark_ethereum_base_flashloans'),

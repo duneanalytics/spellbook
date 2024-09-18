@@ -131,5 +131,7 @@ FROM
     ('usdv-verified-usd', 'USDV', 0x323665443cef804a3b5206103304bd4872ea4253, 6),
     ('zro-layerzero', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
     ('rseth-rseth', 'rsETH', 0x4186bfc76e2e237523cbc30fd220fe055156b41f, 18),
-    ('dola-dola', 'DOLA',0x8ae125e8653821e851f12a49f7765db9a9ce7384, 18)   
+    ('dola-dola', 'DOLA',0x8ae125e8653821e851f12a49f7765db9a9ce7384, 18),
+    ('wld-worldcoin', 'WLD',0xdc6ff44d5d932cbd77b52e5612ba0529dc6226f1, 18),
+    ('pendle-pendle', 'PENDLE',0xbc7b1ff1c6989f006a1185318ed4e7b5796e66e1, 18)
 ) as temp (token_id, symbol, contract_address, decimals)

@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_aggregator_trades
     meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
+      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb, base, scroll, linea, polygon 
       sector: dex_aggregator
       contributors: bh2smith, Henrystats, jeff-dude, rantum
       docs_slug: /curated/trading/DEX/dex-aggregator-trades

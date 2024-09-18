@@ -1833,7 +1833,11 @@ FROM
     ('fuku-fuku-kun', 'ethereum', 'FUKU', 0x1001271083c249bd771e1bb76c22d935809a61ee, 9),
     ('elon-elon-memelord', 'ethereum', 'ELON', 0x69420e3a3aa9e17dea102bb3a9b3b73dcddb9528, 9),
     ('bar-gold-standard', 'ethereum', 'BAR', 0x777be1c6075c20184c4fd76344b7b0b7c858fe6b, 18),
-    ('ftw-black-agnus', 'ethereum', 'FTW', 0x306fD3e7b169Aa4ee19412323e1a5995B8c1a1f4, 18)
+    ('ftw-black-agnus', 'ethereum', 'FTW', 0x306fD3e7b169Aa4ee19412323e1a5995B8c1a1f4, 18),
+    ('synt-synternet','ethereum','SYNT',0xda987c655ebc38c801db64a8608bc1aa56cd9a31, 18),
+    ('babydoge-baby-doge-coin', 'ethereum', 'BABYDOGE', 0xac57de9c1a09fec648e93eb98875b212db0d460b, 9),
+    ('usdz-anzen-usdz', 'ethereum', 'USDZ', 0xa469b7ee9ee773642b3e93e842e5d9b5baa10067, 18),
+    ('lbtc-lombard-staked-btc', 'ethereum', 'LBTC', 0x8236a87084f8b84306f72007f36f2618a5634494, 8)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

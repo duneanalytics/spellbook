@@ -12,7 +12,7 @@ models:
       project: uniswap
       contributors: jeff-dude, masquot, soispoke, mtitus6
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'uniswap', 'v3' ]
+      tags: ["arbitrum", "dex", "trades", "uniswap", "v3"]
     description: "uniswap arbitrum v3 base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -31,7 +31,7 @@ models:
       project: uniswap
       contributors: Henrystats
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'uniswap', 'v2' ]
+      tags: ["arbitrum", "dex", "trades", "uniswap", "v2"]
     description: "uniswap arbitrum v2 base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -50,7 +50,7 @@ models:
       project: sushiswap
       contributors: Henrystats, tomfutago
     config:
-      tags: ['arbitrum', 'dex', 'trades', 'sushiswap', 'v1']
+      tags: ["arbitrum", "dex", "trades", "sushiswap", "v1"]
     description: "Sushiswap arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -62,7 +62,6 @@ models:
           filter:
             version: 1
 
-
   - name: sushiswap_v2_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -70,7 +69,7 @@ models:
       project: sushiswap
       contributors: tomfutago
     config:
-      tags: ['arbitrum', 'dex', 'trades', 'sushiswap', 'v2']
+      tags: ["arbitrum", "dex", "trades", "sushiswap", "v2"]
     description: "Sushiswap arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -82,7 +81,6 @@ models:
           filter:
             version: 2
 
-
   - name: airswap_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -90,7 +88,7 @@ models:
       project: airswap
       contributors: tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'airswap' ]
+      tags: ["arbitrum", "dex", "trades", "airswap"]
     description: "Airswap arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -100,7 +98,6 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('airswap_arbitrum_base_trades_seed')
 
-
   - name: camelot_v2_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -108,7 +105,7 @@ models:
       project: camelot
       contributors: ytoast, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'camelot', 'uniswap', 'v2' ]
+      tags: ["arbitrum", "dex", "trades", "camelot", "uniswap", "v2"]
     description: "Camelot Arbitrum v2 base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -120,7 +117,6 @@ models:
           filter:
             version: 2
 
-
   - name: camelot_v3_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -128,7 +124,7 @@ models:
       project: camelot
       contributors: whale_hunter, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'camelot', 'uniswap', 'v3' ]
+      tags: ["arbitrum", "dex", "trades", "camelot", "uniswap", "v3"]
     description: "Camelot Arbitrum v2 base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -140,7 +136,6 @@ models:
           filter:
             version: 3
 
-
   - name: arbswap_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -148,7 +143,7 @@ models:
       project: arbswap
       contributors: chrispearcx, hosuke, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'arbswap' ]
+      tags: ["arbitrum", "dex", "trades", "arbswap"]
     description: "Arbswap arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -158,7 +153,6 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('arbswap_arbitrum_base_trades_seed')
 
-
   - name: trader_joe_v2_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -166,7 +160,7 @@ models:
       project: trader_joe
       contributors: hsrvc, pecio222, hosuke
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'trader_joe', 'v2' ]
+      tags: ["arbitrum", "dex", "trades", "trader_joe", "v2"]
     description: "Trader Joe arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -178,7 +172,6 @@ models:
           filter:
             version: 2
 
-
   - name: trader_joe_v2_1_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -186,7 +179,7 @@ models:
       project: trader_joe
       contributors: chef_seaweed
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'trader_joe', 'v2.1' ]
+      tags: ["arbitrum", "dex", "trades", "trader_joe", "v2.1"]
     description: "Trader Joe arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -205,7 +198,7 @@ models:
       project: trader_joe
       contributors: chef_seaweed
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'trader_joe', 'v2.2' ]
+      tags: ["arbitrum", "dex", "trades", "trader_joe", "v2.2"]
     description: "Trader Joe arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -217,7 +210,6 @@ models:
           filter:
             version: 2.2
 
-
   - name: pancakeswap_v2_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -225,7 +217,7 @@ models:
       project: pancakeswap
       contributors: chef_seaweed, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
+      tags: ["arbitrum", "dex", "trades", "pancakeswap", "uniswap", "v2"]
     description: "Pancakeswap Arbitrum v2 base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -239,7 +231,6 @@ models:
               - 2
               - stableswap
 
-
   - name: balancer_v2_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -247,7 +238,7 @@ models:
       project: balancer
       contributors: bizzyvinci, thetroyharris, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'balancer' ]
+      tags: ["arbitrum", "dex", "trades", "balancer"]
     description: "Balancer v2 arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -259,7 +250,6 @@ models:
           filter:
             version: 2
 
-
   - name: pancakeswap_v3_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -267,7 +257,7 @@ models:
       project: pancakeswap
       contributors: chef_seaweed, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v3' ]
+      tags: ["arbitrum", "dex", "trades", "pancakeswap", "uniswap", "v3"]
     description: "Pancakeswap Arbitrum v3 base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -279,7 +269,6 @@ models:
           filter:
             version: 3
 
-
   - name: dodo_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -287,7 +276,7 @@ models:
       project: dodo
       contributors: owen05, scoffie, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'dodo' ]
+      tags: ["arbitrum", "dex", "trades", "dodo"]
     description: "Dodo Arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -303,7 +292,6 @@ models:
               - 2_dpp
               - 2_dsp
 
-
   - name: gmx_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -311,7 +299,7 @@ models:
       project: gmx
       contributors: chef_seaweed, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'gmx' ]
+      tags: ["arbitrum", "dex", "trades", "gmx"]
     description: "GMX Arbitrum v3 base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -321,7 +309,6 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('gmx_arbitrum_base_trades_seed')
 
-
   - name: integral_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -329,7 +316,7 @@ models:
       project: integral
       contributors: integralhq, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'integral', 'uniswap', 'v2' ]
+      tags: ["arbitrum", "dex", "trades", "integral", "uniswap", "v2"]
     description: "Integral Arbitrum v3 base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -339,7 +326,6 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('integral_arbitrum_base_trades_seed')
 
-
   - name: clipper_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -347,7 +333,7 @@ models:
       project: clipper
       contributors: 0xRob, amalashkevich, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'clipper' ]
+      tags: ["arbitrum", "dex", "trades", "clipper"]
     description: "clipper Arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -363,7 +349,6 @@ models:
               - 1
               - 2
 
-
   - name: kyberswap_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -371,7 +356,7 @@ models:
       project: kyberswap
       contributors: ppclunghe, gregshestakovlido, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
+      tags: ["arbitrum", "dex", "trades", "kyberswap", "uniswap", "v2"]
     description: "kyberswap Arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -386,7 +371,6 @@ models:
               - elastic
               - elastic_2
 
-
   - name: xchange_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -394,7 +378,7 @@ models:
       project: xchange
       contributors: mike-x7f, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
+      tags: ["arbitrum", "dex", "trades", "xchange", "uniswap", "v2"]
     description: "xchange Arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -404,7 +388,6 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('xchange_arbitrum_base_trades_seed')
 
-
   - name: ramses_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -412,7 +395,7 @@ models:
       project: ramses
       contributors: echovl, discochuck
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'ramses', 'uniswap', 'v2' ]
+      tags: ["arbitrum", "dex", "trades", "ramses", "uniswap", "v2"]
     description: "Ramses Arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -433,7 +416,7 @@ models:
       project: fraxswap
       contributors: LLDAO
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'fraxswap' ]
+      tags: ["arbitrum", "dex", "trades", "fraxswap"]
     description: "Fraxswap arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -450,7 +433,7 @@ models:
       project: chronos
       contributors: LLDAO
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'chronos']
+      tags: ["arbitrum", "dex", "trades", "chronos"]
     description: "Chronos arbitrum  base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -467,7 +450,7 @@ models:
       project: zyberswap
       contributors: LLDAO
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'zyberswap']
+      tags: ["arbitrum", "dex", "trades", "zyberswap"]
     description: "Zyberswap arbitrum  base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -484,7 +467,7 @@ models:
       project: solidlizard
       contributors: LLDAO
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'solidlizard']
+      tags: ["arbitrum", "dex", "trades", "solidlizard"]
     description: "Solidlizard arbitrum  base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -494,7 +477,6 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('solidlizard_arbitrum_base_trades_seed')
 
-
   - name: rubicon_arbitrum_base_trades
     meta:
       blockchain: arbitrum
@@ -502,7 +484,7 @@ models:
       project: rubicon
       contributors: denver, tomfutago
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'rubicon' ]
+      tags: ["arbitrum", "dex", "trades", "rubicon"]
     description: "rubicon Arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -519,7 +501,7 @@ models:
       project: woofi
       contributors: LLDAO
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'woofi']
+      tags: ["arbitrum", "dex", "trades", "woofi"]
     description: "woofi Arbitrum  base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -536,7 +518,7 @@ models:
       project: smardex
       contributors: LLDAO
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'smardex']
+      tags: ["arbitrum", "dex", "trades", "smardex"]
     description: "smardex Arbitrum  base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -553,7 +535,7 @@ models:
       project: oasisswap
       contributors: LLDAO
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'oasisswap']
+      tags: ["arbitrum", "dex", "trades", "oasisswap"]
     description: "oasisswap Arbitrum  base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -570,7 +552,7 @@ models:
       project: swaap
       contributors: LLDAO
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'swaap', 'v2']
+      tags: ["arbitrum", "dex", "trades", "swaap", "v2"]
     description: "swaap v2 arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -589,7 +571,7 @@ models:
       project: apeswap
       contributors: LLDAO
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'apeswap']
+      tags: ["arbitrum", "dex", "trades", "apeswap"]
     description: "apeswap Arbitrum  base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -606,9 +588,9 @@ models:
       pproject: zigzag
       contributors: jeff-dude, masquot, soispoke, mtitus6, hosuke
     config:
-        tags: [ 'arbitrum','trades', 'zigzag','dex' ]
+      tags: ["arbitrum", "trades", "zigzag", "dex"]
     description: >
-          Zigzag V1 contract trades on Arbitrum
+      Zigzag V1 contract trades on Arbitrum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -624,7 +606,7 @@ models:
       project: gridex
       contributors: LLDAO
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'gridex']
+      tags: ["arbitrum", "dex", "trades", "gridex"]
     description: "gridex Arbitrum  base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -641,7 +623,7 @@ models:
       project: sterling_finance
       contributors: ARDev097
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'sterling_finance']
+      tags: ["arbitrum", "dex", "trades", "sterling_finance"]
     description: "sterling_finance Arbitrum  base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -658,7 +640,7 @@ models:
       project: sharkyswap
       contributors: ARDev097
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'sharkyswap']
+      tags: ["arbitrum", "dex", "trades", "sharkyswap"]
     description: "sharkyswap Arbitrum  base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -675,7 +657,7 @@ models:
       project: auragi
       contributors: archie
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'auragi']
+      tags: ["arbitrum", "dex", "trades", "auragi"]
     description: "auragi Arbitrum  base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -692,7 +674,7 @@ models:
       project: wombatexchange
       contributors:
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'wombat_exchange' ]
+      tags: ["arbitrum", "dex", "trades", "wombat_exchange"]
     description: "wombatexchange arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -709,7 +691,7 @@ models:
       project: solidly
       contributors: SolidlyLabs
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'solidly' ]
+      tags: ["arbitrum", "dex", "trades", "solidly"]
     description: "solidly v3 arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -726,7 +708,7 @@ models:
       project: dackieswap
       contributors: blanchemaria6
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'dackieswap' ]
+      tags: ["arbitrum", "dex", "trades", "dackieswap"]
     description: "dackieswap v3 arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -745,7 +727,7 @@ models:
       project: dackieswap
       contributors: blanchemaria6
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'dackieswap' ]
+      tags: ["arbitrum", "dex", "trades", "dackieswap"]
     description: "dackieswap v2 arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -764,7 +746,7 @@ models:
       project: maverick
       contributors: get620v
     config:
-      tags: [ 'arbitrum', 'dex', 'trades', 'maverick' ]
+      tags: ["arbitrum", "dex", "trades", "maverick"]
     description: "Maverick arbitrum base trades"
     tests:
       - dbt_utils.unique_combination_of_columns:
@@ -775,3 +757,18 @@ models:
           seed_file: ref('maverick_arbitrum_base_trades_seed')
           filter:
             version: 2
+
+  - name: valantis_hot_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: valantis
+      contributors: 0xrusowsky
+    config:
+      tags: ["arbitrum", "dex", "trades", "valantis", "arrakis", "hot"]
+    description: "hot-amm arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index

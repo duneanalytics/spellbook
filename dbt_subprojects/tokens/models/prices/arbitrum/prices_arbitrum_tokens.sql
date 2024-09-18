@@ -226,5 +226,6 @@ FROM
     ('catch-spacecatch', 'arbitrum', 'CATCH', 0xf0a479c9c3378638ec603b8b6b0d75903902550b, 18),
     ('tap-taptoken', 'arbitrum', 'TAP', 0x2c650dab03a59332e2e0c0c4a7f726913e5028c1, 18),
     ('shibai-aishiba', 'arbitrum', 'SHIBAI', 0xfa296fca3c7dba4a92a42ec0b5e2138da3b29050, 6),
-    ('usdm-mountain-protocol-usd', 'arbitrum', 'USDM', 0x59d9356e565ab3a36dd77763fc0d87feaf85508c, 18)
+    ('usdm-mountain-protocol-usd', 'arbitrum', 'USDM', 0x59d9356e565ab3a36dd77763fc0d87feaf85508c, 18),
+    ('usdz-anzen-usdz', 'arbitrum', 'USDZ', 0x5018609ab477cc502e170a5accf5312b86a4b94f, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
