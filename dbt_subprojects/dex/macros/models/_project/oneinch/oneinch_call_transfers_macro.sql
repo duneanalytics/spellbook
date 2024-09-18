@@ -89,7 +89,7 @@ meta as (
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
         {% else %}
-            block_time >= greatest((select first_deploy_at from meta), timestamp '2024-09-16')
+            block_time >= greatest((select first_deploy_at from meta), timestamp {{ oneinch_easy_date() }})
         {% endif %}
 )
 
