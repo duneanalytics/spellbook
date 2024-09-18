@@ -11,7 +11,7 @@
 }}
 
 with
-stablecoin_arbitrum_tokens as (
+stablecoin_tokens as (
   select
     symbol,
     contract_address
@@ -32,5 +32,5 @@ select
     t.symbol
     ,b.*
 from balances b
-left join stablecoin_arbitrum_tokens t
-    on b.token_address = t.token_address
+left join stablecoin_tokens t
+    on b.token_address = t.contract_address
