@@ -91,7 +91,7 @@ with tbl_all_logs AS (
         logs.block_time, 
         logs.block_number,
         index, 
-        bytearray_substring(logs.topic2,13,20) as taker,
+        coalesce(bytearray_substring(logs.topic2,13,20), first_value(bytearray_substring(logs.topic1,13,20)) over (partition by logs.tx_hash order by index) ) as taker,
         logs.contract_address as maker_token,  
         first_value(logs.contract_address) over (partition by logs.tx_hash order by index) as taker_token, 
         first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) ) over (partition by logs.tx_hash order by index) as taker_amount, 
@@ -130,14 +130,26 @@ with tbl_all_logs AS (
 
 
 tokens AS (
-    SELECT DISTINCT 
-        te.* 
-    FROM 
-        {{ source('tokens', 'erc20') }} AS te
-    JOIN 
-        tbl_trades ON te.contract_address = taker_token OR te.contract_address = maker_token
-    WHERE 
-        te.blockchain = 'linea'
+    with token_list as (
+        select 
+            distinct maker_token as token
+        from 
+            tbl_trades 
+        
+        union distinct 
+        
+        select 
+            distinct taker_token as token 
+        from tbl_trades 
+        ) 
+
+        select * 
+        from 
+            token_list tl 
+        join 
+            {{ source('tokens', 'erc20') }} AS te ON te.contract_address = tl.token
+        WHERE 
+            te.blockchain = 'linea'
 ),
 
 prices AS (
@@ -194,7 +206,7 @@ results AS (
         "from" AS tx_from,
         "to" AS tx_to,
         trades.index AS tx_index,
-        taker ,
+        case when varbinary_substring(tr.data,1,4) = 0x500c22bc then "from" else taker end as taker,
         CAST(NULL AS varbinary) AS maker,
         taker_token,
         pt.price,

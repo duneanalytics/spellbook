@@ -95,7 +95,7 @@ with tbl_all_logs AS (
                     (varbinary_substring(logs.topic2, 13, 20) = first_value(bytearray_substring(logs.topic1,13,20)) over (partition by logs.tx_hash order by index) ) or
                      topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65) 
                 then 1 end as valid,
-        bytearray_substring(logs.topic2,13,20) as taker,
+        coalesce(bytearray_substring(logs.topic2,13,20), first_value(bytearray_substring(logs.topic1,13,20)) over (partition by logs.tx_hash order by index) ) as taker,
         logs.contract_address as maker_token,  
         first_value(logs.contract_address) over (partition by logs.tx_hash order by index) as taker_token, 
         first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) ) over (partition by logs.tx_hash order by index) as taker_amount, 
@@ -157,7 +157,7 @@ tokens AS (
         join 
             {{ source('tokens', 'erc20') }} AS te ON te.contract_address = tl.token
         WHERE 
-            te.blockchain = '{{blockchain}}'
+            te.blockchain = 'base'
 ),
 
 prices AS (
@@ -175,7 +175,7 @@ prices AS (
             AND minute >= DATE '{{zeroex_settler_start_date}}'
         {% endif %}
 ),
-/*
+
 fills as (
         with signatures as (
         select distinct signature  
@@ -202,7 +202,7 @@ fills as (
         {% endif %}
         group by 1,2,3
         ),
-*/
+
 results AS (
     SELECT
         trades.block_time,
@@ -214,7 +214,7 @@ results AS (
         "from" AS tx_from,
         "to" AS tx_to,
         trades.index AS tx_index,
-        taker ,
+        case when varbinary_substring(tr.data,1,4) = 0x500c22bc then "from" else taker end as taker,
         CAST(NULL AS varbinary) AS maker,
         taker_token,
         pt.price,
@@ -233,8 +233,8 @@ results AS (
         tbl_trades trades
     JOIN 
         {{ source('base', 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
---    LEFT JOIN 
---        fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number 
+    LEFT JOIN 
+        fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number 
     LEFT JOIN 
         tokens tt ON tt.blockchain = 'base' AND tt.contract_address = taker_token
     LEFT JOIN 
