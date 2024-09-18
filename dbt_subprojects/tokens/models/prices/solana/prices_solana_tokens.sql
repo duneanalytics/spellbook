@@ -699,5 +699,6 @@ FROM
         ('mother-mother-iggy', 'solana', 'MOTHER', '3S8qX1MsMqRbiwKg2cQyx7nis1oHMgaCuc9c4VfvVdPN', 6),
         ('mumu1-mumu-the-bull', 'solana', 'MUMU', '5LafQUrVco6o7KMz42eqVEJ9LW31StPyGjeeu5sKoMtA', 6),
         ('nub-nubcat','solana', 'NUB', 'GtDZKAqvMZMnti46ZewMiXCa4oXF4bZxwQPoKzXPFxZn', 9),
-        ('bunk-bunkee', 'solana', 'BUNK', '2nhjjqSkA8FYCUdJvQhYjbtZdPjZbNo8VtNKTkJ3hncb', 6)
+        ('bunk-bunkee', 'solana', 'BUNK', '2nhjjqSkA8FYCUdJvQhYjbtZdPjZbNo8VtNKTkJ3hncb', 6),
+        ('maneki-maneki', 'solana', 'MANEKI', '25hAyBQfoDhfWx9ay6rarbgvWGwDdNqcHsXS3jQ3mTDJ', 5)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
