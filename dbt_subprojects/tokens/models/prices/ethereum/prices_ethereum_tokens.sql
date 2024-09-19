@@ -1837,7 +1837,8 @@ FROM
     ('synt-synternet','ethereum','SYNT',0xda987c655ebc38c801db64a8608bc1aa56cd9a31, 18),
     ('babydoge-baby-doge-coin', 'ethereum', 'BABYDOGE', 0xac57de9c1a09fec648e93eb98875b212db0d460b, 9),
     ('usdz-anzen-usdz', 'ethereum', 'USDZ', 0xa469b7ee9ee773642b3e93e842e5d9b5baa10067, 18),
-    ('lbtc-lombard-staked-btc', 'ethereum', 'LBTC', 0x8236a87084f8b84306f72007f36f2618a5634494, 8)
+    ('lbtc-lombard-staked-btc', 'ethereum', 'LBTC', 0x8236a87084f8b84306f72007f36f2618a5634494, 8),
+    ('zeta-zetachain', 'bnb', 'ZETA', 0xf091867ec603a6628ed83d274e835539d82e9cc8, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
