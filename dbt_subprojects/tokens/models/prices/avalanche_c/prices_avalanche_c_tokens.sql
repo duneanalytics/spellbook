@@ -105,5 +105,6 @@ FROM
     ('klo-kalao', 'avalanche_c', 'KLO', 0xb27c8941a7Df8958A1778c0259f76D1F8B711C35, 18),
     ('steak-steakhut-finance', 'avalanche_c', 'STEAK', 0xb279f8DD152B99Ec1D84A489D32c35bC0C7F5674, 18),
     ('ausd-agora-dollar', 'avalanche_c', 'AUSD', 0x00000000eFE302BEAA2b3e6e1b18d08D69a9012a, 6),
-    ('ggp-gogopool', 'avalanche_c', 'GGP', 0x69260B9483F9871ca57f81A90D91E2F96c2Cd11d, 18)
+    ('ggp-gogopool', 'avalanche_c', 'GGP', 0x69260B9483F9871ca57f81A90D91E2F96c2Cd11d, 18),
+    ('ampl-ampleforth', 'avalanche_c', 'AMPL', 0x027dbcA046ca156De9622cD1e2D907d375e53aa7, 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
