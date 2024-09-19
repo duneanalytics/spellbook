@@ -15,8 +15,8 @@
                         contributors = \'["danielpartida"]\') }}'
     )
 }}
--- TODO: Change start date of the project
-{% set project_start_date = '2023-10-15' %}
+
+{% set project_start_date = '2023-07-12' %}
 
 select
     'mantle' as blockchain,
