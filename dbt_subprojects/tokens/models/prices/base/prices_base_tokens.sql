@@ -167,5 +167,6 @@ FROM
     ('albert-albert-the-alien','base','ALBERT',0x0c067fc190cde145b0c537765a78d4e19873a5cc, 18),
     ('tn100x-tn100x','base','TN100X',0x5b5dee44552546ecea05edea01dcd7be7aa6144a, 18),
     ('rdat-rdatadao','base','RDAT',0x4498cd8ba045e00673402353f5a4347562707e7d, 18),
-    ('usdz-anzen-usdz', 'base', 'USDZ',0x04d5ddf5f3a8939889f11e97f8c4bb48317f1938, 18)
+    ('usdz-anzen-usdz', 'base', 'USDZ',0x04d5ddf5f3a8939889f11e97f8c4bb48317f1938, 18),
+    ('moxie-moxie', 'base', 'MOXIE',0x8C9037D1Ef5c6D1f6816278C7AAF5491d24CD527, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
