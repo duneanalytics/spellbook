@@ -102,5 +102,6 @@ FROM
     ('zro-layerzero', 'avalanche_c', 'ZRO', 0x6985884C4392D348587B19cb9eAAf157F13271cd, 18),
     ('tech-numbergouptech', 'avalanche_c', 'TECH', 0x5Ac04b69bDE6f67C0bd5D6bA6fD5D816548b066a, 18),
     ('wbtc-wrapped-bitcoin', 'avalanche_c', 'WBTC', 0x408D4cD0ADb7ceBd1F1A1C33A0Ba2098E1295bAB, 8),
-    ('klo-kalao', 'avalanche_c', 'KLO', 0xb27c8941a7Df8958A1778c0259f76D1F8B711C35, 18)
+    ('klo-kalao', 'avalanche_c', 'KLO', 0xb27c8941a7Df8958A1778c0259f76D1F8B711C35, 18),
+    ('steak-steakhut-finance', 'avalanche_c', 'STEAK', 0xb279f8DD152B99Ec1D84A489D32c35bC0C7F5674, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
