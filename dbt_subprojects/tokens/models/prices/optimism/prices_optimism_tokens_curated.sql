@@ -133,5 +133,6 @@ FROM
     ('rseth-rseth', 'rsETH', 0x4186bfc76e2e237523cbc30fd220fe055156b41f, 18),
     ('dola-dola', 'DOLA',0x8ae125e8653821e851f12a49f7765db9a9ce7384, 18),
     ('wld-worldcoin', 'WLD',0xdc6ff44d5d932cbd77b52e5612ba0529dc6226f1, 18),
-    ('pendle-pendle', 'PENDLE',0xbc7b1ff1c6989f006a1185318ed4e7b5796e66e1, 18)
+    ('pendle-pendle', 'PENDLE',0xbc7b1ff1c6989f006a1185318ed4e7b5796e66e1, 18),
+    ('trb-tellor', 'TRB', 0xaf8ca653fa2772d58f4368b0a71980e9e3ceb888, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
