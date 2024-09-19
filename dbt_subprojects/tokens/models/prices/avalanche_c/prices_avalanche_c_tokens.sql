@@ -25,7 +25,7 @@ FROM
     ('dai-dai', 'avalanche_c', 'DAI', 0xd586e7f844cea2f87f50152665bcbc2c279d8d70, 18),
     ('usdc-usd-coin', 'avalanche_c', 'USDC', 0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e, 6),
     ('usdt-tether', 'avalanche_c', 'USDT', 0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7, 6),
-    ('wbtc-wrapped-bitcoin', 'avalanche_c', 'WBTC', 0x50b7545627a5162f82a992c33b87adc75187b218, 8),
+    ('wbtce-wrapped-btc-avalanche', 'avalanche_c', 'WBTC.e', 0x50b7545627a5162f82a992c33b87adc75187b218, 8),
     ('bets-betswirl', 'avalanche_c', 'BETS', 0xc763f8570a48c4c00c80b76107cbe744dda67b79, 18),
     ('thor-thor', 'avalanche_c', 'THOR', 0x8f47416cae600bccf9530e9f3aeaa06bdd1caa79, 18),
     ('weth-weth', 'avalanche_c', 'WETH.e', 0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab, 18),
