@@ -98,4 +98,5 @@ FROM
     ('stg-stargate-finance', 'avalanche_c', 'STG', 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590, 18),
     ('gmx-gmx', 'avalanche_c', 'GMX', 0x62edc0692BD897D2295872a9FFCac5425011c661, 18),
     ('beam-beam-token', 'avalanche_c', 'BEAM', 0x62D0A8458eD7719FDAF978fe5929C6D342B0bFcE, 18),
+    ('usdv-verified-usd', 'avalanche_c', 'USDV', 0x323665443CEf804A3b5206103304BD4872EA4253, 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
