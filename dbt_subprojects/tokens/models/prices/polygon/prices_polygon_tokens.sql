@@ -138,7 +138,7 @@ FROM
     ('next-connext-eth', 'polygon', 'NEXT', 0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8, 18),
     ('usdm-mountain-protocol-usd', 'polygon', 'USDM', 0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 18),
     ('crowd-crowdswap', 'polygon', 'CROWD', 0x483dd3425278c1f79f377f1034d9d2cae55648b6, 18),
-    ('trb-tellor', 'polygon', 'TRB', 0xe3322702bedaaed36cddab233360b939775ae5f1, 18), 
+    ('trb-tellor', 'polygon', 'TRB', 0xe3322702bedaaed36cddab233360b939775ae5f1, 18) 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0xef938b6da8576a896f6e0321ef80996f4890f9c4 -- DG, bad price feed
