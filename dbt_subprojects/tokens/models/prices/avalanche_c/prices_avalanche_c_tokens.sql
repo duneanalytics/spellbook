@@ -95,5 +95,6 @@ FROM
     ('bal-balancer', 'avalanche_c', 'BAL', 0xe15bcb9e0ea69e6ab9fa080c4c4a5632896298c3, 18),
     ('kimbo-kimbo', 'avalanche_c', 'KIMBO', 0x184ff13B3EBCB25Be44e860163A5D8391Dd568c1, 18),
     ('meow-meowcat-avax', 'avalanche_c', 'MEOW', 0x8aD25B0083C9879942A64f00F20a70D3278f6187, 18),
-    ('stg-stargate-finance', 'avalanche_c', 'STG', 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590, 18)
+    ('stg-stargate-finance', 'avalanche_c', 'STG', 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590, 18),
+    ('gmx-gmx', 'avalanche_c', 'GMX', 0x62edc0692BD897D2295872a9FFCac5425011c661, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
