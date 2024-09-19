@@ -93,5 +93,6 @@ FROM
     ('bawls-bawls-onu','avalanche_c','BAWLS',0x2da8312e2c08b79104c6b18ba26bc7065abec704,18),
     ('shrap-shrapnel', 'avalanche_c', 'SHRAP', 0xd402298a793948698b9a63311404fbbee944eafd, 18),
     ('bal-balancer', 'avalanche_c', 'BAL', 0xe15bcb9e0ea69e6ab9fa080c4c4a5632896298c3, 18),
-    ('kimbo-kimbo', 'avalanche_c', 'KIMBO', 0x184ff13B3EBCB25Be44e860163A5D8391Dd568c1, 18)
+    ('kimbo-kimbo', 'avalanche_c', 'KIMBO', 0x184ff13B3EBCB25Be44e860163A5D8391Dd568c1, 18),
+    ('meow-meowcat-avax', 'avalanche_c', 'MEOW', 0x8aD25B0083C9879942A64f00F20a70D3278f6187, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
