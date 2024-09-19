@@ -378,7 +378,7 @@ models:
   
   - name: nft_linea_transfers
     meta:
-      blockchain: linea
+      blockchain: scroll
       sector: nft
       contributors: couralex
     config:
