@@ -152,13 +152,16 @@ WITH trusted_tokens AS (
                 AND p.contract_address = tt.contract_address
 ), native_tokens AS (
         SELECT
-                token_id
-                , blockchain
-                , contract_address
-                , symbol
-                , decimals
+                p.token_id
+                , evm.blockchain
+                , {{ var('ETH_ERC20_ADDRESS') }} as contract_address -- 0x00..00
+                , p.symbol
+                , 18 as decimals
         FROM
-                {{ ref('prices_native_tokens') }}
+                {{ source('evms','info') }} evm
+        INNER JOIN
+                {{ ref('prices_native_tokens') }} p
+                on evm.native_token_symbol = p.symbol
 )
 SELECT
         *
