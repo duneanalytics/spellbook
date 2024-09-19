@@ -49,7 +49,6 @@ FROM
         , contract_address
         , decimals
     FROM {{ model }}
-    WHERE contract_address IS DISTINCT FROM 0x0000000000000000000000000000000000000000    -- safeguard as native tokens currently have null address
     {% if not loop.last %}
     UNION ALL
     {% endif %}

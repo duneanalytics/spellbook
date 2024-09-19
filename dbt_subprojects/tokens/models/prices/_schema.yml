@@ -19,8 +19,6 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract address of the token, if any"
-        tests:
-          - not_zero_address
       - &symbol
         name: symbol
         description: "Token symbol"
