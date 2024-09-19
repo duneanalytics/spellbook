@@ -2135,6 +2135,14 @@
       "created_at": "2024-09-19T06:29:42Z",
       "repoId": 237392204,
       "pullRequestNo": 6763
+    },
+    {
+      "name": "rudiafandi16",
+      "id": 53332703,
+      "comment_id": 2360666253,
+      "created_at": "2024-09-19T10:56:30Z",
+      "repoId": 237392204,
+      "pullRequestNo": 6767
     }
   ]
 }
