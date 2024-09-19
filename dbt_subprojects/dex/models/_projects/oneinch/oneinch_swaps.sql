@@ -77,12 +77,19 @@ tokens as (
         , contract_address
         , minute
         , price
-        , decimals
         , symbol
     from {{ source('prices', 'usd') }}
     {% if is_incremental() %}
         where {{ incremental_predicate('minute') }}
     {% endif %}
+)
+
+, decimals_cte as (
+    select 
+        blockchain as transfer_blockchain
+        , contract_address
+        , decimals
+    from {{ source('tokens', 'erc20') }}
 )
 
 , calls as (
@@ -206,6 +213,7 @@ tokens as (
         {% endif %}
     ) using(blockchain, block_number, tx_hash, call_trace_address) -- block_number is needed for performance
     left join prices using(transfer_blockchain, contract_address, minute)
+    left join decimals_cte using(transfer_blockchain, contract_address)
     left join tokens using(transfer_blockchain, contract_address)
     group by 1, 2, 3, 4, 5
 )
