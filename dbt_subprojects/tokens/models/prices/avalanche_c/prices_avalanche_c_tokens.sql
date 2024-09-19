@@ -108,5 +108,6 @@ FROM
     ('ggp-gogopool', 'avalanche_c', 'GGP', 0x69260B9483F9871ca57f81A90D91E2F96c2Cd11d, 18),
     ('ampl-ampleforth', 'avalanche_c', 'AMPL', 0x027dbcA046ca156De9622cD1e2D907d375e53aa7, 9),
     ('shrap-shrapnel', 'avalanche_c', 'SHRAP', 0xd402298a793948698b9a63311404FBBEe944eAfD, 18),
-    ('bls-bloodloop', 'avalanche_c', 'BLS', 0x46B9144771Cb3195D66e4EDA643a7493fADCAF9D, 18)
+    ('bls-bloodloop', 'avalanche_c', 'BLS', 0x46B9144771Cb3195D66e4EDA643a7493fADCAF9D, 18),
+    ('domi-domi', 'avalanche_c', 'DOMI', 0xFc6Da929c031162841370af240dEc19099861d3B, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
