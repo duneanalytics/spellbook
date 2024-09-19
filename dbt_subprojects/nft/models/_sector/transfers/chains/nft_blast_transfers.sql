@@ -13,7 +13,7 @@
 
 {{nft_transfers(
     blockchain='blast'
-    , blast_transactions = source('blast','transactions')
+    , base_transactions = source('blast','transactions')
     , erc721_transfers = source('erc721_blast','evt_transfer')
     , erc1155_single = source('erc1155_blast','evt_transfersingle')
     , erc1155_batch = source('erc1155_blast', 'evt_transferbatch')
