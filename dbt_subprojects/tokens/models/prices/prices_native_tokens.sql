@@ -15,7 +15,7 @@ SELECT
 FROM
 (
     VALUES
-
+    --maintain legacy native token approach for historical queries
     ('ada-cardano', null, 'ADA', null, null),
     ('apt-aptos', null, 'APT', null, null),
     ('ae-aeternity', null, 'AE', null, null),
@@ -83,5 +83,27 @@ FROM
     ('mode-mode', null, 'MODE', null,null),
     ('ton-toncoin', null, 'TON', null,null),
     ('strk-starknet', null, 'STRK', null,null),
-    ('kda-kadena', null, 'KDA', null, null)
+    ('kda-kadena', null, 'KDA', null, null),
+
+    --add new approach to native tokens to populate all fields, standardizing joins to prices regardless of token type
+    ('arb-arbitrum', 'arbitrum', 'ARB', 0x0000000000000000000000000000000000000000, 18),
+    ('avax-avalanche', 'avalanche_c', 'AVAX', 0x0000000000000000000000000000000000000000, 18),
+    ('eth-ethereum', 'base', 'ETH', 0x0000000000000000000000000000000000000000, 18),
+    ('eth-ethereum', 'blast', 'ETH', 0x0000000000000000000000000000000000000000, 18),
+    ('bnb-binance-coin', 'bnb', 'BNB', 0x0000000000000000000000000000000000000000, 18),
+    ('celo-celo', 'celo', 'CELO', 0x0000000000000000000000000000000000000000, 18),
+    ('eth-ethereum', 'ethereum', 'ETH', 0x0000000000000000000000000000000000000000, 18),
+    ('ftm-fantom', 'fantom', 'FTM', 0x0000000000000000000000000000000000000000, 18),
+    ('xdai-xdai', 'gnosis', 'xDAI', 0x0000000000000000000000000000000000000000, 18),
+    ('eth-ethereum', 'linea', 'ETH', 0x0000000000000000000000000000000000000000, 18),
+    ('mnt-mantle', 'mantle', 'MNT', 0x0000000000000000000000000000000000000000, 18),
+    ('eth-ethereum', 'nova', 'ETH', 0x0000000000000000000000000000000000000000, 18),
+    ('eth-ethereum', 'optimism', 'ETH', 0x0000000000000000000000000000000000000000, 18),
+    ('matic-polygon', 'polygon', 'POL', 0x0000000000000000000000000000000000000000, 18), --no full history for 'pol-polygon-ecosystem-token' API ID on coinpaprika
+    ('eth-ethereum', 'scroll', 'ETH', 0x0000000000000000000000000000000000000000, 18),
+    ('sei-sei', 'sei', 'SEI', 0x0000000000000000000000000000000000000000, 18),
+    ('sol-solana', 'solana', 'SOL', 0x0000000000000000000000000000000000000000, 9),
+    ('eth-ethereum', 'zkevm', 'ETH', 0x0000000000000000000000000000000000000000, 18),
+    ('zk-zksync', 'zksync', 'ZK', 0x0000000000000000000000000000000000000000, 18),
+    ('eth-ethereum', 'zora', 'ETH', 0x0000000000000000000000000000000000000000, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

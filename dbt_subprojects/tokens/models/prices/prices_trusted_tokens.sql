@@ -146,6 +146,9 @@ WITH trusted_tokens AS (
                 , decimals
         FROM
                 {{ ref('prices_native_tokens') }}
+        WHERE
+                blockchain is not null
+                AND contract_address = 0x0000000000000000000000000000000000000000 --if we edit address in prices_native_tokens, we need to update here
 )
 SELECT
         p.token_id
