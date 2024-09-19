@@ -1838,12 +1838,9 @@ FROM
     ('babydoge-baby-doge-coin', 'ethereum', 'BABYDOGE', 0xac57de9c1a09fec648e93eb98875b212db0d460b, 9),
     ('usdz-anzen-usdz', 'ethereum', 'USDZ', 0xa469b7ee9ee773642b3e93e842e5d9b5baa10067, 18),
     ('lbtc-lombard-staked-btc', 'ethereum', 'LBTC', 0x8236a87084f8b84306f72007f36f2618a5634494, 8),
-<<<<<<< patch-6
-    ('bubble-imaginary-ones', 'ethereum', 'BUBBLE', 0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3, 18)
-=======
+    ('bubble-imaginary-ones', 'ethereum', 'BUBBLE', 0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3, 18),
     ('zeta-zetachain', 'ethereum', 'ZETA', 0xf091867ec603a6628ed83d274e835539d82e9cc8, 18),
     ('euri-eurite', 'ethereum', 'EURI', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 18)
->>>>>>> main
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
