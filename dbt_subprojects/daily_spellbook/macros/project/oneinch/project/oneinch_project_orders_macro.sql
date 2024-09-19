@@ -80,6 +80,7 @@ logs as (
             , call_type
             , call_error
             , method
+            , auction
             , topic0
             , trade['trade'] as call_trade
             , trade['maker'] as call_maker
@@ -110,8 +111,7 @@ logs as (
             , input
             , output
         from (
-        {% for project, selectors in oneinch_project_orders_cfg_methods_macro().items() %}
-        {% for selector, method_data in selectors.items() %}
+        {% for item in oneinch_project_orders_cfg_methods_macro() %}
             select
                 blockchain
                 , project
@@ -129,35 +129,36 @@ logs as (
                 , gas_used as call_gas_used
                 , call_type
                 , error as call_error
-                , '{{ method_data["name"] }}' as method
-                , {{ method_data["event"] }} as topic0
-                , coalesce({{ method_data.get("number", "1") }}, 1) as call_trades -- total trades in the call
-                , transform(sequence(1, coalesce({{ method_data.get("number", "1") }}, 1)), x -> map_from_entries(array[
+                , '{{ item["name"] }}' as method
+                , {{ item.get("auction", "false") }} as auction
+                , {{ item.get("event", "null") }} as topic0
+                , coalesce({{ item.get("number", "1") }}, 1) as call_trades -- total trades in the call
+                , transform(sequence(1, coalesce({{ item.get("number", "1") }}, 1)), x -> map_from_entries(array[
                       ('trade',             try(to_big_endian_64(x)))
-                    , ('maker',             {{ method_data.get("maker", "null") }})
-                    , ('taker',             {{ method_data.get("taker", "null") }})
-                    , ('receiver',          {{ method_data.get("receiver", "null") }})
-                    , ('pool',              {{ method_data.get("pool", "null") }})
-                    , ('maker_asset',       {{ method_data.get("maker_asset", "null") }})
-                    , ('taker_asset',       {{ method_data.get("taker_asset", "null") }})
-                    , ('maker_max_amount',  {{ method_data.get("maker_max_amount", "null") }})
-                    , ('taker_max_amount',  {{ method_data.get("taker_max_amount", "null") }})
-                    , ('maker_min_amount',  {{ method_data.get("maker_min_amount", "null") }})
-                    , ('taker_min_amount',  {{ method_data.get("taker_min_amount", "null") }})
-                    , ('making_amount',     {{ method_data.get("making_amount", "null") }})
-                    , ('taking_amount',     {{ method_data.get("taking_amount", "null") }})
-                    , ('start',             {{ method_data.get("start", "null") }})
-                    , ('end',               {{ method_data.get("end", "null") }})
-                    , ('deadline',          {{ method_data.get("deadline", "null") }})
-                    , ('fee_asset',         {{ method_data.get("fee_asset", "null") }})
-                    , ('fee_max_amount',    {{ method_data.get("fee_max_amount", "null") }})
-                    , ('fee_min_amount',    {{ method_data.get("fee_min_amount", "null") }})
-                    , ('fee_amount',        {{ method_data.get("fee_amount", "null") }})
-                    , ('fee_receiver',      {{ method_data.get("fee_receiver", "null") }})
-                    , ('nonce',             {{ method_data.get("nonce", "null") }})
-                    , ('order_hash',        {{ method_data.get("order_hash", "null") }})
-                    , ('_maker_parts',      {{ method_data.get("_maker_parts", "0x01") }})
-                    , ('_taker_parts',      {{ method_data.get("_taker_parts", "0x01") }})
+                    , ('maker',             {{ item.get("maker", "null") }})
+                    , ('taker',             {{ item.get("taker", "null") }})
+                    , ('receiver',          {{ item.get("receiver", "null") }})
+                    , ('pool',              {{ item.get("pool", "null") }})
+                    , ('maker_asset',       {{ item.get("maker_asset", "null") }})
+                    , ('taker_asset',       {{ item.get("taker_asset", "null") }})
+                    , ('maker_max_amount',  {{ item.get("maker_max_amount", "null") }})
+                    , ('taker_max_amount',  {{ item.get("taker_max_amount", "null") }})
+                    , ('maker_min_amount',  {{ item.get("maker_min_amount", "null") }})
+                    , ('taker_min_amount',  {{ item.get("taker_min_amount", "null") }})
+                    , ('making_amount',     {{ item.get("making_amount", "null") }})
+                    , ('taking_amount',     {{ item.get("taking_amount", "null") }})
+                    , ('start',             {{ item.get("start", "null") }})
+                    , ('end',               {{ item.get("end", "null") }})
+                    , ('deadline',          {{ item.get("deadline", "null") }})
+                    , ('fee_asset',         {{ item.get("fee_asset", "null") }})
+                    , ('fee_max_amount',    {{ item.get("fee_max_amount", "null") }})
+                    , ('fee_min_amount',    {{ item.get("fee_min_amount", "null") }})
+                    , ('fee_amount',        {{ item.get("fee_amount", "null") }})
+                    , ('fee_receiver',      {{ item.get("fee_receiver", "null") }})
+                    , ('nonce',             {{ item.get("nonce", "null") }})
+                    , ('order_hash',        {{ item.get("order_hash", "null") }})
+                    , ('_maker_parts',      {{ item.get("_maker_parts", "0x01") }})
+                    , ('_taker_parts',      {{ item.get("_taker_parts", "0x01") }})
                 ])) as trades
                 , input
                 , output
@@ -167,16 +168,15 @@ logs as (
                 from {{ ref('oneinch_' + blockchain + '_mapped_contracts') }}
                 where
                     blockchain = '{{ blockchain }}'
-                    and '{{ project }}' in (project, tag)
+                    and project = '{{ item["project"] }}'
+                    and coalesce({{ item.get("tag", "null") }} = tag, true)
             ) using("to")
             where
                 {% if is_incremental() %}{{ incremental_predicate('block_time') }}
                 {% else %}block_time > greatest(first_created_at, timestamp '{{date_from}}'){% endif %}
-                and substr(input, 1, 4) = {{ selector }}
-                and {{ method_data.get("condition", "true") }}
+                and substr(input, 1, 4) = {{ item["selector"] }}
+                and {{ item.get("condition", "true") }}
 
-            {% if not loop.last %}union all{% endif %}
-        {% endfor %}
             {% if not loop.last %}union all{% endif %}
         {% endfor %}
         ), unnest(trades) as trades(trade)
@@ -245,7 +245,7 @@ select
     , project
     , tag
     , map_concat(flags, map_from_entries(array[
-        ('auction', coalesce(order_end - order_start, uint256 '0') > uint256 '0' or project in ('CoWSwap', 'Bebop'))
+        ('auction', coalesce(auction, false) and coalesce(try(order_end - order_start > uint256 '0'), true))
     ])) as flags
     , block_number
     , block_time
@@ -272,8 +272,8 @@ select
     , taker_max_amount
     , maker_min_amount
     , taker_min_amount
-    , coalesce(making_amount, if(order_start = uint256 '0' or order_start = order_end, maker_max_amount, maker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double))), maker_max_amount, maker_min_amount) as making_amount
-    , coalesce(taking_amount, if(order_start = uint256 '0' or order_start = order_end, taker_max_amount, taker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double))), taker_max_amount, taker_min_amount) as taking_amount
+    , coalesce(making_amount, try(if(order_start = uint256 '0' or order_start = order_end, maker_max_amount, maker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(maker_max_amount as double) - cast(maker_min_amount as double)))), maker_max_amount, maker_min_amount) as making_amount
+    , coalesce(taking_amount, try(if(order_start = uint256 '0' or order_start = order_end, taker_max_amount, taker_max_amount - cast(to_unixtime(block_time) - order_start as double) / (order_end - order_start) * (cast(taker_max_amount as double) - cast(taker_min_amount as double)))), taker_max_amount, taker_min_amount) as taking_amount
     , order_start
     , order_end
     , order_deadline

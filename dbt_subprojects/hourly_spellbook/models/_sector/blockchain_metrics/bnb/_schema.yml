@@ -10,16 +10,32 @@ models:
       - name: min_block_time
         description: "block_time of the first transaction initiated by the address"
 
-  - name: bnb_metrics
+  - name: bnb_transaction_metrics
     meta:
       blockchain: bnb
       sector: metrics
       contributors: 0xRob
     config:
       tags: [ 'bnb','metrics' ]
-    description: "fundamental blockchain metrics"
+    description: "fundamental blockchain transaction metrics"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - block_hour
+
+  - name: bnb_transaction_address_metrics
+    meta:
+      blockchain: bnb
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: [ 'bnb','metrics', 'address' ]
+    description: "fundamental blockchain transaction address metrics"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_hour
+            - from_address
+            - to_address

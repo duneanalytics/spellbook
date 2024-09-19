@@ -52,7 +52,7 @@ models:
   - name: prices_trusted_tokens
     meta:
       sector: prices
-      contributors: hosuke
+      contributors: hosuke, jeff-dude
     config:
       tags: [ 'prices', 'stability' ]
     description: "List of trusted tokens across blockchains"
@@ -62,9 +62,7 @@ models:
             - blockchain
             - contract_address
     columns:
-      - name: blockchain
-        description: "Native blockchain of the token"
-      - name: symbol
-        description: "Token symbol"
-      - name: contract_address
-        description: "Contract address of the token"
+      - *blockchain
+      - *contract_address
+      - *symbol
+      - *decimals

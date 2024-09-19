@@ -12,9 +12,9 @@
 
 {%
     set config_other_sources = [
-        {'version': '2_dvm', 'source': 'DVM_evt_DODOSwap'},
-        {'version': '2_dpp', 'source': 'DPP_evt_DODOSwap'},
-        {'version': '2_dsp', 'source': 'DSP_evt_DODOSwap'},
+        {'version': '2', 'source': 'DVM_evt_DODOSwap'},
+        {'version': '2', 'source': 'DPP_evt_DODOSwap'},
+        {'version': '2', 'source': 'DSP_evt_DODOSwap'},
     ]
 %}
 

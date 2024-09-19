@@ -1,0 +1,544 @@
+version: 2
+sources:
+  - name: aptos
+    description: tables in the aptos schema
+    tables:
+      - name: blocks
+        meta:
+          docs_slug: /aptos/blocks
+          short_description: no description yet for aptos.blocks. TBD
+
+        description: '{{ doc("aptos_blocks_doc") }}'
+        columns:
+          - name: block_height
+            description: The block height of the block in the Aptos blockchain.
+          - name: block_timestamp
+            description: The timestamp of the block in the Aptos blockchain.
+          - name: block_date
+            description: The date of the block in the Aptos blockchain.
+          - name: block_hash
+            description: The hash of the block in the Aptos blockchain.
+          - name: first_version
+            description: The first version number in the block. A version is a sequentially increasing number that increments for every transaction
+          - name: last_version
+            description: The last version number in the block. A version is a sequentially increasing number that increments for every transaction
+          - name: proposer
+            description: The address of the account that proposed the block.
+          - name: round
+            description: A round consists of achieving consensus on a block of transactions and their execution results.
+          - name: epoch
+            description: An epoch is the period of time between reconfigurations of the validator set and other administrative actions by the blockchain. On Aptos mainnet currently, it is every 2 hours.
+          - name: metadata_id
+            description: The metadata ID of the block in the Aptos blockchain.
+          - name: failed_proposer_indices
+            description: The indices of the validators who failed to propose the block.
+          - name: previous_block_votes_bitvec
+            description: Bit vector of the validators who voted for the previous block.
+          - name: transactions_count
+            description: The number of transactions in the block.
+      - name: events
+        meta:
+          docs_slug: /aptos/events
+          short_description: Table containing Aptos blockchain events
+
+        description: '{{ doc("aptos_events_doc") }}'
+        columns:
+          - name: block_height
+            description: The height of the block in the Aptos blockchain
+          - name: block_date
+            description: The date of the block
+          - name: block_timestamp
+            description: The timestamp of the block
+          - name: block_hash
+            description: The hash of the block in the Aptos blockchain
+          - name: block_first_version
+            description: The first version number in the block. A version is a sequentially increasing number that increments for every transaction
+          - name: block_last_version
+            description: The last version number in the block. A version is a sequentially increasing number that increments for every transaction
+          - name: block_proposer
+            description: The address of the account that proposed the block
+          - name: block_round
+            description: A round consists of achieving consensus on a block of transactions and their execution results
+          - name: block_epoch
+            description: An epoch is the period of time between reconfigurations of the validator set and other administrative actions by the blockchain. On Aptos mainnet currently, it is every 2 hours
+          - name: block_metadata_id
+            description: The metadata ID of the block in the Aptos blockchain
+          - name: block_failed_proposer_indices
+            description: The indices of the validators who failed to propose the block
+          - name: block_previous_block_votes_bitvec
+            description: Bit vector of the validators who voted for the previous block
+          - name: tx_index
+            description: The index of the transaction within the block
+          - name: tx_type
+            description: The type of the transaction
+          - name: tx_hash
+            description: The hash of the transaction
+          - name: tx_version
+            description: The version number of the transaction
+          - name: tx_gas_used
+            description: The amount of gas used by the transaction
+          - name: tx_vm_status
+            description: The status of the virtual machine after executing the transaction
+          - name: tx_success
+            description: Whether the transaction was successful or not
+          - name: tx_state_change_hash
+            description: The hash of the state changes caused by the transaction
+          - name: tx_event_root_hash
+            description: The root hash of the events emitted by the transaction
+          - name: tx_state_checkpoint_hash
+            description: The hash of the state checkpoint after the transaction
+          - name: tx_accumulator_root_hash
+            description: The root hash of the accumulator after the transaction
+          - name: event_index
+            description: The index of the event within the transaction
+          - name: event_type
+            description: The type of the event
+          - name: guid_account_address
+            description: The global unique identifier (GUID) of the account address linked to the event
+          - name: guid_creation_number
+            description: The creation number of the event's GUID
+          - name: event_sequence_number
+            description: The sequence number of the event for this GUID
+          - name: data
+            description: The data associated with the event
+      - name: move_modules
+        meta:
+          docs_slug: /aptos/move_modules
+          short_description: The Move modules deployed on Aptos
+        description: '{{ doc("aptos_move_modules_doc") }}'
+        columns:
+          - name: block_height
+            description: The height of the block containing the move module
+          - name: block_date
+            description: The date of the block containing the move module
+          - name: block_timestamp
+            description: The timestamp of the block containing the move module
+          - name: block_hash
+            description: The hash of the block containing the move module
+          - name: block_first_version
+            description: The first version number in the block containing the move module
+          - name: block_last_version
+            description: The last version number in the block containing the move module
+          - name: block_proposer
+            description: The proposer of the block containing the move module
+          - name: block_round
+            description: The round number of the block containing the move module
+          - name: block_epoch
+            description: The epoch number of the block containing the move module
+          - name: block_metadata_id
+            description: The metadata ID of the block containing the move module
+          - name: block_failed_proposer_indices
+            description: The indices of failed proposers for the block containing the move module
+          - name: block_previous_block_votes_bitvec
+            description: The bitvector of votes from the previous block
+          - name: tx_index
+            description: The index of the transaction within the block
+          - name: tx_type
+            description: The type of the transaction
+          - name: tx_hash
+            description: The hash of the transaction
+          - name: tx_version
+            description: The version number of the transaction
+          - name: tx_gas_used
+            description: The amount of gas used by the transaction
+          - name: tx_vm_status
+            description: The VM status of the transaction
+          - name: tx_success
+            description: Whether the transaction was successful
+          - name: tx_state_change_hash
+            description: The hash of the state changes caused by the transaction
+          - name: tx_event_root_hash
+            description: The root hash of the events emitted by the transaction
+          - name: tx_state_checkpoint_hash
+            description: The hash of the state checkpoint after the transaction
+          - name: tx_accumulator_root_hash
+            description: The root hash of the accumulator after the transaction
+          - name: write_set_change_index
+            description: The index of the write set change
+          - name: write_set_change_type
+            description: The type of the write set change
+          - name: move_state_key_hash
+            description: The hash of the Move state key
+          - name: move_is_deletion
+            description: Whether the Move operation is a deletion
+          - name: move_address
+            description: The address associated with the Move module
+          - name: move_module_address
+            description: The address of the Move module
+          - name: move_module_bytecode
+            description: The bytecode of the Move module
+          - name: move_module_module_name
+            description: The name of the Move module
+          - name: move_module_friends
+            description: The friends of the Move module
+          - name: move_module_exposed_functions
+            description: The exposed functions of the Move module
+          - name: move_module_structs
+            description: The structs defined in the Move module
+      - name: move_resources
+        meta:
+          docs_slug: /aptos/move_resources
+          short_description: The Move resources deployed on Aptos
+        description: '{{ doc("aptos_move_resources_doc") }}'
+        columns:
+          - name: block_height
+            description: The height of the block containing the move resource
+          - name: block_date
+            description: The date of the block containing the move resource
+          - name: block_timestamp
+            description: The timestamp of the block containing the move resource
+          - name: block_hash
+            description: The hash of the block containing the move resource
+          - name: block_first_version
+            description: The first version number in the block containing the move resource
+          - name: block_last_version
+            description: The last version number in the block containing the move resource
+          - name: block_proposer
+            description: The proposer of the block containing the move resource
+          - name: block_round
+            description: The round number of the block containing the move resource
+          - name: block_epoch
+            description: The epoch number of the block containing the move resource
+          - name: block_metadata_id
+            description: The metadata ID of the block containing the move resource
+          - name: block_failed_proposer_indices
+            description: The indices of failed proposers for the block containing the move resource
+          - name: block_previous_block_votes_bitvec
+            description: The bitvector of votes from the previous block
+          - name: tx_index
+            description: The index of the transaction within the block
+          - name: tx_type
+            description: The type of the transaction
+          - name: tx_hash
+            description: The hash of the transaction
+          - name: tx_version
+            description: The version number of the transaction
+          - name: tx_gas_used
+            description: The amount of gas used by the transaction
+          - name: tx_vm_status
+            description: The VM status of the transaction
+          - name: tx_success
+            description: Whether the transaction was successful
+          - name: tx_state_change_hash
+            description: The hash of the state changes caused by the transaction
+          - name: tx_event_root_hash
+            description: The root hash of the events emitted by the transaction
+          - name: tx_state_checkpoint_hash
+            description: The hash of the state checkpoint after the transaction
+          - name: tx_accumulator_root_hash
+            description: The root hash of the accumulator after the transaction
+          - name: write_set_change_index
+            description: The index of the write set change
+          - name: write_set_change_type
+            description: The type of the write set change
+          - name: move_state_key_hash
+            description: The hash of the Move state key
+          - name: move_is_deletion
+            description: Whether the Move operation is a deletion
+          - name: move_data
+            description: The data associated with the Move resource
+          - name: move_address
+            description: The address associated with the Move resource
+          - name: move_module_address
+            description: The address of the Move module containing the resource
+          - name: move_resource_module
+            description: The name of the Move module containing the resource
+          - name: move_resource_name
+            description: The name of the Move resource
+          - name: move_resource_generic_type_params
+            description: The generic type parameters of the Move resource
+      - name: move_table_items
+        meta:
+          docs_slug: /aptos/move_table_items
+          short_description: Table items in Move tables on Aptos
+
+        description: '{{ doc("aptos_move_table_items_doc") }}'
+        columns:
+          - name: block_height
+            description: The height of the block containing the move table item
+          - name: block_date
+            description: The date of the block containing the move table item
+          - name: block_timestamp
+            description: The timestamp of the block containing the move table item
+          - name: block_hash
+            description: The hash of the block containing the move table item
+          - name: block_first_version
+            description: The first version number in the block containing the move table item
+          - name: block_last_version
+            description: The last version number in the block containing the move table item
+          - name: block_proposer
+            description: The proposer of the block containing the move table item
+          - name: block_round
+            description: The round number of the block containing the move table item
+          - name: block_epoch
+            description: The epoch number of the block containing the move table item
+          - name: block_metadata_id
+            description: The metadata ID of the block containing the move table item
+          - name: block_failed_proposer_indices
+            description: The indices of failed proposers for the block containing the move table item
+          - name: block_previous_block_votes_bitvec
+            description: The bitvector of votes from the previous block
+          - name: tx_index
+            description: The index of the transaction within the block
+          - name: tx_type
+            description: The type of the transaction
+          - name: tx_hash
+            description: The hash of the transaction
+          - name: tx_version
+            description: The version number of the transaction
+          - name: tx_gas_used
+            description: The amount of gas used by the transaction
+          - name: tx_vm_status
+            description: The VM status of the transaction
+          - name: tx_success
+            description: Whether the transaction was successful
+          - name: tx_state_change_hash
+            description: The hash of the state changes caused by the transaction
+          - name: tx_event_root_hash
+            description: The root hash of the events emitted by the transaction
+          - name: tx_state_checkpoint_hash
+            description: The hash of the state checkpoint after the transaction
+          - name: tx_accumulator_root_hash
+            description: The root hash of the accumulator after the transaction
+          - name: write_set_change_index
+            description: The index of the write set change
+          - name: write_set_change_type
+            description: The type of the write set change
+          - name: move_state_key_hash
+            description: The hash of the Move state key
+          - name: move_is_deletion
+            description: Whether the Move operation is a deletion
+          - name: move_table_item_handle
+            description: The handle of the Move table item
+          - name: move_table_item_key
+            description: The key of the Move table item
+          - name: move_table_item_value
+            description: The value of the Move table item
+          - name: move_data
+            description: The data associated with the Move table item
+      - name: signatures
+        meta:
+          docs_slug: /aptos/signatures
+          short_description: Signatures for transactions on Aptos
+        description: '{{ doc("aptos_signatures_doc") }}'
+        columns:
+          - name: block_height
+            description: The height of the block containing the signature
+          - name: block_date
+            description: The date of the block containing the signature
+          - name: block_timestamp
+            description: The timestamp of the block containing the signature
+          - name: block_hash
+            description: The hash of the block containing the signature
+          - name: block_first_version
+            description: The first version number in the block containing the signature
+          - name: block_last_version
+            description: The last version number in the block containing the signature
+          - name: block_proposer
+            description: The proposer of the block containing the signature
+          - name: block_round
+            description: The round number of the block containing the signature
+          - name: block_epoch
+            description: The epoch number of the block containing the signature
+          - name: block_metadata_id
+            description: The metadata ID of the block containing the signature
+          - name: block_failed_proposer_indices
+            description: The indices of failed proposers for the block containing the signature
+          - name: block_previous_block_votes_bitvec
+            description: The bitvector of votes from the previous block
+          - name: tx_index
+            description: The index of the transaction within the block
+          - name: tx_type
+            description: The type of the transaction
+          - name: tx_hash
+            description: The hash of the transaction
+          - name: tx_version
+            description: The version number of the transaction
+          - name: tx_gas_used
+            description: The amount of gas used by the transaction
+          - name: tx_vm_status
+            description: The VM status of the transaction
+          - name: tx_success
+            description: Whether the transaction was successful
+          - name: tx_state_change_hash
+            description: The hash of the state changes caused by the transaction
+          - name: tx_event_root_hash
+            description: The root hash of the events emitted by the transaction
+          - name: tx_state_checkpoint_hash
+            description: The hash of the state checkpoint after the transaction
+          - name: tx_accumulator_root_hash
+            description: The root hash of the accumulator after the transaction
+          - name: tx_timestamp
+            description: The timestamp of the transaction
+          - name: tx_sender
+            description: The address of the transaction sender
+          - name: tx_max_gas_amount
+            description: The maximum amount of gas allowed for the transaction
+          - name: tx_gas_unit_price
+            description: The price per unit of gas for the transaction
+          - name: tx_sequence_number
+            description: The sequence number of the transaction
+          - name: tx_expiration_timestamp_secs
+            description: The expiration timestamp of the transaction in seconds
+          - name: type
+            description: The type of the signature
+          - name: signer_type
+            description: The type of the signer
+          - name: signer_signature_type
+            description: The type of the signer's signature
+          - name: is_single_sender
+            description: Whether the transaction has a single sender
+          - name: signer_address
+            description: The address of the signer
+          - name: secondary_signer_index
+            description: The index of the secondary signer, if applicable
+          - name: public_key
+            description: The public key associated with the signature
+          - name: signature
+            description: The actual signature
+          - name: bitmap
+            description: The bitmap associated with the signature, if applicable
+          - name: bitmap_public_key_index
+            description: The index of the public key in the bitmap, if applicable
+          - name: threshold
+            description: The threshold for multi-signature transactions, if applicable
+      - name: transactions
+        meta:
+          docs_slug: /aptos/transactions
+          short_description: Transactions on the Aptos blockchain
+        description: '{{ doc("aptos_transactions_doc") }}'
+        columns:
+          - name: block_height
+            description: The height of the block containing the transaction
+          - name: block_date
+            description: The date of the block containing the transaction
+          - name: block_timestamp
+            description: The timestamp of the block containing the transaction
+          - name: block_hash
+            description: The hash of the block containing the transaction
+          - name: block_first_version
+            description: The first version number in the block containing the transaction
+          - name: block_last_version
+            description: The last version number in the block containing the transaction
+          - name: block_proposer
+            description: The proposer of the block containing the transaction
+          - name: block_round
+            description: The round number of the block containing the transaction
+          - name: block_epoch
+            description: The epoch number of the block containing the transaction
+          - name: block_metadata_id
+            description: The metadata ID of the block containing the transaction
+          - name: block_failed_proposer_indices
+            description: The indices of failed proposers for the block containing the transaction
+          - name: block_previous_block_votes_bitvec
+            description: The bitvector of votes from the previous block
+          - name: tx_index
+            description: The index of the transaction within the block
+          - name: tx_type
+            description: The type of the transaction
+          - name: hash
+            description: The hash of the transaction
+          - name: version
+            description: The version number of the transaction
+          - name: gas_used
+            description: The amount of gas used by the transaction
+          - name: vm_status
+            description: The VM status after executing the transaction
+          - name: success
+            description: Whether the transaction was successful
+          - name: state_change_hash
+            description: The hash of the state changes caused by the transaction
+          - name: event_root_hash
+            description: The root hash of the events emitted by the transaction
+          - name: state_checkpoint_hash
+            description: The hash of the state checkpoint after the transaction
+          - name: accumulator_root_hash
+            description: The root hash of the accumulator after the transaction
+          - name: events_count
+            description: The number of events emitted by the transaction
+          - name: changes_count
+            description: The number of state changes caused by the transaction
+      - name: user_transactions
+        meta:
+          docs_slug: /aptos/user_transactions
+          short_description: no description yet for aptos.user_transactions. TBD
+        description: '{{ doc("aptos_user_transactions_doc") }}'
+        columns:
+          - name: block_height
+            description: No description provided. TBD
+          - name: block_date
+            description: No description provided. TBD
+          - name: block_timestamp
+            description: No description provided. TBD
+          - name: block_hash
+            description: No description provided. TBD
+          - name: block_first_version
+            description: No description provided. TBD
+          - name: block_last_version
+            description: No description provided. TBD
+          - name: block_proposer
+            description: No description provided. TBD
+          - name: block_round
+            description: No description provided. TBD
+          - name: block_epoch
+            description: No description provided. TBD
+          - name: block_metadata_id
+            description: No description provided. TBD
+          - name: block_failed_proposer_indices
+            description: No description provided. TBD
+          - name: block_previous_block_votes_bitvec
+            description: No description provided. TBD
+          - name: tx_index
+            description: No description provided. TBD
+          - name: tx_type
+            description: No description provided. TBD
+          - name: hash
+            description: No description provided. TBD
+          - name: version
+            description: No description provided. TBD
+          - name: gas_used
+            description: No description provided. TBD
+          - name: vm_status
+            description: No description provided. TBD
+          - name: success
+            description: No description provided. TBD
+          - name: state_change_hash
+            description: No description provided. TBD
+          - name: event_root_hash
+            description: No description provided. TBD
+          - name: state_checkpoint_hash
+            description: No description provided. TBD
+          - name: accumulator_root_hash
+            description: No description provided. TBD
+          - name: timestamp
+            description: No description provided. TBD
+          - name: sender
+            description: No description provided. TBD
+          - name: max_gas_amount
+            description: No description provided. TBD
+          - name: gas_unit_price
+            description: No description provided. TBD
+          - name: sequence_number
+            description: No description provided. TBD
+          - name: expiration_timestamp_secs
+            description: No description provided. TBD
+          - name: events_count
+            description: No description provided. TBD
+          - name: changes_count
+            description: No description provided. TBD
+          - name: payload_type
+            description: No description provided. TBD
+          - name: entry_function_name
+            description: No description provided. TBD
+          - name: entry_function_module_name
+            description: No description provided. TBD
+          - name: entry_function_module_address
+            description: No description provided. TBD
+          - name: script_bytecode
+            description: No description provided. TBD
+          - name: script_abi
+            description: No description provided. TBD
+          - name: type_arguments
+            description: No description provided. TBD
+          - name: arguments
+            description: No description provided. TBD

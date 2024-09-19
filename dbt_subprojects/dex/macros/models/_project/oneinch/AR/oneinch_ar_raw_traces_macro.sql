@@ -11,7 +11,7 @@ with decoded_calls as (
             {% if is_incremental() %}
                 where {{ incremental_predicate('call_block_time') }}
             {% else %}
-                where call_block_time >= greatest(timestamp '{{ contract_data['start'] }}', timestamp '{{date_from}}')
+                where call_block_time >= greatest(timestamp '{{ contract_data['start'] }}', timestamp '{{date_from}}', timestamp {{ oneinch_easy_date() }})
             {% endif %}
             {% if not outer_loop.last or not loop.last %}
                 union all
@@ -44,7 +44,7 @@ with decoded_calls as (
         {% if is_incremental() %}
             {{ incremental_predicate('block_time') }}
         {% else %}
-            block_time >= timestamp '{{date_from}}'
+            block_time >= greatest(timestamp '{{ date_from }}', timestamp {{ oneinch_easy_date() }})
         {% endif %}
 )
 

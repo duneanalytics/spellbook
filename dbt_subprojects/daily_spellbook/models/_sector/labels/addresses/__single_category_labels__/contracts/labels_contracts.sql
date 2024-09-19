@@ -1,7 +1,7 @@
 {{config(
         
         alias = 'contracts',
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom", "polygon"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom", "polygon","base","linea","scroll","mantle","blast"]\',
                                     "sector",
                                     "labels",
                                     \'["soispoke"]\') }}')
@@ -102,3 +102,63 @@ SELECT 'polygon' as blockchain,
        'contracts' as model_name,
        'identifier' as label_type
 FROM {{ source('polygon','contracts') }} 
+UNION
+SELECT 'base' as blockchain,
+       address, 
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
+       'contracts' as category,
+       'rantum' as contributor,
+       'query' AS source,
+       date('2024-08-30') as created_at,
+       now() as updated_at,
+        'contracts' as model_name,
+       'identifier' as label_type
+FROM {{ source('base','contracts') }} 
+UNION
+SELECT 'linea' as blockchain,
+       address, 
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
+       'contracts' as category,
+       'rantum' as contributor,
+       'query' AS source,
+       date('2024-08-30') as created_at,
+       now() as updated_at,
+        'contracts' as model_name,
+       'identifier' as label_type
+FROM {{ source('linea','contracts') }} 
+UNION
+SELECT 'mantle' as blockchain,
+       address, 
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
+       'contracts' as category,
+       'rantum' as contributor,
+       'query' AS source,
+       date('2024-08-30') as created_at,
+       now() as updated_at,
+        'contracts' as model_name,
+       'identifier' as label_type
+FROM {{ source('mantle','contracts') }} 
+UNION
+SELECT 'blast' as blockchain,
+       address, 
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
+       'contracts' as category,
+       'rantum' as contributor,
+       'query' AS source,
+       date('2024-08-30') as created_at,
+       now() as updated_at,
+        'contracts' as model_name,
+       'identifier' as label_type
+FROM {{ source('blast','contracts') }} 
+UNION
+SELECT 'scroll' as blockchain,
+       address, 
+       CONCAT(UPPER(SUBSTR(namespace,1,1)),SUBSTR(namespace,2)) || ': ' || name as name,
+       'contracts' as category,
+       'rantum' as contributor,
+       'query' AS source,
+       date('2024-08-30') as created_at,
+       now() as updated_at,
+        'contracts' as model_name,
+       'identifier' as label_type
+FROM {{ source('scroll','contracts') }} 

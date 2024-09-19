@@ -5,9 +5,9 @@ models:
     meta:
       blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, mantle, optimism, fantom, polygon, base, blast, sepolia, sei, nova
       sector: tokens
-      contributors: hildobby, 0xManny, dot2dotseurat, soispoke, mtitus6, wuligy, angus_1, Henrystats, viniabussafi, jeff-dude
+      contributors: hildobby, 0xManny, dot2dotseurat, soispoke, mtitus6, wuligy, angus_1, Henrystats, viniabussafi, jeff-dude, rantum
     config:
-      tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'mantle', 'optimism', 'fantom', 'base', 'blast', 'sei', 'nova']
+      tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'mantle', 'optimism', 'fantom', 'base', 'blast', 'sei', 'nova', 'linea']
     description: >
         Crosschain ERC20 tokens
     tests:
@@ -63,3 +63,31 @@ models:
         description: "NFT collection symbol"
       - name: standard
         description: "NFT collection standard"
+
+  - name: tokens_erc20_stablecoins
+    meta:
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, base
+      sector: tokens
+      contributors: hildobby, synthquest
+    config:
+      tags: ['tokens','stablecoin', 'arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon','base']
+    description: >
+        Stablecoin (ERC20) tokens
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+    columns:
+      - name: blockchain
+        description: blockchain name
+      - name: contract_address
+        description: token contract address
+      - name: name
+        description: token backing
+      - name: symbol
+        description: token symbol
+      - name: decimal
+        description: token decimals
+      - name: backing
+        description: token backing

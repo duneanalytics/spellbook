@@ -14,7 +14,7 @@ models:
       blockchain: ethereum, arbitrum, gnosis, optimism, bnb, avalanche_c, fantom, polygon
       sector: labels
       category: contracts
-      contributors:  soispoke
+      contributors:  soispoke, rantum
     config:
       tags: ['query', 'labels', 'ethereum', 'contracts']
     description: "Dune contracts query labels across chains"

@@ -6,7 +6,7 @@ models:
       blockchain: bnb
       sector: tokens
       project: bep20
-      contributors: hildobby
+      contributors: hildobby, rantum
     config:
       tags: ['tokens', 'metadata', 'bep20', 'bnb']
     description: "BEP20 Token Addresses, Symbols and Decimals"
@@ -81,3 +81,26 @@ models:
         tests:
           - accepted_values:
               values: [ 'bep721', 'bep1155' ]
+
+  - name: tokens_bnb_erc20_stablecoins
+    meta:
+      blockchain: bnb
+      sector: stablecoins
+      contributors: synthquest
+    config:
+      tags: ['tokens', 'bnb', 'erc20', 'stablecoins']
+    description: >
+        Selection of stablecoin token addresses.
+    columns:
+      - name: blockchain
+        description: "Blockchain name"
+      - name: contract_address
+        description: "Stablecoin contract address"
+      - name: backing
+        description: "Stablecoin backing"
+      - name: symbol
+        description: "Stablecoin symbol"
+      - name: name
+        description: "Stablecoin project name"
+      - name: decimals
+        description: "Number of decimals"

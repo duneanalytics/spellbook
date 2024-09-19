@@ -4,14 +4,10 @@ sources:
   - name: dodo_ethereum
     description: >
       Decoded tables related to Dodo dex trades.
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: DODOV1Proxy01_evt_OrderHistory
         description: >
           Decoded table that shows Order History happening through a router contract number 1.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Ethereum address for the proxy contract used in transaction'
@@ -25,7 +21,6 @@ sources:
       - name: DODOV1Proxy02_evt_OrderHistory
         description: >
           Decoded table that shows Order History happening through a router contract number 2.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Ethereum address for the proxy contract used in transaction'
@@ -39,7 +34,6 @@ sources:
       - name: DODOV1Proxy03_evt_OrderHistory
         description: >
           Decoded table that shows Order History happening through a router contract number 3.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Ethereum address for the proxy contract used in transaction'
@@ -53,7 +47,6 @@ sources:
       - name: DODOV1Proxy04_evt_OrderHistory
         description: >
           Decoded table  that shows Order History happening through a router contract number 4.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Ethereum address for the proxy contract used in transaction'
@@ -67,7 +60,6 @@ sources:
       - name: DODOV2Proxy02_evt_OrderHistory
         description: >
           Decoded table  that shows Order History happening through a router contract number 5.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Ethereum address for the proxy contract used in transaction'
@@ -81,7 +73,6 @@ sources:
       - name: DODORouteProxy_evt_OrderHistory
         description: >
           Decoded table that shows Order History happening through a self_built_router contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Ethereum address for the proxy contract used in transaction'
@@ -95,7 +86,6 @@ sources:
       - name: DODOFeeRouteProxy_evt_OrderHistory
         description: >
           Decoded table that shows Order History happening through a fee_router contract.
-        loaded_at_field: evt_block_time
         columns:
           - name: contract_address
             description: 'Ethereum address for the proxy contract used in transaction'
