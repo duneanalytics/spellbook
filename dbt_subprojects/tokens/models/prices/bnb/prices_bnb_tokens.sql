@@ -277,7 +277,9 @@ FROM
     ('lovely-lovely-inu-finance', 'bnb', 'LOVELY', 0x9e24415d1e549ebc626a13a482bb117a2b43e9cf, 8),
     --('pvc-pvc-meta','bnb','PVC',0x75ca521892de7f2ecfb070cab545c250d0ceb7e3, 9), --token_id not found 
     ('bvsd-bvsd','bnb','BVSD',0x7f9ad7a5854658d984924e868187b2135514fb88, 18),
-    ('coco-coco-coin', 'bnb', 'COCO', 0xf563e86e461de100cfcfd8b65daa542d3d4b0550, 18)
+    ('coco-coco-coin', 'bnb', 'COCO', 0xf563e86e461de100cfcfd8b65daa542d3d4b0550, 18),
+    ('zeta-zetachain', 'bnb', 'ZETA', 0x0000028a2eb8346cd5c0267856ab7594b7a55308, 18),
+    ('euri-eurite', 'bnb', 'EURI', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.

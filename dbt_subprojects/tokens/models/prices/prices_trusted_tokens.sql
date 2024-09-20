@@ -137,16 +137,38 @@ WITH trusted_tokens AS (
                 , ('zksync', 0xbbeb516fb02a01611cbbe0453fe3c580d7281011)
                 , ('zora', 0x4200000000000000000000000000000000000006)
         ) AS t (blockchain, contract_address)
+), erc20 as (
+        SELECT
+                p.token_id
+                , p.blockchain
+                , p.contract_address
+                , p.symbol
+                , p.decimals
+        FROM
+                {{ ref('prices_tokens') }} AS p
+        INNER JOIN
+                trusted_tokens AS tt
+                ON p.blockchain = tt.blockchain
+                AND p.contract_address = tt.contract_address
+), native_tokens AS (
+        SELECT
+                p.token_id
+                , evm.blockchain
+                , {{ var('ETH_ERC20_ADDRESS') }} as contract_address -- 0x00..00
+                , p.symbol
+                , 18 as decimals
+        FROM
+                {{ source('evms','info') }} evm
+        INNER JOIN
+                {{ ref('prices_native_tokens') }} p
+                on evm.native_token_symbol = p.symbol
 )
 SELECT
-        p.token_id
-        , p.blockchain
-        , p.contract_address
-        , p.symbol
-        , p.decimals
+        *
 FROM
-        {{ ref('prices_tokens') }} AS p
-INNER JOIN
-        trusted_tokens AS tt
-        ON p.blockchain = tt.blockchain
-        AND p.contract_address = tt.contract_address
+        erc20
+UNION ALL
+SELECT
+        *
+FROM
+        native_tokens
