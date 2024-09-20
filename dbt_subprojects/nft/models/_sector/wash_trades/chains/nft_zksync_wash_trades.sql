@@ -13,5 +13,5 @@
 
 {{nft_wash_trades(
     blockchain='zksync',
-    first_funded_by= source('addresses_events_zksync', 'first_funded_by')
+    first_funded_by= ref('addresses_events_zksync_first_funded_by')
 )}}

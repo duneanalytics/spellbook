@@ -13,5 +13,5 @@
 
 {{nft_wash_trades(
     blockchain='optimism',
-    first_funded_by= source('addresses_events_optimism', 'first_funded_by')
+    first_funded_by= ref('addresses_events_optimism_first_funded_by')
 )}}

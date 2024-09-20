@@ -15,6 +15,6 @@
 {{
     nft_wash_trades(
         blockchain = 'celo',
-        first_funded_by = source('addresses_events_celo', 'first_funded_by')
+        first_funded_by = ref('addresses_events_celo_first_funded_by')
     )
 }}

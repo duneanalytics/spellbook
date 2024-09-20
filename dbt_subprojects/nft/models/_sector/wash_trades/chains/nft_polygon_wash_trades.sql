@@ -13,5 +13,5 @@
 
 {{nft_wash_trades(
     blockchain='polygon',
-    first_funded_by= source('addresses_events_polygon', 'first_funded_by')
+    first_funded_by= ref('addresses_events_polygon_first_funded_by')
 )}}
