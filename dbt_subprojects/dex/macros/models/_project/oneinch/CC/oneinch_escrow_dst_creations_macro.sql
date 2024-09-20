@@ -48,7 +48,7 @@ factories as (
             , substr(input, 4 + 32*4 + 12 + 1, 20) as token
             , bytearray_to_uint256(substr(input, 4 + 32*5 + 1, 32)) as amount
             , bytearray_to_uint256(substr(input, 4 + 32*6 + 1, 32)) as safety_deposit
-            , substr(input, 4 + 32*7 + 12 + 1, 32) as timelocks
+            , substr(input, 4 + 32*7 + 1, 32) as timelocks
             , success as call_success
         from {{ source(blockchain, 'traces') }}
         where
