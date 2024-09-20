@@ -19,7 +19,7 @@
 ,ref('safe_gnosis_xdai_transfers')
 ,ref('safe_goerli_eth_transfers')
 ,ref('safe_linea_eth_transfers')
-,ref('safe_mantle_mtl_transfers')
+,ref('safe_mantle_mnt_transfers')
 ,ref('safe_optimism_eth_transfers')
 ,ref('safe_polygon_matic_transfers')
 ,ref('safe_scroll_eth_transfers')
