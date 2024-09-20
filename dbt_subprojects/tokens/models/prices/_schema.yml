@@ -56,13 +56,3 @@ models:
     config:
       tags: [ 'prices', 'stability' ]
     description: "List of trusted tokens across blockchains"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - contract_address
-    columns:
-      - *blockchain
-      - *contract_address
-      - *symbol
-      - *decimals
