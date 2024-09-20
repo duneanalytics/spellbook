@@ -82,11 +82,11 @@ WITH data AS (
         , first_tx_block_number
         , last_tx_block_number
         , map_from_entries(array[
-            ('last_seen', CAST(am.last_seen AS varchar))
-            , ('executed_tx_count', CAST(am.executed_tx_count AS varchar))
-            , ('is_smart_contract', CAST(am.is_smart_contract AS varchar))
-            , ('sent_count', CAST(am.sent_count AS varchar))
-            , ('received_count', CAST(am.received_count AS varchar))
+            ('last_seen', CAST(last_seen AS varchar))
+            , ('executed_tx_count', CAST(executed_tx_count AS varchar))
+            , ('is_smart_contract', CAST(is_smart_contract AS varchar))
+            , ('sent_count', CAST(sent_count AS varchar))
+            , ('received_count', CAST(received_count AS varchar))
             ]) AS chain_stats
         , last_seen
         FROM {{ addresses_model[1] }}
