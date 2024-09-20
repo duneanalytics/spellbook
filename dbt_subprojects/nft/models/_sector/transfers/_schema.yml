@@ -378,9 +378,53 @@ models:
   
   - name: nft_linea_transfers
     meta:
-      blockchain: scroll
+      blockchain: linea
       sector: nft
       contributors: couralex
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+      
+  - name: nft_blast_transfers
+    meta:
+      blockchain: blast
+      sector: nft
+      contributors: rantum
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_mantle_transfers
+    meta:
+      blockchain: mantle
+      sector: nft
+      contributors: rantum
     config:
       tags: [ 'nft', 'transfers' ]
     description: >

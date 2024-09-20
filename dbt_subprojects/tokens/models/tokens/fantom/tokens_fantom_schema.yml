@@ -89,23 +89,25 @@ models:
   - name: tokens_fantom_erc20_stablecoins
     meta:
       blockchain: fantom
-      sector: tokens
-      project: erc20
-      contributors: Henrystats
+      sector: stablecoins
+      contributors: synthquest
     config:
-      tags: [ 'table', 'erc20', 'stablecoins' ]
-    description: "ERC20 Stablecoin Token Addresses, Symbols and Decimals"
+      tags: ['tokens', 'fantom', 'erc20', 'stablecoins']
+    description: >
+        Selection of stablecoin token addresses.
     columns:
+      - name: blockchain
+        description: "Blockchain name"
       - name: contract_address
-        description: "ERC20 stablecoin token contract address"
-        tests:
-          - unique
+        description: "Stablecoin contract address"
+      - name: backing
+        description: "Stablecoin backing"
       - name: symbol
-        description: "ERC20 stablecoin token symbol"
-      - name: decimals
-        description: "Number of decimals, refers to how divisible an ERC20 stablecoin token can be"
+        description: "Stablecoin symbol"
       - name: name
-        description: "ERC20 stablecoin token name"
+        description: "Stablecoin project name"
+      - name: decimals
+        description: "Number of decimals"
 
   - name: tokens_fantom_nft_standards
     meta:

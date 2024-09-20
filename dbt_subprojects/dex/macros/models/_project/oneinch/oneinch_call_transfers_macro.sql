@@ -13,6 +13,7 @@
         'tx_hash',
         'call_trace_address',
         'dst_blockchain',
+        'hashlock',
     ]
 %}
 
@@ -52,7 +53,6 @@ meta as (
         , block_time as result_block_time
         , tx_hash as result_tx_hash
         , call_trace_address as result_trace_address
-        , cast(null as varbinary) as hashlock
         , cast(null as varbinary) as result_escrow
         , null as result_method
         , null as result_amount
@@ -71,11 +71,10 @@ meta as (
         , result_block_time
         , result_tx_hash
         , result_trace_address
-        , hashlock
         , result_escrow
         , result_method
         , result_amount
-    from ({{ oneinch_calls_macro(blockchain) }})
+    from (select * from ({{ oneinch_calls_macro(blockchain) }}) where hashlock is not null)
     join results using(hashlock) -- escrow results only
     where
         tx_success
