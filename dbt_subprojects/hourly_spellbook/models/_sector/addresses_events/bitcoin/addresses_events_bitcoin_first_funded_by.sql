@@ -19,7 +19,6 @@ WITH first_appearance AS (
     LEFT JOIN {{this}} ffb ON o.address = ffb.address WHERE ffb.address IS NULL
     {% else %}
     WHERE 1 = 1
-    AND o.block_time > NOW() - interval '3' month
     {% endif %}
     {% if is_incremental() %}
     AND {{incremental_predicate('o.block_time')}}

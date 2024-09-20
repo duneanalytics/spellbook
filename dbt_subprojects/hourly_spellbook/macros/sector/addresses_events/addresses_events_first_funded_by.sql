@@ -14,11 +14,9 @@ FROM {{token_transfers}} tt
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('tt.block_time') }}
 AND tt.token_standard = 'native'
-AND tt.block_time > NOW() - interval '3' month
 AND tt.to NOT IN (SELECT address FROM {{this}})
 {% else %}
 WHERE tt.token_standard = 'native'
-AND tt.block_time > NOW() - interval '3' month
 {% endif %}
 GROUP BY tt.to
 
