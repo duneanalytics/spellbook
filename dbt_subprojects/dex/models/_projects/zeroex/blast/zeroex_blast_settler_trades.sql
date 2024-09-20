@@ -20,7 +20,7 @@ WITH tbl_addresses AS (
         block_time AS begin_block_time, 
         block_number AS begin_block_number
     FROM 
-        {{ source('nft_blast', 'transfers') }}
+        {{ source('nft', 'transfers') }}
     WHERE 
         contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae 
         AND blockchain = 'blast'
