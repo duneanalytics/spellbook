@@ -69,7 +69,7 @@ FROM
     ('willy-willy','avalanche_c','WILLY',0x403b78F9F817a55b66030c7B2ddab063D28c2c0C,18),
     ('nochill-avax-has-no-chill','avalanche_c','NOCHILL',0xAcFb898Cff266E53278cC0124fC2C7C94C8cB9a5,18),
     ('bear-bear-coin-on-avax','avalanche_c','BEAR',0x19c79F282d151995D91f6dbdda2739701F9C47AA,18),
-    ('tech-numbergouptech','avalanche_c','TECH',0x5Ac04b69bDE6f67C0bd5D6bA6fD5D816548b066a,18),
+    ('tech-tech','avalanche_c','TECH',0x5Ac04b69bDE6f67C0bd5D6bA6fD5D816548b066a,18),
     ('alot-dexalot','avalanche_c','ALOT',0x093783055F9047C2BfF99c4e414501F8A147bC69,18),
     ('majin-majin','avalanche_c','MAJIN',0x73f49d00AC1B520F94d11248808c40774aeb0802,18),
     --('snowy-fantastic-protocol-snowy-token','avalanche_c','SNOWY',0x6da767394f079c1524B3e797D2110C23c3ecf322,18),
