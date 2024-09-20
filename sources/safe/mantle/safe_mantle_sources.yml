@@ -5,7 +5,7 @@ sources:
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
-      - name: SafeProxyFactoryv1_3_0_evt_ProxyCreation
+      - name: SafeProxyFactory_v1_3_0_evt_ProxyCreation
         loaded_at_field: evt_block_time
         description: "Safe v1.3.0 factory ProxyCreation events"
         columns:
@@ -30,7 +30,7 @@ sources:
           - &singleton
             name: singleton
             description: "Singleton"
-      - name: SafeProxyFactoryv1_4_1_evt_ProxyCreation
+      - name: SafeProxyFactory_v1_4_1_evt_ProxyCreation
         loaded_at_field: evt_block_time
         description: "Safe v1.4.1 factory ProxyCreation events"
         columns:
