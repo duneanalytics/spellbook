@@ -16,6 +16,8 @@ logs as (
         , block_number
         , block_time
         , tx_hash
+        , tx_from
+        , tx_to
         , index
         , contract_address
         , topic0
@@ -250,6 +252,8 @@ select
     , block_number
     , block_time
     , tx_hash
+    , tx_from
+    , tx_to
     , tx_success
     , call_from
     , call_to
