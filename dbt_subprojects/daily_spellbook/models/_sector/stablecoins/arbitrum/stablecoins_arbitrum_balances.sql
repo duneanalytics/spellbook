@@ -17,8 +17,6 @@ stablecoin_tokens as (
     contract_address as token_address
   from 
     {{ source('tokens_arbitrum', 'erc20_stablecoins')}}
-    where blockchain = 'arbitrum'
-    and contract_address = 0xaf88d065e77c8cC2239327C5EDb3A432268e5831
 )
 
 ,balances as (
@@ -26,7 +24,7 @@ stablecoin_tokens as (
       balances_incremental_subset_daily(
             blockchain = 'arbitrum',
             token_list = 'stablecoin_tokens',
-            start_date = '2021-05-26'
+            start_date = '2024-01-01'
       )
     }}
 )
@@ -37,3 +35,4 @@ select
 from balances b
 left join stablecoin_tokens t
     on b.token_address = t.token_address
+ 
