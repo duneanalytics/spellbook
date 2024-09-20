@@ -3,9 +3,9 @@ version: 2
 models:
   - name: nft_transfers
     meta:
-      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, zksync, zora, mantle
+      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, zksync, zora
       sector: nft
-      contributors: hildobby, rantum
+      contributors: hildobby
     config:
       tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'zora', 'transfers']
     description: >
@@ -397,7 +397,7 @@ models:
       - *token_standard
       - *transfer_type
       - *unique_transfer_id
-
+        
   - name: nft_blast_transfers
     meta:
       blockchain: blast
