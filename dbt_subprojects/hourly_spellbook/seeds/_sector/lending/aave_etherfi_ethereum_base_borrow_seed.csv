@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,borrower,amount
+ethereum,aave_etherfi,3,20752989,2024-09-15 02:20:35.000 UTC,0x7098f5b98b041d290f2b28afb22a0334d5274e229d4465e150be7ce4df10826a,242,borrow,0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48,0x9dbc5e35a2f1a6dc214bdb7ed7a8c706d77f0a74,1e+10
+ethereum,aave_etherfi,3,20728281,2024-09-11 15:31:35.000 UTC,0x6180393887262f626d967ba8a32a10ce8bd860a39dd1423ed2fc592d16e63aff,299,repay,0x853d955acef822db058eb8505911ed77f175b99e,0xedf1086b81f979354fc2ea07260eb83f5852eb15,-1.84e+20

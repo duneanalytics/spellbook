@@ -85,3 +85,26 @@ models:
         tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155']
+
+  - name: tokens_avalanche_c_erc20_stablecoins
+    meta:
+      blockchain: avalanche_c
+      sector: stablecoins
+      contributors: synthquest
+    config:
+      tags: ['tokens', 'avalanche_c', 'erc20', 'stablecoins']
+    description: >
+        Selection of stablecoin token addresses.
+    columns:
+      - name: blockchain
+        description: "Blockchain name"
+      - name: contract_address
+        description: "Stablecoin contract address"
+      - name: backing
+        description: "Stablecoin backing"
+      - name: symbol
+        description: "Stablecoin symbol"
+      - name: name
+        description: "Stablecoin project name"
+      - name: decimals
+        description: "Number of decimals"
