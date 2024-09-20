@@ -13,5 +13,5 @@
 
 {{nft_wash_trades(
     blockchain='scroll',
-    first_funded_by= ref('addresses_events_scroll_first_funded_by')
+    first_funded_by= source('addresses_events_scroll', 'first_funded_by')
 )}}

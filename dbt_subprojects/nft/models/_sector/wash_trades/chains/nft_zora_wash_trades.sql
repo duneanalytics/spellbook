@@ -13,5 +13,5 @@
 
 {{nft_wash_trades(
     blockchain='zora',
-    first_funded_by= ref('addresses_events_zora_first_funded_by')
+    first_funded_by= source('addresses_events_zora', 'first_funded_by')
 )}}

@@ -13,5 +13,5 @@
 
 {{nft_wash_trades(
     blockchain='blast',
-    first_funded_by = ref('addresses_events_blast_first_funded_by')
+    first_funded_by = source('addresses_events_blast', 'first_funded_by')
 )}}

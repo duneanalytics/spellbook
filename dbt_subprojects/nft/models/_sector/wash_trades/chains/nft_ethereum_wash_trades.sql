@@ -13,5 +13,5 @@
 
 {{nft_wash_trades(
     blockchain='ethereum',
-    first_funded_by= ref('addresses_events_ethereum_first_funded_by')
+    first_funded_by= source('addresses_events_ethereum', 'first_funded_by')
 )}}
