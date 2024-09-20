@@ -2,7 +2,7 @@
 
 -- CREATION IMMUTABLES SAMPLES
 {%
-    set samples = {
+    set immutables = {
         "v1": {
             "order_hash":       "from_hex(creation_map['orderHash'])",
             "hashlock":         "from_hex(creation_map['hashlock'])",
@@ -23,8 +23,13 @@
             "version": "1",
             "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "avalanche_c", "gnosis", "optimism", "base"],
             "start": "2024-08-20",
-            "dst_creation": dict(samples["v1"], method="createDstEscrow"),
-            "src_created": dict(samples["v1"], event="SrcEscrowCreated"),
+            "dst_creation": dict(immutables["v1"], method="createDstEscrow"),
+            "src_created":  dict(immutables["v1"], event="SrcEscrowCreated",
+                dst_maker="substr(cast(cast(complement_map['maker'] as uint256) as varbinary), 13)",
+                dst_token="substr(cast(cast(complement_map['token'] as uint256) as varbinary), 13)",
+                dst_amount="cast(complement_map['amount'] as uint256)",
+                dst_chain_id="cast(complement_map['chainId'] as uint256)",
+            ),
         },
     }
 %}
