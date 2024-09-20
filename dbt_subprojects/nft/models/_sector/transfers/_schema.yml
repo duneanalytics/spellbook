@@ -397,7 +397,7 @@ models:
       - *token_standard
       - *transfer_type
       - *unique_transfer_id
-        
+      
   - name: nft_blast_transfers
     meta:
       blockchain: blast
