@@ -172,4 +172,5 @@ FROM (VALUES
     , ('agni', 'AGNI Finance', 'Direct', 'Agnidex')
     , ('rcpswap', 'RCPswap', 'Direct', 'RCPswap')
     , ('valantis', 'Valantis', 'Direct', 'ValantisLabs')
+    , ('CoW Swap', 'CoW DAO', 'Direct', 'CoWSwap')
     ) AS temp_table (project, name, marketplace_type, x_username)
