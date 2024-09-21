@@ -60,5 +60,6 @@ FROM
     ('weeth-wrapped-eeth', 'zksync', 'weETH', 0xc1fa6e2e8667d9be0ca938a54c7e0285e9df924a, 18),
     ('koi4-koi', 'zksync', 'KOI4', 0xa995ad25ce5eb76972ab356168f5e1d9257e4d05, 18),
     ('mvx-metavault-trade', 'zksync', 'MVX', 0xc8ac6191cdc9c7bf846ad6b52aaaa7a0757ee305, 18),
-    ('zf-zkswap-finance', 'zksync', 'ZF', 0x31c2c031fdc9d33e974f327ab0d9883eae06ca4a, 18)
+    ('zf-zkswap-finance', 'zksync', 'ZF', 0x31c2c031fdc9d33e974f327ab0d9883eae06ca4a, 18),
+    ('molten-molten','zksync','MOLTEN',0xcd29882ab7ba6b8717ad858d10930d68eafd78c3, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
