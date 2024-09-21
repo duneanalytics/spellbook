@@ -19,4 +19,5 @@ FROM (VALUES
     , (0xaba1e60af729acd8db3a06e4305affe2ad09987c, 'scUSD', 18)
     , (0x180db257226da9ddd69f3d77fae7f39324cc4981, 'scUSD', 18)
     , (0x7b79995e5f793a07bc00c21412e50ecae098e7f9, 'WETH', 18)
+    , (0x93D16d90490d812ca6fBFD29E8eF3B31495d257D, 'CETH', 18)
 ) AS temp_table (contract_address, symbol, decimals)
