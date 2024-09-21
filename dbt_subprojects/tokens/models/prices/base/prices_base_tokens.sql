@@ -169,5 +169,6 @@ FROM
     ('rdat-rdatadao','base','RDAT',0x4498cd8ba045e00673402353f5a4347562707e7d, 18),
     ('usdz-anzen-usdz', 'base', 'USDZ',0x04d5ddf5f3a8939889f11e97f8c4bb48317f1938, 18),
     ('moxie-moxie', 'base', 'MOXIE',0x8C9037D1Ef5c6D1f6816278C7AAF5491d24CD527, 18),
-    ('cbbtc-coinbase-wrapped-btc', 'base', 'cbBTC',0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf, 8)
+    ('cbbtc-coinbase-wrapped-btc', 'base', 'cbBTC',0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf, 8),
+    ('molten-molten','base','MOLTEN',0x66E535e8D2ebf13F49F3D49e5c50395a97C137b1, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
