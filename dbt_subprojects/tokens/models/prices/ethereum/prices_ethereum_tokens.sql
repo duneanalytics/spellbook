@@ -1842,7 +1842,8 @@ FROM
     ('bubble-imaginary-ones', 'ethereum', 'BUBBLE', 0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3, 18),
     ('zeta-zetachain', 'ethereum', 'ZETA', 0xf091867ec603a6628ed83d274e835539d82e9cc8, 18),
     ('euri-eurite', 'ethereum', 'EURI', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 18),
-    ('sky-sky', 'ethereum', 'SKY', 0x56072C95FAA701256059aa122697B133aDEd9279, 18)
+    ('sky-sky', 'ethereum', 'SKY', 0x56072C95FAA701256059aa122697B133aDEd9279, 18),
+    ('rfrm-reform-dao7448', 'ethereum', 'RFRM', 0xea3eed8616877F5d3c4aEbf5A799F2e8D6DE9A5E, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
