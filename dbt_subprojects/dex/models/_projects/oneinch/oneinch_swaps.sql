@@ -77,19 +77,12 @@ tokens as (
         , contract_address
         , minute
         , price
+        , decimals
         , symbol
     from {{ source('prices', 'usd') }}
     {% if is_incremental() %}
         where {{ incremental_predicate('minute') }}
     {% endif %}
-)
-
-, decimals_cte as (
-    select 
-        blockchain as transfer_blockchain
-        , contract_address
-        , decimals
-    from {{ source('tokens', 'erc20') }}
 )
 
 , calls as (
@@ -153,7 +146,7 @@ tokens as (
 {% set src_condition = 'contract_address = _src_token_address' %}
 {% set dst_condition = 'contract_address = _dst_token_address' %}
 {% set symbol = 'coalesce(symbol, token_symbol)' %}
-{% set decimals = 'coalesce(decimals, token_decimals)' %}
+{% set decimals = 'coalesce(token_decimals, decimals)' %}
 
 , amounts as (
     select
@@ -179,29 +172,29 @@ tokens as (
 
         , max(amount) filter(where {{ src_condition }} and amount <= src_token_amount) as _src_token_amount_true -- take only src token amounts less than in the call
         , max(amount) filter(where {{ dst_condition }} and amount <= dst_token_amount) as _dst_token_amount_true -- take only dst token amounts less than in the call
-        , max(amount * price / pow(10, decimals)) filter(where {{ src_condition }} and amount <= src_token_amount or {{ dst_condition }} and amount <= dst_token_amount) as sources_amount_usd
-        , max(amount * price / pow(10, decimals)) as transfers_amount_usd
+        , max(amount * price / pow(10, {{ decimals }})) filter(where {{ src_condition }} and amount <= src_token_amount or {{ dst_condition }} and amount <= dst_token_amount) as sources_amount_usd
+        , max(amount * price / pow(10, {{ decimals }})) as transfers_amount_usd
 
         -- src $ amount from user
-        , sum(amount * if(user = transfer_from, price, -price) / pow(10, decimals)) filter(where {{ src_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_from_user
+        , sum(amount * if(user = transfer_from, price, -price) / pow(10, {{ decimals }})) filter(where {{ src_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_from_user
         -- dst $ amount to user
-        , sum(amount * if(user = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_to_user
+        , sum(amount * if(user = transfer_to, price, -price) / pow(10, {{ decimals }})) filter(where {{ dst_condition }} and user in (transfer_from, transfer_to)) as _amount_usd_to_user
         -- dst $ amount to receiver
-        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, decimals)) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as _amount_usd_to_receiver
+        , sum(amount * if(receiver = transfer_to, price, -price) / pow(10, {{ decimals }})) filter(where {{ dst_condition }} and receiver in (transfer_from, transfer_to)) as _amount_usd_to_receiver
 
         -- escrow results
         , sum(amount) filter(where result_escrow = src_escrow and result_method = 'withdraw') as src_withdraw_amount
         , sum(amount) filter(where result_escrow = src_escrow and result_method = 'cancel') as src_cancel_amount
         , sum(amount) filter(where result_escrow = src_escrow and result_method = 'rescueFunds') as src_rescue_amount
-        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = src_escrow and result_method = 'withdraw') as src_withdraw_amount_usd
-        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = src_escrow and result_method = 'cancel') as src_cancel_amount_usd
-        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = src_escrow and result_method = 'rescueFunds') as src_rescue_amount_usd
+        , sum(amount * price / pow(10, {{ decimals }})) filter(where result_escrow = src_escrow and result_method = 'withdraw') as src_withdraw_amount_usd
+        , sum(amount * price / pow(10, {{ decimals }})) filter(where result_escrow = src_escrow and result_method = 'cancel') as src_cancel_amount_usd
+        , sum(amount * price / pow(10, {{ decimals }})) filter(where result_escrow = src_escrow and result_method = 'rescueFunds') as src_rescue_amount_usd
         , sum(amount) filter(where result_escrow = dst_escrow and result_method = 'withdraw') as dst_withdraw_amount
         , sum(amount) filter(where result_escrow = dst_escrow and result_method = 'cancel') as dst_cancel_amount
         , sum(amount) filter(where result_escrow = dst_escrow and result_method = 'rescueFunds') as dst_rescue_amount
-        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = dst_escrow and result_method = 'withdraw') as dst_withdraw_amount_usd
-        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = dst_escrow and result_method = 'cancel') as dst_cancel_amount_usd
-        , sum(amount * price / pow(10, decimals)) filter(where result_escrow = dst_escrow and result_method = 'rescueFunds') as dst_rescue_amount_usd
+        , sum(amount * price / pow(10, {{ decimals }})) filter(where result_escrow = dst_escrow and result_method = 'withdraw') as dst_withdraw_amount_usd
+        , sum(amount * price / pow(10, {{ decimals }})) filter(where result_escrow = dst_escrow and result_method = 'cancel') as dst_cancel_amount_usd
+        , sum(amount * price / pow(10, {{ decimals }})) filter(where result_escrow = dst_escrow and result_method = 'rescueFunds') as dst_rescue_amount_usd
 
         , count(distinct (contract_address, transfer_native)) as tokens -- count distinct tokens in transfers
         , count(*) as transfers -- count transfers
@@ -213,7 +206,6 @@ tokens as (
         {% endif %}
     ) using(blockchain, block_number, tx_hash, call_trace_address) -- block_number is needed for performance
     left join prices using(transfer_blockchain, contract_address, minute)
-    left join decimals_cte using(transfer_blockchain, contract_address)
     left join tokens using(transfer_blockchain, contract_address)
     group by 1, 2, 3, 4, 5
 )
