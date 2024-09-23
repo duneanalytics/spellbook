@@ -5,7 +5,7 @@
       , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "sector",
                                   "tokens_ethereum",
-                                  \'["Henrystats", "synthquest"]\') }}'
+                                  \'["Henrystats", "synthquest","rantum"]\') }}'
       , unique_key = ['contract_address']
   )
 }}
@@ -60,7 +60,25 @@ FROM (VALUES
     ('ethereum', 0x57Ab1E02fEE23774580C119740129eAC7081e9D3, 'Crypto-backed stablecoin', 'sUSD', 18, 'Synthetix sUSD'),
     ('ethereum', 0xa693b19d2931d498c5b318df961919bb4aee87a5, 'Crypto-backed stablecoin', 'UST', 6, 'UST (Wormhole)'),
     ('ethereum', 0xe07F9D810a48ab5c3c914BA3cA53AF14E4491e8A, 'Crypto-backed stablecoin', 'GYD', 18, 'Gyro Dollar'),
-    ('ethereum', 0xdb25f211ab05b1c97d595516f45794528a807ad8, 'Fiat-backed stablecoin', 'EURS', 18, 'STASIS EURS')
-
+    ('ethereum', 0xdb25f211ab05b1c97d595516f45794528a807ad8, 'Fiat-backed stablecoin', 'EURS', 18, 'STASIS EURS'),
+    ('ethereum', 0x15f74458ae0bfdaa1a96ca1aa779d715cc1eefe4, 'Crypto-backed stablecoin', 'GRAI', 18, 'Gravita Protocol'),
+    ('ethereum', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e, 'Crypto-backed stablecoin', 'crvUSD', 18, ''),
+    ('ethereum', 0xab5eb14c09d416f0ac63661e57edb7aecdb9befa, 'Crypto-backed stablecoin', 'msUSD', 18, ''),
+    ('ethereum', 0x9d39a5de30e57443bff2a8307a4256c8797a3497, 'Crypto-backed stablecoin', 'sUSDe', 18, ''),
+    ('ethereum', 0x15700b564ca08d9439c58ca5053166e8317aa138, 'Crypto-backed stablecoin', 'deUSD', 18, ''),
+    ('ethereum', 0x085780639cc2cacd35e474e71f4d000e2405d8f6, 'Crypto-backed stablecoin', 'fxUSD', 18, ''),
+    ('ethereum', 0x00000000efe302beaa2b3e6e1b18d08d69a9012a, 'Crypto-backed stablecoin', 'AUSD', 6, ''),
+    ('ethereum', 0xa0d69e286b938e21cbf7e51d71f6a4c8918f482f, 'Crypto-backed stablecoin', 'eUSD', 18, ''),
+    ('ethereum', 0xa469b7ee9ee773642b3e93e842e5d9b5baa10067, 'Crypto-backed stablecoin', 'USDz', 18, ''),
+    ('ethereum', 0x59d9356e565ab3a36dd77763fc0d87feaf85508c, 'Crypto-backed stablecoin', 'USDM', 18, ''),
+    ('ethereum', 0x79c58f70905f734641735bc61e45c19dd9ad60bc, 'Crypto-backed stablecoin', 'usdc-dai-usdt', 18, 'Balancer'),
+    ('ethereum', 0x0000206329b97db379d5e1bf586bbdb969c63274, 'Crypto-backed stablecoin', 'USDA', 18, ''),
+    ('ethereum', 0x35d8949372d46b7a3d5a56006ae77b215fc69bc0, 'Crypto-backed stablecoin', 'USD0++', 18, ''),
+    ('ethereum', 0x4591dbff62656e7859afe5e45f6f47d3669fbb28, 'Crypto-backed stablecoin', 'mkUSD', 18, ''),
+    ('ethereum', 0x0bffdd787c83235f6f0afa0faed42061a4619b7a, 'Crypto-backed stablecoin', 'VUSD', 6, ''),
+    ('ethereum', 0xcfc5bd99915aaa815401c5a41a927ab7a38d29cf, 'Crypto-backed stablecoin', 'thUSD', 18, ''),
+    ('ethereum', 0xdf3ac4f479375802a821f7b7b46cd7eb5e4262cc, 'Crypto-backed stablecoin', 'eUSD', 18, ''),
+    ('ethereum', 0xbbaec992fc2d637151daf40451f160bf85f3c8c1, 'Crypto-backed stablecoin', 'USDM', 6, ''),
+    ('ethereum', 0x7945b0a6674b175695e5d1d08ae1e6f13744abb0, 'Crypto-backed stablecoin', 'BaoUSD', 18, '')
 
      ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
