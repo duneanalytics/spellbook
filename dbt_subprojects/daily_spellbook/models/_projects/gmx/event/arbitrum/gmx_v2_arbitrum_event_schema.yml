@@ -819,3 +819,48 @@ models:
       - *order_key
       - *position_key
       - *referral_code
+
+
+  - name: gmx_v2_arbitrum_order_frozen
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'order_frozen']
+    description: |
+      Extracts and decodes the `OrderFrozen` event log data from the Arbitrum blockchain. 
+      This model processes log entries related to frozen orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for the order being frozen.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to      
+      - name: event_name
+        description: The type of event recorded, always 'OrderFrozen' for this model
+        tests:
+          - not_null 
+      - *msg_sender         
+      - name: key
+        description: The key associated with the frozen order. Extracted as a bytes32 value
+        tests:
+          - not_null
+          - unique
+      - name: account
+        description: The address associated with the order 
+      - name: reason_bytes
+        description: The reason for the order being frozen in byte format.
+        tests:
+          - not_null
+      - name: reason
+        description: The reason for the order being frozen in string format.
+        tests:
+          - not_null
