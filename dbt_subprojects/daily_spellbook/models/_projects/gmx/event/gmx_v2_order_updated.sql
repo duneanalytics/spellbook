@@ -1,6 +1,6 @@
 {{ config(
         schema='gmx_v2',
-        alias = 'order_created',
+        alias = 'order_updated',
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c"]\',
                                     "project",
                                     "gmx",
@@ -25,30 +25,17 @@ SELECT
     tx_from,
     tx_to,   
     event_name,
-    msg_sender,   
-    account,
-    receiver,
-    callback_contract,
-    ui_fee_receiver,
+    msg_sender,  
+    key,
     market,
-    initial_collateral_token,
-    swap_path,
-    order_type,
-    decrease_position_swap_type,    
+    account,
     size_delta_usd,
-    initial_collateral_delta_amount,
-    trigger_price,
     acceptable_price,
-    execution_fee,
-    callback_gas_limit,
-    min_output_amount_raw, 
-    updated_at_block,
-    updated_at_time,
-    is_long,
-    should_unwrap_native_token,
-    is_frozen,
-    key
-FROM {{ ref('gmx_v2_' ~ chain ~ '_order_created') }}
+    trigger_price,
+    min_output_amount_raw,
+    updated_at_time
+
+FROM {{ ref('gmx_v2_' ~ chain ~ '_order_updated') }}
 {% if not loop.last %}
 UNION ALL
 {% endif %}
