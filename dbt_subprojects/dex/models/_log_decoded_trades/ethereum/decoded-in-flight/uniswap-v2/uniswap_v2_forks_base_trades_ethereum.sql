@@ -25,7 +25,7 @@ WITH all_decoded_trades AS (
 
 SELECT *
 FROM all_decoded_trades
-WHERE contract_address NOT IN (
+WHERE factory_address NOT IN (
     -- 1inch LOP trades related
     0x9a27cb5ae0b2cee0bb71f9a85c0d60f3920757b4
     , 0x43ec799eadd63848443e2347c49f5f52e8fe0f6f
