@@ -30,5 +30,6 @@ FROM
     ('usde-ethena-usde', 'mantle', 'USDe', 0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34, 18),
     ('puff-puff-token', 'mantle', 'PUFF', 0x26a6b0dcdcfb981362afa56d581e4a7dba3be140, 18),
     ('moe-merchant-moe', 'mantle', 'MOE', 0x4515A45337F461A11Ff0FE8aBF3c606AE5dC00c9, 18),
-    ('usdy-ondo-us-dollar-yield', 'mantle', 'USDY', 0x5bE26527e817998A7206475496fDE1E68957c5A6, 18)
+    ('usdy-ondo-us-dollar-yield', 'mantle', 'USDY', 0x5bE26527e817998A7206475496fDE1E68957c5A6, 18),
+    ('svl-slash-vision-labs', 'mantle', 'SVL', 0xabbeed1d173541e0546b38b1c0394975be200000, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

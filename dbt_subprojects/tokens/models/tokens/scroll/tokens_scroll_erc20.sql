@@ -25,4 +25,6 @@ FROM (VALUES
     , (0x608ef9a3bffe206b86c3108218003b3cfbf99c84, 'KNC', 18)
     , (0x79379c0e09a41d7978f883a56246290ee9a8c4d3, 'AAVE', 18)
     , (0x5300000000000000000000000000000000000004, 'WETH', 18)
+    , (0xaaae8378809bb8815c08d3c59eb0c7d1529ad769, 'NURI', 18)
+    , (0x8731d54e9d02c286767d56ac03e8037c07e01e98, 'STG', 18)
 ) AS temp_table (contract_address, symbol, decimals)

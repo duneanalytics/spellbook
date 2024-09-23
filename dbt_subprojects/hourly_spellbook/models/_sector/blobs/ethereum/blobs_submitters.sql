@@ -30,6 +30,7 @@ SELECT address
         , (0xe1b64045351b0b6e9821f19b39f81bc4711d2230, 'Boba Network', 'bobanetwork')
         , (0x08f9f14ff43e112b18c96f0986f28cb1878f1d11, 'Camp Network', 'Camp_L2')
         , (0x5ead389b57d533a94a0eacd570dc1cc59c25f2d4, 'Parallel', 'ParallelFi')
+        , (0x40acdc94a00b33151b40763b3fed7c46ff639df4, 'Parallel', 'ParallelFi')
         , (0xcf2898225ed05be911d3709d9417e86e0b4cfc8f, 'Scroll', 'Scroll_ZKP')
         , (0xa6ea2f3299b63c53143c993d2d5e60a69cd6fe24, 'Lisk', 'LiskHQ')
         , (0x3d0bf26e60a689a7da5ea3ddad7371f27f7671a5, 'Optopia', 'Optopia_AI')
@@ -53,14 +54,13 @@ SELECT address
         , (0xaf1e4f6a47af647f87c0ec814d8032c4a4bff145, 'Zircuit', 'ZircuitL2')
         , (0xdbbe3d8c2d2b22a2611c5a94a9a12c2fcd49eb29, 'World Chain', 'worldcoin')
         , (0x8cda8351236199af7532bad53d683ddd9b275d89, 'RACE', 'RACEecosystem')
-        , (0x7f9d9c1bce1062e1077845ea39a0303429600a06, 'Binary', 'binary_chain')
+        , (0x7f9d9c1bce1062e1077845ea39a0303429600a06, 'Binary', 'thebinaryhldgs')
         , (0x4d875acfd836eb3d8a2f25ba03de16c97ec9fc0f, 'PandaSea', 'pandaseaweb3')
         , (0xf7ca543d652e38692fd12f989eb55b5327ec9a20, 'Shape', 'Shape_L2')
         , (0xde794bec196832474f2f218135bfd0f7ca7fb038, 'Swan Chain', 'swan_chain')
-        /*
-        address: 0x40ea7581ed45bf55f255b465c59ccfd298fc3c89, chain_id: 1110
-        address: 0x7720ba0b715f930f61b45bc22d6eb55bf5e3d91a, chain_id: 90000
-        address: 0xfbb1bcb6fe16934c2e3d53ed1fe0271f3cfe8726, chain_id: 2800
-        address: 0x43ca061ea80fbb4a2b5515f4be4e953b191147af, chain_id: 183
-        */
+        , (0x67a44ce38627f46f20b1293960559ed85dd194f1, 'Polynomial', 'PolynomialFi')
+        , (0x060b915ca4904b56ada63565626b9c97f6cad212, 'SNAXchain', 'synthetix_io')
+        , (0x65115c6d23274e0a29a63b69130efe901aa52e7a, 'Hemi Network', 'hemi_xyz')
+        , (0x43ca061ea80fbb4a2b5515f4be4e953b191147af, 'Ethernity', 'EthernityChain')
+        , (0xee12c640b0793cf514e42ea1c428bd5399545d4d, 'MetaMail', 'MetaMailInk')
         ) AS x(address, entity, x_username)

@@ -1,7 +1,7 @@
 {{ config(
      schema = 'zeroex'
         , alias = 'api_fills_deduped'
-        , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "optimism", "polygon"]\',
+        , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "optimism", "polygon","scroll", "linea"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantum","bakabhai993"]\') }}'
@@ -29,6 +29,8 @@
   ,ref('zeroex_bnb_settler_trades')
   ,ref('zeroex_avalanche_c_settler_trades')
   ,ref('zeroex_arbitrum_settler_trades')
+  ,ref('zeroex_scroll_settler_trades')
+  ,ref('zeroex_linea_settler_trades')
 ] %}
 
 
