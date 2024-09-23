@@ -25,11 +25,7 @@ WITH all_decoded_trades AS (
 
 SELECT uniswap_v2_base_trades.*
 FROM all_decoded_trades AS uniswap_v2_base_trades
-LEFT JOIN {{ ref('oneinch_lop_own_trades') }} AS oneinch_lop_own_trades
-    ON uniswap_v2_base_trades.tx_hash = oneinch_lop_own_trades.tx_hash
-    AND uniswap_v2_base_trades.evt_index = oneinch_lop_own_trades.evt_index
-WHERE factory_address NOT IN (
-    -- token mismatched pool
-    0x558e40f696c61c30f99f03e017840232f8c595e5
-    )
-    AND oneinch_lop_own_trades.tx_hash IS NULL
+LEFT JOIN {{ ref('oneinch_swaps') }} AS oneinch_swaps
+    ON uniswap_v2_base_trades.tx_hash = oneinch_swaps.tx_hash
+    AND oneinch_swaps.blockchain = 'ethereum'
+WHERE oneinch_swaps.tx_hash IS NULL
