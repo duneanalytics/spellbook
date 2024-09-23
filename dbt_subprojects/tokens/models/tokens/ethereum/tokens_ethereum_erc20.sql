@@ -4590,5 +4590,7 @@ FROM (VALUES
     , ( 0x20157dbabb84e3bbfe68c349d0d44e48ae7b5ad2, 'dlcBTC', 8)    
     , ( 0xe1B4d34E8754600962Cd944B535180Bd758E6c2e, 'agETH', 18)        
     , ( 0x5C5b196aBE0d54485975D1Ec29617D42D9198326, 'stdeUSD', 18)        
-    , ( 0x09db87a538bd693e9d08544577d5ccfaa6373a48, 'ynETH', 18)          
+    , ( 0x09db87a538bd693e9d08544577d5ccfaa6373a48, 'ynETH', 18)        
+    , ( 0x6dc3ce9c57b20131347fdc9089d740daf6eb34c5, 'balETH', 18)    
+    , ( 0x786f4782d1a5c602ea30bc4a95154110b9e231ea, 'shezBTC', 8)                    
 ) AS temp_table (contract_address, symbol, decimals)

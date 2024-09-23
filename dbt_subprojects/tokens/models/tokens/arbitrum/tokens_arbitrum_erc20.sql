@@ -100,4 +100,5 @@ FROM (VALUES
     , (0x90364aa61234b85251ad943681433904c35fa5ce, 'METIS', 18)
     , (0x4026affabd9032bcc87fa05c02f088905f3dc09b, 'SWISE', 18)
     , (0xf6d22e29496313d89ad6261fbae8d118181561de, 'GT', 18)
+    , (0x25ea98ac87a38142561ea70143fd44c4772a16b6, 'MORE', 18)    
 ) AS temp_table (contract_address, symbol, decimals)
