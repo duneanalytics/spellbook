@@ -279,7 +279,8 @@ FROM
     ('bvsd-bvsd','bnb','BVSD',0x7f9ad7a5854658d984924e868187b2135514fb88, 18),
     ('coco-coco-coin', 'bnb', 'COCO', 0xf563e86e461de100cfcfd8b65daa542d3d4b0550, 18),
     ('zeta-zetachain', 'bnb', 'ZETA', 0x0000028a2eb8346cd5c0267856ab7594b7a55308, 18),
-    ('euri-eurite', 'bnb', 'EURI', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 18)
+    ('euri-eurite', 'bnb', 'EURI', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 18),
+    ('cookie-cookie', 'bnb', 'COOKIE', 0xc0041ef357b183448b235a8ea73ce4e4ec8c265f, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.
