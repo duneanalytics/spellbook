@@ -8,7 +8,7 @@ models:
 
       blockchain: ethereum, arbitrum, optimism, polygon, avalanche_c
       project: gyroscope
-      contributors: fmarrr
+      contributors: fmarrr, viniabussafi
 
     config:
 
