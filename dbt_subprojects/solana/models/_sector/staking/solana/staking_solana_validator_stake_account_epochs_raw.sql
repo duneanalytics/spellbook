@@ -1,8 +1,9 @@
 {{ config(
     schema = 'staking_solana'
     , alias = 'validator_stake_account_epochs_raw'
-    , materialized = 'table'
+    , materialized = 'incremental'
     , file_format = 'delta'
+    , incremental_strategy = 'merge'
     , unique_key = ['epoch', 'epoch_time', 'stake_account', 'vote_account']
 )
 }}
@@ -20,7 +21,10 @@ with
         FROM {{ ref('staking_solana_stake_account_delegations') }} vote
         LEFT JOIN {{ ref('solana_utils_epochs') }} epoch
             ON first_block_epoch = true --cross join
-            AND vote.block_slot < epoch.block_slot --only get changes to accounts before start of epoch
+            {% if is_incremental() %}
+            AND {{incremental_predicate('epoch.block_time')}}
+            {% endif %}
+        WHERE vote.block_slot < epoch.block_slot --only get changes to accounts before start of epoch
         GROUP BY 1,2,3,4,5
     )
 
