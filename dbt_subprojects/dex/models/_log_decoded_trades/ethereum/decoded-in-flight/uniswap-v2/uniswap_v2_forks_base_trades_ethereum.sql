@@ -23,12 +23,12 @@ WITH all_decoded_trades AS (
     }}
 )
 
-SELECT *
-FROM all_decoded_trades
+SELECT uniswap_v2_base_trades.*
+FROM all_decoded_trades AS uniswap_v2_base_trades
+LEFT JOIN {{ ref('oneinch_lop_own_trades') }} AS oneinch_lop_own_trades
+USING (tx_hash, evt_index)
 WHERE factory_address NOT IN (
-    -- 1inch LOP trades related
-    0x9a27cb5ae0b2cee0bb71f9a85c0d60f3920757b4
-    , 0x43ec799eadd63848443e2347c49f5f52e8fe0f6f
-    , 0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f
-    , 0xc0aee478e3658e2610c5f7a4a2e1777ce9e4f2ac
-)
+    -- token mismatched pool
+    0x558e40f696c61c30f99f03e017840232f8c595e5
+    )
+    AND oneinch_lop_own_trades.tx_hash IS NULL
