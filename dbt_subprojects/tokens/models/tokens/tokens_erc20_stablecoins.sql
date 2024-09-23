@@ -3,10 +3,10 @@
         alias = 'erc20_stablecoins',
         materialized='table',
         tags = ['static'],
-        post_hook = '{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "base"]\',
+        post_hook = '{{ expose_spells(\'["ethereum", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "base", "mantle", "scroll", "blast", "linea"]\',
                                     "sector",
                                     "stablecoins",
-                                    \'["synthquest"]\') }}'
+                                    \'["synthquest","rantum"]\') }}'
         )
 }}
 
@@ -20,6 +20,10 @@
 , ref('tokens_optimism_erc20_stablecoins')
 , ref('tokens_polygon_erc20_stablecoins')
 , ref('tokens_base_erc20_stablecoins')
+, ref('tokens_blast_erc20_stablecoins')
+, ref('tokens_mantle_erc20_stablecoins')
+, ref('tokens_scroll_erc20_stablecoins')
+, ref('tokens_linea_erc20_stablecoins')
 ] %}
 
 
