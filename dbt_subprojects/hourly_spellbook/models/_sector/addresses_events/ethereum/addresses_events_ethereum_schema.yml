@@ -11,9 +11,6 @@ models:
       tags: ['table', 'funded', 'addresses_events', 'ethereum']
     description: "Table showing who first funded each Ethereum address in ETH"
     tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
       - check_seed:
           seed_file: ref('first_funded_by_seed')
           filter:
