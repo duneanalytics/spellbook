@@ -6,7 +6,7 @@ models:
       blockchain: arbitrum
       sector: tokens
       project: erc20
-      contributors: soispoke, dot2dotseurat, mtitus6, maybeYonas
+      contributors: soispoke, dot2dotseurat, mtitus6, maybeYonas, rantum
     config:
       tags: ['table', 'erc20']
     description: "ERC20 Token Addresses, Symbols and Decimals"
@@ -81,3 +81,26 @@ models:
           - unique
       - name: standard
         description: "The NFT standard erc721/erc1155/..."
+  
+  - name: tokens_arbitrum_erc20_stablecoins
+    meta:
+      blockchain: arbitrum
+      sector: stablecoins
+      contributors: synthquest
+    config:
+      tags: ['tokens', 'arbitrum', 'erc20', 'stablecoins']
+    description: >
+        Selection of stablecoin token addresses.
+    columns:
+      - name: blockchain
+        description: "Blockchain name"
+      - name: contract_address
+        description: "Stablecoin contract address"
+      - name: backing
+        description: "Stablecoin backing"
+      - name: symbol
+        description: "Stablecoin symbol"
+      - name: name
+        description: "Stablecoin project name"
+      - name: decimals
+        description: "Number of decimals"

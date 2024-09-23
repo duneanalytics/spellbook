@@ -165,5 +165,9 @@ FROM
     ('chomp-chompcoin','base','CHOMP',0xebff2db643cf955247339c8c6bcd8406308ca437, 18),
     ('birddog-bird-dog-on-base','base','BIRDDOG',0x92af6f53febd6b4c6f5293840b6076a1b82c4bc2, 18),
     ('albert-albert-the-alien','base','ALBERT',0x0c067fc190cde145b0c537765a78d4e19873a5cc, 18),
-    ('tn100x-tn100x','base','TN100X',0x5b5dee44552546ecea05edea01dcd7be7aa6144a, 18)
+    ('tn100x-tn100x','base','TN100X',0x5b5dee44552546ecea05edea01dcd7be7aa6144a, 18),
+    ('rdat-rdatadao','base','RDAT',0x4498cd8ba045e00673402353f5a4347562707e7d, 18),
+    ('usdz-anzen-usdz', 'base', 'USDZ',0x04d5ddf5f3a8939889f11e97f8c4bb48317f1938, 18),
+    ('moxie-moxie', 'base', 'MOXIE',0x8C9037D1Ef5c6D1f6816278C7AAF5491d24CD527, 18),
+    ('cbbtc-coinbase-wrapped-btc', 'base', 'cbBTC',0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf, 8)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

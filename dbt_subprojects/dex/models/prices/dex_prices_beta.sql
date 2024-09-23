@@ -43,11 +43,16 @@ dex_bought as (
     inner join {{ source('tokens', 'erc20') }} as t
         on d.blockchain = t.blockchain
         and d.token_bought_address = t.contract_address
+    left join {{ source('prices', 'trusted_tokens') }} as ptt
+        on d.blockchain = ptt.blockchain
+        and d.token_bought_address = ptt.contract_address
     where
         1 = 1
         and d.token_bought_amount > 0
         and d.token_bought_amount_raw > UINT256 '0'
         and t.symbol is not null
+        -- filter out tokens that are already in the trusted_tokens table
+        and ptt.contract_address is null
 ), 
 dex_sold as (
     select
@@ -64,11 +69,16 @@ dex_sold as (
     inner join {{ source('tokens', 'erc20') }} as t
         on d.blockchain = t.blockchain
         and d.token_sold_address = t.contract_address
+    left join {{ source('prices', 'trusted_tokens') }} as ptt
+        on d.blockchain = ptt.blockchain
+        and d.token_sold_address = ptt.contract_address
     where
         1 = 1
         and d.token_sold_amount > 0
         and d.token_sold_amount_raw > UINT256 '0'
         and t.symbol is not null
+        -- filter out tokens that are already in the trusted_tokens table
+        and ptt.contract_address is null
 ),
 dex_prices as (
     select

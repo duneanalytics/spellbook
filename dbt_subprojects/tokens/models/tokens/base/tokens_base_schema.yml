@@ -6,7 +6,7 @@ models:
       blockchain: base
       sector: tokens
       project: erc20
-      contributors: hildobby
+      contributors: hildobby, rantum
     config:
       tags: ['table', 'erc20', 'base']
     description: "All ERC20 Token Addresses on Base - with mapped Symbols and Decimals if known."
@@ -81,3 +81,26 @@ models:
         tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155' ]
+
+  - name: tokens_base_erc20_stablecoins
+    meta:
+      blockchain: base
+      sector: stablecoins
+      contributors: synthquest
+    config:
+      tags: ['tokens', 'base', 'erc20', 'stablecoins']
+    description: >
+        Selection of stablecoin token addresses.
+    columns:
+      - name: blockchain
+        description: "Blockchain name"
+      - name: contract_address
+        description: "Stablecoin contract address"
+      - name: backing
+        description: "Stablecoin backing"
+      - name: symbol
+        description: "Stablecoin symbol"
+      - name: name
+        description: "Stablecoin project name"
+      - name: decimals
+        description: "Number of decimals"

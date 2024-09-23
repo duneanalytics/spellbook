@@ -6,7 +6,7 @@
         incremental_strategy = 'merge',
         unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
         incremental_predicates = ['DBT_INTERNAL_DEST.block_date >= date_trunc(\'day\', now() - interval \'7\' day)'],
-        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom", "bnb", "optimism", "arbitrum"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "gnosis", "avalanche_c", "fantom", "bnb", "optimism", "arbitrum", "base", "linea", "scroll", "polygon"]\',
                                 "sector",
                                 "dex_aggregator",
                                 \'["bh2smith", "Henrystats", "jeff-dude", "rantum", "hosuke"]\') }}'

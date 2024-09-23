@@ -246,7 +246,7 @@ WITH pools AS (
     0 AS normalized_weight,
     cc._name,
     'FX' AS pool_type
-  FROM {{ source('xavefinance_avalanche_c', 'FXPoolFactory_call_newFXPool') }} cc
+  FROM {{ source('xavefinance_polygon', 'FXPoolFactory_call_newFXPool') }} cc
   CROSS JOIN UNNEST(_assetsToRegister) AS t (token)
   WHERE call_success
 ),

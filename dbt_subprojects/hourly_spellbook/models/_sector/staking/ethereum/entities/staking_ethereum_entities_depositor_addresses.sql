@@ -31,6 +31,7 @@ FROM
     , (0x746d8a8fcab7f829fa500504f60d89c5cc1ea973, 'Kiln', 'Kiln 5', 'Staking Pool')
     , (0x0816df553a89c4bff7ebfd778a9706a989dd3ce3, 'Kiln', 'Kiln 6', 'Staking Pool')
     , (0xef650d5dbe75f39e2ec18a4381f75c8a4d4e19c8, 'Kiln', 'Kiln 7', 'Staking Pool')
+    , (0x576834cb068e677db4aff6ca245c7bde16c3867e, 'Kiln', 'Kiln 8', 'Staking Pool')
     , (0xbf1556a7d625654e3d64d1f0466a60a697fac178, 'imToken', 'imToken Staking[NodeProviderInfStones]', 'Staking Pool')
     , (0xbca3b7b87dcb15f0efa66136bc0e4684a3e5da4d, 'SharedStake', 'SharedStake', 'Liquid Staking')
     , (0xeadcba8bf9aca93f627f31fb05470f5a0686ceca, 'StakeWise', 'StakeWise Solos', 'Staking Pool')

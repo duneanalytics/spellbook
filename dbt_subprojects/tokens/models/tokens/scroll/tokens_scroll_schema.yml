@@ -6,7 +6,7 @@ models:
       blockchain: scroll
       sector: tokens
       project: erc20
-      contributors: lgingerich
+      contributors: lgingerich, rantum
     config:
       tags: ['table', 'erc20']
     description: "ERC20 Token Addresses, Symbols and Decimals"
