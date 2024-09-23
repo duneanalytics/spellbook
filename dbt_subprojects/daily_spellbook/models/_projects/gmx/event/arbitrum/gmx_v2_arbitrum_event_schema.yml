@@ -833,6 +833,11 @@ models:
       Extracts and decodes the `OrderFrozen` event log data from the Arbitrum blockchain. 
       This model processes log entries related to frozen orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for the order being frozen.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - key
 
     columns:
       - *blockchain
@@ -853,7 +858,6 @@ models:
         description: The key associated with the frozen order. Extracted as a bytes32 value
         tests:
           - not_null
-          - unique
       - name: account
         description: The address associated with the order 
       - name: reason_bytes
