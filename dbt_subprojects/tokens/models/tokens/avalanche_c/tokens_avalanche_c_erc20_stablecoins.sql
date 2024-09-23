@@ -28,8 +28,8 @@ FROM (VALUES
         ('avalanche_c', 0xdacde03d7ab4d81feddc3a20faa89abac9072ce2, 'Crypto-backed stablecoin', 'USP', 18, ''),
         ('avalanche_c', 0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664, 'Crypto-backed stablecoin', 'USDC.e', 6, ''),
         ('avalanche_c', 0x8861f5c40a0961579689fdf6cdea2be494f9b25a, 'Hybrid stablecoin', 'iUSDS', 18, ''),
-        ('avalanche_c', 0xc7198437980c041c805a1edcba50c1ce5db95118, 'Crypto-backed stablecoin', 'USDT.e', 6, '')
-        ('avalanche_c', 0xabe7a9dfda35230ff60d1590a929ae0644c47dc1, 'Crypto-backed stablecoin', 'aUSD', 18, '')
+        ('avalanche_c', 0xc7198437980c041c805a1edcba50c1ce5db95118, 'Crypto-backed stablecoin', 'USDT.e', 6, ''),
+        ('avalanche_c', 0xabe7a9dfda35230ff60d1590a929ae0644c47dc1, 'Crypto-backed stablecoin', 'aUSD', 18, ''),
         ('avalanche_c', 0xfab550568c688d5d8a52c7d794cb93edc26ec0ec, 'Crypto-backed stablecoin', 'axlUSD', 6, '')
 
      ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
