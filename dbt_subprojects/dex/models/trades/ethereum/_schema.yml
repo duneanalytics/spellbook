@@ -545,7 +545,7 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('xchange_v2_ethereum_base_trades_seed')
+          seed_file: ref('xchange_ethereum_base_trades_seed')
 
   - name: curve_ethereum_base_trades
     meta:
