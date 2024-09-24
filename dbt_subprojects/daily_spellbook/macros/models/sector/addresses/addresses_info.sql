@@ -84,7 +84,8 @@ SELECT '{{blockchain}}' AS blockchain
 , last_tx_block_time
 , first_tx_block_number
 , last_tx_block_number
-, last_tx_block_time AS last_seen
+, GREATEST(last_tx_block_time, last_received_block_time, last_sent_block_time) AS last_seen
+, GREATEST(last_tx_block_number, last_received_block_number, last_sent_block_number) AS last_seen_block
 FROM executed_txs
 LEFT JOIN is_contract USING (address)
 LEFT JOIN transfers USING (address)
@@ -218,7 +219,8 @@ SELECT '{{blockchain}}' AS blockchain
 , COALESCE(t.last_tx_block_time, nd.last_tx_block_time) AS last_tx_block_time
 , COALESCE(t.first_tx_block_number, nd.first_tx_block_number) AS first_tx_block_number
 , COALESCE(t.last_tx_block_number, nd.last_tx_block_number) AS last_tx_block_number
-, GREATEST(nd.last_tx_block_time, t.last_seen) AS last_seen
+, GREATEST(nd.last_tx_block_time, nd.last_received_block_time, nd.last_sent_block_time, t.last_seen) AS last_seen
+, GREATEST(nd.last_tx_block_number, nd.last_received_block_number, nd.last_sent_block_number, t.last_seen_block) AS last_seen_block
 FROM new_data nd
 LEFT JOIN {{this}} t ON t.address=nd.address
 

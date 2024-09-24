@@ -86,3 +86,6 @@ models:
       - &last_seen
         name: last_seen
         description: "The last time this address was seen"
+      - &last_seen_block
+        name: last_seen_block
+        description: "The last block number this address was seen on"

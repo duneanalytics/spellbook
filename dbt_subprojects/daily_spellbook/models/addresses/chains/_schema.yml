@@ -80,6 +80,9 @@ models:
       - &last_seen
         name: last_seen
         description: "The time at which this address last appeared in any form on the blockchain"
+      - &last_seen_block
+        name: last_seen_block
+        description: "The last block number this address was seen on"
 
   - name: addresses_arbitrum_info
     meta:
@@ -116,6 +119,7 @@ models:
       - *first_tx_block_number
       - *last_tx_block_number
       - *last_seen
+      - *last_seen_block
 
   - name: addresses_avalanche_c_info
     meta:
@@ -152,6 +156,7 @@ models:
       - *first_tx_block_number
       - *last_tx_block_number
       - *last_seen
+      - *last_seen_block
 
   - name: addresses_base_info
     meta:
@@ -188,6 +193,7 @@ models:
       - *first_tx_block_number
       - *last_tx_block_number
       - *last_seen
+      - *last_seen_block
 
   - name: addresses_blast_info
     meta:
@@ -224,6 +230,7 @@ models:
       - *first_tx_block_number
       - *last_tx_block_number
       - *last_seen
+      - *last_seen_block
 
   - name: addresses_bnb_info
     meta:
@@ -260,6 +267,7 @@ models:
       - *first_tx_block_number
       - *last_tx_block_number
       - *last_seen
+      - *last_seen_block
 
   - name: addresses_celo_info
     meta:
@@ -296,6 +304,7 @@ models:
       - *first_tx_block_number
       - *last_tx_block_number
       - *last_seen
+      - *last_seen_block
       
   - name: addresses_gnosis_info
     meta:
@@ -332,6 +341,7 @@ models:
       - *first_tx_block_number
       - *last_tx_block_number
       - *last_seen
+      - *last_seen_block
 
   - name: addresses_optimism_info
     meta:
@@ -368,6 +378,7 @@ models:
       - *first_tx_block_number
       - *last_tx_block_number
       - *last_seen
+      - *last_seen_block
 
   - name: addresses_polygon_info
     meta:
@@ -404,6 +415,7 @@ models:
       - *first_tx_block_number
       - *last_tx_block_number
       - *last_seen
+      - *last_seen_block
 
   - name: addresses_scroll_info
     meta:
@@ -440,6 +452,7 @@ models:
       - *first_tx_block_number
       - *last_tx_block_number
       - *last_seen
+      - *last_seen_block
 
   - name: addresses_zora_info
     meta:
@@ -476,3 +489,4 @@ models:
       - *first_tx_block_number
       - *last_tx_block_number
       - *last_seen
+      - *last_seen_block

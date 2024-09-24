@@ -58,6 +58,7 @@ WITH data AS (
             (blockchain, chain_stats)
             ])) AS chain_stats
     , MAX(last_seen) AS last_seen
+    , MAX(last_seen_block) AS last_seen_block
     FROM (
         {% for addresses_model in addresses_models %}
         SELECT '{{ addresses_model[0] }}' AS blockchain
@@ -83,12 +84,14 @@ WITH data AS (
         , last_tx_block_number
         , map_from_entries(array[
             ('last_seen', CAST(last_seen AS varchar))
+            , ('last_seen_block', CAST(last_seen_block AS varchar))
             , ('executed_tx_count', CAST(executed_tx_count AS varchar))
             , ('is_smart_contract', CAST(is_smart_contract AS varchar))
             , ('sent_count', CAST(sent_count AS varchar))
             , ('received_count', CAST(received_count AS varchar))
             ]) AS chain_stats
         , last_seen
+        , last_seen_block
         FROM {{ addresses_model[1] }}
         {% if not loop.last %}
         UNION ALL
@@ -122,6 +125,7 @@ SELECT address
 , last_tx_block_time
 , chain_stats
 , last_seen
+, last_seen_block
 FROM data
 
 
@@ -157,7 +161,7 @@ WITH new_data AS (
             (blockchain, chain_stats)
             ])) AS chain_stats
     , MAX(last_seen) AS last_seen
-    , MAX(last_seen) AS last_seen
+    , MAX(last_seen_block) AS last_seen_block
     FROM (
         {% for addresses_model in addresses_models %}
         SELECT '{{ addresses_model[0] }}' AS blockchain
@@ -183,16 +187,18 @@ WITH new_data AS (
         , am.last_tx_block_number
         , map_from_entries(array[
             ('last_seen', CAST(am.last_seen AS varchar))
+            , ('last_seen_block', CAST(am.last_seen_block AS varchar))
             , ('executed_tx_count', CAST(am.executed_tx_count AS varchar))
             , ('is_smart_contract', CAST(am.is_smart_contract AS varchar))
             , ('sent_count', CAST(am.sent_count AS varchar))
             , ('received_count', CAST(am.received_count AS varchar))
             ]) AS chain_stats
         , am.last_seen
+        , am.last_seen_block
         FROM {{ addresses_model[1] }} am
         LEFT JOIN {{ this }} t ON am.address = t.address
             AND (((contains(t.blockchains, am.blockchain) = FALSE))
-            OR (CAST(chain_stats[{{ addresses_model[0] }}]['last_seen'] AS timestamp) > t.last_seen))
+            OR (chain_stats[{{ addresses_model[0] }}]['last_seen_block'] > t.last_seen_block))
         WHERE {{incremental_predicate('am.last_seen')}}
         {% if not loop.last %}
         UNION ALL
