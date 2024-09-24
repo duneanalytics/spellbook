@@ -11,7 +11,23 @@
     , maker_column_name = null
     )
 %}
-WITH dexs AS
+
+WITH evt_swap AS (
+    SELECT block_number
+        , block_time
+        , {{ taker_column_name }}
+        , {{ maker_column_name }}
+        , amount0
+        , amount1
+        , contract_address
+        , tx_hash
+        , index
+    FROM {{ Pair_evt_Swap }}
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('block_time') }}
+    {% endif %}
+)
+, dexs AS
 (
     SELECT
         t.block_number
@@ -31,7 +47,7 @@ WITH dexs AS
         , t.index as evt_index
         , f.contract_address as factory_address
     FROM
-        {{ Pair_evt_Swap }} t 
+        {{ evt_swap }} t
     INNER JOIN
         {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
@@ -39,10 +55,6 @@ WITH dexs AS
     INNER JOIN {{ source(blockchain, 'creation_traces') }} ct 
         ON f.{{ pair_column_name }} = ct.address 
         AND f.contract_address = ct."from"
-    {% if is_incremental() %}
-    WHERE
-        {{ incremental_predicate('t.block_time') }}
-    {% endif %}
 )
 
 SELECT
