@@ -511,6 +511,7 @@ models:
       - name: chain_id
         tests:
           - not_null
+      - name: mode
       - name: first_promoted_at
       - name: last_promoted_at
 
