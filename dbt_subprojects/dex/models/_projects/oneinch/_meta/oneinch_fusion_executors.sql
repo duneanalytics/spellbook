@@ -32,7 +32,7 @@ executors as (
 
 -- output --
 
-select 
+select
     blockchain
     , resolver_address
     , resolver_executor
