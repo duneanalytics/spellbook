@@ -1871,3 +1871,30 @@ sources:
           - *rateProviders
           - *symbol
           - *tokens          
+
+  - name: gyroscope_avalanche_c
+    tables:
+      - name: GyroECLPPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Gyroscope ECLP contract.
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: capManager
+          - name: capParams                 
+          - name: contract_address
+            description: "Address of the ECLP Pool contract"
+          - name: derivedECLPParams
+          - name: eclpParams
+          - name: name
+          - *output_0
+          - *owner
+          - name: pauseManager
+          - name: pauseParams
+          - *swapFeePercentage
+          - *rateProviders
+          - *symbol
+          - *tokens
