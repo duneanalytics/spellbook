@@ -218,7 +218,7 @@ WITH new_data AS (
         FROM {{ addresses_model[1] }} am
         LEFT JOIN {{ this }} t ON am.address = t.address
             AND (((contains(t.blockchains, am.blockchain) = FALSE))
-            OR (chain_stats['{{ addresses_model[0] }}']['last_seen_block'] > t.last_seen_block))
+            OR (CAST(chain_stats['{{ addresses_model[0] }}']['last_seen_block'] AS bigint) > t.last_seen_block))
         WHERE {{incremental_predicate('am.last_seen')}}
         {% if not loop.last %}
         UNION ALL
