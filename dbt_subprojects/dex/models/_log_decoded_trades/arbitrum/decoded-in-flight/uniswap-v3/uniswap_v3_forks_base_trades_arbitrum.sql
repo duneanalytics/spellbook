@@ -23,25 +23,9 @@ WITH all_decoded_trades AS (
     }}
 )
 
-SELECT
-    all_decoded_trades.blockchain
-    , fork_mapping.project_name as project
-    , all_decoded_trades.version
-    , all_decoded_trades.dex_type
-    , factory_address
-    , all_decoded_trades.block_month
-    , all_decoded_trades.block_date
-    , all_decoded_trades.block_time
-    , all_decoded_trades.block_number
-    , all_decoded_trades.token_bought_amount_raw
-    , all_decoded_trades.token_sold_amount_raw
-    , all_decoded_trades.token_bought_address
-    , all_decoded_trades.token_sold_address
-    , all_decoded_trades.taker
-    , all_decoded_trades.maker
-    , all_decoded_trades.project_contract_address
-    , all_decoded_trades.tx_hash
-    , all_decoded_trades.evt_index
-FROM all_decoded_trades
-INNER JOIN {{ ref('uniswap_v3_fork_mapping_arbitrum') }} AS fork_mapping
-USING (factory_address)
+SELECT uniswap_v3_base_trades.*
+FROM all_decoded_trades AS uniswap_v3_base_trades
+LEFT JOIN {{ ref('oneinch_swaps') }} AS oneinch_swaps
+    ON uniswap_v3_base_trades.tx_hash = oneinch_swaps.tx_hash
+    AND oneinch_swaps.blockchain = 'arbitrum'
+WHERE oneinch_swaps.tx_hash IS NULL
