@@ -5,7 +5,7 @@
       , post_hook='{{ expose_spells(\'["optimism"]\',
                                   "sector",
                                   "tokens_optimism",
-                                  \'["msilb7", "synthquest"]\') }}'
+                                  \'["msilb7", "synthquest","rantum"]\') }}'
       , unique_key = ['contract_address']
   )
 }}
@@ -43,7 +43,8 @@ FROM (VALUES
     ('optimism', 0x2057c8ecb70afd7bee667d76b4cd373a325b1a20, 'Bridge-backed stablecoin', 'hUSDT', 6, 'Tether USD Hop Token'),
     ('optimism', 0x9485aca5bbbe1667ad97c7fe7c4531a624c8b1ed, 'Crypto-backed stablecoin', 'agEUR', 18, 'agEUR'),
     ('optimism', 0xbfd291da8a403daaf7e5e9dc1ec0aceacd4848b9, 'Crypto-backed stablecoin', 'USX', 18, 'dForce USD'),
-    ('optimism', 0xba28feb4b6a6b81e3f26f08b83a19e715c4294fd, 'Algorithmic stablecoin', 'UST', 6, 'UST (Wormhole)')
+    ('optimism', 0xba28feb4b6a6b81e3f26f08b83a19e715c4294fd, 'Algorithmic stablecoin', 'UST', 6, 'UST (Wormhole)'),
+    ('optimism', 0xeb466342c4d449bc9f53a865d5cb90586f405215, 'Crypto-backed stablecoin', 'axlUSDC', 6, 'Axelar USDC')
 
 
      ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)

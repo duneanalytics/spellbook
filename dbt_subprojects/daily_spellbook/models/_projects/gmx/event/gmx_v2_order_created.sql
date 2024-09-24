@@ -41,7 +41,7 @@ SELECT
     acceptable_price,
     execution_fee,
     callback_gas_limit,
-    min_output_amount, 
+    min_output_amount_raw, 
     updated_at_block,
     updated_at_time,
     is_long,
