@@ -46,7 +46,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-            - project_contract_address
   
   - name: uniswap_v3_forks_base_trades_arbitrum
     meta:
@@ -62,7 +61,6 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-            - project_contract_address
 
   - name: uniswap_v3_fork_mapping_arbitrum
     description: >
@@ -84,5 +82,4 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-            - project_contract_address
   
