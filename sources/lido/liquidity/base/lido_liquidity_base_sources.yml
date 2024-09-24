@@ -38,6 +38,13 @@ sources:
       - name: PancakeV3Pool_evt_Mint
       - name: PancakeV3Pool_evt_Collect
       - name: PancakeV3Pool_evt_Burn  
+
+  - name: maverick_v2_base
+    description: "Base decoded tables related to Maverick v2 contract"
+    tables:
+      - name: V2Pool_evt_PoolAddLiquidity
+      - name: V2Pool_evt_PoolRemoveLiquidity
+    
     
 
 
