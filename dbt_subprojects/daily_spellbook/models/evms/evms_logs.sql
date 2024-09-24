@@ -52,8 +52,6 @@ FROM (
         , block_date
         , tx_from
         , tx_to
-        , blob_gas_price
-        , blob_gas_used
         FROM {{ logs_model[1] }}
         {% if not loop.last %}
         UNION ALL
