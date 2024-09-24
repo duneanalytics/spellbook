@@ -100,6 +100,7 @@ FROM (VALUES
     , (0x90364aa61234b85251ad943681433904c35fa5ce, 'METIS', 18)
     , (0x4026affabd9032bcc87fa05c02f088905f3dc09b, 'SWISE', 18)
     , (0xf6d22e29496313d89ad6261fbae8d118181561de, 'GT', 18)
+    , (0x25ea98ac87a38142561ea70143fd44c4772a16b6, 'MORE', 18)    
     , (0xe7076d4bb604dea53adaa424fce0336ee7f975ff, 'auraezETH/wstETH', 18)
     , (0xb3cf6721d8f88f7547d90ed8e4119e09945efa9a, 'aurarsETH/wETH', 18)
     , (0x2f7242373f4b2c831870c145376c4fc9ac76a35d, 'aurarsETH/rETH/wstETH', 18)
