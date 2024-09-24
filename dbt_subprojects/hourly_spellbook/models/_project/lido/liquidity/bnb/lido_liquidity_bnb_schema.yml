@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: lido_liquidity_bnb_pancake_v3_pools
+  - name: lido_liquidity_bnb_pancakeswap_v3_pools
     meta:
       blockchain: bnb
       project: lido
