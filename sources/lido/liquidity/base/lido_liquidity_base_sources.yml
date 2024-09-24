@@ -32,6 +32,12 @@ sources:
       - name: UniswapV3Pool_evt_Collect
       - name: UniswapV3Pool_evt_Burn  
 
+  - name: pancakeswap_v3_base
+    description: "Base decoded tables related to Pancake v3 contract"
+    tables:
+      - name: PancakeV3Pool_evt_Mint
+      - name: PancakeV3Pool_evt_Collect
+      - name: PancakeV3Pool_evt_Burn  
     
 
 
