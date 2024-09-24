@@ -145,6 +145,9 @@ with
                 else wp.tokenBVault
                 end as token_sold_vault
             , wp.update_time
+            --we need a row_number for the transfer out filter to get the first transfer out from the tr_2 join
+            , row_number() over (partition by sp.call_tx_id, sp.call_outer_instruction_index, sp.call_inner_instruction_index
+                                order by COALESCE(tr_2.inner_instruction_index, 0) asc) as first_transfer_out
         FROM (
                 SELECT
                     account_whirlpool
@@ -179,13 +182,27 @@ with
         INNER JOIN whirlpools wp
             ON sp.account_whirlpool = wp.whirlpool_id
             AND sp.call_block_time >= wp.update_time
+        --join on memo program at index + 1 to see if the first token has memo extension active or not. if active everything gets offset by 1
+        LEFT JOIN {{ source('solana', 'instruction_calls')}} memo 
+            ON memo.tx_id = sp.call_tx_id
+            AND memo.block_slot = sp.call_block_slot
+            AND memo.outer_instruction_index = sp.call_outer_instruction_index
+            AND ((sp.call_is_inner = false AND memo.inner_instruction_index = 1)
+                OR (sp.call_is_inner = true AND memo.inner_instruction_index = sp.call_inner_instruction_index + 1)
+                )
+            AND memo.executing_account = 'MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr'
+            {% if is_incremental() %}
+            AND {{incremental_predicate('memo.block_time')}}
+            {% else %}
+            AND memo.block_time >= TIMESTAMP '{{project_start_date}}'
+            {% endif %}
+        --token extension transfer could be preceeded by the memo program and followed by a post execution hook + even potentially more instructions.
         INNER JOIN {{ ref('tokens_solana_transfers') }} tr_1
             ON tr_1.tx_id = sp.call_tx_id
             AND tr_1.block_slot = sp.call_block_slot
             AND tr_1.outer_instruction_index = sp.call_outer_instruction_index
-            AND ((sp.call_is_inner = false AND tr_1.inner_instruction_index = 1)
-                OR (sp.call_is_inner = true AND tr_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
-            AND tr_1.token_version = 'spl_token'
+            AND ((sp.call_is_inner = false AND tr_1.inner_instruction_index = CASE WHEN memo.tx_id IS NOT NULL THEN 2 ELSE 1 END)
+                OR (sp.call_is_inner = true AND tr_1.inner_instruction_index = sp.call_inner_instruction_index + CASE WHEN memo.tx_id IS NOT NULL THEN 2 ELSE 1 END))       
             {% if is_incremental() %}
             AND {{incremental_predicate('tr_1.block_time')}}
             {% else %}
@@ -195,9 +212,9 @@ with
             ON tr_2.tx_id = sp.call_tx_id
             AND tr_2.block_slot = sp.call_block_slot
             AND tr_2.outer_instruction_index = sp.call_outer_instruction_index
-            AND ((sp.call_is_inner = false AND tr_2.inner_instruction_index = 2)
-                OR (sp.call_is_inner = true AND tr_2.inner_instruction_index = sp.call_inner_instruction_index + 2))
-            AND tr_2.token_version = 'spl_token'
+            AND ((sp.call_is_inner = false AND (tr_2.inner_instruction_index >= CASE WHEN memo.tx_id IS NOT NULL THEN 3 ELSE 2 END))
+                OR (sp.call_is_inner = true AND (tr_2.inner_instruction_index >= sp.call_inner_instruction_index + CASE WHEN memo.tx_id IS NOT NULL THEN 3 ELSE 2 END))
+                )
             {% if is_incremental() %}
             AND {{incremental_predicate('tr_2.block_time')}}
             {% else %}
@@ -233,6 +250,7 @@ FROM (
         *
         , row_number() OVER (partition by tx_id, outer_instruction_index, inner_instruction_index, tx_index order by update_time desc) as recent_update
     FROM all_swaps
+    WHERE first_transfer_out = 1
     )
     tb
 WHERE recent_update = 1
