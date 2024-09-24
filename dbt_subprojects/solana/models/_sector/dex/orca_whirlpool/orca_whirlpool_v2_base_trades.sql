@@ -14,6 +14,7 @@
 }}
 
 {% set project_start_date = '2024-05-27' %} --blocktime of upgrade is 268396603
+--you can QA with the tx id 2P2hcK79CV82MqjXa6S4xxKoTHkgqmYkszWkxY1KmASvCek8YfSekSrB8rtdRJSTUYYyuCVxMXFrQd11bXDZqn6K
 
 with
     whirlpools as (
@@ -116,7 +117,7 @@ with
             sp.call_block_time as block_time
             , sp.call_block_slot as block_slot
             , 'whirlpool' as project
-            , 1 as version
+            , 2 as version
             , 'solana' as blockchain
             , case when sp.call_outer_executing_account = 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc' then 'direct'
                 else sp.call_outer_executing_account
