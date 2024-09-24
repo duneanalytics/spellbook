@@ -2,9 +2,21 @@ version: 2
 
 sources:    
   - name: pancakeswap_v3_bnb
-    description: "BNB decoded tables related to Pancake V3 contract"
+    description: "BNB decoded tables related to Pancake V3 contracts"
     tables:
       - name: PancakeV3Pool_evt_Mint
       - name: PancakeV3Pool_evt_Burn
       - name: PancakeV3Pool_evt_Collect
+
+  - name: thena_fi_bnb
+    description: "BNB decoded tables related to Thena DEX contracts"
+    tables:
+      - name: PairFactory_CL_call_createPool
+
+  - name: thena_bnb
+    description: "BNB decoded tables related to Thena Algebra pools contracts"
+    tables:
+      - name: AlgebraPool_evt_Mint
+      - name: AlgebraPool_evt_Burn
+
 
