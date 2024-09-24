@@ -1,0 +1,10 @@
+version: 2
+
+sources:    
+  - name: pancakeswap_v3_bnb
+    description: "BNB decoded tables related to Pancake V3 contract"
+    tables:
+      - name: PancakeV3Pool_evt_Mint
+      - name: PancakeV3Pool_evt_Burn
+      - name: PancakeV3Pool_evt_Collect
+
