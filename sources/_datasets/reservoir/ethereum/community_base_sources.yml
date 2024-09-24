@@ -7,7 +7,6 @@ sources:
     tables:
       - name: collections
       - name: collection_floor_ask_events
-
         description: "todo: add reservoir table description!"
         columns:
           - name: created_at
@@ -30,6 +29,6 @@ sources:
           - name: valid_until_dt
 
   - name: balancer
-      description: ""
-      tables:
-        - name: factory_pool_mapping          
+    description: ""
+    tables:
+      - name: factory_pool_mapping
