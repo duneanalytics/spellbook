@@ -97,3 +97,27 @@ models:
       - &trace_address
         name: trace_address
         description: ""
+
+  - name: firebird_finance_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: firebird_finance
+      contributors: ARDev097, hosuke
+    config:
+      tags: [ 'optimism','trades', 'firebird_finance','dex' ]
+    description: >
+      firebird_finance dex base trades on optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_aggregator_seed:
+          blockchain: optimism
+          project: firebird_finance
+          version: 1
