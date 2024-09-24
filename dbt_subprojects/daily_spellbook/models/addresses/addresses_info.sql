@@ -157,6 +157,7 @@ WITH new_data AS (
             (blockchain, chain_stats)
             ])) AS chain_stats
     , MAX(last_seen) AS last_seen
+    , MAX(last_seen) AS last_seen
     FROM (
         {% for addresses_model in addresses_models %}
         SELECT '{{ addresses_model[0] }}' AS blockchain
@@ -190,7 +191,8 @@ WITH new_data AS (
         , am.last_seen
         FROM {{ addresses_model[1] }} am
         LEFT JOIN {{ this }} t ON am.address = t.address
-            AND (am.last_seen > t.last_seen OR contains(t.blockchains, am.blockchain) = FALSE)
+            AND (((contains(t.blockchains, am.blockchain) = FALSE))
+            OR (CAST(chain_stats[{{ addresses_model[0] }}]['last_seen'] AS timestamp) > t.last_seen))
         WHERE {{incremental_predicate('am.last_seen')}}
         {% if not loop.last %}
         UNION ALL
