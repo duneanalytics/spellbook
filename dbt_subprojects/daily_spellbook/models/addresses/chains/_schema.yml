@@ -53,12 +53,24 @@ models:
       - &last_received_block_time
         name: last_received_block_time
         description: "The block time of the last time this address received tokens"
+      - &first_received_block_number
+        name: first_received_block_number
+        description: "The block number of the first time this address received tokens"
+      - &last_received_block_number
+        name: last_received_block_number
+        description: "The block number of the last time this address received tokens"
       - &first_sent_block_time
         name: first_sent_block_time
         description: "The block time of the first time this address sent tokens"
       - &last_sent_block_time
         name: last_sent_block_time
         description: "The block time of the last time this address sent tokens"
+      - &first_sent_block_number
+        name: first_sent_block_number
+        description: "The block number of the first time this address sent tokens"
+      - &last_sent_block_number
+        name: last_sent_block_number
+        description: "The block number of the last time this address sent tokens"
       - &received_volume_usd
         name: received_volume_usd
         description: "The USD volume of tokens received by this address"
@@ -110,8 +122,12 @@ models:
       - *sent_count
       - *first_received_block_time
       - *last_received_block_time
+      - *first_received_block_number
+      - *last_received_block_number
       - *first_sent_block_time
       - *last_sent_block_time
+      - *first_sent_block_number
+      - *last_sent_block_number
       - *received_volume_usd
       - *sent_volume_usd
       - *first_tx_block_time
@@ -147,8 +163,12 @@ models:
       - *sent_count
       - *first_received_block_time
       - *last_received_block_time
+      - *first_received_block_number
+      - *last_received_block_number
       - *first_sent_block_time
       - *last_sent_block_time
+      - *first_sent_block_number
+      - *last_sent_block_number
       - *received_volume_usd
       - *sent_volume_usd
       - *first_tx_block_time
@@ -184,8 +204,12 @@ models:
       - *sent_count
       - *first_received_block_time
       - *last_received_block_time
+      - *first_received_block_number
+      - *last_received_block_number
       - *first_sent_block_time
       - *last_sent_block_time
+      - *first_sent_block_number
+      - *last_sent_block_number
       - *received_volume_usd
       - *sent_volume_usd
       - *first_tx_block_time
@@ -221,8 +245,12 @@ models:
       - *sent_count
       - *first_received_block_time
       - *last_received_block_time
+      - *first_received_block_number
+      - *last_received_block_number
       - *first_sent_block_time
       - *last_sent_block_time
+      - *first_sent_block_number
+      - *last_sent_block_number
       - *received_volume_usd
       - *sent_volume_usd
       - *first_tx_block_time
@@ -258,8 +286,12 @@ models:
       - *sent_count
       - *first_received_block_time
       - *last_received_block_time
+      - *first_received_block_number
+      - *last_received_block_number
       - *first_sent_block_time
       - *last_sent_block_time
+      - *first_sent_block_number
+      - *last_sent_block_number
       - *received_volume_usd
       - *sent_volume_usd
       - *first_tx_block_time
@@ -295,8 +327,12 @@ models:
       - *sent_count
       - *first_received_block_time
       - *last_received_block_time
+      - *first_received_block_number
+      - *last_received_block_number
       - *first_sent_block_time
       - *last_sent_block_time
+      - *first_sent_block_number
+      - *last_sent_block_number
       - *received_volume_usd
       - *sent_volume_usd
       - *first_tx_block_time
@@ -332,8 +368,12 @@ models:
       - *sent_count
       - *first_received_block_time
       - *last_received_block_time
+      - *first_received_block_number
+      - *last_received_block_number
       - *first_sent_block_time
       - *last_sent_block_time
+      - *first_sent_block_number
+      - *last_sent_block_number
       - *received_volume_usd
       - *sent_volume_usd
       - *first_tx_block_time
@@ -369,8 +409,12 @@ models:
       - *sent_count
       - *first_received_block_time
       - *last_received_block_time
+      - *first_received_block_number
+      - *last_received_block_number
       - *first_sent_block_time
       - *last_sent_block_time
+      - *first_sent_block_number
+      - *last_sent_block_number
       - *received_volume_usd
       - *sent_volume_usd
       - *first_tx_block_time
@@ -406,8 +450,12 @@ models:
       - *sent_count
       - *first_received_block_time
       - *last_received_block_time
+      - *first_received_block_number
+      - *last_received_block_number
       - *first_sent_block_time
       - *last_sent_block_time
+      - *first_sent_block_number
+      - *last_sent_block_number
       - *received_volume_usd
       - *sent_volume_usd
       - *first_tx_block_time
@@ -443,8 +491,12 @@ models:
       - *sent_count
       - *first_received_block_time
       - *last_received_block_time
+      - *first_received_block_number
+      - *last_received_block_number
       - *first_sent_block_time
       - *last_sent_block_time
+      - *first_sent_block_number
+      - *last_sent_block_number
       - *received_volume_usd
       - *sent_volume_usd
       - *first_tx_block_time
@@ -480,8 +532,12 @@ models:
       - *sent_count
       - *first_received_block_time
       - *last_received_block_time
+      - *first_received_block_number
+      - *last_received_block_number
       - *first_sent_block_time
       - *last_sent_block_time
+      - *first_sent_block_number
+      - *last_sent_block_number
       - *received_volume_usd
       - *sent_volume_usd
       - *first_tx_block_time

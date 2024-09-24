@@ -20,8 +20,12 @@ WITH executed_txs AS (
     , SUM(sent_count) AS sent_count
     , MAX(first_received_block_time) AS first_received_block_time
     , MAX(last_received_block_time) AS last_received_block_time
+    , MAX(first_received_block_number) AS first_received_block_number
+    , MAX(last_received_block_number) AS last_received_block_number
     , MAX(first_sent_block_time) AS first_sent_block_time
     , MAX(last_sent_block_time) AS last_sent_block_time
+    , MAX(first_sent_block_number) AS first_sent_block_number
+    , MAX(last_sent_block_number) AS last_sent_block_number
     , MAX(received_volume_usd) AS received_volume_usd
     , MAX(sent_volume_usd) AS sent_volume_usd
     FROM (
@@ -30,8 +34,12 @@ WITH executed_txs AS (
         , COUNT(*) AS sent_count
         , MIN(block_time) AS first_received_block_time
         , MAX(block_time) AS last_received_block_time
+        , MIN(block_number) AS first_received_block_number
+        , MAX(block_number) AS last_received_block_number
         , CAST(NULL AS timestamp) AS first_sent_block_time
         , CAST(NULL AS timestamp) AS last_sent_block_time
+        , CAST(NULL AS bigint) AS first_sent_block_number
+        , CAST(NULL AS bigint) AS last_sent_block_number
         , 0 AS received_volume_usd
         , SUM(amount_usd) AS sent_volume_usd
         FROM {{token_transfers}}
@@ -44,8 +52,12 @@ WITH executed_txs AS (
         , 0 AS sent_count
         , CAST(NULL AS timestamp) AS first_received_block_time
         , CAST(NULL AS timestamp) AS last_received_block_time
+        , CAST(NULL AS bigint) AS first_received_block_number
+        , CAST(NULL AS bigint) AS last_received_block_number
         , MIN(block_time) AS first_sent_block_time
         , MAX(block_time) AS last_sent_block_time
+        , MIN(block_number) AS first_sent_block_number
+        , MAX(block_number) AS last_sent_block_number
         , SUM(amount_usd) AS received_volume_usd
         , 0 AS sent_volume_usd
         FROM {{token_transfers}}
@@ -76,8 +88,12 @@ SELECT '{{blockchain}}' AS blockchain
 , sent_count
 , first_received_block_time
 , last_received_block_time
+, first_received_block_number
+, last_received_block_number
 , first_sent_block_time
 , last_sent_block_time
+, first_sent_block_number
+, last_sent_block_number
 , received_volume_usd
 , sent_volume_usd
 , first_tx_block_time
@@ -119,8 +135,12 @@ WITH executed_txs AS (
     , SUM(sent_count) AS sent_count
     , MAX(first_received_block_time) AS first_received_block_time
     , MAX(last_received_block_time) AS last_received_block_time
+    , MAX(first_received_block_number) AS first_received_block_number
+    , MAX(last_received_block_number) AS last_received_block_number
     , MAX(first_sent_block_time) AS first_sent_block_time
     , MAX(last_sent_block_time) AS last_sent_block_time
+    , MAX(first_sent_block_number) AS first_sent_block_number
+    , MAX(last_sent_block_number) AS last_sent_block_number
     , MAX(received_volume_usd) AS received_volume_usd
     , MAX(sent_volume_usd) AS sent_volume_usd
     FROM (
@@ -129,8 +149,12 @@ WITH executed_txs AS (
         , COUNT(*) AS sent_count
         , MIN(tt.block_time) AS first_received_block_time
         , MAX(tt.block_time) AS last_received_block_time
+        , MIN(tt.block_number) AS first_received_block_number
+        , MAX(tt.block_number) AS last_received_block_number
         , CAST(NULL AS timestamp) AS first_sent_block_time
         , CAST(NULL AS timestamp) AS last_sent_block_time
+        , CAST(NULL AS bigint) AS first_sent_block_number
+        , CAST(NULL AS bigint) AS last_sent_block_number
         , 0 AS received_volume_usd
         , SUM(tt.amount_usd) AS sent_volume_usd
         FROM {{token_transfers}} tt
@@ -146,8 +170,12 @@ WITH executed_txs AS (
         , 0 AS sent_count
         , CAST(NULL AS timestamp) AS first_received_block_time
         , CAST(NULL AS timestamp) AS last_received_block_time
+        , CAST(NULL AS bigint) AS first_received_block_number
+        , CAST(NULL AS bigint) AS last_received_block_number
         , MIN(tt.block_time) AS first_sent_block_time
         , MAX(tt.block_time) AS last_sent_block_time
+        , MIN(tt.block_number) AS first_sent_block_number
+        , MAX(tt.block_number) AS last_sent_block_number
         , SUM(tt.amount_usd) AS received_volume_usd
         , 0 AS sent_volume_usd
         FROM {{token_transfers}} tt
@@ -184,8 +212,12 @@ WITH executed_txs AS (
     , sent_count
     , first_received_block_time
     , last_received_block_time
+    , first_received_block_number
+    , last_received_block_number
     , first_sent_block_time
     , last_sent_block_time
+    , first_sent_block_number
+    , last_sent_block_number
     , received_volume_usd
     , sent_volume_usd
     , first_tx_block_time
@@ -211,8 +243,12 @@ SELECT '{{blockchain}}' AS blockchain
 , nd.sent_count+t.sent_count AS sent_count
 , COALESCE(t.first_received_block_time, nd.first_received_block_time) AS first_received_block_time
 , COALESCE(nd.last_received_block_time, t.last_received_block_time) AS last_received_block_time
+, COALESCE(t.first_received_block_number, nd.first_received_block_number) AS first_received_block_number
+, COALESCE(nd.last_received_block_number, t.last_received_block_number) AS last_received_block_number
 , COALESCE(t.first_sent_block_time, nd.first_sent_block_time) AS first_sent_block_time
 , COALESCE(nd.last_sent_block_time, t.last_sent_block_time) AS last_sent_block_time
+, COALESCE(t.first_sent_block_number, nd.first_sent_block_number) AS first_sent_block_number
+, COALESCE(nd.last_sent_block_number, t.last_sent_block_number) AS last_sent_block_number
 , nd.received_volume_usd+t.received_volume_usd AS received_volume_usd
 , nd.sent_volume_usd+t.sent_volume_usd AS sent_volume_usd
 , COALESCE(t.first_tx_block_time, nd.first_tx_block_time) AS first_tx_block_time

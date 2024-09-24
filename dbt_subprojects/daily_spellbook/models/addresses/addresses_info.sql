@@ -48,8 +48,12 @@ WITH data AS (
     , SUM(received_count) AS received_count
     , MIN(first_received_block_time) AS first_received_block_time
     , MAX(last_received_block_time) AS last_received_block_time
+    , MIN(first_received_block_number) AS first_received_block_number
+    , MAX(last_received_block_number) AS last_received_block_number
     , MIN(first_sent_block_time) AS first_sent_block_time
     , MAX(last_sent_block_time) AS last_sent_block_time
+    , MIN(first_sent_block_number) AS first_sent_block_number
+    , MAX(last_sent_block_number) AS last_sent_block_number
     , SUM(sent_volume_usd) AS sent_volume_usd
     , SUM(received_volume_usd) AS received_volume_usd
     , MIN(first_tx_block_time) AS first_tx_block_time
@@ -74,8 +78,12 @@ WITH data AS (
         , sent_count
         , first_received_block_time
         , last_received_block_time
+        , first_received_block_number
+        , last_received_block_number
         , first_sent_block_time
         , last_sent_block_time
+        , first_sent_block_number
+        , last_sent_block_number
         , received_volume_usd
         , sent_volume_usd
         , first_tx_block_time
@@ -117,8 +125,12 @@ SELECT address
 , received_count
 , first_received_block_time
 , last_received_block_time
+, first_received_block_number
+, last_received_block_number
 , first_sent_block_time
 , last_sent_block_time
+, first_sent_block_number
+, last_sent_block_number
 , sent_volume_usd
 , received_volume_usd
 , first_tx_block_time
@@ -151,8 +163,12 @@ WITH new_data AS (
     , SUM(received_count) AS received_count
     , MIN(first_received_block_time) AS first_received_block_time
     , MAX(last_received_block_time) AS last_received_block_time
+    , MIN(first_received_block_number) AS first_received_block_number
+    , MAX(last_received_block_number) AS last_received_block_number
     , MIN(first_sent_block_time) AS first_sent_block_time
     , MAX(last_sent_block_time) AS last_sent_block_time
+    , MIN(first_sent_block_number) AS first_sent_block_number
+    , MAX(last_sent_block_number) AS last_sent_block_number
     , SUM(sent_volume_usd) AS sent_volume_usd
     , SUM(received_volume_usd) AS received_volume_usd
     , MIN(first_tx_block_time) AS first_tx_block_time
@@ -177,8 +193,12 @@ WITH new_data AS (
         , am.sent_count
         , am.first_received_block_time
         , am.last_received_block_time
+        , am.first_received_block_number
+        , am.last_received_block_number
         , am.first_sent_block_time
         , am.last_sent_block_time
+        , am.first_sent_block_number
+        , am.last_sent_block_number
         , am.received_volume_usd
         , am.sent_volume_usd
         , am.first_tx_block_time
@@ -228,8 +248,12 @@ SELECT nd.address
 , t.received_count+nd.received_count AS received_count
 , LEAST(t.first_received_block_time, nd.first_received_block_time) AS first_received_block_time
 , GREATEST(t.last_received_block_time, nd.last_received_block_time) AS last_received_block_time
+, LEAST(t.first_received_block_number, nd.first_received_block_number) AS first_received_block_number
+, GREATEST(t.last_received_block_number, nd.last_received_block_number) AS last_received_block_number
 , LEAST(t.first_sent_block_time, nd.first_sent_block_time) AS first_sent_block_time
 , GREATEST(t.last_sent_block_time, nd.last_sent_block_time) AS last_sent_block_time
+, LEAST(t.first_sent_block_number, nd.first_sent_block_number) AS first_sent_block_number
+, GREATEST(t.last_sent_block_number, nd.last_sent_block_number) AS last_sent_block_number
 , t.sent_volume_usd+nd.sent_volume_usd AS sent_volume_usd
 , t.received_volume_usd+nd.received_volume_usd AS received_volume_usd
 , LEAST(t.first_tx_block_time, nd.first_tx_block_time) AS first_tx_block_time

@@ -65,12 +65,24 @@ models:
       - &last_received_block_time
         name: last_received_block_time
         description: "The block time of the last known receipt of this address"
+      - &first_received_block_number
+        name: first_received_block_number
+        description: "The block number of the first known receipt of this address"
+      - &last_received_block_number
+        name: last_received_block_number
+        description: "The block number of the last known receipt of this address"
       - &first_sent_block_time
         name: first_sent_block_time
         description: "The block time of the first known send of this address"
       - &last_sent_block_time
         name: last_sent_block_time
         description: "The block time of the last known send of this address"
+      - &first_sent_block_number
+        name: first_sent_block_number
+        description: "The block number of the first known send of this address"
+      - &last_sent_block_number
+        name: last_sent_block_number
+        description: "The block number of the last known send of this address"
       - &sent_volume_usd
         name: sent_volume_usd
         description: "The volume of tokens sent by this address in USD"
