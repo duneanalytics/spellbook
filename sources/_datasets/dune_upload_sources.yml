@@ -10,6 +10,6 @@ sources:
       - name: op_airdrop2_addresses_detailed_list
       - name: op_airdrop_3_addresses_detailed_list
 
-  - name: dune_upload
+  - name: balancer
     tables:
-      - name: factory_pool_mapping
+      - name: dataset_factory_pool_mapping
