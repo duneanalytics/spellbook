@@ -66,11 +66,11 @@ models:
 
   - name: tokens_erc20_stablecoins
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, base
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, base, blast, linea, mantle, scroll
       sector: tokens
-      contributors: hildobby, synthquest
+      contributors: hildobby, synthquest, rantum
     config:
-      tags: ['tokens','stablecoin', 'arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon','base']
+      tags: ['tokens','stablecoin', 'arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon','base', 'blast', 'liena', 'mantle', 'scroll']
     description: >
         Stablecoin (ERC20) tokens
     tests:

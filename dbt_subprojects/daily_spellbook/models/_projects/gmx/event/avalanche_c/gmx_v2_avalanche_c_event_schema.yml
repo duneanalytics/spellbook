@@ -126,11 +126,13 @@ models:
         description: The change in initial collateral amount.
         tests:
           - not_null
-      - name: trigger_price
+      - &trigger_price
+        name: trigger_price
         description: The price that triggers the order execution.
         tests:
-          - not_null        
-      - name: acceptable_price
+          - not_null  
+      - &acceptable_price      
+        name: acceptable_price
         description: The minimum acceptable price for order execution.
         tests:
           - not_null        
@@ -141,16 +143,18 @@ models:
       - name: callback_gas_limit
         description: The gas limit set for callback functions.
         tests:
-          - not_null        
-      - name: min_output_amount
+          - not_null 
+      - &min_output_amount_raw       
+        name: min_output_amount_raw
         description: The minimum amount of output tokens expected from the order, based on the markets in the swap path.
         tests:
           - not_null        
       - name: updated_at_block
         description: The block number at which the order was last updated.
         tests:
-          - not_null        
-      - name: updated_at_time
+          - not_null  
+      - &updated_at_time      
+        name: updated_at_time
         description: The timestamp when the order was last updated.
       - &is_long
         name: is_long
@@ -161,7 +165,8 @@ models:
         description: Boolean indicating if the native token should be unwrapped.
       - name: is_frozen
         description: Boolean indicating if the order is frozen.
-      - name: key
+      - &key
+        name: key
         description: The unique identifier for the order, stored as a bytes32 value.
         tests:
           - not_null
@@ -196,11 +201,7 @@ models:
         tests:
           - not_null 
       - *msg_sender
-      - name: key
-        description: The key associated with the executed order. Extracted as a bytes32 value.
-        tests:
-          - not_null
-          - unique 
+      - *key
       - name: account
         description: The address associated with the order
       - name: secondary_order_type
@@ -243,11 +244,7 @@ models:
         tests:
           - not_null 
       - *msg_sender         
-      - name: key
-        description: The key associated with the cancelled order. Extracted as a bytes32 value
-        tests:
-          - not_null
-          - unique
+      - *key
       - name: account
         description: The address associated with the order 
       - name: reason_bytes
@@ -819,3 +816,97 @@ models:
       - *order_key
       - *position_key
       - *referral_code
+
+
+  - name: gmx_v2_avalanche_c_order_frozen
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['avalanche_c', 'gmx', 'event', 'order_frozen']
+    description: |
+      Extracts and decodes the `OrderFrozen` event log data from the Avalanche blockchain. 
+      This model processes log entries related to frozen orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for the order being frozen.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - key
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to      
+      - name: event_name
+        description: The type of event recorded, always 'OrderFrozen' for this model
+        tests:
+          - not_null 
+      - *msg_sender         
+      - name: key
+        description: The key associated with the frozen order. Extracted as a bytes32 value
+        tests:
+          - not_null
+      - name: account
+        description: The address associated with the order 
+      - name: reason_bytes
+        description: The reason for the order being frozen in byte format.
+        tests:
+          - not_null
+      - name: reason
+        description: The reason for the order being frozen in string format.
+        tests:
+          - not_null
+
+
+  - name: gmx_v2_avalanche_c_order_updated
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['avalanche_c', 'gmx', 'event', 'order_updated']
+    description: |
+      Extracts and decodes the `OrderUpdated` event log data from the Avalanche blockchain. 
+      This model processes log entries related to updated orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for cancellation.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to  
+      - name: event_name
+        description: The type of event recorded, always 'OrderUpdated' for this model.
+        tests:
+          - not_null
+      - *msg_sender
+      - name: key
+        description: The key associated with the updated order. Extracted as a bytes32 value
+        tests:
+          - not_null
+      - name: market
+        description: The market in which the order was updated.
+        tests:
+          - not_null 
+      - name: account
+        description: The address associated with the order.
+      - *size_delta_usd
+      - *trigger_price 
+      - *acceptable_price  
+      - *min_output_amount_raw   
+      - *updated_at_time
