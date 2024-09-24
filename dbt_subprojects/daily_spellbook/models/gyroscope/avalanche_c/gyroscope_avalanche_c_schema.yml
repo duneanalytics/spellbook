@@ -2,24 +2,30 @@ version: 2
 
 models:
 
-  - name: gyroscope_trades
+  - name: gyroscope_avalanche_c_trades
 
     meta:
 
-      blockchain: ethereum, arbitrum, optimism, polygon, avalanche_c
+      blockchain: avalanche_c
       project: gyroscope
-      contributors: fmarrr, viniabussafi
+      contributors: viniabussafi
 
     config:
 
-      tags: ["eclp", "gyroscope", "trades", "amm"]
+      tags: ["avalanche_c", "gyroscope", "trades"]
 
-    description: trades on gyroscope E-CLP pools on all chains
-      
+    description: trades on gyroscope E-CLP pools on avalanche_c
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - blockchain
+            - tx_hash
+            - evt_index     
     columns:
       - &blockchain 
         name: blockchain        
-        description: "blockchain name"
+        description: "blockchain name(avalanche_c)"
       - &project
         name: project
         description: "gyroscope as project"     
@@ -86,22 +92,3 @@ models:
       - &evt_index 
         name: evt_index
         description: "Event index"
-
-  - name: gyroscope_gyro_tokens
-    meta:
-      blockchain: arbitrum, ethereum, optimism
-      contributors: viniabussafi
-    config:
-      tags: ['arbitrum', 'ethereum', 'optimism',]
-    description: >
-      These tokens are being launched in Gyroscope pools, priced at 1 USD, a value that tends to grow marginally over time. This list is an approximation to price these tokens while they're not available on prices.usd and dex.prices
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - token_address
-    columns:
-      - name: blockchain
-      - name: token_address
-      - name: token_symbol
-      - name: price
