@@ -28,3 +28,8 @@ sources:
           - name: valid_until
           - name: tx_timestamp_dt
           - name: valid_until_dt
+
+- name: balancer
+    description: ""
+    tables:
+      - name: factory_pool_mapping          
