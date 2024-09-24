@@ -41,7 +41,7 @@ WITH dexs AS
         AND f.contract_address = ct."from"
     {% if is_incremental() %}
     WHERE
-        {{ incremental_predicate('t.evt_block_time') }}
+        {{ incremental_predicate('t.block_time') }}
     {% endif %}
 )
 
