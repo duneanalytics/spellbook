@@ -12,7 +12,6 @@
     'arbitrum',
     'avalanche_c',
 ] -%}
-
 {%- for chain in chains -%}
 SELECT
     blockchain,
