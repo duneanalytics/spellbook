@@ -21,22 +21,16 @@ with dex_trades as (
         , t.amount_usd
     from
         {{ ref('dex_trades') }} as t
+    inner join
+        {{ source('prices', 'trusted_tokens') }} as tt -- only output trades which contain a trusted token on either side of the trade
+        on t.blockchain = tt.blockchain
+        and (
+            t.token_bought_address = tt.contract_address 
+            or t.token_sold_address = tt.contract_address
+        )
     where
         1 = 1
         and t.amount_usd > 0
-        and exists (
-            -- only output trades which contain a trusted token on either side of the trade
-            select
-                1
-            from
-                {{ source('prices', 'trusted_tokens') }} as tt
-            where
-                t.blockchain = tt.blockchain
-                and (
-                    t.token_bought_address = tt.contract_address 
-                    or t.token_sold_address = tt.contract_address
-                )
-        )
         {% if is_incremental() %}
         and t.block_time > (select max(block_time) from {{ this }})
         {% endif %}
