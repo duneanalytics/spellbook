@@ -1,6 +1,6 @@
 {{ config(
     alias = 'bot_trades',
-    schema = 'jupbot',
+    schema = 'jupbot_solana',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
