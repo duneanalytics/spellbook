@@ -14,7 +14,7 @@ Each model within Spellbook contains a config block with various properties. Dep
    - Table/view name, as used on the Dune app.
 
 3. **materialized**
-   - `view` – Consider performance downstream, as the view executes the underlying query each execution.
+   - `view` – Consider performance downstream, as the view executes the underlying query for each execution.
    - `table` – Full refresh 1x/day, around 12pm EST.
    - `incremental` – Pull approximately the last day of data to load into the spell every 1 hour.
    - **Note**: There may be models without this property assigned, where a default value of ‘view’ is set in the dbt_project file. Please add this directly into the model moving forward.
