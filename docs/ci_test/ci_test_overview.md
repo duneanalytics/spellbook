@@ -60,7 +60,7 @@ Simple rule of thumb – a green check success on CI tests does not guarantee a 
 ### Other Minor CI Details
 
 - There is a 90-minute timeout window, to cancel any long-running spells.
-  - This timeframe has worked well for 95%+ of PRs, but there are instances where the timeout needs increased, which needs handled by the Dune team.
+  - This timeframe has worked well for 95%+ of PRs, but there are instances where the timeout needs to be increased, which needs to be handled by the Dune team.
 - Wizards are unable to modify objects in the `spellbook/.github/` directory. If modified in a PR, a bot may auto-close the PR. Please request help from the Dune team to modify.
 - Concurrency is set to 1, meaning each new commit which triggers a new workflow action will cancel any currently running.
 
