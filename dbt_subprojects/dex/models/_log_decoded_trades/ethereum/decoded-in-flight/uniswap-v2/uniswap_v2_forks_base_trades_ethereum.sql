@@ -30,9 +30,10 @@ INNER JOIN (
         count(*) as transfer_count,
         contract_address,
         tx_hash
-    FROM ethereum.transfers
+    FROM tokens.transfers
+    WHERE blockchain = 'ethereum'
     GROUP BY contract_address, tx_hash
-    HAVING count(*) > 1
+    HAVING count(*) >= 1
 ) AS transfers
 ON (transfers.tx_hash = uniswap_v2_base_trades.tx_hash)
    AND (transfers.contract_address = uniswap_v2_base_trades.token_bought_address
