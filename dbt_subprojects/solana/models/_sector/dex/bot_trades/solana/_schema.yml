@@ -533,5 +533,26 @@ models:
       tags: ["solana", "dex", "bot_trades"]
       columns:
         - name: user
-          tests: unique        
-  
+          tests: unique
+
+  - name: jupbot_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: jupbot
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "jupbot", "trades"]
+    description: >
+      Jupbot trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('jupbot_solana_trades_seed')
+          blockchain: solana
