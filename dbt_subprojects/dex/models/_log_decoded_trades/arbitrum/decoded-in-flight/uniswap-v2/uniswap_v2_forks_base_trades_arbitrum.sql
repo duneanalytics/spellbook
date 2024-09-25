@@ -25,7 +25,15 @@ WITH all_decoded_trades AS (
 
 SELECT uniswap_v2_base_trades.*
 FROM all_decoded_trades AS uniswap_v2_base_trades
-LEFT JOIN {{ ref('oneinch_swaps') }} AS oneinch_swaps
-    ON uniswap_v2_base_trades.tx_hash = oneinch_swaps.tx_hash
-    AND oneinch_swaps.blockchain = 'arbitrum'
-WHERE oneinch_swaps.tx_hash IS NULL
+INNER JOIN (
+    SELECT
+        count(*) as transfer_count,
+        contract_address,
+        tx_hash
+    FROM arbitrum.transfers
+    GROUP BY contract_address, tx_hash
+    HAVING count(*) > 1
+) AS transfers
+ON (transfers.tx_hash = uniswap_v2_base_trades.tx_hash)
+   AND (transfers.contract_address = uniswap_v2_base_trades.token_bought_address
+        OR transfers.contract_address = uniswap_v2_base_trades.token_sold_address)

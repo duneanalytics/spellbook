@@ -13,19 +13,27 @@
 
 WITH all_decoded_trades AS (
     {{
-            uniswap_v2_forks_trades(
-                blockchain = 'ethereum'
-                , version = 'null'
-                , project = 'null'
-                , Pair_evt_Swap = ref('uniswap_v2_pool_decoding_ethereum')
-                , Factory_evt_PairCreated = ref('uniswap_v2_factory_decoding_ethereum')
-            )
+        uniswap_v2_forks_trades(
+            blockchain = 'ethereum'
+            , version = 'null'
+            , project = 'null'
+            , Pair_evt_Swap = ref('uniswap_v2_pool_decoding_ethereum')
+            , Factory_evt_PairCreated = ref('uniswap_v2_factory_decoding_ethereum')
+        )
     }}
 )
 
 SELECT uniswap_v2_base_trades.*
 FROM all_decoded_trades AS uniswap_v2_base_trades
-LEFT JOIN {{ ref('oneinch_swaps') }} AS oneinch_swaps
-    ON uniswap_v2_base_trades.tx_hash = oneinch_swaps.tx_hash
-    AND oneinch_swaps.blockchain = 'ethereum'
-WHERE oneinch_swaps.tx_hash IS NULL
+INNER JOIN (
+    SELECT
+        count(*) as transfer_count,
+        contract_address,
+        tx_hash
+    FROM ethereum.transfers
+    GROUP BY contract_address, tx_hash
+    HAVING count(*) > 1
+) AS transfers
+ON (transfers.tx_hash = uniswap_v2_base_trades.tx_hash)
+   AND (transfers.contract_address = uniswap_v2_base_trades.token_bought_address
+        OR transfers.contract_address = uniswap_v2_base_trades.token_sold_address)

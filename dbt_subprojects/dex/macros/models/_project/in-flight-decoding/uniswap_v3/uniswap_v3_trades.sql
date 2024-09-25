@@ -16,7 +16,9 @@ WITH evt_swap AS (
     SELECT block_number
         , block_time
         , {{ taker_column_name }}
+        {% if maker_column_name %}
         , {{ maker_column_name }}
+        {% endif %}
         , amount0
         , amount1
         , contract_address
@@ -27,6 +29,7 @@ WITH evt_swap AS (
     WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
 )
+
 , dexs AS
 (
     SELECT
