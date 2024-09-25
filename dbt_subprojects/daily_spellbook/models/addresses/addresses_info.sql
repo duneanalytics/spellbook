@@ -259,7 +259,7 @@ SELECT nd.address
 , LEAST(t.first_tx_block_time, nd.first_tx_block_time) AS first_tx_block_time
 , GREATEST(t.last_tx_block_time, nd.last_tx_block_time) AS last_tx_block_time
 , GREATEST(t.last_seen, nd.last_seen) AS last_seen
-, map_union_agg(t.chain_stats, nd.chain_stats) AS chain_stats
+, map_concat(map_filter(t.chain_stats, (k, v) -> NOT contains(map_keys(nd.chain_stats), k)), nd.chain_stats) AS chain_stats
 FROM new_data nd
 LEFT JOIN {{ this }} t ON nd.address = t.address
 
