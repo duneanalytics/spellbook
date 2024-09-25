@@ -24,7 +24,7 @@ stablecoin_tokens as (
       balances_incremental_subset_daily(
             blockchain = 'polygon',
             token_list = 'stablecoin_tokens',
-            start_date = '2024-09-01'
+            start_date = '2020-09-06'
       )
     }}
 )
