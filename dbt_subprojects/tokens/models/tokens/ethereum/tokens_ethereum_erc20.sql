@@ -4624,5 +4624,10 @@ FROM (VALUES
     , ( 0x60407266586e204792b69b024558aa18228ab12f, 'MBAKER', 18)
     , ( 0x048d07bd350ba516b84587e147284881b593eb86, 'SYNK', 18)
     , ( 0xbbd91d5cda7085a186b1354e1b0744bb58ad7cf6, 'ZOMBIE', 9)
+    , ( 0xdd157bd06c1840fa886da18a138c983a7d74c1d7, 'GSTOP', 18)
+    , ( 0x525574c899a7c877a11865339e57376092168258, 'GURU', 18)
+    , ( 0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3, 'BUBBLE', 9)
+    , ( 0xeb9951021698b42e4399f9cbb6267aa35f82d59d, 'LIF', 18)
+    , ( 0x707f9118e33a9b8998bea41dd0d46f38bb963fc8, 'bETH', 18)
 
 ) AS temp_table (contract_address, symbol, decimals)

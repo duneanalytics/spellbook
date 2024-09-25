@@ -111,4 +111,8 @@ FROM (VALUES
     , (0x9aee3c99934c88832399d6c6e08ad802112ebeab, 'FU', 18)
     , (0xe47ba52f326806559c1dec7ddd997f6957d0317d, 'SHELL', 18)
     , (0x79ead7a012d97ed8deece279f9bc39e264d7eef9, 'Bonsai', 18)
+    , (0x89073b7aaae498771bdb789360b0d3de9d15ad56, 'STC', 18)
+    , (0xb59c8912c83157a955f9d715e556257f432c35d7, 'TRUF', 18)
+    , (0xe1d3495717f9534db67a6a8d4940dd17435b6a9e, 'LOCUS', 18)
+    , (0x764bfc309090e7f93edce53e5befa374cdcb7b8e, 'GRIMACE', 18)
 ) AS temp_table (contract_address, symbol, decimals)
