@@ -10,22 +10,35 @@
 
 with dex_trades as (
     select distinct
-        blockchain
-        , block_time
-        , token_bought_address
-        , token_bought_amount_raw
-        , token_bought_amount
-        , token_sold_address
-        , token_sold_amount_raw
-        , token_sold_amount
-        , amount_usd
+        dt.blockchain
+        , dt.block_time
+        , dt.token_bought_address
+        , dt.token_bought_amount_raw
+        , dt.token_bought_amount
+        , dt.token_sold_address
+        , dt.token_sold_amount_raw
+        , dt.token_sold_amount
+        , dt.amount_usd
     from
-        {{ ref('dex_trades') }}
+        {{ ref('dex_trades') }} as dt
+    left join
+        {{ source('prices', 'trusted_tokens') }} as ptt_bought
+        on dt.blockchain = ptt_bought.blockchain
+        and dt.token_bought_address = ptt_bought.contract_address
+    left join
+        {{ source('prices', 'trusted_tokens') }} as ptt_sold
+        on dt.blockchain = ptt_sold.blockchain
+        and dt.token_sold_address = ptt_sold.contract_address
     where
         1 = 1
-        and amount_usd > 0
+        and dt.amount_usd > 0
+        and (
+            -- ensure one side of trade contains a trusted token
+            ptt_bought.blockchain is not null
+            or ptt_sold.blockchain is not null
+        )
         {% if is_incremental() %}
-        and block_time > (select max(block_time) from {{ this }})
+        and dt.block_time > (select max(block_time) from {{ this }})
         {% endif %}
 ),
 dex_bought as (
