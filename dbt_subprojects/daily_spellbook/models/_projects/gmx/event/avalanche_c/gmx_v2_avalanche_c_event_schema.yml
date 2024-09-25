@@ -128,14 +128,10 @@ models:
           - not_null
       - &trigger_price
         name: trigger_price
-        description: The price that triggers the order execution.
-        tests:
-          - not_null  
+        description: The price that triggers the order execution. 
       - &acceptable_price      
         name: acceptable_price
-        description: The minimum acceptable price for order execution.
-        tests:
-          - not_null        
+        description: The minimum acceptable price for order execution.       
       - name: execution_fee
         description: The fee paid for executing the order in native tokens
         tests:

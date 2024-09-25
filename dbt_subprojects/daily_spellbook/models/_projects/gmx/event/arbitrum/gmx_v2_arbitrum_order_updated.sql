@@ -173,11 +173,11 @@ WITH evt_data_1 AS (
         ED.account,
         ED.size_delta_usd / POWER(10, 30) AS size_delta_usd,
         CASE 
-            WHEN MD.index_token_decimals IS NULL THEN ED.acceptable_price / POWER(10, 30)
+            WHEN MD.index_token_decimals IS NULL THEN NULL
             ELSE ED.acceptable_price / POWER(10, 30 - MD.index_token_decimals) 
         END AS acceptable_price,
         CASE 
-            WHEN MD.index_token_decimals IS NULL THEN ED.trigger_price / POWER(10, 30)
+            WHEN MD.index_token_decimals IS NULL THEN NULL
             ELSE ED.trigger_price / POWER(10, 30 - MD.index_token_decimals) 
         END AS trigger_price,
         ED.min_output_amount AS min_output_amount_raw, 

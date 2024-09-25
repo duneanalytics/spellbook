@@ -266,11 +266,11 @@ WITH evt_data_1 AS (
         size_delta_usd / POWER(10, 30) AS size_delta_usd,
         initial_collateral_delta_amount / POWER(10, collateral_token_decimals) AS initial_collateral_delta_amount,
         CASE 
-            WHEN index_token_decimals IS NULL THEN trigger_price / POWER(10, 30)
+            WHEN index_token_decimals IS NULL THEN NULL
             ELSE trigger_price / POWER(10, 30 - index_token_decimals) 
         END AS trigger_price,
         CASE 
-            WHEN index_token_decimals IS NULL THEN acceptable_price / POWER(10, 30)
+            WHEN index_token_decimals IS NULL THEN NULL 
             ELSE acceptable_price / POWER(10, 30 - index_token_decimals) 
         END AS acceptable_price,
         execution_fee / POWER(10, 18) AS execution_fee,
