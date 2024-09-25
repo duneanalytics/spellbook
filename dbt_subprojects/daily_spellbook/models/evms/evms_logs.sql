@@ -5,7 +5,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
                                     "sector",
                                     "evms",
-                                    \'["hildobby"]\') }}'
+                                    \'["hildobby","rantum"]\') }}'
         )
 }}
 
@@ -49,6 +49,9 @@ FROM (
         , tx_hash
         , index
         , tx_index
+        , block_date
+        , tx_from
+        , tx_to
         FROM {{ logs_model[1] }}
         {% if not loop.last %}
         UNION ALL

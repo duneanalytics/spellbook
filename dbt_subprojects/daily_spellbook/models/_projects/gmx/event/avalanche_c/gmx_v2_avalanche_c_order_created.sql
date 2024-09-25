@@ -275,7 +275,7 @@ WITH evt_data_1 AS (
         END AS acceptable_price,
         execution_fee / POWER(10, 18) AS execution_fee,
         callback_gas_limit,
-        min_output_amount AS min_output_amount, 
+        min_output_amount AS min_output_amount_raw, 
 
         updated_at_block,
         CASE 
