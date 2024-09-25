@@ -5,7 +5,7 @@
       , post_hook='{{ expose_spells(\'["polygon"]\',
                                   "sector",
                                   "tokens_polygon",
-                                  \'["synthquest"]\') }}'
+                                  \'["synthquest","rantum"]\') }}'
       , unique_key = ['contract_address']
   )
 }}
@@ -31,7 +31,8 @@ FROM (VALUES
     ('polygon', 0xa3fa99a148fa48d14ed51d610c367c61876997f1, 'Crypto-backed stablecoin', 'miMATIC', 18, ''),
     ('polygon', 0xdab529f40e671a1d4bf91361c21bf9f0c9712ab7, 'Fiat-backed stablecoin', 'BUSD', 18, ''),
     ('polygon', 0x3a3e7650f8b9f667da98f236010fbf44ee4b2975, 'Crypto-backed stablecoin', 'xUSD', 18, ''),
-    ('polygon', 0x23001f892c0c82b79303edc9b9033cd190bb21c7, 'Crypto-backed stablecoin', 'LUSD', 18, '')
+    ('polygon', 0x23001f892c0c82b79303edc9b9033cd190bb21c7, 'Crypto-backed stablecoin', 'LUSD', 18, ''),
+    ('polygon', 0x750e4c4984a9e0f12978ea6742bc1c5d248f40ed, 'Crypto-backed stablecoin', 'axlUSDC', 6, '')
 
 
      ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
