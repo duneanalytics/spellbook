@@ -117,7 +117,7 @@ join pools on a.contract_address = pools.poolAddress
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', a.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE {{ incremental_predicate('a.call_block_time') }}
+ WHERE {{ incremental_predicate('a.evt_block_time') }}
  {% endif %}
 group by 1,2,3,4
 )
@@ -134,7 +134,7 @@ join pools on a.contract_address = pools.poolAddress
  {% if not is_incremental() %}
  WHERE DATE_TRUNC('day', a.evt_block_time) >= DATE '{{ project_start_date }}'
  {% else %}
- WHERE {{ incremental_predicate('a.call_block_time') }}
+ WHERE {{ incremental_predicate('a.evt_block_time') }}
  {% endif %}
 group by 1,2,3,4
 )

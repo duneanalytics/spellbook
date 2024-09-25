@@ -18,3 +18,9 @@ sources:
     tables:
       - name: V2Pool_evt_PoolAddLiquidity
       - name: V2Pool_evt_PoolRemoveLiquidity
+
+  - name: nuri_scroll
+    description: "Scroll decoded tables related to Nuri DEX contract"
+    tables:
+      - name: ClPool_evt_Mint
+      - name: ClPool_evt_Collect
