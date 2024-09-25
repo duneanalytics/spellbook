@@ -3,7 +3,7 @@ version: 2
 models:
   - name: zeroex_api_fills 
     meta:
-      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, scroll
       project: zeroex
       contributors: rantum, danning.sui, bakabhai993
     config:
@@ -105,7 +105,7 @@ models:
 
   - name: zeroex_api_fills_deduped
     meta: 
-      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, scroll, linea
       sector: dex
       project: zeroex
       contributors: rantum, bakabhai993
@@ -158,7 +158,7 @@ models:
 
   - name: zeroex_trades
     meta:
-      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, linea, scroll
       project: zeroex
       contributors: rantum, danning.sui, bakabhai993 
     config:
