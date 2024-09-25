@@ -126,11 +126,11 @@ models:
         description: The change in initial collateral amount.
         tests:
           - not_null
-      - &trigger_price
-        name: trigger_price
+      - &trigger_price_raw
+        name: trigger_price_raw
         description: The price that triggers the order execution.     
-      - &acceptable_price  
-        name: acceptable_price
+      - &acceptable_price_raw 
+        name: acceptable_price_raw
         description: The minimum acceptable price for order execution.      
       - name: execution_fee
         description: The fee paid for executing the order in native tokens
@@ -902,7 +902,7 @@ models:
       - name: account
         description: The address associated with the order.
       - *size_delta_usd
-      - *trigger_price 
-      - *acceptable_price  
+      - *trigger_price_raw
+      - *acceptable_price_raw 
       - *min_output_amount_raw   
       - *updated_at_time

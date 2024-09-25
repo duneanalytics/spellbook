@@ -268,11 +268,11 @@ WITH evt_data_1 AS (
         CASE 
             WHEN index_token_decimals IS NULL THEN NULL
             ELSE trigger_price / POWER(10, 30 - index_token_decimals) 
-        END AS trigger_price,
+        END AS trigger_price_raw,
         CASE 
             WHEN index_token_decimals IS NULL THEN NULL 
             ELSE acceptable_price / POWER(10, 30 - index_token_decimals) 
-        END AS acceptable_price,
+        END AS acceptable_price_raw,
         execution_fee / POWER(10, 18) AS execution_fee,
         callback_gas_limit,
         min_output_amount AS min_output_amount_raw, 
