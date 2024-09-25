@@ -12,7 +12,7 @@
 
 with
 stablecoin_tokens as (
-  select
+  select distinct
     symbol,
     contract_address as token_address
   from 
