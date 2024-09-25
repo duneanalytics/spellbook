@@ -161,7 +161,7 @@ uniswap_pool_created_logs as (
                 , substr(data, {{ data.pool_position }}, 20) as pool
                 , substr(topic1, 13) as token0
                 , substr(topic2, 13) as token1
-                , bytearray_to_uint256(topic3) as fee
+                , coalesce(bytearray_to_uint256(topic3), uint256 '3000') as fee
                 , block_number
                 , block_time
                 , contract_address
