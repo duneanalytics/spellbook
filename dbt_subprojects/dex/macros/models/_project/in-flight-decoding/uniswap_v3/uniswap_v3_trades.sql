@@ -47,7 +47,7 @@ WITH evt_swap AS (
         , t.index as evt_index
         , f.contract_address as factory_address
     FROM
-        {{ evt_swap }} t
+        evt_swap t
     INNER JOIN
         {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
