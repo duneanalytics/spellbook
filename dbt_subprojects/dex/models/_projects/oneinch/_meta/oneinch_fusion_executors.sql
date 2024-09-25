@@ -18,13 +18,13 @@ executors as (
         , min(evt_block_time) as first_promoted_at
         , max(evt_block_time) as last_promoted_at
     from (
-        select promoter, promotee, chainId, evt_block_time, 'intra-chain' as mode
+        select promoter, promotee, chainId, evt_block_time, 'intra_chain' as mode
         from {{ source('oneinch_ethereum', 'FusionWhitelistRegistryV1_evt_Promotion') }}
         union all
-        select promoter, promotee, chainId, evt_block_time, 'intra-chain' as mode
+        select promoter, promotee, chainId, evt_block_time, 'intra_chain' as mode
         from {{ source('oneinch_ethereum', 'FusionWhitelistRegistryV2_evt_Promotion') }}
         union all
-        select promoter, promotee, chainId, evt_block_time, 'cross-chain' as mode
+        select promoter, promotee, chainId, evt_block_time, 'cross_chain' as mode
         from {{ source('oneinch_ethereum', 'CrosschainWhitelistRegistryV1_evt_Promotion') }}
     )
     group by 1, 2, 3, 4
