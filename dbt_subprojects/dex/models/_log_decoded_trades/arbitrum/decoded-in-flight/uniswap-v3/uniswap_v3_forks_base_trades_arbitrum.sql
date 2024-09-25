@@ -30,7 +30,7 @@ INNER JOIN (
         count(*) as transfer_count,
         token_address,
         evt_tx_hash
-    FROM transfers_arbitrum.erc20
+    FROM {{ ref('transfers_arbitrum_erc20') }}
     GROUP BY token_address, evt_tx_hash
     HAVING count(*) >= 1
 ) AS transfers

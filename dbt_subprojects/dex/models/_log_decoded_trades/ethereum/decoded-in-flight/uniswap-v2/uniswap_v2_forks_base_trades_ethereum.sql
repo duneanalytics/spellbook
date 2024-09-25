@@ -30,7 +30,7 @@ INNER JOIN (
         count(*) as transfer_count,
         contract_address,
         tx_hash
-    FROM tokens.transfers
+    FROM {{ ref('tokens_transfers')}}
     WHERE blockchain = 'ethereum'
     GROUP BY contract_address, tx_hash
     HAVING count(*) >= 1
