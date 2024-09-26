@@ -29,8 +29,8 @@ SELECT
     market,
     account,
     size_delta_usd,
-    acceptable_price,
-    trigger_price,
+    acceptable_price_raw,
+    trigger_price_raw,
     min_output_amount_raw,
     updated_at_time
 
