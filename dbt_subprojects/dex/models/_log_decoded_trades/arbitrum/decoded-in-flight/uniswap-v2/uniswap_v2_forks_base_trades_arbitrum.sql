@@ -31,7 +31,7 @@ INNER JOIN (
         contract_address,
         tx_hash
     FROM {{ ref('tokens_transfers')}}
-    WHERE blockchain = 'ethereum'
+    WHERE blockchain = 'arbitrum'
     GROUP BY contract_address, tx_hash
     HAVING count(*) >= 1
 ) AS transfers
