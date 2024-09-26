@@ -44,8 +44,10 @@ WITH data AS (
     , MIN_BY(first_funded_by, first_funded_by_block_time) AS first_funded_by
     , MIN_BY(blockchain, first_funded_by_block_time) AS first_funded_blockchain
     , MIN(first_funded_by_block_time) AS first_funded_by_block_time
-    , SUM(sent_count) AS sent_count
-    , SUM(received_count) AS received_count
+    , SUM(tokens_received_count) AS tokens_received_count
+    , SUM(tokens_received_tx_count) AS tokens_received_tx_count
+    , SUM(tokens_sent_count) AS tokens_sent_count
+    , SUM(tokens_sent_tx_count) AS tokens_sent_tx_count
     , MIN(first_received_block_time) AS first_received_block_time
     , MAX(last_received_block_time) AS last_received_block_time
     , MIN(first_received_block_number) AS first_received_block_number
@@ -74,8 +76,10 @@ WITH data AS (
         , name
         , first_funded_by
         , first_funded_by_block_time
-        , received_count
-        , sent_count
+        , tokens_received_count
+        , tokens_received_tx_count
+        , tokens_sent_count
+        , tokens_sent_tx_count
         , first_received_block_time
         , last_received_block_time
         , first_received_block_number
@@ -121,8 +125,10 @@ SELECT address
 , first_funded_by
 , first_funded_blockchain
 , first_funded_by_block_time
-, sent_count
-, received_count
+, tokens_received_count
+, tokens_received_tx_count
+, tokens_sent_count
+, tokens_sent_tx_count
 , first_received_block_time
 , last_received_block_time
 , first_received_block_number
@@ -159,8 +165,10 @@ WITH new_data AS (
     , MIN_BY(first_funded_by, first_funded_by_block_time) AS first_funded_by
     , MIN_BY(blockchain, first_funded_by_block_time) AS first_funded_blockchain
     , MIN(first_funded_by_block_time) AS first_funded_by_block_time
-    , SUM(sent_count) AS sent_count
-    , SUM(received_count) AS received_count
+    , SUM(tokens_received_count) AS tokens_received_count
+    , SUM(tokens_received_tx_count) AS tokens_received_tx_count
+    , SUM(tokens_sent_count) AS tokens_sent_count
+    , SUM(tokens_sent_tx_count) AS tokens_sent_tx_count
     , MIN(first_received_block_time) AS first_received_block_time
     , MAX(last_received_block_time) AS last_received_block_time
     , MIN(first_received_block_number) AS first_received_block_number
@@ -189,8 +197,10 @@ WITH new_data AS (
         , am.name
         , am.first_funded_by
         , am.first_funded_by_block_time
-        , am.received_count
-        , am.sent_count
+        , am.tokens_received_count
+        , am.tokens_received_tx_count
+        , am.tokens_sent_count
+        , am.tokens_sent_tx_count
         , am.first_received_block_time
         , am.last_received_block_time
         , am.first_received_block_number
@@ -244,8 +254,10 @@ SELECT nd.address
 , CASE WHEN LEAST(t.first_funded_by_block_time, nd.first_funded_by_block_time) = t.first_funded_by_block_time THEN t.first_funded_blockchain
     ELSE nd.first_funded_blockchain END AS first_funded_blockchain
 , LEAST(t.first_funded_by_block_time, nd.first_funded_by_block_time) AS first_funded_by_block_time
-, t.sent_count+nd.sent_count AS sent_count
-, t.received_count+nd.received_count AS received_count
+, t.tokens_received_count+nd.tokens_received_count AS tokens_received_count
+, t.tokens_received_tx_count+nd.tokens_received_tx_count AS tokens_received_tx_count
+, t.tokens_sent_count+nd.tokens_sent_count AS tokens_sent_count
+, t.tokens_sent_tx_count+nd.tokens_sent_tx_count AS tokens_sent_tx_count
 , LEAST(t.first_received_block_time, nd.first_received_block_time) AS first_received_block_time
 , GREATEST(t.last_received_block_time, nd.last_received_block_time) AS last_received_block_time
 , LEAST(t.first_received_block_number, nd.first_received_block_number) AS first_received_block_number

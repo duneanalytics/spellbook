@@ -41,12 +41,18 @@ models:
       - &first_funded_by_block_time
         name: first_funded_by_block_time
         description: "Block time at which the address was first funded with this chains' native token"
-      - &received_count
-        name: received_count
+      - &tokens_received_count
+        name: tokens_received_count
         description: "The number of times this address received tokens"
-      - &sent_count
-        name: sent_count
+      - &tokens_received_tx_count
+        name: tokens_received_tx_count
+        description: "The distinct transactions where this address received tokens"
+      - &tokens_sent_count
+        name: tokens_sent_count
         description: "The number of times this address sent tokens"
+      - &tokens_sent_tx_count
+        name: tokens_sent_tx_count
+        description: "The distinct transactions where this address sent tokens"
       - &first_received_block_time
         name: first_received_block_time
         description: "The block time of the first time this address received tokens"
@@ -118,8 +124,10 @@ models:
       - *name
       - *first_funded_by
       - *first_funded_by_block_time
-      - *received_count
-      - *sent_count
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
       - *first_received_block_time
       - *last_received_block_time
       - *first_received_block_number
@@ -159,8 +167,10 @@ models:
       - *name
       - *first_funded_by
       - *first_funded_by_block_time
-      - *received_count
-      - *sent_count
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
       - *first_received_block_time
       - *last_received_block_time
       - *first_received_block_number
@@ -200,8 +210,10 @@ models:
       - *name
       - *first_funded_by
       - *first_funded_by_block_time
-      - *received_count
-      - *sent_count
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
       - *first_received_block_time
       - *last_received_block_time
       - *first_received_block_number
@@ -241,8 +253,10 @@ models:
       - *name
       - *first_funded_by
       - *first_funded_by_block_time
-      - *received_count
-      - *sent_count
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
       - *first_received_block_time
       - *last_received_block_time
       - *first_received_block_number
@@ -282,8 +296,10 @@ models:
       - *name
       - *first_funded_by
       - *first_funded_by_block_time
-      - *received_count
-      - *sent_count
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
       - *first_received_block_time
       - *last_received_block_time
       - *first_received_block_number
@@ -323,8 +339,10 @@ models:
       - *name
       - *first_funded_by
       - *first_funded_by_block_time
-      - *received_count
-      - *sent_count
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
       - *first_received_block_time
       - *last_received_block_time
       - *first_received_block_number
@@ -364,8 +382,10 @@ models:
       - *name
       - *first_funded_by
       - *first_funded_by_block_time
-      - *received_count
-      - *sent_count
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
       - *first_received_block_time
       - *last_received_block_time
       - *first_received_block_number
@@ -405,8 +425,10 @@ models:
       - *name
       - *first_funded_by
       - *first_funded_by_block_time
-      - *received_count
-      - *sent_count
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
       - *first_received_block_time
       - *last_received_block_time
       - *first_received_block_number
@@ -446,8 +468,10 @@ models:
       - *name
       - *first_funded_by
       - *first_funded_by_block_time
-      - *received_count
-      - *sent_count
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
       - *first_received_block_time
       - *last_received_block_time
       - *first_received_block_number
@@ -487,8 +511,10 @@ models:
       - *name
       - *first_funded_by
       - *first_funded_by_block_time
-      - *received_count
-      - *sent_count
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
       - *first_received_block_time
       - *last_received_block_time
       - *first_received_block_number
@@ -528,8 +554,10 @@ models:
       - *name
       - *first_funded_by
       - *first_funded_by_block_time
-      - *received_count
-      - *sent_count
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
       - *first_received_block_time
       - *last_received_block_time
       - *first_received_block_number

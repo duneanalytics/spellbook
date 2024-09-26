@@ -16,8 +16,10 @@ WITH executed_txs AS (
 
 , transfers AS (
     SELECT address
-    , SUM(received_count) AS received_count
-    , SUM(sent_count) AS sent_count
+    , SUM(tokens_received_count) AS tokens_received_count
+    , SUM(tokens_received_tx_count) AS tokens_received_tx_count
+    , SUM(tokens_sent_count) AS tokens_sent_count
+    , SUM(tokens_sent_tx_count) AS tokens_sent_tx_count
     , MAX(first_received_block_time) AS first_received_block_time
     , MAX(last_received_block_time) AS last_received_block_time
     , MAX(first_received_block_number) AS first_received_block_number
@@ -30,8 +32,10 @@ WITH executed_txs AS (
     , MAX(sent_volume_usd) AS sent_volume_usd
     FROM (
         SELECT "from" AS address
-        , 0 AS received_count
-        , COUNT(*) AS sent_count
+        , 0 AS tokens_received_count
+        , 0 AS tokens_received_tx_count
+        , COUNT(*) AS tokens_sent_count
+        , COUNT(DISTINCT tx_hash) AS tokens_sent_tx_count
         , MIN(block_time) AS first_received_block_time
         , MAX(block_time) AS last_received_block_time
         , MIN(block_number) AS first_received_block_number
@@ -48,8 +52,10 @@ WITH executed_txs AS (
         UNION ALL
 
         SELECT "to" AS address
-        , COUNT(*) AS received_count
-        , 0 AS sent_count
+        , COUNT(*) AS tokens_received_count
+        , COUNT(DISTINCT tx_hash) AS tokens_received_tx_count
+        , 0 AS tokens_sent_count
+        , 0 AS tokens_sent_tx_count
         , CAST(NULL AS timestamp) AS first_received_block_time
         , CAST(NULL AS timestamp) AS last_received_block_time
         , CAST(NULL AS bigint) AS first_received_block_number
@@ -84,8 +90,10 @@ SELECT '{{blockchain}}' AS blockchain
 , name
 , first_funded_by
 , ffb.block_time AS first_funded_by_block_time
-, received_count
-, sent_count
+, tokens_received_count
+, tokens_received_tx_count
+, tokens_sent_count
+, tokens_sent_tx_count
 , first_received_block_time
 , last_received_block_time
 , first_received_block_number
@@ -131,8 +139,10 @@ WITH executed_txs AS (
 
 , transfers AS (
     SELECT address
-    , SUM(received_count) AS received_count
-    , SUM(sent_count) AS sent_count
+    , SUM(tokens_received_count) AS tokens_received_count
+    , SUM(tokens_received_tx_count) AS tokens_received_tx_count
+    , SUM(tokens_sent_count) AS tokens_sent_count
+    , SUM(tokens_sent_tx_count) AS tokens_sent_tx_count
     , MAX(first_received_block_time) AS first_received_block_time
     , MAX(last_received_block_time) AS last_received_block_time
     , MAX(first_received_block_number) AS first_received_block_number
@@ -145,7 +155,10 @@ WITH executed_txs AS (
     , MAX(sent_volume_usd) AS sent_volume_usd
     FROM (
         SELECT tt."from" AS address
-        , 0 AS received_count
+        , 0 AS tokens_received_count
+        , 0 AS tokens_received_tx_count
+        , COUNT(*) AS tokens_sent_count
+        , COUNT(DISTINCT tx_hash) AS tokens_sent_tx_count
         , COUNT(*) AS sent_count
         , MIN(tt.block_time) AS first_received_block_time
         , MAX(tt.block_time) AS last_received_block_time
@@ -166,8 +179,10 @@ WITH executed_txs AS (
         UNION ALL
 
         SELECT tt."to" AS address
-        , COUNT(*) AS received_count
-        , 0 AS sent_count
+        , COUNT(*) AS tokens_received_count
+        , COUNT(DISTINCT tx_hash) AS tokens_received_tx_count
+        , 0 AS tokens_sent_count
+        , 0 AS tokens_sent_tx_count
         , CAST(NULL AS timestamp) AS first_received_block_time
         , CAST(NULL AS timestamp) AS last_received_block_time
         , CAST(NULL AS bigint) AS first_received_block_number
@@ -208,8 +223,10 @@ WITH executed_txs AS (
     , name
     , first_funded_by
     , ffb.block_time AS first_funded_by_block_time
-    , received_count
-    , sent_count
+    , tokens_received_count
+    , tokens_received_tx_count
+    , tokens_sent_count
+    , tokens_sent_tx_count
     , first_received_block_time
     , last_received_block_time
     , first_received_block_number
@@ -239,8 +256,10 @@ SELECT '{{blockchain}}' AS blockchain
 , COALESCE(nd.name, t.name) AS name
 , GREATEST(nd.first_funded_by, t.first_funded_by) AS first_funded_by
 , LEAST(nd.first_funded_by_block_time, t.first_funded_by_block_time) AS first_funded_by_block_time
-, nd.received_count+t.received_count AS received_count
-, nd.sent_count+t.sent_count AS sent_count
+, nd.tokens_received_count+t.tokens_received_count AS tokens_received_count
+, nd.tokens_received_tx_count+t.tokens_received_tx_count AS tokens_received_tx_count
+, nd.tokens_sent_count+t.tokens_sent_count AS tokens_sent_count
+, nd.tokens_sent_tx_count+t.tokens_sent_tx_count AS tokens_sent_tx_count
 , COALESCE(t.first_received_block_time, nd.first_received_block_time) AS first_received_block_time
 , COALESCE(nd.last_received_block_time, t.last_received_block_time) AS last_received_block_time
 , COALESCE(t.first_received_block_number, nd.first_received_block_number) AS first_received_block_number

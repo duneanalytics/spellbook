@@ -53,12 +53,18 @@ models:
       - &first_funded_by_block_time
         name: first_funded_by_block_time
         description: "The block time of the first known funding of this address"
-      - &sent_count
-        name: sent_count
-        description: "The number of times this address had tokens sent across EVM chains"
-      - &received_count
-        name: received_count
-        description: "The number of times this address had tokens received across EVM chains"
+      - &tokens_received_count
+        name: tokens_received_count
+        description: "The number of times this address received tokens across EVM chains"
+      - &tokens_received_tx_count
+        name: tokens_received_tx_count
+        description: "The distinct transactions where this address received tokens across EVM chains"
+      - &tokens_sent_count
+        name: tokens_sent_count
+        description: "The number of times this address sent tokens across EVM chains"
+      - &tokens_sent_tx_count
+        name: tokens_sent_tx_count
+        description: "The distinct transactions where this address sent tokens across EVM chains"
       - &first_received_block_time
         name: first_received_block_time
         description: "The block time of the first known receipt of this address"
