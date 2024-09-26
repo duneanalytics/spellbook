@@ -159,7 +159,6 @@ WITH executed_txs AS (
         , 0 AS tokens_received_tx_count
         , COUNT(*) AS tokens_sent_count
         , COUNT(DISTINCT tx_hash) AS tokens_sent_tx_count
-        , COUNT(*) AS sent_count
         , MIN(tt.block_time) AS first_received_block_time
         , MAX(tt.block_time) AS last_received_block_time
         , MIN(tt.block_number) AS first_received_block_number
