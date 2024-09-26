@@ -28,12 +28,13 @@ FROM all_decoded_trades AS uniswap_v2_base_trades
 INNER JOIN (
     SELECT
         count(*) as transfer_count,
-        token_address,
-        evt_tx_hash
-    FROM {{ ref('transfers_arbitrum_erc20') }}
-    GROUP BY token_address, evt_tx_hash
+        contract_address,
+        tx_hash
+    FROM {{ ref('tokens_transfers')}}
+    WHERE blockchain = 'ethereum'
+    GROUP BY contract_address, tx_hash
     HAVING count(*) >= 1
 ) AS transfers
-ON (transfers.evt_tx_hash = uniswap_v2_base_trades.tx_hash)
-   AND (transfers.token_address = uniswap_v2_base_trades.token_bought_address
-        OR transfers.token_address = uniswap_v2_base_trades.token_sold_address)
+ON (transfers.tx_hash = uniswap_v2_base_trades.tx_hash)
+   AND (transfers.contract_address = uniswap_v2_base_trades.token_bought_address
+        OR transfers.contract_address = uniswap_v2_base_trades.token_sold_address)
