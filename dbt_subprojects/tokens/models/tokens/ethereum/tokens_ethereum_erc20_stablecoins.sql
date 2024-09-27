@@ -80,6 +80,8 @@ FROM (VALUES
     ('ethereum', 0xdf3ac4f479375802a821f7b7b46cd7eb5e4262cc, 'Crypto-backed stablecoin', 'eUSD', 18, ''),
     ('ethereum', 0xbbaec992fc2d637151daf40451f160bf85f3c8c1, 'Crypto-backed stablecoin', 'USDM', 6, ''),
     ('ethereum', 0x7945b0a6674b175695e5d1d08ae1e6f13744abb0, 'Crypto-backed stablecoin', 'BaoUSD', 18, ''),
+    ('ethereum', 0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f, 'Crypto-backed stablecoin', 'GHO', 18, ''),
+    ('ethereum', 0xfd03723a9a3abe0562451496a9a394d2c4bad4ab, 'Crypto-backed stablecoin', 'DYAD', 18, ''),
     ('ethereum', 0xdc035d45d973e3ec169d2276ddab16f1e407384f, 'Crypto-backed stablecoin', 'USDS', 18, '')
 
      ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
