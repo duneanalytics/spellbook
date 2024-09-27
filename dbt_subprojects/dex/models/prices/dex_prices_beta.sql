@@ -10,23 +10,36 @@
 
 with dex_trades as (
     select
-        blockchain
-        , block_number
-        , block_time
-        , token_bought_address
-        , token_bought_amount_raw
-        , token_bought_amount
-        , token_sold_address
-        , token_sold_amount_raw
-        , token_sold_amount
-        , amount_usd
+        t.blockchain
+        , t.block_number
+        , t.block_time
+        , t.token_bought_address
+        , t.token_bought_amount_raw
+        , t.token_bought_amount
+        , t.token_sold_address
+        , t.token_sold_amount_raw
+        , t.token_sold_amount
+        , t.amount_usd
     from
-        {{ ref('dex_trades') }}
+        {{ ref('dex_trades') }} as t
     where
         1 = 1
-        and amount_usd > 0
+        and t.amount_usd > 0
+        and exists (
+            -- only output trades which contain a trusted token on either side of the trade
+            select
+                1
+            from
+                {{ source('prices', 'trusted_tokens') }} as tt
+            where
+                t.blockchain = tt.blockchain
+                and (
+                    t.token_bought_address = tt.contract_address 
+                    or t.token_sold_address = tt.contract_address
+                )
+        )
         {% if is_incremental() %}
-        and block_time > (select max(block_time) from {{ this }})
+        and t.block_time > (select max(block_time) from {{ this }})
         {% endif %}
 ),
 dex_bought as (
