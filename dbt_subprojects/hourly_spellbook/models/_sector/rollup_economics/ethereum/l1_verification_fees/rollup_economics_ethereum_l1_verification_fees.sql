@@ -9,7 +9,7 @@
     ref('rollup_economics_linea_l1_verification_fees')
     , ref('rollup_economics_scroll_l1_verification_fees')
     , ref('rollup_economics_starknet_l1_verification_fees')
-    , ref('rollup_economics_polygon_zkevm_l1_verification_fees')
+    , ref('rollup_economics_zkevm_l1_verification_fees')
     , ref('rollup_economics_zksync_l1_verification_fees')
 ] %}
 
