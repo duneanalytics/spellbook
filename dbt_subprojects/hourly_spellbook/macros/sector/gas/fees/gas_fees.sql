@@ -111,6 +111,8 @@ WITH base_model as (
     {%- endif -%}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
+    {% else %}
+    WHERE txns.block_time >= timestamp '2024-09-01'
     {% endif %}
     )
 
