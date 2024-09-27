@@ -71,15 +71,6 @@
     {%- endif %}
 {% endmacro %}
 
--- applicable on Celo
-{% macro fee_currency(blockchain) %}
-    {%- if blockchain in ('celo',) -%}
-    coalesce(fee_currency, {{var('ETH_ERC20_ADDRESS')}})
-    {%- else -%}
-    {{var('ETH_ERC20_ADDRESS')}}
-    {%- endif %}
-{% endmacro %}
-
 {% macro gas_fees(blockchain) %}
 WITH base_model as (
     SELECT
@@ -92,7 +83,7 @@ WITH base_model as (
         ,txns.gas_used as gas_used
         ,{{tx_fee_raw(blockchain) }} as tx_fee_raw
         ,{{tx_fee_breakdown_raw(blockchain)}} as tx_fee_breakdown_raw
-        ,{{fee_currency(blockchain)}} as tx_fee_currency
+        ,{{var('ETH_ERC20_ADDRESS')}} as tx_fee_currency
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
         ,txns.priority_fee_per_gas
