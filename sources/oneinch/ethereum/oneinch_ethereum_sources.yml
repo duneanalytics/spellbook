@@ -64,6 +64,7 @@ sources:
       - name: FusionWhitelistRegistryV2_evt_Registered
       - name: FusionWhitelistRegistryV2_evt_Unregistered
       - name: FusionWhitelistRegistryV2_evt_Promotion
+      - name: CrosschainWhitelistRegistryV1_evt_Promotion
       - name: AggregationRouterV6_call_swap
       - name: AggregationRouterV6_call_clipperSwap
       - name: AggregationRouterV6_call_clipperSwapTo

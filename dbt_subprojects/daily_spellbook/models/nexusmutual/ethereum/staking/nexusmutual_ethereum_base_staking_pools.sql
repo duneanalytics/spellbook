@@ -104,7 +104,7 @@ staking_pool_products_combined as (
     spp.block_time_created,
     spu.block_time_updated,
     coalesce(spp.pool_id, spu.pool_id) as pool_id,
-    coalesce(spp.product_id, spu.product_id) as product_id,
+    coalesce(spp.product_id, spu.product_id, -1) as product_id,
     spp.initial_price,
     spp.target_price,
     spu.target_price as updated_target_price,
@@ -200,7 +200,7 @@ staking_pool_fee_updates as (
 
 products as (
   select
-    p.product_id,
+    cast(p.product_id as int) as product_id,
     p.product_name,
     pt.product_type_id,
     pt.product_type_name as product_type

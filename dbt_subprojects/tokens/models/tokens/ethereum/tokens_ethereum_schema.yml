@@ -89,7 +89,7 @@ models:
     meta:
       blockchain: ethereum
       sector: stablecoins
-      contributors: synthquest
+      contributors: synthquest, rantum
     config:
       tags: ['tokens', 'ethereum', 'erc20', 'stablecoins']
     description: >

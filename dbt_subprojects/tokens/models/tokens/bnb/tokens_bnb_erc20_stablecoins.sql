@@ -5,7 +5,7 @@
       , post_hook='{{ expose_spells(\'["bnb"]\',
                                   "sector",
                                   "tokens_bnb",
-                                  \'["synthquest"]\') }}'
+                                  \'["synthquest","rantum"]\') }}'
       , unique_key = ['contract_address']
   )
 }}
@@ -36,7 +36,9 @@ FROM (VALUES
     ('bnb', 0xb5102cee1528ce2c760893034a4603663495fd72, 'Crypto-backed stablecoin', 'USX', 18, ''),
     ('bnb', 0xb7f8cd00c5a06c0537e2abff0b58033d02e5e094, 'Crypto-backed stablecoin', 'PAX', 18, ''),
     ('bnb', 0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3, 'Hybrid stablecoin', 'DAI', 18, ''),
-    ('bnb', 0xd17479997f34dd9156deef8f95a52d81d265be9c, 'Algorithmic stablecoin', 'USDD', 18, '')
+    ('bnb', 0xd17479997f34dd9156deef8f95a52d81d265be9c, 'Algorithmic stablecoin', 'USDD', 18, ''),
+    ('bnb', 0x4268b8f0b87b6eae5d897996e6b845ddbd99adf3, 'Crypto-backed stablecoin', 'axlUSDC', 6, '')
+
 
 
 
