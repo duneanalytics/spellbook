@@ -48,7 +48,7 @@ with
             sender as user,
             evt_tx_hash as tx_hash,
             evt_index as tx_index
-        from {{ source('ape_store_base', 'Router_evt_swap') }} as swaps
+        from {{ source('ape_store_ethereum', 'Router_evt_swap') }} as swaps
         left join
             {{ source('tokens', 'erc20') }} as token
             on (
