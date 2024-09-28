@@ -16,15 +16,7 @@
 
 with
     deployments as (
-        select
-            evt_block_time,
-            date_trunc('month', evt_block_time) as block_month,
-            '{{blockchain}}' as blockchain,
-            token,
-            id,
-            -- deployer,
-            evt_tx_hash
-        from {{ source("ape_store_ethereum", "Router_evt_CreateToken") }}
+         select * from {{ref('ape_store_ethereum_deployments')}}
     ),
     bondingcurvetrades as (
         select
