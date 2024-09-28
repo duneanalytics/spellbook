@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   pull_request:
     paths:
-      - 'models/prices/*/*.sql'
+      - 'dbt_subprojects/tokens/models/prices/*/*.sql'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -30,7 +30,7 @@ jobs:
       - name: Get prices diff
         shell: bash
         run: |
-          git diff ${{ github.event.pull_request.base.sha}}..${{ github.event.pull_request.head.sha }} models/prices/**/*.sql | grep '^\+ ' > scripts/new_lines.txt
+          git diff ${{ github.event.pull_request.base.sha}}..${{ github.event.pull_request.head.sha }} dbt_subprojects/tokens/models/prices/**/*.sql | grep '^\+ ' > scripts/new_lines.txt
 
       - name: Run validations
         id: validations

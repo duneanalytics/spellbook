@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: dex_sei_base_trades
+    tests:
+      - check_dex_info_relationship
+
+  - name: jelly_swap_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: jelly_swap
+      contributors: viniabussafi
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'jelly_swap' ]
+    description: "JellySwap Sei base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('jelly_swap_sei_base_trades_seed')
+          filter:
+            version: 2

@@ -29,7 +29,7 @@ INNER JOIN {{ref('evms_info')}} info
 LEFT JOIN {{source('tokens', 'erc20')}} tok
     ON tok.blockchain = t.blockchain
     AND tok.contract_address = t.currency_contract
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu
+LEFT JOIN {{ source('prices','usd_forward_fill') }} pu
     ON pu.blockchain = t.blockchain
     AND (
         pu.contract_address=info.wrapped_native_token_address

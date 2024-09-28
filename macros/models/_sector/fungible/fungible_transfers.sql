@@ -20,9 +20,9 @@ WITH transfers AS (
     WHERE success
     AND (call_type NOT IN ('delegatecall', 'callcode', 'staticcall') OR call_type IS null)
     AND value > UINT256 '0'
-    
+
     UNION ALL
-    
+
     SELECT t.evt_block_time AS block_time
     , t.evt_block_number AS block_number
     , t.value AS amount_raw
@@ -58,7 +58,7 @@ SELECT '{{blockchain}}' as blockchain
 FROM transfers t
 INNER JOIN {{ transactions }} et ON et.block_number=t.block_number
     AND et.hash=t.tx_hash
-LEFT JOIN {{ ref('prices_usd_forward_fill') }} pu ON pu.blockchain = '{{blockchain}}'
+LEFT JOIN {{ source('prices','usd_forward_fill') }} pu ON pu.blockchain = '{{blockchain}}'
     AND (pu.contract_address=t.contract_address
         OR t.contract_address IS NULL AND pu.contract_address=(SELECT wrapped_native_token_address FROM {{ ref('evms_info') }} WHERE blockchain='{{blockchain}}')
         )

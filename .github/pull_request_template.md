@@ -1,5 +1,8 @@
 ## Thank you for contributing to Spellbook 🪄
 
+### Update!
+Please build spells in the proper [subproject](../dbt_subprojects/) directory. For more information, please see the main [readme](../README.md), which also links to a GH discussion with the option to ask questions.
+
 ### Contribution type
 Please check the type of contribution this pull request is for:
 

@@ -5,6 +5,11 @@ sources:
     tables:
       - name: pool_evt_Swap
       - name: factory_evt_PoolCreated
+  - name: maverick_v2_zksync
+    tables:
+      - name: V2Pool_evt_PoolSwap
+      - name: V2Factory_evt_PoolCreated
+      - name: MaverickV2Factory_evt_PoolCreated
   - name: pancakeswap_v2_zksync
     tables:
       - name: PancakePair_evt_Swap
@@ -30,7 +35,7 @@ sources:
       - name: SyncSwapStablePoolFactory_evt_PoolCreated
       - name: SyncSwapStablePool_evt_Swap
       - name: SyncSwapAquaPoolFactory_evt_PoolCreated
-      - name: SyncSwapAquaPool_evt_Swap      
+      - name: SyncSwapAquaPool_evt_Swap
   - name: mute_zksync
     tables:
       - name: MuteSwitchFactoryDynamic_evt_PairCreated

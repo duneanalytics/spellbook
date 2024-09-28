@@ -1,0 +1,70 @@
+version: 2
+
+sources:
+  - name: dex
+    description: "output models of the DEX sector (dbt subproject)"
+    tables:
+      - name: trades
+      - name: prices
+      - name: prices_latest
+      - name: pools
+      - name: addresses
+      - name: atomic_arbitrages
+      - name: sandwiches
+      - name: sandwiched
+      - name: info
+  - name: dex_aggregator
+    tables:
+      - name: trades
+  - name: balancer_v2_optimism
+    tables:
+      - name: trades
+  - name: balancer_v2_arbitrum
+    tables:
+      - name: trades
+  - name: balancer_v2_avalanche_c
+    tables:
+      - name: trades
+  - name: balancer_v2_base
+    tables:
+      - name: trades
+  - name: balancer_v2_ethereum
+    tables:
+      - name: trades
+  - name: balancer_v2_gnosis
+    tables:
+      - name: trades
+  - name: balancer_v2_polygon
+    tables:
+      - name: trades
+  - name: balancer_v2_zkevm
+    tables:
+      - name: trades
+  - name: balancer
+    tables:
+      - name: trades
+  - name: labels
+    tables:
+      - name: balancer_v1_pools_ethereum
+      - name: labels_balancer_v1_pools
+      - name: balancer_v2_pools
+      - name: balancer_v2_pools_arbitrum
+      - name: balancer_v2_pools_avalanche_c
+      - name: balancer_v2_pools_base
+      - name: balancer_v2_pools_ethereum
+      - name: balancer_v2_pools_gnosis
+      - name: balancer_v2_pools_optimism
+      - name: balancer_v2_pools_polygon
+      - name: balancer_v2_pools_zkevm
+  - name: uniswap_v3_optimism
+    tables:
+      - name: ovm1_pool_mapping
+  - name: cow_protocol_ethereum
+    tables:
+      - name: trades
+  - name: cow_protocol_gnosis
+    tables:
+      - name: trades
+  - name: cow_protocol_arbitrum
+    tables:
+      - name: trades

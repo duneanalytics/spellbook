@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: jelly_swap_sei_pools_fees
+    meta:
+      blockchain: sei
+      project: jelly_swap
+      contributors: viniabussafi
+    config:
+      tags: ['sei', 'jelly_swap', 'pools_fees']
+    description: >
+      JellySwap swap fees stored at the pool level.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &contract_address
+        name: contract_address
+        description: 'sei address for the liquidity pool used in transaction'
+        tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &index
+        name: index
+        description: ''
+        tests:
+          - not_null
+      - &tx_index
+        name: tx_index
+        description: ''
+        tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_number
+        name: block_number
+        description: 'Block number'
+        tests:
+          - not_null
+      - &swap_fee_percentage
+        name: swap_fee_percentage
+        description: 'Swap fees for the pool, values are returned with 18 decimals (1e18 meaning 100%)'
+        tests:
+          - not_null

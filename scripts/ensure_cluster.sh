@@ -9,7 +9,7 @@ WAIT_TIME=15
 
 until [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]
 do
-  dbt debug $PROFILE && break
+  dbt debug $PROFILE --project-dir $PROJECT_DIR && break
   RETRY_COUNT=$((RETRY_COUNT+1))
   if [ "$RETRY_COUNT" -ge "$MAX_RETRIES" ]; then
     echo "Max retries reached, failing..."

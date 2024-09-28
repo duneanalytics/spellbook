@@ -28,3 +28,4 @@ sources:
       - name: Cover_call_buyCover
       - name: StakingProducts_call_getPremium
       - name: CoverMigrator_evt_CoverMigrated
+      - name: Ramm_call_getInternalPriceAndUpdateTwap
