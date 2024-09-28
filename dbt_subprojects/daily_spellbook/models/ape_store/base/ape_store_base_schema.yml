@@ -81,9 +81,17 @@ models:
             - token
     columns:
       - block_time
+        name: block_time
+        description: "UTC timestamp of the deployment"
       - block_date
+        name: block_date
+        description: "UTC date of the deployment"
       - block_month
+        name: block_month
+        description: "UTC month of the deployment"
       - blockchain
+        name: blockchain
+        description: "Blockchain on which the deployment occured"
       - &token
         name: token
         description: "Contract address of the deployed token"
@@ -94,3 +102,5 @@ models:
         name: deployer
         description: "Address which initiated the deployment"
       - tx_hash
+        name: tx_hash
+        description: "Unique transaction hash tied to each deployment"
