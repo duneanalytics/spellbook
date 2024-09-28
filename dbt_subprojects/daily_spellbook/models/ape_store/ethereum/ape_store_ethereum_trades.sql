@@ -22,7 +22,7 @@ with
             '{{blockchain}}' as blockchain,
             token,
             id,
-            evt_tx_from as deployer,
+            -- deployer,
             evt_tx_hash
         from {{ source("ape_store_ethereum", "Router_evt_CreateToken") }}
     ),
