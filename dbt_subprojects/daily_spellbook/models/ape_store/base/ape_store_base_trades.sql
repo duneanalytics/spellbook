@@ -61,6 +61,13 @@ with
                 ethPrice.blockchain = '{{blockchain}}'
                 and ethPrice.contract_address = {{ weth_contract_address }}
                 and ethPrice.minute = date_trunc('minute', evt_block_time)
+                and (
+                    {% if is_incremental() %}
+                    {{ incremental_predicate('ethPrice.minute') }}
+                    {% else %}
+                    ethPrice.minute >= timestamp '{{project_start_date}}'
+                    {% endif %}
+                )
             )
         where
             {% if is_incremental() %}
