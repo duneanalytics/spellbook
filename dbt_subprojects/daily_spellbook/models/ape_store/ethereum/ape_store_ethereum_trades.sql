@@ -1,6 +1,6 @@
 {{ config(
     alias = 'trades',
-    schema = 'ape_store_base',
+    schema = 'ape_store_ethereum',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -10,9 +10,9 @@
    )
 }}
 
-{% set project_start_date = '2024-04-04' %}
-{% set blockchain = 'base' %}
-{% set weth_contract_address = '0x4200000000000000000000000000000000000006' %}
+{% set project_start_date = '2024-09-06' %}
+{% set blockchain = 'ethereum' %}
+{% set weth_contract_address = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
 
 with
     deployments as (
@@ -24,7 +24,7 @@ with
             id,
             evt_tx_from as deployer,
             evt_tx_hash
-        from {{ source("ape_store_base", "Router_evt_CreateToken") }}
+        from {{ source("ape_store_ethereum", "Router_evt_CreateToken") }}
     ),
     bondingcurvetrades as (
         select

@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: ape_store_base_trades
+  - name: ape_store_ethereum_trades
     meta:
-      blockchain: base
+      blockchain: ethereum
       project: ape_store
       contributors: whale_hunter
     config:
-      tags: ["base", "ape_store", "dex", "whale_hunter"]
+      tags: ["ethereum", "ape_store", "dex", "whale_hunter"]
     description: >
-      Trades for tokens that get deployed through ApeStore on Base
+      Trades for tokens that get deployed through ApeStore on Ethereum
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
