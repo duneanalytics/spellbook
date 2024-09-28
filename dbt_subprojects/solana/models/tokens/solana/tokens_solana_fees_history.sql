@@ -2,6 +2,7 @@
   config(
         schema = 'tokens_solana',
         alias = 'fees_history',
+        tags = ['prod_exclude'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -9,10 +10,9 @@
         unique_key = ['account_mint','fee_time'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
-                                    "tokens",
+                                    "tokens_solana",
                                     \'["ilemi"]\') }}')
 }}
-
 --we need the fee basis points and maximum fee for token2022 transfers because the fee amount is not emitted in transferChecked
 SELECT
 call_account_arguments[1] as account_mint

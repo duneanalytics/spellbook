@@ -1,0 +1,138 @@
+version: 2
+
+models:
+  - name: dex_solana_sandwiches
+    meta: 
+      blockchain: solana
+      sector: dex
+      contributors: hildobby, ilemi
+    config:
+      tags: ['dex', 'mev', 'sandwiches', 'solana']
+    description: >
+      DEX MEV Sandwich Trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index
+    columns: 
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &block_number
+        name: block_number
+        description: "the block number of the block that the offer was created in"
+      - &token_sold_mint_address
+        name: token_sold_mint_address
+        description: "Contract address of the token sold"
+      - &token_bought_mint_address
+        name: token_bought_mint_address
+        description: "Contract address of the token bought"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &trader_id
+        name: trader_id
+        description: "Trader ID"
+      - &tx_id
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &tx_index
+        name: tx_index
+        description: "Index of the transaction in block"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD Value"
+      - &fee_tier
+        name: fee_tier
+        description: ""
+      - &fee_usd
+        name: fee_usd
+        description: ""
+      - &project_program_id
+        name: project_program_id
+        description: ""
+      - &outer_instruction_index
+        name: outer_instruction_index
+        description: ""
+      - &inner_instruction_index
+        name: inner_instruction_index
+        description: ""
+      - &trade_source
+        name: trade_source
+        description: ""
+  
+  - name: dex_solana_sandwiched
+    meta: 
+      blockchain: solana
+      sector: dex
+      contributors: hildobby, ilemi
+    config:
+      tags: ['dex', 'mev', 'sandwiched', 'solana']
+    description: >
+      DEX MEV Sandwiched Trades on Solana
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index
+    columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_mint_address
+      - *token_bought_mint_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *trader_id
+      - *tx_id
+      - *token_pair
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *fee_tier
+      - *fee_usd
+      - *project_program_id
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *trade_source

@@ -7,10 +7,10 @@
     incremental_strategy = 'merge',
     unique_key = ['flow_type', 'block_time', 'evt_index', 'tx_hash'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
@@ -110,7 +110,7 @@ select
   init_tranche_id,
   new_tranche_id,
   tranche_expiry_date,
-  if(tranche_expiry_date < current_date, false, true) as is_active,
+  if(tranche_expiry_date > current_date, true, false) as is_active,
   amount,
   topup_amount,
   user,

@@ -5,10 +5,10 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'tx_hash', 'evt_index', 'recipient'],
-        post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "bnb", "gnosis"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "optimism", "arbitrum", "avalanche_c", "bnb", "gnosis", "zksync"]\',
                                       "sector",
                                       "airdrop",
-                                    \'["hildobby"]\') }}'
+                                    \'["hildobby", "lgingerich"]\') }}'
     )
 }}
 
@@ -20,6 +20,7 @@
     , ref('airdrop_avalanche_c_claims')
     , ref('airdrop_bnb_claims')
     , ref('airdrop_gnosis_claims')
+    , ref('airdrop_zksync_claims')
 ] %}
 
 
@@ -43,11 +44,10 @@ FROM (
         , evt_index
     FROM {{ airdrop_claims_model }}
     {% if is_incremental() %}
-    WHERE block_time >= date_trunc('day', now() - interval '7' Day)
+    WHERE {{incremental_predicate('block_time')}}
     {% endif %}
     {% if not loop.last %}
     UNION ALL
     {% endif %}
     {% endfor %}
 )
-

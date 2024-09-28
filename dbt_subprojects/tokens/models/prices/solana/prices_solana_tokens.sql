@@ -697,5 +697,9 @@ FROM
         ('kohler-kohler', 'solana', 'KOHLER', 'HmfNGq7kxE6ppMDGW87xPuMU6wnKbeYBZf76K7t33w3s', 6),
         ('lockin-lock-in', 'solana', '$LOCKIN', '8Ki8DpuWNxu9VsS3kQbarsCWMcFGWkzzA8pUPto9zBd5', 9),
         ('mother-mother-iggy', 'solana', 'MOTHER', '3S8qX1MsMqRbiwKg2cQyx7nis1oHMgaCuc9c4VfvVdPN', 6),
-        ('mumu1-mumu-the-bull', 'solana', 'MUMU', '5LafQUrVco6o7KMz42eqVEJ9LW31StPyGjeeu5sKoMtA', 6)
+        ('mumu1-mumu-the-bull', 'solana', 'MUMU', '5LafQUrVco6o7KMz42eqVEJ9LW31StPyGjeeu5sKoMtA', 6),
+        ('nub-nubcat','solana', 'NUB', 'GtDZKAqvMZMnti46ZewMiXCa4oXF4bZxwQPoKzXPFxZn', 9),
+        ('bunk-bunkee', 'solana', 'BUNK', '2nhjjqSkA8FYCUdJvQhYjbtZdPjZbNo8VtNKTkJ3hncb', 6),
+        ('maneki-maneki', 'solana', 'MANEKI', '25hAyBQfoDhfWx9ay6rarbgvWGwDdNqcHsXS3jQ3mTDJ', 5),
+        ('scat-simon39s-baby-cat', 'solana', 'SCAT', '2NNkCSrbQtrc9tgEJHt4MQUH3ySaxTRAAXt9cUgCkycB', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

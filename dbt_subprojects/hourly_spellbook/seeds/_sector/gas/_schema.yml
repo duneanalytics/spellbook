@@ -1,0 +1,9 @@
+version: 2
+seeds:
+  - name: evm_gas_fees
+    config:
+      column_types:
+        blockchain: varchar
+        type: varchar
+        tx_hash: varbinary
+        tx_fee_raw: uint256

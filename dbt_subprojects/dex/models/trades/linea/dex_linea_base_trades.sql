@@ -14,6 +14,8 @@
     , ref('pancakeswap_v3_linea_base_trades')
     , ref('horizondex_linea_base_trades')
     , ref('uniswap_v3_linea_base_trades')
+    , ref('lynex_fusion_linea_base_trades')
+    , ref('swaap_v2_linea_base_trades')
 ] %}
 
 WITH base_union AS (

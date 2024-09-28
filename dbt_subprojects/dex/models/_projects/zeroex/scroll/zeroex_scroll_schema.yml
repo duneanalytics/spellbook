@@ -1,0 +1,111 @@
+version: 2
+
+models:
+  - name: zeroex_scroll_settler_trades 
+    meta:
+      blockchain: scroll
+      project: zeroex
+      contributors: rantum
+    config:
+      tags: ['scroll','0x','dex_aggregator','dex','aggregator']
+    description: >
+        0x API erc20 trades through 0x Settler contracts. No fills, only deduped transactions.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_date
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('zeroex_scroll_settler_trades_sample')
+          match_columns:
+            - tx_hash
+          check_columns:
+            - taker
+            - maker_token
+            - taker_token
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the aggregator project is deployed"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each trade"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each trade"
+      - &taker_symbol
+        name: taker_symbol
+        description: "Symbol of the token taker sells"
+      - &maker_symbol
+        name: maker_symbol
+        description: "Symbol of the token taker buys"
+      - &token_pair
+        name: token_pair
+        description: "Token pair traded"  
+      - &taker_token_amount
+        name: taker_token_amount
+        description: "The after-decimal amount of the token taker sells"
+      - &taker_token_amount_raw
+        name: taker_token_amount_raw
+        description: "The raw amount of the token taker sells"
+      - &maker_token_amount
+        name: maker_token_amount
+        description: "The after-decimal amount of the token taker buys"
+      - &maker_token_amount_raw
+        name: maker_token_amount_raw
+        description: "The raw amount of the token taker buys"
+      - &volume_usd
+        name: volume_usd
+        description: "Trading volume measured in USD value"      
+      - &taker_token
+        name: taker_token
+        description: "Contract address of the token taker sells"
+      - &maker_token
+        name: maker_token
+        description: "Contract address of the token taker buys"
+      - &maker
+        name: maker
+        description: "buyer of the trade"
+      - &taker
+        name: taker
+        description: "seller of the trade"
+      - &affiliate_address
+        name: affiliate_address
+        description: "The recipient address of the affiliate, or the applications that is using 0x API, for receiving affiliate fee"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the fill"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding order filled event"
+      - &type
+        name: type
+        description: "The liquidity route the order went thru"
+      - &swap_flag
+        name: swap_flag
+        description: "If the swap was filled/consumed thru 0x API"
+      - &contract_address
+        name: contract_address
+        desctiption: "The address of the contract which fired the fill/swap event"
+      - &fills_within
+        name: fills_within
+        description: "fills in then multihop, if present"   
+
+
+      
+      
+      
+
+      
+      

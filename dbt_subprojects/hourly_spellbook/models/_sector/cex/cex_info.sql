@@ -310,4 +310,5 @@ FROM (VALUES
         , ('Wealthsimple', 'Wealthsimple', FALSE, TRUE)
         , ('HashKey Exchange', 'HashKeyExchange', FALSE, TRUE)
         , ('Gamdom', 'gamdom', FALSE, TRUE)
+        , ('Mbcbit', 'MbcbitSupport', TRUE, FALSE)
     ) AS temp_table (cex_name, x_username, cex, payment_infra)

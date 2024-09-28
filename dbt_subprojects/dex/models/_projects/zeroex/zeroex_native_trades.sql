@@ -21,7 +21,7 @@ FROM (
     {% for model in zeroex_models %}
     SELECT
       blockchain  as blockchain,
-      '0x API'  as project,
+      '0x-API'  as project,
       version,
       block_month  as block_month,
       block_date  as block_date,

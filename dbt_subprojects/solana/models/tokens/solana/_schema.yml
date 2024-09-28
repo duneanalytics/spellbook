@@ -1,0 +1,124 @@
+version: 2
+
+models:
+  - name: tokens_solana_fungible
+    meta:
+      blockchain: solana
+      sector: tokens
+      project: fungible
+      contributors: ilemi
+    config:
+      tags: ['table', 'metadata', 'fungible', 'solana']
+    description: "Fungible Token Program Mint Addresses, Symbols and Decimals"
+    columns:
+      - name: token_mint_address
+        description: "fungible token mint address on Solana"
+        tests:
+          - unique
+      - name: symbol
+        description: "token symbol"
+      - name: decimals
+        description: "Number of decimals, refers to how divisible a token can be"
+      - name: metadata_program
+        description: program used for creating token metadata
+      - name: token_version
+        description: version of the token program used (spl_token, token2022)
+      - name: created_at
+        description: token mint created at
+      - name: init_tx
+        description: "transaction that initialized the mint"
+
+  - name: tokens_solana_fees_history
+    meta:
+      blockchain: solana
+      sector: tokens
+      project: fees
+      contributors: ilemi
+    config:
+      tags: ['table', 'metadata', 'fess', 'solana']
+    description: "fee updates on token2022 tokens"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - account_mint
+            - fee_time
+    columns:
+      - name: account_mint
+        description: "fungible token mint address on Solana"
+      - name: fee_basis
+        description: basis points fee on transfers
+      - name: fee_maximum
+        description: maximum fee amount on a given transfer
+      - name: fee_time
+        description: fee update time
+
+  - name: tokens_solana_nft
+    meta:
+      blockchain: solana
+      sector: tokens
+      project: fungible
+      contributors: ilemi
+    config:
+      tags: ['table', 'metadata', 'fungible', 'solana']
+    description: "NFTs minted using the Metaplex standard, with a master edition or cNFT tree"
+    columns:
+      - name: account_mint_authority
+        description: "mint authority for the account. this is set so that the account cannot mint more tokens"
+      - name: account_merkle_tree
+        description: only applies to cNFTs, this is the tree the NFT is appended to
+      - name: leaf_id
+        description: only applies to cNFTs, this is the leaf ID of the NFT (order of append)
+      - name: account_master_edition
+        description: "master edition for the account. all NFTs have a master edition"
+      - name: account_metadata
+        description: "metadata for the account. contains stuff like the name, symbol, and uri, etc"
+      - name: account_mint
+        description: "mint for the account. this is the token mint address from spl_token"
+      - name: minter
+        description: "the account_payer or account_leafOwner that minted the NFT"
+      - name: version
+        description: "version of the NFT - Token Metdata, cNFT, etc"
+      - name: token_standard
+      - name: token_name
+      - name: token_symbol
+      - name: token_uri
+      - name: seller_fee_basis_points
+      - name: collection_mint
+        description: "this is the token mint address of the collection. this is the same for all NFTs in the collection"
+      - name: verified_creator
+        description: "this is the first creator in the creator_struct for the NFT. the first creator was originally used as the collection mint reference"
+      - name: creator_struct
+        description: "all creators and their royalty splits"
+      - name: call_tx_id
+      - name: call_block_time
+      - name: call_block_slot
+      - name: call_tx_signer
+
+
+  - name: tokens_solana_transfers
+    meta:
+      blockchain: solana
+      contributors: [ilemi]
+    config:
+      tags: ['solana','transfers','erc20','nft','spl']
+    description: >
+        get all spl token transfers
+    columns:
+      - name: block_time
+      - name: block_date
+      - name: block_slot
+      - name: action
+      - name: token_mint_address
+      - name: amount
+      - name: fee
+      - name: token_version
+      - name: from_owner
+      - name: to_owner
+      - name: from_token_account
+      - name: to_token_account
+      - name: token_version
+      - name: tx_signer
+      - name: tx_id
+      - name: outer_instruction_index
+      - name: inner_instruction_index
+      - name: outer_executing_account

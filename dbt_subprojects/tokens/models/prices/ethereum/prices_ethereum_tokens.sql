@@ -157,7 +157,6 @@ FROM
     ('fx-function-x', 'ethereum', 'FX', 0x8c15ef5b4b21951d50e53e4fbda8298ffad25057, 18),
     ('fxc-flexacoin', 'ethereum', 'FXC', 0x4a57e687b9126435a9b19e4a802113e266adebde, 18),
     ('fxs-frax-share', 'ethereum', 'FXS', 0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0, 18),
-    ('gala-gala', 'ethereum', 'GALA', 0x15d4c048f83bd7e37d49ea4c83a07267ec4203da, 8),
     ('gbp-pound-sterling-token', 'ethereum', 'ibGBP', 0x69681f8fde45345c3870bcd5eaf4a05a60e7d227, 18),
     ('gcr-global-coin-research', 'ethereum', 'GCR', 0x6307b25a665efc992ec1c1bc403c38f3ddd7c661, 4),
     ('gen-daostack', 'ethereum', 'GEN', 0x543ff227f64aa17ea132bf9886cab5db55dcaddf, 18),
@@ -875,6 +874,7 @@ FROM
     ('kuma-kuma-inu', 'ethereum', 'KUMA', 0x48c276e8d03813224bb1e55f953adb6d02fd3e02, 18),
     ('cor-coreto', 'ethereum', 'COR', 0x9c2dc0c3cc2badde84b0025cf4df1c5af288d835, 18),
     ('cqt-covalent', 'ethereum', 'CQT', 0xd417144312dbf50465b1c641d016962017ef6240, 18),
+    ('cxt-covalent-x-token', 'ethereum', 'CXT', 0x7ABc8A5768E6bE61A6c693a6e4EAcb5B60602C4D, 18),
     ('glq-graphlinq', 'ethereum', 'GLQ', 0x9f9c8ec3534c3ce16f928381372bfbfbfb9f4d24, 18),
     ('dfyn-dfyn-network', 'ethereum', 'DFYN', 0x9695e0114e12c0d3a3636fab5a18e6b737529023, 18),
     ('woofy-woofy', 'ethereum', 'WOOFY', 0xd0660cd418a64a1d44e9214ad8e459324d8157f1, 12),
@@ -1806,11 +1806,42 @@ FROM
     ('maga-maga-hat', 'ethereum', 'MAGA', 0xd29da236dd4aac627346e1bba06a619e8c22d7c5, 9),
     ('flappy2-flappy', 'ethereum', 'FLAPPY', 0x590246bfbf89b113d8ac36faeea12b7589f7fe5b, 9),
     ('kendu-kendu-inu', 'ethereum', 'KENDU', 0xaa95f26e30001251fb905d264aa7b00ee9df6c18, 18),
-    ('maganomics-maganomics', 'ethereum', 'MAGANOMICS ', 0x7e744bbb1a49a44dfcc795014a4ba618e418fbbe, 9),
-    ('wojak-wojak', 'ethereum', 'WOJAK ', 0x5026f006b85729a8b14553fae6af249ad16c9aab, 18),
-    ('kai-kai-ken', 'ethereum', 'KAI ', 0xa045fe936e26e1e1e1fb27c1f2ae3643acde0171, 9),
-    ('gme-gme-ethereum', 'ethereum', 'GME ', 0xc56c7a0eaa804f854b536a5f3d5f49d2ec4b12b8, 9),
-    ('birddog-birddog', 'ethereum', 'BIRDDOG ', 0x70fd93fb088150e203d2243b9bd3190276f80c70, 9)
+    ('wojak-wojak', 'ethereum', 'WOJAK', 0x5026f006b85729a8b14553fae6af249ad16c9aab, 18),
+    ('kai-kai-ken', 'ethereum', 'KAI', 0xa045fe936e26e1e1e1fb27c1f2ae3643acde0171, 9),
+    ('gme-gme-ethereum', 'ethereum', 'GME', 0xc56c7a0eaa804f854b536a5f3d5f49d2ec4b12b8, 9),
+    ('birddog-birddog', 'ethereum', 'BIRDDOG', 0x70fd93fb088150e203d2243b9bd3190276f80c70, 9),
+    ('dola-dola','ethereum','DOLA',0x865377367054516e17014ccded1e7d814edc9ce4, 18),
+    ('strump-super-trump', 'ethereum', '$STRUMP', 0x7039cd6d7966672f194e8139074c3d5c4e6dcf65, 9),
+    ('molly2-molly', 'ethereum', 'MOLLY', 0xbdbe9f26918918bd3f43a0219d54e5fda9ce1bb3, 9),
+    ('win-connect', 'ethereum', 'WIN', 0xb10cb07ca2cdac77fbb5707f6690301f9d036f45, 8),
+    ('omikami-amaterasu-omikami', 'ethereum', 'OMIKAMI', 0x9e18d5bab2fa94a6a95f509ecb38f8f68322abd3, 9),
+    ('kas-wrapped-kaspa', 'ethereum', 'KAS', 0x112b08621e27e10773ec95d250604a041f36c582, 8),
+    ('ryu-ryujin', 'ethereum', 'RYU', 0xca530408c3e552b020a2300debc7bd18820fb42f, 18),
+    ('biao-biaoqing', 'ethereum', 'BIAO', 0x9fd9278f04f01c6a39a9d1c1cd79f7782c6ade08, 9),
+    ('matt-matt-furie', 'ethereum', 'MATT', 0x790814Cd782983FaB4d7B92CF155187a865d9F18, 9),
+    ('spurdo-spurdo-on-eth', 'ethereum', 'SPURDO', 0x3927fb89f34bbee63351a6340558eebf51a19fb8, 18),
+    ('alph-alephium', 'ethereum', 'ALPH', 0x590f820444fa3638e022776752c5eef34e2f89a6, 18),
+    ('apex-apex-token', 'ethereum', 'APEX', 0x52A8845DF664D76C69d2EEa607CD793565aF42B8, 18),
+    ('puff-puff-token', 'ethereum', 'PUFF', 0x18fa05ee5e478eed8925946abb41d09aec5d34d6, 18),
+    ('usdy-ondo-us-dollar-yield', 'ethereum', 'USDY', 0x96f6ef951840721adbf46ac996b59e0235cb985c, 18),
+    ('pzeth-renzo-restaked-lst', 'ethereum', 'pzETH', 0x8c9532a60E0E7C6BbD2B2c1303F63aCE1c3E9811, 18),
+    ('sx-sx-network', 'ethereum', 'SX', 0xbe9f61555f50dd6167f2772e9cf7519790d96624, 18),
+    ('rch-rch-token', 'ethereum', 'RCH', 0x57B96D4aF698605563A4653D882635da59Bf11AF, 18),
+    ('raft-raft', 'ethereum', 'RAFT', 0x4c5cb5d87709387f8821709f7a6664f00dcf0c93, 18), 
+    ('neiro3-neiro', 'ethereum', 'NEIRO', 0xee2a03aa6dacf51c18679c516ad5283d8e7c2637, 9),
+    ('neiro-first-neiro-on-ethereum', 'ethereum', 'NEIRO', 0x812ba41e071c7b7fa4ebcfb62df5f45f6fa853ee, 9),
+    ('fuku-fuku-kun', 'ethereum', 'FUKU', 0x1001271083c249bd771e1bb76c22d935809a61ee, 9),
+    ('elon-elon-memelord', 'ethereum', 'ELON', 0x69420e3a3aa9e17dea102bb3a9b3b73dcddb9528, 9),
+    ('bar-gold-standard', 'ethereum', 'BAR', 0x777be1c6075c20184c4fd76344b7b0b7c858fe6b, 18),
+    ('ftw-black-agnus', 'ethereum', 'FTW', 0x306fD3e7b169Aa4ee19412323e1a5995B8c1a1f4, 18),
+    ('synt-synternet','ethereum','SYNT',0xda987c655ebc38c801db64a8608bc1aa56cd9a31, 18),
+    ('babydoge-baby-doge-coin', 'ethereum', 'BABYDOGE', 0xac57de9c1a09fec648e93eb98875b212db0d460b, 9),
+    ('usdz-anzen-usdz', 'ethereum', 'USDZ', 0xa469b7ee9ee773642b3e93e842e5d9b5baa10067, 18),
+    ('lbtc-lombard-staked-btc', 'ethereum', 'LBTC', 0x8236a87084f8b84306f72007f36f2618a5634494, 8),
+    ('msn-mesonnetwork', 'ethereum', 'MSN', 0xaa247c0d81b83812e1abf8bab078e4540d87e3fb, 18),
+    ('zeta-zetachain', 'ethereum', 'ZETA', 0xf091867ec603a6628ed83d274e835539d82e9cc8, 18),
+    ('euri-eurite', 'ethereum', 'EURI', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 18),
+    ('sky-sky', 'ethereum', 'SKY', 0x56072C95FAA701256059aa122697B133aDEd9279, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
@@ -1836,4 +1867,6 @@ where contract_address not in (
     ,0xa15c7ebe1f07caf6bff097d8a589fb8ac49ae5b3   -- NPXS
     ,0x630d98424efe0ea27fb1b3ab7741907dffeaad78   -- PEAKDEFI
     ,0xee06a81a695750e71a662b51066f2c74cf4478a0   -- DG, bad price feed
+    ,0x9e24415d1e549ebc626a13a482bb117a2b43e9cf   -- LOVELY, rugpull
+    ,0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3   -- BUBBLE, bad price feed
 )

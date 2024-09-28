@@ -9,6 +9,8 @@ sources:
     tables:
       - name: PairFactory_evt_PairCreated
       - name: Pair_evt_Swap
+      - name: AlgebraPool_evt_Swap
+      - name: AlgebraFactory_evt_Pool
   - name: nile_linea
     tables:
       - name: ClPoolFactory_evt_PoolCreated
@@ -37,4 +39,6 @@ sources:
     tables:
       - name: UniswapV3Pool_evt_Swap
       - name: UniswapV3Factory_evt_PoolCreated
-
+  - name: swaap_v2_linea
+    tables:
+      - name: Vault_evt_Swap

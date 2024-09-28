@@ -157,3 +157,4 @@ LEFT JOIN {{ source('prices', 'usd') }} AS p
   {% if is_incremental() %}
   AND {{ incremental_predicate('p.minute') }}
   {% endif %}
+where block_time <= timestamp '2022-11-30 22:43'    -- new model takes over

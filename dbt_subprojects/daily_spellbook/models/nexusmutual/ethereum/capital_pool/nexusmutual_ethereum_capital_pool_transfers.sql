@@ -7,10 +7,10 @@
     incremental_strategy = 'merge',
     unique_key = ['block_time', 'transfer_type', 'symbol', 'unique_key', 'tx_hash'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
@@ -42,7 +42,7 @@ transfer_in as (
     unique_key,
     tx_hash
   from {{ source('tokens_ethereum','transfers') }}
-  where block_time >= timestamp '2019-05-01'
+  where block_time >= timestamp '2019-05-23'
     and "to" in (select contract_address from nexusmutual_contracts)
     and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC')
     {% if is_incremental() %}
@@ -62,7 +62,7 @@ transfer_out as (
     unique_key,
     tx_hash
   from {{ source('tokens_ethereum','transfers') }}
-  where block_time >= timestamp '2019-05-01'
+  where block_time >= timestamp '2019-05-23'
     and "from" in (select contract_address from nexusmutual_contracts)
     and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC')
     {% if is_incremental() %}
@@ -121,3 +121,4 @@ from transfer_nxmty_in
 union all
 select block_time, block_number, block_date, transfer_type, symbol, amount, contract_address, unique_key, tx_hash
 from transfer_nxmty_out
+where 1=1 -- dummy change to trigger re-run

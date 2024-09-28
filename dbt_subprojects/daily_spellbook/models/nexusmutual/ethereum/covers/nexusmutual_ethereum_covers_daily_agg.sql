@@ -2,15 +2,12 @@
   config(
     schema = 'nexusmutual_ethereum',
     alias = 'covers_daily_agg',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
+    materialized = 'view',
     unique_key = ['block_date'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
@@ -25,9 +22,6 @@ daily_avg_prices as (
     avg_nxm_eth_price,
     avg_nxm_usd_price
   from {{ ref('nexusmutual_ethereum_capital_pool_prices') }}
-  {% if is_incremental() %}
-  where {{ incremental_predicate('block_date') }}
-  {% endif %}
 ),
 
 covers as (
@@ -45,9 +39,6 @@ covers as (
     premium_asset,
     premium
   from {{ ref('nexusmutual_ethereum_covers_v1') }}
-  {% if is_incremental() %}
-  where {{ incremental_predicate('block_date') }}
-  {% endif %}
   union all
   select
     block_date,
@@ -64,9 +55,6 @@ covers as (
     premium_incl_commission as premium
   from {{ ref('nexusmutual_ethereum_covers_v2') }}
   where is_migrated = false
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_date') }}
-  {% endif %}
 ),
 
 covers_ext as (

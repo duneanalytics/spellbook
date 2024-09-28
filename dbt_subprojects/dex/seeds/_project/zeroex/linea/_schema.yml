@@ -1,0 +1,11 @@
+version: 2
+
+seeds:
+  - name: zeroex_linea_settler_trades_sample
+    config:
+      column_types:
+        tx_hash: varbinary
+        taker: varbinary
+        taker_token: varbinary
+        maker_token: varbinary
+        taker_token_amount: double
