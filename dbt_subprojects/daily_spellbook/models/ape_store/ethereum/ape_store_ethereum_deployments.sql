@@ -23,7 +23,7 @@ select
     evt_tx_from as deployer,
     evt_tx_hash as tx_hash
 from {{ source("ape_store_base", "Router_evt_CreateToken") }}
-join ethereum.transactions on (
+join {{source(blockchain, 'transactions')}} on (
     evt_block_time = block_time
     and evt_tx_hash = hash
     and (
