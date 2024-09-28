@@ -170,7 +170,7 @@ FROM
     ('usdz-anzen-usdz', 'base', 'USDZ',0x04d5ddf5f3a8939889f11e97f8c4bb48317f1938, 18),
     ('moxie-moxie', 'base', 'MOXIE',0x8C9037D1Ef5c6D1f6816278C7AAF5491d24CD527, 18),
     ('cbbtc-coinbase-wrapped-btc', 'base', 'cbBTC',0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf, 8)
-    ('weirdo-weirdo', 'base', 'weirdo',0x76734b57dfe834f102fb61e1ebf844adf8dd931e, 8),
-    ('lune-luneko', 'base', 'LUNE',0xacd1caef47e4c47bafe8a51b3f4305fc38203b7a, 18),
+    --('weirdo-weirdo', 'base', 'weirdo',0x76734b57dfe834f102fb61e1ebf844adf8dd931e, 8),
+    --('lune-luneko', 'base', 'LUNE',0xacd1caef47e4c47bafe8a51b3f4305fc38203b7a, 18),
     ('peach-based-peaches', 'base', 'PEACH',0x8319767a7b602f88e376368dca1b92d38869b9b4, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
