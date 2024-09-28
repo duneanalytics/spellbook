@@ -66,3 +66,41 @@ models:
       - &tx_index
         name: tx_index
         description: "Index of the corresponding trade event"
+  - name: ape_store_base_deployments
+    meta:
+      blockchain: base
+      project: ape_store
+      contributors: whale_hunter
+    config:
+      tags: ["base", "ape_store", "dex", "whale_hunter"]
+    description: >
+      Tokens that get deployed through ApeStore on Base
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token
+    columns:
+      - &block_time
+        name: block_time
+        description: "UTC timestamp of the deployment"
+      - &block_date
+        name: block_date
+        description: "UTC date of the deployment"
+      - &block_month
+        name: block_month
+        description: "UTC month of the deployment"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain on which the deployment occured"
+      - &token
+        name: token
+        description: "Contract address of the deployed token"
+      - &id
+        name: id
+        description: "ID of the deployed token"
+      - &deployer
+        name: deployer
+        description: "Address which initiated the deployment"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash tied to each deployment"
