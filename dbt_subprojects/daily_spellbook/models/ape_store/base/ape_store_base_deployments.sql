@@ -5,6 +5,7 @@
         materialized='incremental',
         file_format='delta',
         incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')],
         unique_key='token'
     )
 }}
@@ -21,3 +22,9 @@ select
     evt_tx_from as deployer,
     evt_tx_hash as tx_hash
 from {{ source("ape_store_base", "Router_evt_CreateToken") }}
+where 
+    {% if is_incremental() %}
+    {{ incremental_predicate('evt_block_time') }}
+    {% else %}
+    evt_block_time >= timestamp '{{project_start_date}}'
+    {% endif %}
