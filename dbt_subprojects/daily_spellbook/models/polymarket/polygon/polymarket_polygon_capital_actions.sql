@@ -102,7 +102,7 @@ select distinct
   evt_index,
   tx_hash
 from {{ source('tokens_polygon', 'transfers')}}
-where contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC
+where contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
   and "from" in (select proxy from safe_proxies)
   and "to" in (select proxy from safe_proxies)
   and "to" not in (select address from polymarket_addresses)
