@@ -6,6 +6,8 @@
 %}
 
 {% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
+{% set native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+{% set zero_address = '0x0000000000000000000000000000000000000000' %}
 
 
 
@@ -58,15 +60,14 @@ meta as (
         , flags as order_flags
     from (
         select *, row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
-        from {{ source('oneinch', 'lop') }}
+        from {{ source('oneinch_' + blockchain, 'lop') }}
         where
-            blockchain = '{{blockchain}}'
+            call_success
             {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
             {% else %}
                 and block_time >= timestamp '{{date_from}}'
             {% endif %}
-            and call_success
     )
 )
 
@@ -88,9 +89,9 @@ meta as (
         , order_hash
         , order_flags
         , maker
-        , maker_asset
+        , replace(maker_asset, {{ zero_address }}, {{ native_address }}) as maker_asset
         , making_amount
-        , taker_asset
+        , replace(taker_asset, {{ zero_address }}, {{ native_address }}) as taker_asset
         , taking_amount
         , array_agg(call_trace_address) over(partition by block_number, tx_hash, project) as call_trace_addresses -- to update the array after filtering nested calls of the project
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
@@ -196,12 +197,12 @@ meta as (
             , if(
                 user_amount_usd is null or caller_amount_usd is null
                 , coalesce(
-                    user_amount_usd_trusted, 
-                    caller_amount_usd_trusted, 
-                    user_amount_usd, 
-                    caller_amount_usd, 
-                    call_amount_usd_trusted, 
-                    call_amount_usd
+                    user_amount_usd_trusted
+                    , caller_amount_usd_trusted
+                    , user_amount_usd
+                    , caller_amount_usd
+                    , call_amount_usd_trusted
+                    , call_amount_usd
                 )
                 , greatest(user_amount_usd, caller_amount_usd)
             ) -- the user_amount & caller_amount of untrusted tokens takes precedence over the call_amount of trusted tokens
@@ -213,7 +214,7 @@ meta as (
             , calls.block_number
             , calls.tx_hash
             , calls.call_trace_address
-            , call_trade_id
+            , calls.call_trade_id
             , any_value(block_time) as block_time
             , any_value(tx_from) as tx_from
             , any_value(tx_to) as tx_to
@@ -259,16 +260,21 @@ meta as (
                 , tx_hash
                 , transfer_trace_address
                 , contract_address as contract_address_raw
-                , if(type = 'native', wrapped_native_token_address, contract_address) as contract_address
-                , type = 'native' as native
+                , if(contract_address = {{ native_address }}, wrapped_native_token_address, contract_address) as contract_address
+                , contract_address = {{ native_address }} as native
                 , amount
                 , native_symbol
                 , transfer_from
                 , transfer_to
                 , date_trunc('minute', block_time) as minute
             from (
-                select * from {{ source('oneinch', 'parsed_transfers_from_calls') }}
-                where blockchain = '{{blockchain}}'
+                select * from ({{ oneinch_project_ptfc_macro(blockchain) }})
+                where
+                    {% if is_incremental() %}
+                        {{ incremental_predicate('block_time') }}
+                    {% else %}
+                        block_time >= timestamp '{{date_from}}'
+                    {% endif %}
             ), meta
             where
                 {% if is_incremental() %}
@@ -316,7 +322,8 @@ select
     , taking_amount
     , order_flags
     , tokens
-    , if(cardinality(user_tokens) = 0, if(cardinality(caller_tokens) = 0, tokens, caller_tokens), user_tokens) as customer_tokens
+    , user_tokens
+    , caller_tokens
     , amount_usd
     , user_amount_usd
     , user_amount_usd_trusted

@@ -25,6 +25,11 @@ models:
         description: The timestamp of the block when the event was recorded
         tests:
           - not_null
+      - &block_date
+        name: block_date
+        description: The date extracted from the block timestamp, representing the day the block was created
+        tests:
+          - not_null         
       - &block_number
         name: block_number
         description: The block number where the event is included
@@ -44,7 +49,17 @@ models:
         name: contract_address
         description: The contract address associated with the event
         tests:
-          - not_null          
+          - not_null  
+      - &tx_from
+        name: tx_from
+        description: The originating address of the transaction, usually representing the sender
+        tests:
+          - not_null
+      - &tx_to
+        name: tx_to
+        description: The destination address of the transaction, representing the receiver
+        tests:
+          - not_null                   
       - name: event_name
         description: The type of event recorded, always 'OrderCreated' for this model.
         tests:
@@ -54,14 +69,6 @@ models:
         description: The address of the sender of the message or transaction.
         tests:
           - not_null
-      - &topic1
-        name: topic1
-        description: The value corresponding to the second indexed event parameter.
-        tests:
-          - not_null
-      - &topic2
-        name: topic2
-        description: The value corresponding to the third indexed event parameter.
       - name: account
         description: The address associated with the order.
       - name: receiver
@@ -119,14 +126,12 @@ models:
         description: The change in initial collateral amount.
         tests:
           - not_null
-      - name: trigger_price
-        description: The price that triggers the order execution.
-        tests:
-          - not_null        
-      - name: acceptable_price
-        description: The minimum acceptable price for order execution.
-        tests:
-          - not_null        
+      - &trigger_price_raw
+        name: trigger_price_raw
+        description: The price that triggers the order execution.     
+      - &acceptable_price_raw 
+        name: acceptable_price_raw
+        description: The minimum acceptable price for order execution.      
       - name: execution_fee
         description: The fee paid for executing the order in native tokens
         tests:
@@ -135,15 +140,17 @@ models:
         description: The gas limit set for callback functions.
         tests:
           - not_null        
-      - name: min_output_amount
+      - &min_output_amount_raw
+        name: min_output_amount_raw
         description: The minimum amount of output tokens expected from the order, based on the markets in the swap path.
         tests:
           - not_null        
       - name: updated_at_block
         description: The block number at which the order was last updated.
         tests:
-          - not_null        
-      - name: updated_at_time
+          - not_null   
+      - &updated_at_time     
+        name: updated_at_time
         description: The timestamp when the order was last updated.
       - &is_long
         name: is_long
@@ -154,7 +161,8 @@ models:
         description: Boolean indicating if the native token should be unwrapped.
       - name: is_frozen
         description: Boolean indicating if the order is frozen.
-      - name: key
+      - &key
+        name: key
         description: The unique identifier for the order, stored as a bytes32 value.
         tests:
           - not_null
@@ -177,22 +185,19 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to
       - name: event_name
         description: The type of event recorded, always 'OrderExecuted' for this model
         tests:
           - not_null 
       - *msg_sender
-      - *topic1
-      - *topic2
-      - name: key
-        description: The key associated with the executed order. Extracted as a bytes32 value.
-        tests:
-          - not_null
-          - unique 
+      - *key
       - name: account
         description: The address associated with the order
       - name: secondary_order_type
@@ -223,22 +228,19 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'OrderCancelled' for this model
         tests:
           - not_null 
-      - *msg_sender
-      - *topic1
-      - *topic2          
-      - name: key
-        description: The key associated with the cancelled order. Extracted as a bytes32 value
-        tests:
-          - not_null
-          - unique
+      - *msg_sender         
+      - *key
       - name: account
         description: The address associated with the order 
       - name: reason_bytes
@@ -267,17 +269,20 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'MarketCreated' for this model
         tests:
           - not_null 
       - *msg_sender
-      - *topic1
-      - *topic2
+      - name: account
+        description: The address associated with the event
       - &market_token
         name: market_token
         description: The token used to represent the market
@@ -337,17 +342,20 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
-      - *contract_address    
+      - *contract_address   
+      - *tx_from
+      - *tx_to       
       - name: event_name
         description: The type of event recorded, always 'PositionIncrease' for this model
         tests:
           - not_null 
       - *msg_sender
-      - *topic1
-      - *topic2
+      - name: account
+        description: The address associated with the event
       - name: market
         description: The market associated with the position increase
         tests:
@@ -467,17 +475,20 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'PositionDecrease' for this model
         tests:
           - not_null  
       - *msg_sender
-      - *topic1
-      - *topic2
+      - name: account
+        description: The address associated with the event
       - name: market
         description: The market associated with the position decrease
         tests:
@@ -545,17 +556,20 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
       - *contract_address
+      - *tx_from
+      - *tx_to      
       - name: event_name
         description: The type of event recorded, always 'PositionFeesCollected' for this model
         tests:
           - not_null 
       - *msg_sender
-      - *topic1
-      - *topic2
+      - name: account
+        description: The address associated with the event
       - name: market
         description: The market associated with the position fees collected event
         tests:
@@ -741,17 +755,20 @@ models:
     columns:
       - *blockchain
       - *block_time
+      - *block_date
       - *block_number
       - *tx_hash
       - *index
-      - *contract_address  
+      - *contract_address 
+      - *tx_from
+      - *tx_to       
       - name: event_name
         description: The type of event recorded, always 'PositionFeesInfo' for this model
         tests:
           - not_null
       - *msg_sender
-      - *topic1
-      - *topic2           
+      - name: account
+        description: The address associated with the event          
       - name: market
         description: The market associated with the position fees info event
         tests:
@@ -795,3 +812,97 @@ models:
       - *order_key
       - *position_key
       - *referral_code
+
+
+  - name: gmx_v2_arbitrum_order_frozen
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'order_frozen']
+    description: |
+      Extracts and decodes the `OrderFrozen` event log data from the Arbitrum blockchain. 
+      This model processes log entries related to frozen orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for the order being frozen.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - key
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to      
+      - name: event_name
+        description: The type of event recorded, always 'OrderFrozen' for this model
+        tests:
+          - not_null 
+      - *msg_sender         
+      - name: key
+        description: The key associated with the frozen order. Extracted as a bytes32 value
+        tests:
+          - not_null
+      - name: account
+        description: The address associated with the order 
+      - name: reason_bytes
+        description: The reason for the order being frozen in byte format.
+        tests:
+          - not_null
+      - name: reason
+        description: The reason for the order being frozen in string format.
+        tests:
+          - not_null
+
+
+  - name: gmx_v2_arbitrum_order_updated
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'order_updated']
+    description: |
+      Extracts and decodes the `OrderUpdated` event log data from the Arbitrum blockchain. 
+      This model processes log entries related to updated orders, extracting key variables such as 
+      account addresses, event keys, and strings representing the reason for cancellation.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - *tx_from
+      - *tx_to  
+      - name: event_name
+        description: The type of event recorded, always 'OrderUpdated' for this model.
+        tests:
+          - not_null
+      - *msg_sender
+      - name: key
+        description: The key associated with the updated order. Extracted as a bytes32 value
+        tests:
+          - not_null
+      - name: market
+        description: The market in which the order was updated.
+        tests:
+          - not_null 
+      - name: account
+        description: The address associated with the order.
+      - *size_delta_usd
+      - *trigger_price_raw
+      - *acceptable_price_raw 
+      - *min_output_amount_raw   
+      - *updated_at_time

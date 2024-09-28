@@ -31,10 +31,10 @@ WITH pool_labels AS (
     eth_prices AS(
         SELECT
             date_trunc('day', minute) AS day,
-            AVG(price) AS eth_price
+            APPROX_PERCENTILE(price, 0.5) AS eth_price
         FROM {{ source('prices', 'usd') }}
-        WHERE blockchain = '{{blockchain}}'
-        AND symbol = 'ETH'
+        WHERE blockchain = 'ethereum'
+        AND contract_address = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
         GROUP BY 1
     ),
 

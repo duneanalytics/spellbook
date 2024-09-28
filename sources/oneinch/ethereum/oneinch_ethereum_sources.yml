@@ -2,7 +2,6 @@ version: 2
 
 sources:
   - name: oneinch_ethereum
-    description: "decoded events and function calls for 1inch on ethereum"
     tables:
       - name: ExchangeV1_call_aggregate
       - name: ExchangeV2_call_aggregate
@@ -65,6 +64,7 @@ sources:
       - name: FusionWhitelistRegistryV2_evt_Registered
       - name: FusionWhitelistRegistryV2_evt_Unregistered
       - name: FusionWhitelistRegistryV2_evt_Promotion
+      - name: CrosschainWhitelistRegistryV1_evt_Promotion
       - name: AggregationRouterV6_call_swap
       - name: AggregationRouterV6_call_clipperSwap
       - name: AggregationRouterV6_call_clipperSwapTo
@@ -84,6 +84,10 @@ sources:
       - name: AggregationRouterV6_call_fillOrderArgs
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
+      - name: EscrowFactoryV1_call_createDstEscrow
+      - name: EscrowFactoryV1_evt_SrcEscrowCreated
+      - name: lop
+      - name: ar
 
 
   - name: onesplit_ethereum

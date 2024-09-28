@@ -17,6 +17,7 @@ WITH l1_data AS (
         , name
         , SUM(data_fee_native) as data_fee_native
         , SUM(data_fee_usd) as data_fee_usd
+        , SUM(calldata_gas_used) as calldata_gas_used
     FROM {{ ref('rollup_economics_ethereum_l1_data_fees')}}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('block_time')}}
@@ -55,6 +56,7 @@ SELECT
     , COALESCE(d.name, v.name, b.name) as name
     , COALESCE(data_fee_native, 0) AS data_fee_native
     , COALESCE(data_fee_usd, 0) AS data_fee_usd
+    , COALESCE(calldata_gas_used, 0) AS calldata_gas_used
     , COALESCE(verification_fee_native, 0) AS verification_fee_native
     , COALESCE(verification_fee_usd, 0) AS verification_fee_usd
     , COALESCE(blob_fee_native, 0) AS blob_fee_native

@@ -104,7 +104,7 @@ from (
         {% if is_incremental() %}
             where {{ incremental_predicate('call_block_time') }}
         {% else %}
-            where call_block_time >= timestamp '{{ start_date }}'
+            where call_block_time >= greatest(timestamp '{{ start_date }}', timestamp {{ oneinch_easy_date() }})
         {% endif %}
     )
 )

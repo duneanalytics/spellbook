@@ -1,0 +1,62 @@
+version: 2
+
+models:
+  - name: stablecoins_arbitrum_balances
+
+    meta:
+      blockchain: arbitrum
+      sector: stablecoin
+      project: stablecoin
+      contributors: synthquest
+
+    config:
+      tags: ['stablecoin', 'balances']
+    description: "Balances of stablecoin token holders"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+    - &blockchain
+      name: blockchain
+      description: "Blockchain for the token"
+    - &symbol
+      name: symbol
+      description: "Symbol for the token"
+    - &version
+      name: version
+      description: "Version of the token"
+    - &day
+      name: day
+      description: "Date on which the token balance is logged"
+    - &address
+      name: address
+      description: "Address for the token holder"
+    - &token_symbol
+      name: token_symbol
+      description: "Symbol for the token"
+    - &token_address
+      name: token_address
+      description: "Address for the token"
+    - &token_standard
+      name: token_standard
+      description: "Standard for the token"
+    - &token_id
+      name: token_id
+      description: "ID for the token"
+    - &balance
+      name: balance
+      description: "Balance for the user"
+    - &balance_usd
+      name: balance_usd
+      description: "USD value of balance for the user"
+    - &last_updated
+      name: last_updated
+      description: "UTC timestamp when data was last updated"
+    - &next_update
+      name: next_update
+      description: "UTC timestamp when data is next updated"
+
+ 
