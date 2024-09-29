@@ -27,14 +27,12 @@ SELECT uniswap_v2_base_trades.*
 FROM all_decoded_trades AS uniswap_v2_base_trades
 INNER JOIN (
     SELECT
-        count(*) as transfer_count,
-        contract_address,
-        tx_hash
+        tx_hash,
+        array_agg(DISTINCT contract_address) as contract_addresses
     FROM {{ source('tokens', 'transfers') }}
     WHERE blockchain = 'ethereum'
-    GROUP BY contract_address, tx_hash
-    HAVING count(*) >= 1
+    GROUP BY tx_hash
 ) AS transfers
-ON (transfers.tx_hash = uniswap_v2_base_trades.tx_hash)
-   AND (transfers.contract_address = uniswap_v2_base_trades.token_bought_address
-        OR transfers.contract_address = uniswap_v2_base_trades.token_sold_address)
+ON transfers.tx_hash = uniswap_v2_base_trades.tx_hash
+    AND contains(transfers.contract_addresses, uniswap_v2_base_trades.token_bought_address)
+    AND contains(transfers.contract_addresses, uniswap_v2_base_trades.token_sold_address)
