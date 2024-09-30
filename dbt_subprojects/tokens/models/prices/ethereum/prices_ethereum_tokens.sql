@@ -1840,8 +1840,9 @@ FROM
     ('lbtc-lombard-staked-btc', 'ethereum', 'LBTC', 0x8236a87084f8b84306f72007f36f2618a5634494, 8),
     ('msn-mesonnetwork', 'ethereum', 'MSN', 0xaa247c0d81b83812e1abf8bab078e4540d87e3fb, 18),
     ('zeta-zetachain', 'ethereum', 'ZETA', 0xf091867ec603a6628ed83d274e835539d82e9cc8, 18),
-    ('euri-eurite', 'ethereum', 'EURI', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 18),
-    ('sky-sky', 'ethereum', 'SKY', 0x56072C95FAA701256059aa122697B133aDEd9279, 18)
+    ('euri-eurite', 'ethereum', 'EURI', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 18)
+    --('sky-sky', 'ethereum', 'SKY', 0x56072C95FAA701256059aa122697B133aDEd9279, 18),
+    --('usds-usds', 'ethereum', 'USDS', 0xdc035d45d973e3ec169d2276ddab16f1e407384f, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

@@ -4635,4 +4635,5 @@ FROM (VALUES
     , ( 0xDBf5E36569798D1E39eE9d7B1c61A7409a74F23A, 'stataEthLUSD', 18)
     , ( 0x63e5dC7C071C1F18d44b69bc86f4c80F24851388, 'KAI', 18)
     , ( 0xFFd9c960bC303b8d3aAED58229ce8a7310bCc5b8, 'KAIAURA', 18)
+    , ( 0xdc035d45d973e3ec169d2276ddab16f1e407384f, 'USDS', 18)
 ) AS temp_table (contract_address, symbol, decimals)
