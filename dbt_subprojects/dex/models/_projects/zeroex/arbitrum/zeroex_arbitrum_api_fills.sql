@@ -49,7 +49,7 @@ WITH zeroex_tx AS (
                 {% if not is_incremental() %}
                 AND tr.block_time >= TIMESTAMP '{{zeroex_v3_start_date}}'
                 {% endif %}
-        GROUP BY tr.tx_hash, tr.block_number
+        GROUP BY tr.tx_hash, tr.block_number, tr.block_time
 ),
 
 v4_rfq_fills_no_bridge AS (
