@@ -219,14 +219,15 @@ NewBridgeFill AS (
     INNER JOIN zeroex_tx
         ON zeroex_tx.tx_hash = logs.tx_hash
         AND zeroex_tx.block_number = logs.block_number
+        and zeroex_tx.block_time = logs.block_time 
     WHERE topic0 = 0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8
         AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
 
         {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
+        AND {{ incremental_predicate('logs.block_time') }}
         {% endif %}
         {% if not is_incremental() %}
-        AND block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
+        AND logs.block_time >= TIMESTAMP '{{zeroex_v4_start_date}}'
         {% endif %}
 ),
 
