@@ -4631,6 +4631,9 @@ FROM (VALUES
     , ( 0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3, 'BUBBLE', 9)
     , ( 0xeb9951021698b42e4399f9cbb6267aa35f82d59d, 'LIF', 18)
     , ( 0x707f9118e33a9b8998bea41dd0d46f38bb963fc8, 'bETH', 18)
+    , ( 0x848107491e029afde0ac543779c7790382f15929, 'stataEthcrvUSD', 18)
+    , ( 0xDBf5E36569798D1E39eE9d7B1c61A7409a74F23A, 'stataEthLUSD', 18)
+    , ( 0x63e5dC7C071C1F18d44b69bc86f4c80F24851388, 'KAI', 18)
+    , ( 0xFFd9c960bC303b8d3aAED58229ce8a7310bCc5b8, 'KAIAURA', 18)
     , ( 0xdc035d45d973e3ec169d2276ddab16f1e407384f, 'USDS', 18)
-
 ) AS temp_table (contract_address, symbol, decimals)
