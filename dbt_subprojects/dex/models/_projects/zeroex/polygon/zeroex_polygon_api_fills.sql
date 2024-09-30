@@ -309,7 +309,10 @@ SELECT distinct
         cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
         cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
         maker,
-        tx."from" AS taker, -- fix the user masked by ProxyContract issue
+        CASE
+            WHEN taker in (0xdef1c0ded9bec7f1a1670819833240f027b25eff,0xdb6f1920a889355780af7570773609bd8cb1f498) THEN tx."from"
+            ELSE taker
+        END AS taker,-- fix the user masked by ProxyContract issue
         taker_token,
         ts.symbol AS taker_symbol,
         maker_token,
