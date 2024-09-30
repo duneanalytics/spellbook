@@ -2183,6 +2183,14 @@
       "created_at": "2024-09-27T15:37:44Z",
       "repoId": 237392204,
       "pullRequestNo": 6844
+    },
+    {
+      "name": "0xVitalii",
+      "id": 83537328,
+      "comment_id": 2384064553,
+      "created_at": "2024-09-30T20:13:53Z",
+      "repoId": 237392204,
+      "pullRequestNo": 6856
     }
   ]
 }
