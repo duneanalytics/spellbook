@@ -4631,5 +4631,6 @@ FROM (VALUES
     , ( 0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3, 'BUBBLE', 9)
     , ( 0xeb9951021698b42e4399f9cbb6267aa35f82d59d, 'LIF', 18)
     , ( 0x707f9118e33a9b8998bea41dd0d46f38bb963fc8, 'bETH', 18)
+    , ( 0xdc035d45d973e3ec169d2276ddab16f1e407384f, 'USDS', 18)
 
 ) AS temp_table (contract_address, symbol, decimals)
