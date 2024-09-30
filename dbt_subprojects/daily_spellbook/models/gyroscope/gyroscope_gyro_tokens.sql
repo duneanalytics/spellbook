@@ -14,6 +14,8 @@ WITH gyro_tokens as (
     (0x4EA71A20e655794051D1eE8b6e4A3269B13ccaCc, 'stataBasUSDC', 6, 'base'),
     (0x270ba1f35d8b87510d24f693fccc0da02e6e4eeb, 'stataGnoUSDC', 6, 'base'),
     (0x862c57d48becB45583AEbA3f489696D22466Ca1b, 'stataEthUSDT', 6, 'ethereum'),
+    (0x848107491e029afde0ac543779c7790382f15929, 'stataEthcrvUSD', 18, 'ethereum'),    
+    (0xDBf5E36569798D1E39eE9d7B1c61A7409a74F23A, 'stataEthLUSD', 18, 'ethereum'),        
     (0x87A1fdc4C726c459f597282be639a045062c0E46, 'stataPolUSDT', 6, 'polygon'),
     (0x2dCa80061632f3F87c9cA28364d1d0c30cD79a19, 'stataPolUSDCn', 6, 'polygon'),        
     (0x4dd03dfd36548c840b563745e3fbec320f37ba7e, 'stataOptUSDCn', 6, 'optimism'),
