@@ -398,7 +398,7 @@ WITH
                 tx.to AS tx_to
             FROM all_fills
             INNER JOIN {{ source('polygon', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
-            AND all_fills.block_number = tx.block_number
+                AND all_fills.block_number = tx.block_number and all_fills.block_time = tx.block_time 
             {% if is_incremental() %}
             AND {{ incremental_predicate('tx.block_time') }}
             {% endif %}

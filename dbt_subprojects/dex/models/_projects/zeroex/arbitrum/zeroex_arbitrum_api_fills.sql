@@ -250,7 +250,7 @@ direct_PLP AS (
     INNER JOIN zeroex_tx
         ON zeroex_tx.tx_hash = plp.evt_tx_hash
         AND zeroex_tx.block_number = plp.evt_block_number
-
+        and zeroex_tx.block_time = plp.block_time 
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
@@ -314,7 +314,7 @@ SELECT
          'arbitrum' AS blockchain
 FROM all_tx
 INNER JOIN {{ source('arbitrum', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
-    AND all_tx.block_number = tx.block_number
+    AND all_tx.block_number = tx.block_number and all_tx.block_time = tx.block_time 
 {% if is_incremental() %}
 AND {{ incremental_predicate('tx.block_time') }}
 {% endif %}
