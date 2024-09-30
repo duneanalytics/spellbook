@@ -376,8 +376,8 @@ WITH
                 evt_index,
                 maker_address as maker,
                 CASE
-                    WHEN taker in (0xdef1c0ded9bec7f1a1670819833240f027b25eff,0xdb6f1920a889355780af7570773609bd8cb1f498) THEN tx."from"
-                    ELSE taker
+                    WHEN taker_address in (0xdef1c0ded9bec7f1a1670819833240f027b25eff,0xdb6f1920a889355780af7570773609bd8cb1f498) THEN tx."from"
+                    ELSE taker_address
                 END AS taker,
                 maker_token,
                 maker_token_filled_amount_raw as maker_token_amount_raw,
