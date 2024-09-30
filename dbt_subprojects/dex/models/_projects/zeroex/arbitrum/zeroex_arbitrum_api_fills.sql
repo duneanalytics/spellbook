@@ -19,6 +19,7 @@
 WITH zeroex_tx AS (
         SELECT
             tr.tx_hash,
+            tr.block_time,
             tr.block_number,
             MAX(CASE
                 WHEN bytearray_position(INPUT, 0x869584cd ) <> 0
