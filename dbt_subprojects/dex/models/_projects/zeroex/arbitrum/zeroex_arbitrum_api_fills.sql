@@ -250,7 +250,7 @@ direct_PLP AS (
     INNER JOIN zeroex_tx
         ON zeroex_tx.tx_hash = plp.evt_tx_hash
         AND zeroex_tx.block_number = plp.evt_block_number
-        and zeroex_tx.block_time = plp.block_time 
+        and zeroex_tx.block_time = plp.evt_block_time 
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
