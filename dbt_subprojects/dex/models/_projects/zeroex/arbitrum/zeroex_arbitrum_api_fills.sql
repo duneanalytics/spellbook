@@ -204,7 +204,7 @@ NewBridgeFill AS (
             logs.block_number as    block_number,
             INDEX                                           AS evt_index,
             logs.contract_address,
-            block_time                                      AS block_time,
+            logs.block_time                                      AS block_time,
             bytearray_substring(DATA, 14, 20)                 AS maker,
             0xdef1c0ded9bec7f1a1670819833240f027b25eff    AS taker,
             bytearray_substring(DATA, 45, 20)                 AS taker_token,
