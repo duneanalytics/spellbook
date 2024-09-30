@@ -1,9 +1,9 @@
 version: 2
 
 models:
-  - name: dex_prices_beta
+  - name: dex_prices_block
     description: >
-      obtain pricing info from dex.trades to feed into prices pipeline
+      obtain pricing info from dex.trades to feed into prices pipeline, aggregate to the block level and obtain median price
   
   - name: dex_prices
     meta:

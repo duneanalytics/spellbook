@@ -1,6 +1,6 @@
 {{ config(
     schema = 'dex'
-    , alias = 'prices_beta'
+    , alias = 'prices_block'
     , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
