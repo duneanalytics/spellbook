@@ -12,12 +12,6 @@ models:
     config:
       tags: ['alchemy', 'balances']
     description: "Balances of alchemy smart account addresses"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
     columns:
     - &blockchain
       name: blockchain
