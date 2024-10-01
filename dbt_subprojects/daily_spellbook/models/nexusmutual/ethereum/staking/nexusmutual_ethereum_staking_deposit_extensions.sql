@@ -3,7 +3,7 @@
     schema = 'nexusmutual_ethereum',
     alias = 'staking_deposit_extensions',
     materialized = 'view',
-    unique_key = ['pool_address', 'token_id', 'init_tranche_id', 'current_tranche_id'],
+    unique_key = ['pool_address', 'token_id', 'init_tranche_id', 'current_tranche_id', 'stake_start_date', 'stake_end_date'],
     post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
                                   spell_type = "project",
                                   spell_name = "nexusmutual",

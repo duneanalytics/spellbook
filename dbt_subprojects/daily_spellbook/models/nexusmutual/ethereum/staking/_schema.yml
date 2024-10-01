@@ -236,6 +236,8 @@ models:
             - token_id
             - init_tranche_id
             - current_tranche_id
+            - stake_start_date
+            - stake_end_date
     columns:
       - *block_time
       - *block_date
