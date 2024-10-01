@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['address'],
-        merge_update_columns = ['blockchains', 'executed_tx_count', 'max_nonce', 'max_nonce_blockchain', 'is_smart_contract', 'smart_contract_blockchains', 'namespace', 'name', 'first_funded_by', 'first_funded_blockchain', 'first_funded_by_block_time', 'sent_count', 'received_count', 'first_received_block_time', 'last_received_block_time', 'first_sent_block_time', 'last_sent_block_time', 'sent_volume_usd', 'received_volume_usd', 'first_tx_block_time', 'last_tx_block_time', 'last_seen'],
+        merge_update_columns = ['blockchains', 'executed_tx_count', 'max_nonce', 'max_nonce_blockchain', 'is_smart_contract', 'smart_contract_blockchains', 'namespace', 'name', 'first_funded_by', 'first_funded_blockchain', 'first_funded_by_block_time', 'sent_count', 'received_count', 'first_transfer_block_time', 'last_transfer_block_time', 'sent_volume_usd', 'received_volume_usd', 'first_tx_block_time', 'last_tx_block_time', 'last_seen'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora", "blast"]\',
                                     "sector",
                                     "addresses",
@@ -48,12 +48,10 @@ WITH data AS (
     , SUM(tokens_received_tx_count) AS tokens_received_tx_count
     , SUM(tokens_sent_count) AS tokens_sent_count
     , SUM(tokens_sent_tx_count) AS tokens_sent_tx_count
-    , MIN(first_received_block_time) AS first_received_block_time
-    , MAX(last_received_block_time) AS last_received_block_time
+    , MIN(first_transfer_block_time) AS first_transfer_block_time
+    , MAX(last_transfer_block_time) AS last_transfer_block_time
     , MIN(first_received_block_number) AS first_received_block_number
     , MAX(last_received_block_number) AS last_received_block_number
-    , MIN(first_sent_block_time) AS first_sent_block_time
-    , MAX(last_sent_block_time) AS last_sent_block_time
     , MIN(first_sent_block_number) AS first_sent_block_number
     , MAX(last_sent_block_number) AS last_sent_block_number
     , SUM(sent_volume_usd) AS sent_volume_usd
@@ -80,12 +78,10 @@ WITH data AS (
         , tokens_received_tx_count
         , tokens_sent_count
         , tokens_sent_tx_count
-        , first_received_block_time
-        , last_received_block_time
+        , first_transfer_block_time
+        , last_transfer_block_time
         , first_received_block_number
         , last_received_block_number
-        , first_sent_block_time
-        , last_sent_block_time
         , first_sent_block_number
         , last_sent_block_number
         , received_volume_usd
@@ -129,12 +125,10 @@ SELECT address
 , tokens_received_tx_count
 , tokens_sent_count
 , tokens_sent_tx_count
-, first_received_block_time
-, last_received_block_time
+, first_transfer_block_time
+, last_transfer_block_time
 , first_received_block_number
 , last_received_block_number
-, first_sent_block_time
-, last_sent_block_time
 , first_sent_block_number
 , last_sent_block_number
 , sent_volume_usd
@@ -169,12 +163,10 @@ WITH new_data AS (
     , SUM(tokens_received_tx_count) AS tokens_received_tx_count
     , SUM(tokens_sent_count) AS tokens_sent_count
     , SUM(tokens_sent_tx_count) AS tokens_sent_tx_count
-    , MIN(first_received_block_time) AS first_received_block_time
-    , MAX(last_received_block_time) AS last_received_block_time
+    , MIN(first_transfer_block_time) AS first_transfer_block_time
+    , MAX(last_transfer_block_time) AS last_transfer_block_time
     , MIN(first_received_block_number) AS first_received_block_number
     , MAX(last_received_block_number) AS last_received_block_number
-    , MIN(first_sent_block_time) AS first_sent_block_time
-    , MAX(last_sent_block_time) AS last_sent_block_time
     , MIN(first_sent_block_number) AS first_sent_block_number
     , MAX(last_sent_block_number) AS last_sent_block_number
     , SUM(sent_volume_usd) AS sent_volume_usd
@@ -201,12 +193,10 @@ WITH new_data AS (
         , am.tokens_received_tx_count
         , am.tokens_sent_count
         , am.tokens_sent_tx_count
-        , am.first_received_block_time
-        , am.last_received_block_time
+        , am.first_transfer_block_time
+        , am.last_transfer_block_time
         , am.first_received_block_number
         , am.last_received_block_number
-        , am.first_sent_block_time
-        , am.last_sent_block_time
         , am.first_sent_block_number
         , am.last_sent_block_number
         , am.received_volume_usd
@@ -258,12 +248,10 @@ SELECT nd.address
 , t.tokens_received_tx_count+nd.tokens_received_tx_count AS tokens_received_tx_count
 , t.tokens_sent_count+nd.tokens_sent_count AS tokens_sent_count
 , t.tokens_sent_tx_count+nd.tokens_sent_tx_count AS tokens_sent_tx_count
-, LEAST(t.first_received_block_time, nd.first_received_block_time) AS first_received_block_time
-, GREATEST(t.last_received_block_time, nd.last_received_block_time) AS last_received_block_time
+, LEAST(t.first_transfer_block_time, nd.first_transfer_block_time) AS first_transfer_block_time
+, GREATEST(t.last_transfer_block_time, nd.last_transfer_block_time) AS last_transfer_block_time
 , LEAST(t.first_received_block_number, nd.first_received_block_number) AS first_received_block_number
 , GREATEST(t.last_received_block_number, nd.last_received_block_number) AS last_received_block_number
-, LEAST(t.first_sent_block_time, nd.first_sent_block_time) AS first_sent_block_time
-, GREATEST(t.last_sent_block_time, nd.last_sent_block_time) AS last_sent_block_time
 , LEAST(t.first_sent_block_number, nd.first_sent_block_number) AS first_sent_block_number
 , GREATEST(t.last_sent_block_number, nd.last_sent_block_number) AS last_sent_block_number
 , t.sent_volume_usd+nd.sent_volume_usd AS sent_volume_usd

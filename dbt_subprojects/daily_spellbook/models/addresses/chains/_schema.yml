@@ -53,24 +53,18 @@ models:
       - &tokens_sent_tx_count
         name: tokens_sent_tx_count
         description: "The distinct transactions where this address sent tokens"
-      - &first_received_block_time
-        name: first_received_block_time
-        description: "The block time of the first time this address received tokens"
-      - &last_received_block_time
-        name: last_received_block_time
-        description: "The block time of the last time this address received tokens"
+      - &first_transfer_block_time
+        name: first_transfer_block_time
+        description: "The block time of the first time this address sent or received tokens"
+      - &last_transfer_block_time
+        name: last_transfer_block_time
+        description: "The block time of the last time this address sent or received tokens"
       - &first_received_block_number
         name: first_received_block_number
         description: "The block number of the first time this address received tokens"
       - &last_received_block_number
         name: last_received_block_number
         description: "The block number of the last time this address received tokens"
-      - &first_sent_block_time
-        name: first_sent_block_time
-        description: "The block time of the first time this address sent tokens"
-      - &last_sent_block_time
-        name: last_sent_block_time
-        description: "The block time of the last time this address sent tokens"
       - &first_sent_block_number
         name: first_sent_block_number
         description: "The block number of the first time this address sent tokens"
@@ -128,12 +122,10 @@ models:
       - *tokens_received_tx_count
       - *tokens_sent_count
       - *tokens_sent_tx_count
-      - *first_received_block_time
-      - *last_received_block_time
+      - *first_transfer_block_time
+      - *last_transfer_block_time
       - *first_received_block_number
       - *last_received_block_number
-      - *first_sent_block_time
-      - *last_sent_block_time
       - *first_sent_block_number
       - *last_sent_block_number
       - *received_volume_usd
@@ -171,12 +163,10 @@ models:
       - *tokens_received_tx_count
       - *tokens_sent_count
       - *tokens_sent_tx_count
-      - *first_received_block_time
-      - *last_received_block_time
+      - *first_transfer_block_time
+      - *last_transfer_block_time
       - *first_received_block_number
       - *last_received_block_number
-      - *first_sent_block_time
-      - *last_sent_block_time
       - *first_sent_block_number
       - *last_sent_block_number
       - *received_volume_usd
@@ -214,12 +204,10 @@ models:
       - *tokens_received_tx_count
       - *tokens_sent_count
       - *tokens_sent_tx_count
-      - *first_received_block_time
-      - *last_received_block_time
+      - *first_transfer_block_time
+      - *last_transfer_block_time
       - *first_received_block_number
       - *last_received_block_number
-      - *first_sent_block_time
-      - *last_sent_block_time
       - *first_sent_block_number
       - *last_sent_block_number
       - *received_volume_usd
@@ -257,12 +245,10 @@ models:
       - *tokens_received_tx_count
       - *tokens_sent_count
       - *tokens_sent_tx_count
-      - *first_received_block_time
-      - *last_received_block_time
+      - *first_transfer_block_time
+      - *last_transfer_block_time
       - *first_received_block_number
       - *last_received_block_number
-      - *first_sent_block_time
-      - *last_sent_block_time
       - *first_sent_block_number
       - *last_sent_block_number
       - *received_volume_usd
@@ -300,12 +286,10 @@ models:
       - *tokens_received_tx_count
       - *tokens_sent_count
       - *tokens_sent_tx_count
-      - *first_received_block_time
-      - *last_received_block_time
+      - *first_transfer_block_time
+      - *last_transfer_block_time
       - *first_received_block_number
       - *last_received_block_number
-      - *first_sent_block_time
-      - *last_sent_block_time
       - *first_sent_block_number
       - *last_sent_block_number
       - *received_volume_usd
@@ -343,12 +327,10 @@ models:
       - *tokens_received_tx_count
       - *tokens_sent_count
       - *tokens_sent_tx_count
-      - *first_received_block_time
-      - *last_received_block_time
+      - *first_transfer_block_time
+      - *last_transfer_block_time
       - *first_received_block_number
       - *last_received_block_number
-      - *first_sent_block_time
-      - *last_sent_block_time
       - *first_sent_block_number
       - *last_sent_block_number
       - *received_volume_usd
@@ -386,12 +368,10 @@ models:
       - *tokens_received_tx_count
       - *tokens_sent_count
       - *tokens_sent_tx_count
-      - *first_received_block_time
-      - *last_received_block_time
+      - *first_transfer_block_time
+      - *last_transfer_block_time
       - *first_received_block_number
       - *last_received_block_number
-      - *first_sent_block_time
-      - *last_sent_block_time
       - *first_sent_block_number
       - *last_sent_block_number
       - *received_volume_usd
@@ -429,12 +409,10 @@ models:
       - *tokens_received_tx_count
       - *tokens_sent_count
       - *tokens_sent_tx_count
-      - *first_received_block_time
-      - *last_received_block_time
+      - *first_transfer_block_time
+      - *last_transfer_block_time
       - *first_received_block_number
       - *last_received_block_number
-      - *first_sent_block_time
-      - *last_sent_block_time
       - *first_sent_block_number
       - *last_sent_block_number
       - *received_volume_usd
@@ -472,12 +450,10 @@ models:
       - *tokens_received_tx_count
       - *tokens_sent_count
       - *tokens_sent_tx_count
-      - *first_received_block_time
-      - *last_received_block_time
+      - *first_transfer_block_time
+      - *last_transfer_block_time
       - *first_received_block_number
       - *last_received_block_number
-      - *first_sent_block_time
-      - *last_sent_block_time
       - *first_sent_block_number
       - *last_sent_block_number
       - *received_volume_usd
@@ -515,12 +491,10 @@ models:
       - *tokens_received_tx_count
       - *tokens_sent_count
       - *tokens_sent_tx_count
-      - *first_received_block_time
-      - *last_received_block_time
+      - *first_transfer_block_time
+      - *last_transfer_block_time
       - *first_received_block_number
       - *last_received_block_number
-      - *first_sent_block_time
-      - *last_sent_block_time
       - *first_sent_block_number
       - *last_sent_block_number
       - *received_volume_usd
@@ -558,12 +532,10 @@ models:
       - *tokens_received_tx_count
       - *tokens_sent_count
       - *tokens_sent_tx_count
-      - *first_received_block_time
-      - *last_received_block_time
+      - *first_transfer_block_time
+      - *last_transfer_block_time
       - *first_received_block_number
       - *last_received_block_number
-      - *first_sent_block_time
-      - *last_sent_block_time
       - *first_sent_block_number
       - *last_sent_block_number
       - *received_volume_usd
