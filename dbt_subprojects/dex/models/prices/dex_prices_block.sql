@@ -20,27 +20,29 @@ with dex_trades as (
         , t.token_sold_amount_raw
         , t.token_sold_amount
         , t.amount_usd
+        , array_agg(t.token_bought_address, t.token_sold_address) as tokens_swapped
     from
         {{ ref('dex_trades') }} as t
+    inner join {{ source('prices', 'trusted_tokens') }} as tt
+        on t.blockchain = tt.blockchain
+        and contains(array_agg(t.token_bought_address, t.token_sold_address), tt.contract_address)
     where
         1 = 1
         and t.amount_usd > 0
-        and exists (
-            -- only output trades which contain a trusted token on either side of the trade
-            select
-                1
-            from
-                {{ source('prices', 'trusted_tokens') }} as tt
-            where
-                t.blockchain = tt.blockchain
-                and (
-                    t.token_bought_address = tt.contract_address 
-                    or t.token_sold_address = tt.contract_address
-                )
-        )
         {% if is_incremental() %}
         and t.block_time > (select max(block_time) from {{ this }})
         {% endif %}
+    group by
+        t.blockchain
+        , t.block_number
+        , t.block_time
+        , t.token_bought_address
+        , t.token_bought_amount_raw
+        , t.token_bought_amount
+        , t.token_sold_address
+        , t.token_sold_amount_raw
+        , t.token_sold_amount
+        , t.amount_usd
 ),
 dex_bought as (
     select
