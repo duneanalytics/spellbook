@@ -137,8 +137,6 @@ WITH executed_txs AS (
     , MAX(last_transfer_block_time) AS last_transfer_block_time
     , MIN(first_received_block_number) AS first_received_block_number
     , MAX(last_received_block_number) AS last_received_block_number
-    , MIN(first_sent_block_time) AS first_sent_block_time
-    , MAX(last_sent_block_time) AS last_sent_block_time
     , MIN(first_sent_block_number) AS first_sent_block_number
     , MAX(last_sent_block_number) AS last_sent_block_number
     , MAX(received_volume_usd) AS received_volume_usd
@@ -159,7 +157,7 @@ WITH executed_txs AS (
         , SUM(tt.amount_usd) AS sent_volume_usd
         FROM {{token_transfers}} tt
         LEFT JOIN {{this}} t ON tt."from"=t.address
-            AND tt.block_time>t.last_sent_block_time
+            AND tt.block_time>t.last_transfer_block_time
         WHERE {{ incremental_predicate('tt.block_time') }}
         GROUP BY tt."from"
 
@@ -180,7 +178,7 @@ WITH executed_txs AS (
         , 0 AS sent_volume_usd
         FROM {{token_transfers}} tt
         LEFT JOIN {{this}} t ON tt."to"=t.address
-            AND tt.block_time>t.last_received_block_time
+            AND tt.block_time>t.last_transfer_block_time
         WHERE {{ incremental_predicate('tt.block_time') }}
         GROUP BY "to"
         )
