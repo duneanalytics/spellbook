@@ -31,6 +31,7 @@
   ,ref('zeroex_arbitrum_settler_trades')
   ,ref('zeroex_scroll_settler_trades')
   ,ref('zeroex_linea_settler_trades')
+  ,ref('zeroex_blast_settler_trades')
 ] %}
 
 

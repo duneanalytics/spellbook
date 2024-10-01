@@ -1,5 +1,6 @@
 {{ config(
-    schema = 'odos_v1_optimism'
+    tags = ['prod_exclude']
+    ,schema = 'odos_v1_optimism'
     ,alias = 'trades'
     ,materialized = 'incremental'
     ,file_format = 'delta'

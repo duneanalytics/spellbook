@@ -206,6 +206,11 @@ models:
         description: "current staking tranche period (most recent one in the chain of extensions)"
       - name: total_amount
         description: "total staking amount (initial deposit + all top-up amounts)"
+      - *tranche_expiry_date
       - *is_active
+      - name: chain_level
+        description: "chain (recursion) level"
+      - name: token_tranche_rn
+        description: "descending row number per pool, token & tranche"
       - *evt_index
       - *tx_hash

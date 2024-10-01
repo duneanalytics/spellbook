@@ -18,6 +18,9 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: sushiswap_arbitrum
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
   - name: sushi_v2_arbitrum
     tables:
       - name: Pool_evt_Swap

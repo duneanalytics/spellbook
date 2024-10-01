@@ -11,7 +11,7 @@
 - Find the API ID in the overview section, slightly down the page: `uni-uniswap`
 - Test the API call result in my web browser: https://api.coinpaprika.com/v1/coins/uni-uniswap
 - Ensure the token feed via the API is live, with the `"is_active":true` flag
-- Add a row to the Ethereum prices spell: https://github.com/duneanalytics/spellbook/blob/main/models/prices/ethereum/prices_ethereum_tokens.sql
+- Add a row to the Ethereum prices spell: https://github.com/duneanalytics/spellbook/blob/main/dbt_subprojects/tokens/models/prices/ethereum/prices_ethereum_tokens.sql
   - In the PR process to add a token, tests will run to ensure unique address value
   - Tests against the API will also run, to ensure results return as expected
 - Request review from maintainers to get PR merged

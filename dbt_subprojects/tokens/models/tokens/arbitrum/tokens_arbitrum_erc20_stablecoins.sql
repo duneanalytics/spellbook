@@ -5,7 +5,7 @@
       , post_hook='{{ expose_spells(\'["arbitrum"]\',
                                   "sector",
                                   "tokens_arbitrum",
-                                  \'["synthquest"]\') }}'
+                                  \'["synthquest","rantum"]\') }}'
       , unique_key = ['contract_address']
   )
 }}
@@ -30,5 +30,16 @@ FROM (VALUES
         ('arbitrum', 0x3509f19581afedeff07c53592bc0ca84e4855475, 'Crypto-backed stablecoin', 'xUSD', 18, ''),
         ('arbitrum', 0x59d9356e565ab3a36dd77763fc0d87feaf85508c, 'Fiat-backed stablecoin', 'USDM', 18, ''),
         ('arbitrum', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 'Fiat-backed stablecoin', 'USDC', 6, ''),
-        ('arbitrum', 0x4d15a3a2286d883af0aa1b3f21367843fac63e07, 'Fiat-backed stablecoin', 'TUSD', 18, '')
+        ('arbitrum', 0x4d15a3a2286d883af0aa1b3f21367843fac63e07, 'Fiat-backed stablecoin', 'TUSD', 18, ''),
+        ('arbitrum', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 'Crypto-backed stablecoin', 'USDe', 18, ''),
+        ('arbitrum', 0xeb466342c4d449bc9f53a865d5cb90586f405215, 'Crypto-backed stablecoin', 'axlUDC', 6, ''),
+        ('arbitrum', 0xd3443ee1e91af28e5fb858fbd0d72a63ba8046e0, 'Crypto-backed stablecoin', 'gUSDC', 6, ''),
+        ('arbitrum', 0x7cfadfd5645b50be87d546f42699d863648251ad, 'Crypto-backed stablecoin', 'stataArbUSDCn', 6, ''),
+        ('arbitrum', 0x12275dcb9048680c4be40942ea4d92c74c63b844, 'Crypto-backed stablecoin', 'eUSD', 18, ''),
+        ('arbitrum', 0xb165a74407fe1e519d6bcbdec1ed3202b35a4140, 'Crypto-backed stablecoin', 'stataArbUSDT', 6, ''),
+        ('arbitrum', 0x323665443cef804a3b5206103304bd4872ea4253, 'Crypto-backed stablecoin', 'USDV', 6, ''),
+        ('arbitrum', 0x4cfa50b7ce747e2d61724fcac57f24b748ff2b2a, 'Crypto-backed stablecoin', 'fUSDC', 6, ''),
+        ('arbitrum', 0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 'Crypto-backed stablecoin', 'sUSDM', 18, ''),
+        ('arbitrum', 0x7dff72693f6a4149b17e7c6314655f6a9f7c8b33, 'Crypto-backed stablecoin', 'GHO', 18, '')
+
      ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
