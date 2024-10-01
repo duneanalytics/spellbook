@@ -8,7 +8,7 @@
 )
 }}
 
-with dex_trades_agg as (
+with dex_trades_raw as (
     select
         blockchain
         , block_number
@@ -20,7 +20,7 @@ with dex_trades_agg as (
         , token_sold_amount_raw
         , token_sold_amount
         , amount_usd
-        , array_agg(token_bought_address, token_sold_address) as tokens_swapped
+        , array[token_bought_address, token_sold_address] as tokens_swapped
     from
         {{ ref('dex_trades') }}
     where
@@ -29,20 +29,9 @@ with dex_trades_agg as (
         {% if is_incremental() %}
         and block_time > (select max(block_time) from {{ this }})
         {% endif %}
-    group by
-        blockchain
-        , block_number
-        , block_time
-        , token_bought_address
-        , token_bought_amount_raw
-        , token_bought_amount
-        , token_sold_address
-        , token_sold_amount_raw
-        , token_sold_amount
-        , amount_usd
 ),
 dex_trades as (
-    select
+    select distinct
         t.blockchain
         , t.block_number
         , t.block_time
@@ -54,7 +43,7 @@ dex_trades as (
         , t.token_sold_amount
         , t.amount_usd
     from
-        dex_trades_agg as t
+        dex_trades_raw as t
     --only output swaps which contain a trusted token
     inner join {{ source('prices', 'trusted_tokens') }} as tt
         on t.blockchain = tt.blockchain
