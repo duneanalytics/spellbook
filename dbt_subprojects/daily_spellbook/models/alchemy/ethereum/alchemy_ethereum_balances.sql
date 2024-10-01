@@ -17,9 +17,9 @@ SELECT
     block_time AS evt_block_time,
     tx_hash AS evt_tx_hash,
     sender AS address
-  from 
+from 
     ref('account_abstraction_erc4337_account_deployed')
-    WHERE factory IN (
+WHERE factory IN (
     0x000000e92d78d90000007f0082006fda09bd5f11,
     0x15ba39375ee2ab563e8873c8390be6f2e2f50232,
     0x62b31a01f937a88f0c5fbda7b8c913eb168e124a,
@@ -110,8 +110,8 @@ select
     day,
     address, 
     sum(balance_usd) as balance_usd
-from balances b
-where b.token_address not in (
+from balances
+where token_address not in (
             0xd74f5255d557944cf7dd0e45ff521520002d5748, --$9.8B were minted in a hack in 2023, all of which are stored in a Safe. Filtering out.
             0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3 )
 group by 1, 2, 3
