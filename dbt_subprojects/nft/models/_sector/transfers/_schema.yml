@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, zksync, zora, scroll, mantle, blast, sei,
       sector: nft
-      contributors: hildobby, rantum
+      contributors: hildobby, rantum, petertherock
     config:
       tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'zora', 'scroll', 'mantle', 'blast', 'sei', 'transfers']
     description: >
