@@ -1,14 +1,16 @@
 {{ config(
     schema = 'dex'
-    , alias = 'prices_beta'
+    , alias = 'prices_block'
     , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
-    , incremental_strategy = 'append'
+    , incremental_strategy = 'merge'
+    , unique_key = ['block_month', 'blockchain', 'contract_address', 'symbol', 'decimals', 'block_number', 'block_time']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
 }}
 
-with dex_trades as (
+with dex_trades_raw as (
     select
         blockchain
         , block_number
@@ -20,14 +22,34 @@ with dex_trades as (
         , token_sold_amount_raw
         , token_sold_amount
         , amount_usd
+        , array[token_bought_address, token_sold_address] as tokens_swapped
     from
         {{ ref('dex_trades') }}
     where
         1 = 1
         and amount_usd > 0
         {% if is_incremental() %}
-        and block_time > (select max(block_time) from {{ this }})
+        and {{ incremental_predicate('block_time') }}
         {% endif %}
+),
+dex_trades as (
+    select distinct
+        t.blockchain
+        , t.block_number
+        , t.block_time
+        , t.token_bought_address
+        , t.token_bought_amount_raw
+        , t.token_bought_amount
+        , t.token_sold_address
+        , t.token_sold_amount_raw
+        , t.token_sold_amount
+        , t.amount_usd
+    from
+        dex_trades_raw as t
+    --only output swaps which contain a trusted token
+    inner join {{ source('prices', 'trusted_tokens') }} as tt
+        on t.blockchain = tt.blockchain
+        and contains(t.tokens_swapped, tt.contract_address)
 ),
 dex_bought as (
     select
