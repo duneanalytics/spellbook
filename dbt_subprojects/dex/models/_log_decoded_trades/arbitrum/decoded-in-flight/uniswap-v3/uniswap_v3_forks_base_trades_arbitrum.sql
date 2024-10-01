@@ -23,10 +23,7 @@ WITH all_decoded_trades AS (
     }}
 )
 
-SELECT  {% if is_incremental() %}
-        DISTINCT
-        {% endif %}
-        uniswap_v3_base_trades.*
+SELECT uniswap_v3_base_trades.*
 FROM all_decoded_trades AS uniswap_v3_base_trades
 INNER JOIN (
     SELECT
