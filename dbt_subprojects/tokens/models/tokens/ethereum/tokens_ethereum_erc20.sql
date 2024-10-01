@@ -4636,4 +4636,5 @@ FROM (VALUES
     , ( 0x63e5dC7C071C1F18d44b69bc86f4c80F24851388, 'KAI', 18)
     , ( 0xFFd9c960bC303b8d3aAED58229ce8a7310bCc5b8, 'KAIAURA', 18)
     , ( 0xdc035d45d973e3ec169d2276ddab16f1e407384f, 'USDS', 18)
+    , ( 0xec53bF9167f50cDEB3Ae105f56099aaaB9061F83, 'EIGEN', 18)
 ) AS temp_table (contract_address, symbol, decimals)
