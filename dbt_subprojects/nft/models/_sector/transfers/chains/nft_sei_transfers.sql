@@ -1,4 +1,4 @@
-{
+{(
     config(
         schema="nft_sei",
         alias="transfers",
