@@ -311,8 +311,8 @@ SELECT distinct
         maker,
         CASE
             WHEN taker in (0xdef1c0ded9bec7f1a1670819833240f027b25eff,0xdb6f1920a889355780af7570773609bd8cb1f498) THEN tx."from"
-            ELSE taker
-        END AS taker,-- fix the user masked by ProxyContract issue
+            ELSE tx."from" -- fix the user masked by ProxyContract issue
+        END AS taker,
         taker_token,
         ts.symbol AS taker_symbol,
         maker_token,
