@@ -8,7 +8,40 @@
 )
 }}
 
-with dex_trades as (
+with dex_trades_agg as (
+    select
+        blockchain
+        , block_number
+        , block_time
+        , token_bought_address
+        , token_bought_amount_raw
+        , token_bought_amount
+        , token_sold_address
+        , token_sold_amount_raw
+        , token_sold_amount
+        , amount_usd
+        , array_agg(token_bought_address, token_sold_address) as tokens_swapped
+    from
+        {{ ref('dex_trades') }}
+    where
+        1 = 1
+        and amount_usd > 0
+        {% if is_incremental() %}
+        and block_time > (select max(block_time) from {{ this }})
+        {% endif %}
+    group by
+        blockchain
+        , block_number
+        , block_time
+        , token_bought_address
+        , token_bought_amount_raw
+        , token_bought_amount
+        , token_sold_address
+        , token_sold_amount_raw
+        , token_sold_amount
+        , amount_usd
+),
+dex_trades as (
     select
         t.blockchain
         , t.block_number
@@ -20,29 +53,12 @@ with dex_trades as (
         , t.token_sold_amount_raw
         , t.token_sold_amount
         , t.amount_usd
-        , array_agg(t.token_bought_address, t.token_sold_address) as tokens_swapped
     from
-        {{ ref('dex_trades') }} as t
+        dex_trades_agg as t
+    --only output swaps which contain a trusted token
     inner join {{ source('prices', 'trusted_tokens') }} as tt
         on t.blockchain = tt.blockchain
-        and contains(array_agg(t.token_bought_address, t.token_sold_address), tt.contract_address)
-    where
-        1 = 1
-        and t.amount_usd > 0
-        {% if is_incremental() %}
-        and t.block_time > (select max(block_time) from {{ this }})
-        {% endif %}
-    group by
-        t.blockchain
-        , t.block_number
-        , t.block_time
-        , t.token_bought_address
-        , t.token_bought_amount_raw
-        , t.token_bought_amount
-        , t.token_sold_address
-        , t.token_sold_amount_raw
-        , t.token_sold_amount
-        , t.amount_usd
+        and contains(t.tokens_swapped, tt.contract_address)
 ),
 dex_bought as (
     select
