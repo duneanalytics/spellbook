@@ -1,0 +1,33 @@
+version: 2
+
+models:
+  - name: alchemy_ethereum_balances
+
+    meta:
+      blockchain: ethereum
+      sector: alchemy
+      project: alchemy
+      contributors: sofiat
+
+    config:
+      tags: ['alchemy', 'balances']
+    description: "Balances of alchemy smart account addresses"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    columns:
+    - &blockchain
+      name: blockchain
+      description: "Blockchain for the token"
+    - &day
+      name: day
+      description: "Date on which the token balance is logged"
+    - &address
+      name: address
+      description: "Address for the token holder"
+    - &balance_usd
+      name: balance_usd
+      description: "USD value of balance for the user" 
