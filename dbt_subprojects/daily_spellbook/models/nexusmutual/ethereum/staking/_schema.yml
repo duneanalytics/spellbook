@@ -147,6 +147,9 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time"
+      - &block_date
+        name: block_date
+        description: "event block date"
       - *pool_address
       - &token_id
         name: token_id
@@ -182,6 +185,42 @@ models:
         name: tx_hash
         description: "unique transaction hash value"
 
+  - name: nexusmutual_ethereum_staking_deposit_ordered
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking pools deposit ordered for Nexus Mutual on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - block_time
+            - evt_index
+            - tx_hash
+    columns:
+      - *block_time
+      - *flow_type
+      - &stake_start_date
+        name: stake_start_date
+      - &stake_end_date
+        name: stake_end_date
+      - *pool_address
+      - *token_id
+      - *tranche_id
+      - *init_tranche_id
+      - *new_tranche_id
+      - *tranche_expiry_date
+      - *is_active
+      - *amount
+      - *topup_amount
+      - *user
+      - *evt_index
+      - *tx_hash
+      - name: deposit_rn
+
   - name: nexusmutual_ethereum_staking_deposit_extensions
     meta:
       blockchain: ethereum
@@ -199,14 +238,16 @@ models:
             - current_tranche_id
     columns:
       - *block_time
+      - *block_date
       - *pool_address
       - *token_id
       - *init_tranche_id
       - name: current_tranche_id
         description: "current staking tranche period (most recent one in the chain of extensions)"
-      - name: total_amount
+      - name: amount
         description: "total staking amount (initial deposit + all top-up amounts)"
-      - *tranche_expiry_date
+      - *stake_start_date
+      - *stake_end_date
       - *is_active
       - name: chain_level
         description: "chain (recursion) level"
