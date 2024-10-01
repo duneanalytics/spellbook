@@ -4,6 +4,16 @@ models:
   - name: dex_prices_block
     description: >
       obtain pricing info from dex.trades to feed into prices pipeline, aggregate to the block level and obtain median price
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - blockchain
+            - contract_address
+            - symbol
+            - decimals
+            - block_number
+            - block_time
   
   - name: dex_prices
     meta:
