@@ -23,7 +23,10 @@ WITH all_decoded_trades AS (
     }}
 )
 
-SELECT uniswap_v2_base_trades.*
+SELECT  {% if is_incremental() %}
+        DISTINCT
+        {% endif %}
+        uniswap_v2_base_trades.*
 FROM all_decoded_trades AS uniswap_v2_base_trades
 INNER JOIN (
     SELECT
@@ -31,6 +34,9 @@ INNER JOIN (
         array_agg(DISTINCT contract_address) as contract_addresses
     FROM {{ source('tokens', 'transfers') }}
     WHERE blockchain = 'arbitrum'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('block_time') }}
+        {% endif %}
     GROUP BY tx_hash
 ) AS transfers
 ON transfers.tx_hash = uniswap_v2_base_trades.tx_hash

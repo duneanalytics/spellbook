@@ -11,9 +11,6 @@
 
 WITH evt_swap AS (
     SELECT
-        {% if is_incremental() %}
-        DISTINCT
-        {% endif %}
         block_number
         , block_time
         , to
