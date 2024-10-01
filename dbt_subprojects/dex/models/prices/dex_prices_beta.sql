@@ -9,8 +9,9 @@
 }}
 
 with dex_trades as (
-    select distinct
+    select
         blockchain
+        , block_number
         , block_time
         , token_bought_address
         , token_bought_amount_raw
@@ -34,6 +35,7 @@ dex_bought as (
         , d.token_bought_address as contract_address
         , t.symbol as symbol
         , t.decimals as decimals
+        , d.block_number as block_number
         , d.block_time as block_time
         , d.token_bought_amount as amount
         , d.amount_usd
@@ -60,6 +62,7 @@ dex_sold as (
         , d.token_sold_address as contract_address
         , t.symbol as symbol
         , t.decimals as decimals
+        , d.block_number as block_number
         , d.block_time as block_time
         , d.token_sold_amount as amount
         , d.amount_usd
@@ -105,17 +108,38 @@ volume_filter as (
         sum(amount_usd) >= 10000
 )
 select
-    dp.blockchain
-    , dp.contract_address
-    , dp.symbol
-    , dp.decimals
-    , cast(date_trunc('month', dp.block_time) as date) as block_month -- for partitioning
-    , dp.block_time
-    , dp.amount
-    , dp.amount_usd
-    , dp.price
+    blockchain
+    , contract_address
+    , symbol
+    , decimals
+    , block_number
+    , cast(date_trunc('month', block_time) as date) as block_month -- for partitioning
+    , block_time
+    , amount
+    , amount_usd
+    , price
 from
-    dex_prices as dp
-inner join volume_filter as vf
-    on dp.blockchain = vf.blockchain
-    and dp.contract_address = vf.contract_address
+(
+    select
+        dp.blockchain
+        , dp.contract_address
+        , dp.symbol
+        , dp.decimals
+        , dp.block_number
+        , dp.block_time
+        , sum(dp.amount) as amount
+        , sum(dp.amount_usd) as amount_usd
+        , approx_percentile(dp.price, 0.5) AS price
+    from
+        dex_prices as dp
+    inner join volume_filter as vf
+        on dp.blockchain = vf.blockchain
+        and dp.contract_address = vf.contract_address
+    group by
+        dp.blockchain
+        , dp.contract_address
+        , dp.symbol
+        , dp.decimals
+        , dp.block_number
+        , dp.block_time
+)
