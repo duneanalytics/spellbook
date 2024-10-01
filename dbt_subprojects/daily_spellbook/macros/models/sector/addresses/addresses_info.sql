@@ -88,6 +88,8 @@ SELECT '{{blockchain}}' AS blockchain
 , tokens_received_tx_count
 , tokens_sent_count
 , tokens_sent_tx_count
+, first_transfer_block_time
+, last_transfer_block_time
 , first_received_block_number
 , last_received_block_number
 , first_sent_block_number
@@ -241,6 +243,8 @@ SELECT '{{blockchain}}' AS blockchain
 , nd.tokens_received_tx_count+t.tokens_received_tx_count AS tokens_received_tx_count
 , nd.tokens_sent_count+t.tokens_sent_count AS tokens_sent_count
 , nd.tokens_sent_tx_count+t.tokens_sent_tx_count AS tokens_sent_tx_count
+, COALESCE(t.first_transfer_block_time, nd.first_transfer_block_time) AS first_transfer_block_time
+, COALESCE(t.last_transfer_block_time, nd.last_transfer_block_time) AS last_transfer_block_time
 , COALESCE(t.first_received_block_number, nd.first_received_block_number) AS first_received_block_number
 , COALESCE(nd.last_received_block_number, t.last_received_block_number) AS last_received_block_number
 , COALESCE(t.first_sent_block_number, nd.first_sent_block_number) AS first_sent_block_number
