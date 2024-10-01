@@ -182,7 +182,7 @@ INNER JOIN {{ source('blast', 'transactions') }} txs ON txs.block_number=nftt.bl
     AND txs.hash=nftt.tx_hash
 LEFT JOIN {{source('nft_blast', 'wash_trades')}} wt ON wt.project = 'fantasy'
     AND wt.block_number=nftt.block_number
-    AND wt.tx_hash=nftt.tx_hash
+    AND nftt.unique_trade_id=wt.unique_trade_id
 WHERE nftt.blockchain = 'blast'
 AND nftt.project = 'fantasy'
 
