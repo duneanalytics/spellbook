@@ -132,7 +132,7 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staking pools event history for Nexus Mutual on Ethereum"
+    description: "Staking pools event history"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -192,7 +192,7 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staking pools deposit ordered for Nexus Mutual on Ethereum"
+    description: "Staking pools deposit ordered"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -228,7 +228,7 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staking pools deposit extensions for Nexus Mutual on Ethereum"
+    description: "Staking pools deposit extensions"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -255,3 +255,73 @@ models:
         description: "descending row number per pool, token & tranche"
       - *evt_index
       - *tx_hash
+
+  - name: nexusmutual_ethereum_staking_rewards
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking rewards minted at cover buy event - to be streamed over cover period"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - cover_id
+    columns:
+      - *block_time
+      - *block_date
+      - *pool_id
+      - *product_id
+      - name: cover_id
+      - name: cover_start_date
+      - name: cover_end_date
+      - name: reward_amount_expected_total
+      - name: reward_amount_per_second
+      - name: reward_amount_per_day
+      - *tx_hash
+
+  - name: nexusmutual_ethereum_staked_per_pool
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking rewards minted at cover buy event - to be streamed over cover period"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+    columns:
+      - *block_date
+      - *pool_id
+      - *pool_address
+      - &total_staked_nxm
+        name: total_staked_nxm
+      - name: pool_date_rn
+
+  - name: nexusmutual_ethereum_staked_per_token
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking rewards minted at cover buy event - to be streamed over cover period"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+            - token_id
+    columns:
+      - *block_date
+      - *pool_id
+      - *pool_address
+      - *token_id
+      - *total_staked_nxm
+      - name: stake_expiry_date
+      - name: token_date_rn
