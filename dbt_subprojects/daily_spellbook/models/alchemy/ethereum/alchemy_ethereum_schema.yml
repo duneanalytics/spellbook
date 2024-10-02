@@ -12,7 +12,7 @@ models:
     config:
       tags: ['alchemy', 'balances']
     description: "Balances of alchemy smart account addresses"
-      tests:
+    tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
