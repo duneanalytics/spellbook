@@ -90,4 +90,3 @@ WHERE factory IN (
     0x832faeeecfe62feeb6703cc17d354e6edcfe8e93,
     0x4e1dcf7ad4e460cfd30791ccc4f9c8a4f820ec67
 )
-and blockchain = 'ethereum'
