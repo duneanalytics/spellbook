@@ -18,6 +18,7 @@ models:
             - day
             - address
             - token_address
+            - token_id
     columns:
     - &blockchain
       name: blockchain
