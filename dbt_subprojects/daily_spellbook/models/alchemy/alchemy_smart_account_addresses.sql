@@ -15,7 +15,7 @@ SELECT
     block_time AS evt_block_time,
     tx_hash AS evt_tx_hash,
     sender AS address
-from {{ ref('account_abstraction_erc4337_account_deployed') }}
+from {{ source ('account_abstraction_erc4337', 'account_deployed') }}
 WHERE factory IN (
     0x000000e92d78d90000007f0082006fda09bd5f11,
     0x15ba39375ee2ab563e8873c8390be6f2e2f50232,

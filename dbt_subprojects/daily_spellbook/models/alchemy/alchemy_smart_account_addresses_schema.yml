@@ -1,10 +1,10 @@
 version: 2
 
 models:
-  - name: alchemy_smart_account_address
+  - name: alchemy_smart_account_addresses
 
     meta:
-      blockchain: arbitrum,ethereum,bnb,arbitrum,avalanche_c,celo,gnosis,zora,polygon,base,optimism
+      blockchain: arbitrum, ethereum, bnb, avalanche_c, celo, gnosis, zora, polygon, base, optimism
       sector: alchemy
       project: alchemy
       contributors: sofiat
