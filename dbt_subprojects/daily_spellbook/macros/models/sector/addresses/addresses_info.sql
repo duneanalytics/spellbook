@@ -16,18 +16,18 @@ WITH executed_txs AS (
 
 , transfers AS (
     SELECT address
-    , SUM(tokens_received_count) AS tokens_received_count
-    , SUM(tokens_received_tx_count) AS tokens_received_tx_count
-    , SUM(tokens_sent_count) AS tokens_sent_count
-    , SUM(tokens_sent_tx_count) AS tokens_sent_tx_count
-    , MIN(first_transfer_block_time) AS first_transfer_block_time
-    , MAX(last_transfer_block_time) AS last_transfer_block_time
-    , MAX(first_received_block_number) AS first_received_block_number
-    , MAX(last_received_block_number) AS last_received_block_number
-    , MAX(first_sent_block_number) AS first_sent_block_number
-    , MAX(last_sent_block_number) AS last_sent_block_number
-    , MAX(received_volume_usd) AS received_volume_usd
-    , MAX(sent_volume_usd) AS sent_volume_usd
+    , SUM(COALESCE(tokens_received_count, 0)) AS tokens_received_count
+    , SUM(COALESCE(tokens_received_tx_count, 0)) AS tokens_received_tx_count
+    , SUM(COALESCE(tokens_sent_count, 0)) AS tokens_sent_count
+    , SUM(COALESCE(tokens_sent_tx_count, 0)) AS tokens_sent_tx_count
+    , MIN(first_transfer_block_time) FILTER (WHERE first_transfer_block_time IS NOT NULL) AS first_transfer_block_time
+    , MAX(last_transfer_block_time) FILTER (WHERE last_transfer_block_time IS NOT NULL) AS last_transfer_block_time
+    , MIN(first_received_block_number) FILTER (WHERE first_received_block_number IS NOT NULL) AS first_received_block_number
+    , MAX(last_received_block_number) FILTER (WHERE last_received_block_number IS NOT NULL) AS last_received_block_number
+    , MIN(first_sent_block_number) FILTER (WHERE first_sent_block_number IS NOT NULL) AS first_sent_block_number
+    , MAX(last_sent_block_number) FILTER (WHERE last_sent_block_number IS NOT NULL) AS last_sent_block_number
+    , SUM(received_volume_usd) AS received_volume_usd
+    , SUM(sent_volume_usd) AS sent_volume_usd
     FROM (
         SELECT "from" AS address
         , 0 AS tokens_received_count
@@ -77,8 +77,8 @@ WITH executed_txs AS (
 
 SELECT '{{blockchain}}' AS blockchain
 , address
-, executed_tx_count
-, max_nonce
+, COALESCE(executed_tx_count, 0) AS executed_tx_count
+, COALESCE(max_nonce, NULL) AS max_nonce
 , COALESCE(is_smart_contract, false) AS is_smart_contract
 , namespace
 , name
@@ -131,18 +131,18 @@ WITH executed_txs AS (
 
 , transfers AS (
     SELECT address
-    , SUM(tokens_received_count) AS tokens_received_count
-    , SUM(tokens_received_tx_count) AS tokens_received_tx_count
-    , SUM(tokens_sent_count) AS tokens_sent_count
-    , SUM(tokens_sent_tx_count) AS tokens_sent_tx_count
-    , MIN(first_transfer_block_time) AS first_transfer_block_time
-    , MAX(last_transfer_block_time) AS last_transfer_block_time
-    , MIN(first_received_block_number) AS first_received_block_number
-    , MAX(last_received_block_number) AS last_received_block_number
-    , MIN(first_sent_block_number) AS first_sent_block_number
-    , MAX(last_sent_block_number) AS last_sent_block_number
-    , MAX(received_volume_usd) AS received_volume_usd
-    , MAX(sent_volume_usd) AS sent_volume_usd
+    , SUM(COALESCE(tokens_received_count, 0)) AS tokens_received_count
+    , SUM(COALESCE(tokens_received_tx_count, 0)) AS tokens_received_tx_count
+    , SUM(COALESCE(tokens_sent_count, 0)) AS tokens_sent_count
+    , SUM(COALESCE(tokens_sent_tx_count, 0)) AS tokens_sent_tx_count
+    , MIN(first_transfer_block_time) FILTER (WHERE first_transfer_block_time IS NOT NULL) AS first_transfer_block_time
+    , MAX(last_transfer_block_time) FILTER (WHERE last_transfer_block_time IS NOT NULL) AS last_transfer_block_time
+    , MIN(first_received_block_number) FILTER (WHERE first_received_block_number IS NOT NULL) AS first_received_block_number
+    , MAX(last_received_block_number) FILTER (WHERE last_received_block_number IS NOT NULL) AS last_received_block_number
+    , MIN(first_sent_block_number) FILTER (WHERE first_sent_block_number IS NOT NULL) AS first_sent_block_number
+    , MAX(last_sent_block_number) FILTER (WHERE last_sent_block_number IS NOT NULL) AS last_sent_block_number
+    , SUM(received_volume_usd) AS received_volume_usd
+    , SUM(sent_volume_usd) AS sent_volume_usd
     FROM (
         SELECT tt."from" AS address
         , 0 AS tokens_received_count
@@ -201,8 +201,8 @@ WITH executed_txs AS (
 
 , new_data AS (
     SELECT address
-    , executed_tx_count
-    , max_nonce
+    , COALESCE(executed_tx_count, 0) AS executed_tx_count
+    , COALESCE(max_nonce, NULL) AS max_nonce
     , is_smart_contract
     , namespace
     , name
@@ -234,27 +234,27 @@ SELECT '{{blockchain}}' AS blockchain
 , nd.address
 , nd.executed_tx_count + t.executed_tx_count AS executed_tx_count
 , COALESCE(nd.max_nonce, t.max_nonce) AS max_nonce
-, COALESCE(COALESCE(nd.is_smart_contract, t.is_smart_contract), false) AS is_smart_contract
+, COALESCE(nd.is_smart_contract, t.is_smart_contract) AS is_smart_contract
 , COALESCE(nd.namespace, t.namespace) AS namespace
 , COALESCE(nd.name, t.name) AS name
-, GREATEST(nd.first_funded_by, t.first_funded_by) AS first_funded_by
-, LEAST(nd.first_funded_by_block_time, t.first_funded_by_block_time) AS first_funded_by_block_time
-, nd.tokens_received_count+t.tokens_received_count AS tokens_received_count
-, nd.tokens_received_tx_count+t.tokens_received_tx_count AS tokens_received_tx_count
-, nd.tokens_sent_count+t.tokens_sent_count AS tokens_sent_count
-, nd.tokens_sent_tx_count+t.tokens_sent_tx_count AS tokens_sent_tx_count
+, COALESCE(t.first_funded_by, nd.first_funded_by) AS first_funded_by
+, COALESCE(t.first_funded_by_block_time, nd.first_funded_by_block_time) AS first_funded_by_block_time
+, COALESCE(nd.tokens_received_count, 0)+COALESCE(t.tokens_received_count, 0) AS tokens_received_count
+, COALESCE(nd.tokens_received_tx_count, 0)+COALESCE(t.tokens_received_tx_count, 0) AS tokens_received_tx_count
+, COALESCE(nd.tokens_sent_count, 0)+COALESCE(t.tokens_sent_count, 0) AS tokens_sent_count
+, COALESCE(nd.tokens_sent_tx_count, 0)+COALESCE(t.tokens_sent_tx_count, 0) AS tokens_sent_tx_count
 , COALESCE(t.first_transfer_block_time, nd.first_transfer_block_time) AS first_transfer_block_time
-, COALESCE(t.last_transfer_block_time, nd.last_transfer_block_time) AS last_transfer_block_time
+, COALESCE(nd.last_transfer_block_time, t.last_transfer_block_time) AS last_transfer_block_time
 , COALESCE(t.first_received_block_number, nd.first_received_block_number) AS first_received_block_number
 , COALESCE(nd.last_received_block_number, t.last_received_block_number) AS last_received_block_number
 , COALESCE(t.first_sent_block_number, nd.first_sent_block_number) AS first_sent_block_number
 , COALESCE(nd.last_sent_block_number, t.last_sent_block_number) AS last_sent_block_number
-, nd.received_volume_usd+t.received_volume_usd AS received_volume_usd
-, nd.sent_volume_usd+t.sent_volume_usd AS sent_volume_usd
+, COALESCE(nd.received_volume_usd, 0)+COALESCE(t.received_volume_usd, 0) AS received_volume_usd
+, COALESCE(nd.sent_volume_usd, 0)+COALESCE(t.sent_volume_usd, 0) AS sent_volume_usd
 , COALESCE(t.first_tx_block_time, nd.first_tx_block_time) AS first_tx_block_time
-, COALESCE(t.last_tx_block_time, nd.last_tx_block_time) AS last_tx_block_time
+, COALESCE(nd.last_tx_block_time, t.last_tx_block_time) AS last_tx_block_time
 , COALESCE(t.first_tx_block_number, nd.first_tx_block_number) AS first_tx_block_number
-, COALESCE(t.last_tx_block_number, nd.last_tx_block_number) AS last_tx_block_number
+, COALESCE(nd.last_tx_block_number, t.last_tx_block_number) AS last_tx_block_number
 , GREATEST(nd.last_tx_block_time, nd.last_transfer_block_time, t.last_seen) AS last_seen
 , GREATEST(nd.last_tx_block_number, nd.last_received_block_number, nd.last_sent_block_number, t.last_seen_block) AS last_seen_block
 FROM new_data nd
