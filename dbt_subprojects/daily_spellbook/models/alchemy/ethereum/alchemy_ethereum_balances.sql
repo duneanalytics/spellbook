@@ -11,11 +11,17 @@
 }}
 
 with
-balances as (
+alchemy_addresses as (
+  select
+    address
+  from {{ref('alchemy_smart_account_addresses')}}
+)
+
+,balances as (
     {{
       balances_incremental_subset_daily(
             blockchain = 'ethereum',
-            address_list  = ref('alchemy_smart_account_addresses'),
+            address_list  = 'alchemy_addresses',
             start_date = '2023-04-13'
       )
     }}
