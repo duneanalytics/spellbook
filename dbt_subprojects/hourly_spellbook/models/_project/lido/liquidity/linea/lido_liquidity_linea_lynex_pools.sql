@@ -262,6 +262,7 @@ SELECT
         pool,
         blockchain,
         project,
+        null as fee,
         time,
         main_token,
         main_token_symbol,

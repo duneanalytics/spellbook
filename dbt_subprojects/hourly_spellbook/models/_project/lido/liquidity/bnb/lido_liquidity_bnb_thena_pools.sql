@@ -216,7 +216,7 @@ group by 1,2
 )
 
 , all_metrics as (
-select l.pool, pools.blockchain, pools.project, cast(l.time as date) as time,
+select l.pool, pools.blockchain, pools.project, null as fee, cast(l.time as date) as time,
     case when tokenA = 0x26c5e01524d2E6280A48F2c50fF6De7e52E9611C then tokenA else tokenB end main_token,
     case when tokenA = 0x26c5e01524d2E6280A48F2c50fF6De7e52E9611C then p0.symbol else p1.symbol end main_token_symbol,
     case when tokenA = 0x26c5e01524d2E6280A48F2c50fF6De7e52E9611C then tokenB else tokenA end paired_token,
