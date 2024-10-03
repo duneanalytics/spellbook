@@ -27,7 +27,7 @@ balances as (
              start_date = '2021-07-01'
        )
      }}
- )
+ ),
 
 flagged_balances as (
     select
