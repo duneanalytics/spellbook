@@ -263,7 +263,7 @@ select  blockchain||' '||project||' '||coalesce(paired_token_symbol,'unknown')||
         pool,
         blockchain,
         project,
-        null as fee, 
+        0 as fee, 
         time,
         main_token,
         main_token_symbol,
