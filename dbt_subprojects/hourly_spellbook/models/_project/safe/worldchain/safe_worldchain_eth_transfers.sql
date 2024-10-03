@@ -8,7 +8,7 @@
         file_format ='delta',
         incremental_strategy='merge',
         unique_key = ['block_date', 'address', 'tx_hash', 'trace_address'],
-        post_hook = '{{ expose_spells(blockchains = \'["mantle"]\',
+        post_hook = '{{ expose_spells(blockchains = \'["worldchain"]\',
                                     spell_type = "project",
                                     spell_name = "safe",
                                     contributors = \'["danielpartida"]\') }}'
@@ -19,7 +19,7 @@
 
 {{
     safe_native_transfers(
-        blockchain = 'mantle',
+        blockchain = 'worldchain',
         native_token_symbol = 'ETH',
         project_start_date = project_start_date
     )
