@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_aggregator_trades
     meta:
-      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
+      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb, base, scroll, linea, polygon 
       sector: dex_aggregator
       contributors: bh2smith, Henrystats, jeff-dude, rantum
       docs_slug: /curated/trading/DEX/dex-aggregator-trades
@@ -93,3 +93,46 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the corresponding trade event"
+        
+  - name: dex_aggregator_base_trades
+    meta:
+      blockchain: ethereum, gnosis, avalanche_c, fantom, optimism, arbitrum, bnb
+      sector: dex_aggregator
+      contributors: hosuke
+    config:
+      tags: ['ethereum', 'gnosis', 'avalanche_c', 'fantom', 'aggregator', 'dex', 'trades', 'cross-chain']
+    description: >
+      Base trades data without amount_usd column
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - trace_address
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index

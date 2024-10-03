@@ -33,6 +33,8 @@ models:
         description: "The list of minted fantasy.top card token ids"
       - name: burned_ids
         description: "The list of burned fantasy.top card token ids"
+      - name: traded_ids
+        description: "The list of traded fantasy.top card token ids"
       - name: traded_with
         description: "Who was on the other side of this executed trade"
       - name: tx_from
@@ -55,5 +57,13 @@ models:
         description: "The amount of tokens involved in the transaction"
       - name: price_usd
         description: "The USD price of the fungibles used in the transaction"
+      - name: heroes_revenue
+        description: "The revenue generated for heroes"
+      - name: heroes_revenue_usd
+        description: "The revenue generated for heroes in USD"
+      - name: to_fantasy_treasury
+        description: "The amount going to fantasy's treasury excluding direct hero rewards"
+      - name: to_fantasy_treasury_usd
+        description: "The amount in USD going to fantasy's treasury excluding direct hero rewards"
       - name: tactics_bought
         description: "The amount of tactics tickets bought"

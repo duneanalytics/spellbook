@@ -69,3 +69,9 @@ sources:
   - name: cow_protocol_arbitrum
     tables:
       - name: trades
+  - name: jelly_swap
+    tables:
+      - name: trades      
+  - name: beethoven_x
+    tables:
+      - name: trades            

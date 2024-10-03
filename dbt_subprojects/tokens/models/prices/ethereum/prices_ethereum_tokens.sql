@@ -1826,7 +1826,24 @@ FROM
     ('usdy-ondo-us-dollar-yield', 'ethereum', 'USDY', 0x96f6ef951840721adbf46ac996b59e0235cb985c, 18),
     ('pzeth-renzo-restaked-lst', 'ethereum', 'pzETH', 0x8c9532a60E0E7C6BbD2B2c1303F63aCE1c3E9811, 18),
     ('sx-sx-network', 'ethereum', 'SX', 0xbe9f61555f50dd6167f2772e9cf7519790d96624, 18),
-    ('rch-rch-token', 'ethereum', 'RCH', 0x57B96D4aF698605563A4653D882635da59Bf11AF, 18)
+    ('rch-rch-token', 'ethereum', 'RCH', 0x57B96D4aF698605563A4653D882635da59Bf11AF, 18),
+    ('raft-raft', 'ethereum', 'RAFT', 0x4c5cb5d87709387f8821709f7a6664f00dcf0c93, 18), 
+    ('neiro3-neiro', 'ethereum', 'NEIRO', 0xee2a03aa6dacf51c18679c516ad5283d8e7c2637, 9),
+    ('neiro-first-neiro-on-ethereum', 'ethereum', 'NEIRO', 0x812ba41e071c7b7fa4ebcfb62df5f45f6fa853ee, 9),
+    ('fuku-fuku-kun', 'ethereum', 'FUKU', 0x1001271083c249bd771e1bb76c22d935809a61ee, 9),
+    ('elon-elon-memelord', 'ethereum', 'ELON', 0x69420e3a3aa9e17dea102bb3a9b3b73dcddb9528, 9),
+    ('bar-gold-standard', 'ethereum', 'BAR', 0x777be1c6075c20184c4fd76344b7b0b7c858fe6b, 18),
+    ('ftw-black-agnus', 'ethereum', 'FTW', 0x306fD3e7b169Aa4ee19412323e1a5995B8c1a1f4, 18),
+    ('synt-synternet','ethereum','SYNT',0xda987c655ebc38c801db64a8608bc1aa56cd9a31, 18),
+    ('babydoge-baby-doge-coin', 'ethereum', 'BABYDOGE', 0xac57de9c1a09fec648e93eb98875b212db0d460b, 9),
+    ('usdz-anzen-usdz', 'ethereum', 'USDZ', 0xa469b7ee9ee773642b3e93e842e5d9b5baa10067, 18),
+    ('lbtc-lombard-staked-btc', 'ethereum', 'LBTC', 0x8236a87084f8b84306f72007f36f2618a5634494, 8),
+    ('msn-mesonnetwork', 'ethereum', 'MSN', 0xaa247c0d81b83812e1abf8bab078e4540d87e3fb, 18),
+    ('zeta-zetachain', 'ethereum', 'ZETA', 0xf091867ec603a6628ed83d274e835539d82e9cc8, 18),
+    ('euri-eurite', 'ethereum', 'EURI', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 18),
+    ('eigen-eigenlayer', 'ethereum', 'EIGEN', 0xec53bF9167f50cDEB3Ae105f56099aaaB9061F83, 18)
+    --('sky-sky', 'ethereum', 'SKY', 0x56072C95FAA701256059aa122697B133aDEd9279, 18),
+    --('usds-usds', 'ethereum', 'USDS', 0xdc035d45d973e3ec169d2276ddab16f1e407384f, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
@@ -1853,4 +1870,5 @@ where contract_address not in (
     ,0x630d98424efe0ea27fb1b3ab7741907dffeaad78   -- PEAKDEFI
     ,0xee06a81a695750e71a662b51066f2c74cf4478a0   -- DG, bad price feed
     ,0x9e24415d1e549ebc626a13a482bb117a2b43e9cf   -- LOVELY, rugpull
+    ,0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3   -- BUBBLE, bad price feed
 )

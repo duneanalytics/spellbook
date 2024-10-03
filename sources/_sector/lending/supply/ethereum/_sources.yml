@@ -21,6 +21,12 @@ sources:
       - name: LidoPool_evt_Withdraw
       - name: LidoPool_evt_ReserveDataUpdated
 
+  - name: aave_v3_etherfi_ethereum
+    tables:
+      - name: PoolInstance_evt_Supply
+      - name: PoolInstance_evt_Withdraw
+      - name: PoolInstance_evt_ReserveDataUpdated
+
   - name: compound_v2_ethereum
     tables:
       - name: cErc20_evt_Mint

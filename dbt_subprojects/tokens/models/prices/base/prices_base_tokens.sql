@@ -157,5 +157,20 @@ FROM
     ('aerobud-aerobud','base','AEROBUD',0xfad8cb754230dbfd249db0e8eccb5142dd675a0d, 18),
     --('normie1-normie','base','NORMIE',0x7f12d13b34f5f4f0a9449c16bcd42f0da47af200, 9), --token inactive
     ('ethb-ethereum-on-base','base','ETHB',0x8d285df5be4570097e84241090fca8034ab18547, 18),
-    ('pepe-pepe-on-base','base','PEPE',0x80f45eacf6537498ecc660e4e4a2d2f99e195cf4, 18)  
+    ('pepe-pepe-on-base','base','PEPE',0x80f45eacf6537498ecc660e4e4a2d2f99e195cf4, 18),
+    ('bum-willybumbum','base','BUM',0x4b8ec286fd218adb992e3df1a8d9fcf6de38d583, 18),
+    ('nippy-cat-on-catnip','base','NIPPY',0x7a31512fb17be839b24276c211e941932c9d20e1, 18),
+    ('roxy-roxy-frog','base','ROXY',0x10a7a84c91988138f8dbbc82a23b02c8639e2552, 18),
+    ('pov-degen-pov','base','POV',0x4c96a67b0577358894407af7bc3158fc1dffbeb5, 18),
+    ('chomp-chompcoin','base','CHOMP',0xebff2db643cf955247339c8c6bcd8406308ca437, 18),
+    ('birddog-bird-dog-on-base','base','BIRDDOG',0x92af6f53febd6b4c6f5293840b6076a1b82c4bc2, 18),
+    ('albert-albert-the-alien','base','ALBERT',0x0c067fc190cde145b0c537765a78d4e19873a5cc, 18),
+    ('tn100x-tn100x','base','TN100X',0x5b5dee44552546ecea05edea01dcd7be7aa6144a, 18),
+    ('rdat-rdatadao','base','RDAT',0x4498cd8ba045e00673402353f5a4347562707e7d, 18),
+    ('usdz-anzen-usdz', 'base', 'USDZ',0x04d5ddf5f3a8939889f11e97f8c4bb48317f1938, 18),
+    ('moxie-moxie', 'base', 'MOXIE',0x8C9037D1Ef5c6D1f6816278C7AAF5491d24CD527, 18),
+    ('cbbtc-coinbase-wrapped-btc', 'base', 'cbBTC',0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf, 8),
+    --('weirdo-weirdo', 'base', 'weirdo',0x76734b57dfe834f102fb61e1ebf844adf8dd931e, 8),
+    --('lune-luneko', 'base', 'LUNE',0xacd1caef47e4c47bafe8a51b3f4305fc38203b7a, 18),
+    ('peach-based-peaches', 'base', 'PEACH',0x8319767a7b602f88e376368dca1b92d38869b9b4, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

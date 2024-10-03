@@ -19,3 +19,26 @@ models:
         description: "ERC20 token symbol"
       - name: decimals
         description: "Number of decimals, refers to how divisible an ERC20 token can be"
+
+  - name: tokens_mantle_erc20_stablecoins
+    meta:
+      blockchain: mantle
+      sector: stablecoins
+      contributors: rantum
+    config:
+      tags: ['tokens', 'mantle', 'erc20', 'stablecoins']
+    description: >
+        Selection of stablecoin token addresses.
+    columns:
+      - name: blockchain
+        description: "Blockchain name"
+      - name: contract_address
+        description: "Stablecoin contract address"
+      - name: backing
+        description: "Stablecoin backing"
+      - name: symbol
+        description: "Stablecoin symbol"
+      - name: name
+        description: "Stablecoin project name"
+      - name: decimals
+        description: "Number of decimals"

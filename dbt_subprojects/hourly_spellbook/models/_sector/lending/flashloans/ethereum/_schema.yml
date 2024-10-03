@@ -205,6 +205,39 @@ models:
       - *tx_hash
       - *evt_index
 
+  - name: aave_etherfi_v3_ethereum_base_flashloans
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave_etherfi
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'etherfi', 'ethereum']
+    description: "Aave v3 flashloans transactions on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('aave_etherfi_ethereum_base_flashloans_seed')
+          filter:
+            version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *project_contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
   - name: radiant_ethereum_base_flashloans
     meta:
       blockchain: ethereum

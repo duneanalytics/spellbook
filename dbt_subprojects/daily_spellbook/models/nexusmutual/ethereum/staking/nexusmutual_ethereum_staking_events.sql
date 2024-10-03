@@ -104,6 +104,7 @@ staked_nxm_history as (
 select
   flow_type,
   block_time,
+  date_trunc('day', block_time) as block_date,
   pool_address,
   token_id,
   tranche_id,
