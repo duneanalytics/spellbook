@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: fees_daily
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'evms', 'fees']
+    description: "Sum of total fees spent per day across all chains available in raw gas.fees table"
+  - name: fees_daily_stats
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'evms', 'fees']
+    description: "Daily view of fees metrics with various stats applied"
+  - name: fees_daily_blockchain_rank
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'evms', 'fees']
+    description: "Daily gas fees grouped by blockchain"
