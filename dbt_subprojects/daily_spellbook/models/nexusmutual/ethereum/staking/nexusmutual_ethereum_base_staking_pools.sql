@@ -104,7 +104,7 @@ staking_pool_products_combined as (
     spp.block_time_created,
     spu.block_time_updated,
     coalesce(spp.pool_id, spu.pool_id) as pool_id,
-    coalesce(spp.product_id, spu.product_id) as product_id,
+    coalesce(spp.product_id, spu.product_id, -1) as product_id,
     spp.initial_price,
     spp.target_price,
     spu.target_price as updated_target_price,
@@ -200,12 +200,18 @@ staking_pool_fee_updates as (
 
 products as (
   select
-    p.product_id,
+    cast(p.product_id as int) as product_id,
     p.product_name,
-    pt.product_type_id,
+    cast(pt.product_type_id as int) as product_type_id,
     pt.product_type_name as product_type
   from {{ ref('nexusmutual_ethereum_product_types_v2') }} pt
     inner join {{ ref('nexusmutual_ethereum_products_v2') }} p on pt.product_type_id = p.product_type_id
+  union all
+  select
+    -1 as product_id,
+    null as product_name,
+    -1 as product_type_id,
+    null as product_type
 )
 
 select
@@ -247,6 +253,6 @@ select
   ) as tx_hash_updated
 from staking_pools_created_ext sp
   inner join staking_pool_products_combined spc on sp.pool_id = spc.pool_id
-  left join products p on spc.product_id = p.product_id
+  inner join products p on spc.product_id = p.product_id
   left join staking_pool_managers spm on sp.pool_id = spm.pool_id
   left join staking_pool_fee_updates spf on sp.pool_address = spf.pool_address

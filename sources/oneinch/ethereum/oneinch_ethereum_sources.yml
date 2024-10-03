@@ -64,6 +64,7 @@ sources:
       - name: FusionWhitelistRegistryV2_evt_Registered
       - name: FusionWhitelistRegistryV2_evt_Unregistered
       - name: FusionWhitelistRegistryV2_evt_Promotion
+      - name: CrosschainWhitelistRegistryV1_evt_Promotion
       - name: AggregationRouterV6_call_swap
       - name: AggregationRouterV6_call_clipperSwap
       - name: AggregationRouterV6_call_clipperSwapTo
@@ -83,6 +84,8 @@ sources:
       - name: AggregationRouterV6_call_fillOrderArgs
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
+      - name: EscrowFactoryV1_call_createDstEscrow
+      - name: EscrowFactoryV1_evt_SrcEscrowCreated
       - name: lop
       - name: ar
 
