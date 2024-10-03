@@ -163,6 +163,8 @@ models:
             - blockchain
             - address
             - token_address
+            - unique_key_id
+
     meta:
       blockchain: ethereum
       project: safe
@@ -171,15 +173,9 @@ models:
       tags: ['safe', 'ethereum']
     description: “Safe addresses balances”
     columns:
-    - &blockchain
-      name: blockchain
-      description: "Blockchain for the token"
-    - &day
-      name: day
-      description: "Date on which the token balance is logged"
-    - &address
-      name: address
-      description: "Address for the token holder"
+    - name: day
+    - name: blockchain
+    - name: address
     - &token_symbol
       name: token_symbol
       description: "Symbol for the token"
