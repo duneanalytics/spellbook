@@ -171,12 +171,39 @@ models:
       tags: ['safe', 'ethereum']
     description: “Safe addresses balances”
     columns:
-      - name: day
-      - name: blockchain
-      - name: address
-      - name: token_address
-      - name: token_standard
-      - name: token_id
-      - name: token_symbol
-      - name: token_balance
-      - name: balance_usd
+    - &blockchain
+      name: blockchain
+      description: "Blockchain for the token"
+    - &day
+      name: day
+      description: "Date on which the token balance is logged"
+    - &address
+      name: address
+      description: "Address for the token holder"
+    - &token_symbol
+      name: token_symbol
+      description: "Symbol for the token"
+    - &token_address
+      name: token_address
+      description: "Address for the token"
+    - &token_standard
+      name: token_standard
+      description: "Standard for the token"
+    - &token_id
+      name: token_id
+      description: "ID for the token"
+    - &balance
+      name: balance
+      description: "Balance for the user"
+    - &balance_usd
+      name: balance_usd
+      description: "USD value of balance for the user"
+    - &last_updated
+      name: last_updated
+      description: "UTC timestamp when data was last updated"
+    - &next_update
+      name: next_update
+      description: "UTC timestamp when data is next updated"
+    - &unique_key_id
+      name: unique_key_id
+      description: " unique key"
