@@ -21,8 +21,7 @@ WITH evt_data_1 AS (
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender,
-        topic1,
-        CAST(NULL AS varbinary) AS topic2  -- Ensure topic2 is treated as varbinary
+        varbinary_substring(topic1, 13, 20) as account
     FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -40,8 +39,7 @@ WITH evt_data_1 AS (
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender,
-        topic1,
-        topic2
+        varbinary_substring(topic2, 13, 20) as account
     FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -115,30 +113,41 @@ WITH evt_data_1 AS (
 )
 
 -- full data 
-SELECT 
-    blockchain,
-    block_time,
-    block_number,
-    ED.tx_hash,
-    ED.index,
-    contract_address,
-    event_name,
-    msg_sender,
-    topic1, 
-    topic2,
-    
-    market_token,
-    index_token,
-    long_token,
-    short_token,
-    salt,
-    CASE 
-        WHEN index_token = '0x0000000000000000000000000000000000000000' THEN true
-        ELSE false
-    END AS spot_only,
-    'GM' AS market_token_symbol,
-    18 AS market_token_decimals
-FROM evt_data AS ED
-LEFT JOIN evt_data_parsed AS EDP
-    ON ED.tx_hash = EDP.tx_hash
-        AND ED.index = EDP.index
+, full_data AS (
+    SELECT 
+        blockchain,
+        block_time,
+        DATE(block_time) AS block_date,
+        block_number,
+        ED.tx_hash,
+        ED.index,
+        contract_address,
+        event_name,
+        msg_sender,
+        account, 
+        
+        from_hex(market_token) AS market_token,
+        from_hex(index_token) AS index_token,
+        from_hex(long_token) AS long_token,
+        from_hex(short_token) AS short_token,
+        from_hex(salt) AS salt,
+        CASE 
+            WHEN index_token = '0x0000000000000000000000000000000000000000' THEN true
+            ELSE false
+        END AS spot_only,
+        'GM' AS market_token_symbol,
+        18 AS market_token_decimals
+    FROM evt_data AS ED
+    LEFT JOIN evt_data_parsed AS EDP
+        ON ED.tx_hash = EDP.tx_hash
+            AND ED.index = EDP.index
+)
+
+--can be removed once decoded tables are fully denormalized
+{{
+    add_tx_columns(
+        model_cte = 'full_data'
+        , blockchain = blockchain_name
+        , columns = ['from', 'to']
+    )
+}}

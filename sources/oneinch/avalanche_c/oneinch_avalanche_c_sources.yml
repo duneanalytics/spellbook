@@ -2,7 +2,6 @@ version: 2
 
 sources:
   - name: oneinch_avalanche_c
-    description: "decoded events and function calls for 1inch on avalanche_c"
     tables:
       - name: AggregationRouterV4_call_unoswap
       - name: AggregationRouterV4_call_unoswapWithPermit
@@ -58,3 +57,7 @@ sources:
       - name: AggregationRouterV6_call_fillOrderArgs
       - name: AggregationRouterV6_call_fillContractOrder
       - name: AggregationRouterV6_call_fillContractOrderArgs
+      - name: EscrowFactoryV1_call_createDstEscrow
+      - name: EscrowFactoryV1_evt_SrcEscrowCreated
+      - name: lop
+      - name: ar

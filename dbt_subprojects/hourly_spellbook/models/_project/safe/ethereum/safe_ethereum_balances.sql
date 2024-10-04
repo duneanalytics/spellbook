@@ -14,29 +14,30 @@
     )
 }}
 
-with changed_balances as (
+with safes as (
+    select
+        address,
+        blockchain
+    from {{ ref('safe_ethereum_safes') }}
+    where blockchain = 'ethereum'
+),
+token_balances as (
     select
         a.blockchain,
-        day,
+        a.day,
         a.address,
-        token_symbol,
-        token_address,
-        token_standard,
-        token_id,
-        balance,
-        lead(cast(day as date)) over (partition by token_address, a.address, token_id order by day asc) as next_update_day
+        a.token_symbol,
+        a.token_address,
+        a.token_standard,
+        a.token_id,
+        a.balance,
+        lead(cast(day as timestamp)) over (partition by token_address, a.address, token_id order by day asc) as next_update_day
     from {{ source('tokens_ethereum', 'balances_daily_agg') }} a
-    join (
-        select
-            address
-            , blockchain
-        from {{ ref('safe_ethereum_safes') }} s
-        where blockchain = 'ethereum'
-    ) q on q.address = a.address
-    where day >= date('2021-07-01')
-        and token_standard in ('native', 'erc20')
+    join safes s on a.address = s.address
+    where a.day >= date('2021-07-01')
+        and a.token_standard in ('native', 'erc20')
         {% if is_incremental() %}
-        and {{ incremental_predicate('day') }}
+        and {{ incremental_predicate('a.day') }}
         {% endif %}
 ),
 days as (
@@ -47,18 +48,20 @@ days as (
 ),
 forward_fill as (
     select
-        blockchain,
+        s.blockchain,
         cast(d.day as date) as day,
-        address,
-        token_symbol,
-        token_address,
-        token_standard,
-        token_id,
-        balance
+        s.address,
+        coalesce(b.token_symbol, lag(b.token_symbol) over (partition by s.address, b.token_address order by d.day)) as token_symbol,
+        coalesce(b.token_address, lag(b.token_address) over (partition by s.address, b.token_address order by d.day)) as token_address,
+        coalesce(b.token_standard, lag(b.token_standard) over (partition by s.address, b.token_address order by d.day)) as token_standard,
+        coalesce(b.token_id, lag(b.token_id) over (partition by s.address, b.token_address order by d.day)) as token_id,
+        coalesce(b.balance, lag(b.balance) over (partition by s.address, b.token_address order by d.day)) as balance
     from days d
-    left join changed_balances b
-        on d.day >= b.day
-        and (b.next_update_day is null OR d.day < b.next_update_day) 
+    cross join safes s
+    left join token_balances b
+        on s.address = b.address
+        and d.day >= b.day
+        and (b.next_update_day is null OR d.day < b.next_update_day)
     where d.day >= cast('2021-07-01' as date)
         {% if is_incremental() %}
         and {{ incremental_predicate('d.day') }}
@@ -80,13 +83,13 @@ from (
 ) b
 left join {{ ref('prices_usd_daily') }} p
     on (
-        token_standard = 'erc20'
+        b.token_standard = 'erc20'
         and b.blockchain = p.blockchain
         and b.token_address = p.contract_address
         and b.day = p.day
     )
     or (
-        token_standard = 'native'
+        b.token_standard = 'native'
         and p.blockchain is null
         and p.contract_address is null
         and p.symbol = 'ETH'
