@@ -179,7 +179,7 @@ models:
           filter:
             version: 2
 
-    - name: leetswap_scroll_base_trades
+  - name: leetswap_scroll_base_trades
     meta:
       blockchain: scroll
       sector: dex
