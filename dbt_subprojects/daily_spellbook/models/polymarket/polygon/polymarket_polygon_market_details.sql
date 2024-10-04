@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'polygon_polymarket_market_details',
+    alias = 'polymarket_polygon_market_details',
     materialized = 'table',
     file_format = 'delta',
     full_refresh = true

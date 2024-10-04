@@ -62,7 +62,7 @@ balances AS (
 
 markets_mapping AS (
     SELECT * 
-    FROM {{ ref('polygon_markets_new') }}
+    FROM {{ ref('polymarket_polygon_market_details') }}
 ),
 
 mapped_balances AS (
