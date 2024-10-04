@@ -40,9 +40,9 @@ with source as (
         c.blockchain
         , c.current_day_tx_count
         , p.previous_day_tx_count
-        , ((c.current_day_tx_count - coalesce(p.previous_day_tx_count, 0)) / coalesce(p.previous_day_tx_count, 1)) * 100 AS daily_percent_change
+        , ((cast(c.current_day_tx_count as double) - coalesce(cast(p.previous_day_tx_count as double), 0)) / coalesce(cast(p.previous_day_tx_count as double), 1)) * 100 AS daily_percent_change
         , t.total_current_day_txs
-        , (c.current_day_tx_count / t.total_current_day_txs) * 100 AS percent_of_total_current_day_txs
+        , (cast(c.current_day_tx_count as double) / cast(t.total_current_day_txs as double)) * 100 AS percent_of_total_current_day_txs
     from
         current_day as c
     left join previous_day as p
@@ -81,9 +81,9 @@ with source as (
         c.blockchain
         , c.current_week_tx_count
         , p.previous_week_tx_count
-        , ((c.current_week_tx_count - coalesce(p.previous_week_tx_count, 0)) / coalesce(p.previous_week_tx_count, 1)) * 100 AS weekly_percent_change
+        , ((cast(c.current_week_tx_count as double) - coalesce(cast(p.previous_week_tx_count as double), 0)) / coalesce(cast(p.previous_week_tx_count as double), 1)) * 100 AS weekly_percent_change
         , t.total_current_week_txs
-        , (c.current_week_tx_count / t.total_current_week_txs) * 100 AS percent_of_total_current_week_txs
+        , (cast(c.current_week_tx_count as double) / cast(t.total_current_week_txs as double)) * 100 AS percent_of_total_current_week_txs
     from
         current_week as c
     left join previous_week as p
@@ -122,9 +122,9 @@ with source as (
         c.blockchain
         , c.current_month_tx_count
         , p.previous_month_tx_count
-        , ((c.current_month_tx_count - coalesce(p.previous_month_tx_count, 0)) / coalesce(p.previous_month_tx_count, 1)) * 100 AS monthly_percent_change
+        , ((cast(c.current_month_tx_count as double) - coalesce(cast(p.previous_month_tx_count as double), 0)) / coalesce(cast(p.previous_month_tx_count as double), 1)) * 100 AS monthly_percent_change
         , t.total_current_month_txs
-        , (c.current_month_tx_count / t.total_current_month_txs) * 100 AS percent_of_total_current_month_txs
+        , (cast(c.current_month_tx_count as double) / cast(t.total_current_month_txs as double)) * 100 AS percent_of_total_current_month_txs
     from
         current_month as c
     left join previous_month as p
