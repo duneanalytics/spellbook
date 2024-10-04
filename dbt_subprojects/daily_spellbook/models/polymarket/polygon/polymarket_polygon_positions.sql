@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['blockchain', 'address', 'token_address', 'token_id', 'day'],
+    unique_key = ['address', 'token_address', 'token_id', 'day'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
@@ -92,4 +92,3 @@ mapped_balances AS (
 )
 
 SELECT * FROM mapped_balances
-WHERE day > CURRENT_DATE - INTERVAL '30' day
