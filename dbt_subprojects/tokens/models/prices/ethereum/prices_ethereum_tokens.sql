@@ -1842,6 +1842,7 @@ FROM
     ('zeta-zetachain', 'ethereum', 'ZETA', 0xf091867ec603a6628ed83d274e835539d82e9cc8, 18),
     ('euri-eurite', 'ethereum', 'EURI', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 18),
     ('eigen-eigenlayer', 'ethereum', 'EIGEN', 0xec53bF9167f50cDEB3Ae105f56099aaaB9061F83, 18)
+    ('dinero-dinero', 'ethereum', 'DINERO', 0x6df0e641fc9847c0c6fde39be6253045440c14d3, 18)
     --('sky-sky', 'ethereum', 'SKY', 0x56072C95FAA701256059aa122697B133aDEd9279, 18),
     --('usds-usds', 'ethereum', 'USDS', 0xdc035d45d973e3ec169d2276ddab16f1e407384f, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
