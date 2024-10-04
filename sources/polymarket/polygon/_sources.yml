@@ -27,3 +27,7 @@ sources:
       - name: NegRiskCtfExchange_evt_OrderFilled
       - name: SafeProxyFactory_evt_ProxyCreation
       - name: fedinterestrate_evt_FPMMFundingAdded 
+
+  - name: dune
+    tables:
+      - name: dataset_polymarket_markets

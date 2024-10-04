@@ -295,3 +295,59 @@ models:
       - name: owner
       - *proxy
       - *tx_hash
+
+  - name: polygon_markets_new
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago, 0xboxer
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Polymarket: combined market data from on-chain and API sources"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_key
+            - token_id
+    columns:
+      - name: unique_key
+        description: "Unique identifier for the market"
+      - name: condition_id
+        description: "Condition ID for the market"
+      - name: neg_risk_market_id
+        description: "Negative risk market ID"
+      - name: neg_risk_market_name_
+        description: "Negative risk market name"
+      - name: question_id
+        description: "Question ID for the market"
+      - name: question
+        description: "Market question"
+      - name: token_id
+        description: "Token ID"
+      - name: token_outcome
+        description: "Token outcome"
+      - name: active
+        description: "Whether the market is active"
+      - name: archived
+        description: "Whether the market is archived"
+      - name: closed
+        description: "Whether the market is closed"
+      - name: accepting_orders
+        description: "Whether the market is accepting orders"
+      - name: enable_order_book
+        description: "Whether the order book is enabled"
+      - name: neg_risk
+        description: "Whether it's a negative risk market"
+      - name: market_slug
+        description: "Market slug for URL"
+      - name: neg_risk_market_name
+        description: "Negative risk market name from on-chain data"
+      - name: polymarket_link
+        description: "Link to the Polymarket event page"
+      - *block_time
+      - *block_number
+      - *oracle
+      - *fee_bips
+      - *evt_index
+      - *tx_hash
