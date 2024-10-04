@@ -296,7 +296,7 @@ models:
       - *proxy
       - *tx_hash
 
-  - name: polygon_markets_new
+  - name: polygon_polymarket_market_details 
     meta:
       blockchain: polygon
       sector: prediction_markets

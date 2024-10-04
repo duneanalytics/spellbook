@@ -1,5 +1,5 @@
 {{ config(
-    alias = 'polygon_markets_new',
+    alias = 'polygon_polymarket_market_details',
     materialized = 'table',
     file_format = 'delta',
     full_refresh = true
@@ -74,7 +74,7 @@ SELECT
   neg_risk_market_description as event_market_description,
   c.question_id AS question_id,
   question,
-  description,
+  description as market_description,
   token_id AS token_id,
   token_outcome,
   token_outcome || '-' || question as token_outcome_name,
