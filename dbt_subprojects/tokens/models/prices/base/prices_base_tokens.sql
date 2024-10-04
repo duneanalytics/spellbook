@@ -172,5 +172,15 @@ FROM
     ('cbbtc-coinbase-wrapped-btc', 'base', 'cbBTC',0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf, 8),
     --('weirdo-weirdo', 'base', 'weirdo',0x76734b57dfe834f102fb61e1ebf844adf8dd931e, 8),
     --('lune-luneko', 'base', 'LUNE',0xacd1caef47e4c47bafe8a51b3f4305fc38203b7a, 18),
-    ('peach-based-peaches', 'base', 'PEACH',0x8319767a7b602f88e376368dca1b92d38869b9b4, 18)
+    ('peach-based-peaches', 'base', 'PEACH',0x8319767a7b602f88e376368dca1b92d38869b9b4, 18),
+    ('dino-coding-dino', 'base', 'DINO',0x85e90a5430af45776548adb82ee4cd9e33b08077, 18),
+    ('fomo-father-of-meme-origin', 'base', 'DFOMOINO',0xd327d36eb6e1f250d191cd62497d08b4aaa843ce, 9),
+    ('base-brianarmstrongcoinbaseusdc2012', 'base', 'BASE',0xf1b4ddf712e108cf43711b1c39f2fddb0d5ce243, 18),
+    ('farther-farther', 'base', 'FATHER',0x8ad5b9007556749de59e088c88801a3aaa87134b, 18),
+    ('degens-the-degensons', 'base', 'DEGENS',0xc41ba5737baf6bd0ccd5daf7eee39874e4ad45ff, 18),
+    ('gochu-gochujang-coin', 'base', 'GOCHU',0x9aaae745cf2830fb8ddc6248b17436dc3a5e701c, 18),
+    ('blue-blue-on-base', 'base', '$BLUE',0xfd9fa4f785331ce88b5af8994a047ba087c705d8, 18),
+    ('bets-all-street-bets', 'base', 'BETS',0x42069de48741db40aef864f8764432bbccbd0b69, 18),
+    ('onchain-onchain-coin', 'base', 'ONCHAIN',0x1c22374032e7e5a1bbde3d943f5deb310db060dd, 18)
+    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
