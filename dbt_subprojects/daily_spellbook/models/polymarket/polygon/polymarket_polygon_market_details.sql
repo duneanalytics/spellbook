@@ -1,9 +1,16 @@
-{{ config(
-    alias = 'polymarket_polygon_market_details',
+{{
+  config(
+    schema = 'polymarket_polygon',
+    alias = 'market_details',
     materialized = 'table',
     file_format = 'delta',
-    full_refresh = true
-) }}
+    full_refresh = true,
+    post_hook='{{ expose_spells(blockchains = \'["polygon"]\',
+                                  spell_type = "project",
+                                  spell_name = "polymarket",
+                                  contributors = \'["tomfutago", "0xboxer"]\') }}'
+  )
+}}
 
 WITH onchain_metadata AS (
   SELECT
