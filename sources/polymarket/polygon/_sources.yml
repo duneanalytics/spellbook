@@ -31,3 +31,20 @@ sources:
   - name: dune
     tables:
       - name: dataset_polymarket_markets
+
+  - name: tokens_polygon
+    description: "Token-related data on the Polygon network"
+    tables:
+      - name: balances_daily_agg
+        description: "Daily aggregated token balances on Polygon"
+        columns:
+          - name: wallet_address
+            description: "Address of the wallet holding the tokens"
+          - name: token_address
+            description: "Address of the token"
+          - name: amount
+            description: "Balance amount"
+          - name: amount_raw
+            description: "Raw balance amount"
+          - name: day
+            description: "Date of the balance snapshot"

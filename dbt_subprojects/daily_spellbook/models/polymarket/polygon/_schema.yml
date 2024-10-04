@@ -351,3 +351,62 @@ models:
       - *fee_bips
       - *evt_index
       - *tx_hash
+
+  - name: polymarket_polygon_positions
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Polymarket: user positions in markets"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - address
+            - token_address
+            - token_id
+            - day
+    columns:
+      - name: day
+        description: "The date of the position"
+      - name: address
+        description: "The address holding the position"
+      - name: unique_key
+        description: "Unique identifier for the market"
+      - name: token_id
+        description: "Token ID of the position"
+      - name: token_outcome
+        description: "Outcome represented by the token"
+      - name: token_outcome_name
+        description: "Name of the outcome represented by the token"
+      - name: balance
+        description: "Balance of the position"
+      - name: question_id
+        description: "Question ID for the market"
+      - name: market_question
+        description: "Question of the market"
+      - name: market_description
+        description: "Description of the market"
+      - name: event_market_name
+        description: "Name of the event market"
+      - name: event_market_description
+        description: "Description of the event market"
+      - name: active
+        description: "Whether the market is active"
+      - name: closed
+        description: "Whether the market is closed"
+      - name: accepting_orders
+        description: "Whether the market is accepting orders"
+      - name: polymarket_link
+        description: "Link to the Polymarket event page"
+      - name: market_start_time
+        description: "Start time of the market"
+      - name: market_end_time
+        description: "End time of the market"
+      - name: market_outcome
+        description: "Outcome of the market"
+      - name: resolved_on_timestamp
+        description: "Timestamp when the market was resolved"
