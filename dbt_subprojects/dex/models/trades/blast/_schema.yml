@@ -96,7 +96,7 @@ models:
     meta:
       blockchain: blast
       sector: dex
-      project: dackieswap_v2
+      project: dackieswap
       contributors: eileenapril
     config:
       tags: [ 'blast', 'dex', 'trades', 'dackieswap' ]
