@@ -57,4 +57,5 @@ FROM (VALUES
     , (0xbae28251b2a4e621aa7e20538c06dee010bc06de, 'dHEDGE', 18)
     , (0xdfe21992da3c135f009f273a281bfe4ee84d9872, 'XOXO', 18)
     , (0xf9b2ebdfa24688f0dfb12cc55782e635f91e64a2, 'CLEO', 18)
+    , (0xfe596d8f73ae03e3720db419c6320e944838a073, 'MGOLD', 18)
 ) AS temp_table (contract_address, symbol, decimals)
