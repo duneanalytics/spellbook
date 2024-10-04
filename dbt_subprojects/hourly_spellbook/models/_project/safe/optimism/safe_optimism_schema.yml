@@ -171,8 +171,8 @@ models:
       - name: blockchain
       - name: address
       - &token_symbol
-      name: token_symbol
-      description: "Symbol for the token"
+        name: token_symbol
+        description: "Symbol for the token"
       - &token_address
         name: token_address
         description: "Address for the token"
