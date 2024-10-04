@@ -93,7 +93,7 @@ with
             on (
                 trades.blockchain = deployments.blockchain
                 and trades.block_month >= deployments.block_month
-                and (token_bought_address = token or token_sold_address = token)
+                and contains(ARRAY[token_bought_address, token_sold_address], token)
             )
         where
             trades.blockchain = '{{blockchain}}'
