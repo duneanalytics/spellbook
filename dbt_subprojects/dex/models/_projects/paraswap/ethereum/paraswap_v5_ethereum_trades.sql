@@ -15,7 +15,7 @@
     )
 }}
 
-{% set project_start_date = '2021-08-23' %}
+{% set project_start_date = '2021-06-18' %}
 {% set trade_event_tables = [
     source('paraswap_ethereum', 'AugustusSwapper6_0_evt_Bought')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_evt_Bought2')
@@ -25,7 +25,7 @@
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_evt_SwappedV3')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_evt_SwappedDirect')
 ] %}
-{% set trade_call_start_block_number = 13056913 %}
+{% set trade_call_start_block_number = 12659551 %}
 {% set uniswap_v2_trade_call_tables = [
     source('paraswap_ethereum', 'AugustusSwapper6_0_call_buyOnUniswapV2Fork')
     ,source('paraswap_ethereum', 'AugustusSwapper6_0_call_buyOnUniswapV2ForkWithPermit')
@@ -73,12 +73,12 @@ WITH dex_swap AS (
             CAST(NULL AS double) AS amount_usd,
             CASE
                 WHEN destToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 -- WETH
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */
                 ELSE destToken
             END AS token_bought_address,
             CASE
                 WHEN srcToken = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */
                 ELSE srcToken
             END AS token_sold_address,
             contract_address AS project_contract_address,
@@ -106,12 +106,12 @@ liqudity_swap AS (
         CAST(NULL AS double) AS amount_usd,
         CASE
             WHEN toAsset = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-            THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+            THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */
             ELSE toAsset
         END AS token_bought_address,
         CASE
             WHEN fromAsset = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-            THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+            THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */
             ELSE fromAsset
         END AS token_sold_address,
         p.contract_address AS project_contract_address,
@@ -138,6 +138,7 @@ event_with_row_number AS (
             PARTITION BY evt_tx_hash, "from", to, contract_address
             ORDER BY evt_index ASC
         ) AS evt_row_num
+        
     FROM {{ source('erc20_ethereum', 'evt_transfer') }}
     
     WHERE evt_block_number >= {{ trade_call_start_block_number }}
@@ -156,14 +157,18 @@ uniswap_v2_call_swap_without_event AS (
                 call_tx_hash,
                 call_trace_address,
                 pools,
-                CASE WHEN tokenIn = 0xeeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
-                    THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+                CASE WHEN tokenIn = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */
                     ELSE tokenIn
                 END AS tokenIn,
+                tokenIn = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee AS is_token_in_eth,
+                tokenIn != 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee AND weth = 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */ AS is_token_out_eth,
                 {% if call_table in uniswap_v2_trade_call_swap_tables %}
-                amountIn AS token_in_amount
+                amountIn AS token_in_amount,
+                0 as token_out_amount
                 {% else %}
-                0 AS token_in_amount
+                0 AS token_in_amount,
+                amountOut AS token_out_amount
                 {% endif %}
             FROM {{ call_table }} c
 
@@ -172,7 +177,7 @@ uniswap_v2_call_swap_without_event AS (
                 AND {{ incremental_predicate('call_block_time') }}
                 {% endif %}
             {% if not loop.last %}
-            UNION -- There may be multiple calls in same tx
+            UNION ALL
             {% endif %}
         {% endfor %}
     ),
@@ -185,15 +190,18 @@ uniswap_v2_call_swap_without_event AS (
             '0x' || lower(substring(to_hex(cast(c.pools[1] AS varbinary)), -40)) AS swap_in_pair,
             '0x' || lower(substring(to_hex(cast(c.pools[cardinality(pools)] AS varbinary)), -40)) AS swap_out_pair,
             row_number() OVER (
-                PARTITION BY c.call_tx_hash, c.pools[1], t."from"
+                PARTITION BY c.call_tx_hash, t."from", c.pools[1]
                 ORDER BY c.call_trace_address ASC
             ) AS swap_in_row_number,
             row_number() OVER (
-                PARTITION BY c.call_tx_hash, c.pools[cardinality(pools)], t."from"
+                PARTITION BY c.call_tx_hash, t."from", c.pools[cardinality(pools)]
                 ORDER BY c.call_trace_address ASC
             ) AS swap_out_row_number,
             c.token_in_amount,
+            c.token_out_amount,
             c.tokenIn,
+            c.is_token_in_eth,
+            c.is_token_out_eth,
             count(c.call_tx_hash) OVER (PARTITION BY c.call_tx_hash) AS calls_count
         
         FROM raw_no_event_call_transaction c
@@ -223,6 +231,7 @@ uniswap_v2_call_swap_without_event AS (
             e.evt_index AS evt_index,
             c.swap_in_pair,
             c.token_in_amount,
+            c.token_out_amount,
             c.swap_in_row_number,
             c.swap_out_row_number,
             c.calls_count
@@ -232,14 +241,13 @@ uniswap_v2_call_swap_without_event AS (
         INNER JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
             AND c.call_tx_hash = e.evt_tx_hash
             AND (
-                e."from" = c.caller
-                OR e."from" = 0x216B4B4Ba9F3e719726886d34a177484278Bfcae /* Token Transfer Proxy */
-                OR e."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */
+                (e."from" = c.caller AND c.is_token_in_eth = false)
+                OR e."from" = 0x216b4b4ba9f3e719726886d34a177484278bfcae /* Token Transfer Proxy */ -- Some of the tokens might use `msg.sender` as `from` for "Transfer" event on the `transferFrom` method
+                OR (e."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */ AND c.is_token_in_eth) -- When token in is ETH, Augustus is used
             )
             AND cast(e."to" AS varchar) = c.swap_in_pair
             AND e.contract_address = c.tokenIn
-            AND (c.token_in_amount = 0 OR e.value = c.token_in_amount)
-            AND e.evt_row_num = c.swap_in_row_number
+            AND e.evt_row_num = c.swap_in_row_number -- Used when tx has identical calls
     ),
 
     swap_detail_out AS (
@@ -251,9 +259,10 @@ uniswap_v2_call_swap_without_event AS (
             try_cast(e.value AS int256) AS amountOut,
             e.evt_index AS evt_index,
             c.swap_in_pair,
+            c.token_in_amount,
+            c.token_out_amount,
             c.swap_in_row_number,
-            c.swap_out_row_number,
-            c.token_in_amount
+            c.swap_out_row_number
 
         FROM formatted_no_event_call_transaction c
     
@@ -261,8 +270,8 @@ uniswap_v2_call_swap_without_event AS (
             AND c.call_tx_hash = e.evt_tx_hash
             AND cast(e."from" AS varchar) = c.swap_out_pair
             AND (
-                e.to = c.caller
-                OR e.to = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
+                (e.to = c.caller AND c.is_token_out_eth = false)
+                OR (e.to = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */ AND c.is_token_out_eth) -- When token out is ETH, Augustus is used
             )
             AND e.evt_row_num = c.swap_out_row_number
     ),
@@ -287,9 +296,10 @@ uniswap_v2_call_swap_without_event AS (
         INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
             AND i.tx_hash = o.tx_hash
             AND i.swap_in_pair = o.swap_in_pair
+            AND i.token_in_amount = o.token_in_amount
+            AND i.token_out_amount = o.token_out_amount
             AND i.swap_in_row_number = o.swap_in_row_number
             AND i.swap_out_row_number = o.swap_out_row_number
-            AND (i.token_in_amount = 0 OR i.token_in_amount = o.token_in_amount)
     )
 
     SELECT block_time,
@@ -301,7 +311,7 @@ uniswap_v2_call_swap_without_event AS (
         cast(NULL AS double) AS amount_usd,
         token_bought_address,
         token_sold_address,
-        0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address,
+        0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address, /* Augustus Swapper */
         tx_hash,
         trace_address,
         evt_index
@@ -317,16 +327,37 @@ uniswap_call_swap_without_event AS (
             SELECT call_tx_hash,
                 call_block_number,
                 call_trace_address,
-                path,
+                CASE WHEN c.path[1] = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */
+                    ELSE c.path[1]
+                END AS swap_in_pair_token_in,
+                CASE WHEN c.path[2] = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */
+                    ELSE c.path[2]
+                END AS swap_in_pair_token_out,
+                CASE WHEN c.path[cardinality(c.path) - 1] = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */
+                    ELSE c.path[cardinality(c.path) - 1]
+                END AS swap_out_pair_token_in,
+                CASE WHEN c.path[cardinality(c.path)] = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                    THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */
+                    ELSE c.path[cardinality(c.path)]
+                END AS swap_out_pair_token_out,
+                path[1] = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee AS is_token_in_eth,
+                path[cardinality(path)] = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee AS is_token_out_eth,
+                {% if call_table in uniswap_fork_trade_call_swap_tables %}
+                factory,
+                initCode,
+                {% else %}
+                0x5c69bee701ef814a2B6a3edd4b1652Cb9cc5aa6f AS factory /* UniswapV2Factory */,
+                0x96e8ac4277198ff8b6f785478aa9a39f403cb768dd02cbee326c3e7da348845f AS initCode,
+                {% endif %}
                 {% if call_table in uniswap_trade_call_swap_tables %}
                 amountIn AS token_in_amount,
+                0 AS token_out_amount
                 {% else %}
                 0 AS token_in_amount,
-                {% endif %}
-                {% if call_table in uniswap_fork_trade_call_swap_tables %}
-                factory
-                {% else %}
-                0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f AS factory
+                amountOut AS token_out_amount
                 {% endif %}
 
             FROM {{ call_table }} c
@@ -336,7 +367,7 @@ uniswap_call_swap_without_event AS (
                 AND {{ incremental_predicate('call_block_time') }}
                 {% endif %}
             {% if not loop.last %}
-            UNION -- There may be multiple calls in same tx
+            UNION ALL
             {% endif %}
         {% endfor %}
     ),
@@ -345,24 +376,67 @@ uniswap_call_swap_without_event AS (
         SELECT c.call_tx_hash,
             c.call_block_number,
             c.call_trace_address,
+            c.swap_in_pair_token_in,
+            c.swap_out_pair_token_out,
             t."from" AS caller,
-            CASE WHEN c.path[1] = 0xeeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
-                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-                ELSE c.path[1]
-            END AS token_in,
-            CASE WHEN c.path[cardinality(c.path)] = 0xeeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
-                THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
-                ELSE c.path[cardinality(c.path)]
-            END AS token_out,
+            concat(
+                '0x',
+                lower(
+                    substring(
+                        to_hex(
+                            keccak(
+                                concat(
+                                    0xff,
+                                    c.factory,
+                                    keccak(
+                                        concat(
+                                            CASE WHEN c.swap_in_pair_token_in < c.swap_in_pair_token_out THEN c.swap_in_pair_token_in ELSE c.swap_in_pair_token_out END,
+                                            CASE WHEN c.swap_in_pair_token_in < c.swap_in_pair_token_out THEN c.swap_in_pair_token_out ELSE c.swap_in_pair_token_in END
+                                        )
+                                    ),
+                                    c.initCode
+                                )
+                            )
+                        ),
+                        -40
+                    )
+                )
+            ) as swap_in_pair,
+            concat(
+                '0x',
+                lower(
+                    substring(
+                        to_hex(
+                            keccak(
+                                concat(
+                                    0xff,
+                                    c.factory,
+                                    keccak(
+                                        concat(
+                                            CASE WHEN c.swap_out_pair_token_in < c.swap_out_pair_token_out THEN c.swap_out_pair_token_in ELSE c.swap_out_pair_token_out END,
+                                            CASE WHEN c.swap_out_pair_token_in < c.swap_out_pair_token_out THEN c.swap_out_pair_token_out ELSE c.swap_out_pair_token_in END
+                                        )
+                                    ),
+                                    c.initCode
+                                )
+                            )
+                        ),
+                        -40
+                    )
+                )
+            ) as swap_out_pair,
+            c.is_token_in_eth,
+            c.is_token_out_eth,
             row_number() OVER (
-                PARTITION BY c.call_tx_hash, t."from", c.path[1], c.path[2], c.factory
+                PARTITION BY c.call_tx_hash, t."from", c.swap_in_pair_token_in, c.swap_in_pair_token_out, c.factory
                 ORDER BY c.call_trace_address ASC
             ) AS swap_in_row_number,
             row_number() OVER (
-                PARTITION BY c.call_tx_hash, c.path[cardinality(c.path) - 1], c.path[cardinality(c.path)], c.factory
+                PARTITION BY c.call_tx_hash, c.swap_out_pair_token_in, c.swap_out_pair_token_out, c.factory
                 ORDER BY c.call_trace_address ASC
             ) AS swap_out_row_number,
             c.token_in_amount,
+            c.token_out_amount,
             count(c.call_tx_hash) OVER (PARTITION BY c.call_tx_hash) AS calls_count
 
         FROM raw_no_event_call_transaction c
@@ -393,6 +467,7 @@ uniswap_call_swap_without_event AS (
             c.swap_in_row_number,
             c.swap_out_row_number,
             c.token_in_amount,
+            c.token_out_amount,
             c.calls_count
 
         FROM formatted_no_event_call_transaction c
@@ -401,13 +476,12 @@ uniswap_call_swap_without_event AS (
             AND c.call_tx_hash = e.evt_tx_hash
             AND (
                 e."from" = c.caller
-                OR e."from" = 0x216B4B4Ba9F3e719726886d34a177484278Bfcae
-                OR e."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
+                OR e."from" = 0x216b4b4ba9f3e719726886d34a177484278bfcae /* Token Transfer Proxy */
+                OR (e."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */ AND c.is_token_in_eth)
             )
-            AND e.contract_address = c.token_in
-            AND e.to != 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
+            AND cast(e.to AS varchar) = c.swap_in_pair
+            AND e.contract_address = c.swap_in_pair_token_in
             AND e.evt_row_num = c.swap_in_row_number
-            AND (c.token_in_amount = 0 OR e.value = c.token_in_amount)
     ),
 
     swap_detail_out AS (
@@ -419,6 +493,7 @@ uniswap_call_swap_without_event AS (
             try_cast(e.value AS int256) AS amountOut,
             e.evt_index AS evt_index,
             c.token_in_amount,
+            c.token_out_amount,
             c.swap_in_row_number,
             c.swap_out_row_number
 
@@ -426,8 +501,12 @@ uniswap_call_swap_without_event AS (
     
         INNER JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
             AND c.call_tx_hash = e.evt_tx_hash
-            AND (e."to" = c.caller OR e.to = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57)
-            AND e.contract_address = c.token_out
+            AND cast(e."from" AS varchar) = swap_out_pair
+            AND (
+                e."to" = c.caller
+                OR (e.to = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */ AND c.is_token_out_eth)
+            )
+            AND e.contract_address = c.swap_out_pair_token_out
             AND e.evt_row_num = c.swap_out_row_number
     ),
 
@@ -450,7 +529,8 @@ uniswap_call_swap_without_event AS (
 
         INNER JOIN swap_detail_out o ON i.block_number = o.block_number 
             AND i.tx_hash = o.tx_hash
-            AND (i.token_in_amount = 0 OR i.token_in_amount = o.token_in_amount)
+            AND i.token_in_amount = o.token_in_amount
+            AND i.token_out_amount = o.token_out_amount
             AND i.swap_in_row_number = o.swap_in_row_number
             AND i.swap_out_row_number = o.swap_out_row_number
     )
@@ -464,7 +544,7 @@ uniswap_call_swap_without_event AS (
         cast(NULL AS double) AS amount_usd,
         token_bought_address,
         token_sold_address,
-        0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address,
+        0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address, /* Augustus Swapper */
         tx_hash,
         trace_address,
         evt_index
@@ -511,7 +591,7 @@ zero_x_call_swap_without_event AS (
                 AND {{ incremental_predicate('c.call_block_time') }}
                 {% endif %}
             {% if not loop.last %}
-            UNION -- There may be multiple calls in same tx
+            UNION ALL
             {% endif %}
         {% endfor %}
     ),
@@ -521,7 +601,7 @@ zero_x_call_swap_without_event AS (
             coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
             coalesce(e.evt_block_number, t.block_number) AS block_number,
             coalesce(e.evt_block_time, t.block_time) AS block_time,
-            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2) AS tokenIn,
+            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */) AS tokenIn,
             coalesce(try_cast(e.value AS int256), try_cast(t.value AS int256)) AS amountIn,
             coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
             coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index,
@@ -533,14 +613,14 @@ zero_x_call_swap_without_event AS (
         LEFT JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
             AND c.call_tx_hash = e.evt_tx_hash
             AND e."from" = c.caller
-            AND e."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
+            AND e."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */
             AND e.contract_address = c.token_in
             AND e.evt_row_num = c.swap_in_row_number
                 
         LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
             AND t."from" = c.caller
-            AND t."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
+            AND t."to" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */
             AND t.call_type = 'call'
             AND t.value > uint256 '0'
             AND t.block_number >= {{ trade_call_start_block_number }}
@@ -557,7 +637,7 @@ zero_x_call_swap_without_event AS (
             coalesce(e.evt_tx_hash, t.tx_hash) AS tx_hash,
             coalesce(e.evt_block_number, t.block_number) AS block_number,
             coalesce(e.evt_block_time, t.block_time) AS block_time,
-            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2) AS tokenOut,
+            coalesce(e.contract_address, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 /* WETH */) AS tokenOut,
             try_cast(coalesce(e.value, t.value) AS int256) AS amountOut,
             coalesce(t.trace_address, cast(ARRAY[-1] AS array<bigint>)) AS trace_address,
             coalesce(e.evt_index, cast(-1 AS integer)) AS evt_index,
@@ -567,14 +647,14 @@ zero_x_call_swap_without_event AS (
     
         LEFT JOIN event_with_row_number e ON c.call_block_number = e.evt_block_number
             AND c.call_tx_hash = e.evt_tx_hash
-            AND e."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
+            AND e."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */
             AND e."to" = c.caller
             AND e.contract_address = c.token_out
             AND e.evt_row_num = c.swap_out_row_number
 
         LEFT JOIN {{ source('ethereum', 'traces') }} t ON c.call_block_number = t.block_number
             AND c.call_tx_hash = t.tx_hash
-            AND t."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57
+            AND t."from" = 0xdef171fe48cf0115b1d80b88dc8eab59176fee57 /* Augustus Swapper */
             AND t."to" = c.caller
             AND t.call_type = 'call'
             AND t.value > uint256 '0'
@@ -596,7 +676,7 @@ zero_x_call_swap_without_event AS (
         cast(NULL AS double) AS amount_usd,
         o.tokenOut AS token_bought_address,
         i.tokenIn AS token_sold_address,
-        0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address,
+        0xdef171fe48cf0115b1d80b88dc8eab59176fee57 AS project_contract_address, /* Augustus Swapper */
         i.tx_hash,
         greatest(i.trace_address, o.trace_address) AS trace_address,
         greatest(i.evt_index, o.evt_index) AS evt_index
@@ -668,6 +748,8 @@ dexs AS (
         c.trace_address,
         c.evt_index
     FROM call_swap_without_event c
+    LEFT JOIN liqudity_swap l ON c.block_number = l.block_number AND c.tx_hash = l.tx_hash
+    WHERE l.tx_hash IS NULL
 )
 
 SELECT 'ethereum' AS blockchain,
