@@ -5,6 +5,8 @@ dbt_macros/dune/create_views_of_dependencies.sql
 dbt_macros/dune/alter_table_locations.sql
 scripts/integration_test/test_diffs_tokens/*
 .vs
+dbt_subprojects/manifests/*
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -146,3 +148,4 @@ logs/
 !target/manifest.json
 !target/run_results.json
 !target/sources.json
+

@@ -2,15 +2,16 @@
     schema = 'gyroscope',
     alias = 'trades',
     materialized = 'view',
-    post_hook='{{ expose_spells(\'["arbitrum", "ethereum","optimism", "polygon"]\',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "ethereum","optimism", "polygon"]\',
                                 "project",
                                 "gyroscope",
-                                \'["fmarrr"]\') }}'
+                                \'["fmarrr", "viniabussafi"]\') }}'
     )
 }}
 
 {% set gyroscope_models = [
     ref('gyroscope_arbitrum_trades'),
+    ref('gyroscope_avalanche_c_trades'),
     ref('gyroscope_ethereum_trades'),
     ref('gyroscope_optimism_trades'),
     ref('gyroscope_polygon_trades')

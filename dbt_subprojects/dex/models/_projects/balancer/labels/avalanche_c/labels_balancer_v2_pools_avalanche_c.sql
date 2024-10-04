@@ -113,6 +113,20 @@ WITH pools AS (
   CROSS JOIN UNNEST(
         CAST(json_extract(settingsParams, '$.tokens') AS ARRAY(VARCHAR))
     ) AS t (tokens)
+
+  UNION ALL
+
+  SELECT
+    c.poolId AS pool_id,
+    t.tokens AS token_address,
+    0 AS normalized_weight,
+    cc.symbol,
+    'ECLP' AS pool_type
+  FROM {{ source('balancer_v2_avalanche_c', 'Vault_evt_PoolRegistered') }} c
+  INNER JOIN {{ source('gyroscope_avalanche_c', 'GyroECLPPoolFactory_call_create') }} cc
+    ON c.evt_tx_hash = cc.call_tx_hash
+    AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
+  CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
 ),
 
 settings AS (
@@ -129,7 +143,7 @@ settings AS (
 SELECT 
   'avalanche_c' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
-  CASE WHEN pool_type IN ('stable', 'linear', 'LBP', 'FX', 'managed') 
+  CASE WHEN pool_type IN ('stable', 'linear', 'LBP', 'FX', 'managed', 'ECLP') 
   THEN lower(pool_symbol)
     ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
     array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))

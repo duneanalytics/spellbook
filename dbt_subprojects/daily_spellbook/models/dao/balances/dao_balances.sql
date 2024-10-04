@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'dao',
     alias = 'balances',
     materialized = 'table',

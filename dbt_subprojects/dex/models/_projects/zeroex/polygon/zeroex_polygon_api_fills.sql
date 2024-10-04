@@ -169,7 +169,7 @@ ERC20BridgeTransfer AS (
             TRUE                                    AS swap_flag,
             FALSE                                   AS matcha_limit_order_flag
     FROM {{ source('polygon', 'logs') }} logs
-    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash and zeroex_tx.block_time = logs.block_time 
     WHERE topic0 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
 
     {% if is_incremental() %}
@@ -266,7 +266,7 @@ direct_uniswapv3 AS (
             FALSE                                                                                   AS matcha_limit_order_flag
     FROM {{ source('uniswap_v3_polygon', 'UniswapV3Pool_evt_Swap') }} swap
    LEFT JOIN {{ source('uniswap_v3_polygon', 'Factory_evt_PoolCreated') }} pair ON pair.pool = swap.contract_address
-   INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash
+   INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = swap.evt_tx_hash and zeroex_tx.block_time = swap.evt_block_time 
    WHERE 1=1 --sender = 0xdef1c0ded9bec7f1a1670819833240f027b25eff
 
         {% if is_incremental() %}
@@ -309,7 +309,10 @@ SELECT distinct
         cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
         cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
         maker,
-        tx."from" AS taker, -- fix the user masked by ProxyContract issue
+        CASE
+            WHEN taker in (0xdef1c0ded9bec7f1a1670819833240f027b25eff,0xdb6f1920a889355780af7570773609bd8cb1f498) THEN tx."from"
+            ELSE tx."from" -- fix the user masked by ProxyContract issue
+        END AS taker,
         taker_token,
         ts.symbol AS taker_symbol,
         maker_token,
@@ -339,7 +342,7 @@ SELECT distinct
 FROM all_tx
 
 
-INNER JOIN {{ source('polygon', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
+INNER JOIN {{ source('polygon', 'transactions')}} tx ON all_tx.tx_hash = tx.hash and all_tx.block_time = tx.block_time 
 
 {% if is_incremental() %}
 AND {{ incremental_predicate('tx.block_time') }}

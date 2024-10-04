@@ -1,5 +1,5 @@
 {{ config(
-    
+    tags = ['prod_exclude'],
     alias = 'transactions_ethereum_eth',
     partition_by = ['block_month'],
     materialized = 'incremental',
