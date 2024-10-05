@@ -46,3 +46,6 @@ sources:
   - name: nft_scroll
     tables:
       - name: transfers
+  - name: nft_sei
+    tables:
+      - name: transfers
