@@ -420,3 +420,28 @@ models:
         description: "Outcome of the market"
       - name: resolved_on_timestamp
         description: "Timestamp when the market was resolved"
+
+  - name: polymarket_polygon_hourly_market_prices
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: your_name_here
+    config:
+      tags: ['polygon','prediction_markets','polymarket','prices']
+    description: "Hourly market prices for Polymarket on Polygon"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hour
+            - condition_id
+            - token_id
+    columns:
+      - name: hour
+        description: "The hour for which the price is valid"
+      - name: condition_id
+        description: "The unique identifier for the market condition"
+      - name: token_id
+        description: "The token ID associated with the outcome"
+      - name: price
+        description: "The price of the outcome token at the end of the hour"
