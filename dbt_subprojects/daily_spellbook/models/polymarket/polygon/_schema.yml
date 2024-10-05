@@ -251,22 +251,17 @@ models:
             - evt_index
             - tx_hash
     columns:
-      - *block_time
-      - *block_number
-      - *action
-      - &from_address
-        name: from_address
-      - &to_address
-        name: to_address
-      - &symbol
-        name: symbol
-      - &amount_raw
-        name: amount_raw
-      - *amount
-      - &amount_usd
-        name: amount_usd
-      - *evt_index
-      - *tx_hash
+      - name: block_time
+      - name: block_number
+      - name: action
+      - name: from_address
+      - name: to_address
+      - name: symbol
+      - name: amount_raw
+      - name: amount
+      - name: amount_usd
+      - name: evt_index
+      - name: tx_hash
 
   - name: polymarket_polygon_safe_proxies
     meta:
