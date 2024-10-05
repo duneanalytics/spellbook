@@ -67,4 +67,6 @@ sources:
     tables:
       - name: transfers
 
-
+  - name: tokens_mantle
+    tables:
+      - name: transfers
