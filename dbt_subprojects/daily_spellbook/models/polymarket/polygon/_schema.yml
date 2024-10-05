@@ -192,34 +192,49 @@ models:
             - evt_index
             - tx_hash
     columns:
-      - *block_time
-      - *block_number
-      - &action
-        name: action
-      - *condition_id
-      - &asset_id
-        name: asset_id
-      - &amount
-        name: amount
-      - &shares
-        name: shares
-      - &price
-        name: price
-      - &fee
-        name: fee
-      - &maker
-        name: maker
-      - &taker
-        name: taker
-      - &maker_amount_raw
-        name: maker_amount_raw
-      - &taker_amount_raw
-        name: taker_amount_raw
-      - &contract_address
-        name: contract_address
-      - *evt_index
-      - *tx_hash
-  
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: block_time
+        description: "UTC event block time"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Index of the event within the transaction"
+      - name: action
+        description: "Type of trade (clob or AMM trade)"
+      - name: contract_address
+        description: "Contract address (ctfexchange or negrisk module)"
+      - name: condition_id
+        description: "Unique identifier for the YES/NO pair"
+      - name: event_market_name
+        description: "Overarching question for negRisk markets (e.g., Presidential election 2024)"
+      - name: question
+        description: "Concrete outcome being bet on (e.g., Trump wins 2024 election?)"
+      - name: polymarket_link
+        description: "Link to the Polymarket site (may be broken for archived markets)"
+      - name: token_outcome
+        description: "YES or NO token outcome"
+      - name: neg_risk
+        description: "Boolean indicating whether this is a neg_risk market"
+      - name: asset_id
+        description: "Token ID of the ERC1155"
+      - name: price
+        description: "Price for the token being bought"
+      - name: amount
+        description: "Amount in USD"
+      - name: shares
+        description: "Amount of shares transferred"
+      - name: fee
+        description: "Fees to Polymarket (currently not enabled)"
+      - name: maker
+        description: "Trader whose order is being filled"
+      - name: taker
+        description: "Trader who is filling the order (often a contract from Polymarket)"
+      - name: unique_key
+        description: "Unique key of the event or market"
+      - name: token_outcome_name
+        description: "Combination of token outcome and question"
+
   - name: polymarket_polygon_capital_actions
     meta:
       blockchain: polygon

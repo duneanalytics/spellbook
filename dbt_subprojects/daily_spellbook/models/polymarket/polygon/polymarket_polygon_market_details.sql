@@ -103,6 +103,7 @@ SELECT
   icon,
   image,
   tags,
+  fpmm, 
   oracle AS oracle,
   fee_bips,
   case when pm.outcome is null then 'unresolved' else pm.outcome end as outcome,
