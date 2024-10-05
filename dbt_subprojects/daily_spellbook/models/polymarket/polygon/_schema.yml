@@ -309,6 +309,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - token_id
+            - question_id
     columns:
       - name: unique_key
         description: "Unique identifier for the market"
@@ -344,13 +345,15 @@ models:
         description: "Negative risk market name from on-chain data"
       - name: polymarket_link
         description: "Link to the Polymarket event page"
-      - *block_time
-      - *block_number
-      - *oracle
-      - *fee_bips
-      - *evt_index
-      - *tx_hash
-
+      - name: market_start_time
+        description: "Start time of the market"
+      - name: market_end_time
+        description: "End time of the market"
+      - name: market_outcome
+        description: "Outcome of the market"
+      - name: resolved_on_timestamp
+        description: "Timestamp when the market was resolved"
+        
   - name: polymarket_polygon_positions
     meta:
       blockchain: polygon
@@ -364,7 +367,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
-            - token_address
             - token_id
             - day
     columns:
