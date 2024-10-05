@@ -31,10 +31,11 @@ WITH changed_balances AS (
       AND token_address = 0x4D97DCd97eC945f40cF65F87097ACe5EA0476045
 ),
 
---sequences are limited to 10k so just pulling this in from the transactions table, no other relationship
-hours AS (
-    Select date_trunc('hour', block_time) as hour
-    from {{ source('ethereum', 'transactions') }}
+days AS (
+    SELECT *
+    FROM UNNEST(
+        SEQUENCE(CAST('2015-01-01' AS date), DATE(DATE_TRUNC('day', NOW())), INTERVAL '1' day)
+    ) AS foo(day)
 ),
 
 forward_fill AS (
