@@ -1,0 +1,201 @@
+version: 2
+
+models:
+  - name: superfluid_base_flow_updated_events
+    meta:
+      blockchain: base
+      sector: defi
+      project: superfluid
+      contributors: superfluid_hq
+    config:
+      tags: ['base', 'DeFi', 'superfluid']
+    description: >
+      A table containing all flow updated events on Base.
+    columns:
+      - &block_time
+        name: block_time
+        description: "Event UTC block time"
+      - &block_number
+        name: block_number
+        description: "Event block number on the chain"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction"
+      - &index
+        name: index
+        description: "Index of the log event in the block"
+      - &token
+        name: token
+        description: "The Supertoken address for the event"
+      - &sender
+        name: sender
+        description: "The sender address for the event"
+      - &receiver
+        name: receiver
+        description: "The receiver address for the event"
+      - &flowRate
+        name: flowRate
+        description: "The new flow rate in nominal token amount per second"
+
+  - name: superfluid_base_flow_distribution_updated_events
+    meta:
+      blockchain: base
+      sector: defi
+      project: superfluid
+      contributors: superfluid_hq
+    config:
+      tags: ['base', 'DeFi', 'superfluid']
+    description: >
+      A table containing all flow distribution updated events on Base.
+    columns:
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *token
+      - &pool
+        name: pool
+        description: "The distribution pool address"
+      - &distributor
+        name: distributor
+        description: "The distributor address"
+      - &operator
+        name: operator
+        description: "The operator address"
+      - &oldFlowRate
+        name: oldFlowRate
+        description: "The old flow rate in nominal token amount per second"
+      - &newDistributorToPoolFlowRate
+        name: newDistributorToPoolFlowRate
+        description: "The new flow rate in nominal token amount per second"
+      - &newTotalDistributionFlowRate
+        name: newTotalDistributionFlowRate
+        description: "The new adjusted distribution flow rate in nominal token amount per second"
+      - &adjustmentFlowRecipient
+        name: adjustmentFlowRecipient
+        description: "The adjustment recipient address"
+      - &adjustmentFlowRate
+        name: adjustmentFlowRate
+        description: "The adjustment flow rate in nominal token amount per second"
+    
+  - name: superfluid_base_instant_distribution_updated_events
+    meta:
+      blockchain: base
+      sector: defi
+      project: superfluid
+      contributors: superfluid_hq
+    config:
+      tags: ['base', 'DeFi', 'superfluid']
+    description: >
+      A table containing all instant distribution updated events on Base.
+    columns:
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *token
+      - *pool
+      - *distributor
+      - *operator
+      - &requestedAmount
+        name: requestedAmount
+        description: "The requested amount in nominal token amount"
+      - &actualAmount
+        name: actualAmount
+        description: "The actual amount in nominal token amount"
+
+  - name: superfluid_base_index_updated_events
+    meta:
+      blockchain: base
+      sector: defi
+      project: superfluid
+      contributors: superfluid_hq
+    config:
+      tags: ['base', 'DeFi', 'superfluid']
+    description: >
+      A table containing all index updated events on Base.
+    columns:
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *token
+      - &publisher
+        name: publisher
+        description: "The publisher address"
+      - &indexId
+        name: indexId
+        description: "The index id"
+      - &oldIndexValue
+        name: oldIndexValue
+        description: "The old index value"
+      - &newIndexValue
+        name: newIndexValue
+        description: "The new index value"
+      - &totalUnitsPending
+        name: totalUnitsPending
+        description: "The total number of index units pending"
+      - &totalUnitsApproved
+        name: totalUnitsApproved
+        description: "The total number of index units approved"
+
+  - name: superfluid_base_token_upgraded_events
+    meta:
+      blockchain: base
+      sector: defi
+      project: superfluid
+      contributors: superfluid_hq
+    config:
+      tags: ['base', 'DeFi', 'superfluid']
+    description: >
+      A table containing all token upgraded events on Base.
+    columns:
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *token
+      - name: account
+        description: "The account address that the token was upgraded to"
+      - name: amount
+        description: "The nominal amount of tokens that were upgraded"
+
+  - name: superfluid_base_token_downgraded_events
+    meta:
+      blockchain: base
+      sector: defi
+      project: superfluid
+      contributors: superfluid_hq
+    config:
+      tags: ['base', 'DeFi', 'superfluid']
+    description: >
+      A table containing all token downgraded events on Base.
+    columns:
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - *token
+      - name: account
+        description: "The account address that the token was downgraded to"
+      - name: amount
+        description: "The nominal amount of tokens that were downgraded"
+  
+  - name: superfluid_base_supertoken_created_events
+    meta:
+      blockchain: base
+      sector: defi
+      project: superfluid
+      contributors: superfluid_hq
+    config:
+      tags: ['base', 'DeFi', 'superfluid']
+    description: >
+      A table containing all supertoken created events on Base.
+    columns:
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *index
+      - name: address
+        description: "The Supertoken address"
+      
