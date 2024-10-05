@@ -25,12 +25,13 @@ WITH changed_prices AS (
     WHERE block_time < DATE_TRUNC('hour', NOW()) 
 ),
 
+--sequences are limited to 10k so just pulling this in from the transactions table, no other relationship
 hours AS (
-    SELECT *
-    FROM UNNEST(
-        SEQUENCE(CAST('2021-03-16' AS timestamp), DATE_TRUNC('hour', NOW()), INTERVAL '1' hour)
-    ) AS foo(hour)
+    Select date_trunc('hour', block_time) as hour
+    from {{ source('ethereum', 'transactions') }}
 ),
+
+
 
 forward_fill AS (
     SELECT
