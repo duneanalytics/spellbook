@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: yield_yak_mantle_trades
+  - name: yield_yak_mantle_base_trades
     meta:
       blockchain: mantle
       sector: dex

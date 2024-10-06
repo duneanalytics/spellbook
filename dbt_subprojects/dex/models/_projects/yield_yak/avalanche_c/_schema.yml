@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: yield_yak_avalanche_c_trades
+  - name: yield_yak_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
       sector: dex

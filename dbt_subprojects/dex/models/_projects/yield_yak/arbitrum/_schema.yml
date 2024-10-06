@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: yield_yak_arbitrum_trades
+  - name: yield_yak_arbitrum_base_trades
     meta:
       blockchain: arbitrum
       sector: dex
