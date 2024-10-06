@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: addresses_events_sepolia_first_funded_by
+    meta:
+      blockchain: sepolia
+      sector: addresses_events
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'funded', 'addresses_events', 'sepolia']
+    description: "Table showing who first funded each Sepolia address in testnet ETH"
+    tests:
+      - check_seed:
+          seed_file: ref('first_funded_by_seed')
+          filter:
+            blockchain: sepolia
+          match_columns:
+            - blockchain
+            - address
+          check_columns:
+            - first_funded_by
+            - block_number
+            - tx_hash
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Concerned Fantom address"
+        tests:
+          - unique
+      - name: first_funding_executed_by
+        description: "Which address executed the first funding tx"
+      - name: first_funded_by
+        description: "Which Fantom address first funded the address with FTM"
+      - name: block_time
+        description: "The block time on which the address was first funded with FTM"
+      - name: block_number
+        description: "The block number on which the address was first funded with FTM"
+      - name: tx_hash
+        description: "The transaction hash on which the address was first funded with FTM"
+
+  - name: addresses_events_sepolia_first_activity
+    meta:
+      blockchain: sepolia
+      sector: addresses_events
+      project: addresses
+      contributors: Henrystats
+    config:
+      tags: ['table', 'activity', 'addresses_events', 'sepolia']
+    description: "Table showing first activity of each Goerli address"
+    tests:
+      - check_seed:
+          seed_file: ref('first_activity_seed')
+          filter:
+            blockchain: sepolia
+          match_columns:
+            - address
+          check_columns:
+            - first_activity_to
+            - first_block_number
+            - first_tx_hash
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: address
+        description: "Concerned sepolia Mainnet address"
+        tests:
+          - unique
+      - name: first_activity_to
+        description: "First transaction activity to address"
+      - name: first_block_time
+        description: "The block time on which the address made it's first activity"
+      - name: first_block_number
+        description: "The block number on which the address made it's first activity"
+      - name: first_tx_hash
+        description: "The transaction hash on which the address made it's first activity"
+      - name: first_function
+        description: "first function called by address"
+      - name: first_ftm_transferred
+        description: "FTM transferred in transaction"
