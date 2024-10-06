@@ -32,10 +32,10 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
   - [Prerequisites](#prerequisites)
   - [Initial Installation](#initial-installation)
   - [Coming back](#coming-back)
-  - [What did I just do?](#what-did-i-just-do?)
+  - [What did I just do?](#what-did-i-just-do)
 - [Using dbt to write spells](#how-to-use-dbt-to-create-spells)
-  - [Generating and serving documentation:](#generating-and-serving-documentation:)
-  - [DBT Resources:](#dbt-resources:)
+  - [Generating and serving documentation:](#generating-and-serving-documentation)
+  - [DBT Resources:](#dbt-resources)
         
 ## Introduction
 
