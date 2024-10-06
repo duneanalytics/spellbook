@@ -38,3 +38,14 @@ sources:
   - name: gas
     tables:
       - name: fees
+
+  - name: evms
+    tables:
+      - name: contracts
+      - name: blocks
+      - name: creation_traces
+      - name: traces
+      - name: traces_decoded
+      - name: transactions
+      - name: logs
+      - name: info
