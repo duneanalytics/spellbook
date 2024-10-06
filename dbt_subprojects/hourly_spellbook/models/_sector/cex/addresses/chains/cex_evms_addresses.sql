@@ -1653,7 +1653,7 @@ FROM (VALUES
     , (0xbb44e3349c23cc430cae6ebbaf0256c9f2a1872f, 'Coinhako', 'Coinhako 4', 'hildobby', date '2024-05-27')
     , (0xe66baa0b612003af308d78f066bbdb9a5e00ff6c, 'Coinhako', 'Coinhako 5', 'hildobby', date '2024-05-27')
     , (0xf2d4766ad705e3a5c9ba5b0436b473085f82f82f, 'Coinhako', 'Coinhako 6', 'hildobby', date '2022-08-28')
-    , (0x1562bd4f90eb997611b5d7579ab38e5a23acb33e, 'Coinhako', 'Coinhako 6', 'hildobby', date '2024-09-06')
+    , (0x1562bd4f90eb997611b5d7579ab38e5a23acb33e, 'Coinhako', 'Coinhako 7', 'hildobby', date '2024-09-06')
     , (0x19d97aa29cd33bd966d52e2bc9dfc719f2bb9ae1, 'Coinhako', 'Coinhako Deployer', 'hildobby', date '2024-09-06')
     -- Bitbuy
     , (0xe9bdb4219706914441178bc8357e8551b53d8cbf, 'Bitbuy', 'Bitbuy MultiSig 1', 'hildobby', date '2023-11-24')
