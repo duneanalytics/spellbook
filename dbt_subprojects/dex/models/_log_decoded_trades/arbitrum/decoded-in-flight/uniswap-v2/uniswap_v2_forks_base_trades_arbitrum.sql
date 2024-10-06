@@ -56,6 +56,14 @@ INNER JOIN (
 ON transfers.tx_hash = uniswap_v2_base_trades.tx_hash
     AND contains(transfers.contract_addresses, uniswap_v2_base_trades.token_bought_address)
     AND contains(transfers.contract_addresses, uniswap_v2_base_trades.token_sold_address)
-LEFT JOIN {{ source('evms', 'contracts') }} AS contracts
+LEFT JOIN (
+    SELECT
+        address,
+        blockchain,
+        array_agg(namespace)[1] AS namespace
+    FROM {{ source('evms', 'contracts') }}
+    WHERE blockchain = 'arbitrum'
+    GROUP BY address, blockchain
+) AS contracts
 ON uniswap_v2_base_trades.project_contract_address = contracts.address
   AND uniswap_v2_base_trades.blockchain = contracts.blockchain
