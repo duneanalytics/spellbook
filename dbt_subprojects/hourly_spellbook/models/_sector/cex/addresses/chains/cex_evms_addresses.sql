@@ -1216,7 +1216,6 @@ FROM (VALUES
     , (0xddaad971be05321fd541372cd710a7f0555972ed, 'BTSE', 'BTSE 3', 'hildobby', date '2023-11-20')
     , (0xde279a5cd86860cd3d039aa1b74bc29e74cabb12, 'BTSE', 'BTSE 4', 'hildobby', date '2024-01-04')
     , (0x661bc014ba045a1918215cbe2af8121ada09638d, 'BTSE', 'BTSE 5', 'hildobby', date '2024-06-03')
-    , (0x661bc014ba045a1918215cbe2af8121ada09638d, 'BTSE', 'BTSE 6', 'hildobby', date '2024-09-06')
     , (0x1619d743d7dc612e99d5d94ebd6b9695d46f0bf3, 'BTSE', 'BTSE WBTC Merchant', 'hildobby', date '2024-01-04')
     , (0xb0afffd6f6ad77f61927803ade6dbd47f1a1c356, 'BTSE', 'BTSE Cobo Deposit', 'hildobby', date '2023-11-20')
     -- Voyager
@@ -2223,8 +2222,7 @@ FROM (VALUES
     , (0x67fe3293fc4e877f3cdc3f0ed93721a600f72bde, 'SwissBorg', 'SwissBorg 13', 'hildobby', date '2024-04-20')
     , (0xff4606bd3884554cdbdabd9b6e25e2fad4f6fc54, 'SwissBorg', 'SwissBorg 14', 'hildobby', date '2024-04-20')
     , (0x0a52368d5a7e70d8c927f75ea6618c2c468031d4, 'SwissBorg', 'SwissBorg 15', 'hildobby', date '2024-06-03')
-    , (0x0a52368d5a7e70d8c927f75ea6618c2c468031d4, 'SwissBorg', 'SwissBorg 16', 'hildobby', date '2024-06-03')
-    , (0x61488b940e5796b0d4ff096a441ebc48b8eac6de, 'SwissBorg', 'SwissBorg 17', 'hildobby', date '2024-09-06')
+    , (0x61488b940e5796b0d4ff096a441ebc48b8eac6de, 'SwissBorg', 'SwissBorg 16', 'hildobby', date '2024-09-06')
     , (0x43fda7708c97c4c40d5402c6392f0457f23c0b8e, 'SwissBorg', 'SwissBorg Deposit Funder 1', 'hildobby', date '2023-11-23')
     , (0xa5546c4bc006d23b60d690d3033b8df40cecc230, 'SwissBorg', 'SwissBorg Deposit Funder 2', 'hildobby', date '2023-11-23')
     , (0xcdf2bfd0ff20811c98471b331db19aabf3d3b972, 'SwissBorg', 'SwissBorg Deposit Funder 3', 'hildobby', date '2023-11-23')
