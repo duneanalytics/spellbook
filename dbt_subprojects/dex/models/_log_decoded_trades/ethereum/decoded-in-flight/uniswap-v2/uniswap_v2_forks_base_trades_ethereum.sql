@@ -15,7 +15,7 @@ WITH all_decoded_trades AS (
     {{
         uniswap_v2_forks_trades(
             blockchain = 'ethereum'
-            , version = 'null'
+            , version = '2'
             , project = 'null'
             , Pair_evt_Swap = ref('uniswap_v2_pool_decoding_ethereum')
             , Factory_evt_PairCreated = ref('uniswap_v2_factory_decoding_ethereum')
@@ -23,7 +23,24 @@ WITH all_decoded_trades AS (
     }}
 )
 
-SELECT uniswap_v2_base_trades.*
+SELECT  uniswap_v2_base_trades.blockchain
+        , contracts.namespace = project
+        , uniswap_v2_base_trades.version
+        , uniswap_v2_base_trades.dex_type
+        , uniswap_v2_base_trades.factory_address
+        , uniswap_v2_base_trades.block_month
+        , uniswap_v2_base_trades.block_date
+        , uniswap_v2_base_trades.block_time
+        , uniswap_v2_base_trades.block_number
+        , uniswap_v2_base_trades.token_bought_amount_raw
+        , uniswap_v2_base_trades.token_sold_amount_raw
+        , uniswap_v2_base_trades.token_bought_address
+        , uniswap_v2_base_trades.token_sold_address
+        , uniswap_v2_base_trades.taker
+        , uniswap_v2_base_trades.maker
+        , uniswap_v2_base_trades.project_contract_address
+        , uniswap_v2_base_trades.tx_hash
+        , uniswap_v2_base_trades.evt_index
 FROM all_decoded_trades AS uniswap_v2_base_trades
 INNER JOIN (
     SELECT
@@ -39,3 +56,6 @@ INNER JOIN (
 ON transfers.tx_hash = uniswap_v2_base_trades.tx_hash
     AND contains(transfers.contract_addresses, uniswap_v2_base_trades.token_bought_address)
     AND contains(transfers.contract_addresses, uniswap_v2_base_trades.token_sold_address)
+LEFT JOIN {{ source('evms', 'contracts') }} AS contracts
+ON uniswap_v2_base_trades.project_contract_address = contracts.address
+  AND uniswap_v2_base_trades.blockchain = contracts.blockchain
