@@ -24,7 +24,7 @@ WITH all_decoded_trades AS (
 )
 
 SELECT  uniswap_v3_base_trades.blockchain
-        , contracts.namespace AS project
+        , COALESCE(contracts.namespace, uniswap_v3_base_trades.project) AS project
         , uniswap_v3_base_trades.version
         , uniswap_v3_base_trades.dex_type
         , uniswap_v3_base_trades.factory_address
@@ -63,6 +63,7 @@ LEFT JOIN (
         array_agg(namespace)[1] AS namespace
     FROM {{ source('evms', 'contracts') }}
     WHERE blockchain = 'arbitrum'
+        AND namespace IS NOT NULL
     GROUP BY address, blockchain
 ) AS contracts
 ON uniswap_v3_base_trades.project_contract_address = contracts.address
