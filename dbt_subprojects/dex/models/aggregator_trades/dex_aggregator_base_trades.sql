@@ -13,6 +13,7 @@
 {% set base_trade_models = [
     ref('lifi_base_trades')
     , ref('firebird_finance_optimism_base_trades')
+    , ref('yield_yak_base_trades')
 ] %}
 
 with base_union as (
