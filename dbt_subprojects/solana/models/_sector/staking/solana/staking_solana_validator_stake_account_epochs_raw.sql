@@ -21,9 +21,6 @@ with
         FROM {{ ref('staking_solana_stake_account_delegations') }} vote
         LEFT JOIN {{ ref('solana_utils_epochs') }} epoch
             ON first_block_epoch = true --cross join
-            {% if is_incremental() %}
-            AND epoch.block_time >= date_trunc('day', now() - interval '7' day)
-            {% endif %}
         WHERE vote.block_slot < epoch.block_slot --only get changes to accounts before start of epoch
         GROUP BY 1,2,3,4,5
     )
