@@ -37,7 +37,8 @@ latest_prices AS (
         day,
         condition_id,
         token_id,
-        price
+        price,
+        next_update_day
     FROM (
         SELECT
             day,
