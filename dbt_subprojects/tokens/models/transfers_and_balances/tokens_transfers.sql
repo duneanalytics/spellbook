@@ -21,6 +21,8 @@
                                             ,"zksync"
                                             ,"zora"
                                             ,"mode"
+                                            ,"bob"
+                                            ,"degen"
                                         ]\',
                                         "sector",
                                         "tokens",
@@ -48,6 +50,8 @@
     ,'zksync'
     ,'zora'
     ,'mode'
+    ,'bob'
+    ,'degen'
 ] %}
 
 SELECT *
