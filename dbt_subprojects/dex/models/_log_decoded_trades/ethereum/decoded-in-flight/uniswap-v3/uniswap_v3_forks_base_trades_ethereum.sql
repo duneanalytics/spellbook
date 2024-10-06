@@ -24,7 +24,7 @@ WITH all_decoded_trades AS (
 )
 
 SELECT  uniswap_v3_base_trades.blockchain
-        , contracts.namespace = project
+        , contracts.namespace AS project
         , uniswap_v3_base_trades.version
         , uniswap_v3_base_trades.dex_type
         , uniswap_v3_base_trades.factory_address
