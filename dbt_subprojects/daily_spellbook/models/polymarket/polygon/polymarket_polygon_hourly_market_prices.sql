@@ -17,6 +17,7 @@
 WITH changed_prices AS (
     SELECT
         date_trunc('day', block_time) AS day,
+        block_time,
         condition_id,
         asset_id AS token_id,
         price,
@@ -43,7 +44,7 @@ latest_prices AS (
             condition_id,
             token_id,
             price,
-            ROW_NUMBER() OVER (PARTITION BY condition_id, token_id, day ORDER BY block_time DESC) AS rn
+            ROW_NUMBER() OVER (PARTITION BY token_id, day ORDER BY block_time DESC) AS rn
         FROM changed_prices
     ) t
     WHERE rn = 1
