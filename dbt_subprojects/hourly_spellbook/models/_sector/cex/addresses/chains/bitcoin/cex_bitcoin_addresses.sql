@@ -784,5 +784,7 @@ FROM (VALUES
     , ('bitcoin', '3HzZ4ybqvTJAGrPXVyxQysUiiaJC9LngBZ', 'Bitcoin Suisse', 'Bitcoin Suisse 5', 'hildobby', date '2024-05-27')
     , ('bitcoin', '3KYL5Rz4hdcgiuwfwrikfY3NEGikoPhbhd', 'Bitcoin Suisse', 'Bitcoin Suisse 6', 'hildobby', date '2024-05-27')
     , ('bitcoin', '3CjxgnmNsu3kaFadzVea2FgECuHN7y2ENz', 'Bitcoin Suisse', 'Bitcoin Suisse 7', 'hildobby', date '2024-05-27')
+
+    , ('bitcoin', 'bc1qu2dq8w8lv8v3l7lr2c5tvx3yltv22r3nhkx7w0', 'eXch.sc', 'eXch.sc 1', 'hildobby', date '2024-09-06')
     
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)

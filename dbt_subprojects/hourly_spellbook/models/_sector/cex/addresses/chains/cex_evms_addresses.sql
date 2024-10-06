@@ -94,6 +94,8 @@ FROM (VALUES
     , (0x7e278a68a35d76a7e4b2c9d8b778acd775c6d832, 'Binance', 'Binance 86', 'hildobby', date '2024-04-20')
     , (0x6be5a267b04e9f24cdc1824fd38d63c436be91ab, 'Binance', 'Binance 87', 'hildobby', date '2024-05-25')
     , (0xeb25df7c79a85640c4420680461dcdfd91f0dfad, 'Binance', 'Binance 88', 'hildobby', date '2024-05-25')
+    , (0x3931dab967c3e2dbb492fe12460a66d0fe4cc857, 'Binance', 'Binance 89', 'hildobby', date '2024-09-06')
+    , (0x25681ab599b4e2ceea31f8b498052c53fc2d74db, 'Binance', 'Binance 90', 'hildobby', date '2024-09-06')
     , (0xef7fb88f709ac6148c07d070bc71d252e8e13b92, 'Binance', 'Binance Internal', 'hildobby', date '2023-11-22')
     , (0x8b99f3660622e21f2910ecca7fbe51d654a1517d, 'Binance', 'Binance Charity', 'hildobby', date '2022-08-28')
     , (0xab83d182f3485cf1d6ccdd34c7cfef95b4c08da4, 'Binance', 'Binance JEX', 'hildobby', date '2022-08-28')
@@ -251,6 +253,8 @@ FROM (VALUES
     , (0x3dd87411a3754deea8cc52c4cf57e2fc254924cc, 'Coinbase', 'Coinbase 56', 'hildobby', date '2024-05-04')
     , (0x441cacfd43856409b163b90e094bb42aeb70a70e, 'Coinbase', 'Coinbase 57', 'hildobby', date '2024-05-25')
     , (0xa14d57f5ea867572b0d239798d2c1dde13153902, 'Coinbase', 'Coinbase 58', 'hildobby', date '2024-05-25')
+    , (0x08954545ba54639ca6a3fe42da74a7fc5257073c, 'Coinbase', 'Coinbase 59', 'hildobby', date '2024-09-06')
+    , (0x69e2a15e852457c7a3f2224b275276f42b14325e, 'Coinbase', 'Coinbase 60', 'hildobby', date '2024-09-06')
     , (0xa090e606e30bd747d4e6245a1517ebe430f0057e, 'Coinbase', 'Coinbase Miscellaneous', 'hildobby', date '2022-08-28')
     , (0xf6874c88757721a02f47592140905c4336dfbc61, 'Coinbase', 'Coinbase Commerce', 'hildobby', date '2022-08-28')
     , (0x881d4032abe4188e2237efcd27ab435e81fc6bb1, 'Coinbase', 'Coinbase Commerce 2', 'hildobby', date '2022-08-28')
@@ -1096,6 +1100,7 @@ FROM (VALUES
     , (0x8ae57a027c63fca8070d1bf38622321de8004c67, 'Rollbit', 'Rollbit 3', 'hildobby', date '2023-11-20')
     -- Roobet
     , (0xc94ebb328ac25b95db0e0aa968371885fa516215, 'Roobet', 'Roobet 1', 'hildobby', date '2023-11-15')
+    , (0x9ebe47c83c996e5cbbe44c423d7f20db19defc39, 'Roobet', 'Roobet 2', 'hildobby', date '2024-09-06')
     -- Bitsten
     , (0xbdef6e20692c302044b98284090922f683f3b523, 'Bitsten', 'Bitsten 1', 'hildobby', date '2023-11-17')
     , (0xfe0cb30afcb0eb1c27ae33d11be7ef749ed25072, 'Bitsten', 'Bitsten Deployer', 'hildobby', date '2023-11-17')
@@ -1274,6 +1279,7 @@ FROM (VALUES
     , (0xab928e30bede5919d4bd9ec244711495769d2d85, 'WhiteBIT', 'WhiteBIT 6', 'hildobby', date '2024-04-04')
     , (0x33eac50b7faf4b8842a621d0475335693f5d21fe, 'WhiteBIT', 'WhiteBIT 7', 'hildobby', date '2024-05-25')
     , (0x98cea98be2a37a8bb52451bd46259b2fbee1bdc0, 'WhiteBIT', 'WhiteBIT 8', 'hildobby', date '2024-08-13')
+    , (0x6040cba61432edf1fc2d3800dd9e18faa43f6618, 'WhiteBIT', 'WhiteBIT 9', 'hildobby', date '2024-09-06')
     -- Paxos
     , (0x286af5cf60ae834199949bbc815485f07cc9c644, 'Paxos', 'Paxos 1', 'hildobby', date '2023-11-15')
     , (0x0c23fc0ef06716d2f8ba19bc4bed56d045581f2d, 'Paxos', 'Paxos 2', 'hildobby', date '2023-11-15')
@@ -1945,6 +1951,7 @@ FROM (VALUES
     -- Sideshift
     , (0xcdd37ada79f589c15bd4f8fd2083dc88e34a2af2, 'Sideshift', 'Sideshift 1', 'hildobby', date '2023-11-16')
     , (0x6cf6a8488d70b1743134d6d69950cda60325a42f, 'Sideshift', 'Sideshift 2', 'hildobby', date '2023-11-16')
+    , (0xf7e00e8df9d41b891bba8263f74c7ec23c12acac, 'Sideshift', 'Sideshift 3', 'hildobby', date '2024-09-06')
     , (0x3ee1fac3d8cc67a0676830622d3afc55cf6fff27, 'Sideshift', 'Sideshift Deposit Funder 1', 'hildobby', date '2024-05-25')
     , (0x722b33b843baca81aa70cef29c9512de7b3f8767, 'Sideshift', 'Sideshift Staking Reserve', 'hildobby', date '2023-11-16')
     , (0x3808708e761b988d23ae011ed0e12674fb66bd62, 'Sideshift', 'Sideshift Token Vault', 'hildobby', date '2023-11-16')
@@ -1952,6 +1959,7 @@ FROM (VALUES
     , (0xb23360ccdd9ed1b15d45e5d3824bb409c8d7c460, 'Revolut', 'Revolut 1', 'hildobby', date '2023-11-22')
     , (0xc44b7316936e2f004e688fd53a95e060df1811c3, 'Revolut', 'Revolut 2', 'hildobby', date '2023-11-22')
     , (0x9b0c45d46d386cedd98873168c36efd0dcba8d46, 'Revolut', 'Revolut 3', 'hildobby', date '2023-11-22')
+    , (0x2b3fed49557bd88f78b898684f82fbb355305dbb, 'Revolut', 'Revolut 4', 'hildobby', date '2024-09-06')
     -- Paxful
     , (0x17f1a51da68d27c94d2a51d92b27b5bd4718b986, 'Paxful', 'Paxful 1', 'hildobby', date '2024-04-04')
     , (0x7a20527ba5a749b3b054a821950bfcc2c01b959f, 'Paxful', 'Paxful 2', 'hildobby', date '2024-04-04')
@@ -2057,6 +2065,7 @@ FROM (VALUES
     , (0x6dfc34609a05bc22319fa4cce1d1e2929548c0d7, 'AlphaPo', 'AlphaPo 1', 'hildobby', date '2023-11-23')
     , (0x808d0aee8db7e7c74faf4b264333afe8c9ccdba4, 'AlphaPo', 'AlphaPo Hot 1', 'hildobby', date '2024-03-13')
     , (0x183a6cf1fc6504138d92c9d663094ee774f80038, 'AlphaPo', 'AlphaPo Hot 2', 'hildobby', date '2024-03-13')
+    , (0x9a10da8ce77f26231860764a2caab36e70584c4b, 'AlphaPo', 'AlphaPo Hot 3', 'hildobby', date '2024-09-06')
     -- C2CX
     , (0xd7c866d0d536937bf9123e02f7c052446588189f, 'C2CX', 'C2CX 1', 'hildobby', date '2023-04-06')
     -- ChainX
@@ -2367,6 +2376,7 @@ FROM (VALUES
     , (0x0d075ccd8fe8c5c8e28a308f66422db3456eb9cc, 'Norwegian Block Exchange', 'Norwegian Block Exchange 7', 'hildobby', date '2024-06-03')
     -- eXch.sc
     , (0xf1da173228fcf015f43f3ea15abbb51f0d8f1123, 'eXch.sc', 'eXch.sc 1', 'hildobby', date '2024-01-04')
+    , (0x1681d536b8a47c01d7ea07f0d80a2eb10e7ce842, 'eXch.sc', 'eXch.sc 2', 'hildobby', date '2024-09-06')
     -- Tokenize Xchange
     , (0xb64d9784e8516983243434ce3badf967fd5cc71e, 'Tokenize Xchange', 'Tokenize Xchange 1', 'hildobby', date '2024-01-04')
     , (0x5f1f90b762bafa7f964050a347228b3b36425a55, 'Tokenize Xchange', 'Tokenize Xchange 2', 'hildobby', date '2024-01-04')
@@ -2450,6 +2460,7 @@ FROM (VALUES
     , (0xc330c1a3c7db9c75f60aed0a9b7c0fc5fa22d5a2, 'TokenMarket', 'TokenMarket 1', 'hildobby', date '2024-01-04')
     -- Bitrefill
     , (0x4945ce2d1b5bd904cac839b7fdabafd19cab982b, 'Bitrefill', 'Bitrefill 1', 'hildobby', date '2024-01-04')
+    , (0x94aa0b75a10bf4e92a00de8a115a6f61095cf663, 'Bitrefill', 'Bitrefill 2', 'hildobby', date '2024-09-06')
     -- Txbit
     , (0x53edc98cb6c21dfcddaf7f91ebf39789b93e2ac6, 'Txbit', 'Txbit 1', 'hildobby', date '2024-01-04')
     , (0xe4feb3e94b4128d973a366dc4814167a90629a08, 'Txbit', 'Txbit 2', 'hildobby', date '2024-01-04')
