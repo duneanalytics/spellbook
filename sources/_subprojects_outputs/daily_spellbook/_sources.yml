@@ -30,6 +30,13 @@ sources:
         description: "Blockchain metadata for all EVM compatible chains"
       - name: evm_smart_account_method_ids
       - name: base_evm_smart_account_method_ids
+      - name: contracts
+      - name: blocks
+      - name: creation_traces
+      - name: traces
+      - name: traces_decoded
+      - name: transactions
+      - name: logs
 
   - name: ethereum
     tables:
@@ -38,14 +45,3 @@ sources:
   - name: gas
     tables:
       - name: fees
-
-  - name: evms
-    tables:
-      - name: contracts
-      - name: blocks
-      - name: creation_traces
-      - name: traces
-      - name: traces_decoded
-      - name: transactions
-      - name: logs
-      - name: info
