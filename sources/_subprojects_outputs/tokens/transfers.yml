@@ -82,3 +82,15 @@ sources:
   - name: tokens_goerli
     tables:
       - name: transfers
+
+  - name: tokens_sepolia
+    tables:
+      - name: transfers
+
+  - name: tokens_bob
+    tables:
+      - name: transfers
+
+  - name: tokens_degen
+    tables:
+      - name: transfers
