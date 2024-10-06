@@ -45,6 +45,7 @@ latest_prices AS (
             condition_id,
             token_id,
             price,
+            next_update_day,
             ROW_NUMBER() OVER (PARTITION BY token_id, day ORDER BY block_time DESC) AS rn
         FROM changed_prices
     ) t
