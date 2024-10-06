@@ -5,7 +5,7 @@ models:
     meta:
       docs_slug: /curated/asset-tracking/evm/token-transfers
       sector: tokens
-      contributors: aalan3, jeff-dude, 0xBoxer
+      contributors: aalan3, jeff-dude, 0xBoxer, hildobby
     config:
       tags: ['tokens','transfers']
     description: >

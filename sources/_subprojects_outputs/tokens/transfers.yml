@@ -70,3 +70,15 @@ sources:
   - name: tokens_mantle
     tables:
       - name: transfers
+
+  - name: tokens_sei
+    tables:
+      - name: transfers
+
+  - name: tokens_mode
+    tables:
+      - name: transfers
+
+  - name: tokens_goerli
+    tables:
+      - name: transfers
