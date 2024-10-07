@@ -20,12 +20,12 @@ WITH executed_txs AS (
     , SUM(COALESCE(tokens_received_tx_count, 0)) AS tokens_received_tx_count
     , SUM(COALESCE(tokens_sent_count, 0)) AS tokens_sent_count
     , SUM(COALESCE(tokens_sent_tx_count, 0)) AS tokens_sent_tx_count
-    , MIN(first_transfer_block_time) FILTER (WHERE first_transfer_block_time IS NOT NULL) AS first_transfer_block_time
-    , MAX(last_transfer_block_time) FILTER (WHERE last_transfer_block_time IS NOT NULL) AS last_transfer_block_time
-    , MIN(first_received_block_number) FILTER (WHERE first_received_block_number IS NOT NULL) AS first_received_block_number
-    , MAX(last_received_block_number) FILTER (WHERE last_received_block_number IS NOT NULL) AS last_received_block_number
-    , MIN(first_sent_block_number) FILTER (WHERE first_sent_block_number IS NOT NULL) AS first_sent_block_number
-    , MAX(last_sent_block_number) FILTER (WHERE last_sent_block_number IS NOT NULL) AS last_sent_block_number
+    , MIN(first_transfer_block_time) AS first_transfer_block_time
+    , MAX(last_transfer_block_time) AS last_transfer_block_time
+    , MIN(first_received_block_number) AS first_received_block_number
+    , MAX(last_received_block_number) AS last_received_block_number
+    , MIN(first_sent_block_number) AS first_sent_block_number
+    , MAX(last_sent_block_number) AS last_sent_block_number
     , SUM(received_volume_usd) AS received_volume_usd
     , SUM(sent_volume_usd) AS sent_volume_usd
     FROM (
@@ -78,7 +78,7 @@ WITH executed_txs AS (
 SELECT '{{blockchain}}' AS blockchain
 , address
 , COALESCE(executed_tx_count, 0) AS executed_tx_count
-, COALESCE(max_nonce, NULL) AS max_nonce
+, max_nonce AS max_nonce
 , COALESCE(is_smart_contract, false) AS is_smart_contract
 , namespace
 , name
@@ -123,8 +123,8 @@ WITH executed_txs AS (
     , MAX(txs.block_number) AS last_tx_block_number
     FROM {{transactions}} txs
     LEFT JOIN {{this}} t ON txs."from"=t.address
-        AND txs.block_number>t.last_tx_block_number
-    WHERE {{ incremental_predicate('txs.block_time') }}
+    WHERE (t.address IS NULL OR txs.block_number > t.last_tx_block_number)
+    AND {{ incremental_predicate('txs.block_time') }}
     GROUP BY 1
     )
 
@@ -135,12 +135,12 @@ WITH executed_txs AS (
     , SUM(COALESCE(tokens_received_tx_count, 0)) AS tokens_received_tx_count
     , SUM(COALESCE(tokens_sent_count, 0)) AS tokens_sent_count
     , SUM(COALESCE(tokens_sent_tx_count, 0)) AS tokens_sent_tx_count
-    , MIN(first_transfer_block_time) FILTER (WHERE first_transfer_block_time IS NOT NULL) AS first_transfer_block_time
-    , MAX(last_transfer_block_time) FILTER (WHERE last_transfer_block_time IS NOT NULL) AS last_transfer_block_time
-    , MIN(first_received_block_number) FILTER (WHERE first_received_block_number IS NOT NULL) AS first_received_block_number
-    , MAX(last_received_block_number) FILTER (WHERE last_received_block_number IS NOT NULL) AS last_received_block_number
-    , MIN(first_sent_block_number) FILTER (WHERE first_sent_block_number IS NOT NULL) AS first_sent_block_number
-    , MAX(last_sent_block_number) FILTER (WHERE last_sent_block_number IS NOT NULL) AS last_sent_block_number
+    , MIN(first_transfer_block_time) AS first_transfer_block_time
+    , MAX(last_transfer_block_time) AS last_transfer_block_time
+    , MIN(first_received_block_number) AS first_received_block_number
+    , MAX(last_received_block_number) AS last_received_block_number
+    , MIN(first_sent_block_number) AS first_sent_block_number
+    , MAX(last_sent_block_number) AS last_sent_block_number
     , SUM(received_volume_usd) AS received_volume_usd
     , SUM(sent_volume_usd) AS sent_volume_usd
     FROM (
@@ -159,8 +159,8 @@ WITH executed_txs AS (
         , SUM(tt.amount_usd) AS sent_volume_usd
         FROM {{token_transfers}} tt
         LEFT JOIN {{this}} t ON tt."from"=t.address
-            AND tt.block_time>t.last_transfer_block_time
-        WHERE {{ incremental_predicate('tt.block_time') }}
+        WHERE (t.address IS NULL OR tt.block_time > t.last_transfer_block_time)
+        AND {{ incremental_predicate('tt.block_time') }}
         GROUP BY tt."from"
 
         UNION ALL
@@ -180,8 +180,8 @@ WITH executed_txs AS (
         , 0 AS sent_volume_usd
         FROM {{token_transfers}} tt
         LEFT JOIN {{this}} t ON tt."to"=t.address
-            AND tt.block_time>t.last_transfer_block_time
-        WHERE {{ incremental_predicate('tt.block_time') }}
+        WHERE (t.address IS NULL OR tt.block_time > t.last_transfer_block_time)
+        AND {{ incremental_predicate('tt.block_time') }}
         GROUP BY "to"
         )
     GROUP BY 1
@@ -194,15 +194,15 @@ WITH executed_txs AS (
     , c.name
     FROM {{creation_traces}} ct
     LEFT JOIN {{this}} t ON ct.address=t.address
-        AND ct.block_number>t.last_tx_block_number
     LEFT JOIN {{contracts}} c ON ct.address=c.address
-    WHERE {{ incremental_predicate('ct.block_time') }}
+    WHERE (t.address IS NULL OR ct.block_number > t.last_tx_block_number)
+    AND {{ incremental_predicate('ct.block_time') }}
     )
 
 , new_data AS (
     SELECT address
     , COALESCE(executed_tx_count, 0) AS executed_tx_count
-    , COALESCE(max_nonce, NULL) AS max_nonce
+    , max_nonce AS max_nonce
     , is_smart_contract
     , namespace
     , name
