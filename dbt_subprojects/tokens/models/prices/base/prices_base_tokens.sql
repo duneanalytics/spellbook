@@ -172,5 +172,24 @@ FROM
     ('cbbtc-coinbase-wrapped-btc', 'base', 'cbBTC',0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf, 8),
     --('weirdo-weirdo', 'base', 'weirdo',0x76734b57dfe834f102fb61e1ebf844adf8dd931e, 8),
     --('lune-luneko', 'base', 'LUNE',0xacd1caef47e4c47bafe8a51b3f4305fc38203b7a, 18),
-    ('peach-based-peaches', 'base', 'PEACH',0x8319767a7b602f88e376368dca1b92d38869b9b4, 18)
+    ('peach-based-peaches', 'base', 'PEACH',0x8319767a7b602f88e376368dca1b92d38869b9b4, 18),
+    ('dino-coding-dino', 'base', 'DINO',0x85e90a5430af45776548adb82ee4cd9e33b08077, 18),
+    ('fomo-father-of-meme-origin', 'base', 'FOMO',0xd327d36eb6e1f250d191cd62497d08b4aaa843ce, 9),
+    ('base-brianarmstrongcoinbaseusdc2012', 'base', 'BASE',0xf1b4ddf712e108cf43711b1c39f2fddb0d5ce243, 18),
+    ('farther-farther', 'base', 'FARTHER',0x8ad5b9007556749de59e088c88801a3aaa87134b, 18),
+    ('degens-the-degensons', 'base', 'DEGENS',0xc41ba5737baf6bd0ccd5daf7eee39874e4ad45ff, 18),
+    ('gochu-gochujang-coin', 'base', 'GOCHU',0x9aaae745cf2830fb8ddc6248b17436dc3a5e701c, 18),
+    ('blue-blue-on-base', 'base', '$BLUE',0xfd9fa4f785331ce88b5af8994a047ba087c705d8, 18),
+    ('bets-all-street-bets', 'base', 'BETS',0x42069de48741db40aef864f8764432bbccbd0b69, 18),
+    ('onchain-onchain-coin', 'base', 'ONCHAIN',0x1c22374032e7e5a1bbde3d943f5deb310db060dd, 18),
+    ('godcat-godcatexplodingkittens', 'base', 'GODCAT',0xdb08ca267e824fb29eb455b7e06fe73fb0370895, 18),
+    ('btcbr-bitcoinbr', 'base', 'BRCBR',0x6324065012b16da37aa4086edb49aa9d3754e691, 18),
+    ('skop-skull-of-pepe-token', 'base', 'SKOP',0x6d3b8c76c5396642960243febf736c6be8b60562, 18),
+    ('based8-based', 'base', 'BASED',0x32e0f9d26d1e33625742a52620cc76c1130efde6, 18),
+    ('meta-based-meta', 'base', 'META',0x3efd97aeb3d2451bbec0e4dfebc8b66ebb33f552, 18),
+    ('stg-stargate-finance', 'base', 'STG',0xe3b53af74a4bf62ae5511055290838050bf764df, 18),
+    ('alf-alf', 'base', 'ALF',0x26f1bb40ea88b46ceb21557dc0ffac7b7c0ad40f, 18), 
+    ('tad1-tadpole', 'base', 'TAD',0x55027a5b06f4340cc4c82dcc74c90ca93dcb173e, 18),
+    ('blue-blue-guy', 'base', 'BLUE',0x891502ba08132653151f822a3a430198f1844115, 18)
+
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

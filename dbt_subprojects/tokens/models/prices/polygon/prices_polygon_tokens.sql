@@ -143,10 +143,17 @@ FROM
     --('pbos-phobos-token', 'polygon', 'PBOS', 0x421b9b487d5a9b76e4b81809c0f1b9bb8cb24cb9, 18) 
     ('brla-brla-digital-brla', 'polygon', 'TRBRLAB', 0xe6a537a407488807f0bbeb0038b79004f19dddfb, 18),
     ('vcnt-vicicoin', 'polygon', 'VCNT', 0x8a16d4bf8a0a716017e8d2262c4ac32927797a2f, 18),
-    ('sut-super-useless-token', 'base', 'SUT',0xdb08ca267e824fb29eb455b7e06fe73fb0370895, 18),
-    ('trc-metatrace', 'base', 'TRC',0x40d9fc77027a281d85de1fa660c887e645ae26c3, 2),
-    ('ggt-go-game-token', 'base', 'GGT',0x8349314651ede274f8c5fef01aa65ff8da75e57c, 8),
-    ('sure-insure', 'base', 'SURE',0xf88332547c680f755481bf489d890426248bb275, 18)
+    ('trc-metatrace', 'polygon', 'TRC',0x40d9fc77027a281d85de1fa660c887e645ae26c3, 2),
+    ('ggt-go-game-token', 'polygon', 'GGT',0x8349314651ede274f8c5fef01aa65ff8da75e57c, 8),
+    ('sure-insure', 'polygon', 'SURE',0xf88332547c680f755481bf489d890426248bb275, 18),
+    ('jmpt-jumptoken', 'polygon', 'JMPT',0x03cf5d93ca7c70ce0a21a09f4d70779d2c66b25a, 18),
+    ('trade-polytrade', 'polygon', 'TRADE',0x692ac1e363ae34b6b489148152b12e2785a3d8d6, 18),
+    ('xen-xen-crypto', 'polygon', 'XEN',0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e, 18),
+    ('ygg-yield-guild-games', 'polygon', 'YGG',0x82617aa52dddf5ed9bb7b370ed777b3182a30fd1, 18),
+    ('metal-badmad-robots', 'polygon', 'METAL',0x200c234721b5e549c3693ccc93cf191f90dc2af9, 18),
+    ('naka-nakamoto-games', 'polygon', 'NAKA',0x311434160d7537be358930def317afb606c0d737, 18),
+    ('sfl1-sunflower-land', 'polygon', 'SFL',0xd1f9c58e33933a993a3891f8acfe05a68e1afc05, 18)
+
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0xef938b6da8576a896f6e0321ef80996f4890f9c4 -- DG, bad price feed
