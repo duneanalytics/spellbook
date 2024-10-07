@@ -228,23 +228,6 @@ sources:
           - name: name
             data_type: varchar
 
-  - name: tokens_blast
-    tables:
-      - name: erc20_stablecoins
-        columns:
-          - name: blockchain
-            data_type: varchar
-          - name: contract_address
-            data_type: varbinary
-          - name: backing
-            data_type: varchar
-          - name: symbol
-            data_type: varchar
-          - name: decimals
-            data_type: integer
-          - name: name
-            data_type: varchar
-
   - name: tokens_celo
     tables:
       - name: erc20
@@ -355,39 +338,6 @@ sources:
           - name: name
             data_type: varchar
 
-  - name: tokens_linea
-    tables:
-      - name: erc20_stablecoins
-        columns:
-          - name: blockchain
-            data_type: varchar
-          - name: contract_address
-            data_type: varbinary
-          - name: backing
-            data_type: varchar
-          - name: symbol
-            data_type: varchar
-          - name: decimals
-            data_type: integer
-          - name: name
-            data_type: varchar
-
-  - name: tokens_mantle
-    tables:
-      - name: erc20_stablecoins
-        columns:
-          - name: blockchain
-            data_type: varchar
-          - name: contract_address
-            data_type: varbinary
-          - name: backing
-            data_type: varchar
-          - name: symbol
-            data_type: varchar
-          - name: decimals
-            data_type: integer
-          - name: name
-            data_type: varchar
 
   - name: tokens_optimism
     tables:
@@ -478,31 +428,6 @@ sources:
           - name: decimals
             data_type: integer
       - name: nft
-      - name: erc20_stablecoins
-        columns:
-          - name: blockchain
-            data_type: varchar
-          - name: contract_address
-            data_type: varbinary
-          - name: backing
-            data_type: varchar
-          - name: symbol
-            data_type: varchar
-          - name: decimals
-            data_type: integer
-          - name: name
-            data_type: varchar
-
-  - name: tokens_scroll
-    tables:
-      - name: erc20
-        columns:
-          - name: contract_address
-            data_type: varbinary
-          - name: symbol
-            data_type: varchar
-          - name: decimals
-            data_type: integer
       - name: erc20_stablecoins
         columns:
           - name: blockchain
