@@ -285,7 +285,8 @@ FROM
     ('bccoin-blackcardcoin', 'bnb', 'BCCOIN', 0x2940566eb50f15129238f4dc599adc4f742d7d8e, 18),
     ('app-moon-app', 'bnb', 'APP', 0xc5d27f27f08d1fd1e3ebbaa50b3442e6c0d50439, 18),
     ('chapz-chappyz', 'bnb', 'CHAPZ', 0x7b56748a3ef9970a5bae99c58ad8bc67b26c525f, 10),
-    ('babyrwa-babyrwa', 'bnb', 'BABYRWA', 0x4a8049c015ae1c6665fc9e49f053458ae3a102d0, 9)
+    ('babyrwa-babyrwa', 'bnb', 'BABYRWA', 0x4a8049c015ae1c6665fc9e49f053458ae3a102d0, 9),
+    ('pvc-pvc-meta', 'bnb', 'PVC', 0x75ca521892de7f2ecfb070cab545c250d0ceb7e3, 9)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (

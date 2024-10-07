@@ -138,9 +138,15 @@ FROM
     ('next-connext-eth', 'polygon', 'NEXT', 0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8, 18),
     ('usdm-mountain-protocol-usd', 'polygon', 'USDM', 0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 18),
     ('crowd-crowdswap', 'polygon', 'CROWD', 0x483dd3425278c1f79f377f1034d9d2cae55648b6, 18),
-    ('trb-tellor', 'polygon', 'TRB', 0xe3322702bedaaed36cddab233360b939775ae5f1, 18)
+    ('trb-tellor', 'polygon', 'TRB', 0xe3322702bedaaed36cddab233360b939775ae5f1, 18),
     --('alta-alta-finance', 'polygon', 'ALTA', 0xe0cca86b254005889ac3a81e737f56a14f4a38f5, 18),
     --('pbos-phobos-token', 'polygon', 'PBOS', 0x421b9b487d5a9b76e4b81809c0f1b9bb8cb24cb9, 18) 
+    ('brla-brla-digital-brla', 'polygon', 'TRBRLAB', 0xe6a537a407488807f0bbeb0038b79004f19dddfb, 18),
+    ('vcnt-vicicoin', 'polygon', 'VCNT', 0x8a16d4bf8a0a716017e8d2262c4ac32927797a2f, 18),
+    ('sut-super-useless-token', 'base', 'SUT',0xdb08ca267e824fb29eb455b7e06fe73fb0370895, 18),
+    ('trc-metatrace', 'base', 'TRC',0x40d9fc77027a281d85de1fa660c887e645ae26c3, 2),
+    ('ggt-go-game-token', 'base', 'GGT',0x8349314651ede274f8c5fef01aa65ff8da75e57c, 8),
+    ('sure-insure', 'base', 'SURE',0xf88332547c680f755481bf489d890426248bb275, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0xef938b6da8576a896f6e0321ef80996f4890f9c4 -- DG, bad price feed
