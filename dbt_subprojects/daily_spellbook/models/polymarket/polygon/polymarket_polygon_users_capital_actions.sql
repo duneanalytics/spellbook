@@ -33,7 +33,7 @@ polymarket_addresses as (
   ) as t(address)
   UNION ALL 
   select 
-    contract_address as address
+    address
   from {{ source('polygon', 'creation_traces') }}
   where "from" = 0x8b9805a2f595b6705e74f7310829f2d299d21522
   -- these are fpmm contracts
