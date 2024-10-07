@@ -1138,8 +1138,8 @@ FROM (VALUES
     , (0x758be77a3ee14e7193730560daa07dd3fcbfd200, 'Stake.com', 'Stake.com 13', 'hildobby', date '2024-08-13')
     -- 1xBet
     , (0x777f415324d56e1d54fa832902d8797db7a4c57c, '1xBet', '1xBet 1', 'hildobby', date '2024-09-06')
-    , (0xba3801847037ffe8de609ccfdd8e02c2f60adc43, '1xBet', '1xBet 1', 'hildobby', date '2024-09-06')
-    , (0x5c89724967d76a4f966b013140355789093f6c7d, '1xBet', '1xBet 1', 'hildobby', date '2024-09-06')
+    , (0xba3801847037ffe8de609ccfdd8e02c2f60adc43, '1xBet', '1xBet 2', 'hildobby', date '2024-09-06')
+    , (0x5c89724967d76a4f966b013140355789093f6c7d, '1xBet', '1xBet 3', 'hildobby', date '2024-09-06')
     -- BetFury
     , (0x52a258ed593c793251a89bfd36cae158ee9fc4f8, 'BetFury', 'BetFury 1', 'hildobby', date '2024-09-06')
     -- Rollbit
