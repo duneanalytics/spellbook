@@ -2,15 +2,13 @@
   config(
     schema = 'polymarket_polygon',
     alias = 'daily_market_prices',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['day', 'condition_id', 'token_id'],
+    materialized = 'view',
+    unique_key = ['day', 'token_id'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
                                   spell_name = "polymarket",
-                                  contributors = \'["your_name_here"]\') }}'
+                                  contributors = \'["0xboxer"]\') }}'
   )
 }}
 
@@ -68,7 +66,6 @@ prices AS (
     SELECT * 
     FROM forward_fill
     WHERE price IS NOT NULL
-    and token_id = cast('87584955359245246404952128082451897287778571240979823316620093987046202296181' as UINT256)
 )
 
 SELECT * FROM prices
