@@ -1,7 +1,7 @@
 {{ config(
         schema = 'safe',
         alias = 'native_transfers_all',
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","gnosis","goerli","linea","optimism","polygon","zkevm","zksync"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","gnosis","goerli","linea","mantle","optimism","polygon","scroll","zkevm","zksync"]\',
                                 "project",
                                 "safe",
                                 \'["kryptaki", "danielpartida"]\') }}'
@@ -19,8 +19,10 @@
 ,ref('safe_gnosis_xdai_transfers')
 ,ref('safe_goerli_eth_transfers')
 ,ref('safe_linea_eth_transfers')
+,ref('safe_mantle_mnt_transfers')
 ,ref('safe_optimism_eth_transfers')
 ,ref('safe_polygon_matic_transfers')
+,ref('safe_scroll_eth_transfers')
 ,ref('safe_zkevm_matic_transfers')
 ,ref('safe_zksync_eth_transfers')
 ] %}

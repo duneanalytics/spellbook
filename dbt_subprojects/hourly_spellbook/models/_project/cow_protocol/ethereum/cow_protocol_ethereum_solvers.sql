@@ -111,6 +111,8 @@ known_solver_metadata (address, environment, name) as (
                  (0xA883710b6DBf008a1CC25722C54583E35884a209, 'prod', 'Horadrim'),
                  (0xc10D4DfDA62227d9EC23Ab0010E2942e48338A60, 'prod', 'Apollo'),
                  (0x008300082C3000009e63680088f8c7f4D3ff2E87, 'prod', 'Copium_Capital'),
+                 (0xC7899Ff6A3aC2FF59261bD960A8C880DF06E1041, 'prod', 'Barter'),
+                 (0xA6A871b612bCE899b1CbBad6E545e5e47Da98b87, 'barn', 'Barter'),
                  (0xa08B00576aeE8d8dd960E08298FAc9fD7C756e36, 'barn', 'Apollo'),
                  (0x2c3A1c33d96C9DcA1c34EB234B1e65F79dEaE60e, 'barn', 'Horadrim'),
                  (0xa5559C2E1302c5Ce82582A6b1E4Aec562C2FbCf4, 'barn', 'Project_Blanc'),

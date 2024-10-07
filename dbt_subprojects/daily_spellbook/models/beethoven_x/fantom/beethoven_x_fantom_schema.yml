@@ -328,3 +328,42 @@ models:
       - name: token_address
       - name: daily_delta
         description: "Daily total impact on BPT supply"
+
+  - name: beethoven_x_fantom_pools_metrics_daily
+    meta:
+      blockchain: fantom
+      contributors: viniabussafi, metacrypto
+    config:
+      tags: ['fantom', 'jelly_swap', 'pool', 'stats', 'volume', 'tvl', 'fee']
+    description: >
+      This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - project_contract_address
+    columns:
+      - *blockchain
+      - name: project
+      - name: version
+      - name: block_date
+      - &project_contract_address
+        name: project_contract_address
+        description: "Pool address"
+      - *pool_symbol
+      - name: pool_type
+      - &swap_amount_usd
+        name: swap_amount_usd
+        description: "Daily swap volume on a pool, in USD"
+      - &tvl_usd
+        name: tvl_usd
+        description: "Total Value Locked on a pool, in USD"
+      - &tvl_eth
+        name: tvl_eth
+        description: "Total Value Locked on a pool, in eth"
+      - &fee_amount_usd
+        name: fee_amount_usd
+        description: "Daily fees collected on a pool, in USD"

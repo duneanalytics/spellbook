@@ -63,4 +63,10 @@ sources:
     tables:
       - name: transfers
 
+  - name: tokens_blast
+    tables:
+      - name: transfers
 
+  - name: tokens_mantle
+    tables:
+      - name: transfers

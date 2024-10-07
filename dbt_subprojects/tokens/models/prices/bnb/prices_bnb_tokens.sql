@@ -270,7 +270,24 @@ FROM
     ('wsm-wall-street-memes', 'bnb', 'WSM', 0xb62e45c3df611dce236a6ddc7a493d79f9dfadef, 18),
     ('the-thena', 'bnb', 'THE', 0xf4c8e32eadec4bfe97e0f595add0f4450a863a11, 18),
     ('lista-lista-dao', 'bnb', 'LISTA', 0xfceb31a79f71ac9cbdcf853519c1b12d379edc46, 18),
-    ('opul-opuloustoken-via-chainportio', 'bnb', 'OPUL', 0x686318000d982bc8dcc1cdcf8ffd22322f0960ed, 18)
+    ('opul-opuloustoken-via-chainportio', 'bnb', 'OPUL', 0x686318000d982bc8dcc1cdcf8ffd22322f0960ed, 18),
+    ('pepe-pepecoin-bsc', 'bnb', 'PEPE', 0xb46584e0efde3092e04010a13f2eae62adb3b9f0, 18),
+    ('babydoge-baby-doge-coin', 'bnb', 'BABYDOGE', 0xc748673057861a797275cd8a068abb95a902e8de, 9),
+    ('bwjup-bsc-wrapped-jupiter', 'bnb', 'bwJUP', 0x0231f91e02debd20345ae8ab7d71a41f8e140ce7, 18),
+    --('pvc-pvc-meta','bnb','PVC',0x75ca521892de7f2ecfb070cab545c250d0ceb7e3, 9), --token_id not found 
+    ('bvsd-bvsd','bnb','BVSD',0x7f9ad7a5854658d984924e868187b2135514fb88, 18),
+    ('coco-coco-coin', 'bnb', 'COCO', 0xf563e86e461de100cfcfd8b65daa542d3d4b0550, 18),
+    ('zeta-zetachain', 'bnb', 'ZETA', 0x0000028a2eb8346cd5c0267856ab7594b7a55308, 18),
+    ('euri-eurite', 'bnb', 'EURI', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 18),
+    ('cookie-cookie', 'bnb', 'COOKIE', 0xc0041ef357b183448b235a8ea73ce4e4ec8c265f, 18),
+    ('wsteth-wrapped-liquid-staked-ether-20', 'bnb', 'wstETH', 0x26c5e01524d2E6280A48F2c50fF6De7e52E9611C, 18),
+    ('arty-artyfact', 'bnb', 'ARTY', 0x617cab4aaae1f8dfb3ee138698330776a1e1b324, 6),
+    ('bccoin-blackcardcoin', 'bnb', 'BCCOIN', 0x2940566eb50f15129238f4dc599adc4f742d7d8e, 18),
+    ('app-moon-app', 'bnb', 'APP', 0xc5d27f27f08d1fd1e3ebbaa50b3442e6c0d50439, 18),
+    ('chapz-chappyz', 'bnb', 'CHAPZ', 0x7b56748a3ef9970a5bae99c58ad8bc67b26c525f, 10),
+    ('babyrwa-babyrwa', 'bnb', 'BABYRWA', 0x4a8049c015ae1c6665fc9e49f053458ae3a102d0, 9),
+    ('zro-layerzero', 'bnb', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18)
+
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e -- bXEN has bad price feed.
@@ -278,4 +295,5 @@ where contract_address not in (
     ,0x7ddee176f665cd201f93eede625770e2fd911990 -- GALA doesn't exists on BSC, it's a scam-token address.
     ,0xe552fb52a4f19e44ef5a967632dbc320b0820639 -- METIS has bad price feed since PolyNetwork incident and will be replaced by new contract
     ,0x9fdc3ae5c814b79dca2556564047c5e7e5449c19 -- DG, bad price feed
+    ,0x9e24415d1e549ebc626a13a482bb117a2b43e9cf -- LOVELY, rugpull
 )

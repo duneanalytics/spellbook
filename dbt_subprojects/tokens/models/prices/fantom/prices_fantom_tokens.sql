@@ -88,7 +88,8 @@ FROM
     ('polter-polterfinance-protocol-token', 'fantom', 'POLTER', 0x5c725631FD299703D0A74C23F89a55c6B9A0C52F, 18),
     ('equal-equalizer-dex', 'fantom', 'EQUAL', 0x3fd3a0c85b70754efc07ac9ac0cbbdce664865a6, 18),
     ('ftails-ftails', 'fantom', 'FTAILS', 0x5cf90b977c86415a53ce3b7be13b26f6abddfee2, 18),
-    ('fbux-fantom-money-market', 'fantom', 'FBUX', 0x1e2ea3f3209d66647f959cf00627107e079b870d, 18)
+    ('fbux-fantom-money-market', 'fantom', 'FBUX', 0x1e2ea3f3209d66647f959cf00627107e079b870d, 18),
+    ('spirit-spiritswap', 'fantom', 'SPIRIT', 0x5cc61a78f164885776aa610fb0fe1257df78e59b, 18)    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

@@ -6,6 +6,8 @@
 %}
 
 {% set native_addresses = '(0x0000000000000000000000000000000000000000, 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee)' %}
+{% set native_address = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' %}
+{% set zero_address = '0x0000000000000000000000000000000000000000' %}
 
 
 
@@ -58,15 +60,14 @@ meta as (
         , flags as order_flags
     from (
         select *, row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
-        from {{ source('oneinch', 'lop') }}
+        from {{ source('oneinch_' + blockchain, 'lop') }}
         where
-            blockchain = '{{blockchain}}'
+            call_success
             {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
             {% else %}
                 and block_time >= timestamp '{{date_from}}'
             {% endif %}
-            and call_success
     )
 )
 
@@ -88,9 +89,9 @@ meta as (
         , order_hash
         , order_flags
         , maker
-        , maker_asset
+        , replace(maker_asset, {{ zero_address }}, {{ native_address }}) as maker_asset
         , making_amount
-        , taker_asset
+        , replace(taker_asset, {{ zero_address }}, {{ native_address }}) as taker_asset
         , taking_amount
         , array_agg(call_trace_address) over(partition by block_number, tx_hash, project) as call_trace_addresses -- to update the array after filtering nested calls of the project
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
@@ -123,6 +124,14 @@ meta as (
         contract_address
         , symbol
     from {{ source('tokens', 'erc20') }}
+    where blockchain = '{{blockchain}}'
+)
+
+, trusted_tokens as (
+    select
+        distinct contract_address
+        , true as trusted
+    from {{ source('prices', 'trusted_tokens') }}
     where blockchain = '{{blockchain}}'
 )
 
@@ -179,15 +188,25 @@ meta as (
             ) as row(
                 project varchar
                 , call_trace_address array(bigint)
-                , tokens array(varchar)
+                , tokens array(row(symbol varchar, contract_address_raw varbinary))
                 , amount_usd double
                 , intent boolean
             ))
         ) over(partition by block_number, tx_hash) as tx_swaps
-        , if(
-            user_amount_usd is null or caller_amount_usd is null
-            , coalesce(user_amount_usd, caller_amount_usd, call_amount_usd)
-            , greatest(user_amount_usd, caller_amount_usd)
+        , if(user_amount_usd_trusted is null or caller_amount_usd_trusted is null
+            , if(
+                user_amount_usd is null or caller_amount_usd is null
+                , coalesce(
+                    user_amount_usd_trusted
+                    , caller_amount_usd_trusted
+                    , user_amount_usd
+                    , caller_amount_usd
+                    , call_amount_usd_trusted
+                    , call_amount_usd
+                )
+                , greatest(user_amount_usd, caller_amount_usd)
+            ) -- the user_amount & caller_amount of untrusted tokens takes precedence over the call_amount of trusted tokens
+            , greatest(user_amount_usd_trusted, caller_amount_usd_trusted)
         ) as amount_usd
     from (
         select
@@ -195,7 +214,7 @@ meta as (
             , calls.block_number
             , calls.tx_hash
             , calls.call_trace_address
-            , call_trade_id
+            , calls.call_trade_id
             , any_value(block_time) as block_time
             , any_value(tx_from) as tx_from
             , any_value(tx_to) as tx_to
@@ -213,10 +232,24 @@ meta as (
             , any_value(taker_asset) as taker_asset
             , any_value(taking_amount) as taking_amount
             , any_value(order_flags) as order_flags
-            , array_agg(distinct if(native, native_symbol, symbol)) as tokens
+            , array_agg(distinct
+                cast(row(if(native, native_symbol, symbol), contract_address_raw)
+                  as row(symbol varchar, contract_address_raw varbinary))
+            ) as tokens
+            , array_agg(distinct
+                cast(row(if(native, native_symbol, symbol), contract_address_raw)
+                  as row(symbol varchar, contract_address_raw varbinary))
+            ) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_tokens
+            , array_agg(distinct
+                cast(row(if(native, native_symbol, symbol), contract_address_raw)
+                  as row(symbol varchar, contract_address_raw varbinary))
+            ) filter(where transfer_from = call_from or transfer_to = call_from) as caller_tokens
             , max(amount * price / pow(10, decimals)) as call_amount_usd
+            , max(amount * price / pow(10, decimals)) filter(where trusted) as call_amount_usd_trusted
             , max(amount * price / pow(10, decimals)) filter(where creations_from.block_number is null or creations_to.block_number is null) as user_amount_usd
+            , max(amount * price / pow(10, decimals)) filter(where (creations_from.block_number is null or creations_to.block_number is null) and trusted) as user_amount_usd_trusted
             , max(amount * price / pow(10, decimals)) filter(where transfer_from = call_from or transfer_to = call_from) as caller_amount_usd
+            , max(amount * price / pow(10, decimals)) filter(where (transfer_from = call_from or transfer_to = call_from) and trusted) as caller_amount_usd_trusted
             , array_agg(distinct transfer_from) filter(where creations_from.block_number is null) as senders
             , array_agg(distinct transfer_to) filter(where creations_to.block_number is null) as receivers
         from calls
@@ -226,16 +259,22 @@ meta as (
                 , block_time
                 , tx_hash
                 , transfer_trace_address
-                , if(type = 'native', wrapped_native_token_address, contract_address) as contract_address
-                , type = 'native' as native
+                , contract_address as contract_address_raw
+                , if(contract_address = {{ native_address }}, wrapped_native_token_address, contract_address) as contract_address
+                , contract_address = {{ native_address }} as native
                 , amount
                 , native_symbol
                 , transfer_from
                 , transfer_to
                 , date_trunc('minute', block_time) as minute
             from (
-                select * from {{ source('oneinch', 'parsed_transfers_from_calls') }}
-                where blockchain = '{{blockchain}}'
+                select * from ({{ oneinch_project_ptfc_macro(blockchain) }})
+                where
+                    {% if is_incremental() %}
+                        {{ incremental_predicate('block_time') }}
+                    {% else %}
+                        block_time >= timestamp '{{date_from}}'
+                    {% endif %}
             ), meta
             where
                 {% if is_incremental() %}
@@ -251,6 +290,7 @@ meta as (
             and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and maker in (transfer_from, transfer_to)) -- transfers related to the order only
         left join prices using(contract_address, minute)
         left join tokens using(contract_address)
+        left join trusted_tokens using(contract_address)
         left join creations as creations_from on creations_from.address = transfers.transfer_from
         left join creations as creations_to on creations_to.address = transfers.transfer_to
         group by 1, 2, 3, 4, 5
@@ -282,10 +322,15 @@ select
     , taking_amount
     , order_flags
     , tokens
+    , user_tokens
+    , caller_tokens
     , amount_usd
     , user_amount_usd
+    , user_amount_usd_trusted
     , caller_amount_usd
+    , caller_amount_usd_trusted
     , call_amount_usd
+    , call_amount_usd_trusted
     , tx_swaps
     , if(cardinality(users) = 0 or order_hash is null, array_union(users, array[tx_from]), users) as users
     , users as direct_users

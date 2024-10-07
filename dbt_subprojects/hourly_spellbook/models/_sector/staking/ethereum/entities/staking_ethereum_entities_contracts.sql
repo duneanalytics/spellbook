@@ -15,6 +15,7 @@ WITH contracts AS (
     (0xdcd51fc5cd918e0461b9b7fb75967fdfd10dae2f, 'Rocket Pool', 'Liquid Staking')
     , (0x1cc9cf5586522c6f483e84a19c3c2b0b6d027bf0, 'Rocket Pool', 'Liquid Staking')
     , (0x2fb42ffe2d7df8381853e96304300c6a5e846905, 'Rocket Pool', 'Liquid Staking')
+    , (0x9304b4ebfbe68932cf9af8de4d21d7e7621f701a, 'Rocket Pool', 'Liquid Staking')
     --, (0x9b8c989ff27e948f55b53bb19b3cc1947852e394, 'Kiln', 'Staking Pool') -- Kiln doesn't custody or manage any validators, hence the removal
     --, (0x1e68238ce926dec62b3fbc99ab06eb1d85ce0270, 'Kiln', 'Staking Pool')
     , (0x2421a0af8badfae12e1c1700e369747d3db47b09, 'SenseiNode', 'Staking Pool')

@@ -18,16 +18,26 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: sushiswap_arbitrum
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
   - name: sushi_v2_arbitrum
     tables:
       - name: Pool_evt_Swap
       - name: Factory_evt_PoolCreated
+  - name: sushiswap_v3_pool_arbitrum
+    tables:
+      - name: UniswapV3Pool_evt_Swap
   - name: arbswap_arbitrum
     tables:
       - name: SwapPair_evt_Swap
       - name: SwapFactory_evt_PairCreated
       - name: ArbswapStableSwapTwoPool_evt_TokenExchange
       - name: ArbswapStableSwapFactory_evt_NewStableSwapPair
+  - name: trader_joe_v2_2_arbitrum
+    tables:
+      - name: LBPair_evt_Swap
+      - name: LBFactory_evt_LBPairCreated
   - name: trader_joe_v2_1_arbitrum
   - name: trader_joe_arbitrum
   - name: pancakeswap_v2_arbitrum
@@ -150,3 +160,8 @@ sources:
     tables:
       - name: V2Pool_evt_PoolSwap
       - name: V2Factory_evt_PoolCreated
+  - name: valantis_arbitrum
+    tables:
+      - name: SovereignPool_evt_Swap
+      - name: ProtocolFactory_evt_SovereignPoolDeployed
+      - name: HOT_evt_HotSwap

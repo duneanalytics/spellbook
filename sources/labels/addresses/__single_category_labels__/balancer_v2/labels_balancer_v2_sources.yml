@@ -6,7 +6,6 @@ sources:
       - name: InvestmentPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer InvestmentPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - &call_block_number
             name: call_block_number
@@ -55,7 +54,6 @@ sources:
       - name: StablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer StablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -78,7 +76,6 @@ sources:
       - name: MetaStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer MetaStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -108,7 +105,6 @@ sources:
       - name: LiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer LiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -130,7 +126,6 @@ sources:
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -152,7 +147,6 @@ sources:
       - name: ComposableStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -180,7 +174,6 @@ sources:
       - name: AaveLinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -208,7 +201,6 @@ sources:
       - name: ERC4626LinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ERC4626LinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -247,7 +239,6 @@ sources:
       - name: InvestmentPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer InvestmentPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -269,7 +260,6 @@ sources:
       - name: StablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer StablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -290,7 +280,6 @@ sources:
       - name: MetaStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer MetaStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -314,7 +303,6 @@ sources:
       - name: LiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer LiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -336,7 +324,6 @@ sources:
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -358,7 +345,6 @@ sources:
       - name: StablePhantomPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer StablePhantomPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -381,7 +367,6 @@ sources:
       - name: ComposableStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -405,7 +390,6 @@ sources:
       - name: AaveLinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -429,7 +413,6 @@ sources:
       - name: StablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer StablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -450,7 +433,6 @@ sources:
       - name: MetaStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer MetaStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -474,7 +456,6 @@ sources:
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -496,7 +477,6 @@ sources:
       - name: ComposableStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -520,7 +500,6 @@ sources:
       - name: AaveLinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -544,7 +523,6 @@ sources:
       - name: InvestmentPoolFactory_call_create
         description: >
           Deco*ed table of registered pools on the Balancer InvestmentPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -567,7 +545,6 @@ sources:
       - name: StablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer StablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -588,7 +565,6 @@ sources:
       - name: MetaStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer MetaStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -612,7 +588,6 @@ sources:
       - name: LiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer LiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -634,7 +609,6 @@ sources:
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -656,7 +630,6 @@ sources:
       - name: StablePhantomPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer StablePhantomPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -679,7 +652,6 @@ sources:
       - name: ComposableStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -703,7 +675,6 @@ sources:
       - name: AaveLinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -977,7 +948,6 @@ sources:
       - name: StablePoolV2Factory_call_create
         description: >
           Decoded table of registered pools on the Balancer StablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -998,7 +968,6 @@ sources:
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1020,7 +989,6 @@ sources:
       - name: ComposableStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1044,7 +1012,6 @@ sources:
       - name: AaveLinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1066,7 +1033,6 @@ sources:
       - name: AaveLinearPoolV3Factory_call_create
         description: >
           Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1088,7 +1054,6 @@ sources:
       - name: ComposableStablePoolV2Factory_call_create
         description: >
           Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1112,7 +1077,6 @@ sources:
       - name: ManagedPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ManagedPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1139,7 +1103,6 @@ sources:
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1161,7 +1124,6 @@ sources:
       - name: ComposableStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1185,7 +1147,6 @@ sources:
       - name: AaveLinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1207,7 +1168,6 @@ sources:
       - name: ERC4626LinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1231,7 +1191,6 @@ sources:
       - name: ManagedPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ManagedPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1258,7 +1217,6 @@ sources:
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1280,7 +1238,6 @@ sources:
       - name: ComposableStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1304,7 +1261,6 @@ sources:
       - name: AaveLinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1326,7 +1282,6 @@ sources:
       - name: ERC4626LinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ERC4626LinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1350,7 +1305,6 @@ sources:
       - name: ManagedPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ManagedPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1376,7 +1330,6 @@ sources:
       - name: GyroECLPPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Gyroscope ECLP contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1402,7 +1355,6 @@ sources:
       - name: Gyro2CLPPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Gyroscope ECLP contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1430,7 +1382,6 @@ sources:
       - name: GyroECLPPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Gyroscope ECLP contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1458,7 +1409,6 @@ sources:
       - name: GyroECLPPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Gyroscope ECLP contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1486,7 +1436,6 @@ sources:
       - name: GyroECLPPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Gyroscope ECLP contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1646,7 +1595,6 @@ sources:
       - name: NoProtocolFeeLiquidityBootstrappingPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer NoProtocolFeeLiquidityBootstrappingPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1668,7 +1616,6 @@ sources:
       - name: ManagedPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ManagedPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1692,7 +1639,6 @@ sources:
       - name: ComposableStablePoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ComposableStablePoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1716,7 +1662,6 @@ sources:
       - name: AaveLinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer AaveLinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1738,7 +1683,6 @@ sources:
       - name: ERC4626LinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer ERC4626LinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1762,7 +1706,6 @@ sources:
       - name: YearnLinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer YearnLinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1786,7 +1729,6 @@ sources:
       - name: GearboxLinearPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Balancer GearboxLinearPoolFactory contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1834,7 +1776,6 @@ sources:
       - name: GyroECLPPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Gyroscope ECLP contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1855,13 +1796,8 @@ sources:
           - *rateProviders
           - *symbol
           - *tokens
-
-  - name: gyroscope_zkevm
-    tables:
       - name: Gyro2CLPPoolFactory_call_create
-        description: >
-          Decoded table of registered pools on the Gyroscope 2CLP contract.
-        loaded_at_field: call_block_time
+        description: "Decoded table of registered pools on the Gyroscope 2CLP contract."
         columns:
           - *call_block_number
           - *call_block_time
@@ -1886,9 +1822,7 @@ sources:
   - name: gyroscope_gnosis
     tables:
       - name: GyroECLPPoolFactory_call_create
-        description: >
-          Decoded table of registered pools on the Gyroscope ECLP contract.
-        loaded_at_field: call_block_time
+        description: "Decoded table of registered pools on the Gyroscope ECLP contract."
         columns:
           - *call_block_number
           - *call_block_time
@@ -1916,7 +1850,6 @@ sources:
       - name: GyroECLPPoolFactory_call_create
         description: >
           Decoded table of registered pools on the Gyroscope ECLP contract.
-        loaded_at_field: call_block_time
         columns:
           - *call_block_number
           - *call_block_time
@@ -1938,3 +1871,30 @@ sources:
           - *rateProviders
           - *symbol
           - *tokens          
+
+  - name: gyroscope_avalanche_c
+    tables:
+      - name: GyroECLPPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Gyroscope ECLP contract.
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: capManager
+          - name: capParams                 
+          - name: contract_address
+            description: "Address of the ECLP Pool contract"
+          - name: derivedECLPParams
+          - name: eclpParams
+          - name: name
+          - *output_0
+          - *owner
+          - name: pauseManager
+          - name: pauseParams
+          - *swapFeePercentage
+          - *rateProviders
+          - *symbol
+          - *tokens
