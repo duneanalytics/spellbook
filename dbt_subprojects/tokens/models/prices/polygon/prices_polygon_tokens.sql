@@ -141,7 +141,7 @@ FROM
     ('trb-tellor', 'polygon', 'TRB', 0xe3322702bedaaed36cddab233360b939775ae5f1, 18),
     --('alta-alta-finance', 'polygon', 'ALTA', 0xe0cca86b254005889ac3a81e737f56a14f4a38f5, 18),
     --('pbos-phobos-token', 'polygon', 'PBOS', 0x421b9b487d5a9b76e4b81809c0f1b9bb8cb24cb9, 18) 
-    ('brla-brla-digital-brla', 'polygon', 'TRBRLAB', 0xe6a537a407488807f0bbeb0038b79004f19dddfb, 18),
+    ('brla-brla-digital-brla', 'polygon', 'BRLA', 0xe6a537a407488807f0bbeb0038b79004f19dddfb, 18),
     ('vcnt-vicicoin', 'polygon', 'VCNT', 0x8a16d4bf8a0a716017e8d2262c4ac32927797a2f, 18),
     ('trc-metatrace', 'polygon', 'TRC',0x40d9fc77027a281d85de1fa660c887e645ae26c3, 2),
     ('ggt-go-game-token', 'polygon', 'GGT',0x8349314651ede274f8c5fef01aa65ff8da75e57c, 8),
@@ -150,9 +150,11 @@ FROM
     ('trade-polytrade', 'polygon', 'TRADE',0x692ac1e363ae34b6b489148152b12e2785a3d8d6, 18),
     ('xen-xen-crypto', 'polygon', 'XEN',0x2ab0e9e4ee70fff1fb9d67031e44f6410170d00e, 18),
     ('ygg-yield-guild-games', 'polygon', 'YGG',0x82617aa52dddf5ed9bb7b370ed777b3182a30fd1, 18),
-    ('metal-badmad-robots', 'polygon', 'METAL',0x200c234721b5e549c3693ccc93cf191f90dc2af9, 18),
+    --('metal-badmad-robots', 'polygon', 'METAL',0x200c234721b5e549c3693ccc93cf191f90dc2af9, 18),
     ('naka-nakamoto-games', 'polygon', 'NAKA',0x311434160d7537be358930def317afb606c0d737, 18),
-    ('sfl1-sunflower-land', 'polygon', 'SFL',0xd1f9c58e33933a993a3891f8acfe05a68e1afc05, 18)
+    ('sfl1-sunflower-land', 'polygon', 'SFL',0xd1f9c58e33933a993a3891f8acfe05a68e1afc05, 18),
+    ('algb-algebra', 'polygon', 'ALGB',0x0169ec1f8f639b32eec6d923e24c2a2ff45b9dd6, 18),
+    ('rmv-reality-metaverse', 'polygon', 'RMV',0xf0949dd87d2531d665010d6274f06a357669457a, 18)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
