@@ -124,7 +124,7 @@ with source as (
         , p.previous_30_days_gas_fees_usd
         , ((c.last_30_days_gas_fees_usd - coalesce(p.previous_30_days_gas_fees_usd, 0)) / coalesce(p.previous_30_days_gas_fees_usd, 1)) * 100 AS monthly_percent_change
         , t.total_cross_chain_last_30_days_gas_fees_usd
-        , (c.last_30_days_gas_fees_usd / t.total_cross_chain_last_30_days_gas_fees_usd) * 100 AS percent_total_last_30_days_gas_fees
+        , (c.last_30_days_gas_fees_usd / t.total_cross_chain_last_30_days_gas_fees_usd) * 100 AS percent_total_last_30_days_gas_fees_usd
     from
         current_month as c
     left join previous_month as p
@@ -148,7 +148,7 @@ select
     , m.previous_30_days_gas_fees_usd
     , m.monthly_percent_change
     , m.total_cross_chain_last_30_days_gas_fees_usd
-    , m.percent_total_last_30_days_gas_fees
+    , m.percent_total_last_30_days_gas_fees_usd
     , m.last_30_days_gas_fees_usd * 12 as gas_fees_usd_run_rate
 from
     daily_stats as d
