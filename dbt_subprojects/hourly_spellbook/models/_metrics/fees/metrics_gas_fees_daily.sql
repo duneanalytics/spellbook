@@ -4,14 +4,14 @@
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
-        , unique_key = ['blockchain', 'day']
-        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
+        , unique_key = ['blockchain', 'block_date']
+        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
         )
 }}
 
 select
     blockchain
-    , block_date as day
+    , block_date
     , sum(tx_fee_usd) as gas_spent_usd
 from
     {{ ref('gas_fees') }}

@@ -8,7 +8,7 @@ with source as (
     -- daily aggregation of tx's per blockchain
     select
         blockchain
-        , day
+        , block_date
         , tx_count
     from
         {{ ref('metrics_transactions_daily') }}
@@ -19,8 +19,8 @@ with source as (
     from
         source
     where
-        day >= date_trunc('day', now()) - interval '1' day
-        and day < date_trunc('day', now())
+        block_date >= date_trunc('day', now()) - interval '1' day
+        and block_date < date_trunc('day', now())
 ), previous_day as (
     select
         blockchain
@@ -28,8 +28,8 @@ with source as (
     from
         source
     where
-        day >= date_trunc('day', now()) - interval '2' day
-        and day < date_trunc('day', now()) - interval '1' day
+        block_date >= date_trunc('day', now()) - interval '2' day
+        and block_date < date_trunc('day', now()) - interval '1' day
 ), total_current_day_txs as (
     select
         sum(current_day_tx_count) AS total_current_day_txs
@@ -56,8 +56,8 @@ with source as (
     from
         source
     where
-        day >= date_trunc('day', now()) - interval '7' day
-        and day < date_trunc('day', now())
+        block_date >= date_trunc('day', now()) - interval '7' day
+        and block_date < date_trunc('day', now())
     group by
         blockchain
 ), previous_week as (
@@ -67,8 +67,8 @@ with source as (
     from
         source
     where
-        day >= date_trunc('day', now()) - interval '14' day
-        and day < date_trunc('day', now()) - interval '7' day
+        block_date >= date_trunc('day', now()) - interval '14' day
+        and block_date < date_trunc('day', now()) - interval '7' day
     group by
         blockchain
 ), total_current_week_txs as (
@@ -97,8 +97,8 @@ with source as (
     from
         source
     where
-        day >= date_trunc('day', now()) - interval '30' day
-        and day < date_trunc('day', now())
+        block_date >= date_trunc('day', now()) - interval '30' day
+        and block_date < date_trunc('day', now())
     group by
         blockchain
 ), previous_month as (
@@ -108,8 +108,8 @@ with source as (
     from
         source
     where
-        day >= date_trunc('day', now()) - interval '60' day
-        and day < date_trunc('day', now()) - interval '30' day
+        block_date >= date_trunc('day', now()) - interval '60' day
+        and block_date < date_trunc('day', now()) - interval '30' day
     group by
         blockchain
 ), total_current_month_txs as (
