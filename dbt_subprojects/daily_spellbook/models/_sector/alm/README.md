@@ -41,7 +41,7 @@ Because of that, the `alm.trades` design mimics the one used for `dex.trades`.
 
 ### Data Flow Architecture
 
-As previously said, the architecture of `alm.trades` mimics the one of `dex.trades`. Because of that, [this diagram](https://github.com/duneanalytics/spellbook/blob/main/models/_sector/dex/readme.md#data-flow-architecture) can be taken as a reference.
+As previously said, the architecture of `alm.trades` mimics the one of `dex.trades`. Because of that, [this diagram](https://github.com/duneanalytics/spellbook/tree/main/dbt_subprojects/dex/models/trades#data-flow-architecture) can be taken as a reference.
 In `alm.trades`, the 2 macros used are:
 - `arrakis_compatible_v2_trades`: which tracks all the Uniswap V3 LP positions (timestamp, liquidity, and tick information) minted by Arrakis Finance vaults, and then derives the volume served for each swap based on the price movement of the pool.
 - `add_pool_price_usd`: which uses `prices.usd` to populate the pool price in USD, so the volume served can be expressed in USD terms.
@@ -74,7 +74,7 @@ Adoption of `arrakis_` for macro names.
 
 ### Macro Usage Example
 
-Below is an example of how to use the [`arrakis_compatible_v2_trades` macro](/dbt_macros/models/_sector/alm/arrakis_compatible_trades.sql) macro within our project. This macro is designed to standardize the trades data for projects compatible with Arrakis V2 on various blockchains.
+Below is an example of how to use the [`arrakis_compatible_v2_trades` macro](https://github.com/duneanalytics/spellbook/blob/main/dbt_subprojects/daily_spellbook/macros/sector/alm/arrakis_compatible_trades.sql) macro within our project. This macro is designed to standardize the trades data for projects compatible with Arrakis V2 on various blockchains.
 
 ```sql
 {{
