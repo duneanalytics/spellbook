@@ -32,10 +32,11 @@ polymarket_addresses as (
     (0x94a3db2f861b01c027871b08399e1ccecfc847f6)   -- liq mining merkle distributor
   ) as t(address)
   UNION ALL 
-  select distinct 
+  select 
     contract_address as address
-  from {{ source('polymarket_polygon', 'fedinterestrate_evt_FPMMFundingAdded') }}
-  -- need to rename fed to FPMM in dune DB
+  from {{ source('polygon', 'creation_traces') }}
+  where "from" = 0x8b9805a2f595b6705e74f7310829f2d299d21522
+  -- these are fpmm contracts
 )
 
 select
