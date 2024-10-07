@@ -421,7 +421,7 @@ models:
       - name: resolved_on_timestamp
         description: "Timestamp when the market was resolved"
 
-  - name: polymarket_polygon_hourly_market_prices
+  - name: polymarket_polygon_daily_market_prices
     meta:
       blockchain: polygon
       sector: prediction_markets
