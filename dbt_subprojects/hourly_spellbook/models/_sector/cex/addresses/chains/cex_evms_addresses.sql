@@ -2704,7 +2704,6 @@ FROM (VALUES
     , (0xc25dc289edce5227cf15d42539824509e826b54d, 'AAX', 'AAX 2', 'hildobby', date '2024-01-04')
     , (0x8dc11398263fff36eb91602a18877112ead2ede4, 'AAX', 'AAX 3', 'hildobby', date '2024-06-03')
     , (0xa4ee5581fdcbaaf52c5edb65c8fbb7d3de78b838, 'AAX', 'AAX 4', 'hildobby', date '2024-06-03')
-    , (0xa4ee5581fdcbaaf52c5edb65c8fbb7d3de78b838, 'AAX', 'AAX 5', 'hildobby', date '2024-09-06')
     , (0x4dca3852323ae417d4c7d735100a629130d50e90, 'AAX', 'AAX Deposit Funder 1', 'hildobby', date '2024-05-25')
     , (0xd25f30ca035250cff6810187e2da6f924bd9616e, 'AAX', 'AAX Deposit Funder 2', 'hildobby', date '2024-09-06')
     -- Abra
