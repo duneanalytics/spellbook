@@ -319,7 +319,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - token_id
-            - question_id
     columns:
       - name: unique_key
         description: "Unique identifier for the market"

@@ -113,3 +113,5 @@ left join {{ ref('polymarket_polygon_market_outcomes') }} pm on pm.question_id =
 )
 
 SELECT * FROM naming_things
+where token_id is not null
+and condition_id is not null
