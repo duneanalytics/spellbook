@@ -7,7 +7,7 @@
         incremental_strategy = 'merge',
         unique_key = ['address'],
         merge_update_columns = ['blockchains', 'executed_tx_count', 'max_nonce', 'max_nonce_blockchain', 'is_smart_contract', 'smart_contract_blockchains', 'namespace', 'name', 'first_funded_by', 'first_funded_blockchain', 'first_funded_by_block_time', 'tokens_received_count', 'tokens_received_tx_count', 'tokens_sent_count', 'tokens_sent_tx_count', 'first_transfer_block_time', 'last_transfer_block_time', 'first_received_block_number', 'last_received_block_number', 'first_sent_block_number', 'last_sent_block_number', 'sent_volume_usd', 'received_volume_usd', 'first_tx_block_time', 'last_tx_block_time', 'chain_stats', 'last_seen', 'last_seen_block'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora", "blast"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora", "blast", "bob", "degen", "fantom", "linea", "mantle", "mode", "sei", "zkevm", "zksync"]\',
                                     "sector",
                                     "addresses",
                                     \'["hildobby"]\') }}'
@@ -27,6 +27,15 @@
     , ('polygon', ref('addresses_polygon_info'))
     , ('scroll', ref('addresses_scroll_info'))
     , ('zora', ref('addresses_zora_info'))
+    , ('bob', ref('addresses_bob_info'))
+    , ('degen', ref('addresses_degen_info'))
+    , ('fantom', ref('addresses_fantom_info'))
+    , ('linea', ref('addresses_linea_info'))
+    , ('mantle', ref('addresses_mantle_info'))
+    , ('mode', ref('addresses_mode_info'))
+    , ('sei', ref('addresses_sei_info'))
+    , ('zkevm', ref('addresses_zkevm_info'))
+    , ('zksync', ref('addresses_zksync_info'))
 ] %}
 
 {% if not is_incremental() %}
