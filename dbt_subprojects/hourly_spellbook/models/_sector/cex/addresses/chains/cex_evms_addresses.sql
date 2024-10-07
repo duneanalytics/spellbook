@@ -2539,7 +2539,7 @@ FROM (VALUES
     , (0xddbb8d8b5da3dfaf65d4f8fa846127acd6a844b1, 'Prime Trust', 'Prime Trust Celsuis Lawsuit Payout 1', 'hildobby', date '2024-01-04')
     , (0xf4e11b89519eccd988a56749f1c64ad9bfe0298f, 'Prime Trust', 'Prime Trust Legacy MultiSig 1', 'hildobby', date '2024-01-04')
     , (0x33fe7ad77394281e43cc82d86ad0cbb5b9e9575d, 'Prime Trust', 'Prime Trust Deposit Funder 1', 'hildobby', date '2024-01-04')
-    , (0xd8b81f6849dfbbe7b8f3c32bbb3a15ad2adb6898, 'Prime Trust', 'Prime Trust Deposit Funder 2', 'hildobby', date '2024-00-06')
+    , (0xd8b81f6849dfbbe7b8f3c32bbb3a15ad2adb6898, 'Prime Trust', 'Prime Trust Deposit Funder 2', 'hildobby', date '2024-09-06')
     -- Digital Surge
     , (0xfb75b231c307738ce506c242babad2fd2e77b0bf, 'Digital Surge', 'Digital Surge 1', 'hildobby', date '2024-01-04')
     -- Thodex
