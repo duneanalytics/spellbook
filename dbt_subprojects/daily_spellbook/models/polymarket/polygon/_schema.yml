@@ -150,31 +150,6 @@ models:
       - *evt_index
       - *tx_hash
 
-  - name: polymarket_polygon_market_conditions
-    meta:
-      blockchain: polygon
-      sector: prediction_markets
-      project: polymarket
-      contributors: tomfutago
-    config:
-      tags: ['polygon','prediction_markets','polymarket','markets']
-    description: "Polymarket: market conditions"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - question_id
-            - condition_id
-            - condition_token
-    columns:
-      - *block_time
-      - *block_number
-      - *condition_id
-      - *question_id
-      - *outcome_slot_count
-      - *oracle
-      - *evt_index
-      - *tx_hash
-
   - name: polymarket_polygon_market_trades
     meta:
       blockchain: polygon
