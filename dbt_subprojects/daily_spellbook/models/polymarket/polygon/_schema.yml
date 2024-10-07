@@ -1,39 +1,6 @@
 version: 2
 
 models:
-  - name: polymarket_polygon_market_categories
-    meta:
-      blockchain: polygon
-      sector: prediction_markets
-      project: polymarket
-      contributors: tomfutago
-    config:
-      tags: ['polygon','prediction_markets','polymarket','markets']
-    description: "Polymarket: market categories"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - market_id
-    columns:
-      - &block_time
-        name: block_time
-      - &block_number
-        name: block_number
-      - &market_id
-        name: market_id
-      - &market
-        name: market
-      - &market_description
-        name: market_description
-      - &oracle
-        name: oracle
-      - &fee_bips
-        name: fee_bips
-      - &evt_index
-        name: evt_index
-      - &tx_hash
-        name: tx_hash
-
   - name: polymarket_polygon_markets
     meta:
       blockchain: polygon
@@ -48,11 +15,14 @@ models:
           combination_of_columns:
             - question_id
     columns:
-      - *block_time
-      - *block_number
+      - &block_time
+        name: block_time
+      - &block_number
+        name: block_number
       - &source
         name: source
-      - *market_id
+      - &market_id
+        name: market_id
       - &question_id
         name: question_id
       - &question
@@ -63,8 +33,10 @@ models:
         name: reward
       - &reward_token
         name: reward_token
-      - *evt_index
-      - *tx_hash
+      - &evt_index
+        name: evt_index
+      - &tx_hash
+        name: tx_hash
 
   - name: polymarket_polygon_market_outcomes
     meta:
@@ -120,7 +92,8 @@ models:
         name: condition
       - &outcome_slot_count
         name: outcome_slot_count
-      - *oracle
+      - &oracle
+        name: oracle
       - *evt_index
       - *tx_hash
 
