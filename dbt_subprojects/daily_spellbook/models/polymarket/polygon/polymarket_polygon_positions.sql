@@ -89,6 +89,10 @@ mapped_balances AS (
         mm.resolved_on_timestamp
     FROM balances b
     INNER JOIN markets_mapping mm ON b.token_id = mm.token_id
+    {% if is_incremental() %}
+    where {{ incremental_predicate('b.day') }}
+    {% endif %}
 )
 
 SELECT * FROM mapped_balances
+

@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'polymarket_polygon',
-    alias = 'safe_proxies',
+    alias = 'users_magic_wallet_proxies',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -15,14 +15,17 @@
 }}
 
 select
-  evt_block_time as block_time,
-  evt_block_number as block_number,
-  'safe' as type_of_wallet,
-  owner,
-  proxy,
-  evt_index,
-  evt_tx_hash as tx_hash
-from {{ source('polymarket_polygon', 'SafeProxyFactory_evt_ProxyCreation') }}
+  block_time,
+  block_number,
+  'magic.link' as type_of_wallet,
+  cast(null as varbinary) as owner,
+  address as proxy,
+  tx_hash
+from {{ source('polygon', 'creation_traces') }}
+where "from" = 0xaB45c5A4B0c941a2F231C04C3f49182e1A254052
 {% if is_incremental() %}
-where {{ incremental_predicate('evt_block_time') }}
+  and {{ incremental_predicate('block_time') }}
 {% endif %}
+
+
+

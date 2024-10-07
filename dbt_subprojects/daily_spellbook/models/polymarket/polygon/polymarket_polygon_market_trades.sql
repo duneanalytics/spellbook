@@ -32,5 +32,5 @@ select
   t.taker,
   md.unique_key,
   md.token_outcome_name
-from {{ ref('polymarket_polygon_raw_market_trades') }} t
+from {{ ref('polymarket_polygon_market_trades_raw') }} t
 left join {{ ref('polymarket_polygon_market_details') }} md on t.condition_id = md.condition_id

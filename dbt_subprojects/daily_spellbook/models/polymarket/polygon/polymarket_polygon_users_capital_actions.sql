@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'polymarket_polygon',
-    alias = 'capital_actions',
+    alias = 'users_capital_actions',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -17,9 +17,9 @@
 with
 
 safe_proxies as (
-  select proxy from {{ ref('polymarket_polygon_safe_proxies') }}
+  select proxy from {{ ref('polymarket_polygon_users_safe_proxies') }}
   UNION ALL 
-  select proxy from {{ ref('polymarket_polygon_magic_wallet_proxies') }}
+  select proxy from {{ ref('polymarket_polygon_users_magic_wallet_proxies') }}
 ),
 
 polymarket_addresses as (

@@ -1,7 +1,6 @@
-{{
-  config(
+{{ config(
     schema = 'polymarket_polygon',
-    alias = 'daily_market_prices',
+    alias = 'market_prices_daily',
     materialized = 'view',
     unique_key = ['day', 'token_id'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
@@ -20,7 +19,7 @@ WITH changed_prices AS (
         asset_id AS token_id,
         price,
         LEAD(CAST(date_trunc('day', block_time) AS timestamp)) OVER (PARTITION BY condition_id, asset_id ORDER BY block_time ASC) AS next_update_day
-    FROM {{ ref('polymarket_polygon_raw_market_trades') }}
+    FROM {{ ref('polymarket_polygon_market_trades_raw') }}
     WHERE block_time < DATE_TRUNC('day', NOW()) 
 ),
 
