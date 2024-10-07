@@ -12,7 +12,7 @@
 select
     blockchain
     , block_date
-    , sum(tx_fee_usd) as gas_spent_usd
+    , sum(tx_fee_usd) as gas_fees_usd
 from
     {{ ref('gas_fees') }}
 {% if is_incremental() %}
