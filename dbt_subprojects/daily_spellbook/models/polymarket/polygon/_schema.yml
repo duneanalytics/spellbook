@@ -311,6 +311,33 @@ models:
       - name: resolved_on_timestamp
         description: "Timestamp when the market was resolved"
         
+  - name: polymarket_polygon_positions_raw
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Polymarket: raw user positions in markets"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - token_id
+            - day
+    columns:
+      - name: day
+        description: "The date of the position"
+      - name: address
+        description: "The address holding the position"
+      - name: token_address
+        description: "The address of the token"
+      - name: token_id
+        description: "Token ID of the position"
+      - name: balance
+        description: "Balance of the position"
+
   - name: polymarket_polygon_positions
     meta:
       blockchain: polygon
@@ -319,7 +346,7 @@ models:
       contributors: tomfutago
     config:
       tags: ['polygon','prediction_markets','polymarket','positions']
-    description: "Polymarket: user positions in markets"
+    description: "Polymarket: user positions in markets with market details"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
