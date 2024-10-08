@@ -11,11 +11,11 @@
 }}
 
 select
-    p.minute
-    , ptt.blockchain
+    ptt.blockchain
     , ptt.contract_address
     , ptt.symbol
     , ptt.decimals
+    , p.minute
     , p.price
 from
     {{ source('prices','usd_0003') }} as p
