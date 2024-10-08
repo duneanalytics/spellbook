@@ -47,6 +47,12 @@ sources:
   - name: addresses_events_fantom
     tables:
       - name: first_funded_by
+  - name: addresses_events_zkevm
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_linea
+    tables:
+      - name: first_funded_by
   - name: bridge_optimism
     tables:
       - name: standard_bridge_flows
