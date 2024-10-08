@@ -1,7 +1,7 @@
 {{ config(
         schema = 'prices'
         , alias = 'usd_trusted_tokens'
-        , partition_by = ['blockchain']
+        , partition_by = ['month']
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
@@ -15,6 +15,7 @@ select
     , ptt.contract_address
     , ptt.symbol
     , ptt.decimals
+    , date_trunc('month', p.minute) as month
     , p.minute
     , p.price
 from
