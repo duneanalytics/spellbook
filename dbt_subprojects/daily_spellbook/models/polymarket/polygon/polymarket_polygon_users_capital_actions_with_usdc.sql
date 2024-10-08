@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'polymarket_polygon',
-    alias = 'users_capital_actions',
+    alias = 'users_capital_actions_with_usdc',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
