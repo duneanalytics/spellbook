@@ -3,7 +3,6 @@
 {{ config(
     schema = 'gas_' + blockchain
     ,alias = 'fees'
-    ,tags = ['prod_exclude']
     ,partition_by = ['block_month']
     ,materialized = 'incremental'
     ,file_format = 'delta'
@@ -12,7 +11,7 @@
     ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
--- excluded because some raw data is incorrect: example https://dune.com/queries/4008169
+
 {{
     gas_fees(blockchain = blockchain)
 }}
