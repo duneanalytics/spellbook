@@ -8,10 +8,10 @@
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address'],
-    post_hook='{{ expose_spells(\'["arbitrum"]\',
-                                "project",
-                                "paraswap_v5",
-                                \'["springzh"]\') }}'
+    post_hook='{{ expose_spells(blockchains = \'["arbitrum"]\',
+                                spell_type = "project",
+                                spell_name = "paraswap_v5",
+                                contributors = \'["springzhang"]\') }}'
     )
 }}
 
@@ -72,11 +72,6 @@ SELECT 'arbitrum' AS blockchain,
     d.token_sold_amount_raw / power(10, e2.decimals) AS token_sold_amount,
     d.token_bought_amount_raw,
     d.token_sold_amount_raw,
-    coalesce(
-        d.amount_usd
-        ,(d.token_bought_amount_raw / power(10, p1.decimals)) * p1.price
-        ,(d.token_sold_amount_raw / power(10, p2.decimals)) * p2.price
-    ) AS amount_usd,
     d.token_bought_address,
     d.token_sold_address,
     coalesce(d.taker, tx."from") AS taker,

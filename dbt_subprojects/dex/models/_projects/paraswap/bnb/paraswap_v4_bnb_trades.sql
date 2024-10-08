@@ -71,11 +71,6 @@ SELECT 'bnb' AS blockchain,
     d.token_sold_amount_raw / power(10, e2.decimals) AS token_sold_amount,
     d.token_bought_amount_raw,
     d.token_sold_amount_raw,
-    coalesce(
-        d.amount_usd
-        ,(d.token_bought_amount_raw / power(10, p1.decimals)) * p1.price
-        ,(d.token_sold_amount_raw / power(10, p2.decimals)) * p2.price
-    ) AS amount_usd,
     d.token_bought_address,
     d.token_sold_address,
     coalesce(d.taker, tx."from") AS taker,
