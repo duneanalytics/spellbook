@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'dex_ethereum'
-    , alias = 'mass_decoded_trades'
+    schema = 'dex_automation_ethereum'
+    , alias = 'base_trades'
     , materialized = 'view'
     )
 }}

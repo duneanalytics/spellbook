@@ -75,7 +75,7 @@ models:
       - name: project_name
         description: "name of the project associated with the factory"
     
-  - name: mass_decoded_dex_trades_ethereum
+  - name: dex_automation_ethereum_base_trades
     description: "all dex trades on ethereum, mass decoded"
     tests: 
       - dbt_utils.unique_combination_of_columns:

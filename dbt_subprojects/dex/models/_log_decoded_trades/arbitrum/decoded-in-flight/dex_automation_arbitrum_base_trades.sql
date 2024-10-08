@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'dex_arbitrum'
-    , alias = 'mass_decoded_trades'
+    schema = 'dex_automation_arbitrum'
+    , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
