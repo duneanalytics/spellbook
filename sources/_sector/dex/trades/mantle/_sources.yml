@@ -19,3 +19,6 @@ sources:
   - name: swaap_v2_mantle
     tables:
       - name: Vault_evt_Swap
+  - name: clipper_mantle
+    tables:
+      - name: ClipperPackedVerifiedExchange_evt_Swapped
