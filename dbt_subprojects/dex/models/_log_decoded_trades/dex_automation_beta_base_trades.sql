@@ -11,8 +11,8 @@
 }}
 
 {% set models = [
-    ref('mass_decoded_dex_trades_ethereum')
-    , ref('mass_decoded_dex_trades_arbitrum')
+    ref('dex_automation_ethereum_base_trades')
+    , ref('dex_automation_arbitrum_base_trades')
 ] %}
 
 with base_union as (
