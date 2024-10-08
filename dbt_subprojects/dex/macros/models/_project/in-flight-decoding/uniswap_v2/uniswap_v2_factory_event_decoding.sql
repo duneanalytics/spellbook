@@ -1,4 +1,4 @@
-{% macro uniswap_v2_factory_mass_decoding(logs) %}
+{% macro uniswap_v2_factory_event_decoding(logs) %}
 
 {% set abi = '{
     "anonymous": false,
