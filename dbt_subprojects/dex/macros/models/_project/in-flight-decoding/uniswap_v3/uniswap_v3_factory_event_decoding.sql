@@ -1,4 +1,4 @@
-{% macro uniswap_v3_factory_mass_decoding(logs) %}
+{% macro uniswap_v3_factory_event_decoding(logs) %}
 
 {% set abi = '
 {"name":"PoolCreated","type":"event","inputs":[{"name":"token0","type":"address","indexed":true,"internalType":"address"},{"name":"token1","type":"address","indexed":true,"internalType":"address"},{"name":"fee","type":"uint24","indexed":true,"internalType":"uint24"},{"name":"tickSpacing","type":"int24","indexed":false,"internalType":"int24"},{"name":"pool","type":"address","indexed":false,"internalType":"address"}],"anonymous":false}

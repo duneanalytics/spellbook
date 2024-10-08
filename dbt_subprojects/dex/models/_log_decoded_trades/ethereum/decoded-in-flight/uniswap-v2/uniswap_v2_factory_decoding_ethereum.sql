@@ -10,6 +10,6 @@
         )
 }}
 
-{{uniswap_v2_factory_mass_decoding(
+{{uniswap_v2_factory_event_decoding(
         logs = source('ethereum', 'logs')
 )}}

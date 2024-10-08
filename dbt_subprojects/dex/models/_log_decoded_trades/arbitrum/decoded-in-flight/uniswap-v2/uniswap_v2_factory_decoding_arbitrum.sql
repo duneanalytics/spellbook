@@ -1,5 +1,4 @@
 {{ config(
-
         schema = 'mass_decoding_arbitrum',
         alias = 'uniswap_v2_factory_evt_PairCreated',
         partition_by = ['block_date'],
@@ -11,6 +10,6 @@
         )
 }}
 
-{{uniswap_v2_factory_mass_decoding(
+{{uniswap_v2_factory_event_decoding(
         logs = source('arbitrum', 'logs')
 )}}

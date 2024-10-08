@@ -11,6 +11,6 @@
         )
 }}
 
-{{uniswap_v3_pool_mass_decoding(
+{{uniswap_v3_pool_event_decoding(
         logs = source('arbitrum', 'logs')
 )}}
