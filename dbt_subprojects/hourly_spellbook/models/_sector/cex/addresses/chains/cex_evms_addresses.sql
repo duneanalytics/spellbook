@@ -76,7 +76,7 @@ FROM (VALUES
     , (0x290275e3db66394c52272398959845170e4dcb88, 'Binance', 'Binance 68', 'hildobby', date '2024-04-04')
     , (0x505e71695e9bc45943c58adec1650577bca68fd9, 'Binance', 'Binance 69', 'hildobby', date '2024-04-04')
     , (0x001ceb373c83ae75b9f5cf78fc2aba3e185d09e2, 'Binance', 'Binance 70', 'hildobby', date '2024-04-20')
-    , (0xd3a22590f8243f8e83ac230d1842c9af0404c4a1, 'Binance', 'Binance 71', 'hildobby', date '2024-04-20')
+    , (0x07b664c8af37eddaa7e3b6030ed1f494975e9dfb, 'Binance', 'Binance 71', 'hildobby', date '2024-09-06')
     , (0x0e4158c85ff724526233c1aeb4ff6f0c46827fbe, 'Binance', 'Binance 72', 'hildobby', date '2024-04-20')
     , (0xb32e9a84ae0b55b8ab715e4ac793a61b277bafa3, 'Binance', 'Binance 73', 'hildobby', date '2024-04-20')
     , (0xa7c0d36c4698981fab42a7d8c783674c6fe2592d, 'Binance', 'Binance 74', 'hildobby', date '2024-04-20')
@@ -96,7 +96,6 @@ FROM (VALUES
     , (0xeb25df7c79a85640c4420680461dcdfd91f0dfad, 'Binance', 'Binance 88', 'hildobby', date '2024-05-25')
     , (0x3931dab967c3e2dbb492fe12460a66d0fe4cc857, 'Binance', 'Binance 89', 'hildobby', date '2024-09-06')
     , (0x25681ab599b4e2ceea31f8b498052c53fc2d74db, 'Binance', 'Binance 90', 'hildobby', date '2024-09-06')
-    , (0x07b664c8af37eddaa7e3b6030ed1f494975e9dfb, 'Binance', 'Binance 91', 'hildobby', date '2024-09-06')
     , (0xef7fb88f709ac6148c07d070bc71d252e8e13b92, 'Binance', 'Binance Internal', 'hildobby', date '2023-11-22')
     , (0x8b99f3660622e21f2910ecca7fbe51d654a1517d, 'Binance', 'Binance Charity', 'hildobby', date '2022-08-28')
     , (0xab83d182f3485cf1d6ccdd34c7cfef95b4c08da4, 'Binance', 'Binance JEX', 'hildobby', date '2022-08-28')
@@ -1139,7 +1138,7 @@ FROM (VALUES
     , (0x07ee55aa48bb72dcc6e9d78256648910de513eca, 'Gemini', 'Gemini Contract 1', 'hildobby', date '2023-08-31')
     , (0x485b9a41e8bf06e57bb64c6ba7cb04f9d53d2d76, 'Gemini', 'Gemini Contract 2', 'hildobby', date '2024-01-10')
     , (0x9d549ad2ce668271fb1354af19b1668fdb86d818, 'Gemini', 'Gemini Deposit Funder 1', 'hildobby', date '2024-09-06')
-    , (0x993ee9917eaa1cda1f6a0a5892cff87ee7588785, 'Gemini', 'Gemini Deposit Funder 1', 'hildobby', date '2024-09-06')
+    , (0x993ee9917eaa1cda1f6a0a5892cff87ee7588785, 'Gemini', 'Gemini Deposit Funder 2', 'hildobby', date '2024-09-06')
     -- BitMart
     , (0xe79eef9b9388a4ff70ed7ec5bccd5b928ebb8bd1, 'BitMart', 'BitMart 1', 'hildobby', date '2022-08-28')
     , (0x68b22215ff74e3606bd5e6c1de8c2d68180c85f7, 'BitMart', 'BitMart 2', 'hildobby', date '2022-08-28')
@@ -2182,8 +2181,7 @@ FROM (VALUES
     , (0x9989528cdf6dc1a792ae0f49a791f88fa9e343dc, 'FixedFloat', 'FixedFloat 9', 'hildobby', date '2024-09-06')
     , (0x257a00a4942b600110dc61f45f06bbcaac85f87a, 'FixedFloat', 'FixedFloat 10', 'hildobby', date '2024-09-06')
     , (0x5959dba0123d7a60df9e1409de4d7b5604976060, 'FixedFloat', 'FixedFloat Deposit Funder 1', 'hildobby', date '2024-09-06')
-    , (0x5959dba0123d7a60df9e1409de4d7b5604976060, 'FixedFloat', 'FixedFloat Deposit Funder 2', 'hildobby', date '2024-09-06')
-    , (0x440efc740ca49ed88051c05cf756cde6c8be3b27, 'FixedFloat', 'FixedFloat Deposit Funder 3', 'hildobby', date '2024-09-06')
+    , (0x440efc740ca49ed88051c05cf756cde6c8be3b27, 'FixedFloat', 'FixedFloat Deposit Funder 2', 'hildobby', date '2024-09-06')
     -- Bitrue
     , (0x6cc8dcbca746a6e4fdefb98e1d0df903b107fd21, 'Bitrue', 'Bitrue 1', 'hildobby', date '2022-08-28')
     , (0xd205a958527f083f1b222061b4d60d147fec5044, 'Bitrue', 'Bitrue 2', 'hildobby', date '2024-06-03')
@@ -2327,7 +2325,6 @@ FROM (VALUES
     , (0xe17af102ba3c45301cca05953892e2ed357486e6, 'Liqui', 'Liqui Deposit Funder 3', 'hildobby', date '2024-09-06')
     , (0x3ae7f3679d63077b4ab30dc96af2df72239faaff, 'Liqui', 'Liqui Deposit Funder 4', 'hildobby', date '2024-09-06')
     , (0x1bedb2aa5d389b13980d7b7ca7b7266a95020781, 'Liqui', 'Liqui Deposit Funder 5', 'hildobby', date '2024-09-06')
-    , (0xdb2e63058a01a3f304c9e337003f425889ba135f, 'Liqui', 'Liqui Deposit Funder 6', 'hildobby', date '2024-09-06')
     -- Hoo.com
     , (0x980a4732c8855ffc8112e6746bd62095b4c2228f, 'Hoo.com', 'Hoo.com 1', 'hildobby', date '2022-08-28')
     , (0xd0ec209ad2134899148bec8aef905a6e9997456a, 'Hoo.com', 'Hoo.com 2', 'hildobby', date '2022-08-28')
