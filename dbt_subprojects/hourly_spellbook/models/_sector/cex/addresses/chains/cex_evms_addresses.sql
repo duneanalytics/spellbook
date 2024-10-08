@@ -2960,15 +2960,6 @@ FROM (VALUES
     , (0x6438beeb08cf4faba533ecde748180dd56d43513, 'Bitrefill', 'Bitrefill Deposit Funder 8', 'hildobby', date '2024-09-06')
     , (0xf5e410b97aabdfbd019f1428fde4e12815cabbae, 'Bitrefill', 'Bitrefill Deposit Funder 9', 'hildobby', date '2024-09-06')
     , (0xcbd17ee0703b92f858744f658c53ad26ce206dfa, 'Bitrefill', 'Bitrefill Deposit Funder 10', 'hildobby', date '2024-09-06')
-    , (, 'Bitrefill', 'Bitrefill Deposit Funder 11', 'hildobby', date '2024-09-06')
-    , (, 'Bitrefill', 'Bitrefill Deposit Funder 12', 'hildobby', date '2024-09-06')
-    , (, 'Bitrefill', 'Bitrefill Deposit Funder 13', 'hildobby', date '2024-09-06')
-    , (, 'Bitrefill', 'Bitrefill Deposit Funder 14', 'hildobby', date '2024-09-06')
-    , (, 'Bitrefill', 'Bitrefill Deposit Funder 15', 'hildobby', date '2024-09-06')
-    , (, 'Bitrefill', 'Bitrefill Deposit Funder 16', 'hildobby', date '2024-09-06')
-    , (, 'Bitrefill', 'Bitrefill Deposit Funder 17', 'hildobby', date '2024-09-06')
-    , (, 'Bitrefill', 'Bitrefill Deposit Funder 18', 'hildobby', date '2024-09-06')
-    , (, 'Bitrefill', 'Bitrefill Deposit Funder 19', 'hildobby', date '2024-09-06')
     -- Txbit
     , (0x53edc98cb6c21dfcddaf7f91ebf39789b93e2ac6, 'Txbit', 'Txbit 1', 'hildobby', date '2024-01-04')
     , (0xe4feb3e94b4128d973a366dc4814167a90629a08, 'Txbit', 'Txbit 2', 'hildobby', date '2024-01-04')
@@ -2997,8 +2988,6 @@ FROM (VALUES
     -- Anchorage Digital
     , (0xd52055a39a3d2f7505c739f981f296ea31b50191, 'Anchorage Digital', 'Anchorage Digital Custodian 1', 'hildobby', date '2024-01-04')
     , (0xa44d54ae6a00e095daa000365c99c4a27303b6f3, 'Anchorage Digital', 'Anchorage Digital Custodian 2', 'hildobby', date '2024-09-06')
-    , (, 'Anchorage Digital', 'Anchorage Digital Custodian 3', 'hildobby', date '2024-09-06')
-    , (, 'Anchorage Digital', 'Anchorage Digital Custodian 4', 'hildobby', date '2024-09-06')
     , (0x3161b9660cc36c00dfc36307de2b8c53960164dc, 'Anchorage Digital', 'Anchorage Digital Deposit Funder 1', 'hildobby', date '2024-01-04')
     -- VinDAX
     , (0xc5a7c9d185a47da11878f46932d23c0fdc56f275, 'VinDAX', 'VinDAX 1', 'hildobby', date '2024-01-04')
