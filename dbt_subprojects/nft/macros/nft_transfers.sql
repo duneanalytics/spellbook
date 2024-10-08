@@ -110,7 +110,6 @@ FROM(
         {% endif %}
     {%- endif -%}
     WHERE t.value > uint256 '0'
-    {% endif %}
 )
 
 {% endmacro %}
