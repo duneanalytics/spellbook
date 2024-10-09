@@ -113,9 +113,9 @@ with tbl_trades_pre as (
             )
     WHERE 
             {% if is_incremental() %}
-                 {{ incremental_predicate('block_time') }}
+                 {{ incremental_predicate('logs.block_time') }}
             {% else %}
-                 block_time >= DATE '{{start_date}}'
+                 logs.block_time >= DATE '{{start_date}}'
             {% endif %}
     
   
