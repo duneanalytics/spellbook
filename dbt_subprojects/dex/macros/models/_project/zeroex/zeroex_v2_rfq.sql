@@ -104,18 +104,18 @@ with tbl_trades_pre as (
     FROM 
         {{ source(blockchain, 'logs') }} as logs
     JOIN 
-        settler_txs st ON st.tx_hash = logs.tx_hash 
+        zeroex_tx st ON st.tx_hash = logs.tx_hash 
             AND logs.block_time = st.block_time 
             AND st.block_number = logs.block_number
             AND (logs.contract_address = st.settler_address 
                 or bytearray_substring(logs.topic1,13,20) = st.settler_address 
                 or bytearray_substring(logs.topic2,13,20) = st.settler_address 
             )
-    WHERE 
+    WHERE 1=1
             {% if is_incremental() %}
-                 {{ incremental_predicate('logs.block_time') }}
+              and   {{ incremental_predicate('logs.block_time') }}
             {% else %}
-                 logs.block_time >= DATE '{{start_date}}'
+              and   logs.block_time >= DATE '{{start_date}}'
             {% endif %}
     
   
