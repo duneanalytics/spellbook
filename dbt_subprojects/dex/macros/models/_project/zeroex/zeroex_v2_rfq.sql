@@ -113,9 +113,9 @@ tbl_trades_pre as (
             )
     WHERE 
             {% if is_incremental() %}
-                AND {{ incremental_predicate('block_time') }}
+                 {{ incremental_predicate('block_time') }}
             {% else %}
-                AND block_time >= DATE '{{start_date}}'
+                 block_time >= DATE '{{start_date}}'
             {% endif %}
     
   
@@ -130,10 +130,12 @@ tbl_trades_pre as (
     )
     select * from tbl_valid_logs
         WHERE index IN (
-            (SELECT index - 1 FROM tbl_valid_logs WHERE valid = 1),
-            (SELECT index FROM tbl_valid_logs WHERE valid = 1),
-            (SELECT index + 1 FROM tbl_valid_logs WHERE valid = 1)
-)
+             SELECT index - 1 FROM tbl_valid_logs WHERE valid = 1
+            UNION
+            SELECT index FROM tbl_valid_logs WHERE valid = 1
+            UNION
+            SELECT index + 1 FROM tbl_valid_logs WHERE valid = 1
+            )
        and rn = 1
 ), 
 
@@ -189,9 +191,9 @@ tbl_trades as (
         tokens tm ON tm.blockchain = '{{blockchain}}' AND tm.contract_address = maker_token
     WHERE 
             {% if is_incremental() %}
-                AND {{ incremental_predicate('tr.block_time') }}
+                 {{ incremental_predicate('tr.block_time') }}
             {% else %}
-                AND tr.block_time >= DATE '{{start_date}}'
+                 tr.block_time >= DATE '{{start_date}}'
             {% endif %}
     
 )
