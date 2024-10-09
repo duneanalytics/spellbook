@@ -68,8 +68,8 @@ stablecoin_tokens_total as (
 )
 
 , stablecoin_tokens as (
-  select distinct st.symbol, st.contract_address as token_address from stablecoin_tokens_total st 
-  inner join filter_tokens ft on st.contract_address = ft.contract_address
+  select distinct st.symbol, st.token_address from stablecoin_tokens_total st 
+  inner join filter_tokens ft on st.token_address = ft.contract_address
 )
 
 ,balances as (
