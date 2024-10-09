@@ -1,7 +1,7 @@
 {% macro is_incremental() %}
     {#-- allow for command line compile of incremental models  #}
     {#-- Usage: dbt compile --vars '{force-incremental: True}'  #}
-    {% if vars.get('force_incremental_for_testing', False) or var('force-incremental', False) %}
+    {% if var('force-incremental', False) %}
         {{ return(True) }}
     {% endif %}
 

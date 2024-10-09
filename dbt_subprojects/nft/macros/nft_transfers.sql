@@ -2,7 +2,6 @@
 {%- set token_standard_721 = 'bep721' if blockchain == 'bnb' else 'erc721' -%}
 {%- set token_standard_1155 = 'bep1155' if blockchain == 'bnb' else 'erc1155' -%}
 {%- set denormalized = True if blockchain in ['base'] else False -%}
-{% set force_incremental_for_testing = True %}
 SELECT
     *
 FROM(
@@ -30,11 +29,11 @@ FROM(
     {% if denormalized == False %}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         AND {{incremental_predicate('et.block_time')}}
         {% endif %}
     {%- endif -%}
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     WHERE {{incremental_predicate('t.evt_block_time')}}
     {% endif %}
 
@@ -64,11 +63,11 @@ FROM(
     {%- if denormalized == False %}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         AND {{incremental_predicate('et.block_time')}}
         {% endif %}
     {%- endif -%}
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     WHERE {{incremental_predicate('t.evt_block_time')}}
     {% endif %}
 
@@ -99,14 +98,14 @@ FROM(
         , value, id
         FROM {{ erc1155_batch }} t
         CROSS JOIN unnest(zip(t."values", t.ids)) AS foo(value, id)
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         WHERE {{incremental_predicate('t.evt_block_time')}}
         {% endif %}
         ) t
     {%- if denormalized == False %}
     INNER JOIN {{ base_transactions }} et ON et.block_number = t.evt_block_number
         AND et.hash = t.evt_tx_hash
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         AND {{incremental_predicate('et.block_time')}}
         {% endif %}
     {%- endif %}
