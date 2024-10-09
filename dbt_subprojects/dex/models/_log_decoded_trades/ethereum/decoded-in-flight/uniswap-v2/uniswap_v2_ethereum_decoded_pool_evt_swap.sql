@@ -1,7 +1,6 @@
 {{ config(
-
-        schema = 'mass_decoding_ethereum',
-        alias = 'uniswap_v3_factory_evt_PoolCreated',
+        schema = 'uniswap_v2_ethereum',
+        alias = 'decoded_pool_evt_Swap',
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -11,7 +10,6 @@
         )
 }}
 
-{{uniswap_v3_factory_event_decoding(
+{{uniswap_v2_pool_event_decoding(
         logs = source('ethereum', 'logs')
 )}}
-

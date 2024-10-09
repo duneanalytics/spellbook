@@ -1,7 +1,6 @@
 {{ config(
-
-        schema = 'dex_mass_decoding_ethereum',
-        alias = 'uniswap_v3_base_trades',
+        schema = 'uniswap_v3_ethereum',
+        alias = 'automated_base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -17,8 +16,8 @@ WITH all_decoded_trades AS (
             blockchain = 'ethereum'
             , version = '3'
             , project = 'null'
-            , Pair_evt_Swap = ref('uniswap_v3_pool_decoding_ethereum')
-            , Factory_evt_PoolCreated = ref('uniswap_v3_factory_decoding_ethereum')
+            , Pair_evt_Swap = ref('uniswap_v3_ethereum_decoded_pool_evt_swap')
+            , Factory_evt_PoolCreated = ref('uniswap_v3_ethereum_decoded_factory_evt')
         )
     }}
 )

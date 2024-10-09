@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'dex_automation_beta'
-    , alias = 'base_trades'
+    schema = 'dex'
+    , alias = 'automated_base_trades'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -11,8 +11,8 @@
 }}
 
 {% set models = [
-    ref('dex_automation_ethereum_base_trades')
-    , ref('dex_automation_arbitrum_base_trades')
+    ref('dex_ethereum_automated_base_trades')
+    , ref('dex_arbitrum_automated_base_trades')
 ] %}
 
 with base_union as (

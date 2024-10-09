@@ -1,7 +1,6 @@
 {{ config(
-
-        schema = 'dex_mass_decoding_ethereum',
-        alias = 'uniswap_v2_base_trades',
+        schema = 'uniswap_v2_arbitrum',
+        alias = 'automated_base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -14,11 +13,11 @@
 WITH all_decoded_trades AS (
     {{
         uniswap_v2_forks_trades(
-            blockchain = 'ethereum'
+            blockchain = 'arbitrum'
             , version = '2'
             , project = 'null'
-            , Pair_evt_Swap = ref('uniswap_v2_pool_decoding_ethereum')
-            , Factory_evt_PairCreated = ref('uniswap_v2_factory_decoding_ethereum')
+            , Pair_evt_Swap = ref('uniswap_v2_arbitrum_decoded_pool_evt_swap')
+            , Factory_evt_PairCreated = ref('uniswap_v2_arbitrum_decoded_factory_evt')
         )
     }}
 )
@@ -47,7 +46,7 @@ INNER JOIN (
         tx_hash,
         array_agg(DISTINCT contract_address) as contract_addresses
     FROM {{ source('tokens', 'transfers') }}
-    WHERE blockchain = 'ethereum'
+    WHERE blockchain = 'arbitrum'
         {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -62,7 +61,7 @@ LEFT JOIN (
         blockchain,
         array_agg(namespace)[1] AS namespace
     FROM {{ source('evms', 'contracts') }}
-    WHERE blockchain = 'ethereum'
+    WHERE blockchain = 'arbitrum'
         AND namespace IS NOT NULL
     GROUP BY address, blockchain
 ) AS contracts

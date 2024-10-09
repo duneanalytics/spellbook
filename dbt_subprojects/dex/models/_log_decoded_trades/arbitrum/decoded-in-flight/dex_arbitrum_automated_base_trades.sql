@@ -1,14 +1,13 @@
 {{ config(
-    schema = 'dex_automation_arbitrum'
-    , alias = 'base_trades'
+    schema = 'dex_arbitrum'
+    , alias = 'automated_base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    
-      ref('uniswap_v2_forks_base_trades_arbitrum')
-    , ref('uniswap_v3_forks_base_trades_arbitrum')
+      ref('uniswap_v2_arbitrum_automated_base_trades')
+    , ref('uniswap_v3_arbitrum_automated_base_trades')
 ] %}
 
 WITH base_union AS (

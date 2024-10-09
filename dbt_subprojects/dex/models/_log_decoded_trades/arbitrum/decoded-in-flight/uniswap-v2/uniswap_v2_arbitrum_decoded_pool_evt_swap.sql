@@ -1,7 +1,6 @@
 {{ config(
-
-        schema = 'mass_decoding_arbitrum',
-        alias = 'uniswap_v2_pool_evt_Swap',
+        schema = 'uniswap_v2_arbitrum',
+        alias = 'decoded_pool_evt_swap',
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',

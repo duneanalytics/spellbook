@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: dex_automation_beta_trades
+  - name: dex_automated_trades
     meta:
       docs_slug: /curated/trading/DEX/dex-trades
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei
@@ -100,7 +100,7 @@ models:
         name: evt_index
         description: "Index of the event in the transaction. Can be used to uniquely identify the order of trades within in a transaction"
 
-  - name: dex_automation_beta_base_trades
+  - name: dex_automated_base_trades
     meta:
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei
       sector: dex

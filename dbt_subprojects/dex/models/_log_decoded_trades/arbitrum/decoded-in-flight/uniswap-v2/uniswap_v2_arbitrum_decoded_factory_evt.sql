@@ -1,7 +1,6 @@
 {{ config(
-
-        schema = 'mass_decoding_ethereum',
-        alias = 'uniswap_v2_pool_evt_Swap',
+        schema = 'uniswap_v2_arbitrum',
+        alias = 'decoded_factory_evt',
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -11,6 +10,6 @@
         )
 }}
 
-{{uniswap_v2_pool_event_decoding(
-        logs = source('ethereum', 'logs')
+{{uniswap_v2_factory_event_decoding(
+        logs = source('arbitrum', 'logs')
 )}}

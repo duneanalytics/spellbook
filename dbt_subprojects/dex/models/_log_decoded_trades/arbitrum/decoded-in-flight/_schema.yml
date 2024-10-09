@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: uniswap_v2_factory_decoding_arbitrum 
+  - name: uniswap_v2_arbitrum_decoded_factory_evt
     description: >
       mass decoding of all forks of uniswap v2 factory contract on arbitrum 
     tests:
@@ -10,7 +10,7 @@ models:
             - tx_hash
             - index
 
-  - name: uniswap_v2_pool_decoding_arbitrum
+  - name: uniswap_v2_arbitrum_decoded_pool_evt_swap
     description: >
       mass decoding of all forks of uniswap v2 pool contracts on arbitrum
     tests:
@@ -19,7 +19,7 @@ models:
             - tx_hash
             - index
 
-  - name: uniswap_v2_fork_mapping_arbitrum
+  - name: uniswap_v2_arbitrum_fork_mapping
     description: >
       mapping of all forks of uniswap v2 factory contract on arbitrum 
     tests:
@@ -32,7 +32,7 @@ models:
       - name: project_name
         description: "name of the project associated with the factory"
 
-  - name: uniswap_v2_forks_base_trades_arbitrum
+  - name: uniswap_v2_arbitrum_automated_base_trades
     meta:
       blockchain: arbitrum
       sector: dex
@@ -46,8 +46,26 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: uniswap_v3_arbitrum_decoded_factory_evt
+    description: >
+      mass decoding of all forks of uniswap v3 factory contract on arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
+
+  - name: uniswap_v3_arbitrum_decoded_pool_evt_swap
+    description: >
+      mass decoding of all forks of uniswap v3 pool contracts on arbitrum
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
   
-  - name: uniswap_v3_forks_base_trades_arbitrum
+  - name: uniswap_v3_arbitrum_automated_base_trades
     meta:
       blockchain: arbitrum
       sector: dex
@@ -62,7 +80,7 @@ models:
             - tx_hash
             - evt_index
 
-  - name: uniswap_v3_fork_mapping_arbitrum
+  - name: uniswap_v3_arbitrum_fork_mapping
     description: >
       mapping of all forks of uniswap v3 factory contract on arbitrum
     tests:
@@ -75,7 +93,7 @@ models:
       - name: project_name
         description: "name of the project associated with the factory"
     
-  - name: dex_automation_arbitrum_base_trades
+  - name: dex_arbitrum_automated_base_trades
     description: "all dex trades on arbitrum, mass decoded"
     tests: 
       - dbt_utils.unique_combination_of_columns:
