@@ -2,6 +2,7 @@
 {%- set token_standard_721 = 'bep721' if blockchain == 'bnb' else 'erc721' -%}
 {%- set token_standard_1155 = 'bep1155' if blockchain == 'bnb' else 'erc1155' -%}
 {%- set denormalized = True if blockchain in ['base'] else False -%}
+{% set force_incremental_for_testing = True %}
 SELECT
     *
 FROM(
