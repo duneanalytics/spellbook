@@ -286,7 +286,8 @@ FROM
     ('app-moon-app', 'bnb', 'APP', 0xc5d27f27f08d1fd1e3ebbaa50b3442e6c0d50439, 18),
     ('chapz-chappyz', 'bnb', 'CHAPZ', 0x7b56748a3ef9970a5bae99c58ad8bc67b26c525f, 10),
     ('babyrwa-babyrwa', 'bnb', 'BABYRWA', 0x4a8049c015ae1c6665fc9e49f053458ae3a102d0, 9),
-    ('zro-layerzero', 'bnb', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18)
+    ('zro-layerzero', 'bnb', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
+    ('usdfi-usdfi', 'bnb', 'USDFI', 0x7df1938170869afe410098540c051a8a50308988, 18)    
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
