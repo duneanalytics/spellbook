@@ -178,3 +178,20 @@ models:
           seed_file: ref('swaap_scroll_base_trades_seed')
           filter:
             version: 2
+
+  - name: leetswap_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: leetswap
+      contributors: sunshinejulia9 
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'leetswap' ]
+    description: "leetswap base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('leetswap_scroll_base_trades_seed')
