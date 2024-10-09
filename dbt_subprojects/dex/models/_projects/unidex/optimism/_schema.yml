@@ -97,3 +97,46 @@ models:
       - &trace_address
         name: trace_address
         description: ""
+
+  - name: unidex_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: unidex
+      contributors: ARDev097, hosuke
+    config:
+      tags: ['optimism','trades', 'unidex','dex']
+    description: >
+        unidex dex base trades on optimism
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+      - check_dex_aggregator_seed:
+          blockchain: optimism
+          project: unidex
+          version: 1
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_date
+      - *block_time
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *trace_address
+      - *evt_index
+      - *block_month

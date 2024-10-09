@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'yield_yak_arbitrum',
-        alias = 'trades',
+        alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,7 +12,7 @@
 }}
 
 {{
-    yield_yak_trades(
+    yield_yak_base_trades(
         blockchain = 'arbitrum',
         project_start_date = '2023-03-21'
     )
