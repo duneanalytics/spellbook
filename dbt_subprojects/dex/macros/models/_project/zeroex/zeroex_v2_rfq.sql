@@ -76,7 +76,7 @@ select * from settler_txs
 
 {% macro zeroex_rfq_events(blockchain, start_date) %}
 
-tbl_trades_pre as (
+with tbl_trades_pre as (
     with tbl_all_logs as (
       SELECT  
         logs.tx_hash, 
