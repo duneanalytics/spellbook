@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'uniswap_v3_zksync'
+    schema = 'uniswap_v3_mantle'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
