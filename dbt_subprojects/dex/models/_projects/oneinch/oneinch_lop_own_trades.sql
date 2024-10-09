@@ -20,8 +20,8 @@ select
     , coalesce(src_token_symbol, '') as token_bought_symbol
     , coalesce(dst_token_symbol, '') as token_sold_symbol
     , case
-        when lower(dst_token_symbol) > lower(src_token_symbol) then concat(src_token_symbol, '-', dst_token_symbol)
-        else concat(dst_token_symbol, '-', src_token_symbol)
+        when lower(src_token_symbol) > lower(dst_token_symbol) then concat(dst_token_symbol, '-', src_token_symbol)
+        else concat(src_token_symbol, '-', dst_token_symbol)
     end as token_pair
     , cast(src_token_amount as double) / pow(10, src_token_decimals) as token_bought_amount
     , cast(dst_token_amount as double) / pow(10, dst_token_decimals) as token_sold_amount
