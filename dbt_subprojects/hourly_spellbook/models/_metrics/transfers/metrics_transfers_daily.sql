@@ -28,7 +28,7 @@ with raw_transfers as (
     {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
     {% else %}
-        and block_date >= timestamp '2024-09-01'
+        and block_date >= timestamp '2024-01-01'
     {% endif %}
     group by
         blockchain
@@ -53,7 +53,7 @@ with raw_transfers as (
     {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
     {% else %}
-        and block_date >= timestamp '2024-09-01'
+        and block_date >= timestamp '2024-01-01'
     {% endif %}
     group by
         blockchain
