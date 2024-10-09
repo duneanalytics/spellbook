@@ -15,7 +15,7 @@ select
     , ptt.contract_address
     , ptt.symbol
     , ptt.decimals
-    , date_trunc('month', p.minute) as month
+    , cast(date_trunc('month', p.minute) as date) as month
     , p.minute
     , p.price
 from
