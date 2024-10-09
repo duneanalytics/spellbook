@@ -96,7 +96,7 @@ models:
             
   - name: uniswap_v3_mantle_base_trades
     meta:
-      blockchain: zksync
+      blockchain: mantle
       sector: dex
       project: uniswap
       contributors: trimmer2
