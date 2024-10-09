@@ -5,7 +5,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+    unique_key=['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index', 'trace_address']
     )
 }}
 
@@ -31,7 +31,7 @@ with dexs as (
             evt_index
         FROM {{ evt_trade_table }}
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+        WHERE {{ incremental_predicate('evt_block_time') }}
         {% else %}
         WHERE evt_block_time >= TIMESTAMP '{{project_start_date}}'
         {% endif %}
