@@ -20,7 +20,7 @@ WITH zeroex_tx AS (
         )
     }}
 ),
-, all_tx AS (
+all_tx AS (
     {{
         zeroex_rfq_events(
             blockchain = 'ethereum',
