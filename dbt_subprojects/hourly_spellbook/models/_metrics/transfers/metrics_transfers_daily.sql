@@ -21,7 +21,6 @@ with raw_transfers as (
         , "from" as address
         , 'sent' as transfer_direction
         , (sum(amount_usd) * -1) as transfer_amount_usd
-        , count(1) as transfer_count
     from
         {{ source('tokens', 'transfers') }}
     where
@@ -38,7 +37,7 @@ with raw_transfers as (
         , "from"
         , 'sent'
 
-    union
+    union all
 
     select
         blockchain
@@ -47,7 +46,6 @@ with raw_transfers as (
         , to as address
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
-        , count(1) as transfer_count
     from
         {{ source('tokens', 'transfers') }}
     where
@@ -74,7 +72,6 @@ with raw_transfers as (
         , address
         , sum(case when transfer_direction = 'sent' then transfer_amount_usd else 0 end) as transfer_amount_usd_sent
         , sum(case when transfer_direction = 'received' then transfer_amount_usd else 0 end) as transfer_amount_usd_received
-        , sum(transfer_count) as transfer_count
     from
         raw_transfers     
     group by
@@ -94,8 +91,7 @@ with raw_transfers as (
         , address
         , sum(coalesce(transfer_amount_usd_sent, 0)) as transfer_amount_usd_sent
         , sum(coalesce(transfer_amount_usd_received, 0)) as transfer_amount_usd_received
-        , sum(coalesce(transfer_amount_usd_received, 0)) + sum(coalesce(transfer_amount_usd_sent, 0)) as transfer_amount_usd
-        , sum(transfer_count) as transfer_count
+        , sum(coalesce(transfer_amount_usd_received, 0)) + sum(coalesce(transfer_amount_usd_sent, 0)) as net_transfer_amount_usd
     from
         transfers_amount
     group by
@@ -109,12 +105,11 @@ select
     , block_date
     , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
     , sum(transfer_amount_usd_received) as transfer_amount_usd_received
-    , sum(transfer_amount_usd) as transfer_amount_usd
-    , sum(transfer_count) as transfer_count
+    , sum(net_transfer_amount_usd) as net_transfer_amount_usd
 from
     net_transfers
 where
-    transfer_amount_usd > 0
+    net_transfer_amount_usd > 0
 group by
     blockchain
     , block_date
