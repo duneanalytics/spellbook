@@ -93,3 +93,22 @@ models:
           seed_file: ref('clipper_mantle_base_trades_seed')
           filter:
             version: 1
+            
+  - name: uniswap_v3_mantle_base_trades
+    meta:
+      blockchain: zksync
+      sector: dex
+      project: uniswap
+      contributors: trimmer2
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap mantle v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_mantle_base_trades_seed')
+          filter:
+            version: 3
