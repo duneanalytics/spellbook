@@ -11,6 +11,7 @@
     , ref('agni_mantle_base_trades')
     , ref('swaap_v2_mantle_base_trades')
     , ref('clipper_mantle_base_trades')
+    , ref('uniswap_v3_mantle_base_trades')
 ] %}
 
 WITH base_union AS (
