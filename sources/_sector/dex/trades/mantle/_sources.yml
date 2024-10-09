@@ -22,3 +22,4 @@ sources:
   - name: clipper_mantle
     tables:
       - name: ClipperPackedVerifiedExchange_evt_Swapped
+  - name: uniswap_v3_mantle
