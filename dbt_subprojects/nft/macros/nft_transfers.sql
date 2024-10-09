@@ -108,7 +108,7 @@ FROM(
         {% if is_incremental() %}
         AND {{incremental_predicate('et.block_time')}}
         {% endif %}
-    {%- endif -%}
+    {%- endif %}
     WHERE t.value > uint256 '0'
 )
 
