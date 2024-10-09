@@ -1,6 +1,5 @@
 {% macro fungible_transfers(blockchain, native_symbol, traces, transactions, erc20_transfers, erc20_tokens) %}
 {%- set token_standard_20 = 'bep20' if blockchain == 'bnb' else 'erc20' -%}
-{%- set spark_mode = True -%} {# TODO: Potential bug. Consider disabling #}
 {%- set denormalized = True if blockchain in ['base'] else False -%}
 
 WITH transfers AS (
