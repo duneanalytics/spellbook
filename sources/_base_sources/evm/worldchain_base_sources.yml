@@ -420,7 +420,7 @@ sources:
           - name: operator
             description: "worldchain address being granted or revoked permission to operate all tokens"
 
-  - name: erc721_ethereum
+  - name: erc721_worldchain
     description: '{{ doc("erc721_worldchain_evt_transfer_doc") }}'
     tables:
       - name: evt_transfer
