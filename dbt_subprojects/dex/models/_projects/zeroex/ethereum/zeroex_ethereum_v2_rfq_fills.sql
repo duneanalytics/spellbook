@@ -14,7 +14,7 @@
 
 WITH zeroex_tx AS (
     {{
-        zeroex_tx_cte(
+        zeroex_txs_cte(
             blockchain = 'ethereum',
             start_date = zeroex_settler_start_date
         )
