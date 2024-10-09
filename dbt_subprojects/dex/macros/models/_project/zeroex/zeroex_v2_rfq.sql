@@ -181,12 +181,19 @@ tbl_trades as (
     FROM 
         tbl_trades_pre trades
     JOIN 
-        {{blockchain}}.transactions tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
-    
+        {{ source(blockchain, 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
+        
     LEFT JOIN 
         tokens tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
     LEFT JOIN 
         tokens tm ON tm.blockchain = '{{blockchain}}' AND tm.contract_address = maker_token
+    WHERE 
+            {% if is_incremental() %}
+                AND {{ incremental_predicate('tr.block_time') }}
+            {% else %}
+                AND tr.block_time >= DATE '{{start_date}}'
+            {% endif %}
+    
 )
 
 select * from tbl_trades

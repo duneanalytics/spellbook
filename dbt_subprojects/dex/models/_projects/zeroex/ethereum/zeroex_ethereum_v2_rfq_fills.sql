@@ -28,4 +28,8 @@ WITH zeroex_tx AS (
             
         )
     }}
-),
+)
+
+
+
+select * from all_tx 
