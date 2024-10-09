@@ -1,0 +1,194 @@
+{% macro settler_txs_cte(blockchain, start_date) %}
+WITH tbl_addresses AS (
+    SELECT 
+        token_id, 
+        to AS settler_address, 
+        block_time AS begin_block_time, 
+        block_number AS begin_block_number
+    FROM 
+        {{ source('nft', 'transfers') }}
+    WHERE 
+        contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae 
+        AND blockchain = '{{ blockchain }}'
+        and block_time >= cast('{{ start_date }}' as date)
+),
+
+tbl_end_times AS (
+    SELECT 
+        *, 
+        LEAD(begin_block_time) OVER (token_id ORDER BY begin_block_time) AS end_block_time,
+        LEAD(begin_block_number) OVER (token_id ORDER BY begin_block_number) AS end_block_number
+    FROM 
+        tbl_addresses
+),
+
+result_0x_settler_addresses AS (
+    SELECT 
+        * 
+    FROM 
+        tbl_end_times
+    WHERE 
+        settler_address != 0x0000000000000000000000000000000000000000
+),
+
+settler_txs AS (
+    SELECT      
+        tx_hash,
+        block_time,
+        block_number,
+        method_id,
+        contract_address,
+        settler_address,
+        MAX(varbinary_substring(tracker,2,12)) AS zid,
+        CASE 
+            WHEN method_id = 0x1fff991f THEN MAX(varbinary_substring(tracker,14,3))
+            WHEN method_id = 0xfd3ad6d4 THEN MAX(varbinary_substring(tracker,13,3))
+        END AS tag
+    FROM (
+        SELECT
+            tr.tx_hash, 
+            block_number, 
+            block_time, 
+            "to" AS contract_address,
+            varbinary_substring(input,1,4) AS method_id,
+            varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker,
+            a.settler_address
+        FROM 
+            {{ source(blockchain, 'traces') }} AS tr
+        JOIN 
+            result_0x_settler_addresses a ON a.settler_address = tr.to AND tr.block_time > a.begin_block_time
+        WHERE 
+            (a.settler_address IS NOT NULL OR tr.to = 0xca11bde05977b3631167028862be2a173976ca11)
+            AND varbinary_substring(input,1,4) IN (0x1fff991f, 0xfd3ad6d4)
+            {% if is_incremental() %}
+                AND {{ incremental_predicate('block_time') }}
+            {% else %}
+                AND block_time >= DATE '{{start_date}}'
+            {% endif %}
+    ) 
+    GROUP BY 
+        1,2,3,4,5,6
+) 
+
+select * from settler_txs
+{% endmacro %}
+
+
+{% macro zeroex_rfq_events(blockchain, start_date) %}
+
+tbl_trades_pre as (
+    with tbl_all_logs as (
+      SELECT  
+        logs.tx_hash, 
+        logs.block_time, 
+        logs.block_number,
+        index, 
+        case when ( 
+                   logs.contract_address = st.settler_address 
+                    ) 
+                then 1 end as valid,
+        coalesce(bytearray_substring(logs.topic2,13,20), first_value(bytearray_substring(logs.topic1,13,20)) over (partition by logs.tx_hash order by index) ) as taker,
+        logs.contract_address as maker_token_temp,  
+        first_value(logs.contract_address) over (partition by logs.tx_hash order by index) as taker_token, 
+        first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) ) over (partition by logs.tx_hash order by index) as taker_amount, 
+        try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256) as maker_amount_temp, 
+        method_id, 
+        tag,  
+        st.settler_address, 
+        zid,
+        st.settler_address as contract_address,
+        logs.tx_to, 
+        logs.tx_from, 
+        bytearray_substring(logs.topic1,13,20)
+        
+    FROM 
+        {{ source(blockchain, 'logs') }} as logs
+    JOIN 
+        settler_txs st ON st.tx_hash = logs.tx_hash 
+            AND logs.block_time = st.block_time 
+            AND st.block_number = logs.block_number
+            AND (logs.contract_address = st.settler_address 
+                or bytearray_substring(logs.topic1,13,20) = st.settler_address 
+                or bytearray_substring(logs.topic2,13,20) = st.settler_address 
+            )
+    WHERE 
+            {% if is_incremental() %}
+                AND {{ incremental_predicate('block_time') }}
+            {% else %}
+                AND block_time >= DATE '{{start_date}}'
+            {% endif %}
+    
+  
+    ),
+    tbl_valid_logs as (
+        select * 
+            ,  row_number() over (partition by tx_hash order by valid, index desc) rn
+            , case when valid = 1 then lag(maker_amount_temp) over (partition by tx_hash order by index) end as  maker_amount
+            , case when valid = 1 then lag(maker_token_temp) over (partition by tx_hash order by index) end as  maker_token
+        from tbl_all_logs 
+       
+    )
+    select * from tbl_valid_logs
+        WHERE index IN (
+            (SELECT index - 1 FROM tbl_valid_logs WHERE valid = 1),
+            (SELECT index FROM tbl_valid_logs WHERE valid = 1),
+            (SELECT index + 1 FROM tbl_valid_logs WHERE valid = 1)
+)
+       and rn = 1
+), 
+
+tokens as (
+    with token_list as (
+        select distinct maker_token as token
+        from tbl_trades 
+        union distinct 
+        select distinct taker_token as token 
+        from tbl_trades 
+        ) 
+        select * 
+        from token_list tl 
+        join tokens.erc20 AS te ON te.contract_address = tl.token
+        WHERE 
+            te.blockchain = '{{blockchain}}'
+), 
+
+tbl_trades as (
+
+ SELECT
+        trades.block_time,
+        trades.block_number,
+        zid,
+        trades.contract_address,
+        method_id,
+        trades.tx_hash,
+        "from" AS tx_from,
+        "to" AS tx_to,
+        trades.index AS tx_index,
+        case when varbinary_substring(tr.data,1,4) = 0x500c22bc then "from" else taker end as taker,
+        CAST(NULL AS varbinary) AS maker,
+        taker_token,
+        pt.price,
+        COALESCE(tt.symbol, pt.symbol) AS taker_symbol,
+        taker_amount AS taker_token_amount_raw,
+        taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) AS taker_token_amount,
+        taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) * pt.price AS taker_amount,
+        maker_token,
+        COALESCE(tm.symbol, pm.symbol)  AS maker_symbol,
+        maker_amount AS maker_token_amount_raw,
+        maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS maker_token_amount,
+        maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) * pm.price AS maker_amount,
+        tag
+    FROM 
+        tbl_trades_pre trades
+    JOIN 
+        {{blockchain}}.transactions tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
+    
+    LEFT JOIN 
+        tokens tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
+    LEFT JOIN 
+        tokens tm ON tm.blockchain = '{{blockchain}}' AND tm.contract_address = maker_token
+)
+
+select * from tbl_trades
+
+{% endmacro %}
