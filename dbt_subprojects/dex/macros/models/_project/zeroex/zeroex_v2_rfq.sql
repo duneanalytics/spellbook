@@ -16,8 +16,8 @@ WITH tbl_addresses AS (
 tbl_end_times AS (
     SELECT 
         *, 
-        LEAD(begin_block_time) OVER (token_id ORDER BY begin_block_time) AS end_block_time,
-        LEAD(begin_block_number) OVER (token_id ORDER BY begin_block_number) AS end_block_number
+        LEAD(begin_block_time) OVER (partition by token_id ORDER BY begin_block_time) AS end_block_time,
+        LEAD(begin_block_number) OVER (partition by token_id ORDER BY begin_block_number) AS end_block_number
     FROM 
         tbl_addresses
 ),
