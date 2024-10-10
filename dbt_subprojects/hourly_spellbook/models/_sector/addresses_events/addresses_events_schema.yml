@@ -52,9 +52,9 @@ models:
       - &tx_index
         name: tx_index
         description: "The transaction index within its block on which the address was first funded with the native asset on that chain"
-      - &evt_index
-        name: evt_index
-        description: "The event index within its transaction on which the address was first funded with the native asset on that chain"
+      - &trace_address
+        name: trace_address
+        description: "The trace_address within its transaction on which the address was first funded with the native asset on that chain"
 
   - name: addresses_events_first_activity
     meta:
