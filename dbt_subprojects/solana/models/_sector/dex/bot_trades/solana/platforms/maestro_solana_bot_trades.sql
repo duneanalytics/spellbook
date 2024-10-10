@@ -11,7 +11,8 @@
 }}
 
 {% set project_start_date = '2024-03-05' %}
-{% set fee_receiver = 'FRMxAnZgkW58zbYcE7Bxqsg99VWpJh6sMP5xLzAWNabN' %}
+{% set fee_receiver_1 = 'FRMxAnZgkW58zbYcE7Bxqsg99VWpJh6sMP5xLzAWNabN' %}
+{% set fee_receiver_2 = 'MaestroUL88UBnZr3wfoN7hqmNWFi3ZYCGqZoJJHE36' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
@@ -31,7 +32,7 @@ WITH
       {% endif %}
       AND tx_success
       AND balance_change > 0
-      AND address = '{{fee_receiver}}'
+      AND (address = '{{fee_receiver_1}}' OR address = '{{fee_receiver_2}}')
   ),
   zeroFeeTrades AS (
    SELECT
@@ -48,10 +49,13 @@ WITH
       block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
       --AND block_time < TIMESTAMP '2024-03-09' -- TOOD: enable end date once fees are live
-      AND contains(
+      AND (contains(
         account_keys,
-        '{{fee_receiver}}'
-      )
+        '{{fee_receiver_1}}'
+      ) OR contains(
+        account_keys,
+        '{{fee_receiver_2}}'
+      ))
       AND id NOT IN (
         SELECT
           tx_id
@@ -123,8 +127,10 @@ WITH
         {% endif %}
       )
     WHERE
-      trades.trader_id != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
-      AND transactions.signer != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
+      trades.trader_id != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
       {% if is_incremental() %}
       AND {{ incremental_predicate('trades.block_time') }}
       {% else %}
