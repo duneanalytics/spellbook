@@ -45,8 +45,8 @@ select
     , d.tx_count
     , b.baseline_tx_count
     , bb.blockchain_baseline_tx_count
-    , (d.tx_count / b.baseline_tx_count) * 100 as tx_index
-    , (d.tx_count / bb.blockchain_baseline_tx_count) * 100 as blockchain_tx_index
+    , (cast(d.tx_count as double) / cast(b.baseline_tx_count as double)) * 100 as tx_index
+    , (cast(d.tx_count as double) / cast(bb.blockchain_baseline_tx_count as double)) * 100 as blockchain_tx_index
 from
     daily as d
 left join
