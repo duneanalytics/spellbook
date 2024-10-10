@@ -32,13 +32,23 @@ models:
       - name: first_funding_executed_by
         description: "Which address executed the first funding tx"
       - name: first_funded_by
-        description: "Which Gnosis address first funded the address with xDAI"
+        description: "Which base address first funded the address with xDAI"
+      - name: amount
+        description: "The amount of xDAI the wallet was funded with in this first transfer"
+      - name: amount_usd
+        description: "The USD value of the xDAI the wallet was funded with in this first transfer"
       - name: block_time
         description: "The block time on which the address was first funded with xDAI"
       - name: block_number
         description: "The block number on which the address was first funded with xDAI"
       - name: tx_hash
         description: "The transaction hash on which the address was first funded with xDAI"
+      - name: tx_index
+        description: "The transaction index within the block on which the address was first funded with xDAI"
+      - name: evt_index
+        description: "The event index within the transaction on which the address was first funded with xDAI"
+      - name: unique_key
+        description: "Unique transfer identifier key"
 
   - name: addresses_events_gnosis_first_activity
     meta:
