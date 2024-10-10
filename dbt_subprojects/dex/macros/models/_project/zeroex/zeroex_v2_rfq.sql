@@ -220,7 +220,6 @@ tbl_trades as (
 ),
 results AS (
     SELECT
-        '{{blockchain}}' as blockchain,
         trades.block_time,
         trades.block_number,
         zid,
@@ -265,6 +264,7 @@ results AS (
         1=1 
         
 ),
+
 results_usd AS (
     {{
         add_amount_usd(
@@ -272,7 +272,39 @@ results_usd AS (
         )
     }}
 )
-SELECT * 
+SELECT 
+       SELECT
+        '{{blockchain}}' AS blockchain,
+        '0x-API' AS project,
+        'settler' AS version,
+        DATE_TRUNC('day', block_time) block_date,
+        DATE_TRUNC('month', block_time) AS block_month,
+        block_time,
+        taker_symbol,
+        maker_symbol,
+        CASE WHEN LOWER(taker_symbol) > LOWER(maker_symbol) THEN CONCAT(maker_symbol, '-', taker_symbol) ELSE CONCAT(taker_symbol, '-', maker_symbol) END AS token_pair,
+        taker_token_amount,
+        maker_token_amount,
+        taker_token_amount_raw,
+        maker_token_amount_raw,
+        amount_usd as volume_usd,
+        taker_token,
+        maker_token,
+        taker,
+        maker,
+        tag,
+        zid,
+        tx_hash,
+        tx_from,
+        tx_to,
+        tx_index AS evt_index,
+        (ARRAY[-1]) AS trace_address,
+        'settler' AS type,
+        TRUE AS swap_flag,
+        contract_address
+    FROM 
+        results
+
 FROM results_usd
 order by block_time desc 
 
