@@ -273,13 +273,13 @@ results_usd AS (
     }}
 )
 SELECT 
-       SELECT
         '{{blockchain}}' AS blockchain,
         '0x-API' AS project,
         'settler' AS version,
         DATE_TRUNC('day', block_time) block_date,
         DATE_TRUNC('month', block_time) AS block_month,
         block_time,
+        block_number,
         taker_symbol,
         maker_symbol,
         CASE WHEN LOWER(taker_symbol) > LOWER(maker_symbol) THEN CONCAT(maker_symbol, '-', taker_symbol) ELSE CONCAT(taker_symbol, '-', maker_symbol) END AS token_pair,
@@ -302,8 +302,6 @@ SELECT
         'settler' AS type,
         TRUE AS swap_flag,
         contract_address
-    FROM 
-        results
 
 FROM results_usd
 order by block_time desc 
