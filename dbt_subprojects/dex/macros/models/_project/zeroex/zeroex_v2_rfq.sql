@@ -142,10 +142,10 @@ with tbl_trades_pre as (
 tokens as (
     with token_list as (
         select distinct maker_token as token
-        from tbl_trades 
+        from tbl_trades_pre 
         union distinct 
         select distinct taker_token as token 
-        from tbl_trades 
+        from tbl_trades_pre 
         ) 
         select * 
         from token_list tl 
