@@ -13,3 +13,10 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+  - name: metrics_dune_index_stats
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'dune', 'index', 'daily']
+    description: "**todo**"
