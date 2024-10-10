@@ -246,7 +246,7 @@ results AS (
     FROM 
         tbl_trades trades
     JOIN 
-        {{blockchain}}.transactions tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
+         {{ source(blockchain, 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
     
     LEFT JOIN 
         tokens tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
