@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: metrics_dune_index
+  - name: metrics_dune_index_daily
     meta:
       sector: metrics
       contributors: jeff-dude
