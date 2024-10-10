@@ -41,7 +41,7 @@ WITH joined_data AS (
         , block_number
         , tx_hash
         , tx_index
-        , evt_index
+        , trace_address
         FROM {{ addresses_events_model[0] }}
         {% if not loop.last %}
         UNION ALL
@@ -62,6 +62,6 @@ SELECT MIN_BY(blockchain, block_time) AS blockchain
 , MIN(block_number) AS block_number
 , MIN_BY(tx_hash, block_time) AS tx_hash
 , MIN_BY(tx_index, block_time) AS tx_index
-, MIN_BY(evt_index, block_time) AS evt_index
+, MIN_BY(trace_address, block_time) AS trace_address
 FROM joined_data
 GROUP BY address

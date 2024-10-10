@@ -45,8 +45,8 @@ models:
         description: "The transaction hash on which the address was first funded with AVAX"
       - name: tx_index
         description: "The transaction index within the block on which the address was first funded with AVAX"
-      - name: evt_index
-        description: "The event index within the transaction on which the address was first funded with AVAX"
+      - name: trace_address
+        description: "The trace_address within the transaction on which the address was first funded with AVAX"
       - name: unique_key
         description: "Unique transfer identifier key"
 
