@@ -87,7 +87,7 @@ base_model AS (
         null AS compute_price_lamport,
         null AS compute_limit,
         null AS limit_type,
-        'So11111111111111111111111111111111111111112' AS tx_fee_currency,
+        'So11111111111111111111111111111111111111112' AS tx_fee_currency
         --null AS block_proposer -- somehow hard to figure out the leader in dune atm
     FROM {{ source('solana', 'vote_transactions') }} vt
     WHERE vt.block_date > current_date - interval '2' day
@@ -118,7 +118,7 @@ SELECT
         (k, v) -> CAST(v AS double) / pow(10, 9) * p.price
     ) AS tx_fee_breakdown_usd,
     tx_fee_currency,
-    block_proposer,
+    -- block_proposer,
     tx_type,
     limit_type
 FROM base_model
