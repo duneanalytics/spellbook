@@ -160,7 +160,7 @@ prices AS (
     FROM 
          {{ source( 'prices', 'usd') }} as pu 
     JOIN 
-        tbl_trades ON (pu.contract_address = taker_token  OR pu.contract_address = maker_token) AND date_trunc('minute',block_time) = minute
+        tbl_trades_pre ON (pu.contract_address = taker_token  OR pu.contract_address = maker_token) AND date_trunc('minute',block_time) = minute
     WHERE 
         pu.blockchain = '{{blockchain}}'
         {% if is_incremental() %}
