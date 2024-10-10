@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: metrics_dune_index
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'dune', 'index', 'daily']
+    description: "**todo**"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
