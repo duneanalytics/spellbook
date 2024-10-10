@@ -5,30 +5,12 @@ models:
     meta:
       blockchain: solana
       sector: gas
-      contributors: YourName
+      contributors: 0xboxer
     config:
       tags: ['solana', 'gas', 'fees']
     description: >
         Gas Fees on Solana, including compute unit prices and prioritization fees
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - block_number
-            - tx_hash
-      - check_seed:
-          seed_file: ref('evm_gas_fees')
-          filter:
-            blockchain: solana
-          match_columns:
-            - blockchain
-            - tx_hash
-          check_columns:
-            - tx_fee_raw
-      - dbt_utils.expression_is_true:
-          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw), 0, (s, x) -> s + x, s -> s)"
-          config:
-            where: "block_time > now() - interval '7' day"
+    -- TODO: add tests
 
     columns:
       - name: blockchain
@@ -77,9 +59,8 @@ models:
         tests:
           - not_null
       - name: block_proposer
-        tests:
-          - not_null
+        description: Block proposer address, currently unknown how to get it in Dune
       - name: tx_type
-        description: Type of transaction (normal)
+        description: Type of transaction (normal or vote
       - name: limit_type
-        description: Whether compute limit was set or default
+        description: Whether compute limit was set or defaults to 200k

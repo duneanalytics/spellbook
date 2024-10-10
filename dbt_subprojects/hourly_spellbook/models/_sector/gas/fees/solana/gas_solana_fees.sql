@@ -1,5 +1,6 @@
 {{ config(
-    alias = 'gas_solana_fees',
+    schema = 'gas_solana',
+    alias = 'fees',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
