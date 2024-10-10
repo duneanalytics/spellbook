@@ -220,6 +220,7 @@ tbl_trades as (
 ),
 results AS (
     SELECT
+        '{{blockchain}}' AS blockchain,
         trades.block_time,
         trades.block_number,
         zid,
