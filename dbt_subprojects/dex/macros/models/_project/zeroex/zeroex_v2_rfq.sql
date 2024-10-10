@@ -228,7 +228,7 @@ results AS (
         trades.tx_hash,
         "from" AS tx_from,
         "to" AS tx_to,
-        trades.index AS tx_index,
+        trades.tx_index AS tx_index,
         case when varbinary_substring(tr.data,1,4) = 0x500c22bc then "from" else taker end as taker,
         CAST(NULL AS varbinary) AS maker,
         taker_token,
