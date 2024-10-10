@@ -82,9 +82,11 @@ with source as (
         c.blockchain
         , c.last_7_days_dune_index_contribution
         , c.last_7_days_dune_index_contribution_percent
+        , c.last_7_days_dune_index
         , p.previous_7_days_dune_index_contribution
         , p.previous_7_days_dune_index_contribution_percent
-        , ((c.last_7_days_dune_index_contribution - coalesce(p.previous_7_days_dune_index_contribution, 0)) / coalesce(p.previous_7_days_dune_index_contribution, 1)) * 100 AS weekly_percent_change
+        , p.previous_7_days_dune_index
+        , ((c.last_7_days_dune_index - coalesce(p.previous_7_days_dune_index, 0)) / coalesce(p.previous_7_days_dune_index, 1)) * 100 AS weekly_percent_change
     from
         current_week as c
     left join previous_week as p
@@ -120,9 +122,11 @@ with source as (
         c.blockchain
         , c.last_30_days_dune_index_contribution
         , c.last_30_days_dune_index_contribution_percent
+        , c.last_30_days_dune_index
         , p.previous_30_days_dune_index_contribution
         , p.previous_30_days_dune_index_contribution_percent
-        , ((c.last_30_days_dune_index_contribution - coalesce(p.previous_30_days_dune_index_contribution, 0)) / coalesce(p.previous_30_days_dune_index_contribution, 1)) * 100 AS monthly_percent_change
+        , p.previous_30_days_dune_index
+        , ((c.last_30_days_dune_index - coalesce(p.previous_30_days_dune_index, 0)) / coalesce(p.previous_30_days_dune_index, 1)) * 100 AS monthly_percent_change
     from
         current_month as c
     left join previous_month as p
