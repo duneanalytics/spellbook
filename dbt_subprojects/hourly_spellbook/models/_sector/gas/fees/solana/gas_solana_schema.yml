@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: gas_solana_fees
+    meta:
+      blockchain: solana
+      sector: gas
+      contributors: YourName
+    config:
+      tags: ['solana', 'gas', 'fees']
+    description: >
+        Gas Fees on Solana, including compute unit prices and prioritization fees
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_number
+            - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: solana
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_raw
+      - dbt_utils.expression_is_true:
+          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw), 0, (s, x) -> s + x, s -> s)"
+          config:
+            where: "block_time > now() - interval '7' day"
+
+    columns:
+      - name: blockchain
+        tests:
+          - accepted_values:
+              values: ['solana']
+      - name: block_month
+        tests:
+          - not_null
+      - name: block_date
+        tests:
+          - not_null
+      - name: block_time
+        tests:
+          - not_null
+      - name: block_number
+        tests:
+          - not_null
+      - name: tx_hash
+        tests:
+          - not_null
+          - unique
+      - name: tx_from
+        tests:
+          - not_null
+      - name: gas_price
+        description: Compute unit price in lamports
+      - name: gas_used
+        description: Compute units used (or limit set)
+      - name: tx_fee_raw
+        tests:
+          - not_null
+      - name: tx_fee
+        tests:
+          - not_null
+      - name: tx_fee_usd
+        tests:
+          - not_null
+      - name: tx_fee_breakdown_raw
+        description: Breakdown of fee into base_fee and prioritization_fee
+      - name: tx_fee_breakdown
+        description: Breakdown of fee in SOL
+      - name: tx_fee_breakdown_usd
+        description: Breakdown of fee in USD
+      - name: tx_fee_currency
+        tests:
+          - not_null
+      - name: block_proposer
+        tests:
+          - not_null
+      - name: tx_type
+        description: Type of transaction (normal)
+      - name: limit_type
+        description: Whether compute limit was set or default
