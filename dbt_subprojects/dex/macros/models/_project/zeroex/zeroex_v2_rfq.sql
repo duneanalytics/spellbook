@@ -217,8 +217,58 @@ tbl_trades as (
                  tr.block_time >= DATE '{{start_date}}'
             {% endif %}
     
+),
+results AS (
+    SELECT
+        trades.block_time,
+        trades.block_number,
+        zid,
+        trades.contract_address,
+        method_id,
+        trades.tx_hash,
+        "from" AS tx_from,
+        "to" AS tx_to,
+        trades.index AS tx_index,
+        case when varbinary_substring(tr.data,1,4) = 0x500c22bc then "from" else taker end as taker,
+        CAST(NULL AS varbinary) AS maker,
+        taker_token,
+        pt.price,
+        COALESCE(tt.symbol, pt.symbol) AS taker_symbol,
+        taker_amount AS taker_token_amount_raw,
+        taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) AS taker_token_amount,
+        taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) * pt.price AS taker_amount,
+        maker_token,
+        COALESCE(tm.symbol, pm.symbol)  AS maker_symbol,
+        maker_amount AS maker_token_amount_raw,
+        maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS maker_token_amount,
+        maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) * pm.price AS maker_amount,
+        tag
+    FROM 
+        tbl_trades trades
+    JOIN 
+        {{blockchain}}.transactions tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
+    
+    LEFT JOIN 
+        tokens tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
+    LEFT JOIN 
+        tokens tm ON tm.blockchain = '{{blockchain}}' AND tm.contract_address = maker_token
+    LEFT JOIN 
+        prices pt ON pt.blockchain = '{{blockchain}}' AND pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
+    LEFT JOIN 
+        prices pm ON pm.blockchain = '{{blockchain}}' AND pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
+    WHERE 
+        1=1 
+        
+),
+results_usd AS (
+    {{
+        add_amount_usd(
+            trades_cte = 'results'
+        )
+    }}
 )
-
-select * from tbl_trades
+SELECT * 
+FROM results_usd
+order by block_time desc 
 
 {% endmacro %}
