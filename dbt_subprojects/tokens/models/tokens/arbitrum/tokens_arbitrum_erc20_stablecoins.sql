@@ -29,7 +29,7 @@ FROM (VALUES
         ('arbitrum', 0xb1084db8d3c05cebd5fa9335df95ee4b8a0edc30, 'Crypto-backed stablecoin', 'USDT+', 6, ''),
         ('arbitrum', 0x3509f19581afedeff07c53592bc0ca84e4855475, 'Crypto-backed stablecoin', 'xUSD', 18, ''),
         ('arbitrum', 0x59d9356e565ab3a36dd77763fc0d87feaf85508c, 'Fiat-backed stablecoin', 'USDM', 18, ''),
-        ('arbitrum', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 'Fiat-backed stablecoin', 'USDC', 6, ''),
+        ('arbitrum', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8, 'Fiat-backed stablecoin', 'USDC.e', 6, ''),
         ('arbitrum', 0x4d15a3a2286d883af0aa1b3f21367843fac63e07, 'Fiat-backed stablecoin', 'TUSD', 18, ''),
         ('arbitrum', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 'Crypto-backed stablecoin', 'USDe', 18, ''),
         ('arbitrum', 0xeb466342c4d449bc9f53a865d5cb90586f405215, 'Crypto-backed stablecoin', 'axlUDC', 6, ''),
