@@ -52,8 +52,8 @@ base_model AS (
         COALESCE(up.compute_unit_price, 0) / 1e6 AS compute_price_lamport,
         COALESCE(cl.compute_limit, 200000) AS compute_limit,
         CASE WHEN cl.compute_limit IS NULL THEN 'default' ELSE 'limit_set' END AS limit_type,
-        'So11111111111111111111111111111111111111112' AS tx_fee_currency,
-        null AS block_proposer  -- somehow hard to figure out the leader in dune atm
+        'So11111111111111111111111111111111111111112' AS tx_fee_currency
+        --null AS block_proposer  -- somehow hard to figure out the leader in dune atm
     FROM {{ source('solana', 'transactions') }} t
     LEFT JOIN compute_limit_cte cl 
         ON t.id = cl.tx_id 
@@ -88,7 +88,7 @@ base_model AS (
         null AS compute_limit,
         null AS limit_type,
         'So11111111111111111111111111111111111111112' AS tx_fee_currency,
-        null AS block_proposer -- somehow hard to figure out the leader in dune atm
+        --null AS block_proposer -- somehow hard to figure out the leader in dune atm
     FROM {{ source('solana', 'vote_transactions') }} vt
     WHERE vt.block_date > current_date - interval '2' day
     )
@@ -101,7 +101,7 @@ SELECT
     block_number,
     tx_hash,
     tx_from,
-    NULL AS tx_to, -- this concept doesn't really exist in solana
+    --NULL AS tx_to, -- this concept doesn't really exist in solana
     compute_price_lamport AS gas_price, -- only applies to compute budget tx
     compute_limit AS gas_used, -- this is the compute limit, not gas
     p.symbol AS currency_symbol,
