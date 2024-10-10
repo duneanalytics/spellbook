@@ -164,9 +164,9 @@ prices AS (
     WHERE 
         pu.blockchain = '{{blockchain}}'
         {% if is_incremental() %}
-            and  {{ incremental_predicate('tr.block_time') }}
+            and  {{ incremental_predicate('pu.minute') }}
         {% else %}
-            and  tr.block_time >= DATE '{{start_date}}'
+            and  pu.minute >= DATE '{{start_date}}'
         {% endif %}
        
 ),
