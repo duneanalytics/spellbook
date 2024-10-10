@@ -35,10 +35,13 @@ WITH joined_data AS (
         , '{{ addresses_events_model[1] }}' AS token_symbol
         , first_funded_by
         , first_funding_executed_by
+        , amount
+        , amount_usd
         , block_time
         , block_number
         , tx_hash
         , tx_index
+        , evt_index
         FROM {{ addresses_events_model[0] }}
         {% if not loop.last %}
         UNION ALL
