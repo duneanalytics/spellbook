@@ -20,3 +20,10 @@ models:
     config:
       tags: ['metrics', 'fees', 'gas']
     description: "View of gas fees per blockchain aggregated to various levels. The goal is to output one row per chain with stats availble for use in counter visuals."
+  - name: metrics_fees_index
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'fees', 'gas', 'index']
+    description: "**todo**"

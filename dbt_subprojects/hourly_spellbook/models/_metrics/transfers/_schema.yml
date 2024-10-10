@@ -32,3 +32,10 @@ models:
     config:
       tags: ['metrics', 'transfers']
     description: "View of transfers per blockchain aggregated to various levels. The goal is to output one row per chain with stats availble for use in counter visuals."
+  - name: metrics_transfers_index
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'transfers', 'index']
+    description: "**todo**"
