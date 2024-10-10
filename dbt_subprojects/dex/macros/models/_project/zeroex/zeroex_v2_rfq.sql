@@ -149,10 +149,27 @@ tokens as (
         ) 
         select * 
         from token_list tl 
-        join tokens.erc20 AS te ON te.contract_address = tl.token
+        join {{ source( 'tokens', 'erc20') }} as te ON te.contract_address = tl.token
         WHERE 
             te.blockchain = '{{blockchain}}'
 ), 
+
+prices AS (
+    SELECT DISTINCT 
+        pu.* 
+    FROM 
+         {{ source( 'prices', 'usd') }} as pu 
+    JOIN 
+        tbl_trades ON (pu.contract_address = taker_token  OR pu.contract_address = maker_token) AND date_trunc('minute',block_time) = minute
+    WHERE 
+        pu.blockchain = '{{blockchain}}'
+        {% if is_incremental() %}
+            and  {{ incremental_predicate('tr.block_time') }}
+        {% else %}
+            and  tr.block_time >= DATE '{{start_date}}'
+        {% endif %}
+       
+),
 
 tbl_trades as (
 
@@ -189,6 +206,10 @@ tbl_trades as (
         tokens tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
     LEFT JOIN 
         tokens tm ON tm.blockchain = '{{blockchain}}' AND tm.contract_address = maker_token
+    LEFT JOIN 
+        prices pt ON pt.blockchain = '{{blockchain}}' AND pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
+    LEFT JOIN 
+        prices pm ON pm.blockchain = '{{blockchain}}' AND pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
     WHERE 
             {% if is_incremental() %}
                  {{ incremental_predicate('tr.block_time') }}
