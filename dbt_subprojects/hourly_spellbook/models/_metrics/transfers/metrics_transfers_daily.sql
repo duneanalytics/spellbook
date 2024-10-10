@@ -25,11 +25,9 @@ with raw_transfers as (
         {{ source('tokens', 'transfers') }}
     where
         1 = 1
-    {% if is_incremental() %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
-    {% else %}
-        and block_date >= timestamp '2024-01-01'
-    {% endif %}
+        {% endif %}
     group by
         blockchain
         , block_date
@@ -50,11 +48,9 @@ with raw_transfers as (
         {{ source('tokens', 'transfers') }}
     where
         1 = 1
-    {% if is_incremental() %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
-    {% else %}
-        and block_date >= timestamp '2024-01-01'
-    {% endif %}
+        {% endif %}
     group by
         blockchain
         , block_date
