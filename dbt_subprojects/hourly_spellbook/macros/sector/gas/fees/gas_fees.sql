@@ -85,7 +85,8 @@
 -- applicable on Celo
 {% macro fee_currency(blockchain) %}
     {%- if blockchain in ('celo',) -%}
-    coalesce(fee_currency, {{var('ETH_ERC20_ADDRESS')}})
+    -- temp, revert to fee_currency once available
+    coalesce(null, {{var('ETH_ERC20_ADDRESS')}})
     {%- else -%}
     {{var('ETH_ERC20_ADDRESS')}}
     {%- endif %}
