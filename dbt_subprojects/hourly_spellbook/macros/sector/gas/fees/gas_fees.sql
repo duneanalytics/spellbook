@@ -1,3 +1,6 @@
+-- Used to run the models only on incremental timeframe + seed transactions (for tests)
+{% set test_short_ci = true%}
+
 -- any modifications needed for getting the correct gas price
 {% macro gas_price(blockchain) %}
     {%- if blockchain in ['arbitrum']-%}
@@ -126,7 +129,10 @@ WITH base_model as (
         AND {{ incremental_predicate('blob.block_time') }}
         {% endif %}
     {%- endif -%}
-    {% if is_incremental() %}
+    {% if test_short_ci %}
+    WHERE {{ incremental_predicate('txns.block_time') }}
+    OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
+    {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     {% endif %}
     )
