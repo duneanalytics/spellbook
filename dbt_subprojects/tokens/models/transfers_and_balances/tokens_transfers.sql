@@ -20,9 +20,6 @@
                                             ,"zkevm"
                                             ,"zksync"
                                             ,"zora"
-                                            ,"mode"
-                                            ,"bob"
-                                            ,"degen"
                                         ]\',
                                         "sector",
                                         "tokens",
