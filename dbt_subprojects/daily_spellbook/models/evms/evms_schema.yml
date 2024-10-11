@@ -238,6 +238,11 @@ models:
     config:
       tags:   ['evms', 'contracts']
     description: "A view keeping track of what contracts are decoded across EVM chains on Dune; contains information associated with the decoded contract such as namespace, name, address, ABI."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - address
     columns:
       - *blockchain
       - name: abi
