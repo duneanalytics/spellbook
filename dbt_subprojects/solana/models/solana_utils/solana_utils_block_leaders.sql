@@ -13,7 +13,7 @@
 ) }}
 
 SELECT 
-    date_trunc('month', b.time) as month,
+    cast(date_trunc('month', b.time) as date) as month,
     b.time,
     b.slot,
     b.height,
