@@ -48,6 +48,7 @@
     , ref('dackieswap_v2_arbitrum_base_trades')
     , ref('maverick_v2_arbitrum_base_trades')
     , ref('valantis_hot_arbitrum_base_trades')
+    , ref('spartadex_arbitrum_base_trades')
 ] %}
 
 WITH base_union AS (
