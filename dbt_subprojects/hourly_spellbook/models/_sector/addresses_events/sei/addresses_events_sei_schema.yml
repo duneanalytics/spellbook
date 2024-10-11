@@ -9,7 +9,7 @@ models:
       contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'sei']
-    description: "Table showing who first funded each Sei address in ETH"
+    description: "Table showing who first funded each Sei address in SEI"
     tests:
       - check_seed:
           seed_file: ref('first_funded_by_seed')
@@ -26,26 +26,36 @@ models:
       - name: blockchain
         description: "Blockchain"
       - name: address
-        description: "Concerned Fantom address"
+        description: "Concerned sei address"
         tests:
           - unique
       - name: first_funding_executed_by
         description: "Which address executed the first funding tx"
       - name: first_funded_by
-        description: "Which Fantom address first funded the address with FTM"
+        description: "Which base address first funded the address with SEI"
+      - name: amount
+        description: "The amount of SEI the wallet was funded with in this first transfer"
+      - name: amount_usd
+        description: "The USD value of the SEI the wallet was funded with in this first transfer"
       - name: block_time
-        description: "The block time on which the address was first funded with FTM"
+        description: "The block time on which the address was first funded with SEI"
       - name: block_number
-        description: "The block number on which the address was first funded with FTM"
+        description: "The block number on which the address was first funded with SEI"
       - name: tx_hash
-        description: "The transaction hash on which the address was first funded with FTM"
+        description: "The transaction hash on which the address was first funded with SEI"
+      - name: tx_index
+        description: "The transaction index within the block on which the address was first funded with SEI"
+      - name: trace_address
+        description: "The trace_address within the transaction on which the address was first funded with SEI"
+      - name: unique_key
+        description: "Unique transfer identifier key"
 
   - name: addresses_events_sei_first_activity
     meta:
       blockchain: sei
       sector: addresses_events
       project: addresses
-      contributors: Henrystats
+      contributors: Henrystats, lgingerich, hildobby
     config:
       tags: ['table', 'activity', 'addresses_events', 'sei']
     description: "Table showing first activity of each Sei Mainnet address"
@@ -77,5 +87,5 @@ models:
         description: "The transaction hash on which the address made it's first activity"
       - name: first_function
         description: "first function called by address"
-      - name: first_ftm_transferred
-        description: "FTM transferred in transaction"
+      - name: first_eth_transferred
+        description: "SEI transferred in transaction"
