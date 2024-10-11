@@ -15,7 +15,7 @@
         blockchain = 'mantle',
         project = 'tropicalswap',
         version = '1',
-        Pair_evt_Swap = source('tropicalswap_mantle', 'PancakePair_evt_Swap'),
-        Factory_evt_PairCreated = source('tropicalswap_mantle', 'TropicalPair_evt_Swap')
+        Pair_evt_Swap = source('tropicalswap_mantle', 'TropicalPair_evt_Swap'),
+        Factory_evt_PairCreated = source('tropicalswap_mantle', 'TropicalFactory_evt_PairCreated')
     )
 }}
