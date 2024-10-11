@@ -32,12 +32,13 @@ SELECT
     b.previous_block_hash,
     r.recipient AS leader
 FROM {{ source('solana', 'blocks') }} b 
-LEFT JOIN {{ source('solana', 'rewards') }} r 
-    ON b.slot = r.block_slot and b.date = r.block_date
+INNER JOIN {{ source('solana', 'rewards') }} r 
+    ON b.slot = r.block_slot 
+    AND b.date = r.block_date
     AND r.reward_type = 'Fee'
     {% if is_incremental() %}
         AND {{incremental_predicate('r.block_time')}}
     {% endif %}
 {% if is_incremental() %} 
-    WHERE 1=1 AND {{incremental_predicate('b.time')}}
+    WHERE {{incremental_predicate('b.time')}}
 {% endif %}
