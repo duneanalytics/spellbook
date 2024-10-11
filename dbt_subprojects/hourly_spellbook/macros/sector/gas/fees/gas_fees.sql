@@ -1,6 +1,3 @@
--- Used to run the models only on incremental timeframe + seed transactions (for tests)
-{% set test_short_ci = true%}
-
 -- any modifications needed for getting the correct gas price
 {% macro gas_price(blockchain) %}
     {%- if blockchain in ['arbitrum']-%}
@@ -93,6 +90,8 @@
 {% endmacro %}
 
 {% macro gas_fees(blockchain) %}
+-- Used to run the models only on incremental timeframe + seed transactions (for tests)
+{% set test_short_ci = true %}
 WITH base_model as (
     SELECT
         txns.block_time
