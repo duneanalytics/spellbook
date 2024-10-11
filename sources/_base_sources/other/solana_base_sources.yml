@@ -199,5 +199,13 @@ sources:
           docs_slug: ''
           short_description: ''
         description: ''
+
+  - name: solana_utils
+    description: tables in the solana_utils schema
+    tables:
+      - name: block_leaders
+        meta:
+          docs_slug: /solana/block_leaders
+        description: Leaders for each block on the Solana blockchain
         
       

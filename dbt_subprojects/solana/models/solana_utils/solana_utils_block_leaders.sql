@@ -35,6 +35,8 @@ LEFT JOIN {{ source('solana', 'rewards') }} r
     ON b.slot = r.block_slot 
     AND r.reward_type = 'Fee'
 
+--not all slots have leaders, but slots without leaders don't have transactions so can be disregarded.
+
 {% if is_incremental() %}
     AND {{incremental_predicate('b.time')}}
 {% endif %}
