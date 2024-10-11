@@ -17,10 +17,10 @@
 {{
     transfers_enrich(
         base_transfers = ref('tokens_sepolia_base_transfers')
-        , tokens_erc20_sepolial = source('tokens', 'erc20')
-        , prices_sepolial = source('prices', 'usd')
-        , evms_info_sepolial = source('evms','info')
-        , transfers_start_date = '2020-04-22'
+        , tokens_erc20_model = source('tokens', 'erc20')
+        , prices_model = source('prices', 'usd')
+        , evms_info_model = source('evms','info')
+        , transfers_start_date = '2015-07-30'
         , blockchain = 'sepolia'
     )
 }}

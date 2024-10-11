@@ -17,10 +17,10 @@
 {{
     transfers_enrich(
         base_transfers = ref('tokens_goerli_base_transfers')
-        , tokens_erc20_goerlil = source('tokens', 'erc20')
-        , prices_goerlil = source('prices', 'usd')
-        , evms_info_goerlil = source('evms','info')
-        , transfers_start_date = '2020-04-22'
+        , tokens_erc20_model = source('tokens', 'erc20')
+        , prices_model = source('prices', 'usd')
+        , evms_info_model = source('evms','info')
+        , transfers_start_date = '2019-01-30'
         , blockchain = 'goerli'
     )
 }}
