@@ -12,6 +12,7 @@
     , ref('swaap_v2_mantle_base_trades')
     , ref('clipper_mantle_base_trades')
     , ref('uniswap_v3_mantle_base_trades')
+    , ref('tropicalswap_mantle_base_trades')
 ] %}
 
 WITH base_union AS (
