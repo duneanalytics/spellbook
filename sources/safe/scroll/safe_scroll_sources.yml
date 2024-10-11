@@ -30,7 +30,7 @@ sources:
           - &singleton
             name: singleton
             description: "Singleton"
-      - name: SafeProxyFactory_v_14_1_evt_ProxyCreation
+      - name: SafeProxyFactory_v1_4_1_evt_ProxyCreation
         loaded_at_field: evt_block_time
         description: "Safe v1.4.1 factory ProxyCreation events"
         columns:
