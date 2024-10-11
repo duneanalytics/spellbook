@@ -7,7 +7,7 @@ models:
       contributors: jeff-dude
     config:
       tags: ['metrics', 'dune', 'index', 'daily']
-    description: "**todo**"
+    description: "Combine transactions, transfers and fees index values to get a daily dune index value"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -19,4 +19,4 @@ models:
       contributors: jeff-dude
     config:
       tags: ['metrics', 'dune', 'index', 'daily']
-    description: "**todo**"
+    description: "View containing various time aggregations of the dune index"

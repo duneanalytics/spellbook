@@ -38,7 +38,7 @@ models:
       contributors: jeff-dude
     config:
       tags: ['metrics', 'transfers', 'index', 'daily']
-    description: "**todo**"
+    description: "Each day, per chain, compare the adoption of total transfers relative to the baseline expectation"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

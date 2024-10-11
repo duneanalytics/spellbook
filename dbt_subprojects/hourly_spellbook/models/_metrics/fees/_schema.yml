@@ -26,7 +26,7 @@ models:
       contributors: jeff-dude
     config:
       tags: ['metrics', 'fees', 'gas', 'index', 'daily']
-    description: "**todo**"
+    description: "Each day, per chain, compare the adoption of activity based on total gas fees relative to the baseline expectation"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
