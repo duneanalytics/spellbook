@@ -4,7 +4,7 @@
     materialized = 'incremental',
     partition_by = ['month'],
     file_format = 'delta',
-    unique_key = ['slot'],
+    unique_key = ['month', 'slot'],
     incremental_strategy = 'merge',
     post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
@@ -13,7 +13,7 @@
 ) }}
 
 SELECT 
-    date_trunc('month', b.time) as month,
+    cast(date_trunc('month', b.time) as date) as month,
     b.time,
     b.slot,
     b.height,
