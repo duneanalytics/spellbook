@@ -52,8 +52,8 @@ base_model AS (
         COALESCE(up.compute_unit_price, 0) / 1e6 AS compute_price_lamport,
         COALESCE(cl.compute_limit, 200000) AS compute_limit,
         CASE WHEN cl.compute_limit IS NULL THEN 'default' ELSE 'limit_set' END AS limit_type,
-        'So11111111111111111111111111111111111111112' AS tx_fee_currency,
-        bl.leader AS block_proposer
+        'So11111111111111111111111111111111111111112' AS tx_fee_currency
+        --null AS block_proposer  -- somehow hard to figure out the leader in dune atm
     FROM {{ source('solana', 'transactions') }} t
     LEFT JOIN compute_limit_cte cl 
         ON t.id = cl.tx_id 
@@ -73,14 +73,6 @@ base_model AS (
         {% if not is_incremental() %}
             AND up.block_time > current_date - interval '2' day
         {% endif %}
-    LEFT JOIN {{ source('solana_utils', 'block_leaders') }} bl
-        ON t.block_slot = bl.slot and t.block_date = bl.date
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('bl.time') }}
-        {% endif %}
-        {% if not is_incremental() %}
-            AND bl.time > current_date - interval '2' day
-        {% endif %}
     WHERE t.block_date > current_date - interval '2' day
     UNION ALL
     SELECT 
@@ -95,17 +87,9 @@ base_model AS (
         null AS compute_price_lamport,
         null AS compute_limit,
         null AS limit_type,
-        'So11111111111111111111111111111111111111112' AS tx_fee_currency,
-        bl.leader AS block_proposer
+        'So11111111111111111111111111111111111111112' AS tx_fee_currency
+        --null AS block_proposer -- somehow hard to figure out the leader in dune atm
     FROM {{ source('solana', 'vote_transactions') }} vt
-    LEFT JOIN {{ source('solana_utils', 'block_leaders') }} bl
-        ON vt.block_slot = bl.slot and vt.block_date = bl.date
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('bl.time') }}
-        {% endif %}
-        {% if not is_incremental() %}
-            AND bl.time > current_date - interval '2' day
-        {% endif %}
     WHERE vt.block_date > current_date - interval '2' day
     )
 
