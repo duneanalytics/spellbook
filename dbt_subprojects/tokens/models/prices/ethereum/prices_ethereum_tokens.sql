@@ -1851,7 +1851,8 @@ FROM
     ('bubble-imaginary-ones', 'ethereum', 'BUBBLE', 0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3, 18),
     ('guru-guru-token', 'ethereum', 'GURU', 0x525574c899a7c877a11865339e57376092168258, 18),
     ('avail-avail', 'ethereum', 'AVAIL',0xeeb4d8400aeefafc1b2953e0094134a887c76bd8, 18),
-    ('licker-licker', 'ethereum', 'LICKER',0x1b3be8fcd2e7c5ce9c5c242e0066fdd9740220d0, 18)
+    ('licker-licker', 'ethereum', 'LICKER',0x1b3be8fcd2e7c5ce9c5c242e0066fdd9740220d0, 18),
+    ('spx-spx6900', 'ethereum', 'SPX', 0xE0f63A424a4439cBE457D80E4f4b51aD25b2c56C, 8)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
