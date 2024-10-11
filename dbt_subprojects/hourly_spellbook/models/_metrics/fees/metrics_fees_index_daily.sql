@@ -18,14 +18,6 @@ with baseline as (
         {{ ref('metrics_gas_fees_daily') }}
     where
         block_date = date '{{ baseline_date }}'
-), blockchain_baseline as (
-    select
-        blockchain
-        , gas_fees_usd as blockchain_baseline_gas_fees_usd
-    from
-        {{ ref('metrics_gas_fees_daily') }}
-    where
-        block_date = date '{{ baseline_date }}'
 ), daily as (
     select
         blockchain
@@ -44,14 +36,9 @@ select
     , d.block_date
     , d.gas_fees_usd
     , b.baseline_gas_fees_usd
-    , bb.blockchain_baseline_gas_fees_usd
     , (d.gas_fees_usd / b.baseline_gas_fees_usd) * 100 as fees_index
-    , (d.gas_fees_usd / bb.blockchain_baseline_gas_fees_usd) * 100 as blockchain_fees_index
 from
     daily as d
 left join
     baseline as b
     on 1 = 1
-left join
-    blockchain_baseline as bb
-    on d.blockchain = bb.blockchain

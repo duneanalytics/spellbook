@@ -18,14 +18,6 @@ with baseline as (
         {{ ref('metrics_transactions_daily') }}
     where
         block_date = date '{{ baseline_date }}'
-), blockchain_baseline as (
-    select
-        blockchain
-        , tx_count as blockchain_baseline_tx_count
-    from
-        {{ ref('metrics_transactions_daily') }}
-    where
-        block_date = date '{{ baseline_date }}'
 ), daily as (
     select
         blockchain
@@ -44,14 +36,9 @@ select
     , d.block_date
     , d.tx_count
     , b.baseline_tx_count
-    , bb.blockchain_baseline_tx_count
     , (cast(d.tx_count as double) / cast(b.baseline_tx_count as double)) * 100 as tx_index
-    , (cast(d.tx_count as double) / cast(bb.blockchain_baseline_tx_count as double)) * 100 as blockchain_tx_index
 from
     daily as d
 left join
     baseline as b
     on 1 = 1
-left join
-    blockchain_baseline as bb
-    on d.blockchain = bb.blockchain

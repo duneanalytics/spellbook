@@ -18,14 +18,6 @@ with baseline as (
         {{ ref('metrics_transfers_daily') }}
     where
         block_date = date '{{ baseline_date }}'
-), blockchain_baseline as (
-    select
-        blockchain
-        , net_transfer_amount_usd as blockchain_baseline_net_transfer_amount_usd
-    from
-        {{ ref('metrics_transfers_daily') }}
-    where
-        block_date = date '{{ baseline_date }}'
 ), daily as (
     select
         blockchain
@@ -44,14 +36,9 @@ select
     , d.block_date
     , d.net_transfer_amount_usd
     , b.baseline_net_transfer_amount_usd
-    , bb.blockchain_baseline_net_transfer_amount_usd
     , (d.net_transfer_amount_usd / b.baseline_net_transfer_amount_usd) * 100 as transfers_index
-    , (d.net_transfer_amount_usd / bb.blockchain_baseline_net_transfer_amount_usd) * 100 as blockchain_transfers_index
 from
     daily as d
 left join
     baseline as b
     on 1 = 1
-left join
-    blockchain_baseline as bb
-    on d.blockchain = bb.blockchain
