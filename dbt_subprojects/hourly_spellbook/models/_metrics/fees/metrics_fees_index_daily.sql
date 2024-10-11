@@ -1,6 +1,6 @@
 {{ config(
         schema = 'metrics'
-        , alias = 'fees_index'
+        , alias = 'fees_index_daily'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'

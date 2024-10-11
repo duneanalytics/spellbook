@@ -1,6 +1,6 @@
 {{ config(
         schema = 'metrics'
-        , alias = 'transactions_index'
+        , alias = 'transactions_index_daily'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
