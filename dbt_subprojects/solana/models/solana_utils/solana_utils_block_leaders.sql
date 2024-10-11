@@ -37,6 +37,6 @@ LEFT JOIN {{ source('solana', 'rewards') }} r
     {% if is_incremental() %}
         AND {{incremental_predicate('r.block_time')}}
     {% endif %}
-    {% if is_incremental() %} 
-       WHERE 1=1 AND {{incremental_predicate('b.time')}}
-    {% endif %}
+{% if is_incremental() %} 
+    WHERE 1=1 AND {{incremental_predicate('b.time')}}
+{% endif %}
