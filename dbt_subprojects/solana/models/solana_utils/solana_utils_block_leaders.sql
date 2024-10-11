@@ -4,7 +4,7 @@
     materialized = 'incremental',
     partition_by = ['month'],
     file_format = 'delta',
-    unique_key = ['slot'],
+    unique_key = ['month', 'slot'],
     incremental_strategy = 'merge',
     post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
