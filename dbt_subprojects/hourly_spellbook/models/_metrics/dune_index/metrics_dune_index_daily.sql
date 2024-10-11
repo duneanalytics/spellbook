@@ -1,6 +1,6 @@
 {{ config(
         schema = 'metrics'
-        , alias = 'dune_index'
+        , alias = 'dune_index_daily'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
