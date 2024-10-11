@@ -14,6 +14,7 @@
 
 SELECT 
     cast(date_trunc('month', b.time) as date) as month,
+    b.date,
     b.time,
     b.slot,
     b.height,
