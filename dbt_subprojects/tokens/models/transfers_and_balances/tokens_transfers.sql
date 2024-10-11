@@ -23,7 +23,7 @@
                                         ]\',
                                         "sector",
                                         "tokens",
-                                        \'["aalan3", "jeff-dude"]\') }}'
+                                        \'["aalan3", "jeff-dude", "0xBoxer", "hildobby"]\') }}'
         )
 }}
 
@@ -46,6 +46,9 @@
     ,'zkevm'
     ,'zksync'
     ,'zora'
+    ,'mode'
+    ,'bob'
+    ,'degen'
 ] %}
 
 SELECT *
