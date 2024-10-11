@@ -4,14 +4,14 @@
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
-        , unique_key = ['blockchain', 'day']
-        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
+        , unique_key = ['blockchain', 'block_date']
+        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
         )
 }}
 
 select
     blockchain
-    , date_trunc('day', block_hour) as day
+    , date_trunc('day', block_hour) as block_date
     , sum(tx_count) as tx_count
 from
     {{ ref('evms_transaction_metrics') }}
