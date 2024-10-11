@@ -1854,12 +1854,11 @@ FROM
     ('licker-licker', 'ethereum', 'LICKER',0x1b3be8fcd2e7c5ce9c5c242e0066fdd9740220d0, 18),
     ('doge-department-of-government-efficiency', 'ethereum', 'DOGE',0x1121acc14c63f3c872bfca497d10926a6098aac5, 18),
     ('cate-cate', 'ethereum', 'CATE',0xa00453052a36d43a99ac1ca145dfe4a952ca33b8, 9),
-    ('spx-spx6900', 'ethereum', 'SPX',0xe0f63a424a4439cbe457d80e4f4b51ad25b2c56c, 18),
+    ('spx-spx6900', 'ethereum', 'SPX', 0xe0f63a424a4439cbe457d80e4f4b51ad25b2c56c, 8),
     ('rlb-rollbit-coin', 'ethereum', 'RLB',0x046eee2cc3188071c02bfc1745a6b17c656e3f3d, 18),
     ('ebull-ethereum-is-good4058', 'ethereum', 'EBULL',0x71297312753ea7a2570a5a3278ed70d9a75f4f44, 9),
     ('fight-fight-to-maga', 'ethereum', 'FIGHT',0x8802269d1283cdb2a5a329649e5cb4cdcee91ab6, 9),
     ('sato-atsuko-sato', 'ethereum', 'SATO',0x5de758bba013e58dae2693aea3f0b12b31a3023d, 18)
-
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
