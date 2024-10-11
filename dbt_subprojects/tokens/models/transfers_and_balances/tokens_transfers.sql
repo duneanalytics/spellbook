@@ -46,9 +46,6 @@
     ,'zkevm'
     ,'zksync'
     ,'zora'
-    ,'mode'
-    ,'bob'
-    ,'degen'
 ] %}
 
 SELECT *
