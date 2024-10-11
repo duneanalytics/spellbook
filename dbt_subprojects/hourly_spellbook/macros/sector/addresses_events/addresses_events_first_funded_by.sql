@@ -20,6 +20,7 @@ AND tt.token_standard = 'native'
 AND tt.to NOT IN (SELECT address FROM {{this}})
 {% else %}
 WHERE tt.token_standard = 'native'
+  and tt.block_time >= timestamp '2024-10-01'
 {% endif %}
 GROUP BY tt.to
 
