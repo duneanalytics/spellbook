@@ -24,7 +24,7 @@ WITH changed_prices AS (
 ),
 
 hours AS (
-    SELECT date_trunc('hour', block_time) as hour
+    SELECT distinct date_trunc('hour', block_time) as hour
     FROM {{ source('ethereum', 'transactions') }}
 ),
 

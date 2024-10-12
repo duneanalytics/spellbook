@@ -25,7 +25,7 @@ WITH changed_prices AS (
 
 --sequences are limited to 10k so just pulling this in from the transactions table, no other relationship
 days AS (
-    Select date_trunc('day', block_time) as day
+    Select distinct date_trunc('day', block_time) as day
     from {{ source('ethereum', 'transactions') }}
 ),
 
