@@ -49,7 +49,7 @@ SELECT *
             , factory
             , detection_source
             , created_at
-            , row_number() over (partition by blockchain, address order by created_at desc) as duplicates_rank
+            , row_number() over (partition by address order by created_at desc) as duplicates_rank
         FROM {{ contracts_model[1] }}
         {% if not loop.last %}
         UNION ALL
