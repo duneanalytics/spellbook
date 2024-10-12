@@ -60,6 +60,7 @@ FROM
     ('trx-tron', null, 'TRX', null, null),
     ('dai-dai', null, 'XDAI', null, null),    -- maintain all caps spelling for legacy queries, coinpaprika xdai only goes back to 2023
     ('dai-dai', null, 'xDAI', null, null),    -- xDAI is the proper spelling, coinpaprika xdai only goes back to 2023
+    ('wld-worldcoin', null, 'WLD', null, null),
     ('xem-nem', null, 'XEM', null, null),
     ('xlm-stellar', null, 'XLM', null, null),
     ('xmr-monero', null, 'XMR', null, null),
