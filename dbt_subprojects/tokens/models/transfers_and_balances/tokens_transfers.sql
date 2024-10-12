@@ -20,13 +20,10 @@
                                             ,"zkevm"
                                             ,"zksync"
                                             ,"zora"
-                                            ,"mode"
-                                            ,"bob"
-                                            ,"degen"
                                         ]\',
                                         "sector",
                                         "tokens",
-                                        \'["aalan3", "jeff-dude", "0xBoxer", "hildobby"]\') }}'
+                                        \'["aalan3", "jeff-dude"]\') }}'
         )
 }}
 
@@ -49,9 +46,6 @@
     ,'zkevm'
     ,'zksync'
     ,'zora'
-    ,'mode'
-    ,'bob'
-    ,'degen'
 ] %}
 
 SELECT *
