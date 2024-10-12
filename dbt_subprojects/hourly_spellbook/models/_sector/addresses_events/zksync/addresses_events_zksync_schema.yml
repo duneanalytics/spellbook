@@ -32,7 +32,11 @@ models:
       - name: first_funding_executed_by
         description: "Which address executed the first funding tx"
       - name: first_funded_by
-        description: "Which zksync address first funded the address with ETH"
+        description: "Which base address first funded the address with ETH"
+      - name: amount
+        description: "The amount of ETH the wallet was funded with in this first transfer"
+      - name: amount_usd
+        description: "The USD value of the ETH the wallet was funded with in this first transfer"
       - name: block_time
         description: "The block time on which the address was first funded with ETH"
       - name: block_number
@@ -41,6 +45,8 @@ models:
         description: "The transaction hash on which the address was first funded with ETH"
       - name: tx_index
         description: "The transaction index within the block on which the address was first funded with ETH"
+      - name: trace_address
+        description: "The trace_address within the transaction on which the address was first funded with ETH"
       - name: unique_key
         description: "Unique transfer identifier key"
 

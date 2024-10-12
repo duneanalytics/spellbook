@@ -6,7 +6,7 @@
         tags = ['static']
         )
 }}
-SELECT 
+SELECT
     token_id
     , CAST(blockchain as VARCHAR) as blockchain
     , symbol
@@ -58,7 +58,8 @@ FROM
     ('tia-celestia', null, 'TIA', null, null),
     ('tomo-tomochain', null, 'TOMO', null, null),
     ('trx-tron', null, 'TRX', null, null),
-    ('xdai-xdai', null, 'XDAI', null, null),
+    ('dai-dai', null, 'XDAI', null, null),    -- maintain all caps spelling for legacy queries, coinpaprika xdai only goes back to 2023
+    ('dai-dai', null, 'xDAI', null, null),    -- xDAI is the proper spelling, coinpaprika xdai only goes back to 2023
     ('xem-nem', null, 'XEM', null, null),
     ('xlm-stellar', null, 'XLM', null, null),
     ('xmr-monero', null, 'XMR', null, null),
