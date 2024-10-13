@@ -69,10 +69,11 @@ WITH executed_txs AS (
 , is_contract AS (
     SELECT ct.address
     , true AS is_smart_contract
-    , c.namespace
-    , c.name
+    , MAX_BY(c.namespace, c.created_at) AS namespace
+    , MAX_BY(c.name, c.created_at) AS name
     FROM {{creation_traces}} ct
     LEFT JOIN {{contracts}} c ON ct.address=c.address
+    GROUP BY 1
     )
 
 SELECT '{{blockchain}}' AS blockchain
@@ -189,13 +190,14 @@ WITH executed_txs AS (
 , is_contract AS (
     SELECT ct.address
     , true AS is_smart_contract
-    , c.namespace
-    , c.name
+    , MAX_BY(c.namespace, c.created_at) AS namespace
+    , MAX_BY(c.name, c.created_at) AS name
     FROM {{creation_traces}} ct
     LEFT JOIN {{this}} t ON ct.address=t.address
     LEFT JOIN {{contracts}} c ON ct.address=c.address
     WHERE (t.address IS NULL OR ct.block_number > t.last_tx_block_number)
     AND {{ incremental_predicate('ct.block_time') }}
+    GROUP BY 1
     )
 
 , new_data AS (
@@ -227,6 +229,7 @@ WITH executed_txs AS (
     FULL OUTER JOIN executed_txs et ON et.address=t.address
     FULL OUTER JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} ffb ON ffb.address=t.address
         AND {{ incremental_predicate('ffb.block_time') }}
+    LEFT JOIN is_contract ic ON ic.address=t.address
     )
 
 SELECT '{{blockchain}}' AS blockchain
