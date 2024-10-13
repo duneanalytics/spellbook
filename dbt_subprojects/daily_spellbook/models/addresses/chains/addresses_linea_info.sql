@@ -2,7 +2,6 @@
 
 {{
     config(
-        tags=['prod_exclude'],
         schema = 'addresses_' + blockchain,
         alias = 'info',
         materialized = 'incremental',
