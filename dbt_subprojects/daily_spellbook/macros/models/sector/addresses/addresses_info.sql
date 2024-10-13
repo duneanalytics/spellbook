@@ -107,6 +107,7 @@ FROM transfers
 FULL OUTER JOIN executed_txs USING (address)
 FULL OUTER JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} ffb USING (address)
 FULL OUTER JOIN is_contract ic USING (address)
+WHERE address IS NOT NULL
 
 
 
@@ -262,6 +263,7 @@ SELECT '{{blockchain}}' AS blockchain
 , GREATEST(nd.last_tx_block_number, nd.last_received_block_number, nd.last_sent_block_number, t.last_seen_block) AS last_seen_block
 FROM new_data nd
 LEFT JOIN {{this}} t ON t.address=nd.address
+WHERE nd.address IS NOT NULL
 
 {% endif %}
 
