@@ -106,6 +106,7 @@ SELECT '{{blockchain}}' AS blockchain
 FROM transfers
 FULL OUTER JOIN executed_txs USING (address)
 FULL OUTER JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} ffb USING (address)
+FULL OUTER JOIN is_contract ic USING (address)
 
 
 
