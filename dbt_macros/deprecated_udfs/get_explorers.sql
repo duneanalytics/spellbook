@@ -5,14 +5,14 @@
 /* 
  get all the chain explorer links with some params.
 • hash: address or transaction hash
-• explorers: List all explorers you need as a single comma-separated string. Output order will match input ordering. Full list: Etherscan,GitHub,Arkham,Zerion,Parsec,Nansen,Dora,Zapper,OKLink,Blockscout,DeBank,Tokenview,Ethplorer,Bitquery,Blockchair,Ankr,Unmarshal,Beaconchain,Rated
+• explorers: List all explorers you need as a single comma-separated string. Output order will match input ordering. Full list: Etherscan,GitHub,Arkham,Zerion,Parsec,Nansen,Dora,Zapper,OKLink,Blockscout,DeBank,Tokenview,Ethplorer,Socketscan,Bitquery,Blockchair,Ankr,Unmarshal,Beaconchain,Rated
 • hash_type: 'tx' or 'address'
 • blockchain: chain to explore
 • concise: true/false
 
 example: get_explorers(
       0xd8da6bf26964af9d7eed9e03e53415d37aa96045
-      , 'Etherscan,GitHub,Arkham,Zerion,Parsec,Nansen,Dora,Zapper,OKLink,Blockscout,DeBank,Tokenview,Ethplorer,Bitquery,Blockchair,Ankr,Unmarshal,Beaconchain,Rated'
+      , 'Etherscan,GitHub,Arkham,Zerion,Parsec,Nansen,Dora,Zapper,OKLink,Blockscout,DeBank,Tokenview,Ethplorer,Socketscan,Bitquery,Blockchair,Ankr,Unmarshal,Beaconchain,Rated'
       , 'address'
       , true
       )
