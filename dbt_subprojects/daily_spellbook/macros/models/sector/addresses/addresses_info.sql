@@ -103,9 +103,9 @@ SELECT '{{blockchain}}' AS blockchain
 , GREATEST(last_tx_block_time, last_transfer_block_time) AS last_seen
 , GREATEST(last_tx_block_number, last_received_block_number, last_sent_block_number) AS last_seen_block
 FROM {{ source('addresses_events_'~blockchain, 'first_funded_by')}} ffb
-LEFT JOIN is_contract USING (address)
-LEFT JOIN transfers USING (address)
+FULL OUTER JOIN transfers USING (address)
 FULL OUTER JOIN executed_txs USING (address)
+LEFT JOIN is_contract USING (address)
 
 
 
@@ -225,9 +225,9 @@ WITH executed_txs AS (
     , first_tx_block_number
     , last_tx_block_number
     FROM {{ source('addresses_events_'~blockchain, 'first_funded_by')}} ffb
-    LEFT JOIN is_contract USING (address)
+    FULL OUTER JOIN transfers USING (address)
     FULL OUTER JOIN executed_txs USING (address)
-    LEFT JOIN transfers USING (address)
+    LEFT JOIN is_contract USING (address)
     )
 
 SELECT '{{blockchain}}' AS blockchain
