@@ -32,3 +32,7 @@ sources:
     tables:
       - name: DackieFactory_evt_PairCreated
       - name: DackiePair_evt_Swap
+  - name: sushiswap_v2_blast
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
