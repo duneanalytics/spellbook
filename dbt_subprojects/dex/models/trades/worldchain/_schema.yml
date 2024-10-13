@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: dex_worldchain_base_trades
+    tests:
+      - check_dex_info_relationship
+  
+  - name: uniswap_v3_worldchain_base_trades
+    meta:
+      blockchain: worldchain
+      sector: dex
+      project: uniswap
+      contributors: hosuke
+    config:
+      tags: [ 'worldchain', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap worldchain v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+#      - check_dex_base_trades_seed:
+#          seed_file: ref('uniswap_worldchain_base_trades_seed')
+#          filter:
+#            version: 3
