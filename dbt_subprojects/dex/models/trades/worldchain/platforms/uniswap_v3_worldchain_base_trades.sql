@@ -14,7 +14,7 @@
         blockchain = 'worldchain'
         , project = 'uniswap'
         , version = '3'
-        , Pair_evt_Swap = source('uniswap_v3_worldchain', 'uniswapv3pool_evt_swap')
-        , Factory_evt_PoolCreated = source('uniswap_v3_worldchain', 'uniswapv3factory_evt_poolcreated')
+        , Pair_evt_Swap = source('uniswap_worldchain', 'uniswapv3pool_evt_swap')
+        , Factory_evt_PoolCreated = source('uniswap_worldchain', 'uniswapv3factory_evt_poolcreated')
     )
 }}
