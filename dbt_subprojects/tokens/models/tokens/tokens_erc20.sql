@@ -38,6 +38,7 @@
     ,'tokens_sei': {'blockchain': 'sei', 'model': ref('tokens_sei_erc20')}
     ,'tokens_nova': {'blockchain': 'nova', 'model': ref('tokens_nova_erc20')}
     ,'tokens_linea': {'blockchain': 'linea', 'model': ref('tokens_linea_erc20')}
+    ,'tokens_worldchain': {'blockchain': 'worldchain', 'model': ref('tokens_worldchain_erc20')}
 } %}
 
 with
