@@ -270,7 +270,7 @@ WITH evt_data_1 AS (
             WHEN index_token_decimals IS NULL THEN NULL
             ELSE trigger_price / POWER(10, 30 - index_token_decimals) 
         END AS trigger_price,
-        acceptable_price AS acceptable_price_raw
+        acceptable_price AS acceptable_price_raw,
         CASE 
             WHEN index_token_decimals IS NULL THEN NULL 
             ELSE acceptable_price / POWER(10, 30 - index_token_decimals) 
