@@ -23,7 +23,7 @@ WITH compute_limit_cte AS (
     WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
     AND bytearray_substring(data,1,1) = 0x02
     {% if not is_incremental() %}
-            AND block_time > current_date - interval '2' day and block_time < current_date - interval '1' day
+            AND block_time > current_date - interval '10' day and block_time < current_date - interval '1' day
     {% endif %}
 ),
 
@@ -41,7 +41,7 @@ unit_price_cte AS (
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
     {% if not is_incremental() %}
-            AND block_time > current_date - interval '2' day and block_time < current_date - interval '1' day
+            AND block_time > current_date - interval '10' day and block_time < current_date - interval '1' day
     {% endif %}
 ),
 
@@ -68,7 +68,7 @@ base_model AS (
             AND {{ incremental_predicate('cl.block_time') }}
         {% endif %}
         {% if not is_incremental() %}
-            AND cl.block_time > current_date - interval '2' day and cl.block_time < current_date - interval '1' day
+            AND cl.block_time > current_date - interval '10' day and cl.block_time < current_date - interval '1' day
         {% endif %}
     LEFT JOIN unit_price_cte up 
         ON t.id = up.tx_id 
@@ -77,7 +77,7 @@ base_model AS (
             AND {{ incremental_predicate('up.block_time') }}
         {% endif %}
         {% if not is_incremental() %}
-            AND up.block_time > current_date - interval '2' day and up.block_time < current_date - interval '1' day
+            AND up.block_time > current_date - interval '10' day and up.block_time < current_date - interval '1' day
         {% endif %}
     LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
         ON t.block_slot = b.slot
@@ -86,9 +86,9 @@ base_model AS (
             AND {{ incremental_predicate('b.time') }}
         {% endif %}
         {% if not is_incremental() %}
-            AND b.time > current_date - interval '2' day and b.time < current_date - interval '1' day
+            AND b.time > current_date - interval '10' day and b.time < current_date - interval '1' day
         {% endif %}
-    WHERE t.block_date > current_date - interval '2' day and t.block_date < current_date - interval '1' day
+    WHERE t.block_date > current_date - interval '10' day and t.block_date < current_date - interval '1' day
     /*
     UNION ALL
     SELECT 
@@ -113,7 +113,7 @@ base_model AS (
             AND {{ incremental_predicate('b.time') }}
         {% endif %}
         {% if not is_incremental() %}
-            AND b.time > current_date - interval '2' day and b.time < current_date - interval '1' day
+            AND b.time > current_date - interval '10' day and b.time < current_date - interval '1' day
         {% endif %}
     */
 )
@@ -156,5 +156,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p
         AND {{ incremental_predicate('p.minute') }}
     {% endif %}
     {% if not is_incremental() %}
-        AND p.minute > current_date - interval '2' day and p.minute < current_date - interval '1' day
+        AND p.minute > current_date - interval '10' day and p.minute < current_date - interval '1' day
     {% endif %}
