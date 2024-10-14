@@ -129,3 +129,22 @@ models:
           seed_file: ref('sushiswap_blast_base_trades_seed')
           filter:
             version: 2
+            
+  - name: dackieswap_v3_blast_base_trades
+    meta:
+      blockchain: blast
+      sector: dex
+      project: dackieswap
+      contributors: theresearchersg
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'dackieswap' ]
+    description: "dackieswap v3 arbitrum base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dackieswap_v3_blast_base_trades_seed')
+          filter:
+            version: 3
