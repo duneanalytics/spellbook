@@ -62,7 +62,7 @@ base_model AS (
             AND {{ incremental_predicate('cl.block_time') }}
         {% endif %}
         {% if not is_incremental() %}
-            AND cl.block_time > current_date - interval '2' day
+            AND cl.block_time > current_date - interval '2' day and cl.block_time < current_date - interval '1' day
         {% endif %}
     LEFT JOIN unit_price_cte up 
         ON t.id = up.tx_id 
@@ -71,9 +71,9 @@ base_model AS (
             AND {{ incremental_predicate('up.block_time') }}
         {% endif %}
         {% if not is_incremental() %}
-            AND up.block_time > current_date - interval '2' day
+            AND up.block_time > current_date - interval '2' day and up.block_time < current_date - interval '1' day
         {% endif %}
-    WHERE t.block_date > current_date - interval '2' day
+    WHERE t.block_date > current_date - interval '2' day and t.block_date < current_date - interval '1' day
     UNION ALL
     SELECT 
         'vote' as tx_type,
@@ -90,7 +90,7 @@ base_model AS (
         'So11111111111111111111111111111111111111112' AS tx_fee_currency
         --null AS block_proposer -- somehow hard to figure out the leader in dune atm
     FROM {{ source('solana', 'vote_transactions') }} vt
-    WHERE vt.block_date > current_date - interval '2' day
+    WHERE vt.block_date > current_date - interval '2' day and WHERE vt.block_date < current_date - interval '1' day
     )
 
 SELECT
@@ -131,5 +131,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p
         AND {{ incremental_predicate('p.minute') }}
     {% endif %}
     {% if not is_incremental() %}
-        AND p.minute > current_date - interval '2' day
+        AND p.minute > current_date - interval '2' day and p.minute < current_date - interval '1' day
     {% endif %}
