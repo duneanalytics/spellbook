@@ -1,6 +1,5 @@
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'aave_v3_scroll',
     alias = 'base_supply',
     materialized = 'incremental',

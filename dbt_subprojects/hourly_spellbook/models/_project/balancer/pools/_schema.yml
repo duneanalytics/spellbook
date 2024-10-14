@@ -42,7 +42,7 @@ models:
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
     description: >
-      This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool
+      This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool.
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -77,7 +77,7 @@ models:
         description: "Total Value Locked on a pool, in USD"
       - &tvl_eth
         name: tvl_eth
-        description: "Total Value Locked on a pool, in eth"
+        description: "Total Value Locked on a pool, in ETH"
       - &fee_amount_usd
         name: fee_amount_usd
         description: "Daily fees collected on a pool, in USD"
@@ -90,7 +90,7 @@ models:
     config:
       tags: ['balancer', 'amm', 'trades', 'dex', 'incentives']
     description: >
-      Gauge to Pool mappings for balancer on all chains
+      Gauge to Pool mappings for balancer on all chains.
     columns:
       - *blockchain
       - *version
@@ -119,5 +119,40 @@ models:
         name: evt_tx_hash
         description: 'Transaction hash'
       - &evt_index
-        name: evT_index
+        name: evt_index
         description: 'Event Index'
+
+  - name: balancer_view_pools_latest
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
+    description: >
+      This spell aggregates data from the trades, liquidity, and protocol fees spells, by pool, while also displaying information about the pool creation.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool_id
+    columns:
+      - *blockchain
+      - name: pool_id
+      - name: pool_address
+      - name: pool_symbol
+      - name: pool_type
+      - name: factory_version
+      - name: factory_address
+      - name: creation_date
+      - name: tvl_usd
+      - name: tvl_eth
+      - name: swap_volume
+      - name: swap_volume_1y
+      - name: swap_volume_30d
+      - name: swap_volume_7d
+      - name: swap_volume_1d  
+      - name: fees_collected
+      - name: fees_collected_1y
+      - name: fees_collected_30d
+      - name: fees_collected_7d
+      - name: fees_collected_1d

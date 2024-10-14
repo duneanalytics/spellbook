@@ -69,6 +69,9 @@ models:
       - &tokens
         name: tokens
         description: "Tokens in the pool"
+      - &fee
+        name: fee
+        description: "Defined fee"
       - &creation_block_time
         name: creation_block_time
         description: "Block time of pool creation"
@@ -101,6 +104,7 @@ models:
       - *token0
       - *token1
       - *tokens
+      - *fee
       - *creation_block_time
       - *creation_block_number
       - name: contract_address
@@ -127,9 +131,7 @@ models:
         description: "Project name of the DEX"
       - *version
       - *pool
-      - &fee
-        name: fee
-        description: "Defined fee"
+      - *fee
       - *token0
       - *token1
       - *creation_block_time

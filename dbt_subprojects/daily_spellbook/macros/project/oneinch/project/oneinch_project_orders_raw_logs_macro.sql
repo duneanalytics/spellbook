@@ -7,6 +7,8 @@ select
     block_number
     , block_time
     , tx_hash
+    , tx_from
+    , tx_to
     , index
     , contract_address
     , topic0

@@ -42,3 +42,11 @@ sources:
   - name: perpetual
     tables:
       - name: trades
+
+  - name: beethoven_x_fantom
+    tables:
+      - name: pools_metrics_daily
+
+  - name: jelly_swap_sei
+    tables:
+      - name: pools_metrics_daily 

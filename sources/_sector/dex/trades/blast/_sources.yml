@@ -28,4 +28,7 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: PairFactoryUpgradeable_evt_PairCreated
-
+  - name: dackieswap_v2_blast
+    tables:
+      - name: DackieFactory_evt_PairCreated
+      - name: DackiePair_evt_Swap

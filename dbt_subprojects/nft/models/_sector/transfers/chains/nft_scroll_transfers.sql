@@ -1,5 +1,4 @@
 {{ config(
-        tags = ['prod_exclude'],
         schema = 'nft_scroll',
         alias ='transfers',
         partition_by=['block_month'],

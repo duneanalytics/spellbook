@@ -1,6 +1,5 @@
 {{
   config(
-    tags = ['prod_exclude'],
     schema = 'layer_bank_scroll',
     alias = 'base_supply',
     materialized = 'incremental',

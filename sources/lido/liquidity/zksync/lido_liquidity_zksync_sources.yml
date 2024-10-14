@@ -19,4 +19,9 @@ sources:
       - name: pool_call_addLiquidity
       - name: pool_call_removeLiquidity
 
-      
+  - name: pancakeswap_v3_zksync
+    description: "Zksync decoded tables related to Pancake V3 contracts"
+    tables:
+      - name: PancakeV3Pool_evt_Mint
+      - name: PancakeV3Pool_evt_Collect     
+      - name: PancakeV3Pool_evt_Burn

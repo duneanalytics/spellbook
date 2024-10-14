@@ -52,19 +52,19 @@ models:
   - name: prices_trusted_tokens
     meta:
       sector: prices
-      contributors: hosuke
+      contributors: hosuke, jeff-dude
     config:
       tags: [ 'prices', 'stability' ]
     description: "List of trusted tokens across blockchains"
+
+  - name: prices_usd_trusted_tokens
+    meta:
+      sector: prices
+      contributors: jeff-dude
+    description: "Subset of minute-level prices from CoinPaprika API, only containing the list of trusted tokens across blockchains"
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - contract_address
-    columns:
-      - name: blockchain
-        description: "Native blockchain of the token"
-      - name: symbol
-        description: "Token symbol"
-      - name: contract_address
-        description: "Contract address of the token"
+            - minute
