@@ -101,8 +101,8 @@ SELECT '{{blockchain}}' AS blockchain
 , last_tx_block_time
 , first_tx_block_number
 , last_tx_block_number
-, ARRAY_MAX(ARRAY_FILTER(ARRAY[last_tx_block_time, last_transfer_block_time], x -> x IS NOT NULL)) AS last_seen
-, ARRAY_MAX(ARRAY_FILTER(ARRAY[last_tx_block_number, last_received_block_number, last_sent_block_number], x -> x IS NOT NULL)) AS last_seen_block
+, ARRAY_MAX(FILTER(ARRAY[last_tx_block_time, last_transfer_block_time], x -> x IS NOT NULL)) AS last_seen
+, ARRAY_MAX(FILTER(ARRAY[last_tx_block_number, last_received_block_number, last_sent_block_number], x -> x IS NOT NULL)) AS last_seen_block
 FROM transfers
 FULL OUTER JOIN executed_txs USING (address)
 FULL OUTER JOIN {{ source('addresses_events_'~blockchain, 'first_funded_by')}} ffb USING (address)
@@ -259,8 +259,8 @@ SELECT '{{blockchain}}' AS blockchain
 , COALESCE(nd.last_tx_block_time, t.last_tx_block_time) AS last_tx_block_time
 , COALESCE(t.first_tx_block_number, nd.first_tx_block_number) AS first_tx_block_number
 , COALESCE(nd.last_tx_block_number, t.last_tx_block_number) AS last_tx_block_number
-, ARRAY_MAX(ARRAY_FILTER(ARRAY[nd.last_tx_block_time, nd.last_transfer_block_time, t.last_seen], x -> x IS NOT NULL)) AS last_seen
-, ARRAY_MAX(ARRAY_FILTER(ARRAY[nd.last_tx_block_number, nd.last_received_block_number, nd.last_sent_block_number, t.last_seen_block], x -> x IS NOT NULL)) AS last_seen_block
+, ARRAY_MAX(FILTER(ARRAY[nd.last_tx_block_time, nd.last_transfer_block_time, t.last_seen], x -> x IS NOT NULL)) AS last_seen
+, ARRAY_MAX(FILTER(ARRAY[nd.last_tx_block_number, nd.last_received_block_number, nd.last_sent_block_number, t.last_seen_block], x -> x IS NOT NULL)) AS last_seen_block
 LEFT JOIN {{this}} t ON t.address=nd.address
 
 {% endif %}
