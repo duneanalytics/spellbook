@@ -85,7 +85,12 @@ base_model AS (
         {% if not is_incremental() %}
             AND b.time > current_date - interval '10' day and b.time < current_date - interval '1' day
         {% endif %}
-    WHERE t.block_date > current_date - interval '10' day and t.block_date < current_date - interval '1' day
+    {% if is_incremental() %}
+            WHERE {{ incremental_predicate('t.block_time') }}
+    {% endif %}
+    {% if not is_incremental() %}
+            WHERE t.block_date > current_date - interval '10' day and t.block_date < current_date - interval '1' day
+    {% endif %}
     /*
     UNION ALL
     SELECT 
