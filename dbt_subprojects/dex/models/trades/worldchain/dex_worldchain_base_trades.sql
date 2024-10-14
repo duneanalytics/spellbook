@@ -1,19 +1,12 @@
 {{ config(
-    schema = 'dex_blast'
+    schema = 'dex_worldchain'
     , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('uniswap_v3_blast_base_trades')
-    , ref('uniswap_v2_blast_base_trades')
-    , ref('thruster_blast_base_trades')
-    , ref('blasterswap_blast_base_trades')
-    , ref('fenix_blast_base_trades')
-    , ref('dackieswap_v2_blast_base_trades')
-    , ref('sushiswap_v2_blast_base_trades')
-    , ref('dackieswap_v3_blast_base_trades')
+    ref('uniswap_v3_worldchain_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -37,7 +30,7 @@ WITH base_union AS (
             , project_contract_address
             , tx_hash
             , evt_index
-        FROM
+        FROM 
             {{ base_model }}
         {% if not loop.last %}
         UNION ALL
@@ -49,7 +42,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'blast'
+        , blockchain = 'worldchain'
         , columns = ['from', 'to', 'index']
     )
 }}
