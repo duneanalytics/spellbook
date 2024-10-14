@@ -172,12 +172,12 @@ WITH evt_data_1 AS (
         OC.market,
         ED.account,
         ED.size_delta_usd / POWER(10, 30) AS size_delta_usd,
-        acceptable_price AS acceptable_price_raw,
+        ED.acceptable_price AS acceptable_price_raw,
         CASE 
             WHEN MD.index_token_decimals IS NULL THEN NULL
             ELSE ED.acceptable_price / POWER(10, 30 - MD.index_token_decimals) 
         END AS acceptable_price,
-        trigger_price AS trigger_price_raw,
+        ED.trigger_price AS trigger_price_raw,
         CASE 
             WHEN MD.index_token_decimals IS NULL THEN NULL
             ELSE ED.trigger_price / POWER(10, 30 - MD.index_token_decimals) 
