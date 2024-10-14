@@ -4,7 +4,7 @@
         post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","fantom","gnosis","goerli","linea","mantle","optimism","polygon","scroll","zkevm","zksync"]\',
                                 "project",
                                 "safe",
-                                \'["kryptaki", "danielpartida"]\') }}'
+                                \'["kryptaki", "danielpartida", "safeintern"]\') }}'
         )
 }}
 
@@ -26,6 +26,7 @@
 ,ref('safe_scroll_transactions')
 ,ref('safe_zkevm_transactions')
 ,ref('safe_zksync_transactions')
+,ref('safe_mantle_transactions')
 ] %}
 
 
