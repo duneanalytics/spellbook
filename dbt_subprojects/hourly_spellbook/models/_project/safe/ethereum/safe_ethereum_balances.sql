@@ -1,6 +1,6 @@
 {{
    config(
-     schema = 'safe_balances',
+     schema = 'safe_ethereum',
      alias = 'balances',
      materialized = 'incremental',
      file_format = 'delta',
