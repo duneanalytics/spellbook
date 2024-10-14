@@ -1,8 +1,8 @@
 
 {{
    config(
-     schema = 'safe_balances',
-     alias = 'daily_balance',
+     schema = 'safe_ethereumbalances',
+     alias = 'daily',
      materialized = 'view'
    )
 }}
