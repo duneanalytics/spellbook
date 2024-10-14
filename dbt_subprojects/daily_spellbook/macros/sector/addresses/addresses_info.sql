@@ -261,6 +261,7 @@ SELECT '{{blockchain}}' AS blockchain
 , COALESCE(nd.last_tx_block_number, t.last_tx_block_number) AS last_tx_block_number
 , ARRAY_MAX(FILTER(ARRAY[nd.last_tx_block_time, nd.last_transfer_block_time, t.last_seen], x -> x IS NOT NULL)) AS last_seen
 , ARRAY_MAX(FILTER(ARRAY[nd.last_tx_block_number, nd.last_received_block_number, nd.last_sent_block_number, t.last_seen_block], x -> x IS NOT NULL)) AS last_seen_block
+FROM new_data nd
 LEFT JOIN {{this}} t ON t.address=nd.address
 
 {% endif %}
