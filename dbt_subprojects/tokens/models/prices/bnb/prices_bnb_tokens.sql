@@ -274,7 +274,6 @@ FROM
     ('pepe-pepecoin-bsc', 'bnb', 'PEPE', 0xb46584e0efde3092e04010a13f2eae62adb3b9f0, 18),
     ('babydoge-baby-doge-coin', 'bnb', 'BABYDOGE', 0xc748673057861a797275cd8a068abb95a902e8de, 9),
     ('bwjup-bsc-wrapped-jupiter', 'bnb', 'bwJUP', 0x0231f91e02debd20345ae8ab7d71a41f8e140ce7, 18),
-    --('pvc-pvc-meta','bnb','PVC',0x75ca521892de7f2ecfb070cab545c250d0ceb7e3, 9), --token_id not found 
     ('bvsd-bvsd','bnb','BVSD',0x7f9ad7a5854658d984924e868187b2135514fb88, 18),
     ('coco-coco-coin', 'bnb', 'COCO', 0xf563e86e461de100cfcfd8b65daa542d3d4b0550, 18),
     ('zeta-zetachain', 'bnb', 'ZETA', 0x0000028a2eb8346cd5c0267856ab7594b7a55308, 18),
@@ -285,7 +284,12 @@ FROM
     ('bccoin-blackcardcoin', 'bnb', 'BCCOIN', 0x2940566eb50f15129238f4dc599adc4f742d7d8e, 18),
     ('app-moon-app', 'bnb', 'APP', 0xc5d27f27f08d1fd1e3ebbaa50b3442e6c0d50439, 18),
     ('chapz-chappyz', 'bnb', 'CHAPZ', 0x7b56748a3ef9970a5bae99c58ad8bc67b26c525f, 10),
-    ('babyrwa-babyrwa', 'bnb', 'BABYRWA', 0x4a8049c015ae1c6665fc9e49f053458ae3a102d0, 9)
+    ('babyrwa-babyrwa', 'bnb', 'BABYRWA', 0x4a8049c015ae1c6665fc9e49f053458ae3a102d0, 9),
+    ('zro-layerzero', 'bnb', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
+    --('pvc-pvc-meta', 'bnb', 'PVC', 0x75ca521892de7f2ecfb070cab545c250d0ceb7e3, 9),
+    ('ice-ice-network', 'bnb', 'ICE', 0xc335df7c25b72eec661d5aa32a7c2b7b2a1d1874, 18),
+    ('jmpt-jumptoken', 'bnb', 'JMPT', 0x88d7e9b65dc24cf54f5edef929225fc3e1580c25, 18),
+    ('usdfi-usdfi', 'bnb', 'USDFI', 0x7df1938170869afe410098540c051a8a50308988, 18)    
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (

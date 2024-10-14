@@ -1,7 +1,7 @@
 {{ config(
     schema = 'zeroex'
         ,alias = 'trades'
-        ,post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c","bnb","base","scroll","linea"]\',
+        ,post_hook='{{ expose_spells(\'["ethereum","arbitrum", "optimism", "polygon","fantom","avalanche_c","bnb","base","scroll","linea","blast","mantle"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantum","bakabhai993"]\') }}'
