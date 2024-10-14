@@ -22,6 +22,7 @@ WITH compute_limit_cte AS (
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
     AND bytearray_substring(data,1,1) = 0x02
+    AND inner_instruction_index is null -- compute budget and price are inherited on cross program invocation
     {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -44,6 +45,7 @@ unit_price_cte AS (
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
     AND bytearray_substring(data,1,1) = 0x03
+    AND inner_instruction_index is null -- compute budget and price are inherited on cross program invocation
     {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
