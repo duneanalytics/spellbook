@@ -251,6 +251,19 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
+
+  UNION ALL
+  
+  SELECT
+    cc.output_balancerPoolId AS pool_id,
+    _baseToken AS token_address,
+    0 AS normalized_weight,
+    COALESCE(CONCAT('LP-', t.symbol), '?') AS name,
+    'FX' AS pool_type
+  FROM {{ source('xavefinance_arbitrum', 'FXPoolDeployer_call_newFXPool') }} cc
+  LEFT JOIN {{ source('tokens', 'erc20') }} t ON cc._baseToken = t.contract_address
+  AND blockchain = 'arbitrum'
+  WHERE call_success
 ),
 
 settings AS (
@@ -267,7 +280,7 @@ settings AS (
 SELECT 
   'arbitrum' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
-  CASE WHEN pool_type IN ('stable', 'linear', 'LBP', 'ECLP') 
+  CASE WHEN pool_type IN ('stable', 'linear', 'LBP', 'ECLP', 'FX') 
   THEN lower(pool_symbol)
     ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
     array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))
