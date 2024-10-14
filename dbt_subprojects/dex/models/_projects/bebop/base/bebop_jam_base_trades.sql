@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'bebop_jam_base',
     alias = 'trades',
     partition_by = ['block_month'],
@@ -66,7 +67,7 @@ jam_unnested_array_taker AS (
         element_at(taker_tokens_raw, sequence_number) AS taker_token_address,
         element_at(taker_amounts_raw, sequence_number) AS taker_token_amounts,
         sequence_number - 1 AS taker_index
-    FROM (select * FROM bebop_jam_raw_data WHERE taker_length > 0 AND maker_length > 0)
+    FROM bebop_jam_raw_data
     CROSS JOIN UNNEST(sequence(1, taker_length)) AS t(sequence_number)
 ), 
 
