@@ -22,6 +22,9 @@ WITH compute_limit_cte AS (
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
     AND bytearray_substring(data,1,1) = 0x02
+    {% if not is_incremental() %}
+            AND cl.block_time > current_date - interval '2' day and cl.block_time < current_date - interval '1' day
+    {% endif %}
 ),
 
 unit_price_cte AS (
@@ -37,6 +40,9 @@ unit_price_cte AS (
         ) AS compute_unit_price
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
+    {% if not is_incremental() %}
+            AND cl.block_time > current_date - interval '2' day and cl.block_time < current_date - interval '1' day
+    {% endif %}
 ),
 
 base_model AS (
@@ -83,6 +89,7 @@ base_model AS (
             AND b.time > current_date - interval '2' day and b.time < current_date - interval '1' day
         {% endif %}
     WHERE t.block_date > current_date - interval '2' day and t.block_date < current_date - interval '1' day
+    /*
     UNION ALL
     SELECT 
         'vote' as tx_type,
@@ -108,7 +115,8 @@ base_model AS (
         {% if not is_incremental() %}
             AND b.time > current_date - interval '2' day and b.time < current_date - interval '1' day
         {% endif %}
-    )
+    */
+)
 
 SELECT
     'solana' AS blockchain,
