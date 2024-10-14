@@ -2,7 +2,7 @@
 {{
    config(
      schema = 'safe_balances',
-     alias = 'filtered_balances',
+     alias = 'daily_balance',
      materialized = 'view'
    )
 }}
