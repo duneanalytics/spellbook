@@ -26,3 +26,7 @@ sources:
     tables:
       - name: UniswapV3Factory_evt_PoolCreated
       - name: UniswapV3Pool_evt_Swap
+  - name: tropicalswap_mantle
+    tables:
+      - name: TropicalFactory_evt_PairCreated
+      - name: TropicalPair_evt_Swap
