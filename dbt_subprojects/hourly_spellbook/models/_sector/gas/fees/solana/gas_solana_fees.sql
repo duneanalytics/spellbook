@@ -23,7 +23,7 @@ WITH compute_limit_cte AS (
     WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
     AND bytearray_substring(data,1,1) = 0x02
     {% if not is_incremental() %}
-            AND cl.block_time > current_date - interval '2' day and cl.block_time < current_date - interval '1' day
+            AND block_time > current_date - interval '2' day and block_time < current_date - interval '1' day
     {% endif %}
 ),
 
@@ -41,7 +41,7 @@ unit_price_cte AS (
     FROM {{ source('solana', 'instruction_calls') }}
     WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
     {% if not is_incremental() %}
-            AND cl.block_time > current_date - interval '2' day and cl.block_time < current_date - interval '1' day
+            AND block_time > current_date - interval '2' day and block_time < current_date - interval '1' day
     {% endif %}
 ),
 
