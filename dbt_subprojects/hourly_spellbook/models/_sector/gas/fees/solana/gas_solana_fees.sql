@@ -27,7 +27,7 @@ WITH compute_limit_cte AS (
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
     {% if not is_incremental() %}
-            AND block_time > current_date - interval '30' day and block_time < current_date - interval '1' day
+            AND block_time > current_date - interval '365' day and block_time < current_date - interval '1' day
     {% endif %}
 ),
 
@@ -50,7 +50,7 @@ unit_price_cte AS (
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
     {% if not is_incremental() %}
-            AND block_time > current_date - interval '30' day and block_time < current_date - interval '1' day
+            AND block_time > current_date - interval '365' day and block_time < current_date - interval '1' day
     {% endif %}
 ),
 
@@ -83,13 +83,13 @@ base_model AS (
             AND {{ incremental_predicate('b.time') }}
         {% endif %}
         {% if not is_incremental() %}
-            AND b.time > current_date - interval '30' day and b.time < current_date - interval '1' day
+            AND b.time > current_date - interval '365' day and b.time < current_date - interval '1' day
         {% endif %}
     {% if is_incremental() %}
             WHERE {{ incremental_predicate('t.block_time') }}
     {% endif %}
     {% if not is_incremental() %}
-            WHERE t.block_date > current_date - interval '30' day and t.block_date < current_date - interval '1' day
+            WHERE t.block_date > current_date - interval '365' day and t.block_date < current_date - interval '1' day
     {% endif %}
     /*
     UNION ALL
@@ -115,7 +115,7 @@ base_model AS (
             AND {{ incremental_predicate('b.time') }}
         {% endif %}
         {% if not is_incremental() %}
-            AND b.time > current_date - interval '30' day and b.time < current_date - interval '1' day
+            AND b.time > current_date - interval '365' day and b.time < current_date - interval '1' day
         {% endif %}
     */
 )
@@ -158,5 +158,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p
         AND {{ incremental_predicate('p.minute') }}
     {% endif %}
     {% if not is_incremental() %}
-        AND p.minute > current_date - interval '30' day and p.minute < current_date - interval '1' day
+        AND p.minute > current_date - interval '365' day and p.minute < current_date - interval '1' day
     {% endif %}
