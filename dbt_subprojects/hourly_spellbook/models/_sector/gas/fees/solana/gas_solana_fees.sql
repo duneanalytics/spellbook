@@ -52,8 +52,8 @@ base_model AS (
         COALESCE(up.compute_unit_price, 0) / 1e6 AS compute_price_lamport,
         COALESCE(cl.compute_limit, 200000) AS compute_limit,
         CASE WHEN cl.compute_limit IS NULL THEN 'default' ELSE 'limit_set' END AS limit_type,
-        'So11111111111111111111111111111111111111112' AS tx_fee_currency
-        --null AS block_proposer  -- somehow hard to figure out the leader in dune atm
+        'So11111111111111111111111111111111111111112' AS tx_fee_currency,
+        b.leader AS block_proposer
     FROM {{ source('solana', 'transactions') }} t
     LEFT JOIN compute_limit_cte cl 
         ON t.id = cl.tx_id 
@@ -73,6 +73,15 @@ base_model AS (
         {% if not is_incremental() %}
             AND up.block_time > current_date - interval '2' day and up.block_time < current_date - interval '1' day
         {% endif %}
+    LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
+        ON t.block_slot = b.slot
+        AND t.block_date = b.date
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('b.time') }}
+        {% endif %}
+        {% if not is_incremental() %}
+            AND b.time > current_date - interval '2' day and b.time < current_date - interval '1' day
+        {% endif %}
     WHERE t.block_date > current_date - interval '2' day and t.block_date < current_date - interval '1' day
     UNION ALL
     SELECT 
@@ -87,10 +96,18 @@ base_model AS (
         null AS compute_price_lamport,
         null AS compute_limit,
         null AS limit_type,
-        'So11111111111111111111111111111111111111112' AS tx_fee_currency
-        --null AS block_proposer -- somehow hard to figure out the leader in dune atm
+        'So11111111111111111111111111111111111111112' AS tx_fee_currency,
+        b.leader AS block_proposer
     FROM {{ source('solana', 'vote_transactions') }} vt
-    WHERE vt.block_date > current_date - interval '2' day and WHERE vt.block_date < current_date - interval '1' day
+    LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
+        ON vt.block_slot = b.slot
+        AND vt.block_date = b.date
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('b.time') }}
+        {% endif %}
+        {% if not is_incremental() %}
+            AND b.time > current_date - interval '2' day and b.time < current_date - interval '1' day
+        {% endif %}
     )
 
 SELECT
@@ -118,7 +135,7 @@ SELECT
         (k, v) -> CAST(v AS double) / pow(10, 9) * p.price
     ) AS tx_fee_breakdown_usd,
     tx_fee_currency,
-    -- block_proposer,
+    block_proposer,
     tx_type,
     limit_type
 FROM base_model
