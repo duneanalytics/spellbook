@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: jito_tip_distribution_solana
+    description: >
+      Jito MEV rewards claim 
+    tables:
+      - name: jito_tip_distribution_call_claim
