@@ -137,13 +137,13 @@ SELECT
     tx_fee_raw + coalesce(prioritization_fee_raw,0) AS tx_fee_raw,
     (tx_fee_raw + coalesce(prioritization_fee_raw,0)) / pow(10, 9) AS tx_fee,
     (tx_fee_raw + coalesce(prioritization_fee_raw,0)) / pow(10, 9) * p.price AS tx_fee_usd,
-    map(array['base_fee', 'prioritization_fee'], array[tx_fee_raw, prioritization_fee_raw]) AS tx_fee_breakdown_raw,
+    map(array['base_fee', 'prioritization_fee'], array[coalesce(tx_fee_raw, 0), coalesce(prioritization_fee_raw, 0)]) AS tx_fee_breakdown_raw,
     transform_values(
-        map(array['base_fee', 'prioritization_fee'], array[tx_fee_raw, prioritization_fee_raw]),
+        map(array['base_fee', 'prioritization_fee'], array[coalesce(tx_fee_raw, 0), coalesce(prioritization_fee_raw, 0)]),
         (k, v) -> CAST(v AS double) / pow(10, 9)
     ) AS tx_fee_breakdown,
     transform_values(
-        map(array['base_fee', 'prioritization_fee'], array[tx_fee_raw, prioritization_fee_raw]),
+        map(array['base_fee', 'prioritization_fee'], array[coalesce(tx_fee_raw, 0), coalesce(prioritization_fee_raw, 0)]),
         (k, v) -> CAST(v AS double) / pow(10, 9) * p.price
     ) AS tx_fee_breakdown_usd,
     tx_fee_currency,
