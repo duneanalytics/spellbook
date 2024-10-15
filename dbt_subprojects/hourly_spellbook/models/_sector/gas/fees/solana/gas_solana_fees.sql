@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_number', 'tx_hash']
+    unique_key = ['block_slot', 'tx_hash']
 ) }}
 
 WITH compute_limit_cte AS (
