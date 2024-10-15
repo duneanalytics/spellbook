@@ -10,8 +10,7 @@
     )
 }}
 
-{# TODO: revert back to 2024-04-04 #}
-{% set project_start_date = '2024-09-20' %}
+{% set project_start_date = '2024-04-04' %}
 {% set blockchain = 'base' %}
 
 select
