@@ -42,7 +42,7 @@ with
             vote.epoch
             , vote.vote_account
             , sum(amount/1e9) as mev_account_rewards
-        FROM {{ source('jito_tip_distribution_solana', 'jito_tip_distribution_call_claim') }} c
+        FROM {{ ref('jito_tip_distribution_solana', 'jito_tip_distribution_call_claim') }} c
         JOIN staking_solana.validator_stake_account_epochs vote
             ON vote.stake_account = c.account_claimant
             AND c.call_block_slot >= vote.epoch_start_slot
@@ -55,7 +55,7 @@ with
             floor(cast(c.call_block_slot as double) / 432000) as epoch
             , c.account_claimant as vote_account 
             , sum(amount/1e9) as mev_commission_rewards
-        FROM {{ source('jito_tip_distribution_solana', 'jito_tip_distribution_call_claim') }} c
+        FROM {{ ref('jito_tip_distribution_solana', 'jito_tip_distribution_call_claim') }} c
         WHERE c.account_claimant IN (SELECT distinct vote_account FROM {{ source('staking_solana', 'validator_stake_account_epochs') }})
         GROUP BY 1,2
     )
