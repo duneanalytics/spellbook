@@ -26,19 +26,19 @@ models:
       - name: block_time
         tests:
           - not_null
-      - name: block_number
+      - name: block_slot
         tests:
           - not_null
       - name: tx_hash
         tests:
           - not_null
           - unique
-      - name: tx_from
+      - name: signer
         tests:
           - not_null
-      - name: gas_price
+      - name: compute_unit_price
         description: Compute unit price in lamports
-      - name: gas_used
+      - name: compute_limit
         description: Compute units used (or limit set)
       - name: tx_fee_raw
         tests:
@@ -58,9 +58,7 @@ models:
       - name: tx_fee_currency
         tests:
           - not_null
-      - name: block_proposer
-        description: Block proposer address, currently unknown how to get it in Dune
+      - name: leader
+        description: Validator that proposed this block, known as leader in Solana
       - name: tx_type
-        description: Type of transaction (normal or vote
-      - name: limit_type
-        description: Whether compute limit was set or defaults to 200k
+        description: Vote or normal transaction
