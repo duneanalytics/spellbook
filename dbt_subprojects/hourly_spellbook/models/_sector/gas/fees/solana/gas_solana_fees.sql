@@ -27,7 +27,7 @@ WITH compute_limit_cte AS (
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
     {% if not is_incremental() %}
-            AND block_time > current_date - interval '180' day and block_time < current_date - interval '1' day
+            AND block_time > current_date - interval '30' day and block_time < current_date - interval '1' day
     {% endif %}
 ),
 
@@ -50,7 +50,7 @@ unit_price_cte AS (
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
     {% if not is_incremental() %}
-            AND block_time > current_date - interval '180' day and block_time < current_date - interval '1' day
+            AND block_time > current_date - interval '30' day and block_time < current_date - interval '1' day
     {% endif %}
 ),
 
@@ -59,16 +59,15 @@ base_model AS (
         'normal' as tx_type,
         t.id AS tx_hash,
         t.block_date,
-        t.block_slot AS block_number,
+        t.block_slot,
         t.block_time,
-        t.signer AS tx_from,
+        t.signer,
         t.fee AS tx_fee_raw,
         (COALESCE(cl.compute_limit, 200000) * COALESCE(up.compute_unit_price/ 1e6, 0)) AS prioritization_fee_raw,
-        COALESCE(up.compute_unit_price/ 1e6, 0) AS compute_price_lamport,
+        COALESCE(up.compute_unit_price/ 1e6, 0) AS compute_unit_price,
         COALESCE(cl.compute_limit, 200000) AS compute_limit,
-        CASE WHEN cl.compute_limit IS NULL THEN 'default' ELSE 'limit_set' END AS limit_type,
         'So11111111111111111111111111111111111111112' AS tx_fee_currency,
-        b.leader AS block_proposer
+        b.leader
     FROM {{ source('solana', 'transactions') }} t
     LEFT JOIN compute_limit_cte cl 
         ON t.id = cl.tx_id 
@@ -83,15 +82,14 @@ base_model AS (
             AND {{ incremental_predicate('b.time') }}
         {% endif %}
         {% if not is_incremental() %}
-            AND b.time > current_date - interval '180' day and b.time < current_date - interval '1' day
+            AND b.time > current_date - interval '30' day and b.time < current_date - interval '1' day
         {% endif %}
     {% if is_incremental() %}
             WHERE {{ incremental_predicate('t.block_time') }}
     {% endif %}
     {% if not is_incremental() %}
-            WHERE t.block_date > current_date - interval '180' day and t.block_date < current_date - interval '1' day
+            WHERE t.block_date > current_date - interval '30' day and t.block_date < current_date - interval '1' day
     {% endif %}
-    /*
     UNION ALL
     SELECT 
         'vote' as tx_type,
@@ -99,14 +97,13 @@ base_model AS (
         vt.block_date,
         vt.block_slot AS block_number,
         vt.block_time,
-        vt.signer AS tx_from,
+        vt.signer,
         vt.fee AS tx_fee_raw,
         null AS prioritization_fee_raw,
         null AS compute_price_lamport,
         null AS compute_limit,
-        null AS limit_type,
         'So11111111111111111111111111111111111111112' AS tx_fee_currency,
-        b.leader AS block_proposer
+        b.leader
     FROM {{ source('solana', 'vote_transactions') }} vt
     LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
         ON vt.block_slot = b.slot
@@ -115,9 +112,14 @@ base_model AS (
             AND {{ incremental_predicate('b.time') }}
         {% endif %}
         {% if not is_incremental() %}
-            AND b.time > current_date - interval '180' day and b.time < current_date - interval '1' day
+            AND b.time > current_date - interval '30' day and b.time < current_date - interval '1' day
         {% endif %}
-    */
+    {% if is_incremental() %}
+            WHERE {{ incremental_predicate('vt.block_time') }}
+    {% endif %}
+    {% if not is_incremental() %}
+            WHERE vt.block_date > current_date - interval '30' day and vt.block_date < current_date - interval '1' day
+    {% endif %}
 )
 
 SELECT
@@ -125,12 +127,12 @@ SELECT
     CAST(date_trunc('month', block_time) AS DATE) AS block_month,
     block_date,
     block_time,
-    block_number,
+    block_slot,
     tx_hash,
-    tx_from,
+    signer,
     --NULL AS tx_to, -- this concept doesn't really exist in solana
-    compute_price_lamport AS compute_price, -- only applies to compute budget tx
-    compute_limit AS compute_limit, -- this is the compute limit, not gas
+    compute_unit_price, -- only applies to compute budget tx
+    compute_limit, -- this is the compute limit, not gas
     p.symbol AS currency_symbol,
     tx_fee_raw + coalesce(prioritization_fee_raw,0) AS tx_fee_raw,
     (tx_fee_raw + coalesce(prioritization_fee_raw,0)) / pow(10, 9) AS tx_fee,
@@ -145,9 +147,8 @@ SELECT
         (k, v) -> CAST(v AS double) / pow(10, 9) * p.price
     ) AS tx_fee_breakdown_usd,
     tx_fee_currency,
-    block_proposer,
-    tx_type,
-    limit_type
+    leader,
+    tx_type
 FROM base_model
 LEFT JOIN {{ source('prices', 'usd') }} p
     ON p.blockchain = 'solana'
@@ -158,5 +159,5 @@ LEFT JOIN {{ source('prices', 'usd') }} p
         AND {{ incremental_predicate('p.minute') }}
     {% endif %}
     {% if not is_incremental() %}
-        AND p.minute > current_date - interval '180' day and p.minute < current_date - interval '1' day
+        AND p.minute > current_date - interval '30' day and p.minute < current_date - interval '1' day
     {% endif %}
