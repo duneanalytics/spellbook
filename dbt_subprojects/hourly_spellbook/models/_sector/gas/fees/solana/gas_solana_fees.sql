@@ -5,6 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_slot', 'tx_hash']
 ) }}
 
@@ -150,7 +151,7 @@ SELECT
     leader,
     tx_type
 FROM base_model
-LEFT JOIN {{ source('prices', 'usd') }} p
+LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     ON p.blockchain = 'solana'
     --AND to_base58(p.contract_address) = tx_fee_currency  -- this would the right way to do it but slow af
     AND p.contract_address = 0x069b8857feab8184fb687f634618c035dac439dc1aeb3b5598a0f00000000001 --from base58 converted wsol address
