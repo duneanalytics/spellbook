@@ -70,6 +70,7 @@ with
             {% endif %}
     ),
     dextrades as (
+        -- Buys
         select distinct
             trades.block_time,
             date_trunc('day', trades.block_time) as block_date,
@@ -93,15 +94,48 @@ with
             on (
                 trades.blockchain = deployments.blockchain
                 and trades.block_month >= deployments.block_month
-                and contains(ARRAY[token_bought_address, token_sold_address], token)
+                and token_bought_address = token
             )
         where
             trades.blockchain = '{{blockchain}}'
-            and
-            {% if is_incremental() %}
-            {{ incremental_predicate('trades.block_time') }}
-            {% else %}
-            trades.block_time >= timestamp '{{project_start_date}}'
+            and {% if is_incremental() %}
+                {{ incremental_predicate("trades.block_time") }}
+            {% else %} trades.block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
+
+        union all
+
+        -- Sells
+        select distinct
+            trades.block_time,
+            date_trunc('day', trades.block_time) as block_date,
+            date_trunc('month', trades.block_time) as block_month,
+            trades.blockchain,
+            'DEX' as platform,
+            if(token_sold_address = {{ weth_contract_address }}, 'Buy', 'Sell') as type,
+            amount_usd,
+            token_bought_amount,
+            token_bought_symbol,
+            token_bought_address,
+            token_sold_amount,
+            token_sold_symbol,
+            token_sold_address,
+            tx_from as user,
+            trades.tx_hash,
+            evt_index as tx_index
+        from {{ source('dex', 'trades') }} as trades
+        join
+            deployments
+            on (
+                trades.blockchain = deployments.blockchain
+                and trades.block_month >= deployments.block_month
+                and token_sold_address = token
+            )
+        where
+            trades.blockchain = '{{blockchain}}'
+            and {% if is_incremental() %}
+                {{ incremental_predicate("trades.block_time") }}
+            {% else %} trades.block_time >= timestamp '{{project_start_date}}'
             {% endif %}
     )
 select *
