@@ -181,6 +181,14 @@ FROM
     ('gochu-gochujang-coin', 'base', 'GOCHU',0x9aaae745cf2830fb8ddc6248b17436dc3a5e701c, 18),
     ('blue-blue-on-base', 'base', '$BLUE',0xfd9fa4f785331ce88b5af8994a047ba087c705d8, 18),
     ('bets-all-street-bets', 'base', 'BETS',0x42069de48741db40aef864f8764432bbccbd0b69, 18),
-    ('onchain-onchain-coin', 'base', 'ONCHAIN',0x1c22374032e7e5a1bbde3d943f5deb310db060dd, 18)
-    
+    ('onchain-onchain-coin', 'base', 'ONCHAIN',0x1c22374032e7e5a1bbde3d943f5deb310db060dd, 18),
+    ('godcat-godcatexplodingkittens', 'base', 'GODCAT',0xdb08ca267e824fb29eb455b7e06fe73fb0370895, 18),
+    ('btcbr-bitcoinbr', 'base', 'BTCBR',0x6324065012b16da37aa4086edb49aa9d3754e691, 18),
+    ('skop-skull-of-pepe-token', 'base', 'SKOP',0x6d3b8c76c5396642960243febf736c6be8b60562, 18),
+    ('based8-based', 'base', 'BASED',0x32e0f9d26d1e33625742a52620cc76c1130efde6, 18),
+    ('meta-based-meta', 'base', 'META',0x3efd97aeb3d2451bbec0e4dfebc8b66ebb33f552, 18),
+    ('alf-alf', 'base', 'ALF',0x26f1bb40ea88b46ceb21557dc0ffac7b7c0ad40f, 18), 
+    ('tad1-tadpole', 'base', 'TAD',0x55027a5b06f4340cc4c82dcc74c90ca93dcb173e, 18),
+    ('blue-blue-guy', 'base', 'BLUE',0x891502ba08132653151f822a3a430198f1844115, 18)
+
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
