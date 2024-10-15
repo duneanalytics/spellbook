@@ -27,19 +27,6 @@ models:
             - tx_hash
             - index
 
-  - name: uniswap_v2_arbitrum_fork_mapping
-    description: >
-      mapping of all forks of uniswap v2 factory contract on arbitrum 
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - factory_address
-    columns:
-      - name: factory_address
-        description: "address of the factory contract"
-      - name: project_name
-        description: "name of the project associated with the factory"
-
   - name: uniswap_v2_arbitrum_automated_base_trades
     meta:
       blockchain: arbitrum
@@ -88,15 +75,3 @@ models:
             - tx_hash
             - evt_index
 
-  - name: uniswap_v3_arbitrum_fork_mapping
-    description: >
-      mapping of all forks of uniswap v3 factory contract on arbitrum
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - factory_address
-    columns:
-      - name: factory_address
-        description: "address of the factory contract"
-      - name: project_name
-        description: "name of the project associated with the factory"
