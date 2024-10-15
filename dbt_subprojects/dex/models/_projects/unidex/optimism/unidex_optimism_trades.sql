@@ -1,7 +1,6 @@
 {{ config(
     alias = 'trades',
     schema = 'unidex_optimism',
-    partition_by = ['block_month'],
     materialized = 'view',
     post_hook = '{{ expose_spells(blockchains = \'["optimism"]\',
                                 spell_type = "project",
