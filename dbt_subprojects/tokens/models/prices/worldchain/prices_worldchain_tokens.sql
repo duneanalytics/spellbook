@@ -22,4 +22,5 @@ FROM
     , ('usdc-usd-coin', 'USDC.e', 0x79A02482A880bCE3F13e09Da970dC34db4CD24d1, 6)
     , ('wbtc-wrapped-bitcoin', 'WBTC', 0x03C7054BCB39f7b2e5B2c7AcB37583e32D70Cfa3, 8)
     , ('weth-weth', 'WETH', 0x4200000000000000000000000000000000000006, 18)
+    , ('sdai-savings-dai', 'sDAI', 0x859DBE24b90C9f2f7742083d3cf59cA41f55Be5d, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
