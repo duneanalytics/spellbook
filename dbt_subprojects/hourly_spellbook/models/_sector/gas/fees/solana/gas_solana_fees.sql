@@ -1,12 +1,12 @@
 {{ config(
     schema = 'gas_solana',
     alias = 'fees',
-    partition_by = ['block_month'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['block_slot', 'tx_hash']
+    unique_key = ['block_date', 'tx_hash']
 ) }}
 
 WITH compute_limit_cte AS (
