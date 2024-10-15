@@ -380,5 +380,4 @@ select
 from daily_running_totals_enriched
 {% if is_incremental() %}
 where {{ incremental_predicate('block_date') }}
-  and 1=1 -- dummy change to trigger re-run
 {% endif %}

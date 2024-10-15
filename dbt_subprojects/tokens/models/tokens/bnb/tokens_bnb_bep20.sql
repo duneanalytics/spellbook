@@ -608,4 +608,5 @@ FROM (VALUES
     , (0xdb6c248902ad2722a5e01e9689824c28bd0a5f75, 'Baby-LP', 18)
     , (0xd1b6d02c03e632a845460c8167eb05d2d9e03a35, 'Sorai', 18)
     , (0x0f327343c7902233c0419724946b17fa664f2fe0, 'LBTC', 18)
+    , (0xd4e17ad949bb0fd99a6e7a5f2dad73baf41d3210, 'WZM', 9)
 ) AS temp_table (contract_address, symbol, decimals)

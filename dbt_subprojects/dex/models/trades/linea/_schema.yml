@@ -204,3 +204,20 @@ models:
           seed_file: ref('swaap_linea_base_trades_seed')
           filter:
             version: 2
+
+  - name: leetswap_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: leetswap
+      contributors: kiley79
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'leetswap' ]
+    description: "Leetswap Linea base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('leetswap_linea_base_trades_seed')

@@ -9,3 +9,8 @@ sources:
       - name: SyncSwapClassicPool_evt_Burn
       - name: SyncSwapClassicPool_evt_Swap
 
+  - name: lynex_linea
+    description: "Linea decoded tables related to Lynex contract"
+    tables:
+      - name: AlgebraPool_evt_Mint
+      - name: AlgebraPool_evt_Burn
