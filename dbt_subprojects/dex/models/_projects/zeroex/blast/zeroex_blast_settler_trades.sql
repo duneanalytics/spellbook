@@ -109,6 +109,7 @@ with tbl_all_logs AS (
                 or (st.settler_address= bytearray_substring(logs.topic2,13,20)) 
                 or logs.tx_from = varbinary_substring(logs.topic1,13,20) 
                 or logs.tx_from = varbinary_substring(logs.topic2,13,20) 
+                or logs.tx_to = varbinary_substring(logs.topic1,13,20) 
                  ) 
     WHERE 
         topic0 IN ( 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
