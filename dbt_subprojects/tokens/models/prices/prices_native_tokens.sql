@@ -6,7 +6,7 @@
         tags = ['static']
         )
 }}
-SELECT 
+SELECT
     token_id
     , CAST(blockchain as VARCHAR) as blockchain
     , symbol
@@ -20,6 +20,7 @@ FROM
     ('apt-aptos', null, 'APT', null, null),
     ('ae-aeternity', null, 'AE', null, null),
     ('algo-algorand', null, 'ALGO', null, null),
+    ('arb-arbitrum', null, 'ARB', null, null),
     ('atom-cosmos', null, 'ATOM', null, null),
     ('avax-avalanche', null, 'AVAX', null, null),
     ('bch-bitcoin-cash', null, 'BCH', null, null),
@@ -40,7 +41,8 @@ FROM
     ('kava-kava', null, 'KAVA', null, null),
     ('kuji-kujira', null, 'KUJI', null, null),
     ('ltc-litecoin', null, 'LTC', null, null),
-    ('matic-polygon', null, 'MATIC', null, null),
+    ('matic-polygon', null, 'MATIC', null, null), --maintain legacy native token for legacy queries
+    ('matic-polygon', null, 'POL', null, null), --no full history for 'pol-polygon-ecosystem-token' API ID on coinpaprika
     ('miota-iota', null, 'MIOTA', null, null),
     ('mnt-mantle', null, 'MNT', null, null),
     ('mona-monacoin', null, 'MONA', null, null),
@@ -56,7 +58,9 @@ FROM
     ('tia-celestia', null, 'TIA', null, null),
     ('tomo-tomochain', null, 'TOMO', null, null),
     ('trx-tron', null, 'TRX', null, null),
-    ('xdai-xdai', null, 'XDAI', null, null),
+    ('dai-dai', null, 'XDAI', null, null),    -- maintain all caps spelling for legacy queries, coinpaprika xdai only goes back to 2023
+    ('dai-dai', null, 'xDAI', null, null),    -- xDAI is the proper spelling, coinpaprika xdai only goes back to 2023
+    ('wld-worldcoin', null, 'WLD', null, null),
     ('xem-nem', null, 'XEM', null, null),
     ('xlm-stellar', null, 'XLM', null, null),
     ('xmr-monero', null, 'XMR', null, null),

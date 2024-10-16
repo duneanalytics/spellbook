@@ -48,6 +48,10 @@ sources:
     tables:
       - name: PancakePair_evt_Swap
       - name: PancakeFactory_evt_PairCreated
+  - name: baseswap_v3_base
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated  
   - name: scale_base
     tables:
       - name: Pair_evt_Swap
@@ -178,3 +182,7 @@ sources:
   - name: swaap_v2_base
     tables:
       - name: Vault_evt_Swap
+  - name: xchange_base
+    tables:
+      - name: XchangePair_evt_Swap
+      - name: XchangeFactory_evt_PairCreated

@@ -4,12 +4,13 @@ version: 2
 sources:
   - name: prices
     description: "Prices tables across blockchains"
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
+      - name: usd_0003
+        description: "raw, versioned USD prices table"
       - name: usd
-        loaded_at_field: minute
         description: "USD prices across blockchains"
+        meta:
+          docs_slug: /curated/asset-tracking/prices/prices
         columns:
           - name: minute
             description: "UTC event block time truncated to the minute mark"

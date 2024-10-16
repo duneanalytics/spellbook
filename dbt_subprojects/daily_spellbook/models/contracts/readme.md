@@ -9,7 +9,7 @@
 
 # Contract Mapping
 
-Table models are defined in [`macros/models/_sector/contracts`](/macros/models/_sector/contracts)
+Table models are defined in [`macros/models/_sector/contracts`](../macros/models/_sector/contracts)
 
 This repository contains all the source code for `contracts.contract_mapping` that you can use to join contract addresses on each chain to pull our mapped project names in the `contract_project` field.
 

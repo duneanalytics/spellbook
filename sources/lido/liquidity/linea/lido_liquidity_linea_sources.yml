@@ -3,16 +3,14 @@ version: 2
 sources:    
   - name: syncswap_linea
     description: "Linea decoded tables related to SyncSwap contract"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: SyncSwapClassicPoolFactory_evt_PoolCreated
-        loaded_at_field: evt_block_time
       - name: SyncSwapClassicPool_evt_Mint
-        loaded_at_field: evt_block_time
       - name: SyncSwapClassicPool_evt_Burn
-        loaded_at_field: evt_block_time  
       - name: SyncSwapClassicPool_evt_Swap
-        loaded_at_field: evt_block_time 
 
+  - name: lynex_linea
+    description: "Linea decoded tables related to Lynex contract"
+    tables:
+      - name: AlgebraPool_evt_Mint
+      - name: AlgebraPool_evt_Burn

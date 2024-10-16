@@ -35,7 +35,7 @@ Each model within Spellbook contains a config block with various properties. Dep
 
 4. **incremental_predicates**
    - Filters the target to the same date range as the source, for improved performance & less data in memory.
-   - Universal incremental macro can be found [here](/macros/incremental_predicate.sql).
+   - Universal incremental macro can be found [here](/dbt_macros/dune/incremental_predicate.sql).
    - **Note**: This is a newer addition to Spellbook. Please add this property for new incremental spells.
 
 ## Optional Configs for Materialized as Table / Incremental

@@ -31,6 +31,7 @@ SELECT
     , t.value as tx_value
     , t.hash as tx_hash
     , t."from" as blob_submitter
+    , t.to as blob_receiver
     , COALESCE(l.entity, ls.entity) as blob_submitter_label
     , t.index as tx_index
     , t.success as tx_success

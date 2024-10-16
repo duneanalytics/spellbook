@@ -57,3 +57,41 @@ models:
           seed_file: ref('pancakeswap_zkevm_base_trades_seed')
           filter:
             version: 3
+
+  - name: clipper_zkevm_base_trades
+    meta:
+      blockchain: zkevm
+      sector: dex
+      project: clipper
+      contributors: amalashkevich, 0xTemo
+    config:
+      tags: [ 'zkevm', 'dex', 'trades', 'clipper' ]
+    description: "Clipper zkevm base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('clipper_zkevm_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: sushiswap_v2_zkevm_base_trades
+    meta:
+      blockchain: zkevm
+      sector: dex
+      project: sushiswap
+      contributors: rosaria292
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'sushiswap', 'v2' ]
+    description: "sushiswap zkevm v2 trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_zkevm_base_trades_seed')
+          filter:
+            version: 2

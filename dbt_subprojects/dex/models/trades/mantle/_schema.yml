@@ -21,3 +21,111 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('merchant_moe_mantle_base_trades_seed')
+
+  - name: fusionx_mantle_base_trades
+    meta:
+      blockchain: mantle
+      sector: dex
+      project: fusionx
+      contributors: hosuke
+    config:
+      tags: [ 'mantle', 'dex', 'trades', 'fusionx' ]
+    description: "FusionX Finance mantle base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fusionx_mantle_base_trades_seed')
+
+  - name: agni_mantle_base_trades
+    meta:
+      blockchain: mantle
+      sector: dex
+      project: agni
+      contributors: hosuke
+    config:
+      tags: [ 'mantle', 'dex', 'trades', 'agni' ]
+    description: "AGNI Finance mantle base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('agni_mantle_base_trades_seed')
+
+  - name: swaap_v2_mantle_base_trades
+    meta:
+      blockchain: mantle
+      sector: dex
+      project: swaap
+      contributors: borelien
+    config:
+      tags: [ 'mantle', 'dex', 'trades', 'swaap', 'v2']
+    description: "swaap v2 mantle base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('swaap_mantle_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: clipper_mantle_base_trades
+    meta:
+      blockchain: mantle
+      sector: dex
+      project: clipper
+      contributors: 0xTemo
+    config:
+      tags: [ 'mantle', 'dex', 'trades', 'clipper' ]
+    description: "Clipper mantle base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('clipper_mantle_base_trades_seed')
+          filter:
+            version: 1
+            
+  - name: uniswap_v3_mantle_base_trades
+    meta:
+      blockchain: mantle
+      sector: dex
+      project: uniswap
+      contributors: trimmer2
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap mantle v3 base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_mantle_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: tropicalswap_mantle_base_trades
+    meta:
+      blockchain: mantle
+      sector: dex
+      project: tropicalswap
+      contributors: MariaChen22
+    config:
+      tags: [ 'zksync', 'dex', 'trades', 'tropicalswap']
+    description: "tropicalswap mantle base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('tropicalswap_mantle_base_trades_seed')

@@ -6,7 +6,8 @@
 
 
 {% set balancer_models = [
-    ref('balancer_v2_gnosis_trades')
+    ref('balancer_v2_gnosis_trades'),
+    ref('balancer_cowswap_amm_gnosis_trades')
 ] %}
 
 SELECT *

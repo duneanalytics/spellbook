@@ -15,7 +15,7 @@ SELECT
 FROM
 (
     VALUES
-
+    ('dlcbtc-dlcbtc', 'arbitrum', 'dlcBTC', 0x050C24dBf1eEc17babE5fc585F06116A259CC77A, 8),
     ('0xbtc-0xbitcoin','arbitrum','0xBTC',0x7cb16cb78ea464ad35c8a50abf95dff3c9e09d5d,8),
     ('aave-new','arbitrum','AAVE',0xba5ddd1f9d7f570dc94a51479a000e3bce967196,18),
     ('ageur-ageur','arbitrum','agEUR',0xfa5ed56a203466cbbc2430a43c66b9d8723528e7,18),
@@ -225,5 +225,10 @@ FROM
     ('fuse-fuse-network', 'arbitrum', 'FUSE', 0x6b021b3f68491974be6d4009fee61a4e3c708fd6, 18),
     ('catch-spacecatch', 'arbitrum', 'CATCH', 0xf0a479c9c3378638ec603b8b6b0d75903902550b, 18),
     ('tap-taptoken', 'arbitrum', 'TAP', 0x2c650dab03a59332e2e0c0c4a7f726913e5028c1, 18),
-    ('shibai-aishiba', 'arbitrum', 'SHIBAI', 0xfa296fca3c7dba4a92a42ec0b5e2138da3b29050, 6)
+    ('shibai-aishiba', 'arbitrum', 'SHIBAI', 0xfa296fca3c7dba4a92a42ec0b5e2138da3b29050, 6),
+    ('usdm-mountain-protocol-usd', 'arbitrum', 'USDM', 0x59d9356e565ab3a36dd77763fc0d87feaf85508c, 18),
+    ('usdz-anzen-usdz', 'arbitrum', 'USDZ', 0x5018609ab477cc502e170a5accf5312b86a4b94f, 18),
+    ('trb-tellor', 'arbitrum', 'TRB', 0xd58d345fd9c82262e087d2d0607624b410d88242, 18),
+    ('mor-morpheusai', 'arbitrum', 'MOR', 0x092baadb7def4c3981454dd9c0a0d7ff07bcfc86, 18)
+    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

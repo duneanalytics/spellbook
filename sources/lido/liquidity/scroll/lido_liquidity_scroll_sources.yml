@@ -3,22 +3,24 @@ version: 2
 sources:    
   - name: syncswap_scroll
     description: "Scroll decoded tables related to SyncSwap contract"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: SyncSwapClassicPool_evt_Mint
-        loaded_at_field: evt_block_time
       - name: SyncSwapClassicPool_evt_Burn
-        loaded_at_field: evt_block_time  
       
   - name: zebra_scroll
     description: "Scroll decoded tables related to Zebra DEX contract"
-    freshness: # default freshness
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     tables:
       - name: ZebraV2Pool_evt_Mint
-        loaded_at_field: evt_block_time
       - name: ZebraV2Pool_evt_Burn
-        loaded_at_field: evt_block_time  
+
+  - name: maverick_v2_scroll
+    description: "Scroll decoded tables related to Maveric v2 contract"
+    tables:
+      - name: V2Pool_evt_PoolAddLiquidity
+      - name: V2Pool_evt_PoolRemoveLiquidity
+
+  - name: nuri_scroll
+    description: "Scroll decoded tables related to Nuri DEX contract"
+    tables:
+      - name: ClPool_evt_Mint
+      - name: ClPool_evt_Collect

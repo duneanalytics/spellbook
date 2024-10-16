@@ -7,10 +7,10 @@
     incremental_strategy = 'merge',
     unique_key = ['flow_type', 'block_time', 'evt_index', 'tx_hash'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
@@ -104,6 +104,7 @@ staked_nxm_history as (
 select
   flow_type,
   block_time,
+  date_trunc('day', block_time) as block_date,
   pool_address,
   token_id,
   tranche_id,

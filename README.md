@@ -29,8 +29,14 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
   - [Testing your Spell](#testing-your-spell)
   - [Connecting with other wizards](#connecting-with-other-wizards)
 - [Setting up your dev environment](#setting-up-your-local-dev-environment)
+  - [Prerequisites](#prerequisites)
+  - [Initial Installation](#initial-installation)
+  - [Coming back](#coming-back)
+  - [What did I just do?](#what-did-i-just-do)
 - [Using dbt to write spells](#how-to-use-dbt-to-create-spells)
-
+  - [Generating and serving documentation:](#generating-and-serving-documentation)
+  - [DBT Resources:](#dbt-resources)
+        
 ## Introduction
 
 Spellbook is Dune's interpretation layer, built for and by the community.
@@ -94,7 +100,7 @@ Please note: the test tables built in the CI pipeline will exist for ~24 hours. 
 
 ### Connecting with other wizards
 
-We use Discord to connect with our community. Head over to spellbook channel on [Dune's Discord](https://discord.gg/dunecom) for questions or to ask for help with a particular PR. We encourage you to learn by doing, and leverage our vibrant community to help you get going.
+We use Discord to connect with our community. Head over to spellbook channel on [Dune's Discord](https://discord.com/invite/ErrzwBz) for questions or to ask for help with a particular PR. We encourage you to learn by doing, and leverage our vibrant community to help you get going.
 
 ## Setting up your Local Dev Environment
 
@@ -116,6 +122,12 @@ Navigate to the spellbook repo within your CLI (Command line interface).
 ```console
 cd user\directory\github\spellbook
 # Change this to wherever spellbook is stored locally on your machine.
+```
+
+Within Spellbook repo, there are multiple dbt projects, located in the root directory. Navigate to the correct project, depending on your use case.
+
+```console
+cd ../spellbook/dbt_subprojects/<subproject_name>/
 ```
 
 Using the pipfile located in the spellbook repo, run the below install command to create a pipenv.
@@ -199,7 +211,6 @@ models:
       error_after: { count: 24, period: hour }
     tables:
       - name: traces
-        loaded_at_field: block_time
 ```
 
 See links to more docs on dbt below.

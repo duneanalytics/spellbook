@@ -1,0 +1,85 @@
+version: 2
+
+models:
+
+  - name: addresses_events_first_funded_by
+    meta:
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea
+      sector: addresses_events
+      project: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'funded', 'addresses_events', 'mainnets', 'crosschain']
+    description: "Table showing what chain an address was first funded on and its details"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Name of the blockchain where the address was first funded"
+      - &address
+        name: address
+        description: "Concerned address"
+      - &first_funded_by
+        name: first_funded_by
+        description: "Which address first funded the address with the native asset on that chain"
+      - &chains_funded_on
+        name: chains_funded_on
+        description: "Name of all the blockchains it was funded on"
+      - &first_funding_executed_by
+        name: first_funding_executed_by
+        description: "Which address executed the first funding tx"
+      - &amount
+        name: amount
+        description: "The amount of the native currency sent in the funding transfer"
+      - &amount_usd
+        name: amount_usd
+        description: "The USD value of the native currency the wallet was funded with in this funding transfer"
+      - &token_symbol
+        name: token_symbol
+        description: "The token symbol of the native currency the wallet was funded with in this funding transfer"
+      - &block_time
+        name: block_time
+        description: "The block time on which the address was first funded with the native asset on that chain"
+      - &block_number
+        name: block_number
+        description: "The block number on which the address was first funded with the native asset on that chain"
+      - &tx_hash
+        name: tx_hash
+        description: "The transaction hash on which the address was first funded with the native asset on that chain"
+      - &tx_index
+        name: tx_index
+        description: "The transaction index within its block on which the address was first funded with the native asset on that chain"
+      - &trace_address
+        name: trace_address
+        description: "The trace_address within its transaction on which the address was first funded with the native asset on that chain"
+
+  - name: addresses_events_first_activity
+    meta:
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync, base, scroll, zkevm, linea
+      sector: addresses_events
+      project: addresses
+      contributors: Henrystats, hildobby
+    config:
+      tags: ['table', 'first_activity', 'addresses_events', 'mainnets']
+    description: "Table showing first activity of each address on every chain"
+    columns:
+      - *blockchain
+      - *address
+      - &first_activity
+        name: first_activity_to
+        description: "First transaction activity to address"
+      - &first_block_time
+        name: first_block_time
+        description: "The block time on which the address made it's first activity"
+      - &first_block_number
+        name: first_block_number
+        description: "The block number on which the address made it's first activity"
+      - &first_tx_hash
+        name: first_tx_hash
+        description: "The transaction hash on which the address made it's first activity"
+      - &first_function
+        name: first_function
+        description: "first function called by address"

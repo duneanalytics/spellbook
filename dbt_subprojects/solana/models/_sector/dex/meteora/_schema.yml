@@ -1,6 +1,31 @@
 version: 2
 
 models:
+  - name: meteora_v1_solana_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+        all meteora amm dex trades on Solana
+    tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+  - name: meteora_v2_solana_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ ilemi ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+        all meteora amm dex trades on Solana
+    tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+
   - name: meteora_v1_solana_trades
     meta:
       blockchain: solana
@@ -9,14 +34,6 @@ models:
       tags: ['solana','dex']  
     description: >
         all meteora amm dex trades on Solana
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
-            - tx_index
     columns:
       - &blockchain
         name: blockchain
@@ -33,6 +50,9 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time of each DEX trade"
+      - &block_slot
+        name: block_slot
+        description: "block slot of each DEX trade"
       - &trade_source
         name: trade_source
         description: "Was the trade a direct call to the pool or did it go through another program like Jupiter (Dex Aggregator)"
@@ -80,7 +100,10 @@ models:
         description: "token associated address, of the token sold"
       - &project_program_id
         name: project_program_id
-        description: "Project program id that the trade was executed on - like the pool id"
+        description: "pool program id of the project"
+      - &project_main_id
+        name: project_main_id
+        description: "main program id of the project"
       - &trader_id
         name: trader_id
         description: "id (address) of trader who purchased a token"
@@ -105,20 +128,13 @@ models:
       tags: ['solana','dex']  
     description: >
         all meteora lb_clmm dex trades on Solana
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_month
-            - tx_id
-            - outer_instruction_index
-            - inner_instruction_index
-            - tx_index
     columns:
       - *blockchain
       - *project
       - *version
       - *block_month
       - *block_time
+      - *block_slot
       - *trade_source
       - *token_bought_symbol
       - *token_sold_symbol
@@ -135,6 +151,7 @@ models:
       - *token_bought_vault
       - *token_sold_vault
       - *project_program_id
+      - *project_main_id
       - *trader_id
       - *tx_id
       - *outer_instruction_index

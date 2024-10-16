@@ -63,4 +63,34 @@ sources:
     tables:
       - name: transfers
 
+  - name: tokens_blast
+    tables:
+      - name: transfers
 
+  - name: tokens_mantle
+    tables:
+      - name: transfers
+
+  - name: tokens_sei
+    tables:
+      - name: transfers
+
+  - name: tokens_mode
+    tables:
+      - name: transfers
+
+  - name: tokens_goerli
+    tables:
+      - name: transfers
+
+  - name: tokens_sepolia
+    tables:
+      - name: transfers
+
+  - name: tokens_bob
+    tables:
+      - name: transfers
+
+  - name: tokens_degen
+    tables:
+      - name: transfers

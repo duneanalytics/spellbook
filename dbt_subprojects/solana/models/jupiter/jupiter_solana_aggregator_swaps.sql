@@ -22,6 +22,8 @@ with
         FROM (
             --use this api https://station.jup.ag/api-v6/get-program-id-to-label
             values
+                ('stabble Stable Swap', 'swapNyd8XiQwJ6ianp9snpu4brUqFxadzvHebnAXjJZ'),
+                ('stabble Weighted Swap', 'swapFpHZwjELNnjvThjajtiVmkz3yPQEHjLtka2fwHW'),
                 ('Invariant', 'HyaB3W9q6XdA5xwpU4XnSZV94htfmbmqJXZcEbRaJutt'),
                 ('Saber (Decimals)', 'DecZY86MU5Gj7kppfUCEmd4LbXXuyZH1yHaP2NTqdiZB'),
                 ('Balansol', 'D3BBjqUdCYuP18fNvvMbPAZ8DpcRi4io2EsYHQawJDag'),
@@ -164,7 +166,7 @@ l.amm
 , l.tx_id
 , l.block_slot
 , l.block_time
-, date_trunc('month', l.block_time) as block_month
+, CAST(date_trunc('month', l.block_time) as DATE) as block_month
 , l.tx_signer
 , l.jup_version
 FROM (

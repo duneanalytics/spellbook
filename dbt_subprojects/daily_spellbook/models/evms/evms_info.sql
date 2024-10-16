@@ -2,10 +2,10 @@
         schema = 'evms',
         tags = ['static'],
         alias = 'info',
-        post_hook = '{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "sei"]\',
+        post_hook = '{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "sei", "worldchain"]\',
                                         "sector",
                                         "evms",
-                                        \'["hildobby"]\') }}')
+                                        \'["hildobby", "hosuke"]\') }}')
 }}
 
 SELECT chain_id
@@ -27,7 +27,7 @@ FROM (
         , (42161, 'arbitrum', 'Arbitrum One', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x82af49447d8a07e3bd95bd0d56f35241523fbab1, 'https://arbiscan.io/', timestamp '2021-05-29 00:35', 'Arbitrum', 'Ethereum Blobs', 'Ethereum')
         , (10, 'optimism', 'OP Mainnet', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.optimism.io/', timestamp '2021-11-11 21:16', 'OP Stack', 'Ethereum Blobs', 'Ethereum')
         , (100, 'gnosis', 'Gnosis', 'Layer 1', NULL, 'xDAI', 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d, 'https://gnosisscan.io/', timestamp '2018-10-08 18:43', NULL, NULL, NULL)
-        , (137, 'polygon', 'Polygon PoS', 'Layer 1', NULL, 'MATIC', 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270, 'https://polygonscan.com/', timestamp '2020-05-30 16:30', NULL, NULL, NULL)
+        , (137, 'polygon', 'Polygon PoS', 'Layer 1', NULL, 'POL', 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270, 'https://polygonscan.com/', timestamp '2020-05-30 16:30', NULL, NULL, NULL)
         , (250, 'fantom', 'Fantom', 'Layer 1', NULL, 'FTM', 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83, 'https://ftmscan.com/', timestamp '2019-12-27 03:56', NULL, NULL, NULL)
         , (56, 'bnb', 'BNB', 'Layer 1', NULL, 'BNB', 0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c, 'https://bscscan.com/', timestamp '2020-08-29 03:24', NULL, NULL, NULL)
         , (5, 'goerli', 'Goerli', 'Testnet', NULL, 'tETH', 0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6, 'https://goerli.etherscan.io/', timestamp '2015-07-30 03:26', NULL, NULL, NULL)
@@ -41,7 +41,7 @@ FROM (
         , (1088, 'metis_andromeda', 'Metis Andromeda', NULL, NULL, NULL, NULL, 'https://andromeda-explorer.metis.io/', timestamp '2021-11-18 22:19', 'Optimistic Virtual Machine', 'Ethereum', 'Ethereum')
         , (5000, 'mantle', 'Mantle', 'Layer 2', 'Optimistic Rollup', 'MNT', NULL, 'https://explorer.mantle.xyz/', timestamp '2023-07-02 18:21', 'Optimistic Virtual Machine', 'Ethereum', 'Ethereum')
         , (59144, 'linea', 'Linea', 'Layer 2', 'ZK Rollup', 'ETH', 0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f, 'https://lineascan.build/', timestamp '2023-07-06 13:15', NULL, 'Ethereum Blobs', 'Ethereum')
-        , (42170, 'arbitrum_nova', 'Arbitrum Nova', 'Layer 2', 'Optimistic Rollup', 'ETH', NULL, 'https://nova-explorer.arbitrum.io/', timestamp '2022-06-25 04:01', 'Arbitrum', 'Ethereum', 'Ethereum')
+        , (42170, 'nova', 'Arbitrum Nova', 'Layer 2', 'Optimistic Rollup', 'ETH', NULL, 'https://nova-explorer.arbitrum.io/', timestamp '2022-06-25 04:01', 'Arbitrum', 'Ethereum', 'Ethereum')
         , (288, 'boba', 'Boba Network', 'Layer 2', 'Optimistic Rollup', 'ETH', NULL, 'https://bobascan.com/', timestamp '2021-10-28 05:03', 'Optimistic Virtual Machine', 'Ethereum', 'Ethereum')
         , (7700, 'canto', 'Canto', 'Layer 2', NULL, 'ETH', NULL, 'https://evm.explorer.canto.io/', timestamp '2022-07-26 19:27', NULL, 'Ethereum', 'Ethereum')
         , (420, 'optimism_goerli', 'Optimism Goerli', 'Testnet', 'Optimistic Rollup', 'GTH', 0x4200000000000000000000000000000000000006, 'https://optimism-goerli.blockscout.com/', timestamp '2022-06-09 16:55', 'OP Stack', 'Goerli', 'Goerli')
@@ -63,4 +63,5 @@ FROM (
         , (11155111, 'sepolia', 'Sepolia', 'Testnet', 'Testnet', 'tETH', 0x7b79995e5f793a07bc00c21412e50ecae098e7f9, 'https://sepolia.etherscan.io/', timestamp '2015-07-30 15:26:13', NULL, NULL, NULL)
         , (167000, 'taiko', 'Taiko', 'Layer 2', 'Optimistic Rollup', 'ETH', 0xa51894664a773981c6c112c43ce576f315d5b1b6, 'https://taikoscan.network/', timestamp '2024-03-29 07:39:12', 'OP Stack', 'Ethereum Blobs', 'Ethereum')
         , (1329, 'sei', 'Sei Network', 'Layer 1', NULL, 'SEI', 0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7, 'https://seitrace.com/?chain=pacific-1', timestamp '2024-05-27 13:14', NULL, NULL, NULL)
+        , (480, 'worldchain', 'World Chain', 'Layer 2', 'Optimistic Rollup', 'WLD', 0x2cFc85d8E48F8EAB294be644d9E25C3030863003, 'https://worldchain-mainnet.explorer.alchemy.com/', timestamp '2024-06-25 17:14', 'OP Stack', 'Ethereum Blobs', 'Ethereum')
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement)

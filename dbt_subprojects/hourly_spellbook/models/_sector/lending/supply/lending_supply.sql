@@ -20,3 +20,4 @@
     model = ref('lending_base_supply')
   )
 }}
+

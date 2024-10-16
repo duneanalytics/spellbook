@@ -7,7 +7,26 @@ sources:
   - name: fusionx_mantle
     tables:
       - name: FusionXV3Factory_evt_PoolCreated
+      - name: FusionXV3Pool_evt_Swap
   - name: merchant_moe_mantle
     tables:
       - name: MoeFactory_evt_PairCreated
       - name: MoePair_evt_Swap
+  - name: agni_mantle
+    tables:
+      - name: AgniPool_evt_Swap
+      - name: AgniPoolDeployer_call_deploy
+  - name: swaap_v2_mantle
+    tables:
+      - name: Vault_evt_Swap
+  - name: clipper_mantle
+    tables:
+      - name: ClipperPackedVerifiedExchange_evt_Swapped
+  - name: uniswap_v3_mantle
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
+  - name: tropicalswap_mantle
+    tables:
+      - name: TropicalFactory_evt_PairCreated
+      - name: TropicalPair_evt_Swap
