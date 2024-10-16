@@ -1,7 +1,7 @@
 {{ config(
         schema = 'safe',
         alias = 'transactions_all',
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","fantom","gnosis","goerli","linea","mantle","optimism","polygon","scroll","zkevm","zksync"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","blast","bnb","celo","ethereum","fantom","gnosis","goerli","linea","mantle","optimism","polygon","scroll","worldchain","zkevm","zksync"]\',
                                 "project",
                                 "safe",
                                 \'["kryptaki", "danielpartida", "safeintern"]\') }}'
@@ -24,6 +24,7 @@
 ,ref('safe_optimism_transactions')
 ,ref('safe_polygon_transactions')
 ,ref('safe_scroll_transactions')
+,ref('safe_worldchain_transactions')
 ,ref('safe_zkevm_transactions')
 ,ref('safe_zksync_transactions')
 ,ref('safe_mantle_transactions')
