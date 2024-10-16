@@ -163,7 +163,6 @@ models:
             - blockchain
             - address
             - token_address
-            - unique_key_id
 
     meta:
       blockchain: ethereum
