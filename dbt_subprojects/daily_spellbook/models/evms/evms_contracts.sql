@@ -1,7 +1,7 @@
 {{ config(
         schema='evms',
         alias = 'contracts',
-        unique_key=['blockchain', 'address', 'created_at'],
+        unique_key=['blockchain', 'address'],
         post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
                                     "sector",
                                     "evms",
@@ -32,25 +32,29 @@
 ] %}
 
 SELECT *
-FROM (
+    FROM
+    (
         {% for contracts_model in contracts_models %}
         SELECT
-        '{{ contracts_model[0] }}' AS blockchain
-        , abi_id
-        , abi
-        , address
-        , "from"
-        , code
-        , name
-        , namespace
-        , dynamic
-        , base
-        , factory
-        , detection_source
-        , created_at
+            '{{ contracts_model[0] }}' AS blockchain
+            , abi_id
+            , abi
+            , address
+            , "from"
+            , code
+            , name
+            , namespace
+            , dynamic
+            , base
+            , factory
+            , detection_source
+            , created_at
+            , row_number() over (partition by address order by created_at desc) as duplicates_rank
         FROM {{ contracts_model[1] }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
-        );
+    )
+    WHERE
+        duplicates_rank = 1
