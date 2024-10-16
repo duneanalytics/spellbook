@@ -43,6 +43,7 @@
         blockchain = 'bnb',
         project = 'dodo',
         markets = config_markets,
+        decoded_project = 'dodoex',
         sell_base_token_source = 'DODO_evt_SellBaseToken',
         buy_base_token_source = 'DODO_evt_BuyBaseToken',
         other_sources = config_other_sources
