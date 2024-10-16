@@ -17,13 +17,13 @@ with safes as (
     from {{ ref('safe_ethereum_safes') }}
     where blockchain = 'ethereum'
 ),
-
+-- startdate set shorter for fast CI.. actual start: 2021-07-01
 balances as (
      {{
        balances_incremental_subset_daily(
              blockchain = 'ethereum',
              address_list  = 'safes',
-             start_date = '2024-07-01'  --set shorter for fast CI.. actual start: 2021-07-01
+             start_date = '2024-07-01'
        )
      }}
 )
