@@ -174,4 +174,5 @@ FROM (VALUES
     , ('valantis', 'Valantis', 'Direct', 'ValantisLabs')
     , ('spartadex', 'SpartaDEX', 'Direct', 'spartadex_io')
     , ('tropicalswap', 'TropicalSwap', 'Direct', 'tropical_swap')
+    , ('swapblast', 'SwapBlast', 'Direct', 'SwapBlast')
     ) AS temp_table (project, name, marketplace_type, x_username)
