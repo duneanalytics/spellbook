@@ -57,6 +57,9 @@ sources:
     tables:
       - name: MdexPair_evt_Swap
       - name: MdexFactory_evt_PairCreated
+  - name: dodo_bnb
+    tables:
+      - name: DSP_evt_DODOSwap
   - name: dodoex_bnb
     tables:
       - name: DODO_evt_SellBaseToken

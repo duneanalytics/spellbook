@@ -14,7 +14,7 @@ select
     , block_date
     , sum(tx_fee_usd) as gas_fees_usd
 from
-    {{ ref('gas_fees') }}
+    {{ source('gas', 'fees') }}
 {% if is_incremental() %}
 where
     {{ incremental_predicate('block_date') }}

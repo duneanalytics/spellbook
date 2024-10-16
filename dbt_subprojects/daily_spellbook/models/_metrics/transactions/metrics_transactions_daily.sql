@@ -14,7 +14,7 @@ select
     , date_trunc('day', block_hour) as block_date
     , sum(tx_count) as tx_count
 from
-    {{ ref('evms_transaction_metrics') }}
+    {{ source('evms', 'transaction_metrics') }}
 {% if is_incremental() %}
 where
     {{ incremental_predicate('block_hour') }}
