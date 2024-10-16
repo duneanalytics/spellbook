@@ -1,5 +1,4 @@
 {{ config(
-        tags=['prod_exclude'],
         schema = 'addresses',
         alias ='info',
         materialized = 'incremental',
