@@ -150,22 +150,23 @@ FROM data
 
 
 WITH to_update AS (
-    SELECT DISTINCT address
+    SELECT address
     FROM (
         {% for addresses_model in addresses_models %}
-        SELECT am.address
+        (SELECT am.address
         FROM {{ addresses_model[1] }} am
         LEFT JOIN {{ this }} t ON am.address = t.address
         WHERE (t.address IS NULL
             OR ((contains(t.blockchains, am.blockchain) = FALSE))
             OR (CAST(t.chain_stats['{{ addresses_model[0] }}']['last_seen_block'] AS bigint) <= am.last_seen_block))
         AND {{incremental_predicate('am.last_seen')}}
+        LIMIT 200000)
         {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
         )
-    LIMIT 2000000
+    GROUP BY 1
     )
 
 
