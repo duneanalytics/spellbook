@@ -71,7 +71,7 @@ with raw_transfers as (
     from
         raw_transfers as t
     left join
-        labels.owner_addresses as l
+        {{ source('labels', 'owner_addresses') }} as l
         on t.blockchain = l.blockchain
         and t.address = l.address
     group by
