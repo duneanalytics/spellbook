@@ -100,9 +100,6 @@ base_model AS (
         {% if is_incremental() or true %}
             AND {{ incremental_predicate('b.time') }}
         {% endif %}
-        {% if not is_incremental() or true %}
-            AND b.time > current_date - interval '10' day and b.time < current_date - interval '1' day
-        {% endif %}
     {% if is_incremental() or true %}
             WHERE {{ incremental_predicate('vt.block_time') }}
     {% endif %}
@@ -111,7 +108,7 @@ base_model AS (
 SELECT
     'solana' AS blockchain,
     CAST(date_trunc('month', block_time) AS DATE) AS block_month,
-    block_date,
+    CAST(date_trunc('day', block_time) AS DATE) AS block_date,
     block_time,
     block_slot,
     tx_hash,
