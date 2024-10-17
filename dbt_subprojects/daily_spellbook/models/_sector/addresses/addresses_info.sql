@@ -236,7 +236,7 @@ FROM (
     , last_seen
     , last_seen_block
     FROM {{ addresses_model[1] }}
-    INNER JOIN to_update tu USING (address)
+    INNER JOIN to_update USING (address)
     {% if not loop.last %}
     UNION ALL
     {% endif %}
