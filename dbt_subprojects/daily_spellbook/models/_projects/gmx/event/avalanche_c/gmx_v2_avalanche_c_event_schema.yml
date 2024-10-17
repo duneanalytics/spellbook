@@ -128,10 +128,16 @@ models:
           - not_null
       - &trigger_price_raw
         name: trigger_price_raw
-        description: The price that triggers the order execution. 
-      - &acceptable_price_raw  
+        description: The original trigger price that initiates order execution before adjustments.
+      - &trigger_price
+        name: trigger_price
+        description: The adjusted trigger price based on the index token decimals, ensuring correct scaling of the value.
+      - &acceptable_price_raw 
         name: acceptable_price_raw
-        description: The minimum acceptable price for order execution.       
+        description: The original minimum acceptable price for order execution before adjustments.
+      - &acceptable_price
+        name: acceptable_price
+        description: The adjusted acceptable price based on the index token decimals, ensuring correct scaling of the value.     
       - name: execution_fee
         description: The fee paid for executing the order in native tokens
         tests:
@@ -568,8 +574,6 @@ models:
         tests:
           - not_null 
       - *msg_sender
-      - name: account
-        description: The address associated with the event
       - name: market
         description: The market associated with the position fees collected event
         tests:
@@ -766,9 +770,7 @@ models:
         description: The type of event recorded, always 'PositionFeesInfo' for this model
         tests:
           - not_null
-      - *msg_sender
-      - name: account
-        description: The address associated with the event          
+      - *msg_sender         
       - name: market
         description: The market associated with the position fees info event
         tests:
@@ -903,6 +905,8 @@ models:
         description: The address associated with the order.
       - *size_delta_usd
       - *trigger_price_raw
-      - *acceptable_price_raw
+      - *trigger_price
+      - *acceptable_price_raw 
+      - *acceptable_price
       - *min_output_amount_raw   
       - *updated_at_time
