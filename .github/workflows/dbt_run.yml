@@ -11,7 +11,7 @@ on:
 jobs:
   dbt-test:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
-    timeout-minutes: 90
+    timeout-minutes: 300
 
     steps:
       - name: Check out repository code

@@ -344,8 +344,3 @@ models:
       +schema: worldcoin
       optimism:
         +schema: worldcoin_optimism
-
-    aerodrome:
-      +schema: aerodrome
-      base:
-        +schema: aerodrome_base
