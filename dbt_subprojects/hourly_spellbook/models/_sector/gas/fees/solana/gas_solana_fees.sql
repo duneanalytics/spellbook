@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    unique_key = ['block_date', 'tx_hash']
+    unique_key = ['block_date', 'block_slot', 'tx_index']
 ) }}
 
 WITH compute_limit_cte AS (
@@ -15,6 +15,7 @@ WITH compute_limit_cte AS (
         block_date,
         block_time,
         block_slot,
+        tx_index,
         bytearray_to_bigint(
             bytearray_reverse(
                 bytearray_substring(data, 2, 8)
@@ -35,6 +36,7 @@ unit_price_cte AS (
         block_date,
         block_time,
         block_slot,
+        tx_index,
         bytearray_to_bigint(
             bytearray_reverse(
                 bytearray_substring(data, 2, 8)
@@ -55,6 +57,7 @@ base_model AS (
         t.id AS tx_hash,
         t.block_date,
         t.block_slot,
+        t.index as tx_index,
         t.block_time,
         t.signer,
         t.fee AS tx_fee_raw,
@@ -66,10 +69,10 @@ base_model AS (
     FROM {{ source('solana', 'transactions') }} t
     LEFT JOIN compute_limit_cte cl
         ON t.id = cl.tx_id
-        AND t.block_date = cl.block_date
+        AND t.block_slot = cl.block_slot
     LEFT JOIN unit_price_cte up
         ON t.id = up.tx_id
-        AND t.block_date = up.block_date
+        AND t.block_slot = up.block_slot
     LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
         ON t.block_slot = b.slot
         AND t.block_date = b.date
@@ -84,7 +87,8 @@ base_model AS (
         'vote' as tx_type,
         vt.id AS tx_hash,
         vt.block_date,
-        vt.block_slot AS block_number,
+        vt.block_slot,
+        vt.index as tx_index,
         vt.block_time,
         vt.signer,
         vt.fee AS tx_fee_raw,
@@ -101,16 +105,17 @@ base_model AS (
             AND {{ incremental_predicate('b.time') }}
         {% endif %}
     {% if is_incremental() or true %}
-            WHERE {{ incremental_predicate('vt.block_time') }}
+    WHERE {{ incremental_predicate('vt.block_time') }}
     {% endif %}
 )
 
 SELECT
     'solana' AS blockchain,
     CAST(date_trunc('month', block_time) AS DATE) AS block_month,
-    CAST(date_trunc('day', block_time) AS DATE) AS block_date,
+    block_date,
     block_time,
     block_slot,
+    tx_index,
     tx_hash,
     signer,
     --NULL AS tx_to, -- this concept doesn't really exist in solana
