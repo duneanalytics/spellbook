@@ -102,7 +102,7 @@ with
             {% else %} trades.block_time >= timestamp '{{project_start_date}}'
             {% endif %}
 
-        union all
+        union
 
         -- Sells
         select distinct
