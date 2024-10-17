@@ -1,6 +1,7 @@
 {{ config(
         schema = 'addresses',
         alias ='info',
+        tags = ['prod_exclude'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -103,6 +104,7 @@ WITH data AS (
         , last_seen
         , last_seen_block
         FROM {{ addresses_model[1] }}
+        ORDER BY address asc limit 100000
         {% if not loop.last %}
         UNION ALL
         {% endif %}
