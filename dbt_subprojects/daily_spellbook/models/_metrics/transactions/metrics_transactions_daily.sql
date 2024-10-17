@@ -37,6 +37,7 @@ with net_transfers_filter as (
         and tx.tx_hash = nt.tx_hash
     where
         1 = 1
+        and tx.block_hour >= timestamp '2024-10-01'
         {% if is_incremental() %}
         and {{ incremental_predicate('tx.block_hour') }}
         {% endif %}
