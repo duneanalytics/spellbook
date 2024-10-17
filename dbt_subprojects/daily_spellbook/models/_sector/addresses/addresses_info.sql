@@ -148,6 +148,7 @@ FROM data
 {% else %}
 
 
+
 WITH to_update AS (
     SELECT DISTINCT address
     FROM (
