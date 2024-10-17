@@ -67,8 +67,8 @@ SELECT '{{ addresses_model[0] }}' AS blockchain
 --    ]) AS chain_stats
 , last_seen
 , last_seen_block
-FROM {{ addresses_model[1] }}
-ORDER BY address asc limit 100000
+FROM (select * from {{ addresses_model[1] }}
+ORDER BY address asc limit 100000)
 {% if not loop.last %}
 UNION ALL
 {% endif %}
