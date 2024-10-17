@@ -158,7 +158,6 @@ models:
             - blockchain
             - address
             - token_address
-            - unique_key_id
     meta:
       blockchain: optimism
       project: safe
@@ -194,7 +193,4 @@ models:
       - &next_update
         name: next_update
         description: "UTC timestamp when data is next updated"
-      - &unique_key_id
-        name: unique_key_id
-        description: " unique key"
-  
+
