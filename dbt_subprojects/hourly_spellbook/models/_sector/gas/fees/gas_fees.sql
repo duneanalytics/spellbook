@@ -59,7 +59,7 @@ FROM
         block_date,
         block_time,
         block_slot AS block_number,
-        cast(from_base58(tx_hash) as varbinary) as tx_hash, 
+        cast(from_base58(tx_id) as varbinary) as tx_hash,
         cast(from_base58(signer) as varbinary) as tx_from,
         cast (NULL AS varbinary) tx_to, -- this concept doesn't exist in solana
         cast (NULL AS double) AS gas_price, -- this concept doesn't exist in solana
