@@ -55,14 +55,14 @@ SELECT '{{ addresses_model[0] }}' AS blockchain
 , last_tx_block_time
 , first_tx_block_number
 , last_tx_block_number
---, map_from_entries(array[
---    ('last_seen', CAST(last_seen AS varchar))
---    , ('last_seen_block', CAST(last_seen_block AS varchar))
---    , ('executed_tx_count', CAST(executed_tx_count AS varchar))
---    , ('is_smart_contract', CAST(is_smart_contract AS varchar))
---    , ('tokens_sent_count', CAST(tokens_sent_count AS varchar))
---    , ('tokens_received_count', CAST(tokens_received_count AS varchar))
---    ]) AS chain_stats
+, map_from_entries(array[
+    ('last_seen', CAST(last_seen AS varchar))
+    , ('last_seen_block', CAST(last_seen_block AS varchar))
+    , ('executed_tx_count', CAST(executed_tx_count AS varchar))
+    , ('is_smart_contract', CAST(is_smart_contract AS varchar))
+    , ('tokens_sent_count', CAST(tokens_sent_count AS varchar))
+    , ('tokens_received_count', CAST(tokens_received_count AS varchar))
+    ]) AS chain_stats
 , last_seen
 , last_seen_block
 FROM (select * from {{ addresses_model[1] }}
