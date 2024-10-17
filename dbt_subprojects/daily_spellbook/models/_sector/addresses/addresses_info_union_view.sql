@@ -1,9 +1,7 @@
 {{ config(
         schema = 'addresses',
         alias ='info_union_view',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'view',
+        materialized = 'view',
         unique_key = ['address'],
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora", "blast", "fantom", "linea", "zkevm", "zksync"]\',
                                     "sector",

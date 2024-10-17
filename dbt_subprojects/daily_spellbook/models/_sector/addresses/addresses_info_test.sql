@@ -93,7 +93,7 @@ SELECT address
 , received_volume_usd
 , first_tx_block_time
 , last_tx_block_time
-, chain_stats
+--, chain_stats
 , last_seen
 , last_seen_block
 FROM data
