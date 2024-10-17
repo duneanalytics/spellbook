@@ -17,6 +17,8 @@ models:
             - blockchain
             - tx_hash
             - tx_index
+            - token_bought_address
+            - token_sold_address
     columns:
       - &block_time
         name: block_time
