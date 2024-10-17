@@ -102,12 +102,13 @@ WITH data AS (
             ]) AS chain_stats
         , last_seen
         , last_seen_block
-        FROM {{ addresses_model[1] }}
+        FROM (select * from {{ addresses_model[1] }}
+        ORDER BY address asc limit 2000000)
         {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
-        )
+    )
     GROUP BY address
     )
 
