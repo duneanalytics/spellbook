@@ -52,8 +52,7 @@ unit_price_cte AS (
 base_model AS (
     SELECT
         'normal' as tx_type,
-        t.id AS tx_id,
-        cast(from_base58(t.id) as varbinary) AS tx_hash,
+        t.id AS tx_hash,
         t.block_date,
         t.block_slot,
         t.block_time,
@@ -83,8 +82,7 @@ base_model AS (
     UNION ALL
     SELECT
         'vote' as tx_type,
-        vt.id as tx_id,
-        cast(from_base58(vt.id) as varbinary) AS tx_hash,
+        vt.id AS tx_hash,
         vt.block_date,
         vt.block_slot AS block_number,
         vt.block_time,
@@ -113,7 +111,6 @@ SELECT
     CAST(date_trunc('day', block_time) AS DATE) AS block_date,
     block_time,
     block_slot,
-    tx_id,
     tx_hash,
     signer,
     --NULL AS tx_to, -- this concept doesn't really exist in solana
