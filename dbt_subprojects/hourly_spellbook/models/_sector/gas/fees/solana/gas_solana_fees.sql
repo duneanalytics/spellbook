@@ -10,7 +10,7 @@
 ) }}
 
 WITH compute_limit_cte AS (
-    SELECT 
+    SELECT
         tx_id,
         block_date,
         block_time,
@@ -24,16 +24,13 @@ WITH compute_limit_cte AS (
     WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
     AND bytearray_substring(data,1,1) = 0x02
     AND inner_instruction_index is null -- compute budget and price are inherited on cross program invocation
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
             AND {{ incremental_predicate('block_time') }}
-        {% endif %}
-    {% if not is_incremental() %}
-            AND block_time > current_date - interval '10' day and block_time < current_date - interval '1' day
     {% endif %}
 ),
 
 unit_price_cte AS (
-    SELECT 
+    SELECT
         tx_id,
         block_date,
         block_time,
@@ -47,16 +44,13 @@ unit_price_cte AS (
     WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
     AND bytearray_substring(data,1,1) = 0x03
     AND inner_instruction_index is null -- compute budget and price are inherited on cross program invocation
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
             AND {{ incremental_predicate('block_time') }}
-        {% endif %}
-    {% if not is_incremental() %}
-            AND block_time > current_date - interval '10' day and block_time < current_date - interval '1' day
     {% endif %}
 ),
 
 base_model AS (
-    SELECT 
+    SELECT
         'normal' as tx_type,
         t.id AS tx_hash,
         t.block_date,
@@ -70,29 +64,23 @@ base_model AS (
         'So11111111111111111111111111111111111111112' AS tx_fee_currency,
         b.leader
     FROM {{ source('solana', 'transactions') }} t
-    LEFT JOIN compute_limit_cte cl 
-        ON t.id = cl.tx_id 
-        AND t.block_date = cl.block_date  
-    LEFT JOIN unit_price_cte up 
-        ON t.id = up.tx_id 
+    LEFT JOIN compute_limit_cte cl
+        ON t.id = cl.tx_id
+        AND t.block_date = cl.block_date
+    LEFT JOIN unit_price_cte up
+        ON t.id = up.tx_id
         AND t.block_date = up.block_date
     LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
         ON t.block_slot = b.slot
         AND t.block_date = b.date
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             AND {{ incremental_predicate('b.time') }}
         {% endif %}
-        {% if not is_incremental() %}
-            AND b.time > current_date - interval '10' day and b.time < current_date - interval '1' day
-        {% endif %}
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
             WHERE {{ incremental_predicate('t.block_time') }}
     {% endif %}
-    {% if not is_incremental() %}
-            WHERE t.block_date > current_date - interval '10' day and t.block_date < current_date - interval '1' day
-    {% endif %}
     UNION ALL
-    SELECT 
+    SELECT
         'vote' as tx_type,
         vt.id AS tx_hash,
         vt.block_date,
@@ -109,17 +97,14 @@ base_model AS (
     LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
         ON vt.block_slot = b.slot
         AND vt.block_date = b.date
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             AND {{ incremental_predicate('b.time') }}
         {% endif %}
-        {% if not is_incremental() %}
+        {% if not is_incremental() or true %}
             AND b.time > current_date - interval '10' day and b.time < current_date - interval '1' day
         {% endif %}
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
             WHERE {{ incremental_predicate('vt.block_time') }}
-    {% endif %}
-    {% if not is_incremental() %}
-            WHERE vt.block_date > current_date - interval '10' day and vt.block_date < current_date - interval '1' day
     {% endif %}
 )
 
@@ -156,9 +141,6 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     --AND to_base58(p.contract_address) = tx_fee_currency  -- this would the right way to do it but slow af
     AND p.contract_address = 0x069b8857feab8184fb687f634618c035dac439dc1aeb3b5598a0f00000000001 --from base58 converted wsol address
     AND p.minute = date_trunc('minute', block_time)
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
         AND {{ incremental_predicate('p.minute') }}
-    {% endif %}
-    {% if not is_incremental() %}
-        AND p.minute > current_date - interval '10' day and p.minute < current_date - interval '1' day
     {% endif %}
