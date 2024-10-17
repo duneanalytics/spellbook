@@ -1,6 +1,7 @@
 {{ config(
         schema = 'addresses',
         alias ='info_test',
+        tags =['prod_exclude'],
         materialized = 'table',
         file_format = 'delta',
         incremental_strategy = 'merge',
