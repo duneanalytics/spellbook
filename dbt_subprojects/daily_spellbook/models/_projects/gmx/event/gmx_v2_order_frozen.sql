@@ -30,7 +30,7 @@ SELECT
     account,
     reason_bytes,
     reason
-FROM {{ ref('gmx_v2_' ~ chain ~ '_order_cancelled') }}
+FROM {{ ref('gmx_v2_' ~ chain ~ '_order_frozen') }}
 {% if not loop.last %}
 UNION ALL
 {% endif %}

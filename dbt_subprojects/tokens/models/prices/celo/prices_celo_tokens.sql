@@ -36,5 +36,6 @@ FROM
     ('scelo-savings-celo', 'celo', 'SCELO', 0x2879bfd5e7c4ef331384e908aaa3bd3014b703fa, 18),
     ('btcbr-bitcoinbr', 'celo', 'BTCBR', 0xe9dc987b939a7b33270e56532297cf82716c79a3, 18),
     ('usdglo-glo-dollar', 'celo', 'USDGLO', 0x4f604735c1cf31399c6e711d5962b2b3e0225ad3, 18),
-    ('abr-allbridge', 'celo', 'ABR', 0x6e512bfc33be36f2666754e996ff103ad1680cc9, 18)
+    ('abr-allbridge', 'celo', 'ABR', 0x6e512bfc33be36f2666754e996ff103ad1680cc9, 18),
+    ('weth-wormhole-weth-celo', 'celo', 'WETH', 0x66803FB87aBd4aaC3cbB3fAd7C3aa01f6F3FB207, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

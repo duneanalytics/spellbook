@@ -28,4 +28,19 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: PairFactoryUpgradeable_evt_PairCreated
-
+  - name: dackieswap_v2_blast
+    tables:
+      - name: DackieFactory_evt_PairCreated
+      - name: DackiePair_evt_Swap
+  - name: sushiswap_v2_blast
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
+  - name: dackieswap_v3_blast
+    tables:
+      - name: DackieV3Factory_evt_PoolCreated
+      - name: DackieV3Pool_evt_Swap
+  - name: swapblast_blast
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap

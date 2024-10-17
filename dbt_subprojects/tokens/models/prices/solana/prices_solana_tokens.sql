@@ -701,5 +701,8 @@ FROM
         ('nub-nubcat','solana', 'NUB', 'GtDZKAqvMZMnti46ZewMiXCa4oXF4bZxwQPoKzXPFxZn', 9),
         ('bunk-bunkee', 'solana', 'BUNK', '2nhjjqSkA8FYCUdJvQhYjbtZdPjZbNo8VtNKTkJ3hncb', 6),
         ('maneki-maneki', 'solana', 'MANEKI', '25hAyBQfoDhfWx9ay6rarbgvWGwDdNqcHsXS3jQ3mTDJ', 5),
-        ('scat-simon39s-baby-cat', 'solana', 'SCAT', '2NNkCSrbQtrc9tgEJHt4MQUH3ySaxTRAAXt9cUgCkycB', 9)
+        ('scat-simon39s-baby-cat', 'solana', 'SCAT', '2NNkCSrbQtrc9tgEJHt4MQUH3ySaxTRAAXt9cUgCkycB', 9),
+        ('wolf-landwolf-sol', 'solana', 'WOLF', 'Faf89929Ni9fbg4gmVZTca7eW6NFg877Jqn6MizT3Gvw', 8),
+        ('jason-jason-derulo', 'solana', 'JASON', '6SUryVEuDz5hqAxab6QrGfbzWvjN8dC7m29ezSvDpump', 6),
+        ('moodeng-moo-deng-moodengsolcom', 'solana', 'MOODENG', 'ED5nyyWEzpPPiWimP8vYm7sD7TD3LAt3Q3gRTWHzPJBY', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
