@@ -150,7 +150,7 @@ FROM data
 
 
 WITH to_update AS (
-    SELECT address
+    SELECT DISTINCT address
     FROM (
         {% for addresses_model in addresses_models %}
         SELECT am.address
@@ -165,7 +165,7 @@ WITH to_update AS (
         {% endif %}
         {% endfor %}
         )
-    GROUP BY 1
+    LIMIT 2000000
     )
 
 
