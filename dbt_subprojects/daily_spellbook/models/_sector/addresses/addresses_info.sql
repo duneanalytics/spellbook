@@ -1,7 +1,6 @@
 {{ config(
         schema = 'addresses',
         alias ='info',
-        tags = ['prod_exclude'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -66,50 +65,7 @@ WITH data AS (
             ])) AS chain_stats
     , MAX(last_seen) AS last_seen
     , MAX(last_seen_block) AS last_seen_block
-    FROM (
-        {% for addresses_model in addresses_models %}
-        SELECT '{{ addresses_model[0] }}' AS blockchain
-        , address
-        , executed_tx_count
-        , max_nonce
-        , is_smart_contract
-        , namespace
-        , name
-        , first_funded_by
-        , first_funded_by_block_time
-        , tokens_received_count
-        , tokens_received_tx_count
-        , tokens_sent_count
-        , tokens_sent_tx_count
-        , first_transfer_block_time
-        , last_transfer_block_time
-        , first_received_block_number
-        , last_received_block_number
-        , first_sent_block_number
-        , last_sent_block_number
-        , received_volume_usd
-        , sent_volume_usd
-        , first_tx_block_time
-        , last_tx_block_time
-        , first_tx_block_number
-        , last_tx_block_number
-        , map_from_entries(array[
-            ('last_seen', CAST(last_seen AS varchar))
-            , ('last_seen_block', CAST(last_seen_block AS varchar))
-            , ('executed_tx_count', CAST(executed_tx_count AS varchar))
-            , ('is_smart_contract', CAST(is_smart_contract AS varchar))
-            , ('tokens_sent_count', CAST(tokens_sent_count AS varchar))
-            , ('tokens_received_count', CAST(tokens_received_count AS varchar))
-            ]) AS chain_stats
-        , last_seen
-        , last_seen_block
-        FROM {{ addresses_model[1] }}
-        ORDER BY address asc limit 100000
-        {% if not loop.last %}
-        UNION ALL
-        {% endif %}
-        {% endfor %}
-        )
+    FROM ({{ref('addresses_info_union_view')}})
     GROUP BY address
     )
 

@@ -1,7 +1,7 @@
 {{ config(
         schema = 'addresses',
         alias ='info_test',
-        materialized = 'incremental',
+        materialized = 'table',
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['address'],
