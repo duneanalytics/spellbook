@@ -6,7 +6,7 @@
         materialized = 'incremental',
         incremental_strategy = 'merge',
         file_format = 'delta',
-        unique_key = ['day', 'blockchain', 'address', 'token_address','unique_key_id'],
+        unique_key = ['day', 'blockchain', 'address', 'token_address'],
         post_hook = '{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "safe",
@@ -31,11 +31,9 @@ balances as (
        )
      }}
  )
-   
-select
-  *,
-  coalesce(token_id, uint256 '1') as unique_key_id 
-from balances
-where token_address not in (
+
+select * from balances
+where token_standard in ('native', 'erc20')
+and token_address not in (
             0xd74f5255d557944cf7dd0e45ff521520002d5748, --$9.8B were minted in a hack in 2023, all of which are stored in a Safe. Filtering out.
             0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3 )
