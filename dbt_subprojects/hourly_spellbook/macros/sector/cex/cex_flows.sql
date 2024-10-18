@@ -9,11 +9,11 @@ SELECT DISTINCT '{{blockchain}}' AS blockchain
 , t.contract_address AS token_address
 , t.symbol AS token_symbol
 , t.token_standard
-, CASE WHEN a.address=t."from" AND b.address=t.to AND a.cex_name=b.cex_name THEN 'Internal'
-    WHEN a.address=t."from" AND b.address=t.to THEN 'Cross-CEX'
-    WHEN b.address=t.to THEN 'Inflow'
-    WHEN a.address=t."from" THEN 'Outflow'
-    WHEN a.address=t.tx_from THEN 'Executed'
+, CASE WHEN a.cex_name=b.cex_name AND a.cex_name IS NOT NULL AND a.address=t."from" THEN 'Internal'
+    WHEN a.cex_name<>b.cex_name AND a.cex_name IS NOT NULL AND b.cex_name IS NOT NULL AND a.address=t."from" THEN 'Cross-CEX'
+    WHEN b.cex_name IS NOT NULL THEN 'Inflow'
+    WHEN a.cex_name IS NOT NULL AND a.address=t."from" THEN 'Outflow'
+    WHEN a.cex_name IS NOT NULL THEN 'Executed'
     END AS flow_type
 , CASE WHEN a.address=t."from" AND b.address!=t.to THEN -t.amount ELSE t.amount END AS amount
 , t.amount_raw
@@ -27,10 +27,11 @@ SELECT DISTINCT '{{blockchain}}' AS blockchain
 , t.evt_index
 , t.unique_key
 FROM {{transfers}} t
-INNER JOIN {{addresses}} a ON a.address = t."from" OR a.address=t.tx_from
-INNER JOIN {{addresses}} b ON b.address = t.to
+LEFT JOIN cex_ethereum.addresses a ON a.address = t."from" OR a.address=t.tx_from
+LEFT JOIN cex_ethereum.addresses b ON b.address = t.to
+WHERE a.cex_name IS NOT NULL OR b.cex_name IS NOT NULL
 {% if is_incremental() %}
-WHERE {{incremental_predicate('block_time')}}
+AND {{incremental_predicate('block_time')}}
 {% endif %}
 
 {% endmacro %}
