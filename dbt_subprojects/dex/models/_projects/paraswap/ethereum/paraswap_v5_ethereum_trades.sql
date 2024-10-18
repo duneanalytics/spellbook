@@ -379,52 +379,32 @@ uniswap_call_swap_without_event AS (
             c.swap_in_pair_token_in,
             c.swap_out_pair_token_out,
             t."from" AS caller,
-            concat(
-                '0x',
-                lower(
-                    substring(
-                        to_hex(
-                            keccak(
-                                concat(
-                                    0xff,
-                                    c.factory,
-                                    keccak(
-                                        concat(
-                                            CASE WHEN c.swap_in_pair_token_in < c.swap_in_pair_token_out THEN c.swap_in_pair_token_in ELSE c.swap_in_pair_token_out END,
-                                            CASE WHEN c.swap_in_pair_token_in < c.swap_in_pair_token_out THEN c.swap_in_pair_token_out ELSE c.swap_in_pair_token_in END
-                                        )
-                                    ),
-                                    c.initCode
-                                )
-                            )
-                        ),
-                        -40
-                    )
+            '0x' || lower(
+                substring(
+                    to_hex(
+                        keccak(
+                            0xff || c.factory || keccak(
+                                CASE WHEN c.swap_in_pair_token_in < c.swap_in_pair_token_out THEN c.swap_in_pair_token_in ELSE c.swap_in_pair_token_out END ||
+                                CASE WHEN c.swap_in_pair_token_in < c.swap_in_pair_token_out THEN c.swap_in_pair_token_out ELSE c.swap_in_pair_token_in END
+                            ) || c.initCode
+                        )
+                    ),
+                    -40
                 )
-            ) as swap_in_pair,
-            concat(
-                '0x',
-                lower(
-                    substring(
-                        to_hex(
-                            keccak(
-                                concat(
-                                    0xff,
-                                    c.factory,
-                                    keccak(
-                                        concat(
-                                            CASE WHEN c.swap_out_pair_token_in < c.swap_out_pair_token_out THEN c.swap_out_pair_token_in ELSE c.swap_out_pair_token_out END,
-                                            CASE WHEN c.swap_out_pair_token_in < c.swap_out_pair_token_out THEN c.swap_out_pair_token_out ELSE c.swap_out_pair_token_in END
-                                        )
-                                    ),
-                                    c.initCode
-                                )
-                            )
-                        ),
-                        -40
-                    )
+            ) AS swap_in_pair,
+            '0x' || lower(
+                substring(
+                    to_hex(
+                        keccak(
+                            0xff || c.factory || keccak(
+                                CASE WHEN c.swap_out_pair_token_in < c.swap_out_pair_token_out THEN c.swap_out_pair_token_in ELSE c.swap_out_pair_token_out END ||
+                                CASE WHEN c.swap_out_pair_token_in < c.swap_out_pair_token_out THEN c.swap_out_pair_token_out ELSE c.swap_out_pair_token_in END
+                            ) || c.initCode
+                        )
+                    ),
+                    -40
                 )
-            ) as swap_out_pair,
+            ) AS swap_out_pair,
             c.is_token_in_eth,
             c.is_token_out_eth,
             row_number() OVER (
