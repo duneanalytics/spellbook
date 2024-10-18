@@ -30,7 +30,7 @@ WITH transfers AS (
         'SOL' as symbol,
         lamports as amount_raw,
         lamports / 1e9 as amount,
-        'So11111111111111111111111111111111111111111' as token_mint_address,
+        'So11111111111111111111111111111111111111112' as token_mint_address,
         call_outer_executing_account as outer_executing_account,
         call_inner_executing_account as inner_executing_account,
         'transfer' as action
