@@ -757,6 +757,13 @@ FROM (VALUES
 
     , ('bitcoin', 'TD1tjf1ZVzq2NCeYoppUAsBZevobkftYDu', 'Wirex', 'Wirex 1', 'hildobby', date '2024-05-27')
 
+    , ('bitcoin', '322GfdSXmYNJb4nAsqTmbhs2LXkTqCPMYk', '1xBet', '1xBet 1', 'hildobby', date '2024-09-06')
+    , ('bitcoin', '37RpvaLDcNXXQ6v5uPzhjSEpPM3hJ3EFoN', '1xBet', '1xBet 2', 'hildobby', date '2024-09-06')
+    , ('bitcoin', '39cKgdXDhY6ngYkfTBocZ4KnMhTFRGbSkF', '1xBet', '1xBet 3', 'hildobby', date '2024-09-06')
+    , ('bitcoin', '3P5mLcDEvwJRoGTS7acrZuxqaWLzFLujG4', '1xBet', '1xBet 4', 'hildobby', date '2024-09-06')
+    , ('bitcoin', '1NqwEcrdxqpP1Fug5HuCvUyr4kcpR5Mi9Z', '1xBet', '1xBet 5', 'hildobby', date '2024-09-06')
+    , ('bitcoin', '3KtUhkjv7qC6DieMuprgojV9d1T1iRTgfh', '1xBet', '1xBet 6', 'hildobby', date '2024-09-06')
+
     , ('bitcoin', 'TPQqrAEnrWKTefTpgCNzXAGmJuvBqUrk1P', 'WazirX', 'WazirX 1', 'hildobby', date '2024-05-27')
     , ('bitcoin', 'TXe3EibZP9jFogwyqLPd3APdwxZbiQBUqi', 'WazirX', 'WazirX 2', 'hildobby', date '2024-05-27')
 
@@ -784,5 +791,7 @@ FROM (VALUES
     , ('bitcoin', '3HzZ4ybqvTJAGrPXVyxQysUiiaJC9LngBZ', 'Bitcoin Suisse', 'Bitcoin Suisse 5', 'hildobby', date '2024-05-27')
     , ('bitcoin', '3KYL5Rz4hdcgiuwfwrikfY3NEGikoPhbhd', 'Bitcoin Suisse', 'Bitcoin Suisse 6', 'hildobby', date '2024-05-27')
     , ('bitcoin', '3CjxgnmNsu3kaFadzVea2FgECuHN7y2ENz', 'Bitcoin Suisse', 'Bitcoin Suisse 7', 'hildobby', date '2024-05-27')
+
+    , ('bitcoin', 'bc1qu2dq8w8lv8v3l7lr2c5tvx3yltv22r3nhkx7w0', 'eXch.sc', 'eXch.sc 1', 'hildobby', date '2024-09-06')
     
     ) AS x (blockchain, address, cex_name, distinct_name, added_by, added_date)
