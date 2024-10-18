@@ -21,7 +21,7 @@ base as (
     block_time
     , block_slot
     , action
-    , amount
+    , amount --these are the raw amounts from the spl_transfers, even though the name is amount 
     , fee
     , from_token_account
     , to_token_account
@@ -45,7 +45,7 @@ UNION ALL
     block_time
     , block_slot
     , action
-    , amount
+    , amount --these are the raw amounts from the token22 transfers
     , fee
     , from_token_account
     , to_token_account
@@ -69,7 +69,7 @@ UNION ALL
     block_time
     , block_slot
     , action
-    , amount
+    , amount_raw as amount --for sol transfers, the amount is the raw amount
     , cast (null as double) as fee
     , from_owner
     , to_owner
