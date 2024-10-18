@@ -36,7 +36,7 @@ FROM {{ ref('tokens_solana_spl_transfers') }}
 WHERE {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_time > now() - interval '90' day
+AND block_time > now() - interval '5' hour
 {% endif %}
 UNION ALL
     SELECT
@@ -58,7 +58,7 @@ FROM {{ ref('tokens_solana_token22_spl_transfers') }}
 WHERE {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_time > now() - interval '90' day
+AND block_time > now() - interval '5' hour
 {% endif %}
 UNION ALL
     SELECT
@@ -82,7 +82,7 @@ FROM {{ ref('tokens_solana_sol_transfers') }}
 WHERE {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_time > now() - interval '90' day
+AND block_time > now() - interval '5' hour
 {% endif %}
 )
 
@@ -114,7 +114,7 @@ WHERE 1=1
 AND {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_time > now() - interval '90' day
+AND block_time > now() - interval '5' hour
 {% endif %}
 )
 
@@ -145,12 +145,12 @@ SELECT
     AND {{incremental_predicate('p.minute')}}
     {% endif %}
     {% if not is_incremental() %}
-    AND p.minute > now() - interval '90' day
+    AND p.minute > now() - interval '5' hour
     {% endif %}
 WHERE 1=1
 {% if is_incremental() %}
 AND {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_time > now() - interval '90' day
+AND block_time > now() - interval '5' hour
 {% endif %}

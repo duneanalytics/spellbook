@@ -70,5 +70,5 @@ where 1=1
 AND {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not is_incremental() %}
-AND p.minute > now() - interval '5' hour
+AND p.block_time > now() - interval '5' hour
 {% endif %}
