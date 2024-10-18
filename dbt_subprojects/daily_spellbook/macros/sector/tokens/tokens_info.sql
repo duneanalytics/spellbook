@@ -16,15 +16,15 @@ WITH transfers AS (
     )
 
 , dexs AS (
-    SELECT token_sold_address AS address
+    SELECT address
     , SUM(trades) AS trades
     , SUM(volume) AS volume
-    , array_distinct(array_union_agg(found_on_dexs)) AS found_on_dexs
+    --, array_distinct(array_union_agg(found_on_dexs)) AS found_on_dexs
     FROM (
         SELECT token_sold_address AS address
         , COUNT(*) AS trades
         , SUM(amount_usd) AS volume
-        , array_distinct(array_agg(project)) AS found_on_dexs
+        --, array_distinct(array_agg(project)) AS found_on_dexs
         FROM {{ source('dex', 'trades')}}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1
@@ -34,7 +34,7 @@ WITH transfers AS (
         SELECT token_bought_address AS address
         , COUNT(*) AS trades
         , SUM(amount_usd) AS volume
-        , array_distinct(array_agg(project)) AS found_on_dexs
+        --, array_distinct(array_agg(project)) AS found_on_dexs
         FROM {{ source('dex', 'trades')}}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1
@@ -50,7 +50,7 @@ SELECT address AS token_address
 , t.token_standard
 , trades
 , d.volume
-, d.found_on_dexs
+--, d.found_on_dexs
 , t.transactions
 , t.transfers
 , t.first_block_time
