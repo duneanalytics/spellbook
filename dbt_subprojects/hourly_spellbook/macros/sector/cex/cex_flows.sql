@@ -29,7 +29,7 @@ SELECT DISTINCT '{{blockchain}}' AS blockchain
 FROM {{transfers}} t
 LEFT JOIN cex_ethereum.addresses a ON a.address = t."from" OR a.address=t.tx_from
 LEFT JOIN cex_ethereum.addresses b ON b.address = t.to
-WHERE a.cex_name IS NOT NULL OR b.cex_name IS NOT NULL
+WHERE (a.cex_name IS NOT NULL OR b.cex_name IS NOT NULL)
 {% if is_incremental() %}
 AND {{incremental_predicate('block_time')}}
 {% endif %}
