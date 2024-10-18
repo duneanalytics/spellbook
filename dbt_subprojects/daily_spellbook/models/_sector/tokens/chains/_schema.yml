@@ -1,0 +1,380 @@
+version: 2
+
+models:
+  - name: tokens_ethereum_info
+    meta:
+      blockchain: ethereum
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Ethereum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - &token_address
+        name: token_address
+        description: "Address of the token"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol associated with the the token"
+      - &creator
+        name: creator
+        description: "Address that created the token contract"
+      - &namespace
+        name: namespace
+        description: "Namespace given on dune for this token's decoded tables"
+      - &name
+        name: name
+        description: "Contract name"
+      - &token_standard
+        name: token_standard
+        description: "Token standard"
+      - &trades
+        name: trades
+        description: "Amount of trades on DEXs"
+      - &volume
+        name: volume
+        description: "Total volume across all DEXs"
+      - &found_on_dexs
+        name: found_on_dexs
+        description: "List of DEXs where the token was traded"
+      - &transactions
+        name: transactions
+        description: "The amount of transactions involving a transfer of this token"
+      - &transfers
+        name: transfers
+        description: "The amount of transfers involving a transfer of this token"
+      - &first_block_time
+        name: first_block_time
+        description: "The first block where this token saw a transfer"
+      - &first_block_number
+        name: first_block_number
+        description: "The first block number where this token saw a transfer"
+      - &last_block_time
+        name: last_block_time
+        description: "The last block where this token saw a transfer"
+      - &last_block_number
+        name: last_block_number
+        description: "The last block number where this token saw a transfer"
+
+  - name: tokens_arbitrum_info
+    meta:
+      blockchain: arbitrum
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Arbitrum"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *token_address
+      - *token_symbol
+      - *creator
+      - *namespace
+      - *name
+      - *token_standard
+      - *trades
+      - *volume
+      - *found_on_dexs
+      - *transactions
+      - *transfers
+      - *first_block_time
+      - *first_block_number
+      - *last_block_time
+      - *last_block_number
+
+  - name: tokens_avalanche_c_info
+    meta:
+      blockchain: avalanche_c
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Avalanche"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *token_address
+      - *token_symbol
+      - *creator
+      - *namespace
+      - *name
+      - *token_standard
+      - *trades
+      - *volume
+      - *found_on_dexs
+      - *transactions
+      - *transfers
+      - *first_block_time
+      - *first_block_number
+      - *last_block_time
+      - *last_block_number
+
+  - name: tokens_base_info
+    meta:
+      blockchain: base
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Base"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *token_address
+      - *token_symbol
+      - *creator
+      - *namespace
+      - *name
+      - *token_standard
+      - *trades
+      - *volume
+      - *found_on_dexs
+      - *transactions
+      - *transfers
+      - *first_block_time
+      - *first_block_number
+      - *last_block_time
+      - *last_block_number
+
+  - name: tokens_blast_info
+    meta:
+      blockchain: blast
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Blast"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *token_address
+      - *token_symbol
+      - *creator
+      - *namespace
+      - *name
+      - *token_standard
+      - *trades
+      - *volume
+      - *found_on_dexs
+      - *transactions
+      - *transfers
+      - *first_block_time
+      - *first_block_number
+      - *last_block_time
+      - *last_block_number
+
+  - name: tokens_bnb_info
+    meta:
+      blockchain: bnb
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on BNB"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *token_address
+      - *token_symbol
+      - *creator
+      - *namespace
+      - *name
+      - *token_standard
+      - *trades
+      - *volume
+      - *found_on_dexs
+      - *transactions
+      - *transfers
+      - *first_block_time
+      - *first_block_number
+      - *last_block_time
+      - *last_block_number
+
+  - name: tokens_celo_info
+    meta:
+      blockchain: celo
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Celo"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *token_address
+      - *token_symbol
+      - *creator
+      - *namespace
+      - *name
+      - *token_standard
+      - *trades
+      - *volume
+      - *found_on_dexs
+      - *transactions
+      - *transfers
+      - *first_block_time
+      - *first_block_number
+      - *last_block_time
+      - *last_block_number
+      
+  - name: tokens_gnosis_info
+    meta:
+      blockchain: gnosis
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Gnosis"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *token_address
+      - *token_symbol
+      - *creator
+      - *namespace
+      - *name
+      - *token_standard
+      - *trades
+      - *volume
+      - *found_on_dexs
+      - *transactions
+      - *transfers
+      - *first_block_time
+      - *first_block_number
+      - *last_block_time
+      - *last_block_number
+
+  - name: tokens_optimism_info
+    meta:
+      blockchain: optimism
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Optimism"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *token_address
+      - *token_symbol
+      - *creator
+      - *namespace
+      - *name
+      - *token_standard
+      - *trades
+      - *volume
+      - *found_on_dexs
+      - *transactions
+      - *transfers
+      - *first_block_time
+      - *first_block_number
+      - *last_block_time
+      - *last_block_number
+
+  - name: tokens_polygon_info
+    meta:
+      blockchain: polygon
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Polygon"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *token_address
+      - *token_symbol
+      - *creator
+      - *namespace
+      - *name
+      - *token_standard
+      - *trades
+      - *volume
+      - *found_on_dexs
+      - *transactions
+      - *transfers
+      - *first_block_time
+      - *first_block_number
+      - *last_block_time
+      - *last_block_number
+
+  - name: tokens_scroll_info
+    meta:
+      blockchain: scroll
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Scroll"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *token_address
+      - *token_symbol
+      - *creator
+      - *namespace
+      - *name
+      - *token_standard
+      - *trades
+      - *volume
+      - *found_on_dexs
+      - *transactions
+      - *transfers
+      - *first_block_time
+      - *first_block_number
+      - *last_block_time
+      - *last_block_number
+
+  - name: tokens_zora_info
+    meta:
+      blockchain: zora
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Zora"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *token_address
+      - *token_symbol
+      - *creator
+      - *namespace
+      - *name
+      - *token_standard
+      - *trades
+      - *volume
+      - *found_on_dexs
+      - *transactions
+      - *transfers
+      - *first_block_time
+      - *first_block_number
+      - *last_block_time
+      - *last_block_number
