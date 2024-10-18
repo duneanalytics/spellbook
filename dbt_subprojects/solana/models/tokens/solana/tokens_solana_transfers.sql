@@ -32,8 +32,9 @@ base as (
     , inner_instruction_index
     , outer_executing_account
 FROM {{ ref('tokens_solana_spl_transfers') }}
+WHERE 1=1
 {% if is_incremental() %}
-WHERE {{incremental_predicate('block_time')}}
+AND {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not is_incremental() %}
 AND block_time > now() - interval '5' hour
@@ -54,8 +55,9 @@ UNION ALL
     , inner_instruction_index
     , outer_executing_account
 FROM {{ ref('tokens_solana_token22_spl_transfers') }}
+WHERE 1=1
 {% if is_incremental() %}
-WHERE {{incremental_predicate('block_time')}}
+AND {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not is_incremental() %}
 AND block_time > now() - interval '5' hour
@@ -78,8 +80,9 @@ UNION ALL
     , cast(null as string) as from_token_account
     , cast(null as string) as to_token_account
 FROM {{ ref('tokens_solana_sol_transfers') }}
+WHERE 1=1
 {% if is_incremental() %}
-WHERE {{incremental_predicate('block_time')}}
+AND {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not is_incremental() %}
 AND block_time > now() - interval '5' hour
