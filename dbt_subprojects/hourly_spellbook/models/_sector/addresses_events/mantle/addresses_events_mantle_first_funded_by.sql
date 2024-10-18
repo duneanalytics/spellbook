@@ -1,7 +1,6 @@
 {% set blockchain = 'mantle' %}
 
 {{ config(
-    tags = ['prod_exclude']
     , schema = 'addresses_events_' + blockchain
     , alias = 'first_funded_by'
     , materialized = 'incremental'
