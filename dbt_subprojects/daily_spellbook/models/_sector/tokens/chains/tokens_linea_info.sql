@@ -2,6 +2,7 @@
 
 {{
     config(
+        tags=['prod_exclude'],
         schema = 'tokens_' + blockchain,
         alias = 'info',
         materialized = 'incremental',
