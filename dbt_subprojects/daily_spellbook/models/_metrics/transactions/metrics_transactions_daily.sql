@@ -55,7 +55,7 @@ with raw_tx as (
 select
     blockchain
     , block_date
-    , sum(tx_hash) as tx_count
+    , count(tx_hash) as tx_count
 from
     filtered_tx
 group by
