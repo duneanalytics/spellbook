@@ -315,21 +315,7 @@ models:
       - *cover_owner
 
 
-  # to be deprecated:
-  - name: nexusmutual_ethereum_product_information
-    meta:
-      blockchain: ethereum
-      project: nexusmutual
-      contributors: [guyhow]
-    description: >
-        nexusmutual product information for v1
-    columns:
-      - *product_contract_address
-      - *product_name
-      - *product_type
-      - *date_added
-      - name: syndicate
-
+  # to be deprecated?:
   - name: nexusmutual_ethereum_quotation_trades
     meta:
       blockchain: ethereum
