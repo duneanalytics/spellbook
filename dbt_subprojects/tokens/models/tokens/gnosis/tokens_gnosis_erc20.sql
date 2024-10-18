@@ -7803,4 +7803,5 @@ FROM (VALUES
     , ( 0xac28c9178acc8ba4a11a29e013a3a2627086e422, 'bMSTR', 18)    
     , ( 0xa34c5e0abe843e10461e2c9586ea03e55dbcc495, 'bNVDA', 18)
     , ( 0xbbcb0356bb9e6b3faa5cbf9e5f36185d53403ac9, 'bCOIN', 18)        
+    , ( 0xF490c80aAE5f2616d3e3BDa2483E30C4CB21d1A0, 'osGNO', 18)       
 ) AS temp_table (contract_address, symbol, decimals)

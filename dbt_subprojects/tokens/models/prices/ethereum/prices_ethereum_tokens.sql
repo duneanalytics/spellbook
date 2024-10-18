@@ -73,6 +73,7 @@ FROM
     ('btu-btu-protocol', 'ethereum', 'BTU', 0xb683d83a532e2cb7dfa5275eed3698436371cc9f, 18),
     ('busd-binance-usd', 'ethereum', 'BUSD', 0x4fabb145d64652a948d72533023f6e7a623c7c53, 18),
     ('cake-pancakeswap', 'ethereum', 'CAKE', 0x152649ea73beab28c5b49b26eb48f7ead6d4c898, 18),
+    ('cbbtc-coinbase-wrapped-btc', 'ethereum', 'cbBTC', 0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf, 8),
     ('cel-celsius', 'ethereum', 'CEL', 0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d, 4),
     ('celr-celer-network', 'ethereum', 'CELR', 0x4f9254c83eb525f9fcf346490bbb3ed28a81c667, 18),
     ('cennz-centrality', 'ethereum', 'CENNZ', 0x1122b6a0e00dce0563082b6e2953f3a943855c1f, 18),
@@ -1842,9 +1843,24 @@ FROM
     ('zeta-zetachain', 'ethereum', 'ZETA', 0xf091867ec603a6628ed83d274e835539d82e9cc8, 18),
     ('euri-eurite', 'ethereum', 'EURI', 0x9d1a7a3191102e9f900faa10540837ba84dcbae7, 18),
     ('eigen-eigenlayer', 'ethereum', 'EIGEN', 0xec53bF9167f50cDEB3Ae105f56099aaaB9061F83, 18),
-    ('dinero-dinero', 'ethereum', 'DINERO', 0x6df0e641fc9847c0c6fde39be6253045440c14d3, 18)
-    --('sky-sky', 'ethereum', 'SKY', 0x56072C95FAA701256059aa122697B133aDEd9279, 18),
-    --('usds-usds', 'ethereum', 'USDS', 0xdc035d45d973e3ec169d2276ddab16f1e407384f, 18)
+    ('dinero-dinero', 'ethereum', 'DINERO', 0x6df0e641fc9847c0c6fde39be6253045440c14d3, 18),
+    ('sky-sky', 'ethereum', 'SKY', 0x56072C95FAA701256059aa122697B133aDEd9279, 18),
+    ('usds-usds', 'ethereum', 'USDS', 0xdc035d45d973e3ec169d2276ddab16f1e407384f, 18),
+    ('oni-onigiri', 'ethereum', 'ONI', 0x7777cec341e7434126864195adef9b05dcc3489c, 18),
+    ('nemo-nemo-sum', 'ethereum', 'NEMO', 0xb60fdf036f2ad584f79525b5da76c5c531283a1b, 18),
+    ('gstop-gamestop', 'ethereum', 'GSTOP', 0xdd157bd06c1840fa886da18a138c983a7d74c1d7, 18),
+    ('bubble-imaginary-ones', 'ethereum', 'BUBBLE', 0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3, 18),
+    ('guru-guru-token', 'ethereum', 'GURU', 0x525574c899a7c877a11865339e57376092168258, 18),
+    ('avail-avail', 'ethereum', 'AVAIL',0xeeb4d8400aeefafc1b2953e0094134a887c76bd8, 18),
+    ('licker-licker', 'ethereum', 'LICKER',0x1b3be8fcd2e7c5ce9c5c242e0066fdd9740220d0, 18),
+    ('doge-department-of-government-efficiency', 'ethereum', 'DOGE',0x1121acc14c63f3c872bfca497d10926a6098aac5, 18),
+    ('cate-cate', 'ethereum', 'CATE',0xa00453052a36d43a99ac1ca145dfe4a952ca33b8, 9),
+    ('spx-spx6900', 'ethereum', 'SPX', 0xe0f63a424a4439cbe457d80e4f4b51ad25b2c56c, 8),
+    ('rlb-rollbit-coin', 'ethereum', 'RLB',0x046eee2cc3188071c02bfc1745a6b17c656e3f3d, 18),
+    ('ebull-ethereum-is-good4058', 'ethereum', 'EBULL',0x71297312753ea7a2570a5a3278ed70d9a75f4f44, 9),
+    ('fight-fight-to-maga', 'ethereum', 'FIGHT',0x8802269d1283cdb2a5a329649e5cb4cdcee91ab6, 9),
+    ('sato-atsuko-sato', 'ethereum', 'SATO',0x5de758bba013e58dae2693aea3f0b12b31a3023d, 18),
+    ('kekec-the-balkan-dwarf', 'ethereum', 'KEKEC', 0x8c7ac134ed985367eadc6f727d79e8295e11435c, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

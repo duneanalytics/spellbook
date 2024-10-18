@@ -381,4 +381,6 @@ FROM (VALUES
     , (0x37e428349c8e754c8f70b90f4a0c50cee50b174b, 'BRETT420', 18)
     , (0x0066cadd8822f2f260db3395dcfa6015bb9c1042, '&#127820;', 18)
     , (0xbb4f69a0fca3f63477b6b3b2a3e8491e5425a356, 'GRASS', 18)
+    , (0x6c240dda6b5c336df09a4d011139beaaa1ea2aa2, 'ETHFI', 18)
+    , (0x25ea98ac87A38142561eA70143fd44c4772A16b6, 'MORE', 18)    
 ) AS temp_table (contract_address, symbol, decimals)

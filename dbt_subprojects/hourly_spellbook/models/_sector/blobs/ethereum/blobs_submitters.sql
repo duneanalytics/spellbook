@@ -63,4 +63,6 @@ SELECT address
         , (0x65115c6d23274e0a29a63b69130efe901aa52e7a, 'Hemi Network', 'hemi_xyz')
         , (0x43ca061ea80fbb4a2b5515f4be4e953b191147af, 'Ethernity', 'EthernityChain')
         , (0xee12c640b0793cf514e42ea1c428bd5399545d4d, 'MetaMail', 'MetaMailInk')
+        , (0xe42aa6d07e28655bc060251d6ccbb1368e4333fd, 'Nanon Network', 'NanonNetwork')
+        , (0xea0337efc12e98ab118948da570c07691e8e4b37, 'Fuel', 'fuel_network')
         ) AS x(address, entity, x_username)
