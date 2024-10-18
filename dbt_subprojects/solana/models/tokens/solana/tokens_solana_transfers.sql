@@ -23,6 +23,8 @@ base as (
     , action
     , amount --these are the raw amounts from the spl_transfers, even though the name is amount 
     , fee
+    , cast (null as varchar) as from_owner
+    , cast (null as varchar) as to_owner
     , from_token_account
     , to_token_account
     , token_version
@@ -47,6 +49,8 @@ UNION ALL
     , action
     , amount --these are the raw amounts from the token22 transfers
     , fee
+    , cast (null as varchar) as from_owner
+    , cast (null as varchar) as to_owner
     , from_token_account
     , to_token_account
     , token_version
@@ -73,6 +77,8 @@ UNION ALL
     , cast (null as double) as fee
     , from_owner
     , to_owner
+    , cast (null as varchar) as from_token_account
+    , cast (null as varchar) as to_token_account
     , token_version
     , tx_signer
     , tx_id
@@ -102,8 +108,14 @@ SELECT
         WHEN tr.token_version = 'native' THEN tr.token_mint_address
         ELSE COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
       END as token_mint_address
-    , tk_s.token_balance_owner as from_owner
-    , tk_d.token_balance_owner as to_owner
+    , CASE
+        WHEN tr.token_version = 'native' THEN tr.from_owner
+        ELSE tk_s.token_balance_owner
+      END as from_owner
+    , CASE
+        WHEN tr.token_version = 'native' THEN tr.to_owner
+        ELSE tk_d.token_balance_owner
+      END as to_owner
     , from_token_account
     , to_token_account
     , token_version
