@@ -73,6 +73,7 @@ FROM
     ('btu-btu-protocol', 'ethereum', 'BTU', 0xb683d83a532e2cb7dfa5275eed3698436371cc9f, 18),
     ('busd-binance-usd', 'ethereum', 'BUSD', 0x4fabb145d64652a948d72533023f6e7a623c7c53, 18),
     ('cake-pancakeswap', 'ethereum', 'CAKE', 0x152649ea73beab28c5b49b26eb48f7ead6d4c898, 18),
+    ('cbbtc-coinbase-wrapped-btc', 'ethereum', 'cbBTC', 0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf, 8),
     ('cel-celsius', 'ethereum', 'CEL', 0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d, 4),
     ('celr-celer-network', 'ethereum', 'CELR', 0x4f9254c83eb525f9fcf346490bbb3ed28a81c667, 18),
     ('cennz-centrality', 'ethereum', 'CENNZ', 0x1122b6a0e00dce0563082b6e2953f3a943855c1f, 18),
