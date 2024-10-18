@@ -13,7 +13,7 @@ with raw_tx as (
     select
         blockchain
         , cast(date_trunc('day', block_time) as date) as block_date
-        , tx_hash
+        , hash as tx_hash
     from
         {{ source('evms', 'transactions') }}
     where
@@ -25,7 +25,7 @@ with raw_tx as (
     group by
         blockchain
         , cast(date_trunc('day', block_time) as date)
-        , tx_hash
+        , hash
 ), net_transfers_filter as (
     select 
         blockchain
