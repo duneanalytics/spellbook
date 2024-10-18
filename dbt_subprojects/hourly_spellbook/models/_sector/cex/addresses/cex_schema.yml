@@ -3,7 +3,7 @@ version: 2
 models:
   - name: cex_evms_addresses
     meta:
-      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, fantom, base, zksync, celo, zora
+      blockchain: ethereum, bnb, avalanche_c, optimism, arbitrum, polygon, fantom, base, zksync, celo, zora, worldchain, mantle, sei
       sector: cex
       contributors: hildobby
     config:
