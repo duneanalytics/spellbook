@@ -98,7 +98,10 @@ SELECT
     , action
     , amount
     , fee
-    , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address, tr.token_mint_address) as token_mint_address
+    , CASE
+        WHEN tr.token_version = 'native' THEN tr.token_mint_address
+        ELSE COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
+      END as token_mint_address
     , tk_s.token_balance_owner as from_owner
     , tk_d.token_balance_owner as to_owner
     , from_token_account
@@ -111,8 +114,8 @@ SELECT
     , outer_executing_account
 FROM base tr
 --get token and accounts
-LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.from_token_account and token_version <> 'native'
-LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.to_token_account and token_version <> 'native'
+LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.from_token_account 
+LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.to_token_account
 WHERE 1=1
 {% if is_incremental() %}
 AND {{incremental_predicate('block_time')}}
