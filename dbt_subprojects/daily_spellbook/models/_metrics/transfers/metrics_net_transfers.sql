@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'tokens'
+        schema = 'metrics'
         , alias = 'net_transfers'
         , materialized = 'incremental'
         , file_format = 'delta'
@@ -59,6 +59,17 @@ with raw_transfers as (
         , tx_hash
         , to
         , 'received'
+), labels as (
+    select
+        od.owner_key
+        , od.primary_category
+        , oa.blockchain
+        , oa.address
+    from
+        {{ source('labels', 'owner_addresses') }} as oa
+    inner join
+        {{ source('labels', 'owner_details') }} as od
+        on oa.owner_key = od.owner_key
 ), transfers_amount as (
     /*
     - create one column for transfer amount received, one column for transfer amount sent
@@ -73,9 +84,11 @@ with raw_transfers as (
     from
         raw_transfers as t
     left join
-        {{ source('labels', 'owner_addresses') }} as l
+        labels as l
         on t.blockchain = l.blockchain
         and t.address = l.address
+    where
+        l.primary_category not in ('Hacks and exploits', 'Social Engineering Scams') -- filter out scam addresses
     group by
         t.blockchain
         , t.block_date

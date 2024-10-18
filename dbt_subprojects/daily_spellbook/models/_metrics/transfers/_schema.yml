@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: tokens_net_transfers
+  - name: metrics_net_transfers
     meta:
       sector: metrics
       contributors: jeff-dude

@@ -16,7 +16,7 @@ select
     , sum(transfer_amount_usd_received) as transfer_amount_usd_received
     , sum(net_transfer_amount_usd) as net_transfer_amount_usd
 from
-    {{ ref('tokens_net_transfers') }}
+    {{ ref('metrics_net_transfers') }}
 where
     1 = 1
     and net_transfer_amount_usd > 0
