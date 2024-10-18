@@ -36,6 +36,7 @@ ref('prices_native_tokens')
 ,ref('prices_sei_tokens')
 ,ref('prices_nova_tokens')
 ,ref('prices_worldchain_tokens')
+,ref('prices_tron_tokens')
 ] %}
 
 
