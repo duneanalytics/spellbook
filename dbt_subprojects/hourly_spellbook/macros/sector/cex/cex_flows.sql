@@ -10,7 +10,7 @@ SELECT DISTINCT '{{blockchain}}' AS blockchain
 , t.symbol AS token_symbol
 , t.token_standard
 , CASE WHEN a.cex_name=c.cex_name AND a.cex_name IS NOT NULL THEN 'Internal'
-    WHEN a.cex_name<>c.cex_name AND a.cex_name IS NOT NULL AND b.cex_name IS NOT NULL THEN 'Cross-CEX'
+    WHEN a.cex_name<>c.cex_name AND a.cex_name IS NOT NULL AND c.cex_name IS NOT NULL THEN 'Cross-CEX'
     WHEN a.cex_name IS NOT NULL THEN 'Outflow'
     WHEN c.cex_name IS NOT NULL THEN 'Inflow'
     WHEN d.cex_name IS NOT NULL THEN 'Executed Contract'
