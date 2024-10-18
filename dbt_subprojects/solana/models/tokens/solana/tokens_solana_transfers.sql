@@ -77,8 +77,8 @@ UNION ALL
     , outer_instruction_index
     , inner_instruction_index
     , outer_executing_account
-    , cast(null as string) as from_token_account
-    , cast(null as string) as to_token_account
+    , cast(null as varchar) as from_token_account
+    , cast(null as varchar) as to_token_account
 FROM {{ ref('tokens_solana_sol_transfers') }}
 WHERE 1=1
 {% if is_incremental() %}
