@@ -32,7 +32,7 @@ with raw_tx as (
         , block_date
         , tx_hash
     from
-        {{ ref('tokens_net_transfers') }}
+        {{ ref('metrics_net_transfers') }}
     where
         1 = 1
         and net_transfer_amount_usd >= 1 --only include tx's where transfer value is greater at least $1
