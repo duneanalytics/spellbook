@@ -77,8 +77,6 @@ UNION ALL
     , outer_instruction_index
     , inner_instruction_index
     , outer_executing_account
-    , cast(null as varchar) as from_token_account
-    , cast(null as varchar) as to_token_account
 FROM {{ ref('tokens_solana_sol_transfers') }}
 WHERE 1=1
 {% if is_incremental() %}
@@ -110,8 +108,8 @@ SELECT
     , outer_executing_account
 FROM base tr
 --get token and accounts
-LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.from_token_account
-LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.to_token_account
+LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.from_token_account and token_version <> 'native'
+LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.to_token_account and token_version <> 'native'
 WHERE 1=1
 {% if is_incremental() %}
 AND {{incremental_predicate('block_time')}}
