@@ -128,7 +128,7 @@ SELECT
     , block_slot
     , action
     , amount
-    , p.price * amount as amount_usd
+    , p.price * amount/p.decimals as amount_usd
     , fee
     , token_mint_address
     , from_owner
