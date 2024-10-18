@@ -12,19 +12,19 @@
 with raw_tx as (
     select
         blockchain
-        , block_date
+        , cast(date_trunc('day', block_time) as date) as block_date
         , tx_hash
     from
         {{ source('evms', 'transactions') }}
     where
         1 = 1
-        and block_date >= timestamp '2024-10-01'
+        and block_time >= timestamp '2024-10-01'
         {% if is_incremental() %}
-        and {{ incremental_predicate('block_date') }}
+        and {{ incremental_predicate('block_time') }}
         {% endif %}
     group by
         blockchain
-        , block_date
+        , cast(date_trunc('day', block_time) as date)
         , tx_hash
 ), net_transfers_filter as (
     select 
