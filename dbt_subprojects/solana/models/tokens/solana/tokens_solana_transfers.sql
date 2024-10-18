@@ -98,7 +98,7 @@ SELECT
     , action
     , amount
     , fee
-    , COALESCE(tr.token_mint_address, tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
+    , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address, tr.token_mint_address) as token_mint_address
     , tk_s.token_balance_owner as from_owner
     , tk_d.token_balance_owner as to_owner
     , from_token_account
@@ -128,7 +128,10 @@ SELECT
     , block_slot
     , action
     , amount
-    , p.price * amount/p.decimals as amount_usd
+    , CASE 
+        WHEN p.decimals = 0 THEN p.price * amount
+        ELSE p.price * amount / power(10, p.decimals)
+      END as amount_usd
     , fee
     , token_mint_address
     , from_owner
