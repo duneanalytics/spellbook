@@ -4,7 +4,7 @@ SELECT DISTINCT '{{blockchain}}' AS blockchain
 , CAST(date_trunc('month', block_time) AS date) AS block_month
 , block_time
 , block_number
-, a.cex_name
+, COALESCE(c.cex_name, a.cex_name, d.cex_name, b.cex_name) AS cex_name
 , a.distinct_name
 , t.contract_address AS token_address
 , t.symbol AS token_symbol
