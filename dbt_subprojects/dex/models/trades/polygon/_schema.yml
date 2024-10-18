@@ -379,3 +379,20 @@ models:
           seed_file: ref('swaap_polygon_base_trades_seed') 
           filter:
             version: 2
+
+  - name: dfyn_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: dfyn
+      contributors: letaharouna
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'dfyn', 'v2' ]
+    description: "dfyn polygon base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dfyn_polygon_base_trades_seed')

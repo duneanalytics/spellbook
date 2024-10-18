@@ -34,7 +34,3 @@ sources:
   - name: ethereum
     tables:
       - name: blobs_submissions
-      
-  - name: gas
-    tables:
-      - name: fees
