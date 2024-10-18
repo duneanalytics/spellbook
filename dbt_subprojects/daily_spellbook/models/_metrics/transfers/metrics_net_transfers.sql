@@ -87,8 +87,8 @@ with raw_transfers as (
         labels as l
         on t.blockchain = l.blockchain
         and t.address = l.address
-    --where
-        --l.primary_category not in ('Hacks and exploits', 'Social Engineering Scams') -- filter out scam addresses
+    where
+        l.primary_category not in ('Hacks and exploits', 'Social Engineering Scams') -- filter out scam addresses
     group by
         t.blockchain
         , t.block_date
