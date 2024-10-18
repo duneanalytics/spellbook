@@ -11,7 +11,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "fantom", "goerli", "base", "celo", "zksync", "zora", "scroll", "linea", "blast", "mantle"]\',
                                     "sector",
                                     "nft",
-                                    \'["hildobby", "0xRob", "rantum"]\') }}'
+                                    \'["hildobby", "0xRob", "rantum","petertherock"]\') }}'
 )
 }}
 
@@ -33,6 +33,7 @@
 ,ref('nft_linea_transfers')
 ,ref('nft_blast_transfers')
 ,ref('nft_mantle_transfers')
+,ref('nft_sei_transfers')
 ] %}
 
 SELECT *
