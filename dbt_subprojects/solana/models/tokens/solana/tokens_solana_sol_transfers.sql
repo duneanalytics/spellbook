@@ -39,7 +39,7 @@ WITH transfers AS (
     WHERE {{incremental_predicate('call_block_time')}}
     {% endif %}
     {% if not is_incremental() %}
-    WHERE call_block_time > now() - interval '5' hour
+    WHERE call_block_time > now() - interval '30' day
     {% endif %}
 )
 
@@ -70,5 +70,5 @@ where 1=1
 AND {{incremental_predicate('t.block_time')}}
 {% endif %}
 {% if not is_incremental() %}
-AND t.block_time > now() - interval '5' hour
+AND t.block_time > now() - interval '30' day
 {% endif %}
