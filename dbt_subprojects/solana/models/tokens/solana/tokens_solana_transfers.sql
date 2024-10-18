@@ -31,6 +31,7 @@ base as (
     , outer_instruction_index
     , inner_instruction_index
     , outer_executing_account
+    , cast (null as varchar) as token_mint_address
 FROM {{ ref('tokens_solana_spl_transfers') }}
 WHERE 1=1
 {% if is_incremental() %}
@@ -54,6 +55,7 @@ UNION ALL
     , outer_instruction_index
     , inner_instruction_index
     , outer_executing_account
+    , cast(null as varchar) as token_mint_address
 FROM {{ ref('tokens_solana_token22_spl_transfers') }}
 WHERE 1=1
 {% if is_incremental() %}
@@ -77,6 +79,7 @@ UNION ALL
     , outer_instruction_index
     , inner_instruction_index
     , outer_executing_account
+    , token_mint_address as token_mint_address
 FROM {{ ref('tokens_solana_sol_transfers') }}
 WHERE 1=1
 {% if is_incremental() %}
@@ -95,7 +98,7 @@ SELECT
     , action
     , amount
     , fee
-    , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
+    , COALESCE(tr.token_mint_address, tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
     , tk_s.token_balance_owner as from_owner
     , tk_d.token_balance_owner as to_owner
     , from_token_account
