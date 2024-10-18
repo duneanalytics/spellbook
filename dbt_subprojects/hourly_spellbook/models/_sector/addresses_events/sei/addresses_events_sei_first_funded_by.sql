@@ -1,7 +1,7 @@
 {% set blockchain = 'sei' %}
 
 {{ config(
-    , schema = 'addresses_events_' + blockchain
+    schema = 'addresses_events_' + blockchain
     , alias = 'first_funded_by'
     , materialized = 'incremental'
     , file_format = 'delta'
