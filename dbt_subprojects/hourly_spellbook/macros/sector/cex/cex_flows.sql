@@ -13,7 +13,7 @@ SELECT DISTINCT '{{blockchain}}' AS blockchain
     WHEN a.address=t."from" AND b.address=t.to THEN 'Cross-CEX'
     WHEN b.address=t.to THEN 'Inflow'
     WHEN a.address=t."from" THEN 'Outflow'
-    ELSE 'Executed'
+    WHEN a.address=t.tx_from THEN 'Executed'
     END AS flow_type
 , CASE WHEN a.address=t."from" AND b.address!=t.to THEN -t.amount ELSE t.amount END AS amount
 , t.amount_raw
@@ -27,7 +27,7 @@ SELECT DISTINCT '{{blockchain}}' AS blockchain
 , t.evt_index
 , t.unique_key
 FROM {{transfers}} t
-INNER JOIN {{addresses}} a ON a.address = t."from" OR OR a.address=t.tx_from
+INNER JOIN {{addresses}} a ON a.address = t."from" OR a.address=t.tx_from
 INNER JOIN {{addresses}} b ON b.address = t.to
 {% if is_incremental() %}
 WHERE {{incremental_predicate('block_time')}}
