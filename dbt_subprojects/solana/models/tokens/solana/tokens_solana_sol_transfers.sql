@@ -67,8 +67,8 @@ SELECT
 FROM transfers t
 where 1=1 
 {% if is_incremental() %}
-AND {{incremental_predicate('block_time')}}
+AND {{incremental_predicate('t.block_time')}}
 {% endif %}
 {% if not is_incremental() %}
-AND p.block_time > now() - interval '5' hour
+AND t.block_time > now() - interval '5' hour
 {% endif %}
