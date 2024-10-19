@@ -177,3 +177,4 @@ AND {{incremental_predicate('block_time')}}
 {% if not is_incremental() %}
 AND block_time > now() - interval '7' day
 {% endif %}
+ 
