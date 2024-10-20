@@ -90,6 +90,7 @@ sources:
           - name: token_id
           - name: amount
           - name: type
+      - name: balances_polygon_0002
 
   - name: tokens_scroll
     description: "Prices tables across blockchains"
