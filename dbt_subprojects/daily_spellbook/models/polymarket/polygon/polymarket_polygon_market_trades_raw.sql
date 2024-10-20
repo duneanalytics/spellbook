@@ -14,6 +14,7 @@
   )
 }}
 
+/*
 with fpmm_markets as (
   select
     fpmm.evt_block_time,
@@ -82,6 +83,8 @@ where {{ incremental_predicate('t.evt_block_time') }}
 {% endif %}
 
 union all
+some bug in fpmms here, no time to fix and they arent used for anything anyway*/
+
 
 select
   t.evt_block_time as block_time,

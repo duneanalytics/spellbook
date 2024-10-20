@@ -22,11 +22,18 @@ WITH changed_balances AS (
         token_id,
         amount as balance,
         LEAD(CAST(block_time AS timestamp)) OVER (PARTITION BY contract_address, address, token_id ORDER BY block_time ASC) AS next_update_day
-    FROM {{ source('tokens_polygon', 'balances_polygon_0002') }}
-    WHERE block_time < DATE(DATE_TRUNC('day', NOW())) 
-      AND type = 'erc1155' 
-      AND contract_address = 0x4D97DCd97eC945f40cF65F87097ACe5EA0476045
-      AND block_time > TIMESTAMP '2020-09-02 00:00:00'
+    FROM (
+        SELECT *,
+               ROW_NUMBER() OVER (PARTITION BY DATE_TRUNC('day', block_time), address, contract_address, token_id 
+                                  ORDER BY block_time DESC) as rn
+        FROM {{ source('tokens_polygon', 'balances_polygon_0002') }}
+        WHERE block_time < DATE(DATE_TRUNC('day', NOW())) 
+          AND type = 'erc1155' 
+          AND contract_address = 0x4D97DCd97eC945f40cF65F87097ACe5EA0476045
+          AND block_time > TIMESTAMP '2020-09-02 00:00:00'
+    ) ranked
+    WHERE rn = 1
+    and block_time < now() - interval '30 day' -- just for testing
 ),
 
 days AS (
@@ -62,6 +69,7 @@ SELECT
     token_id,
     balance / 1e6 AS balance
 FROM balances
+WHERE 1=1 
 {% if is_incremental() %}
-WHERE {{ incremental_predicate('day') }}
+AND {{ incremental_predicate('day') }}
 {% endif %}
