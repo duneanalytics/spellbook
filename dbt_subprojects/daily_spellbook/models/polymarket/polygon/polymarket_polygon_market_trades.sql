@@ -33,4 +33,4 @@ select
   md.unique_key,
   md.token_outcome_name
 from {{ ref('polymarket_polygon_market_trades_raw') }} t
-left join {{ ref('polymarket_polygon_market_details') }} md on t.condition_id = md.condition_id
+left join {{ ref('polymarket_polygon_market_details') }} md on t.asset_id = md.token_id

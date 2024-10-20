@@ -82,7 +82,7 @@ SELECT
   c.question_id AS question_id,
   question,
   description as market_description,
-  token_id AS token_id,
+  try_cast(token_id AS UINT256) AS token_id,
   token_outcome,
   token_outcome || '-' || question as token_outcome_name,
   active,
