@@ -33,7 +33,7 @@ WITH changed_balances AS (
           AND block_time > TIMESTAMP '2020-09-02 00:00:00'
     ) ranked
     WHERE rn = 1
-    and block_time < now() - interval '30 day' -- just for testing
+    and block_time > now() - interval '30' day -- just for testing
 ),
 
 days AS (
