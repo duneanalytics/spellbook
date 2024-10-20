@@ -52,7 +52,7 @@ forward_fill AS (
         balance
     FROM days d
     LEFT JOIN changed_balances b
-        ON d.day >= b.day
+        ON d.day > b.day
         AND (b.next_update_day IS NULL OR d.day < b.next_update_day)
 ),
 
