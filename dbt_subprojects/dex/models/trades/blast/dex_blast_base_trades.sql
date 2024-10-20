@@ -14,6 +14,7 @@
     , ref('dackieswap_v2_blast_base_trades')
     , ref('sushiswap_v2_blast_base_trades')
     , ref('dackieswap_v3_blast_base_trades')
+    , ref('swapblast_blast_base_trades')
 ] %}
 
 WITH base_union AS (

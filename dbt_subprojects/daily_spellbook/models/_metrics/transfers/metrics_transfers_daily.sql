@@ -61,20 +61,24 @@ with raw_transfers as (
     /*
     - create one column for transfer amount received, one column for transfer amount sent
     */
-    select 
-        blockchain
-        , block_date
-        , tx_hash
-        , address
-        , sum(case when transfer_direction = 'sent' then transfer_amount_usd else 0 end) as transfer_amount_usd_sent
-        , sum(case when transfer_direction = 'received' then transfer_amount_usd else 0 end) as transfer_amount_usd_received
+    select
+        t.blockchain
+        , t.block_date
+        , t.tx_hash
+        , coalesce(l.owner_key, cast(t.address as varchar)) as address_owner
+        , sum(case when t.transfer_direction = 'sent' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_sent
+        , sum(case when t.transfer_direction = 'received' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_received
     from
-        raw_transfers     
+        raw_transfers as t
+    left join
+        {{ source('labels', 'owner_addresses') }} as l
+        on t.blockchain = l.blockchain
+        and t.address = l.address
     group by
-        blockchain
-        , block_date
-        , tx_hash
-        , address
+        t.blockchain
+        , t.block_date
+        , t.tx_hash
+        , coalesce(l.owner_key, cast(t.address as varchar))
 ), net_transfers as (
     /*
     - add amount received and amount sent (since transfer amount sent is set to a negative number, this calculates the net transfer amount received)
@@ -84,7 +88,7 @@ with raw_transfers as (
         blockchain
         , block_date
         , tx_hash
-        , address
+        , address_owner
         , sum(coalesce(transfer_amount_usd_sent, 0)) as transfer_amount_usd_sent
         , sum(coalesce(transfer_amount_usd_received, 0)) as transfer_amount_usd_received
         , sum(coalesce(transfer_amount_usd_received, 0)) + sum(coalesce(transfer_amount_usd_sent, 0)) as net_transfer_amount_usd
@@ -94,7 +98,7 @@ with raw_transfers as (
         blockchain
         , block_date
         , tx_hash
-        , address
+        , address_owner
 )
 select 
     blockchain

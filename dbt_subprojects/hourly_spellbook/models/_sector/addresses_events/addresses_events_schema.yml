@@ -4,7 +4,7 @@ models:
 
   - name: addresses_events_first_funded_by
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea, zksync, sei, mantle
       sector: addresses_events
       project: addresses
       contributors: hildobby
@@ -58,7 +58,7 @@ models:
 
   - name: addresses_events_first_activity
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync, base, scroll, zkevm, linea
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync, base, scroll, zkevm, linea, sei, mantle
       sector: addresses_events
       project: addresses
       contributors: Henrystats, hildobby

@@ -26,7 +26,6 @@ SELECT
     tx_to,    
     event_name,
     msg_sender,
-    account,
     market,
     collateral_token,
     affiliate,

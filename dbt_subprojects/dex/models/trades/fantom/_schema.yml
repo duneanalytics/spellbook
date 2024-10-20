@@ -204,3 +204,19 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('solidly_v3_fantom_base_trades_seed')
 
+  - name: yoshiexchange_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: dex
+      project: yoshiexchange
+      contributors: evetliu
+    config:
+      tags: ['fantom', 'dex', 'trades', 'yoshiexchange']
+    description: "Yoshiexchange fantom base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('yoshiexchange_fantom_base_trades_seed')

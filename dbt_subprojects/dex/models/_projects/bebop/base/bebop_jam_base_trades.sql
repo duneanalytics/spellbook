@@ -1,5 +1,4 @@
 {{ config(
-    tags = ['prod_exclude'],
     schema = 'bebop_jam_base',
     alias = 'trades',
     partition_by = ['block_month'],
@@ -49,6 +48,8 @@ bebop_jam_raw_data AS (
     {% if is_incremental() %}
     AND {{ incremental_predicate('evt.evt_block_time') }}
     {% endif %}
+    AND json_array_length(JSON_EXTRACT(ex."order", '$.sellTokens')) > 0
+    AND json_array_length(JSON_EXTRACT(ex."order", '$.buyTokens')) > 0
 ),
 
 jam_unnested_array_taker AS (

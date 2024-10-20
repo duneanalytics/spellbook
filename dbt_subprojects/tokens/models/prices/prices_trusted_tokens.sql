@@ -128,6 +128,7 @@ WITH trusted_tokens AS (
                 , ('worldchain', 0x79A02482A880bCE3F13e09Da970dC34db4CD24d1)
                 , ('worldchain', 0x03C7054BCB39f7b2e5B2c7AcB37583e32D70Cfa3)
                 , ('worldchain', 0x4200000000000000000000000000000000000006)
+                , ('worldchain', 0x859DBE24b90C9f2f7742083d3cf59cA41f55Be5d)
                 , ('zkevm', 0x4f9a0e7fd2bf6067db6994cf12e4495df938e6e9)
                 , ('zkevm', 0x1e4a5963abfd975d8c9021ce480b42188849d41d)
                 , ('zkevm', 0x37eaa0ef3549a5bb7d431be78a3d99bd360d19e5)
