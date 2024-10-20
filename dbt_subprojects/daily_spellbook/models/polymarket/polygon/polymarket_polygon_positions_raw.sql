@@ -19,16 +19,15 @@ WITH changed_balances AS (
         blockchain,
         date_trunc('day', block_time) as day,
         address,
-        token_symbol,
-        token_address,
-        token_standard,
+        contract_address as token_address,
+        type as token_standard,
         token_id,
         balance,
         LEAD(CAST(day AS timestamp)) OVER (PARTITION BY token_address, address, token_id ORDER BY block_time ASC) AS next_update_day
     FROM {{ source('tokens_polygon', 'balances_polygon_0002') }}
     WHERE block_time < DATE(DATE_TRUNC('day', NOW())) 
-      AND token_standard = 'erc1155' 
-      AND token_address = 0x4D97DCd97eC945f40cF65F87097ACe5EA0476045
+      AND type = 'erc1155' 
+      AND contract_address = 0x4D97DCd97eC945f40cF65F87097ACe5EA0476045
       AND block_time > TIMESTAMP '2020-01-01 00:00:00'
 ),
 
