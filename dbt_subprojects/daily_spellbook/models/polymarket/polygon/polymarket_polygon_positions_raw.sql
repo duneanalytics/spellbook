@@ -10,7 +10,7 @@
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
                                   spell_name = "polymarket",
-                                  contributors = \'["tomfutago"]\') }}'
+                                  contributors = \'["0xBoxer"]\') }}'
   )
 }}
 
