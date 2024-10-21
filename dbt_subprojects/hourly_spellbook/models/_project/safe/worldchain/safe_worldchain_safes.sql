@@ -16,7 +16,7 @@
     )
 }}
 
-{% set project_start_date = '2024-10-01' %}
+{% set project_start_date = '2024-06-30' %}
 
 select
     'worldchain' as blockchain,
