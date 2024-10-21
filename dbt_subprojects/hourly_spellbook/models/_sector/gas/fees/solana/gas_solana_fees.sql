@@ -1,11 +1,10 @@
 {{ config(
     schema = 'gas_solana',
     alias = 'fees',
-    tags = ['prod_exclude'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
-    incremental_strategy = 'merge',
+    incremental_strategy = 'append',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'block_slot', 'tx_index']
 ) }}
@@ -147,3 +146,8 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     {% if is_incremental() or true %}
         AND {{ incremental_predicate('p.minute') }}
     {% endif %}
+{% if is_incremental() or true %}
+    WHERE block_time > (select max(block_time) from {{this}})
+    -- run 1h behind to allow for late data
+    and block_time < now() - interval '1' hour
+{% endif %}
