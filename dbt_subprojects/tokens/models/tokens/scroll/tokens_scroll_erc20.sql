@@ -27,4 +27,7 @@ FROM (VALUES
     , (0x5300000000000000000000000000000000000004, 'WETH', 18)
     , (0xaaae8378809bb8815c08d3c59eb0c7d1529ad769, 'NURI', 18)
     , (0x8731d54e9d02c286767d56ac03e8037c07e01e98, 'STG', 18)
+    , (0xb0643f7b3e2e2f10fe4e38728a763ec05f4adec3, 'DAPP', 18)
+    , (0x1a2fcb585b327fadec91f55d45829472b15f17a4, 'TKN', 18)
+    , (0x2147a89fb4608752807216d5070471c09a0dce32, 'ZP', 18)
 ) AS temp_table (contract_address, symbol, decimals)
