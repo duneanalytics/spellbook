@@ -32,8 +32,7 @@ WITH changed_balances AS (
           AND contract_address = 0x4D97DCd97eC945f40cF65F87097ACe5EA0476045
           AND block_time > TIMESTAMP '2020-09-02 00:00:00'
     ) ranked
-    WHERE rn = 1
-    and block_time > now() - interval '30' day -- just for testing
+    WHERE rn = 1 -- picking the latest balance for each day
 ),
 
 days AS (
