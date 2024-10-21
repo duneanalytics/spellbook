@@ -5,7 +5,6 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'delete+insert',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
     unique_key = ['block_date', 'block_slot', 'tx_index']
 ) }}
 
@@ -25,7 +24,7 @@ WITH compute_limit_cte AS (
     WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
     AND bytearray_substring(data,1,1) = 0x02
     AND inner_instruction_index is null -- compute budget and price are inherited on cross program invocation
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
             AND {{ incremental_predicate('block_date') }}
     {% endif %}
 ),
@@ -46,7 +45,7 @@ unit_price_cte AS (
     WHERE executing_account = 'ComputeBudget111111111111111111111111111111'
     AND bytearray_substring(data,1,1) = 0x03
     AND inner_instruction_index is null -- compute budget and price are inherited on cross program invocation
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
             AND {{ incremental_predicate('block_date') }}
     {% endif %}
 ),
@@ -76,10 +75,10 @@ base_model AS (
     LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
         ON t.block_slot = b.slot
         AND t.block_date = b.date
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
             AND {{ incremental_predicate('b.date') }}
         {% endif %}
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
             WHERE {{ incremental_predicate('t.block_date') }}
     {% endif %}
     UNION ALL
@@ -101,10 +100,10 @@ base_model AS (
     LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
         ON vt.block_slot = b.slot
         AND vt.block_date = b.date
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
             AND {{ incremental_predicate('b.date') }}
         {% endif %}
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     WHERE {{ incremental_predicate('vt.block_date') }}
     {% endif %}
 )
@@ -143,7 +142,6 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     --AND to_base58(p.contract_address) = tx_fee_currency  -- this would the right way to do it but slow af
     AND p.contract_address = 0x069b8857feab8184fb687f634618c035dac439dc1aeb3b5598a0f00000000001 --from base58 converted wsol address
     AND p.minute = date_trunc('minute', block_time)
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
         AND {{ incremental_predicate("date_trunc('day',p.minute)")}}
     {% endif %}
-WHERE 1=1
