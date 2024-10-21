@@ -165,3 +165,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('swapblast_blast_base_trades_seed')
+
+  - name: dyorswap_blast_base_trades
+    meta:
+      blockchain: blast
+      sector: dex
+      project: dyorswap
+      contributors: jamesanalyst
+    config:
+      tags: [ 'blast', 'dex', 'trades', 'dyorswap' ]
+    description: "dyorswap Blast base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dyorswap_blast_base_trades_seed')
