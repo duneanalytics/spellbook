@@ -4,7 +4,7 @@
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
-    incremental_strategy = 'append',
+    incremental_strategy = 'delete+insert',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'block_slot', 'tx_index']
 ) }}
@@ -148,7 +148,7 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     {% endif %}
 WHERE 1=1
 {% if is_incremental() %}
-    and block_time > (select max(block_time) from {{this}})
+--    and block_time > (select max(block_time) from {{this}})
 {% endif %}
 -- run 1h behind to allow for late data
 and block_time < now() - interval '1' hour
