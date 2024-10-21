@@ -69,10 +69,10 @@ settler_txs AS (
             a.settler_address
         FROM 
             {{ source('avalanche_c', 'traces') }} AS tr
-        JOIN 
+        LEFT JOIN 
             result_0x_settler_addresses a ON a.settler_address = tr.to AND a.blockchain = 'avalanche_c' AND tr.block_time > a.begin_block_time
         WHERE 
-            (a.settler_address IS NOT NULL OR tr.to = 0xca11bde05977b3631167028862be2a173976ca11)
+            (a.settler_address IS NOT NULL OR tr.to = 0x0000000000005E88410CcDFaDe4a5EfaE4b49562 )
             AND varbinary_substring(input,1,4) IN (0x1fff991f, 0xfd3ad6d4)
             {% if is_incremental() %}
                 AND {{ incremental_predicate('block_time') }}
@@ -115,6 +115,7 @@ with tbl_all_logs AS (
                 or (st.settler_address= bytearray_substring(logs.topic2,13,20)) 
                 or logs.tx_from = bytearray_substring(logs.topic1,13,20) 
                 or logs.tx_from = bytearray_substring(logs.topic2,13,20) 
+                or logs.tx_to = varbinary_substring(logs.topic1,13,20) 
                  )   
     WHERE 
         topic0 IN ( 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,

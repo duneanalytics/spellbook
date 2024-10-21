@@ -125,6 +125,9 @@ sources:
 
       - name: instruction_calls
         description: '{{ doc("solana_instruction_calls_doc") }}'
+        meta:
+          docs_slug: /solana/instruction_calls
+          short_description: The `solana.instruction_calls` table contains detailed information about instruction calls on the Solana blockchain, including account keys, block data, transaction data, and more.
         columns:
           - *block_slot
           - *block_hash
@@ -160,7 +163,28 @@ sources:
             description: "The transaction was valid and thus committed."
           - name: log_messages
             description: "The log messages emitted by the transaction"
-
+      - name: vote_transactions
+        description: '{{ doc("solana_vote_transactions_doc") }}'
+        meta:
+          docs_slug: /solana/vote_transactions
+          short_description: The `solana.vote_transactions` table contains only vote transactions. The votes are transactions that are not executed but are used to select the leader for a given block.
+        columns:
+          - *block_slot
+          - *block_hash
+          - *block_time
+          - *block_date
+          - name: tx_hash
+            description: "The unique identifier of the transaction"
+          - name: tx_from
+            description: "The address that initiates the transaction and pays the transaction fee"
+          - name: tx_fee_raw
+            description: "The raw transaction fee in lamports"
+          - name: block_proposer
+            description: "The leader who proposed the block"
+          - name: tx_type
+            description: "The type of the transaction"
+          - name: limit_type
+            description: "The type of compute limit applied to the transaction"
   - name: system_program_solana
     description: tables in the system_program_solana schema
     tables:
@@ -184,3 +208,4 @@ sources:
           docs_slug: /solana/block_leaders
         description: Leaders for each block on the Solana blockchain
         
+      
