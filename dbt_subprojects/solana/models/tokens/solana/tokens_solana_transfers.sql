@@ -11,7 +11,7 @@
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "tokens_solana",
-                                    \'["ilemi"]\') }}')
+                                    \'["ilemi", "0xBoxer"]\') }}')
 }}
 
 
@@ -21,8 +21,10 @@ base as (
     block_time
     , block_slot
     , action
-    , amount
+    , amount --these are the raw amounts from the spl_transfers, even though the name is amount 
     , fee
+    , cast (null as varchar) as from_owner
+    , cast (null as varchar) as to_owner
     , from_token_account
     , to_token_account
     , token_version
@@ -31,17 +33,24 @@ base as (
     , outer_instruction_index
     , inner_instruction_index
     , outer_executing_account
+    , cast (null as varchar) as token_mint_address
 FROM {{ ref('tokens_solana_spl_transfers') }}
+WHERE 1=1
 {% if is_incremental() %}
-WHERE {{incremental_predicate('block_time')}}
+AND {{incremental_predicate('block_time')}}
+{% endif %}
+{% if not is_incremental() %}
+AND block_time > now() - interval '7' day
 {% endif %}
 UNION ALL
     SELECT
     block_time
     , block_slot
     , action
-    , amount
+    , amount --these are the raw amounts from the token22 transfers
     , fee
+    , cast (null as varchar) as from_owner
+    , cast (null as varchar) as to_owner
     , from_token_account
     , to_token_account
     , token_version
@@ -50,12 +59,44 @@ UNION ALL
     , outer_instruction_index
     , inner_instruction_index
     , outer_executing_account
+    , cast(null as varchar) as token_mint_address
 FROM {{ ref('tokens_solana_token22_spl_transfers') }}
+WHERE 1=1
 {% if is_incremental() %}
-WHERE {{incremental_predicate('block_time')}}
+AND {{incremental_predicate('block_time')}}
+{% endif %}
+{% if not is_incremental() %}
+AND block_time > now() - interval '7' day
+{% endif %}
+UNION ALL
+    SELECT
+    block_time
+    , block_slot
+    , action
+    , amount_raw as amount --for sol transfers, the amount is the raw amount
+    , cast (null as double) as fee
+    , from_owner
+    , to_owner
+    , cast (null as varchar) as from_token_account
+    , cast (null as varchar) as to_token_account
+    , token_version
+    , tx_signer
+    , tx_id
+    , outer_instruction_index
+    , inner_instruction_index
+    , outer_executing_account
+    , token_mint_address as token_mint_address
+FROM {{ ref('tokens_solana_sol_transfers') }}
+WHERE 1=1
+{% if is_incremental() %}
+AND {{incremental_predicate('block_time')}}
+{% endif %}
+{% if not is_incremental() %}
+AND block_time > now() - interval '7' day
 {% endif %}
 )
 
+,final_transfers as (
 SELECT
     block_time
     , cast (date_trunc('day', block_time) as date) as block_date
@@ -63,9 +104,18 @@ SELECT
     , action
     , amount
     , fee
-    , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
-    , tk_s.token_balance_owner as from_owner
-    , tk_d.token_balance_owner as to_owner
+    , CASE
+        WHEN tr.token_version = 'native' THEN tr.token_mint_address
+        ELSE COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
+      END as token_mint_address
+    , CASE
+        WHEN tr.token_version = 'native' THEN tr.from_owner
+        ELSE tk_s.token_balance_owner
+      END as from_owner
+    , CASE
+        WHEN tr.token_version = 'native' THEN tr.to_owner
+        ELSE tk_d.token_balance_owner
+      END as to_owner
     , from_token_account
     , to_token_account
     , token_version
@@ -76,7 +126,55 @@ SELECT
     , outer_executing_account
 FROM base tr
 --get token and accounts
-LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.from_token_account
+LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.from_token_account 
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.to_token_account
 WHERE 1=1
--- AND call_block_time > now() - interval '90' day --for faster CI testing
+{% if is_incremental() %}
+AND {{incremental_predicate('block_time')}}
+{% endif %}
+{% if not is_incremental() %}
+AND block_time > now() - interval '7' day
+{% endif %}
+)
+
+SELECT 
+    block_time
+    , block_date
+    , block_slot
+    , action
+    , amount
+    , CASE 
+        WHEN p.decimals = 0 THEN p.price * amount
+        ELSE p.price * amount / power(10, p.decimals)
+      END as amount_usd
+    , fee
+    , token_mint_address
+    , from_owner
+    , to_owner
+    , from_token_account
+    , to_token_account
+    , token_version
+    , tx_signer
+    , tx_id
+    , outer_instruction_index
+    , inner_instruction_index
+    , outer_executing_account
+ FROM final_transfers
+ LEFT JOIN {{ source('prices', 'usd_forward_fill') }} p
+    ON p.blockchain = 'solana'
+    AND to_base58(p.contract_address) = token_mint_address
+    AND p.minute = date_trunc('minute', block_time)
+    {% if is_incremental() %}
+    AND {{incremental_predicate('p.minute')}}
+    {% endif %}
+    {% if not is_incremental() %}
+    AND p.minute > now() - interval '7' day
+    {% endif %}
+WHERE 1=1
+{% if is_incremental() %}
+AND {{incremental_predicate('block_time')}}
+{% endif %}
+{% if not is_incremental() %}
+AND block_time > now() - interval '7' day
+{% endif %}
+ 
