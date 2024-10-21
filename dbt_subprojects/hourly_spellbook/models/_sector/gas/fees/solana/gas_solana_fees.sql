@@ -5,7 +5,6 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'delete+insert',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date', 'block_slot', 'tx_index']
 ) }}
 
