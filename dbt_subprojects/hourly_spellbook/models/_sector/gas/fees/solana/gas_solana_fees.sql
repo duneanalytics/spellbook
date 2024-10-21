@@ -143,6 +143,6 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     AND p.contract_address = 0x069b8857feab8184fb687f634618c035dac439dc1aeb3b5598a0f00000000001 --from base58 converted wsol address
     AND p.minute = date_trunc('minute', block_time)
     {% if is_incremental() or true %}
-        AND {{ incremental_predicate("date_trunc('day',p.minute)"}}
+        AND {{ incremental_predicate("date_trunc('day',p.minute)")}}
     {% endif %}
 WHERE 1=1
