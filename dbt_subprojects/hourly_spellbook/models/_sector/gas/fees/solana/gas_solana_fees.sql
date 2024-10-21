@@ -146,8 +146,9 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     {% if is_incremental() or true %}
         AND {{ incremental_predicate('p.minute') }}
     {% endif %}
-{% if is_incremental() or true %}
-    WHERE block_time > (select max(block_time) from {{this}})
-    -- run 1h behind to allow for late data
-    and block_time < now() - interval '1' hour
+WHERE 1=1
+{% if is_incremental() %}
+    and block_time > (select max(block_time) from {{this}})
 {% endif %}
+-- run 1h behind to allow for late data
+and block_time < now() - interval '1' hour
