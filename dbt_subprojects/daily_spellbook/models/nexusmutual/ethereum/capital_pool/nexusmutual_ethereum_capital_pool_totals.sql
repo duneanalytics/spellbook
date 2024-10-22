@@ -261,7 +261,7 @@ daily_avg_cbbtc_prices as (
   select
     date_trunc('day', minute) as block_date,
     avg(price) as price_usd
-  from prices.usd
+  from {{ source('prices', 'usd') }}
   where symbol = 'cbBTC'
     and blockchain = 'ethereum'
     and contract_address = 0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf
