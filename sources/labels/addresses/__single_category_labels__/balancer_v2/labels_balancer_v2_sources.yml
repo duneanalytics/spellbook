@@ -1552,9 +1552,24 @@ sources:
           - name: output_0
           - name: vault
 
+      - name: FXPoolDeployer_call_newFXPool
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: _baseToken
+          - name: _baseOracle
+          - name: _initialDepositInNumeraire
+          - name: _params
+          - name: output_balancerPoolId
+          - name: output_fxpoolAddr
+
   - name: xavefinance_ethereum
     description: >
-      Decoded tables related to Xave Finance, a project built on Balancer, on Polygon.
+      Decoded tables related to Xave Finance, a project built on Balancer, on Ethereum.
     tables:
       - name: FXPoolFactory_call_newFXPool
         columns:
@@ -1570,6 +1585,21 @@ sources:
           - name: _symbol
           - name: output_0
           - name: vault
+
+      - name: FXPoolDeployer_call_newFXPool
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: _baseToken
+          - name: _baseOracle
+          - name: _initialDepositInNumeraire
+          - name: _params
+          - name: output_balancerPoolId
+          - name: output_fxpoolAddr
 
   - name: xavefinance_polygon
     description: >
@@ -1589,6 +1619,40 @@ sources:
           - name: _symbol
           - name: output_0
           - name: vault          
+
+      - name: FXPoolDeployer_call_newFXPool
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: _baseToken
+          - name: _baseOracle
+          - name: _initialDepositInNumeraire
+          - name: _params
+          - name: output_balancerPoolId
+          - name: output_fxpoolAddr       
+
+  - name: xavefinance_arbitrum
+    description: >
+      Decoded tables related to Xave Finance, a project built on Balancer, on Arbitrum.
+    tables:
+      - name: FXPoolDeployer_call_newFXPool
+        columns:
+          - name: contract_address
+          - name: call_tx_hash
+          - name: call_success
+          - name: call_trace_address
+          - name: call_block_time
+          - name: call_block_number
+          - name: _baseToken
+          - name: _baseOracle
+          - name: _initialDepositInNumeraire
+          - name: _params
+          - name: output_balancerPoolId
+          - name: output_fxpoolAddr             
 
   - name: balancer_v2_zkevm
     tables:
@@ -1871,3 +1935,30 @@ sources:
           - *rateProviders
           - *symbol
           - *tokens          
+
+  - name: gyroscope_avalanche_c
+    tables:
+      - name: GyroECLPPoolFactory_call_create
+        description: >
+          Decoded table of registered pools on the Gyroscope ECLP contract.
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - name: capManager
+          - name: capParams                 
+          - name: contract_address
+            description: "Address of the ECLP Pool contract"
+          - name: derivedECLPParams
+          - name: eclpParams
+          - name: name
+          - *output_0
+          - *owner
+          - name: pauseManager
+          - name: pauseParams
+          - *swapFeePercentage
+          - *rateProviders
+          - *symbol
+          - *tokens

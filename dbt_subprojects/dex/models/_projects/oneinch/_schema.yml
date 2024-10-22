@@ -500,6 +500,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - chain_id
+            - resolver_address
             - resolver_executor
     columns:
       - name: resolver_address
@@ -511,6 +512,7 @@ models:
       - name: chain_id
         tests:
           - not_null
+      - name: mode
       - name: first_promoted_at
       - name: last_promoted_at
 

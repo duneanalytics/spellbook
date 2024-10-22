@@ -3,11 +3,11 @@ version: 2
 models:
   - name: nft_transfers
     meta:
-      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, zksync, zora
+      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, zksync, zora, scroll, mantle, blast, sei,
       sector: nft
-      contributors: hildobby
+      contributors: hildobby, rantum, petertherock
     config:
-      tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'zora', 'transfers']
+      tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'zora', 'scroll', 'mantle', 'blast', 'sei', 'transfers']
     description: >
         NFT transfers
     tests:
@@ -17,6 +17,8 @@ models:
             - evt_index
             - token_id
             - amount
+          config:
+            where: "block_time > now() - interval '7' day"
     columns:
       - &blockchain
         name: blockchain
@@ -31,12 +33,16 @@ models:
         tests:
           - accepted_values:
               values: ['erc721', 'erc1155', 'bep721', 'bep1155']
+              config:
+                where: "block_time > now() - interval '7' day"
         description: "Token standard"
       - &transfer_type
         name: transfer_type
         tests:
           - accepted_values:
               values: ['single', 'batch']
+              config:
+                where: "block_time > now() - interval '7' day"
         description: "single or batch transfer of tokens"
       - &evt_index
         name: evt_index
@@ -65,7 +71,9 @@ models:
       - &unique_transfer_id
         name: unique_transfer_id
         tests:
-          - unique
+          - unique:
+              config:
+                where: "block_time > now() - interval '7' day"
         description: "Unique transfer ID"
 
   - name: nft_ethereum_transfers
@@ -375,7 +383,7 @@ models:
       - *token_standard
       - *transfer_type
       - *unique_transfer_id
-  
+
   - name: nft_linea_transfers
     meta:
       blockchain: linea
@@ -397,7 +405,7 @@ models:
       - *token_standard
       - *transfer_type
       - *unique_transfer_id
-      
+
   - name: nft_blast_transfers
     meta:
       blockchain: blast
@@ -425,6 +433,28 @@ models:
       blockchain: mantle
       sector: nft
       contributors: rantum
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_sei_transfers
+    meta:
+      blockchain: sei
+      sector: nft
+      contributors: petertherock
     config:
       tags: [ 'nft', 'transfers' ]
     description: >

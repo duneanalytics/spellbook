@@ -311,4 +311,6 @@ FROM (VALUES
         , ('HashKey Exchange', 'HashKeyExchange', FALSE, TRUE)
         , ('Gamdom', 'gamdom', FALSE, TRUE)
         , ('Mbcbit', 'MbcbitSupport', TRUE, FALSE)
+        , ('1xBet', '1xBet_Eng', FALSE, FALSE)
+        , ('BetFury', 'betfury_gaming', FALSE, FALSE)
     ) AS temp_table (cex_name, x_username, cex, payment_infra)

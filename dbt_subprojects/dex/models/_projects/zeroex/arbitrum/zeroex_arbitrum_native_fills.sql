@@ -231,7 +231,10 @@ WITH
                 transaction_hash as tx_hash,
                 evt_index,
                 maker_address as maker,
-                taker_address as taker,
+                CASE
+                    WHEN taker_address in (0xdef1c0ded9bec7f1a1670819833240f027b25eff,0xdb6f1920a889355780af7570773609bd8cb1f498) THEN tx."from"
+                    ELSE taker_address
+                END AS taker,
                 maker_token,
                 maker_token_filled_amount_raw as maker_token_amount_raw,
                 taker_token_filled_amount_raw as taker_token_amount_raw,
@@ -251,7 +254,7 @@ WITH
                 tx.to AS tx_to
             FROM all_fills
             INNER JOIN {{ source('arbitrum', 'transactions')}} tx ON all_fills.transaction_hash = tx.hash
-            AND all_fills.block_number = tx.block_number
+            AND all_fills.block_number = tx.block_number and all_fills.block_time = tx.block_time 
             {% if is_incremental() %}
             AND {{ incremental_predicate('tx.block_time') }}
             {% endif %}

@@ -41,3 +41,11 @@ sources:
   - name: swaap_v2_scroll
     tables:
       - name: Vault_evt_Swap
+  - name: leetswap_scroll
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
+  - name: spacefi_scroll
+    tables:
+      - name: SwapFactory_evt_PairCreated
+      - name: UniswapV2Pool_evt_Swap

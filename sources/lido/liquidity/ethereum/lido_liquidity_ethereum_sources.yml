@@ -75,3 +75,9 @@ sources:
       - name: SolidlyV3Pool_evt_Swap      
       - name: SolidlyV3Pool_evt_Mint
       - name: SolidlyV3Pool_evt_Collect          
+
+  - name: puffer_ethereum
+    description: "Ethereum decoded tables related to Curve pufETH:wstETH pool contract"
+    tables:
+      - name: CurveStableSwapNG_evt_TokenExchange
+     
