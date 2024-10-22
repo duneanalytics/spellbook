@@ -289,7 +289,8 @@ FROM
     --('pvc-pvc-meta', 'bnb', 'PVC', 0x75ca521892de7f2ecfb070cab545c250d0ceb7e3, 9),
     ('ice-ice-network', 'bnb', 'ICE', 0xc335df7c25b72eec661d5aa32a7c2b7b2a1d1874, 18),
     ('jmpt-jumptoken', 'bnb', 'JMPT', 0x88d7e9b65dc24cf54f5edef929225fc3e1580c25, 18),
-    ('usdfi-usdfi', 'bnb', 'USDFI', 0x7df1938170869afe410098540c051a8a50308988, 18)    
+    ('usdfi-usdfi', 'bnb', 'USDFI', 0x7df1938170869afe410098540c051a8a50308988, 18),
+    ('wncg-wrapped-ncg', 'bnb', 'WNCG', 0x52242cbAb41e290E9E17CCC50Cc437bB60020a9d, 18)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (

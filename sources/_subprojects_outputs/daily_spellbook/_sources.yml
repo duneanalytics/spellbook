@@ -30,6 +30,7 @@ sources:
         description: "Blockchain metadata for all EVM compatible chains"
       - name: evm_smart_account_method_ids
       - name: base_evm_smart_account_method_ids
+      - name: transactions
 
   - name: ethereum
     tables:
