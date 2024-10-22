@@ -83,6 +83,7 @@ select
     when 0 then 'ETH'
     when 1 then 'DAI'
     when 6 then 'USDC'
+    when 7 then 'cbBTC'
     else 'NA'
   end as cover_asset,
   cd.requested_amount / if(cd.cover_asset = 6, 1e6, 1e18) as requested_amount,
