@@ -4,7 +4,7 @@
         alias = 'transfers',
         materialized = 'incremental',
         file_format = 'delta',
-        incremental_strategy = 'merge',
+        incremental_strategy = 'delete+insert',
         partition_by = ['block_date'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
         unique_key = ['tx_id','outer_instruction_index','inner_instruction_index', 'block_slot'],
@@ -19,6 +19,7 @@ WITH
 base as (
     SELECT
     block_time
+    , block_date
     , block_slot
     , action
     , amount --these are the raw amounts from the spl_transfers, even though the name is amount 
@@ -37,14 +38,15 @@ base as (
 FROM {{ ref('tokens_solana_spl_transfers') }}
 WHERE 1=1
 {% if is_incremental() %}
-AND {{incremental_predicate('block_time')}}
+AND {{incremental_predicate('block_date')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_time > now() - interval '7' day
+AND block_date > now() - interval '30' day
 {% endif %}
 UNION ALL
     SELECT
     block_time
+    , block_date
     , block_slot
     , action
     , amount --these are the raw amounts from the token22 transfers
@@ -63,14 +65,15 @@ UNION ALL
 FROM {{ ref('tokens_solana_token22_spl_transfers') }}
 WHERE 1=1
 {% if is_incremental() %}
-AND {{incremental_predicate('block_time')}}
+AND {{incremental_predicate('block_date')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_time > now() - interval '7' day
+AND block_date > now() - interval '30' day
 {% endif %}
 UNION ALL
     SELECT
     block_time
+    , block_date
     , block_slot
     , action
     , amount_raw as amount --for sol transfers, the amount is the raw amount
@@ -89,17 +92,17 @@ UNION ALL
 FROM {{ ref('tokens_solana_sol_transfers') }}
 WHERE 1=1
 {% if is_incremental() %}
-AND {{incremental_predicate('block_time')}}
+AND {{incremental_predicate('block_date')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_time > now() - interval '7' day
+AND block_date > now() - interval '30' day
 {% endif %}
 )
 
 ,final_transfers as (
 SELECT
     block_time
-    , cast (date_trunc('day', block_time) as date) as block_date
+    , block_date
     , block_slot
     , action
     , amount
@@ -130,10 +133,10 @@ LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.fro
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.to_token_account
 WHERE 1=1
 {% if is_incremental() %}
-AND {{incremental_predicate('block_time')}}
+AND {{incremental_predicate('block_date')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_time > now() - interval '7' day
+AND block_date > now() - interval '30' day
 {% endif %}
 )
 
@@ -168,13 +171,13 @@ SELECT
     AND {{incremental_predicate('p.minute')}}
     {% endif %}
     {% if not is_incremental() %}
-    AND p.minute > now() - interval '7' day
+    AND p.minute > now() - interval '30' day
     {% endif %}
 WHERE 1=1
 {% if is_incremental() %}
-AND {{incremental_predicate('block_time')}}
+AND {{incremental_predicate('block_date')}}
 {% endif %}
-{% if not is_incremental() %}
-AND block_time > now() - interval '7' day
+{% if not is_incremental() %}   
+AND block_date > now() - interval '30' day
 {% endif %}
  
