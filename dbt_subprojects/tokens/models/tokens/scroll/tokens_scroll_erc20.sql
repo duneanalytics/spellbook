@@ -30,4 +30,5 @@ FROM (VALUES
     , (0xb0643f7b3e2e2f10fe4e38728a763ec05f4adec3, 'DAPP', 18)
     , (0x1a2fcb585b327fadec91f55d45829472b15f17a4, 'TKN', 18)
     , (0x2147a89fb4608752807216d5070471c09a0dce32, 'ZP', 18)
+    , (0xd29687c813d741e2f938f4ac377128810e217b1b, 'SCR', 18)
 ) AS temp_table (contract_address, symbol, decimals)
