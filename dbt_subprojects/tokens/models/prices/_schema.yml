@@ -3,6 +3,8 @@ version: 2
 models:
   - name: prices_day
     description: "Token prices aggregated to the daily level across all chains traded on a DEX"
+  - name: prices_hour
+    description: "Token prices aggregated to the hourly level across all chains traded on a DEX"
     
   - name: prices_tokens
     meta:

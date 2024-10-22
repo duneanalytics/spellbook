@@ -4,3 +4,4 @@ sources:
   - name: dune
     tables:
       - name: prices_day_raw
+      - name: prices_hour_raw
