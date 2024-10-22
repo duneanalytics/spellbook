@@ -546,6 +546,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('xchange_ethereum_base_trades_seed')
+          filter:
+            version: 2
 
   - name: curve_ethereum_base_trades
     meta:
