@@ -212,3 +212,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('spacefi_scroll_base_trades_seed')
+
+  - name: punkswap_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: punkswap
+      contributors: zionhaley 
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'punkswap' ]
+    description: "punkswap base base trades"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('punkswap_scroll_base_trades_seed')
