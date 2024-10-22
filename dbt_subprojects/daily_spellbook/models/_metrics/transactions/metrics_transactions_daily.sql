@@ -18,7 +18,7 @@ with raw_tx as (
         {{ source('evms', 'transactions') }}
     where
         1 = 1
-        and block_date >= timestamp '2024-10-18'
+        and block_time >= timestamp '2024-10-18'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
         {% endif %}
