@@ -41,7 +41,7 @@ WHERE 1=1
 AND {{incremental_predicate('block_date')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_date > now() - interval '30' day
+AND block_date > now() - interval '7' day
 {% endif %}
 UNION ALL
     SELECT
@@ -68,7 +68,7 @@ WHERE 1=1
 AND {{incremental_predicate('block_date')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_date > now() - interval '30' day
+AND block_date > now() - interval '7' day
 {% endif %}
 UNION ALL
     SELECT
@@ -95,7 +95,7 @@ WHERE 1=1
 AND {{incremental_predicate('block_date')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_date > now() - interval '30' day
+AND block_date > now() - interval '7' day
 {% endif %}
 )
 
@@ -136,7 +136,7 @@ WHERE 1=1
 AND {{incremental_predicate('block_date')}}
 {% endif %}
 {% if not is_incremental() %}
-AND block_date > now() - interval '30' day
+AND block_date > now() - interval '7' day
 {% endif %}
 )
 
@@ -173,13 +173,13 @@ SELECT
     AND {{incremental_predicate('p.minute')}}
     {% endif %}
     {% if not is_incremental() %}
-    AND p.minute > now() - interval '30' day
+    AND p.minute > now() - interval '7' day
     {% endif %}
 WHERE 1=1
 {% if is_incremental() %}
 AND {{incremental_predicate('block_date')}}
 {% endif %}
 {% if not is_incremental() %}   
-AND block_date > now() - interval '30' day
+AND block_date > now() - interval '7' day
 {% endif %}
  
