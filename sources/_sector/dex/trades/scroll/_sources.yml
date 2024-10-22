@@ -49,3 +49,7 @@ sources:
     tables:
       - name: SwapFactory_evt_PairCreated
       - name: UniswapV2Pool_evt_Swap
+  - name: punkswap_scroll
+    tables:
+      - name: PunkFactory_evt_PairCreated
+      - name: PunkPair_evt_Swap
