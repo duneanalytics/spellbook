@@ -29,6 +29,15 @@ lido_oracle as (
     cast(postTotalPooledEther as double) / cast(totalShares as double) as rebase
   from {{ source('lido_ethereum', 'LegacyOracle_evt_PostTotalShares') }}
   where evt_block_time >= timestamp '2021-05-26'
+    and evt_block_time < timestamp '2023-05-16'
+  union all
+  select
+    1 as anchor,
+    evt_block_time as block_time,
+    date_trunc('day', evt_block_time) as block_date,
+    cast(postTotalEther as double) / cast(postTotalShares as double) as rebase
+  from {{ source('lido_ethereum', 'steth_evt_TokenRebased') }}
+  where evt_block_time >= timestamp '2023-05-16'
 ),
 
 steth_adjusted_date as (
@@ -380,5 +389,4 @@ select
 from daily_running_totals_enriched
 {% if is_incremental() %}
 where {{ incremental_predicate('block_date') }}
-  and 1=1 -- dummy change to trigger re-run
 {% endif %}

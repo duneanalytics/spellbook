@@ -4641,4 +4641,8 @@ FROM (VALUES
     , ( 0x809361da53c2d3b15a29d3b4ab0a4b84025c2397, 'TOMCAT', 9)
     , ( 0x1b3be8fcd2e7c5ce9c5c242e0066fdd9740220d0, 'LICKER', 9)
     , ( 0x0ba45a8b5d5575935b8158a88c631e9f9c95a2e5, 'TRB', 18)
+    , ( 0xf0a949b935e367a94cdfe0f2a54892c2bc7b2131, 'ultraETHs', 18)
+    , ( 0x5e362eb2c0706bd1d134689ec75176018385430b, 'DVstETH', 18)
+    , ( 0xcbc632833687dacdcc7dfac96f6c5989381f4b47, 'ultraETHs', 18)    
+    , ( 0xa684eaf215ad323452e2b2bf6f817d4aa5c116ab, 'lpETH', 18)        
 ) AS temp_table (contract_address, symbol, decimals)
