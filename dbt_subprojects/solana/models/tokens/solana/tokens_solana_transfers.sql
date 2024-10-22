@@ -163,9 +163,11 @@ SELECT
     , inner_instruction_index
     , outer_executing_account
  FROM final_transfers
+ LEFT JOIN {{ ref('solana_utils_token_address_mapping') }} tk_m
+    ON tk_m.base58_address = token_mint_address
  LEFT JOIN {{ source('prices', 'usd_forward_fill') }} p
     ON p.blockchain = 'solana'
-    AND to_base58(p.contract_address) = token_mint_address
+    AND p.contract_address = tk_m.binary_address
     AND p.minute = date_trunc('minute', block_time)
     {% if is_incremental() %}
     AND {{incremental_predicate('p.minute')}}
