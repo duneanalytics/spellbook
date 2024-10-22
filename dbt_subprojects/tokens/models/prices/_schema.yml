@@ -1,6 +1,11 @@
 version: 2
 
 models:
+  - name: prices_day
+    description: "Token prices aggregated to the daily level across all chains traded on a DEX"
+  - name: prices_hour
+    description: "Token prices aggregated to the hourly level across all chains traded on a DEX"
+    
   - name: prices_tokens
     meta:
       blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm, blast, sei, nova, worldchain
