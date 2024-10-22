@@ -150,23 +150,26 @@ FROM data
 
 
 WITH to_update AS (
-    SELECT address
+    SELECT DISTINCT am.address
     FROM (
         {% for addresses_model in addresses_models %}
-        (SELECT am.address
-        FROM {{ addresses_model[1] }} am
-        LEFT JOIN {{ this }} t ON am.address = t.address
-        WHERE (t.address IS NULL
-            OR ((contains(t.blockchains, am.blockchain) = FALSE))
-            OR (CAST(t.chain_stats['{{ addresses_model[0] }}']['last_seen_block'] AS bigint) <= am.last_seen_block))
-        AND {{incremental_predicate('am.last_seen')}}
-        LIMIT 200000)
+        (SELECT address
+        , last_seen_block
+        , '{{ addresses_model[0] }}' AS blockchain
+        FROM {{ addresses_model[1] }}
+        WHERE {{incremental_predicate('last_seen')}}
+        )
         {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
-        )
+        ) am
+    LEFT JOIN {{ this }} t ON am.address = t.address
+    WHERE t.address IS NULL
+        OR ((contains(t.blockchains, am.blockchain) = FALSE))
+        OR (CAST(t.chain_stats['{{ addresses_model[0] }}']['last_seen_block'] AS bigint) <= am.last_seen_block)
     GROUP BY 1
+    LIMIT 200000
     )
 
 
