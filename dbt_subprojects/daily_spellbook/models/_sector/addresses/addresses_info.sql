@@ -102,8 +102,7 @@ WITH data AS (
             ]) AS chain_stats
         , last_seen
         , last_seen_block
-        FROM (select * from {{ addresses_model[1] }}
-        ORDER BY address asc limit 2000000)
+        FROM {{ addresses_model[1] }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -169,7 +168,6 @@ WITH to_update AS (
         OR ((contains(t.blockchains, am.blockchain) = FALSE))
         OR (CAST(t.chain_stats[am.blockchain]['last_seen_block'] AS bigint) <= am.last_seen_block)
     GROUP BY 1
-    LIMIT 200000
     )
 
 
