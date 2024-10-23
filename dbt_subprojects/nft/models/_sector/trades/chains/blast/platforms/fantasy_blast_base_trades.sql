@@ -34,9 +34,9 @@ WITH trades AS (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
-
+    
     UNION ALL
-
+    
     SELECT evt_block_time AS block_time
     , evt_block_date AS block_date
     , CAST(JSON_EXTRACT_SCALAR(buyOrder, '$.tokenId') AS UINT256) AS nft_token_id
