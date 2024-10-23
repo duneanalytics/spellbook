@@ -10,7 +10,7 @@ models:
       tags: ['polygon','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on Balancer Polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -72,7 +72,7 @@ models:
       tags: ['polygon','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on Uniswap v3 Polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool

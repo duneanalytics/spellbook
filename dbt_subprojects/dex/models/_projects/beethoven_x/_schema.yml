@@ -10,7 +10,7 @@ models:
       tags: ['fantom', 'balancer', 'pools_fees']
     description: >
       Beethoven X swap fees stored at the pool level.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -23,7 +23,7 @@ models:
       - &contract_address
         name: contract_address
         description: 'fantom address for the liquidity pool used in transaction'
-        tests:
+        data_tests:
           - not_null
       - &tx_hash
         name: tx_hash
@@ -31,12 +31,12 @@ models:
       - &index
         name: index
         description: ''
-        tests:
+        data_tests:
           - not_null
       - &tx_index
         name: tx_index
         description: ''
-        tests:
+        data_tests:
           - not_null
       - &block_time
         name: block_time
@@ -44,10 +44,10 @@ models:
       - &block_number
         name: block_number
         description: 'Block number'
-        tests:
+        data_tests:
           - not_null
       - &swap_fee_percentage
         name: swap_fee_percentage
         description: 'Swap fees for the pool, values are returned with 18 decimals (1e18 meaning 100%)'
-        tests:
+        data_tests:
           - not_null

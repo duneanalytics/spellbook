@@ -14,7 +14,7 @@ models:
       - &contract_address
         name: contract_address
         description: "ERC20 token contract address on Optimism"
-        tests:
+        data_tests:
           - unique
       - &symbol
         name: symbol
@@ -87,7 +87,7 @@ models:
       tags: ['tokens', 'optimism', 'bridge', 'erc20']
     description: >
         Selection of ERC20 token addresses bridged from Ethereum to Optimism.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - l1_token
@@ -114,7 +114,7 @@ models:
     columns:
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored on Optimism."
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "NFT Project Name"
@@ -131,12 +131,12 @@ models:
     columns:
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored on Optimism."
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "NFT Project Name"
       - name: standard
-        tests:
+        data_tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155']
         description: >
@@ -156,7 +156,7 @@ models:
     columns:
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored on Optimism."
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "NFT Project name"
@@ -166,7 +166,7 @@ models:
         description: "NFT Project symbol"
       - name: contract_address_l1
         description: "Bridged project contract address on L1"
-        tests:
+        data_tests:
           - unique
 
   - name: tokens_optimism_erc20_stablecoins
@@ -204,11 +204,11 @@ models:
     columns:
       - name: contract_address
         description: "the NFT contract address"
-        tests:
+        data_tests:
           - unique
       - name: standard
         description: "The NFT standard erc721/erc1155/..."
-        tests:
+        data_tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155' ]
 
@@ -224,7 +224,7 @@ models:
     columns:
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored on Optimism."
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "NFT Project name"

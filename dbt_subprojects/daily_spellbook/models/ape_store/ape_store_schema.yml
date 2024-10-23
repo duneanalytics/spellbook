@@ -10,7 +10,7 @@ models:
       tags: ["base", "ethereum", "ape_store", "dex", "whale_hunter"]
     description: >
       Trades for tokens that get deployed through ApeStore across all chains
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_month

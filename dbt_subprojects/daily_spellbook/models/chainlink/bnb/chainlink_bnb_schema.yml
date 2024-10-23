@@ -57,7 +57,7 @@ models:
       tags: ["bnb", "chainlink", "oracle"]
     description: >
       Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -88,7 +88,7 @@ models:
       tags: ["bnb", "chainlink", "oracle"]
     description: >
       Manually updated table for mapping chainlink feeds to proxy addresses and the aggregator addresses (where updates read to)
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - proxy_address
@@ -111,7 +111,7 @@ models:
       tags: ["chainlink", "ocr", "gas", "transmission", "logs", "bnb"]
     description: >
       Chainlink OCR Gas Transmission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -162,7 +162,7 @@ models:
       tags: ["chainlink", "ocr", "fulfilled", "transactions", "bnb"]
     description: >
       Chainlink OCR Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -196,7 +196,7 @@ models:
       tags: ["chainlink", "ocr", "reverted", "transactions", "bnb"]
     description: >
       Chainlink OCR Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -222,7 +222,7 @@ models:
       tags: ["chainlink", "ocr", "gas", "daily", "bnb"]
     description: >
       Chainlink OCR Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -266,7 +266,7 @@ models:
       tags: ["chainlink", "ocr", "request", "daily", "bnb"]
     description: >
       Chainlink OCR Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -343,7 +343,7 @@ models:
       tags: ["chainlink", "ocr", "reward", "evt", "transfer", "daily", "bnb"]
     description: >
       Chainlink OCR Reward Event Transfers Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -366,7 +366,7 @@ models:
       tags: ["chainlink", "ocr", "reward", "daily", "bnb"]
     description: >
       Chainlink OCR Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -390,7 +390,7 @@ models:
       tags: ["chainlink", "fm", "gas", "daily", "bnb"]
     description: >
       Chainlink FM Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -418,7 +418,7 @@ models:
       tags: ["chainlink", "fm", "gas", "submission", "logs", "bnb"]
     description: >
       Chainlink FM Gas Transmission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -449,7 +449,7 @@ models:
       tags: ["chainlink", "fm", "fulfilled", "transactions", "bnb"]
     description: >
       Chainlink FM Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -475,7 +475,7 @@ models:
       tags: ["chainlink", "fm", "request", "daily", "bnb"]
     description: >
       Chainlink FM Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -500,7 +500,7 @@ models:
       tags: ["chainlink", "fm", "reverted", "transactions", "bnb"]
     description: >
       Chainlink FM Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -526,7 +526,7 @@ models:
       tags: ["chainlink", "fm", "reward", "daily", "bnb"]
     description: >
       Chainlink FM Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -566,7 +566,7 @@ models:
       tags: ["chainlink", "fm", "reward", "evt", "transfer", "daily", "bnb"]
     description: >
       Chainlink FM Reward Event Transfers Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -590,7 +590,7 @@ models:
       tags: ["chainlink", "automation", "fulfilled", "transactions", "bnb"]
     description: >
       Chainlink Automation Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -617,7 +617,7 @@ models:
       tags: ["chainlink", "automation", "gas", "daily", "bnb"]
     description: >
       Chainlink Automation Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -646,7 +646,7 @@ models:
       tags: ["chainlink", "automation", "upkeep", "performed", "logs", "bnb"]
     description: >
       Chainlink Automation Gas Submission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -681,7 +681,7 @@ models:
       tags: ["chainlink", "automation", "request", "daily", "bnb"]
     description: >
       Chainlink Automation Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -707,7 +707,7 @@ models:
       tags: ["chainlink", "automation", "reverted", "transactions", "bnb"]
     description: >
       Chainlink Automation Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -734,7 +734,7 @@ models:
       tags: ["chainlink", "automation", "reward", "daily", "bnb"]
     description: >
       Chainlink Automation Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -778,7 +778,7 @@ models:
       tags: ["chainlink", "automation", "performed", "daily", "bnb"]
     description: >
       Chainlink Automation Performed Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -801,7 +801,7 @@ models:
       tags: ["chainlink", "vrf", "fulfilled", "transactions", "bnb"]
     description: >
       Chainlink VRF Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -827,7 +827,7 @@ models:
       tags: ["chainlink", "vrf", "gas", "daily", "bnb"]
     description: >
       Chainlink VRF Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -854,7 +854,7 @@ models:
       tags: ["chainlink", "vrf", "v1", "random", "fulfilled", "logs", "bnb"]
     description: >
       Chainlink VRF V1 Randomness Fulfilled Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -886,7 +886,7 @@ models:
       tags: ["chainlink", "vrf", "v1", "random", "request", "logs", "bnb"]
     description: >
       Chainlink VRF V1 Randomness Requested Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -917,7 +917,7 @@ models:
       tags: ["chainlink", "vrf", "v2", "random", "fulfilled", "logs", "bnb"]
     description: >
       Chainlink VRF V2 Randomness Fulfilled Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -949,7 +949,7 @@ models:
       tags: ["chainlink", "vrf", "request", "daily", "bnb"]
     description: >
       Chainlink VRF Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -973,7 +973,7 @@ models:
       tags: ["chainlink", "vrf", "reverted", "transactions", "bnb"]
     description: >
       Chainlink Automation Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -999,7 +999,7 @@ models:
       tags: ["chainlink", "vrf", "reward", "daily", "bnb"]
     description: >
       Chainlink VRF Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1039,7 +1039,7 @@ models:
       tags: ["chainlink", "vrf", "request", "fulfilled", "daily", "bnb"]
     description: >
       Chainlink VRF Request Fulfilled Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1061,7 +1061,7 @@ models:
       tags: ["chainlink", "read", "requests", "feeds", "daily", "bnb"]
     description: >
       Chainlink Read Requests Feeds Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1129,7 +1129,7 @@ models:
       tags: ["chainlink", "read", "requests", "requester", "daily", "bnb"]
     description: >
       Chainlink Read Requests Requester Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1174,7 +1174,7 @@ models:
       tags: ["chainlink", "ccip", "fulfilled", "transactions", "bnb"]
     description: >
       Chainlink CCIP Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1200,7 +1200,7 @@ models:
       tags: ["chainlink", "ccip", "gas", "daily", "bnb"]
     description: >
       Chainlink CCIP Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1228,7 +1228,7 @@ models:
       tags: ["chainlink", "ccip", "request", "daily", "bnb"]
     description: >
       Chainlink CCIP Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1250,7 +1250,7 @@ models:
       tags: ["chainlink", "ccip", "reverted", "transactions", "bnb"]
     description: >
       Chainlink CCIP Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1274,7 +1274,7 @@ models:
       tags: ["chainlink", "ccip", "reward", "daily", "bnb"]
     description: >
       Chainlink CCIP Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1323,7 +1323,7 @@ models:
       tags: ["chainlink", "ccip", "send", "requested", "daily", "bnb"]
     description: >
       Chainlink CCIP Send Requested Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1385,7 +1385,7 @@ models:
       tags: ["chainlink", "ccip", "tokens", "transferred", "logs", "bnb"]
     description: >
       Chainlink CCIP Tokens Transferred Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1418,7 +1418,7 @@ models:
       tags: ["chainlink", "ccip", "tokens", "transferred", "bnb"]
     description: >
       Chainlink CCIP Tokens Transferred
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1447,7 +1447,7 @@ models:
       tags: ["chainlink", "ccip", "transmitted", "fulfilled", "bnb"]
     description: >
       Chainlink CCIP Transmitted Fulfilled
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1473,7 +1473,7 @@ models:
       tags: ["chainlink", "ccip", "transmitted", "reverted", "bnb"]
     description: >
       Chainlink CCIP Transmitted Reverted
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1552,7 +1552,7 @@ models:
       tags: ["chainlink", "ccip", "nop", "reward", "daily", "bnb"]
     description: >
       Chainlink CCIP Nop Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - date_start

@@ -48,7 +48,7 @@ sources:
             description: "Any binary data payload"
           - name: hash
             description: "Primary key of the transaction"
-            tests:
+            data_tests:
               - unique
               - not_null
           - name: type
@@ -180,7 +180,7 @@ sources:
             description: "Boolean indicating whether the contract is a factory contract or not"
           - name: detection_source
             description: "Detection source: 'factory', 'base', or 'dynamic'"
-            tests:
+            data_tests:
               - accepted_values:
                   values: ["factory", "base", "dynamic"]
           - name: created_at

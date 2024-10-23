@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'airdrop', 'gnosis', 'claim', 'giveth']
     description: "List of claim transactions for the $GIV airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

@@ -8,7 +8,7 @@ models:
       contributors: hildobby
     config:
       tags: ['table', 'social', 'base', 'trades', 'friend_tech']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -74,7 +74,7 @@ models:
       contributors: hildobby
     config:
       tags: ['table', 'social', 'base', 'trades', 'friend_tech']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -120,7 +120,7 @@ models:
       tags: ['social', 'bnb', 'avalanche_c',  'arbitrum', 'base', 'info']
     description: >
         socials info
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project

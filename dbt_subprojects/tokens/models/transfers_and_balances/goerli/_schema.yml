@@ -10,7 +10,7 @@ goerlils:
       tags: ['tokens','transfers', 'goerli']
     description: >
       Token transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -58,7 +58,7 @@ goerlils:
       tags: ['tokens','transfers', 'goerli']
     description: >
       Token transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

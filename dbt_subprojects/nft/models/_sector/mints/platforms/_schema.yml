@@ -10,7 +10,7 @@ models:
       tags: ['zora', 'ethereum', 'mints']
     description: >
         Zora Mints on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -55,7 +55,7 @@ models:
       tags: ['zora', 'optimism', 'mints']
     description: >
         Zora Mints on Optimism
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -100,7 +100,7 @@ models:
       tags: ['base', 'optimism', 'mints']
     description: >
         Zora Mints on Base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -145,7 +145,7 @@ models:
       tags: ['zora', 'mints']
     description: >
         Zora Mints on Zora
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
