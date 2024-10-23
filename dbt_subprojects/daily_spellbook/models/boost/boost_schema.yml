@@ -8,7 +8,7 @@ models:
     config:
       tags: ["boost", "boost_inbox", "quest"]
     description: Boost deployments on [boost.xyz](https://boost.xyz), an open source platform to incentivize any onchain action, with any token, on any chain. 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - boost_address
@@ -67,7 +67,7 @@ models:
     config:
       tags: ["boost", "boost_inbox", "quest"]
     description: Boost rewards claimed after actions are completed
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - boost_address

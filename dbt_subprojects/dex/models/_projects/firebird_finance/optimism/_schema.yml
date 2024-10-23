@@ -11,7 +11,7 @@ models:
       tags: ['optimism','trades', 'firebird_finance','dex']
     description: >
         firebird_finance dex trades on optimism
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -108,7 +108,7 @@ models:
       tags: [ 'optimism','trades', 'firebird_finance','dex' ]
     description: >
       firebird_finance dex base trades on optimism
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

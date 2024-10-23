@@ -10,7 +10,7 @@ models:
       tags: ['ethereum', 'balancer', 'balances']
     description: >
       ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -20,7 +20,7 @@ models:
       - &day
         name: day
         description: "UTC event block time truncated to the day mark"
-        tests:
+        data_tests:
           - not_null
       - &pool
         name: pool
@@ -41,7 +41,7 @@ models:
       tags: ['ethereum', 'bpt', 'supply', 'changes']
     description: >
       Token Balance Changes on Balancer Pools.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -104,7 +104,7 @@ models:
       tags: ['ethereum', 'bpt', 'supply', 'changes']
     description: >
       Token Balance Changes on Balancer Pools, grouped by day.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

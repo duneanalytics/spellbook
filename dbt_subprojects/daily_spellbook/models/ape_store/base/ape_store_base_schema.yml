@@ -10,7 +10,7 @@ models:
       tags: ["base", "ape_store", "dex", "whale_hunter"]
     description: >
       Trades for tokens that get deployed through ApeStore on Base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_month
@@ -77,7 +77,7 @@ models:
       tags: ["base", "ape_store", "dex", "whale_hunter"]
     description: >
       Tokens that get deployed through ApeStore on Base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - token

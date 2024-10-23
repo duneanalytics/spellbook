@@ -57,7 +57,7 @@ models:
       tags: ["polygon", "chainlink", "oracle"]
     description: >
       Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -88,7 +88,7 @@ models:
       tags: ["polygon", "chainlink", "oracle"]
     description: >
       Manually updated table for mapping chainlink feeds to proxy addresses and the aggregator addresses (where updates read to)
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - proxy_address
@@ -111,7 +111,7 @@ models:
       tags: ["chainlink", "ocr", "gas", "transmission", "logs", "polygon"]
     description: >
       Chainlink OCR Gas Transmission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -162,7 +162,7 @@ models:
       tags: ["chainlink", "ocr", "fulfilled", "transactions", "polygon"]
     description: >
       Chainlink OCR Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -196,7 +196,7 @@ models:
       tags: ["chainlink", "ocr", "reverted", "transactions", "polygon"]
     description: >
       Chainlink OCR Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -222,7 +222,7 @@ models:
       tags: ["chainlink", "ocr", "gas", "daily", "polygon"]
     description: >
       Chainlink OCR Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -266,7 +266,7 @@ models:
       tags: ["chainlink", "ocr", "request", "daily", "polygon"]
     description: >
       Chainlink OCR Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -344,7 +344,7 @@ models:
         ["chainlink", "ocr", "reward", "evt", "transfer", "daily", "polygon"]
     description: >
       Chainlink OCR Reward Event Transfers Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -367,7 +367,7 @@ models:
       tags: ["chainlink", "ocr", "reward", "daily", "polygon"]
     description: >
       Chainlink OCR Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -391,7 +391,7 @@ models:
       tags: ["chainlink", "fm", "gas", "daily", "polygon"]
     description: >
       Chainlink FM Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -419,7 +419,7 @@ models:
       tags: ["chainlink", "fm", "gas", "submission", "logs", "polygon"]
     description: >
       Chainlink FM Gas Transmission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -450,7 +450,7 @@ models:
       tags: ["chainlink", "fm", "fulfilled", "transactions", "polygon"]
     description: >
       Chainlink FM Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -476,7 +476,7 @@ models:
       tags: ["chainlink", "fm", "request", "daily", "polygon"]
     description: >
       Chainlink FM Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -501,7 +501,7 @@ models:
       tags: ["chainlink", "fm", "reverted", "transactions", "polygon"]
     description: >
       Chainlink FM Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -527,7 +527,7 @@ models:
       tags: ["chainlink", "fm", "reward", "daily", "polygon"]
     description: >
       Chainlink FM Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -567,7 +567,7 @@ models:
       tags: ["chainlink", "fm", "reward", "evt", "transfer", "daily", "polygon"]
     description: >
       Chainlink FM Reward Event Transfers Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -591,7 +591,7 @@ models:
       tags: ["chainlink", "automation", "fulfilled", "transactions", "polygon"]
     description: >
       Chainlink Automation Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -618,7 +618,7 @@ models:
       tags: ["chainlink", "automation", "gas", "daily", "polygon"]
     description: >
       Chainlink Automation Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -648,7 +648,7 @@ models:
         ["chainlink", "automation", "upkeep", "performed", "logs", "polygon"]
     description: >
       Chainlink Automation Gas Submission Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -683,7 +683,7 @@ models:
       tags: ["chainlink", "automation", "request", "daily", "polygon"]
     description: >
       Chainlink Automation Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -709,7 +709,7 @@ models:
       tags: ["chainlink", "automation", "reverted", "transactions", "polygon"]
     description: >
       Chainlink Automation Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -736,7 +736,7 @@ models:
       tags: ["chainlink", "automation", "reward", "daily", "polygon"]
     description: >
       Chainlink Automation Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -780,7 +780,7 @@ models:
       tags: ["chainlink", "automation", "performed", "daily", "polygon"]
     description: >
       Chainlink Automation Performed Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -803,7 +803,7 @@ models:
       tags: ["chainlink", "vrf", "fulfilled", "transactions", "polygon"]
     description: >
       Chainlink VRF Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -829,7 +829,7 @@ models:
       tags: ["chainlink", "vrf", "gas", "daily", "polygon"]
     description: >
       Chainlink VRF Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -856,7 +856,7 @@ models:
       tags: ["chainlink", "vrf", "v1", "random", "fulfilled", "logs", "polygon"]
     description: >
       Chainlink VRF V1 Randomness Fulfilled Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -888,7 +888,7 @@ models:
       tags: ["chainlink", "vrf", "v1", "random", "request", "logs", "polygon"]
     description: >
       Chainlink VRF V1 Randomness Requested Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -919,7 +919,7 @@ models:
       tags: ["chainlink", "vrf", "v2", "random", "fulfilled", "logs", "polygon"]
     description: >
       Chainlink VRF V2 Randomness Fulfilled Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -951,7 +951,7 @@ models:
       tags: ["chainlink", "vrf", "request", "daily", "polygon"]
     description: >
       Chainlink VRF Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -975,7 +975,7 @@ models:
       tags: ["chainlink", "vrf", "reverted", "transactions", "polygon"]
     description: >
       Chainlink Automation Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1001,7 +1001,7 @@ models:
       tags: ["chainlink", "vrf", "reward", "daily", "polygon"]
     description: >
       Chainlink VRF Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1041,7 +1041,7 @@ models:
       tags: ["chainlink", "vrf", "request", "fulfilled", "daily", "polygon"]
     description: >
       Chainlink VRF Request Fulfilled Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1063,7 +1063,7 @@ models:
       tags: ["chainlink", "ocr", "reward", "daily", "polygon"]
     description: >
       Chainlink OCR Reconcile Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - date_start
@@ -1082,7 +1082,7 @@ models:
       tags: ["chainlink", "read", "requests", "feeds", "daily", "polygon"]
     description: >
       Chainlink Read Requests Feeds Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1150,7 +1150,7 @@ models:
       tags: ["chainlink", "read", "requests", "requester", "daily", "polygon"]
     description: >
       Chainlink Read Requests Requester Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1195,7 +1195,7 @@ models:
       tags: ["chainlink", "ccip", "fulfilled", "transactions", "polygon"]
     description: >
       Chainlink CCIP Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1221,7 +1221,7 @@ models:
       tags: ["chainlink", "ccip", "gas", "daily", "polygon"]
     description: >
       Chainlink CCIP Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1249,7 +1249,7 @@ models:
       tags: ["chainlink", "ccip", "request", "daily", "polygon"]
     description: >
       Chainlink CCIP Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1271,7 +1271,7 @@ models:
       tags: ["chainlink", "ccip", "reverted", "transactions", "polygon"]
     description: >
       Chainlink CCIP Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1295,7 +1295,7 @@ models:
       tags: ["chainlink", "ccip", "reward", "daily", "polygon"]
     description: >
       Chainlink CCIP Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1344,7 +1344,7 @@ models:
       tags: ["chainlink", "ccip", "send", "requested", "daily", "polygon"]
     description: >
       Chainlink CCIP Send Requested Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1406,7 +1406,7 @@ models:
       tags: ["chainlink", "ccip", "tokens", "transferred", "logs", "polygon"]
     description: >
       Chainlink CCIP Tokens Transferred Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1439,7 +1439,7 @@ models:
       tags: ["chainlink", "ccip", "tokens", "transferred", "polygon"]
     description: >
       Chainlink CCIP Tokens Transferred
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1468,7 +1468,7 @@ models:
       tags: ["chainlink", "ccip", "transmitted", "fulfilled", "polygon"]
     description: >
       Chainlink CCIP Transmitted Fulfilled
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1494,7 +1494,7 @@ models:
       tags: ["chainlink", "ccip", "transmitted", "reverted", "polygon"]
     description: >
       Chainlink CCIP Transmitted Reverted
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1573,7 +1573,7 @@ models:
       tags: ["chainlink", "ccip", "nop", "reward", "daily", "polygon"]
     description: >
       Chainlink CCIP Nop Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

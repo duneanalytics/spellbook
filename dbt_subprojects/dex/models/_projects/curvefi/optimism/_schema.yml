@@ -10,7 +10,7 @@ models:
       tags: ['optimism','curve','dex']
     description: >
         A table containing all known pools of curve on optimism (i.e. metapool, basicpool). Additional types should be monitored to ensure they're accurately shown.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - version
@@ -21,20 +21,20 @@ models:
       - &version
         name: version
         description: "Versions of the pool: Basic Pool, Meta Pool, etc"
-        tests:
+        data_tests:
           - not_null
       - &tokenid
         name: tokenid
         description: "ID of the token in the pool"
-        tests:
+        data_tests:
           - not_null
       - &token
         name: token
         description: "Token Address"
-        tests:
+        data_tests:
           - not_null
       - &pool
         name: pool
         description: "Pool contract address"
-        tests:
+        data_tests:
           - not_null

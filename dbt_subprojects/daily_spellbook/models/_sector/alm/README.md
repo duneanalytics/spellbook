@@ -138,7 +138,7 @@ models:
     config:
       tags: [ 'ethereum', 'alm', 'arrakis', 'arrakis_finance', 'trades' ]
     description: "arrakis finance ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
