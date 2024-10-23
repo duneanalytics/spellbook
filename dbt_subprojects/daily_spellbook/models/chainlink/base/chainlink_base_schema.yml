@@ -10,7 +10,7 @@ models:
       tags: ["chainlink", "ccip", "fulfilled", "transactions", "base"]
     description: >
       Chainlink CCIP Fulfilled Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -46,7 +46,7 @@ models:
       tags: ["chainlink", "ccip", "gas", "daily", "base"]
     description: >
       Chainlink CCIP Gas Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -92,7 +92,7 @@ models:
       tags: ["chainlink", "ccip", "request", "daily", "base"]
     description: >
       Chainlink CCIP Request Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -120,7 +120,7 @@ models:
       tags: ["chainlink", "ccip", "reverted", "transactions", "base"]
     description: >
       Chainlink CCIP Reverted Transactions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -144,7 +144,7 @@ models:
       tags: ["chainlink", "ccip", "reward", "daily", "base"]
     description: >
       Chainlink CCIP Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -199,7 +199,7 @@ models:
       tags: ["chainlink", "ccip", "send", "requested", "daily", "base"]
     description: >
       Chainlink CCIP Send Requested Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -273,7 +273,7 @@ models:
       tags: ["chainlink", "ccip", "tokens", "transferred", "logs", "base"]
     description: >
       Chainlink CCIP Tokens Transferred Logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -320,7 +320,7 @@ models:
       tags: ["chainlink", "ccip", "tokens", "transferred", "base"]
     description: >
       Chainlink CCIP Tokens Transferred
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -349,7 +349,7 @@ models:
       tags: ["chainlink", "ccip", "transmitted", "fulfilled", "base"]
     description: >
       Chainlink CCIP Transmitted Fulfilled
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -375,7 +375,7 @@ models:
       tags: ["chainlink", "ccip", "transmitted", "reverted", "base"]
     description: >
       Chainlink CCIP Transmitted Reverted
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -454,7 +454,7 @@ models:
       tags: ["chainlink", "ccip", "nop", "reward", "daily", "base"]
     description: >
       Chainlink CCIP Nop Reward Daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - date_start

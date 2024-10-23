@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_linea_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: sushiswap_v2_linea_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: [ 'linea', 'dex', 'trades', 'sushiswap' ]
     description: "Sushiswap v2 Linea base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -31,7 +31,7 @@ models:
     config:
       tags: [ 'linea', 'dex', 'trades', 'lynex' ]
     description: "Lynex Linea base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -48,7 +48,7 @@ models:
     config:
       tags: [ 'linea', 'dex', 'trades', 'nile' ]
     description: "Nile Linea base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -65,7 +65,7 @@ models:
     config:
       tags: [ 'linea', 'dex', 'trades', 'echodex' ]
     description: "EchoDex Linea base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -82,7 +82,7 @@ models:
     config:
       tags: [ 'linea', 'dex', 'trades', 'secta' ]
     description: "Secta Linea base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -99,7 +99,7 @@ models:
     config:
       tags: [ 'linea', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
     description: "Pancakeswap linea v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -119,7 +119,7 @@ models:
     config:
       tags: [ 'linea', 'dex', 'trades', 'pancakeswap' ]
     description: "Pancakeswap V3 linea base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -138,7 +138,7 @@ models:
     config:
       tags: [ 'linea', 'dex', 'trades', 'horizondex' ]
     description: "horizondex dex swaps on linea chain"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -157,7 +157,7 @@ models:
     config:
       tags: [ 'linea', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap linea v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -176,7 +176,7 @@ models:
     config:
       tags: [ 'linea', 'dex', 'trades', 'lynex', 'fusion' ]
     description: "lynex linea fusion base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -195,7 +195,7 @@ models:
     config:
       tags: [ 'linea', 'dex', 'trades', 'swaap', 'v2']
     description: "swaap v2 linea base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -204,3 +204,20 @@ models:
           seed_file: ref('swaap_linea_base_trades_seed')
           filter:
             version: 2
+
+  - name: leetswap_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: leetswap
+      contributors: kiley79
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'leetswap' ]
+    description: "Leetswap Linea base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('leetswap_linea_base_trades_seed')

@@ -19,7 +19,7 @@ FROM
     ('celo-celo', 'celo', 'CELO', 0x471ece3750da237f93b8e339c536989b8978a438, 18), 
     ('cusd-celo-dollar', 'celo', 'cUSD', 0x765de816845861e75a25fca122bb6898b8b1282a, 18),
     ('ceur-celo-euro', 'celo', 'cEUR', 0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73, 18), --requested add to coinPaprika 2023-08-10
-    --('creal-celo-brazilian-real', 'celo', 'cREAL', 0xe8537a3d056DA446677B9E9d6c5dB704EaAb4787, 18), --listed but no much volume
+    ('creal-celo-brazilian-real', 'celo', 'cREAL', 0xe8537a3d056DA446677B9E9d6c5dB704EaAb4787, 18),
     ('ico-axelar', 'celo', 'AXL', 0x23ee2343B892b1BB63503a4FAbc840E0e2C6810f, 6), --requested add to coinPaprika 2023-08-10
     --('mimatic-mimatic', 'celo', 'MAI', 0xb9c8f0d3254007ee4b98970b94544e473cd610ec, 18), --requested add to coinPaprika 2023-08-10
     ('wbtc-wrapped-bitcoin', 'celo', 'WBTC', 0xd629eb00deced2a080b7ec630ef6ac117e614f1b, 18),
@@ -36,5 +36,6 @@ FROM
     ('scelo-savings-celo', 'celo', 'SCELO', 0x2879bfd5e7c4ef331384e908aaa3bd3014b703fa, 18),
     ('btcbr-bitcoinbr', 'celo', 'BTCBR', 0xe9dc987b939a7b33270e56532297cf82716c79a3, 18),
     ('usdglo-glo-dollar', 'celo', 'USDGLO', 0x4f604735c1cf31399c6e711d5962b2b3e0225ad3, 18),
-    ('abr-allbridge', 'celo', 'ABR', 0x6e512bfc33be36f2666754e996ff103ad1680cc9, 18)
+    ('abr-allbridge', 'celo', 'ABR', 0x6e512bfc33be36f2666754e996ff103ad1680cc9, 18),
+    ('weth-wormhole-weth-celo', 'celo', 'WETH', 0x66803FB87aBd4aaC3cbB3fAd7C3aa01f6F3FB207, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

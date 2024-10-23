@@ -12,7 +12,7 @@ models:
     config:
       tags: [ 'ethereum', 'dex', 'pools', 'uniswap', 'v2']
     description: "uniswap ethereum v2 pools"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -27,7 +27,7 @@ models:
     config:
       tags: [ 'ethereum', 'dex', 'pools', 'uniswap', 'v3']
     description: "uniswap ethereum v3 pools"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool

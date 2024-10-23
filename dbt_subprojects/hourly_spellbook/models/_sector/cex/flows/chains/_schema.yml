@@ -9,7 +9,7 @@ models:
     config:
       tags: ['cex','flows', 'ethereum']
     description: "All CEX-tied flows identified on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -87,7 +87,7 @@ models:
     config:
       tags: ['cex','flows', 'arbitrum']
     description: "All CEX-tied flows identified on Arbitrum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -123,7 +123,7 @@ models:
     config:
       tags: ['cex','flows', 'avalanche_c']
     description: "All CEX-tied flows identified on Avalanche"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -159,7 +159,7 @@ models:
     config:
       tags: ['cex','flows', 'base']
     description: "All CEX-tied flows identified on Base"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -195,7 +195,7 @@ models:
     config:
       tags: ['cex','flows', 'bnb']
     description: "All CEX-tied flows identified on BNB"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -231,7 +231,7 @@ models:
     config:
       tags: ['cex','flows', 'celo']
     description: "All CEX-tied flows identified on Celo"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -267,7 +267,7 @@ models:
     config:
       tags: ['cex','flows', 'gnosis']
     description: "All CEX-tied flows identified on Gnosis"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -303,7 +303,7 @@ models:
     config:
       tags: ['cex','flows', 'optimism']
     description: "All CEX-tied flows identified on Optimism Mainnet"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -339,7 +339,7 @@ models:
     config:
       tags: ['cex','flows', 'polygon']
     description: "All CEX-tied flows identified on Polygon"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -375,7 +375,7 @@ models:
     config:
       tags: ['cex','flows', 'scroll']
     description: "All CEX-tied flows identified on Scroll"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -411,7 +411,7 @@ models:
     config:
       tags: ['cex','flows', 'zksync']
     description: "All CEX-tied flows identified on zkSync"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -447,7 +447,7 @@ models:
     config:
       tags: ['cex','flows', 'zora']
     description: "All CEX-tied flows identified on ZORA Network"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -483,7 +483,7 @@ models:
     config:
       tags: ['cex','flows', 'fantom']
     description: "All CEX-tied flows identified on ZORA Network"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -519,7 +519,7 @@ models:
     config:
       tags: ['cex','flows', 'linea']
     description: "All CEX-tied flows identified on ZORA Network"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -555,7 +555,7 @@ models:
     config:
       tags: ['cex','flows', 'zkevm']
     description: "All CEX-tied flows identified on ZORA Network"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type

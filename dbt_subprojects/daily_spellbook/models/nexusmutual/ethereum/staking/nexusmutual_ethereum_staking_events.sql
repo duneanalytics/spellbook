@@ -86,10 +86,12 @@ staked_nxm_history as (
     eb.evt_block_time as block_time,
     eb.contract_address as pool_address,
     cast(null as uint256) as token_id,
-    cast(null as uint256) as tranche_id,
+    cast(floor(date_diff('day', from_unixtime(0), eb.evt_block_time) / 91.0) as uint256) as tranche_id,
     cast(null as uint256) as init_tranche_id,
     cast(null as uint256) as new_tranche_id,
-    cast(null as date) as tranche_expiry_date,
+    cast(from_unixtime(91.0 * 86400.0 * cast(
+      floor(date_diff('day', from_unixtime(0), eb.evt_block_time) / 91.0)
+    + 1 as double)) as date) as tranche_expiry_date,
     -1 * cast(eb.amount as double) / 1e18 as amount,
     cast(null as double) as topup_amount,
     cast(null as varbinary) as user,
@@ -104,6 +106,7 @@ staked_nxm_history as (
 select
   flow_type,
   block_time,
+  date_trunc('day', block_time) as block_date,
   pool_address,
   token_id,
   tranche_id,

@@ -10,7 +10,7 @@ models:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator','optimism','polygon','arbitrum','fantom','avalanche','bnb']
     description: >
         0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -105,7 +105,7 @@ models:
 
   - name: zeroex_api_fills_deduped
     meta: 
-      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, scroll, linea, blast
+      blockchain: ethereum, optimism, polygon, arbitrum, fantom, avalanche, bnb, base, scroll, linea, blast, mantle
       sector: dex
       project: zeroex
       contributors: rantum, bakabhai993
@@ -113,7 +113,7 @@ models:
       tags: ['ethereum', 'optimism', 'polygon', 'bnb', 'avalanche', '0x','trades', 'dex', 'jeff-dude','cross-chain']
     description: >
         Zeroex API on all chains across all contracts and versions. This table will load dex trades downstream.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -225,7 +225,7 @@ models:
       tags: ['ethereum','polygon','0x','optimism','arbitrum','fantom','bnb','dex']
     description: >
         0x native swaps thru 0x exchange contracts (without using 0x API) on Ethereum & Polygon & Arbitrum & Fantom & BNB
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -270,7 +270,7 @@ models:
       tags: ['ethereum','optimism', 'polygon', 'abitrum', 'fantom', 'bnb', '0x','dex_aggregator','dex','aggregator']
     description: >
         0x native swaps thru 0x exchange contracts (without using 0x API) on Ethereum & Polygon & Arbitrum & Fantom & BNB
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

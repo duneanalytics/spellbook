@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_gnosis_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: sushiswap_v1_gnosis_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: ['gnosis', 'dex', 'trades', 'sushiswap', 'v1']
     description: "Sushiswap gnosis base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -33,7 +33,7 @@ models:
     config:
       tags: ['gnosis', 'dex', 'trades', 'sushiswap', 'v2']
     description: "Sushiswap gnosis base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -52,7 +52,7 @@ models:
     config:
       tags: [ 'gnosis', 'dex', 'trades', 'balancer' ]
     description: "Balancer v2 gnosis base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -71,7 +71,7 @@ models:
     config:
       tags: ['gnosis', 'dex', 'trades', 'honeyswap', 'v2']
     description: "Honeyswap gnosis base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_blast_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: uniswap_v3_blast_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: [ 'blast', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap blast v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -33,7 +33,7 @@ models:
     config:
       tags: [ 'blast', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap blast v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -52,7 +52,7 @@ models:
     config:
       tags: [ 'blast', 'dex', 'trades', 'thruster' ]
     description: "Thruster blast v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -69,7 +69,7 @@ models:
     config:
       tags: [ 'blast', 'dex', 'trades', 'blasterswap' ]
     description: "blasterswap blast base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -86,9 +86,99 @@ models:
     config:
       tags: [ 'blast', 'dex', 'trades', 'fenix' ]
     description: "Fenix blast v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
 
+  - name: dackieswap_v2_blast_base_trades
+    meta:
+      blockchain: blast
+      sector: dex
+      project: dackieswap
+      contributors: eileenapril
+    config:
+      tags: [ 'blast', 'dex', 'trades', 'dackieswap' ]
+    description: "dackieswap v2 blast base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dackieswap_v2_blast_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: sushiswap_v2_blast_base_trades
+    meta:
+      blockchain: blast
+      sector: dex
+      project: sushiswap
+      contributors: LeonAdam21
+    config:
+      tags: [ 'blast', 'dex', 'trades', 'sushiswap' ]
+    description: "Sushiswap v2 Blast base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_blast_base_trades_seed')
+          filter:
+            version: 2
+            
+  - name: dackieswap_v3_blast_base_trades
+    meta:
+      blockchain: blast
+      sector: dex
+      project: dackieswap
+      contributors: theresearchersg
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'dackieswap' ]
+    description: "dackieswap v3 arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dackieswap_v3_blast_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: swapblast_blast_base_trades
+    meta:
+      blockchain: blast
+      sector: dex
+      project: swapblast
+      contributors: sharita9
+    config:
+      tags: [ 'blast', 'dex', 'trades', 'swapblast' ]
+    description: "Swapblast Blast base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('swapblast_blast_base_trades_seed')
+
+  - name: dyorswap_blast_base_trades
+    meta:
+      blockchain: blast
+      sector: dex
+      project: dyorswap
+      contributors: jamesanalyst
+    config:
+      tags: [ 'blast', 'dex', 'trades', 'dyorswap' ]
+    description: "dyorswap Blast base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dyorswap_blast_base_trades_seed')

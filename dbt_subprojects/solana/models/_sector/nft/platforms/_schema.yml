@@ -10,7 +10,7 @@ models:
       tags: ['magiceden','solana','nft']
     description: >
        magiceden solana trades
-    tests:
+    data_tests:
      - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -151,12 +151,12 @@ models:
      - &outer_instruction_index
        name: outer_instruction_index
        description: "outer index of instruction call"
-       tests:
+       data_tests:
          - not_null
      - &inner_instruction_index
        name: inner_instruction_index
        description: "inner index of instruction call"
-       tests:
+       data_tests:
          - not_null
 
   - name: magiceden_v3_solana_trades
@@ -168,7 +168,7 @@ models:
       tags: [ 'magiceden','solana','nft' ]
     description: >
       magiceden solana trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - instruction
@@ -240,7 +240,7 @@ models:
       tags: [ 'magiceden','solana','nft' ]
     description: >
       magiceden solana trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -314,7 +314,7 @@ models:
       tags: [ 'tensorswap','solana','nft' ]
     description: >
       tensorswap solana trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -389,7 +389,7 @@ models:
       tags: [ 'tensorswap','solana','nft' ]
     description: >
       tensorswap solana trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project

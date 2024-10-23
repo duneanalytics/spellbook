@@ -8,7 +8,7 @@ models:
     description: "a summary of transfers in/out of labeled addresses"
     meta: 
       docs_slug: /curated/labels/owners/value-flows/transfer-summary
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -22,7 +22,7 @@ models:
     description: "a daily summary of transfers in/out of labeled addresses"
     meta: 
       docs_slug: /curated/labels/owners/value-flows/transfer-summary-daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -37,7 +37,7 @@ models:
     description: "a daily activity of the counterparties of labeled addresses"
     meta: 
       docs_slug: /curated/labels/owners/value-flows/counterparty-activity-daily
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

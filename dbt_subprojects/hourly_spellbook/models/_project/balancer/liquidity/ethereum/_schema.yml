@@ -10,7 +10,7 @@ models:
       tags: ['ethereum', 'balancer', 'pools', 'liquidity']
     description: >
       Balancer v2 pools liquidity by token in Ethereum.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -72,7 +72,7 @@ models:
       tags: ['ethereum', 'balancer', 'pools', 'liquidity']
     description: >
       Balancer v1 pools liquidity by token in Ethereum.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day

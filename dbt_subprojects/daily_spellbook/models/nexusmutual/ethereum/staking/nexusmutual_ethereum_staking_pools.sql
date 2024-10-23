@@ -39,6 +39,6 @@ select
   tx_hash_updated
 from {{ ref('nexusmutual_ethereum_base_staking_pools') }}
 where true
-  {% if is_incremental() %}
-  and {{ incremental_predicate('block_time_updated') }}
-  {% endif %}
+{% if is_incremental() %}
+and {{ incremental_predicate('block_time_updated') }}
+{% endif %}
