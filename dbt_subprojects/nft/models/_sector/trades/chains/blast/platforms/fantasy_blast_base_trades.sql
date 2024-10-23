@@ -9,7 +9,7 @@
 }}
 
 {% set project_start_date = '2024-05-01' %}
--- comment to check CI
+
 WITH trades AS (
     SELECT evt_block_time AS block_time
     , evt_block_date AS block_date
