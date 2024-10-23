@@ -35,7 +35,7 @@ clean-targets: # directories to be removed by `dbt clean`
 
 # Configuring tests
 # Full documentation: https://docs.getdbt.com/reference/test-configs
-tests:
+data_tests:
   nft:
     +store_failures: true  # store failures for all tests
 
