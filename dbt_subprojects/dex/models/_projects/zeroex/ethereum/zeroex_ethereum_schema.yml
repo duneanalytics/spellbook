@@ -323,3 +323,45 @@ models:
       - *swap_flag
       - *contract_address
       - *fills_within
+
+  - name: zeroex_ethereum_v2_rfq_fills
+    meta:
+      blockchain: ethereum
+      project: zeroex
+      contributors: rantum
+    config:
+      tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
+    description: >
+        0x API erc20 trades through 0x Settler RFQ contracts. No fills, only deduped transactions.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_date
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_date
+      - *block_month
+      - *block_time
+      - *taker_symbol
+      - *maker_symbol
+      - *token_pair
+      - *taker_token_amount
+      - *maker_token_amount
+      - *taker_token_amount_raw
+      - *maker_token_amount_raw
+      - *volume_usd
+      - *taker_token
+      - *maker_token
+      - *taker
+      - *maker
+      - *affiliate_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *type
+      - *swap_flag
+      - *contract_address
