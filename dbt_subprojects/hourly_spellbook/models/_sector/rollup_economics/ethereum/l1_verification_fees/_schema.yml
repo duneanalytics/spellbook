@@ -10,7 +10,7 @@ models:
     config:
       tags: ['rollup', 'l2']
     description: Fees spent by rollups for proof verification on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - name

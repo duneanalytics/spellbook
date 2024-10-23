@@ -9,7 +9,7 @@ models:
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'optimism']
     description: "All CEX-tied addresses identified on Optimism"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

@@ -10,7 +10,7 @@ models:
     config:
       tags: [ 'zksync', 'nft', 'trades', 'tevaera' ]
     description: "Tevaera base trades on zkSync"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -41,7 +41,7 @@ models:
     config:
       tags: [ 'zksync', 'nft', 'trades', 'zonic' ]
     description: "Zonic base trades on zkSync"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -72,7 +72,7 @@ models:
       tags: [ 'zksync','kreatorland','base_trades' ]
     description: >
       Kreatorland trades on zksync
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -86,7 +86,7 @@ models:
     config:
       tags: [ 'zksync', 'nft', 'trades', 'zk_markets' ]
     description: "zkMarkets base trades on zkSync"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
@@ -114,7 +114,7 @@ models:
       tags: [ 'zksync','element','base_trades' ]
     description: >
       Element trades on zksync
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -128,7 +128,7 @@ models:
     config:
       tags: [ 'zksync', 'nft', 'trades', 'mint_square' ]
     description: "Mint Square base trades on zkSync"
-    tests:
+    data_tests:
       - check_columns_nft_base_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
