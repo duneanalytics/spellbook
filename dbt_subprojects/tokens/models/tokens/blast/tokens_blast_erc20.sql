@@ -19,4 +19,7 @@ FROM (VALUES
     , (0x5ffd9ebd27f2fcab044c0f0a26a45cb62fa29c06, 'PAC', 18)
     , (0x2416092f143378750bb29b79ed961ab195cceea5, 'ezETH', 18)
     , (0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A, 'weETH', 18)
+    , (0x010392305558d58e1Cb0Eec5529a65bf3545f82e, 'MACHI', 18)
+    , (0x373318cccC1da7934929d8af23eA17641522206B, 'pUSDB-WETH LP', 18)
+    , (0x1a49351bdB4BE48C0009b661765D01ed58E8C2d8, 'YES', 18)
 ) AS temp_table (contract_address, symbol, decimals)
