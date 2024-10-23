@@ -62,7 +62,7 @@ models:
         description: "Token decimals"
       - name: price
         description: "USD price of a token"
-        test: not_null
+        data_tests: not_null
 
   - name: prices_usd_daily
     meta:

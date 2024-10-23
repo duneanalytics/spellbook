@@ -17,7 +17,7 @@ models:
       - &address
         name: address
         description: "Address of trader"
-        test:
+        data_tests:
           - unique
       - &name
         name: name
