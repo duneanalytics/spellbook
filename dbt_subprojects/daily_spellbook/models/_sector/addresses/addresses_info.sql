@@ -67,7 +67,7 @@ WITH data AS (
     , MAX(last_seen_block) AS last_seen_block
     FROM (
         {% for addresses_model in addresses_models %}
-        (SELECT '{{ addresses_model[0] }}' AS blockchain
+        SELECT '{{ addresses_model[0] }}' AS blockchain
         , address
         , executed_tx_count
         , max_nonce
@@ -101,7 +101,6 @@ WITH data AS (
         , last_seen
         , last_seen_block
         FROM {{ addresses_model[1] }}
-        LIMIT 100000)
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -167,7 +166,6 @@ WITH to_update AS (
         OR ((contains(t.blockchains, am.blockchain) = FALSE))
         OR (CAST(t.chain_stats[am.blockchain]['last_seen'] AS timestamp) <= am.last_seen)
     GROUP BY 1
-    LIMIT 100000
     )
 
 
