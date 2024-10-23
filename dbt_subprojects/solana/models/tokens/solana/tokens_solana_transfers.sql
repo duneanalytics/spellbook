@@ -6,7 +6,7 @@
         file_format = 'delta',
         incremental_strategy = 'delete+insert',
         partition_by = ['block_date'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
         unique_key = ['tx_id','outer_instruction_index','inner_instruction_index', 'block_slot'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
