@@ -9,7 +9,7 @@ models:
     config:
       tags: ['cex','addresses', 'algorand']
     description: "All CEX-tied addresses identified on Algorand"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

@@ -10,7 +10,7 @@ models:
       tags: ['balancer', 'base', 'amm', 'trades', 'dex']
     description: >
       DEX trades on balancer on base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

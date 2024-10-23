@@ -24,7 +24,7 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract address of the token, if any"
-        tests:
+        data_tests:
           - not_zero_address
       - &symbol
         name: symbol
@@ -41,7 +41,7 @@ models:
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens for native tokens for all chains"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - symbol
@@ -65,7 +65,7 @@ models:
       sector: prices
       contributors: jeff-dude
     description: "Subset of minute-level prices from CoinPaprika API, only containing the list of trusted tokens across blockchains"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

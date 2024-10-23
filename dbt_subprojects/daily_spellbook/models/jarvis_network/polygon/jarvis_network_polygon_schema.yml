@@ -11,7 +11,7 @@ models:
       tags: ['polygon','synthereum','currencies','forex', 'Jarvis Network', '0xroll']
     description: >
         Jarvis Network Synthereum transactions on Polygon across all contracts and versions. This table will load all synthereum activities downstream.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

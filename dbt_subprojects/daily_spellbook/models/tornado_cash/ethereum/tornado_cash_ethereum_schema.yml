@@ -9,7 +9,7 @@ models:
     config:
       tags: ['tornado_cash', 'deposits', 'ethereum']
     description: "Tornado Cash Deposits on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -29,7 +29,7 @@ models:
         description: "Symbol of currency deposited/withdrawn from Tornado Cash"
       - &tornado_version
         name: tornado_version
-        tests:
+        data_tests:
           - accepted_values:
               values: ['classic', 'nova']
         description: "Version of Tornado Cash used for this transaction"
@@ -53,7 +53,7 @@ models:
     config:
       tags: ['tornado_cash', 'withdrawals', 'ethereum']
     description: "Tornado Cash Withdrawals on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

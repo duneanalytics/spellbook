@@ -123,7 +123,7 @@ For each model in the DEX sector, we must define its schema. This schema outline
   config:
     tags: ["ethereum", "dex", "trades", "uniswap", "v2"]
   description: "uniswap ethereum v2 base trades"
-  tests:
+  data_tests:
     - dbt_utils.unique_combination_of_columns:
         combination_of_columns:
           - tx_hash
@@ -207,7 +207,7 @@ In your model's schema file, add tests that validate the output against the seed
 Example tests:
 
 ```yaml
-tests:
+data_tests:
   - dbt_utils.unique_combination_of_columns:
       combination_of_columns:
         - tx_hash
