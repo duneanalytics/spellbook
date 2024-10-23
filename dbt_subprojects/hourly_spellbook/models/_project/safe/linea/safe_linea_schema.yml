@@ -9,7 +9,7 @@ models:
     config:
       tags: ['safe', 'linea']
     description: "Safe addresses"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -42,7 +42,7 @@ models:
     config:
       tags: ['safe', 'transfers', 'linea']
     description: "Eth transfers for safes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -81,7 +81,7 @@ models:
     columns:
       - name: address
         description: "Safe contract address"
-        tests:
+        data_tests:
           - unique
           - not_null
 
@@ -93,7 +93,7 @@ models:
     config:
       tags: ['safe', 'linea']
     description: "Safe transactions"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
