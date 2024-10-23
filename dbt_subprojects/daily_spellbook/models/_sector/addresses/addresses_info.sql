@@ -164,7 +164,7 @@ WITH to_update AS (
     LEFT JOIN {{ this }} t ON am.address = t.address
     WHERE t.address IS NULL
         OR ((contains(t.blockchains, am.blockchain) = FALSE))
-        OR (CAST(t.chain_stats[am.blockchain]['last_seen_block'] AS bigint) <= am.last_seen_block)
+        OR (CAST(t.chain_stats[am.blockchain]['last_seen'] AS timestamp) <= am.last_seen)
     GROUP BY 1
     )
 
