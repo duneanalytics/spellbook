@@ -10,7 +10,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Polymarket: markets"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - question_id
@@ -47,7 +47,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Polymarket: market outcomes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - question_id
@@ -70,7 +70,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Polymarket: market conditions (helper table)"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - condition_id
@@ -106,7 +106,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Polymarket: CTF tokens (helper table)"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - condition_id
@@ -132,7 +132,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
     description: "All market activity including complementary matching (A buys shares from B), MINT matching (A wants to buy, but not enough sell orders in book, system mints shares if conditions are right), and MERGE matching (A wants to sell shares, but not enough buy orders in book, system matches yes and no shares to unlock collateral). Technically correct volume, but not directly comparable to dex volume or similar. The internal operations increase volume significantly."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
@@ -192,7 +192,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Polymarket: user capital actions"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
@@ -220,7 +220,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Safes deployed by the SafeProxyFactory on behalf of Polymarket users that use their own EOA to sign transactions"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - proxy
@@ -243,7 +243,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Magic wallets deployed by the MagicWalletFactory on behalf of Polymarket users that use magic.link to sign up to polymarket"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - proxy
@@ -263,7 +263,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','markets']
     description: "Polymarket: combined market data from on-chain and API sources"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - token_id
@@ -320,7 +320,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','positions']
     description: "Polymarket: raw user positions in markets"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -347,7 +347,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','positions']
     description: "Polymarket: user positions in markets with market details"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -404,7 +404,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','prices']
     description: "Daily market prices for Polymarket on Polygon"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -428,7 +428,7 @@ models:
     config:
       tags: ['polygon','prediction_markets','polymarket','prices']
     description: "Hourly market prices for Polymarket on Polygon"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - hour
