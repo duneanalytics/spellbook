@@ -8,6 +8,8 @@
     unique_key = ['block_date', 'block_slot', 'tx_id']
 ) }}
 
+-- this is just decoding program data, could be moved into decoding pipeline
+
 SELECT
     tx_id,
     block_date,
