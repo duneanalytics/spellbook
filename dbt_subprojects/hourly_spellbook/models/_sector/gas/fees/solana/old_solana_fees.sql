@@ -26,7 +26,6 @@ WITH compute_limit_cte AS (
     AND inner_instruction_index is null -- compute budget and price are inherited on cross program invocation
     {% if is_incremental() %}
             AND {{ incremental_predicate('block_date') }}
-    {% endif %}
     {% else %}
             AND block_date >= DATE_TRUNC('DAY', CURRENT_DATE) - INTERVAL '30' DAY
     {% endif %}
