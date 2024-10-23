@@ -15,13 +15,13 @@ dbt_output=$(dbt ls $PROFILE \
     --resource-type model \
     --select state:modified+ \
     --output json \
-    --output-keys alias schema config \
+    --output-keys config \
     --state . \
     --project-dir $PROJECT_DIR)
 
 # For debugging
-echo "Raw output:"
-echo "$dbt_output"
+#echo "Raw output:"
+#echo "$dbt_output"
 
 # Check for no output or error messages
 if [ -z "$dbt_output" ] || echo "$dbt_output" | grep -q "No nodes selected"; then
@@ -35,7 +35,7 @@ echo "$dbt_output" | \
         # Skip empty lines
         [ -z "$line" ] && continue
         # Extract and format each line
-        echo "$line" | jq -r '"\(.config.materialized) \(.config.schema) \(.alias)"'
+        echo "$line" | jq -r '"\(.config.materialized) \(.config.schema) \(.config.alias)"'
     done | \
     sort | \
     while IFS= read -r line; do
