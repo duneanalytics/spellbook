@@ -168,6 +168,7 @@ SELECT
     ON p.blockchain = 'solana'
     AND p.contract_address = tk_m.binary_address
     AND p.minute = date_trunc('minute', block_time)
+    AND date_trunc('day', p.minute) = block_date
     {% if is_incremental() %}
     AND {{incremental_predicate('p.minute')}}
     {% endif %}
