@@ -28,7 +28,11 @@ LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
     AND vt.block_date = b.date
     {% if is_incremental() %}
         AND {{ incremental_predicate('b.date') }}
+    {% else %}
+        AND b.date >= DATE_TRUNC('DAY', CURRENT_DATE) - INTERVAL '30' DAY
     {% endif %}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('vt.block_date') }}
+{% else %}
+WHERE vt.block_date >= DATE_TRUNC('DAY', CURRENT_DATE) - INTERVAL '30' DAY
 {% endif %}

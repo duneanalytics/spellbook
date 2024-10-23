@@ -15,6 +15,8 @@ WITH combined_fees AS (
     FROM {{ ref('gas_solana_tx_fees') }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_date') }}
+    {% else %}
+    WHERE block_date >= DATE_TRUNC('DAY', CURRENT_DATE) - INTERVAL '30' DAY
     {% endif %}
 
     UNION ALL
@@ -28,6 +30,8 @@ WITH combined_fees AS (
         AND f.block_slot = vf.block_slot
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('f.block_date') }}
+    {% else %}
+    WHERE f.block_date >= DATE_TRUNC('DAY', CURRENT_DATE) - INTERVAL '30' DAY
     {% endif %}
 )
 

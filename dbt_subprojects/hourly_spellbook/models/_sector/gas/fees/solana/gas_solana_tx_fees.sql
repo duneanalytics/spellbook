@@ -34,9 +34,13 @@ WITH base_model AS (
         AND t.block_date = b.date
         {% if is_incremental() %}
             AND {{ incremental_predicate('b.date') }}
+        {% else %}
+            AND b.date >= DATE_TRUNC('DAY', CURRENT_DATE) - INTERVAL '30' DAY
         {% endif %}
     {% if is_incremental() %}
-            WHERE {{ incremental_predicate('t.block_date') }}
+        WHERE {{ incremental_predicate('t.block_date') }}
+    {% else %}
+        WHERE t.block_date >= DATE_TRUNC('DAY', CURRENT_DATE) - INTERVAL '30' DAY
     {% endif %}
 )
 
@@ -73,4 +77,6 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     AND p.minute = date_trunc('minute', block_time)
     {% if is_incremental() %}
         AND {{ incremental_predicate("date_trunc('day',p.minute)")}}
+    {% else %}
+        AND p.minute >= DATE_TRUNC('DAY', CURRENT_DATE) - INTERVAL '30' DAY
     {% endif %}
