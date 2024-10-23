@@ -4,7 +4,7 @@
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
-    incremental_strategy = 'merge',
+    incremental_strategy = 'delete+insert',
     unique_key = ['tx_id', 'tx_index', 'inner_instruction_index', 'outer_instruction_index'],
     post_hook='{{ expose_spells(\'["solana"]\',
                                 "sector",
