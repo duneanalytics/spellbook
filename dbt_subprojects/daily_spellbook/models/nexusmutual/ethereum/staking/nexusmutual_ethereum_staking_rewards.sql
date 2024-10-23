@@ -49,6 +49,7 @@ select
 from {{ source('nexusmutual_ethereum', 'TokenController_call_mintStakingPoolNXMRewards') }} mr
   inner join covers c on mr.call_tx_hash = c.tx_hash and mr.call_block_number = c.block_number
 where mr.call_success
+  and mr.contract_address = 0x5407381b6c251cfd498ccd4a1d877739cb7960b8 -- proxy
   and mr.poolId = c.staking_pool_id
   and (c.trace_address is null
     or slice(mr.call_trace_address, 1, cardinality(c.trace_address)) = c.trace_address)
