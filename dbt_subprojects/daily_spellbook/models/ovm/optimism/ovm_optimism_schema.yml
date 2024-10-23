@@ -9,7 +9,7 @@ models:
       tags: ['cross-chain','optimism', 'messages']
     description: >
         Table aggregating messages through Optimism's cross-domain messenger
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - msg_type

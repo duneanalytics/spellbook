@@ -9,7 +9,7 @@ models:
     config:
       tags: ['evm', 'optimism', 'contracts', 'addresses']
     description: "Mapping of contracts to its creators and names on op mainnet."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -122,7 +122,7 @@ models:
     config:
       tags: ['evm', 'contracts', 'addresses']
     description: "A list of contracts that are self-destruct, with the time that they were most recently self-destructed."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -152,7 +152,7 @@ models:
     config:
       tags: ['evm', 'optimism', 'contracts', 'addresses']
     description: "Base Level for mapping of contracts to its creators and names on op mainnet."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -186,7 +186,7 @@ models:
     config:
       tags: ['evm', 'optimism', 'contracts', 'addresses']
     description: "Iterated creators for mapping of contracts to its creators and names on op mainnet."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -240,7 +240,7 @@ models:
     columns:
       - name: creator_address
         description: "Contract creator address"
-        tests:
+        data_tests:
           - unique
           - not_null
       - *contract_project
@@ -270,7 +270,7 @@ models:
       tags: ['optimism','op','contracts','disperse']
     description: >
         A table containing mappings for disperse contract wallets that we want to map distributions with
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - contract_address

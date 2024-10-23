@@ -44,3 +44,7 @@ sources:
     tables:
       - name: UniswapV2Factory_evt_PairCreated
       - name: UniswapV2Pair_evt_Swap
+  - name: dyorswap_blast
+    tables:
+      - name: DYORFactory_evt_PairCreated
+      - name: DYORPair_evt_Swap

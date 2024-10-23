@@ -177,4 +177,5 @@ FROM (VALUES
     , ('dfyn', 'DFYN Network', 'Direct', '_DFyn')
     , ('swapblast', 'SwapBlast', 'Direct', 'SwapBlast')
     , ('yoshiexchange', 'Yoshi Exchange', 'Direct', 'YoshiExchange')
+    , ('dyorswap', 'DyorSwap', 'Direct', 'DYORSWAP')
     ) AS temp_table (project, name, marketplace_type, x_username)

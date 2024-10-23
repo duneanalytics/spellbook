@@ -11,7 +11,7 @@ models:
       tags: ["dex", "mev", "sandwiches"]
     description: >
       The dex.sandwiches table captures detailed data on the outer trades of sandwich attacks in decentralized exchanges (DEXs), recording front-running and back-running trades across various EVM networks.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -102,7 +102,7 @@ models:
       tags: ["dex", "mev", "sandwiched"]
     description: >
       The dex.sandwiched table captures detailed data on the victim trades of sandwich attacks in decentralized exchanges (DEXs), recording transactions that have been sandwiched across various EVM networks.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -143,7 +143,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "ethereum"]
     description: >
       DEX MEV Sandwich Trades on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -184,7 +184,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "arbitrum"]
     description: >
       DEX MEV Sandwich Trades on Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -225,7 +225,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "avalanche_c"]
     description: >
       DEX MEV Sandwich Trades on Avalanche
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -266,7 +266,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "bnb"]
     description: >
       DEX MEV Sandwich Trades on BNB
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -307,7 +307,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "fantom"]
     description: >
       DEX MEV Sandwich Trades on Fantom
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -348,7 +348,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "gnosis"]
     description: >
       DEX MEV Sandwich Trades on Gnosis
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -389,7 +389,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "optimism"]
     description: >
       DEX MEV Sandwich Trades on Optimism
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -430,7 +430,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "polygon"]
     description: >
       DEX MEV Sandwich Trades on Polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -471,7 +471,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "base"]
     description: >
       DEX MEV Sandwich Trades on Base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -512,7 +512,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "zksync"]
     description: >
       DEX MEV Sandwich Trades on zkSync
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -553,7 +553,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "celo"]
     description: >
       DEX MEV Sandwich Trades on Celo
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -594,7 +594,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "scroll"]
     description: >
       DEX MEV Sandwich Trades on Scroll
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -635,7 +635,7 @@ models:
       tags: ["dex", "mev", "sandwiches", "zora"]
     description: >
       DEX MEV Sandwich Trades on Zora Network
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -676,7 +676,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "ethereum"]
     description: >
       DEX MEV Sandwiched Trades on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -717,7 +717,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "arbitrum"]
     description: >
       DEX MEV Sandwiched Trades on Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -758,7 +758,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "avalanche_c"]
     description: >
       DEX MEV Sandwiched Trades on Avalanche
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -799,7 +799,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "bnb"]
     description: >
       DEX MEV Sandwiched Trades on BNB
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -840,7 +840,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "fantom"]
     description: >
       DEX MEV Sandwiched Trades on Fantom
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -881,7 +881,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "gnosis"]
     description: >
       DEX MEV Sandwiched Trades on Gnosis
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -922,7 +922,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "optimism"]
     description: >
       DEX MEV Sandwiched Trades on Optimism
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -963,7 +963,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "polygon"]
     description: >
       DEX MEV Sandwiched Trades on Polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1004,7 +1004,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "base"]
     description: >
       DEX MEV Sandwiched Trades on Base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1045,7 +1045,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "celo"]
     description: >
       DEX MEV Sandwiched Trades on Celo
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1086,7 +1086,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "zksync"]
     description: >
       DEX MEV Sandwiched Trades on zkSync
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1127,7 +1127,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "scroll"]
     description: >
       DEX MEV Sandwiched Trades on Scroll
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -1168,7 +1168,7 @@ models:
       tags: ["dex", "mev", "sandwiched", "zora"]
     description: >
       DEX MEV Sandwiched Trades on Zora Network
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
