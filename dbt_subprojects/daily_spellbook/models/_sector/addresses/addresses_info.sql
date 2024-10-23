@@ -152,7 +152,7 @@ WITH to_update AS (
     FROM (
         {% for addresses_model in addresses_models %}
         (SELECT address
-        , last_seen_block
+        , last_seen
         , '{{ addresses_model[0] }}' AS blockchain
         FROM {{ addresses_model[1] }}
         WHERE {{incremental_predicate('last_seen')}}
