@@ -19,7 +19,6 @@ from
     {{ ref('metrics_net_transfers') }}
 where
     1 = 1
-    and net_transfer_amount_usd > 0
     {% if is_incremental() %}
     and {{ incremental_predicate('block_date') }}
     {% endif %}

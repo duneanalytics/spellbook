@@ -10,7 +10,7 @@ models:
         tags: ['ethereum', 'polygon', 'gitcoin', 'grant', 'round']
     description: >
         All Gitcoin grant round dates on Ethereum & Polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - round_name
@@ -28,7 +28,7 @@ models:
         tags: ['ethereum', 'polygon', 'gitcoin', 'donation']
     description: >
         All Gitcoin donations on Ethereum & Polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

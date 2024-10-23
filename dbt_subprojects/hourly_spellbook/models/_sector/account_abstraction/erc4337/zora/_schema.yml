@@ -58,7 +58,7 @@ models:
     config:
       tags: ["zora", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 user operation on zora"
-    tests:
+    data_tests:
       - check_seed:
           seed_file: ref('account_abstraction_erc4337_userops_seed')
           filter:
@@ -135,7 +135,7 @@ models:
     config:
       tags: ["zora", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 account deployed on zora"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - userop_hash

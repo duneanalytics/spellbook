@@ -3,6 +3,7 @@
 name: "dex"
 version: "1.0.0"
 config-version: 2
+require-dbt-version: ">=1.8.0"
 
 quoting:
   database: false
@@ -31,7 +32,7 @@ clean-targets: # directories to be removed by `dbt clean`
 
 # Configuring tests
 # Full documentation: https://docs.getdbt.com/reference/test-configs
-tests:
+data_tests:
   dex:
     +store_failures: true  # store failures for all tests
 
