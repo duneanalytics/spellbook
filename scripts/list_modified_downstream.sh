@@ -23,19 +23,25 @@ dbt_output=$(dbt ls $PROFILE \
 echo "Raw output:"
 echo "$dbt_output"
 
-# Check if output is empty
-if [ -z "$dbt_output" ] || [ "$dbt_output" = "[]" ]; then
+# Check for no output or error messages
+if [ -z "$dbt_output" ] || echo "$dbt_output" | grep -q "No nodes selected"; then
     echo "No modified models found"
     exit 0
 fi
 
-# Process single object JSON (wrap in array)
-dbt_output="[$dbt_output]"
-
-# Use jq to parse the JSON and format the output, then sort using sort command
+# Process the output line by line and format each JSON object
 echo "$dbt_output" | \
-    jq -r '.[] | "\(.config.materialized // "view") \(.schema) \(.alias)"' | \
+    while IFS= read -r line; do
+        # Skip empty lines
+        [ -z "$line" ] && continue
+        # Extract and format each line
+        echo "$line" | jq -r '"\(.config.materialized) \(.config.schema) \(.alias)"'
+    done | \
     sort | \
-    while read -r materialization schema alias; do
+    while IFS= read -r line; do
+        # Split the line into components and format
+        materialization=$(echo "$line" | cut -d' ' -f1)
+        schema=$(echo "$line" | cut -d' ' -f2)
+        alias=$(echo "$line" | cut -d' ' -f3)
         echo "[$materialization] - $schema.$alias"
     done
