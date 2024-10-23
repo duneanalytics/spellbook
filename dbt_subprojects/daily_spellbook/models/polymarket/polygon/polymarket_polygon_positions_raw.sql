@@ -69,6 +69,7 @@ SELECT
     balance / 1e6 AS balance
 FROM balances
 WHERE 1=1 
+AND address <> 0xa5ef39c3d3e10d0b270233af41cac69796b12966 -- for some reason a system address that's an EOA
 {% if is_incremental() %}
 AND {{ incremental_predicate('day') }}
 {% endif %}
