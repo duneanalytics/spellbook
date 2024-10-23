@@ -2303,6 +2303,14 @@
       "created_at": "2024-10-23T07:39:56Z",
       "repoId": 237392204,
       "pullRequestNo": 6992
+    },
+    {
+      "name": "bernatfp",
+      "id": 565238,
+      "comment_id": 2433307314,
+      "created_at": "2024-10-23T19:51:57Z",
+      "repoId": 237392204,
+      "pullRequestNo": 7004
     }
   ]
 }
