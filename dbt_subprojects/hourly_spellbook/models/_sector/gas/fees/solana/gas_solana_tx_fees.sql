@@ -25,10 +25,10 @@ WITH base_model AS (
     FROM {{ source('solana', 'transactions') }} t
     LEFT JOIN {{ ref('solana_compute_limit') }} cl
         ON t.id = cl.tx_id
-        AND t.block_slot = cl.block_slot
+        AND t.block_date = cl.block_date
     LEFT JOIN {{ ref('solana_compute_unit_price') }} up
         ON t.id = up.tx_id
-        AND t.block_slot = up.block_slot
+        AND t.block_date = up.block_date
     LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
         ON t.block_slot = b.slot
         AND t.block_date = b.date
@@ -75,6 +75,7 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     ON p.blockchain = 'solana'
     AND p.contract_address = 0x069b8857feab8184fb687f634618c035dac439dc1aeb3b5598a0f00000000001
     AND p.minute = date_trunc('minute', block_time)
+    AND date_trunc('day', p.minute) = block_date
     {% if is_incremental() %}
         AND {{ incremental_predicate("date_trunc('day',p.minute)")}}
     {% else %}
