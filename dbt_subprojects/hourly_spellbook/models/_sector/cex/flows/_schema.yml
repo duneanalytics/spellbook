@@ -9,7 +9,7 @@ models:
     config:
       tags: ['cex','flows']
     description: "All CEX-tied flows identified across EVM chains"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'gas_dao']
     description: "List of claim transactions for the $GAS airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

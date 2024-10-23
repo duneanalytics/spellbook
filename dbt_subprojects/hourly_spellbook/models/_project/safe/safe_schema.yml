@@ -103,7 +103,7 @@ models:
     config:
       tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'gnosis', 'goerli', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'worldchain', 'zkevm', 'zksync']
     description: "Native gas token transfers into or out of Safes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

@@ -81,7 +81,7 @@ models:
     config:
       tags: ["gnosis", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 user operation on gnosis"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - userop_hash
@@ -194,7 +194,7 @@ models:
     config:
       tags: ["gnosis", "erc4337", "account", "abstraction", "entrypoint"]
     description: "erc4337 account deployed on gnosis"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - userop_hash

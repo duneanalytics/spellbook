@@ -89,7 +89,7 @@ models:
         description: "Address that received the transaction"
       - &unique_trade_id
           name: unique_trade_id
-          tests:
+          data_tests:
             - unique:
                 config:
                   where: "unique_trade_id is not null and block_date >= NOW() - interval '2' day"

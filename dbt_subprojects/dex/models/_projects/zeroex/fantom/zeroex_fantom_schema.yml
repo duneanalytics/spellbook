@@ -10,7 +10,7 @@ models:
       tags: [fantom','0x','dex_aggregator','dex','aggregator']
     description: >
         0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on fantom
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -101,7 +101,7 @@ models:
       tags: ['fantom','0x','dex_aggregator','dex','aggregator']
     description: >
         0x API erc20 swaps raw fills (deduped) on fantom
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
