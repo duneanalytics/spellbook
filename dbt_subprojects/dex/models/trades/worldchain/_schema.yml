@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_worldchain_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
   
   - name: uniswap_v3_worldchain_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: [ 'worldchain', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap worldchain v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

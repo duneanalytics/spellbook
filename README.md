@@ -200,7 +200,7 @@ models:
     columns:
       - name: tx_hash
         description: "Table primary key: a transaction hash (tx_hash) is a unique identifier for a transaction."
-        tests:
+        data_tests:
           - unique
           - not_null
 

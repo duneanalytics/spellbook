@@ -5,7 +5,7 @@ models:
     columns:
       - name: blockchain
       - name: address
-        tests:
+        data_tests:
           - unique
       - name: min_block_time
         description: "block_time of the first transaction initiated by the address"
@@ -18,7 +18,7 @@ models:
     config:
       tags: [ 'arbitrum','metrics' ]
     description: "fundamental blockchain transaction metrics"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -32,7 +32,7 @@ models:
     config:
       tags: [ 'arbitrum','metrics', 'address' ]
     description: "fundamental blockchain transaction address metrics"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

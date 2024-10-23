@@ -10,7 +10,7 @@ models:
       tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'mantle', 'optimism', 'fantom', 'base', 'blast', 'sei', 'nova', 'linea', 'worldchain']
     description: >
         Crosschain ERC20 tokens
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -73,7 +73,7 @@ models:
       tags: ['tokens','stablecoin', 'arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon','base', 'blast', 'liena', 'mantle', 'scroll']
     description: >
         Stablecoin (ERC20) tokens
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

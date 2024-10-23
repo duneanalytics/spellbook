@@ -95,7 +95,7 @@ models:
       tags: ['arbitrum','cow_protocol','trades', 'dex', 'aggregator']
     description: >
       CoW Protocol enriched trades list on Arbitrum Chain
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -172,7 +172,7 @@ models:
       tags: ['ethereum','cow_protocol','trades', 'dex', 'aggregator']
     description: >
       CoW Protocol enriched trades list on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -256,7 +256,7 @@ models:
       tags: ['gnosis','cow_protocol','trades', 'dex', 'aggregator']
     description: >
       CoW Protocol enriched trades list on Gnosis Chain
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

@@ -37,7 +37,7 @@ models:
     config:
       tags: ['safe', 'transfers', 'ethereum']
     description: "Eth transfers for safes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -75,7 +75,7 @@ models:
     columns:
       - name: address
         description: "Safe contract address"
-        tests:
+        data_tests:
           - unique
           - not_null
 
@@ -137,7 +137,7 @@ models:
         description: "Output data"
 
   - name: safe_ethereum_signer_thresholds
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -156,7 +156,7 @@ models:
         description: "Number of signer threshold"
 
   - name: safe_ethereum_balances
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day

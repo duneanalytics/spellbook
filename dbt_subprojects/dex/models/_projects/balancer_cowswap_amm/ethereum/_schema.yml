@@ -10,7 +10,7 @@ models:
     config:
       tags: ['balancer', 'cowswap', 'ethereum', 'amm', 'trades']
     description: "Trades on Balancer CoWSwap AMM pools"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -101,7 +101,7 @@ models:
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer CoWSwap AMM liquidity pools created on Ethereum."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address

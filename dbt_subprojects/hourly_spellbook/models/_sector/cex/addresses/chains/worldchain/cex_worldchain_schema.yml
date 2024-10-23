@@ -9,7 +9,7 @@ models:
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'worldchain']
     description: "All CEX-tied addresses identified on WorldChain"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
