@@ -17,6 +17,8 @@ models:
     columns:
       - &block_time_created
         name: block_time_created
+        tests:
+          - not_null
       - &block_time_product_updated
         name: block_time_product_updated
       - &block_time_manager_updated
@@ -25,9 +27,13 @@ models:
         name: block_time_fee_updated
       - &block_time_updated
         name: block_time_updated
+        tests:
+          - not_null
       - &pool_id
         name: pool_id
         description: "pool id"
+        tests:
+          - not_null
       - &pool_address
         name: pool_address
         description: "pool contract deployment address"
@@ -55,6 +61,8 @@ models:
       - &product_id
         name: product_id
         description: "product id"
+        tests:
+          - not_null
       - &product_name
         name: product_name
       - &product_type
@@ -279,6 +287,7 @@ models:
       - name: cover_id
       - name: cover_start_date
       - name: cover_end_date
+      - name: cover_end_bucket_expiry_date
       - name: reward_amount_expected_total
       - name: reward_amount_per_second
       - name: reward_amount_per_day
