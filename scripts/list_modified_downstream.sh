@@ -17,6 +17,12 @@ dbt_output=$(dbt ls $PROFILE \
     --state . \
     --project-dir $PROJECT_DIR)
 
+# Check if output is empty or invalid JSON
+if [ -z "$dbt_output" ] || [ "$dbt_output" = "[]" ]; then
+    echo "No modified models found"
+    exit 0
+fi
+
 # Use jq to parse the JSON and format the output, then sort using sort command
 echo "$dbt_output" | \
     jq -r '.[] | "\(.config.materialized // "view") \(.schema) \(.alias)"' | \
