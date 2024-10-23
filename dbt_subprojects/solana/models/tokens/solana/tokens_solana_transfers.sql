@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'delete+insert',
-        partition_by = ['block_date'],
+        partition_by = ['block_date', 'block_hour'],
         unique_key = ['tx_id','outer_instruction_index','inner_instruction_index', 'block_slot'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
@@ -142,6 +142,7 @@ AND block_date > now() - interval '30' day
 SELECT 
     block_time
     , block_date
+    , date_trunc('hour', block_time) as block_hour
     , block_slot
     , action
     , amount
@@ -169,6 +170,7 @@ SELECT
     AND p.contract_address = tk_m.binary_address
     AND p.minute = date_trunc('minute', block_time)
     AND date_trunc('day', p.minute) = block_date
+    AND p.minute > TIMESTAMP '2020-10-02 00:00'
     {% if is_incremental() %}
     AND {{incremental_predicate('p.minute')}}
     {% endif %}
