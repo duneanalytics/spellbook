@@ -20,7 +20,7 @@ models:
       - &pool_id
         name: pool_id
         description: 'Unique encoded identifier that refers to each pool'
-        tests:
+        data_tests:
           - not_null
       - &token_address
         name: token_address
@@ -38,7 +38,7 @@ models:
       tags: ['gnosis', 'balancer', 'pools', 'tokens', 'weights']
     description: >
       Token weights in Balancer v2 pools.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool_id

@@ -10,7 +10,7 @@ models:
     config:
       tags: ["transfers", "bitcoin", "satoshi"]
     description: "Transfer satoshi in Bitcoin"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - type
@@ -49,7 +49,7 @@ models:
     description: "Transfer satoshi aggregate in Bitcoin by day"
     config:
       tags: ['transfers', 'bitcoin', 'satoshi', 'agg_day', 'longnhbkhn']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day

@@ -12,7 +12,7 @@ models:
     config:
       tags: ['yearn', 'tokens', 'optimism', 'yield']
     description: "Yearn vault list and mappings to underlying tokens"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
