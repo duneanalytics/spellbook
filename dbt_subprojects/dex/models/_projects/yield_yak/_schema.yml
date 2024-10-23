@@ -12,7 +12,8 @@ models:
     description: >
         yield yak aggregator trades on all chains across all contracts and versions. This table will load dex trades downstream.
     columns:
-      - name: blockchain
+      - &blockchain
+        name: blockchain
         description: "Blockchain which the DEX is deployed"
       - &project 
         name: project
@@ -20,9 +21,11 @@ models:
       - &version
         name: version
         description: "Version of the contract built and deployed by the DEX project"  
-      - name: block_date
+      - &block_date
+        name: block_date
         description: "UTC event block date of each DEX trade"
-      - name: block_time
+      - &block_time
+        name: block_time
         description: "UTC event block time of each DEX trade"
       - &token_bought_symbol
         name: token_bought_symbol
@@ -63,7 +66,8 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "Project contract address which executed the trade on the blockchain"
-      - name: tx_hash
+      - &tx_hash
+        name: tx_hash
         description: "Unique transaction hash value tied to each transaction on the DEX"
       - &tx_from
         name: tx_from
@@ -77,3 +81,36 @@ models:
       - &evt_index
         name: evt_index
         description: "The position of this event log within this transaction"
+      - &block_month
+        name: block_month
+        description: "Month of the block_date"
+
+  - name: yield_yak_base_trades
+    meta:
+      blockchain: avalanche_c, arbitrum, mantle
+      sector: dex
+      project: yield_yak
+      contributors: Henrystats, angus_1, hosuke
+    config:
+      tags: [ 'avalanche_c', 'yield_yak','trades', 'dex', 'aggregator', 'Henrystats', 'angus_1', 'cross-chain', 'arbitrum', 'mantle' ]
+    description: >
+      yield yak aggregator base trades on all chains across all contracts and versions. This table will load dex trades downstream.
+    columns:
+        - *blockchain
+        - *project
+        - *version
+        - *block_date
+        - *block_time
+        - *token_bought_amount_raw
+        - *token_sold_amount_raw
+        - *token_bought_address
+        - *token_sold_address
+        - *taker
+        - *maker
+        - *project_contract_address
+        - *tx_hash
+        - *tx_from
+        - *tx_to
+        - *trace_address
+        - *evt_index
+        - *block_month
