@@ -48,6 +48,7 @@ SELECT
     'solana' AS blockchain,
     CAST(date_trunc('month', block_time) AS DATE) AS block_month,
     block_date,
+    date_trunc('hour', block_time) AS block_hour,
     block_time,
     block_slot,
     tx_index,
