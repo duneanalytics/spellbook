@@ -22,7 +22,7 @@ WITH combined_fees AS (
     SELECT
         'vote' as tx_type,
         f.*
-    FROM {{ ref('gas_solana_fees') }} f
+    FROM {{ ref('gas_solana_tx_fees') }} f
     JOIN {{ ref('solana_vote_fees') }} vf
         ON f.tx_hash = vf.tx_hash
         AND f.block_slot = vf.block_slot
