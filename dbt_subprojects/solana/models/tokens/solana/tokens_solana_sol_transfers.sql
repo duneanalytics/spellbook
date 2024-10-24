@@ -51,7 +51,7 @@ WITH transfers AS (
         decimals
     FROM {{ source('prices', 'usd_forward_fill') }}
     WHERE blockchain = 'solana'
-    AND contract_address = 0x0000000000000000000000000000000000000000000000000000000000000001 -- SOL address
+    AND contract_address =  0x069b8857feab8184fb687f634618c035dac439dc1aeb3b5598a0f00000000001 -- SOL address
     AND minute >= TIMESTAMP '2020-10-02 00:00'
     {% if is_incremental() %}
     AND {{incremental_predicate('minute')}}
@@ -78,10 +78,7 @@ SELECT
     t.symbol,
     t.amount_raw,
     t.amount,
-    CASE 
-        WHEN p.decimals = 0 THEN p.price * t.amount
-        ELSE p.price * t.amount / power(10, p.decimals)
-    END as amount_usd,
+    p.price * (t.amount / power(10, 9)) as amount_usd,
     t.action,
     t.outer_executing_account,
     t.inner_executing_account,
