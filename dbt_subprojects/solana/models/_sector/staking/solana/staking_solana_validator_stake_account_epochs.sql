@@ -3,7 +3,6 @@
     , alias = 'validator_stake_account_epochs'
     , materialized = 'incremental'
     , materialized = 'table'
-    , unique_key = ['epoch', 'epoch_time', 'stake_account', 'vote_account']
     , post_hook='{{ expose_spells(\'["solana"]\',
                                 "sector",
                                 "staking",
