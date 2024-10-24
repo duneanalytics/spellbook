@@ -21,7 +21,7 @@ SELECT
     , b.index AS blob_index
     , b.proposer_index AS beacon_proposer_index
     , b.kzg_commitment AS blob_kzg_commitment
-    ,bytearray_length(varbinary_ltrim(varbinary_rtrim(blob))) as used_blob_byte_count
+    ,bytearray_length(varbinary_rtrim(blob)) as used_blob_byte_count
     ,bytearray_length(blob) AS blob_byte_count
     ,bytearray_length(blob) AS blob_gas_used
     -- GPT to the rescue
