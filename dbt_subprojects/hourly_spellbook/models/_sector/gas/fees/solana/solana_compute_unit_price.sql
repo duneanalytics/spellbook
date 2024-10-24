@@ -9,6 +9,7 @@
 ) }}
 
 -- this is just decoding program data, could be moved into decoding pipeline
+-- trigger CI
 
 SELECT
     tx_id,
