@@ -27,6 +27,4 @@ AND bytearray_substring(data,1,1) = 0x02
 AND inner_instruction_index is null
 {% if is_incremental() %}
     AND {{ incremental_predicate('block_date') }}
-{% else %}
-    AND block_date >= DATE_TRUNC('DAY', CURRENT_DATE) - INTERVAL '30' DAY
 {% endif %}
