@@ -222,7 +222,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'punkswap' ]
     description: "punkswap base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
