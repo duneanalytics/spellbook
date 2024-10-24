@@ -126,4 +126,5 @@ models:
       - name: dai_usd_claim_amount
       - name: usdc_eth_claim_amount
       - name: usdc_usd_claim_amount
-      
+      - name: cbbtc_eth_claim_amount
+      - name: cbbtc_usd_claim_amount

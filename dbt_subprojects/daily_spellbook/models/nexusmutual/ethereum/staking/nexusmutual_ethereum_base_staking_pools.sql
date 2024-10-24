@@ -149,24 +149,7 @@ staking_pool_managers_history as (
     call_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'TokenController_call_assignStakingPoolManager') }}
   where call_success
-  union all
-  select
-    call_block_time as block_time,
-    poolId as pool_id,
-    manager,
-    call_trace_address,
-    call_tx_hash as tx_hash
-  from {{ source('nexusmutual_ethereum', 'TokenController2_call_assignStakingPoolManager') }}
-  where call_success
-  union all
-  select
-    call_block_time as block_time,
-    poolId as pool_id,
-    manager,
-    call_trace_address,
-    call_tx_hash as tx_hash
-  from {{ source('nexusmutual_ethereum', 'TokenController3_call_assignStakingPoolManager') }}
-  where call_success
+    and contract_address = 0x5407381b6c251cfd498ccd4a1d877739cb7960b8 -- proxy
   union all
   select distinct
     m.call_block_time as block_time,
