@@ -59,6 +59,11 @@ SELECT
     , b.block_slot
     , b.action
     , b.amount
+    , CASE  
+        WHEN p.decimals is null THEN null
+        WHEN p.decimals = 0 THEN b.amount
+        ELSE b.amount / power(10, p.decimals)
+      END as amount_display
     , b.fee
     , b.from_token_account
     , b.to_token_account
@@ -68,8 +73,10 @@ SELECT
     , b.outer_instruction_index
     , b.inner_instruction_index
     , b.outer_executing_account
-    , tk_m.base58_address as token_mint_address
+    , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
+    , p.price as price_usd
     , CASE 
+        WHEN p.decimals is null THEN null
         WHEN p.decimals = 0 THEN p.price * b.amount
         ELSE p.price * b.amount / power(10, p.decimals)
       END as amount_usd

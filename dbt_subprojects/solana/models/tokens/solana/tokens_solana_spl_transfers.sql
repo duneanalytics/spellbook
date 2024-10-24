@@ -116,6 +116,11 @@ SELECT
     , tr.call_block_slot as block_slot
     , tr.action
     , tr.amount
+    , CASE 
+        WHEN p.decimals is null THEN null
+        WHEN p.decimals = 0 THEN tr.amount
+        ELSE tr.amount / power(10, p.decimals)
+      END as amount_display
     , tr.fee
     , tr.account_source as from_token_account
     , tr.account_destination as to_token_account
@@ -125,8 +130,10 @@ SELECT
     , tr.call_outer_instruction_index as outer_instruction_index
     , COALESCE(tr.call_inner_instruction_index,0) as inner_instruction_index
     , tr.call_outer_executing_account as outer_executing_account
-    , tk_m.base58_address as token_mint_address
+    , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
+    , p.price as price_usd
     , CASE 
+        WHEN p.decimals is null THEN null
         WHEN p.decimals = 0 THEN p.price * tr.amount
         ELSE p.price * tr.amount / power(10, p.decimals)
       END as amount_usd
@@ -147,6 +154,7 @@ SELECT
     , block_slot
     , action
     , amount
+    , amount_display
     , fee
     , from_token_account
     , to_token_account
@@ -157,6 +165,7 @@ SELECT
     , inner_instruction_index
     , outer_executing_account
     , token_mint_address
+    , price_usd
     , amount_usd
 FROM {{ref('tokens_solana_spl_transfers_call_transfer')}}
 {% if is_incremental() %}

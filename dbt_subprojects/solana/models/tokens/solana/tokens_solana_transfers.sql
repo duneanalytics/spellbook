@@ -16,7 +16,9 @@ SELECT
     , block_slot
     , action
     , amount
+    , amount_display
     , amount_usd
+    , price_usd
     , fee
     , token_mint_address
     , from_owner
@@ -47,7 +49,9 @@ SELECT
     , block_slot
     , action
     , amount
+    , amount_display
     , amount_usd
+    , price_usd
     , fee
     , token_mint_address
     , from_owner
@@ -78,7 +82,9 @@ SELECT
     , block_slot
     , action
     , amount
+    , amount_display
     , amount_usd
+    , price_usd
     , cast(null as double) as fee
     , token_mint_address
     , from_owner
