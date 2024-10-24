@@ -9,7 +9,7 @@ models:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'transfers']
     description: >
       Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_tx_hash
@@ -62,7 +62,7 @@ models:
       tags: ['balancer', 'amm', 'dex', 'bpt', 'prices', 'ethereum', 'arbitrum', 'optimism', 'polygon', 'gnosis', 'avalanche_c', 'base', 'zkevm']
     description: >
       Balancer Pool Token (BPT) hourly median price by pool on Balancer, an automated portfolio manager and trading platform.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -91,7 +91,7 @@ models:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm',  'bpt']
     description: >
       The Balancer Pool Token (BPT) supply over time of ComposableStablePools versions 4+
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -119,7 +119,7 @@ models:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
     description: >
       Balancer Pool Token (BPT) supply change events.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -158,7 +158,7 @@ models:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'supply', 'changes']
     description: >
       Balancer Pool Token (BPT) supply change events. grouped by day
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

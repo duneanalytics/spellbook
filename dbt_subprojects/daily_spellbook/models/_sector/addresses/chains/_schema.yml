@@ -9,7 +9,7 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -104,7 +104,7 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Arbitrum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -145,7 +145,7 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Avalanche"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -186,7 +186,7 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Base"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -227,7 +227,7 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Blast"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -268,7 +268,7 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on BNB"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -309,7 +309,7 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Celo"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -350,7 +350,7 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Gnosis"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -391,7 +391,7 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Optimism"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -432,7 +432,7 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Polygon"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -473,7 +473,7 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Scroll"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -514,7 +514,7 @@ models:
     config:
       tags: ['table', 'address', 'info']
     description: "High level information about every address on Zora"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address

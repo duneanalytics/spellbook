@@ -10,7 +10,7 @@ models:
     config:
       tags: [ 'attestation', 'eas', 'base' ]
     description: "EAS schema registry on Base"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - schema_uid
@@ -18,7 +18,7 @@ models:
       - &schema_uid
         name: schema_uid
         description: "Schema unique identifier"
-        tests:
+        data_tests:
           - not_null
 
   - name: eas_base_schema_details
@@ -30,7 +30,7 @@ models:
     config:
       tags: [ 'attestation', 'eas', 'base' ]
     description: "EAS schema registry details on Base"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - schema_uid
@@ -40,7 +40,7 @@ models:
       - &ordinality
         name: ordinality
         description: "Incremental unique number to order fields within each Schema"
-        tests:
+        data_tests:
           - not_null
 
   - name: eas_base_attestations
@@ -52,7 +52,7 @@ models:
     config:
       tags: [ 'attestation', 'eas', 'base' ]
     description: "EAS attestations on Base"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - schema_uid
@@ -62,7 +62,7 @@ models:
       - &attestation_uid
         name: attestation_uid
         description: "Attestation unique identifier"
-        tests:
+        data_tests:
           - not_null
 
   - name: eas_base_attestation_details
@@ -74,7 +74,7 @@ models:
     config:
       tags: [ 'attestation', 'eas', 'base' ]
     description: "EAS attestation details on Base"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - schema_uid

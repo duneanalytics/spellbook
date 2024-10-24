@@ -14,7 +14,7 @@ models:
       - &day
         name: day
         description: "UTC event block time truncated to the day mark"
-        tests:
+        data_tests:
           - not_null
       - &blockchain
         name: blockchain

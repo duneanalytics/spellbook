@@ -28,7 +28,7 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
-        tests:
+        data_tests:
           - not_null
       - name: trace_address
         description: "All returned traces, gives the exact location in the call trace"
@@ -43,7 +43,7 @@ models:
         description: "Function calls specified by the first four bytes of data sent with a transaction"
       - name: unique_transfer_id
         description: "Unique transfer ID (used for testing for duplicates), made up with tx_hash and trace_address"
-        tests:
+        data_tests:
           - not_null
           - unique
       - &tx_to
@@ -64,7 +64,7 @@ models:
     description: "ERC20 Token Transfers on base. This table is updated every 30 minutes."
     columns:
       - name: unique_transfer_id
-        tests:
+        data_tests:
           - unique
           - not_null
         description: "Unique transfer ID (used for testing for duplicates)"

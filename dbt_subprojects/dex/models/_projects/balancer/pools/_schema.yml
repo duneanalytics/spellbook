@@ -9,7 +9,7 @@ models:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'pools', 'fees']
     description: >
       Balancer v2 swap fees stored at the pool level.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -26,37 +26,37 @@ models:
       - &contract_address
         name: contract_address
         description: 'zkevm address for the liquidity pool used in transaction'
-        tests:
+        data_tests:
           - not_null
       - &tx_hash
         name: tx_hash
         description: 'Transaction hash'
-        tests:
+        data_tests:
           - not_null
       - &index
         name: index
         description: 'Event Index'
-        tests:
+        data_tests:
           - not_null
       - &tx_index
         name: tx_index
         description: 'Transaction Index'
-        tests:
+        data_tests:
           - not_null
       - &block_time
         name: block_time
         description: 'Block time in UTC'
-        tests:
+        data_tests:
           - not_null
       - &block_number
         name: block_number
         description: 'Event Block Number'
-        tests:
+        data_tests:
           - not_null
       - &swap_fee_percentage
         name: swap_fee_percentage
         description: 'Swap fees for the pool, values are returned with 18 decimals (1e18 meaning 100%)'
-        tests:
+        data_tests:
           - not_null
 
   - name: balancer_v2_arbitrum_pools_fees
@@ -68,7 +68,7 @@ models:
       tags: ['arbitrum', 'balancer', 'pools_fees']
     description: >
       Balancer v2 swap fees stored at the pool level.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -94,7 +94,7 @@ models:
       tags: ['avalanche_c', 'balancer', 'pools_fees']
     description: >
       Balancer v2 swap fees stored at the pool level.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -120,7 +120,7 @@ models:
       tags: ['base', 'balancer', 'pools_fees']
     description: >
       Balancer v2 swap fees stored at the pool level.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -146,7 +146,7 @@ models:
       tags: ['ethereum', 'balancer', 'pools', 'fees']
     description: >
       Balancer v2 swap fees stored at the pool level.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -172,7 +172,7 @@ models:
       tags: ['gnosis', 'balancer', 'pools_fees']
     description: >
       Balancer v2 swap fees stored at the pool level.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -198,7 +198,7 @@ models:
       tags: ['optimism', 'balancer', 'pools_fees']
     description: >
       Balancer v2 swap fees stored at the pool level.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -224,7 +224,7 @@ models:
       tags: ['polygon', 'balancer', 'pools', 'fees']
     description: >
       Balancer v2 swap fees stored at the pool level.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -250,7 +250,7 @@ models:
       tags: ['zkevm', 'balancer', 'pools_fees']
     description: >
       Balancer v2 swap fees stored at the pool level.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
