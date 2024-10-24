@@ -17,6 +17,7 @@
                                             ,"polygon"
                                             ,"scroll"
                                             ,"sei"
+                                            ,"solana"
                                             ,"zkevm"
                                             ,"zksync"
                                             ,"zora"
@@ -78,4 +79,28 @@ FROM (
     UNION ALL
     {% endif %}
     {% endfor %}
+    UNION ALL
+    SELECT 
+    null as unique_key -- need to do this upstream in solana cluster
+    , 'solana' as blockchain
+    , date_trunc('month', block_date) as block_month
+    , block_date
+    , block_time
+    , block_slot as block_number
+    , tx_id as tx_hash
+    , cast(null as bigint) as evt_index
+    , cast(null as array<bigint>) as trace_address
+    , token_version as token_standard
+    , tx_signer as tx_from
+    , cast(null as varbinary) as tx_to -- not a concept in solana
+    , null as tx_index
+    , from_base58(from_owner) as "from"
+    , from_base58(to_owner) as "to"
+    , from_base58(token_mint_address) as contract_address
+    , symbol
+    , amount as amount_raw
+    , amount_display as amount
+    , price_usd
+    , amount_usd
+    FROM {{ source('tokens_solana', 'transfers') }}
 )
