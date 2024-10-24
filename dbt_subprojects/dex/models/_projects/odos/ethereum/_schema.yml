@@ -11,7 +11,7 @@ models:
       tags: ['ethereum','trades', 'odos','dex']
     description: >
         A table containing all trades of odos v2 on ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

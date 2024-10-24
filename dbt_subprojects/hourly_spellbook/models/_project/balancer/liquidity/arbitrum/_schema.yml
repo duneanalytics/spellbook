@@ -10,7 +10,7 @@ models:
       tags: ['arbitrum', 'balancer', 'pools', 'liquidity']
     description: >
       Balancer v2 pools liquidity by token in Arbitrum.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day

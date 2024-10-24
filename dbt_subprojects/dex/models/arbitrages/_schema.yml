@@ -10,7 +10,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages']
     description: >
       DEX MEV Arbitrage Trades across all Chains
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -102,7 +102,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'ethereum']
     description: >
       DEX MEV Arbitrage Trades on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -145,7 +145,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'arbitrum']
     description: >
       DEX MEV Arbitrage Trades on Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -188,7 +188,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'avalanche_c']
     description: >
       DEX MEV Arbitrage Trades on Avalanche
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -231,7 +231,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'bnb']
     description: >
       DEX MEV Arbitrage Trades on BNB
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -274,7 +274,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'fantom']
     description: >
       DEX MEV Arbitrage Trades on Fantom
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -317,7 +317,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'gnosis']
     description: >
       DEX MEV Arbitrage Trades on Gnosis
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -360,7 +360,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'optimism']
     description: >
       DEX MEV Arbitrage Trades on Optimism
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -403,7 +403,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'polygon']
     description: >
       DEX MEV Arbitrage Trades on Polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -446,7 +446,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'base']
     description: >
       DEX MEV Arbitrage Trades on Base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -489,7 +489,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'celo']
     description: >
       DEX MEV Arbitrage Trades on Celo
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -532,7 +532,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'zksync']
     description: >
       DEX MEV Arbitrage Trades on zkSync
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -575,7 +575,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'scroll']
     description: >
       DEX MEV Arbitrage Trades on zkSScrollync
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -619,7 +619,7 @@ models:
       tags: ['dex', 'mev', 'atomic', 'arbitrages', 'zora']
     description: >
       DEX MEV Arbitrage Trades on Zora Network
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

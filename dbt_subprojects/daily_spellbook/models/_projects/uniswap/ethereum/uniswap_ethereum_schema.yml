@@ -49,7 +49,7 @@ models:
       - &support
         name: support
         description: "0 = Against, 1 = For, 2 = Abstain votes"
-        tests:
+        data_tests:
         - accepted_values:
             values: ['for', 'against', 'abstain']
       - &reason
@@ -65,7 +65,7 @@ models:
       tags: ['ethereum', 'proposals', 'dao', 'cross-chain']
     description: >
       DAO proposals on all chains across all contracts and versions
-    tests:
+    data_tests:
       - check_seed:
           seed_file: ref('uniswap_v3_proposals_seed')
           match_columns:
@@ -87,7 +87,7 @@ models:
       - *dao_address
       - *block_month
       - name: proposal_id
-        tests:
+        data_tests:
           - unique
       - &votes_for
         name: votes_for
@@ -104,7 +104,7 @@ models:
       - &status
         name: status
         description: "Proposal status: Queued, Active, Executed, Canceled or Defeated"
-        tests:
+        data_tests:
           - accepted_values:
               values: ['Queued', 'Active', 'Executed', 'Canceled','Defeated']
       - &description
@@ -120,7 +120,7 @@ models:
       tags: ['ethereum', 'flashloans']
     description: >
       All Uniswap v3 flashloans on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

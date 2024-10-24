@@ -10,7 +10,7 @@ models:
       tags: ['rebase', 'ethereum', 'lido']
     description: >
         ERC20 rebase events on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

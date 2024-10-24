@@ -10,7 +10,7 @@ models:
     config:
       tags: ["transfers", "celo"]
     description: "Events of native CELO transfers on Celo."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -33,14 +33,14 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
-        tests:
+        data_tests:
           - not_null
       - name: trace_address
         description: "All returned traces, gives the exact location in the call trace"
       - &block_month
         name: block_month
         description: "Block Month column used to partition data in this table"
-        tests:
+        data_tests:
           - not_null
       - &tx_block_time
         name: tx_block_time
@@ -67,7 +67,7 @@ models:
     config:
       tags: ['transfers', 'celo', 'erc20']
     description: "ERC20 Token Transfers on Celo. This table is updated every 30 minutes."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -107,7 +107,7 @@ models:
       contributors: soispoke, dot2dotseurat, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc20', 'agg_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - wallet_address
@@ -138,7 +138,7 @@ models:
     description: "ERC20 Token Transfers on Celo per hour."
     config:
       tags: ['transfers', 'celo', 'erc20', 'rolling_hour', 'soispoke', 'dot2dotseurat', 'tomfutago']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - wallet_address
@@ -170,7 +170,7 @@ models:
       contributors: soispoke, dot2dotseurat, tomfutago
     config:
       tags: ['transfers', 'celo', 'erc20', 'agg_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - wallet_address
@@ -197,7 +197,7 @@ models:
     description: "ERC20 Token Transfers on Celo per day."
     config:
       tags: ['transfers', 'celo', 'erc20', 'rolling_day', 'soispoke', 'dot2dotseurat', 'tomfutago']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - wallet_address

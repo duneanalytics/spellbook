@@ -42,10 +42,10 @@ with source as (
     select
         c.blockchain
         , c.last_1_days_dune_index as last_1_days_dune_index_contribution
-        , (c.last_1_days_dune_index / t.total_cross_chain_last_1_days_dune_index) * 100 as last_1_days_dune_index_contribution_percent
+        , c.last_1_days_dune_index / t.total_cross_chain_last_1_days_dune_index as last_1_days_dune_index_contribution_percent
         , t.total_cross_chain_last_1_days_dune_index
         , p.previous_1_days_dune_index as previous_1_days_dune_index_contribution
-        , ((c.last_1_days_dune_index - coalesce(p.previous_1_days_dune_index, 0)) / coalesce(p.previous_1_days_dune_index, 1)) * 100 AS daily_percent_change
+        , (c.last_1_days_dune_index - coalesce(p.previous_1_days_dune_index, 0)) / coalesce(p.previous_1_days_dune_index, 1) AS daily_percent_change
     from
         current_day as c
     left join previous_day as p
@@ -83,10 +83,10 @@ with source as (
     select
         c.blockchain
         , c.last_7_days_dune_index as last_7_days_dune_index_contribution
-        , (c.last_7_days_dune_index / t.total_cross_chain_last_7_days_dune_index) * 100 as last_7_days_dune_index_contribution_percent
+        , c.last_7_days_dune_index / t.total_cross_chain_last_7_days_dune_index as last_7_days_dune_index_contribution_percent
         , t.total_cross_chain_last_7_days_dune_index
         , p.previous_7_days_dune_index as previous_7_days_dune_index_contribution
-        , ((c.last_7_days_dune_index - coalesce(p.previous_7_days_dune_index, 0)) / coalesce(p.previous_7_days_dune_index, 1)) * 100 AS weekly_percent_change
+        , (c.last_7_days_dune_index - coalesce(p.previous_7_days_dune_index, 0)) / coalesce(p.previous_7_days_dune_index, 1) AS weekly_percent_change
     from
         current_week as c
     left join previous_week as p
@@ -124,10 +124,10 @@ with source as (
     select
         c.blockchain
         , c.last_30_days_dune_index as last_30_days_dune_index_contribution
-        , (c.last_30_days_dune_index / t.total_cross_chain_last_30_days_dune_index) * 100 as last_30_days_dune_index_contribution_percent
+        , c.last_30_days_dune_index / t.total_cross_chain_last_30_days_dune_index as last_30_days_dune_index_contribution_percent
         , t.total_cross_chain_last_30_days_dune_index
         , p.previous_30_days_dune_index as previous_30_days_dune_index_contribution
-        , ((c.last_30_days_dune_index - coalesce(p.previous_30_days_dune_index, 0)) / coalesce(p.previous_30_days_dune_index, 1)) * 100 AS monthly_percent_change
+        , (c.last_30_days_dune_index - coalesce(p.previous_30_days_dune_index, 0)) / coalesce(p.previous_30_days_dune_index, 1) AS monthly_percent_change
     from
         current_month as c
     left join previous_month as p

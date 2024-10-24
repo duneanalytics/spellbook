@@ -10,7 +10,7 @@ models:
       tags: ['bnb','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on Pancake v3 BNB Chain
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
