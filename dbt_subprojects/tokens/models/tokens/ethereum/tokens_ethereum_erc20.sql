@@ -4650,4 +4650,6 @@ FROM (VALUES
     , ( 0x66b5228cfd34d9f4d9f03188d67816286c7c0b74, 'VOLT', 18)
     , ( 0x4d1c297d39c5c1277964d0e3f8aa901493664530, 'PUFER', 18)
     , ( 0x460372866fe1448de1549cebdb0539f4075a2aa8, 'SHERK', 9)        
+    , ( 0x0a6E7Ba5042B38349e437ec6Db6214AEC7B35676, 'SWELL', 18)
+    , ( 0xf9B24C9364457Ea85792179D285855753549eBAa, 'slisBNB', 18)
 ) AS temp_table (contract_address, symbol, decimals)
