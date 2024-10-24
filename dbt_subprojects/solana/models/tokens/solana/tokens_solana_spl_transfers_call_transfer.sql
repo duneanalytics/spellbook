@@ -70,6 +70,8 @@ SELECT
     , b.fee
     , b.from_token_account
     , b.to_token_account
+    , tk_s.token_balance_owner as from_owner
+    , tk_d.token_balance_owner as to_owner
     , b.token_version
     , b.tx_signer
     , b.tx_id

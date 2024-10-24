@@ -154,6 +154,8 @@ SELECT
     , tr.fee
     , tr.account_source as from_token_account
     , tr.account_destination as to_token_account
+    , tk_s.token_balance_owner as from_owner
+    , tk_d.token_balance_owner as to_owner
     , tr.token_version
     , tr.call_tx_signer as tx_signer
     , tr.call_tx_id as tx_id
