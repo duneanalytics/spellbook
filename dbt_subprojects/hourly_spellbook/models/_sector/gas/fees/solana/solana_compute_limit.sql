@@ -1,7 +1,7 @@
 {{ config(
     schema = 'gas_solana',
     alias = 'compute_limit',
-    partition_by = ['block_date'],
+    partition_by = ['block_date', 'block_hour'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'delete+insert',
@@ -13,6 +13,7 @@
 SELECT
     tx_id,
     block_date,
+    date_trunc('hour', block_time) AS block_hour,
     block_time,
     block_slot,
     tx_index,
