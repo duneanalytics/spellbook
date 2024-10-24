@@ -192,7 +192,7 @@ models:
     config:
       tags: [ 'blast', 'dex', 'trades', 'icecreamswap' ]
     description: "icecreamswap Blast base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
