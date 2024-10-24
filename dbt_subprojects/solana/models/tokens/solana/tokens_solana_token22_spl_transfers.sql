@@ -126,20 +126,49 @@ base as (
       {% endif %}
 )
 
+, prices AS (
+    SELECT
+        contract_address,
+        minute,
+        price,
+        decimals
+    FROM {{ source('prices', 'usd_forward_fill') }}
+    WHERE blockchain = 'solana'
+    AND minute >= TIMESTAMP '2020-10-02 00:00'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('minute')}}
+    {% endif %}
+    {% if not is_incremental() %}
+    AND minute > now() - interval '30' day
+    {% endif %}
+)
+
 SELECT
-    call_block_time as block_time
-    , cast (date_trunc('day', call_block_time) as date) as block_date
-    , call_block_slot as block_slot
-    , action
-    , amount
-    , fee
-    , account_source as from_token_account
-    , account_destination as to_token_account
-    , token_version
-    , call_tx_signer as tx_signer
-    , call_tx_id as tx_id
-    , call_outer_instruction_index as outer_instruction_index
-    , COALESCE(call_inner_instruction_index,0) as inner_instruction_index
-    , call_outer_executing_account as outer_executing_account
+    tr.call_block_time as block_time
+    , cast (date_trunc('day', tr.call_block_time) as date) as block_date
+    , tr.call_block_slot as block_slot
+    , tr.action
+    , tr.amount
+    , tr.fee
+    , tr.account_source as from_token_account
+    , tr.account_destination as to_token_account
+    , tr.token_version
+    , tr.call_tx_signer as tx_signer
+    , tr.call_tx_id as tx_id
+    , tr.call_outer_instruction_index as outer_instruction_index
+    , COALESCE(tr.call_inner_instruction_index,0) as inner_instruction_index
+    , tr.call_outer_executing_account as outer_executing_account
+    , tk_m.base58_address as token_mint_address
+    , CASE 
+        WHEN p.decimals = 0 THEN p.price * tr.amount
+        ELSE p.price * tr.amount / power(10, p.decimals)
+      END as amount_usd
 FROM base tr
+LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.account_source
+LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.account_destination
+LEFT JOIN {{ ref('solana_utils_token_address_mapping') }} tk_m
+    ON tk_m.base58_address = COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
+LEFT JOIN prices p
+    ON p.contract_address = tk_m.binary_address
+    AND p.minute = date_trunc('minute', tr.call_block_time)
 -- AND call_block_time > now() - interval '90' day --for faster CI testing

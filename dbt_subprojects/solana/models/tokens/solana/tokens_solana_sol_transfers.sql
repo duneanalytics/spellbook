@@ -43,6 +43,24 @@ WITH transfers AS (
     {% endif %}
 )
 
+, prices AS (
+    SELECT
+        contract_address,
+        minute,
+        price,
+        decimals
+    FROM {{ source('prices', 'usd_forward_fill') }}
+    WHERE blockchain = 'solana'
+    AND contract_address = 0x0000000000000000000000000000000000000000000000000000000000000001 -- SOL address
+    AND minute >= TIMESTAMP '2020-10-02 00:00'
+    {% if is_incremental() %}
+    AND {{incremental_predicate('minute')}}
+    {% endif %}
+    {% if not is_incremental() %}
+    AND minute > now() - interval '30' day
+    {% endif %}
+)
+
 SELECT
     t.blockchain,
     t.block_month,
@@ -60,12 +78,18 @@ SELECT
     t.symbol,
     t.amount_raw,
     t.amount,
+    CASE 
+        WHEN p.decimals = 0 THEN p.price * t.amount
+        ELSE p.price * t.amount / power(10, p.decimals)
+    END as amount_usd,
     t.action,
     t.outer_executing_account,
     t.inner_executing_account,
     t.token_version
 FROM transfers t
-where 1=1 
+LEFT JOIN prices p
+    ON p.minute = date_trunc('minute', t.block_time)
+WHERE 1=1 
 {% if is_incremental() %}
 AND {{incremental_predicate('t.block_time')}}
 {% endif %}
