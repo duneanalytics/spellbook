@@ -45,7 +45,7 @@ models:
     columns:
       - name: address
         description: "Safe contract address"
-        tests:
+        data_tests:
           - unique
           - not_null
 
@@ -124,7 +124,7 @@ models:
     config:
       tags: ['safe', 'transfers', 'optimism']
     description: "ETH transfers into or out of Safes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -151,7 +151,7 @@ models:
         description: "USD amount of transferred ETH"
 
   - name: safe_optimism_balances
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day

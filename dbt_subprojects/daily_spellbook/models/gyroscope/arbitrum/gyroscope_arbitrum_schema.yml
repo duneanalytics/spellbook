@@ -15,7 +15,7 @@ models:
       tags: ["arbitrum", "gyroscope", "trades"]
 
     description: trades on gyroscope E-CLP pools on arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time

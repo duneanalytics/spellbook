@@ -10,7 +10,7 @@ models:
       tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'zora', 'scroll', 'mantle', 'blast', 'sei', 'transfers']
     description: >
         NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -30,7 +30,7 @@ models:
         description: "Block number in which the transaction was executed"
       - &token_standard
         name: token_standard
-        tests:
+        data_tests:
           - accepted_values:
               values: ['erc721', 'erc1155', 'bep721', 'bep1155']
               config:
@@ -38,7 +38,7 @@ models:
         description: "Token standard"
       - &transfer_type
         name: transfer_type
-        tests:
+        data_tests:
           - accepted_values:
               values: ['single', 'batch']
               config:
@@ -70,7 +70,7 @@ models:
         description: "Transaction hash"
       - &unique_transfer_id
         name: unique_transfer_id
-        tests:
+        data_tests:
           - unique:
               config:
                 where: "block_time > now() - interval '7' day"
@@ -85,7 +85,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -107,7 +107,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -129,7 +129,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -151,7 +151,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -173,7 +173,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -195,7 +195,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -217,7 +217,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -239,7 +239,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -261,7 +261,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -283,7 +283,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -305,7 +305,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -327,7 +327,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -349,7 +349,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -371,7 +371,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -393,7 +393,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -415,7 +415,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -437,7 +437,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -459,7 +459,7 @@ models:
       tags: [ 'nft', 'transfers' ]
     description: >
       NFT transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
