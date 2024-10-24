@@ -10,7 +10,7 @@ models:
       tags: ['dex', 'ethereum', 'bnb', 'avalanche_c', 'optimism', 'arbitrum', 'polygon', 'fantom', 'base', 'zksync', 'celo', 'zora', 'info']
     description: >
         CEXs info
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - cex_name

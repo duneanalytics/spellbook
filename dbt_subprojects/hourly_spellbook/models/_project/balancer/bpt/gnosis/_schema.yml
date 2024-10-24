@@ -10,7 +10,7 @@ models:
       tags: ['gnosis', 'bpt', 'transfers']
     description: >
       Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on gnosis.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_tx_hash
@@ -63,7 +63,7 @@ models:
       tags: ['gnosis', 'bpt', 'prices']
     description: >
       Balancer Pool Token (BPT) daily price by pool on Balancer, an automated portfolio manager and trading platform.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -92,7 +92,7 @@ models:
       tags: ['gnosis', 'bpt', 'supply']
     description: >
       Balancer Pool Token (BPT) supply by pool on Balancer, an automated portfolio manager and trading platform.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -121,7 +121,7 @@ models:
       tags: ['gnosis', 'bpt', 'supply', 'changes']
     description: >
       Balancer Pool Token (BPT) supply change events.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -160,7 +160,7 @@ models:
       tags: ['gnosis', 'bpt', 'supply', 'changes']
     description: >
       Balancer Pool Token (BPT) supply change events. grouped by day
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

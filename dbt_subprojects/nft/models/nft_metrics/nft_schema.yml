@@ -10,7 +10,7 @@ models:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'ethereum', 'solana', 'address']
     description: >
         NFT linked addresses. Addresses that buy and sell NFTs from each other. By definition (master address < alt address) alphabetically.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -34,7 +34,7 @@ models:
       tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'info']
     description: >
         NFT marketplaces info
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project

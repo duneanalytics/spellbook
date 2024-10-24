@@ -10,7 +10,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -50,7 +50,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on avalanche_c
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -74,7 +74,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -98,7 +98,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on bnb
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -122,7 +122,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on celo
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -146,7 +146,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -170,7 +170,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on fantom
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -194,7 +194,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on gnosis
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -218,7 +218,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on linea
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -242,7 +242,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on optimism
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -266,7 +266,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -290,7 +290,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on scroll
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -314,7 +314,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on zkevm
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -338,7 +338,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on zksync
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -362,7 +362,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on zora
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -386,7 +386,7 @@ models:
       tags: ['gas', 'prices']
     description: >
       Gas prices per minute, on goerli
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

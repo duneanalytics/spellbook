@@ -11,7 +11,7 @@ models:
       tags: ['base','paraswap_v5','trades', 'paraswap','dex']
     description: >
         Paraswap V5 contract aggregator trades on base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -141,7 +141,7 @@ models:
       tags: ["eptighte", "paraswap_v6", "trades", "paraswap", "dex"]
     description: >
       Paraswap V6 contract aggregator trades on eptighte
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -186,7 +186,7 @@ models:
 
   - name: paraswap_v6_base_trades_decoded
     description: "Paraswap V6 trades decoded"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:            
             - call_tx_hash

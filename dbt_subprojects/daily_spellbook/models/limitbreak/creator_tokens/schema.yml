@@ -10,7 +10,7 @@ models:
      tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
    description: >
      Identifies smart contracts that implement Creator Token Standards so that collection, minting and trade data can be queried based on Creator Token Standard support.
-   tests:
+   data_tests:
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns:
            - blockchain

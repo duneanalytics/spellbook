@@ -59,7 +59,7 @@ models:
     config:
       tags: ['labels', 'ethereum', 'gauges']
     description: 'Balancer v2 gauge labels.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -87,7 +87,7 @@ models:
     config:
       tags: ['labels', 'polygon', 'gauges']
     description: 'Balancer v2 gauge labels.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -115,7 +115,7 @@ models:
     config:
       tags: ['labels', 'arbitrum', 'gauges']
     description: 'Balancer v2 gauge labels.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -143,7 +143,7 @@ models:
     config:
       tags: ['labels', 'optimism', 'gauges']
     description: 'Balancer v2 gauge labels.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -171,7 +171,7 @@ models:
     config:
       tags: ['labels', 'avalanche_c', 'gauges']
     description: 'Balancer v2 gauge labels.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -199,7 +199,7 @@ models:
     config:
       tags: ['labels', 'base', 'gauges']
     description: 'Balancer v2 gauge labels.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -227,7 +227,7 @@ models:
     config:
       tags: ['labels', 'gnosis', 'gauges']
     description: 'Balancer v2 gauge labels.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -255,7 +255,7 @@ models:
     config:
       tags: ['labels', 'zkevm', 'gauges']
     description: 'Balancer v2 gauge labels.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address

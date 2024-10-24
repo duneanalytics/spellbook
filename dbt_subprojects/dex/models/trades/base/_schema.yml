@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_base_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: uniswap_v3_base_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap base v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -34,7 +34,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'aerodrome' ]
     description: aerodrome base trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -52,7 +52,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'sushiswap', 'v1' ]
     description: "sushiswap base v1 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -72,7 +72,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'sushiswap', 'v2' ]
     description: "sushiswap base v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -91,7 +91,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
     description: "Pancakeswap Base v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -110,7 +110,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'balancer' ]
     description: "Balancer v2 base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -129,7 +129,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v3' ]
     description: "Pancakeswap Base v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -148,7 +148,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'dodo' ]
     description: "Dodo base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -167,7 +167,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'maverick' ]
     description: "Maverick Base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -186,7 +186,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'maverick' ]
     description: "Maverick Base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -205,7 +205,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'smardex' ]
     description: "smardex base trades on base"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -222,7 +222,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'baseswap' ]
     description: "baseswap base trades on base"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -241,7 +241,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'baseswap' ]
     description: "baseswap base trades on base"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -260,7 +260,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'dackieswap' ]
     description: "dackieswap base trades on base"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -277,7 +277,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'scale' ]
     description: "scale base trades on base"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -294,7 +294,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'rubicon' ]
     description: "rubicon base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -312,7 +312,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'kyberswap' ]
     description: "kyberswap base  base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -332,7 +332,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'woofi' ]
     description: "woofi base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -352,7 +352,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'velocimeter_v2' ]
     description: "velocimeter_v2 base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -372,7 +372,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'moonbase' ]
     description: "moonbase base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -392,7 +392,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'sobal' ]
     description: "sobal base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -412,7 +412,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'plantbaseswap' ]
     description: "plantbaseswap base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -432,7 +432,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'derpdex' ]
     description: "derpdex base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -453,7 +453,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'torus', 'v1' ]
     description: "torus base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -471,7 +471,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'throne_exchange' ]
     description: "throne_exchange base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -491,7 +491,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'sharkswap' ]
     description: "sharkswap base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -511,7 +511,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'throne_exchange' ]
     description: "throne_exchange base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -531,7 +531,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'horizondex' ]
     description: "horizondex dex swaps on base chain"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -551,7 +551,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'citadelswap' ]
     description: "citadelswap base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -571,7 +571,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'autotronic' ]
     description: "autotronic base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -591,7 +591,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap base v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -611,7 +611,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'soswap' ]
     description: "soswap base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -631,7 +631,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'elk_finance' ]
     description: "elk_finance base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -651,7 +651,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'oasisswap' ]
     description: "oasisswap base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -671,7 +671,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'leetswap' ]
     description: "leetswap_v2 base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -690,7 +690,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'openocean' ]
     description: "openocean base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -707,7 +707,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'rocketswap' ]
     description: "rocketswap base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -726,7 +726,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'wombat_exchange' ]
     description: "wombat exchange base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -745,7 +745,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'icecreamswap' ]
     description: "icecreamswap base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -762,7 +762,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'alienbase' ]
     description: "alienbase base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -781,7 +781,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'swapbased' ]
     description: "swapbased base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -800,7 +800,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'gridex' ]
     description: "gridex base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -819,7 +819,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'baseswap' ]
     description: "baseswap base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -838,7 +838,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'synthswap' ]
     description: "synthswap base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -857,7 +857,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'solidly' ]
     description: "solidly base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -876,7 +876,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'energon' ]
     description: "energon base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -895,7 +895,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'voltswap' ]
     description: "voltswap base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -914,7 +914,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'crescentswap' ]
     description: "crescentswap base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -933,7 +933,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'baso_finance' ]
     description: "baso finance base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -950,7 +950,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'clipper' ]
     description: "clipper base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -970,7 +970,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'swaap', 'v2']
     description: "swaap v2 base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -989,7 +989,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'xchange' ]
     description: "xchange base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

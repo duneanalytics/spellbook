@@ -91,7 +91,7 @@ models:
       - &support
         name: support
         description: "0 = Against, 1 = For, 2 = Abstain votes"
-        tests:
+        data_tests:
         - accepted_values:
             values: ['for', 'against', 'abstain']
       - &reason
@@ -240,7 +240,7 @@ models:
       - *dao_name
       - *dao_address
       - name: proposal_id
-        tests:
+        data_tests:
           - unique
       - &votes_for
         name: votes_for
@@ -257,7 +257,7 @@ models:
       - &status
         name: status
         description: "Proposal status: Pending, Queued, Active, Executed, Canceled or Defeated"
-        tests:
+        data_tests:
           - accepted_values:
               values: ['Pending', 'Queued', 'Active', 'Executed', 'Canceled','Defeated']
       - &description
