@@ -3,6 +3,7 @@
 name: "daily_spellbook"
 version: "1.0.0"
 config-version: 2
+require-dbt-version: ">=1.8.0"
 
 quoting:
   database: false
@@ -15,7 +16,7 @@ profile: "spellbook-local"
 
 vars:
   DBT_ENV_CUSTOM_ENV_S3_BUCKET: "{{ env_var('DBT_ENV_CUSTOM_ENV_S3_BUCKET', 'local') }}"
-  DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '1') }}"
+  DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '3') }}"
   DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'day') }}"
   ETH_ERC20_ADDRESS: '0x0000000000000000000000000000000000000000'
 
@@ -33,7 +34,7 @@ clean-targets: # directories to be removed by `dbt clean`
 
 # Configuring tests
 # Full documentation: https://docs.getdbt.com/reference/test-configs
-tests:
+data_tests:
   daily_spellbook:
     +store_failures: true  # store failures for all tests
 

@@ -9,7 +9,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Token transfers in the Nexus Mutual Capital Pool"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
@@ -21,27 +21,27 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time of each transfer"
-        tests:
+        data_tests:
           - not_null
       - &block_number
         name: block_number
         description: "Block number of each transfer"
-        tests:
+        data_tests:
           - not_null
       - &block_date
         name: block_date
         description: "UTC event block date of each transfer"
-        tests:
+        data_tests:
           - not_null
       - &transfer_type
         name: transfer_type
         description: "Transfer type: in/out (inflow/outflow)"
-        tests:
+        data_tests:
           - not_null
       - &symbol
         name: symbol
         description: "Token symbol for transferred token"
-        tests:
+        data_tests:
           - not_null
       - &amount
         name: amount
@@ -55,7 +55,7 @@ models:
       - &tx_hash
         name: tx_hash
         description: "unique transaction hash value tied to each token transfer"
-        tests:
+        data_tests:
           - not_null
 
   - name: nexusmutual_ethereum_capital_pool_totals
@@ -66,7 +66,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Daily running totals for core tokens in the Nexus Mutual Capital Pool"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -168,7 +168,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Latest totals for core tokens in the Nexus Mutual Capital Pool"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -212,7 +212,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Minimum Capital Requirement (MCR) in the Nexus Mutual Capital Pool"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -237,7 +237,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
     description: "Combined daily avg prices for base assets: ETH, DAI, USDC and NXM"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -252,27 +252,3 @@ models:
       - &avg_nxm_usd_price
         name: avg_nxm_usd_price
         description: "Daily average NXM/USD price"
-
-
-  # to be deprecated:
-  - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary
-    meta:
-      blockchain: ethereum
-      project: nexusmutual
-      contributors: [guyhow]
-    config:
-      tags: ["ethereum","nexusmutual","trades"]
-    description: >
-        Daily summary for ethereum entering and leaving the nexus mutual capital pool contracts
-    columns:
-      - &day
-        name: day
-        description: "Table primary key: day of summarised transctions"
-        tests:
-          - unique
-      - &eth_ingress
-        name: ingress ethereum
-        description: "Sum of incoming transctions over the time covered by day"
-      - &eth_egress
-        name: egress ethereum
-        description: "Sum of outgoing transctions over the time covered by day"

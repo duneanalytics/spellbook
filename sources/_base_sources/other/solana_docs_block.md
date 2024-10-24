@@ -48,3 +48,16 @@ The `solana.instruction_calls` table provides detailed information about instruc
 - `log_messages`: Log messages emitted by the transaction
 {% enddocs %}
 
+{% docs solana_vote_transactions_doc %}
+The `solana.vote_transactions` table contains only vote transactions. The votes are transactions that are not executed but are used to select the leader for a given block. Key columns include:
+
+- `block_slot`, `block_hash`, `block_time`, `block_date`: Block information
+- `tx_hash`: The unique identifier of the transaction
+- `tx_from`: The address that initiates the transaction and pays the transaction fee
+- `tx_fee_raw`: The raw transaction fee in lamports
+- `block_proposer`: The leader who proposed the block
+- `tx_type`: The type of the transaction
+- `limit_type`: The type of compute limit applied to the transaction
+{% enddocs %}
+
+

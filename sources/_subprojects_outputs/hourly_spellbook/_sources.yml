@@ -54,3 +54,11 @@ sources:
   - name: account_abstraction_erc4337
     tables:
       - name: account_deployed
+
+  - name: gas
+    tables:
+      - name: fees
+
+  - name: evms
+    tables:
+      - name: transaction_metrics

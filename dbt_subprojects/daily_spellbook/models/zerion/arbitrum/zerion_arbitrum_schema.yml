@@ -11,7 +11,7 @@ models:
       tags: ['arbitrum', 'zerion', 'zerion', 'trades', 'dex']
     description: >
         Zerion DEX trades on Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

@@ -10,7 +10,7 @@ models:
     config:
       tags: ['query','labels', 'ethereum', 'ens', 'ENS resolver', 'ENS reverse']
     description: "ENS labels"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address

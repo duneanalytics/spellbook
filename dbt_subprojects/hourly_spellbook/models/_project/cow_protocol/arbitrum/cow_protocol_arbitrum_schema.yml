@@ -20,6 +20,6 @@ models:
       tags: ['arbitrum','cow_protocol','trades', 'dex', 'aggregator', 'auction']
     description: >
       CoW Protocol enriched batches table on Arbitrum Chain
-    tests:
+    data_tests:
       - unique:
           column_name: tx_hash

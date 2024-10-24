@@ -314,7 +314,7 @@ sources:
           - name: ts
             description: "Block timestamp"
           - name: type
-            tests:
+            data_tests:
               - accepted_values:
                   values: [0, 1, 2, 3]
             description: >

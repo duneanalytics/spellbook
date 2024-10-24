@@ -9,7 +9,7 @@ models:
       tags: ['bridge','standard_bridge', 'flows', 'cross-chain', 'optimism']
     description: >
         Table aggregating bridge transfers through Optimism's Standard Bridge.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - block_date
