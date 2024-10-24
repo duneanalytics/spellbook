@@ -78,4 +78,28 @@ FROM (
     UNION ALL
     {% endif %}
     {% endfor %}
+    UNION ALL
+    SELECT 
+    concat(tx_id, '-', outer_instruction_index, '-', inner_instruction_index, '-', block_slot) as unique_key
+    , 'solana' as blockchain
+    , date_trunc('month', block_date) as block_month
+    , block_date
+    , block_time
+    , block_slot as block_number
+    , tx_id as tx_hash
+    , cast(null as bigint) as evt_index
+    , cast(null as array<bigint>) as trace_address
+    , token_version as token_standard
+    , tx_signer as tx_from
+    , cast(null as varchar) as tx_to -- not a concept in solana
+    , index as tx_index -- need to look into this 
+    , from_owner as "from"
+    , to_owner as "to"
+    , from_base58(token_mint_address) as contract_address
+    , symbol
+    , amount as amount_raw
+    , amount as amount -- need to look into this
+    , cast(null as double) as price_usd -- need to look into this
+    , amount_usd
+    FROM {{ source('tokens_solana', 'transfers') }}
 )
