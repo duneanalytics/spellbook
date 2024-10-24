@@ -81,7 +81,7 @@ FROM (
     {% endfor %}
     UNION ALL
     SELECT 
-    concat(tx_id, '-', outer_instruction_index, '-', inner_instruction_index, '-', block_slot) as unique_key
+    null as unique_key -- need to do this upstream in solana cluster
     , 'solana' as blockchain
     , date_trunc('month', block_date) as block_month
     , block_date
