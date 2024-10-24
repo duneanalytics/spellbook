@@ -13,7 +13,7 @@ models:
     columns:
       - name: contract_address
         description: "ERC20 token contract address on avalanche c chain"
-        tests:
+        data_tests:
           - unique
       - name: symbol
         description: "ERC20 token symbol"
@@ -32,7 +32,7 @@ models:
     columns:
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored on avalanche c chain."
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "NFT project name"
@@ -51,14 +51,14 @@ models:
     columns:
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored on avalanche c chain."
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "NFT project name"
       - name: symbol
         description: "NFT project symbol"
       - name: standard
-        tests:
+        data_tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155']
         description: >
@@ -78,11 +78,11 @@ models:
     columns:
       - name: contract_address
         description: "the NFT contract address"
-        tests:
+        data_tests:
           - unique
       - name: standard
         description: "The NFT standard erc721/erc1155/..."
-        tests:
+        data_tests:
           - accepted_values:
               values: [ 'erc721', 'erc1155']
 

@@ -11,7 +11,7 @@ models:
     config:
       tags: ['table', 'funded', 'addresses_events', 'mainnets', 'crosschain']
     description: "Table showing what chain an address was first funded on and its details"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address

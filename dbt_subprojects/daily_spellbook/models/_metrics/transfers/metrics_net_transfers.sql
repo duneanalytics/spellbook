@@ -122,6 +122,8 @@ select
     , sum(net_transfer_amount_usd) as net_transfer_amount_usd
 from
     net_transfers
+where
+    net_transfer_amount_usd > 0
 group by
     blockchain
     , block_date

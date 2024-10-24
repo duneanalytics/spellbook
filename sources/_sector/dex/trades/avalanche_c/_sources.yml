@@ -61,7 +61,11 @@ sources:
   - name: curvefi_avalanche_c
     tables:
       - name: 3pool_evt_TokenExchange
+        quoting:
+          identifier: true # override source defaults
       - name: 3poolV2_evt_TokenExchange
+        quoting:
+          identifier: true # override source defaults
       - name: AavePool_evt_TokenExchange
       - name: AavePool_evt_TokenExchangeUnderlying
       - name: aave_v3_evt_TokenExchangeUnderlying

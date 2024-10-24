@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'funded', 'addresses_events', 'optimism']
     description: "Table showing who first funded each Optimism address in ETH"
-    tests:
+    data_tests:
       - check_seed:
           seed_file: ref('first_funded_by_seed')
           filter:
@@ -26,7 +26,7 @@ models:
         description: "Blockchain"
       - name: address
         description: "Concerned Optimism address"
-        tests:
+        data_tests:
           - unique
       - name: first_funding_executed_by
         description: "Which address executed the first funding tx"
@@ -58,7 +58,7 @@ models:
     config:
       tags: ['table', 'activity', 'addresses_events', 'optimism']
     description: "Table showing first activity of each OP Mainnet address"
-    tests:
+    data_tests:
       - check_seed:
           seed_file: ref('first_activity_seed')
           filter:
@@ -74,7 +74,7 @@ models:
         description: "Blockchain"
       - name: address
         description: "Concerned OP Mainnet address"
-        tests:
+        data_tests:
           - unique
       - name: first_activity_to
         description: "First transaction activity to address"
@@ -103,7 +103,7 @@ models:
         description: "Blockchain"
       - name: address
         description: "Concerned OP Mainnet address"
-        tests:
+        data_tests:
           - unique
       - name: first_to_addresses_path
         description: "First transaction to addresses path"
