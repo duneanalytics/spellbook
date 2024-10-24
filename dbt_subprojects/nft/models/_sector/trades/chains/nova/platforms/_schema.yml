@@ -10,7 +10,7 @@ models:
    config:
      tags: [ 'nova', 'nft', 'trades', 'king_of_destiny' ]
    description: "king_of_destiny base trades"
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -24,7 +24,7 @@ models:
      tags: [ 'opensea','base_trades','seaport' ]
    description: >
      Opensea base trades from seaport (v3)
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns:
@@ -41,7 +41,7 @@ models:
      tags: [ 'opensea','base_trades','seaport' ]
    description: >
      Opensea base trades from seaport (v4)
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns:

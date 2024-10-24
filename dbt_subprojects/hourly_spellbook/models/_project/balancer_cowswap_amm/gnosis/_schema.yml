@@ -10,7 +10,7 @@ models:
       tags: ['gnosis', 'balancer', 'balances']
     description: >
       ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -20,7 +20,7 @@ models:
       - &day
         name: day
         description: "UTC event block time truncated to the day mark"
-        tests:
+        data_tests:
           - not_null
       - &blockchain
         name: blockchain
@@ -44,7 +44,7 @@ models:
       tags: ['gnosis', 'balancer', 'pools', 'liquidity']
     description: >
       Balancer CoWSwap AMM pools liquidity by token in gnosis.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day

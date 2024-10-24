@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'funded', 'addresses_events', 'polygon']
     description: "Table showing who first funded each Polygon address in MATIC"
-    tests:
+    data_tests:
       - check_seed:
           seed_file: ref('first_funded_by_seed')
           filter:
@@ -27,7 +27,7 @@ models:
         description: "Blockchain"
       - name: address
         description: "Concerned Polygon address"
-        tests:
+        data_tests:
           - unique
       - name: first_funding_executed_by
         description: "Which address executed the first funding tx"
@@ -59,7 +59,7 @@ models:
     config:
       tags: ['table', 'activity', 'addresses_events', 'polygon']
     description: "Table showing first activity of each Polygon Mainnet address"
-    tests:
+    data_tests:
       - check_seed:
           seed_file: ref('first_activity_seed')
           filter:
@@ -75,7 +75,7 @@ models:
         description: "Blockchain"
       - name: address
         description: "Concerned Polygon Mainnet address"
-        tests:
+        data_tests:
           - unique
       - name: first_activity_to
         description: "First transaction activity to address"
