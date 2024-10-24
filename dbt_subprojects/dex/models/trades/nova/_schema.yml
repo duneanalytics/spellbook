@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_nova_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: sushiswap_nova_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: [ 'nova', 'dex', 'trades', 'sushiswap' ]
     description: "sushiswap nova base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -31,7 +31,7 @@ models:
     config:
       tags: [ 'nova', 'dex', 'trades', 'rcpswap' ]
     description: "rcpswap nova base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
            combination_of_columns:
               - tx_hash

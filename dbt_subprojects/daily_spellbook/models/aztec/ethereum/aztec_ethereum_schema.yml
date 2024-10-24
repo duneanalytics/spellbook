@@ -9,7 +9,7 @@ models:
     config:
       tags: ['ethereum','aztec', 'bridge']
     description: "View aztec rollup bridge transactions on ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_tx_hash
@@ -91,7 +91,7 @@ models:
     config:
       tags: ['ethereum','aztec']
     description: "List of assets added"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - asset_id
@@ -229,5 +229,5 @@ models:
           description: "bridge type, used to include aztec rollup, other spells depend on this"
         - name: contract_address
           description: "bridge address"
-          tests:
+          data_tests:
             - unique
