@@ -24,7 +24,7 @@ WITH invalid_pubkeys AS (
 
 , indexes AS (
     SELECT pubkey
-    , ROW_NUMBER() OVER (ORDER BY MIN(deposit_index)) - 1 AS validator_index
+    , ROW_NUMBER() OVER (ORDER BY MIN(deposit_index)) - 1 FILTER (WHERE pubkey IN (SELECT pubkey FROM {{ source('beacon', 'deposits')}})) AS validator_index
     , MAX(entity) AS entity
     , MAX(entity_category) AS entity_category
     , MAX(entity_unique_name) AS entity_unique_name
