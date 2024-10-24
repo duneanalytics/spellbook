@@ -23,7 +23,7 @@
                                         ]\',
                                         "sector",
                                         "tokens",
-                                        \'["aalan3", "jeff-dude", "0xBoxer", "hildobby"]\') }}'
+                                        \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob"]\') }}'
         )
 }}
 
@@ -43,6 +43,7 @@
     ,'polygon'
     ,'scroll'
     ,'sei'
+    ,'tron'
     ,'zkevm'
     ,'zksync'
     ,'zora'
