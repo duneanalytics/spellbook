@@ -38,9 +38,6 @@ WITH transfers AS (
     {% if is_incremental() %}
     WHERE {{incremental_predicate('call_block_time')}}
     {% endif %}
-    {% if not is_incremental() %}
-    WHERE call_block_time > now() - interval '30' day
-    {% endif %}
 )
 
 , prices AS (
@@ -55,9 +52,6 @@ WITH transfers AS (
     AND minute >= TIMESTAMP '2020-10-02 00:00'
     {% if is_incremental() %}
     AND {{incremental_predicate('minute')}}
-    {% endif %}
-    {% if not is_incremental() %}
-    AND minute > now() - interval '30' day
     {% endif %}
 )
 
@@ -90,7 +84,4 @@ LEFT JOIN prices p
 WHERE 1=1 
 {% if is_incremental() %}
 AND {{incremental_predicate('t.block_time')}}
-{% endif %}
-{% if not is_incremental() %}
-AND t.block_time > now() - interval '30' day
 {% endif %}

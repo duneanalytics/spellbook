@@ -105,9 +105,6 @@ base as (
     {% if is_incremental() %}
     AND {{incremental_predicate('minute')}}
     {% endif %}
-    {% if not is_incremental() %}
-    AND minute > now() - interval '30' day
-    {% endif %}
 )
 
 SELECT

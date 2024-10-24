@@ -36,9 +36,6 @@ WHERE 1=1
 {% if is_incremental() %}
 AND {{incremental_predicate('block_date')}}
 {% endif %}
-{% if not is_incremental() %}
-AND block_date > now() - interval '30' day
-{% endif %}
 
 UNION ALL
 
@@ -69,9 +66,6 @@ WHERE 1=1
 {% if is_incremental() %}
 AND {{incremental_predicate('block_date')}}
 {% endif %}
-{% if not is_incremental() %}
-AND block_date > now() - interval '30' day
-{% endif %}
 
 UNION ALL
 
@@ -101,7 +95,4 @@ FROM {{ ref('tokens_solana_sol_transfers') }}
 WHERE 1=1
 {% if is_incremental() %}
 AND {{incremental_predicate('block_date')}}
-{% endif %}
-{% if not is_incremental() %}
-AND block_date > now() - interval '30' day
 {% endif %}
