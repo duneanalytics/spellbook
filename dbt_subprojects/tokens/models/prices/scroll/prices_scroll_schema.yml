@@ -9,7 +9,7 @@ models:
     config:
       tags: ['prices', 'tokens', 'usd', 'scroll']
     description: "Price tokens on scroll chain"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - contract_address
@@ -18,7 +18,7 @@ models:
         description: "Id of the token at coinpaprika. This id is required to pull the price feed data. NOTE: Not all tokens are listed at coinpaprika - consider using price data from DEX sources in this case or submit a listing request at coinpaprika."
       - name: blockchain
         description: "Native blockchain of the token, if any"
-        tests:
+        data_tests:
           - accepted_values:
               values: [ "scroll" ]
       - name: contract_address

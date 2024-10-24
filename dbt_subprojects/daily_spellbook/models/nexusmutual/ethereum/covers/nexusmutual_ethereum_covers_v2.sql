@@ -85,6 +85,7 @@ cover_premiums as (
       when 0 then 'ETH'
       when 1 then 'DAI'
       when 6 then 'USDC'
+      when 7 then 'cbBTC'
       else 'NA'
     end as cover_asset,
     c.sum_assured / if(c.cover_asset = 6, 1e6, 1e18) as sum_assured,
@@ -92,6 +93,7 @@ cover_premiums as (
       when 0 then 'ETH'
       when 1 then 'DAI'
       when 6 then 'USDC'
+      when 7 then 'cbBTC'
       when 255 then 'NXM'
       else 'NA'
     end as premium_asset,

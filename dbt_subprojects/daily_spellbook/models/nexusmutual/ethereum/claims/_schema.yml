@@ -9,7 +9,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "claims"]
     description: "Nexus Mutual Claims v1"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - claim_id
@@ -17,17 +17,17 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time"
-        tests:
+        data_tests:
           - not_null
       - &block_number
         name: block_number
         description: "block number"
-        tests:
+        data_tests:
           - not_null
       - &submit_time
         name: submit_time
         description: "submit time"
-        tests:
+        data_tests:
           - not_null
       - &submit_date
         name: submit_date
@@ -35,12 +35,12 @@ models:
       - &claim_id
         name: claim_id
         description: "claim id"
-        tests:
+        data_tests:
           - not_null
       - &cover_id
         name: cover_id
         description: "cover id"
-        tests:
+        data_tests:
           - not_null
       - &claimant
         name: claimant
@@ -54,7 +54,7 @@ models:
       - &tx_hash
         name: tx_hash
         description: "unique transaction hash value"
-        tests:
+        data_tests:
           - not_null
 
   - name: nexusmutual_ethereum_claims_v2
@@ -65,7 +65,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "claims"]
     description: "Nexus Mutual Claims v2"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - claim_id
@@ -107,7 +107,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "claims"]
     description: "Nexus Mutual Claims v2"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - version
@@ -126,4 +126,5 @@ models:
       - name: dai_usd_claim_amount
       - name: usdc_eth_claim_amount
       - name: usdc_usd_claim_amount
-      
+      - name: cbbtc_eth_claim_amount
+      - name: cbbtc_usd_claim_amount

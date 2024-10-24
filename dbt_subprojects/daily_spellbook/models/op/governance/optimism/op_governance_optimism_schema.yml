@@ -11,7 +11,7 @@ models:
       tags: ['optimism', 'governance', 'delegates', 'votes', 'OP']
     description: "Tracks OP delegates voting power and delegating addresses data over time"
     
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
@@ -69,7 +69,7 @@ models:
       tags: ['optimism', 'governance', 'delegates', 'votes', 'OP']
     description: "Incremental model related to delegators"
     
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
@@ -97,7 +97,7 @@ models:
       tags: ['optimism', 'governance', 'delegates', 'votes', 'OP']
     description: "Incremental model related to delegates' voting power"
     
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
@@ -131,7 +131,7 @@ models:
       - &address
         name: address
         description: "Addresses of delegates"
-        tests:
+        data_tests:
           - unique
           - not_null
       - &name

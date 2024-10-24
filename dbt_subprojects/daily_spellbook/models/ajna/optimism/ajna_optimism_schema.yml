@@ -9,7 +9,7 @@ models:
     config:
       tags: ["optimism", "ajna"]
     description: List of ERC20 pools deployed on Ajna
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool_address

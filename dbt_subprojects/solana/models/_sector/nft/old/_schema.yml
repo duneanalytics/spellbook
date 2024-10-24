@@ -10,7 +10,7 @@ models:
       tags: ['magiceden','solana','events']
     description: >
         Magic Eden events on Solana
-    tests:
+    data_tests:
       - check_columns_nft_old_events
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -25,5 +25,5 @@ models:
       tags: [ 'solana','opensea','events' ]
     description: >
       OpenSea events on Solana
-    tests:
+    data_tests:
       - check_columns_nft_old_events

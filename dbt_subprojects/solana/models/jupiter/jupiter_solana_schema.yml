@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: jupiter_solana_perp_events
-    tests:
+    data_tests:
     - dbt_utils.unique_combination_of_columns:
         combination_of_columns:
           - position_change
@@ -50,7 +50,7 @@ models:
       - name: tx_id
 
   - name: jupiter_solana_aggregator_swaps
-    tests:
+    data_tests:
     - dbt_utils.unique_combination_of_columns:
         combination_of_columns:
           - log_index

@@ -10,7 +10,7 @@ models:
       tags: ['nft', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'base', 'zksync', 'approvals']
     description: >
         NFT approvals
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -19,7 +19,7 @@ models:
     columns:
       - name: blockchain
         description: "Blockchain"
-        tests:
+        data_tests:
           - not_null
       - name: block_time
         description: "UTC event block time"
@@ -27,14 +27,14 @@ models:
         description: "UTC event block date"
       - name: block_month
         description: "UTC event block month"
-        tests:
+        data_tests:
           - not_null
       - name: block_number
         description: "event block number"
       - name: address
         description: "Address for which NFTs were approved"
       - name: token_standard
-        tests:
+        data_tests:
           - accepted_values:
               values: ['erc721', 'erc1155', 'bep721', 'bep1155']
       - name: approval_for_all
@@ -49,9 +49,9 @@ models:
         description: "Operator address"
       - name: tx_hash
         description: "transaction hash"
-        tests:
+        data_tests:
           - not_null
       - name: evt_index
         description: "Event index"
-        tests:
+        data_tests:
           - not_null

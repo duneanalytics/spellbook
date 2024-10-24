@@ -10,7 +10,7 @@ models:
       tags: ['dex', 'cross-chain', 'pools']
     description: >
       DEX raw pools initialization calls
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -54,7 +54,7 @@ models:
       tags: ['dex', 'cross-chain', 'pools']
     description: >
       DEX raw pools on all chains across all contracts and versions parsed from logs
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -91,7 +91,7 @@ models:
       tags: ['dex', 'cross-chain', 'pools']
     description: >
       DEX raw pools on all chains across all contracts and versions parsed from logs + filtered degen pools
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -119,7 +119,7 @@ models:
       tags: ['ethereum', 'arbitrum', 'polygon', 'dex', 'cross-chain', 'pools']
     description: >
       DEX pools on all chains across all contracts and versions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

@@ -45,7 +45,7 @@ transfer_in as (
   from {{ source('tokens_ethereum','transfers') }}
   where block_time >= timestamp '2019-05-23'
     and "to" in (select contract_address from nexusmutual_contracts)
-    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC')
+    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC', 'cbBTC')
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -65,7 +65,7 @@ transfer_out as (
   from {{ source('tokens_ethereum','transfers') }}
   where block_time >= timestamp '2019-05-23'
     and "from" in (select contract_address from nexusmutual_contracts)
-    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC')
+    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC', 'cbBTC')
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
