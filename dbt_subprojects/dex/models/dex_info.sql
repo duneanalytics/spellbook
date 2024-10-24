@@ -178,5 +178,5 @@ FROM (VALUES
     , ('swapblast', 'SwapBlast', 'Direct', 'SwapBlast')
     , ('yoshiexchange', 'Yoshi Exchange', 'Direct', 'YoshiExchange')
     , ('dyorswap', 'DyorSwap', 'Direct', 'DYORSWAP')
-    , ('yaka', 'Yaka Finance', 'Direct', 'YakaFinance')
+    , ('yaka', 'yaka', 'Direct', 'YakaFinance')
     ) AS temp_table (project, name, marketplace_type, x_username)

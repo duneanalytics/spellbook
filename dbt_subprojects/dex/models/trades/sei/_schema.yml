@@ -92,7 +92,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('carbon_defi_sei_base_trades_seed')
   
-  - name: yaka_finance_sei_base_trades
+  - name: yaka_sei_base_trades
     meta:
       blockchain: sei
       sector: dex
