@@ -26,9 +26,15 @@ WITH base_model AS (
     LEFT JOIN {{ ref('solana_compute_limit') }} cl
         ON t.id = cl.tx_id
         AND t.block_date = cl.block_date
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('cl.block_date') }}
+        {% endif %}
     LEFT JOIN {{ ref('solana_compute_unit_price') }} up
         ON t.id = up.tx_id
         AND t.block_date = up.block_date
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('up.block_date') }}
+        {% endif %}
     LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
         ON t.block_slot = b.slot
         AND t.block_date = b.date
