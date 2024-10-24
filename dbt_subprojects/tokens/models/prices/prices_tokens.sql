@@ -50,7 +50,6 @@ FROM
         , symbol
         , contract_address
         , decimals
-        , 'test' as test
     FROM {{ model }}
     WHERE contract_address IS DISTINCT FROM 0x0000000000000000000000000000000000000000    -- safeguard as native tokens currently have null address
     {% if not loop.last %}
