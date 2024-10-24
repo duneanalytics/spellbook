@@ -17,6 +17,7 @@
                                             ,"polygon"
                                             ,"scroll"
                                             ,"sei"
+                                            ,"solana"
                                             ,"zkevm"
                                             ,"zksync"
                                             ,"zora"
@@ -91,15 +92,15 @@ FROM (
     , cast(null as array<bigint>) as trace_address
     , token_version as token_standard
     , tx_signer as tx_from
-    , cast(null as varchar) as tx_to -- not a concept in solana
-    , index as tx_index -- need to look into this 
-    , from_owner as "from"
-    , to_owner as "to"
+    , cast(null as varbinary) as tx_to -- not a concept in solana
+    , null as tx_index
+    , from_base58(from_owner) as "from"
+    , from_base58(to_owner) as "to"
     , from_base58(token_mint_address) as contract_address
     , symbol
     , amount as amount_raw
-    , amount as amount -- need to look into this
-    , cast(null as double) as price_usd -- need to look into this
+    , amount_display as amount
+    , price_usd
     , amount_usd
     FROM {{ source('tokens_solana', 'transfers') }}
 )
