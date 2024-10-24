@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_arbitrum_automated_base_trades
     description: "all dex trades on arbitrum, mass decoded"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -12,7 +12,7 @@ models:
   - name: uniswap_v2_arbitrum_decoded_factory_evt
     description: >
       mass decoding of all forks of uniswap v2 factory contract on arbitrum 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -21,7 +21,7 @@ models:
   - name: uniswap_v2_arbitrum_decoded_pool_evt_swap
     description: >
       mass decoding of all forks of uniswap v2 pool contracts on arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -36,7 +36,7 @@ models:
     config:
       tags: [ 'arbitrum', 'dex', 'trades', 'uniswap', 'v2', 'forks' ]
     description: "base trades for all forks of uniswap v2 on arbitrum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -45,7 +45,7 @@ models:
   - name: uniswap_v3_arbitrum_decoded_factory_evt
     description: >
       mass decoding of all forks of uniswap v3 factory contract on arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -54,7 +54,7 @@ models:
   - name: uniswap_v3_arbitrum_decoded_pool_evt_swap
     description: >
       mass decoding of all forks of uniswap v3 pool contracts on arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -69,7 +69,7 @@ models:
     config:
       tags: [ 'arbitrum', 'dex', 'trades', 'uniswap', 'v3', 'forks' ]
     description: "base trades for all forks of uniswap v3 on arbitrum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
