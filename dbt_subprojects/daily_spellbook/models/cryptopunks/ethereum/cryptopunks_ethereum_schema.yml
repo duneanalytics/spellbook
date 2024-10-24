@@ -51,7 +51,7 @@ models:
     columns:
       - name: punk_id
         description: "CryptoPunk ID #"
-        tests:
+        data_tests:
           - unique
       - name: current_owner
         description: "Wallet that currently holds each CryptoPunk ID #"
@@ -67,7 +67,7 @@ models:
       tags: ['ethereum', 'cryptopunks', 'transfers']
     description: > 
         All CryptoPunks transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time_week
@@ -119,7 +119,7 @@ models:
     columns:
       - name: day
         description: "Day"
-        tests:
+        data_tests:
           - unique
       - name: unique_wallets
         description: "# unique Punk wallets that day"
@@ -150,7 +150,7 @@ models:
       tags: ['ethereum', 'cryptopunks', 'bids']
     description: > 
         All CryptoPunks bid events
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time_week
@@ -192,7 +192,7 @@ models:
         description: "Wallet that placed bid"
       - name: punk_id
         description: "CryptoPunk ID #"
-        tests:
+        data_tests:
           - unique
       - name: bid_amount_eth
         description: "Bid amount (ETH)"
@@ -216,7 +216,7 @@ models:
       tags: ['ethereum', 'cryptopunks', 'offers']
     description: > 
         All CryptoPunks offer events
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time_week

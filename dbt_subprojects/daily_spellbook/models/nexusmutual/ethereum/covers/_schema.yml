@@ -9,7 +9,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Product Types v2"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - product_type_id
@@ -17,22 +17,22 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time"
-        tests:
+        data_tests:
           - not_null
       - &block_number
         name: block_number
         description: "Block number"
-        tests:
+        data_tests:
           - not_null
       - &product_type_id
         name: product_type_id
         description: "product type id"
-        tests:
+        data_tests:
           - not_null
       - &product_type_name
         name: product_type_name
         description: "product type name"
-        tests:
+        data_tests:
           - not_null
       - name: claim_method
         description: "claim method"
@@ -48,7 +48,7 @@ models:
       - &tx_hash
         name: tx_hash
         description: "unique transaction hash value"
-        tests:
+        data_tests:
           - not_null
 
   - name: nexusmutual_ethereum_products_v2
@@ -59,7 +59,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Products v2"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - product_id
@@ -73,10 +73,10 @@ models:
       - &product_name
         name: product_name
         description: "product name"
-        tests:
+        data_tests:
           - not_null
       - name: cover_assets
-        description: "cover assets: ETH, DAI, USDC"
+        description: "cover assets: ETH, DAI, USDC, cbBTC"
       - name: is_deprecated
         description: "is deprecated flag"
       - name: initial_price_ratio
@@ -102,7 +102,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Products v1"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - product_contract_address
@@ -110,7 +110,7 @@ models:
       - &product_contract_address
         name: product_contract_address
         description: "product contract address"
-        tests:
+        data_tests:
           - unique
       - *product_name
       - &product_type
@@ -128,7 +128,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Covers v1"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - cover_id
@@ -141,17 +141,17 @@ models:
       - &cover_id
         name: cover_id
         description: "cover id"
-        tests:
+        data_tests:
           - not_null
       - &cover_start_time
         name: cover_start_time
         description: "cover start time"
-        tests:
+        data_tests:
           - not_null
       - &cover_end_time
         name: cover_end_time
         description: "cover end time"
-        tests:
+        data_tests:
           - not_null
       - &cover_start_date
         name: cover_start_date
@@ -196,7 +196,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Covers v2"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - cover_id
@@ -257,7 +257,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Nexus Mutual Active Covers"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - cover_id
@@ -283,6 +283,8 @@ models:
       - name: dai_usd_cover_amount
       - name: usdc_eth_cover_amount
       - name: usdc_usd_cover_amount
+      - name: cbbtc_eth_cover_amount
+      - name: cbbtc_usd_cover_amount
 
   - name: nexusmutual_ethereum_covers_daily_agg
     meta:
@@ -292,7 +294,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Daily Covers aggregates"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -307,7 +309,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "covers"]
     description: "Cover Owners aggregates"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - cover_owner
@@ -325,7 +327,7 @@ models:
       tags: ["ethereum","nexusmutual","quotation_trades"]
     description: >
         nexusmutual quotation trades on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

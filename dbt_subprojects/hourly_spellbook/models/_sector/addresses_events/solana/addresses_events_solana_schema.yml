@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'funded', 'addresses_events', 'solana']
     description: "Table showing who first funded each Solana address in SOL"
-    tests:
+    data_tests:
       - check_seed:
           seed_file: ref('first_funded_by_seed_solana')
           filter:
@@ -28,7 +28,7 @@ models:
         description: "Blockchain"
       - name: address
         description: "Concerned Solana address"
-        tests:
+        data_tests:
           - unique
       - name: first_funding_executed_by
         description: "Which address executed the first funding tx"

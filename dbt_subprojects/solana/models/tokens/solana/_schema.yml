@@ -13,7 +13,7 @@ models:
     columns:
       - name: token_mint_address
         description: "fungible token mint address on Solana"
-        tests:
+        data_tests:
           - unique
       - name: symbol
         description: "token symbol"
@@ -37,7 +37,7 @@ models:
     config:
       tags: ['table', 'metadata', 'fess', 'solana']
     description: "fee updates on token2022 tokens"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - account_mint
