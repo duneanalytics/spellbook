@@ -2,7 +2,7 @@
     schema = 'staking_solana'
     , alias = 'validator_stake_account_epochs'
     , materialized = 'incremental'
-    , file_format = 'table'
+    , materialized = 'table'
     , unique_key = ['epoch', 'epoch_time', 'stake_account', 'vote_account']
     , post_hook='{{ expose_spells(\'["solana"]\',
                                 "sector",
