@@ -13,6 +13,7 @@
                                   contributors = \'["tomfutago"]\') }}'
   )
 }}
+-- trigger CI
 
 select
   block_time_created,
