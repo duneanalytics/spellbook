@@ -17,7 +17,7 @@ models:
       - &pool_id
         name: pool_id
         description: 'Unique encoded identifier that refers to each pool'
-        tests:
+        data_tests:
           - not_null
       - &token_address
         name: token_address
@@ -35,7 +35,7 @@ models:
       tags: ['sei', 'jelly_swap', 'pools', 'liquidity']
     description: >
       JellySwap pools liquidity by token in sei.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -78,7 +78,7 @@ models:
       tags: ['sei', 'revenue', 'fees']
     description: >
       Daily Protocol Fee collected and Revenue by pool on JellySwap, an automated portfolio manager and trading platform built on jelly_swap.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -116,7 +116,7 @@ models:
       tags: ['sei', 'bpt', 'supply']
     description: >
       jelly_swap Pool Token (BPT) supply for JellySwap pools built on jelly_swap.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -139,7 +139,7 @@ models:
       tags: ['sei', 'bpt', 'prices']
     description: >
       jelly_swap Pool Token (BPT) daily price by pool on JellySwap, an automated portfolio manager and trading platform built on jelly_swap.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -163,7 +163,7 @@ models:
       tags: ['sei', 'bpt', 'transfers']
     description: >
       jelly_swap Pool Token (BPT) transfer logs on JellySwap, an automated portfolio manager and trading platform built on jelly_swap.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_tx_hash
@@ -191,7 +191,7 @@ models:
       tags: ['sei', 'bpt', 'supply', 'changes']
     description: >
       Token Balance Changes on JellySwap Pools.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -239,7 +239,7 @@ models:
       tags: ['sei', 'bpt', 'supply', 'changes']
     description: >
       Token Balance Changes on JellySwap Pools, grouped by day.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -274,7 +274,7 @@ models:
       tags: ['sei', 'bpt', 'supply', 'changes']
     description: >
       jelly_swap Pool Token (BPT) supply change events on JellySwap.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -313,7 +313,7 @@ models:
       tags: ['sei', 'bpt', 'supply', 'changes']
     description: >
       jelly_swap Pool Token (BPT) supply change events on JellySwap, grouped by day
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -337,7 +337,7 @@ models:
       tags: ['sei', 'jelly_swap', 'pool', 'stats', 'volume', 'tvl', 'fee']
     description: >
       This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

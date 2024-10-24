@@ -10,7 +10,7 @@ models:
       tags: ['nft', 'aggregators']
     description: >
         NFT aggregators
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - contract_address

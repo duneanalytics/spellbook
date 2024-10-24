@@ -10,7 +10,7 @@ models:
       tags: ['optimism','uniswap','gamma','pools']
     description: >
         A canonical table containing Uniswap mappings for known Gamma pools created on Optimism. 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - contract_address

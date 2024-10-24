@@ -4,7 +4,7 @@ models:
   - name: dex_prices_block
     description: >
       obtain pricing info from dex.trades to feed into prices pipeline, aggregate to the block level and obtain median price
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_month
@@ -24,7 +24,7 @@ models:
       tags: ['ethereum', 'polygon', 'arbitrum', 'optimism', 'gnosis', 'fantom', 'avalanche_c', 'trades', 'dex', 'cross-chain', 'prices']
     description: >
       This table loads the prices of tokens from the dex.trades table. This helps for missing tokens from the prices.usd table
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - hour

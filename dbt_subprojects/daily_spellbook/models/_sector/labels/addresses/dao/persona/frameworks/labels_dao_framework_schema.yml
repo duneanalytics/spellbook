@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: labels_dao_framework
-    tests:
+    data_tests:
     - dbt_utils.unique_combination_of_columns:
         combination_of_columns:
           - address
@@ -18,7 +18,7 @@ models:
     config:
       tags: ['labels', 'ethereum', 'gnosis', 'polygon', 'dao']
     description: "dao addresses and wallet addresses from dao addresses spell"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -32,7 +32,7 @@ models:
       - &address
         name: address
         description: "DAO Address"
-        tests:
+        data_tests:
           - unique
       - &name
         name: name
