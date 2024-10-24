@@ -9,7 +9,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools base data (helper view)"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool_id
@@ -96,7 +96,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools base data (materialised)"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool_id
@@ -133,7 +133,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools event history"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -193,7 +193,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools deposit ordered"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -229,7 +229,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools deposit extensions"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool_address
@@ -266,7 +266,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking rewards minted at cover buy event - to be streamed over cover period"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool_id
@@ -292,7 +292,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking rewards minted at cover buy event - to be streamed over cover period"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -313,7 +313,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking rewards minted at cover buy event - to be streamed over cover period"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

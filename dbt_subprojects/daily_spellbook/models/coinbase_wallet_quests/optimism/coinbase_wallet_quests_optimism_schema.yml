@@ -10,7 +10,7 @@ models:
       tags: ['optimism','coinbase wallet','quests']
     description: >
         A table containing quest information (i.e. name, distributor address) for Coinbase Wallet Quests
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - distributor_address
@@ -35,7 +35,7 @@ models:
       tags: ['optimism','coinbase wallet','quests']
     description: >
         A table containing all rewards distirbutions for Coinbase Quests, tagged by quest.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - block_time

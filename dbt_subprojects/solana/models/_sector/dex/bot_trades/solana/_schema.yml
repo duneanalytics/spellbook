@@ -103,7 +103,7 @@ models:
       tags: ["solana", "dex", "bonkbot", "trades"]
     description: >
       Bonkbot trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -125,7 +125,7 @@ models:
       tags: ["solana", "dex", "bot", "trojan", "trades"]
     description: >
       Trojan trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -147,7 +147,7 @@ models:
       tags: ["solana", "dex", "banana_gun", "trades"]
     description: >
       Banana Gun trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -169,7 +169,7 @@ models:
       tags: ["solana", "dex", "soltradingbot", "trades"]
     description: >
       Sol Trading Bot trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -191,7 +191,7 @@ models:
       tags: ["solana", "dex", "pepeboost", "trades"]
     description: >
       Pepe Boost trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -213,7 +213,7 @@ models:
       tags: ["solana", "dex", "maestro", "trades"]
     description: >
       Maestro trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -235,7 +235,7 @@ models:
       tags: ["solana", "dex", "shuriken", "trades"]
     description: >
       Shuriken trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -257,7 +257,7 @@ models:
       tags: ["solana", "dex", "magnum", "trades"]
     description: >
       Magnum trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -279,7 +279,7 @@ models:
       tags: ["solana", "dex", "readyswap", "trades"]
     description: >
       Readyswap trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -301,7 +301,7 @@ models:
       tags: ["solana", "dex", "solgun", "trades"]
     description: >
       SolGun trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -323,7 +323,7 @@ models:
       tags: ["solana", "dex", "looter", "trades"]
     description: >
       Looter trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -345,7 +345,7 @@ models:
       tags: ["solana", "dex", "consortium_key", "trades"]
     description: >
       Consortium Key trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -367,7 +367,7 @@ models:
       tags: ["solana", "dex", "wifbot", "trades"]
     description: >
       Wifbot trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -389,7 +389,7 @@ models:
       tags: ["solana", "dex", "soul_sniper", "trades"]
     description: >
       Soul Sniper trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -413,8 +413,8 @@ models:
       tags: ["solana", "dex", "bot_trades"]
       columns:
         - name: user
-          tests: unique
-    tests:
+          data_tests: unique
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - user
@@ -431,7 +431,7 @@ models:
       tags: ["solana", "dex", "bot_trades"]
       columns:
         - name: user
-          tests: unique
+          data_tests: unique
 
   - name: tirador_solana_bot_trades
     meta:
@@ -443,7 +443,7 @@ models:
       tags: ["solana", "dex", "tirador", "trades"]
     description: >
       Tirador trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -465,7 +465,7 @@ models:
       tags: ["solana", "dex", "unibot", "trades"]
     description: >
       Unibot trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -487,7 +487,7 @@ models:
       tags: ["solana", "dex", "mev_x", "trades"]
     description: >
       MevX trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -509,7 +509,7 @@ models:
       tags: ["solana", "dex", "alpha_dex", "trades"]
     description: >
       Alpha Dex trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -533,7 +533,7 @@ models:
       tags: ["solana", "dex", "bot_trades"]
       columns:
         - name: user
-          tests: unique
+          data_tests: unique
 
   - name: jupbot_solana_bot_trades
     meta:
@@ -545,7 +545,7 @@ models:
       tags: ["solana", "dex", "jupbot", "trades"]
     description: >
       Jupbot trades on Solana
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

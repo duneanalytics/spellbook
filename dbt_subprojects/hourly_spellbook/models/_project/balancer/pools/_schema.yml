@@ -9,7 +9,7 @@ models:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'bpt', 'transfers']
     description: >
       Token weights in Balancer pools.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -25,7 +25,7 @@ models:
       - &pool_id
         name: pool_id
         description: 'Unique encoded identifier that refers to each pool'
-        tests:
+        data_tests:
           - not_null
       - &token_address
         name: token_address
@@ -43,7 +43,7 @@ models:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
     description: >
       This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -113,7 +113,7 @@ models:
       - &contract_address
         name: contract_address
         description: 'zkevm address for the liquidity pool used in transaction'
-        tests:
+        data_tests:
           - not_null
       - &evt_tx_hash
         name: evt_tx_hash
@@ -130,7 +130,7 @@ models:
       tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon', 'zkevm', 'balancer', 'pool', 'stats', 'volume', 'tvl', 'fee']
     description: >
       This spell aggregates data from the trades, liquidity, and protocol fees spells, by pool, while also displaying information about the pool creation.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

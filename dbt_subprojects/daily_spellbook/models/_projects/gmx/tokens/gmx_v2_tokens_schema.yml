@@ -18,15 +18,15 @@ models:
       - &blockchain
         name: blockchain
         description: The blockchain network where the token information was retrieved
-        tests:
+        data_tests:
           - not_null    
       - name: collateral_token
         description: The contract address of the token used as collateral.
-        tests:
+        data_tests:
           - not_null
       - name: collateral_token_decimals
         description: The number of decimal places for the collateral token.
-        tests:
+        data_tests:
           - not_null
 
   - name: gmx_v2_erc20
@@ -47,33 +47,33 @@ models:
       - &project
         name: project
         description: The project related to the tokens (GMX v2)
-        tests:
+        data_tests:
           - not_null
       - &symbol
         name: symbol
         description: The symbol of the ERC20 token
-        tests:
+        data_tests:
           - not_null
       - &contract_address
         name: contract_address
         description: The contract address of the ERC20 token
-        tests:
+        data_tests:
           - not_null
           - unique
       - &decimals
         name: decimals
         description: The number of decimal places the token supports
-        tests:
+        data_tests:
           - not_null
       - &synthetic
         name: synthetic
         description: Indicates whether the token is synthetic or not
-        tests:
+        data_tests:
           - not_null
       - &last_update_utc
         name: last_update_utc
         description: The timestamp of when the data was last updated
-        tests:
+        data_tests:
           - not_null
 
 
@@ -95,7 +95,7 @@ models:
       - *blockchain
       - name: market
         description: The contract address of the market token.
-        tests:
+        data_tests:
           - not_null
       - name: market_name
         description: |
@@ -104,11 +104,11 @@ models:
           of the short token used in the market, and `long_token` is the symbol of the long token used in the market.
       - name: market_token_symbol
         description: The symbol representing the market token.
-        tests:
+        data_tests:
           - not_null
       - name: market_token_decimals
         description: The number of decimal places for the market token.
-        tests:
+        data_tests:
           - not_null
       - name: index_token_symbol
         description: The symbol representing the index token in the market.
@@ -116,17 +116,17 @@ models:
         description: The number of decimal places for the index token used in the market.
       - name: long_token_symbol
         description: The symbol representing the long token in the market.
-        tests:
+        data_tests:
           - not_null
       - name: long_token_decimals
         description: The number of decimal places for the long token used in the market.
-        tests:
+        data_tests:
           - not_null
       - name: short_token_symbol
         description: The symbol representing the short token in the market.
-        tests:
+        data_tests:
           - not_null
       - name: short_token_decimals
         description: The number of decimal places for the short token used in the market.
-        tests:
+        data_tests:
           - not_null            

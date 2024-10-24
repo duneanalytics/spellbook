@@ -10,7 +10,7 @@ models:
       tags: ['avalanche_c','seaport','base_pairs','sohwak']
     description: >
         Exploded table from Seaport trade events with `offer` and `consideration` array columns
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -122,7 +122,7 @@ models:
       tags: ['avalanche_c','seaport','base_pairs','sohwak']
     description: >
         Seaport trades on Avalanche_c
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -278,7 +278,7 @@ models:
       tags: ['seaport', 'avalanche_c', 'traces']
     description: >
         Seaport emitted event traces on Avalanche C-chain
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -297,7 +297,7 @@ models:
       - name: block_number
         description: "Block number in which the transaction was executed"
       - name: trace_side
-        tests:
+        data_tests:
           - accepted_values:
               values: ['consideration', 'offer']
         description: "Side of the trace"
@@ -306,7 +306,7 @@ models:
       - name: tx_hash
         description: "Transaction hash"
       - name: token_standard
-        tests:
+        data_tests:
           - accepted_values:
               values: ['native', 'erc20', 'erc721', 'erc1155']
         description: "Token standard"
@@ -340,7 +340,7 @@ models:
       tags: ['seaport', 'avalanche_c', 'tagging']
     description: >
         Seaport tagging to identify the different protocols using Seaport on Avalanche C-chain 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -351,7 +351,7 @@ models:
         description: "Blockchain"
       - name: tagging_method
         description: "Identification method"
-        tests:
+        data_tests:
           - accepted_values:
               values: ['zone', 'fee_recipient', 'tx_data_salt']
       - name: identifier

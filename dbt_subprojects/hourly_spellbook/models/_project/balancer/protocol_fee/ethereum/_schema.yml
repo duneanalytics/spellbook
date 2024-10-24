@@ -10,7 +10,7 @@ models:
       tags: ['ethereum', 'revenue', 'fees']
     description: >
       Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day

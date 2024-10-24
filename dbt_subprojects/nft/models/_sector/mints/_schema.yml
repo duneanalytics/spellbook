@@ -12,7 +12,7 @@ models:
       tags: ['nft', 'opensea', 'looksrare', 'x2y2', 'magiceden', 'sudoswap', 'foundation', 'element', 'zora', 'ethereum', 'bnb', 'solana', 'events', 'polygon', 'optimism', 'arbitrum', 'rarible', 'aavegotchi', 'oneplanet', 'fractal', 'zksync']
     description: >
         NFT mints
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -41,7 +41,7 @@ models:
       - &amount_usd
         name: amount_usd
         description:  "USD value of the trade at time of execution"
-        tests:
+        data_tests:
           - dbt_utils.accepted_range:
               max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
       - &token_standard

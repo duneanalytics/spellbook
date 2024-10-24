@@ -30,7 +30,7 @@ models:
       tags: ['optimism','quests']
     description: >
         A table containing all quest completion NFT mints for Optimism Quests, tagged by quest.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - block_time
