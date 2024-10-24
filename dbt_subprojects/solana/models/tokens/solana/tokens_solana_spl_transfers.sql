@@ -175,6 +175,8 @@ SELECT
     , fee
     , from_token_account
     , to_token_account
+    , from_owner
+    , to_owner
     , token_version
     , tx_signer
     , tx_id
