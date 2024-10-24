@@ -4645,4 +4645,6 @@ FROM (VALUES
     , ( 0x5e362eb2c0706bd1d134689ec75176018385430b, 'DVstETH', 18)
     , ( 0xcbc632833687dacdcc7dfac96f6c5989381f4b47, 'ultraETHs', 18)    
     , ( 0xa684eaf215ad323452e2b2bf6f817d4aa5c116ab, 'lpETH', 18)        
+    , ( 0x0a6E7Ba5042B38349e437ec6Db6214AEC7B35676, 'SWELL', 18)
+    , ( 0xf9B24C9364457Ea85792179D285855753549eBAa, 'slisBNB', 18)
 ) AS temp_table (contract_address, symbol, decimals)
