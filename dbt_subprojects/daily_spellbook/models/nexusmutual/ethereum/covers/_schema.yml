@@ -76,7 +76,7 @@ models:
         data_tests:
           - not_null
       - name: cover_assets
-        description: "cover assets: ETH, DAI, USDC"
+        description: "cover assets: ETH, DAI, USDC, cbBTC"
       - name: is_deprecated
         description: "is deprecated flag"
       - name: initial_price_ratio
@@ -283,6 +283,8 @@ models:
       - name: dai_usd_cover_amount
       - name: usdc_eth_cover_amount
       - name: usdc_usd_cover_amount
+      - name: cbbtc_eth_cover_amount
+      - name: cbbtc_usd_cover_amount
 
   - name: nexusmutual_ethereum_covers_daily_agg
     meta:

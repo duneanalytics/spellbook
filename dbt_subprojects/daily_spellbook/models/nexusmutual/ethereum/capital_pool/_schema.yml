@@ -81,6 +81,9 @@ models:
       - &avg_usdc_usd_price
         name: avg_usdc_usd_price
         description: "Daily average USDC/USD price"
+      - &avg_cbbtc_usd_price
+        name: avg_cbbtc_usd_price
+        description: "Daily average cbBTC/USD price"
       - &avg_capital_pool_eth_total
         name: avg_capital_pool_eth_total
         description: "Daily average Capital Pool total expressed in ETH"
@@ -135,6 +138,15 @@ models:
       - &avg_usdc_eth_total
         name: avg_usdc_eth_total
         description: "Daily average USDC total in the Capital Pool expressed in ETH"
+      - &cbbtc_total
+        name: cbbtc_total
+        description: "Daily cbBTC total in the Capital Pool"
+      - &avg_cbbtc_usd_total
+        name: avg_cbbtc_usd_total
+        description: "Daily average cbBTC total in the Capital Pool expressed in USD"
+      - &avg_cbbtc_eth_total
+        name: avg_cbbtc_eth_total
+        description: "Daily average cbBTC total in the Capital Pool expressed in ETH"
       - &cover_re_usdc_total
         name: cover_re_usdc_total
         description: "Daily Cover Re USDC Investment total"
@@ -177,6 +189,7 @@ models:
       - *avg_eth_usd_price
       - *avg_dai_usd_price
       - *avg_usdc_usd_price
+      - *avg_cbbtc_usd_price
       - *avg_capital_pool_eth_total
       - *avg_capital_pool_usd_total
       - *eth_total
@@ -195,6 +208,9 @@ models:
       - *usdc_total
       - *avg_usdc_usd_total
       - *avg_usdc_eth_total
+      - *cbbtc_total
+      - *avg_cbbtc_usd_total
+      - *avg_cbbtc_eth_total
       - *cover_re_usdc_total
       - *avg_cover_re_usdc_usd_total
       - *avg_cover_re_usdc_eth_total
@@ -236,7 +252,7 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "capital_pool"]
-    description: "Combined daily avg prices for base assets: ETH, DAI, USDC and NXM"
+    description: "Combined daily avg prices for base assets: ETH, DAI, USDC, cbBTC and NXM"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -246,6 +262,7 @@ models:
       - *avg_eth_usd_price
       - *avg_dai_usd_price
       - *avg_usdc_usd_price
+      - *avg_cbbtc_usd_price
       - &avg_nxm_eth_price
         name: avg_nxm_eth_price
         description: "Daily average NXM/ETH price"
