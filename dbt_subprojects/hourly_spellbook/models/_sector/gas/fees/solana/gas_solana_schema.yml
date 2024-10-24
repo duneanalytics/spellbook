@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: gas_solana_fees
+    meta:
+      blockchain: solana
+      sector: gas
+      contributors: 0xboxer
+    config:
+      tags: ['solana', 'gas', 'fees']
+    description: >
+        Gas Fees on Solana, including compute unit prices and prioritization fees
+    -- TODO: add tests
+
+    columns:
+      - name: blockchain
+        data_tests:
+          - accepted_values:
+              values: ['solana']
+      - name: block_month
+        data_tests:
+          - not_null
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: block_time
+        data_tests:
+          - not_null
+      - name: block_slot
+        data_tests:
+          - not_null
+      - name: tx_hash
+        data_tests:
+          - not_null
+          - unique
+      - name: signer
+        data_tests:
+          - not_null
+      - name: compute_unit_price
+        description: Compute unit price in lamports
+      - name: compute_limit
+        description: Compute units used (or limit set)
+      - name: tx_fee_raw
+        data_tests:
+          - not_null
+      - name: tx_fee
+        data_tests:
+          - not_null
+      - name: tx_fee_usd
+        data_tests:
+          - not_null
+      - name: tx_fee_breakdown_raw
+        description: Breakdown of fee into base_fee and prioritization_fee
+      - name: tx_fee_breakdown
+        description: Breakdown of fee in SOL
+      - name: tx_fee_breakdown_usd
+        description: Breakdown of fee in USD
+      - name: tx_fee_currency
+        data_tests:
+          - not_null
+      - name: leader
+        description: Validator that proposed this block, known as leader in Solana
+      - name: tx_type
+        description: Vote or normal transaction

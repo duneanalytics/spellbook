@@ -10,7 +10,7 @@ models:
     config:
       tags: ['lending', 'supply', 'aave', 'compound', 'ethereum']
     description: "All lending supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -21,27 +21,27 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain name"
-        tests:
+        data_tests:
           - not_null
       - &project
         name: project
         description: "Project name"
-        tests:
+        data_tests:
           - not_null
       - &version
         name: version
         description: "Version of the contract built and deployed by the lending project"
-        tests:
+        data_tests:
           - not_null
       - &transaction_type
         name: transaction_type
         description: "Transaction type"
-        tests:
+        data_tests:
           - not_null
       - &token_address
         name: token_address
         description: "Token contract address"
-        tests:
+        data_tests:
           - not_null
       - &depositor
         name: depositor
@@ -64,27 +64,27 @@ models:
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
-        tests:
+        data_tests:
           - not_null
       - &block_number
         name: block_number
         description: "Event block number"
-        tests:
+        data_tests:
           - not_null
       - &project_contract_address
         name: project_contract_address
         description: "Project contract address"
-        tests:
+        data_tests:
           - not_null
       - &tx_hash
         name: tx_hash
         description: "Transaction hash of the event"
-        tests:
+        data_tests:
           - not_null
       - &evt_index
         name: evt_index
         description: "Event index"
-        tests:
+        data_tests:
           - not_null
 
   - name: aave_v1_ethereum_base_supply
@@ -96,7 +96,7 @@ models:
     config:
       tags: ['lending', 'supply', 'aave', 'ethereum']
     description: "Aave v1 supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -134,7 +134,7 @@ models:
     config:
       tags: ['lending', 'supply', 'aave', 'ethereum']
     description: "Aave v2 supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -172,7 +172,7 @@ models:
     config:
       tags: ['lending', 'supply', 'aave', 'ethereum']
     description: "Aave v3 supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -210,7 +210,7 @@ models:
     config:
       tags: ['lending', 'supply', 'aave', 'lido', 'ethereum']
     description: "Aave v3 supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -248,7 +248,7 @@ models:
     config:
       tags: ['lending', 'supply', 'aave', 'etherfi', 'ethereum']
     description: "Aave v3 supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -286,7 +286,7 @@ models:
     config:
       tags: ['lending', 'supply', 'compound', 'ethereum']
     description: "Compound v2 supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -324,7 +324,7 @@ models:
     config:
       tags: ['lending', 'supply', 'compound', 'ethereum']
     description: "Compound v3 supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -362,7 +362,7 @@ models:
     config:
       tags: ['lending', 'supply', 'radiant', 'ethereum']
     description: "Radiant supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -398,7 +398,7 @@ models:
     config:
       tags: ['lending', 'supply', 'uwulend', 'ethereum']
     description: "Uwulend supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -434,7 +434,7 @@ models:
     config:
       tags: ['lending', 'supply', 'spark', 'ethereum']
     description: "Spark Protocol supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -470,7 +470,7 @@ models:
     config:
       tags: ['lending', 'supply', 'compound', 'fluxfinance', 'ethereum']
     description: "Flux Finance supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -506,7 +506,7 @@ models:
     config:
       tags: ['lending', 'supply', 'compound', 'strike', 'ethereum']
     description: "Strike supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -542,7 +542,7 @@ models:
     config:
       tags: ['lending', 'supply', 'aave', 'granary', 'ethereum']
     description: "Granary supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -578,7 +578,7 @@ models:
     config:
       tags: ['lending', 'supply', 'morpho', 'ethereum']
     description: "Morpho supply transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type

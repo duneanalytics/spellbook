@@ -30,7 +30,7 @@ models:
     columns:
       - name: block_time
       - name: block_slot
-        tests:
+        data_tests:
           - unique
       - name: epoch
       - name: first_block_epoch
@@ -115,7 +115,7 @@ models:
       tags: ['solana','block_leaders']
     description: >
         get the block leaders for each slot
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - slot

@@ -9,7 +9,7 @@ models:
     config:
       tags: [ 'attestation', 'eas' ]
     description: "EAS schema registry"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -20,22 +20,22 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain where EAS is deployed"
-        tests:
+        data_tests:
           - not_null
       - &project
         name: project
         description: "Project name"
-        tests:
+        data_tests:
           - not_null
       - &version
         name: version
         description: "Version of the EAS contract"
-        tests:
+        data_tests:
           - not_null
       - &schema_uid
         name: schema_uid
         description: "Schema unique identifier"
-        tests:
+        data_tests:
           - not_null
       - &registerer
         name: registerer
@@ -76,7 +76,7 @@ models:
     config:
       tags: [ 'attestation', 'eas' ]
     description: "EAS schema registry details"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -92,7 +92,7 @@ models:
       - &ordinality
         name: ordinality
         description: "Incremental unique number to order fields within each Schema"
-        tests:
+        data_tests:
           - not_null
       - &data_type
         name: data_type
@@ -113,7 +113,7 @@ models:
     config:
       tags: [ 'attestation', 'eas' ]
     description: "EAS attestations"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -129,7 +129,7 @@ models:
       - &attestation_uid
         name: attestation_uid
         description: "Attestation unique identifier"
-        tests:
+        data_tests:
           - not_null
       - &attester
         name: attester
@@ -176,7 +176,7 @@ models:
     config:
       tags: [ 'attestation', 'eas' ]
     description: "EAS attestation details"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

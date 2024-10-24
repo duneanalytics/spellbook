@@ -3,10 +3,10 @@
     schema = 'nexusmutual_ethereum',
     alias = 'capital_pool_latest',
     materialized = 'view',
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
@@ -18,6 +18,7 @@ daily_running_totals as (
     avg_eth_usd_price,
     avg_dai_usd_price,
     avg_usdc_usd_price,
+    avg_cbbtc_usd_price,
     -- Capital Pool
     avg_capital_pool_eth_total,
     avg_capital_pool_usd_total,
@@ -43,6 +44,10 @@ daily_running_totals as (
     usdc_total,
     avg_usdc_usd_total,
     avg_usdc_eth_total,
+    -- cbBTC
+    cbbtc_total,
+    avg_cbbtc_usd_total,
+    avg_cbbtc_eth_total,
     -- Cover Re USDC investment
     cover_re_usdc_total,
     avg_cover_re_usdc_usd_total,
@@ -62,6 +67,7 @@ select
   avg_eth_usd_price,
   avg_dai_usd_price,
   avg_usdc_usd_price,
+  avg_cbbtc_usd_price,
   -- Capital Pool
   avg_capital_pool_eth_total,
   avg_capital_pool_usd_total,
@@ -87,6 +93,10 @@ select
   usdc_total,
   avg_usdc_usd_total,
   avg_usdc_eth_total,
+  -- cbBTC
+  cbbtc_total,
+  avg_cbbtc_usd_total,
+  avg_cbbtc_eth_total,
   -- Cover Re USDC investment
   cover_re_usdc_total,
   avg_cover_re_usdc_usd_total,
