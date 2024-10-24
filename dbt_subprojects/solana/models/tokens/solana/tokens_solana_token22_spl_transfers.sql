@@ -166,6 +166,7 @@ SELECT
     , tk_m.base58_address as token_mint_address
     , p.price as price_usd
     , CASE 
+        WHEN p.decimals is null THEN null
         WHEN p.decimals = 0 THEN p.price * tr.amount
         ELSE p.price * tr.amount / power(10, p.decimals)
       END as amount_usd
