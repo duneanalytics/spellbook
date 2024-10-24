@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'loans', 'ethereum', 'blend', 'blur']
     description: "All Blend-related events"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - lien_id

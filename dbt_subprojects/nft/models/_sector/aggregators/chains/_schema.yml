@@ -6,7 +6,7 @@ models:
       - &contract_address
         name: contract_address
         description: "Aggregator project's contract address"
-        tests:
+        data_tests:
           - unique
       - &name
         name: name
@@ -45,7 +45,7 @@ models:
     columns:
       - name: contract_address
         description: "Aggregator project's contract address"
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "Aggregator project's name"
@@ -62,7 +62,7 @@ models:
     columns:
       - name: hash_marker
         description: "Hash used to identify an aggregator"
-        tests:
+        data_tests:
           - unique
       - name: aggregator_name
         description: "Name of aggregator tied to the hash_marker"
@@ -83,7 +83,7 @@ models:
     columns:
       - name: contract_address
         description: "Aggregator project's contract address"
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "Aggregator project's name"
@@ -100,7 +100,7 @@ models:
     columns:
       - name: contract_address
         description: "Aggregator project's contract address"
-        tests:
+        data_tests:
           - unique
       - name: name
         description: "Aggregator project's name"

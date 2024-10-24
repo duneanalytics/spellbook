@@ -10,7 +10,7 @@ models:
     config:
       tags: [ 'arbitrum','bebop','rfq','trades','dex' ]
     description: Bebop-RFQ contract trades on arbitrum - formatted for dex.trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -110,7 +110,7 @@ models:
     config:
       tags: [ 'arbitrum','bebop','jam','trades','dex' ]
     description: Bebop-JAM contract trades on arbitrum - formatted for dex.trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -160,7 +160,7 @@ models:
     config:
       tags: [ 'arbitrum','bebop','pmm','trades','dex', 'blend' ]
     description: Bebop-BLEND contract trades on arbitrum - formatted for dex.trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

@@ -9,7 +9,7 @@ models:
       tags: [ 'solana','dex' ]
     description: >
       all raw whirlpool dex trades on Solana
-    tests:
+    data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
@@ -22,7 +22,7 @@ models:
       tags: [ 'solana','dex' ]
     description: >
       all raw whirlpool dex trades on Solana
-    tests:
+    data_tests:
       - check_columns_solana_dex_trades
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
@@ -108,7 +108,7 @@ models:
       tags: ['solana','dex', 'price']
     description: >
         All token price in Orca pool
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -138,7 +138,7 @@ models:
       tags: ['solana','dex', 'price']
     description: >
         All token price in Orca pool
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

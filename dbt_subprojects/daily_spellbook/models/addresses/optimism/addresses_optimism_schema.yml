@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'grants', 'governance', 'incentives', 'addresses', 'optimism']
     description: "Project address for receiving Optimism Governance and Partner Funding Grants."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -40,7 +40,7 @@ models:
     columns:
       - name: address
         description: "Address of the fee vault"
-        tests:
+        data_tests:
           - unique
       - name: vault_name
         description: "Fee vault type"

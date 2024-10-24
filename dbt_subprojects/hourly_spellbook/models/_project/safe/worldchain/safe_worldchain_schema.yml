@@ -12,7 +12,7 @@ models:
     config:
       tags: ['safe', 'worldchain']
     description: "Safe addresses"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -48,7 +48,7 @@ models:
     config:
       tags: ['safe', 'transfers', 'worldchain']
     description: "ETH transfers for safes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -102,7 +102,7 @@ models:
     config:
       tags: ['safe', 'worldchain']
     description: "Safe transactions"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_scroll_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: uniswap_v3_scroll_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'uniswap' ]
     description: "Uniswap v3 scroll base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -31,7 +31,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'sushiswap' ]
     description: "Sushiswap v2 scroll base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -48,7 +48,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'zebra' ]
     description: "Zebra scroll base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -65,7 +65,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'scrollswap' ]
     description: "Zebra scroll base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -82,7 +82,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'syncswap' ]
     description: "SyncSwap V1 scroll base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -99,7 +99,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'nuri' ]
     description: "Nuri scroll base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -116,7 +116,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'iziswap' ]
     description: "Iziswap scroll base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -133,7 +133,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'icecreamswap' ]
     description: "icecreamswap v2 scroll base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -150,7 +150,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'maverick' ]
     description: "Maverick scroll base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -169,7 +169,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'swaap', 'v2']
     description: "swaap v2 scroll base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -188,7 +188,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'leetswap' ]
     description: "leetswap base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -205,7 +205,7 @@ models:
     config:
       tags: [ 'scroll', 'dex', 'trades', 'spacefi' ]
     description: "leetswap base base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

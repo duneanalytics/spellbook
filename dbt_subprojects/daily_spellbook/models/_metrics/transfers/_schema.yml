@@ -18,7 +18,7 @@ models:
       with the positive net received (aka received) it adds up to 0 since the net sent should equal the net received. 
       For example, if I give you $1 that's -1 sent (from me) and +1 received (by you) which adds to 0. 
       This query counts the received to show that $1 was effectively transfered."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -32,7 +32,7 @@ models:
       tags: ['metrics', 'transfers', 'daily']
     description: |
       "Sum of total transfer amount per day across all chain."
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -51,7 +51,7 @@ models:
     config:
       tags: ['metrics', 'transfers', 'index', 'daily']
     description: "Each day, per chain, compare the adoption of total transfers relative to the baseline expectation"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
