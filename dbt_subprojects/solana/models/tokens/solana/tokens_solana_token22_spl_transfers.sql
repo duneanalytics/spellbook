@@ -170,7 +170,7 @@ SELECT
         WHEN p.decimals = 0 THEN p.price * tr.amount
         ELSE p.price * tr.amount / power(10, p.decimals)
       END as amount_usd
-    , p.symbol as token_symbol
+    , p.symbol
 FROM base tr
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.account_source
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.account_destination
