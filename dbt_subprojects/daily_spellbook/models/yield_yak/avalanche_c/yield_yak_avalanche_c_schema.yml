@@ -10,7 +10,7 @@ models:
       tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
     description: >
         yield yak deposits on avalanche_c
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -57,7 +57,7 @@ models:
       tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
     description: >
         yield yak withdraws on avalanche_c
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -86,7 +86,7 @@ models:
       tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
     description: >
         yield yak reinvests on avalanche_c
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -129,7 +129,7 @@ models:
       tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
     description: >
         yield yak vault/farm/pool balances on avalanche_c as a temporal table
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - contract_address
@@ -156,7 +156,7 @@ models:
       tags: ['avalanche_c', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
     description: >
         yield yak user-level YRT balances on avalanche_c as a temporal table
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - user_address
@@ -184,7 +184,7 @@ models:
       tags: ['avalanche_c', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex']
     description: >
         yield yak aggregator yak swaps on avalanche_c
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -244,7 +244,7 @@ models:
       tags: ['avalanche_c', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex', 'yakadapter']
     description: >
         yield yak aggregator yak adapter swaps on avalanche_c
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -298,7 +298,7 @@ models:
       tags: ['avalanche_c', 'yield_yak', 'strategies', 'yield']
     description: >
         yield yak strategies on avalanche_c
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - contract_address

@@ -10,7 +10,7 @@ models:
       tags: ['ethereum', 'polygon', 'arbitrum', 'celo', 'pools']
     description: >
       Uniswap DEX pools
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -86,7 +86,7 @@ models:
       - *version
       - name: pool
         description: "DEX pool smart contract address"
-        tests:
+        data_tests:
           - unique
       - &fee
         name: fee
@@ -117,7 +117,7 @@ models:
       - *version
       - name: pool
         description: "DEX pool smart contract address"
-        tests:
+        data_tests:
           - unique
       - name: fee
         description: "Defined fee"
@@ -147,7 +147,7 @@ models:
       - *version
       - name: pool
         description: "DEX pool smart contract address"
-        tests:
+        data_tests:
           - unique
       - name: fee
         description: "Defined fee"
@@ -177,7 +177,7 @@ models:
       - *version
       - name: pool
         description: "DEX pool smart contract address"
-        tests:
+        data_tests:
           - unique
       - name: fee
         description: "Defined fee"
@@ -207,7 +207,7 @@ models:
       - *version
       - name: pool
         description: "DEX pool smart contract address"
-        tests:
+        data_tests:
           - unique
       - name: fee
         description: "Defined fee"
@@ -231,7 +231,7 @@ models:
       tags: ['optimism','uniswap','pools']
     description: >
         A canonical table containing all Uniswap pool address changes between OVM1 and the EVM Equivalence regenesis release.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - oldAddress
@@ -262,7 +262,7 @@ models:
       - *version
       - name: pool
         description: "DEX pool smart contract address"
-        tests:
+        data_tests:
           - unique
       - name: fee
         description: "Defined fee"

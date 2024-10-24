@@ -12,7 +12,7 @@ models:
       tags: ['arbitrum','timeswap','pools', 'view']
     description: >
         Timeswap pools on arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool_pair
@@ -58,7 +58,7 @@ models:
         Timeswap lend transactions on arbitrum
     config:
       tags: ['arbitrum','timeswap','lend', 'view']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_hash
@@ -100,7 +100,7 @@ models:
       Timeswap borrow transactions on arbitrum
     config:
       tags: ['arbitrum','timeswap','borrow', 'view']
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_hash

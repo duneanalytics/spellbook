@@ -10,7 +10,7 @@ models:
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer V1 liquidity pools created on Ethereum. "
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -76,7 +76,7 @@ models:
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Ethereum. '
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -105,7 +105,7 @@ models:
     config:
       tags: ['labels', 'polygon', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Polygon.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -130,7 +130,7 @@ models:
     config:
       tags: ['labels', 'gnosis', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Gnosis.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -155,7 +155,7 @@ models:
     config:
       tags: ['labels', 'avalanche_c', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Avalanche Chain.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -180,7 +180,7 @@ models:
     config:
       tags: ['labels', 'base', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Base Chain.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -205,7 +205,7 @@ models:
     config:
       tags: ['labels', 'arbitrum', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Arbitrum.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -230,7 +230,7 @@ models:
     config:
       tags: ['labels', 'optimism', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Optimism.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -255,7 +255,7 @@ models:
     config:
       tags: ['labels', 'zkevm', 'balancer', 'pools']
     description: 'Balancer V2 liquidity pools created on Polygon zkevm.'
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address

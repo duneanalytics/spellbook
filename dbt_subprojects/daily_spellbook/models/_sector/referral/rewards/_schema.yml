@@ -11,7 +11,7 @@ models:
       tags: ['referral','rewards', 'ethereum', 'optimism', 'arbitrum', 'base', 'zora', 'polygon']
     description: >
         Referral rewards
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - project
@@ -22,7 +22,7 @@ models:
         description: "Blockchain"
       - name: project
         description: "Project"
-        tests:
+        data_tests:
           - not_null
       - name: version
         description: "Project version"
@@ -36,7 +36,7 @@ models:
         description: "block number"
       - name: tx_hash
         description: "transaction hash"
-        tests:
+        data_tests:
           - not_null
       - name: tx_from
         description: "transaction sender"
@@ -50,7 +50,7 @@ models:
         description: "address of the person being referred"
       - name: is_referral
         description: "whether or not the a referral was made (and payed out)"
-        tests:
+        data_tests:
           - accepted_values:
               values: [ true, false ]
               quote: false
@@ -62,13 +62,13 @@ models:
         description: "reward amount corrected with the correct decimals"
       - name:  reward_amount_usd
         description: "USD value of the referral reward at time of execution"
-        tests:
+        data_tests:
           - dbt_utils.accepted_range:
               max_value: 1000000 # $1m is an arbitrary number, intended to flag outlier amounts early
       - name:  project_contract_address
         description: "project contract address"
       - name: sub_tx_id
         description: "id to distinguish multiple rewards in 1 transaction. Often the event index"
-        tests:
+        data_tests:
           - not_null
 

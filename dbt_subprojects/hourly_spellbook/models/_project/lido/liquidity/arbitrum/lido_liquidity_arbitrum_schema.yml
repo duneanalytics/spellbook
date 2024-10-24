@@ -10,7 +10,7 @@ models:
       tags: ['arbitrum','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on Kyberswap Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -72,7 +72,7 @@ models:
       tags: ['arbitrum','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on Camelot Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -104,7 +104,7 @@ models:
       tags: ['arbitrum','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on Uniswap v3 Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -136,7 +136,7 @@ models:
       tags: ['arbitrum','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on Balancer Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -168,7 +168,7 @@ models:
       tags: ['arbitrum','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on Curve Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool
@@ -200,7 +200,7 @@ models:
       tags: ['arbitrum','lido','liquidity']
     description: 
         Lido wstETH liquidity pools on Ramses DEX Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool

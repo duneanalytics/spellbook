@@ -13,7 +13,7 @@ models:
     columns:
       - name: contract_address
         description: "BEP20 token contract address on BNB"
-        tests:
+        data_tests:
           - unique
       - name: symbol
         description: "BEP20 token symbol"
@@ -34,7 +34,7 @@ models:
         description: "NFT Project Name"
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored."
-        tests:
+        data_tests:
           - unique
 
   - name: tokens_bnb_nft
@@ -51,10 +51,10 @@ models:
         description: "NFT Project Name"
       - name: contract_address
         description: "The contract address is the unique address of where the NFTs are stored."
-        tests:
+        data_tests:
           - unique
       - name: standard
-        tests:
+        data_tests:
           - accepted_values:
               values: [ 'bep721', 'bep1155']
         description: >
@@ -74,11 +74,11 @@ models:
     columns:
       - name: contract_address
         description: "the NFT contract address"
-        tests:
+        data_tests:
           - unique
       - name: standard
         description: "The NFT standard erc721/erc1155/..."
-        tests:
+        data_tests:
           - accepted_values:
               values: [ 'bep721', 'bep1155' ]
 

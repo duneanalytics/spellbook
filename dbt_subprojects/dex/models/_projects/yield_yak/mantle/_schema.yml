@@ -11,7 +11,7 @@ models:
       tags: ['mantle','trades', 'aggregator', 'yield_yak','dex']
     description: >
         yield yak aggregator trades on mantle
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

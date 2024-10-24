@@ -12,7 +12,7 @@ models:
     config:
       tags: ['safe', 'zksync']
     description: "Safe addresses"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -48,7 +48,7 @@ models:
     config:
       tags: ['safe', 'transfers', 'zksync']
     description: "Eth transfers for safes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -91,7 +91,7 @@ models:
     columns:
       - name: address
         description: "Safe contract address"
-        tests:
+        data_tests:
           - unique
           - not_null
 
@@ -163,5 +163,5 @@ models:
       - &unique_key
         name: unique_key
         description: unique row identifier
-        tests:
+        data_tests:
           - unique

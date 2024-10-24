@@ -16,7 +16,7 @@ models:
       - &address
         name: address
         description: "Safe contract address"
-        tests:
+        data_tests:
           - unique
           - not_null
 
@@ -124,7 +124,7 @@ models:
     config:
       tags: ['safe', 'transfers', 'gnosis']
     description: "xDAI transfers into or out of Safes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

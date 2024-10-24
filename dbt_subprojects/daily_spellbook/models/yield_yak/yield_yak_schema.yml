@@ -10,7 +10,7 @@ models:
       tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
     description: >
         yield yak deposits
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -58,7 +58,7 @@ models:
       tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
     description: >
         yield yak withdraws
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -88,7 +88,7 @@ models:
       tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
     description: >
         yield yak reinvests
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -132,7 +132,7 @@ models:
       tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
     description: >
         yield yak vault/farm/pool balances as a temporal table
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -160,7 +160,7 @@ models:
       tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
     description: >
         yield yak user-level YRT balances as a temporal table
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -189,7 +189,7 @@ models:
       tags: ['avalanche_c', 'arbitrum', 'mantle', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex']
     description: >
         yield yak aggregator yak swaps
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -250,7 +250,7 @@ models:
       tags: ['avalanche_c', 'arbitrum', 'mantle', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex', 'yakadapter']
     description: >
         yield yak aggregator yak adapter swaps
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -305,7 +305,7 @@ models:
       tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield_yak', 'strategies', 'yield']
     description: >
         yield yak strategies on all chains
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

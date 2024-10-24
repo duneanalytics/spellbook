@@ -94,7 +94,7 @@ models:
       tags: ["ethereum", "dex", "chain_swap", "trades"]
     description: >
       ChainSwap trades on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -136,7 +136,7 @@ models:
       tags: ["arbitrum", "dex", "chain_swap", "trades"]
     description: >
       ChainSwap trades on Arbitrum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -178,7 +178,7 @@ models:
       tags: ["base", "dex", "chain_swap", "trades"]
     description: >
       ChainSwap trades on Base
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -220,7 +220,7 @@ models:
       tags: ["optimism", "dex", "chain_swap", "trades"]
     description: >
       ChainSwap trades on Optimism
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -262,7 +262,7 @@ models:
       tags: ["bnb", "dex", "chain_swap", "trades"]
     description: >
       ChainSwap trades on Bnb
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -304,7 +304,7 @@ models:
       tags: ["polygon", "dex", "chain_swap", "trades"]
     description: >
       ChainSwap trades on Polygon
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -346,7 +346,7 @@ models:
       tags: ["avalanche_c", "dex", "chain_swap", "trades"]
     description: >
       ChainSwap trades on Avalanche_c
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
