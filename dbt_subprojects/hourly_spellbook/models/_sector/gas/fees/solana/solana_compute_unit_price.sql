@@ -1,7 +1,6 @@
 {{ config(
     schema = 'gas_solana',
     alias = 'compute_unit_price',
-    tags = ['prod_exclude'],
     partition_by = ['block_date', 'block_hour'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -10,6 +9,7 @@
 ) }}
 
 -- this is just decoding program data, could be moved into decoding pipeline
+-- trigger CI
 
 SELECT
     tx_id,
