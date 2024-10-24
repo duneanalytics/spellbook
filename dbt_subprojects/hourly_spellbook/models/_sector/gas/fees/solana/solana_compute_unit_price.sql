@@ -1,7 +1,6 @@
 {{ config(
     schema = 'gas_solana',
     alias = 'compute_unit_price',
-    tags = ['prod_exclude'],
     partition_by = ['block_date', 'block_hour'],
     materialized = 'incremental',
     file_format = 'delta',
