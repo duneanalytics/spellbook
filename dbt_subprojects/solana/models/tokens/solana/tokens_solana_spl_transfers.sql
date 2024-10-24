@@ -27,6 +27,9 @@ base as (
       {% if is_incremental() %}
       AND {{incremental_predicate('call_block_time')}}
       {% endif %}
+      {% if not is_incremental() %}
+      AND call_block_time > now() - interval '30' day
+      {% endif %}
 
       UNION ALL
 
@@ -42,6 +45,9 @@ base as (
       WHERE 1=1
       {% if is_incremental() %}
       AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
+      {% if not is_incremental() %}
+      AND call_block_time > now() - interval '30' day
       {% endif %}
 
       UNION ALL
@@ -59,6 +65,9 @@ base as (
       {% if is_incremental() %}
       AND {{incremental_predicate('call_block_time')}}
       {% endif %}
+      {% if not is_incremental() %}
+      AND call_block_time > now() - interval '30' day
+      {% endif %}
 
       UNION ALL
 
@@ -74,6 +83,9 @@ base as (
       WHERE 1=1
       {% if is_incremental() %}
       AND {{incremental_predicate('call_block_time')}}
+      {% endif %}
+      {% if not is_incremental() %}
+      AND call_block_time > now() - interval '30' day
       {% endif %}
 
       UNION ALL
@@ -91,6 +103,9 @@ base as (
       {% if is_incremental() %}
       AND {{incremental_predicate('call_block_time')}}
       {% endif %}
+      {% if not is_incremental() %}
+      AND call_block_time > now() - interval '30' day
+      {% endif %}
 )
 
 , prices AS (
@@ -104,6 +119,9 @@ base as (
     AND minute >= TIMESTAMP '2020-10-02 00:00'
     {% if is_incremental() %}
     AND {{incremental_predicate('minute')}}
+    {% endif %}
+    {% if not is_incremental() %}
+    AND minute > now() - interval '30' day
     {% endif %}
 )
 
@@ -168,3 +186,4 @@ FROM {{ref('tokens_solana_spl_transfers_call_transfer')}}
 {% if is_incremental() %}
     WHERE {{incremental_predicate('block_time')}}
 {% endif %}
+-- already filtered in the call_transfer model
