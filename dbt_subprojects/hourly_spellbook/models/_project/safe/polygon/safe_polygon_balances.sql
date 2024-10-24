@@ -1,6 +1,6 @@
 {{
    config(
-     schema = 'safe_ethereum',
+     schema = 'safe_polygon',
      alias = 'balances',
      materialized = 'incremental',
      file_format = 'delta',
@@ -15,7 +15,7 @@ with safes as (
         address,
         blockchain
     from {{ ref('safe_polygon_safes') }}
-    where blockchain = 'ethereum'
+    where blockchain = 'polygon'
 ),
 
 balances as (
