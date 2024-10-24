@@ -1,7 +1,6 @@
 {{ config(
     schema = 'staking_solana'
     , alias = 'validator_stake_account_epochs'
-    , materialized = 'incremental'
     , materialized = 'table'
     , post_hook='{{ expose_spells(\'["solana"]\',
                                 "sector",
