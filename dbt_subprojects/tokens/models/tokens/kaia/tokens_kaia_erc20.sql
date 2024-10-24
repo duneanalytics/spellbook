@@ -14,6 +14,7 @@ SELECT
 FROM (VALUES
     --below 10 from: https://kaiascope.com/tokens?sort=descVolume
     (0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167, 'oUSDT', 6)
+    , (0x19aac5f612f524b754ca7e7c41cbfa2e981a4432, 'WKLAY', 18)
     , (0x34d21b1e550d73cee41151c77f3c73359527a396, 'oETH', 18)
     , (0x754288077d0ff82af7a5317c7cb8c444d421d103, 'oUSDC', 6)
     , (0x574e9c26bda8b95d7329505b4657103710eb32ea, 'oBNB', 18)

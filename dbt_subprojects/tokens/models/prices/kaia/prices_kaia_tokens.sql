@@ -20,6 +20,7 @@ FROM
     VALUES
     --below 10 from: https://kaiascope.com/tokens?sort=descVolume
     ('usdt-tether', 'oUSDT', 0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167, 6)
+    , ('klay-klaytn', 'WKLAY', 0x19aac5f612f524b754ca7e7c41cbfa2e981a4432, 18)
     , ('eth-ethereum', 'oETH', 0x34d21b1e550d73cee41151c77f3c73359527a396, 18)
     , ('usdc-usd-coin', 'oUSDC', 0x754288077d0ff82af7a5317c7cb8c444d421d103, 6)
     , ('bnb-binance-coin', 'oBNB', 0x574e9c26bda8b95d7329505b4657103710eb32ea, 18)
