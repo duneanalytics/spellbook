@@ -79,6 +79,7 @@ WITH trusted_tokens AS (
                 , ('kaia', 0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167)
                 , ('kaia', 0x34d21b1e550d73cee41151c77f3c73359527a396)
                 , ('kaia', 0x754288077d0ff82af7a5317c7cb8c444d421d103)
+                , ('kaia', 0xc6a2ad8cc6e4a7e08fc37cc5954be07d499e7654)                
                 , ('linea', 0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f)
                 , ('linea', 0x176211869ca2b568f2a7d4ee941e073a821ee1ff)
                 , ('linea', 0xa219439258ca9da29e9cc4ce5596924745e12b93)
