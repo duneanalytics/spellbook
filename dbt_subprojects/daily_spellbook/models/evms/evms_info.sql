@@ -64,4 +64,5 @@ FROM (
         , (167000, 'taiko', 'Taiko', 'Layer 2', 'Optimistic Rollup', 'ETH', 0xa51894664a773981c6c112c43ce576f315d5b1b6, 'https://taikoscan.network/', timestamp '2024-03-29 07:39:12', 'OP Stack', 'Ethereum Blobs', 'Ethereum')
         , (1329, 'sei', 'Sei Network', 'Layer 1', NULL, 'SEI', 0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7, 'https://seitrace.com/?chain=pacific-1', timestamp '2024-05-27 13:14', NULL, NULL, NULL)
         , (480, 'worldchain', 'World Chain', 'Layer 2', 'Optimistic Rollup', 'WLD', 0x2cFc85d8E48F8EAB294be644d9E25C3030863003, 'https://worldchain-mainnet.explorer.alchemy.com/', timestamp '2024-06-25 17:14', 'OP Stack', 'Ethereum Blobs', 'Ethereum')
+        , (728126428, 'tron', 'TRON', 'Layer 1', null, 'TRX', from_tron_address('TNUC9Qb1rRpS5CbWLmNMxXBjyFoydXjWFR'), 'https://tronscan.org/', timestamp '2024-06-25 17:14', NULL, NULL, NULL)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement)
