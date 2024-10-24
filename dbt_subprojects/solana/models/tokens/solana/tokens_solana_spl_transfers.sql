@@ -113,7 +113,8 @@ base as (
         contract_address,
         minute,
         price,
-        decimals
+        decimals,
+        symbol  -- Add symbol to the prices CTE
     FROM {{ source('prices', 'usd_forward_fill') }}
     WHERE blockchain = 'solana'
     AND minute >= TIMESTAMP '2020-10-02 00:00'
@@ -154,6 +155,7 @@ SELECT
         WHEN p.decimals = 0 THEN p.price * tr.amount
         ELSE p.price * tr.amount / power(10, p.decimals)
       END as amount_usd
+    , p.symbol as symbol
 FROM base tr
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.account_source
 LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.account_destination

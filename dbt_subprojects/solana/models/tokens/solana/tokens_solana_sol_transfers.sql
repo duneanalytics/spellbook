@@ -86,7 +86,8 @@ SELECT
     t.action,
     t.outer_executing_account,
     t.inner_executing_account,
-    t.token_version
+    t.token_version,
+    'SOL' as symbol
 FROM transfers t
 LEFT JOIN prices p
     ON p.minute = date_trunc('minute', t.block_time)

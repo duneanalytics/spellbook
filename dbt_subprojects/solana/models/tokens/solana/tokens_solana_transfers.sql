@@ -21,6 +21,7 @@ SELECT
     , price_usd
     , fee
     , token_mint_address
+    , symbol  
     , from_owner
     , to_owner
     , from_token_account
@@ -51,6 +52,7 @@ SELECT
     , price_usd
     , fee
     , token_mint_address
+    , symbol
     , from_owner
     , to_owner
     , from_token_account
@@ -81,6 +83,7 @@ SELECT
     , price_usd
     , cast(null as double) as fee
     , token_mint_address
+    , symbol
     , from_owner
     , to_owner
     , cast(null as varchar) as from_token_account
