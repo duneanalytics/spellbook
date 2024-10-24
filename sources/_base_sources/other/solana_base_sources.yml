@@ -211,10 +211,7 @@ sources:
   - name: tokens_solana
     description: tables in the tokens_solana schema
     tables:
-  
       - name: transfers
-          meta:
+        meta:
           docs_slug: /solana/tokens/transfers
         description: SOL, SPL and SPL2022 token transfers enriched with prices and metadata
-        
-      
