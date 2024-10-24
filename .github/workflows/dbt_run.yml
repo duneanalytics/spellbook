@@ -48,6 +48,9 @@ jobs:
       - name: dbt seed
         run: "dbt seed $PROFILE --select @state:modified --exclude tag:prod_exclude tag:remove --state . --project-dir ${PROJECT_DIR}"
 
+      - name: list downstream models
+        run: "./scripts/list_modified_downstream.sh"
+
       - name: dbt run initial model(s)
         run: "dbt -x run $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
