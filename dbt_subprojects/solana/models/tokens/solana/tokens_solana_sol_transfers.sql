@@ -35,8 +35,9 @@ WITH transfers AS (
         call_inner_executing_account as inner_executing_account,
         'transfer' as action
     FROM {{ source('system_program_solana', 'system_program_call_Transfer') }}
+    WHERE 1=1
     {% if is_incremental() %}
-    WHERE {{incremental_predicate('call_block_time')}}
+    AND {{incremental_predicate('call_block_time')}}
     {% endif %}
     {% if not is_incremental() %}
     AND call_block_time > now() - interval '30' day

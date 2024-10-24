@@ -184,6 +184,5 @@ SELECT
     , amount_usd
 FROM {{ref('tokens_solana_spl_transfers_call_transfer')}}
 {% if is_incremental() %}
-    WHERE {{incremental_predicate('block_time')}}
+WHERE {{incremental_predicate('block_time')}}
 {% endif %}
--- already filtered in the call_transfer model

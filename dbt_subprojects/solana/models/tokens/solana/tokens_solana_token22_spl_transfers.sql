@@ -42,9 +42,6 @@ base as (
             {% if is_incremental() %}
             AND {{incremental_predicate('tr.call_block_time')}}
             {% endif %}
-            {% if not is_incremental() %}
-            AND tr.call_block_time > now() - interval '30' day
-            {% endif %}
       ) WHERE latest_fee = 1
 
       UNION ALL
@@ -62,9 +59,6 @@ base as (
       {% if is_incremental() %}
       AND {{incremental_predicate('call_block_time')}}
       {% endif %}
-      {% if not is_incremental() %}
-      AND call_block_time > now() - interval '30' day
-      {% endif %} 
 
       UNION ALL
 
@@ -80,9 +74,6 @@ base as (
       WHERE 1=1
       {% if is_incremental() %}
       AND {{incremental_predicate('call_block_time')}}
-      {% endif %}
-      {% if not is_incremental() %}
-      AND call_block_time > now() - interval '30' day
       {% endif %}
 
       UNION ALL
@@ -100,9 +91,6 @@ base as (
       {% if is_incremental() %}
       AND {{incremental_predicate('call_block_time')}}
       {% endif %}
-      {% if not is_incremental() %}
-      AND call_block_time > now() - interval '30' day
-      {% endif %}
 
       UNION ALL
 
@@ -118,9 +106,6 @@ base as (
       WHERE 1=1
       {% if is_incremental() %}
       AND {{incremental_predicate('call_block_time')}}
-      {% endif %}
-      {% if not is_incremental() %}
-      AND call_block_time > now() - interval '30' day
       {% endif %}
 
       --token2022 transferFeeExtension has some extra complications. It's the only extension with its own transferChecked wrapper (confidential transfers will have this too)
@@ -138,9 +123,6 @@ base as (
       WHERE bytearray_substring(call_data,1,2) = 0x1a01 --https://github.com/solana-labs/solana-program-library/blob/8f50c6fabc6ec87ada229e923030381f573e0aed/token/program-2022/src/extension/transfer_fee/instruction.rs#L284
       {% if is_incremental() %}
       AND {{incremental_predicate('call_block_time')}}
-      {% endif %}
-      {% if not is_incremental() %}
-      AND call_block_time > now() - interval '30' day
       {% endif %}
 )
 
@@ -193,5 +175,7 @@ LEFT JOIN {{ ref('solana_utils_token_address_mapping') }} tk_m
 LEFT JOIN prices p
     ON p.contract_address = tk_m.binary_address
     AND p.minute = date_trunc('minute', tr.call_block_time)
--- AND call_block_time > now() - interval '90' day --for faster CI testing
-
+WHERE 1=1
+{% if is_incremental() %}
+AND {{incremental_predicate('tr.call_block_time')}}
+{% endif %}

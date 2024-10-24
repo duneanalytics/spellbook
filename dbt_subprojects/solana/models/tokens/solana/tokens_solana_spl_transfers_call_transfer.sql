@@ -91,3 +91,7 @@ LEFT JOIN {{ ref('solana_utils_token_address_mapping') }} tk_m
 LEFT JOIN prices p
     ON p.contract_address = tk_m.binary_address
     AND p.minute = date_trunc('minute', b.block_time)
+WHERE 1=1
+{% if is_incremental() %}
+AND {{incremental_predicate('b.block_time')}}
+{% endif %}
