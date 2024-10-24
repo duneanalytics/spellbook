@@ -207,5 +207,14 @@ sources:
         meta:
           docs_slug: /solana/block_leaders
         description: Leaders for each block on the Solana blockchain
+
+  - name: tokens_solana
+    description: tables in the tokens_solana schema
+    tables:
+  
+      - name: transfers
+          meta:
+          docs_slug: /solana/tokens/transfers
+        description: SOL, SPL and SPL2022 token transfers enriched with prices and metadata
         
       
