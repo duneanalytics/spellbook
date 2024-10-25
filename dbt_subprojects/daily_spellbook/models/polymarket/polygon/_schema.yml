@@ -223,14 +223,13 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - proxy
+            - polymarket_wallet
     columns:
       - *block_time
       - *block_number
-      - &owner
-        name: owner
-      - &proxy
-        name: proxy
+      - *owner
+      - name: polymarket_wallet
+        description: "Safe wallet address deployed for the Polymarket user"
       - *evt_index
       - *tx_hash
 
@@ -442,3 +441,41 @@ models:
         description: "The token ID associated with the outcome"
       - name: price
         description: "The price of the outcome token at the end of the hour"
+
+  - name: polymarket_polygon_users_address_lookup
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: 0xRob
+    config:
+      tags: ['polygon','prediction_markets','polymarket','users']
+    description: "Comprehensive lookup table for Polymarket user addresses, including both Safe and Magic wallet proxies with funding information"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - polymarket_wallet
+    columns:
+      - name: created_time
+        description: "Timestamp when the Polymarket wallet was created"
+      - name: block_number
+        description: "Block number when the Polymarket wallet was created"
+      - name: wallet_type
+        description: "Type of wallet (safe or magic)"
+      - name: owner
+        description: "Owner address of the Polymarket wallet"
+      - name: polymarket_wallet
+        description: "Polymarket wallet address"
+      - name: first_funded_time
+        description: "Timestamp of first funding received by the Polymarket wallet"
+      - name: first_funded_by
+        description: "Address that first funded the Polymarket wallet"
+      - name: has_been_funded
+        description: "Boolean indicating if the wallet has ever received funds"
+      - name: minutes_to_first_funding
+        description: "Number of minutes between wallet creation and first funding (null if never funded)"
+      - name: evt_index
+        description: "Event index in the transaction"
+      - name: tx_hash
+        description: "Transaction hash of the wallet creation"
+

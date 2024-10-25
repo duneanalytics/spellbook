@@ -6,11 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['address', 'token_address', 'token_id', 'day'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
-    post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
-                                  spell_type = "project",
-                                  spell_name = "polymarket",
-                                  contributors = \'["0xBoxer"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}
 
@@ -26,7 +22,7 @@ WITH changed_balances AS (
         SELECT *,
                ROW_NUMBER() OVER (PARTITION BY DATE_TRUNC('day', block_time), address, contract_address, token_id 
                                   ORDER BY block_time DESC) as rn
-        FROM {{ source('tokens_polygon', 'balances_polygon_0002') }}
+        FROM {{ source('tokens_polygon', 'balances_polygon') }}
         WHERE block_time < DATE(DATE_TRUNC('day', NOW())) 
           AND type = 'erc1155' 
           AND contract_address = 0x4D97DCd97eC945f40cF65F87097ACe5EA0476045
@@ -69,7 +65,6 @@ SELECT
     balance / 1e6 AS balance
 FROM balances
 WHERE 1=1 
-AND address <> 0xa5ef39c3d3e10d0b270233af41cac69796b12966 -- for some reason a system address that's an EOA
 {% if is_incremental() %}
 AND {{ incremental_predicate('day') }}
 {% endif %}

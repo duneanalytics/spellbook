@@ -6,11 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_time','asset_id','evt_index','tx_hash'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
-                                  spell_type = "project",
-                                  spell_name = "polymarket",
-                                  contributors = \'["tomfutago"]\') }}'
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
 
