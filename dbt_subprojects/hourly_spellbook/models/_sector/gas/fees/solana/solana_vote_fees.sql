@@ -10,16 +10,5 @@
 ) }}
 
 {% if is_incremental() %}
-    {{ solana_vote_fees_template(
-        var('DBT_INCREMENTAL_FROM'), 
-        var('DBT_INCREMENTAL_TO')
-    ) }}
-{% else %}
-    -- For backfill, reference all quarterly tables
-    SELECT * FROM {{ ref('gas_solana_vote_fees_q1_2020') }}
-    UNION ALL
-    SELECT * FROM {{ ref('gas_solana_vote_fees_q2_2020') }}
-    UNION ALL
-    SELECT * FROM {{ ref('gas_solana_vote_fees_q3_2020') }}
-    -- ... and so on
+    {{ solana_vote_fees_macro() }}
 {% endif %}
