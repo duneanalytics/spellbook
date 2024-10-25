@@ -182,3 +182,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('dyorswap_blast_base_trades_seed')
+
+  - name: icecreamswap_v2_blast_base_trades
+    meta:
+      blockchain: blast
+      sector: dex
+      project: icecreamswap
+      contributors: cindieKim99
+    config:
+      tags: [ 'blast', 'dex', 'trades', 'icecreamswap' ]
+    description: "icecreamswap Blast base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('icecreamswap_v2_blast_base_trades_seed')
+  
