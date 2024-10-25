@@ -15,7 +15,7 @@ select
   evt_block_number as block_number,
   'safe' as type_of_wallet,
   owner,
-  proxy as polymarket_wallet,
+  proxy,
   evt_index,
   evt_tx_hash as tx_hash
 from {{ source('polymarket_polygon', 'SafeProxyFactory_evt_ProxyCreation') }}
