@@ -1,0 +1,5 @@
+version: 2
+
+models:
+  - name: gas_compute_limit #todo: add full metadata and tests
+  - name: gas_compute_unit_price #todo: add full metadata and tests
