@@ -11,7 +11,7 @@ models:
     config:
       tags: ['ethereum', 'staking', 'entities']
     description: Ethereum staking identified depositor entities
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - depositor_address
@@ -21,25 +21,25 @@ models:
     columns:
       - name: depositor_address
         description: "Address of identified depositor entity"
-        tests:
+        data_tests:
           - unique:
               config:
                 where: "depositor_address is not null"
       - name: tx_from
         description: "Address that initiated the ETH staking deposit"
-        tests:
+        data_tests:
           - unique:
               config:
                 where: "tx_from is not null"
       - name: pubkey
         description: "Pubkey of identified validator"
-        tests:
+        data_tests:
           - unique:
               config:
                 where: "pubkey is not null"
       - name: withdrawal_credentials
         description: "Withdrawal Credentials of identified validator"
-        tests:
+        data_tests:
           - unique:
               config:
                 where: "withdrawal_credentials is not null"
@@ -49,7 +49,7 @@ models:
         description: "Unique name of identified entity"
       - name: category
         description: "Category of entity"
-        tests:
+        data_tests:
           - accepted_values:
               values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
       - name: sub_entity
@@ -58,7 +58,7 @@ models:
         description: "Unique name of identified sub entity"
       - name: sub_entity_category
         description: "Category of sub entity"
-        tests:
+        data_tests:
           - accepted_values:
               values: ['CEX', 'Staking Pool', 'Liquid Staking', 'Liquid Restaking', 'Solo Staker', 'Batch Staking Contract', 'Others', NULL]
 
@@ -70,7 +70,7 @@ models:
     config:
       tags: ['ethereum', 'staking', 'deposits']
     description: Ethereum staking deposits
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -180,7 +180,7 @@ models:
       tags: ['staking', 'ethereum', 'info']
     description: >
         Ethereum staking entities info
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - entity

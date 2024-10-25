@@ -9,16 +9,54 @@
         )
 }}
 
+with raw_tx as (
+    select
+        blockchain
+        , cast(date_trunc('day', block_time) as date) as block_date
+        , hash as tx_hash
+    from
+        {{ source('evms', 'transactions') }}
+    where
+        1 = 1
+        {% if is_incremental() %}
+        and {{ incremental_predicate('block_time') }}
+        {% endif %}
+    group by
+        blockchain
+        , cast(date_trunc('day', block_time) as date)
+        , hash
+), net_transfers_filter as (
+    select 
+        blockchain
+        , block_date
+        , tx_hash
+    from
+        {{ ref('metrics_net_transfers') }}
+    where
+        1 = 1
+        and net_transfer_amount_usd >= 1 --only include tx's where transfer value is at least $1
+        {% if is_incremental() %}
+        and {{ incremental_predicate('block_date') }}
+        {% endif %}
+), filtered_tx as (
+    select
+        tx.blockchain
+        , tx.block_date
+        , tx.tx_hash
+    from
+        raw_tx as tx
+    inner join
+        net_transfers_filter as nt
+        on tx.blockchain = nt.blockchain
+        and tx.block_date = nt.block_date
+        and tx.tx_hash = nt.tx_hash
+)
 select
     blockchain
-    , date_trunc('day', block_hour) as block_date
-    , sum(tx_count) as tx_count
+    , block_date
+    , count(tx_hash) as tx_count
 from
-    {{ source('evms', 'transaction_metrics') }}
-{% if is_incremental() %}
-where
-    {{ incremental_predicate('block_hour') }}
-{% endif %}
+    filtered_tx
 group by
     blockchain
-    , date_trunc('day', block_hour)
+    , block_date

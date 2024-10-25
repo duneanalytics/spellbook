@@ -15,7 +15,7 @@ models:
       tags: ["avalanche_c", "gyroscope", "trades"]
 
     description: trades on gyroscope E-CLP pools on avalanche_c
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time

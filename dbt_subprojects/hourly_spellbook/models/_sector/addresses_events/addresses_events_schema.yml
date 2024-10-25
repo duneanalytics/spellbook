@@ -4,14 +4,14 @@ models:
 
   - name: addresses_events_first_funded_by
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea, zksync, sei, mantle
       sector: addresses_events
       project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'mainnets', 'crosschain']
     description: "Table showing what chain an address was first funded on and its details"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -58,7 +58,7 @@ models:
 
   - name: addresses_events_first_activity
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync, base, scroll, zkevm, linea
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync, base, scroll, zkevm, linea, sei, mantle
       sector: addresses_events
       project: addresses
       contributors: Henrystats, hildobby

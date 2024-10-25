@@ -10,7 +10,7 @@ models:
       tags: [ 'zksync','erc20','dao', 'dao creator tools', 'Henrystats' ]
     description: >
       erc20 transactions of DAO wallets 
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date 
@@ -31,7 +31,7 @@ models:
       - &dao_creator_tool
         name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
-        tests:
+        data_tests:
           - dao_transactions_creator_tool:
               dao_transactions_seed: ref('dao_transactions_seed')
       - &dao

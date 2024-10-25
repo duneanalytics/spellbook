@@ -10,7 +10,7 @@ models:
       tags: ['ethereum', 'optimism', 'bridge', 'flows', 'cross-chain']
     description: >
       Cross-chain bridge transfers on all chains across all contracts and versions
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - block_date

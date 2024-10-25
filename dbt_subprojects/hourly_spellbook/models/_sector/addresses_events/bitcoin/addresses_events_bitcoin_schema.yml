@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'funded', 'addresses_events', 'bitcoin']
     description: "Table showing who first funded each Bitcoin address in BTC"
-    tests:
+    data_tests:
       - check_seed:
           seed_file: ref('first_funded_by_seed_bitcoin')
           filter:
@@ -26,7 +26,7 @@ models:
         description: "Blockchain"
       - name: address
         description: "Concerned Bitcoin address"
-        tests:
+        data_tests:
           - unique
       - name: first_funding_executed_by
         description: "Which address executed the first funding tx"

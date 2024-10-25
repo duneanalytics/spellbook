@@ -1,6 +1,11 @@
 version: 2
 
 models:
+  - name: prices_day
+    description: "Token prices aggregated to the daily level across all chains traded on a DEX"
+  - name: prices_hour
+    description: "Token prices aggregated to the hourly level across all chains traded on a DEX"
+    
   - name: prices_tokens
     meta:
       blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm, blast, sei, nova, worldchain
@@ -19,7 +24,7 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract address of the token, if any"
-        tests:
+        data_tests:
           - not_zero_address
       - &symbol
         name: symbol
@@ -36,11 +41,9 @@ models:
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens for native tokens for all chains"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - contract_address
             - symbol
     columns:
       - *token_id
@@ -62,7 +65,7 @@ models:
       sector: prices
       contributors: jeff-dude
     description: "Subset of minute-level prices from CoinPaprika API, only containing the list of trusted tokens across blockchains"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

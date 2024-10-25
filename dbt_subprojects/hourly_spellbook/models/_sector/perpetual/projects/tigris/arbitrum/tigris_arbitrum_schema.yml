@@ -12,7 +12,7 @@ models:
       tags: ['arbitrum', 'tigris', 'perpetuals', 'perps']
     description: >
       Tigris perpetuals trades/swaps on avalanche_c
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -108,7 +108,7 @@ models:
       tags: ['arbitrum', 'tigris', 'trades', 'perps', 'dex']
     description: >
         tigirstrades on Arbitrum v1 & v2
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time
@@ -182,7 +182,7 @@ models:
       tags: [ 'tigris', 'perps', 'margin' ]
     description: >
       Tigris Options Trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - evt_block_time

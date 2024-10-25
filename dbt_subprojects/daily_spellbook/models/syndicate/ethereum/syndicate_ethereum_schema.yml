@@ -10,7 +10,7 @@ models:
       tags: [ 'ethereum', 'dao', 'syndicate', 'dao creator tools', 'Henrystats' ]
     description: >
       wallet addresses of daos created on syndicate
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - created_date
@@ -25,7 +25,7 @@ models:
         description: "blockchain which the DAO is deployed"
       - name: dao_creator_tool
         description: "Name of creator tool used to create DAO"
-        tests:
+        data_tests:
           - dao_addresses_creator_tool:
               dao_addresses_seed: ref('dao_addresses_seed')
       - &dao
