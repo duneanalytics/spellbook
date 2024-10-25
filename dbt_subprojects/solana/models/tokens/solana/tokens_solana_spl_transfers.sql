@@ -188,6 +188,7 @@ SELECT
     , token_mint_address
     , price_usd
     , amount_usd
+    , symbol
 FROM {{ref('tokens_solana_spl_transfers_call_transfer')}}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('block_time')}}
