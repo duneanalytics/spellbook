@@ -106,3 +106,5 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('yaka_sei_base_trades_seed')

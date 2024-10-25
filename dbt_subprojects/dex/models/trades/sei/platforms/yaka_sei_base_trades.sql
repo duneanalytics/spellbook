@@ -14,7 +14,7 @@
     uniswap_compatible_v2_trades(
         blockchain = 'sei',
         project = 'yaka',
-        version = '2',
+        version = '1',
         Pair_evt_Swap = source('yaka_sei', 'Pair_evt_Swap'),
         Factory_evt_PairCreated = source('yaka_sei', 'PairFactory_evt_PairCreated')
     )
