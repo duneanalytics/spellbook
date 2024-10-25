@@ -17,21 +17,20 @@
 WITH first_capital_action AS (
     SELECT 
         to_address as proxy,
-        tx_hash,
+        MIN(tx_hash) as first_funded_tx_hash,
         MIN(block_time) as first_funded_time,
         MIN(from_address) as first_funded_by
     FROM {{ ref('polymarket_polygon_users_capital_actions') }}
-    GROUP BY to_address, tx_hash
+    GROUP BY to_address  -- Remove tx_hash from GROUP BY
 ),
 
 wallet_addresses AS (
     SELECT 
         block_time as created_time,
         block_number,
-        'safe' as wallet_type,
+        type_of_wallet,
         owner,
         proxy,
-        evt_index,
         tx_hash
     FROM {{ ref('polymarket_polygon_users_safe_proxies') }}
     {% if is_incremental() %}
@@ -43,10 +42,9 @@ wallet_addresses AS (
     SELECT 
         block_time as created_time,
         block_number,
-        'magic' as wallet_type,
+        type_of_wallet,
         owner,
         proxy,
-        0 as evt_index,
         tx_hash
     FROM {{ ref('polymarket_polygon_users_magic_wallet_proxies') }}
     {% if is_incremental() %}
@@ -57,17 +55,16 @@ wallet_addresses AS (
 SELECT
     w.created_time,
     w.block_number,
-    w.wallet_type,
+    w.type_of_wallet as wallet_type,
     w.owner,
     w.proxy as polymarket_wallet,
+    w.tx_hash as created_tx_hash,
     f.first_funded_time,
     f.first_funded_by,
-    f.tx_hash as first_funded_tx_hash,
+    f.first_funded_tx_hash,
     CASE 
         WHEN f.first_funded_time IS NOT NULL THEN true 
         ELSE false 
-    END as has_been_funded,
-    w.evt_index,
-    w.tx_hash 
+    END as has_been_funded
 FROM wallet_addresses w
 LEFT JOIN first_capital_action f ON f.proxy = w.proxy
