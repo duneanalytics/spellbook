@@ -1,5 +1,6 @@
 {{
     config(
+        tags = ['prod_exclude'],
         schema = 'safe_optimism',
         alias = 'balances',
         partition_by = ['day'],

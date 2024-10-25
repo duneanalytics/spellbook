@@ -705,5 +705,7 @@ FROM
         ('wolf-landwolf-sol', 'solana', 'WOLF', 'Faf89929Ni9fbg4gmVZTca7eW6NFg877Jqn6MizT3Gvw', 8),
         ('jason-jason-derulo', 'solana', 'JASON', '6SUryVEuDz5hqAxab6QrGfbzWvjN8dC7m29ezSvDpump', 6),
         ('moodeng-moo-deng-moodengsolcom', 'solana', 'MOODENG', 'ED5nyyWEzpPPiWimP8vYm7sD7TD3LAt3Q3gRTWHzPJBY', 6),
-        ('scf-smoking-chicken-fish', 'solana', 'SCF', 'GiG7Hr61RVm4CSUxJmgiCoySFQtdiwxtqf64MsRppump', 6)
+        ('scf-smoking-chicken-fish', 'solana', 'SCF', 'GiG7Hr61RVm4CSUxJmgiCoySFQtdiwxtqf64MsRppump', 6),
+        ('luna-luna-by-virtuals', 'solana', 'LUNA', '9se6kma7LeGcQWyRBNcYzyxZPE3r9t9qWZ8SnjnN3jJ7', 8),
+        ('goat-goatseus-maximus', 'solana', 'GOAT', 'CzLSujWBLFsSjncfkh59rUFqvafWcY5tzedWJSuypump', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
