@@ -34,5 +34,6 @@ FROM
     ('solvbtc-solv-protocol-solvbtc', 'scroll', 'SolvBTC ', 0x3ba89d490ab1c0c9cc2313385b30710e838370a4, 18),
     ('pufeth-pufeth', 'scroll', 'pufETH ', 0xc4d46E8402F476F269c379677C99F18E22Ea030e, 18),
     ('usde-ethena-usde', 'scroll', 'USDe', 0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34, 18),
-    ('susde-ethena-staked-usde', 'scroll', 'sUSDe', 0x211Cc4DD073734dA055fbF44a2b4667d5E5fE5d2, 18)
+    ('susde-ethena-staked-usde', 'scroll', 'sUSDe', 0x211Cc4DD073734dA055fbF44a2b4667d5E5fE5d2, 18),
+    ('scr-scroll', 'scroll', 'SCR', 0xd29687c813D741E2F938F4aC377128810E217b1b, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
