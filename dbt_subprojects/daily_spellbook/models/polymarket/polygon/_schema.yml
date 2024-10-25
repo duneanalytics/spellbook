@@ -227,7 +227,7 @@ models:
     columns:
       - *block_time
       - *block_number
-      - *owner
+      - name: owner
       - name: polymarket_wallet
         description: "Safe wallet address deployed for the Polymarket user"
       - *evt_index
@@ -250,7 +250,7 @@ models:
       - *block_time
       - *block_number
       - name: owner
-      - *proxy
+      - name: proxy
       - *tx_hash
 
   - name: polymarket_polygon_market_details 
@@ -442,7 +442,7 @@ models:
       - name: price
         description: "The price of the outcome token at the end of the hour"
 
-  - name: polymarket_polygon_users_address_lookup
+  - name: polymarket_polygon_users
     meta:
       blockchain: polygon
       sector: prediction_markets
@@ -478,4 +478,5 @@ models:
         description: "Event index in the transaction"
       - name: tx_hash
         description: "Transaction hash of the wallet creation"
+
 
