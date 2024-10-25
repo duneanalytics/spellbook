@@ -18,6 +18,7 @@ WITH base_model AS (
         t.block_time,
         t.signer,
         t.fee AS tx_fee_raw,
+        5000*required_signatures as base_fee_raw, -- each signature is 5000 lamports
         (COALESCE(cl.compute_limit, 200000) * COALESCE(up.compute_unit_price/ 1e6, 0)) AS prioritization_fee_raw,
         COALESCE(up.compute_unit_price/ 1e6, 0) AS compute_unit_price,
         COALESCE(cl.compute_limit, 200000) AS compute_limit,
@@ -60,16 +61,16 @@ SELECT
     compute_unit_price,
     compute_limit,
     p.symbol AS currency_symbol,
-    tx_fee_raw + coalesce(prioritization_fee_raw,0) AS tx_fee_raw,
-    (tx_fee_raw + coalesce(prioritization_fee_raw,0)) / pow(10, 9) AS tx_fee,
-    (tx_fee_raw + coalesce(prioritization_fee_raw,0)) / pow(10, 9) * p.price AS tx_fee_usd,
-    map(array['base_fee', 'prioritization_fee'], array[coalesce(tx_fee_raw, 0), coalesce(prioritization_fee_raw, 0)]) AS tx_fee_breakdown_raw,
+    tx_fee_raw,
+    (tx_fee_raw/ pow(10, 9) AS tx_fee,
+    (tx_fee_raw/ pow(10, 9) * p.price AS tx_fee_usd,
+    map(array['base_fee', 'prioritization_fee'], array[coalesce(base_fee_raw, 0), coalesce(prioritization_fee_raw, 0)]) AS tx_fee_breakdown_raw,
     transform_values(
-        map(array['base_fee', 'prioritization_fee'], array[coalesce(tx_fee_raw, 0), coalesce(prioritization_fee_raw, 0)]),
+        map(array['base_fee', 'prioritization_fee'], array[coalesce(base_fee_raw, 0), coalesce(prioritization_fee_raw, 0)]),
         (k, v) -> CAST(v AS double) / pow(10, 9)
     ) AS tx_fee_breakdown,
     transform_values(
-        map(array['base_fee', 'prioritization_fee'], array[coalesce(tx_fee_raw, 0), coalesce(prioritization_fee_raw, 0)]),
+        map(array['base_fee', 'prioritization_fee'], array[coalesce(base_fee_raw, 0), coalesce(prioritization_fee_raw, 0)]),
         (k, v) -> CAST(v AS double) / pow(10, 9) * p.price
     ) AS tx_fee_breakdown_usd,
     tx_fee_currency,
