@@ -24,13 +24,13 @@ WITH base_model AS (
         'So11111111111111111111111111111111111111112' AS tx_fee_currency,
         b.leader
     FROM {{ source('solana', 'transactions') }} t
-    LEFT JOIN {{ ref('solana_compute_limit') }} cl
+    LEFT JOIN {{ ref('gas_solana_compute_limit') }} cl
         ON t.id = cl.tx_id
         AND t.block_date = cl.block_date
         {% if is_incremental() %}
             AND {{ incremental_predicate('cl.block_date') }}
         {% endif %}
-    LEFT JOIN {{ ref('solana_compute_unit_price') }} up
+    LEFT JOIN {{ ref('gas_solana_compute_unit_price') }} up
         ON t.id = up.tx_id
         AND t.block_date = up.block_date
         {% if is_incremental() %}
