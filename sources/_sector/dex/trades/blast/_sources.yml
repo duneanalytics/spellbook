@@ -48,3 +48,7 @@ sources:
     tables:
       - name: DYORFactory_evt_PairCreated
       - name: DYORPair_evt_Swap
+  - name: icecreamswap_v2_blast
+    tables:
+      - name: IceCreamSwapV2Factory_evt_PairCreated
+      - name: IceCreamSwapV2Pair_evt_Swap
