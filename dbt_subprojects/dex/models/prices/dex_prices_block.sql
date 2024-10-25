@@ -30,7 +30,7 @@
                                     ]\',
                                     "sector",
                                     "dex",
-                                    \'["jeff-dude", "couralex", "0xrob"]\') }}')
+                                    \'["jeff-dude", "couralex", "0xrob"]\') }}'
 )
 }}
 
