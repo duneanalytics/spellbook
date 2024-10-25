@@ -1,6 +1,6 @@
 {{ config(
         schema = 'uniswap_v2_ethereum',
-        alias = 'decoded_pool_evt_Swap',
+        alias = 'decoded_pool_evt_swap',
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
