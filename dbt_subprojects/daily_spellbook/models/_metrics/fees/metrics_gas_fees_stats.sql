@@ -40,9 +40,9 @@ with source as (
         c.blockchain
         , c.last_1_days_gas_fees_usd
         , p.previous_1_days_gas_fees_usd
-        , ((c.last_1_days_gas_fees_usd - coalesce(p.previous_1_days_gas_fees_usd, 0)) / coalesce(p.previous_1_days_gas_fees_usd, 1)) * 100 AS daily_percent_change
+        , (c.last_1_days_gas_fees_usd - coalesce(p.previous_1_days_gas_fees_usd, 0)) / coalesce(p.previous_1_days_gas_fees_usd, 1) AS daily_percent_change
         , t.total_cross_chain_last_1_days_gas_fees_usd
-        , (c.last_1_days_gas_fees_usd / t.total_cross_chain_last_1_days_gas_fees_usd) * 100 AS percent_total_last_1_days_fees_usd
+        , c.last_1_days_gas_fees_usd / t.total_cross_chain_last_1_days_gas_fees_usd AS percent_total_last_1_days_fees_usd
     from
         current_day as c
     left join previous_day as p
@@ -81,9 +81,9 @@ with source as (
         c.blockchain
         , c.last_7_days_gas_fees_usd
         , p.previous_7_days_gas_fees_usd
-        , ((c.last_7_days_gas_fees_usd - coalesce(p.previous_7_days_gas_fees_usd, 0)) / coalesce(p.previous_7_days_gas_fees_usd, 1)) * 100 AS weekly_percent_change
+        , (c.last_7_days_gas_fees_usd - coalesce(p.previous_7_days_gas_fees_usd, 0)) / coalesce(p.previous_7_days_gas_fees_usd, 1) AS weekly_percent_change
         , t.total_cross_chain_last_7_days_gas_fees_usd
-        , (c.last_7_days_gas_fees_usd / t.total_cross_chain_last_7_days_gas_fees_usd) * 100 AS percent_total_last_7_days_gas_fees_usd
+        , c.last_7_days_gas_fees_usd / t.total_cross_chain_last_7_days_gas_fees_usd AS percent_total_last_7_days_gas_fees_usd
     from
         current_week as c
     left join previous_week as p
@@ -122,9 +122,9 @@ with source as (
         c.blockchain
         , c.last_30_days_gas_fees_usd
         , p.previous_30_days_gas_fees_usd
-        , ((c.last_30_days_gas_fees_usd - coalesce(p.previous_30_days_gas_fees_usd, 0)) / coalesce(p.previous_30_days_gas_fees_usd, 1)) * 100 AS monthly_percent_change
+        , (c.last_30_days_gas_fees_usd - coalesce(p.previous_30_days_gas_fees_usd, 0)) / coalesce(p.previous_30_days_gas_fees_usd, 1) AS monthly_percent_change
         , t.total_cross_chain_last_30_days_gas_fees_usd
-        , (c.last_30_days_gas_fees_usd / t.total_cross_chain_last_30_days_gas_fees_usd) * 100 AS percent_total_last_30_days_gas_fees_usd
+        , c.last_30_days_gas_fees_usd / t.total_cross_chain_last_30_days_gas_fees_usd AS percent_total_last_30_days_gas_fees_usd
     from
         current_month as c
     left join previous_month as p
