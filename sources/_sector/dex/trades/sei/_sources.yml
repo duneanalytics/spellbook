@@ -27,3 +27,7 @@ sources:
   - name: carbon_defi_sei
     tables:
       - name: CarbonController_evt_TokensTraded
+  - name: yaka_sei
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
