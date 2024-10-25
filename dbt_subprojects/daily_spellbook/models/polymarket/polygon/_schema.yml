@@ -223,12 +223,12 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - polymarket_wallet
+            - proxy
     columns:
       - *block_time
       - *block_number
       - name: owner
-      - name: polymarket_wallet
+      - name: proxy
         description: "Safe wallet address deployed for the Polymarket user"
       - *evt_index
       - *tx_hash
@@ -454,7 +454,7 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - proxy
+            - polymarket_wallet
     columns:
       - name: created_time
         description: "Timestamp when the Polymarket wallet was created"
@@ -464,7 +464,7 @@ models:
         description: "Type of wallet (safe or magic)"
       - name: owner
         description: "Owner address of the Polymarket wallet"
-      - name: proxy
+      - name: polymarket_wallet
         description: "Polymarket wallet address"
       - name: first_funded_time
         description: "Timestamp of first funding received by the Polymarket wallet"
