@@ -21,7 +21,7 @@ WITH first_capital_action AS (
         MIN(block_time) as first_funded_time,
         MIN(from_address) as first_funded_by
     FROM {{ ref('polymarket_polygon_users_capital_actions') }}
-    GROUP BY to_address
+    GROUP BY to_address, tx_hash
 ),
 
 wallet_addresses AS (
