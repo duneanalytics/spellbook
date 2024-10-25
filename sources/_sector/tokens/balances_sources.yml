@@ -80,7 +80,7 @@ sources:
     description: "Prices tables across blockchains"
     tables:
       - name: balances_polygon
-        identifier: balances_polygon_0001
+        identifier: balances_polygon_0002
         description: "Raw balances data"
         columns:
           - name: block_number
