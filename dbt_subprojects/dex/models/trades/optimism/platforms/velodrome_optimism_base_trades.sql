@@ -35,6 +35,18 @@ dexs_v2 AS (
             pair_column_name = 'pool'
         )
     }}
+),
+
+dexs_v2_cl AS (
+        {{
+        uniswap_compatible_v3_trades(
+            blockchain = 'optimism',
+            project = 'velodrome',
+            version = '2',
+            Pair_evt_Swap = source('velodrome_v2_optimism', 'CLPool_evt_Swap'),
+            Factory_evt_PoolCreated = source('velodrome_v2_optimism', 'CLFactory_evt_PoolCreated')
+        )
+    }}
 )
 
 SELECT
@@ -74,3 +86,22 @@ SELECT
     dexs_v2.tx_hash,
     dexs_v2.evt_index
 FROM dexs_v2
+UNION ALL
+SELECT
+    dexs_v2_cl.blockchain,
+    dexs_v2_cl.project,
+    dexs_v2_cl.version,
+    dexs_v2_cl.block_month,
+    dexs_v2_cl.block_date,
+    dexs_v2_cl.block_time,
+    dexs_v2_cl.block_number,
+    dexs_v2_cl.token_bought_amount_raw,
+    dexs_v2_cl.token_sold_amount_raw,
+    dexs_v2_cl.token_bought_address,
+    dexs_v2_cl.token_sold_address,
+    dexs_v2_cl.taker,
+    dexs_v2_cl.maker,
+    dexs_v2_cl.project_contract_address,
+    dexs_v2_cl.tx_hash,
+    dexs_v2_cl.evt_index
+FROM dexs_v2_cl
