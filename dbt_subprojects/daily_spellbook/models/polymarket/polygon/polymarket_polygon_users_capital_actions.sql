@@ -74,16 +74,10 @@ where (
     contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
     or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 -- USDC
   )
-  and "to" not in (
-    select address from polymarket_addresses 
-    UNION ALL 
-    select proxy from polymarket_wallets
-  )
-  and "from" not in (
-    select address from polymarket_addresses
-    UNION ALL 
-    select proxy from polymarket_wallets
-  )
+  and "to" in (select proxy from polymarket_wallets) --deposits are to the wallet
+  and "from" not in (select proxy from polymarket_wallets) --not looking for transfers
+  and "to" not in (select address from polymarket_addresses)
+  and "from" not in (select address from polymarket_addresses) 
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
@@ -112,16 +106,10 @@ where (
     contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
     or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 -- USDC
   )
-  and "to" not in (
-    select address from polymarket_addresses 
-    UNION ALL 
-    select proxy from polymarket_wallets
-  )
-  and "from" not in (
-    select address from polymarket_addresses
-    UNION ALL 
-    select proxy from polymarket_wallets
-  )
+  and "from" in (select proxy from polymarket_wallets) --withdrawals are from the wallet
+  and "to" not in (select proxy from polymarket_wallets)  --not looking for transfers
+  and "to" not in (select address from polymarket_addresses)
+  and "from" not in (select address from polymarket_addresses)
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
@@ -176,7 +164,8 @@ select distinct
 from {{ source('tokens_polygon', 'transfers')}}
 where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
   or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
-  and ("to" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 or "from" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418)
+  and ("to" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 and "from" in (select proxy from polymarket_wallets))
+  and ("from" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 and "to" in (select proxy from polymarket_wallets))
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
