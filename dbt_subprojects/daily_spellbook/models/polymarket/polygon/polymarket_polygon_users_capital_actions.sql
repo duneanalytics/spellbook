@@ -24,13 +24,7 @@
 -- by ignoring the uniswap pool, but looking for USDC transfers, we can get a better read on funding sources
 
 
--- get all safe and magic wallet proxies to filter for polymarket user addresses
--- there are some rare EOA addresses that trade directly on polymarket, but they are few and far between
-with safe_proxies as (
-  select proxy from {{ ref('polymarket_polygon_users_safe_proxies') }}
-  UNION ALL 
-  select proxy from {{ ref('polymarket_polygon_users_magic_wallet_proxies') }}
-),
+
 
 -- get all known polymarket contract and filter them out as these are not users
 polymarket_addresses as (
@@ -40,13 +34,20 @@ polymarket_addresses as (
     (0x4bFb41d5B3570DeFd03C39a9A4D8dE6Bd8B8982E), -- CTFExchange
     (0xC5d563A36AE78145C45a50134d48A1215220f80a), -- NegRiskCTFExchange
     (0xc288480574783BD7615170660d71753378159c47),  -- Polymarket Rewards
-    (0x94a3db2f861b01c027871b08399e1ccecfc847f6)   -- liq mining merkle distributor
+    (0x94a3db2f861b01c027871b08399e1ccecfc847f6),  -- liq mining merkle distributor
+    (0xD36ec33c8bed5a9F7B6630855f1533455b98a418)   -- USDC.e - USDC uniswap pool
   ) as t(address)
   UNION ALL 
   select 
     address
   from {{ source('polygon', 'creation_traces') }}
-  where "from" = 0x8b9805a2f595b6705e74f7310829f2d299d21522
+  where "from" = 0x8b9805a2f595b6705e74f7310829f2d299d21522 -- fpmm factory
+  -- get all safe and magic wallet proxies to filter for polymarket user addresses
+-- there are some rare EOA addresses that trade directly on polymarket, but they are few and far between
+  UNION ALL 
+  Select proxy from {{ ref('polymarket_polygon_users_magic_wallet_proxies') }}
+  UNION ALL
+  Select proxy from {{ ref('polymarket_polygon_users_safe_proxies') }}
   -- these are fpmm contracts
 )
 
@@ -70,11 +71,8 @@ select
 from {{ source('tokens_polygon', 'transfers')}}
 where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
   or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
-  and "to" in (select proxy from safe_proxies)
-  and "from" not in (select proxy from safe_proxies)
   and "to" not in (select address from polymarket_addresses)
   and "from" not in (select address from polymarket_addresses)
-  and "from" <> 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 --USDC.e - USDC uniswap pool
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
@@ -101,11 +99,8 @@ select
 from {{ source('tokens_polygon', 'transfers')}}
 where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
   or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
-  and "from" in (select proxy from safe_proxies)
-  and "to" not in (select proxy from safe_proxies)
   and "to" not in (select address from polymarket_addresses)
   and "from" not in (select address from polymarket_addresses)
-  and "from" <> 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 --USDC.e - USDC uniswap pool
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
@@ -132,11 +127,8 @@ select distinct
 from {{ source('tokens_polygon', 'transfers')}}
 where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
   or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
-  and "from" in (select proxy from safe_proxies)
-  and "to" in (select proxy from safe_proxies)
   and "to" not in (select address from polymarket_addresses)
   and "from" not in (select address from polymarket_addresses)
-  and "from" <> 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 --USDC.e - USDC uniswap pool
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
