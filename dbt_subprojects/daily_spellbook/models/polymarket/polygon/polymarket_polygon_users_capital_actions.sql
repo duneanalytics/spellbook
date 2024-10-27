@@ -27,7 +27,7 @@
 
 
 -- get all known polymarket contract and filter them out as these are not users
-polymarket_addresses as (
+with polymarket_addresses as (
   select * from (values 
     (0x4D97DCd97eC945f40cF65F87097ACe5EA0476045), -- Conditional Tokens
     (0x3A3BD7bb9528E159577F7C2e685CC81A765002E2), -- Wrapped Collateral
@@ -44,7 +44,8 @@ polymarket_addresses as (
   where "from" = 0x8b9805a2f595b6705e74f7310829f2d299d21522 -- fpmm factory
   -- get all safe and magic wallet proxies to filter for polymarket user addresses
 -- there are some rare EOA addresses that trade directly on polymarket, but they are few and far between
-  UNION ALL 
+)
+,polymarket_wallets as ( 
   Select proxy from {{ ref('polymarket_polygon_users_magic_wallet_proxies') }}
   UNION ALL
   Select proxy from {{ ref('polymarket_polygon_users_safe_proxies') }}
@@ -69,10 +70,20 @@ select
   evt_index,
   tx_hash
 from {{ source('tokens_polygon', 'transfers')}}
-where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
-  or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
-  and "to" not in (select address from polymarket_addresses)
-  and "from" not in (select address from polymarket_addresses)
+where (
+    contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
+    or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 -- USDC
+  )
+  and "to" not in (
+    select address from polymarket_addresses 
+    UNION ALL 
+    select proxy from polymarket_wallets
+  )
+  and "from" not in (
+    select address from polymarket_addresses
+    UNION ALL 
+    select proxy from polymarket_wallets
+  )
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
@@ -97,10 +108,20 @@ select
   evt_index,
   tx_hash
 from {{ source('tokens_polygon', 'transfers')}}
-where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
-  or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
-  and "to" not in (select address from polymarket_addresses)
-  and "from" not in (select address from polymarket_addresses)
+where (
+    contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
+    or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 -- USDC
+  )
+  and "to" not in (
+    select address from polymarket_addresses 
+    UNION ALL 
+    select proxy from polymarket_wallets
+  )
+  and "from" not in (
+    select address from polymarket_addresses
+    UNION ALL 
+    select proxy from polymarket_wallets
+  )
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
@@ -129,6 +150,33 @@ where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
   or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
   and "to" not in (select address from polymarket_addresses)
   and "from" not in (select address from polymarket_addresses)
+  and "from" in (select proxy from polymarket_wallets)
+  and "to" in (select proxy from polymarket_wallets)
+  {% if is_incremental() %}
+  and {{ incremental_predicate('block_time') }}
+  {% endif %}
+
+union all
+
+select distinct
+  block_time,
+  block_date,
+  block_number,
+  'swap' as action, -- swap with uniswap pool
+  "from" as from_address,
+  "to" as to_address,
+  case when contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 then 'USDC.e'
+    when contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359 then 'USDC'
+  end as symbol,
+  amount_raw,
+  amount,
+  amount_usd,
+  evt_index,
+  tx_hash
+from {{ source('tokens_polygon', 'transfers')}}
+where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
+  or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
+  and ("to" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 or "from" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418)
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
