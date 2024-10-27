@@ -118,7 +118,7 @@ union all
 
 -- get all transfers between safes, this is very rare but a possible edge case
 
-select distinct
+select distinct 
   block_time,
   block_date,
   block_number,
@@ -146,11 +146,11 @@ where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
 
 union all
 
-select distinct
+select
   block_time,
   block_date,
   block_number,
-  'swap' as action, -- swap with uniswap pool
+  'convert' as action, -- convert between USDC and USDC.e via uniswap pool
   "from" as from_address,
   "to" as to_address,
   case when contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 then 'USDC.e'
@@ -165,7 +165,7 @@ from {{ source('tokens_polygon', 'transfers')}}
 where (contract_address = 0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174 -- USDC.e
   or contract_address = 0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359) -- USDC
   and ("to" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 and "from" in (select proxy from polymarket_wallets))
-  and ("from" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 and "to" in (select proxy from polymarket_wallets))
+  or ("from" = 0xD36ec33c8bed5a9F7B6630855f1533455b98a418 and "to" in (select proxy from polymarket_wallets))
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
