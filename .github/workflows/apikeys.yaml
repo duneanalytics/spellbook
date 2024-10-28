@@ -1,0 +1,16 @@
+name: API Key test
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/apikeys.yaml
+
+jobs:
+  get-key:
+    runs-on: [ self-hosted, linux, spellbook-trino-ci ]
+    steps:
+      - name: Check out repository code
+        env:
+          DUNE_API_KEY_PROD: ${{ secrets.DUNE_API_KEY_PROD }}
+        run:
+          curl -X GET "https://api.dune.com/api/beta/balance/BBBBBBBBBBBBB/CCCCCCCCCCCC?api_key=${DUNE_API_KEY_PROD}"
