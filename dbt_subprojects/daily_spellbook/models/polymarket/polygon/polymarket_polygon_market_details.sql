@@ -68,7 +68,7 @@ LEFT JOIN onchain_metadata oc ON cast(oc.market_id AS varchar) = api.unique_key
 
 , naming_things as (
 SELECT 
-  from_hex(unique_key) AS unique_key,
+  unique_key AS unique_key,
   condition_id AS condition_id,
   CASE 
     WHEN neg_risk_market_id IS NULL THEN NULL
@@ -112,7 +112,7 @@ FROM combine c
 left join {{ ref('polymarket_polygon_market_outcomes') }} pm on pm.question_id = c.question_id
 )
 
---these get introduced by the polymarket api responses 
+--these nulls get introduced by the polymarket api responses 
 
 SELECT * FROM naming_things
 where token_id is not null
