@@ -51,7 +51,7 @@ WITH all_fees AS (
         tx_fee_currency,
         leader,
         tx_type
-    FROM {{ ref('solana_vote_fees') }}
+    FROM {{ ref('gas_solana_vote_fees') }}
 )
 
 SELECT *

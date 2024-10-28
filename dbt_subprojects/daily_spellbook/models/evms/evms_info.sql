@@ -2,10 +2,31 @@
         schema = 'evms',
         tags = ['static'],
         alias = 'info',
-        post_hook = '{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "sei", "worldchain"]\',
+        post_hook = '{{ expose_spells(\'[
+                                        "arbitrum"
+                                        , "avalanche_c"
+                                        , "base"
+                                        , "blast"
+                                        , "bnb"
+                                        , "celo"
+                                        , "ethereum"
+                                        , "fantom"
+                                        , "gnosis"
+                                        , "kaia"
+                                        , "linea"
+                                        , "nova"
+                                        , "optimism"
+                                        , "polygon"
+                                        , "scroll"
+                                        , "sei"
+                                        , "worldchain"
+                                        , "zksync"
+                                        , "zkevm"
+                                        , "zora"
+                                        ]\',
                                         "sector",
                                         "evms",
-                                        \'["hildobby", "hosuke"]\') }}')
+                                        \'["hildobby", "hosuke", "jeff-dude"]\') }}')
 }}
 
 SELECT chain_id
@@ -46,7 +67,7 @@ FROM (
         , (7700, 'canto', 'Canto', 'Layer 2', NULL, 'ETH', NULL, 'https://evm.explorer.canto.io/', timestamp '2022-07-26 19:27', NULL, 'Ethereum', 'Ethereum')
         , (420, 'optimism_goerli', 'Optimism Goerli', 'Testnet', 'Optimistic Rollup', 'GTH', 0x4200000000000000000000000000000000000006, 'https://optimism-goerli.blockscout.com/', timestamp '2022-06-09 16:55', 'OP Stack', 'Goerli', 'Goerli')
         , (1313161554, 'aurora', 'Aurora', 'Layer 2', NULL, 'ETH', 0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB, 'https://explorer.aurora.dev/', timestamp '2020-07-21 21:50:11', NULL, NULL, NULL)
-        , (8217, 'klaytn', 'Klaytn', 'Layer 1', NULL, 'KLAY', 0xe4f05a66ec68b54a58b17c22107b02e0232cc817, 'https://scope.klaytn.com/', timestamp '2019-06-25 13:41:14', NULL, NULL, NULL)
+        , (8217, 'kaia', 'Kaia', 'Layer 1', NULL, 'KAIA', 0xe4f05a66ec68b54a58b17c22107b02e0232cc817, 'https://kaiascope.com/', timestamp '2019-06-25 13:41:14', NULL, NULL, NULL)
         , (34443, 'mode', 'Mode', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.mode.network/', timestamp '2023-11-16 20:46:23', 'OP Stack', 'Ethereum Blobs', 'Ethereum')
         , (291, 'orderly', 'Orderly Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.orderly.network/', timestamp '2023-10-06 16:03:49', 'OP Stack', 'Ethereum', 'Ethereum')
         , (957, 'lyra', 'Lyra', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.lyra.finance/', cast(NULL AS timestamp), 'OP Stack', 'Ethereum', 'Ethereum')
