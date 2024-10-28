@@ -33,8 +33,8 @@ SELECT
 FROM {{ source('erc20_tron','evt_transfer') }} t
 INNER JOIN {{ source('tron','transactions') }} tx ON
     tx.block_time = t.evt_block_time -- raw base tables partitioned by time
-    AND tx.block_number = t.block_number
-    AND tx.hash = t.tx_hash
+    AND tx.block_number = t.evt_block_number
+    AND tx.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
