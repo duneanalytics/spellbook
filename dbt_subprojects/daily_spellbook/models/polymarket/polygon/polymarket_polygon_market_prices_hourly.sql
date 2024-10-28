@@ -41,7 +41,7 @@ forward_fill AS (
     FROM hours h
     LEFT JOIN changed_prices lp
         ON h.hour >= lp.hour
-        AND (lp.next_update_hour IS NULL OR h.hour <= lp.next_update_hour)
+        AND (lp.next_update_hour IS NULL OR h.hour < lp.next_update_hour)
 )
 
 SELECT * FROM forward_fill

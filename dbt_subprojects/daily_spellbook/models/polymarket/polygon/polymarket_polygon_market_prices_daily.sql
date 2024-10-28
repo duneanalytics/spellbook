@@ -44,7 +44,7 @@ forward_fill AS (
     FROM days d
     LEFT JOIN changed_prices lp
         ON d.day >= lp.day
-        AND (lp.next_update_day IS NULL OR d.day <= lp.next_update_day)
+        AND (lp.next_update_day IS NULL OR d.day < lp.next_update_day)
 )
 
 SELECT * FROM forward_fill
