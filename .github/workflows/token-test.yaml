@@ -7,6 +7,7 @@ on:
 
 jobs:
   runner-test:
+    runs-on: [ self-hosted, linux, spellbook-trino-ci ]
     steps:
       - name: Print runner token hash
         run: echo $RUNNER_TOKEN | sha256sum
