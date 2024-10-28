@@ -2,6 +2,7 @@
    config(
      schema = 'safe_polygon',
      alias = 'balances',
+     partition_by = ['day'],
      materialized = 'incremental',
      file_format = 'delta',
      incremental_strategy = 'merge',
