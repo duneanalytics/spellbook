@@ -19,7 +19,8 @@
     'gas_solana_vote_fees_2023_q4',
     'gas_solana_vote_fees_2024_q1',
     'gas_solana_vote_fees_2024_q2',
-    'gas_solana_vote_fees_2024_q3'
+    'gas_solana_vote_fees_2024_q3',
+    'gas_solana_vote_fees_2024_q4' -- this currently has current_date as end_date, if we ever need to backfill further we will need to update this
 ] -%}
 
 {%- for model in models %}
