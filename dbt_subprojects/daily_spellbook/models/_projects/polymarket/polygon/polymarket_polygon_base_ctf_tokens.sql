@@ -2,9 +2,7 @@
   config(
     schema = 'polymarket_polygon',
     alias = 'base_ctf_tokens',
-    materialized = 'view',
-    unique_key = ['condition_id','token0','token1'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    materialized = 'view'
   )
 }}
 

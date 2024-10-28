@@ -2,7 +2,6 @@
     schema = 'polymarket_polygon',
     alias = 'market_prices_latest',
     materialized = 'view',
-    unique_key = ['token_id'],
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
                                   spell_name = "polymarket",

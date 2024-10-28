@@ -3,8 +3,6 @@
     schema = 'polymarket_polygon',
     alias = 'market_details',
     materialized = 'table',
-    file_format = 'delta',
-    full_refresh = true,
     post_hook='{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
                                   spell_name = "polymarket",

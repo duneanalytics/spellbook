@@ -2,8 +2,6 @@
     schema = 'polymarket_polygon',
     alias = 'market_prices_daily',
     materialized = 'view',
-    unique_key = ['day', 'token_id'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
     post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
                                   spell_type = "project",
                                   spell_name = "polymarket",
