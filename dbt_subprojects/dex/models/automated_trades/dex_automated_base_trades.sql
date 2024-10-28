@@ -13,6 +13,10 @@
 {% set models = [
     ref('dex_ethereum_automated_base_trades')
     , ref('dex_arbitrum_automated_base_trades')
+    , ref('dex_base_automated_base_trades')
+    , ref('dex_bnb_automated_base_trades')
+    , ref('dex_celo_automated_base_trades')
+    , ref('dex_optimism_automated_base_trades')
     , ref('dex_polygon_automated_base_trades')
 ] %}
 
