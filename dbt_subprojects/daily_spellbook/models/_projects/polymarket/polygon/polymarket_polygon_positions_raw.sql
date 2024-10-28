@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     partition_by = ['month'],
-    unique_key = ['month', 'day', 'address', 'token_address', 'blockchain'],
+    unique_key = ['month', 'day', 'address', 'token_address', 'token_id', 'blockchain'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}

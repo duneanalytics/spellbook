@@ -326,6 +326,7 @@ models:
             - day
             - address
             - token_address
+            - token_id
             - blockchain
     columns:
       - name: blockchain
