@@ -13,11 +13,18 @@
 {% set models = [
     ref('dex_ethereum_automated_base_trades')
     , ref('dex_arbitrum_automated_base_trades')
+    , ref('dex_avalanche_c_automated_base_trades')
     , ref('dex_base_automated_base_trades')
     , ref('dex_bnb_automated_base_trades')
     , ref('dex_celo_automated_base_trades')
+    , ref('dex_fantom_automated_base_trades')
+    , ref('dex_gnosis_automated_base_trades')
+    , ref('dex_linea_automated_base_trades')
+    , ref('dex_mantle_automated_base_trades')
     , ref('dex_optimism_automated_base_trades')
     , ref('dex_polygon_automated_base_trades')
+    , ref('dex_scroll_automated_base_trades')
+    , ref('dex_worldchain_automated_base_trades')
 ] %}
 
 with base_union as (
