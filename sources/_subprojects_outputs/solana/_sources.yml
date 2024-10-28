@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: gas_solana
+    tables:
+      - name: fees
