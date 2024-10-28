@@ -1,13 +1,12 @@
 {{ config(
     schema = 'gas_solana',
-    alias = 'vote_fees_q4_2020',
+    alias = 'vote_fees_2022_q1',
     tags = ['static'],
     materialized = 'table',
     file_format = 'delta'
 ) }}
 
 {{ solana_vote_fees_macro(
-    "cast('2020-10-01' as timestamp)",
-    "cast('2021-01-01' as timestamp)"
+    "cast('2022-01-01' as timestamp)",
+    "cast('2022-04-01' as timestamp)"
 ) }}
-
