@@ -1,4 +1,5 @@
 {% macro solana_tx_fees_macro(start_date, end_date) %}
+
 WITH base_model AS (
     SELECT
         'transaction' as tx_type,
@@ -20,36 +21,36 @@ WITH base_model AS (
         ON t.id = cl.tx_id
         AND t.block_date = cl.block_date
         {% if is_incremental() %}
-            AND {{ incremental_predicate('cl.block_date') }}
-        {% elif not is_incremental() %}
-            AND cl.block_date >= {{ start_date }}
-            AND cl.block_date < {{ end_date }}
+        AND {{ incremental_predicate('cl.block_date') }}
+        {% else %}
+        AND cl.block_date >= {{ start_date }}
+        AND cl.block_date < {{ end_date }}
         {% endif %}
     LEFT JOIN {{ ref('gas_solana_compute_unit_price') }} up
         ON t.id = up.tx_id
         AND t.block_date = up.block_date
         {% if is_incremental() %}
-            AND {{ incremental_predicate('up.block_date') }}
-        {% elif not is_incremental() %}
-            AND up.block_date >= {{ start_date }}
-            AND up.block_date < {{ end_date }}
+        AND {{ incremental_predicate('up.block_date') }}
+        {% else %}
+        AND up.block_date >= {{ start_date }}
+        AND up.block_date < {{ end_date }}
         {% endif %}
     LEFT JOIN {{ ref('solana_utils_block_leaders') }} b
         ON t.block_slot = b.slot
         AND t.block_date = b.date
         {% if is_incremental() %}
-            AND {{ incremental_predicate('b.date') }}
-        {% elif not is_incremental() %}
-            AND b.date >= {{ start_date }}
-            AND b.date < {{ end_date }}
+        AND {{ incremental_predicate('b.date') }}
+        {% else %}
+        AND b.date >= {{ start_date }}
+        AND b.date < {{ end_date }}
         {% endif %}
     WHERE 1=1
-    {% if is_incremental() %}
+        {% if is_incremental() %}
         AND {{ incremental_predicate('t.block_date') }}
-    {% elif not is_incremental() %}
+        {% else %}
         AND t.block_date >= {{ start_date }}
         AND t.block_date < {{ end_date }}
-    {% endif %}
+        {% endif %}
 )
 
 SELECT
@@ -87,9 +88,9 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     AND p.minute = date_trunc('minute', block_time)
     AND date_trunc('day', p.minute) = block_date
     {% if is_incremental() %}
-        AND {{ incremental_predicate('p.minute') }}
-    {% elif not is_incremental() %}
-        AND p.minute >= {{ start_date }}
-        AND p.minute < {{ end_date }}
+    AND {{ incremental_predicate('p.minute') }}
+    {% else %}
+    AND p.minute >= {{ start_date }}
+    AND p.minute < {{ end_date }}
     {% endif %}
 {% endmacro %}

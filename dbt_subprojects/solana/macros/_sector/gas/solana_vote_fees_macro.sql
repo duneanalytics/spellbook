@@ -1,4 +1,5 @@
 {% macro solana_vote_fees_macro(start_date, end_date) %}
+
 WITH base_model AS (
     SELECT
         'vote' as tx_type,
@@ -20,19 +21,18 @@ WITH base_model AS (
         ON vt.block_slot = b.slot
         AND vt.block_date = b.date
         {% if is_incremental() %}
-            AND {{ incremental_predicate('b.date') }}
-        {% elif not is_incremental() %}
-            AND b.date >= {{ start_date }}
-            AND b.date < {{ end_date }}
+        AND {{ incremental_predicate('b.date') }}
+        {% else %}
+        AND b.date >= {{ start_date }}
+        AND b.date < {{ end_date }}
         {% endif %}
-    WHERE 1=1
-    
-    {% if is_incremental() %}
+    WHERE 1=1    
+        {% if is_incremental() %}
         AND {{ incremental_predicate('vt.block_date') }}
-    {% elif not is_incremental() %}
+        {% else %}
         AND vt.block_date >= {{ start_date }}
         AND vt.block_date < {{ end_date }}
-    {% endif %}
+        {% endif %}
 )
 
 SELECT
@@ -70,10 +70,10 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     AND p.minute = date_trunc('minute', block_time)
     AND date_trunc('day', p.minute) = block_date
     {% if is_incremental() %}
-        AND {{ incremental_predicate('p.minute') }}
-    {% elif not is_incremental() %}
-        AND p.minute >= {{ start_date }}
-        AND p.minute < {{ end_date }}
+    AND {{ incremental_predicate('p.minute') }}
+    {% else %}
+    AND p.minute >= {{ start_date }}
+    AND p.minute < {{ end_date }}
     {% endif %}
    
 {% endmacro %}
