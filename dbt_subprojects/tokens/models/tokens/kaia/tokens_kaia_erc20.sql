@@ -12,10 +12,13 @@ SELECT
     , symbol
     , decimals
 FROM (VALUES
-    --below 10 from: https://kaiascope.com/tokens?sort=descVolume
-    (0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167, 'oUSDT', 6)
+    (0x5c13e303a62fc5dedf5b52d66873f2e59fedadc2, 'USDT', 6)
+    , (0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167, 'oUSDT', 6)
     , (0x19aac5f612f524b754ca7e7c41cbfa2e981a4432, 'WKLAY', 18)
+    , (0x98a8345bb9d3dda9d808ca1c9142a28f6b0430e1, 'WETH', 18)
     , (0x34d21b1e550d73cee41151c77f3c73359527a396, 'oETH', 18)
+    , (0x15d9f3ab1982b0e5a415451259994ff40369f584, 'BTCB', 18)
+    , (0x608792deb376cce1c9fa4d0e6b7b44f507cffa6a, 'USDC', 6)
     , (0x754288077d0ff82af7a5317c7cb8c444d421d103, 'oUSDC', 6)
     , (0x574e9c26bda8b95d7329505b4657103710eb32ea, 'oBNB', 18)
     , (0x9eaefb09fe4aabfbe6b1ca316a3c36afc83a393f, 'oXRP', 6)

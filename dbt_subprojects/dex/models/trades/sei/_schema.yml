@@ -91,3 +91,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('carbon_defi_sei_base_trades_seed')
+  
+  - name: yaka_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: yaka
+      contributors: john
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'yaka_finance' ]
+    description: "Yaka Finance base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('yaka_sei_base_trades_seed')
