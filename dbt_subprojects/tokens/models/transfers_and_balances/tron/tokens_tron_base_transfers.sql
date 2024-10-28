@@ -32,7 +32,7 @@ SELECT
     , t.value AS amount_raw
 FROM {{ source('erc20_tron','evt_transfer') }} t
 INNER JOIN {{ source('tron','transactions') }} tx ON
-    tx.block_date = t.block_date -- partition column in raw base tables (transactions)
+    tx.block_time = t.evt_block_time -- raw base tables partitioned by time
     AND tx.block_number = t.block_number
     AND tx.hash = t.tx_hash
     {% if is_incremental() %}
