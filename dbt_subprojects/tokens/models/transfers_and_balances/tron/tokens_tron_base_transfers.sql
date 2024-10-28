@@ -12,7 +12,7 @@
 
 -- this is only including TRC20 (ERC20) transfers
 SELECT
-    {{dbt_utils.generate_surrogate_key(['t.block_number', 'tx.index', 't.evt_index'])}} as unique_key
+    {{dbt_utils.generate_surrogate_key(['t.evt_block_number', 'tx.index', 't.evt_index'])}} as unique_key
     , 'tron' as blockchain
     , cast(date_trunc('month', t.evt_block_time) as date) AS block_month
     , cast(date_trunc('day', t.evt_block_time) as date) AS block_date
