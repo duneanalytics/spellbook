@@ -7,6 +7,7 @@
         incremental_strategy = 'merge',
         file_format = 'delta',
         unique_key = ['day', 'blockchain', 'address', 'token_address'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
         post_hook = '{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "safe",
