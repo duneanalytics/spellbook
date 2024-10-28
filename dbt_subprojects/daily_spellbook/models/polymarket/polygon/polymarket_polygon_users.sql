@@ -17,9 +17,9 @@
 WITH first_capital_action AS (
     SELECT 
         to_address as proxy,
-        MIN(tx_hash) as first_funded_tx_hash,
-        MIN(block_time) as first_funded_time,
-        MIN(from_address) as first_funded_by
+        MIN_BY(tx_hash, block_time) as first_funded_tx_hash,
+        MIN_BY(block_time) as first_funded_time,
+        MIN_BY(from_address, block_time) as first_funded_by
     FROM {{ ref('polymarket_polygon_users_capital_actions') }}
     GROUP BY to_address  -- Remove tx_hash from GROUP BY
 ),

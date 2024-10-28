@@ -90,7 +90,7 @@ SELECT
   closed,
   accepting_orders,
   enable_order_book,
-  from_hex(neg_risk) AS neg_risk,
+  neg_risk AS neg_risk,
   CASE 
     WHEN neg_risk = false THEN get_href('https://polymarket.com/event/' || market_slug, market_slug)
     WHEN neg_risk = true  THEN  get_href('https://polymarket.com/event/' || replace(replace(replace(lower(neg_risk_market_name), ' ', '-'), '$', ''), '''',''), neg_risk_market_name)
