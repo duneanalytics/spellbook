@@ -13,6 +13,7 @@
 {% set models = [
     ref('dex_ethereum_automated_base_trades')
     , ref('dex_arbitrum_automated_base_trades')
+    , ref('dex_polygon_automated_base_trades')
 ] %}
 
 with base_union as (
