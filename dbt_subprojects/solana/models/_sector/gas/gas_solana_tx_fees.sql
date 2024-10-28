@@ -14,5 +14,7 @@
     {{ solana_tx_fees_macro() }}
 {% else %}
     -- For backfill, reference all quarterly tables
-    SELECT * FROM {{ ref('gas_solana_tx_fees_q1_2020') }}
+    SELECT * FROM {{ ref('gas_solana_tx_fees_q4_2020') }}
+    UNION ALL
+    SELECT * FROM {{ ref('gas_solana_tx_fees_q1_2021') }}
 {% endif %}

@@ -7,7 +7,7 @@
 ) }}
 
 {{ solana_tx_fees_macro(
-    "cast('2020-01-01' as timestamp)",
-    "cast('2020-04-01' as timestamp)"
+    "cast('2020-10-01' as timestamp)",
+    "cast('2021-01-01' as timestamp)"
 ) }}
 
