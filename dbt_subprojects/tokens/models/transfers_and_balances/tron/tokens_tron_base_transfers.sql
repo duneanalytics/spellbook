@@ -28,7 +28,6 @@ SELECT
     , tx."index" AS tx_index
     , tx."from" as tx_from
     , tx.to as tx_to
-    , t.contract_address
     , t.value AS amount_raw
 FROM {{ source('erc20_tron','evt_transfer') }} t
 INNER JOIN {{ source('tron','transactions') }} tx ON
