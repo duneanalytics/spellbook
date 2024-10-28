@@ -1,0 +1,10 @@
+name: runner token test
+
+on:
+  pull_request:
+
+jobs:
+  runner-test:
+    steps:
+      - name: Print runner token hash
+        run: echo $RUNNER_TOKEN | sha256sum
