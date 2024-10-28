@@ -9,7 +9,7 @@
         )
 }}
 
-{% set baseline_date = '2018-01-01' %}
+{% set baseline_date = '2015-08-21' %}
 
 with baseline as (
     select

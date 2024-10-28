@@ -609,4 +609,7 @@ FROM (VALUES
     , (0xd1b6d02c03e632a845460c8167eb05d2d9e03a35, 'Sorai', 18)
     , (0x0f327343c7902233c0419724946b17fa664f2fe0, 'LBTC', 18)
     , (0xd4e17ad949bb0fd99a6e7a5f2dad73baf41d3210, 'WZM', 9)
+    , (0xf0f14cbd7ce6753bc209eb0d8f67fc84cccb9b2f, 'MSS', 18)
+    , (0xea2f49a2e6e27b7b47cbef50aff5af11350108d1, 'MAGA', 18)
+    , (0x19ae49b9f38dd836317363839a5f6bfbfa7e319a, 'STC', 9)
 ) AS temp_table (contract_address, symbol, decimals)
