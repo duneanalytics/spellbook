@@ -9,7 +9,7 @@ models:
       tags: ['tokens','transfers', 'tron']
     description: >
       Token transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -56,7 +56,7 @@ models:
       tags: ['tokens','transfers', 'tron']
     description: >
       Token transfers
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
