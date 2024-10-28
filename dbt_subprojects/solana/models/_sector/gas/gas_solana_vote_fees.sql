@@ -11,4 +11,9 @@
 
 {% if is_incremental() %}
     {{ solana_vote_fees_macro() }}
+{% else %}
+    -- For backfill, reference all quarterly tables
+    SELECT * FROM {{ ref('gas_solana_vote_fees_q4_2020') }}
+    UNION ALL
+    SELECT * FROM {{ ref('gas_solana_vote_fees_q1_2021') }}
 {% endif %}

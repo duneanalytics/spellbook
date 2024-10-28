@@ -8,5 +8,5 @@
 
 {{ solana_tx_fees_macro(
     "cast('2021-01-01' as timestamp)",
-    "cast('2021-04-01' as timestamp)"
+    "cast('2021-02-01' as timestamp)"
 ) }}
