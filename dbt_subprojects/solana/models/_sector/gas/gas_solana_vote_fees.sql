@@ -1,7 +1,6 @@
 {{ config(
     schema = 'gas_solana',
     alias = 'vote_fees',
-    tags = ['prod_exclude'],
     partition_by = ['block_date', 'block_hour'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -9,8 +8,11 @@
     unique_key = ['block_date', 'block_slot', 'tx_index']
 ) }}
 
+SELECT * FROM 
 {% if is_incremental() %}
-    {{ solana_vote_fees_macro() }}
+    ({{ solana_vote_fees_macro() }})
 {% else %}
-    SELECT * FROM {{ ref('vote_fees_backfill') }}
+    {{ ref('vote_fees_backfill') }}
 {% endif %}
+
+
