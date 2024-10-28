@@ -18,35 +18,21 @@ WITH changed_prices AS (
         condition_id,
         asset_id AS token_id,
         price,
-        LEAD(CAST(date_trunc('day', block_time) AS timestamp)) OVER (PARTITION BY condition_id, asset_id ORDER BY block_time ASC) AS next_update_day
-    FROM {{ ref('polymarket_polygon_market_trades_raw') }}
-    WHERE block_time < DATE_TRUNC('day', NOW()) 
+        LEAD(CAST(date_trunc('day', block_time) AS timestamp)) OVER (PARTITION BY asset_id ORDER BY block_time ASC) AS next_update_day
+    FROM (
+        SELECT *,
+               ROW_NUMBER() OVER (PARTITION BY DATE_TRUNC('day', block_time), asset_id ORDER BY block_time DESC) as rn
+        FROM {{ ref('polymarket_polygon_market_trades_raw') }}
+    ) ranked
+    WHERE rn = 1
 ),
 
 --sequences are limited to 10k so just pulling this in from the transactions table, no other relationship
 days AS (
-    Select distinct date_trunc('day', block_time) as day
-    from {{ source('ethereum', 'transactions') }}
-),
-
-latest_prices AS (
-    SELECT
-        day,
-        condition_id,
-        token_id,
-        price,
-        next_update_day
-    FROM (
-        SELECT
-            day,
-            condition_id,
-            token_id,
-            price,
-            next_update_day,
-            ROW_NUMBER() OVER (PARTITION BY token_id, day ORDER BY block_time DESC) AS rn
-        FROM changed_prices
-    ) t
-    WHERE rn = 1
+    SELECT *
+    FROM UNNEST(
+        SEQUENCE(CAST('2015-01-01' AS date), DATE(DATE_TRUNC('day', NOW())), INTERVAL '1' day)
+    ) AS foo(day)
 ),
 
 forward_fill AS (
@@ -56,18 +42,10 @@ forward_fill AS (
         lp.token_id,
         lp.price
     FROM days d
-    LEFT JOIN latest_prices lp
+    LEFT JOIN changed_prices lp
         ON d.day >= lp.day
-        AND (lp.next_update_day IS NULL OR d.day < lp.next_update_day)
-),
-
-prices AS (
-    SELECT * 
-    FROM forward_fill
-    WHERE price IS NOT NULL
+        AND (lp.next_update_day IS NULL OR d.day <= lp.next_update_day)
 )
 
-SELECT * FROM prices
-{% if is_incremental() %}
-WHERE day >= DATE_TRUNC('day', NOW() - INTERVAL '2' day)
-{% endif %}
+SELECT * FROM forward_fill
+WHERE price > 0

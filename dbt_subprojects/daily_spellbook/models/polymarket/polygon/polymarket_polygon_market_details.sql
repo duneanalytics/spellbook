@@ -68,7 +68,7 @@ LEFT JOIN onchain_metadata oc ON cast(oc.market_id AS varchar) = api.unique_key
 
 , naming_things as (
 SELECT 
-  unique_key AS unique_key,
+  from_hex(unique_key) AS unique_key,
   condition_id AS condition_id,
   CASE 
     WHEN neg_risk_market_id IS NULL THEN NULL
@@ -90,7 +90,7 @@ SELECT
   closed,
   accepting_orders,
   enable_order_book,
-  neg_risk,
+  from_hex(neg_risk) AS neg_risk,
   CASE 
     WHEN neg_risk = false THEN get_href('https://polymarket.com/event/' || market_slug, market_slug)
     WHEN neg_risk = true  THEN  get_href('https://polymarket.com/event/' || replace(replace(replace(lower(neg_risk_market_name), ' ', '-'), '$', ''), '''',''), neg_risk_market_name)
@@ -111,6 +111,8 @@ SELECT
 FROM combine c
 left join {{ ref('polymarket_polygon_market_outcomes') }} pm on pm.question_id = c.question_id
 )
+
+--these get introduced by the polymarket api responses 
 
 SELECT * FROM naming_things
 where token_id is not null

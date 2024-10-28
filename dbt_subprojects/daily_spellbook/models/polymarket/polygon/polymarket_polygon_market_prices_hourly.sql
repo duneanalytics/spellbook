@@ -18,34 +18,18 @@ WITH changed_prices AS (
         condition_id,
         asset_id AS token_id,
         price,
-        LEAD(CAST(date_trunc('hour', block_time) AS timestamp)) OVER (PARTITION BY condition_id, asset_id ORDER BY block_time ASC) AS next_update_hour
-    FROM {{ ref('polymarket_polygon_market_trades_raw') }}
-    WHERE block_time < DATE_TRUNC('hour', NOW()) 
+        LEAD(CAST(date_trunc('hour', block_time) AS timestamp)) OVER (PARTITION BY asset_id ORDER BY block_time ASC) AS next_update_hour
+    FROM (
+        SELECT *,
+               ROW_NUMBER() OVER (PARTITION BY DATE_TRUNC('hour', block_time), asset_id ORDER BY block_time DESC) as rn
+        FROM {{ ref('polymarket_polygon_market_trades_raw') }}
+    ) ranked
+    WHERE rn = 1
 ),
 
 hours AS (
-    SELECT distinct date_trunc('hour', block_time) as hour
-    FROM {{ source('ethereum', 'transactions') }}
-),
-
-latest_prices AS (
-    SELECT
-        hour,
-        condition_id,
-        token_id,
-        price,
-        next_update_hour
-    FROM (
-        SELECT
-            hour,
-            condition_id,
-            token_id,
-            price,
-            next_update_hour,
-            ROW_NUMBER() OVER (PARTITION BY token_id, hour ORDER BY block_time DESC) AS rn
-        FROM changed_prices
-    ) t
-    WHERE rn = 1
+   Select distinct date_trunc('hour', block_time) as hour
+   from {{ source('polygon', 'transactions') }}
 ),
 
 forward_fill AS (
@@ -55,18 +39,10 @@ forward_fill AS (
         lp.token_id,
         lp.price
     FROM hours h
-    LEFT JOIN latest_prices lp
+    LEFT JOIN changed_prices lp
         ON h.hour >= lp.hour
-        AND (lp.next_update_hour IS NULL OR h.hour < lp.next_update_hour)
-),
-
-prices AS (
-    SELECT * 
-    FROM forward_fill
-    WHERE price IS NOT NULL
+        AND (lp.next_update_hour IS NULL OR h.hour <= lp.next_update_hour)
 )
 
-SELECT * FROM prices
-{% if is_incremental() %}
-WHERE hour >= DATE_TRUNC('hour', NOW() - INTERVAL '2' day)
-{% endif %}
+SELECT * FROM forward_fill
+WHERE price > 0
