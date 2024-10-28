@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: dragonswap_kaia
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeV2Factory_evt_PairCreated
+  - name: dragonswap_kaia
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
