@@ -18,11 +18,13 @@ SELECT
 FROM
 (
     VALUES
-    --below 10 from: https://kaiascope.com/tokens?sort=descVolume
-    ('usdt-tether', 'oUSDT', 0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167, 6)
-    , ('klay-klaytn', 'WKLAY', 0x19aac5f612f524b754ca7e7c41cbfa2e981a4432, 18)
-    , ('eth-ethereum', 'oETH', 0x34d21b1e550d73cee41151c77f3c73359527a396, 18)
+    ('usdt-tether', 'USDT', 0x5c13e303a62fc5dedf5b52d66873f2e59fedadc2, 6)
+    , ('usdt-tether', 'oUSDT', 0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167, 6)
+    , ('usdc-usd-coin', 'USDC', 0x608792deb376cce1c9fa4d0e6b7b44f507cffa6a, 6)
     , ('usdc-usd-coin', 'oUSDC', 0x754288077d0ff82af7a5317c7cb8c444d421d103, 6)
+    , ('klay-klaytn', 'WKLAY', 0x19aac5f612f524b754ca7e7c41cbfa2e981a4432, 18)
+    , ('eth-ethereum', 'WETH', 0x98a8345bb9d3dda9d808ca1c9142a28f6b0430e1, 18)
+    , ('btcb-binance-bitcoin', 'BTCB', 0x15d9f3ab1982b0e5a415451259994ff40369f584, 18)
     , ('bnb-binance-coin', 'oBNB', 0x574e9c26bda8b95d7329505b4657103710eb32ea, 18)
     , ('xrp-xrp', 'oXRP', 0x9eaefb09fe4aabfbe6b1ca316a3c36afc83a393f, 6)
     , ('busd-binance-usd', 'oBUSD', 0x210bc03f49052169d5588a52c317f71cf2078b85, 18)
