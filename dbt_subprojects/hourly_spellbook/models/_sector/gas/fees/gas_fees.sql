@@ -71,5 +71,5 @@ FROM
 --        cast(from_base58(leader) as varbinary) AS block_proposer,
 --        cast (NULL AS double) AS gas_limit, -- this concept doesn't exist in solana
 --        cast (NULL AS double) AS gas_limit_usage -- this concept doesn't exist in solana
---    FROM {{ ref('gas_solana_fees') }}
+--    FROM {{ source('gas_solana', 'fees') }}
 )
