@@ -16,7 +16,7 @@ WITH base_model AS (
         'So11111111111111111111111111111111111111112' AS tx_fee_currency,
         b.leader
     FROM {{ source('solana', 'vote_transactions') }} vt
-    LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
+    LEFT JOIN {{ ref('solana_utils_block_leaders') }} b 
         ON vt.block_slot = b.slot
         AND vt.block_date = b.date
         {% if is_incremental() %}
