@@ -1,0 +1,13 @@
+{{ config(
+    schema = 'gas_solana',
+    alias = 'tx_fees_q1_2020',
+    tags = ['static'],
+    materialized = 'table',
+    file_format = 'delta'
+) }}
+
+{{ solana_tx_fees_macro(
+    "cast('2020-01-01' as timestamp)",
+    "cast('2020-04-01' as timestamp)"
+) }}
+
