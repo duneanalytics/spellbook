@@ -5,7 +5,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['block_time','asset_id','evt_index','tx_hash'],
+    partition_by = ['block_month'],
+    unique_key = ['block_month','block_time','asset_id','evt_index','tx_hash'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
   )
 }}
@@ -83,6 +84,7 @@ some bug in fpmms here, no time to fix and they arent used for anything anyway*/
 
 
 select
+  cast(date_trunc('month', t.evt_block_time) as date) as block_month,
   t.evt_block_time as block_time,
   t.evt_block_number as block_number,
   'CLOB trade' as action,
@@ -113,6 +115,7 @@ where {{ incremental_predicate('t.evt_block_time') }}
 union all
 
 select
+  cast(date_trunc('month', t.evt_block_time) as date) as block_month,
   t.evt_block_time as block_time,
   t.evt_block_number as block_number,
   'CLOB trade' as action,

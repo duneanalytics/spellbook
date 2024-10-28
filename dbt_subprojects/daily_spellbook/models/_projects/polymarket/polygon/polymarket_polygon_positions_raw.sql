@@ -5,14 +5,15 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['address', 'token_address', 'token_id', 'day'],
+    partition_by = ['month'],
+    unique_key = ['address', 'token_address', 'token_id', 'month', 'day'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')]
   )
 }}
 
 WITH changed_balances AS (
     SELECT
-        date_trunc('day', block_time) as day,
+        cast(date_trunc('day', block_time) as date) as day,
         address,
         contract_address as token_address,
         token_id,
@@ -40,7 +41,7 @@ days AS (
 
 forward_fill AS (
     SELECT
-        CAST(d.day AS timestamp) AS day,
+        CAST(d.day AS date) AS day,
         address,
         token_address,
         token_id,
@@ -58,6 +59,7 @@ balances AS (
 )
 
 SELECT 
+    date_trunc('month', day) as month,
     day,
     address,
     token_address,
