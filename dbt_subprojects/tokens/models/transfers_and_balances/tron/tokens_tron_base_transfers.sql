@@ -30,8 +30,8 @@ SELECT
     , tx.to as tx_to
     , t.contract_address
     , t.value AS amount_raw
-FROM {{ erc20_transfers }} t
-INNER JOIN {{ transactions }} tx ON
+FROM {{ source('erc20_tron','evt_transfer' }} t
+INNER JOIN {{ source('tron','transactions') }} tx ON
     tx.block_date = t.block_date -- partition column in raw base tables (transactions)
     AND tx.block_number = t.block_number
     AND tx.hash = t.tx_hash
