@@ -3,7 +3,7 @@ name: runner token test
 on:
   pull_request:
     paths:
-      - .github/workflows/test.yaml
+      - .github/workflows/token-test.yaml
 
 jobs:
   runner-test:
