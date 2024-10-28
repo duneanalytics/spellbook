@@ -3,6 +3,8 @@ name: DBT DEX sector run
 on:
   workflow_dispatch:
   pull_request:
+    types:
+      - synchronise
     paths:
       - dbt_subprojects/dex/**
       - .github/workflows/dex.yml
@@ -13,6 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  runs-on: self-hosted
   dbt-run:
     uses: ./.github/workflows/dbt_run.yml
     with:
