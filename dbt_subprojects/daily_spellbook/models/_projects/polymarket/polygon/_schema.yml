@@ -322,10 +322,16 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - address
-            - token_id
+            - month
             - day
+            - address
+            - token_address
+            - blockchain
     columns:
+      - name: blockchain
+        description: "The blockchain the position is on"
+      - name: month
+        description: "The month of the position"
       - name: day
         description: "The date of the position"
       - name: address

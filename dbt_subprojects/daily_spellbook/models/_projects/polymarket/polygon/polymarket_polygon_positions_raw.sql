@@ -26,7 +26,8 @@ balances as (
 )
 
 select
-    date_trunc('month', day) as month
+    'polygon' as blockchain
+    , date_trunc('month', day) as month
     , day
     , address
     , token_address
