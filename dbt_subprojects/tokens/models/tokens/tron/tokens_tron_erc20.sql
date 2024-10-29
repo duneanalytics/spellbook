@@ -9,7 +9,7 @@
 
 
 SELECT
-    , from_tron_address(contract_address) as contract_address
+    from_tron_address(contract_address) as contract_address
     , symbol
     , decimals
 FROM
