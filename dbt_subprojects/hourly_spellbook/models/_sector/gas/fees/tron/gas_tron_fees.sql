@@ -46,9 +46,9 @@ SELECT
     ,coalesce(tx_fee_raw, 0) as tx_fee_raw
     ,coalesce(tx_fee_raw, 0) / pow(10,6) as tx_fee
     ,coalesce(tx_fee_raw, 0) / pow(10,6) * p.price as tx_fee_usd
-    ,cast(null as MAP) as tx_fee_breakdown_raw
-    ,cast(null as MAP) as tx_fee_breakdown
-    ,cast(null as MAP) as tx_fee_breakdown_usd
+    ,null as tx_fee_breakdown_raw
+    ,null as tx_fee_breakdown
+    ,null as tx_fee_breakdown_usd
     ,tx_fee_currency
     ,cast(null as varbinary) as block_proposer
     ,cast(null as uint256) as gas_limit
