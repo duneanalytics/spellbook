@@ -34,6 +34,13 @@ models:
       contributors: couralex, jeff-dude, 0xRob
     config:
       tags: [ 'prices', 'daily']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - day
+      - no_missing_price_day
 
   - name: prices_hour
     meta:
@@ -68,6 +75,13 @@ models:
       contributors: couralex, jeff-dude, 0xRob
     config:
       tags: [ 'prices', 'hourly']
+    data_tests:
+        - dbt_utils.unique_combination_of_columns:
+            combination_of_columns:
+                - blockchain
+                - contract_address
+                - hour
+        - no_missing_price_hour
     
   - name: prices_tokens
     meta:
