@@ -16,7 +16,6 @@
     , ref('dex_avalanche_c_automated_base_trades')
     , ref('dex_base_automated_base_trades')
     , ref('dex_blast_automated_base_trades')
-    , ref('dex_bnb_automated_base_trades')
     , ref('dex_celo_automated_base_trades')
 
 ] %}
