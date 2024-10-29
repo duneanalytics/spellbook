@@ -180,4 +180,5 @@ FROM (VALUES
     , ('dyorswap', 'DyorSwap', 'Direct', 'DYORSWAP')
     , ('punkswap', 'PunkSwap', 'Direct', 'PunkSwapDEX')
     , ('yaka', 'yaka', 'Direct', 'YakaFinance')
+    , ('klay_swap', 'KLAYswap', 'Direct', 'KLAYswap')
     ) AS temp_table (project, name, marketplace_type, x_username)
