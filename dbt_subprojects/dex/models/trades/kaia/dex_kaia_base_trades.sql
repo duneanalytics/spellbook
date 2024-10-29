@@ -9,6 +9,7 @@
     ref('dragon_swap_v2_kaia_base_trades')
     , ref('dragon_swap_v3_kaia_base_trades')
     , ref('klay_swap_v3_kaia_base_trades')
+    , ref('neopin_kaia_base_trades')
 ] %}
 
 WITH base_union AS (

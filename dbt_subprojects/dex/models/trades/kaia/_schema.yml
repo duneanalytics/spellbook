@@ -63,3 +63,20 @@ models:
           seed_file: ref('klay_swap_kaia_base_trades_seed')
           filter:
             version: 3
+
+  - name: neopin_kaia_base_trades
+    meta:
+      blockchain: kaia
+      sector: dex
+      project: neopin
+      contributors: jeff-dude
+    config:
+      tags: [ 'kaia', 'dex', 'trades', 'neopin' ]
+    description: "neopin kaia base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('neopin_kaia_base_trades_seed')

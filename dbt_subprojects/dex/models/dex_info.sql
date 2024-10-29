@@ -181,4 +181,5 @@ FROM (VALUES
     , ('punkswap', 'PunkSwap', 'Direct', 'PunkSwapDEX')
     , ('yaka', 'yaka', 'Direct', 'YakaFinance')
     , ('klay_swap', 'KLAYswap', 'Direct', 'KLAYswap')
+    , ('neopin', 'neopin', 'Direct', 'NeopinOfficial')
     ) AS temp_table (project, name, marketplace_type, x_username)

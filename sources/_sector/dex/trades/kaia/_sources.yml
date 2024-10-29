@@ -11,3 +11,7 @@ sources:
     tables:
       - name: Pool_evt_Swap
       - name: Factory_evt_PoolCreated
+  - name: neopin_kaia
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
