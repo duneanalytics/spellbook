@@ -39,7 +39,7 @@ models:
           combination_of_columns:
             - blockchain
             - contract_address
-            - day
+            - timestamp
 
   - name: prices_hour
     meta:
@@ -79,7 +79,7 @@ models:
             combination_of_columns:
                 - blockchain
                 - contract_address
-                - hour
+                - timestamp
     
   - name: prices_tokens
     meta:
