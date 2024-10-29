@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_optimism_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: uniswap_v3_optimism_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap optimism v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -36,7 +36,7 @@ models:
       tags: [ 'optimism', 'dex', 'trades', 'woofi' ]
     description: >
         Woofi base trades on optimism across two contracts.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -54,7 +54,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'sushiswap', 'v1' ]
     description: "sushiswap optimism v1 trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -76,7 +76,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'sushiswap', 'v2' ]
     description: "sushiswap optimism v2 trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -97,7 +97,7 @@ models:
       tags: [ 'optimism', 'dex', 'trades', 'mummy_finance' ]
     description: >
         mummy_finance base trades on optimism.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -115,7 +115,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'zipswap', 'uniswap', 'v2' ]
     description: "Zipswap optimism trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -135,7 +135,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'balancer' ]
     description: "Balancer v2 optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -156,7 +156,7 @@ models:
       tags: [ 'optimism', 'dex', 'trades', 'hashflow' ]
     description: >
         hashflow base trades on optimism.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -174,7 +174,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'wardenswap' ]
     description: "Wardenswap optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -192,7 +192,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'dodo' ]
     description: "Dodo optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -215,7 +215,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'clipper' ]
     description: "clipper optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -238,7 +238,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
     description: "kyberswap optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -261,7 +261,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'velodrome', 'uniswap', 'v2' ]
     description: "velodrome optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -283,7 +283,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'synthetix' ]
     description: "synthetix optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -301,7 +301,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'openxswap' ]
     description: "openxswap optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -319,7 +319,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'openocean' ]
     description: "openocean optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -337,7 +337,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'opx_finance' ]
     description: "OPX Finance optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -356,7 +356,7 @@ models:
       tags: [ 'optimism', 'dex', 'trades', 'chainhop' ]
     description: >
         chainhop base trades on optimism.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -373,7 +373,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'rubicon' ]
     description: "rubicon optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -391,7 +391,7 @@ models:
     config:
       tags: ['optimism', 'dex', 'trades', 'curve']
     description: "Curve optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -409,7 +409,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'gridex' ]
     description: "gridex  optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -427,7 +427,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'solidly' ]
     description: "solidly v3 optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -445,7 +445,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'dackieswap' ]
     description: "dackieswap v2  optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -464,7 +464,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'dackieswap' ]
     description: "dackieswap v3  optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -483,7 +483,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'wombat_exchange' ]
     description: "wombat_exchange optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -502,7 +502,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap optimism v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -521,7 +521,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'elk_finance' ]
     description: "elk_finance optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -540,7 +540,7 @@ models:
     config:
       tags: ['optimism', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
     description: "Fraxswap optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -559,7 +559,7 @@ models:
     config:
       tags: [ 'optimism', 'dex', 'trades', 'swaap', 'v2']
     description: "swaap v2 optimism base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: dex_kaia_base_trades
+    data_tests:
+      - check_dex_info_relationship
+
+  - name: dragon_swap_v2_kaia_base_trades
+    meta:
+      blockchain: kaia
+      sector: dex
+      project: dragon_swap
+      contributors: jeff-dude
+    config:
+      tags: [ 'kaia', 'dex', 'trades', 'dragon_swap' ]
+    description: "dragon_swap kaia v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dragon_swap_kaia_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: dragon_swap_v3_kaia_base_trades
+    meta:
+      blockchain: kaia
+      sector: dex
+      project: dragon_swap
+      contributors: jeff-dude
+    config:
+      tags: [ 'kaia', 'dex', 'trades', 'dragon_swap' ]
+    description: "dragon_swap V3 kaia base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dragon_swap_kaia_base_trades_seed')
+          filter:
+            version: 3

@@ -11,7 +11,7 @@ models:
       tags: ['base','perpetual', 'bmx','perps']
     description: >
         Base decoded table for bmx protocol
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -42,7 +42,7 @@ models:
       - &market_address
         name: market_address
         description: "Contract address of the market"
-        tests:
+        data_tests:
           - perpetual_trades_market_address:
               perpetual_trades_seed: ref('perpetual_trades_seed')
       - &volume_usd

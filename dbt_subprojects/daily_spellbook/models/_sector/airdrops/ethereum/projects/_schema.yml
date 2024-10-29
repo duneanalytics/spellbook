@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'airdrop', 'ethereum', 'claim', 'cow_protocol']
     description: "List of claim transactions for the $COW airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -26,7 +26,7 @@ models:
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'dydx' ]
     description: "List of claim transactions for the $DYDX airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -42,7 +42,7 @@ models:
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'gitcoin' ]
     description: "List of claim transactions for the $GTC airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -58,7 +58,7 @@ models:
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'paraswap' ]
     description: "List of claim transactions for the $PSP airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -74,7 +74,7 @@ models:
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'pooltogether' ]
     description: "List of claim transactions for the $POOL airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -90,7 +90,7 @@ models:
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'sudoswap' ]
     description: "List of claim transactions for the $SUDO airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -106,7 +106,7 @@ models:
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'tornado_cash' ]
     description: "List of claim transactions for the $TORN airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -122,7 +122,7 @@ models:
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'safe' ]
     description: "List of claim transactions for the $SAFE airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -138,7 +138,7 @@ models:
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'uniswap' ]
     description: "List of claim transactions for the $UNI airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -154,7 +154,7 @@ models:
     config:
       tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'oneinch' ]
     description: "List of claim transactions for the $1INCH airdrop"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

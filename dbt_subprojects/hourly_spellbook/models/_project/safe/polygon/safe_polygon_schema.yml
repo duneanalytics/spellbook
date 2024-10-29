@@ -16,7 +16,7 @@ models:
       - &address
         name: address
         description: "Safe contract address"
-        tests:
+        data_tests:
           - unique
           - not_null
 
@@ -60,7 +60,7 @@ models:
     config:
       tags: ['safe', 'transfers', 'polygon']
     description: "MATIC transfers into or out of Safes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -153,7 +153,7 @@ models:
         description: "Output data"
 
   - name: safe_polygon_balances
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -171,9 +171,30 @@ models:
       - name: day
       - name: blockchain
       - name: address
-      - name: token_address
-      - name: token_standard
-      - name: token_id
-      - name: token_symbol
-      - name: token_balance
-      - name: balance_usd
+      - &token_symbol
+        name: token_symbol
+        description: "Symbol for the token"
+      - &token_address
+        name: token_address
+        description: "Address for the token"
+      - &token_standard
+        name: token_standard
+        description: "Standard for the token"
+      - &token_id
+        name: token_id
+        description: "ID for the token"
+      - &balance
+        name: balance
+        description: "Balance for the user"
+      - &balance_usd
+        name: balance_usd
+        description: "USD value of balance for the user"
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when data was last updated"
+      - &next_update
+        name: next_update
+        description: "UTC timestamp when data is next updated"
+      - &unique_key_id
+        name: unique_key_id
+        description: " unique key"

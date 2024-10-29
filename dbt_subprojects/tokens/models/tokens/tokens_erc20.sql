@@ -3,10 +3,35 @@
         schema = 'tokens'
         ,alias = 'erc20'
         ,materialized = 'table'
-        ,post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","fantom","fuse","gnosis","goerli","mantle","optimism","polygon","scroll","zkevm","zksync","zora","blast","sepolia","sei","nova","linea"]\',
-                        "sector",
-                        "tokens",
-                        \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum"]\') }}'
+        ,post_hook='{{ expose_spells(\'[
+                                        "arbitrum"
+                                        ,"avalanche_c"
+                                        ,"base"
+                                        ,"blast"
+                                        ,"bnb"
+                                        ,"celo"
+                                        ,"ethereum"
+                                        ,"fantom"
+                                        ,"fuse"
+                                        ,"gnosis"
+                                        ,"goerli"
+                                        ,"kaia"
+                                        ,"linea"
+                                        ,"mantle"
+                                        ,"nova"
+                                        ,"optimism"
+                                        ,"polygon"
+                                        ,"scroll"
+                                        ,"sei"
+                                        ,"sepolia"
+                                        ,"worldchain"
+                                        ,"zkevm"
+                                        ,"zksync"
+                                        ,"zora"
+                                    ]\',
+                                    "sector",
+                                    "tokens",
+                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum"]\') }}'
     )
 }}
 
@@ -38,11 +63,21 @@
     ,'tokens_sei': {'blockchain': 'sei', 'model': ref('tokens_sei_erc20')}
     ,'tokens_nova': {'blockchain': 'nova', 'model': ref('tokens_nova_erc20')}
     ,'tokens_linea': {'blockchain': 'linea', 'model': ref('tokens_linea_erc20')}
+    ,'tokens_worldchain': {'blockchain': 'worldchain', 'model': ref('tokens_worldchain_erc20')}
+    ,'tokens_kaia': {'blockchain': 'kaia', 'model': ref('tokens_kaia_erc20')}
 } %}
 
-with
-  automated_source as (
-    with raw_source as (
+with automated_source as (
+    with evms_info as (
+        select
+            blockchain
+            , case
+                when blockchain = 'sei' then 531 -- the automated erc20 source below (definedfi) has a bug on networkid value for SEI EVM chain
+                else chain_id
+            end as chain_id
+        from
+            {{ source('evms', 'info') }}
+    ), raw_source as (
         select
             i.blockchain
             , t.address as contract_address
@@ -57,7 +92,7 @@ with
             ) as rn
         from
             {{ source("definedfi", "dataset_tokens", database="dune") }} as t
-            join {{ source('evms', 'info') }} as i on t.networkid = i.chain_id
+            join evms_info as i on t.networkid = i.chain_id
     )
     select
         blockchain

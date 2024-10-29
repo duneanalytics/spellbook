@@ -11,7 +11,7 @@ models:
       tags: ['ethereum','pooltogether_v4','defi','services']
     description: >
         Pooltogether V4 contract prize structures on Ethereum
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -20,7 +20,7 @@ models:
       - &tx_hash
         name: tx_hash
         description: "Primary key of the transaction"
-        tests:
+        data_tests:
           - not_null
       - &block_time
         name: evt_block_time
@@ -28,12 +28,12 @@ models:
       - &network
         name: network
         description: "Blockchain which the protocol is deployed"
-        tests:
+        data_tests:
           - not_null
       - &draw_id
         name: draw_id
         description: "Identifier of the drawID for which the prize structure is being pushed"
-        tests:
+        data_tests:
           - not_null
       - &bit_range
         name: bit_range
@@ -92,5 +92,5 @@ models:
       - &prize
         name: prize
         description: "total prize of the prize structure"
-        tests:
+        data_tests:
           - not_null

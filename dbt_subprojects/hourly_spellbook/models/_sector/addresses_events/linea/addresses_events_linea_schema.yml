@@ -10,7 +10,7 @@ models:
     config:
       tags: ['table', 'funded', 'addresses_events', 'linea']
     description: "Table showing who first funded each Linea address in ETH"
-    tests:
+    data_tests:
       - check_seed:
           seed_file: ref('first_funded_by_seed')
           filter:
@@ -27,12 +27,16 @@ models:
         description: "Blockchain"
       - name: address
         description: "Concerned linea address"
-        tests:
+        data_tests:
           - unique
       - name: first_funding_executed_by
         description: "Which address executed the first funding tx"
       - name: first_funded_by
-        description: "Which linea address first funded the address with ETH"
+        description: "Which base address first funded the address with ETH"
+      - name: amount
+        description: "The amount of ETH the wallet was funded with in this first transfer"
+      - name: amount_usd
+        description: "The USD value of the ETH the wallet was funded with in this first transfer"
       - name: block_time
         description: "The block time on which the address was first funded with ETH"
       - name: block_number
@@ -41,9 +45,10 @@ models:
         description: "The transaction hash on which the address was first funded with ETH"
       - name: tx_index
         description: "The transaction index within the block on which the address was first funded with ETH"
+      - name: trace_address
+        description: "The trace_address within the transaction on which the address was first funded with ETH"
       - name: unique_key
         description: "Unique transfer identifier key"
-
   - name: addresses_events_linea_first_activity
     meta:
       blockchain: linea
@@ -53,7 +58,7 @@ models:
     config:
       tags: ['table', 'activity', 'addresses_events', 'linea']
     description: "Table showing first activity of each linea Mainnet address"
-    tests:
+    data_tests:
       - check_seed:
           seed_file: ref('first_activity_seed')
           filter:
@@ -69,7 +74,7 @@ models:
         description: "Blockchain"
       - name: address
         description: "Concerned linea Mainnet address"
-        tests:
+        data_tests:
           - unique
       - name: first_activity_to
         description: "First transaction activity to address"

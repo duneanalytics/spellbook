@@ -10,7 +10,7 @@ models:
      tags: [ 'scroll','zonic', 'trades' ]
    description: >
      Zonic events on Scroll
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
@@ -24,7 +24,7 @@ models:
      tags: [ 'scroll','element', 'trades' ]
    description: >
      Element events on Scroll
-   tests:
+   data_tests:
      - check_columns_nft_base_trades
      - dbt_utils.unique_combination_of_columns:
          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]

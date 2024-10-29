@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_polygon_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: uniswap_v3_polygon_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap polygon v3 trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -34,7 +34,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'airswap' ]
     description: "Defiswap polygon base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -52,7 +52,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'sushiswap', 'v1' ]
     description: "sushiswap polygon v1 trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -72,7 +72,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'sushiswap', 'v2' ]
     description: "sushiswap polygon v2 trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -92,7 +92,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'quickswap', 'v2' ]
     description: "quickswap polygon v2 trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -112,7 +112,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'quickswap', 'v3' ]
     description: "quickswap polygon v3 trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -132,7 +132,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'apeswap' ]
     description: apeswap base trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -152,7 +152,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'balancer' ]
     description: "Balancer v2 polygon base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -172,7 +172,7 @@ models:
     config:
       tags: ['polygon', 'dex', 'trades', 'honeyswap', 'v2']
     description: "Honeyswap polygon base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -192,7 +192,7 @@ models:
     config:
       tags: ['polygon', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
     description: "Fraxswap polygon base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -212,7 +212,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'dodo' ]
     description: "Dodo polygon base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -236,7 +236,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'clipper' ]
     description: "clipper polygon base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -259,7 +259,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
     description: "kyberswap polygon base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -281,7 +281,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
     description: "xchange polygon base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -298,7 +298,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'dooar', 'uniswap' ]
     description: "Dooar polygon base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -315,7 +315,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap polygon v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -334,7 +334,7 @@ models:
     config:
       tags: [ 'base', 'dex', 'trades', 'smardex' ]
     description: "smardex base trades on polygon"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -351,7 +351,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'gridex' ]
     description: "gridex polygon base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -370,7 +370,7 @@ models:
     config:
       tags: [ 'polygon', 'dex', 'trades', 'swaap', 'v2']
     description: "swaap v2 polygon base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -379,3 +379,20 @@ models:
           seed_file: ref('swaap_polygon_base_trades_seed') 
           filter:
             version: 2
+
+  - name: dfyn_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: dfyn
+      contributors: letaharouna
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'dfyn', 'v2' ]
+    description: "dfyn polygon base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dfyn_polygon_base_trades_seed')

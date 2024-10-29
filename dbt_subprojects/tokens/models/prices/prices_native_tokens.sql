@@ -6,7 +6,7 @@
         tags = ['static']
         )
 }}
-SELECT 
+SELECT
     token_id
     , CAST(blockchain as VARCHAR) as blockchain
     , symbol
@@ -58,7 +58,9 @@ FROM
     ('tia-celestia', null, 'TIA', null, null),
     ('tomo-tomochain', null, 'TOMO', null, null),
     ('trx-tron', null, 'TRX', null, null),
-    ('xdai-xdai', null, 'XDAI', null, null),
+    ('dai-dai', null, 'XDAI', null, null),    -- maintain all caps spelling for legacy queries, coinpaprika xdai only goes back to 2023
+    ('dai-dai', null, 'xDAI', null, null),    -- xDAI is the proper spelling, coinpaprika xdai only goes back to 2023
+    ('wld-worldcoin', null, 'WLD', null, null),
     ('xem-nem', null, 'XEM', null, null),
     ('xlm-stellar', null, 'XLM', null, null),
     ('xmr-monero', null, 'XMR', null, null),
@@ -76,7 +78,8 @@ FROM
     ('flr-flare-network', null, 'FLR', null, null),
     ('ar-arweave', null, 'AR', null, null),
     ('glmr-moonbeam', null, 'GLMR', null, null),
-    ('klay-klaytn', null, 'KLAY', null, null),
+    ('klay-klaytn', null, 'KLAY', null, null), --old symbol was KLAY, new symbol is KAIA, keep for existing queries downstream
+    ('klay-klaytn', null, 'KAIA', null, null), --coinpaprika hasn't updated token yet post-migration
     ('fuse-fuse-network', null, 'FUSE', null, null),
     ('zel-zelcash', null, 'FLUX', null, null),
     ('myria-myria', null, 'MYRIA', null, null),

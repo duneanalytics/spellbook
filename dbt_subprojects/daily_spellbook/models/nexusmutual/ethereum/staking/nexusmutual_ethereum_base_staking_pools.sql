@@ -67,7 +67,7 @@ staking_pools_and_products as (
     sp.is_private_pool,
     sp.initial_pool_fee,
     sp.max_management_fee,
-    cast(json_query(t.json, 'lax $.productId') as int) as product_id,
+    coalesce(cast(json_query(t.json, 'lax $.productId') as int), -1) as product_id,
     cast(json_query(t.json, 'lax $.weight') as double) as weight,
     cast(json_query(t.json, 'lax $.initialPrice') as double) as initial_price,
     cast(json_query(t.json, 'lax $.targetPrice') as double) as target_price,
@@ -84,7 +84,7 @@ staking_pool_products_updated as (
     select
       p.call_block_time as block_time_updated,
       p.poolId as pool_id,
-      cast(json_query(t.json, 'lax $.productId') as int) as product_id,
+      coalesce(cast(json_query(t.json, 'lax $.productId') as int), -1) as product_id,
       cast(json_query(t.json, 'lax $.recalculateEffectiveWeight') as boolean) as re_eval_eff_weight,
       cast(json_query(t.json, 'lax $.setTargetWeight') as boolean) as set_target_weight,
       cast(json_query(t.json, 'lax $.targetWeight') as double) as target_weight,
@@ -103,19 +103,41 @@ staking_pool_products_combined as (
   select
     spp.block_time_created,
     spu.block_time_updated,
-    coalesce(spp.pool_id, spu.pool_id) as pool_id,
-    coalesce(spp.product_id, spu.product_id, -1) as product_id,
+    spp.pool_id,
+    coalesce(spp.product_id, -1) as product_id,
     spp.initial_price,
-    spp.target_price,
-    spu.target_price as updated_target_price,
+    coalesce(spu.target_price, spp.target_price) as target_price,
     spp.weight as initial_weight,
     spu.target_weight,
     if(spp.product_id is null, true, false) as is_product_added,
     spp.tx_hash_created,
     spu.tx_hash_updated
   from staking_pools_and_products spp
-    full outer join staking_pool_products_updated as spu on spp.pool_id = spu.pool_id and spp.product_id = spu.product_id
-  where coalesce(spu.rn, 1) = 1
+    left join staking_pool_products_updated spu
+      on spp.pool_id = spu.pool_id
+      and spp.product_id = spu.product_id
+      and spu.rn = 1
+  
+  union all
+  
+  select
+    spu.block_time_updated as block_time_created,
+    spu.block_time_updated,
+    spu.pool_id,
+    coalesce(spu.product_id, -1) as product_id,
+    null as initial_price,
+    spu.target_price as target_price,
+    null as initial_weight,
+    spu.target_weight,
+    true as is_product_added,
+    null as tx_hash_created,
+    spu.tx_hash_updated
+  from staking_pool_products_updated spu
+    left join staking_pools_and_products spp
+      on spu.pool_id = spp.pool_id
+      and spu.product_id = spp.product_id
+  where spp.pool_id is null
+    and spu.rn = 1
 ),
 
 staking_pool_managers_history as (
@@ -127,24 +149,7 @@ staking_pool_managers_history as (
     call_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'TokenController_call_assignStakingPoolManager') }}
   where call_success
-  union all
-  select
-    call_block_time as block_time,
-    poolId as pool_id,
-    manager,
-    call_trace_address,
-    call_tx_hash as tx_hash
-  from {{ source('nexusmutual_ethereum', 'TokenController2_call_assignStakingPoolManager') }}
-  where call_success
-  union all
-  select
-    call_block_time as block_time,
-    poolId as pool_id,
-    manager,
-    call_trace_address,
-    call_tx_hash as tx_hash
-  from {{ source('nexusmutual_ethereum', 'TokenController3_call_assignStakingPoolManager') }}
-  where call_success
+    and contract_address = 0x5407381b6c251cfd498ccd4a1d877739cb7960b8 -- proxy
   union all
   select distinct
     m.call_block_time as block_time,
@@ -237,7 +242,7 @@ select
   p.product_name,
   p.product_type,
   spc.initial_price / 100.00 as initial_price,
-  coalesce(spc.updated_target_price, spc.target_price) / 100.00 as target_price,
+  spc.target_price / 100.00 as target_price,
   spc.initial_weight / 100.00 as initial_weight,
   spc.target_weight / 100.00 as target_weight,
   sp.block_time_created as pool_created_time,

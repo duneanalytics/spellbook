@@ -4,21 +4,21 @@ models:
 
   - name: addresses_events_first_funded_by
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, celo, base, scroll, zkevm, linea, zksync, sei, mantle
       sector: addresses_events
       project: addresses
       contributors: hildobby
     config:
       tags: ['table', 'funded', 'addresses_events', 'mainnets', 'crosschain']
     description: "Table showing what chain an address was first funded on and its details"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
     columns:
       - &blockchain
         name: blockchain
-        description: "Name of the blockchain"
+        description: "Name of the blockchain where the address was first funded"
       - &address
         name: address
         description: "Concerned address"
@@ -31,6 +31,15 @@ models:
       - &first_funding_executed_by
         name: first_funding_executed_by
         description: "Which address executed the first funding tx"
+      - &amount
+        name: amount
+        description: "The amount of the native currency sent in the funding transfer"
+      - &amount_usd
+        name: amount_usd
+        description: "The USD value of the native currency the wallet was funded with in this funding transfer"
+      - &token_symbol
+        name: token_symbol
+        description: "The token symbol of the native currency the wallet was funded with in this funding transfer"
       - &block_time
         name: block_time
         description: "The block time on which the address was first funded with the native asset on that chain"
@@ -43,10 +52,13 @@ models:
       - &tx_index
         name: tx_index
         description: "The transaction index within its block on which the address was first funded with the native asset on that chain"
+      - &trace_address
+        name: trace_address
+        description: "The trace_address within its transaction on which the address was first funded with the native asset on that chain"
 
   - name: addresses_events_first_activity
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync, base, scroll, zkevm, linea
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, zksync, base, scroll, zkevm, linea, sei, mantle
       sector: addresses_events
       project: addresses
       contributors: Henrystats, hildobby

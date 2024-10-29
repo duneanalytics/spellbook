@@ -18,7 +18,8 @@ with
 
 nexusmutual_contracts (contract_address) as (
   values
-  (0xcafeaBED7e0653aFe9674A3ad862b78DB3F36e60), --Pool (active), deployed: Nov-21-2023
+  (0xcafeaf6eA90CB931ae43a8Cf4B25a73a24cF6158), --Pool (active), deployed: Oct-03-2024
+  (0xcafeaBED7e0653aFe9674A3ad862b78DB3F36e60), --Pool, deployed: Nov-21-2023
   (0xcafea112Db32436c2390F5EC988f3aDB96870627), --Pool (Pool V2), deployed: Mar-08-2023
   (0xcafea35ce5a2fc4ced4464da4349f81a122fd12b), --Pool (Pool3), deployed: May-25-2021
   (0xcafea7934490ef8b9d2572eaefeb9d48162ea5d8), --Pool (old), deployed: Jan-26-2021
@@ -44,7 +45,7 @@ transfer_in as (
   from {{ source('tokens_ethereum','transfers') }}
   where block_time >= timestamp '2019-05-23'
     and "to" in (select contract_address from nexusmutual_contracts)
-    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC')
+    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC', 'cbBTC')
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -64,7 +65,7 @@ transfer_out as (
   from {{ source('tokens_ethereum','transfers') }}
   where block_time >= timestamp '2019-05-23'
     and "from" in (select contract_address from nexusmutual_contracts)
-    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC')
+    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC', 'cbBTC')
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -121,4 +122,3 @@ from transfer_nxmty_in
 union all
 select block_time, block_number, block_date, transfer_type, symbol, amount, contract_address, unique_key, tx_hash
 from transfer_nxmty_out
-where 1=1 -- dummy change to trigger re-run

@@ -238,6 +238,11 @@ models:
     config:
       tags:   ['evms', 'contracts']
     description: "A view keeping track of what contracts are decoded across EVM chains on Dune; contains information associated with the decoded contract such as namespace, name, address, ABI."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - address
     columns:
       - *blockchain
       - name: abi
@@ -260,7 +265,7 @@ models:
         description: "Boolean indicating whether the contract is a factory contract or not"
       - name: detection_source
         description: "Detection source: 'factory', 'base', or 'dynamic'"
-        tests:
+        data_tests:
           - accepted_values:
               values: ["factory", "base", "dynamic"]
       - name: created_at
@@ -519,7 +524,7 @@ models:
       tags: ['method_ids','methods','function','signature']
     description: >
         A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - blockchain
@@ -542,7 +547,7 @@ models:
       tags: ['method_ids','methods','function','signature']
     description: >
         A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - blockchain
@@ -564,7 +569,7 @@ models:
       tags: ['method_ids','methods','function','signature']
     description: >
         A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - blockchain

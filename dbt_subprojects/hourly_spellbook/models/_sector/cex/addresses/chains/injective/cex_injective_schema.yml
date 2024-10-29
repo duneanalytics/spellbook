@@ -9,7 +9,7 @@ models:
     config:
       tags: ['cex','addresses', 'injective']
     description: "All CEX-tied addresses identified on Injective"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

@@ -16,7 +16,7 @@ models:
       - &nft_contract_address
         name: nft_contract_address
         description: "NFT (token) Address"
-        tests:
+        data_tests:
           - unique
       - &created_tx_hash
         name: created_tx_hash

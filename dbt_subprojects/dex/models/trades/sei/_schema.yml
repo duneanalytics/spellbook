@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_sei_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: jelly_swap_sei_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: [ 'sei', 'dex', 'trades', 'jelly_swap' ]
     description: "JellySwap Sei base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -33,7 +33,7 @@ models:
     config:
       tags: [ 'sei', 'dex', 'trades', 'oku', 'v3' ]
     description: "Oku sei base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -50,7 +50,7 @@ models:
     config:
       tags: [ 'sei', 'dex', 'trades', 'dragon_swap', 'v2' ]
     description: "DragonSwap sei base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -67,7 +67,7 @@ models:
     config:
       tags: [ 'sei', 'dex', 'trades', 'xei_finance', 'v3' ]
     description: "XeiFinance sei base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -84,10 +84,27 @@ models:
     config:
       tags: [ 'sei', 'dex', 'trades', 'carbon_defi' ]
     description: "Carbon DeFi sei base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('carbon_defi_sei_base_trades_seed')
+  
+  - name: yaka_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: yaka
+      contributors: john
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'yaka_finance' ]
+    description: "Yaka Finance base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('yaka_sei_base_trades_seed')

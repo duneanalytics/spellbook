@@ -73,6 +73,7 @@ FROM
     ('btu-btu-protocol', 'ethereum', 'BTU', 0xb683d83a532e2cb7dfa5275eed3698436371cc9f, 18),
     ('busd-binance-usd', 'ethereum', 'BUSD', 0x4fabb145d64652a948d72533023f6e7a623c7c53, 18),
     ('cake-pancakeswap', 'ethereum', 'CAKE', 0x152649ea73beab28c5b49b26eb48f7ead6d4c898, 18),
+    ('cbbtc-coinbase-wrapped-btc', 'ethereum', 'cbBTC', 0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf, 8),
     ('cel-celsius', 'ethereum', 'CEL', 0xaaaebe6fe48e54f431b0c390cfaf0b017d09d42d, 4),
     ('celr-celer-network', 'ethereum', 'CELR', 0x4f9254c83eb525f9fcf346490bbb3ed28a81c667, 18),
     ('cennz-centrality', 'ethereum', 'CENNZ', 0x1122b6a0e00dce0563082b6e2953f3a943855c1f, 18),
@@ -1851,7 +1852,15 @@ FROM
     ('bubble-imaginary-ones', 'ethereum', 'BUBBLE', 0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3, 18),
     ('guru-guru-token', 'ethereum', 'GURU', 0x525574c899a7c877a11865339e57376092168258, 18),
     ('avail-avail', 'ethereum', 'AVAIL',0xeeb4d8400aeefafc1b2953e0094134a887c76bd8, 18),
-    ('licker-licker', 'ethereum', 'LICKER',0x1b3be8fcd2e7c5ce9c5c242e0066fdd9740220d0, 18)
+    ('licker-licker', 'ethereum', 'LICKER',0x1b3be8fcd2e7c5ce9c5c242e0066fdd9740220d0, 18),
+    ('doge-department-of-government-efficiency', 'ethereum', 'DOGE',0x1121acc14c63f3c872bfca497d10926a6098aac5, 18),
+    ('cate-cate', 'ethereum', 'CATE',0xa00453052a36d43a99ac1ca145dfe4a952ca33b8, 9),
+    ('spx-spx6900', 'ethereum', 'SPX', 0xe0f63a424a4439cbe457d80e4f4b51ad25b2c56c, 8),
+    ('rlb-rollbit-coin', 'ethereum', 'RLB',0x046eee2cc3188071c02bfc1745a6b17c656e3f3d, 18),
+    ('ebull-ethereum-is-good4058', 'ethereum', 'EBULL',0x71297312753ea7a2570a5a3278ed70d9a75f4f44, 9),
+    ('fight-fight-to-maga', 'ethereum', 'FIGHT',0x8802269d1283cdb2a5a329649e5cb4cdcee91ab6, 9),
+    ('sato-atsuko-sato', 'ethereum', 'SATO',0x5de758bba013e58dae2693aea3f0b12b31a3023d, 18),
+    ('kekec-the-balkan-dwarf', 'ethereum', 'KEKEC', 0x8c7ac134ed985367eadc6f727d79e8295e11435c, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

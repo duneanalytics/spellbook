@@ -10,7 +10,7 @@ models:
     config:
       tags: ['blob', 'ethereum',]
     description: Blob table but enriched with size, blob version hash, blob submitter, base fee, ..
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - beacon_slot_number
@@ -20,7 +20,7 @@ models:
         description: "UTC slot time of the beacon slot"
       - name: blob_versioned_hash
         description: "hash of the blob"
-        tests:
+        data_tests:
           - not_null
       - &beacon_epoch
         name: beacon_epoch
@@ -51,7 +51,7 @@ models:
       - &blob_base_fee
         name: blob_base_fee
         description: "the base fee (wei) per blob gas"
-        tests:
+        data_tests:
           - not_null
       - &max_fee_per_blob_gas
         name: max_fee_per_blob_gas
@@ -69,7 +69,7 @@ models:
     config:
       tags: ['blob', 'blobs', 'BLOB_TX_TYPE', 'L1', 'transaction']
     description: Blob submission transactions.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_number
@@ -110,7 +110,7 @@ models:
     config:
       tags: ['blob', 'blobs', 'ethereum']
     description: Blob submitting address tags
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - address
@@ -131,7 +131,7 @@ models:
     config:
       tags: ['blob', 'blobs', 'ethereum']
     description: Blob submitting address tags
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

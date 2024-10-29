@@ -1,11 +1,79 @@
 version: 2
 
 models:
+  - name: prices_day
+    meta:
+      blockchain: |
+        arbitrum
+        avalanche_c
+        base
+        blast
+        bnb
+        bob
+        celo
+        ethereum
+        fantom
+        gnosis
+        kaia
+        linea
+        mantle
+        mode
+        nova
+        polygon
+        scroll
+        sei
+        worldchain
+        zkevm
+        zksync
+        zora
+      sector: prices
+      short_description: |
+          The prices.day table provides historical price information for each token. The prices are calculated as the volume weighted average price at the day level from our dex.prices_block table.
+          If there are no trades at a given interval, the previous price is used until a new trade occurs.
+          It is recommended to use the contract_address to refer to a token rather than the token symbol as blockchains do not enforce unique token symbols. 
+      contributors: couralex, jeff-dude, 0xRob
+    config:
+      tags: [ 'prices', 'daily']
+
+  - name: prices_hour
+    meta:
+      blockchain: |
+        arbitrum
+        avalanche_c
+        base
+        blast
+        bnb
+        bob
+        celo
+        ethereum
+        fantom
+        gnosis
+        kaia
+        linea
+        mantle
+        mode
+        nova
+        polygon
+        scroll
+        sei
+        worldchain
+        zkevm
+        zksync
+        zora
+      sector: prices
+      short_description: |
+          The prices.hour table provides historical price information for each token. The prices are calculated as the volume weighted average price at the hourly level from our dex.prices_block table.
+          If there are no trades at a given interval, the previous price is used until a new trade occurs.
+          It is recommended to use the contract_address to refer to a token rather than the token symbol as blockchains do not enforce unique token symbols. 
+      contributors: couralex, jeff-dude, 0xRob
+    config:
+      tags: [ 'prices', 'hourly']
+    
   - name: prices_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm, blast, sei, nova
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm, blast, sei, nova, worldchain, kaia
       sector: prices
-      contributors: aalan3, hildobby, pipistrella, viniabussafi, jeff-dude
+      contributors: aalan3, hildobby, pipistrella, viniabussafi, jeff-dude, hosuke
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens"
@@ -19,7 +87,7 @@ models:
       - &contract_address
         name: contract_address
         description: "Contract address of the token, if any"
-        tests:
+        data_tests:
           - not_zero_address
       - &symbol
         name: symbol
@@ -30,17 +98,15 @@ models:
 
   - name: prices_native_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, zksync, zora, sei, nova
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, zksync, zora, sei, nova, worldchain, kaia
       sector: prices
       contributors: aalan3, jeff-dude
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens for native tokens for all chains"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - contract_address
             - symbol
     columns:
       - *token_id
@@ -62,7 +128,7 @@ models:
       sector: prices
       contributors: jeff-dude
     description: "Subset of minute-level prices from CoinPaprika API, only containing the list of trusted tokens across blockchains"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

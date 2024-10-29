@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: metrics_transactions_daily
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day across all chains"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+  - name: metrics_transactions_stats
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'transactions']
+    description: "View of tx's per blockchain aggregated to various levels. The goal is to output one row per chain with stats availble for use in counter visuals."
+  - name: metrics_transactions_index_daily
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'transactions', 'index', 'daily']
+    description: "Each day, per chain, compare the adoption of total transactions relative to the baseline expectation"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
