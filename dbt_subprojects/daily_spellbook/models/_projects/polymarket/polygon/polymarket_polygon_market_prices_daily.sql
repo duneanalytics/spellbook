@@ -3,6 +3,7 @@
     alias = 'market_prices_daily',
     materialized = 'view',
     tags = ['prod_exclude']
+    )
 }}
 
 WITH changed_prices AS (
