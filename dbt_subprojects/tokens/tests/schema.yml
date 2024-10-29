@@ -1,0 +1,14 @@
+version: 2
+
+data_tests:
+  - name: no_missing_price_day
+    description: >
+        Ensure that there are no missing prices for each token on each day
+    severity: error
+    tags: [ 'data_test', 'daily']
+
+  - name: no_missing_price_hour
+    description: >
+        Ensure that there are no missing prices for each token on each hour
+    severity: error
+    tags: [ 'data_test', 'hourly']
