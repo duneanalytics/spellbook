@@ -22,7 +22,7 @@ SELECT
     , t.evt_index
     , CAST(NULL AS ARRAY<BIGINT>) AS trace_address
     , t.contract_address
-    , 'trc20' AS token_standard
+    , 'erc20' AS token_standard
     , t."from"
     , t.to
     , tx."index" AS tx_index
