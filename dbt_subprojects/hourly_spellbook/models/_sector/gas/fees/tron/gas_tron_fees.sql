@@ -30,6 +30,7 @@ WITH base_model as (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     {% endif %}
+   )
 
 SELECT
     'tron' as blockchain
