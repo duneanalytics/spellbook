@@ -6,5 +6,5 @@
 
 {{ solana_vote_fees_macro(
     "cast('2024-10-01' as timestamp)",
-    "now()"
+    "cast('current_date' as timestamp)"
 ) }}
