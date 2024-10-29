@@ -23,7 +23,7 @@ vars:
 # These configurations specify where dbt should look for different types of files.
 # You don't need to change these!
 model-paths: ["models", "../../sources"]
-# test-paths: ["tests"]
+test-paths: ["tests"]
 # seed-paths: ["seeds"]
 macro-paths: ["macros", "../../dbt_macros"]
 
