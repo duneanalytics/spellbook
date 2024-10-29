@@ -1,6 +1,7 @@
 {{ config(
     alias = 'bot_trades',
     schema = 'bonkbot_solana',
+    tags = ['prod_exclude'],
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

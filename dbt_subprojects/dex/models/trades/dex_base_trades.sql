@@ -21,6 +21,7 @@
     , ref('dex_fantom_base_trades')
     , ref('dex_gnosis_base_trades')
     , ref('dex_linea_base_trades')
+    , ref('dex_kaia_base_trades')
     , ref('dex_mantle_base_trades')
     , ref('dex_nova_base_trades')
     , ref('dex_optimism_base_trades')

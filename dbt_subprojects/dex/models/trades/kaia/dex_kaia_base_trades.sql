@@ -1,17 +1,13 @@
 {{ config(
-    schema = 'dex_sei'
+    schema = 'dex_kaia'
     , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('jelly_swap_sei_base_trades')
-    , ref('oku_sei_base_trades')
-    , ref('dragon_swap_sei_base_trades')
-    , ref('xei_finance_sei_base_trades')
-    , ref('carbon_defi_sei_base_trades')
-    , ref('yaka_sei_base_trades')
+    ref('dragon_swap_v2_kaia_base_trades')
+    , ref('dragon_swap_v3_kaia_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -47,7 +43,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'sei'
+        , blockchain = 'kaia'
         , columns = ['from', 'to', 'index']
     )
 }}
