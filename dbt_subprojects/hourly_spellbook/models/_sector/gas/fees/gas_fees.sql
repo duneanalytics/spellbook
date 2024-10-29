@@ -11,7 +11,7 @@
 {% set chains = [
     "arbitrum", "avalanche_c", "base", "blast", "bnb", "celo", "ethereum",
     "fantom", "gnosis", "linea", "mantle", "optimism", "polygon", "scroll",
-    "sei", "zkevm", "zksync", "zora"
+    "sei", "zkevm", "zksync", "zora", "tron"
 ] %}
 
 
