@@ -13,7 +13,6 @@
 {% set models = [
     ref('dex_ethereum_automated_base_trades')
     , ref('dex_arbitrum_automated_base_trades')
-    , ref('dex_fantom_automated_base_trades')
     , ref('dex_gnosis_automated_base_trades')
     , ref('dex_linea_automated_base_trades')
     , ref('dex_mantle_automated_base_trades')
