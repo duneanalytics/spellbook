@@ -15,3 +15,7 @@ sources:
     tables:
       - name: Pair_evt_Swap
       - name: Factory_evt_PairCreated
+  - name: kaia_swap_v3_kaia
+    tables:
+      - name: KaiaSwapPool_evt_Swap
+      - name: KaiaSwapFactory_evt_NewPool
