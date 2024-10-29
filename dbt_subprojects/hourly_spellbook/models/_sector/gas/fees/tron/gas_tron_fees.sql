@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'gas_tron
+    schema = 'gas_tron'
     ,alias = 'fees'
     ,partition_by = ['block_month']
     ,materialized = 'incremental'
