@@ -36,11 +36,7 @@ INNER JOIN {{ source('tron','transactions') }} tx ON
     AND tx.hash = t.evt_tx_hash
     {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
-    {% else %}
-    and tx.block_time > now() - interval '30' day
     {% endif %}
 {% if is_incremental() %}
 WHERE {{incremental_predicate('t.evt_block_time')}}
-{% else %}
-where t.evt_block_time > now() - interval '30' day
 {% endif %}
