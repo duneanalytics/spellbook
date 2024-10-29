@@ -2,7 +2,9 @@
     schema = 'gas_solana',
     alias = 'vote_fees',
     materialized = 'view'
-) }}
+    )
+}}
+
 {%- set models = [
     'gas_solana_vote_fees_2020_q4',
     'gas_solana_vote_fees_2021_q1',
