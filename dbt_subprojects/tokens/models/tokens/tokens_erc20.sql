@@ -3,7 +3,7 @@
         schema = 'tokens'
         ,alias = 'erc20'
         ,materialized = 'table'
-        ,partition_by = ['block_month'],
+        ,partition_by = ['blockchain']
         ,post_hook='{{ expose_spells(\'[
                                         "arbitrum"
                                         ,"avalanche_c"
