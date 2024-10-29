@@ -95,3 +95,20 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: defi_kingdoms_kaia_base_trades
+    meta:
+      blockchain: kaia
+      sector: dex
+      project: defi_kingdoms
+      contributors: jeff-dude
+    config:
+      tags: [ 'kaia', 'dex', 'trades', 'defi_kingdoms' ]
+    description: "defi_kingdoms kaia base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('defi_kingdoms_kaia_base_trades_seed')

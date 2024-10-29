@@ -183,4 +183,5 @@ FROM (VALUES
     , ('klay_swap', 'KLAYswap', 'Direct', 'KLAYswap')
     , ('neopin', 'neopin', 'Direct', 'NeopinOfficial')
     , ('kaia_swap', 'KaiaSwap', 'Direct', 'KaiaSwap')
+    , ('defi_kingdoms', 'DeFi Kingdoms', 'Direct', 'DeFiKingdoms')
     ) AS temp_table (project, name, marketplace_type, x_username)

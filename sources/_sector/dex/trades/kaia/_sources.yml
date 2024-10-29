@@ -19,3 +19,7 @@ sources:
     tables:
       - name: KaiaSwapPool_evt_Swap
       - name: KaiaSwapFactory_evt_NewPool
+  - name: defi_kingdoms_kaia
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
