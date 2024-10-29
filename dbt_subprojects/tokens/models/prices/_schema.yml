@@ -40,7 +40,6 @@ models:
             - blockchain
             - contract_address
             - day
-      - no_missing_price_day
 
   - name: prices_hour
     meta:
@@ -81,7 +80,6 @@ models:
                 - blockchain
                 - contract_address
                 - hour
-        - no_missing_price_hour
     
   - name: prices_tokens
     meta:
