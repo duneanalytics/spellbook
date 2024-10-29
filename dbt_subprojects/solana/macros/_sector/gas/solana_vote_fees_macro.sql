@@ -24,14 +24,14 @@ WITH base_model AS (
         AND {{ incremental_predicate('b.date') }}
         {% else %}
         AND b.date >= {{ start_date }}
-        AND b.date < {{ end_date }}
+        AND b.date < date_add('day', 1, {{ start_date }})
         {% endif %}
     WHERE 1=1    
         {% if is_incremental() %}
         AND {{ incremental_predicate('vt.block_date') }}
         {% else %}
         AND vt.block_date >= {{ start_date }}
-        AND vt.block_date < {{ end_date }}
+        AND vt.block_date < date_add('day', 1, {{ start_date }})
         {% endif %}
 )
 
@@ -73,7 +73,7 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     AND {{ incremental_predicate('p.minute') }}
     {% else %}
     AND p.minute >= {{ start_date }}
-    AND p.minute < {{ end_date }}
+    AND p.minute < date_add('day', 1, {{ start_date }})
     {% endif %}
    
 {% endmacro %}

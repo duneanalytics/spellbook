@@ -24,7 +24,7 @@ WITH base_model AS (
         AND {{ incremental_predicate('cl.block_date') }}
         {% else %}
         AND cl.block_date >= {{ start_date }}
-        AND cl.block_date < {{ end_date }}
+        AND cl.block_date < date_add('day', 1, {{ start_date }})
         {% endif %}
     LEFT JOIN {{ ref('gas_solana_compute_unit_price') }} up
         ON t.id = up.tx_id
@@ -33,7 +33,7 @@ WITH base_model AS (
         AND {{ incremental_predicate('up.block_date') }}
         {% else %}
         AND up.block_date >= {{ start_date }}
-        AND up.block_date < {{ end_date }}
+        AND up.block_date < date_add('day', 1, {{ start_date }})
         {% endif %}
     LEFT JOIN {{ ref('solana_utils_block_leaders') }} b
         ON t.block_slot = b.slot
@@ -42,14 +42,14 @@ WITH base_model AS (
         AND {{ incremental_predicate('b.date') }}
         {% else %}
         AND b.date >= {{ start_date }}
-        AND b.date < {{ end_date }}
+        AND b.date < date_add('day', 1, {{ start_date }})
         {% endif %}
     WHERE 1=1
         {% if is_incremental() %}
         AND {{ incremental_predicate('t.block_date') }}
         {% else %}
         AND t.block_date >= {{ start_date }}
-        AND t.block_date < {{ end_date }}
+        AND t.block_date < date_add('day', 1, {{ start_date }})
         {% endif %}
 )
 
@@ -91,6 +91,6 @@ LEFT JOIN {{ source('prices','usd_forward_fill') }} p
     AND {{ incremental_predicate('p.minute') }}
     {% else %}
     AND p.minute >= {{ start_date }}
-    AND p.minute < {{ end_date }}
+    AND p.minute < date_add('day', 1, {{ start_date }})
     {% endif %}
 {% endmacro %}
