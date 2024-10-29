@@ -1,36 +1,75 @@
 {{ config(
     schema = 'gas_solana',
     alias = 'vote_fees',
-    materialized = 'view'
-    )
-}}
+    tags = ['prod_exclude'],
+    partition_by = ['block_date', 'block_hour'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'delete+insert',
+    unique_key = ['block_date', 'block_slot', 'tx_index']
+) }}
 
-{%- set models = [
-    'gas_solana_vote_fees_2020_q4',
-    'gas_solana_vote_fees_2021_q1',
-    'gas_solana_vote_fees_2021_q2', 
-    'gas_solana_vote_fees_2021_q3',
-    'gas_solana_vote_fees_2021_q4',
-    'gas_solana_vote_fees_2022_q1',
-    'gas_solana_vote_fees_2022_q2',
-    'gas_solana_vote_fees_2022_q3', 
-    'gas_solana_vote_fees_2022_q4',
-    'gas_solana_vote_fees_2023_q1',
-    'gas_solana_vote_fees_2023_q2',
-    'gas_solana_vote_fees_2023_q3',
-    'gas_solana_vote_fees_2023_q4',
-    'gas_solana_vote_fees_2024_q1',
-    'gas_solana_vote_fees_2024_q2',
-    'gas_solana_vote_fees_2024_q3',
-    'gas_solana_vote_fees_current'
-] -%}
-
-{%- for model in models %}
+WITH base_model AS (
     SELECT
-        *
-    FROM 
-        {{ ref(model) }}
-    {%- if not loop.last %}
-    UNION ALL
-    {%- endif %}
-{%- endfor %}
+        'vote' as tx_type,
+        vt.id AS tx_hash,
+        vt.block_date,
+        vt.block_slot,
+        vt.index as tx_index,
+        vt.block_time,
+        vt.signer,
+        vt.fee AS tx_fee_raw,
+        CAST(null AS bigint) AS prioritization_fee_raw,
+        CAST(null AS double) AS compute_unit_price,
+        CAST(null AS bigint) AS compute_limit,
+        'So11111111111111111111111111111111111111112' AS tx_fee_currency,
+        b.leader
+    FROM {{ source('solana', 'vote_transactions') }} vt
+    LEFT JOIN {{ source('solana_utils', 'block_leaders') }} b
+        ON vt.block_slot = b.slot
+        AND vt.block_date = b.date
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('b.date') }}
+        {% endif %}
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('vt.block_date') }}
+    {% endif %}
+)
+
+SELECT
+    'solana' AS blockchain,
+    CAST(date_trunc('month', block_time) AS DATE) AS block_month,
+    block_date,
+    date_trunc('hour', block_time) AS block_hour,
+    block_time,
+    block_slot,
+    tx_index,
+    tx_hash,
+    signer,
+    compute_unit_price,
+    compute_limit,
+    p.symbol AS currency_symbol,
+    tx_fee_raw + coalesce(prioritization_fee_raw,0) AS tx_fee_raw,
+    (tx_fee_raw + coalesce(prioritization_fee_raw,0)) / pow(10, 9) AS tx_fee,
+    (tx_fee_raw + coalesce(prioritization_fee_raw,0)) / pow(10, 9) * p.price AS tx_fee_usd,
+    map(array['base_fee', 'prioritization_fee'], array[coalesce(tx_fee_raw, 0), coalesce(prioritization_fee_raw, 0)]) AS tx_fee_breakdown_raw,
+    transform_values(
+        map(array['base_fee', 'prioritization_fee'], array[coalesce(tx_fee_raw, 0), coalesce(prioritization_fee_raw, 0)]),
+        (k, v) -> CAST(v AS double) / pow(10, 9)
+    ) AS tx_fee_breakdown,
+    transform_values(
+        map(array['base_fee', 'prioritization_fee'], array[coalesce(tx_fee_raw, 0), coalesce(prioritization_fee_raw, 0)]),
+        (k, v) -> CAST(v AS double) / pow(10, 9) * p.price
+    ) AS tx_fee_breakdown_usd,
+    tx_fee_currency,
+    leader,
+    tx_type
+FROM base_model
+LEFT JOIN {{ source('prices','usd_forward_fill') }} p
+    ON p.blockchain = 'solana'
+    AND p.contract_address = 0x069b8857feab8184fb687f634618c035dac439dc1aeb3b5598a0f00000000001
+    AND p.minute = date_trunc('minute', block_time)
+    AND date_trunc('day', p.minute) = block_date
+    {% if is_incremental() %}
+        AND {{ incremental_predicate("date_trunc('day',p.minute)")}}
+    {% endif %}
