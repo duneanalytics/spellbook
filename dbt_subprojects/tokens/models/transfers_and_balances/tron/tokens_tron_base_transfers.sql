@@ -34,9 +34,9 @@ INNER JOIN {{ source('tron','transactions') }} tx ON
     tx.block_time = t.evt_block_time -- raw base tables partitioned by time
     AND tx.block_number = t.evt_block_number
     AND tx.hash = t.evt_tx_hash
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
-{% if is_incremental() or true %}
+{% if is_incremental() %}
 WHERE {{incremental_predicate('t.evt_block_time')}}
 {% endif %}
