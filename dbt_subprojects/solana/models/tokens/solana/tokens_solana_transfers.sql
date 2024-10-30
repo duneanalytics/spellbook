@@ -1,13 +1,12 @@
- {{
-  config(
-        schema = 'tokens_solana',
-        alias = 'transfers',
-        materialized = 'view',
-        post_hook='{{ expose_spells(\'["solana"]\',
-                                    "sector",
-                                    "tokens_solana",
-                                    \'["ilemi", "0xBoxer"]\') }}')
-}}
+{{ config(
+    schema = 'tokens_solana',
+    alias = 'transfers',
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'["solana"]\',
+                                "sector",
+                                "tokens_solana",
+                                \'["ilemi", "0xBoxer"]\') }}'
+) }}
 
 SELECT
     block_time
@@ -21,7 +20,7 @@ SELECT
     , price_usd
     , fee
     , token_mint_address
-    , symbol  
+    , symbol
     , from_owner
     , to_owner
     , from_token_account
@@ -81,7 +80,38 @@ SELECT
     , amount_display
     , amount_usd
     , price_usd
-    , cast(null as double) as fee
+    , fee
+    , token_mint_address
+    , symbol
+    , from_owner
+    , to_owner
+    , from_token_account
+    , to_token_account
+    , token_version
+    , tx_signer
+    , tx_id
+    , outer_instruction_index
+    , inner_instruction_index
+    , outer_executing_account
+FROM {{ ref('tokens_solana_spl_transfers_call_transfer') }}
+WHERE 1=1
+{% if is_incremental() %}
+AND {{incremental_predicate('block_date')}}
+{% endif %}
+
+UNION ALL
+
+SELECT
+    block_time
+    , block_date
+    , date_trunc('hour', block_time) as block_hour
+    , block_slot
+    , action
+    , amount
+    , amount_display
+    , amount_usd
+    , price_usd
+    , fee
     , token_mint_address
     , symbol
     , from_owner
