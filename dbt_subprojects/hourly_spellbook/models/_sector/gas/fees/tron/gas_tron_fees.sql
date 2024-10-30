@@ -56,7 +56,7 @@ SELECT
     ,cast(null as double) as gas_limit_usage
 FROM base_model
 LEFT JOIN {{ref('prices_usd_with_native')}} p
-    ON p.blockchain = null
+    ON p.blockchain is null
     AND symbol = 'TRX'
     AND p.minute = date_trunc('minute', block_time)
     {% if is_incremental() %}
