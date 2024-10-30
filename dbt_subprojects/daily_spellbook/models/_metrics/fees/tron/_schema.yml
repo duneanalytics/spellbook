@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: tron_fee_correction
+    meta:
+      sector: metrics
+      contributors: 0xRob
+    description: "correction needed to compensate for subsized energy fees"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day

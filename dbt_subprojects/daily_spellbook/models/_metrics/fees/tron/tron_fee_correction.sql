@@ -1,10 +1,17 @@
 {{ config(
         schema = 'metrics'
         , alias = 'tron_fee_correction'
-        , materialized = 'table'
+        , materialized = 'incremental'
         , file_format = 'delta'
+        , incremental_strategy = 'merge'
+        , unique_key = ['day']
         )
 }}
+
+-- this model is set up as incremental as a safeguard for when the API would misbehave,
+-- in that case we should not lose any historical data
+-- we still just pull all historical data for simplicity on every run (it's only 3 api calls)
+
 
 -- api can only return 1000 days a time, this CTE URLs to query in batches of 1000 days
 with api_urls as (
@@ -32,7 +39,7 @@ with api_urls as (
     -- cast(json_extract_scalar(json_data, '$.trx') as bigint) as trx,
     -- cast(json_extract_scalar(json_data, '$.energy_ration') as double) as energy_ration,
     -- cast(json_extract_scalar(json_data, '$.contract_supplied_ration') as double) as contract_supplied_ration,
-    cast(json_extract_scalar(json_row, '$.trx_ration') as double) as trx_ration
+    cast(json_extract_scalar(json_row, '$.trx_ration') as double) as trx_fee_ratio
   FROM (
         SELECT cast(json_extract(
                       http_get(api_url),
@@ -49,7 +56,7 @@ union all
 select * from (
 select
   day
-  ,1.0 as trx_ration
+  ,1.0 as trx_fee_ratio
 from unnest(
         sequence(
            cast('2018-06-25' as timestamp) --min(block_date) from tron.transactions
