@@ -85,7 +85,9 @@ FROM
     UNION ALL
     {% endif %}
     {% endfor %}
+
     UNION ALL
+    
     SELECT
         blockchain
         , block_month
