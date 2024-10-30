@@ -34,7 +34,7 @@ WITH base AS (
     AND {{incremental_predicate('call_block_time')}}
     {% endif %}
     {% if not is_incremental() %}
-    AND call_block_time > now() - interval '30' day
+    AND call_block_time > now() - interval '3' day
     {% endif %}
 ),
 
@@ -52,7 +52,7 @@ prices AS (
     AND {{incremental_predicate('minute')}}
     {% endif %}
     {% if not is_incremental() %}
-    AND minute > now() - interval '30' day
+    AND minute > now() - interval '3' day
     {% endif %}
 )
 
