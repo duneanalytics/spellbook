@@ -16,7 +16,7 @@ with evm_fees as (
         , sum(tx_fee_usd) as gas_fees_usd
     from
         {{ source('gas', 'fees') }}
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     where
         {{ incremental_predicate('block_date') }}
     {% endif %}
@@ -30,7 +30,7 @@ with evm_fees as (
         , sum(tx_fee_usd) as gas_fees_usd
     from
         {{ source('gas_solana', 'fees') }}
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     where
         {{ incremental_predicate('block_date') }}
     {% endif %}
@@ -44,7 +44,7 @@ with evm_fees as (
         , sum(tx_fee_usd) as gas_fees_usd
     from
         {{ source('gas_solana', 'vote_fees') }}
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     where
         {{ incremental_predicate('block_date') }}
     {% endif %}
