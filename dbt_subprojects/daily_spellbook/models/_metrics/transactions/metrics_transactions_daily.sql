@@ -31,7 +31,7 @@ with raw_tx as (
     ) union all
     select * from (
         select
-            blockchain
+            'tron' as blockchain
             , cast(date_trunc('day', block_time) as date) as block_date
             , hash as tx_hash
         from
