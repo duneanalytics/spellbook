@@ -14,12 +14,12 @@
 
 
 {% set native_mints = [
-,ref('nft_arbitrum_native_mints')
+ref('nft_arbitrum_native_mints')
 ,ref('nft_avalanche_c_native_mints')
 ,ref('nft_base_native_mints')
 ,ref('nft_blast_native_mints')
 ,ref('nft_celo_native_mints')
- ref('nft_ethereum_native_mints')
+,ref('nft_ethereum_native_mints')
 ,ref('nft_fantom_native_mints')
 ,ref('nft_gnosis_native_mints')
 ,ref('nft_linea_native_mints')
