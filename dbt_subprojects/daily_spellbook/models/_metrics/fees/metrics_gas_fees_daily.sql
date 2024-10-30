@@ -9,7 +9,7 @@
         )
 }}
 
-with evm_fees as (
+with fees as (
     select
         blockchain
         , block_date
@@ -23,21 +23,8 @@ with evm_fees as (
     group by
         blockchain
         , block_date
-), solana_regular_fees as (
-    select
-        blockchain
-        , block_date
-        , sum(tx_fee_usd) as gas_fees_usd
-    from
-        {{ source('gas_solana', 'fees') }}
-    {% if is_incremental() %}
-    where
-        {{ incremental_predicate('block_date') }}
-    {% endif %}
-    group by
-        blockchain
-        , block_date
 ), solana_vote_fees as (
+    -- solana vote fees are stored in a different spell due to data volume & lack of value-add for materializing the fee breakdown
     select
         blockchain
         , block_date
@@ -51,25 +38,20 @@ with evm_fees as (
     group by
         blockchain
         , block_date
-), solana_fees as (
+), combined_fees as (
     select
-        srf.blockchain
-        , srf.block_date
-        , srf.gas_fees_usd + svf.gas_fees_usd as gas_fees_usd
+        fees.blockchain
+        , fees.block_date
+        , fees.gas_fees_usd + coalesce(solana_vote_fees.gas_fees_usd, 0) as gas_fees_usd
     from
-        solana_regular_fees as srf
-    inner join
-        solana_vote_fees as svf
+        fees
+    left join
+        solana_vote_fees
     on
-        srf.block_date = svf.block_date
-        and srf.blockchain = svf.blockchain
+        fees.blockchain = solana_vote_fees.blockchain
+        and fees.block_date = solana_vote_fees.block_date
 )
 select
     *
 from
-    evm_fees
-union all
-select
-    *
-from
-    solana_fees
+    combined_fees
