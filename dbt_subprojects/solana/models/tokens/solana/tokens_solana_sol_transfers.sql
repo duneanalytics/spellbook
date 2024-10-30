@@ -94,3 +94,4 @@ WHERE 1=1
 {% if is_incremental() %}
 AND {{incremental_predicate('t.block_time')}}
 {% endif %}
+
