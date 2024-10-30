@@ -137,3 +137,256 @@ models:
       - *token_id
       - *number_of_items
       - *amount_usd
+
+  - name: nft_arbitrum_native_mints
+    meta:
+      blockchain: arbitrum
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft','arbitrum' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+
+  - name: nft_avalanche_c_native_mints
+    meta:
+      blockchain: avalanche_c
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft','avalanche_c' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+
+  - name: nft_blast_native_mints
+    meta:
+      blockchain: blast
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft','blast' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+
+  - name: nft_celo_native_mints
+    meta:
+      blockchain: celo
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft','celo' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+
+  - name: nft_fantom_native_mints
+    meta:
+      blockchain: fantom
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft','fantom' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+
+  - name: nft_gnosis_native_mints
+    meta:
+      blockchain: gnosis
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft','gnosis' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+
+  - name: nft_linea_native_mints
+    meta:
+      blockchain: linea
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft','linea' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+
+  - name: nft_mantle_native_mints
+    meta:
+      blockchain: mantle
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft','mantle' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+
+  - name: nft_polygon_native_mints
+    meta:
+      blockchain: polygon
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft','polygon' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+
+  - name: nft_scroll_native_mints
+    meta:
+      blockchain: scroll
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft','scroll' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd
+
+  - name: nft_sei_native_mints
+    meta:
+      blockchain: sei
+      sector: nft
+      contributors: hildobby
+    config:
+      tags: [ 'nft','sei' ]
+    description: >
+      NFT native (i.e., non-platform) mints
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - number_of_items
+    columns:
+      - *tx_hash
+      - *evt_index
+      - *token_id
+      - *number_of_items
+      - *amount_usd

@@ -4,7 +4,7 @@ models:
 
   - name: nft_mints
     meta:
-      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon, zksync
+      blockchain: ethereum, solana, bnb, optimism, arbitrum, polygon, zksynce, arbitrum, avalanche_c, blast, celo, fantom, gnosis, linea, mantle, polygon, scroll, sei
       sector: nft
       contributors: soispoke, hildobby, ilemi, 0xRob, cat, umer_h_adil, lgingerich
       docs_slug: /curated/trading/NFT/nft-mints

@@ -6,19 +6,30 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['tx_hash','evt_index','token_id','number_of_items'],
-    post_hook='{{ expose_spells(\'["ethereum","bnb","optimism","arbitrum","zksync"]\',
+    post_hook='{{ expose_spells(\'["ethereum","bnb","optimism","arbitrum","zksync","arbitrum","avalanche_c","blast","celo","fantom","gnosis","linea","mantle","polygon","scroll","sei"]\',
                     "sector",
                     "nft",
-                    \'["soispoke","umer_h_adil","hildobby","0xRob", "chuxin", "lgingerich"]\') }}')
+                    \'["soispoke","umer_h_adil","hildobby","0xRob", "chuxin", "lgingerich", "hildobby"]\') }}')
 }}
 
 
 {% set native_mints = [
- ref('nft_ethereum_native_mints')
-,ref('nft_optimism_native_mints')
+,ref('nft_arbitrum_native_mints')
+,ref('nft_avalanche_c_native_mints')
 ,ref('nft_base_native_mints')
-,ref('nft_zora_native_mints')
+,ref('nft_blast_native_mints')
+,ref('nft_celo_native_mints')
+ ref('nft_ethereum_native_mints')
+,ref('nft_fantom_native_mints')
+,ref('nft_gnosis_native_mints')
+,ref('nft_linea_native_mints')
+,ref('nft_mantle_native_mints')
+,ref('nft_optimism_native_mints')
+,ref('nft_polygon_native_mints')
+,ref('nft_scroll_native_mints')
+,ref('nft_sei_native_mints')
 ,ref('nft_zksync_native_mints')
+,ref('nft_zora_native_mints')
 ] %}
 
 WITH native_mints AS
