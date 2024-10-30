@@ -21,7 +21,7 @@ with raw_tx as (
             {{ source('evms', 'transactions') }}
         where
             1 = 1
-            {% if is_incremental() %}
+            {% if is_incremental() or true%}
             and {{ incremental_predicate('block_time') }}
             {% endif %}
         group by
@@ -38,7 +38,7 @@ with raw_tx as (
             {{ source('tron', 'transactions') }}
         where
             1 = 1
-            {% if is_incremental() %}
+            {% if is_incremental() or true %}
             and {{ incremental_predicate('block_time') }}
             {% endif %}
     )
@@ -52,7 +52,7 @@ with raw_tx as (
     where
         1 = 1
         and net_transfer_amount_usd >= 1 --only include tx's where transfer value is at least $1
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
 ), filtered_tx as (
