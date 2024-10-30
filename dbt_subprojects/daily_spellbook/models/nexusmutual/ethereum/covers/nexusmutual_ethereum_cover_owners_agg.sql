@@ -18,6 +18,7 @@ daily_avg_prices as (
     avg_eth_usd_price,
     avg_dai_usd_price,
     avg_usdc_usd_price,
+    avg_cbbtc_usd_price,
     avg_nxm_eth_price,
     avg_nxm_usd_price
   from {{ ref('nexusmutual_ethereum_capital_pool_prices') }}
@@ -71,6 +72,7 @@ covers_ext as (
     if(cover_asset = 'ETH', cover_amount, 0) as eth_cover_amount,
     if(cover_asset = 'DAI', cover_amount, 0) as dai_cover_amount,
     if(cover_asset = 'USDC', cover_amount, 0) as usdc_cover_amount,
+    if(cover_asset = 'cbBTC', cover_amount, 0) as cbbtc_cover_amount,
     premium_asset,
     if(staking_pool = 'v1' and cover_asset = 'ETH', premium, 0) as eth_premium_amount,
     if(staking_pool = 'v1' and cover_asset = 'DAI', premium, 0) as dai_premium_amount,
@@ -100,6 +102,9 @@ cover_sales_per_owner as (
     --USDC
     coalesce(c_start.usdc_cover_amount * p.avg_usdc_usd_price / p.avg_eth_usd_price, 0) as usdc_eth_cover,
     coalesce(c_start.usdc_cover_amount * p.avg_usdc_usd_price, 0) as usdc_usd_cover,
+    --cbBTC
+    coalesce(c_start.cbbtc_cover_amount * p.avg_cbbtc_usd_price / p.avg_eth_usd_price, 0) as cbbtc_eth_cover,
+    coalesce(c_start.cbbtc_cover_amount * p.avg_cbbtc_usd_price, 0) as cbbtc_usd_cover,
     --== fees ==
     --ETH
     coalesce(c_start.eth_premium_amount, 0) as eth_eth_premium,
@@ -125,13 +130,15 @@ cover_sales_per_owner_aggs as (
     sum(eth_eth_cover) as eth_eth_cover,
     sum(dai_eth_cover) as dai_eth_cover,
     sum(usdc_eth_cover) as usdc_eth_cover,
-    sum(eth_eth_cover) + sum(dai_eth_cover) + sum(usdc_eth_cover) as eth_cover,
-    approx_percentile(eth_eth_cover + dai_eth_cover + usdc_eth_cover, 0.5) as median_eth_cover,
+    sum(cbbtc_eth_cover) as cbbtc_eth_cover,
+    sum(eth_eth_cover) + sum(dai_eth_cover) + sum(usdc_eth_cover) + sum(cbbtc_eth_cover) as eth_cover,
+    approx_percentile(eth_eth_cover + dai_eth_cover + usdc_eth_cover + cbbtc_eth_cover, 0.5) as median_eth_cover,
     sum(eth_usd_cover) as eth_usd_cover,
     sum(dai_usd_cover) as dai_usd_cover,
     sum(usdc_usd_cover) as usdc_usd_cover,
-    sum(eth_usd_cover) + sum(dai_usd_cover) + sum(usdc_usd_cover) as usd_cover,
-    approx_percentile(eth_usd_cover + dai_usd_cover + usdc_usd_cover, 0.5) as median_usd_cover,
+    sum(cbbtc_usd_cover) as cbbtc_usd_cover,
+    sum(eth_usd_cover) + sum(dai_usd_cover) + sum(usdc_usd_cover) + sum(cbbtc_usd_cover) as usd_cover,
+    approx_percentile(eth_usd_cover + dai_usd_cover + usdc_usd_cover + cbbtc_usd_cover, 0.5) as median_usd_cover,
     --== fees ==
     sum(eth_eth_premium) as eth_eth_premium,
     sum(dai_eth_premium) as dai_eth_premium,
@@ -158,12 +165,14 @@ select
   eth_eth_cover,
   dai_eth_cover,
   usdc_eth_cover,
+  cbbtc_eth_cover,
   eth_cover,
   coalesce(eth_cover / nullif(cover_sold, 0), 0) as mean_eth_cover,
   median_eth_cover,
   eth_usd_cover,
   dai_usd_cover,
   usdc_usd_cover,
+  cbbtc_usd_cover,
   usd_cover,
   coalesce(usd_cover / nullif(cover_sold, 0), 0) as mean_usd_cover,
   median_usd_cover,
