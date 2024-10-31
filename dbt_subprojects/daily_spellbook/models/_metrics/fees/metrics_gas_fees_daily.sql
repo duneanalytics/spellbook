@@ -9,6 +9,7 @@
         )
 }}
 
+with daily_data as (
 select
     blockchain
     , block_date
@@ -22,3 +23,19 @@ where
 group by
     blockchain
     , block_date
+)
+
+select
+    blockchain
+    ,block_date
+    ,case when blockchain = 'tron'
+        then gas_fees_usd * coalesce(t.trx_fee_ratio,0.0) -- apply correction to account for subsidized fees
+        else gas_fees_usd end
+        as gas_fees_usd
+from daily_data
+left join {{ref('tron_fee_correction')}} t
+    on block_date = t.day
+    and blockchain = 'tron'
+    {% if is_incremental() %}
+    and {{ incremental_predicate('day') }}
+    {% endif %}

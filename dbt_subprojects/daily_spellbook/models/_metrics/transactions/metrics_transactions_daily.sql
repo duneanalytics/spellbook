@@ -9,24 +9,41 @@
         )
 }}
 
+
+
 with raw_tx as (
-    select
-        blockchain
-        , cast(date_trunc('day', block_time) as date) as block_date
-        , hash as tx_hash
-    from
-        {{ source('evms', 'transactions') }}
-    where
-        1 = 1
-        {% if is_incremental() %}
-        and {{ incremental_predicate('block_time') }}
-        {% endif %}
-    group by
-        blockchain
-        , cast(date_trunc('day', block_time) as date)
-        , hash
+    select * from (
+        select
+            blockchain
+            , cast(date_trunc('day', block_time) as date) as block_date
+            , hash as tx_hash
+        from
+            {{ source('evms', 'transactions') }}
+        where
+            1 = 1
+            {% if is_incremental() %}
+            and {{ incremental_predicate('block_time') }}
+            {% endif %}
+        group by
+            blockchain
+            , cast(date_trunc('day', block_time) as date)
+            , hash
+    ) union all
+    select * from (
+        select
+            'tron' as blockchain
+            , cast(date_trunc('day', block_time) as date) as block_date
+            , hash as tx_hash
+        from
+            {{ source('tron', 'transactions') }}
+        where
+            1 = 1
+            {% if is_incremental() %}
+            and {{ incremental_predicate('block_time') }}
+            {% endif %}
+    )
 ), net_transfers_filter as (
-    select 
+    select
         blockchain
         , block_date
         , tx_hash
