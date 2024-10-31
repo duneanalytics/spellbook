@@ -59,7 +59,7 @@ WITH base as (
                   AND {{incremental_predicate('tr.call_block_time')}}
                   {% else %}
                   AND tr.call_block_time >= {{start_date}}
-                  AND tr.call_block_time < date_add('day', 1, {{ start_date }})
+                  AND tr.call_block_time < {{end_date}}
                   {% endif %}
       )
       /*
@@ -93,7 +93,7 @@ WITH base as (
             AND {{incremental_predicate('call_block_time')}}
             {% else %}
             AND call_block_time >= {{start_date}}
-            AND call_block_time < date_add('day', 1, {{ start_date }})
+            AND call_block_time < {{end_date}}
             {% endif %}
 
       UNION ALL
@@ -122,7 +122,7 @@ WITH base as (
             AND {{incremental_predicate('call_block_time')}}
             {% else %}
             AND call_block_time >= {{start_date}}
-            AND call_block_time < date_add('day', 1, {{ start_date }})
+            AND call_block_time < {{end_date}}
             {% endif %}
 
       UNION ALL
@@ -150,7 +150,7 @@ WITH base as (
             AND {{incremental_predicate('call_block_time')}}
             {% else %}
             AND call_block_time >= {{start_date}}
-            AND call_block_time < date_add('day', 1, {{ start_date }})
+            AND call_block_time < {{end_date}}
             {% endif %}
 
       UNION ALL
@@ -178,7 +178,7 @@ WITH base as (
             AND {{incremental_predicate('call_block_time')}}
             {% else %}
             AND call_block_time >= {{start_date}}
-            AND call_block_time < date_add('day', 1, {{ start_date }})
+            AND call_block_time < {{end_date}}
             {% endif %}
 
       UNION ALL
@@ -206,7 +206,7 @@ WITH base as (
             AND {{incremental_predicate('call_block_time')}}
             {% else %}
             AND call_block_time >= {{start_date}}
-            AND call_block_time < date_add('day', 1, {{ start_date }})
+            AND call_block_time < {{end_date}}
             {% endif %}
 )
 , prices AS (
@@ -225,7 +225,7 @@ WITH base as (
         AND {{incremental_predicate('minute')}}
         {% else %}
         AND minute >= {{start_date}}
-        AND minute < date_add('day', 1, {{ start_date }})
+        AND minute < {{end_date}}
         {% endif %}
 )
 SELECT
