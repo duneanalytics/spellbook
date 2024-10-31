@@ -16,14 +16,14 @@ with evm as (
         , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
         , sum(transfer_amount_usd_received) as transfer_amount_usd_received
         , sum(net_transfer_amount_usd) as net_transfer_amount_usd
-from
-    {{ ref('metrics_net_transfers') }}
-where
-    1 = 1
-    {% if is_incremental() %}
-    and {{ incremental_predicate('block_date') }}
-    {% endif %}
-group by
+    from
+        {{ ref('metrics_net_transfers') }}
+    where
+        1 = 1
+        {% if is_incremental() %}
+        and {{ incremental_predicate('block_date') }}
+        {% endif %}
+    group by
         blockchain
         , block_date
 ), solana as (
