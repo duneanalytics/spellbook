@@ -56,7 +56,7 @@ with raw_transfers as (
         , block_date
         , tx_id
         , to_owner
-        , 'received' as transfer_direction
+        , 'received'
 ), transfers_amount as (
     /*
     - create one column for transfer amount received, one column for transfer amount sent
