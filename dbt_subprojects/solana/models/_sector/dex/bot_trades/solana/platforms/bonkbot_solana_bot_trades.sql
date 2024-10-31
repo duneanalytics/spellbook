@@ -136,6 +136,7 @@ WITH
       outer_instruction_index
   )
 SELECT
+  -- TODO
   block_time,
   block_date,
   block_month,
