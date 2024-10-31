@@ -18,7 +18,7 @@
     transfers_enrich_beta(
         base_transfers = ref('tokens_blast_base_transfers')
         , tokens_erc20_model = source('tokens', 'erc20')
-        , prices_model = source('prices', 'hour')
+        , prices_model = ref('prices_hour')
         , evms_info_model = source('evms','info')
         , transfers_start_date = '2024-04-22'
         , blockchain = 'blast'
