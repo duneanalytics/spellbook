@@ -47,7 +47,7 @@ dex_trades as (
         dex_trades_raw as t
     --only output swaps which contain a trusted token
     inner join {{ source('prices', 'trusted_tokens') }} as tt
-        on t.blockchain = 'solana'
+        on t.blockchain = tt.blockchain
         and contains(t.tokens_swapped, toBase58(tt.contract_address))
 ),
 dex_bought as (
