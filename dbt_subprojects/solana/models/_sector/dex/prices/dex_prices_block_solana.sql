@@ -64,7 +64,7 @@ dex_bought as (
         dex_trades as d
     inner join {{ ref('tokens_solana_fungible') }} as t
         and d.token_bought_mint_address = t.token_mint_address
-    left join {{ ref('prices', 'trusted_tokens') }} as ptt
+    left join {{ source('prices', 'trusted_tokens') }} as ptt
         on d.blockchain = ptt.blockchain
         and d.token_bought_mint_address = ptt.contract_address
     where
