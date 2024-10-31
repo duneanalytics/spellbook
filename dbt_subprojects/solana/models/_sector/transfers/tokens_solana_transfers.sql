@@ -32,10 +32,6 @@ SELECT
     , inner_instruction_index
     , outer_executing_account
 FROM {{ ref('tokens_solana_spl_transfers') }}
-WHERE 1=1
-{% if is_incremental() %}
-AND {{incremental_predicate('block_date')}}
-{% endif %}
 
 UNION ALL
 
@@ -63,10 +59,6 @@ SELECT
     , inner_instruction_index
     , outer_executing_account
 FROM {{ ref('tokens_solana_token22_spl_transfers') }}
-WHERE 1=1
-{% if is_incremental() %}
-AND {{incremental_predicate('block_date')}}
-{% endif %}
 
 UNION ALL
 
@@ -94,10 +86,6 @@ SELECT
     , inner_instruction_index
     , outer_executing_account
 FROM {{ ref('tokens_solana_spl_transfers_call_transfer') }}
-WHERE 1=1
-{% if is_incremental() %}
-AND {{incremental_predicate('block_date')}}
-{% endif %}
 
 UNION ALL
 
@@ -125,7 +113,3 @@ SELECT
     , inner_instruction_index
     , outer_executing_account
 FROM {{ ref('tokens_solana_sol_transfers') }}
-WHERE 1=1
-{% if is_incremental() %}
-AND {{incremental_predicate('block_date')}}
-{% endif %}

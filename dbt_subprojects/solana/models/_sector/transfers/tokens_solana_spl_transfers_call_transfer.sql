@@ -25,9 +25,11 @@
 ] -%}
 
 {%- for model in models %}
-    SELECT *
-    FROM {{ ref(model) }}
-    {%- if not loop.last %}
-    UNION ALL
-    {%- endif %}
+SELECT 
+    *
+FROM 
+    {{ ref(model) }}
+{%- if not loop.last %}
+UNION ALL
+{%- endif %}
 {%- endfor %}
