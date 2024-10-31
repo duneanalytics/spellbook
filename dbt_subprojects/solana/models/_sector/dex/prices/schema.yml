@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: dex_prices_block_solana
+    meta:
+      blockchain: |
+        solana
+      sector: prices
+      short_description: |
+          The dex.prices_block_solana table provides aggregated token price data at the block level, derived from decentralized exchange (DEX) trades in dex.trades_solana.
+          It filters out tokens with less than $10,000 USD in overall trading volume.
+          The final price for each token per block is determined by taking the median (50th percentile) of all qualifying trades, ensuring a robust representation of token prices across different DEX platforms.
+      contributors: couralex, jeff-dude, 0xRob
+    config:
+      tags: [ 'dex', 'prices', 'solana']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - blockchain
+            - contract_address
+            - symbol
+            - decimals
+            - block_number
+            - block_time
