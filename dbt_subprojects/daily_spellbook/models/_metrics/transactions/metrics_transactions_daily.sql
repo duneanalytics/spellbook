@@ -85,7 +85,7 @@ with evm as (
     select
         blockchain
         , block_date
-        , tx_id
+        , tx_id as tx_hash
     from
         {{ ref('metrics_net_solana_transfers') }}
     where
@@ -98,14 +98,14 @@ with evm as (
     select
         tx.blockchain
         , tx.block_date
-        , tx.tx_id as tx_hash
+        , tx.tx_hash
     from
         solana as tx
     inner join
         solana_net_transfers_filter as nt
         on tx.blockchain = nt.blockchain
         and tx.block_date = nt.block_date
-        and tx.tx_id = nt.tx_id
+        and tx.tx_hash = nt.tx_hash
 )
 select
     blockchain
