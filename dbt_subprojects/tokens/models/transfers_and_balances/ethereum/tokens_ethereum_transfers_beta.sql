@@ -1,6 +1,6 @@
 {{config(
     schema = 'tokens_ethereum',
-    alias = 'transfers',
+    alias = 'transfers_beta',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
