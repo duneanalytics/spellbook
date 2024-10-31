@@ -122,3 +122,27 @@ models:
       - name: outer_instruction_index
       - name: inner_instruction_index
       - name: outer_executing_account
+
+
+  - name: tokens_solana_stablecoins
+    meta:
+      blockchain: solana
+      sector: tokens
+      contributors: synthquest
+    config:
+      tags: ['tokens', 'solana', 'spl', 'stablecoins']
+    description: >
+        Selection of stablecoin token addresses.
+    columns:
+      - name: blockchain
+        description: "Blockchain name"
+      - name: address
+        description: "Stablecoin address"
+      - name: backing
+        description: "Stablecoin backing"
+      - name: symbol
+        description: "Stablecoin symbol"
+      - name: name
+        description: "Stablecoin project name"
+      - name: decimals
+        description: "Number of decimals"

@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: stablecoin_balances
+    meta:
+      blockchain: solana
+      contributors: [synthquest]
+    config:
+      tags: ['solana','stablecoin']
+    description: >
+        stablecoin address balances on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['day', 'token_balance_owner', 'token_balance', 'token_mint_address']
+    columns:
+      - &day
+        name: day
+        description: "Date of balance recorded"
+      - &token_balance_owner
+        name: token_balance_owner
+        description: "Owner address of token addresses"
+      - &symbol
+        name: symbol
+        description: "Stablecoin symbol"
+      - &token_balance
+        name: token_balance
+        description: "Stablecoin balance of all token addresses"
+      - &token_mint_address
+        name: token_mint_address
+        description: "Stablecoin token address"
