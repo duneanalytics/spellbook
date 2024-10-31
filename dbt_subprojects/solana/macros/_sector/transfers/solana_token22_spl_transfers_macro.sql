@@ -23,16 +23,50 @@ WITH base as (
                   , 'token2022' as token_version
                   , f.fee_time
                   , row_number() over (partition by tr.call_tx_id,  tr.call_outer_instruction_index,  tr.call_inner_instruction_index order by f.fee_time desc) as latest_fee
-            FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferChecked') }} tr
-            LEFT JOIN {{ ref('tokens_solana_fees_history') }} f ON tr.account_tokenMint = f.account_mint AND tr.call_block_time >= f.fee_time
-            WHERE 1=1
+            FROM 
+                  {{ source('spl_token_2022_solana','spl_token_2022_call_transferChecked') }} tr
+            LEFT JOIN 
+                  {{ ref('tokens_solana_fees_history') }} f 
+                  ON tr.account_tokenMint = f.account_mint 
+                  AND tr.call_block_time >= f.fee_time
+                  {% if is_incremental() %}
+                  AND {{incremental_predicate('f.fee_time')}}
+                  {% else %}
+                  AND f.fee_time >= {{start_date}}
+                  AND f.fee_time < {{end_date}}
+                  {% endif %}
+            WHERE 
+                  1=1
+                  {% if is_incremental() %}
+                  AND {{incremental_predicate('tr.call_block_time')}}
+                  {% else %}
+                  AND tr.call_block_time >= {{start_date}}
+                  AND tr.call_block_time < {{end_date}}
+                  {% endif %}
+      )
+      WHERE 
+            latest_fee = 1
+
+      UNION ALL
+
+      SELECT
+            null as account_source, account_mintTo as account_destination
+            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
+            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , 'mint' as action
+            , call_outer_instruction_index, call_inner_instruction_index
+            , null as fee
+            , 'token2022' as token_version
+      FROM 
+            {{ source('spl_token_2022_solana','spl_token_2022_call_mintTo') }}
+      WHERE
+            1=1
             {% if is_incremental() %}
-            AND {{incremental_predicate('tr.call_block_time')}}
+            AND {{incremental_predicate('call_block_time')}}
             {% else %}
-            AND tr.call_block_time >= {{start_date}}
-            AND tr.call_block_time < {{end_date}}
+            AND call_block_time >= {{start_date}}
+            AND call_block_time < {{end_date}}
             {% endif %}
-      ) WHERE latest_fee = 1
 
       UNION ALL
 
@@ -44,33 +78,16 @@ WITH base as (
             , call_outer_instruction_index, call_inner_instruction_index
             , null as fee
             , 'token2022' as token_version
-      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_mintTo') }}
-      WHERE 1=1
-      {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% else %}
-      AND call_block_time >= {{start_date}}
-      AND call_block_time < {{end_date}}
-      {% endif %}
-
-      UNION ALL
-
-      SELECT
-            null as account_source, account_mintTo as account_destination
-            , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
-            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
-            , 'mint' as action
-            , call_outer_instruction_index, call_inner_instruction_index
-            , null as fee
-            , 'token2022' as token_version
-      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_mintToChecked') }}
-      WHERE 1=1
-      {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% else %}
-      AND call_block_time >= {{start_date}}
-      AND call_block_time < {{end_date}}
-      {% endif %}
+      FROM 
+            {{ source('spl_token_2022_solana','spl_token_2022_call_mintToChecked') }}
+      WHERE 
+            1=1
+            {% if is_incremental() %}
+            AND {{incremental_predicate('call_block_time')}}
+            {% else %}
+            AND call_block_time >= {{start_date}}
+            AND call_block_time < {{end_date}}
+            {% endif %}
 
       UNION ALL
 
@@ -82,14 +99,16 @@ WITH base as (
             , call_outer_instruction_index, call_inner_instruction_index
             , null as fee
             , 'token2022' as token_version
-      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_burn') }}
-      WHERE 1=1
-      {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% else %}
-      AND call_block_time >= {{start_date}}
-      AND call_block_time < {{end_date}}
-      {% endif %}
+      FROM 
+            {{ source('spl_token_2022_solana','spl_token_2022_call_burn') }}
+      WHERE 
+            1=1
+            {% if is_incremental() %}
+            AND {{incremental_predicate('call_block_time')}}
+            {% else %}
+            AND call_block_time >= {{start_date}}
+            AND call_block_time < {{end_date}}
+            {% endif %}
 
       UNION ALL
 
@@ -101,14 +120,16 @@ WITH base as (
             , call_outer_instruction_index, call_inner_instruction_index
             , null as fee
             , 'token2022' as token_version
-      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_burnChecked') }}
-      WHERE 1=1
-      {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% else %}
-      AND call_block_time >= {{start_date}}
-      AND call_block_time < {{end_date}}
-      {% endif %}
+      FROM 
+            {{ source('spl_token_2022_solana','spl_token_2022_call_burnChecked') }}
+      WHERE 
+            1=1
+            {% if is_incremental() %}
+            AND {{incremental_predicate('call_block_time')}}
+            {% else %}
+            AND call_block_time >= {{start_date}}
+            AND call_block_time < {{end_date}}
+            {% endif %}
 
       UNION ALL
 
@@ -120,34 +141,36 @@ WITH base as (
             , call_outer_instruction_index, call_inner_instruction_index
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data, 1+2+8+1,8))) as fee
             , 'token2022' as token_version
-      FROM {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
-      WHERE bytearray_substring(call_data,1,2) = 0x1a01
-      {% if is_incremental() %}
-      AND {{incremental_predicate('call_block_time')}}
-      {% else %}
-      AND call_block_time >= {{start_date}}
-      AND call_block_time < {{end_date}}
-      {% endif %}
+      FROM 
+            {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
+      WHERE 
+            bytearray_substring(call_data,1,2) = 0x1a01
+            {% if is_incremental() %}
+            AND {{incremental_predicate('call_block_time')}}
+            {% else %}
+            AND call_block_time >= {{start_date}}
+            AND call_block_time < {{end_date}}
+            {% endif %}
 )
-
 , prices AS (
     SELECT
-        contract_address,
-        minute,
-        price,
-        decimals,
-        symbol
-    FROM {{ source('prices', 'usd_forward_fill') }}
-    WHERE blockchain = 'solana'
-    AND minute >= TIMESTAMP '2020-10-02 00:00'
-    {% if is_incremental() %}
-    AND {{incremental_predicate('minute')}}
-    {% else %}
-    AND minute >= {{start_date}}
-    AND minute < {{end_date}}
-    {% endif %}
+        contract_address
+        , minute
+        , price
+        , decimals
+        , symbol
+    FROM 
+        {{ source('prices', 'usd_forward_fill') }}
+    WHERE 
+        blockchain = 'solana'
+        AND minute >= TIMESTAMP '2020-10-02 00:00' --solana start date
+        {% if is_incremental() %}
+        AND {{incremental_predicate('minute')}}
+        {% else %}
+        AND minute >= {{start_date}}
+        AND minute < {{end_date}}
+        {% endif %}
 )
-
 SELECT
     tr.call_block_time as block_time
     , cast (date_trunc('day', tr.call_block_time) as date) as block_date
@@ -179,19 +202,17 @@ SELECT
       END as amount_usd
     , p.symbol
 FROM base tr
-LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_s ON tk_s.address = tr.account_source
-LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_d ON tk_d.address = tr.account_destination
-LEFT JOIN {{ ref('solana_utils_token_address_mapping') }} tk_m
+LEFT JOIN 
+      {{ ref('solana_utils_token_accounts') }} tk_s 
+      ON tk_s.address = tr.account_source
+LEFT JOIN 
+      {{ ref('solana_utils_token_accounts') }} tk_d 
+      ON tk_d.address = tr.account_destination
+LEFT JOIN 
+      {{ ref('solana_utils_token_address_mapping') }} tk_m
     ON tk_m.base58_address = COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
 LEFT JOIN prices p
     ON p.contract_address = tk_m.binary_address
     AND p.minute = date_trunc('minute', tr.call_block_time)
-WHERE 1=1
-{% if is_incremental() %}
-AND {{incremental_predicate('tr.call_block_time')}}
-{% else %}
-AND tr.call_block_time >= {{start_date}}
-AND tr.call_block_time < {{end_date}}
-{% endif %}
 
 {% endmacro %} 
