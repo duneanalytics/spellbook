@@ -47,7 +47,7 @@ dex_trades as (
         dex_trades_raw as t
     --only output swaps which contain a trusted token
     inner join {{ source('prices', 'trusted_tokens') }} as tt
-        on t.blockchain = tt.blockchain
+        on t.blockchain = 'solana'
         and contains(t.tokens_swapped, tt.contract_address)
 ),
 dex_bought as (
@@ -65,7 +65,7 @@ dex_bought as (
     inner join {{ ref('tokens_solana_fungible') }} as t
         on d.token_bought_mint_address = t.token_mint_address
     left join {{ source('prices', 'trusted_tokens') }} as ptt
-        on d.blockchain = ptt.blockchain
+        on d.blockchain = 'solana'
         and d.token_bought_mint_address = ptt.contract_address
     where
         1 = 1
@@ -90,7 +90,7 @@ dex_sold as (
     inner join {{ ref('tokens_solana_fungible') }} as t
         on d.token_bought_mint_address = t.token_mint_address
     left join {{ source('prices', 'trusted_tokens') }} as ptt
-        on d.blockchain = ptt.blockchain
+        on d.blockchain = 'solana'
         and d.token_sold_mint_address = ptt.contract_address
     where
         1 = 1
