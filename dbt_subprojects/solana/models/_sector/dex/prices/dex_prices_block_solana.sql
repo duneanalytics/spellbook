@@ -12,7 +12,7 @@
 
 with dex_trades_raw as (
     select
-        blockchain
+        'solana' as blockchain
         , block_time
         , token_bought_mint_address
         , token_bought_amount_raw
@@ -62,10 +62,9 @@ dex_bought as (
         , coalesce(d.amount_usd/d.token_bought_amount, d.amount_usd/(d.token_bought_amount_raw/POW(10, t.decimals))) as price
     from
         dex_trades as d
-    inner join {{ source('tokens', 'erc20') }} as t
-        on d.blockchain = t.blockchain
-        and d.token_bought_mint_address = t.contract_address
-    left join {{ source('prices', 'trusted_tokens') }} as ptt
+    inner join {{ ref('tokens_solana_fungible') }} as t
+        and d.token_bought_mint_address = t.token_mint_address
+    left join {{ ref('prices', 'trusted_tokens') }} as ptt
         on d.blockchain = ptt.blockchain
         and d.token_bought_mint_address = ptt.contract_address
     where
@@ -88,9 +87,8 @@ dex_sold as (
         , coalesce(d.amount_usd/d.token_sold_amount, d.amount_usd/(d.token_sold_amount_raw/POW(10, t.decimals))) as price
     from
         dex_trades as d
-    inner join {{ source('tokens', 'erc20') }} as t
-        on d.blockchain = t.blockchain
-        and d.token_sold_mint_address = t.contract_address
+    inner join {{ ref('tokens_solana_fungible') }} as t
+        and d.token_bought_mint_address = t.token_mint_address
     left join {{ source('prices', 'trusted_tokens') }} as ptt
         on d.blockchain = ptt.blockchain
         and d.token_sold_mint_address = ptt.contract_address
