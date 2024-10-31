@@ -1,7 +1,6 @@
 {{ config(
     alias = 'bot_trades',
     schema = 'bonkbot_solana',
-    tags = ['prod_exclude'],
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -136,7 +135,6 @@ WITH
       outer_instruction_index
   )
 SELECT
-  -- TODO
   block_time,
   block_date,
   block_month,
