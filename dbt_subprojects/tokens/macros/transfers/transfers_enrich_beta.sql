@@ -1,13 +1,4 @@
-{%- macro case_when_token_standard(native_column, erc20_column, else_column) -%}
-CASE token_standard
-    WHEN 'native' THEN {{native_column}}
-    WHEN 'erc20' THEN {{erc20_column}}
-    WHEN 'bep20' THEN {{erc20_column}}
-    ELSE {{else_column}}
-END
-{%- endmacro-%}
-
-{% macro transfers_enrich(
+{% macro transfers_enrich_beta(
     base_transfers = null
     , tokens_erc20_model = null
     , prices_model = null
