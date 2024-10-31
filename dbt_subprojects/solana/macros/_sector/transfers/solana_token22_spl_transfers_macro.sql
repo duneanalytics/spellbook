@@ -3,19 +3,32 @@
 WITH base as (
       --token2022. Most mint and account extensions still use the parent transferChecked instruction, hooks are excecuted after and interest-bearing is precalculated.
       SELECT
-            account_source, account_destination, amount
-            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            account_source
+            , account_destination
+            , amount
+            , call_tx_id
+            , call_block_time
+            , call_block_slot
+            , call_outer_executing_account
+            , call_tx_signer
             , action
-            , call_outer_instruction_index, call_inner_instruction_index
+            , call_outer_instruction_index
+            , call_inner_instruction_index
             , fee
             , token_version
       FROM (
             SELECT
-                  account_source, account_destination
+                  account_source
+                  , account_destination
                   , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
-                  , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+                  , call_tx_id
+                  , call_block_time
+                  , call_block_slot
+                  , call_outer_executing_account
+                  , call_tx_signer
                   , 'transfer' as action
-                  , call_outer_instruction_index, call_inner_instruction_index
+                  , call_outer_instruction_index
+                  , call_inner_instruction_index
                   , least(
                         cast(bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as double)
                               *cast(f.fee_basis as double)/10000
@@ -50,11 +63,17 @@ WITH base as (
       UNION ALL
 
       SELECT
-            null as account_source, account_mintTo as account_destination
+            null as account_source
+            , account_mintTo as account_destination
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
-            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , call_tx_id
+            , call_block_time
+            , call_block_slot
+            , call_outer_executing_account
+            , call_tx_signer
             , 'mint' as action
-            , call_outer_instruction_index, call_inner_instruction_index
+            , call_outer_instruction_index
+            , call_inner_instruction_index
             , null as fee
             , 'token2022' as token_version
       FROM 
@@ -71,11 +90,17 @@ WITH base as (
       UNION ALL
 
       SELECT
-            null as account_source, account_mintTo as account_destination
+            null as account_source
+            , account_mintTo as account_destination
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
-            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , call_tx_id
+            , call_block_time
+            , call_block_slot
+            , call_outer_executing_account
+            , call_tx_signer
             , 'mint' as action
-            , call_outer_instruction_index, call_inner_instruction_index
+            , call_outer_instruction_index
+            , call_inner_instruction_index
             , null as fee
             , 'token2022' as token_version
       FROM 
@@ -94,9 +119,14 @@ WITH base as (
       SELECT
             account_burnAccount as account_source, null as account_destination
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
-            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , call_tx_id
+            , call_block_time
+            , call_block_slot
+            , call_outer_executing_account
+            , call_tx_signer
             , 'burn' as action
-            , call_outer_instruction_index, call_inner_instruction_index
+            , call_outer_instruction_index
+            , call_inner_instruction_index
             , null as fee
             , 'token2022' as token_version
       FROM 
@@ -115,9 +145,14 @@ WITH base as (
       SELECT
             account_burnAccount as account_source, null as account_destination
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as amount
-            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , call_tx_id
+            , call_block_time
+            , call_block_slot
+            , call_outer_executing_account
+            , call_tx_signer
             , 'burn' as action
-            , call_outer_instruction_index, call_inner_instruction_index
+            , call_outer_instruction_index
+            , call_inner_instruction_index
             , null as fee
             , 'token2022' as token_version
       FROM 
@@ -136,9 +171,14 @@ WITH base as (
       SELECT
             call_account_arguments[1] as account_source, call_account_arguments[3] as account_destination
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+2,8))) as amount
-            , call_tx_id, call_block_time, call_block_slot, call_outer_executing_account, call_tx_signer
+            , call_tx_id
+            , call_block_time
+            , call_block_slot
+            , call_outer_executing_account
+            , call_tx_signer
             , 'transfer' as action
-            , call_outer_instruction_index, call_inner_instruction_index
+            , call_outer_instruction_index
+            , call_inner_instruction_index
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data, 1+2+8+1,8))) as fee
             , 'token2022' as token_version
       FROM 
@@ -172,8 +212,9 @@ WITH base as (
         {% endif %}
 )
 SELECT
-    tr.call_block_time as block_time
-    , cast (date_trunc('day', tr.call_block_time) as date) as block_date
+    cast(date_trunc('month', tr.call_block_time) as date) as block_month
+    , cast(date_trunc('day', tr.call_block_time) as date) as block_date
+    , tr.call_block_time as block_time
     , tr.call_block_slot as block_slot
     , tr.action
     , tr.amount

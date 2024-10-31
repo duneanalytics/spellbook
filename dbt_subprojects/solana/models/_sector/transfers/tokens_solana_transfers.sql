@@ -9,9 +9,10 @@
 ) }}
 
 SELECT
-    block_time
+    block_month
     , block_date
-    , date_trunc('hour', block_time) as block_hour
+    , date_trunc('hour', block_date) as block_hour
+    , block_time
     , block_slot
     , action
     , amount
@@ -36,9 +37,10 @@ FROM {{ ref('tokens_solana_spl_transfers') }}
 UNION ALL
 
 SELECT
-    block_time
+    block_month
     , block_date
-    , date_trunc('hour', block_time) as block_hour
+    , date_trunc('hour', block_date) as block_hour
+    , block_time
     , block_slot
     , action
     , amount
@@ -63,9 +65,10 @@ FROM {{ ref('tokens_solana_token22_spl_transfers') }}
 UNION ALL
 
 SELECT
-    block_time
+    block_month
     , block_date
-    , date_trunc('hour', block_time) as block_hour
+    , date_trunc('hour', block_date) as block_hour
+    , block_time
     , block_slot
     , action
     , amount
@@ -90,22 +93,23 @@ FROM {{ ref('tokens_solana_spl_transfers_call_transfer') }}
 UNION ALL
 
 SELECT
-    block_time
+    block_month
     , block_date
-    , date_trunc('hour', block_time) as block_hour
+    , date_trunc('hour', block_date) as block_hour
+    , block_time
     , block_slot
     , action
     , amount
     , amount_display
     , amount_usd
     , price_usd
-    , fee
+    , NULL as fee
     , token_mint_address
     , symbol
     , from_owner
     , to_owner
-    , cast(null as varchar) as from_token_account
-    , cast(null as varchar) as to_token_account
+    , from_token_account
+    , to_token_account
     , token_version
     , tx_signer
     , tx_id
