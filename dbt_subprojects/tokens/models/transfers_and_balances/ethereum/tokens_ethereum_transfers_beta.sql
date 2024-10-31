@@ -15,7 +15,7 @@
 }}
 
 {{
-    transfers_enrich(
+    transfers_enrich_beta(
         base_transfers = ref('tokens_ethereum_base_transfers')
         , tokens_erc20_model = source('tokens', 'erc20')
         , prices_model = ref('prices_hour')
