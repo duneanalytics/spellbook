@@ -48,7 +48,7 @@ dex_trades as (
     --only output swaps which contain a trusted token
     inner join {{ source('prices', 'trusted_tokens') }} as tt
         on t.blockchain = 'solana'
-        and contains(t.tokens_swapped, tt.contract_address)
+        and contains(t.tokens_swapped, toBase58(tt.contract_address))
 ),
 dex_bought as (
     select
@@ -66,14 +66,14 @@ dex_bought as (
         on d.token_bought_mint_address = t.token_mint_address
     left join {{ source('prices', 'trusted_tokens') }} as ptt
         on d.blockchain = 'solana'
-        and d.token_bought_mint_address = ptt.contract_address
+        and d.token_bought_mint_address = toBase58(ptt.contract_address)
     where
         1 = 1
         and d.token_bought_amount > 0
         and d.token_bought_amount_raw > UINT256 '0'
         and t.symbol is not null
         -- filter out tokens that are already in the trusted_tokens table
-        and ptt.contract_address is null
+        and toBase58(ptt.contract_address) is null
 ), 
 dex_sold as (
     select
@@ -91,14 +91,14 @@ dex_sold as (
         on d.token_bought_mint_address = t.token_mint_address
     left join {{ source('prices', 'trusted_tokens') }} as ptt
         on d.blockchain = 'solana'
-        and d.token_sold_mint_address = ptt.contract_address
+        and d.token_sold_mint_address = toBase58(ptt.contract_address)
     where
         1 = 1
         and d.token_sold_amount > 0
         and d.token_sold_amount_raw > UINT256 '0'
         and t.symbol is not null
         -- filter out tokens that are already in the trusted_tokens table
-        and ptt.contract_address is null
+        and toBase58(ptt.contract_address) is null
 ),
 dex_prices as (
     select
