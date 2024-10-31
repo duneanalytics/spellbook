@@ -2,11 +2,8 @@
     schema = 'polymarket_polygon',
     alias = 'market_prices_daily',
     materialized = 'view',
-    post_hook = '{{ expose_spells(blockchains = \'["polygon"]\',
-                                  spell_type = "project",
-                                  spell_name = "polymarket",
-                                  contributors = \'["0xboxer, tomfutago"]\') }}'
-  )
+    tags = ['prod_exclude']
+    )
 }}
 
 WITH changed_prices AS (

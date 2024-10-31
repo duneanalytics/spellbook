@@ -7,7 +7,7 @@ models:
       contributors: jeff-dude
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
-    description: "Sum of total fees spent per day across all chains available in raw gas.fees table"
+    description: "Sum of total fees spent per day across all chains available in gas.fees and gas_solana.fees tables"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

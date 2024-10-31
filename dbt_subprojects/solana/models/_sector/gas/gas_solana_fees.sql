@@ -27,6 +27,11 @@ WITH all_fees AS (
         leader,
         'regular' AS tx_type
     FROM {{ ref('gas_solana_tx_fees') }}
+    /*
+    -- for now, keep votes separate and don't feed into gas.fees downstream
+    -- this is a data volume issue, causing performance issues downstream
+    -- the value-add to vote fees is minimal, as the calculation is static
+    -- we essentially rewrite the same data in a different structure (300 billion+ rows)
 
     UNION ALL
 
@@ -52,6 +57,7 @@ WITH all_fees AS (
         leader,
         tx_type
     FROM {{ ref('gas_solana_vote_fees') }}
+    */
 )
 
 SELECT *
