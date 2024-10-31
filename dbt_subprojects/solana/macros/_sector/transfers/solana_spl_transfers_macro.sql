@@ -39,7 +39,7 @@ WITH base AS (
         , amount
         , cast(null as double) as fee
         , cast(null as varchar) as from_token_account
-        , account_mintTo as to_token_account
+        , account_account as to_token_account
         , 'spl_token' as token_version
         , call_tx_signer as tx_signer
         , call_tx_id as tx_id
@@ -68,7 +68,7 @@ WITH base AS (
         , amount
         , cast(null as double) as fee
         , cast(null as varchar) as from_token_account
-        , account_mintTo as to_token_account
+        , account_account as to_token_account
         , 'spl_token' as token_version
         , call_tx_signer as tx_signer
         , call_tx_id as tx_id
@@ -96,7 +96,7 @@ WITH base AS (
         , 'burn' as action
         , amount
         , cast(null as double) as fee
-        , account_burnAccount as from_token_account
+        , account_account as from_token_account
         , cast(null as varchar) as to_token_account
         , 'spl_token' as token_version
         , call_tx_signer as tx_signer
@@ -125,7 +125,7 @@ WITH base AS (
         , 'burn' as action
         , amount
         , cast(null as double) as fee
-        , account_burnAccount as from_token_account
+        , account_account as from_token_account
         , cast(null as varchar) as to_token_account
         , 'spl_token' as token_version
         , call_tx_signer as tx_signer
