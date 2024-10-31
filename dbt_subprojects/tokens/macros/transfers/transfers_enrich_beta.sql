@@ -74,7 +74,7 @@ WITH base_transfers as (
         AND tokens_erc20.contract_address = t.contract_address
     LEFT JOIN
         prices
-        ON date_trunc('hour', t.block_time) = date_trunc('hour', prices.timestamp)
+        ON date_trunc('hour', t.block_time) = prices.timestamp
         AND CASE
             WHEN t.token_standard = 'native'
                 THEN
