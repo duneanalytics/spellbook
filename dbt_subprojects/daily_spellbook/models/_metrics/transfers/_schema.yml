@@ -36,7 +36,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-            - tx_hash
+            - tx_id
   - name: metrics_transfers_daily
     meta:
       sector: metrics
