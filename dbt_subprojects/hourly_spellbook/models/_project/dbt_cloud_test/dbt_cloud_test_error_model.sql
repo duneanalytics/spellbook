@@ -1,6 +1,6 @@
 {{ config(
         schema = 'dbt_cloud_test'
-
+        ,tags = ['prod_exclude']
         ,alias = 'error_model'
         ,materialized = 'table'
         )

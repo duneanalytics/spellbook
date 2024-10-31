@@ -1,6 +1,6 @@
 {{ config(
         schema = 'dbt_cloud_test'
-
+        ,tags = ['prod_exclude']
         ,alias = 'good_model'
         ,materialized = 'table'
         )
