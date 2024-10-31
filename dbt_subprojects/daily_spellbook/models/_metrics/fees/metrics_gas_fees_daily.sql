@@ -51,7 +51,19 @@ with fees as (
         fees.blockchain = solana_vote_fees.blockchain
         and fees.block_date = solana_vote_fees.block_date
 )
+
+
 select
-    *
-from
-    combined_fees
+    blockchain
+    ,block_date
+    ,case when blockchain = 'tron'
+        then gas_fees_usd * coalesce(t.trx_fee_ratio,0.0) -- apply correction to account for subsidized fees
+        else gas_fees_usd end
+        as gas_fees_usd
+from combined_fees
+left join {{ref('tron_fee_correction')}} t
+    on block_date = t.day
+    and blockchain = 'tron'
+    {% if is_incremental() %}
+    and {{ incremental_predicate('day') }}
+    {% endif %}
