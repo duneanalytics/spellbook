@@ -25,7 +25,7 @@ WITH base AS (
         AND {{incremental_predicate('call_block_time')}}
         {% else %}
         AND call_block_time >= {{start_date}}
-        AND call_block_time < {{end_date}}
+        AND call_block_time < date_add('day', 1, {{ start_date }})
         {% endif %}
 )
 , prices AS (
@@ -44,7 +44,7 @@ WITH base AS (
         AND {{incremental_predicate('minute')}}
         {% else %}
         AND minute >= {{start_date}}
-        AND minute < {{end_date}}
+        AND minute < date_add('day', 1, {{ start_date }})
         {% endif %}
 )
 
