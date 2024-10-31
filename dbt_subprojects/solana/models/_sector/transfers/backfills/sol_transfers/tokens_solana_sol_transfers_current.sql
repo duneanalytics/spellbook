@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'delete+insert',
-    unique_key = ['tx_id', 'outer_instruction_index', 'inner_instruction_index', 'block_slot']
+    unique_key = ['block_date', 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'block_slot']
 ) }}
 
 {{ solana_sol_transfers_macro(
