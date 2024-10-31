@@ -1,5 +1,10 @@
 {% macro solana_token22_spl_transfers_macro(start_date, end_date) %}
 
+/*
+      please note that fee columns have been excluded due to upstream dependencies on token_solana_fees_history outputting duplicates per unique key definition and excluded in production
+      when the upstream model is fixed, we can revisit and add fee logic back in here
+*/
+
 WITH base as (
       --token2022. Most mint and account extensions still use the parent transferChecked instruction, hooks are excecuted after and interest-bearing is precalculated.
       SELECT
@@ -14,8 +19,10 @@ WITH base as (
             , action
             , call_outer_instruction_index
             , call_inner_instruction_index
-            , fee
             , token_version
+            /*
+            , fee
+            */
       FROM (
             SELECT
                   account_source
@@ -29,19 +36,23 @@ WITH base as (
                   , 'transfer' as action
                   , call_outer_instruction_index
                   , call_inner_instruction_index
+                  , 'token2022' as token_version
+                  /*
                   , least(
                         cast(bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data,1+1,8))) as double)
                               *cast(f.fee_basis as double)/10000
                         ,f.fee_maximum) as fee
-                  , 'token2022' as token_version
                   , f.fee_time
                   , row_number() over (partition by tr.call_tx_id,  tr.call_outer_instruction_index,  tr.call_inner_instruction_index order by f.fee_time desc) as latest_fee
+                  */
             FROM 
                   {{ source('spl_token_2022_solana','spl_token_2022_call_transferChecked') }} tr
+            /*
             LEFT JOIN 
                   {{ ref('tokens_solana_fees_history') }} f 
                   ON tr.account_tokenMint = f.account_mint 
                   AND tr.call_block_time >= f.fee_time
+            */
             WHERE 
                   1=1
                   {% if is_incremental() %}
@@ -51,8 +62,10 @@ WITH base as (
                   AND tr.call_block_time < date_add('day', 1, {{ start_date }})
                   {% endif %}
       )
+      /*
       WHERE 
             latest_fee = 1
+      */
 
       UNION ALL
 
@@ -68,7 +81,9 @@ WITH base as (
             , 'mint' as action
             , call_outer_instruction_index
             , call_inner_instruction_index
+            /*
             , null as fee
+            */
             , 'token2022' as token_version
       FROM 
             {{ source('spl_token_2022_solana','spl_token_2022_call_mintTo') }}
@@ -95,7 +110,9 @@ WITH base as (
             , 'mint' as action
             , call_outer_instruction_index
             , call_inner_instruction_index
+            /*
             , null as fee
+            */
             , 'token2022' as token_version
       FROM 
             {{ source('spl_token_2022_solana','spl_token_2022_call_mintToChecked') }}
@@ -121,7 +138,9 @@ WITH base as (
             , 'burn' as action
             , call_outer_instruction_index
             , call_inner_instruction_index
+            /*
             , null as fee
+            */
             , 'token2022' as token_version
       FROM 
             {{ source('spl_token_2022_solana','spl_token_2022_call_burn') }}
@@ -147,7 +166,9 @@ WITH base as (
             , 'burn' as action
             , call_outer_instruction_index
             , call_inner_instruction_index
+            /*
             , null as fee
+            */
             , 'token2022' as token_version
       FROM 
             {{ source('spl_token_2022_solana','spl_token_2022_call_burnChecked') }}
@@ -173,7 +194,9 @@ WITH base as (
             , 'transfer' as action
             , call_outer_instruction_index
             , call_inner_instruction_index
+            /*
             , bytearray_to_uint256(bytearray_reverse(bytearray_substring(call_data, 1+2+8+1,8))) as fee
+            */
             , 'token2022' as token_version
       FROM 
             {{ source('spl_token_2022_solana','spl_token_2022_call_transferFeeExtension') }}
@@ -217,7 +240,9 @@ SELECT
         WHEN p.decimals = 0 THEN tr.amount
         ELSE tr.amount / power(10, p.decimals)
       END as amount_display
+    /*
     , tr.fee
+    */
     , tr.account_source as from_token_account
     , tr.account_destination as to_token_account
     , tk_s.token_balance_owner as from_owner

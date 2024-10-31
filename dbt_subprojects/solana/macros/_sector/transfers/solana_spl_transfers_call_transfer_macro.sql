@@ -8,7 +8,6 @@ WITH base AS (
         , call_block_slot as block_slot
         , 'transfer' as action
         , amount
-        , cast(null as double) as fee
         , account_source as from_token_account
         , account_destination as to_token_account
         , 'spl_token' as token_version
@@ -60,7 +59,6 @@ SELECT
         WHEN p.decimals = 0 THEN b.amount
         ELSE b.amount / power(10, p.decimals)
       END as amount_display
-    , b.fee
     , b.from_token_account
     , b.to_token_account
     , tk_s.token_balance_owner as from_owner

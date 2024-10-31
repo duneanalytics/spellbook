@@ -19,7 +19,6 @@ SELECT
     , amount_display
     , amount_usd
     , price_usd
-    , fee
     , token_mint_address
     , symbol
     , from_owner
@@ -47,7 +46,6 @@ SELECT
     , amount_display
     , amount_usd
     , price_usd
-    , fee
     , token_mint_address
     , symbol
     , from_owner
@@ -75,7 +73,6 @@ SELECT
     , amount_display
     , amount_usd
     , price_usd
-    , fee
     , token_mint_address
     , symbol
     , from_owner
@@ -103,7 +100,6 @@ SELECT
     , amount_display
     , amount_usd
     , price_usd
-    , NULL as fee
     , token_mint_address
     , symbol
     , from_owner
