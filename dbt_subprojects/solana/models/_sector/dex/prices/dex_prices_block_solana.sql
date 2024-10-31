@@ -63,7 +63,7 @@ dex_bought as (
     from
         dex_trades as d
     inner join {{ ref('tokens_solana_fungible') }} as t
-        and d.token_bought_mint_address = t.token_mint_address
+        on d.token_bought_mint_address = t.token_mint_address
     left join {{ source('prices', 'trusted_tokens') }} as ptt
         on d.blockchain = ptt.blockchain
         and d.token_bought_mint_address = ptt.contract_address
@@ -88,7 +88,7 @@ dex_sold as (
     from
         dex_trades as d
     inner join {{ ref('tokens_solana_fungible') }} as t
-        and d.token_bought_mint_address = t.token_mint_address
+        on d.token_bought_mint_address = t.token_mint_address
     left join {{ source('prices', 'trusted_tokens') }} as ptt
         on d.blockchain = ptt.blockchain
         and d.token_sold_mint_address = ptt.contract_address
