@@ -4,7 +4,7 @@
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
-        , unique_key = ['blockchain', 'block_date', 'tx_hash']
+        , unique_key = ['blockchain', 'block_date', 'tx_id']
         , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
         )
 }}
@@ -17,8 +17,8 @@ with raw_transfers as (
     select
         blockchain
         , block_date
-        , tx_id as tx_hash
-        , from_base58(from_owner) as address
+        , tx_id
+        , from_owner as address
         , 'sent' as transfer_direction
         , (sum(amount_usd) * -1) as transfer_amount_usd
     from
@@ -32,7 +32,7 @@ with raw_transfers as (
         blockchain
         , block_date
         , tx_id
-        , from_base58(from_owner)
+        , from_owner
         , 'sent'
 
     union all
@@ -40,8 +40,8 @@ with raw_transfers as (
     select
         blockchain
         , block_date
-        , tx_id as tx_hash
-        , from_base58(to_owner) as address
+        , tx_id
+        , to_owner as address
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
     from
@@ -55,8 +55,8 @@ with raw_transfers as (
         blockchain
         , block_date
         , tx_id
-        , from_base58(to_owner)
-        , 'received'
+        , to_owner
+        , 'received' as transfer_direction
 ), transfers_amount as (
     /*
     - create one column for transfer amount received, one column for transfer amount sent
@@ -64,7 +64,7 @@ with raw_transfers as (
     select
         t.blockchain
         , t.block_date
-        , t.tx_hash
+        , t.tx_id
         , t.address
         , sum(case when t.transfer_direction = 'sent' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_sent
         , sum(case when t.transfer_direction = 'received' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_received
@@ -73,7 +73,7 @@ with raw_transfers as (
     group by
         t.blockchain
         , t.block_date
-        , t.tx_hash
+        , t.tx_id
         , t.address
 ), net_transfers as (
     /*
@@ -83,7 +83,7 @@ with raw_transfers as (
     select
         blockchain
         , block_date
-        , tx_hash
+        , tx_id
         , address
         , sum(coalesce(transfer_amount_usd_sent, 0)) as transfer_amount_usd_sent
         , sum(coalesce(transfer_amount_usd_received, 0)) as transfer_amount_usd_received
@@ -93,13 +93,13 @@ with raw_transfers as (
     group by
         blockchain
         , block_date
-        , tx_hash
+        , tx_id
         , address
 )
 select 
     blockchain
     , block_date
-    , tx_hash
+    , tx_id
     , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
     , sum(transfer_amount_usd_received) as transfer_amount_usd_received
     , sum(net_transfer_amount_usd) as net_transfer_amount_usd
@@ -110,4 +110,4 @@ where
 group by
     blockchain
     , block_date
-    , tx_hash
+    , tx_id
