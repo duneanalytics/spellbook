@@ -1,7 +1,7 @@
 {{ config(
         schema = 'dbt_cloud_test'
 
-        ,alias = 'error_model'
+        ,alias = 'skipped_model'
         ,materialized = 'table'
         )
 }}
