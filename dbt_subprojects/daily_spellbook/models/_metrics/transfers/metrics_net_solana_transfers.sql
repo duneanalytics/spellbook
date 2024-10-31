@@ -15,7 +15,7 @@ with raw_transfers as (
     - union the transfer amount received per address in a transaction hash, keep the amount received as a positve value
     */
     select
-        blockchain
+        'solana' as blockchain
         , block_date
         , tx_id
         , from_owner as address
@@ -29,7 +29,7 @@ with raw_transfers as (
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
-        blockchain
+        'solana'
         , block_date
         , tx_id
         , from_owner
@@ -38,7 +38,7 @@ with raw_transfers as (
     union all
 
     select
-        blockchain
+        'solana' as blockchain
         , block_date
         , tx_id
         , to_owner as address
@@ -52,7 +52,7 @@ with raw_transfers as (
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
-        blockchain
+        'solana'
         , block_date
         , tx_id
         , to_owner
