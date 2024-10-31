@@ -7,7 +7,7 @@ models:
       contributors: jeff-dude
     config:
       tags: ['metrics', 'net_transfers']
-    description: |
+    description: &net_transfers_description |
       "The amount returned is the net received amount in a transaction. This gets to the heart of what was really transfered
       in a transaction, as the amounts that go from and back to a single address don't actually count as real transfers.
       For example, if I give you a dollar and then you give it back to me in a single transaction that should count as $0 
@@ -18,6 +18,19 @@ models:
       with the positive net received (aka received) it adds up to 0 since the net sent should equal the net received. 
       For example, if I give you $1 that's -1 sent (from me) and +1 received (by you) which adds to 0. 
       This query counts the received to show that $1 was effectively transfered."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - tx_hash
+  - name: metrics_net_solana_transfers
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'net_transfers', 'solana']
+    description: *net_transfers_description
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

@@ -4,3 +4,6 @@ sources:
   - name: gas_solana
     tables:
       - name: fees
+  - name: tokens_solana
+    tables:
+      - name: transfers
