@@ -14,14 +14,14 @@ with dex_trades_raw as (
     select
         blockchain
         , block_time
-        , token_bought_address
+        , token_bought_mint_address
         , token_bought_amount_raw
         , token_bought_amount
-        , token_sold_address
+        , token_sold_mint_address
         , token_sold_amount_raw
         , token_sold_amount
         , amount_usd
-        , array[token_bought_address, token_sold_address] as tokens_swapped
+        , array[token_bought_mint_address, token_sold_mint_address] as tokens_swapped
     from
         {{ ref('dex_solana_trades') }}
     where
@@ -36,10 +36,10 @@ dex_trades as (
     select distinct
         t.blockchain
         , t.block_time
-        , t.token_bought_address
+        , t.token_bought_mint_address
         , t.token_bought_amount_raw
         , t.token_bought_amount
-        , t.token_sold_address
+        , t.token_sold_mint_address
         , t.token_sold_amount_raw
         , t.token_sold_amount
         , t.amount_usd
@@ -53,7 +53,7 @@ dex_trades as (
 dex_bought as (
     select
         d.blockchain
-        , d.token_bought_address as contract_address
+        , d.token_bought_mint_address as contract_address
         , t.symbol as symbol
         , t.decimals as decimals
         , d.block_time as block_time
@@ -64,10 +64,10 @@ dex_bought as (
         dex_trades as d
     inner join {{ source('tokens', 'erc20') }} as t
         on d.blockchain = t.blockchain
-        and d.token_bought_address = t.contract_address
+        and d.token_bought_mint_address = t.contract_address
     left join {{ source('prices', 'trusted_tokens') }} as ptt
         on d.blockchain = ptt.blockchain
-        and d.token_bought_address = ptt.contract_address
+        and d.token_bought_mint_address = ptt.contract_address
     where
         1 = 1
         and d.token_bought_amount > 0
@@ -79,7 +79,7 @@ dex_bought as (
 dex_sold as (
     select
         d.blockchain
-        , d.token_sold_address as contract_address
+        , d.token_sold_mint_address as contract_address
         , t.symbol as symbol
         , t.decimals as decimals
         , d.block_time as block_time
@@ -90,10 +90,10 @@ dex_sold as (
         dex_trades as d
     inner join {{ source('tokens', 'erc20') }} as t
         on d.blockchain = t.blockchain
-        and d.token_sold_address = t.contract_address
+        and d.token_sold_mint_address = t.contract_address
     left join {{ source('prices', 'trusted_tokens') }} as ptt
         on d.blockchain = ptt.blockchain
-        and d.token_sold_address = ptt.contract_address
+        and d.token_sold_mint_address = ptt.contract_address
     where
         1 = 1
         and d.token_sold_amount > 0
