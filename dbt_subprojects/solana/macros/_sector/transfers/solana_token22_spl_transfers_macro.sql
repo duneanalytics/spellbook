@@ -42,12 +42,6 @@ WITH base as (
                   {{ ref('tokens_solana_fees_history') }} f 
                   ON tr.account_tokenMint = f.account_mint 
                   AND tr.call_block_time >= f.fee_time
-                  {% if is_incremental() %}
-                  AND {{incremental_predicate('f.fee_time')}}
-                  {% else %}
-                  AND f.fee_time >= {{start_date}}
-                  AND f.fee_time < date_add('day', 1, {{ start_date }})
-                  {% endif %}
             WHERE 
                   1=1
                   {% if is_incremental() %}
