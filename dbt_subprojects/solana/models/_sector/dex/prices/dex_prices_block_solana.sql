@@ -5,7 +5,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['block_month', 'blockchain', 'contract_address', 'symbol', 'decimals', 'block_number', 'block_time']
+    , unique_key = ['block_month', 'blockchain', 'contract_address', 'symbol', 'decimals', 'block_time']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
 )
 }}
@@ -13,7 +13,6 @@
 with dex_trades_raw as (
     select
         blockchain
-        , block_number
         , block_time
         , token_bought_address
         , token_bought_amount_raw
@@ -36,7 +35,6 @@ with dex_trades_raw as (
 dex_trades as (
     select distinct
         t.blockchain
-        , t.block_number
         , t.block_time
         , t.token_bought_address
         , t.token_bought_amount_raw
@@ -58,7 +56,6 @@ dex_bought as (
         , d.token_bought_address as contract_address
         , t.symbol as symbol
         , t.decimals as decimals
-        , d.block_number as block_number
         , d.block_time as block_time
         , d.token_bought_amount as amount
         , d.amount_usd
@@ -85,7 +82,6 @@ dex_sold as (
         , d.token_sold_address as contract_address
         , t.symbol as symbol
         , t.decimals as decimals
-        , d.block_number as block_number
         , d.block_time as block_time
         , d.token_sold_amount as amount
         , d.amount_usd
@@ -135,7 +131,6 @@ select
     , contract_address
     , symbol
     , decimals
-    , block_number
     , cast(date_trunc('month', block_time) as date) as block_month -- for partitioning
     , block_time
     , amount
@@ -148,7 +143,6 @@ from
         , dp.contract_address
         , dp.symbol
         , dp.decimals
-        , dp.block_number
         , dp.block_time
         , sum(dp.amount) as amount
         , sum(dp.amount_usd) as amount_usd
@@ -163,6 +157,5 @@ from
         , dp.contract_address
         , dp.symbol
         , dp.decimals
-        , dp.block_number
         , dp.block_time
 )
