@@ -25,7 +25,7 @@ with raw_transfers as (
         {{ source('tokens_solana', 'transfers') }}
     where
         1 = 1
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
@@ -48,7 +48,7 @@ with raw_transfers as (
         {{ source('tokens_solana', 'transfers') }}
     where
         1 = 1
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
