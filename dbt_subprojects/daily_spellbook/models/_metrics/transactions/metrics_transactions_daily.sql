@@ -9,39 +9,58 @@
         )
 }}
 
-
-
-with raw_tx as (
-    select * from (
-        select
-            blockchain
-            , cast(date_trunc('day', block_time) as date) as block_date
-            , hash as tx_hash
-        from
-            {{ source('evms', 'transactions') }}
-        where
-            1 = 1
-            {% if is_incremental() %}
-            and {{ incremental_predicate('block_time') }}
-            {% endif %}
-        group by
-            blockchain
-            , cast(date_trunc('day', block_time) as date)
-            , hash
-    ) union all
-    select * from (
-        select
-            'tron' as blockchain
-            , cast(date_trunc('day', block_time) as date) as block_date
-            , hash as tx_hash
-        from
-            {{ source('tron', 'transactions') }}
-        where
-            1 = 1
-            {% if is_incremental() %}
-            and {{ incremental_predicate('block_time') }}
-            {% endif %}
-    )
+with evm as (
+    select
+        blockchain
+        , cast(date_trunc('day', block_time) as date) as block_date
+        , hash as tx_hash
+    from
+        {{ source('evms', 'transactions') }}
+    where
+        1 = 1
+        {% if is_incremental() or true %}
+        and {{ incremental_predicate('block_time') }}
+        {% endif %}
+), tron as (
+    select
+        'tron' as blockchain
+        , cast(date_trunc('day', block_time) as date) as block_date
+        , hash as tx_hash
+    from
+        {{ source('tron', 'transactions') }}
+    where
+        1 = 1
+        {% if is_incremental() or true %}
+        and {{ incremental_predicate('block_time') }}
+        {% endif %}
+), solana as (
+    select
+        'solana' as blockchain
+        , block_date
+        , id as tx_hash
+    from
+        {{ source('solana', 'transactions') }}
+    where
+        1 = 1
+        and block_date is not null --200m+ rows of nulls
+        {% if is_incremental() or true %}
+        and {{ incremental_predicate('block_date') }}
+        {% endif %}
+), raw_tx as (
+    select
+        *
+    from
+        evm
+    union all
+    select
+        *
+    from
+        tron
+    union all
+    select
+        *
+    from
+        solana
 ), net_transfers_filter as (
     select
         blockchain
@@ -52,7 +71,7 @@ with raw_tx as (
     where
         1 = 1
         and net_transfer_amount_usd >= 1 --only include tx's where transfer value is at least $1
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
 ), filtered_tx as (
