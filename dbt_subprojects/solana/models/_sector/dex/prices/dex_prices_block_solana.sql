@@ -160,5 +160,6 @@ from
         , dp.contract_address
         , dp.symbol
         , dp.decimals
+        , dp.block_time
         , dp.block_slot
 )
