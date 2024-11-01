@@ -85,7 +85,7 @@ WITH
       COALESCE(solFeePayments.feeTokenType, splFeePayments.feeTokenType) AS feeTokenType,
       COALESCE(solFeePayments.fee_token_amount, splFeePayments.fee_token_amount) AS fee_token_amount,
       COALESCE(solFeePayments.fee_token_mint_address, splFeePayments.fee_token_mint_address) AS fee_token_mint_address
-    FROM 
+    FROM
       solFeePayments 
       FULL JOIN splFeePayments ON solFeePayments.tx_id = splFeePayments.tx_id
   ),
