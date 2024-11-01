@@ -81,14 +81,13 @@ WITH
   -- Eliminate duplicates (e.g. both SOL + SPL payment in a single transaction)
   allFeePaymentsWithSOLPaymentPreferred AS (
     SELECT 
-      tx_id,
+      COALESCE(solFeePayments.tx_id, splFeePayments.tx_id) AS tx_id,
       COALESCE(solFeePayments.feeTokenType, splFeePayments.feeTokenType) AS feeTokenType,
       COALESCE(solFeePayments.fee_token_amount, splFeePayments.fee_token_amount) AS fee_token_amount,
       COALESCE(solFeePayments.fee_token_mint_address, splFeePayments.fee_token_mint_address) AS fee_token_mint_address
     FROM 
-      solFeePayments FULL JOIN splFeePayments ON solFeePayments.tx_id = splFeePayments.tx_id
-    GROUP BY 
-      tx_id
+      solFeePayments 
+      FULL JOIN splFeePayments ON solFeePayments.tx_id = splFeePayments.tx_id
   ),
   botTrades AS (
     SELECT
