@@ -13,6 +13,7 @@ with dex_trades_raw as (
     select
         'solana' as blockchain
         , block_time
+        , block_slot
         , token_bought_mint_address
         , token_bought_amount_raw
         , token_bought_amount
@@ -26,6 +27,7 @@ with dex_trades_raw as (
     where
         1 = 1
         and amount_usd > 0
+        and block_time >= now() - interval '1' month
         {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
         {% endif %}
@@ -34,6 +36,7 @@ dex_trades as (
     select distinct
         t.blockchain
         , t.block_time
+        , t.block_slot
         , t.token_bought_mint_address
         , t.token_bought_amount_raw
         , t.token_bought_amount
@@ -55,6 +58,7 @@ dex_bought as (
         , t.symbol as symbol
         , t.decimals as decimals
         , d.block_time as block_time
+        , d.block_slot as block_slot
         , d.token_bought_amount as amount
         , d.amount_usd
         , coalesce(d.amount_usd/d.token_bought_amount, d.amount_usd/(d.token_bought_amount_raw/POW(10, t.decimals))) as price
@@ -80,6 +84,7 @@ dex_sold as (
         , t.symbol as symbol
         , t.decimals as decimals
         , d.block_time as block_time
+        , d.block_slot as block_slot
         , d.token_sold_amount as amount
         , d.amount_usd
         , coalesce(d.amount_usd/d.token_sold_amount, d.amount_usd/(d.token_sold_amount_raw/POW(10, t.decimals))) as price
@@ -129,6 +134,7 @@ select
     , decimals
     , cast(date_trunc('day', block_time) as date) as block_date -- for partitioning
     , block_time
+    , block_slot
     , amount
     , amount_usd
     , price
@@ -140,6 +146,7 @@ from
         , dp.symbol
         , dp.decimals
         , dp.block_time
+        , dp.block_slot
         , sum(dp.amount) as amount
         , sum(dp.amount_usd) as amount_usd
         , approx_percentile(dp.price, 0.5) AS price
@@ -153,5 +160,5 @@ from
         , dp.contract_address
         , dp.symbol
         , dp.decimals
-        , dp.block_time
+        , dp.block_slot
 )
