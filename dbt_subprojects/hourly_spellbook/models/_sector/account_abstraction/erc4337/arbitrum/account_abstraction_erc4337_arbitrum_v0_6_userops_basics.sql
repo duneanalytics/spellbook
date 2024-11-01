@@ -13,7 +13,7 @@
 
 {% set chain = 'arbitrum' %}
 {% set gas_symbol = 'ETH' %}
-{% set wrapped_gas_address = '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270' %}
+{% set wrapped_gas_address = '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' %}
 {% set version = 'v0.6' %}
 {% set deployed_date = '2023-02-15' %}
 
