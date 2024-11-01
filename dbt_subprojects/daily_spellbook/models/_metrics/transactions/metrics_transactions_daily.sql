@@ -22,7 +22,7 @@ with evm as (
                 {{ source('evms', 'transactions') }}
             where
                 1 = 1
-                {% if is_incremental() or true %}
+                {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
                 {% endif %}
         )
@@ -39,7 +39,7 @@ with evm as (
                 {{ source('tron', 'transactions') }}
             where
                 1 = 1
-                {% if is_incremental() or true %}
+                {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
                 {% endif %}
         )
@@ -53,7 +53,7 @@ with evm as (
     where
         1 = 1
         and net_transfer_amount_usd >= 1 --only include tx's where transfer value is at least $1
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
 ), filtered_tx as (
@@ -78,7 +78,7 @@ with evm as (
     where
         1 = 1
         and block_date is not null --200m+ rows of nulls
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
 ), solana_net_transfers_filter as (
@@ -91,7 +91,7 @@ with evm as (
     where
         1 = 1
         and net_transfer_amount_usd >= 1 --only include tx's where transfer value is at least $1
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
 ), filtered_solana_tx as (
