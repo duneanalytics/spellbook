@@ -62,24 +62,31 @@ WITH
       tx_id,
       fee_token_mint_address
   ),
+  solFeePayments AS (
+    SELECT 
+      * 
+    FROM 
+      allFeePayments 
+    WHERE 
+      feeTokenType = 'SOL'
+  ),
+  splFeePayments AS (
+    SELECT 
+      * 
+    FROM 
+      allFeePayments 
+    WHERE 
+      feeTokenType = 'SPL'
+  ),
   -- Eliminate duplicates (e.g. both SOL + SPL payment in a single transaction)
   allFeePaymentsWithSOLPaymentPreferred AS (
     SELECT 
       tx_id,
-      FIRST_VALUE(feeTokenType) OVER (
-        PARTITION BY tx_id
-        ORDER BY IF(fee_token_mint_address = 'So11111111111111111111111111111111111111112', 1, 2)
-      ) AS feeTokenType,
-      FIRST_VALUE(fee_token_amount) OVER (
-        PARTITION BY tx_id
-        ORDER BY IF(fee_token_mint_address = 'So11111111111111111111111111111111111111112', 1, 2)
-      ) AS fee_token_amount,
-      FIRST_VALUE(fee_token_mint_address) OVER (
-        PARTITION BY tx_id
-        ORDER BY IF(fee_token_mint_address = 'So11111111111111111111111111111111111111112', 1, 2)
-      ) AS fee_token_mint_address
+      COALESCE(solFeePayments.feeTokenType, splFeePayments.feeTokenType) AS feeTokenType,
+      COALESCE(solFeePayments.fee_token_amount, splFeePayments.fee_token_amount) AS fee_token_amount,
+      COALESCE(solFeePayments.fee_token_mint_address, splFeePayments.fee_token_mint_address) AS fee_token_mint_address
     FROM 
-      allFeePayments
+      solFeePayments FULL JOIN splFeePayments ON solFeePayments.tx_id = splFeePayments.tx_id
     GROUP BY 
       tx_id
   ),
