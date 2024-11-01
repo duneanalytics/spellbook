@@ -1,11 +1,7 @@
 {{ config(
         schema = 'metrics'
         , alias = 'fees_index_daily'
-        , materialized = 'incremental'
-        , file_format = 'delta'
-        , incremental_strategy = 'merge'
-        , unique_key = ['blockchain', 'block_date']
-        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
+        , materialized = 'view'
         )
 }}
 
@@ -27,9 +23,6 @@ with baseline as (
         {{ ref('metrics_gas_fees_daily') }}
     where
         block_date >= date '{{ baseline_date }}'
-        {% if is_incremental() %}
-        and {{ incremental_predicate('block_date') }}
-        {% endif %}
 )
 select
     d.blockchain
