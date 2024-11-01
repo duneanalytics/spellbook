@@ -11,7 +11,7 @@
 SELECT
     block_month
     , block_date
-    , date_trunc('hour', block_date) as block_hour
+    , date_trunc('hour', block_time) as block_hour
     , block_time
     , block_slot
     , action
@@ -38,7 +38,7 @@ UNION ALL
 SELECT
     block_month
     , block_date
-    , date_trunc('hour', block_date) as block_hour
+    , date_trunc('hour', block_time) as block_hour
     , block_time
     , block_slot
     , action
@@ -65,7 +65,7 @@ UNION ALL
 SELECT
     block_month
     , block_date
-    , date_trunc('hour', block_date) as block_hour
+    , date_trunc('hour', block_time) as block_hour
     , block_time
     , block_slot
     , action
@@ -92,7 +92,7 @@ UNION ALL
 SELECT
     block_month
     , block_date
-    , date_trunc('hour', block_date) as block_hour
+    , date_trunc('hour', block_time) as block_hour
     , block_time
     , block_slot
     , action
