@@ -27,7 +27,6 @@ with dex_trades_raw as (
     where
         1 = 1
         and amount_usd > 0
-        and block_time >= now() - interval '1' month
         {% if is_incremental() %}
         and {{ incremental_predicate('block_time') }}
         {% endif %}
