@@ -12,6 +12,7 @@
   ref('account_abstraction_erc4337_ethereum_account_deployed')
 , ref('account_abstraction_erc4337_polygon_account_deployed')
 , ref('account_abstraction_erc4337_arbitrum_account_deployed')
+, ref('account_abstraction_erc4337_b3_account_deployed')
 , ref('account_abstraction_erc4337_optimism_account_deployed')
 , ref('account_abstraction_erc4337_avalanche_c_account_deployed')
 , ref('account_abstraction_erc4337_gnosis_account_deployed')

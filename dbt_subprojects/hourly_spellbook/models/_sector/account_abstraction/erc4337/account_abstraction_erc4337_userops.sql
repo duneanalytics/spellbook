@@ -13,6 +13,7 @@
 , ref('account_abstraction_erc4337_polygon_userops')
 , ref('account_abstraction_erc4337_arbitrum_userops')
 , ref('account_abstraction_erc4337_optimism_userops')
+, ref('account_abstraction_erc4337_b3_userops')
 , ref('account_abstraction_erc4337_avalanche_c_userops')
 , ref('account_abstraction_erc4337_gnosis_userops')
 , ref('account_abstraction_erc4337_base_userops')
