@@ -62,6 +62,27 @@ WITH
       tx_id,
       fee_token_mint_address
   ),
+  -- Eliminate duplicates (e.g. both SOL + SPL payment in a single transaction)
+  allFeePaymentsWithSOLPaymentPreferred AS (
+    SELECT 
+      tx_id,
+      FIRST_VALUE(feeTokenType) OVER (
+        PARTITION BY tx_id
+        ORDER BY IF(fee_token_mint_address = 'So11111111111111111111111111111111111111112', 1, 2)
+      ) AS feeTokenType,
+      FIRST_VALUE(fee_token_amount) OVER (
+        PARTITION BY tx_id
+        ORDER BY IF(fee_token_mint_address = 'So11111111111111111111111111111111111111112', 1, 2)
+      ) AS fee_token_amount,
+      FIRST_VALUE(fee_token_mint_address) OVER (
+        PARTITION BY tx_id
+        ORDER BY IF(fee_token_mint_address = 'So11111111111111111111111111111111111111112', 1, 2)
+      ) AS fee_token_mint_address
+    FROM 
+      allFeePayments
+    GROUP BY 
+      tx_id
+  ),
   botTrades AS (
     SELECT
       trades.block_time,
@@ -95,7 +116,7 @@ WITH
       inner_instruction_index
     FROM
       {{ ref('dex_solana_trades') }} AS trades
-      JOIN allFeePayments AS feePayments ON trades.tx_id = feePayments.tx_id
+      JOIN allFeePaymentsWithSOLPaymentPreferred AS feePayments ON trades.tx_id = feePayments.tx_id
       LEFT JOIN {{ source('prices', 'usd') }} AS feeTokenPrices ON (
         feeTokenPrices.blockchain = 'solana'
         AND fee_token_mint_address = toBase58 (feeTokenPrices.contract_address)
