@@ -23,9 +23,6 @@ with baseline as (
         {{ ref('metrics_gas_fees_daily') }}
     where
         block_date >= date '{{ baseline_date }}'
-        {% if is_incremental() %}
-        and {{ incremental_predicate('block_date') }}
-        {% endif %}
 )
 select
     d.blockchain

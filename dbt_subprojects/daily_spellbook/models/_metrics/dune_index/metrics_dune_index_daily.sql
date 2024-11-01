@@ -18,17 +18,7 @@ left join
     {{ ref('metrics_transfers_index_daily') }} as tr
     on f.blockchain = tr.blockchain
     and f.block_date = tr.block_date
-    {% if is_incremental() %}
-    and {{ incremental_predicate('tr.block_date') }}
-    {% endif %}
 left join
     {{ ref('metrics_transactions_index_daily') }} as tx
     on f.blockchain = tx.blockchain
     and f.block_date = tx.block_date
-    {% if is_incremental() %}
-    and {{ incremental_predicate('tx.block_date') }}
-    {% endif %}
-{% if is_incremental() %}
-where
-    {{ incremental_predicate('f.block_date') }}
-{% endif %}
