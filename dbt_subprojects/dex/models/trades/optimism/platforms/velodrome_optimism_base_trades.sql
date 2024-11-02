@@ -42,7 +42,7 @@ dexs_v2_cl AS (
         uniswap_compatible_v3_trades(
             blockchain = 'optimism',
             project = 'velodrome',
-            version = '2',
+            version = '2_cl',
             Pair_evt_Swap = source('velodrome_v2_optimism', 'CLPool_evt_Swap'),
             Factory_evt_PoolCreated = source('velodrome_v2_optimism', 'CLFactory_evt_PoolCreated'),
             optional_columns = []
