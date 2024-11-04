@@ -2,7 +2,7 @@
         schema='evms',
         alias = 'logs',
         unique_key=['blockchain', 'tx_hash'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby","rantum"]\') }}'
@@ -20,7 +20,6 @@
      , ('arbitrum', source('arbitrum', 'logs'))
      , ('celo', source('celo', 'logs'))
      , ('base', source('base', 'logs'))
-     , ('goerli', source('goerli', 'logs'))
      , ('zksync', source('zksync', 'logs'))
      , ('zora', source('zora', 'logs'))
      , ('scroll', source('scroll', 'logs'))
