@@ -2,7 +2,7 @@
         schema='evms',
         alias = 'transactions',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby", "synthquest"]\') }}'
@@ -21,7 +21,6 @@
      , ('optimism', source('optimism', 'transactions'))
      , ('celo', source('celo', 'transactions'))
      , ('base', source('base', 'transactions'))
-     , ('goerli', source('goerli', 'transactions'))
      , ('zksync', source('zksync', 'transactions'))
      , ('zora', source('zora', 'transactions'))
      , ('scroll', source('scroll', 'transactions'))
