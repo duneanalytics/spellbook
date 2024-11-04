@@ -155,7 +155,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
-            - blockchain
             - address
             - token_address
     meta:
