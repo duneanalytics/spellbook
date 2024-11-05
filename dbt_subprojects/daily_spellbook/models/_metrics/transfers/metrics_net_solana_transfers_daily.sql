@@ -1,6 +1,6 @@
 {{ config(
         schema = 'metrics'
-        , alias = 'net_solana_transfers'
+        , alias = 'net_solana_transfers_daily'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
@@ -17,7 +17,6 @@ with raw_transfers as (
     select
         'solana' as blockchain
         , block_date
-        , tx_id
         , from_owner as address
         , 'sent' as transfer_direction
         , (sum(amount_usd) * -1) as transfer_amount_usd
@@ -31,7 +30,6 @@ with raw_transfers as (
     group by
         'solana'
         , block_date
-        , tx_id
         , from_owner
         , 'sent'
 
@@ -40,7 +38,6 @@ with raw_transfers as (
     select
         'solana' as blockchain
         , block_date
-        , tx_id
         , to_owner as address
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
@@ -54,7 +51,6 @@ with raw_transfers as (
     group by
         'solana'
         , block_date
-        , tx_id
         , to_owner
         , 'received'
 ), transfers_amount as (
@@ -64,7 +60,6 @@ with raw_transfers as (
     select
         t.blockchain
         , t.block_date
-        , t.tx_id
         , t.address
         , sum(case when t.transfer_direction = 'sent' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_sent
         , sum(case when t.transfer_direction = 'received' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_received
@@ -73,7 +68,6 @@ with raw_transfers as (
     group by
         t.blockchain
         , t.block_date
-        , t.tx_id
         , t.address
 ), net_transfers as (
     /*
@@ -83,7 +77,6 @@ with raw_transfers as (
     select
         blockchain
         , block_date
-        , tx_id
         , address
         , sum(coalesce(transfer_amount_usd_sent, 0)) as transfer_amount_usd_sent
         , sum(coalesce(transfer_amount_usd_received, 0)) as transfer_amount_usd_received
@@ -93,21 +86,15 @@ with raw_transfers as (
     group by
         blockchain
         , block_date
-        , tx_id
         , address
 )
-select 
+select
     blockchain
     , block_date
-    , tx_id
-    , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
-    , sum(transfer_amount_usd_received) as transfer_amount_usd_received
+    , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received))as transfer_amount_usd
     , sum(net_transfer_amount_usd) as net_transfer_amount_usd
 from
     net_transfers
-where
-    net_transfer_amount_usd > 0
 group by
     blockchain
     , block_date
-    , tx_id
