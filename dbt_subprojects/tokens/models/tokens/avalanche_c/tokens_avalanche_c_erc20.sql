@@ -379,4 +379,6 @@ FROM (VALUES
     , (0x2b2C81e08f1Af8835a78Bb2A90AE924ACE0eA4bE, 'sAVAX', 18)
     , (0xc07c98a93591504584738e4569928ddb3b9f12a7, 'Bonk', 5)
     , (0x6A02C7a974F1F13A67980C80F774eC1d2eD8f98d, 'stataAvaWAVAX', 18)
+    , (0x432d38f83a50ec77c409d086e97448794cf76dcf, 'HERESY', 18)
+    , (0xb8d7710f7d8349a506b75dd184f05777c82dad0c, 'ARENA', 18)
 ) AS temp_table (contract_address, symbol, decimals)
