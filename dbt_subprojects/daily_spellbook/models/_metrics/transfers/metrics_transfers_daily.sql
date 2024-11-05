@@ -8,6 +8,8 @@
 select
     blockchain
     , block_date
+    , transfer_amount_usd_sent
+    , transfer_amount_usd_received
     , transfer_amount_usd
     , net_transfer_amount_usd
 from
@@ -16,6 +18,8 @@ union all
 select
     blockchain
     , block_date
+    , transfer_amount_usd_sent
+    , transfer_amount_usd_received
     , transfer_amount_usd
     , net_transfer_amount_usd
 from

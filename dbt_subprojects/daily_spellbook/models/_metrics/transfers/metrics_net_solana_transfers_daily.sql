@@ -4,16 +4,12 @@
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
-        , unique_key = ['blockchain', 'block_date', 'tx_id']
+        , unique_key = ['blockchain', 'block_date']
         , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
         )
 }}
 
 with raw_transfers as (
-    /*
-    - get the transfer amount sent per address in a transaction hash, set the amount sent as a negative value
-    - union the transfer amount received per address in a transaction hash, keep the amount received as a positve value
-    */
     select
         'solana' as blockchain
         , block_date
@@ -54,9 +50,6 @@ with raw_transfers as (
         , to_owner
         , 'received'
 ), transfers_amount as (
-    /*
-    - create one column for transfer amount received, one column for transfer amount sent
-    */
     select
         t.blockchain
         , t.block_date
@@ -70,10 +63,6 @@ with raw_transfers as (
         , t.block_date
         , t.address
 ), net_transfers as (
-    /*
-    - add amount received and amount sent (since transfer amount sent is set to a negative number, this calculates the net transfer amount received)
-    - for any given address in a single transaction
-    */
     select
         blockchain
         , block_date
@@ -91,10 +80,14 @@ with raw_transfers as (
 select
     blockchain
     , block_date
-    , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received))as transfer_amount_usd
+    , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
+    , sum(transfer_amount_usd_received) as transfer_amount_usd_received
+    , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received)) as transfer_amount_usd
     , sum(net_transfer_amount_usd) as net_transfer_amount_usd
 from
     net_transfers
+where
+    net_transfer_amount_usd > 0
 group by
     blockchain
     , block_date
