@@ -49,6 +49,7 @@ known_solver_metadata (address, environment, name) as (
                 (0x059aefdF9d9F47def37cF7066DA83fEB91fDd089, 'prod', 'Barter'),
                 (0x40798d2261f8b7F11BFa73623c99C876844dD05A, 'prod', 'OpenOcean'),
                 (0x0648548f891E1356f197070D009704e574182bfB, 'prod', 'Rizzolver'),
+                (0x23e868881dfe0531358B8FE0cbec43FD860cbF33, 'prod', 'Rizzolver'),
                 (0x20dC1014E946Cf511Ee535D908eC9a1d75Dd66ce, 'barn', 'Naive'),
                 (0x2e6822f4Ab355E386d1A4fd34947ACE0F6f344a7, 'barn', 'Baseline'),
                 (0x03a65D265E0613326ca23f5E6A1a99Ab2F12600B, 'barn', 'Quasimodo'),
@@ -61,6 +62,7 @@ known_solver_metadata (address, environment, name) as (
                 (0x7B0211286d8Dfdb717f4A2E5Fa5131eD911097e1, 'barn', 'Barter'),
                 (0xc8371B2898FBaEeAe658f9FaeE8ddeDA24e37012, 'barn', 'OpenOcean'),
                 (0x2aeC288B42C99D2e8e984c5C324FB069f7705186, 'barn', 'Rizzolver')
+                (0x26B5e3bF135D3Dd05A220508dD61f25BF1A47cBD, 'barn', 'Rizzolver')
          ) as _
 )
 -- Combining the metadata with current activation status for final table
