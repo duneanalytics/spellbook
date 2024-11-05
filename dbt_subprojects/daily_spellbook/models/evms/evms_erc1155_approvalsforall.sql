@@ -2,7 +2,7 @@
         schema='evms',
         alias = 'erc1155_approvalsforall',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -20,7 +20,6 @@
      , ('arbitrum', source('erc1155_arbitrum', 'evt_ApprovalForAll'))
      , ('celo', source('erc1155_celo', 'evt_ApprovalForAll'))
      , ('base', source('erc1155_base', 'evt_ApprovalForAll'))
-     , ('goerli', source('erc1155_goerli', 'evt_ApprovalForAll'))
      , ('zksync', source('erc1155_zksync', 'evt_ApprovalForAll'))
      , ('zora', source('erc1155_zora', 'evt_ApprovalForAll'))
      , ('scroll', source('erc1155_scroll', 'evt_ApprovalForAll'))
