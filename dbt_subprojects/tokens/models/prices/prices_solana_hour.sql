@@ -1,6 +1,6 @@
 {{ config(
-        schema = 'prices',
-        alias = 'solana_hour',
+        schema = 'prices_solana',
+        alias = 'hour',
         materialized = 'view',
         post_hook =
             '{{ expose_spells(\'[
