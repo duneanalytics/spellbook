@@ -7,10 +7,10 @@
     incremental_strategy = 'merge',
     unique_key = ['claim_id'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-    post_hook = '{{ expose_spells(\'["ethereum"]\',
-                                "project",
-                                "nexusmutual",
-                                \'["tomfutago"]\') }}'
+    post_hook = '{{ expose_spells(blockchains = \'["ethereum"]\',
+                                  spell_type = "project",
+                                  spell_name = "nexusmutual",
+                                  contributors = \'["tomfutago"]\') }}'
   )
 }}
 
@@ -83,6 +83,7 @@ select
     when 0 then 'ETH'
     when 1 then 'DAI'
     when 6 then 'USDC'
+    when 7 then 'cbBTC'
     else 'NA'
   end as cover_asset,
   cd.requested_amount / if(cd.cover_asset = 6, 1e6, 1e18) as requested_amount,

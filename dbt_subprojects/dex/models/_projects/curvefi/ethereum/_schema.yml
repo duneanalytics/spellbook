@@ -14,22 +14,22 @@ models:
       - &version_pool
         name: version
         description: "Versions of the pool: Regular, Factory V1 Plain, Factory V1 Meta, Factory V2"
-        tests:
+        data_tests:
           - not_null
       - &name
         name: name
         description: "Pool name"
-        tests:
+        data_tests:
           - not_null
       - &symbol
         name: symbol
         description: "Pool symbol"
-        tests:
+        data_tests:
           - not_null
       - &pool_address
         name: pool_address
         description: "Address for the pool"
-        tests:
+        data_tests:
           - unique
           - not_null
       - &token_address

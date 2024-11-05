@@ -5,7 +5,7 @@
     {%- else -%}
     gas_price
     {%- endif -%}
-{% endmacro %} 
+{% endmacro %}
 
 -- include chain specific logic here
 {% macro tx_fee_raw(blockchain) %}
@@ -31,6 +31,14 @@
                 ,cast((txns.gas_used - coalesce(gas_used_for_l1,0)) * {{gas_price(blockchain)}} as uint256)])
     {%- elif blockchain in ('zksync',) %}
       ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+    {%- elif blockchain in ('celo',) %}
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(gas_price - priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
     {%- else -%}
         {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') %}
           ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])
@@ -81,6 +89,8 @@
 {% endmacro %}
 
 {% macro gas_fees(blockchain) %}
+-- Used to run the models only on incremental timeframe + seed transactions (for tests)
+{% set test_short_ci = false %}
 WITH base_model as (
     SELECT
         txns.block_time
@@ -118,7 +128,10 @@ WITH base_model as (
         AND {{ incremental_predicate('blob.block_time') }}
         {% endif %}
     {%- endif -%}
-    {% if is_incremental() %}
+    {% if test_short_ci %}
+    WHERE {{ incremental_predicate('txns.block_time') }}
+    OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
+    {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     {% endif %}
     )

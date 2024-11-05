@@ -40,4 +40,8 @@ sources:
     tables:
       - name: SolidlyV3Factory_evt_PoolCreated
       - name: SolidlyV3Pool_evt_Swap
+  - name: yoshiexchange_fantom
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
 

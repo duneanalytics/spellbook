@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_celo_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: uniswap_v3_celo_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: [ 'celo', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap celo v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -32,7 +32,7 @@ models:
     config:
       tags: ['celo', 'dex', 'trades', 'mento']
     description: "Mento trades on Celo"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -51,7 +51,7 @@ models:
     config:
       tags: ['celo', 'dex', 'trades', 'mento']
     description: "Mento trades on Celo"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -70,7 +70,7 @@ models:
     config:
       tags: ['celo', 'dex', 'trades', 'curvefi']
     description: "Curvefi Celo base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -88,7 +88,7 @@ models:
     config:
       tags: ['celo', 'dex', 'trades', 'sushiswap']
     description: "Sushiswap Celo base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -106,7 +106,7 @@ models:
     config:
       tags: ['celo', 'dex', 'trades', 'ubeswap']
     description: "Ubeswap Celo base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -124,7 +124,7 @@ models:
     config:
       tags: ['celo', 'dex', 'trades', 'carbonhood']
     description: "Carbonhood trades on Celo"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash

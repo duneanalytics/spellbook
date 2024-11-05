@@ -13,7 +13,7 @@ models:
     columns:
       - name: token_id
         description: "Token ID"
-        tests:
+        data_tests:
           - unique
       - &token_id_short
         name: token_id_short
@@ -68,7 +68,7 @@ models:
     columns:
       - name: token_id
         description: "Token ID"
-        tests:
+        data_tests:
           - unique
       - &color_direction 
         name: color_direction
@@ -116,7 +116,7 @@ models:
     columns:
       - name: token_id
         description: "Token ID"
-        tests:
+        data_tests:
           - unique
       - &mode
         name: mode
@@ -167,7 +167,7 @@ models:
     columns:
       - name: token_id
         description: "Token ID"
-        tests:
+        data_tests:
           - unique
       - name: background
         description: "background"
@@ -236,7 +236,7 @@ models:
         description: "If Curated collection, season it was launched in. Else N/A"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
-        tests:
+        data_tests:
           - unique
 
   - name: nft_ethereum_metadata_bright_moments
@@ -263,7 +263,7 @@ models:
         description: "City collection launched in, if applicable"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
-        tests:
+        data_tests:
           - unique
 
   - name: nft_ethereum_metadata_proof_grails_i
@@ -292,7 +292,7 @@ models:
         description: "Grail ID pre-reveal"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
-        tests:
+        data_tests:
           - unique
 
   - name: nft_ethereum_metadata_proof_grails_ii
@@ -321,7 +321,7 @@ models:
         description: "Grail ID pre-reveal"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
-        tests:
+        data_tests:
           - unique
         
   - name: nft_ethereum_metadata_braindrops
@@ -346,7 +346,7 @@ models:
         description: "Name of artist"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
-        tests:
+        data_tests:
           - unique
 
   - name: nft_ethereum_metadata_verse
@@ -371,7 +371,7 @@ models:
         description: "Name of artist"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
-        tests:
+        data_tests:
           - unique
 
   - name: nft_ethereum_metadata_fellowship_gallery
@@ -386,7 +386,7 @@ models:
     columns:
       - name: contract_address
         description: "Collection contract address"
-        tests:
+        data_tests:
           - unique        
       - name: collection_name
         description: "Name of collection"
@@ -421,7 +421,7 @@ models:
         description: "Name of project"
       - name: art_collection_unique_id
         description: "Unique identifier - contract address and project id"
-        tests:
+        data_tests:
           - unique
 
   - name: nft_ethereum_metadata_art_platform_collections
@@ -459,7 +459,7 @@ models:
     columns:
       - name: title
         description: "Unique identifier - title of piece"
-        tests:
+        data_tests:
           - unique
       - name: art_type
         description: "Type - 1/1, edition, etc."

@@ -71,3 +71,7 @@ sources:
   - name: swaap_v2_polygon
     tables:
       - name: Vault_evt_Swap
+  - name: dfyn_polygon
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated

@@ -45,7 +45,7 @@ transfer_in as (
   from {{ source('tokens_ethereum','transfers') }}
   where block_time >= timestamp '2019-05-23'
     and "to" in (select contract_address from nexusmutual_contracts)
-    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC')
+    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC', 'cbBTC')
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -65,7 +65,7 @@ transfer_out as (
   from {{ source('tokens_ethereum','transfers') }}
   where block_time >= timestamp '2019-05-23'
     and "from" in (select contract_address from nexusmutual_contracts)
-    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC')
+    and symbol in ('ETH', 'DAI', 'stETH', 'rETH', 'USDC', 'cbBTC')
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -122,4 +122,3 @@ from transfer_nxmty_in
 union all
 select block_time, block_number, block_date, transfer_type, symbol, amount, contract_address, unique_key, tx_hash
 from transfer_nxmty_out
-where 1=1 -- dummy change to trigger re-run

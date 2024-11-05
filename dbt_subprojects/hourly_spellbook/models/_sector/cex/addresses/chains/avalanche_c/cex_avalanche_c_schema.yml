@@ -9,7 +9,7 @@ models:
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'avalanche_c']
     description: "All CEX-tied addresses identified on Avalanche"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

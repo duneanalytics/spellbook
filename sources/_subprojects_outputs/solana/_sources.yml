@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: gas_solana
+    tables:
+      - name: fees
+      - name: vote_fees
+  - name: tokens_solana
+    tables:
+      - name: transfers

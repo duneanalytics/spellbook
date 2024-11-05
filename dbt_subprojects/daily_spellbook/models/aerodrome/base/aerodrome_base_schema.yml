@@ -10,7 +10,7 @@ models:
       tags: ['base','aerodrome','velo','dex', 'incentives']
     description: >
       Bribe to Pool mappings for aerodrome on all chains
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
               - pool_contract

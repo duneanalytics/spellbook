@@ -1,0 +1,98 @@
+version: 2
+
+models:
+  - name: ape_store_base_trades
+    meta:
+      blockchain: base
+      project: ape_store
+      contributors: whale_hunter
+    config:
+      tags: ["base", "ape_store", "dex", "whale_hunter"]
+    description: >
+      Trades for tokens that get deployed through ApeStore on Base
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - blockchain
+            - tx_hash
+            - tx_index
+            - token_bought_address
+            - token_sold_address
+    columns:
+      - &block_time
+        name: block_time
+        description: "UTC timestamp of the trade"
+      - &block_date
+        name: block_date
+        description: "UTC date of the trade"
+      - &block_month
+        name: block_month
+        description: "UTC month of the trade"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain on which the trade occured"
+      - &platform
+        name: platform
+        description: "Platform on which the trade occured. e.g. Bonding Curve or DEX"
+      - &type
+        name: type
+        description: "Wether the trade is a buy or a sell"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &user
+        name: user
+        description: "Address which initiated the trade"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_index
+        name: tx_index
+        description: "Index of the corresponding trade event"
+  - name: ape_store_base_deployments
+    meta:
+      blockchain: base
+      project: ape_store
+      contributors: whale_hunter
+    config:
+      tags: ["base", "ape_store", "dex", "whale_hunter"]
+    description: >
+      Tokens that get deployed through ApeStore on Base
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token
+    columns:
+      - *block_time
+      - *block_date
+      - *block_month
+      - *blockchain
+      - &token
+        name: token
+        description: "Contract address of the deployed token"
+      - &id
+        name: id
+        description: "ID of the deployed token"
+      - &deployer
+        name: deployer
+        description: "Address which initiated the deployment"
+      - *tx_hash

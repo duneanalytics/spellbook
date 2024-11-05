@@ -34,7 +34,7 @@ models:
         description: "Name of blockchain"
       - name: address
         description: "Address of known DEX"
-        tests:
+        data_tests:
           - unique
       - name: dex_name
         description: "Name of decentralised exchange"
@@ -55,7 +55,7 @@ models:
         description: "Name of blockchain"
       - name: address
         description: "Address of known DEX"
-        tests:
+        data_tests:
           - unique
       - name: dex_name
         description: "Name of decentralised exchange"
@@ -76,7 +76,7 @@ models:
         description: "Name of blockchain"
       - name: address
         description: "Address of known DEX"
-        tests:
+        data_tests:
           - unique
       - name: dex_name
         description: "Name of decentralised exchange"
@@ -97,7 +97,7 @@ models:
         description: "Name of blockchain"
       - name: address
         description: "Address of known DEX"
-        tests:
+        data_tests:
           - unique
       - name: dex_name
         description: "Name of decentralised exchange"
@@ -118,7 +118,7 @@ models:
         description: "Name of blockchain"
       - name: address
         description: "Address of known DEX"
-        tests:
+        data_tests:
           - unique
       - name: dex_name
         description: "Name of decentralised exchange"
@@ -139,7 +139,7 @@ models:
         description: "Name of blockchain"
       - name: address
         description: "Address of known DEX"
-        tests:
+        data_tests:
           - unique
       - name: dex_name
         description: "Name of decentralised exchange"

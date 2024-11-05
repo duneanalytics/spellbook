@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_mantle_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: merchant_moe_mantle_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: [ 'mantle', 'dex', 'trades', 'merchant_moe' ]
     description: "merchant_moe mantle base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -31,7 +31,7 @@ models:
     config:
       tags: [ 'mantle', 'dex', 'trades', 'fusionx' ]
     description: "FusionX Finance mantle base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -48,7 +48,7 @@ models:
     config:
       tags: [ 'mantle', 'dex', 'trades', 'agni' ]
     description: "AGNI Finance mantle base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -65,7 +65,7 @@ models:
     config:
       tags: [ 'mantle', 'dex', 'trades', 'swaap', 'v2']
     description: "swaap v2 mantle base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -84,7 +84,7 @@ models:
     config:
       tags: [ 'mantle', 'dex', 'trades', 'clipper' ]
     description: "Clipper mantle base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -103,7 +103,7 @@ models:
     config:
       tags: [ 'zksync', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap mantle v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -122,7 +122,7 @@ models:
     config:
       tags: [ 'zksync', 'dex', 'trades', 'tropicalswap']
     description: "tropicalswap mantle base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
