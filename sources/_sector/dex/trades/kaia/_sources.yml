@@ -5,7 +5,21 @@ sources:
     tables:
       - name: PancakePair_evt_Swap
       - name: PancakeV2Factory_evt_PairCreated
-  - name: dragonswap_kaia
-    tables:
       - name: PancakeV3Pool_evt_Swap
       - name: PancakeV3Factory_evt_PoolCreated
+  - name: klay_swap_v3_kaia
+    tables:
+      - name: Pool_evt_Swap
+      - name: Factory_evt_PoolCreated
+  - name: neopin_kaia
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: kaia_swap_v3_kaia
+    tables:
+      - name: KaiaSwapPool_evt_Swap
+      - name: KaiaSwapFactory_evt_NewPool
+  - name: defi_kingdoms_kaia
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
