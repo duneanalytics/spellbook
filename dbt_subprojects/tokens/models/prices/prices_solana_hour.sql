@@ -1,28 +1,10 @@
 {{ config(
         schema = 'prices',
-        alias = 'solana_day',
+        alias = 'solana_hour',
         materialized = 'view',
         post_hook =
             '{{ expose_spells(\'[
-                "arbitrum"
-                , "avalanche_c"
-                , "base"
-                , "blast"
-                , "bnb"
-                , "celo"
-                , "ethereum"
-                , "fantom"
-                , "gnosis"
-                , "linea"
-                , "mantle"
-                , "nova"
-                , "optimism"
-                , "polygon"
-                , "scroll"
-                , "sei"
-                , "zkevm"
-                , "zksync"
-                , "zora"
+                "solana"
             ]\',
             "sector",
             "prices",
@@ -40,4 +22,4 @@ select
     , decimals
     , price
 from
-    {{ source("dune", "prices_day_raw", database="dune") }}
+    {{ source("dune", "prices_solana_hour_raw", database="dune") }}
