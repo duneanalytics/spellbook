@@ -1,6 +1,6 @@
 {{ config(
         schema = 'prices',
-        alias = 'day',
+        alias = 'solana_day',
         materialized = 'view',
         post_hook =
             '{{ expose_spells(\'[
