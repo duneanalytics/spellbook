@@ -47,7 +47,7 @@ select
     maker_token_amount,
     taker_token_amount_raw as token_sold_amount_raw,
     maker_token_amount_raw as token_bought_amount_raw,
-    amount_usd as volume_usd,
+    volume_usd,
     taker_token as token_sold_address,
     maker_token as token_bought_address,
     taker,
