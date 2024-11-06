@@ -57,9 +57,9 @@ select
     tx_hash,
     tx_from,
     tx_to,
-    tx_index AS evt_index,
-    (ARRAY[-1]) AS trace_address,
-    'settler' AS type,
-    TRUE AS swap_flag,
+    evt_index,
+    trace_address,
+    type,
+    swap_flag,
     contract_address as project_contract_address
  from all_tx 
