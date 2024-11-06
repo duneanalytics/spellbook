@@ -63,31 +63,31 @@ with fees as (
             {% if is_incremental() %}
             and {{ incremental_predicate('day') }}
             {% endif %}
-    ), btc_tx as (
+    ), btc as (
         select
-            block_date
-            , sum(fee) as daily_fee
+            date as block_date
+            , sum(total_fees) as daily_fee
         from
-            {{ source('bitcoin', 'transactions') }}
+            {{ source('bitcoin', 'blocks') }}
         where
-            block_date < cast(date_trunc('day', now()) as date) --exclude current day to match prices.usd_daily
+            date < cast(date_trunc('day', now()) as date) --exclude current day to match prices.usd_daily
             {% if is_incremental() %}
-            and {{ incremental_predicate('block_date') }}
+            and {{ incremental_predicate('date') }}
             {% endif %}
         group by
-            block_date
+            date
     )
     select
         'bitcoin' as blockchain
-        , btc_tx.block_date
-        , btc_tx.daily_fee as gas_fees_raw
+        , btc.block_date
+        , btc.daily_fee as gas_fees_raw
         , prices.price as daily_price
-        , (btc_tx.daily_fee * prices.price) as gas_fees_usd
+        , (btc.daily_fee * prices.price) as gas_fees_usd
     from
-        btc_tx
+        btc
     inner join
         prices
-        on btc_tx.block_date = prices.day
+        on btc.block_date = prices.day
 )
 select
     blockchain
