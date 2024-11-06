@@ -68,6 +68,65 @@ models:
       contributors: couralex, jeff-dude, 0xRob
     config:
       tags: [ 'prices', 'hourly']
+  - name: prices_minute
+    meta:
+      blockchain: |
+        arbitrum
+        avalanche_c
+        base
+        blast
+        bnb
+        bob
+        celo
+        ethereum
+        fantom
+        gnosis
+        kaia
+        linea
+        mantle
+        mode
+        nova
+        polygon
+        scroll
+        sei
+        worldchain
+        zkevm
+        zksync
+        zora
+      sector: prices
+      short_description: |
+          The prices.minute table provides historical price information for each token. The prices are calculated as the volume weighted average price at the hourly level from our dex.prices_block table.
+          If there are no trades at a given interval, the previous price is used until a new trade occurs.
+          It is recommended to use the contract_address to refer to a token rather than the token symbol as blockchains do not enforce unique token symbols. 
+      contributors: couralex, jeff-dude, 0xRob
+    config:
+      tags: [ 'prices', 'minute']
+  
+  - name: prices_solana_hour
+    meta:
+      blockchain: |
+        solana
+      sector: prices
+      short_description: |
+          The prices.solana_hour table provides historical price information for each token. The prices are calculated as the volume weighted average price at the hourly level from our dex_solana.prices_block table.
+          If there are no trades at a given interval, the previous price is used until a new trade occurs.
+          It is recommended to use the contract_address to refer to a token rather than the token symbol as blockchains do not enforce unique token symbols. 
+      contributors: couralex, jeff-dude, 0xRob
+    config:
+      tags: [ 'prices', 'hourly']
+  
+  - name: prices_solana_day
+    meta:
+      blockchain: |
+        solana
+      sector: prices
+      short_description: |
+          The prices.solana_day table provides historical price information for each token. The prices are calculated as the volume weighted average price at the hourly level from our dex_solana.prices_block table.
+          If there are no trades at a given interval, the previous price is used until a new trade occurs.
+          It is recommended to use the contract_address to refer to a token rather than the token symbol as blockchains do not enforce unique token symbols. 
+      contributors: couralex, jeff-dude, 0xRob
+    config:
+      tags: [ 'prices', 'daily']
     
   - name: prices_tokens
     meta:
