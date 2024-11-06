@@ -484,7 +484,7 @@ models:
 
   - name: evms_info
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin
       sector: evms
       contributors: hildobby
     config:

@@ -68,6 +68,7 @@ models:
       contributors: couralex, jeff-dude, 0xRob
     config:
       tags: [ 'prices', 'hourly']
+
   - name: prices_minute
     meta:
       blockchain: |
@@ -130,7 +131,7 @@ models:
     
   - name: prices_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm, blast, sei, nova, worldchain, kaia
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm, blast, sei, nova, worldchain, kaia, ronin
       sector: prices
       contributors: aalan3, hildobby, pipistrella, viniabussafi, jeff-dude, hosuke
     config:
@@ -157,7 +158,7 @@ models:
 
   - name: prices_native_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, zksync, zora, sei, nova, worldchain, kaia
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, zksync, zora, sei, nova, worldchain, kaia, ronin
       sector: prices
       contributors: aalan3, jeff-dude
     config:
