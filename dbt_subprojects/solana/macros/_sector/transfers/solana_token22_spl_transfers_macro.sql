@@ -253,7 +253,7 @@ SELECT
     , tr.call_outer_instruction_index as outer_instruction_index
     , COALESCE(tr.call_inner_instruction_index,0) as inner_instruction_index
     , tr.call_outer_executing_account as outer_executing_account
-    , tk_m.base58_address as token_mint_address
+    , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
     , p.price as price_usd
     , CASE 
         WHEN p.decimals is null THEN null
