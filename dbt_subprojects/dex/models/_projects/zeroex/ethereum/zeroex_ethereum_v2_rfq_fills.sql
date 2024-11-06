@@ -32,4 +32,34 @@ all_tx AS (
 
 
 
-select * from all_tx 
+select 
+    blockchain,
+    project,
+    version,
+    block_date,
+    block_month,
+    block_time,
+    block_number,
+    taker_symbol,
+    maker_symbol,
+    token_pair,
+    taker_token_amount,
+    maker_token_amount,
+    taker_token_amount_raw as token_sold_amount_raw,
+    maker_token_amount_raw as token_bought_amount_raw,
+    amount_usd as volume_usd,
+    taker_token as token_sold_address,
+    maker_token as token_bought_address,
+    taker,
+    maker,
+    tag,
+    zid,
+    tx_hash,
+    tx_from,
+    tx_to,
+    tx_index AS evt_index,
+    (ARRAY[-1]) AS trace_address,
+    'settler' AS type,
+    TRUE AS swap_flag,
+    contract_address as project_contract_address
+ from all_tx 
