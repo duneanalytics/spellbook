@@ -22,8 +22,7 @@ with raw_transfers as (
     where
         1 = 1
         and type = 'input'
-        and tx_id = 0x06959162c165c7eb10b42d30f70ff82da89b5c1aaff5c8495eaf7cb0fc422670
-        and block_date = date '2024-10-15'
+        and block_date >= date '2024-10-15'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
@@ -46,8 +45,7 @@ with raw_transfers as (
     where
         1 = 1
         and type = 'output'
-        and tx_id = 0x06959162c165c7eb10b42d30f70ff82da89b5c1aaff5c8495eaf7cb0fc422670
-        and block_date = date '2024-10-15'
+        and block_date >= date '2024-10-15'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
