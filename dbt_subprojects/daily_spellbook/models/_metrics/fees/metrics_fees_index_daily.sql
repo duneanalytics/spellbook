@@ -30,7 +30,7 @@ select
     , d.block_date
     , d.gas_fees_usd
     , b.baseline_gas_fees_usd
-    , (d.gas_fees_usd / b.baseline_gas_fees_usd) * 100 as fees_index
+    , (d.gas_fees_usd / b.baseline_gas_fees_usd) * 10 as fees_index
 from
     daily as d
 left join

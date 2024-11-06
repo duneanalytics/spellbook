@@ -12,7 +12,6 @@ select
     , tr.transfers_index
     , tx.tx_index
     , (f.fees_index + tr.transfers_index + tx.tx_index) / 3 as dune_index
-    , 100 as baseline
 from {{ ref('metrics_fees_index_daily') }} as f
 left join
     {{ ref('metrics_transfers_index_daily') }} as tr
