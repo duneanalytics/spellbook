@@ -17,7 +17,7 @@ with evm as (
             select
                 blockchain
                 , cast(date_trunc('day', block_time) as date) as block_date
-                , hash as tx_hash
+                , count(hash) as tx_count
             from
                 {{ source('evms', 'transactions') }}
             where
@@ -25,6 +25,9 @@ with evm as (
                 {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
                 {% endif %}
+            group by
+                blockchain
+                , cast(date_trunc('day', block_time) as date)
         )
     union all
     select
@@ -34,7 +37,7 @@ with evm as (
             select
                 'tron' as blockchain
                 , cast(date_trunc('day', block_time) as date) as block_date
-                , hash as tx_hash
+                , count(hash) as tx_count
             from
                 {{ source('tron', 'transactions') }}
             where
@@ -42,13 +45,16 @@ with evm as (
                 {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
                 {% endif %}
+            group by
+                'tron'
+                , cast(date_trunc('day', block_time) as date)
         )
 )
 , solana as (
     select
         'solana' as blockchain
         , block_date
-        , id as tx_hash
+        , count(id) as tx_count
     from
         {{ source('solana', 'transactions') }}
     where
@@ -57,23 +63,43 @@ with evm as (
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
+    group by
+        'solana'
+        , block_date
+)
+, bitcoin as (
+    select
+        'bitcoin' as blockchain
+        , date as block_date
+        , sum(transaction_count) as tx_count
+    from
+        {{ source('bitcoin', 'blocks') }}
+    where
+        1 = 1
+        {% if is_incremental() %}
+        and {{ incremental_predicate('date') }}
+        {% endif %}
+    group by
+        'bitcoin'
+        , date
 )
 select
     blockchain
     , block_date
-    , count(tx_hash) as tx_count
+    , tx_count
 from
     evm
-group by
-    blockchain
-    , block_date
 union all
 select
     blockchain
     , block_date
-    , count(tx_hash) as tx_count
+    , tx_count
 from
     solana
-group by
+union all
+select
     blockchain
     , block_date
+    , tx_count
+from
+    bitcoin
