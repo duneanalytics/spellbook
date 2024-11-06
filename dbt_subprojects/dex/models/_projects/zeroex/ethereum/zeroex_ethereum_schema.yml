@@ -333,7 +333,7 @@ models:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
         0x API erc20 trades through 0x Settler RFQ contracts. No fills, only deduped transactions.
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_month
