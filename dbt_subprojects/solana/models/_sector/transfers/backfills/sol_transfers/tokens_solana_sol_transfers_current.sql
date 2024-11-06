@@ -8,7 +8,12 @@
     unique_key = ['block_date', 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'block_slot']
 ) }}
 
+with results as (
 {{ solana_sol_transfers_macro(
     "cast('2024-10-01' as timestamp)",
     "now()"
-) }} 
+) }}
+)
+
+select * from results
+where block_date > now() - interval '7' day

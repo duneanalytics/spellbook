@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: tokens_solana_sol_transfers_current
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_id
+            - outer_instruction_index
+            - inner_instruction_index
+            - block_slot
+    columns:
+      - name: block_date
+        data_tests:
+          - not_null
+      - name: tx_id
+        data_tests:
+          - not_null
+      - name: outer_instruction_index
+        data_tests:
+          - not_null
+      - name: inner_instruction_index
+        data_tests:
+          - not_null
+      - name: block_slot
+        data_tests:
+          - not_null
+
