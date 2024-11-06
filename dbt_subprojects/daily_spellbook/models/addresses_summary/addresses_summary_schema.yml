@@ -17,9 +17,9 @@ models:
         data_tests:
           - unique
       - name: first_active_time
-        description: "The block time on which the address made it's first OP Mainnet transaction"
+        description: "The block time on which the address made its first OP Mainnet transaction"
       - name: first_tx_hash
-        description: "The transaction hash on which the address made it's first OP Mainnet transaction"
+        description: "The transaction hash on which the address made its first OP Mainnet transaction"
       - name: first_function
         description: "first function called by the address"
       - name: last_active_time
