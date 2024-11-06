@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: metrics_net_transfers
+  - name: metrics_net_transfers_daily
     meta:
       sector: metrics
       contributors: jeff-dude
@@ -23,8 +23,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-            - tx_hash
-  - name: metrics_net_solana_transfers
+  - name: metrics_net_solana_transfers_daily
     meta:
       sector: metrics
       contributors: jeff-dude
@@ -36,7 +35,6 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-            - tx_id
   - name: metrics_transfers_daily
     meta:
       sector: metrics
