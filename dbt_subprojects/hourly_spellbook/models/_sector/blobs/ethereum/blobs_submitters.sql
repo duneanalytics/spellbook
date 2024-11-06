@@ -74,4 +74,6 @@ SELECT address
         , (0xf834ffbeb6bb3f4841afc6b5fb40b94cd580fa23, 'Morph', 'MorphL2')
         , (0x61f2945d4bc9e40b66a6376d1094a50438f613e2, 'Morph', 'MorphL2')
         , (0xb6cf39ee72e0127e6ea6059e38b8c197227a6ac7, 'Morph', 'MorphL2')
+        , (0x2986bf308d0684ad77cd32ee1c60429e6573b5af, 'R0AR Chain', 'th3r0ar')
+        , (0x2f60a5184c63ca94f82a27100643dbabe4f3f7fd, 'Unichain', 'unichain')
         ) AS x(address, entity, x_username)
