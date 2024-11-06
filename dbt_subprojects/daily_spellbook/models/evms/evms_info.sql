@@ -17,6 +17,7 @@
                                         , "nova"
                                         , "optimism"
                                         , "polygon"
+                                        , "ronin"
                                         , "scroll"
                                         , "sei"
                                         , "worldchain"
@@ -86,4 +87,5 @@ FROM (
         , (1329, 'sei', 'Sei Network', 'Layer 1', NULL, 'SEI', 0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7, 'https://seitrace.com/?chain=pacific-1', timestamp '2024-05-27 13:14', NULL, NULL, NULL)
         , (480, 'worldchain', 'World Chain', 'Layer 2', 'Optimistic Rollup', 'WLD', 0x2cFc85d8E48F8EAB294be644d9E25C3030863003, 'https://worldchain-mainnet.explorer.alchemy.com/', timestamp '2024-06-25 17:14', 'OP Stack', 'Ethereum Blobs', 'Ethereum')
         , (728126428, 'tron', 'TRON', 'Layer 1', null, 'TRX', from_tron_address('TNUC9Qb1rRpS5CbWLmNMxXBjyFoydXjWFR'), 'https://tronscan.org/', timestamp '2024-06-25 17:14', NULL, NULL, NULL)
+        , (2020, 'ronin', 'Ronin', 'Layer 1', null, 'RON', 0xe514d9deb7966c8be0ca922de8a064264ea6bcd4, 'https://app.roninchain.com/', timestamp '2021-01-25 10:49', NULL, NULL, NULL)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement)

@@ -37,6 +37,7 @@
     , ref('hashflow_bnb_base_trades')
     , ref('uniswap_v2_bnb_base_trades')
     , ref('swaap_v2_bnb_base_trades')
+    , ref('hyperjump_bnb_base_trades')
 ] %}
 
 
