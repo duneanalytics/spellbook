@@ -32,6 +32,44 @@ WITH transfers AS (
         AND call_block_time >= {{start_date}}
         AND call_block_time < {{end_date}}
         {% endif %}
+    UNION ALL
+    SELECT
+        'solana' as blockchain,
+        call_block_time as block_time,
+        cast(date_trunc('day', call_block_time) AS date) AS block_date,
+        cast(date_trunc('month', call_block_time) AS date) AS block_month,
+        call_block_slot as block_slot,
+        call_tx_id as tx_id,
+        call_tx_index as tx_index,
+        call_inner_instruction_index as inner_instruction_index,
+        call_outer_instruction_index as outer_instruction_index,
+        call_tx_signer as tx_signer,
+        COALESCE(tk_from.token_balance_owner, call_account_arguments[1]) AS from_owner,
+        COALESCE(tk_to.token_balance_owner, call_account_arguments[2]) AS to_owner,
+        'native' as token_version,
+        'SOL' as symbol,
+        lamports as amount,
+        lamports / 1e9 as amount_display,
+        'So11111111111111111111111111111111111111112' as token_mint_address,
+        call_outer_executing_account as outer_executing_account,
+        call_inner_executing_account as inner_executing_account,
+        'wrap' as action
+    FROM 
+        {{ source('spl_token_solana', 'spl_token_call_Transfer') }} t
+    LEFT JOIN 
+        {{ ref('solana_utils_token_accounts') }} tk_from 
+        ON tk_from.address = t.call_account_arguments[1]
+    LEFT JOIN 
+        {{ ref('solana_utils_token_accounts') }} tk_to 
+        ON tk_to.address = t.call_account_arguments[2]
+    WHERE
+        1=1
+        {% if is_incremental() %}
+        AND {{incremental_predicate('call_block_time')}}
+        {% else %}
+        AND call_block_time >= {{start_date}}
+        AND call_block_time < {{end_date}}
+        {% endif %}
 )
 , prices AS (
     SELECT
