@@ -25,7 +25,7 @@ WITH transfers AS (
         call_inner_executing_account as inner_executing_account,
         CASE WHEN tk_to.address IS NOT NULL THEN 'wrap' ELSE 'transfer' END as action -- if the token account exists, it's a wrap, otherwise it's a transfer
     FROM 
-        {{ source('spl_token_solana', 'spl_token_call_Transfer') }} t
+        {{ source('system_program_solana', 'system_program_call_Transfer') }} t
     LEFT JOIN 
         {{ ref('solana_utils_token_accounts') }} tk_from 
         ON tk_from.address = t.call_account_arguments[1]
