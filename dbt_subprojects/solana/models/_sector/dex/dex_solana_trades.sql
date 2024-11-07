@@ -24,7 +24,7 @@ with base_trades as (
         {{incremental_predicate('block_time')}}
     {% else %}
     WHERE
-        block_time >= now() - interval '7' day
+        block_time >= now() - interval '2' day
     {% endif %}
 )
 
@@ -90,7 +90,7 @@ LEFT JOIN
     {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
     {% else %}
-    AND p_bought.minute >= now() - interval '7' day
+    AND p_bought.minute >= now() - interval '2' day
     {% endif %}
 LEFT JOIN 
     {{ source('prices', 'usd') }} p_sold
@@ -100,7 +100,7 @@ LEFT JOIN
     {% if is_incremental() %}
     AND {{incremental_predicate('p_sold.minute')}}
     {% else %}
-    AND p_sold.minute >= now() - interval '7' day
+    AND p_sold.minute >= now() - interval '2' day
     {% endif %}
 -- if bought token is trusted, prefer that price, else default to sold token then bought token.
 LEFT JOIN 

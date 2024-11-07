@@ -60,7 +60,8 @@ SELECT
     , t.block_slot
     , t.tx_id
     , t.tx_index
-    , coalesce(t.inner_instruction_index, 0) as inner_instruction_index
+    , t.inner_instruction_index
+    , coalesce(t.inner_instruction_index, 0) as key_inner_instruction_index
     , t.outer_instruction_index
     , t.tx_signer
     , cast(null as varchar) as from_token_account
