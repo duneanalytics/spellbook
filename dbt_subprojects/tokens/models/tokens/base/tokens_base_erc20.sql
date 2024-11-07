@@ -403,5 +403,7 @@ FROM (VALUES
     , (0xe388a9a5bfd958106adeb79df10084a8b1d9a5ab, 'LORDY', 18)
     , (0x49ead0b1d0c493a995fd83c3ac2c013c127434fd, '$RTRN', 18)
     , (0x574178357661527601482b79af6bb1ff7cc1306a, '1984', 18)
-    , (0x63e14921ba4546cb15087d574346574eee055812, 'PVP', 18)    
+    , (0x63e14921ba4546cb15087d574346574eee055812, 'PVP', 18)
+    , (0xd68470491eb513365322810e55e0eba80785dfdd, '243M theft', 18)
+    , (0xb0505e5a99abd03d94a1169e638b78edfed26ea4, 'uSUI', 18)    
 ) AS temp_table (contract_address, symbol, decimals)
