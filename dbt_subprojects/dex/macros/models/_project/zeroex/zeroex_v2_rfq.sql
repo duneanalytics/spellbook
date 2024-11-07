@@ -59,7 +59,7 @@ settler_txs AS (
             result_0x_settler_addresses a ON a.settler_address = tr.to AND tr.block_time > a.begin_block_time
         WHERE 
             (a.settler_address IS NOT NULL OR tr.to = 0xca11bde05977b3631167028862be2a173976ca11)
-            AND varbinary_substring(input,1,4) IN (0x1fff991f, 0xfd3ad6d4)
+            AND (varbinary_position(input,0x1fff991f) <> 0 OR  varbinary_position(input,0xfd3ad6d4) <> 0 )
             {% if is_incremental() %}
                 AND {{ incremental_predicate('block_time') }}
             {% else %}
