@@ -22,6 +22,9 @@ with base_trades as (
     {% if is_incremental() %}
     WHERE
         {{incremental_predicate('block_time')}}
+    {% else %}
+    WHERE
+        block_time >= now() - interval '7' day
     {% endif %}
 )
 
@@ -86,6 +89,8 @@ LEFT JOIN
     AND bt.token_bought_mint_address = toBase58(p_bought.contract_address)
     {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
+    {% else %}
+    AND p_bought.minute >= now() - interval '7' day
     {% endif %}
 LEFT JOIN 
     {{ source('prices', 'usd') }} p_sold
@@ -94,6 +99,8 @@ LEFT JOIN
     AND bt.token_sold_mint_address = toBase58(p_sold.contract_address)
     {% if is_incremental() %}
     AND {{incremental_predicate('p_sold.minute')}}
+    {% else %}
+    AND p_sold.minute >= now() - interval '7' day
     {% endif %}
 -- if bought token is trusted, prefer that price, else default to sold token then bought token.
 LEFT JOIN 
