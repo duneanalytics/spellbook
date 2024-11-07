@@ -50,9 +50,45 @@ with fees as (
     on
         fees.blockchain = solana_vote_fees.blockchain
         and fees.block_date = solana_vote_fees.block_date
+), bitcoin_fees as (
+    with prices as (
+        select
+            day
+            , price
+        from
+            {{ source('prices', 'usd_daily') }}
+        where
+            symbol = 'BTC'
+            and blockchain is null
+            {% if is_incremental() %}
+            and {{ incremental_predicate('day') }}
+            {% endif %}
+    ), btc as (
+        select
+            date as block_date
+            , sum(total_fees) as daily_fee
+        from
+            {{ source('bitcoin', 'blocks') }}
+        where
+            date < cast(date_trunc('day', now()) as date) --exclude current day to match prices.usd_daily
+            {% if is_incremental() %}
+            and {{ incremental_predicate('date') }}
+            {% endif %}
+        group by
+            date
+    )
+    select
+        'bitcoin' as blockchain
+        , btc.block_date
+        , btc.daily_fee as gas_fees_raw
+        , prices.price as daily_price
+        , (btc.daily_fee * prices.price) as gas_fees_usd
+    from
+        btc
+    inner join
+        prices
+        on btc.block_date = prices.day
 )
-
-
 select
     blockchain
     ,block_date
@@ -67,3 +103,10 @@ left join {{ref('tron_fee_correction')}} t
     {% if is_incremental() %}
     and {{ incremental_predicate('day') }}
     {% endif %}
+union all
+select
+    blockchain
+    , block_date
+    , gas_fees_usd
+from
+    bitcoin_fees
