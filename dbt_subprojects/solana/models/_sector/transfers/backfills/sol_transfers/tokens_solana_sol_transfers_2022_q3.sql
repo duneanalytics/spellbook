@@ -1,7 +1,7 @@
 {{ config(
     schema = 'tokens_solana',
     alias = 'sol_transfers_2022_q3',
-    tags = ['static'],
+    tags = ['prod_exclude'],
     partition_by = ['block_date'],
     materialized = 'table',
     file_format = 'delta'

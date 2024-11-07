@@ -25,7 +25,7 @@
                                 ]\',
                                 "sector",
                                 "gas",
-                                \'["soispoke", "ilemi", "0xRob", "jeff-dude"]\'
+                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "0xBoxe"]\'
                             )
                         }}'
         )
