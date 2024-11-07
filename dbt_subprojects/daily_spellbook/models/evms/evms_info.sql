@@ -2,10 +2,32 @@
         schema = 'evms',
         tags = ['static'],
         alias = 'info',
-        post_hook = '{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "sei", "worldchain"]\',
+        post_hook = '{{ expose_spells(\'[
+                                        "arbitrum"
+                                        , "avalanche_c"
+                                        , "base"
+                                        , "blast"
+                                        , "bnb"
+                                        , "celo"
+                                        , "ethereum"
+                                        , "fantom"
+                                        , "gnosis"
+                                        , "kaia"
+                                        , "linea"
+                                        , "nova"
+                                        , "optimism"
+                                        , "polygon"
+                                        , "ronin"
+                                        , "scroll"
+                                        , "sei"
+                                        , "worldchain"
+                                        , "zksync"
+                                        , "zkevm"
+                                        , "zora"
+                                        ]\',
                                         "sector",
                                         "evms",
-                                        \'["hildobby", "hosuke"]\') }}')
+                                        \'["hildobby", "hosuke", "jeff-dude"]\') }}')
 }}
 
 SELECT chain_id
@@ -46,7 +68,7 @@ FROM (
         , (7700, 'canto', 'Canto', 'Layer 2', NULL, 'ETH', NULL, 'https://evm.explorer.canto.io/', timestamp '2022-07-26 19:27', NULL, 'Ethereum', 'Ethereum')
         , (420, 'optimism_goerli', 'Optimism Goerli', 'Testnet', 'Optimistic Rollup', 'GTH', 0x4200000000000000000000000000000000000006, 'https://optimism-goerli.blockscout.com/', timestamp '2022-06-09 16:55', 'OP Stack', 'Goerli', 'Goerli')
         , (1313161554, 'aurora', 'Aurora', 'Layer 2', NULL, 'ETH', 0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB, 'https://explorer.aurora.dev/', timestamp '2020-07-21 21:50:11', NULL, NULL, NULL)
-        , (8217, 'klaytn', 'Klaytn', 'Layer 1', NULL, 'KLAY', 0xe4f05a66ec68b54a58b17c22107b02e0232cc817, 'https://scope.klaytn.com/', timestamp '2019-06-25 13:41:14', NULL, NULL, NULL)
+        , (8217, 'kaia', 'Kaia', 'Layer 1', NULL, 'KAIA', 0xe4f05a66ec68b54a58b17c22107b02e0232cc817, 'https://kaiascope.com/', timestamp '2019-06-25 13:41:14', NULL, NULL, NULL)
         , (34443, 'mode', 'Mode', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.mode.network/', timestamp '2023-11-16 20:46:23', 'OP Stack', 'Ethereum Blobs', 'Ethereum')
         , (291, 'orderly', 'Orderly Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.orderly.network/', timestamp '2023-10-06 16:03:49', 'OP Stack', 'Ethereum', 'Ethereum')
         , (957, 'lyra', 'Lyra', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.lyra.finance/', cast(NULL AS timestamp), 'OP Stack', 'Ethereum', 'Ethereum')
@@ -65,4 +87,5 @@ FROM (
         , (1329, 'sei', 'Sei Network', 'Layer 1', NULL, 'SEI', 0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7, 'https://seitrace.com/?chain=pacific-1', timestamp '2024-05-27 13:14', NULL, NULL, NULL)
         , (480, 'worldchain', 'World Chain', 'Layer 2', 'Optimistic Rollup', 'WLD', 0x2cFc85d8E48F8EAB294be644d9E25C3030863003, 'https://worldchain-mainnet.explorer.alchemy.com/', timestamp '2024-06-25 17:14', 'OP Stack', 'Ethereum Blobs', 'Ethereum')
         , (728126428, 'tron', 'TRON', 'Layer 1', null, 'TRX', from_tron_address('TNUC9Qb1rRpS5CbWLmNMxXBjyFoydXjWFR'), 'https://tronscan.org/', timestamp '2024-06-25 17:14', NULL, NULL, NULL)
+        , (2020, 'ronin', 'Ronin', 'Layer 1', null, 'RON', 0xe514d9deb7966c8be0ca922de8a064264ea6bcd4, 'https://app.roninchain.com/', timestamp '2021-01-25 10:49', NULL, NULL, NULL)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement)

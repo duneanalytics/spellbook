@@ -3,10 +3,37 @@
         schema = 'tokens'
         ,alias = 'erc20'
         ,materialized = 'table'
-        ,post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","base","bnb","celo","ethereum","fantom","fuse","gnosis","goerli","mantle","optimism","polygon","scroll","zkevm","zksync","zora","blast","sepolia","sei","nova","linea"]\',
-                        "sector",
-                        "tokens",
-                        \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum"]\') }}'
+        ,partition_by = ['blockchain']
+        ,post_hook='{{ expose_spells(\'[
+                                        "arbitrum"
+                                        ,"avalanche_c"
+                                        ,"base"
+                                        ,"blast"
+                                        ,"bnb"
+                                        ,"celo"
+                                        ,"ethereum"
+                                        ,"fantom"
+                                        ,"fuse"
+                                        ,"gnosis"
+                                        ,"goerli"
+                                        ,"kaia"
+                                        ,"linea"
+                                        ,"mantle"
+                                        ,"nova"
+                                        ,"optimism"
+                                        ,"ronin"
+                                        ,"polygon"
+                                        ,"scroll"
+                                        ,"sei"
+                                        ,"sepolia"
+                                        ,"worldchain"
+                                        ,"zkevm"
+                                        ,"zksync"
+                                        ,"zora"
+                                    ]\',
+                                    "sector",
+                                    "tokens",
+                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum"]\') }}'
     )
 }}
 
@@ -39,6 +66,9 @@
     ,'tokens_nova': {'blockchain': 'nova', 'model': ref('tokens_nova_erc20')}
     ,'tokens_linea': {'blockchain': 'linea', 'model': ref('tokens_linea_erc20')}
     ,'tokens_worldchain': {'blockchain': 'worldchain', 'model': ref('tokens_worldchain_erc20')}
+    ,'tokens_kaia': {'blockchain': 'kaia', 'model': ref('tokens_kaia_erc20')}
+    ,'tokens_tron': {'blockchain': 'tron', 'model': ref('tokens_tron_erc20')}
+    ,'tokens_ronin': {'blockchain': 'ronin', 'model': ref('tokens_ronin_erc20')}
 } %}
 
 with automated_source as (

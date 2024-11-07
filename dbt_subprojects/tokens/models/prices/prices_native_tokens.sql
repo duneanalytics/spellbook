@@ -78,12 +78,14 @@ FROM
     ('flr-flare-network', null, 'FLR', null, null),
     ('ar-arweave', null, 'AR', null, null),
     ('glmr-moonbeam', null, 'GLMR', null, null),
-    ('klay-klaytn', null, 'KLAY', null, null),
+    ('klay-klaytn', null, 'KLAY', null, null), --old symbol was KLAY, new symbol is KAIA, keep for existing queries downstream
+    ('klay-klaytn', null, 'KAIA', null, null), --coinpaprika hasn't updated token yet post-migration
     ('fuse-fuse-network', null, 'FUSE', null, null),
     ('zel-zelcash', null, 'FLUX', null, null),
     ('myria-myria', null, 'MYRIA', null, null),
     ('mode-mode', null, 'MODE', null,null),
     ('ton-toncoin', null, 'TON', null,null),
     ('strk-starknet', null, 'STRK', null,null),
-    ('kda-kadena', null, 'KDA', null, null)
+    ('kda-kadena', null, 'KDA', null, null),
+    ('ron-ronin-token', null, 'RON', null, null)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

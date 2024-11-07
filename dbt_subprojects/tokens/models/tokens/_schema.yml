@@ -3,11 +3,11 @@ version: 2
 models:
   - name: tokens_erc20
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, mantle, optimism, fantom, polygon, base, blast, sepolia, sei, nova, worldchain
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, mantle, optimism, fantom, polygon, base, blast, sepolia, sei, nova, worldchain, kaia, ronin
       sector: tokens
       contributors: hildobby, 0xManny, dot2dotseurat, soispoke, mtitus6, wuligy, angus_1, Henrystats, viniabussafi, jeff-dude, rantum, hosuke
     config:
-      tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'mantle', 'optimism', 'fantom', 'base', 'blast', 'sei', 'nova', 'linea', 'worldchain']
+      tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'mantle', 'optimism', 'fantom', 'base', 'blast', 'sei', 'nova', 'linea', 'worldchain', 'kaia', 'ronin']
     description: >
         Crosschain ERC20 tokens
     data_tests:

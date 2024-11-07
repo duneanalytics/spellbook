@@ -1,6 +1,7 @@
 {{
     config(
         schema='boost',
+        tags = ['prod_exclude'],
         alias='deployed',
         materialized='incremental',
         file_format='delta',
@@ -49,7 +50,7 @@ from
     {% endif %}
     {% endfor %}
 )
-where 
+where
     creator <> 0xa4c8bb4658bc44bac430699c8b7b13dab28e0f4e
     and start_time > 0
     and end_time < 1e11
