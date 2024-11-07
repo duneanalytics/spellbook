@@ -3,7 +3,7 @@
 There are a few main use cases for opening GH issues in spellbook:
 
 1. **Report a bug** found on an existing spell.
-2. **Suggest enhancements** on existing spells.
+2. **Suggest enhancements** for existing spells.
 3. **Share an idea for a new spell** & have upfront discussions on the design prior to developing.
     - **Note**: This is especially important for new sector spells, that contain multiple projects across multiple blockchains.
 
