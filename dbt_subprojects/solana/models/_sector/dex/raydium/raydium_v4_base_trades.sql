@@ -58,7 +58,7 @@
             AND {{incremental_predicate('trs_1.block_time')}}
             {% else %}
             AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
-            -- AND trs_1.block_time >= now() - interval '7' day
+            AND trs_1.block_time >= now() - interval '7' day
             {% endif %}
         INNER JOIN {{ ref('tokens_solana_transfers') }} trs_2
             ON trs_2.tx_id = sp.call_tx_id
@@ -72,7 +72,7 @@
             AND {{incremental_predicate('trs_2.block_time')}}
             {% else %}
             AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
-            -- AND trs_2.block_time >= now() - interval '7' day
+            AND trs_2.block_time >= now() - interval '7' day
             {% endif %}
         LEFT JOIN {{ ref('solana_utils_token_accounts') }} tk_2 ON tk_2.address = trs_2.from_token_account
             AND tk_2.account_type = 'fungible'
@@ -83,7 +83,7 @@
         AND {{incremental_predicate('sp.call_block_time')}}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
-        -- AND sp.call_block_time >= now() - interval '7' day --qa
+        AND sp.call_block_time >= now() - interval '7' day --qa
         {% endif %}
         --force
     )

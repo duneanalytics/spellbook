@@ -25,6 +25,7 @@
 
 {% set solana_dexes = [
    ref('raydium_v3_base_trades')
+   , ref('raydium_v4_base_trades')
 ] %}
 
 {% for dex in solana_dexes %}
@@ -57,7 +58,7 @@ WHERE
       {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not is_incremental() %}
-WHERE block_time >= now() - interval '2' day
+WHERE block_time >= now() - interval '7' day
 {% endif %}
 {% if not loop.last %}
 UNION ALL
