@@ -19,7 +19,7 @@ Contributions in the form of issues and pull requests are very much welcome here
 
 ## [BETA] Pre-push hooks
 
-UPDATE: These pre-push hooks require running `dbt compile` which is a fairly slow step due to the size of our project. We intend to rewrite these hooks to be more efficient but for the time being they remain cumbersome. Feel free to use them if you find them useful but the same checks will run in a Github Action when you commit your code. Feel free to uninstall if they do not bring joy, we'll let wizards know when we think we've improved them enought to warrant making them part of the general development flow.
+UPDATE: These pre-push hooks require running `dbt compile` which is a fairly slow step due to the size of our project. We intend to rewrite these hooks to be more efficient but for the time being they remain cumbersome. Feel free to use them if you find them useful but the same checks will run in a Github Action when you commit your code. Feel free to uninstall if they do not bring joy, we'll let wizards know when we think we've improved them enough to warrant making them part of the general development flow.
 
 We are testing out adding pre-push hooks to our workflow. The goal is to catch common errors before code is pushed and
 streamline the pull request review process.
