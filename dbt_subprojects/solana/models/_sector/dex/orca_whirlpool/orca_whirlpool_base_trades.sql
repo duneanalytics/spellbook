@@ -203,7 +203,8 @@ with
                 {% if is_incremental() %}
                 AND {{incremental_predicate('call_block_time')}}
                 {% else %}
-                AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+                AND call_block_time >= TIMESTAMP '2024-11-01'  -- Hardcoded date filter 
+                --AND call_block_time >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
 
                 UNION ALL
@@ -213,7 +214,8 @@ with
                 {% if is_incremental() %}
                 AND {{incremental_predicate('call_block_time')}}
                 {% else %}
-                AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+                AND call_block_time >= TIMESTAMP '2024-11-01'  -- Hardcoded date filter 
+                --AND call_block_time >= TIMESTAMP '{{project_start_date}}'
                 {% endif %}
             )
             sp
@@ -230,7 +232,8 @@ with
             {% if is_incremental() %}
             AND {{incremental_predicate('tr_1.block_time')}}
             {% else %}
-            AND tr_1.block_time >= TIMESTAMP '{{project_start_date}}'
+            AND tr_1.block_time >= TIMESTAMP '2024-11-01'  -- Hardcoded date filter 
+            --AND tr_1.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
         INNER JOIN {{ ref('tokens_solana_transfers') }} tr_2
             ON tr_2.tx_id = sp.call_tx_id
@@ -242,7 +245,8 @@ with
             {% if is_incremental() %}
             AND {{incremental_predicate('tr_2.block_time')}}
             {% else %}
-            AND tr_2.block_time >= TIMESTAMP '{{project_start_date}}'
+            AND tr_2.block_time >= TIMESTAMP '2024-11-01'  -- Hardcoded date filter 
+            --AND tr_2.block_time >= TIMESTAMP '{{project_start_date}}'
             {% endif %}
     )
 
