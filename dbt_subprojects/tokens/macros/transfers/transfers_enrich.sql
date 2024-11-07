@@ -13,6 +13,7 @@ END
     , prices_model = null
     , evms_info_model = null
     , transfers_start_date = '2000-01-01'
+    , transfers_end_date = '9999-12-31'
     , blockchain = null
     , usd_amount_threshold = 25000000000
     )
@@ -23,10 +24,11 @@ WITH base_transfers as (
         *
     FROM
         {{ base_transfers }}
-    {% if is_incremental() %}
     WHERE
-        {{ incremental_predicate('block_date') }}
-    {% endif %}
+        block_date BETWEEN DATE '{{ transfers_start_date }}' AND DATE '{{ transfers_end_date }}'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('block_date') }}
+        {% endif %}
 )
 , prices AS (
     SELECT
@@ -38,13 +40,11 @@ WITH base_transfers as (
         , price
     FROM
         {{ prices_model }}
-    {% if is_incremental() %}
     WHERE
-        {{ incremental_predicate('minute') }}
-    {% else %}
-    WHERE
-        minute >= TIMESTAMP '{{ transfers_start_date }}'
-    {% endif %}
+        minute BETWEEN TIMESTAMP '{{ transfers_start_date }}' AND TIMESTAMP '{{ transfers_end_date }}'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('minute') }}
+        {% endif %}
 )
 , transfers as (
     SELECT
