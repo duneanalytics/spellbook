@@ -16,7 +16,7 @@
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
-  allFeePayments AS (
+  all_fee_payments AS (
     SELECT
       tx_id,
       'SOL' AS feeTokenType,
@@ -37,7 +37,7 @@ WITH
         OR address = '{{fee_receiver_2}}'
       )
   ),
-  botTrades AS (
+  bot_trades AS (
     SELECT
       trades.block_time,
       CAST(date_trunc('day', trades.block_time) AS date) AS block_date,
@@ -100,7 +100,7 @@ WITH
       AND trades.block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
   ),
-  highestInnerInstructionIndexForEachTrade AS (
+  highest_inner_instruction_index_for_each_trade AS (
     SELECT
       tx_id,
       outer_instruction_index,
@@ -145,9 +145,9 @@ SELECT
   ) AS is_last_trade_in_transaction
 FROM
   botTrades
-  JOIN highestInnerInstructionIndexForEachTrade ON (
-    botTrades.tx_id = highestInnerInstructionIndexForEachTrade.tx_id
-    AND botTrades.outer_instruction_index = highestInnerInstructionIndexForEachTrade.outer_instruction_index
+  JOIN highest_inner_instruction_index_for_each_trade ON (
+    bot_trades.tx_id = highest_inner_instruction_index_for_each_trade.tx_id
+    AND bot_trades.outer_instruction_index = highest_inner_instruction_index_for_each_trade.outer_instruction_index
   )
 ORDER BY
   block_time DESC,
