@@ -13,7 +13,7 @@ with evm as (
     select
         blockchain
         , block_date
-        , count(distinct tx_hash) as tx_count
+        , approx_distinct(tx_hash) as tx_count --max 2% error, which is fine
     from
         {{ source('tokens', 'transfers') }}
     where
@@ -29,7 +29,7 @@ with evm as (
     select
         'solana' as blockchain
         , block_date
-        , count(distinct tx_id) as tx_count
+        , approx_distinct(tx_id) as tx_count
     from
         {{ source('tokens_solana', 'transfers') }}
     where
@@ -46,7 +46,7 @@ with evm as (
     select
         blockchain
         , block_date
-        , count(distinct tx_id) as tx_count
+        , approx_distinct(tx_id) as tx_count
     from
         {{ source('transfers_bitcoin', 'satoshi') }}
     where
