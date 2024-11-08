@@ -20,6 +20,7 @@ with raw_transfers as (
         {{ source('tokens_solana', 'transfers') }}
     where
         1 = 1
+        and action != 'wrap'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
@@ -41,6 +42,7 @@ with raw_transfers as (
         {{ source('tokens_solana', 'transfers') }}
     where
         1 = 1
+        and action != 'wrap'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
