@@ -21,6 +21,7 @@ with raw_transfers as (
     where
         1 = 1
         and action != 'wrap'
+        and block_date >= date '2024-11-01'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
@@ -43,6 +44,7 @@ with raw_transfers as (
     where
         1 = 1
         and action != 'wrap'
+        and block_date >= date '2024-11-01'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
