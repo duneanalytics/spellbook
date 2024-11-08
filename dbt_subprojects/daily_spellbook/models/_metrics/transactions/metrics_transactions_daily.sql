@@ -52,7 +52,7 @@ with evm as (
     where
         1 = 1
         {% if is_incremental() %}
-        and {{ incremental_predicate('date') }}
+        and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
         blockchain
