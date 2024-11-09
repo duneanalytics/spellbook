@@ -1686,7 +1686,7 @@ FROM (VALUES
     , (0x714d7321fe17acbcf1d64fd3a48ac22d3d214204, 'ShapeShift', 'ShapeShift Gas Supplier 21', 'hildobby', date '2024-10-06')
     , (0x5d089c8141e58773bc88fba973198b3ec95aa501, 'ShapeShift', 'ShapeShift Gas Supplier 22', 'hildobby', date '2024-10-06')
     , (0x5aa107c71a314cada39db8fe7f9b591f67521c14, 'ShapeShift', 'ShapeShift Gas Supplier 23', 'hildobby', date '2024-10-12')
-
+    , (0x7b9bc474667db2ffe5b08d000f1acc285b2ae47d, 'ShapeShift', 'ShapeShift Gas Supplier 24', 'hildobby', date '2024-11-08')
     -- Shakepay
     , (0x912fd21d7a69678227fe6d08c64222db41477ba0, 'Shakepay', 'Shakepay 1', 'hildobby', date '2023-11-17')
     , (0x000f422887ea7d370ff31173fd3b46c8f66a5b1c, 'Shakepay', 'Shakepay 2', 'hildobby', date '2023-11-17')
@@ -2376,6 +2376,7 @@ FROM (VALUES
     , (0x6efb20f61b80f6a7ebe7a107bace58288a51fb34, 'BiKi', 'BiKi 2', 'hildobby', date '2023-11-23')
     , (0xf71cbf6758aaaaf06ebcca5447019c31bb145782, 'BiKi', 'BiKi Gas Supplier 1', 'hildobby', date '2023-11-23')
     , (0xfd736faa01073d35c148b61093e6ae562b2f8544, 'BiKi', 'BiKi Gas Supplier 2', 'hildobby', date '2023-11-23')
+    , (0x06ba294d190b5f9788ffca86ce19a43cd746d36a, 'BiKi', 'BiKi Gas Supplier 3', 'hildobby', date '2024-11-08')
     -- Coindelta
     , (0xb6ba1931e4e74fd080587688f6db10e830f810d5, 'Coindelta', 'Coindelta 1', 'hildobby', date '2023-04-06')
     -- Gamdom
