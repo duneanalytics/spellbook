@@ -101,7 +101,7 @@ models:
   - name: mock_table
     columns:
       - name: tx_id
-        tests:
+        data_tests:
           - unique
           - not_null
 ```

@@ -9,7 +9,7 @@ models:
     config:
       tags: ['cex','addresses', 'deposits', 'withdrawals', 'base']
     description: "All CEX-tied addresses identified on Base"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain

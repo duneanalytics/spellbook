@@ -16,7 +16,7 @@ models:
       - &address
         name: address
         description: "Safe contract address"
-        tests:
+        data_tests:
           - unique
           - not_null
 

@@ -1,7 +1,6 @@
 {% macro nft_transfers(blockchain, base_transactions, erc721_transfers, erc1155_single, erc1155_batch ) %}
 {%- set token_standard_721 = 'bep721' if blockchain == 'bnb' else 'erc721' -%}
 {%- set token_standard_1155 = 'bep1155' if blockchain == 'bnb' else 'erc1155' -%}
-{%- set spark_mode = True -%} {# TODO: Potential bug. Consider disabling #}
 {%- set denormalized = True if blockchain in ['base'] else False -%}
 SELECT
     *
@@ -95,16 +94,12 @@ FROM(
     , t.evt_tx_hash AS tx_hash
     , {{ dbt_utils.generate_surrogate_key(['t.evt_tx_hash', 't.evt_index', 't.id', 't.value']) }} as unique_transfer_id -- For backward compatibility
     FROM (
-        SELECT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index {% if denormalized == True %}, t.evt_tx_from {% endif %}
+        SELECT DISTINCT t.evt_block_time, t.evt_block_number, t.evt_tx_hash, t.contract_address, t."from", t.to, t.evt_index {% if denormalized == True %}, t.evt_tx_from {% endif %}
         , value, id
         FROM {{ erc1155_batch }} t
         CROSS JOIN unnest(zip(t."values", t.ids)) AS foo(value, id)
         {% if is_incremental() %}
         WHERE {{incremental_predicate('t.evt_block_time')}}
-        {% endif %}
-        {% if spark_mode == True %}
-        {# This deduplicates rows. Double check if this is correct or not #}
-        GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9 {% if denormalized == True %}, 10 {% endif %}
         {% endif %}
         ) t
     {%- if denormalized == False %}
@@ -113,14 +108,8 @@ FROM(
         {% if is_incremental() %}
         AND {{incremental_predicate('et.block_time')}}
         {% endif %}
-    {%- endif -%}
-    {% if spark_mode == True %}
-    {# TODO: This is a bug. In the comparsion t.value > 0, spark converts t.value to an integer before the comparison,
-    or null (i.e., false) if it overflows) #}
-    WHERE t.value > uint256 '0' and t.value < uint256 '{{2**31}}'
-    {% else %}
+    {%- endif %}
     WHERE t.value > uint256 '0'
-    {% endif %}
 )
 
 {% endmacro %}

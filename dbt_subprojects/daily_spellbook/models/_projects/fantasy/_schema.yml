@@ -33,6 +33,8 @@ models:
         description: "The list of minted fantasy.top card token ids"
       - name: burned_ids
         description: "The list of burned fantasy.top card token ids"
+      - name: traded_ids
+        description: "The list of traded fantasy.top card token ids"
       - name: traded_with
         description: "Who was on the other side of this executed trade"
       - name: tx_from

@@ -9,7 +9,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools base data (helper view)"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool_id
@@ -17,6 +17,8 @@ models:
     columns:
       - &block_time_created
         name: block_time_created
+        data_tests:
+          - not_null
       - &block_time_product_updated
         name: block_time_product_updated
       - &block_time_manager_updated
@@ -25,9 +27,13 @@ models:
         name: block_time_fee_updated
       - &block_time_updated
         name: block_time_updated
+        data_tests:
+          - not_null
       - &pool_id
         name: pool_id
         description: "pool id"
+        data_tests:
+          - not_null
       - &pool_address
         name: pool_address
         description: "pool contract deployment address"
@@ -55,6 +61,8 @@ models:
       - &product_id
         name: product_id
         description: "product id"
+        data_tests:
+          - not_null
       - &product_name
         name: product_name
       - &product_type
@@ -96,7 +104,7 @@ models:
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
     description: "Staking pools base data (materialised)"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool_id
@@ -132,8 +140,8 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staking pools event history for Nexus Mutual on Ethereum"
-    tests:
+    description: "Staking pools event history"
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - flow_type
@@ -147,6 +155,9 @@ models:
       - &block_time
         name: block_time
         description: "UTC event block time"
+      - &block_date
+        name: block_date
+        description: "event block date"
       - *pool_address
       - &token_id
         name: token_id
@@ -182,6 +193,42 @@ models:
         name: tx_hash
         description: "unique transaction hash value"
 
+  - name: nexusmutual_ethereum_staking_deposit_ordered
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking pools deposit ordered"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - block_time
+            - evt_index
+            - tx_hash
+    columns:
+      - *block_time
+      - *flow_type
+      - &stake_start_date
+        name: stake_start_date
+      - &stake_end_date
+        name: stake_end_date
+      - *pool_address
+      - *token_id
+      - *tranche_id
+      - *init_tranche_id
+      - *new_tranche_id
+      - *tranche_expiry_date
+      - *is_active
+      - *amount
+      - *topup_amount
+      - *user
+      - *evt_index
+      - *tx_hash
+      - name: deposit_rn
+
   - name: nexusmutual_ethereum_staking_deposit_extensions
     meta:
       blockchain: ethereum
@@ -189,23 +236,103 @@ models:
       contributors: tomfutago
     config:
       tags: ["ethereum", "nexusmutual", "staking"]
-    description: "Staking pools deposit extensions for Nexus Mutual on Ethereum"
-    tests:
+    description: "Staking pools deposit extensions"
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - pool_address
             - token_id
             - init_tranche_id
             - current_tranche_id
+            - stake_start_date
+            - stake_end_date
     columns:
       - *block_time
+      - *block_date
       - *pool_address
       - *token_id
       - *init_tranche_id
       - name: current_tranche_id
         description: "current staking tranche period (most recent one in the chain of extensions)"
-      - name: total_amount
+      - name: amount
         description: "total staking amount (initial deposit + all top-up amounts)"
+      - *stake_start_date
+      - *stake_end_date
       - *is_active
+      - name: chain_level
+        description: "chain (recursion) level"
+      - name: token_tranche_rn
+        description: "descending row number per pool, token & tranche"
       - *evt_index
       - *tx_hash
+
+  - name: nexusmutual_ethereum_staking_rewards
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking rewards minted at cover buy event - to be streamed over cover period"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - cover_id
+    columns:
+      - *block_time
+      - *block_date
+      - *pool_id
+      - *product_id
+      - name: cover_id
+      - name: cover_start_date
+      - name: cover_end_date
+      - name: cover_end_bucket_expiry_date
+      - name: reward_amount_expected_total
+      - name: reward_amount_per_second
+      - name: reward_amount_per_day
+      - *tx_hash
+
+  - name: nexusmutual_ethereum_staked_per_pool
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking rewards minted at cover buy event - to be streamed over cover period"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+    columns:
+      - *block_date
+      - *pool_id
+      - *pool_address
+      - &total_staked_nxm
+        name: total_staked_nxm
+      - name: pool_date_rn
+
+  - name: nexusmutual_ethereum_staked_per_token
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking rewards minted at cover buy event - to be streamed over cover period"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+            - token_id
+    columns:
+      - *block_date
+      - *pool_id
+      - *pool_address
+      - *token_id
+      - *total_staked_nxm
+      - name: stake_expiry_date
+      - name: token_date_rn

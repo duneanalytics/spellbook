@@ -12,7 +12,7 @@ models:
     config:
       tags: ['rwa', 'tokens']
     description: "RWA tokens"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - token_address
@@ -42,7 +42,7 @@ models:
     config:
       tags: ['rwa', 'tokens']
     description: "RWA tokens DEX Pools"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - token_address, pool
@@ -71,7 +71,7 @@ models:
     config:
       tags: ['rwa', 'balances']
     description: "Balances of RWA token holders"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day
@@ -123,7 +123,7 @@ models:
     config:
       tags: ['rwa', 'balances']
     description: "Balances of RWA token DEXes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - day

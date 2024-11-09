@@ -16,6 +16,9 @@
     , ref('icecreamswap_v2_scroll_base_trades')
     , ref('maverick_v2_scroll_base_trades')
     , ref('swaap_v2_scroll_base_trades')
+    , ref('leetswap_scroll_base_trades')
+    , ref('spacefi_scroll_base_trades')
+    , ref('punkswap_scroll_base_trades')
 ] %}
 
 WITH base_union AS (

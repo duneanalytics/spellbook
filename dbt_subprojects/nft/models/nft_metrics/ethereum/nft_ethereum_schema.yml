@@ -34,7 +34,7 @@ models:
       tags: ['nft', 'ethereum', 'top minters']
     description: >
         Top 50 NFT minters
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - nft_contract_address
@@ -60,7 +60,7 @@ models:
       tags: ['nft', 'ethereum', 'wallet pnl']
     description: >
         Top 50 nft traders based on profit from nft.trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - wallet
@@ -90,7 +90,7 @@ models:
       tags: ['nft','ethereum', 'sales stats','volume']
     description: >
         This spell aggregates nft collections trading stats (volume, floor price) and pulls the data from nft.trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date
@@ -125,7 +125,7 @@ models:
     columns:
       - name: wallet
         description: "NFT trader's wallet address"
-        tests:
+        data_tests:
           - unique
       - name: unique_collections_traded
         description: "Count of unqiue collections/ERC721-contracts traded"

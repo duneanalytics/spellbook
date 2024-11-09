@@ -57,6 +57,7 @@ SELECT m.evt_block_time AS block_time
 , m.firstTokenId+90, m.firstTokenId+91, m.firstTokenId+92, m.firstTokenId+93, m.firstTokenId+94, m.firstTokenId+95, m.firstTokenId+96, m.firstTokenId+97, m.firstTokenId+98, m.firstTokenId+99
     ], x -> x <= lastTokenId) AS minted_ids
 , NULL AS burned_ids
+, NULL AS traded_ids
 , NULL AS traded_with
 , m.evt_tx_from AS tx_from
 , m.evt_tx_to AS tx_to
@@ -93,6 +94,7 @@ SELECT evt_block_time AS block_time
 , CAST(cardinality(burntTokenIds) AS double) AS cards_burned
 , ARRAY[mintedTokenId] AS minted_ids
 , burntTokenIds AS burned_ids
+, NULL AS traded_ids
 , NULL AS traded_with
 , evt_tx_from AS tx_from
 , evt_tx_to AS tx_to
@@ -125,6 +127,7 @@ SELECT evt_block_time AS block_time
 , CAST(cardinality(burntTokenIds) AS double) AS cards_burned
 , mintedTokenIds AS minted_ids
 , burntTokenIds AS burned_ids
+, NULL AS traded_ids
 , NULL AS traded_with
 , evt_tx_from AS tx_from
 , evt_tx_to AS tx_to
@@ -157,6 +160,7 @@ SELECT nftt.block_time
 , CAST(0 AS double) AS cards_burned
 , NULL AS minted_ids
 , NULL AS burned_ids
+, nftt.token_id AS traded_ids
 , CASE WHEN nftt.trade_category='Buy' THEN nftt.seller ELSE nftt.buyer END AS traded_with
 , nftt.tx_from
 , nftt.tx_to
@@ -178,7 +182,7 @@ INNER JOIN {{ source('blast', 'transactions') }} txs ON txs.block_number=nftt.bl
     AND txs.hash=nftt.tx_hash
 LEFT JOIN {{source('nft_blast', 'wash_trades')}} wt ON wt.project = 'fantasy'
     AND wt.block_number=nftt.block_number
-    AND wt.tx_hash=nftt.tx_hash
+    AND nftt.unique_trade_id=wt.unique_trade_id
 WHERE nftt.blockchain = 'blast'
 AND nftt.project = 'fantasy'
 
@@ -196,6 +200,7 @@ SELECT block_time
 , CAST(0 AS double) AS cards_burned
 , NULL AS minted_ids
 , NULL AS burned_ids
+, NULL AS traded_ids
 , NULL AS traded_with
 , tx_from
 , tx_to

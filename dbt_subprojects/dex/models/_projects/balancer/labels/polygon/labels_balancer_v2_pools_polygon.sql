@@ -246,8 +246,21 @@ WITH pools AS (
     0 AS normalized_weight,
     cc._name,
     'FX' AS pool_type
-  FROM {{ source('xavefinance_avalanche_c', 'FXPoolFactory_call_newFXPool') }} cc
+  FROM {{ source('xavefinance_polygon', 'FXPoolFactory_call_newFXPool') }} cc
   CROSS JOIN UNNEST(_assetsToRegister) AS t (token)
+  WHERE call_success
+
+  UNION ALL
+  
+  SELECT
+    cc.output_balancerPoolId AS pool_id,
+    _baseToken AS token_address,
+    0 AS normalized_weight,
+    COALESCE(CONCAT('LP-', t.symbol), '?') AS name,
+    'FX' AS pool_type
+  FROM {{ source('xavefinance_avalanche_c', 'FXPoolDeployer_call_newFXPool') }} cc
+  LEFT JOIN {{ source('tokens', 'erc20') }} t ON cc._baseToken = t.contract_address
+  AND blockchain = 'avalanche_c'
   WHERE call_success
 ),
 

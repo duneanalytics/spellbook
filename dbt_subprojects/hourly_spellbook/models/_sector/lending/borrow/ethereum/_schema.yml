@@ -10,7 +10,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'aave', 'compound', 'ethereum']
     description: "Aave v1 borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -21,27 +21,27 @@ models:
       - &blockchain
         name: blockchain
         description: "Blockchain name"
-        tests:
+        data_tests:
           - not_null
       - &project
         name: project
         description: "Project name"
-        tests:
+        data_tests:
           - not_null
       - &version
         name: version
         description: "Version of the contract built and deployed by the lending project"
-        tests:
+        data_tests:
           - not_null
       - &transaction_type
         name: transaction_type
         description: "Transaction type"
-        tests:
+        data_tests:
           - not_null
       - &token_address
         name: token_address
         description: "Token contract address"
-        tests:
+        data_tests:
           - not_null
       - &borrower
         name: borrower
@@ -64,27 +64,27 @@ models:
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
-        tests:
+        data_tests:
           - not_null
       - &block_number
         name: block_number
         description: "Event block number"
-        tests:
+        data_tests:
           - not_null
       - &project_contract_address
         name: project_contract_address
         description: "Project contract address"
-        tests:
+        data_tests:
           - not_null
       - &tx_hash
         name: tx_hash
         description: "Transaction hash of the event"
-        tests:
+        data_tests:
           - not_null
       - &evt_index
         name: evt_index
         description: "Event index"
-        tests:
+        data_tests:
           - not_null
 
   - name: aave_v1_ethereum_base_borrow
@@ -96,7 +96,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'aave', 'ethereum']
     description: "All Aave borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -134,7 +134,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'aave', 'v2', 'ethereum']
     description: "Aave v2 borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -172,7 +172,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'aave', 'v3', 'ethereum']
     description: "Aave v3 borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -210,7 +210,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'aave', 'lido', 'v3', 'ethereum']
     description: "Aave v3 borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -219,6 +219,44 @@ models:
             - evt_index
       - check_lending_base_borrow_seed:
           seed_file: ref('aave_lido_ethereum_base_borrow_seed')
+          filter:
+            version: 3
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *on_behalf_of
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+
+  - name: aave_etherfi_v3_ethereum_base_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave_etherfi
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'etherfi', 'v3', 'ethereum']
+    description: "Aave v3 borrow transactions on Ethereum"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('aave_etherfi_ethereum_base_borrow_seed')
           filter:
             version: 3
     columns:
@@ -248,7 +286,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'compound', 'v1', 'ethereum']
     description: "Compound v1 borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -282,7 +320,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'compound', 'v2', 'ethereum']
     description: "Compound v2 borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -320,7 +358,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'compound', 'v3', 'ethereum']
     description: "Compound v3 borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -358,7 +396,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'aave', 'radiant', 'ethereum']
     description: "Radiant borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -394,7 +432,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'aave', 'uwulend', 'ethereum']
     description: "Uwulend borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -430,7 +468,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'aave', 'spark', 'ethereum']
     description: "Spark Protocol borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -466,7 +504,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'compound', 'fluxfinance', 'ethereum']
     description: "Flux Finance borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -502,7 +540,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'compound', 'strike', 'ethereum']
     description: "Strike borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -538,7 +576,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'compound', 'granary', 'ethereum']
     description: "Granary borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type
@@ -575,7 +613,7 @@ models:
     config:
       tags: ['lending', 'borrow', 'compound', 'morpho', 'ethereum']
     description: "Morpho borrow transactions on Ethereum"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - transaction_type

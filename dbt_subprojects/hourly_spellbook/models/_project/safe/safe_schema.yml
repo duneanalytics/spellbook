@@ -3,11 +3,11 @@ version: 2
 models:
   - name: safe_safes_all
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, goerli, linea, optimism, polygon, scroll, zkevm, zksync
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, goerli, linea, , mantle, optimism, polygon, scroll, worldchain, zkevm, zksync
       project: safe
       contributors: tschubotz, danielpartida, kryptaki
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'linea', 'optimism', 'polygon', 'safe', 'scroll', 'zkevm', 'zksync']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'worldchain', 'zkevm', 'zksync']
     description: >
         Lists all Safes across chains.
     columns:
@@ -32,14 +32,14 @@ models:
 
   - name: safe_transactions_all
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, goerli, linea, optimism, polygon, scroll, zkevm, zksync
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, fantom, gnosis, goerli, linea, mantle, optimism, polygon, scroll, worldchain, zkevm, zksync
       project: safe
       contributors: kryptaki, danielpartida
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'linea', 'optimism', 'polygon', 'safe', 'scroll', 'zkevm', 'zksync']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'fantom', 'gnosis', 'goerli', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'worldchain', 'zkevm', 'zksync']
     description: "Safe transactions"
     columns:
       - *blockchain
@@ -94,16 +94,16 @@ models:
 
   - name: safe_native_transfers_all
     meta:
-      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, gnosis, goerli, linea, optimism, polygon, scroll, zkevm, zksync
+      blockchain: arbitrum, avalanche_c, base, blast, bnb, celo, ethereum, gnosis, goerli, linea, mantle, optimism, polygon, scroll, worldchain, zkevm, zksync
       project: safe
       contributors: kryptaki, tschubotz, danielpartida
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     config:
-      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'gnosis', 'goerli', 'linea', 'optimism', 'polygon', 'safe', 'scroll', 'zkevm', 'zksync']
+      tags: ['arbitrum', 'avalanche_c', 'base', 'blast', 'bnb', 'celo','ethereum', 'gnosis', 'goerli', 'linea', 'mantle', 'optimism', 'polygon', 'safe', 'scroll', 'worldchain', 'zkevm', 'zksync']
     description: "Native gas token transfers into or out of Safes"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

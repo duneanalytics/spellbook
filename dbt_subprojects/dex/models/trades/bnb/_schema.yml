@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_bnb_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: uniswap_v3_bnb_base_trades
@@ -14,7 +14,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'uniswap', 'v3' ]
     description: "uniswap bnb v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -34,7 +34,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'airswap' ]
     description: "Airswap bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -52,7 +52,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'sushiswap', 'v1' ]
     description: "sushiswap bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -72,7 +72,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'sushiswap', 'v2' ]
     description: "sushiswap bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -92,7 +92,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'trader_joe', 'v2' ]
     description: "Trader Joe bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -112,7 +112,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'trader_joe', 'v2.1' ]
     description: "Trader Joe bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -132,7 +132,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'apeswap' ]
     description: apeswap base trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -151,7 +151,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
     description: "Pancakeswap BNB v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -174,7 +174,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v3' ]
     description: "Pancakeswap BNB v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -194,7 +194,7 @@ models:
     config:
       tags: ['bnb', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
     description: "Fraxswap bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -212,7 +212,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'biswap', 'uniswap', 'v2' ]
     description: "biswap bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -232,7 +232,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'biswap', 'v3' ]
     description: "biswap bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -252,7 +252,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'babyswap', 'uniswap', 'v2' ]
     description: "babyswap bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -271,7 +271,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'mdex', 'uniswap', 'v2' ]
     description: "mdex bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -290,7 +290,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'wombat' ]
     description: "Wombat bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -309,7 +309,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'dodo' ]
     description: "Dodo bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -332,7 +332,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'iziswap' ]
     description: "iziswap bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -349,7 +349,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'maverick' ]
     description: "Maverick bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -368,7 +368,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'maverick' ]
     description: "Maverick bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -387,7 +387,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'nomiswap', 'uniswap', 'v2' ]
     description: "NomiSwap bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -404,7 +404,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
     description: "kyberswap bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -425,7 +425,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
     description: "xchange bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -442,7 +442,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'thena' ]
     description: "thena bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -463,7 +463,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'ellipsis_finance' ]
     description: "ellipsis_finance bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -480,7 +480,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'onepunchswap' ]
     description: "onepunchswap bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -497,7 +497,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'woofi' ]
     description: "woofi bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -515,7 +515,7 @@ models:
       tags: [ 'bnb','hashflow','trades','dex', 'Henrystats']
     description: >
       Hashflow contract trades on Binance Smart Chain
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -532,7 +532,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'uniswap', 'v2' ]
     description: "uniswap bnb v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -551,7 +551,7 @@ models:
     config:
       tags: [ 'bnb', 'dex', 'trades', 'swaap', 'v2']
     description: "swaap v2 bnb base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -560,3 +560,20 @@ models:
           seed_file: ref('swaap_bnb_base_trades_seed')
           filter:
             version: 2
+
+  - name: hyperjump_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: hyperjump
+      contributors: bertastr
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'hyperjump' ]
+    description: "hyperjump bnb base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('hyperjump_bnb_base_trades_seed')

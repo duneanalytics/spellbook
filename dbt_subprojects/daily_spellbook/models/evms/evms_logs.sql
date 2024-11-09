@@ -2,10 +2,10 @@
         schema='evms',
         alias = 'logs',
         unique_key=['blockchain', 'tx_hash'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "goerli", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle"]\',
                                     "sector",
                                     "evms",
-                                    \'["hildobby"]\') }}'
+                                    \'["hildobby","rantum"]\') }}'
         )
 }}
 
@@ -20,7 +20,6 @@
      , ('arbitrum', source('arbitrum', 'logs'))
      , ('celo', source('celo', 'logs'))
      , ('base', source('base', 'logs'))
-     , ('goerli', source('goerli', 'logs'))
      , ('zksync', source('zksync', 'logs'))
      , ('zora', source('zora', 'logs'))
      , ('scroll', source('scroll', 'logs'))
@@ -49,6 +48,9 @@ FROM (
         , tx_hash
         , index
         , tx_index
+        , block_date
+        , tx_from
+        , tx_to
         FROM {{ logs_model[1] }}
         {% if not loop.last %}
         UNION ALL

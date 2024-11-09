@@ -4,7 +4,32 @@
         materialized='table',
         file_format = 'delta',
         tags = ['static'],
-        post_hook = '{{ expose_spells(\'["ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "polygon", "fantom", "celo", "base", "zksync", "zora", "bitcoin", "cardano","blast"]\',
+        post_hook = '{{ expose_spells(\'[
+                                        "arbitrum"
+                                        , "avalanche_c"
+                                        , "base"
+                                        , "bitcoin"
+                                        , "blast"
+                                        , "bnb"
+                                        , "cardano"
+                                        , "celo"
+                                        , "ethereum"
+                                        , "fantom"
+                                        , "gnosis"
+                                        , "kaia"
+                                        , "linea"
+                                        , "nova"
+                                        , "optimism"
+                                        , "polygon"
+                                        , "ronin"
+                                        , "scroll"
+                                        , "sei"
+                                        , "solana"
+                                        , "worldchain"
+                                        , "zksync"
+                                        , "zkevm"
+                                        , "zora"
+                                    ]\',
                                     "sector",
                                     "prices",
                                     \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "rantum", "lgingerich", "hildobby", "cryptokoryo", "0xRob", "hosuke", "Henrystats"]\') }}'
@@ -35,6 +60,10 @@ ref('prices_native_tokens')
 ,ref('prices_blast_tokens')
 ,ref('prices_sei_tokens')
 ,ref('prices_nova_tokens')
+,ref('prices_worldchain_tokens')
+,ref('prices_kaia_tokens')
+,ref('prices_tron_tokens')
+,ref('prices_ronin_tokens')
 ] %}
 
 

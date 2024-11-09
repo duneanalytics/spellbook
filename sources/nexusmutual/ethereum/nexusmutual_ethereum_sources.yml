@@ -13,8 +13,7 @@ sources:
       - name: StakingProducts_call_createStakingPool
       - name: StakingProducts_call_setProducts
       - name: TokenController_call_assignStakingPoolManager
-      - name: TokenController2_call_assignStakingPoolManager
-      - name: TokenController3_call_assignStakingPoolManager
+      - name: TokenController_call_mintStakingPoolNXMRewards
       - name: StakingProducts_evt_ProductUpdated
       - name: StakingPool_call_manager
       - name: StakingPool_evt_PoolFeeChanged

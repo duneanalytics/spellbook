@@ -3,14 +3,14 @@ version: 2
 models:
   - name: tokens_erc20
     meta:
-      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, mantle, optimism, fantom, polygon, base, blast, sepolia, sei, nova
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, gnosis, mantle, optimism, fantom, polygon, base, blast, sepolia, sei, nova, worldchain, kaia, ronin
       sector: tokens
-      contributors: hildobby, 0xManny, dot2dotseurat, soispoke, mtitus6, wuligy, angus_1, Henrystats, viniabussafi, jeff-dude
+      contributors: hildobby, 0xManny, dot2dotseurat, soispoke, mtitus6, wuligy, angus_1, Henrystats, viniabussafi, jeff-dude, rantum, hosuke
     config:
-      tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'mantle', 'optimism', 'fantom', 'base', 'blast', 'sei', 'nova']
+      tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'mantle', 'optimism', 'fantom', 'base', 'blast', 'sei', 'nova', 'linea', 'worldchain', 'kaia', 'ronin']
     description: >
         Crosschain ERC20 tokens
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -26,11 +26,11 @@ models:
 
   - name: tokens_native
     meta:
-      blockchain: avalanche_c, bnb, ethereum, gnosis, optimism, ethereum, arbitrum, solana, fantom, mantle, blast
+      blockchain: avalanche_c, bnb, ethereum, gnosis, optimism, ethereum, arbitrum, solana, fantom, mantle, blast, scroll, linea
       sector: tokens
-      contributors: ilemi
+      contributors: ilemi, rantum
     config:
-      tags: ['tokens','native', 'avalanche_c', 'bnb','ethereum', 'gnosis','optimism','ethereum','solana','arbitrum', 'fantom','mantle', 'blast']
+      tags: ['tokens','native', 'avalanche_c', 'bnb','ethereum', 'gnosis','optimism','ethereum','solana','arbitrum', 'fantom','mantle', 'blast','scroll','linea']
     description: >
         The chain native token and symbol, and the prices.usd symbol/address that is closest.
     columns:
@@ -63,3 +63,31 @@ models:
         description: "NFT collection symbol"
       - name: standard
         description: "NFT collection standard"
+
+  - name: tokens_erc20_stablecoins
+    meta:
+      blockchain: arbitrum, avalanche_c, bnb, ethereum, fantom, gnosis, optimism, polygon, base, blast, linea, mantle, scroll
+      sector: tokens
+      contributors: hildobby, synthquest, rantum
+    config:
+      tags: ['tokens','stablecoin', 'arbitrum','avalanche_c','bnb','ethereum','fantom','gnosis','optimism','polygon','base', 'blast', 'liena', 'mantle', 'scroll']
+    description: >
+        Stablecoin (ERC20) tokens
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+    columns:
+      - name: blockchain
+        description: blockchain name
+      - name: contract_address
+        description: token contract address
+      - name: name
+        description: token backing
+      - name: symbol
+        description: token symbol
+      - name: decimal
+        description: token decimals
+      - name: backing
+        description: token backing

@@ -108,7 +108,7 @@ FROM
     ('snx-synthetix-network-token', 'SNX', 0x8700daec35af8ff88c16bdf0418774cb3d7599b4, 18),
     -- ('unlock-unlock', 'UNLOCK', 0x7ae97042a4a0eb4d1eb370c34bfec71042a056b7, 18), --removed for low quality feed
     ('bank-bankless-dao', 'BANK', 0x29FAF5905bfF9Cfcc7CF56a5ed91E0f091F8664B, 18),
-    ('btcb-bitcoin-avalanche-bridged-btcb', 'BTC.b', 0x2297aebd383787a160dd0d9f71508148769342e3,18),
+    ('btcb-bitcoin-avalanche-bridged-btcb', 'BTC.b', 0x2297aebd383787a160dd0d9f71508148769342e3,8),
     ('pickle-pickle-finance', 'PICKLE', 0x0c5b4c92c948691EEBf185C17eeB9c230DC019E9, 18),
     ('bob-bob', 'BOB', 0xb0b195aefa3650a6908f15cdac7d92f8a5791b0b, 18),
     ('bomb-fbomb', 'fBOMB', 0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979,18),
@@ -131,5 +131,10 @@ FROM
     ('usdv-verified-usd', 'USDV', 0x323665443cef804a3b5206103304bd4872ea4253, 6),
     ('zro-layerzero', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
     ('rseth-rseth', 'rsETH', 0x4186bfc76e2e237523cbc30fd220fe055156b41f, 18),
-    ('dola-dola', 'DOLA',0x8ae125e8653821e851f12a49f7765db9a9ce7384, 18)   
+    ('dola-dola', 'DOLA',0x8ae125e8653821e851f12a49f7765db9a9ce7384, 18),
+    ('wld-worldcoin', 'WLD',0xdc6ff44d5d932cbd77b52e5612ba0529dc6226f1, 18),
+    ('pendle-pendle', 'PENDLE',0xbc7b1ff1c6989f006a1185318ed4e7b5796e66e1, 18),
+    ('trb-tellor', 'TRB', 0xaf8ca653fa2772d58f4368b0a71980e9e3ceb888, 18),
+    ('dtoro-dextoro', 'DTORO', 0x1cef2d62af4cd26673c7416957cc4ec619a696a7, 18),
+    ('osak-osaka-protocol', 'OSAK', 0xbfd5206962267c7b4b4a8b3d76ac2e1b2a5c4d5e, 18)
 ) as temp (token_id, symbol, contract_address, decimals)

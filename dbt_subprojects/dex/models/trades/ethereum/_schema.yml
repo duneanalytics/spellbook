@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: dex_ethereum_base_trades
-    tests:
+    data_tests:
       - check_dex_info_relationship
 
   - name: uniswap_v1_ethereum_base_trades
@@ -12,9 +12,9 @@ models:
       project: uniswap
       contributors: jeff-dude, masquot, soispoke, hosuke
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v1']
+      tags: ["ethereum", "dex", "trades", "uniswap", "v1"]
     description: "uniswap ethereum v1 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -31,9 +31,9 @@ models:
       project: uniswap
       contributors: jeff-dude, masquot, soispoke, hosuke
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v2' ]
+      tags: ["ethereum", "dex", "trades", "uniswap", "v2"]
     description: "uniswap ethereum v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -50,9 +50,9 @@ models:
       project: uniswap
       contributors: jeff-dude, masquot, soispoke, hosuke
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v3' ]
+      tags: ["ethereum", "dex", "trades", "uniswap", "v3"]
     description: "uniswap ethereum v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -62,7 +62,6 @@ models:
           filter:
             version: 3
 
-
   - name: defiswap_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -70,16 +69,15 @@ models:
       project: defiswap
       contributors: pandajackson42, 0xRob, hosuke
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'defiswap' ]
+      tags: ["ethereum", "dex", "trades", "defiswap"]
     description: "Defiswap ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('defiswap_ethereum_base_trades_seed')
-
 
   - name: airswap_ethereum_base_trades
     meta:
@@ -88,16 +86,15 @@ models:
       project: airswap
       contributors: hosuke, jeff-dude, ivigamberdiev, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'airswap' ]
+      tags: ["ethereum", "dex", "trades", "airswap"]
     description: "Defiswap ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('airswap_ethereum_base_trades_seed')
-
 
   - name: sushiswap_v1_ethereum_base_trades
     meta:
@@ -106,9 +103,9 @@ models:
       project: sushiswap
       contributors: pandajackson42, 0xRob, hosuke, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'sushiswap', 'v1' ]
+      tags: ["ethereum", "dex", "trades", "sushiswap", "v1"]
     description: "sushiswap ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -118,7 +115,6 @@ models:
           filter:
             version: 1
 
-
   - name: sushiswap_v2_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -126,9 +122,9 @@ models:
       project: sushiswap
       contributors: pandajackson42, 0xRob, hosuke, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'sushiswap', 'v2' ]
+      tags: ["ethereum", "dex", "trades", "sushiswap", "v2"]
     description: "sushiswap ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -138,7 +134,6 @@ models:
           filter:
             version: 2
 
-
   - name: carbon_defi_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -146,16 +141,15 @@ models:
       project: carbon_defi
       contributors: tiagofilipenunes, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'carbon_defi' ]
+      tags: ["ethereum", "dex", "trades", "carbon_defi"]
     description: "Carbon_defi ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('carbon_defi_ethereum_base_trades_seed')
-
 
   - name: apeswap_ethereum_base_trades
     meta:
@@ -164,9 +158,9 @@ models:
       project: apeswap
       contributors: hosuke
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'apeswap' ]
+      tags: ["ethereum", "dex", "trades", "apeswap"]
     description: apeswap base trades
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -181,9 +175,9 @@ models:
       project: pancakeswap
       contributors: chef_seaweed, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
+      tags: ["ethereum", "dex", "trades", "pancakeswap", "uniswap", "v2"]
     description: "Pancakeswap Ethereum v2 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -202,9 +196,9 @@ models:
       project: shibaswap
       contributors: 0xRob, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'shibaswap', 'uniswap', 'v2' ]
+      tags: ["ethereum", "dex", "trades", "shibaswap", "uniswap", "v2"]
     description: "sushiswap ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -221,9 +215,9 @@ models:
       project: pancakeswap
       contributors: chef_seaweed, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v3' ]
+      tags: ["ethereum", "dex", "trades", "pancakeswap", "uniswap", "v3"]
     description: "Pancakeswap Ethereum v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -240,9 +234,9 @@ models:
       project: balancer
       contributors: bizzyvinci, thetroyharris, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'balancer' ]
+      tags: ["ethereum", "dex", "trades", "balancer"]
     description: "Balancer v1 ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -259,9 +253,9 @@ models:
       project: balancer
       contributors: bizzyvinci, thetroyharris, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'balancer' ]
+      tags: ["ethereum", "dex", "trades", "balancer"]
     description: "Balancer v2 ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -278,9 +272,9 @@ models:
       project: fraxswap
       contributors: kndlexi, tomfutago
     config:
-      tags: ['ethereum', 'dex', 'trades', 'fraxswap', 'uniswap', 'v2']
+      tags: ["ethereum", "dex", "trades", "fraxswap", "uniswap", "v2"]
     description: "Fraxswap ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -297,9 +291,9 @@ models:
       project: bancor
       contributors: tian7, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'bancor' ]
+      tags: ["ethereum", "dex", "trades", "bancor"]
     description: "Bancor ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -314,9 +308,9 @@ models:
       project: verse_dex
       contributors: Henrystats, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'verse_dex' ]
+      tags: ["ethereum", "dex", "trades", "verse_dex"]
     description: "Verse ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -331,9 +325,9 @@ models:
       project: swapr
       contributors: cryptoleishen, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'swapr', 'uniswap', 'v2' ]
+      tags: ["ethereum", "dex", "trades", "swapr", "uniswap", "v2"]
     description: "Verse ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -348,9 +342,9 @@ models:
       project: mauve
       contributors: jeff-dude, masquot, soispoke, raphaelr, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'mauve' ]
+      tags: ["ethereum", "dex", "trades", "mauve"]
     description: "Mauve ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -365,9 +359,9 @@ models:
       project: dfx
       contributors: Henrystats, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'dfx' ]
+      tags: ["ethereum", "dex", "trades", "dfx"]
     description: "DFX ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -382,9 +376,9 @@ models:
       project: dodo
       contributors: owen05, scoffie, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'dodo' ]
+      tags: ["ethereum", "dex", "trades", "dodo"]
     description: "Dodo ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -398,7 +392,6 @@ models:
               - 2_dpp
               - 2_dsp
 
-
   - name: integral_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -406,16 +399,15 @@ models:
       project: integral
       contributors: integralhq, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'integral', 'uniswap', 'v2' ]
+      tags: ["ethereum", "dex", "trades", "integral", "uniswap", "v2"]
     description: "Integral ethereum v3 base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('integral_ethereum_base_trades_seed')
-
 
   - name: maverick_ethereum_base_trades
     meta:
@@ -424,9 +416,9 @@ models:
       project: maverick
       contributors: get620v, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'maverick' ]
+      tags: ["ethereum", "dex", "trades", "maverick"]
     description: "Maverick ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -443,9 +435,9 @@ models:
       project: maverick
       contributors: get620v
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'maverick' ]
+      tags: ["ethereum", "dex", "trades", "maverick"]
     description: "Maverick ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -462,9 +454,9 @@ models:
       project: clipper
       contributors: 0xRob, amalashkevich, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'clipper' ]
+      tags: ["ethereum", "dex", "trades", "clipper"]
     description: "clipper ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -478,7 +470,6 @@ models:
               - 3
               - 4
 
-
   - name: mstable_ethereum_base_trades
     meta:
       blockchain: ethereum
@@ -486,9 +477,9 @@ models:
       project: mstable
       contributors: ripple3, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'mstable' ]
+      tags: ["ethereum", "dex", "trades", "mstable"]
     description: "mstable ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -507,9 +498,9 @@ models:
       project: kyberswap
       contributors: ppclunghe, gregshestakovlido, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'kyberswap', 'uniswap', 'v2' ]
+      tags: ["ethereum", "dex", "trades", "kyberswap", "uniswap", "v2"]
     description: "kyberswap ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -529,15 +520,36 @@ models:
       project: xchange
       contributors: mike-x7f, tomfutago
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
+      tags: ["ethereum", "dex", "trades", "xchange", "uniswap", "v2"]
     description: "xchange ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('xchange_ethereum_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: xchange_v2_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: xchange
+      contributors: mike-x7f, tomfutago
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'xchange', 'uniswap', 'v2' ]
+    description: "xchange v2 ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('xchange_ethereum_base_trades_seed')
+          filter:
+            version: 2
 
   - name: curve_ethereum_base_trades
     meta:
@@ -546,9 +558,9 @@ models:
       project: curve
       contributors: dsalv, yulesa, ilemi, jeff-dude, tomfutago
     config:
-      tags: ['ethereum', 'dex', 'trades', 'curve']
+      tags: ["ethereum", "dex", "trades", "curve"]
     description: "Curve ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -571,9 +583,9 @@ models:
       project: solidly
       contributors: SolidlyLabs
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'solidly' ]
+      tags: ["ethereum", "dex", "trades", "solidly"]
     description: "solidly v3 ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -588,9 +600,9 @@ models:
       project: swaap
       contributors: borelien
     config:
-      tags: [ 'ethereum', 'dex', 'trades', 'swaap', 'v2']
+      tags: ["ethereum", "dex", "trades", "swaap", "v2"]
     description: "swaap v2 ethereum base trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
@@ -599,3 +611,18 @@ models:
           seed_file: ref('swaap_ethereum_base_trades_seed')
           filter:
             version: 2
+
+  - name: valantis_hot_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: valantis
+      contributors: 0xrusowsky
+    config:
+      tags: ["ethereum", "dex", "trades", "valantis", "arrakis", "hot"]
+    description: "hot-amm ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index

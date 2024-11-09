@@ -8,7 +8,11 @@
 
 SELECT
     MCE.market_token AS market,
-    CONCAT(ERC20_IT.symbol, '/USD [', ERC20_LT.symbol, '-', ERC20_ST.symbol, ']') AS market_name,
+    CASE 
+        WHEN MCE.index_token = 0x0000000000000000000000000000000000000000
+        THEN CONCAT('SWAP-ONLY [', ERC20_LT.symbol, '-', ERC20_ST.symbol, ']')
+        ELSE CONCAT(ERC20_IT.symbol, '/USD [', ERC20_LT.symbol, '-', ERC20_ST.symbol, ']') 
+    END AS market_name,
     'GM' AS market_token_symbol,
     18 AS market_token_decimals,
     ERC20_IT.symbol AS index_token_symbol,

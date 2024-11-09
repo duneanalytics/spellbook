@@ -29,8 +29,14 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
   - [Testing your Spell](#testing-your-spell)
   - [Connecting with other wizards](#connecting-with-other-wizards)
 - [Setting up your dev environment](#setting-up-your-local-dev-environment)
+  - [Prerequisites](#prerequisites)
+  - [Initial Installation](#initial-installation)
+  - [Coming back](#coming-back)
+  - [What did I just do?](#what-did-i-just-do)
 - [Using dbt to write spells](#how-to-use-dbt-to-create-spells)
-
+  - [Generating and serving documentation:](#generating-and-serving-documentation)
+  - [DBT Resources:](#dbt-resources)
+        
 ## Introduction
 
 Spellbook is Dune's interpretation layer, built for and by the community.
@@ -86,7 +92,7 @@ You don't need a complex local setup to test spells against Dune's engine. Once 
 
 Simply write a query like you would for any of our live tables, and use the test schema to fetch the tables your PR created.
 
-`test_schema.git_{{commit_hash}}_{{table_name}}`
+`test_schema.git_dunesql_{{commit_hash}}_{{table_name}}`
 
 You can find the exact names easily by looking at the logs from the `dbt slim ci` action, under `dbt run initial model(s)`.
 
@@ -194,7 +200,7 @@ models:
     columns:
       - name: tx_hash
         description: "Table primary key: a transaction hash (tx_hash) is a unique identifier for a transaction."
-        tests:
+        data_tests:
           - unique
           - not_null
 

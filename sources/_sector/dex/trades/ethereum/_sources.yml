@@ -28,6 +28,8 @@ sources:
       - name: PancakePair_evt_Swap
       - name: PancakeFactory_evt_PairCreated
       - name: PancakeSwapMMPool_evt_Swap
+      - name: PancakeStableSwapTwoPool_evt_TokenExchange
+      - name: PancakeStableSwapFactory_evt_NewStableSwapPair
   - name: pancakeswap_v3_ethereum
     tables:
       - name: PancakeV3Pool_evt_Swap
@@ -111,6 +113,10 @@ sources:
     tables:
       - name: XchangePair_evt_Swap
       - name: XchangeFactory_evt_PairCreated
+  - name: xchange_v2_ethereum
+    tables:
+      - name: XchangePair_evt_Swap
+      - name: XchangeFactory_evt_PairCreated
   - name: solidly_v3_ethereum
     tables:
       - name: SolidlyV3Factory_evt_PoolCreated
@@ -118,3 +124,8 @@ sources:
   - name: swaap_v2_ethereum
     tables:
       - name: Vault_evt_Swap
+  - name: valantis_ethereum
+    tables:
+      - name: SovereignPool_evt_Swap
+      - name: ProtocolFactory_evt_SovereignPoolDeployed
+      - name: HOT_evt_HotSwap
