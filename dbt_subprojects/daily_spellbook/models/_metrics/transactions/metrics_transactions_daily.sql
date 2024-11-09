@@ -18,6 +18,7 @@ with evm as (
         {{ source('tokens', 'transfers') }}
     where
         1 = 1
+        and amount_usd >=1
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
@@ -35,6 +36,7 @@ with evm as (
     where
         1 = 1
         and action != 'wrap'
+        and amount_usd > 1
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
@@ -51,6 +53,7 @@ with evm as (
         {{ source('transfers_bitcoin', 'satoshi') }}
     where
         1 = 1
+        and amount_transfer_usd > 1
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
