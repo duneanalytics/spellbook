@@ -106,7 +106,7 @@ WITH
       outer_instruction_index,
       MAX(inner_instruction_index) AS highestInnerInstructionIndex
     FROM
-      botTrades
+      bot_trades
     GROUP BY
       tx_id,
       outer_instruction_index
@@ -134,9 +134,9 @@ SELECT
   token_pair,
   project_contract_address,
   user,
-  botTrades.tx_id,
+  bot_trades.tx_id,
   tx_index,
-  botTrades.outer_instruction_index,
+  bot_trades.outer_instruction_index,
   COALESCE(inner_instruction_index, 0) AS inner_instruction_index,
   IF(
     inner_instruction_index = highestInnerInstructionIndex,
@@ -144,7 +144,7 @@ SELECT
     false
   ) AS is_last_trade_in_transaction
 FROM
-  botTrades
+  bot_trades
   JOIN highest_inner_instruction_index_for_each_trade ON (
     bot_trades.tx_id = highest_inner_instruction_index_for_each_trade.tx_id
     AND bot_trades.outer_instruction_index = highest_inner_instruction_index_for_each_trade.outer_instruction_index
