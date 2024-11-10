@@ -92,7 +92,7 @@ You don't need a complex local setup to test spells against Dune's engine. Once 
 
 Simply write a query like you would for any of our live tables, and use the test schema to fetch the tables your PR created.
 
-`test_schema.git_{{commit_hash}}_{{table_name}}`
+`test_schema.git_dunesql_{{commit_hash}}_{{table_name}}`
 
 You can find the exact names easily by looking at the logs from the `dbt slim ci` action, under `dbt run initial model(s)`.
 

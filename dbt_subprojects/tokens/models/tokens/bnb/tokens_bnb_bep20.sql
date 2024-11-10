@@ -616,4 +616,8 @@ FROM (VALUES
     , (0x6ec07dbd9311975b8002079d70c6f6d9e3e1ee5c, 'BabyTroll', 9)
     , (0xccdf812aa7cdee4ff7cb89546d7f1718bb8d46e1, 'TRUMP', 18)
     , (0x1bf0e31b0cf3accd304fa197788bc3be661dba09, 'TRUMPINU', 9)
+    , (0x6cdd08de79231a1957f205a3fe5cf9dbf4b0c454, 'BabyNeiro', 9)
+    , (0x258903a8e68d5248de85cf8a0a173d9e046edd98, 'BabyElon', 9)
+    , (0xe66fd34c0f8726a5eb97f6d45c5a5df4d57d39fc, 'BabyTrump', 9)
+    , (0x92072f045d0904e9a0cdfd48519f54c83bf41e82, 'MOCHI', 9)
 ) AS temp_table (contract_address, symbol, decimals)
