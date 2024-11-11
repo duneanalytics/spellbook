@@ -7,7 +7,6 @@
         incremental_strategy = 'merge',
         unique_key = ['address'],
         post_hook='{{ expose_spells(\'["solana"]\',
-                                    "sector",
                                     "solana_utils",
                                     "stablecoin",
                                     \'["synthquest"]\') }}')
@@ -57,3 +56,4 @@ with
 
 select day, token_balance_owner, symbol, token_balance, token_mint_address
 from final
+order by day desc
