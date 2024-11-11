@@ -5,8 +5,8 @@
       , post_hook='{{ expose_spells(\'["arbitrum"]\',
                                   "sector",
                                   "tokens_solana",
-                                  \'["synthquest","rantum"]\') }}'
-      , unique_key = ['contract_address']
+                                  \'["synthquest"]\') }}'
+      , unique_key = ['address']
   )
 }}
 
