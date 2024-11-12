@@ -1,5 +1,5 @@
 {{config(
-     schema = 'tokens_ronin',
+     schema = 'tokens_abstract',
      alias = 'base_transfers',
      partition_by = ['block_month'],
      materialized = 'incremental',
@@ -11,10 +11,10 @@
  }}
 
  {{transfers_base(
-     blockchain='ronin',
-     traces = source('ronin','traces'),
-     transactions = source('ronin','transactions'),
-     erc20_transfers = source('erc20_ronin','evt_transfer'),
+     blockchain='abstract',
+     traces = source('abstract','traces'),
+     transactions = source('abstract','transactions'),
+     erc20_transfers = source('erc20_abstract','evt_transfer'),
      native_contract_address = null
  )
  }}
