@@ -1,5 +1,5 @@
 {{config(
-     schema = 'tokens_ronin',
+     schema = 'tokens_abstract',
      alias = 'transfers',
      partition_by = ['block_month'],
      materialized = 'incremental',
@@ -7,7 +7,7 @@
      incremental_strategy = 'merge',
      unique_key = ['block_date','unique_key'],
      incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')],
-     post_hook='{{ expose_spells(\'["ronin"]\',
+     post_hook='{{ expose_spells(\'["abstract"]\',
                                  "sector",
                                  "tokens",
                                  \'["aalan3", "jeff-dude", "peterrliem"]\') }}'
@@ -16,7 +16,7 @@
 
  {{
      transfers_enrich(
-         base_transfers = ref('tokens_ronin_abstract_transfers')
+         base_transfers = ref('tokens_abstract_base_transfers')
          , tokens_erc20_model = source('tokens', 'erc20')
          , prices_model = source('prices', 'usd')
          , evms_info_model = source('evms','info')
