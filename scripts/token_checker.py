@@ -42,49 +42,29 @@ class TokenChecker:
         pattern1 = r"\('([\w-]+)',\s*'([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\)"
         pattern2 = r"\('([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\)"
 
-        matches = re.findall(pattern1, line)
-        if matches:
-            parts = [item.strip() for item in matches[0].split(",")]
-            values = []
-            for val in parts:
-                if val.startswith("'"):
-                    values.append(val.strip("'"))
-                elif val.startswith('"'):
-                    values.append(val.strip('"'))
-                elif val.startswith("0x"):
-                    values.append(val)
-                else:
-                    values.append(int(val))
-
+        match1 = re.match(pattern1, line)
+        if match1:
             return {
-                "id": values[0],
-                "blockchain": values[1],
-                "symbol": values[2],
-                "contract_address": values[3].lower() if values[3] is not None else values[3],
-                "decimal": values[4]
+                "id": match1.group(1),
+                "blockchain": match1.group(2),
+                "symbol": match1.group(3),
+                "contract_address": match1.group(4).lower() if match1.group(4).startswith('0x') else match1.group(
+                    4).strip("'"),
+                "decimal": int(match1.group(5))
             }
 
-        matches = re.findall(pattern2, line)
-        if matches:
-            parts = [item.strip() for item in matches[0].split(",")]
-            values = []
-            for val in parts:
-                if val.startswith("'"):
-                    values.append(val.strip("'"))
-                elif val.startswith('"'):
-                    values.append(val.strip('"'))
-                elif val.startswith("0x"):
-                    values.append(val)
-                else:
-                    values.append(int(val))
-
+        match2 = re.match(pattern2, line)
+        if match2:
             return {
-                "id": values[0],
-                "symbol": values[1],
-                "contract_address": values[2].lower() if values[2] is not None else values[2],
-                "decimal": values[3]
+                "id": match2.group(1),
+                "symbol": match2.group(2),
+                "contract_address": match2.group(3).lower() if match2.group(3).startswith('0x') else match2.group(
+                    3).strip("'"),
+                "decimal": int(match2.group(4)),
+                "blockchain": None
             }
 
+        logging.warning(f"Failed to parse line: {line}")
         return None
 
     @staticmethod
