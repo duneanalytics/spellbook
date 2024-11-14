@@ -39,6 +39,8 @@ class TokenChecker:
 
     @staticmethod
     def parse_token(line):
+        line = line.strip().lstrip(',')
+
         pattern1 = r"\('([\w-]+)',\s*'([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\)"
         pattern2 = r"\('([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\)"
 
@@ -61,7 +63,7 @@ class TokenChecker:
                 "contract_address": match2.group(3).lower() if match2.group(3).startswith('0x') else match2.group(
                     3).strip("'"),
                 "decimal": int(match2.group(4)),
-                "blockchain": None
+                "blockchain": None # TO BE FIXED ...
             }
 
         logging.warning(f"Failed to parse line: {line}")
