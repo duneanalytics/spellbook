@@ -39,32 +39,36 @@ class TokenChecker:
 
     @staticmethod
     def parse_token(line):
-        line = line.strip().lstrip(',')
+        line = line.strip().lstrip(',').strip()
 
-        pattern1 = r"\('([\w-]+)',\s*'([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\)"
-        pattern2 = r"\('([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\)"
+        pattern1 = r"\(?'?([\w-]+)'?,\s*'?([\w-]+)'?,\s*'?([\w-]+)'?,\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\)?"
+        pattern2 = r"\(?'?([\w-]+)'?,\s*'?([\w-]+)'?,\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\)?"
 
-        match1 = re.match(pattern1, line)
-        if match1:
-            return {
-                "id": match1.group(1),
-                "blockchain": match1.group(2),
-                "symbol": match1.group(3),
-                "contract_address": match1.group(4).lower() if match1.group(4).startswith('0x') else match1.group(
-                    4).strip("'"),
-                "decimal": int(match1.group(5))
-            }
+        try:
+            match1 = re.match(pattern1, line)
+            if match1:
+                return {
+                    "id": match1.group(1),
+                    "blockchain": match1.group(2),
+                    "symbol": match1.group(3),
+                    "contract_address": match1.group(4).lower() if match1.group(4).startswith('0x') else match1.group(
+                        4).strip("'"),
+                    "decimal": int(match1.group(5))
+                }
 
-        match2 = re.match(pattern2, line)
-        if match2:
-            return {
-                "id": match2.group(1),
-                "symbol": match2.group(2),
-                "contract_address": match2.group(3).lower() if match2.group(3).startswith('0x') else match2.group(
-                    3).strip("'"),
-                "decimal": int(match2.group(4)),
-                "blockchain": None # TO BE FIXED ...
-            }
+            match2 = re.match(pattern2, line)
+            if match2:
+                return {
+                    "id": match2.group(1),
+                    "symbol": match2.group(2),
+                    "contract_address": match2.group(3).lower() if match2.group(3).startswith('0x') else match2.group(
+                        3).strip("'"),
+                    "decimal": int(match2.group(4)),
+                    "blockchain": None
+                }
+        except Exception as e:
+            logging.warning(f"Failed to parse line: {line}. Error: {str(e)}")
+            return None
 
         logging.warning(f"Failed to parse line: {line}")
         return None
