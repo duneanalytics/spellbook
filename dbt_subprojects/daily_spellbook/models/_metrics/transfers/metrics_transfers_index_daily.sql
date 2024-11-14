@@ -1,15 +1,12 @@
 {{ config(
         schema = 'metrics'
         , alias = 'transfers_index_daily'
-        , materialized = 'incremental'
-        , file_format = 'delta'
-        , incremental_strategy = 'merge'
-        , unique_key = ['blockchain', 'block_date']
-        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
+        , materialized = 'view'
         )
 }}
 
-{% set baseline_date = '2015-08-21' %}
+{% set baseline_date = '2018-01-01' %}
+{% set start_date = '2015-08-21' %}
 
 with baseline as (
     select
@@ -26,17 +23,14 @@ with baseline as (
     from
         {{ ref('metrics_transfers_daily') }}
     where
-        block_date >= date '{{ baseline_date }}'
-        {% if is_incremental() %}
-        and {{ incremental_predicate('block_date') }}
-        {% endif %}
+        block_date >= date '{{ start_date }}'
 )
 select
     d.blockchain
     , d.block_date
     , d.net_transfer_amount_usd
     , b.baseline_net_transfer_amount_usd
-    , (d.net_transfer_amount_usd / b.baseline_net_transfer_amount_usd) * 100 as transfers_index
+    , (d.net_transfer_amount_usd / b.baseline_net_transfer_amount_usd) * 10 as transfers_index
 from
     daily as d
 left join

@@ -12,8 +12,10 @@ WITH transfers AS (
         call_inner_instruction_index as inner_instruction_index,
         call_outer_instruction_index as outer_instruction_index,
         call_tx_signer as tx_signer,
-        call_account_arguments[1] AS from_owner,
-        call_account_arguments[2] AS to_owner,
+        COALESCE(tk_from.token_balance_owner, call_account_arguments[1]) AS from_owner, -- if the token account exists, use the owner of that, otherwise if should be an account
+        COALESCE(tk_to.token_balance_owner, call_account_arguments[2]) AS to_owner,
+        CASE WHEN tk_from.address IS NOT NULL THEN tk_from.address ELSE null END as from_token_account, -- if the token account exists, use the address of that, otherwise no token accounts are involved
+        CASE WHEN tk_to.address IS NOT NULL THEN tk_to.address ELSE null END as to_token_account,
         'native' as token_version,
         'SOL' as symbol,
         lamports as amount,
@@ -21,9 +23,15 @@ WITH transfers AS (
         'So11111111111111111111111111111111111111112' as token_mint_address,
         call_outer_executing_account as outer_executing_account,
         call_inner_executing_account as inner_executing_account,
-        'transfer' as action
+        CASE WHEN tk_to.address IS NOT NULL THEN 'wrap' ELSE 'transfer' END as action -- if the token account exists, it's a wrap, otherwise it's a transfer
     FROM 
-        {{ source('system_program_solana', 'system_program_call_Transfer') }}
+        {{ source('system_program_solana', 'system_program_call_Transfer') }} t
+    LEFT JOIN 
+        {{ ref('solana_utils_token_accounts') }} tk_from 
+        ON tk_from.address = t.call_account_arguments[1]
+    LEFT JOIN 
+        {{ ref('solana_utils_token_accounts') }} tk_to 
+        ON tk_to.address = t.call_account_arguments[2]
     WHERE
         1=1
         {% if is_incremental() %}
@@ -61,12 +69,13 @@ SELECT
     , t.tx_id
     , t.tx_index
     , t.inner_instruction_index
+    , coalesce(t.inner_instruction_index, 0) as key_inner_instruction_index
     , t.outer_instruction_index
     , t.tx_signer
-    , cast(null as varchar) as from_token_account
-    , cast(null as varchar) as to_token_account
     , t.from_owner
     , t.to_owner
+    , t.from_token_account
+    , t.to_token_account
     , t.token_mint_address
     , t.symbol
     , t.amount_display
