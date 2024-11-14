@@ -20,7 +20,7 @@
 {{
     safe_native_transfers(
         blockchain = 'ronin',
-        native_token_symbol = 'ETH',
+        native_token_symbol = 'RON',
         project_start_date = project_start_date
     )
 }}
