@@ -1,6 +1,6 @@
 {{ config(
     alias = 'bot_trades',
-    schema = 'bonkbot_solana',
+    schema = 'pinkpunk_solana',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -10,25 +10,18 @@
    )
 }}
 
-{% set project_start_date = '2023-08-17' %}
-{% set fee_receiver = 'ZG98FUCjb8mJ824Gbs6RsgVmr1FhXb2oNiJHa2dwmPd' %}
+{% set project_start_date = '2024-06-13' %}
+{% set fee_receiver_1 = '38e4GH49TwjXn2yARvnHueAKvU2xREtuchQahMiz3w9G' %}
+{% set fee_receiver_2 = 'DShXwLqk6ZHZFtdzE8HMDsGJLhEvrxgRdB5K16V28arK' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
-  feePayments AS (
-    SELECT DISTINCT
+  all_fee_payments AS (
+    SELECT
       tx_id,
-      IF(balance_change > 0, 'SOL', 'SPL') AS feeTokenType,
-      IF(
-        balance_change > 0,
-        balance_change / 1e9,
-        token_balance_change
-      ) AS fee_token_amount,
-      IF(
-        balance_change > 0,
-        '{{wsol_token}}',
-        token_mint_address
-      ) AS fee_token_mint_address
+      'SOL' AS feeTokenType,
+      balance_change / 1e9 AS fee_token_amount,
+      '{{wsol_token}}' AS fee_token_mint_address
     FROM
       {{ source('solana','account_activity') }}
     WHERE
@@ -38,58 +31,13 @@ WITH
       block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
       AND tx_success
+      AND balance_change > 0
       AND (
-        (
-          address = '{{fee_receiver}}'
-          AND balance_change > 0 -- SOL fee payments
-        )
-        OR (
-          token_balance_owner = '{{fee_receiver}}'
-          AND token_balance_change > 0 -- SPL fee payments
-        )
+        address = '{{fee_receiver_1}}'
+        OR address = '{{fee_receiver_2}}'
       )
   ),
-  -- Eliminate duplicates (e.g. both SOL + WSOL in a single transaction)
-  allFeePayments AS (
-    SELECT
-      tx_id,
-      MIN(feeTokenType) AS feeTokenType,
-      SUM(fee_token_amount) AS fee_token_amount,
-      fee_token_mint_address
-    FROM
-      feePayments
-    GROUP BY
-      tx_id,
-      fee_token_mint_address
-  ),
-  solFeePayments AS (
-    SELECT 
-      * 
-    FROM 
-      allFeePayments 
-    WHERE 
-      feeTokenType = 'SOL'
-  ),
-  splFeePayments AS (
-    SELECT 
-      * 
-    FROM 
-      allFeePayments 
-    WHERE 
-      feeTokenType = 'SPL'
-  ),
-  -- Eliminate duplicates (e.g. both SOL + SPL payment in a single transaction)
-  allFeePaymentsWithSOLPaymentPreferred AS (
-    SELECT 
-      COALESCE(solFeePayments.tx_id, splFeePayments.tx_id) AS tx_id,
-      COALESCE(solFeePayments.feeTokenType, splFeePayments.feeTokenType) AS feeTokenType,
-      COALESCE(solFeePayments.fee_token_amount, splFeePayments.fee_token_amount) AS fee_token_amount,
-      COALESCE(solFeePayments.fee_token_mint_address, splFeePayments.fee_token_mint_address) AS fee_token_mint_address
-    FROM
-      solFeePayments 
-      FULL JOIN splFeePayments ON solFeePayments.tx_id = splFeePayments.tx_id
-  ),
-  botTrades AS (
+  bot_trades AS (
     SELECT
       trades.block_time,
       CAST(date_trunc('day', trades.block_time) AS date) AS block_date,
@@ -122,7 +70,7 @@ WITH
       inner_instruction_index
     FROM
       {{ ref('dex_solana_trades') }} AS trades
-      JOIN allFeePaymentsWithSOLPaymentPreferred AS feePayments ON trades.tx_id = feePayments.tx_id
+      JOIN all_fee_payments AS feePayments ON trades.tx_id = feePayments.tx_id
       LEFT JOIN {{ source('prices', 'usd') }} AS feeTokenPrices ON (
         feeTokenPrices.blockchain = 'solana'
         AND fee_token_mint_address = toBase58 (feeTokenPrices.contract_address)
@@ -142,21 +90,23 @@ WITH
         {% endif %}
       )
     WHERE
-      trades.trader_id != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
-      AND transactions.signer != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
+      trades.trader_id != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
       {% if is_incremental() %}
       AND {{ incremental_predicate('trades.block_time') }}
       {% else %}
       AND trades.block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
   ),
-  highestInnerInstructionIndexForEachTrade AS (
+  highest_inner_instruction_index_for_each_trade AS (
     SELECT
       tx_id,
       outer_instruction_index,
       MAX(inner_instruction_index) AS highestInnerInstructionIndex
     FROM
-      botTrades
+      bot_trades
     GROUP BY
       tx_id,
       outer_instruction_index
@@ -165,7 +115,7 @@ SELECT
   block_time,
   block_date,
   block_month,
-  'BonkBot' as bot,
+  'Pinkpunk' as bot,
   blockchain,
   amount_usd,
   type,
@@ -184,9 +134,9 @@ SELECT
   token_pair,
   project_contract_address,
   user,
-  botTrades.tx_id,
+  bot_trades.tx_id,
   tx_index,
-  botTrades.outer_instruction_index,
+  bot_trades.outer_instruction_index,
   COALESCE(inner_instruction_index, 0) AS inner_instruction_index,
   IF(
     inner_instruction_index = highestInnerInstructionIndex,
@@ -194,10 +144,10 @@ SELECT
     false
   ) AS is_last_trade_in_transaction
 FROM
-  botTrades
-  JOIN highestInnerInstructionIndexForEachTrade ON (
-    botTrades.tx_id = highestInnerInstructionIndexForEachTrade.tx_id
-    AND botTrades.outer_instruction_index = highestInnerInstructionIndexForEachTrade.outer_instruction_index
+  bot_trades
+  JOIN highest_inner_instruction_index_for_each_trade ON (
+    bot_trades.tx_id = highest_inner_instruction_index_for_each_trade.tx_id
+    AND bot_trades.outer_instruction_index = highest_inner_instruction_index_for_each_trade.outer_instruction_index
   )
 ORDER BY
   block_time DESC,
