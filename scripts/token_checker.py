@@ -39,29 +39,53 @@ class TokenChecker:
 
     @staticmethod
     def parse_token(line):
-        matches = re.findall(r"\((.*?)\)", line)
-        if not matches:
-            return None
+        pattern1 = r"\('([\w-]+)',\s*'([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\)"
+        pattern2 = r"\('([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\)"
 
-        parts = [item.strip() for item in matches[0].split(",")]
-        values = []
-        for val in parts:
-            if val.startswith("'"):
-                values.append(val.strip("'"))
-            elif val.startswith('"'):
-                values.append(val.strip('"'))
-            elif val.startswith("0x"):
-                values.append(val)
-            else:
-                values.append(int(val))
+        matches = re.findall(pattern1, line)
+        if matches:
+            parts = [item.strip() for item in matches[0].split(",")]
+            values = []
+            for val in parts:
+                if val.startswith("'"):
+                    values.append(val.strip("'"))
+                elif val.startswith('"'):
+                    values.append(val.strip('"'))
+                elif val.startswith("0x"):
+                    values.append(val)
+                else:
+                    values.append(int(val))
 
-        return {
-            "id": values[0],
-            "blockchain": values[1],
-            "symbol": values[2],
-            "contract_address": values[3].lower() if values[3] is not None else values[3],
-            "decimal": values[4]
-        }
+            return {
+                "id": values[0],
+                "blockchain": values[1],
+                "symbol": values[2],
+                "contract_address": values[3].lower() if values[3] is not None else values[3],
+                "decimal": values[4]
+            }
+
+        matches = re.findall(pattern2, line)
+        if matches:
+            parts = [item.strip() for item in matches[0].split(",")]
+            values = []
+            for val in parts:
+                if val.startswith("'"):
+                    values.append(val.strip("'"))
+                elif val.startswith('"'):
+                    values.append(val.strip('"'))
+                elif val.startswith("0x"):
+                    values.append(val)
+                else:
+                    values.append(int(val))
+
+            return {
+                "id": values[0],
+                "symbol": values[1],
+                "contract_address": values[2].lower() if values[2] is not None else values[2],
+                "decimal": values[3]
+            }
+
+        return None
 
     @staticmethod
     def get_tokens():
