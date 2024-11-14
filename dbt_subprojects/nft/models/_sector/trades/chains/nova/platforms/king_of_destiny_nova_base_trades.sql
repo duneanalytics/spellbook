@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'king_of_destiny_nova',
     alias = 'base_trades',
     materialized = 'incremental',
