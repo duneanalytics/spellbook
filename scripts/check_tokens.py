@@ -14,10 +14,14 @@ parser.add_argument('--file_name')
 args = parser.parse_args()
 
 # the following pattern supports hexstring address and varchar address
+### ('weth-weth','base','WETH',0x4200000000000000000000000000000000000006,18)
 static_record_pattern = r"\('([\w-]+)',\s*'([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\),?"
+### ('ron-ronin-token', 'WRON', 0xe514d9deb7966c8be0ca922de8a064264ea6bcd4, 18)
+alternative_pattern = r"\('([\w-]+)',\s*'([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+),\s*(\d+)\),?"
 
 def filter_non_row_lines(new_lines):
-    filtered_lines = [line for line in new_lines if bool(re.search(static_record_pattern, line)) and not line.startswith('--')]
+    filtered_lines = [line for line in new_lines if (bool(re.search(static_record_pattern, line)) or bool(
+        re.search(alternative_pattern, line))) and not line.startswith('--')]
     return filtered_lines
 
 
@@ -40,6 +44,8 @@ for new_line in filtered_lines:
         exceptions += 1
         logging.warning(f'Failed to decode line: {new_line}')
     except Exception as err:
+        exceptions += 1
+        logging.error(f"Error processing line: {new_line}. {str(err)}")
         raise err
 if exceptions > 0:
     raise Exception(
