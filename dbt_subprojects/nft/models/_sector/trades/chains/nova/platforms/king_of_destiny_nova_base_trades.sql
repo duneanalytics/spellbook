@@ -52,7 +52,7 @@ left join  {{source('king_of_destiny_nova','MarketplaceV3_call_GetRoyalty')}}  r
     {% endif %}
 WHERE
     tx_hash != 0xde7696b64c41bc6ffe2834ba51da7f04121f49c08fc89de724413bf81e6e16be
-    and (sub_tx_trade_id not in [13, 19]
+    and (sub_tx_trade_id not in (13, 19))
 {% if is_incremental() %}
  and {{incremental_predicate('s.evt_block_time')}}
 {% endif %}
