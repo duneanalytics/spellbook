@@ -29,7 +29,10 @@ class TokenChecker:
                             "blast": "blast-blast",
                             "linea": "eth-ethereum",
                             "scroll": "eth-ethereum",
-                            "zkevm": "eth-ethereum"
+                            "zkevm": "eth-ethereum",
+                            "ronin": "ron-ronin-token",
+                            "cardano": "ada-cardano",
+                            "tron": "trx-tron"
                             }
         self.tokens_by_id = self.get_tokens()
         self.contracts_by_chain = self.get_contracts()
