@@ -21,6 +21,7 @@
                                         , "nova"
                                         , "optimism"
                                         , "polygon"
+                                        , "ronin"
                                         , "scroll"
                                         , "sei"
                                         , "solana"
@@ -62,6 +63,7 @@ ref('prices_native_tokens')
 ,ref('prices_worldchain_tokens')
 ,ref('prices_kaia_tokens')
 ,ref('prices_tron_tokens')
+,ref('prices_ronin_tokens')
 ] %}
 
 

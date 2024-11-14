@@ -5,7 +5,8 @@
         )
 }}
 
-{% set baseline_date = '2015-08-21' %}
+{% set baseline_date = '2018-01-01' %}
+{% set start_date = '2015-08-21' %}
 
 with baseline as (
     select
@@ -22,14 +23,14 @@ with baseline as (
     from
         {{ ref('metrics_transactions_daily') }}
     where
-        block_date >= date '{{ baseline_date }}'
+        block_date >= date '{{ start_date }}'
 )
 select
     d.blockchain
     , d.block_date
     , d.tx_count
     , b.baseline_tx_count
-    , (cast(d.tx_count as double) / cast(b.baseline_tx_count as double)) * 100 as tx_index
+    , (cast(d.tx_count as double) / cast(b.baseline_tx_count as double)) * 10 as tx_index
 from
     daily as d
 left join

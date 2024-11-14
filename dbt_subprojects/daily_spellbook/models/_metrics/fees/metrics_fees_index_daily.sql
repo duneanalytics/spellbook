@@ -5,7 +5,8 @@
         )
 }}
 
-{% set baseline_date = '2015-08-21' %}
+{% set baseline_date = '2018-01-01' %}
+{% set start_date = '2015-08-21' %}
 
 with baseline as (
     select
@@ -22,14 +23,14 @@ with baseline as (
     from
         {{ ref('metrics_gas_fees_daily') }}
     where
-        block_date >= date '{{ baseline_date }}'
+        block_date >= date '{{ start_date }}'
 )
 select
     d.blockchain
     , d.block_date
     , d.gas_fees_usd
     , b.baseline_gas_fees_usd
-    , (d.gas_fees_usd / b.baseline_gas_fees_usd) * 100 as fees_index
+    , (d.gas_fees_usd / b.baseline_gas_fees_usd) * 10 as fees_index
 from
     daily as d
 left join
