@@ -556,6 +556,28 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('jupbot_solana_trades_seed')
           blockchain: solana
+
+  - name: pinkpunk_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: pinkpunk
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "pinkpunk", "trades"]
+    description: >
+      Pinkpunk trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('pinkpunk_solana_trades_seed')
+          blockchain: solana
           
   - name: falcon_solana_bot_trades
     meta:
