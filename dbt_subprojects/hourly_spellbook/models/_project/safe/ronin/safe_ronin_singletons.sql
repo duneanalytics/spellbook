@@ -14,4 +14,4 @@
 
 -- Fetch all known singleton/mastercopy addresses used via factories.
 select distinct singleton as address
-from {{ source('safe_ronin', 'SafeProxyFactory_v_1_3_0_evt_ProxyCreation') }}
+from {{ source('safe_ronin', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
