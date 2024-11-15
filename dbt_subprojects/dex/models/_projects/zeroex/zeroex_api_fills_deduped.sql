@@ -63,7 +63,7 @@ FROM (
       ,tx_to
       ,trace_address
       ,evt_index
-      ,tag as affiliate_address
+      ,affiliate_address
       ,null as zid 
       ,type 
     FROM {{ model }}
