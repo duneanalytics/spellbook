@@ -103,7 +103,7 @@ select * from settler_txs
     FROM 
          {{ source(blockchain, 'logs') }} AS logs
     JOIN 
-        settler_txs st ON st.tx_hash = logs.tx_hash 
+        zeroex_tx st ON st.tx_hash = logs.tx_hash 
             AND logs.block_time = st.block_time 
             AND st.block_number = logs.block_number
             AND ( (st.settler_address = bytearray_substring(logs.topic1,13,20))  
@@ -156,7 +156,7 @@ with tbl_all_logs as (
     FROM 
          {{ source(blockchain, 'logs') }} AS logs
     JOIN 
-        settler_txs st ON st.tx_hash = logs.tx_hash 
+        zeroex_tx st ON st.tx_hash = logs.tx_hash 
             AND logs.block_time = st.block_time 
             AND st.block_number = logs.block_number
     WHERE 
