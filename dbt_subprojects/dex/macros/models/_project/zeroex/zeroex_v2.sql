@@ -101,7 +101,7 @@ select * from settler_txs
         topic2, 
         tx_to
     FROM 
-        {{blockchain}}.logs AS logs
+         {{ source(blockchain, 'logs') }} AS logs
     JOIN 
         settler_txs st ON st.tx_hash = logs.tx_hash 
             AND logs.block_time = st.block_time 
@@ -154,7 +154,7 @@ with tbl_all_logs as (
         zid, 
         st.settler_address as contract_address, topic1, topic2, tx_to
     FROM 
-        {{blockchain}}.logs AS logs
+         {{ source(blockchain, 'logs') }} AS logs
     JOIN 
         settler_txs st ON st.tx_hash = logs.tx_hash 
             AND logs.block_time = st.block_time 
@@ -215,18 +215,28 @@ prices AS (
 fills as (
         with signatures as (
         select distinct signature  
-        from evms.logs_decoded  l
+        from  {{ source(blockchain, 'logs_decoded') }}  l
         join tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
         and event_name in ('TokenExchange', 'OtcOrderFilled', 'SellBaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
-        WHERE  1=1 
+        WHERE 
+        {% if is_incremental() %}
+            and  {{ incremental_predicate('l.block_time') }}
+        {% else %}
+            and  l.block_time >= DATE '{{start_date}}'
+        {% endif %}
         
         )
         
         select tt.tx_hash, tt.block_number, tt.block_time, count(*) fills_within
-        from {{blockchain}}.logs  l
+        from  {{ source(blockchain, 'logs') }}  l
         join signatures on signature = topic0 
         join  tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
-        WHERE 1=1 
+        WHERE 
+        {% if is_incremental() %}
+            and  {{ incremental_predicate('l.block_time') }}
+        {% else %}
+            and  l.block_time >= DATE '{{start_date}}'
+        {% endif %}
       
         group by 1,2,3
         ),
@@ -260,7 +270,7 @@ results AS (
     FROM 
         tbl_trades trades
     JOIN 
-        {{blockchain}}.transactions tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
+         {{ source(blockchain, 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
     LEFT JOIN 
         fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number 
     LEFT JOIN 
