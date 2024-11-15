@@ -58,7 +58,7 @@ settler_txs AS (
         JOIN 
             result_0x_settler_addresses a ON a.settler_address = tr.to AND tr.block_time > a.begin_block_time
         WHERE 
-            (a.settler_address IS NOT NULL OR tr.to = (0x0000000000001fF3684f28c67538d4D072C22734,0x0000000000005E88410CcDFaDe4a5EfaE4b49562,0x000000000000175a8b9bC6d539B3708EEd92EA6c))
+            (a.settler_address IS NOT NULL OR tr.to in (0x0000000000001fF3684f28c67538d4D072C22734,0x0000000000005E88410CcDFaDe4a5EfaE4b49562,0x000000000000175a8b9bC6d539B3708EEd92EA6c))
             AND (varbinary_position(input,0x1fff991f) <> 0 OR  varbinary_position(input,0xfd3ad6d4) <> 0 )
             {% if is_incremental() %}
                 AND {{ incremental_predicate('block_time') }}
