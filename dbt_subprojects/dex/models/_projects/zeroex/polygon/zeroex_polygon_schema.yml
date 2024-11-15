@@ -306,7 +306,9 @@ models:
       - *maker_token
       - *taker
       - *maker
-      - *affiliate_address
+      - &tag
+        name: tag
+        description: "tag of the trade"
       - &zid 
         name: zid
         description: "0x order id"

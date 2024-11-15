@@ -318,7 +318,7 @@ SELECT
         maker_token,
         taker,
         maker,
-        tag as affiliate_address,
+        tag,
         zid,
         tx_hash,
         tx_from,
