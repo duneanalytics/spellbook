@@ -102,7 +102,7 @@ FROM (
       ,tx_to
       ,trace_address
       ,evt_index
-      ,affiliate_address 
+      ,tag as affiliate_address 
       ,zid
       ,type
     FROM {{ model }}
