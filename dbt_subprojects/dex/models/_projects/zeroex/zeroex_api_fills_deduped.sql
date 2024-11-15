@@ -24,7 +24,7 @@
 {% set settler_models = [  
   ref('zeroex_ethereum_settler_trades')
   ,ref('zeroex_base_settler_trades')
-  ,ref('zeroex_polygon_settler_trades')
+  ,ref('zeroex_polygon_v2_trades')
   ,ref('zeroex_optimism_settler_trades')
   ,ref('zeroex_bnb_settler_trades')
   ,ref('zeroex_avalanche_c_settler_trades')
@@ -102,7 +102,7 @@ FROM (
       ,tx_to
       ,trace_address
       ,evt_index
-      ,tag as affiliate_address 
+      ,affiliate_address 
       ,zid
       ,type
     FROM {{ model }}
