@@ -563,7 +563,7 @@ contracts as (
         , contains(array[
               'Across'
             , 'LiFi'
-        ], project) or position('bridge' in lower(concat(project, tag)) > 0 as cross_chain
+        ], project) or position('bridge' in lower(concat(project, tag))) > 0 as cross_chain
         , tag
     from (values
         {% for row in config if blockchain in row[4] %}
