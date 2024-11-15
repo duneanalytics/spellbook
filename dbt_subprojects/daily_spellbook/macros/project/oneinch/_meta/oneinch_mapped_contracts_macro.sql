@@ -46,6 +46,12 @@
         , ('0x7f069df72b7a39bce9806e3afaf579e54d8cf2b9', 'true', '1inch'                , 'SettlementV1'            , ['base'])
         , ('0x11de482747d1b39e599f120d526af512dd1a9326', 'true', '1inch'                , 'SettlementV1'            , ['zksync'])
         , ('0xfb2809a5314473e1165f6b58018e20ed8f07b840', 'true', '1inch'                , 'SettlementV2'            , ['ethereum','bnb','polygon','arbitrum','avalanche_c','gnosis','optimism','fantom','base'])
+        , ('0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5', 'true', 'Across'               , 'SpokePool'               , ['ethereum'])
+        , ('0xe35e9842fceaCA96570B734083f4a58e8F7C5f2A', 'true', 'Across'               , 'SpokePool'               , ['arbitrum'])
+        , ('0x6f26Bf09B1C792e3228e5467807a900A503c0281', 'true', 'Across'               , 'SpokePool'               , ['optimism'])
+        , ('0x9295ee1d8C5b022Be115A2AD3c30C72E34e7F096', 'true', 'Across'               , 'SpokePool'               , ['polygon'])
+        , ('0x09aea4b2242abC8bb4BB78D537A67a245A7bEC64', 'true', 'Across'               , 'SpokePool'               , ['base'])
+        , ('0xE0B015E54d54fc84a6cB9B666099c46adE9335FF', 'true', 'Across'               , 'SpokePool'               , ['zksync'])
         , ('0x0cae51e1032e8461f4806e26332c030e34de3adb', 'true', 'AnySwap'              , 'AnyswapV3Router'         , ['arbitrum'])
         , ('0x7782046601e7b9b05ca55a3899780ce6ee6b8b2b', 'true', 'AnySwap'              , 'AnyswapV6Router'         , ['ethereum'])
         , ('0xb0731d50c681c45856bfc3f7539d5f61d4be81d8', 'true', 'AnySwap'              , 'UNDEFINED'               , ['avalanche_c'])
@@ -148,6 +154,12 @@
         , ('0x9dda6ef3d919c9bc8885d5560999a3640431e8e6', 'true', 'MetaMask'             , 'MetaSwap'                , ['arbitrum','optimism'])
         , ('0x3c11f6265ddec22f4d049dde480615735f451646', 'true', 'Mimic'                , 'Swapper'                 , ['ethereum','bnb'])
         , ('0x8b791913eb07c32779a16750e3868aa8495f5964', 'true', 'Mute'                 , 'Router'                  , ['zksync'])
+        , ('0x72Ce9c846789fdB6fC1f34aC4AD25Dd9ef7031ef', 'true', 'NativeBridgeArbitrum' , 'L1GatewayRouter'         , ['ethereum'])
+        , ('0x5288c571Fd7aD117beA99bF60FE0846C4E84F933', 'true', 'NativeBridgeEthereum' , 'L2GatewayRouter'         , ['arbitrum'])
+        , ('0x99C9fc46f92E8a1c0deC1b1747d010903E884bE1', 'true', 'NativeBridgeOptimism' , 'L1StandardBridgeProxy'   , ['ethereum'])
+        , ('0x4200000000000000000000000000000000000010', 'true', 'NativeBridgeEthereum' , 'L2StandardBridgeProxy'   , ['optimism'])
+        , ('0x3154Cf16ccdb4C6d922629664174b904d80F2C35', 'true', 'NativeBridgeBase'     , 'L1StandardBridgeProxy'   , ['ethereum'])
+        , ('0x4200000000000000000000000000000000000010', 'true', 'NativeBridgeEthereum' , 'L2StandardBridgeProxy'   , ['base'])
         , ('0xd654953d746f0b114d1f85332dc43446ac79413d', 'true', 'NomiSwap'             , 'UNDEFINED'               , ['bnb'])
         , ('0x76f4eed9fe41262669d0250b2a97db79712ad855', 'true', 'Odos'                 , 'OdosRouter'              , ['ethereum'])
         , ('0x9f138be5aa5cc442ea7cc7d18cd9e30593ed90b9', 'true', 'Odos'                 , 'OdosRouter'              , ['bnb'])
@@ -541,7 +553,6 @@ contracts as (
             , 'Dzap'
             , 'Firebird'
             , 'Kyber'
-            , 'LiFi'
             , 'Odos'
             , 'OpenOcean'
             , 'Paraswap'
@@ -549,6 +560,10 @@ contracts as (
             , 'TransitSwap'
             , 'ZeroEx'
         ], project) as multi
+        , contains(array[
+              'Across'
+            , 'LiFi'
+        ], project) or position('bridge' in lower(concat(project, tag)) > 0 as cross_chain
         , tag
     from (values
         {% for row in config if blockchain in row[4] %}
@@ -576,7 +591,12 @@ select
     , address
     , project
     , tag
-    , map_from_entries(array[('user', user), ('multi', multi), ('recreated', first_created_at <> last_created_at)]) as flags
+    , map_from_entries(array[
+            ('user', user)
+            , ('multi', multi)
+            , ('recreated', first_created_at <> last_created_at)
+            , ('cross_chain', cross_chain)
+    ]) as flags
     , first_created_at
     , last_created_at
     , last_creator
