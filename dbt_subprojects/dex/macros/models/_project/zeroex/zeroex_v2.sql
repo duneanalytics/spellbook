@@ -181,13 +181,13 @@ with tbl_all_logs as (
 {% endmacro %}
 
 {% macro zeroex_v2_trades_detail(blockchain, start_date) %}
-tokens as (
+with tokens as (
     with token_list as (
         select distinct maker_token as token
-        from tbl_trades_pre 
+        from tbl_trades 
         union distinct 
         select distinct taker_token as token 
-        from tbl_trades_pre 
+        from tbl_trades 
         ) 
         select * 
         from token_list tl 
@@ -202,7 +202,7 @@ prices AS (
     FROM 
          {{ source( 'prices', 'usd') }} as pu 
     JOIN 
-        tbl_trades_pre ON (pu.contract_address = taker_token  OR pu.contract_address = maker_token) AND date_trunc('minute',block_time) = minute
+        tbl_trades ON (pu.contract_address = taker_token  OR pu.contract_address = maker_token) AND date_trunc('minute',block_time) = minute
     WHERE 
         pu.blockchain = '{{blockchain}}'
         {% if is_incremental() %}
@@ -212,10 +212,27 @@ prices AS (
         {% endif %}
        
 ),
+fills as (
+        with signatures as (
+        select distinct signature  
+        from evms.logs_decoded  l
+        join tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
+        and event_name in ('TokenExchange', 'OtcOrderFilled', 'SellBaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
+        WHERE  1=1 
+        
+        )
+        
+        select tt.tx_hash, tt.block_number, tt.block_time, count(*) fills_within
+        from {{blockchain}}.logs  l
+        join signatures on signature = topic0 
+        join  tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
+        WHERE 1=1 
+      
+        group by 1,2,3
+        ),
 
-tbl_trades as (
-
- SELECT
+results AS (
+    SELECT
         trades.block_time,
         trades.block_number,
         zid,
@@ -238,63 +255,14 @@ tbl_trades as (
         maker_amount AS maker_token_amount_raw,
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS maker_token_amount,
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) * pm.price AS maker_amount,
-        tag
-    FROM 
-        tbl_trades_pre trades
-    JOIN 
-        {{ source(blockchain, 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
-        
-    LEFT JOIN 
-        tokens tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
-    LEFT JOIN 
-        tokens tm ON tm.blockchain = '{{blockchain}}' AND tm.contract_address = maker_token
-    LEFT JOIN 
-        prices pt ON pt.blockchain = '{{blockchain}}' AND pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
-    LEFT JOIN 
-        prices pm ON pm.blockchain = '{{blockchain}}' AND pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
-    WHERE 
-            {% if is_incremental() %}
-                 {{ incremental_predicate('tr.block_time') }}
-            {% else %}
-                 tr.block_time >= DATE '{{start_date}}'
-            {% endif %}
-    
-),
-results AS (
-    SELECT
-        '{{blockchain}}' AS blockchain,
-        trades.block_time,
-        trades.block_number,
-        zid,
-        trades.contract_address,
-        method_id,
-        trades.tx_hash,
-        "from" AS tx_from,
-        "to" AS tx_to,
-        trades.tx_index AS tx_index,
-        case when varbinary_substring(tr.data,1,4) = 0x500c22bc then "from" else taker end as taker,
-        CAST(NULL AS varbinary) AS maker,
-        taker_token,
-        taker_token as token_sold_address,
-        pt.price,
-        COALESCE(tt.symbol, pt.symbol) AS taker_symbol,
-        taker_amount AS taker_token_amount_raw,
-        taker_amount as token_sold_amount,
-        taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) AS taker_token_amount,
-        taker_amount / POW(10,COALESCE(tt.decimals,pt.decimals)) * pt.price AS taker_amount,
-        maker_token,
-        maker_token as token_bought_address,
-        COALESCE(tm.symbol, pm.symbol)  AS maker_symbol,
-        maker_amount AS maker_token_amount_raw,
-        maker_amount as token_bought_amount,
-        maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS maker_token_amount,
-        maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) * pm.price AS maker_amount,
-        tag
+        tag,
+        fills_within
     FROM 
         tbl_trades trades
     JOIN 
-         {{ source(blockchain, 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
-    
+        {{blockchain}}.transactions tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
+    LEFT JOIN 
+        fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number 
     LEFT JOIN 
         tokens tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
     LEFT JOIN 
