@@ -220,9 +220,9 @@ fills as (
         and event_name in ('TokenExchange', 'OtcOrderFilled', 'SellBaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
         WHERE 
         {% if is_incremental() %}
-            and  {{ incremental_predicate('l.block_time') }}
+            {{ incremental_predicate('l.block_time') }}
         {% else %}
-            and  l.block_time >= DATE '{{start_date}}'
+            l.block_time >= DATE '{{start_date}}'
         {% endif %}
         
         )
@@ -233,9 +233,9 @@ fills as (
         join  tbl_trades tt on tt.tx_hash = l.tx_hash and l.block_time = tt.block_time and l.block_number = tt.block_number 
         WHERE 
         {% if is_incremental() %}
-            and  {{ incremental_predicate('l.block_time') }}
+            {{ incremental_predicate('l.block_time') }}
         {% else %}
-            and  l.block_time >= DATE '{{start_date}}'
+            l.block_time >= DATE '{{start_date}}'
         {% endif %}
       
         group by 1,2,3
