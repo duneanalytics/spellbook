@@ -10,7 +10,6 @@ WITH tbl_addresses AS (
     WHERE 
         contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae 
         AND blockchain = '{{ blockchain }}'
-        and block_time >= cast('{{ start_date }}' as date)
 ),
 
 tbl_end_times AS (
