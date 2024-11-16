@@ -166,7 +166,8 @@ with tbl_all_logs as (
         and zid != 0xa00000000000000000000000
         AND (tx_to = settler_address  or varbinary_substring(logs.topic2, 13, 20) != 0x0000000000000000000000000000000000000000)
         and logs.tx_to != varbinary_substring(logs.topic1,13,20)
-        and (logs.tx_to != settler_address OR logs.tx_to != 0xca11bde05977b3631167028862be2a173976ca11) 
+        and logs.tx_to != settler_address
+        and logs.tx_to != 0xca11bde05977b3631167028862be2a173976ca11 
 
         ),
         tbl_valid_logs as (
