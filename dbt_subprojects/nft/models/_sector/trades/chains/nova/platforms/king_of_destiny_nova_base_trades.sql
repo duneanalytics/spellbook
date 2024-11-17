@@ -8,7 +8,21 @@
     )
 }}
 
-
+with deduplicated_royalties as (
+select * from (
+    select
+        call_tx_hash
+        ,call_block_number
+        ,call_block_time
+        ,value
+        ,tokenAddress
+        ,tokenId
+        ,output_amounts
+        ,output_recipients
+        ,row_number() over (partition by call_tx_hash, call_block_time, tokenAddress, tokenId, tokenAddress, value order by call_trace_address) as row_number
+        from {{source('king_of_destiny_nova','MarketplaceV3_call_GetRoyalty')}}
+) where row_number = 1
+)
 select
     'nova' as blockchain
     ,'king_of_destiny' as project
@@ -41,7 +55,7 @@ left join  {{source('king_of_destiny_nova','MarketplaceV3_DirectListingsLogic_ev
     {% if is_incremental() %}
     and {{incremental_predicate('l.evt_block_time')}}
     {% endif %}
-left join  {{source('king_of_destiny_nova','MarketplaceV3_call_GetRoyalty')}}  r
+left join deduplicated_royalties r
     on s.evt_tx_hash = r.call_tx_hash
     and s.evt_block_number = r.call_block_number
     and s.totalPricePaid = r.value
@@ -51,5 +65,5 @@ left join  {{source('king_of_destiny_nova','MarketplaceV3_call_GetRoyalty')}}  r
     and {{incremental_predicate('r.call_block_time')}}
     {% endif %}
 {% if is_incremental() %}
-WHERE {{incremental_predicate('s.evt_block_time')}}
+Where {{incremental_predicate('s.evt_block_time')}}
 {% endif %}
