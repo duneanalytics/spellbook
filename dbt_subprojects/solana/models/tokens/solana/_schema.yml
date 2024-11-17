@@ -110,6 +110,8 @@ models:
         description: "The symbol of the stablecoin"
       - name: address
         description: "The address of the stablecoin on the Solana blockchain"
+        data_tests:
+          - unique
       - name: decimals
         description: "The number of decimal places the stablecoin can be divided into"
       - name: backing
