@@ -6,7 +6,6 @@
                                   "sector",
                                   "tokens_solana",
                                   \'["synthquest"]\') }}'
-      , unique_key = ['address']
   )
 }}
 
