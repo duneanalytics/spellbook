@@ -80,6 +80,9 @@
         , ('0x11984dc4465481512eb5b777e44061c158cf2259', 'true', 'Connext'              , 'ConnextDiamond'          , ['polygon'])
         , ('0xee9dec2712cce65174b561151701bf54b99c24c8', 'true', 'Connext'              , 'ConnextDiamond'          , ['arbitrum'])
         , ('0x9008d19f58aabd9ed0d60971565aa8510560ab41', 'true', 'CoWSwap'              , 'GPv2Settlement'          , ['ethereum','gnosis','arbitrum'])
+        , ('0xfa43de785dd3cd0ef3dae0dd2b8be3f1b5112d1a', 'true', 'CrossCurve'           , 'UnifiedRouterV2v1'       , ['ethereum','bnb','polygon','gnosis','arbitrum','avalanche_c','optimism','base','fantom'])
+        , ('0xa2a786ff9148f7c88ee93372db8cbe9e94585c74', 'true', 'CrossCurve'           , 'UnifiedRouterV2v5'       , ['ethereum','bnb','polygon','gnosis','arbitrum','avalanche_c','optimism','base','fantom','blast','linea','mantle'])
+        , ('0xe7db62c7960183895190274f26925388db4a3be4', 'true', 'CrossCurve'           , 'UnifiedRouterV2'         , ['ethereum','bnb','polygon','gnosis','arbitrum','avalanche_c','optimism','base','fantom'])
         , ('0x99a58482bd75cbab83b27ec03ca68ff489b5788f', 'true', 'Curvefi'              , 'SwapRouter'              , ['ethereum'])
         , ('0xbebc44782c7db0a1a60cb6fe97d0b483032ff1c7', 'true', 'Curvefi'              , 'ThreepoolSwap'           , ['ethereum'])
         , ('0xdc24316b9ae028f1497c275eb9192a3ea0f67022', 'true', 'Curvefi'              , 'StETHSwap'               , ['ethereum'])
@@ -188,6 +191,11 @@
         , ('0x1dac23e41fc8ce857e86fd8c1ae5b6121c67d96d', 'true', 'OKXDEX'               , 'DexAggregationRouter'    , ['avalanche_c'])
         , ('0x6352a56caadc4f1e25cd6c75970fa768a3304e64', 'true', 'OpenOcean'            , 'ExchangeV2'              , ['ethereum','bnb','polygon','avalanche_c','optimism','fantom','base','arbitrum','gnosis'])
         , ('0x36a1acbbcafca2468b85011ddd16e7cb4d673230', 'true', 'OpenOcean'            , 'ExchangeV2'              , ['zksync'])
+        , ('0xc741900276cd598060b0fe6594fbe977392928f4', 'true', 'Orbiter'              , 'XRouter'                 , ['ethereum'])
+        , ('0x13e46b2a3f8512ed4682a8fb8b560589fe3c2172', 'true', 'Orbiter'              , 'XRouter'                 , ['bnb'])
+        , ('0x653f25dc641544675338cb47057f8ea530c69b78', 'true', 'Orbiter'              , 'XRouter'                 , ['polygon'])
+        , ('0x6a065083886ec63d274b8e1fe19ae2ddf498bfdd', 'true', 'Orbiter'              , 'XRouter'                 , ['arbitrum'])
+        , ('0x3191f40de6991b1bb1f61b7cec43d62bb337786b', 'true', 'Orbiter'              , 'XRouter'                 , ['optimism'])
         , ('0x05ff2b0db69458a0750badebc4f9e13add608c7f', 'true', 'PancakeSwap'          , 'PancakeRouter'           , ['bnb'])
         , ('0x10ed43c718714eb63d5aa57b78b54704e256024e', 'true', 'PancakeSwap'          , 'PancakeswapV2'           , ['bnb'])
         , ('0x5aeaf2883fbf30f3d62471154eda3c0c1b05942d', 'true', 'PancakeSwap'          , 'PancakeswapV2'           , ['zksync'])
@@ -253,6 +261,18 @@
         , ('0xf491e7b69e4244ad4002bc14e878a34207e38c29', 'true', 'Spookyswap'           , 'UniswapV2Router02'       , ['fantom'])
         , ('0xce16f69375520ab01377ce7b88f5ba8c48f8d666', 'true', 'Squid'                , 'SquidRouterProxy'        , ['base'])
         , ('0xC9eaaf81430547639fF16292697686d749d347BD', 'true', 'Squid'                , 'SquidRouter'             , ['base'])
+        , ('0x4a364f8c717caad9a442737eb7b8a55cc6cf18d8', 'true', 'Stargate'             , 'Router'                  , ['bnb'])
+        , ('0x53bf833a5d6c4dda888f69c22c88c9f356a41614', 'true', 'Stargate'             , 'Router'                  , ['arbitrum'])
+        , ('0x45a01e4e04f14f7a4a6702c74187c5f6222033cd', 'true', 'Stargate'             , 'Router'                  , ['polygon','avalanche_c'])
+        , ('0xb0d502e938ed5f4df2e681fe6e419ff29631d62b', 'true', 'Stargate'             , 'Router'                  , ['optimism'])
+        , ('0xaf5191b0de278c7286d6c7cc6ab6bb8a73ba2cd6', 'true', 'Stargate'             , 'Router'                  , ['fantom'])
+        , ('0x45f1a95a4d3f3836523f5c83673c797f4d4d263b', 'true', 'Stargate'             , 'Router'                  , ['base'])
+        , ('0x2f6f07cdcf3588944bf4c42ac74ff24bf56e7590', 'true', 'Stargate'             , 'Router'                  , ['linea'])
+        , ('0x150f94b44927f078737562f0fcf3c95c01cc2376', 'true', 'Stargate'             , 'RouterETH'               , ['ethereum'])
+        , ('0x8731d54e9d02c286767d56ac03e8037c07e01e98', 'true', 'Stargate'             , 'RouterETH'               , ['ethereum','linea'])
+        , ('0xbf22f0f184bccbea268df387a49ff5238dd23e40', 'true', 'Stargate'             , 'RouterETH'               , ['arbitrum'])
+        , ('0xb49c4e680174e331cb0a7ff3ab58afc9738d5f8b', 'true', 'Stargate'             , 'RouterETH'               , ['optimism'])
+        , ('0x50b6ebc2103bfec165949cc946d739d5650d7ae4', 'true', 'Stargate'             , 'RouterETH'               , ['base'])
         , ('0x1b02da8cb0d097eb8d57a175b88c7d8b47997506', 'true', 'SushiSwap'            , 'SwapRouter'              , ['bnb','polygon','arbitrum','avalanche_c','gnosis','fantom'])
         , ('0x2c8c987c4777ab740d20cb581f5d381be95a4a4a', 'true', 'SushiSwap'            , 'SushiXSwap'              , ['avalanche_c'])
         , ('0x4c5d5234f232bd2d76b96aa33f5ae4fcf0e4bfab', 'true', 'SushiSwap'            , 'RouteProcessorV3'        , ['optimism'])
@@ -533,6 +553,7 @@
         , ('0x6a3e4b7e23661108aaec70266c468e6c679ae022', 'false', 'Unknown'             , 'Unknown'                 , ['arbitrum'])
         , ('0xf770c63b1764a9c8f0fa925044158b09855a7faf', 'false', 'Unknown'             , 'Unknown'                 , ['arbitrum'])
         , ('0x00000000001f8b68515efb546542397d3293ccfd', 'false', 'Unknown'             , 'ArbBot'                  , ['bnb'])
+        
     ]
 %}
 
@@ -559,10 +580,13 @@ contracts as (
             , 'SlingshotFinance'
             , 'TransitSwap'
             , 'ZeroEx'
+            , 'LiFi'
         ], project) as multi
         , contains(array[
               'Across'
-            , 'LiFi'
+            , 'CrossCurve'
+            , 'Stargate'
+            , 'Orbiter'
         ], project) or position('bridge' in lower(concat(project, tag))) > 0 as cross_chain
         , tag
     from (values

@@ -13,9 +13,9 @@ with
 
 static as (
     select
-          array['swap', 'settle', 'change', 'exact', 'batch', 'trade', 'sell', 'buy', 'fill', 'route', 'zap', 'symbiosis', 'aggregate', 'multicall', 'execute', 'wrap', 'transform', 'bridge', 'outboundtransfer', 'deposit'] as suitables
+          array['swap', 'settle', 'change', 'exact', 'batch', 'trade', 'sell', 'buy', 'fill', 'route', 'zap', 'symbiosis', 'aggregate', 'multicall', 'execute', 'wrap', 'transform', 'bridge', 'outboundtransfer', 'deposit', 'start', 'transfer'] as suitables
         , array['add', 'remove', 'mint', 'increase', 'decrease', 'cancel', 'destroy', 'claim', 'rescue', 'withdraw', 'simulate', 'join', 'exit', 'interaction', '721', '1155', 'nft', 'create'] as exceptions
-        , array['bridge', 'outboundtransfer', 'deposit'] as cross_chain_suitables
+        , array['bridge', 'outboundtransfer', 'deposit', 'start', 'transfer'] as cross_chain_suitables
 )
 
 , meta as (
@@ -40,7 +40,7 @@ static as (
 )
 
 , signatures as (
-    select *, reduce(cross_chain_suitables, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) as cross_chain
+    select *, reduce(cross_chain_suitables, false, (r, x) -> if(position(x in lower(replace(method, '_'))) > 0, true, r), r -> r) as cross_chain_method
     from (
         select
             id as selector
@@ -101,9 +101,6 @@ static as (
             {% endif %}
             
     ) using(block_number, block_time, tx_hash)
-    where
-        not flags['cross_chain'] and not cross_chain
-        or flags['cross_chain'] and cross_chain
 )
 
 -- output --
@@ -120,7 +117,7 @@ select
     , call_trace_address
     , project
     , tag
-    , map_concat(flags, map_from_entries(array[('direct', direct)])) as flags
+    , map_concat(flags, map_from_entries(array[('direct', direct), ('cross_chain_method', cross_chain_method)])) as flags
     , selector as call_selector
     , method
     , signature
