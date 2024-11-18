@@ -1861,6 +1861,9 @@ FROM
     ('fight-fight-to-maga', 'ethereum', 'FIGHT',0x8802269d1283cdb2a5a329649e5cb4cdcee91ab6, 9),
     ('sato-atsuko-sato', 'ethereum', 'SATO',0x5de758bba013e58dae2693aea3f0b12b31a3023d, 18),
     ('kekec-the-balkan-dwarf', 'ethereum', 'KEKEC', 0x8c7ac134ed985367eadc6f727d79e8295e11435c, 18),
+    ('oas-oases-chain', 'ethereum', 'OAS', 0x89885fc1f76c3f4cc719640e33c315227da7003a, 18),
+    ('sidus-sidus', 'ethereum', 'SIDUS', 0x549020a9Cb845220D66d3E9c6D9F9eF61C981102, 18),
+    ('mcg-metalcore', 'ethereum', 'MCG', 0xc9E503562d0Db0A2629288a5D3b1c94Ea7741869, 18),
     ('mavia-heroes-of-mavia', 'ethereum', 'MAVIA', 0x24fcfc492c1393274b6bcd568ac9e225bec93584, 18)    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
