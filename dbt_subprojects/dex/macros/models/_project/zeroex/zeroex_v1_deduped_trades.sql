@@ -6,7 +6,7 @@ AS
 (
     SELECT   row_number() OVER ( partition BY tx_hash ORDER BY evt_index ASC ) AS tx_fill_number
            , *
-    FROM {{ source(table_prefix, 'api_fills') }} 
+    FROM {{ source(table_prefix, api_fills) }} 
     WHERE 1=1
     AND swap_flag = true
     {% if is_incremental() %}
