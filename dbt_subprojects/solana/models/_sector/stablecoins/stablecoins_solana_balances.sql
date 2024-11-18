@@ -1,7 +1,7 @@
  {{
   config(
-        schema = 'solana_stablecoins',
-        alias = 'balances',
+        schema = 'stablecoins',
+        alias = 'solana_balances',
         materialized='incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

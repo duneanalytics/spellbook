@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: solana_stablecoins_balances
+  - name: stablecoins_solana_balances
     meta:
       blockchain: solana
       contributors: [synthquest]
