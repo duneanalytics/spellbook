@@ -273,7 +273,7 @@ models:
         name: protocol_fee_paid_eth
         description: "The protocol fee paid in ETH"
 
-  - name: zeroex_ethereum_v2_trades 
+  - name: zeroex_v2_ethereum_trades 
     meta:
       blockchain: ethereum
       project: zeroex

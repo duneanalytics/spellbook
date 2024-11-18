@@ -267,7 +267,7 @@ models:
         name: protocol_fee_paid_eth
         description: "The protocol fee paid in ETH"
 
-  - name: zeroex_polygon_v2_trades 
+  - name: zeroex_v2_polygon_trades 
     meta:
       blockchain: polygon
       project: zeroex

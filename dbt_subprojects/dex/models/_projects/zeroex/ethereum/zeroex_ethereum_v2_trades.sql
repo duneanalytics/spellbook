@@ -1,6 +1,6 @@
 {{  config(
-    schema = 'zeroex_ethereum',
-    alias = 'v2_trades',
+    schema = 'zeroex_v2_ethereum',
+    alias = 'trades',
     materialized='incremental',
     partition_by = ['block_month'],
     unique_key = ['block_month', 'block_date', 'tx_hash', 'evt_index'],
@@ -15,7 +15,7 @@
 
 WITH zeroex_tx AS (
     {{
-        settler_txs_cte(
+        zeroex_settler_txs_cte(
             blockchain = blockchain,
             start_date = zeroex_settler_start_date
         )
