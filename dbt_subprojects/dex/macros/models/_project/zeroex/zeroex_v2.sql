@@ -1,4 +1,4 @@
-{% macro settler_txs_cte(blockchain, start_date) %}
+{% macro zeroex_settler_txs_cte(blockchain, start_date) %}
 WITH tbl_addresses AS (
     SELECT 
         token_id, 
