@@ -13,13 +13,12 @@
 
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set blockchain = 'ethereum' %}
-{% set table_name = 'zeroex_' ~ blockchain ~ '_api_fills' %}
 
 WITH 
 deduped_trades as (
     {{
         zeroex_v1_deduped_trades(
-            table_name = table_name,
+            blockchain = blockchain,
             start_date = zeroex_v3_start_date
             
         )
