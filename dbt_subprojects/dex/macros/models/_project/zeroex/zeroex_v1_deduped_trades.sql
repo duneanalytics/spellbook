@@ -12,7 +12,7 @@ AS
     AND {{ incremental_predicate('block_time') }}
     {% endif %}
     {% if not is_incremental() %}
-    AND block_time >= {{start_date}}
+    AND block_time >= DATE '{{start_date}}'
     {% endif %}
 )
 , fills_first_last
