@@ -1860,7 +1860,8 @@ FROM
     ('ebull-ethereum-is-good4058', 'ethereum', 'EBULL',0x71297312753ea7a2570a5a3278ed70d9a75f4f44, 9),
     ('fight-fight-to-maga', 'ethereum', 'FIGHT',0x8802269d1283cdb2a5a329649e5cb4cdcee91ab6, 9),
     ('sato-atsuko-sato', 'ethereum', 'SATO',0x5de758bba013e58dae2693aea3f0b12b31a3023d, 18),
-    ('kekec-the-balkan-dwarf', 'ethereum', 'KEKEC', 0x8c7ac134ed985367eadc6f727d79e8295e11435c, 18)
+    ('kekec-the-balkan-dwarf', 'ethereum', 'KEKEC', 0x8c7ac134ed985367eadc6f727d79e8295e11435c, 18),
+    ('mavia-heroes-of-mavia', 'ethereum', 'MAVIA', 0x24fcfc492c1393274b6bcd568ac9e225bec93584, 18)    
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
