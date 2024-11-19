@@ -562,7 +562,7 @@
 with 
     
 contracts as (
-    select
+    select distinct
         '{{blockchain}}' as blockchain
         , address
         , project
