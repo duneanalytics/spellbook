@@ -30,7 +30,7 @@ select
     , d.block_date
     , d.net_transfer_amount_usd
     , b.baseline_net_transfer_amount_usd
-    , (d.net_transfer_amount_usd / b.baseline_net_transfer_amount_usd) * 100 as transfers_index
+    , (d.net_transfer_amount_usd / b.baseline_net_transfer_amount_usd) * 10 as transfers_index
 from
     daily as d
 left join
