@@ -117,3 +117,7 @@ sources:
   - name: swaap_v2_bnb
     tables:
       - name: Vault_evt_Swap
+  - name: hyperjump_bnb
+    tables:
+      - name: ThugswapPair_evt_Swap
+      - name: ThugswapFactory_evt_PairCreated

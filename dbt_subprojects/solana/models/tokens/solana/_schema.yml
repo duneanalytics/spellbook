@@ -93,3 +93,28 @@ models:
       - name: call_block_time
       - name: call_block_slot
       - name: call_tx_signer
+
+  - name: tokens_solana_stablecoins
+    meta:
+      blockchain: solana
+      sector: tokens
+      project: stablecoins
+      contributors: synthquest
+    config:
+      tags: ['table', 'metadata', 'stablecoins', 'solana']
+    description: "Stablecoins on Solana blockchain with their details"
+    columns:
+      - name: blockchain
+        description: "The blockchain on which the stablecoin is issued"
+      - name: symbol
+        description: "The symbol of the stablecoin"
+      - name: address
+        description: "The address of the stablecoin on the Solana blockchain"
+        data_tests:
+          - unique
+      - name: decimals
+        description: "The number of decimal places the stablecoin can be divided into"
+      - name: backing
+        description: "The type of backing for the stablecoin (e.g., Fiat Stablecoin, Dollar-Pegged)"
+      - name: name
+        description: "The name of the issuer or protocol of the stablecoin"
