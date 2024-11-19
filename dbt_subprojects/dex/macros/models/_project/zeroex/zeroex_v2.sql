@@ -109,7 +109,12 @@ WITH tbl_all_logs AS (
         zeroex_tx st ON st.tx_hash = logs.tx_hash
             AND logs.block_time = st.block_time
             AND st.block_number = logs.block_number
-    WHERE
+    WHERE 1=1
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('logs.block_time') }}
+        {% else %}
+            AND logs.block_time >= DATE '{{start_date}}'
+        {% endif %}
         topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
                    0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
@@ -229,6 +234,11 @@ results AS (
         tbl_trades trades
     JOIN
         {{ source(blockchain, 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('tr.block_time') }}
+        {% else %}
+            AND tr.block_time >= DATE '{{start_date}}'
+        {% endif %}
     LEFT JOIN
         fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number
     LEFT JOIN
