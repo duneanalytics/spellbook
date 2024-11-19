@@ -12,3 +12,9 @@ data_tests:
         Ensure that there are no missing prices for each token on each hour
     severity: error
     tags: [ 'data_test', 'hourly']
+
+  - name: assert_no_missing_price_minute
+    description: >
+        Ensure that there are no missing prices for each token on each minute
+    severity: error
+    tags: [ 'data_test', 'minute']
