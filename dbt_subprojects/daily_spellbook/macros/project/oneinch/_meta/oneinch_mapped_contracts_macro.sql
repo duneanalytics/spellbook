@@ -590,7 +590,7 @@ contracts as (
             , 'LiFi'
         ], project) or position('bridge' in lower(concat(project, tag))) > 0 as cross_chain
         , tag
-    from (distinct values
+    from (values
         {% for row in config if blockchain in row[4] %}
             {% if not loop.first %}, {% endif %}({{ row[0] }}, {{ row[1] }}, '{{ row[2] }}', '{{ row[3] }}')
         {% endfor %}
