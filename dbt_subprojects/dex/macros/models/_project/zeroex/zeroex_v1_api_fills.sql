@@ -498,7 +498,7 @@ AND mp.minute >= cast('{{zeroex_v3_start_date}}' as date)
 
 LEFT OUTER JOIN {{ source('tokens', 'erc20') }} ts ON ts.contract_address = taker_token and ts.blockchain = '{{ blockchain }}' 
 LEFT OUTER JOIN {{ source('tokens', 'erc20') }} ms ON ms.contract_address = maker_token and ms.blockchain = '{{ blockchain }}' 
-)
+),
 
 results_usd AS (
     {{
@@ -507,5 +507,6 @@ results_usd AS (
         )
     }}
 )
+select * from results_usd 
 {% endmacro %}
 
