@@ -116,12 +116,11 @@ WITH tbl_all_logs AS (
         AND topic1 != 0x0000000000000000000000000000000000000000000000000000000000000000
         AND zid != 0xa00000000000000000000000
         {% if is_direct %}
-            AND (logs.tx_to = settler_address OR logs.tx_to = 0xca11bde05977b3631167028862be2a173976ca11)
+            AND (logs.tx_to = settler_address)
         {% else %}
             AND (tx_to = settler_address OR varbinary_substring(logs.topic2, 13, 20) != 0x0000000000000000000000000000000000000000)
             AND logs.tx_to != varbinary_substring(logs.topic1,13,20)
             AND logs.tx_to != settler_address
-            AND logs.tx_to != 0xca11bde05977b3631167028862be2a173976ca11
         {% endif %}
         {% if is_direct %}
             AND (st.settler_address = bytearray_substring(logs.topic1,13,20)
