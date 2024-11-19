@@ -4671,4 +4671,5 @@ FROM (VALUES
     , ( 0x6532b3f1e4dbff542fbd6befe5ed7041c10b385a, 'TINC', 18)
     , ( 0x69340ad256a30fa4525686e6fd42df559277b5aa, 'Astley', 9)
     , ( 0x878aee00f14323250eb3a1289a58012951e89428, 'PEIRO', 9)
+    , ( 0x89885FC1F76C3f4cc719640E33c315227Da7003a, 'OAS', 18)
 ) AS temp_table (contract_address, symbol, decimals)
