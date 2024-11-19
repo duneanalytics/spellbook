@@ -199,7 +199,7 @@ select * from zeroex_tx
     SELECT
             logs.tx_hash,
             INDEX                                   AS evt_index,
-            logs.contract_address,s
+            logs.contract_address,
             logs.block_time                              AS block_time,
             bytearray_substring(DATA, 141, 20) AS maker,
             bytearray_substring(DATA, 173, 20) AS taker,
@@ -389,7 +389,7 @@ select * from zeroex_tx
 
 
 {% macro direct_uniswapv3(blockchain,zeroex_v4_start_date) %}
-{%- set table_prefix = 'uniswap_v3' + blockchain -%}
+{%- set table_prefix = 'uniswap_v3_' + blockchain -%}
     SELECT
             swap.evt_tx_hash                                                                        AS tx_hash,
             swap.evt_index,
