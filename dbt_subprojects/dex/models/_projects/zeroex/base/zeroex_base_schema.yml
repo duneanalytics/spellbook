@@ -151,7 +151,7 @@ models:
             - tx_hash
             - evt_index
       - check_seed:
-          seed_file: ref('zeroex_base_v2_trades_sample')
+          seed_file: ref('zeroex_v2_base_trades_sample')
           match_columns:
             - tx_hash
           check_columns:
