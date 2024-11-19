@@ -23,7 +23,7 @@
 
 {% set settler_models = [  
   ref('zeroex_v2_ethereum_trades')
-  ,ref('zeroex_base_settler_trades')
+  ,ref('zeroex_v2_base_trades')
   ,ref('zeroex_v2_polygon_trades')
   ,ref('zeroex_optimism_settler_trades')
   ,ref('zeroex_bnb_settler_trades')
