@@ -6,19 +6,16 @@
 }}
 
 select
-    f.blockchain
-    , f.block_date
-    , f.fees_index
-    , tr.transfers_index
-    , tx.tx_index
-    , (f.fees_index + tr.transfers_index + tx.tx_index) / 3 as dune_index
-    , 100 as baseline
+    blockchain
+    , block_date
+    , coalesce(f.fees_index,0) as fees_index
+    , coalesce(tr.transfers_index,0) as transfers_index
+    , coalesce(tx.tx_index,0) as tx_index
+    , coalesce(f.fees_index,0)*0.45 + coalesce(tr.transfers_index,0)*0.45 + coalesce(tx.tx_index,0)*0.10 as dune_index
 from {{ ref('metrics_fees_index_daily') }} as f
 left join
     {{ ref('metrics_transfers_index_daily') }} as tr
-    on f.blockchain = tr.blockchain
-    and f.block_date = tr.block_date
+    using (blockchain, block_date)
 left join
     {{ ref('metrics_transactions_index_daily') }} as tx
-    on f.blockchain = tx.blockchain
-    and f.block_date = tx.block_date
+     using (blockchain, block_date)

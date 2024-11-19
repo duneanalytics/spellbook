@@ -5,3 +5,7 @@ sources:
     tables:
       - name: prices_day_raw
       - name: prices_hour_raw
+      - name: prices_minute_raw
+      - name: prices_solana_hour_raw
+      - name: prices_solana_day_raw
+      - name: prices_solana_minute_raw
