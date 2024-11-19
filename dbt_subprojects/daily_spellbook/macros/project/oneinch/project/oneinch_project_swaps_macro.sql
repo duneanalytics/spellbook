@@ -57,7 +57,7 @@ meta as (
         , making_amount
         , taker_asset
         , taking_amount
-        , flags as order_flags
+        , map_concat(flags, map_from_entries(array[('cross_chain', hashlock is not null)])) as order_flags
     from (
         select *, row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
         from {{ source('oneinch_' + blockchain, 'lop') }}
@@ -111,6 +111,7 @@ meta as (
             {% endif %}
             and (tx_success or tx_success is null)
             and call_success
+            and not (not flags['cross_chain'] and flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
     )
     left join orders using(block_number, tx_hash, call_trace_address, project)
     join meta on true
@@ -208,6 +209,11 @@ meta as (
             ) -- the user_amount & caller_amount of untrusted tokens takes precedence over the call_amount of trusted tokens
             , greatest(user_amount_usd_trusted, caller_amount_usd_trusted)
         ) as amount_usd
+        , coalesce(element_at(order_flags, 'fusion'), false) or coalesce(element_at(order_flags, 'auction'), false) as auction -- 1inch Fusion or any other auction
+        , coalesce(element_at(order_flags, 'cross_chain'), false) -- 1inch cross-chain
+            or coalesce(element_at(flags, 'cross_chain'), false) and not coalesce(element_at(flags, 'multi'), false) -- any suitable swap method call of exclusively cross-chain protocol
+            or coalesce(element_at(flags, 'cross_chain'), false) and coalesce(element_at(flags, 'cross_chain_method'), false) -- calls of exclusively cross-chain methods of any cross-chain protocol
+        as cross_chain_swap
     from (
         select
             blockchain
@@ -297,6 +303,23 @@ meta as (
     )
 )
 
+, sides as (
+    select *, coalesce(maker, tx_from) as user, false as second_side
+    from swaps
+    
+    union all
+    
+    select *, tx_from as user, true as second_side
+    from swaps
+    where
+        true
+        and flags['direct']
+        and order_hash is not null -- intent
+        and maker is not null
+        and not auction
+        and not cross_chain_swap
+)
+
 -- output --
 
 select
@@ -309,11 +332,17 @@ select
     , call_trace_address
     , project
     , tag
-    , flags
+    , map_concat(flags, map_from_entries(array[
+        ('second_side', second_side)
+        , ('intent', order_hash is not null)
+        , ('auction', auction)
+        , ('cross_chain_swap', cross_chain_swap)
+    ])) as flags
     , call_selector
     , method
     , call_from
     , call_to
+    , user
     , order_hash
     , maker
     , maker_asset
@@ -338,6 +367,6 @@ select
     , receivers
     , date(date_trunc('month', block_time)) as block_month
     , call_trade_id
-from swaps
+from sides
 
 {% endmacro %}
