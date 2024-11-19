@@ -144,5 +144,5 @@ tbl_trade_details AS (
         )
     }}
 )
-select * from trade_details
+select * from tbl_trade_details
 order by block_time desc 
