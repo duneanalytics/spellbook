@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: zeroex_v1_ethereum_api_fills 
+  - name: zeroex_ethereum_api_fills 
     meta:
       blockchain: ethereum
       project: zeroex
