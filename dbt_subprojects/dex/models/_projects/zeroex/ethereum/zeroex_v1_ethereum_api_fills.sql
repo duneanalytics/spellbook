@@ -69,7 +69,7 @@ BridgeFill as (
     {{
         BridgeFill(
             blockchain = blockchain,
-            zeroex_v3_start_date = zeroex_v3_start_date
+            zeroex_v4_start_date = zeroex_v4_start_date
         )
     }} 
 ),
@@ -77,7 +77,7 @@ NewBridgeFill as (
     {{
         NewBridgeFill(
             blockchain = blockchain,
-            zeroex_v3_start_date = zeroex_v3_start_date
+            zeroex_v4_start_date = zeroex_v4_start_date
         )
     }} 
 ),
