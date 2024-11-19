@@ -195,7 +195,7 @@ select * from zeroex_tx
 {% endmacro %}
 
 
-{% macro ERC20BridgeTransfer(blockchain,zeroex_v4_start_date) %}
+{% macro ERC20BridgeTransfer(blockchain,zeroex_v3_start_date) %}
     SELECT
             logs.tx_hash,
             INDEX                                   AS evt_index,
