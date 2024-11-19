@@ -2,7 +2,7 @@
 WITH tbl_addresses AS (
     SELECT 
         token_id, 
-        to AS settler_address, 
+        "to" AS settler_address,
         block_time AS begin_block_time, 
         block_number AS begin_block_number
     FROM 
@@ -15,8 +15,8 @@ WITH tbl_addresses AS (
 tbl_end_times AS (
     SELECT 
         *, 
-        LEAD(begin_block_time, begin_block_number) OVER (PARTITION BY token_id ORDER BY begin_block_time)
-        AS (end_block_time, end_block_number)
+        LEAD(begin_block_time) OVER (PARTITION BY token_id ORDER BY begin_block_time) AS end_block_time,
+        LEAD(begin_block_number) OVER (PARTITION BY token_id ORDER BY begin_block_time) AS end_block_number
     FROM
         tbl_addresses
 ),
@@ -251,31 +251,38 @@ results_usd AS (
 )
 
 SELECT
-    '{{blockchain}}' AS blockchain,
-    '0x-API' AS project,
-    'settler' AS version,
-    DATE_TRUNC('day', block_time) AS block_date,
-    DATE_TRUNC('month', block_time) AS block_month,
-    block_time,
-    block_number,
-    taker_symbol,
-    maker_symbol,
-    CASE WHEN LOWER(taker_symbol) > LOWER(maker_symbol) THEN CONCAT(maker_symbol, '-', taker_symbol) ELSE CONCAT(taker_symbol, '-', maker_symbol) END AS token_pair,
-    taker_token_amount,
-    maker_token_amount,
-    taker_token_amount_raw,
-    maker_token_amount_raw,
-    CASE WHEN tag IS NULL THEN 'Unknown' ELSE tag END AS trade_tag,
-    (taker_amount + maker_amount) AS total_amount,
-    event_timestamp,
-    fills_within,
-    COALESCE(taker_amount_usd, 0) AS taker_amount_usd,
-    COALESCE(maker_amount_usd, 0) AS maker_amount_usd,
-    COALESCE(total_amount_usd, 0) AS total_amount_usd
-FROM
-    results
-JOIN
-    results_usd ON results.tx_hash = results_usd.tx_hash
+        '{{blockchain}}' AS blockchain,
+        '0x-API' AS project,
+        'settler' AS version,
+        DATE_TRUNC('day', block_time) block_date,
+        DATE_TRUNC('month', block_time) AS block_month,
+        block_time,
+        block_number,
+        taker_symbol,
+        maker_symbol,
+        CASE WHEN LOWER(taker_symbol) > LOWER(maker_symbol) THEN CONCAT(maker_symbol, '-', taker_symbol) ELSE CONCAT(taker_symbol, '-', maker_symbol) END AS token_pair,
+        taker_token_amount,
+        maker_token_amount,
+        taker_token_amount_raw,
+        maker_token_amount_raw,
+        amount_usd as volume_usd,
+        taker_token,
+        maker_token,
+        taker,
+        maker,
+        tag,
+        zid,
+        tx_hash,
+        tx_from,
+        tx_to,
+        tx_index AS evt_index,
+        (ARRAY[-1]) AS trace_address,
+        'settler' AS type,
+        TRUE AS swap_flag,
+        contract_address
+
+FROM results_usd
+order by block_time desc
 {% endmacro %}
 
 {% macro zeroex_v2_trades_direct(blockchain, start_date) %}
