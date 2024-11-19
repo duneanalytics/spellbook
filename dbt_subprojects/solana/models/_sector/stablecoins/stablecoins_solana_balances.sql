@@ -8,7 +8,7 @@
         unique_key = ['token_mint_address', 'token_balance_owner', 'day'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "solana_utils",
-                                    "stablecoin",
+                                    "stablecoins",
                                     \'["synthquest"]\') }}')
 }}
 
