@@ -195,7 +195,7 @@ select * from zeroex_tx
 {% endmacro %}
 
 
-{% macro otc_fills(blockchain,zeroex_v4_start_date) %}
+{% macro ERC20BridgeTransfer(blockchain,zeroex_v4_start_date) %}
     SELECT
             logs.tx_hash,
             INDEX                                   AS evt_index,
@@ -287,7 +287,7 @@ select * from zeroex_tx
 {% endmacro %}
 
 
-{% macro NewBridgeFill(blockchain,zeroex_v3_start_date) %}
+{% macro direct_PLP(blockchain,zeroex_v3_start_date) %}
 {%- set table_prefix = 'zeroex_' + blockchain -%}
     SELECT
             plp.evt_tx_hash,
@@ -388,7 +388,7 @@ select * from zeroex_tx
 {% endmacro %}
 
 
-{% macro direct_sushiswap(blockchain,zeroex_v4_start_date) %}
+{% macro direct_uniswapv3(blockchain,zeroex_v4_start_date) %}
 {%- set table_prefix = 'uniswap_v3' + blockchain -%}
     SELECT
             swap.evt_tx_hash                                                                        AS tx_hash,
