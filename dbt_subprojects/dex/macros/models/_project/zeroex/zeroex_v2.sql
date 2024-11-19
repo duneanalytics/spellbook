@@ -86,11 +86,7 @@ WITH tbl_all_logs AS (
                    (varbinary_substring(logs.topic2, 13, 20) = first_value(bytearray_substring(logs.topic1,13,20)) OVER (PARTITION BY logs.tx_hash ORDER BY index)) OR
                    topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65)
             THEN 1 END AS valid,
-        {% if is_direct %}
-            COALESCE(bytearray_substring(logs.topic2,13,20), first_value(bytearray_substring(logs.topic1,13,20)) OVER (PARTITION BY logs.tx_hash ORDER BY index)) AS taker,
-        {% else %}
-            tx_from AS taker,
-        {% endif %}
+        COALESCE(bytearray_substring(logs.topic2,13,20), first_value(bytearray_substring(logs.topic1,13,20)) OVER (PARTITION BY logs.tx_hash ORDER BY index)) AS taker,
         logs.contract_address AS maker_token,
         first_value(logs.contract_address) OVER (PARTITION BY logs.tx_hash ORDER BY index) AS taker_token,
         first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) AS int256)) OVER (PARTITION BY logs.tx_hash ORDER BY index) AS taker_amount,
