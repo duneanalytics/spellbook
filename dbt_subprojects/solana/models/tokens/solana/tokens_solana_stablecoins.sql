@@ -21,4 +21,5 @@ from (Values
     , ('solana', 'USDY','A1KLoBrKBde8Ty9qtNQUtq3C2ortoC3u7twggz7sEto6', 6,'Dollar-Pegged', 'Ondo')
     , ('solana', 'ZUSD','FrBfWJ4qE5sCzKm3k3JaAtqZcXUh4LvJygDeketsrsH4', 6,'Dollar-Pegged','GMO-Z')
     , ('solana', 'PAI', 'Ea5SjE2Y6yvCeW5dYTn7PYMuW5ikXkvbGdcmSnXeaLjS', 6,'Crypto Stablecoin', 'Parrot')
+    , ('solana', 'USDS', 'USDSwr9ApdHk5bvJKMjzff41FfuX8bSxdKcR81vTwcA', 6, 'Hybrid Stablecoin', 'Sky Protocol')
 ) as t(blockchain, symbol, address, decimals, backing, name)
