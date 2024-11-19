@@ -109,7 +109,7 @@ direct_uniswapv3 as (
     {{
         direct_uniswapv3(
             blockchain = blockchain,
-            zeroex_v3_start_date = zeroex_v3_start_date
+            zeroex_v4_start_date = zeroex_v4_start_date
         )
     }}
 ),
