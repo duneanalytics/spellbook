@@ -199,7 +199,7 @@ select * from zeroex_tx
     SELECT
             logs.tx_hash,
             INDEX                                   AS evt_index,
-            logs.contract_address,
+            logs.contract_address,s
             logs.block_time                              AS block_time,
             bytearray_substring(DATA, 141, 20) AS maker,
             bytearray_substring(DATA, 173, 20) AS taker,
@@ -352,7 +352,7 @@ select * from zeroex_tx
 {% endmacro %}
 
 {% macro direct_sushiswap(blockchain,zeroex_v3_start_date) %}
-{%- set table_prefix = 'sushiswap_' + blockchain -%}
+{%- set table_prefix = 'sushi_' + blockchain -%}
     SELECT
             swap.evt_tx_hash AS tx_hash,
             swap.evt_index,
