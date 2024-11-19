@@ -13,7 +13,7 @@
 
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
-
+{% set blockchain = 'ethereum' %}
 {% set table_name = 'zeroex_' ~ blockchain ~ '_Exchange_evt_Fill' %}
 
 WITH zeroex_tx AS (
