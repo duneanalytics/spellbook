@@ -333,8 +333,7 @@ select
     , project
     , tag
     , map_concat(flags, map_from_entries(array[
-        ('second_side', second_side)
-        , ('intent', order_hash is not null)
+        ('intent', order_hash is not null)
         , ('auction', auction)
         , ('cross_chain_swap', cross_chain_swap)
     ])) as flags
@@ -367,6 +366,7 @@ select
     , receivers
     , date(date_trunc('month', block_time)) as block_month
     , call_trade_id
+    , second_side
 from sides
 
 {% endmacro %}
