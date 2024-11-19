@@ -18,7 +18,7 @@
 
 WITH zeroex_tx AS (
     {{
-        zeroex_v1_ethereum_api_fills(
+        zeroex_v1_txs(
             table_name = table_name,
             blockchain = blockchain,
             zeroex_v3_start_date = zeroex_v3_start_date
