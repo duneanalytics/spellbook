@@ -171,30 +171,6 @@ prices AS (
         {% endif %}
 ),
 
-fills AS (
-    WITH signatures AS (
-        SELECT DISTINCT signature
-        FROM {{ source('evms', 'logs_decoded') }} l
-        JOIN tbl_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
-        WHERE event_name IN ('TokenExchange', 'OtcOrderFilled', 'SellBaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('l.block_time') }}
-        {% else %}
-            AND l.block_time >= DATE '{{start_date}}'
-        {% endif %}
-    )
-    SELECT tt.tx_hash, tt.block_number, tt.block_time, COUNT(*) AS fills_within
-    FROM {{ source(blockchain, 'logs') }} l
-    JOIN signatures ON signature = topic0
-    JOIN tbl_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
-    {% if is_incremental() %}
-        WHERE {{ incremental_predicate('l.block_time') }}
-    {% else %}
-        WHERE l.block_time >= DATE '{{start_date}}'
-    {% endif %}
-    GROUP BY 1,2,3
-),
-
 results AS (
     SELECT
         '{{blockchain}}' AS blockchain,
@@ -224,8 +200,7 @@ results AS (
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS maker_token_amount,
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS token_bought_amount,
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) * pm.price AS maker_amount,
-        tag,
-        fills_within
+        tag
     FROM
         tbl_trades trades
     JOIN
@@ -235,8 +210,6 @@ results AS (
         {% else %}
             AND tr.block_time >= DATE '{{start_date}}'
         {% endif %}
-    LEFT JOIN
-        fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number
     LEFT JOIN
         tokens tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
     LEFT JOIN
@@ -296,4 +269,28 @@ order by block_time desc
 
 {% macro zeroex_v2_trades_indirect(blockchain, start_date) %}
 {{ zeroex_v2_trades(blockchain, start_date, false) }}
+{% endmacro %}
+
+{% macro zeroex_v2_trades_fills_count(blockchain, start_date) %}
+    WITH signatures AS (
+        SELECT DISTINCT signature
+        FROM {{ source(blockchain, 'logs_decoded') }} l
+        JOIN tbl_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
+        WHERE event_name IN ('TokenExchange', 'OtcOrderFilled', 'SellBaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('l.block_time') }}
+        {% else %}
+            AND l.block_time >= DATE '{{start_date}}'
+        {% endif %}
+    )
+    SELECT tt.tx_hash, tt.block_number, tt.block_time, COUNT(*) AS fills_within
+    FROM {{ source(blockchain, 'logs') }} l
+    JOIN signatures ON signature = topic0
+    JOIN tbl_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
+    {% if is_incremental() %}
+        WHERE {{ incremental_predicate('l.block_time') }}
+    {% else %}
+        WHERE l.block_time >= DATE '{{start_date}}'
+    {% endif %}
+    GROUP BY 1,2,3
 {% endmacro %}
