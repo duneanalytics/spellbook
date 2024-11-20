@@ -1,16 +1,6 @@
-{% macro zeroex_v1_txs(blockchain,zeroex_v3_start_date,include_exchange_evt_fills) %}
-{%- set table_prefix = 'zeroex_v3_' + blockchain -%}
-    WITH zeroex_tx AS (
-        {% if include_exchange_evt_fills %}
-            
-        SELECT tx_hash,
-           block_time as block_time,
-           max(affiliate_address) as affiliate_address,
-           max(is_gasless) as is_gasless
-            
-    FROM (
+{% macro zeroex_evt_fills_txs(blockchain,zeroex_v3_start_date) %}
 
-        SELECT v3.evt_tx_hash AS tx_hash,
+SELECT v3.evt_tx_hash AS tx_hash,
                     CASE
                         WHEN takerAddress = 0x63305728359c088a52b0b0eeec235db4d31a67fc THEN takerAddress
                         ELSE NULL
@@ -32,8 +22,12 @@
             {% if not is_incremental() %}
             AND evt_block_time >= cast('{{zeroex_v3_start_date}}' as date)
             {% endif %}
-        UNION ALL
-        {% endif %}
+{% endmacro %}
+
+
+{% macro zeroex_v1_txs(blockchain,zeroex_v3_start_date) %}
+{%- set table_prefix = 'zeroex_v3_' + blockchain -%}
+
         SELECT tr.tx_hash,
                        CASE
                             WHEN bytearray_position(INPUT, 0x869584cd ) <> 0 THEN SUBSTRING(INPUT
@@ -67,10 +61,6 @@
                 {% if not is_incremental() %}
                 AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
                 {% endif %}
-    ) temp
-    group by tx_hash, block_time 
-)
-select * from zeroex_tx
 {% endmacro %}
 
 

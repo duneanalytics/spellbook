@@ -16,13 +16,30 @@
 {% set blockchain = 'ethereum' %}
 
 WITH zeroex_tx AS (
+     SELECT tx_hash,
+           block_time as block_time,
+           max(affiliate_address) as affiliate_address,
+           max(is_gasless) as is_gasless
+
+    FROM (
+        {{
+        zeroex_evt_fills_txs(
+            blockchain = blockchain,
+            zeroex_v3_start_date = zeroex_v3_start_date,
+        )
+    }}
+
+    union 
+
     {{
         zeroex_v1_txs(
             blockchain = blockchain,
             zeroex_v3_start_date = zeroex_v3_start_date,
-            include_exchange_evt_fills = 'true'
         )
     }}
+
+    ) temp
+    group by tx_hash, block_time 
 ),
 v3_fills_no_bridge as (
     {{
