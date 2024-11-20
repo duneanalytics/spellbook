@@ -1,5 +1,5 @@
 {% macro zeroex_evt_fills_txs(blockchain,zeroex_v3_start_date) %}
-
+{%- set table_prefix = 'zeroex_v3_' + blockchain -%}
 SELECT v3.evt_tx_hash AS tx_hash,
                     CASE
                         WHEN takerAddress = 0x63305728359c088a52b0b0eeec235db4d31a67fc THEN takerAddress
@@ -26,8 +26,6 @@ SELECT v3.evt_tx_hash AS tx_hash,
 
 
 {% macro zeroex_v1_txs(blockchain,zeroex_v3_start_date) %}
-{%- set table_prefix = 'zeroex_v3_' + blockchain -%}
-
         SELECT tr.tx_hash,
                        CASE
                             WHEN bytearray_position(INPUT, 0x869584cd ) <> 0 THEN SUBSTRING(INPUT
