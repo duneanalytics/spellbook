@@ -66,5 +66,5 @@ trade_details as (
 )
 select 
     t.*, fills_within 
- from trade_details 
+ from trade_details t 
     left join fills_count f on t.tx_hash = f.tx_hash and t.evt_index = f.evt_index
