@@ -30,7 +30,7 @@
   ,ref('zeroex_avalanche_c_settler_trades')
   ,ref('zeroex_arbitrum_settler_trades')
   ,ref('zeroex_scroll_settler_trades')
-  ,ref('zeroex_linea_settler_trades')
+  ,ref('zeroex_v2_linea_trades')
   ,ref('zeroex_blast_settler_trades')
   ,ref('zeroex_mantle_settler_trades')
 ] %}
