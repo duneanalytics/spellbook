@@ -174,7 +174,7 @@ prices AS (
 fills AS (
     WITH signatures AS (
         SELECT DISTINCT signature
-        FROM {{ source(blockchain, 'logs_decoded') }} l
+        FROM {{ source('evms', 'logs_decoded') }} l
         JOIN tbl_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
         WHERE event_name IN ('TokenExchange', 'OtcOrderFilled', 'SellBaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
         {% if is_incremental() %}
