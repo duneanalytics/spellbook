@@ -7816,7 +7816,6 @@ FROM (VALUES
     , ( 0x7f0eae87df30c468e0680c83549d0b3de7664d4b, 'stataGnoWXDAI', 18)
     , ( 0x2d737e2b0e175f05d0904c208d6c4e40da570f65, 'stataGnoGNO', 18)
     , ( 0xf3f45960f8de00d8ed614d445a5a268c6f6dec4f, 'stataGnosDAI', 18)
-    , ( 0x270ba1f35d8b87510d24f693fccc0da02e6e4eeb, 'stataGnoUSDC', 6)
     , ( 0xd843fb478c5aa9759fea3f3c98d467e2f136190a, 'stataGnoWETH', 18)
     , ( 0x8418d17640a74f1614ac3e1826f29e78714488a1, 'stataGnoEURe', 18)
     , ( 0xecfd0638175e291ba3f784a58fb9d38a25418904, 'stataGnowstETH', 18)
