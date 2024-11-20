@@ -1,7 +1,9 @@
-{% macro zeroex_v1_txs(blockchain,zeroex_v3_start_date) %}
+{% macro zeroex_v1_txs(blockchain,zeroex_v3_start_date,include_exchange_evt_fills) %}
 {%- set table_prefix = 'zeroex_v3_' + blockchain -%}
     WITH zeroex_tx AS (
-    SELECT tx_hash,
+        {% if include_exchange_evt_fills %}
+            
+        SELECT tx_hash,
            block_time as block_time,
            max(affiliate_address) as affiliate_address,
            max(is_gasless) as is_gasless
@@ -31,6 +33,7 @@
             AND evt_block_time >= cast('{{zeroex_v3_start_date}}' as date)
             {% endif %}
         UNION ALL
+        {% endif %}
         SELECT tr.tx_hash,
                        CASE
                             WHEN bytearray_position(INPUT, 0x869584cd ) <> 0 THEN SUBSTRING(INPUT
