@@ -32,7 +32,7 @@
   ,ref('zeroex_scroll_settler_trades')
   ,ref('zeroex_linea_settler_trades')
   ,ref('zeroex_v2_blast_trades')
-  ,ref('zeroex_mantle_settler_trades')
+  ,ref('zeroex_v2_mantle_trades')
 ] %}
 
 
