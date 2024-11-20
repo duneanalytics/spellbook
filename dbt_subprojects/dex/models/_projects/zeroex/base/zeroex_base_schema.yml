@@ -82,7 +82,7 @@ models:
         name: blockchain
         description: "Blockchain which the aggregator project is deployed"
         
-  - name: zeroex_base_api_fills_deduped
+  - name: zeroex_v1_base_deduped_trades
     meta:
       blockchain: base
       project: zeroex

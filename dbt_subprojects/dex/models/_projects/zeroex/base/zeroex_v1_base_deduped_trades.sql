@@ -1,5 +1,5 @@
 {{  config(
-        schema = 'zeroex_v1_ethereum',
+        schema = 'zeroex_v1_base',
         alias = 'deduped_trades',
         materialized='incremental',
         partition_by = ['block_month'],
@@ -12,7 +12,7 @@
 }}
 
 {% set zeroex_v3_start_date = '2019-12-01' %}
-{% set blockchain = 'ethereum' %}
+{% set blockchain = 'base' %}
 
 WITH 
 deduped_trades as (
