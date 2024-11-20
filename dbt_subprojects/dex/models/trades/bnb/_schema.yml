@@ -560,3 +560,20 @@ models:
           seed_file: ref('swaap_bnb_base_trades_seed')
           filter:
             version: 2
+
+  - name: hyperjump_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: hyperjump
+      contributors: bertastr
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'hyperjump' ]
+    description: "hyperjump bnb base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('hyperjump_bnb_base_trades_seed')

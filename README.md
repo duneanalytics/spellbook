@@ -92,7 +92,7 @@ You don't need a complex local setup to test spells against Dune's engine. Once 
 
 Simply write a query like you would for any of our live tables, and use the test schema to fetch the tables your PR created.
 
-`test_schema.git_{{commit_hash}}_{{table_name}}`
+`test_schema.git_dunesql_{{commit_hash}}_{{table_name}}`
 
 You can find the exact names easily by looking at the logs from the `dbt slim ci` action, under `dbt run initial model(s)`.
 
@@ -124,12 +124,6 @@ cd user\directory\github\spellbook
 # Change this to wherever spellbook is stored locally on your machine.
 ```
 
-Within Spellbook repo, there are multiple dbt projects, located in the root directory. Navigate to the correct project, depending on your use case.
-
-```console
-cd ../spellbook/dbt_subprojects/<subproject_name>/
-```
-
 Using the pipfile located in the spellbook repo, run the below install command to create a pipenv.
 
 ```console
@@ -153,20 +147,30 @@ pipenv shell
 
 You have now created a virtual environment for this project. You can read more about virtual environments [here](https://realpython.com/pipenv-guide/).
 
-To pull the dbt project dependencies run:
+Within the Spellbook repo, there are multiple dbt projects, located in the root directory. Navigate to the correct project, depending on your use case.
 
 ```console
-dbt deps
+cd ../spellbook/dbt_subprojects/<subproject_name>/
 ```
 
-Ensure you are in Spellbook root directory, then run the following command:
+Each subproject has it's own dbt project file with varying configs. Once your CLI has navigated to the correct project directory, follow the below steps:
+- To clean up the dbt project
+  ```console
+  dbt clean
+  ```
 
-```console
-dbt compile
-```
+- To pull the dbt project dependencies run:
+  ```console
+  dbt deps
+  ```
 
-Spellbook root directory includes a `profiles.yml` file, which helps tell dbt how to run commands. The profile is located in the root directory [here](profiles.yml). This should never need modified, unless done intentionally by the Dune team.  
-Due to the `profiles.yml` file being stored in the root directory, this is why users **must** be in the root directory on the command line to run `dbt compile`.
+- To compile models into raw SQL, to run on the dune app and validate:
+  ```console
+  dbt compile
+  ```
+
+Each Spellbook subproject includes a `profiles.yml` file, which helps tell dbt how to run commands. The profile is located in each subproject directory, such as [here](./dbt_subprojects/dex/profiles.yml). This should never need modified, unless done intentionally by the Dune team.  
+Due to the `profiles.yml` file being stored in the root directory of each subproject, this is why users **must** be in the root directory per subproject on the command line to run `dbt compile` as expected.
 
 dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. Your spellbook directory now has a folder named `target` containing plain SQL versions of all models in Dune. If you have made changes to the repo before completing all these actions, you can now be certain that at least the compile process works correctly, if there are big errors the compile process will not complete.
 If you haven't made changes to the directory beforehand, you can now start adding, editing, or deleting files within the repository.
