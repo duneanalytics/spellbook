@@ -26,7 +26,7 @@
   ,ref('zeroex_v2_base_trades')
   ,ref('zeroex_v2_polygon_trades')
   ,ref('zeroex_optimism_settler_trades')
-  ,ref('zeroex_bnb_settler_trades')
+  ,ref('zeroex_v2_bnb_trades')
   ,ref('zeroex_avalanche_c_settler_trades')
   ,ref('zeroex_arbitrum_settler_trades')
   ,ref('zeroex_scroll_settler_trades')
