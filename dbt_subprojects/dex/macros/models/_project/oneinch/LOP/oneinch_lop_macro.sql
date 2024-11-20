@@ -252,6 +252,7 @@ select
     , order_hash
     , map_concat(flags, map_from_entries(array[
         ('first', row_number() over(partition by coalesce(order_hash, tx_hash) order by block_number, tx_index, call_trace_address) = 1)
+        , ('direct', call_from = tx_from and call_to = tx_to) -- == cardinality(call_trace_address) = 0, but because of zksync trace structure we switched to this
     ])) as flags
     , remains
     , src_escrow
