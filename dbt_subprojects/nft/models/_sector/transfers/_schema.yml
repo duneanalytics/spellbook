@@ -3,11 +3,11 @@ version: 2
 models:
   - name: nft_transfers
     meta:
-      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, zksync, zora, scroll, mantle, blast, sei,
+      blockchain: ethereum, base, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, celo, zksync, zora, scroll, mantle, blast, sei, mode
       sector: nft
       contributors: hildobby, rantum, petertherock
     config:
-      tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'zora', 'scroll', 'mantle', 'blast', 'sei', 'transfers']
+      tags: ['nft', 'ethereum', 'base', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'celo', 'zksync', 'zora', 'scroll', 'mantle', 'blast', 'sei', 'mode', 'transfers']
     description: >
         NFT transfers
     data_tests:
@@ -455,6 +455,28 @@ models:
       blockchain: sei
       sector: nft
       contributors: petertherock
+    config:
+      tags: [ 'nft', 'transfers' ]
+    description: >
+      NFT transfers
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - token_id
+            - amount
+    columns:
+      # only listing columns that have tests here for simplicity
+      - *token_standard
+      - *transfer_type
+      - *unique_transfer_id
+
+  - name: nft_mode_transfers
+    meta:
+      blockchain: mode
+      sector: nft
+      contributors: rantum
     config:
       tags: [ 'nft', 'transfers' ]
     description: >
