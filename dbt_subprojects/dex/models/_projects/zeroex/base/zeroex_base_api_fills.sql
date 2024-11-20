@@ -27,7 +27,7 @@ WITH zeroex_tx AS (
         zeroex_v1_txs(
             blockchain = blockchain,
             zeroex_v3_start_date = zeroex_v3_start_date,
-            include_exchange_evt_fills = false 
+            include_exchange_evt_fills = 'false' 
         )
     }}
 ),
