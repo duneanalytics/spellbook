@@ -40,7 +40,3 @@ sources:
     tables:
       - name: bubblegum_call_mintV1
       - name: bubblegum_call_mintToCollectionV1
-  - name: tokens_solana
-    description: "solana stablecoin token metadata"
-    tables:
-      - name: stablecoins

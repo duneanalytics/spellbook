@@ -8,3 +8,4 @@ sources:
   - name: tokens_solana
     tables:
       - name: transfers
+      - name: stablecoins
