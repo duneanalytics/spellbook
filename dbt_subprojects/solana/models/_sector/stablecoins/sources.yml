@@ -1,7 +1,0 @@
-version: 2
-
-sources:
-  - name: tokens_solana
-    description: "Solana tables"
-    tables:
-      - name: stablecoins
