@@ -27,7 +27,7 @@ with
                   , sd.symbol
                   , sum(coalesce(token_balance,0)) as token_balance 
                   , token_mint_address
-            from {{ ref('solana_utils_daily_balances') }}
+            from {{ ref('solana_utils_daily_balances') }} bal
             inner join (select address, symbol from stablecoin_tokens) sd on sd.address = bal.token_mint_address
             where day > cast('2024-10-26' as timestamp)
             group by 1,2,3,5
