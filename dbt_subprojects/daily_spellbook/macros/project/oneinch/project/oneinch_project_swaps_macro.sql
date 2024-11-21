@@ -54,7 +54,7 @@ meta as (
         , '1inch' as project
         , coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int)))) as order_hash
         , maker
-        , taker
+        , receiver as taker
         , maker_asset
         , making_amount
         , taker_asset
