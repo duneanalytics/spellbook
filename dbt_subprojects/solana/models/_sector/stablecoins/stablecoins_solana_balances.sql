@@ -20,7 +20,7 @@ with
                   {{ source('tokens_solana', 'stablecoins')}}
 )
 
-, updated_balances as (
+, balance_base as (
             select 
                   day
                   , bal.token_balance_owner
@@ -43,7 +43,7 @@ with
 
       select tt.day, tt.token_balance_owner
             , tt.symbol
-            , COALESCE(nf.token_balance, last_value(nf.token_balance) IGNORE NULLS OVER (PARTITION BY tt.token_balance_owner, tt.token_mint_address ORDER BY nf.block_time)) AS token_balance
+            , COALESCE(nf.token_balance, last_value(nf.token_balance) IGNORE NULLS OVER (PARTITION BY tt.token_balance_owner, tt.token_mint_address ORDER BY nf.day)) AS token_balance
             , tt.token_mint_address
       
       from time_table tt
