@@ -1,7 +1,7 @@
 {% macro 
     oneinch_project_swaps_macro(
         blockchain
-        , date_from = '2024-11-01'
+        , date_from = '2024-11-20'
     ) 
 %}
 
@@ -89,6 +89,7 @@ meta as (
         , order_hash
         , order_flags
         , maker
+        , taker
         , replace(maker_asset, {{ zero_address }}, {{ native_address }}) as maker_asset
         , making_amount
         , replace(taker_asset, {{ zero_address }}, {{ native_address }}) as taker_asset
