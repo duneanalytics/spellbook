@@ -30,6 +30,7 @@
                                         ,"zkevm"
                                         ,"zksync"
                                         ,"zora"
+                                        ,"bob"
                                     ]\',
                                     "sector",
                                     "tokens",
@@ -69,6 +70,7 @@
     ,'tokens_kaia': {'blockchain': 'kaia', 'model': ref('tokens_kaia_erc20')}
     ,'tokens_tron': {'blockchain': 'tron', 'model': ref('tokens_tron_erc20')}
     ,'tokens_ronin': {'blockchain': 'ronin', 'model': ref('tokens_ronin_erc20')}
+    ,'tokens_bob': {'blockchain': 'bob', 'model': ref('tokens_bob_erc20')}
 } %}
 
 with automated_source as (

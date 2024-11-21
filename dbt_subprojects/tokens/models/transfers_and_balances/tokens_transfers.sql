@@ -41,6 +41,7 @@
     ,'mantle'
     ,'optimism'
     ,'polygon'
+    ,'ronin'
     ,'scroll'
     ,'sei'
     ,'tron'
