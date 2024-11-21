@@ -1,0 +1,37 @@
+version: 2
+
+sources:
+  - name: bebop_v3_arbitrum
+    description: "Bebop decoded tables related to Bebop"
+    tables:
+      - name: BebopAggregationContract_call_SettleAggregateOrder
+      - name: BebopAggregationContract_evt_AggregateOrderExecuted
+  - name: bebop_v4_arbitrum
+    description: "Bebop decoded tables related to Bebop"
+    tables:
+      - name: BebopSettlement_call_SettleAggregateOrder
+      - name: BebopSettlement_call_SettleAggregateOrderWithTakerPermits
+      - name: BebopSettlement_evt_AggregateOrderExecuted
+  - name: bebop_jam_arbitrum
+    description: "BebopJAM decoded tables related to Bebop"
+    tables:
+      - name: JamSettlement_call_settle
+      - name: JamSettlement_call_settleWithPermitsSignatures
+      - name: JamSettlement_evt_Settlement
+  - name: bebop_pmms_arbitrum
+    description: "Bebop decoded tables related to Bebop"
+    tables:
+      - name: BebopSettlement_call_settleSingle
+      - name: BebopSettlement_call_settleSingleAndSignPermit
+      - name: BebopSettlement_call_settleSingleAndSignPermit2
+      - name: BebopSettlement_call_swapSingle
+      - name: BebopSettlement_call_swapSingleFromContract
+      - name: BebopSettlement_call_settleMulti
+      - name: BebopSettlement_call_settleMultiAndSignPermit
+      - name: BebopSettlement_call_settleMultiAndSignPermit2
+      - name: BebopSettlement_call_swapMulti
+      - name: BebopSettlement_call_settleAggregate
+      - name: BebopSettlement_call_settleAggregateAndSignPermit
+      - name: BebopSettlement_call_settleAggregateAndSignPermit2
+      - name: BebopSettlement_call_swapAggregate
+      - name: BebopSettlement_evt_BebopOrder

@@ -1,0 +1,278 @@
+version: 2
+
+models:
+  - name: uniswap_pools
+    meta:
+      blockchain: ethereum, polygon, arbitrum, celo
+      sector: dex
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['ethereum', 'polygon', 'arbitrum', 'celo', 'pools']
+    description: >
+      Uniswap DEX pools
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - name: pool
+        description: "DEX pool smart contract address"
+      - name: fee
+        description: "Defined fee"
+      - &token0
+        name: token0
+        description: "First token in pool"
+      - &token1
+        name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: uniswap_liquidity_manager_pools
+    meta:
+      blockchain: optimism
+      project: uniswap
+      contributors: msilb7
+    config:
+      tags: ['optimism','uniswap','pools','liquidity managers']
+    description: >
+        A table containing Uniswap mappings for known liquidity manager pools created.
+    columns:
+      - name: blockchain
+        description: 'Blockchain of the LP Token'
+      - name: dex_project_name
+        description: "DEX Project Name - This will be used for overall DEX LM incentives models"
+      - name: dex_project_version
+        description: "DEX Project Version - This will be used for overall DEX LM incentives models"
+      - name: project
+        description: 'Project Name of the LP Token'
+      - name: contract_address
+        description: 'Manager LP Token contract address'
+      - name: pool_contract
+        description: "Uniswap liquidity pool contract address"
+      - name: fee
+        description:  "Swap fee of a Uniswap liquidity pool. Divide by 1e4 or power(10,4) to get the fee percentage"
+      - name: token0
+        description:  "Token0 contract address"
+      - name: token1
+        description:  "Token1 contract address"
+
+  - name: uniswap_arbitrum_pools
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['arbitrum']
+    description: >
+      Uniswap DEX pools
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+        data_tests:
+          - unique
+      - &fee
+        name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: uniswap_bnb_pools
+    meta:
+      blockchain: bnb
+      sector: dex
+      contributors: mtitus6
+    config:
+      tags: ['bnb']
+    description: >
+      Uniswap DEX pools on BNB
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+        data_tests:
+          - unique
+      - name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: uniswap_celo_pools
+    meta:
+      blockchain: celo
+      sector: dex
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['celo']
+    description: >
+      Uniswap DEX pools
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+        data_tests:
+          - unique
+      - name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: uniswap_ethereum_pools
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['ethereum']
+    description: >
+      Uniswap DEX pools
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+        data_tests:
+          - unique
+      - name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: uniswap_optimism_pools
+    meta:
+      blockchain: optimism
+      project: uniswap
+      contributors: msilb7, chuxin, mtitus6
+    config:
+      tags: ['optimism','uniswap','pools']
+    description: >
+        A canonical table containing all Uniswap pools created on Optimism. Pools from OVM1 will be missing from factory_evt_poolcreated, so we use this table to get pool information.
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+        data_tests:
+          - unique
+      - name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: uniswap_optimism_ovm1_pool_mapping
+    meta:
+      blockchain: optimism
+      project: uniswap
+      contributors: msilb7, chuxin
+    config:
+      tags: ['optimism','uniswap','pools']
+    description: >
+        A canonical table containing all Uniswap pool address changes between OVM1 and the EVM Equivalence regenesis release.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - oldAddress
+              - newAddress
+    columns:
+      - &oldAddress
+        name: oldAddress
+        description: "Uniswap liquidity pool contract address in OVM1"
+      - &newAddress
+        name: newAddress
+        description: "Uniswap liquidity pool contract address in the EVM Equivalence regenesis release."
+      - *token0
+      - *token1
+      - *fee
+
+  - name: uniswap_polygon_pools
+    meta:
+      blockchain: polygon
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['polygon']
+    description: >
+      Uniswap DEX pools
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+        data_tests:
+          - unique
+      - name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"

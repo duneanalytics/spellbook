@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: curvefi_celo
+    description: "decoded events and function calls for curve.fi on Celo"
+    tables:
+      - name: StableSwap_call_coins

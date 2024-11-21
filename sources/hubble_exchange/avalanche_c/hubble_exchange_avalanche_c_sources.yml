@@ -1,0 +1,12 @@
+
+version: 2
+
+sources: 
+  - name: hubble_exchange_avalanche_c
+    description: >
+      Decoded event table for hubble exchange margin trades 
+    tables:
+      - name: ClearingHouse_evt_PositionModified
+      - name: ClearingHouse_call_closePosition
+      - name: ClearingHouse_call_openPosition
+      - name: ClearingHouse_evt_PositionLiquidated

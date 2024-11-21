@@ -1,9 +1,0 @@
-version: 2
-
-sources: 
-  - name: uniswap_ethereum
-    description: >
-      Genie ethereum contracts
-    tables:
-      - name: MerkleDistributorWithDeadline_evt_Claimed
-        loaded_at_field: evt_block_time

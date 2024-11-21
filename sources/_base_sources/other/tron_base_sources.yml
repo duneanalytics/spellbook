@@ -1,0 +1,169 @@
+version: 2
+sources:
+  - name: tron
+    description: tables in the tron schema
+    tables:
+      - name: transactions
+        meta:
+          docs_slug: /tron/transactions
+          short_description:
+        description: '{{ doc("tron_transactions_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this transaction"
+          - name: value
+            description: "Amount of TRX sent from sender to recipient (if any), measured in sun (1 TRX = 10^6 sun)"
+          - name: gas_limit
+            description: "Maximum number of energy units this transaction can consume"
+          - name: gas_price
+            description: "Price per unit of energy for this transaction, denominated in sun"
+          - name: gas_used
+            description: "Actual amount of energy units consumed by this transaction's execution"
+          - name: max_fee_per_gas
+            description: "Maximum total amount per energy unit the initiator is willing to pay"
+          - name: max_priority_fee_per_gas
+            description: "Maximum additional fee per energy unit the initiator is willing to pay as a tip"
+          - name: priority_fee_per_gas
+            description: "Actual additional fee per energy unit paid as a tip"
+          - name: nonce
+            description: "Sequential number representing the count of transactions sent from the sender's address"
+          - name: index
+            description: "Position of this transaction within its containing block"
+          - name: success
+            description: "Boolean flag indicating whether the transaction executed successfully (true) or failed (false)"
+          - &from
+            name: from
+            description: "Address of the account that initiated and signed this transaction"
+          - &to
+            name: to
+            description: "Address of the recipient account or contract for this transaction"
+          - name: block_hash
+            description: "Unique identifier (hash) of the block containing this transaction"
+          - name: data
+            description: "Input data for the transaction, which may include function calls or contract interaction data"
+          - name: hash
+            description: "Unique identifier (hash) of this specific transaction"
+          - name: type
+            description: "Type of transaction indicating its structure and fee mechanism"
+          - name: access_list
+            description: "List of addresses and storage keys the transaction plans to access, used for energy optimization"
+          - name: block_date
+            description: "The UTC date of the block in which this transaction was included"
+      - name: blocks
+        meta:
+          docs_slug: /tron/blocks
+          short_description: "The tron.blocks table contains information about Tron blocks. Each row represents a single block."
+        description: '{{ doc("tron_blocks_doc") }}'
+        columns:
+          - name: time
+            description: "Timestamp when this block was added to the chain"
+          - name: number
+            description: "Sequential position of this block in the blockchain"
+          - name: gas_limit
+            description: "Maximum amount of energy that can be used by all transactions in this block"
+          - name: gas_used
+            description: "Total amount of energy actually consumed by all transactions in this block"
+          - name: difficulty
+            description: "Measure of how difficult it was to produce this block (may be deprecated in Tron)"
+          - name: total_difficulty
+            description: "Total chain difficulty up to this block (may be deprecated in Tron)"
+          - name: size
+            description: "Size of this block in bytes"
+          - name: base_fee_per_gas
+            description: "Minimum fee per energy unit required for transaction inclusion in this block"
+          - name: hash
+            description: "Unique identifier (hash) of this block"
+          - name: parent_hash
+            description: "Hash of the previous block in the blockchain"
+          - name: miner
+            description: "Address of the block producer who produced this block"
+          - name: nonce
+            description: "A block's nonce value, used in the consensus mechanism (may be deprecated in Tron)"
+          - name: date
+            description: "The UTC date when this block was added to the chain"
+      - name: logs
+        meta:
+          docs_slug: /tron/logs
+          short_description: "The tron.logs table contains information about event logs emitted by smart contracts on the Tron blockchain."
+        description: '{{ doc("tron_logs_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this log was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this log"
+          - name: block_hash
+            description: "Unique identifier (hash) of the block containing this log"
+          - name: contract_address
+            description: "Address of the smart contract that emitted this log"
+          - name: topic0
+            description: "First 32-byte topic, typically containing the event signature hash"
+          - name: topic1
+            description: "Second 32-byte topic, often containing indexed event parameters"
+          - name: topic2
+            description: "Third 32-byte topic, often containing indexed event parameters"
+          - name: topic3
+            description: "Fourth 32-byte topic, often containing indexed event parameters"
+          - name: data
+            description: "ABI-encoded data of the log, containing non-indexed event parameters"
+          - name: tx_hash
+            description: "Unique identifier (hash) of the transaction containing this log"
+          - name: index
+            description: "Position of this log within the block"
+          - name: tx_index
+            description: "Position of the parent transaction within its containing block"
+          - name: block_date
+            description: "The UTC date of the block in which this log was included"
+          - name: tx_from
+            description: "Address of the account that initiated the transaction containing this log"
+          - name: tx_to
+            description: "Address of the recipient account or contract for the transaction containing this log"
+
+  # ERC Transfer Tables
+  - name: erc20_tron
+    description: "Transfer events for ERC20 tokens on tron"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/tron/decoded/interfaces/erc20/evt_transfer
+          short_description: This table contains individual transfer events for ERC20 tokens on the tron blockchain. Each row represents a single token transfer event.
+        description: '{{ doc("erc20_tron_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract that emitted this event"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - &evt_index
+            name: evt_index
+            description: "Index position of this event within the transaction"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - &evt_block_number
+            name: evt_block_number
+            description: "The block number containing this event"
+          - *from
+          - *to
+          - name: value
+            description: "Amount of ERC20 tokens transferred, in the token's tron unit"
+
+      - name: evt_approval
+        meta:
+          docs_slug: /evm/tron/decoded/interfaces/erc20/evt_approval
+          short_description: The `tron.evt_approval` table contains approval events for ERC20 tokens on tron, allowing an address to spend tokens on behalf of the owner.
+        description: '{{ doc("erc20_tron_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: owner
+            description: "address of the token owner granting approval"
+          - name: spender
+            description: "address being granted permission to spend tokens"
+          - name: value
+            description: "Amount of ERC20 tokens approved for spending, in the token's smallest unit"

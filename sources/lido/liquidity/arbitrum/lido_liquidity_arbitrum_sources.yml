@@ -1,0 +1,64 @@
+version: 2
+
+sources:    
+  - name: kyber_arbitrum
+    description: "Arbitrum decoded tables related to Kyberswap contract"
+    tables:
+      - name: Elastic_Pool_evt_Mint
+      - name: Elastic_Pool_evt_Burn
+      - name: Elastic_Pool_evt_BurnRTokens
+      - name: ElasticFactoryV2_evt_PoolCreated
+      - name: ElasticPoolV2_evt_Swap
+      - name: ElasticPoolV2_evt_Mint
+      - name: ElasticPoolV2_evt_Burn
+      - name: ElasticPoolV2_evt_BurnRTokens
+
+  - name: camelot_arbitrum
+    description: "Arbitrum decoded tables related to Camelot pools contracts"
+    tables:
+      - name: CamelotPair_evt_Mint
+      - name: CamelotPair_evt_Burn
+
+  - name: uniswap_v3_arbitrum
+    description: "Arbitrum decoded tables related to Uniswap v3 pools contracts"
+    tables:
+      - name: Pair_evt_Mint
+      - name: Pair_evt_Burn
+      - name: Pair_evt_Collect
+      - name: UniswapV3Factory_evt_PoolCreated
+
+
+  - name: curvefi_arbitrum
+    description: "Arbitrum decoded tables related to Curve pools contracts"
+    tables:
+      - name: wstETH_swap_evt_AddLiquidity
+      - name: wstETH_swap_evt_RemoveLiquidityOne
+      - name: wstETH_swap_evt_RemoveLiquidityImbalance
+      - name: wstETH_swap_evt_RemoveLiquidity
+      - name: wstETH_swap_evt_TokenExchange
+  
+  - name: lido_arbitrum
+    description: "Arbitrum decoded tables related to Lido contracts"
+    tables:
+      - name: wstETH_evt_Transfer
+
+  - name: wombat_arbitrum
+    description: "Arbitrum decoded tables related to Wombat exchange contracts"
+    tables:
+      - name: wsteth_pool_evt_Swap
+      - name: wsteth_pool_evt_Deposit     
+      - name: wsteth_pool_evt_Withdraw    
+
+  - name: ramses_arbitrum
+    description: "Arbitrum decoded tables related to Ramses DEX pools contracts"
+    tables:
+      - name: RamsesV2Pool_evt_Mint
+      - name: RamsesV2Pool_evt_Collect
+
+  - name: pancakeswap_v3_arbitrum
+    description: "Arbitrum decoded tables related to Pancake v3 DEX pools contracts"
+    tables:
+      - name: PancakeV3Pool_evt_Mint
+      - name: PancakeV3Pool_evt_Collect            
+      - name: PancakeV3Pool_evt_Burn            
+          

@@ -1,0 +1,240 @@
+version: 2
+
+models:
+  - name: chikn_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: nft
+      project: chikn
+      contributors: Henrystats
+    config:
+      tags: ['avalanche', 'nft', 'trades', 'chikn']
+    description: "chikn base trades"
+    data_tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - check_seed:
+          seed_file: ref('chikn_avalanche_c_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+
+  - name: campfire_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: nft
+      project: campfire
+      contributors: Henrystats
+    config:
+      tags: ['avalanche', 'nft', 'trades', 'campfore']
+    description: "Campfire base trades"
+    data_tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - check_seed:
+          seed_file: ref('campfire_avalanche_c_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+
+  - name: hyperspace_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: nft
+      project: hyperspace
+      contributors: Henrystats
+    config:
+      tags: ['avalanche', 'nft', 'trades', 'campfore']
+    description: "hyperspace base trades"
+    data_tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - check_seed:
+          seed_file: ref('hyperspace_avalanche_c_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+
+  - name: joepegs_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: nft
+      project: joepegs
+      contributors: Henrystats
+    config:
+      tags: ['avalanche', 'nft', 'trades', 'joepegs']
+    description: "Joepegs base trades"
+    data_tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - check_seed:
+          seed_file: ref('joepegs_avalanche_c_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+            - royalty_fee_amount_raw
+
+  - name: element_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      project: element
+      contributors: 0xRob
+    config:
+      tags: [ 'avalanche_c','element','trades' ]
+    description: >
+      Element events on Avalanche
+    data_tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]
+
+  - name: opensea_v3_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      project: opensea
+      contributors: sohwak, 0xRob
+    config:
+      tags: [ 'opensea','base_trades','seaport' ]
+    description: >
+      Opensea base trades from seaport (v3)
+    data_tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+      - check_seed:
+          seed_file: ref('opensea_seaport_trades_samples')
+          filter:
+            blockchain: avalanche_c
+            project: opensea
+            project_version: v3
+          check_columns:
+            - buyer
+            - seller
+            - price_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+
+  - name: opensea_v4_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      project: opensea
+      contributors: sohwak, 0xRob
+    config:
+      tags: [ 'opensea','base_trades','seaport' ]
+    description: >
+      Opensea base trades from seaport (v4)
+    data_tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+      - check_seed:
+          seed_file: ref('opensea_seaport_trades_samples')
+          filter:
+            blockchain: avalanche_c
+            project: opensea
+            project_version: v4
+          check_columns:
+            - buyer
+            - seller
+            - price_raw
+            - platform_fee_amount_raw
+            - royalty_fee_amount_raw
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+
+  - name: salvor_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: nft
+      project: salvor
+      contributors: Henrystats
+    config:
+      tags: ['avalanche', 'nft', 'trades', 'salvor']
+    description: "Salvor base trades"
+    data_tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - check_seed:
+          seed_file: ref('salvor_avalanche_c_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw
+            - royalty_fee_amount_raw
+            
+  - name: superchief_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: nft
+      project: superchief
+      contributors: Henrystats
+    config:
+      tags: ['avalanche', 'nft', 'trades', 'superchief']
+    description: "Superchief base trades"
+    data_tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+      - check_seed:
+          seed_file: ref('superchief_avalanche_c_base_trades_seed')
+          match_columns:
+            - block_number
+            - tx_hash
+            - sub_tx_trade_id
+          check_columns:
+            - buyer
+            - seller
+            - nft_contract_address
+            - nft_token_id
+            - price_raw

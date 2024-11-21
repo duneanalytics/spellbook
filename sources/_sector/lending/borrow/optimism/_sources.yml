@@ -1,0 +1,47 @@
+version: 2
+
+sources:
+  - name: aave_v3_optimism
+    tables:
+      - name: Pool_evt_Borrow
+      - name: Pool_evt_Repay
+      - name: Pool_evt_LiquidationCall
+
+  - name: sonne_finance_optimism
+    tables:
+      - name: soDAI_evt_Borrow
+      - name: soDAI_evt_RepayBorrow
+      - name: soDAI_evt_LiquidateBorrow
+      - name: soMAI_evt_Borrow
+      - name: soMAI_evt_RepayBorrow
+      - name: soMAI_evt_LiquidateBorrow
+      - name: soOP_evt_Borrow
+      - name: soOP_evt_RepayBorrow
+      - name: soOP_evt_LiquidateBorrow
+      - name: soSNX_evt_Borrow
+      - name: soSNX_evt_RepayBorrow
+      - name: soSNX_evt_LiquidateBorrow
+      - name: soSUSD_evt_Borrow
+      - name: soSUSD_evt_RepayBorrow
+      - name: soSUSD_evt_LiquidateBorrow
+      - name: soUSDC_evt_Borrow
+      - name: soUSDC_evt_RepayBorrow
+      - name: soUSDC_evt_LiquidateBorrow
+      - name: soUSDT_evt_Borrow
+      - name: soUSDT_evt_RepayBorrow
+      - name: soUSDT_evt_LiquidateBorrow
+      - name: soWBTC_evt_Borrow
+      - name: soWBTC_evt_RepayBorrow
+      - name: soWBTC_evt_LiquidateBorrow
+      - name: soWETH_evt_Borrow
+      - name: soWETH_evt_RepayBorrow
+      - name: soWETH_evt_LiquidateBorrow
+      - name: sowstETH_evt_Borrow
+      - name: sowstETH_evt_RepayBorrow
+      - name: sowstETH_evt_LiquidateBorrow
+
+  - name: the_granary_optimism
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall

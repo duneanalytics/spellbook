@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+ethereum,strike,1,19217242,2024-02-13 06:15:11.000 UTC,0xd56c13f35e6ef3af87b983709ff56043272af9b3207c9a3c3f6248c23be59654,126,deposit,0xdac17f958d2ee523a2206206994597c13d831ec7,0xcb6586874cc04b01cc4fdb777de502cea7b3d6c1,3.4e+08
+ethereum,strike,1,19224871,2024-02-14 07:58:47.000 UTC,0xbe9c4b9b3ad8cbdecc9493bb0cdd4eae71cb6595e8829c9456a32422b907ef33,59,withdraw,0x74232704659ef37c08995e386a2e26cc27a8d7b1,0x17013314d52fdd0792d1b89658e6176a049e75ac,-6e+21

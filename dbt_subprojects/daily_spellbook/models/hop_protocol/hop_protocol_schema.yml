@@ -1,0 +1,192 @@
+version: 2
+
+models:
+  - name: hop_protocol_flows
+    meta:
+      project: hop_protocol
+      contributors: msilb7, soispoke
+    config:
+      tags: ['bridges','hop_protocol', 'flows', 'cross-chain', 'optimism']
+    description: >
+        Table aggregating bridge transfers through Hop Protocol.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_date
+              - blockchain
+              - tx_hash
+              - evt_index
+              - transfer_id
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain Used to Pull Data - What chain the bridge transfers are in prespective from"
+      - &project
+        name: project
+        description: "Bridge protocol project"
+      - &version
+        name: version
+        description: "Bridge protocol project version"
+      - &block_time
+        name: block_time
+        description: "Block time of the transaction"
+      - &block_date
+        name: block_date
+        description: "Date of the block time"
+      - &block_number
+        name: block_number
+        description: Block number of the transaction
+      - &tx_hash
+        name: tx_hash
+        description: Transaction hash
+      - &sender
+        name: sender
+        description: "Address of the wallet sending the transfer"
+      - &receiver
+        name: receiver
+        description: "Address of the wallet receiving the transfer"
+      - &transfer_type
+        name: transfer_type
+        description: "Is the transfer a Deposit, or a Withdrawal away?"
+      - &token_symbol
+        name: token_symbol
+        description: Bridged Token Symbol
+      - &token_amount
+        name: token_amount
+        description: Bridged Token Amount (Decimal adjusted)
+      - &token_amount_usd
+        name: token_amount_usd
+        description: Bridged Token Amount USD
+      - &token_amount_raw
+        name: token_amount_raw
+        description: Bridged Token Amount (Not Decimal adjusted)
+      - &fee_amount
+        name: fee_amount
+        description: Bridged Token Fee Amount (Decimal adjusted)
+      - &fee_amount_usd
+        name: fee_amount_usd
+        description: Bridged Token Fee Amount USD
+      - &fee_amount_raw
+        name: fee_amount_raw
+        description: Bridged Token Fee Amount (Not Decimal adjusted)
+      - &token_address
+        name: token_address
+        description: Bridged Token Address
+      - &fee_address
+        name: bridged_fee_address
+        description: Bridged Token Fee Address
+      - &source_chain_id
+        name: source_chain_id
+        description: "Source Chain ID (EIP-155)"
+      - &destination_chain_id
+        name: destination_chain_id
+        description: "Destination Chain ID (EIP-155)"
+      - &source_chain_name
+        name: source_chain_name
+        description: "Source Chain Name (EIP-155)"
+      - &destination_chain_name
+        name: destination_chain_name
+        description: "Destination Chain ID (EIP-155)"
+      - &is_native_bridge
+        name: is_native_bridge
+        description: Did this use the native token bridge? 1 if true, 0 if false
+      - &tx_from
+        name: tx_from
+        description: Transaction from address
+      - &tx_to
+        name: tx_to
+        description: Transaction to address
+      - &transfer_id
+        name: transfer_id
+        description: "Unique ID used to tie bridge events together across chains"
+      - &evt_index
+        name: evt_index
+        description: "Index value of the transaction"
+      - &trace_address
+        name: trace_address
+        description: "Trace address of the transaction"
+      - &tx_method_id
+        name: tx_method_id
+        description: "4byte function signature of the transaction (with leading 0x)"
+
+  - name: hop_protocol_addresses
+    meta:
+      project: hop_protocol
+      contributors: msilb7, soispoke
+    config:
+      tags: ['bridge','hop_protocol','cross-chain']
+    description: >
+        Table storing address mapping inoformation for Hop's bridge addresses and underlying tokens.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - l1CanonicalToken
+              - l1Bridge
+              - l1CanonicalBridge
+              - bridgeDeployedBlockNumber
+              - l2CanonicalToken
+              - l2Bridge
+              - l2HopBridgeToken
+              - l2SaddleSwap
+              - l2SaddleLpToken
+    columns:
+      - name: blockchain
+        description: "Blockchain of the bridge contract"
+      - name: token_symbol
+        description: Bridged Token Symbol
+      - &l1CanonicalToken
+        name: l1CanonicalToken
+        description:  "Underlying L1 Token address (i.e. USDC address on L1)"
+      - &l1Bridge
+        name: l1Bridge
+        description:  "Bridge contract address on L1"
+      - &bridgeDeployedBlockNumber
+        name: bridgeDeployedBlockNumber
+        description:  "Block number when the bridge contract was deployed on the specified blockchain."
+      - &l1CanonicalBridge
+        name: l1CanonicalBridge
+        description:  "Canonical bridge contract address on L1"
+      - &l1MessengerWrapper
+        name: l1MessengerWrapper
+        description:  "Messenger Wrapper contract address on L1"
+      - &l2CanonicalBridge
+        name: l2CanonicalBridge
+        description:  "Canonical bridge contract address on L2"
+      - &l2CanonicalToken
+        name: l2CanonicalToken
+        description:  "Underlying L2 Token address (i.e. USDC address on L2)"
+      - &l2Bridge
+        name: l2Bridge
+        description:  "Bridge contract address"
+      - &l2HopBridgeToken
+        name: l2HopBridgeToken
+        description:  "hToken address (i.e. hUSDC)"
+      - &l2AmmWrapper
+        name: l2AmmWrapper
+        description:  "AMM Wrapper address" 
+      - &l2SaddleSwap
+        name: l2SaddleSwap
+        description:  "Swap token address"
+      - &l2SaddleLpToken
+        name: l2SaddleLpToken
+        description:  "LP Token Address"
+      - &l1Amb
+        name: l1Amb
+        description:  "See Hop Documentation"
+      - &l2Amb
+        name: l2Amb
+        description:  "See Hop Documentation"
+      - &l1FxBaseRootTunnel
+        name: l1FxBaseRootTunnel
+        description:  "See Hop Documentation"
+      - &l1PosRootChainManager
+        name: l1PosRootChainManager
+        description:  "See Hop Documentation"
+      - &l1PosPredicate
+        name: l1PosPredicate
+        description:  "See Hop Documentation"
+      - &l2MessengerProxy
+        name: l2MessengerProxy
+        description:  "Messenger Proxy contract address on L2"
+  

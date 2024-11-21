@@ -1,0 +1,121 @@
+version: 2
+
+sources:
+  - name: abi
+    tables:
+      - name: signatures
+  - name: addresses_events_optimism
+    tables:
+      - name: first_activity
+      - name: first_funded_by
+  - name: addresses_events_arbitrum
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_avalanche_c
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_bnb
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_base
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_celo
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_ethereum
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_gnosis
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_polygon
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_scroll
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_zksync
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_zora
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_blast
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_fantom
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_zkevm
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_linea
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_mantle
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_goerli
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_sei
+    tables:
+      - name: first_funded_by
+  - name: addresses_events_mode
+    tables:
+      - name: first_funded_by
+  - name: bridge_optimism
+    tables:
+      - name: standard_bridge_flows
+  - name: op_optimism
+    tables:
+      - name: airdrop_1_claims
+  - name: cex_optimism
+    tables:
+      - name: addresses
+
+  - name: op_retropgf_optimism
+    tables:
+      - name: recipients
+      - name: voters
+  - name: addresses_optimism
+    tables:
+      - name: fee_vaults
+      - name: grants_funding
+  - name: balancer_v2_optimism
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_arbitrum
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_avalanche_c
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_base
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_ethereum
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_gnosis
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_polygon
+    tables:
+      - name: bpt_prices
+  - name: balancer_v2_zkevm
+    tables:
+      - name: bpt_prices
+  - name: balancer
+    tables:
+      - name: bpt_prices
+
+  - name: addresses_ethereum
+    tables:
+      - name: optimism_batchinbox_combinations
+      - name: optimism_outputoracle_combinations
+
+  - name: gyroscope
+    tables:
+      - name: gyro_tokens

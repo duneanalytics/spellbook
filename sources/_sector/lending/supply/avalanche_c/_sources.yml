@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: aave_v2_avalanche_c
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
+      - name: LendingPool_evt_RedeemUnderlying
+
+  - name: aave_v3_avalanche_c
+    tables:
+      - name: Pool_evt_Supply
+      - name: Pool_evt_Withdraw
+      - name: Pool_evt_RedeemUnderlying
+
+  - name: benqi_finance_avalanche_c
+    tables:
+      - name: QiErc20Delegate_evt_Mint
+      - name: QiAvax_evt_Mint
+      - name: QiErc20Delegate_evt_Redeem
+      - name: QiAvax_evt_Redeem
+
+  - name: the_granary_avalanche_c
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw

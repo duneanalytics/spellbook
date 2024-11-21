@@ -1,9 +1,0 @@
-version: 2
-
-sources: 
-  - name: forta_network_ethereum
-    description: >
-      Forta Network ethereum contracts
-    tables:
-      - name: Airdrop_evt_TokensReleased
-        loaded_at_field: evt_block_time

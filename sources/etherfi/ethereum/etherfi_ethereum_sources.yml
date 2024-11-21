@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: ethfi_ethereum
+    description: >
+      Ether.Fi is a liquid restaking protocol on Ethereum.
+    tables:
+      - name: MerkleDistributorWithDeadline_evt_Claimed

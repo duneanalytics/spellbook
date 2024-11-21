@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,borrower,amount
+ethereum,radiant,1,19069412,2024-01-23 12:36:47.000 UTC,0x19e76f6d22c40e025f67ab8b283e43e6bcff965df317f693b5ef420f447c5550,134,borrow,0xdac17f958d2ee523a2206206994597c13d831ec7,0xfc5a3c2ef8070c21ccd4c62856e3e36b41f405bf,1e+10
+ethereum,radiant,1,19071091,2024-01-23 18:15:47.000 UTC,0x47adfa6e16e6a32ae41cbad6883bfdd55af356023af22ed1f19c12e98fc6af4f,231,repay,0xdac17f958d2ee523a2206206994597c13d831ec7,0x5d7166ee0c633021cb502fa5302866316d86f701,-3.02655531373e+11

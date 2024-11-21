@@ -1,0 +1,196 @@
+version: 2
+
+models:
+  - name: safe_optimism_safes
+    meta:
+      blockchain: optimism
+      project: safe
+      contributors: frankmaseo
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'optimism']
+    description: "Safe addresses on Optimism"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "The blockchain on which the Safe is deployed"
+      - &address
+        name: address
+        description: "Safe contract address"
+      - &creation_version
+        name: creation_version
+        description: "Version of initially created safe"
+      - &block_date
+        name: block_date
+      - &block_month
+        name: block_month
+      - &creation_time
+        name: creation_time
+        description: "Date/time of safe creation"
+      - &tx_hash
+        name: tx_hash
+  - name: safe_optimism_singletons
+    meta:
+      blockchain: optimism
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'singletons', 'optimism']
+    description: "Singletons addresses used with Safes"
+    columns:
+      - name: address
+        description: "Safe contract address"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: safe_optimism_transactions
+    meta:
+      blockchain: optimism
+      project: safe
+      contributors: tschubotz, danielpartida
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'optimism']
+    description: "Safe transactions"
+    columns:
+      - *blockchain
+      - *block_date
+      - *block_month
+      - &block_time
+        name: block_time
+        description: "Datetime of block"
+      - &block_number
+        name: block_number
+        description: "Number of block"
+      - *tx_hash
+      - name: address
+        description: "Safe contract address"
+      - &to
+        name: to
+        description: "Destination address"
+      - &value
+        name: value
+        description: "Value of transaction"
+      - &execution_gas_used
+        name: execution_gas_used
+        description: "Execution gas used during transaction, for more details see https://dune.com/docs/data-tables/raw/evm/traces/?h=traces#gas-used-in-traces"
+      - &total_gas_used
+        name: total_gas_used
+        description: "Total gas used during transaction"
+      - &gas_used
+        name: gas_used
+        description: "Gas used during transaction"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &sub_traces
+        name: sub_traces
+        description: "Number of sub traces"
+      - &trace_address
+        name: trace_address
+        description: ""
+      - &success
+        name: success
+        description: "Success state of transaction"
+      - &error
+        name: error
+        description: "Error of transaction if any"
+      - &code
+        name: code
+        description: "Code"
+      - &input
+        name: input
+        description: "Input data"
+      - &output
+        name: output
+        description: "Output data"
+
+  - name: safe_optimism_eth_transfers
+    meta:
+      blockchain: optimism
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'transfers', 'optimism']
+    description: "ETH transfers into or out of Safes"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+            - tx_hash
+            - trace_address
+    columns:
+      - *blockchain
+      - &symbol
+        name: symbol
+        description: "Symbol of native gas token: ETH"
+      - name: address
+        description: "Safe contract address"
+      - *block_date
+      - *block_month
+      - *block_time
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of transferred ETH"
+      - *tx_hash
+      - *trace_address
+      - &amount_usd
+        name: amount_usd
+        description: "USD amount of transferred ETH"
+
+  - name: safe_optimism_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - address
+            - token_address
+    meta:
+      blockchain: optimism
+      project: safe
+      contributors: safeintern
+    config:
+      tags: ['safe', 'optimism']
+    description: “Safe addresses balances”
+    columns:
+      - name: day
+      - name: blockchain
+      - name: address
+      - &token_symbol
+        name: token_symbol
+        description: "Symbol for the token"
+      - &token_address
+        name: token_address
+        description: "Address for the token"
+      - &token_standard
+        name: token_standard
+        description: "Standard for the token"
+      - &token_id
+        name: token_id
+        description: "ID for the token"
+      - &balance
+        name: balance
+        description: "Balance for the user"
+      - &balance_usd
+        name: balance_usd
+        description: "USD value of balance for the user"
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when data was last updated"
+      - &next_update
+        name: next_update
+        description: "UTC timestamp when data is next updated"
+

@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: opensea_polygon_v2_polygon
+    tables:
+      - name: ZeroExFeeWrapper_call_matchOrders
+
+  - name: seaportv1_4polygon_polygon
+    tables:
+      - name: Seaport_evt_OrderFulfilled
+      - name: Seaport_evt_OrdersMatched

@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,token_address,recipient,amount
+arbitrum,granary,1,58075597,2023-02-04 23:43:53.000 UTC,0x50bd4b2cec7a7a71aebcad30a0a1e8396d95b36532aad559d4e3c791dd075046,31,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0x08e18666ead6c8a16cc0b81292fbf081dd6844fe,2.505564e+06
+arbitrum,granary,1,52493684,2023-01-12 07:44:10.000 UTC,0xa91d16d7412a87b318fed6ec067cde8698d754c388badf84edbc655cae5eb10a,24,0xff970a61a04b1ca14834a43f5de4533ebddb5cc8,0x71a073cdf8364e6f3fb5714779c129639e7d2d82,5.000024e+06

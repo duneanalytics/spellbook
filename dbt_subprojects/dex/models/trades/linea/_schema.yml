@@ -1,0 +1,223 @@
+version: 2
+
+models:
+  - name: dex_linea_base_trades
+    data_tests:
+      - check_dex_info_relationship
+
+  - name: sushiswap_v2_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: sushiswap
+      contributors: tomfutago
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'sushiswap' ]
+    description: "Sushiswap v2 Linea base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_linea_base_trades_seed')
+
+  - name: lynex_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: lynex
+      contributors: tomfutago
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'lynex' ]
+    description: "Lynex Linea base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('lynex_linea_base_trades_seed')
+
+  - name: nile_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: nile
+      contributors: tomfutago
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'nile' ]
+    description: "Nile Linea base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('nile_linea_base_trades_seed')
+
+  - name: echodex_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: echodex
+      contributors: tomfutago
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'echodex' ]
+    description: "EchoDex Linea base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('echodex_linea_base_trades_seed')
+
+  - name: secta_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: secta
+      contributors: tomfutago
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'secta' ]
+    description: "Secta Linea base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('secta_linea_base_trades_seed')
+
+  - name: pancakeswap_v2_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
+    description: "Pancakeswap linea v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_linea_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: pancakeswap_v3_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: pancakeswap
+      contributors: chef_seaweed
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'pancakeswap' ]
+    description: "Pancakeswap V3 linea base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('pancakeswap_linea_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: horizondex_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: horizondex
+      contributors: blanchemaria6
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'horizondex' ]
+    description: "horizondex dex swaps on linea chain"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('horizondex_linea_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: uniswap_v3_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: uniswap
+      contributors: chef_seaweed
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap linea v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_linea_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: lynex_fusion_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: lynex
+      contributors: atarod0
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'lynex', 'fusion' ]
+    description: "lynex linea fusion base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('lynex_linea_base_trades_seed')
+          filter:
+            version: fusion
+
+  - name: swaap_v2_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: swaap
+      contributors: borelien
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'swaap', 'v2']
+    description: "swaap v2 linea base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('swaap_linea_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: leetswap_linea_base_trades
+    meta:
+      blockchain: linea
+      sector: dex
+      project: leetswap
+      contributors: kiley79
+    config:
+      tags: [ 'linea', 'dex', 'trades', 'leetswap' ]
+    description: "Leetswap Linea base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('leetswap_linea_base_trades_seed')

@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: velodrome_optimism
+    description: "decoded events and function calls for velodrome on optimism"
+    tables:
+      - name: MerkleClaim_evt_Claim
+      - name: BribeFactory_call_createExternalBribe
+      - name: GaugeFactory_call_createGauge
+      - name: BribeFactory_call_createInternalBribe
+      - name: WrappedExternalBribeFactory_call_createBribe
+  
+  - name: velodrome_v2_optimism
+    description: "decoded events and function calls for velodrome v2 on optimism"
+    tables:
+      - name: Voter_evt_GaugeCreated

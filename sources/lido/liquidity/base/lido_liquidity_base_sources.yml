@@ -1,0 +1,50 @@
+version: 2
+
+sources:    
+  - name: kyber_base
+    description: "Base decoded tables related to Kyberswap contract"
+    tables:
+      - name: ElasticPool_evt_Mint
+      - name: ElasticPool_evt_Burn
+      - name: ElasticPool_evt_BurnRTokens  
+      - name: Factory_evt_PoolCreated
+      - name: ElasticPool_evt_Swap
+      
+
+  - name: aerodrome_base
+    description: "Base decoded tables related to Aerodrome pools contracts"
+    tables:
+      - name: Pool_evt_Mint
+      - name: Pool_evt_Burn 
+      - name: PoolFactory_call_getFee
+      - name: Pool_evt_Fees 
+      - name: CLPool_evt_Mint
+      - name: CLPool_evt_Collect 
+      - name: CLFactory_call_getSwapFee
+      - name: CLFactory_evt_PoolCreated   
+      - name: CLPool_evt_Swap     
+      - name: CLPool_evt_CollectFees       
+
+  - name: uniswap_v3_base
+    description: "Base decoded tables related to Uniswap v3 contract"
+    tables:
+      - name: UniswapV3Pool_evt_Mint
+      - name: UniswapV3Pool_evt_Collect
+      - name: UniswapV3Pool_evt_Burn  
+
+  - name: pancakeswap_v3_base
+    description: "Base decoded tables related to Pancake v3 contract"
+    tables:
+      - name: PancakeV3Pool_evt_Mint
+      - name: PancakeV3Pool_evt_Collect
+      - name: PancakeV3Pool_evt_Burn  
+
+  - name: maverick_v2_base
+    description: "Base decoded tables related to Maverick v2 contract"
+    tables:
+      - name: V2Pool_evt_PoolAddLiquidity
+      - name: V2Pool_evt_PoolRemoveLiquidity
+    
+    
+
+

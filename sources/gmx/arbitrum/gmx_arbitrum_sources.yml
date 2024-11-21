@@ -1,0 +1,16 @@
+version: 2
+
+sources: 
+  - name: gmx_arbitrum
+    description: >
+      Decoded event table for swaps and margin trades on gmx arbitrum
+    tables:
+      - name: Vault_evt_DecreasePosition
+      - name: Vault_evt_IncreasePosition
+      - name: Vault_evt_LiquidatePosition
+
+  - name: gmx_v2_arbitrum
+    description: Tables with all decoded events for GMX v2 on the Arbitrum blockchain
+    tables:
+      - name: EventEmitter_evt_EventLog1
+      - name: EventEmitter_evt_EventLog2    

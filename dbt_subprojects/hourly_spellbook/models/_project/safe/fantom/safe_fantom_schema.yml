@@ -1,0 +1,114 @@
+version: 2
+
+models:
+  - name: safe_fantom_singletons
+    meta:
+      blockchain: fantom
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'singletons', 'fantom']
+    description: "Singletons addresses used with Safes"
+    columns:
+      - &address
+        name: address
+        description: "Safe contract address"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: safe_fantom_safes
+    meta:
+      blockchain: fantom
+      project: safe
+      contributors: tschubotz
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'fantom']
+    description: "Safe addresses"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain on which the Safe is deployed"
+      - *address
+      - &creation_version
+        name: creation_version
+        description: "Initial version during creation"
+      - &block_date
+        name: block_date
+      - &block_month
+        name: block_month
+      - &creation_time
+        name: creation_time
+        description: "Datetime of Safe creation"
+      - &tx_hash
+        name: tx_hash
+
+  - name: safe_fantom_transactions
+    meta:
+      blockchain: fantom
+      project: safe
+      contributors: tschubotz, danielpartida
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'fantom']
+    description: "Safe transactions"
+    columns:
+      - *blockchain
+      - *block_date
+      - *block_month
+      - &block_time
+        name: block_time
+        description: "Datetime of block"
+      - &block_number
+        name: block_number
+        description: "Number of block"
+      - *tx_hash
+      - name: address
+        description: "Safe contract address"
+      - &to
+        name: to
+        description: "Destination address"
+      - &value
+        name: value
+        description: "Value of transaction"
+      - &gas
+        name: gas 
+        description: "Gas limit set for transaction"
+      - &execution_gas_used
+        name: execution_gas_used
+        description: "Execution gas used during transaction, for more details see https://dune.com/docs/data-tables/raw/evm/traces/?h=traces#gas-used-in-traces"
+      - &total_gas_used
+        name: total_gas_used
+        description: "Total gas used during transaction"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &sub_traces
+        name: sub_traces
+        description: "Number of sub traces"
+      - &trace_address
+        name: trace_address
+        description: ""
+      - &success
+        name: success
+        description: "Success state of transaction"
+      - &error
+        name: error
+        description: "Error of transaction if any"
+      - &code
+        name: code
+        description: "Code"
+      - &input
+        name: input
+        description: "Input data"
+      - &output
+        name: output
+        description: "Output data"

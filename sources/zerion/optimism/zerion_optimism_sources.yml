@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: zerion_optimism
+    description: "Zerion contracts on Optimism"
+    tables:
+      - name: Router_evt_Executed

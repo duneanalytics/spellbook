@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: aragon_ethereum
+    description: "aragon dao deployed decoded event"
+    tables:
+      - name: DAOFactory_evt_DeployDAO

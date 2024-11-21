@@ -1,0 +1,24 @@
+
+version: 2
+
+sources:
+  - name: prices
+    description: "Prices tables across blockchains"
+    tables:
+      - name: usd_0003
+        description: "raw, versioned USD prices table"
+      - name: usd
+        description: "USD prices across blockchains"
+        meta:
+          docs_slug: /curated/asset-tracking/prices/prices
+        columns:
+          - name: minute
+            description: "UTC event block time truncated to the minute mark"
+          - name: blockchain
+            description: "Native blockchain of the token"
+          - name: contract_address
+            description: "Contract address of the token"
+          - name: symbol
+            description: "Token symbol"
+          - name: price
+            description: "USD price of a token"

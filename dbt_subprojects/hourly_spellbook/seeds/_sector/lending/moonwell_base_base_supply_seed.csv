@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+base,moonwell,1,10008338,2024-02-01 16:47:03.000 UTC,0xc662c0f678ba6dd350ae971e94ca42f59e31a023c6b795a85c22380441c58e4e,11,deposit,0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x0d5aea5025d431f0589dcb35ad64d0d38dcd077f,2.5119876e+08
+base,moonwell,1,10008352,2024-02-01 16:47:31.000 UTC,0x7f76624246e449a74d42e248ac41d3014ee81cfc212b1be01c93e433eb50e8bd,20,withdraw,0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x0d5aea5025d431f0589dcb35ad64d0d38dcd077f,-2.51198764e+08

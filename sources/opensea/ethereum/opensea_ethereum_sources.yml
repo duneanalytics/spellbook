@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: opensea_ethereum
+    tables:
+      - name: wyvernexchange_call_atomicmatch_
+      - name: wyvernexchange_evt_ordersmatched

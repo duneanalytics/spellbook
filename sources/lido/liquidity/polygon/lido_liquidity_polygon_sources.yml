@@ -1,0 +1,24 @@
+version: 2
+
+sources:    
+  - name: balancer_v2_polygon
+    description: "Polygon decoded tables related to Balancer contract"
+    tables:
+      - name: pools_fees
+
+  - name: uniswap_v3_polygon
+    description: "Polygon decoded tables related to Uniswap v3 contract"
+    tables:
+      - name: UniswapV3Pool_evt_Mint 
+      - name: UniswapV3Pool_evt_Collect
+      - name: UniswapV3Pool_evt_Burn
+
+  - name: kyber_polygon
+    description: "Polygon decoded tables related to Kyberswap contract"
+    tables:
+      - name: ElasticFactoryV2_evt_PoolCreated
+      - name: ElasticPoolV2_evt_Swap
+      - name: ElasticPoolV2_evt_Mint
+      - name: ElasticPoolV2_evt_Burn
+      - name: ElasticPoolV2_evt_BurnRTokens
+      

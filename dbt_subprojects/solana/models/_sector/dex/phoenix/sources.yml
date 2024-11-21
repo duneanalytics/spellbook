@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: phoenix_v1_solana
+    description: "phoenix_v1_solana decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: phoenix_v1_call_InitializeMarket
+        loaded_at_field: call_block_time
+      - name: phoenix_v1_call_Swap
+        loaded_at_field: call_block_time
+      - name: phoenix_v1_call_Log
+        loaded_at_field: call_block_time

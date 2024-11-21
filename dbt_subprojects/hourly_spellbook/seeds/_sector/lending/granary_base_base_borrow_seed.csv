@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,borrower,amount
+base,granary,1,11285556,2024-03-02 06:20:59.000 UTC,0xefabee9b1f2f6368605eda8fd1e8e146d975f3eef456c655319786a9afbfa2c0,21,borrow,0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x878eccaca3ae1e0923966a1fdad2672195c8bd95,4e+08
+base,granary,1,11285709,2024-03-02 06:26:05.000 UTC,0xcdb6a8ad89bf6450bf5278da4af6a31b83b4c5937ec35772d94e4d40f7a57b2b,40,repay,0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x878eccaca3ae1e0923966a1fdad2672195c8bd95,-4.00000202e+08

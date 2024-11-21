@@ -1,0 +1,47 @@
+version: 2
+
+sources:
+  # for native orders on v4 + PLP VIP
+  - name: zeroex_ethereum
+    description: "Ethereum decoded tables related to 0x Exchange Proxy (v4)"
+    tables:
+      - name: ExchangeProxy_evt_LimitOrderFilled
+      - name: ExchangeProxy_evt_OtcOrderFilled
+      - name: ExchangeProxy_evt_RfqOrderFilled
+      - name: ExchangeProxy_evt_LiquidityProviderSwap
+      - name: ExchangeProxy_evt_ERC721OrderFilled
+      - name: ExchangeProxy_evt_ERC1155OrderFilled
+
+  # for native orders on v2
+  - name: zeroex_v2_ethereum
+    description: "Ethereum decoded tables related to 0x Exchange Proxy (v2)"
+    tables:
+      - name: Exchange2_0_evt_Fill
+      - name: Exchange2_1_evt_Fill
+  
+  # for native orders on v3
+  - name: zeroex_v3_ethereum
+    description: "Ethereum decoded tables related to 0x v3 Exchange Contract"
+    tables:
+      - name: Exchange_evt_Fill
+
+  # for VIP routes
+
+  ### already defined ###
+  # - name: uniswap_v2_ethereum
+  #   tables:
+  #     - name: Pair_evt_Swap
+  #     - name: Factory_evt_PairCreated
+
+  # - name: sushi_ethereum
+  #   #   tables:
+  #     - name: Pair_evt_Swap
+  #     - name: Factory_evt_PairCreated
+
+  # - name: uniswap_v3_ethereum
+  #   #   tables:
+  #     - name: Pair_evt_Swap
+  #     - name: Factory_evt_PoolCreated
+  ### already defined ###
+
+  # other 3 bridge fills are using raw logs table

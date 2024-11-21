@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: optimism
+    description: >
+      Decoded optimism event logs table
+    tables:
+      - name: decoded_logs

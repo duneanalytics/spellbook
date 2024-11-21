@@ -1,0 +1,114 @@
+version: 2
+
+models:
+  - name: dex_kaia_base_trades
+    data_tests:
+      - check_dex_info_relationship
+
+  - name: dragon_swap_v2_kaia_base_trades
+    meta:
+      blockchain: kaia
+      sector: dex
+      project: dragon_swap
+      contributors: jeff-dude
+    config:
+      tags: [ 'kaia', 'dex', 'trades', 'dragon_swap' ]
+    description: "dragon_swap kaia v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dragon_swap_kaia_base_trades_seed')
+          filter:
+            version: 2
+
+
+  - name: dragon_swap_v3_kaia_base_trades
+    meta:
+      blockchain: kaia
+      sector: dex
+      project: dragon_swap
+      contributors: jeff-dude
+    config:
+      tags: [ 'kaia', 'dex', 'trades', 'dragon_swap' ]
+    description: "dragon_swap V3 kaia base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dragon_swap_kaia_base_trades_seed')
+          filter:
+            version: 3
+
+
+  - name: klay_swap_v3_kaia_base_trades
+    meta:
+      blockchain: kaia
+      sector: dex
+      project: klay_swap
+      contributors: jeff-dude
+    config:
+      tags: [ 'kaia', 'dex', 'trades', 'klay_swap' ]
+    description: "klay_swap V3 kaia base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('klay_swap_kaia_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: neopin_kaia_base_trades
+    meta:
+      blockchain: kaia
+      sector: dex
+      project: neopin
+      contributors: jeff-dude
+    config:
+      tags: [ 'kaia', 'dex', 'trades', 'neopin' ]
+    description: "neopin kaia base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('neopin_kaia_base_trades_seed')
+
+  - name: kaia_swap_v3_kaia_base_trades
+    meta:
+      blockchain: kaia
+      sector: dex
+      project: kaia_swap
+      contributors: jeff-dude
+    config:
+      tags: [ 'kaia', 'dex', 'trades', 'kaia_swap' ]
+    description: "kaia_swap V3 kaia base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: defi_kingdoms_kaia_base_trades
+    meta:
+      blockchain: kaia
+      sector: dex
+      project: defi_kingdoms
+      contributors: jeff-dude
+    config:
+      tags: [ 'kaia', 'dex', 'trades', 'defi_kingdoms' ]
+    description: "defi_kingdoms kaia base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('defi_kingdoms_kaia_base_trades_seed')

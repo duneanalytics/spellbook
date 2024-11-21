@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: lending_info
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['lending', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'celo', 'base', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'scroll', 'zksync', 'info']
+    description: >
+        Lending DEXs info
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+    columns:
+      - name: project
+        description: "Marketplace codename"
+      - name: name
+        description: "Marketplace capitalised name"
+      - name: has_flashloans
+        description: "Does the lending protocol allow for flashloans"
+      - name: x_username
+        description: "Username on X"

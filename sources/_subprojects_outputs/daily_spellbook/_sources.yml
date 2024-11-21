@@ -1,0 +1,44 @@
+version: 2
+sources:
+  - name: chainlink
+    tables:
+      - name: price_feeds
+
+  - name: chainlink_ethereum
+    tables:
+      - name: price_feeds
+
+  - name: contracts
+    tables:
+      - name: system_predeploys
+
+  - name: contracts_optimism
+    tables:
+      - name: disperse_contracts
+      - name: contract_creator_project_mapping
+      - name: contract_mapping
+      
+  - name: labels
+    tables:
+      - name: jelly_swap_pools_sei     
+      - name: addresses
+      
+  - name: evms
+    description: "Cross-chain EVM raw data"
+    tables:
+      - name: info
+        description: "Blockchain metadata for all EVM compatible chains"
+      - name: evm_smart_account_method_ids
+      - name: base_evm_smart_account_method_ids
+      - name: contracts
+      - name: blocks
+      - name: creation_traces
+      - name: traces
+      - name: traces_decoded
+      - name: transactions
+      - name: logs
+
+  - name: ethereum
+    tables:
+      - name: blobs_submissions
+      

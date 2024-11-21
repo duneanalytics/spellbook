@@ -1,0 +1,96 @@
+version: 2
+
+models:
+  - name: pooltogether_v4_ethereum_prize_structure
+    meta:
+      blockchain: ethereum
+      sector: services
+      project: pooltogether_v4
+      contributors: bronder
+    config:
+      tags: ['ethereum','pooltogether_v4','defi','services']
+    description: >
+        Pooltogether V4 contract prize structures on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - network
+    columns:
+      - &tx_hash
+        name: tx_hash
+        description: "Primary key of the transaction"
+        data_tests:
+          - not_null
+      - &block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &network
+        name: network
+        description: "Blockchain which the protocol is deployed"
+        data_tests:
+          - not_null
+      - &draw_id
+        name: draw_id
+        description: "Identifier of the drawID for which the prize structure is being pushed"
+        data_tests:
+          - not_null
+      - &bit_range
+        name: bit_range
+        description: "BitRange of the prize structure"
+      - &tiers1
+        name: tiers1
+        description: "Portion of total prize dedicated to the tier 1"
+      - &tiers2
+        name: tiers2
+        description: "Portion of total prize dedicated to the tier 2"
+      - &tiers3
+        name: tiers3
+        description: "Portion of total prize dedicated to the tier 3"
+      - &tiers4
+        name: tiers4
+        description: "Portion of total prize dedicated to the tier 4"
+      - &tiers5
+        name: tiers5
+        description: "Portion of total prize dedicated to the tier 5"
+      - &tiers6
+        name: tiers6
+        description: "Portion of total prize dedicated to the tier 6"
+      - &tiers7
+        name: tiers7
+        description: "Portion of total prize dedicated to the tier 7"
+      - &tiers8
+        name: tiers8
+        description: "Portion of total prize dedicated to the tier 8"
+      - &tiers9
+        name: tiers9
+        description: "Portion of total prize dedicated to the tier 9"
+      - &tiers10
+        name: tiers10
+        description: "Portion of total prize dedicated to the tier 10"
+      - &tiers11
+        name: tiers11
+        description: "Portion of total prize dedicated to the tier 11"
+      - &tiers12
+        name: tiers12
+        description: "Portion of total prize dedicated to the tier 12"
+      - &tiers13
+        name: tiers13
+        description: "Portion of total prize dedicated to the tier 13"
+      - &tiers14
+        name: tiers14
+        description: "Portion of total prize dedicated to the tier 14"
+      - &tiers15
+        name: tiers15
+        description: "Portion of total prize dedicated to the tier 15"
+      - &tiers16
+        name: tiers16
+        description: "Portion of total prize dedicated to the tier 16"
+      - &dpr
+        name: dpr
+        description: "dpr of the prize structure"
+      - &prize
+        name: prize
+        description: "total prize of the prize structure"
+        data_tests:
+          - not_null

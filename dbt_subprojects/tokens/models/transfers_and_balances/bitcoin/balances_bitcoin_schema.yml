@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: balances_bitcoin_satoshi_day
+    meta:
+      blockchain: bitcoin
+      sector: balances
+      project: satoshi
+      contributors: longnhbkhn
+    config:
+      tags: ['balances', 'bitcoin', 'satoshi', 'day', 'longnhbkhn']
+    description: >
+        Daily token balances of Satoshi Bitcoin per wallets
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Chai name"
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark"
+      - &wallet_address
+        name: wallet_address
+        description: "Wallet address of sender or receiver. If amount is negative, wallet address is the sender's."
+      - &amount_raw
+        name: amount_raw
+        description: "The number of Satoshis in the wallet"
+      - &amount
+        name: amount
+        description: "The number of Bitcoins in the wallet"
+      - &price_btc
+        name: price_btc
+        description: "Price of btc at day"
+      - &profit
+        name: profit
+        description: "Profit by USD of the wallet"
+      - &amount_usd
+        name: amount_usd
+        description: "USD balance of the wallet"
+      - &total_asset
+        name: total_asset
+        description: "Total asset by USD of the wallet"
+      - &updated_at
+        name: updated_at
+        description: "When the balances were last updated"
+  - name: balances_bitcoin_satoshi_latest_day
+    meta:
+      blockchain: bitcoin
+      sector: balances
+      project: satoshi
+      contributors: gandalf
+    config:
+      tags: [ 'latest', 'balances', 'bitcoin', 'satoshi', 'day', 'gandalf' ]
+    description: >
+      Latest token balances of Satoshi Bitcoin per wallet
+    columns:
+      - *blockchain
+      - *day
+      - *wallet_address
+      - *amount_raw
+      - *amount
+      - *price_btc
+      - *profit
+      - *amount_usd
+      - *total_asset
+      - *updated_at

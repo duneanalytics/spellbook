@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: bebop_v4_optimism
+    description: "Bebop decoded tables related to Bebop"
+    tables:
+      - name: BebopSettlement_call_SettleAggregateOrder
+      - name: BebopSettlement_call_SettleAggregateOrderWithTakerPermits
+      - name: BebopSettlement_evt_AggregateOrderExecuted
+  - name: bebop_jam_optimism
+    description: "BebopJAM decoded tables related to Bebop"
+    tables:
+      - name: JamSettlement_call_settle
+      - name: JamSettlement_call_settleWithPermitsSignatures
+      - name: JamSettlement_evt_Settlement

@@ -1,0 +1,60 @@
+version: 2
+
+sources:    
+  - name: kyber_optimism
+    description: "Optimism decoded tables related to Kyberswap contract"
+    tables:
+      - name: Elastic_Pool_evt_Mint
+      - name: Elastic_Pool_evt_Burn
+      - name: Elastic_Pool_evt_BurnRTokens  
+      - name: ElasticFactoryV2_evt_PoolCreated
+      - name: ElasticPoolV2_evt_Swap
+      - name: ElasticPoolV2_evt_Mint
+      - name: ElasticPoolV2_evt_Burn                      
+      - name: ElasticPoolV2_evt_BurnRTokens      
+
+  - name: uniswap_v3_optimism
+    description: "Optimism decoded tables related to Uniswap v3 contract"
+    tables:
+      - name: Pair_evt_Mint
+      - name: Pair_evt_Collect
+      - name: Pair_evt_Burn  
+      - name: Factory_evt_PoolCreated  
+
+  - name: curvefi_optimism
+    description: "Optimism decoded tables related to Curve pools contracts"
+    tables:
+      - name: wstETH_swap_evt_AddLiquidity
+      - name: wstETH_swap_evt_RemoveLiquidityOne        
+      - name: wstETH_swap_evt_RemoveLiquidityImbalance          
+      - name: wstETH_swap_evt_RemoveLiquidity          
+        
+  
+  - name: lido_optimism
+    description: "Optimism decoded tables related to Lido contracts"
+    tables:
+      - name: wstETH_evt_Transfer                
+
+  - name: velodrome_optimism
+    description: "Optimism decoded tables related to Velodrome pools contracts"
+    tables:
+      - name: Pair_evt_Mint
+      - name: Pair_evt_Burn          
+      - name: Pair_evt_Fees          
+
+  - name: velodrome_v2_optimism
+    description: "Optimism decoded tables related to Velodrome V2 pools contracts"
+    tables:
+      - name: Pool_evt_Mint
+      - name: Pool_evt_Burn          
+      - name: Pool_evt_Fees           
+      - name: PoolFactory_call_getFee
+      - name: CLFactory_evt_PoolCreated
+      - name: CLPool_evt_Mint
+      - name: CLPool_evt_Collect          
+      - name: CLPool_evt_Fees           
+      - name: CLPoolFactory_call_getFee
+      - name: CLFactory_call_getSwapFee
+      - name: CLPool_evt_Swap     
+      - name: CLPool_evt_CollectFees    
+       

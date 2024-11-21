@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: balancer_v2_ethereum_protocol_fee
+    meta:
+      blockchain: ethereum
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['ethereum', 'revenue', 'fees']
+    description: >
+      Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - &day
+        name: day
+        description: "Block date in UTC"
+      - &pool_id
+        name: pool_id
+        description: "Unique encoded identifier that refers to each pool"
+      - &pool_address
+        name: pool_address
+        description: "Pool address"
+      - &pool_symbol
+        name: pool_symbol
+        description: "Token symbols, followed by their respective weights, if applicable"
+      - &version
+        name: version
+        description: "Version of the project"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &pool_type
+        name: pool_type
+        description: "Pool attributes, determined by the pool's factory"              
+      - &token_address
+        name: token_address
+        description: "Contract address of the token in which protocol fees were collected"
+      - &token_symbol
+        name: token_symbol
+        description: Token symbol of the token in which protocol fees were collected"
+      - &token_amount_raw
+        name: token_amount_raw
+        description: "Raw amount of fees of the token in the pool at time of execution in the original currency"
+      - &token_amount
+        name: token_amount
+        description: "Normalized amount of fees of the token in the pool at time of execution in the original currency"
+      - &protocol_fee_collected_usd
+        name: protocol_fee_collected_usd
+        description: "USD value of the collected fee"
+      - &treasury_share
+        name: treasury_share
+        description: "Share of total fee that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
+      - &treasury_revenue_usd
+        name: treasury_revenue_usd
+        description: "USD value of fee directed to Balancer DAO's treasury"

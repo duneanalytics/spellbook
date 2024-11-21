@@ -1,0 +1,33 @@
+version: 2
+
+sources:
+  - name: oku_sei
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
+  - name: dragon_swap_sei
+    tables:
+      - name: DragonswapFactory_evt_PairCreated
+      - name: DragonswapPair_evt_Swap
+  - name: jelly_swap_sei
+    tables:
+      - name: WeightedPoolFactory_call_create
+      - name: Vault_evt_PoolBalanceChanged
+      - name: Vault_evt_PoolBalanceManaged
+      - name: Vault_evt_FlashLoan
+      - name: ComposableStablePoolFactory_evt_PoolCreated
+      - name: Vault_evt_TokensRegistered
+      - name: Vault_evt_Swap
+      - name: Vault_evt_PoolRegistered
+      - name: ComposableStablePoolFactory_call_create
+  - name: xei_finance_sei
+    tables:
+      - name: XeiV3Factory_evt_PoolCreated
+      - name: XeiV3Pool_evt_Swap
+  - name: carbon_defi_sei
+    tables:
+      - name: CarbonController_evt_TokensTraded
+  - name: yaka_sei
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated

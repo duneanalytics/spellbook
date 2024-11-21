@@ -1,0 +1,100 @@
+version: 2
+sources:
+  - name: tokens
+    tables:
+      - name: transfers
+  - name: tokens_arbitrum
+    tables:
+      - name: transfers
+
+  - name: tokens_avalanche_c
+    tables:
+      - name: transfers
+
+  - name: tokens_base
+    tables:
+      - name: transfers
+
+  - name: tokens_bnb
+    tables:
+      - name: transfers
+
+  - name: tokens_celo
+    tables:
+      - name: transfers
+
+  - name: tokens_ethereum
+    tables:
+      - name: transfers
+
+  - name: tokens_fantom
+    tables:
+      - name: transfers
+
+  - name: tokens_gnosis
+    tables:
+      - name: transfers
+
+  - name: tokens_linea
+    tables:
+      - name: transfers
+
+  - name: tokens_optimism
+    tables:
+      - name: transfers
+
+  - name: tokens_polygon
+    tables:
+      - name: transfers
+
+  - name: tokens_scroll
+    tables:
+      - name: transfers
+
+  - name: tokens_zkevm
+    tables:
+      - name: transfers
+
+  - name: tokens_zksync
+    tables:
+      - name: transfers
+
+  - name: tokens_zora
+    tables:
+      - name: transfers
+
+  - name: tokens_blast
+    tables:
+      - name: transfers
+
+  - name: tokens_mantle
+    tables:
+      - name: transfers
+
+  - name: tokens_sei
+    tables:
+      - name: transfers
+
+  - name: tokens_mode
+    tables:
+      - name: transfers
+
+  - name: tokens_goerli
+    tables:
+      - name: transfers
+
+  - name: tokens_sepolia
+    tables:
+      - name: transfers
+
+  - name: tokens_bob
+    tables:
+      - name: transfers
+
+  - name: tokens_degen
+    tables:
+      - name: transfers
+
+  - name: transfers_bitcoin
+    tables:
+      - name: satoshi

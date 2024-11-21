@@ -1,0 +1,17 @@
+version: 2
+
+sources: 
+  - name: fxdxdex_v2_optimism
+    description: >
+      Decoded event tables for Perpetual trades on fxdx
+    tables:
+
+      - name: Vault_evt_CollectPositionTradeFees
+
+      - name: PositionRouter_evt_ExecuteDecreasePosition
+
+      - name: PositionRouter_evt_ExecuteIncreasePosition
+
+      - name: Vault_evt_DecreasePosition
+
+      - name: Vault_evt_IncreasePosition

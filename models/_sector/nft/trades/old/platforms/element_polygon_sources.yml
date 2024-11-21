@@ -1,9 +1,0 @@
-version: 2
-
-sources:
-  - name: element_ex_polygon
-    tables:
-      - name: OrdersFeature_evt_ERC721SellOrderFilled
-      - name: OrdersFeature_evt_ERC721BuyOrderFilled
-      - name: OrdersFeature_evt_ERC1155SellOrderFilled
-      - name: OrdersFeature_evt_ERC1155BuyOrderFilled

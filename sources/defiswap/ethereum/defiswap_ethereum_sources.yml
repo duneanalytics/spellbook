@@ -1,0 +1,65 @@
+version: 2
+
+sources:
+  - name: defiswap_ethereum
+    description: >
+      Decoded tables related to defiswap dex swap.
+    tables:
+      - name: CroDefiSwapPair_evt_Swap
+        description: >
+          Decoded table related to the defiswap swap events.
+        columns:
+          - &amount0In
+            name: amount0In
+          - &amount0Out
+            name: amount0Out
+          - &amount1In
+            name: amount1In
+          - &amount1Out
+            name: amount1Out
+          - &contract_address
+            name: contract_address
+            description: "Ethereum address for the liquidity pool used in transaction"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction event"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Tx hash of the transaction"
+          - &sender
+            name: sender
+            description: "msg.sender for the trace"
+          - &to
+            name: to
+            description: "Taker for the trade"
+  - name: crodefi_ethereum
+    description: >
+      Decoded tables related to defiswap dex pair creation.
+    tables:
+      - name: CroDefiSwapFactory_evt_PairCreated
+        description: >
+          Decoded table related to the defiswap pair creations.
+        columns:
+          - &_0
+            name: _0
+            description: "Serial ID for defiswap pairs"
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time 
+          - *evt_index
+          - *evt_tx_hash
+          - &pair
+            name: pair
+            description: "Address for the token pair"
+          - &token0
+            name: token0
+            description: "Address for token0"
+          - &token1
+            name: token1
+            description: "Address for token1"

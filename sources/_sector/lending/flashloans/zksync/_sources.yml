@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: zerolend_zksync
+    tables:
+      - name: Pool_evt_FlashLoan

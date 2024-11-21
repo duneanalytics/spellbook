@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: gas_prices
+    meta: 
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, fantom, arbitrum, celo, zkync, zora, scroll, goerli, linea, zkevm, goerli
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, per chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &minute
+        name: minute
+        description: "UTC minute"
+      - &median_gas
+        name: median_gas
+        description: "Median gas price"
+      - &tenth_percentile_gas
+        name: tenth_percentile_gas
+        description: "10th percentile gas price"
+      - &ninetieth_percentile_gas
+        name: ninetieth_percentile_gas
+        description: "90th percentile gas price"
+      - &avg_gas
+        name: avg_gas
+        description: "Average gas price"
+      - &min_gas
+        name: min_gas
+        description: "Minimum gas price"
+      - &max_gas
+        name: max_gas
+        description: "Maximum gas price"

@@ -1,0 +1,398 @@
+version: 2
+
+models:
+  - name: nexusmutual_ethereum_product_types_v2
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Nexus Mutual Product Types v2"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - product_type_id
+    columns:
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+        data_tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: "Block number"
+        data_tests:
+          - not_null
+      - &product_type_id
+        name: product_type_id
+        description: "product type id"
+        data_tests:
+          - not_null
+      - &product_type_name
+        name: product_type_name
+        description: "product type name"
+        data_tests:
+          - not_null
+      - name: claim_method
+        description: "claim method"
+      - name: grace_period
+        description: "grace period"
+      - name: product_type_ipfs_metadata
+        description: "product type ipfs metadata"
+      - name: cover_wording_url
+        description: "cover wording url"
+      - &evt_index
+        name: evt_index
+        description: "event index"
+      - &tx_hash
+        name: tx_hash
+        description: "unique transaction hash value"
+        data_tests:
+          - not_null
+
+  - name: nexusmutual_ethereum_products_v2
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Nexus Mutual Products v2"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - product_id
+    columns:
+      - *block_time
+      - *block_number
+      - *product_type_id
+      - &product_id
+        name: product_id
+        description: "product id"
+      - &product_name
+        name: product_name
+        description: "product name"
+        data_tests:
+          - not_null
+      - name: cover_assets
+        description: "cover assets: ETH, DAI, USDC, cbBTC"
+      - name: is_deprecated
+        description: "is deprecated flag"
+      - name: initial_price_ratio
+        description: "initial price ratio"
+      - name: use_fixed_price
+        description: "use fixed price?"
+      - name: capacity_reduction_ratio
+        description: "capacity reduction ratio"
+      - name: allowed_pools
+        description: "allowed pools (array)"
+      - name: yield_token_address
+        description: "yield token address"
+      - name: product_ipfs_metadata
+        description: "product ipfs metadata"
+      - *evt_index
+      - *tx_hash
+
+  - name: nexusmutual_ethereum_products_v1
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: guyhow, tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Nexus Mutual Products v1"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - product_contract_address
+    columns:
+      - &product_contract_address
+        name: product_contract_address
+        description: "product contract address"
+        data_tests:
+          - unique
+      - *product_name
+      - &product_type
+        name: product_type
+        description: "product type"
+      - &date_added
+        name: date_added
+        description: "date added"
+
+  - name: nexusmutual_ethereum_covers_v1
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Nexus Mutual Covers v1"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cover_id
+    columns:
+      - *block_time
+      - &block_date
+        name: block_date
+        description: "block date"
+      - *block_number
+      - &cover_id
+        name: cover_id
+        description: "cover id"
+        data_tests:
+          - not_null
+      - &cover_start_time
+        name: cover_start_time
+        description: "cover start time"
+        data_tests:
+          - not_null
+      - &cover_end_time
+        name: cover_end_time
+        description: "cover end time"
+        data_tests:
+          - not_null
+      - &cover_start_date
+        name: cover_start_date
+        description: "cover start date"
+      - &cover_end_date
+        name: cover_end_date
+        description: "cover end date"
+      - &product_contract
+        name: product_contract
+        description: "product contract"
+      - name: syndicate
+        description: "syndicate"
+      - *product_id
+      - *product_name
+      - *product_type
+      - &cover_asset
+        name: cover_asset
+        description: "cover asset"
+      - &sum_assured
+        name: sum_assured
+        description: "total cover amount"
+      - &premium_asset
+        name: premium_asset
+        description: "premium asset"
+      - &premium
+        name: premium
+        description: "premium in cover asset"
+      - &premium_nxm
+        name: premium_nxm
+        description: "premium in NXM"
+      - &cover_owner
+        name: cover_owner
+        description: "cover owner"
+      - *evt_index
+      - *tx_hash
+
+  - name: nexusmutual_ethereum_covers_v2
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Nexus Mutual Covers v2"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cover_id
+            - staking_pool
+    columns:
+      - *block_time
+      - *block_date
+      - *block_number
+      - *cover_id
+      - *cover_start_time
+      - *cover_end_time
+      - *cover_start_date
+      - *cover_end_date
+      - &staking_pool_id
+        name: staking_pool_id
+        description: "staking pool id"
+      - &staking_pool
+        name: staking_pool
+        description: "staking pool"
+      - *product_id
+      - *product_type
+      - *product_name
+      - *cover_asset
+      - *sum_assured
+      - &partial_cover_amount
+        name: partial_cover_amount
+        description: "partial cover amount"
+      - *premium_asset
+      - *premium
+      - *premium_nxm
+      - &premium_incl_commission
+        name: premium_incl_commission
+        description: "premium incl commission"
+      - &premium_period_ratio
+        name: premium_period_ratio
+        description: "premium period ratio"
+      - *cover_owner
+      - &commission
+        name: commission
+        description: "commission"
+      - &commission_ratio
+        name: commission_ratio
+        description: "commission ratio"
+      - &commission_destination
+        name: commission_destination
+        description: "commission destination (recipient wallet)"
+      - &is_migrated
+        name: is_migrated
+        description: "is migrated flag"
+      - name: trace_address
+      - *tx_hash
+
+  - name: nexusmutual_ethereum_active_covers
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Nexus Mutual Active Covers"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cover_id
+            - staking_pool_id
+    columns:
+      - *cover_id
+      - *cover_start_time
+      - *cover_end_time
+      - *cover_start_date
+      - *cover_end_date
+      - *cover_owner
+      - *staking_pool_id
+      - *product_id
+      - *product_type
+      - *product_name
+      - *cover_asset
+      - *sum_assured
+      - *partial_cover_amount
+      - name: total_cover_amount
+      - name: eth_cover_amount
+      - name: eth_usd_cover_amount
+      - name: dai_eth_cover_amount
+      - name: dai_usd_cover_amount
+      - name: usdc_eth_cover_amount
+      - name: usdc_usd_cover_amount
+      - name: cbbtc_eth_cover_amount
+      - name: cbbtc_usd_cover_amount
+
+  - name: nexusmutual_ethereum_covers_daily_agg
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Daily Covers aggregates"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+
+  - name: nexusmutual_ethereum_cover_owners_agg
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "covers"]
+    description: "Cover Owners aggregates"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - cover_owner
+    columns:
+      - *cover_owner
+
+
+  # to be deprecated?:
+  - name: nexusmutual_ethereum_quotation_trades
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: [zxf, jonah]
+    config:
+      tags: ["ethereum","nexusmutual","quotation_trades"]
+    description: >
+        nexusmutual quotation trades on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - evt_tx_hash
+            - evt_index
+            - cid
+      - check_seed:
+          seed_file: ref("nexusmutual_ethereum_trades_seed")
+          match_columns:
+            - evt_tx_hash
+          check_columns:
+            - premium
+            - premium_nxm
+            - sum_assured
+    columns:
+      - &cid
+        name: cid
+      - &contract_address
+        name: contract_address
+      - &symbol
+        name: symbol
+      - *evt_index
+      - &evt_tx_hash
+        name: evt_tx_hash
+      - &curr
+        name: curr
+      - *premium
+      - &pre_amount
+        name: pre_amount
+      - *premium_nxm
+      - &pre_nxm_amount
+        name: pre_nxm_amount
+      - &sc_add
+        name: sc_add
+      - *sum_assured
+      - &block_hash
+        name: block_hash
+      - &nonce
+        name: nonce
+      - &gas_limit
+        name: gas_limit
+      - &gas_price
+        name: gas_price
+      - &gas_used
+        name: gas_used
+      - &max_fee_per_gas
+        name: max_fee_per_gas
+      - &max_priority_fee_per_gas
+        name: max_priority_fee_per_gas
+      - &priority_fee_per_gas
+        name: priority_fee_per_gas
+      - &success
+        name: success
+      - &tx_type
+        name: tx_type
+      - &tx_value
+        name: tx_value
+      - &evt_block_number
+        name: evt_block_number
+      - &evt_block_time
+        name: evt_block_time
+      - &evt_expiry
+        name: evt_expiry
+      - &evt_expiry_date
+        name: evt_expiry_date
+      - *block_date
+      - &token_address
+        name: token_address

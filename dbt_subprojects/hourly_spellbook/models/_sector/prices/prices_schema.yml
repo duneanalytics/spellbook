@@ -1,0 +1,103 @@
+version: 2
+
+models:
+  - name: prices_usd_latest
+    meta:
+      sector: prices
+      contributors: hildobby, 0xRob
+      docs_slug: /curated/asset-tracking/prices/prices_latest
+    config:
+      tags: ['prices', 'usd', 'latest']
+    description: "Latest price data for tokens in USD"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - symbol
+            - decimals
+    columns:
+      - name: minute
+        description: "UTC event block time truncated to the minute mark"
+      - name: blockchain
+        description: "Native blockchain of the token"
+      - name: contract_address
+        description: "Contract address of the token"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Token decimals"
+      - name: price
+        description: "USD price of a token"
+
+  - name: prices_usd_forward_fill
+    meta:
+      sector: prices
+      contributors: 0xRob
+    config:
+      tags: [ 'prices', 'usd', 'forward_fill' ]
+    description: "View on prices that does a forward fill on the last 24h till the current timestamp"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - minute
+            - blockchain
+            - contract_address
+            - symbol
+          config:
+            severity: error
+            error_if: ">5"        #there are 5 duplicates in the source prices table (29/11/2022)
+            warn_if: "!=0"
+            where: "minute > now() - interval '30' day"
+    columns:
+      - name: minute
+        description: "UTC event block time truncated to the minute mark"
+      - name: blockchain
+        description: "Native blockchain of the token"
+      - name: contract_address
+        description: "Contract address of the token"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Token decimals"
+      - name: price
+        description: "USD price of a token"
+        data_tests:
+          - not_null
+
+  - name: prices_usd_daily
+    meta:
+      sector: prices
+      contributors: aalan3
+      docs_slug: /curated/asset-tracking/prices/prices_daily
+    config:
+      tags: ['prices', 'usd', 'daily']
+    description: "Daily aggregated prices table across blockchains"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - contract_address
+            - symbol
+    columns:
+      - name: day
+        description: "UTC event block time truncated to the day mark"
+      - name: blockchain
+        description: "Native blockchain of the token"
+      - name: contract_address
+        description: "Contract address of the token"
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Token decimals"
+      - name: price
+        description: "daily average USD price of a token"
+      - name: price_open
+        description: "daily opening USD price of a token"
+      - name: price_high
+        description: "daily maximum USD price of a token"
+      - name: price_low
+        description: "daily minimum USD price of a token"
+      - name: price_close
+        description: "daily closing USD price of a token"

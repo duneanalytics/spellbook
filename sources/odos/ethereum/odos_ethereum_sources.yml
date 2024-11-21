@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: odos_v2_ethereum
+    description: >
+      Decoded event table for swaps on odos_v2
+    tables:
+      - name: OdosRouterV2_evt_Swap

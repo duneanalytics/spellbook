@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: curvefi_celo_pools
+    meta:
+      blockchain: celo
+      project: curvefi
+      contributors: tomfutago
+    config:
+      tags: ['celo','curvefi','curve','dex']
+    description: >
+        A table containing all known pools of curvefi on Celo. Additional types should be monitored to ensure they're accurately shown.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - version
+              - tokenid
+              - token
+              - pool
+    columns:
+      - &version
+        name: version
+        description: "Versions of the pool: Basic Pool, Meta Pool, etc"
+        data_tests:
+          - not_null
+      - &tokenid
+        name: tokenid
+        description: "ID of the token in the pool"
+        data_tests:
+          - not_null
+      - &token
+        name: token
+        description: "Token Address"
+        data_tests:
+          - not_null
+      - &pool
+        name: pool
+        description: "Pool contract address"
+        data_tests:
+          - not_null

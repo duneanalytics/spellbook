@@ -1,0 +1,23 @@
+version: 2
+
+sources:
+  - name: sharky_solana
+    description: "sharky decoded tables"
+    tables:
+      - name: sharky_call_offerLoan
+      - name: sharky_call_rescindLoan
+      - name: sharky_call_takeLoan
+      - name: sharky_call_takeLoanV3
+      - name: sharky_call_takeLoanV3Compressed
+      - name: sharky_call_repayLoan
+      - name: sharky_call_repayLoanEscrow
+      - name: sharky_call_repayLoanV3
+      - name: sharky_call_repayLoanV3Compressed
+      - name: sharky_call_forecloseLoan
+      - name: sharky_call_forecloseLoanEscrow
+      - name: sharky_call_forecloseLoanV3
+      - name: sharky_call_forecloseLoanV3Compressed
+      - name: sharky_call_extendLoan
+      - name: sharky_call_extendLoanEscrow
+      - name: sharky_call_extendLoanV3
+      - name: sharky_call_extendLoanV3Compressed

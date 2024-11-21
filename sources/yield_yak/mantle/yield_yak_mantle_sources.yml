@@ -1,0 +1,38 @@
+version: 2
+
+sources: 
+  - name: yield_yak_mantle
+    description: >
+      Decoded event tables for swaps, deposits, withdraws, reinvests and transfers on yield yak
+    tables:
+      - name: YakRouter_evt_YakSwap
+      - name: YakRouter_call_swapNoSplitFromAVAX
+      - name: YakRouter_call_swapNoSplit
+      - name: YakRouter_call_swapNoSplitToAVAXWithPermit
+      - name: YakRouter_call_swapNoSplitWithPermit
+      - name: YakRouter_call_swapNoSplitToAVAX
+      # Now the strategies
+      - name: CompoundingJoeMantle_evt_Deposit
+      - name: CompoundingJoeMantle_evt_Withdraw
+      - name: CompoundingJoeMantle_evt_Reinvest
+      - name: CompoundingJoeMantle_evt_Transfer
+      - name: CompoundingMoe_evt_Deposit
+      - name: CompoundingMoe_evt_Withdraw
+      - name: CompoundingMoe_evt_Reinvest
+      - name: CompoundingMoe_evt_Transfer
+      - name: CompoundingYYStaking_evt_Deposit
+      - name: CompoundingYYStaking_evt_Withdraw
+      - name: CompoundingYYStaking_evt_Reinvest
+      - name: CompoundingYYStaking_evt_Transfer
+      - name: LendleStrategy_evt_Deposit
+      - name: LendleStrategy_evt_Withdraw
+      - name: LendleStrategy_evt_Reinvest
+      - name: LendleStrategy_evt_Transfer
+      - name: MoeStrategy_evt_Deposit
+      - name: MoeStrategy_evt_Withdraw
+      - name: MoeStrategy_evt_Reinvest
+      - name: MoeStrategy_evt_Transfer
+      - name: StargateV2Strategy_evt_Deposit
+      - name: StargateV2Strategy_evt_Withdraw
+      - name: StargateV2Strategy_evt_Reinvest
+      - name: StargateV2Strategy_evt_Transfer

@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: arbitrum_ethereum
+    description: >
+      Decoded tables related to arbitrum L2<>L1 transactions.
+    tables:
+      - name: SequencerInbox_evt_SequencerBatchDeliveredFromOrigin
+
+      - name: SequencerInbox_call_addSequencerL2BatchFromOrigin
+
+      - name: SequencerInbox_call_addSequencerL2Batch
+
+      - name: SequencerInbox_call_addSequencerL2BatchFromOriginWithGasRefunder

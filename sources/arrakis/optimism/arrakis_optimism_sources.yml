@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: arrakis_optimism
+    description: "Optimism decoded tables related to Arrakis Finance contracts"
+    tables:
+      - name: ArrakisFactoryV1_evt_PoolCreated

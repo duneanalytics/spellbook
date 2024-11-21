@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: aave_v3_scroll
+    tables:
+      - name: L2Pool_evt_Supply
+      - name: L2Pool_evt_Withdraw
+
+  - name: layer_bank_scroll
+    tables:
+      - name: lETH_evt_Mint
+      - name: lETH_evt_Redeem
+      - name: lUSDC_evt_Mint
+      - name: lUSDC_evt_Redeem
+      - name: lwstETH_evt_Mint
+      - name: lwstETH_evt_Redeem

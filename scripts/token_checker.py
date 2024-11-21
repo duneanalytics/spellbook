@@ -22,36 +22,56 @@ class TokenChecker:
                             "optimism": "op-optimism",
                             "fantom": "ftm-fantom",
                             "celo": "celo-celo",
-                            "base": "base-base"
+                            "base": "base-base",
+                            "zksync": "zksync-zksync",
+                            "zora": "eth-ethereum",
+                            "mantle": "mnt-mantle",
+                            "blast": "blast-blast",
+                            "linea": "eth-ethereum",
+                            "scroll": "eth-ethereum",
+                            "zkevm": "eth-ethereum",
+                            "ronin": "ron-ronin-token",
+                            "cardano": "ada-cardano",
+                            "tron": "trx-tron"
                             }
         self.tokens_by_id = self.get_tokens()
         self.contracts_by_chain = self.get_contracts()
 
     @staticmethod
     def parse_token(line):
-        matches = re.findall(r"\((.*?)\)", line)
-        if not matches:
+        line = line.strip().lstrip(',').strip()
+
+        pattern1 = r"\(?'?([\w-]+)'?,\s*'?([\w-]+)'?,\s*'?([\w-]+)'?,\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\)?"
+        pattern2 = r"\(?'?([\w-]+)'?,\s*'?([\w-]+)'?,\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\)?"
+
+        try:
+            match1 = re.match(pattern1, line)
+            if match1:
+                return {
+                    "id": match1.group(1),
+                    "blockchain": match1.group(2),
+                    "symbol": match1.group(3),
+                    "contract_address": match1.group(4).lower() if match1.group(4).startswith('0x') else match1.group(
+                        4).strip("'"),
+                    "decimal": int(match1.group(5))
+                }
+
+            match2 = re.match(pattern2, line)
+            if match2:
+                return {
+                    "id": match2.group(1),
+                    "symbol": match2.group(2),
+                    "contract_address": match2.group(3).lower() if match2.group(3).startswith('0x') else match2.group(
+                        3).strip("'"),
+                    "decimal": int(match2.group(4)),
+                    "blockchain": None
+                }
+        except Exception as e:
+            logging.warning(f"Failed to parse line: {line}. Error: {str(e)}")
             return None
 
-        parts = [item.strip() for item in matches[0].split(",")]
-        values = []
-        for val in parts:
-            if val.startswith("'"):
-                values.append(val.strip("'"))
-            elif val.startswith('"'):
-                values.append(val.strip('"'))
-            elif val.startswith("0x"):
-                values.append(val)
-            else:
-                values.append(int(val))
-
-        return {
-            "id": values[0],
-            "blockchain": values[1],
-            "symbol": values[2],
-            "contract_address": values[3].lower() if values[3] is not None else values[3],
-            "decimal": values[4]
-        }
+        logging.warning(f"Failed to parse line: {line}")
+        return None
 
     @staticmethod
     def get_tokens():

@@ -1,0 +1,69 @@
+version: 2
+
+sources:
+  - name: ethereum
+    tables:
+      - name: signatures
+        description: "signatures from ABIs on this chain"
+  - name: polygon
+    tables:
+      - name: signatures
+        description: "signatures from ABIs on this chain"
+  - name: optimism
+    tables:
+      - name: signatures
+        description: "signatures from ABIs on this chain"
+  - name: arbitrum
+    tables:
+      - name: signatures
+        description: "signatures from ABIs on this chain"
+  - name: gnosis
+    tables:
+      - name: signatures
+        description: "signatures from ABIs on this chain"
+  - name: bnb
+    tables:
+      - name: signatures
+        description: "signatures from ABIs on this chain"
+  - name: avalanche_c
+    tables:
+      - name: signatures
+        description: "signatures from ABIs on this chain"
+  - name: fantom
+    tables:
+      - name: signatures
+        description: "signatures from ABIs on this chain"
+  - name: celo
+    tables:
+      - name: signatures
+        description: "signatures from ABIs on this chain"
+  - name: base
+    tables:
+      - name: signatures
+        description: "signatures from ABIs on this chain"
+  - name: zksync
+    tables:
+      - name: signatures
+        description: "signatures from ABIs on this chain"
+  - name: scroll
+    tables:
+      - name: signatures
+        description: "signatures from ABIs on this chain"
+  - name: nova
+    tables:
+      - name: signatures
+  - name: blast
+    tables:
+      - name: signatures
+  - name: linea
+    tables:
+      - name: signatures
+  - name: mantle
+    tables:
+      - name: signatures
+  - name: zkevm
+    tables:
+      - name: signatures
+  - name: sei
+    tables:
+      - name: signatures

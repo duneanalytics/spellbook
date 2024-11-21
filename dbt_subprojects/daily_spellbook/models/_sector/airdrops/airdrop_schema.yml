@@ -1,0 +1,101 @@
+version: 2
+
+models:
+  - name: airdrop_claims
+    meta:
+      blockchain: ethereum, optimism, arbitrum, avalanche_c, bnb, gnosis, zksync
+      sector: airdrop
+      project: addresses
+      contributors: hildobby, lgingerich
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'optimism', 'arbitrum', 'avalanche_c', 'bnb', 'gnosis', 'zksync', 'claim']
+    description: "List of claim transactions for all airdrops"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+            - recipient
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "Block time of transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of transaction"
+      - &project
+        name: project
+        description: "Project name"
+        data_tests:
+          - relationships:
+              to: ref('airdrop_info')
+              field: project
+      - &airdrop_number
+        name: airdrop_number
+        description: "Airdrop identifier number"
+      - &recipient
+        name: recipient
+        description: "Airdrop recipient"
+      - &contract_address
+        name: contract_address
+        description: "Contract addressed used"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of tokens"
+      - &amount_original
+        name: amount_original
+        description: "Original amount of tokens"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of tokens"
+      - &token_address
+        name: token_address
+        description: "Token address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+
+  - name: airdrop_info
+    meta:
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, zksync
+      sector: airdrop
+      contributors: hildobby, lgingerich
+    config:
+      tags: ['airdrop', 'ethereum', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'zksync', 'info']
+    description: >
+        Airdrop info
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+    columns:
+      - name: project
+        description: "Marketplace codename"
+      - name: name
+        description: "Marketplace capitalised name"
+      - name: eligible_addresses
+        description: "NUmber of addresses eligible for the airdrop"
+      - name: airdropped_total
+        description: "Totla amount of tokens airdropped"
+      - name: circulating_supply_on_drop
+        description: "Circulating supply when the airdrop goes live"
+      - name: max_supply
+        description: "Maximum token supply"
+      - name: token_issued_by_protocol
+        description: "Was the token issued by the protocol?"
+      - name: x_username
+        description: "Username on X"
+      - name: airdrop_start
+        description: "Airdrop claim start date"
+      - name: airdrop_end
+        description: "Airdrop claim end date"

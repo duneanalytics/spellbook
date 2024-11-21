@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: notional_ethereum
+    description: >
+      Notional ethereum contracts
+    tables:
+      - name: MerkleDistributor_evt_Claimed

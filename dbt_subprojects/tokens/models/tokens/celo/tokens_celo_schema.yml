@@ -1,0 +1,83 @@
+version: 2
+
+models:
+  - name: tokens_celo_erc20
+    meta:
+      blockchain: celo
+      sector: tokens
+      project: erc20
+      contributors: hosuke
+    config:
+      tags: ['table', 'erc20', 'celo']
+    description: "All ERC20 Token Addresses on Celo - with mapped Symbols and Decimals if known."
+    columns:
+      - name: contract_address
+        description: "ERC20 token contract address on Celo"
+        data_tests:
+          - unique
+      - name: symbol
+        description: "ERC20 token symbol"
+      - name: decimals
+        description: "Number of decimals, refers to how divisible an ERC20 token can be"
+
+  - name: tokens_celo_nft_curated
+    meta:
+      blockchain: celo
+      sector: nft
+      contributors: tomfutago
+    config:
+      tags: ['tokens', 'celo', 'nft', 'erc721', 'erc1155']
+    description: >
+        Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on Optimism."
+        data_tests:
+          - unique
+      - name: name
+        description: "NFT Project Name"
+
+  - name: tokens_celo_nft
+    meta:
+      blockchain: celo
+      sector: nft
+      contributors: tomfutago
+    config:
+      tags: [ 'tokens', 'celo', 'nft', 'erc721', 'erc1155' ]
+    description: >
+      Selection of NFT token addresses.
+    columns:
+      - name: contract_address
+        description: "The contract address is the unique address of where the NFTs are stored on Optimism."
+        data_tests:
+          - unique
+      - name: name
+        description: "NFT Project Name"
+      - name: standard
+        data_tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155']
+        description: >
+          The token standard. This is the set of rules that the contract must respect
+          to be compatible with the common standards. Accepted values are presently standards represented.
+          If you are adding a token with a new standard, remember to add it the accepted values list.
+
+  - name: tokens_celo_nft_standards
+    meta:
+      blockchain: celo
+      sector: nft
+      contributors: tomfutago
+    config:
+      tags: [ 'nft','celo' ]
+    description: >
+      NFT contract standards
+    columns:
+      - name: contract_address
+        description: "the NFT contract address"
+        data_tests:
+          - unique
+      - name: standard
+        description: "The NFT standard erc721/erc1155/..."
+        data_tests:
+          - accepted_values:
+              values: [ 'erc721', 'erc1155' ]

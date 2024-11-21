@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: dex_pools_beta
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: [ 'dex', 'pools', 'beta' ]
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - name: pool
+        description: "DEX pool smart contract address"
+        data_tests:
+          - unique
+      - name: fee
+        description: "Defined fee"
+      - name: tokens
+        description: "List of tokens in pool"
+      - name: token_symbols
+        description: "Symbols of tokens in pool"
+      - name: tokens_in_pool
+        description: "Number of tokens in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
+
+  - name: dex_pools_metrics_daily
+    meta: 
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, zkevm
+      sector: dex
+      contributors: viniabussafi, metacrypto
+    config:
+      tags: ['dex', 'pools', 'volume', 'fee', 'tvl']
+    description: >
+      This spell aggregates data from the trades, liquidity and protocol fees spells, by day and pool, while also displaying some basic information about the pool
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - project_contract_address
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_date
+      - name: project_contract_address
+      - name: pool_symbol
+      - name: pool_type
+      - name: swap_amount_usd
+        description: "Daily swap volume on a pool, in USD"
+      - name: tvl_usd
+        description: "Total Value Locked on a pool, in USD"
+      - name: tvl_eth
+        description: "Total Value Locked on a pool, in eth"
+      - name: fee_amount_usd
+        description: "Daily fees collected on a pool, in USD"

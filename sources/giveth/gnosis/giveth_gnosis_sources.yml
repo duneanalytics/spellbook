@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: giveth_gnosis
+    description: >
+      Giveth gnosis contracts
+    tables:
+      - name: MerkleDistro_evt_Claimed

@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: ethereumnameservice_ethereum
+    tables:
+      - name: ENSToken_evt_Claim

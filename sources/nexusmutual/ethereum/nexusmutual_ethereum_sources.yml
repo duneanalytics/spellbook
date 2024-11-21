@@ -1,0 +1,44 @@
+version: 2
+
+sources: 
+  - name: nexusmutual_ethereum
+    tables:
+      - name: QuotationData_evt_CoverDetailsEvent
+      - name: StakingPool_evt_StakeDeposited
+      - name: StakingPool_evt_DepositExtended
+      - name: StakingPool_evt_Withdraw
+      - name: StakingPool_evt_StakeBurned
+      - name: StakingPoolFactory_evt_StakingPoolCreated
+      - name: Cover_call_createStakingPool
+      - name: StakingProducts_call_createStakingPool
+      - name: StakingProducts_call_setProducts
+      - name: TokenController_call_assignStakingPoolManager
+      - name: TokenController_call_mintStakingPoolNXMRewards
+      - name: StakingProducts_evt_ProductUpdated
+      - name: StakingPool_call_manager
+      - name: StakingPool_evt_PoolFeeChanged
+      - name: SafeTrackerNXMIS_evt_CoverReInvestmentUSDCUpdated
+      - name: MCR_evt_MCREvent
+      - name: MCR_evt_MCRUpdated
+      - name: Cover_evt_ProductTypeSet
+      - name: Cover_call_setProductTypes
+      - name: Cover_evt_ProductSet
+      - name: Cover_call_setProducts
+      - name: CoverProducts_evt_ProductTypeSet
+      - name: CoverProducts_call_setProductTypes
+      - name: CoverProducts_evt_ProductSet
+      - name: CoverProducts_call_setProducts
+      - name: Quotation_call_buyCoverWithMetadata
+      - name: Quotation_call_makeCoverUsingNXMTokens
+      - name: QuotationData_call_addCover
+      - name: Cover_call_buyCover
+      - name: StakingProducts_call_getPremium
+      - name: CoverMigrator_evt_CoverMigrated
+      - name: Ramm_call_getInternalPriceAndUpdateTwap
+      - name: ClaimsData_evt_ClaimRaise
+      - name: Claims_call_submitPartialClaim
+      - name: ClaimsData_call_setClaimStatus
+      - name: IndividualClaims_evt_ClaimSubmitted
+      - name: IndividualClaims_call_submitClaimFor
+      - name: IndividualClaims_call_submitClaim
+      - name: IndividualClaims_call_redeemClaimPayout

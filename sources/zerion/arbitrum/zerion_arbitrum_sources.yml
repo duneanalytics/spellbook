@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: zerion_arbitrum
+    description: "Zerion contracts on Arbitrum"
+    tables:
+      - name: Router_evt_Executed

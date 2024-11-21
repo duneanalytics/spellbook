@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: firebird_finance_optimism
+    description: >
+      Decoded event table for swaps on firebird_finance
+    tables:
+      - name: FireBirdRouter_evt_Swapped

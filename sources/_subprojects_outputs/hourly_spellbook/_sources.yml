@@ -1,0 +1,64 @@
+version: 2
+
+sources:
+  - name: cex
+    tables:
+      - name: addresses
+
+  - name: ens
+    tables:
+      - name: reverse_latest
+      - name: resolver_latest
+      - name: view_registrations
+
+  - name: prices
+    tables:
+      - name: usd_latest
+      - name: usd_daily
+      - name: usd_forward_fill
+
+  - name: lending
+    tables:
+      - name: borrow
+      - name: supply
+      - name: flashloans
+
+  - name: balancer
+    tables:
+      - name: gauge_mappings
+      - name: flashloans
+      - name: pools_metrics_daily
+      - name: token_whitelist
+      - name: single_recipient_gauges
+
+  - name: staking_ethereum
+    tables:
+      - name: entities
+
+  - name: safe_ethereum
+    tables:
+      - name: safes
+
+  - name: perpetual
+    tables:
+      - name: trades
+
+  - name: beethoven_x_fantom
+    tables:
+      - name: pools_metrics_daily
+
+  - name: jelly_swap_sei
+    tables:
+      - name: pools_metrics_daily 
+
+  - name: account_abstraction_erc4337
+    tables:
+      - name: account_deployed
+
+  - name: gas
+    tables:
+      - name: fees
+
+  - name: evms
+    tables:
+      - name: transaction_metrics

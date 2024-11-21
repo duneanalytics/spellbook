@@ -1,0 +1,263 @@
+
+version: 2
+models:
+
+ - name: aavegotchi_trades_view
+   meta:
+     blockchain: ["polygon"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'aavegotchi']
+   description: "NFT trades view for aavegotchi"
+
+
+ - name: archipelago_trades_view
+   meta:
+     blockchain: ["ethereum"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'archipelago']
+   description: "NFT trades view for archipelago"
+
+
+ - name: blur_trades_view
+   meta:
+     blockchain: ["ethereum"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'blur']
+   description: "NFT trades view for blur"
+
+
+ - name: collectionswap_trades_view
+   meta:
+     blockchain: ["ethereum"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'collectionswap']
+   description: "NFT trades view for collectionswap"
+
+
+ - name: cryptopunks_trades_view
+   meta:
+     blockchain: ["ethereum"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'cryptopunks']
+   description: "NFT trades view for cryptopunks"
+
+
+ - name: element_trades_view
+   meta:
+     blockchain: ["ethereum"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'element']
+   description: "NFT trades view for element"
+
+
+ - name: foundation_trades_view
+   meta:
+     blockchain: ["ethereum"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'foundation']
+   description: "NFT trades view for foundation"
+
+
+ - name: fractal_trades_view
+   meta:
+     blockchain: ["polygon"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'fractal']
+   description: "NFT trades view for fractal"
+
+
+ - name: looksrare_trades_view
+   meta:
+     blockchain: ["ethereum"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'looksrare']
+   description: "NFT trades view for looksrare"
+
+
+ - name: magiceden_trades_view
+   meta:
+     blockchain: ["solana", "polygon"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'magiceden']
+   description: "NFT trades view for magiceden"
+
+
+ - name: nftb_trades_view
+   meta:
+     blockchain: ["bnb"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'nftb']
+   description: "NFT trades view for nftb"
+
+
+ - name: nftearth_trades_view
+   meta:
+     blockchain: ["optimism"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'nftearth']
+   description: "NFT trades view for nftearth"
+
+
+ - name: nftrade_trades_view
+   meta:
+     blockchain: ["bnb"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'nftrade']
+   description: "NFT trades view for nftrade"
+
+
+ - name: oneplanet_trades_view
+   meta:
+     blockchain: ["polygon"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'oneplanet']
+   description: "NFT trades view for oneplanet"
+
+
+ - name: opensea_trades_view
+   meta:
+     blockchain: ["ethereum", "solana", "polygon"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'opensea']
+   description: "NFT trades view for opensea"
+
+
+ - name: pancakeswap_trades_view
+   meta:
+     blockchain: ["bnb"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'pancakeswap']
+   description: "NFT trades view for pancakeswap"
+
+
+ - name: quix_trades_view
+   meta:
+     blockchain: ["optimism"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'quix']
+   description: "NFT trades view for quix"
+
+
+ - name: rarible_trades_view
+   meta:
+     blockchain: ["polygon"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'rarible']
+   description: "NFT trades view for rarible"
+
+
+ - name: stealcam_trades_view
+   meta:
+     blockchain: ["arbitrum"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'stealcam']
+   description: "NFT trades view for stealcam"
+
+
+ - name: sudoswap_trades_view
+   meta:
+     blockchain: ["ethereum"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'sudoswap']
+   description: "NFT trades view for sudoswap"
+
+
+ - name: superrare_trades_view
+   meta:
+     blockchain: ["ethereum"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'superrare']
+   description: "NFT trades view for superrare"
+
+
+ - name: tofu_trades_view
+   meta:
+     blockchain: ["optimism", "arbitrum", "polygon", "bnb"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'tofu']
+   description: "NFT trades view for tofu"
+
+
+ - name: x2y2_trades_view
+   meta:
+     blockchain: ["ethereum"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'x2y2']
+   description: "NFT trades view for x2y2"
+
+
+ - name: zonic_trades_view
+   meta:
+     blockchain: ["optimism"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'zonic']
+   description: "NFT trades view for zonic"
+
+
+ - name: zora_trades_view
+   meta:
+     blockchain: ["ethereum"]
+     sector: nft
+     contributors: 0xRob
+   config:
+     tags: ['nft', 'trades', 'zora']
+   description: "NFT trades view for zora"
+
+
+ - name: fantasy_trades_view
+   meta:
+     blockchain: ["blast"]
+     sector: nft
+     contributors: hildobby
+   config:
+     tags: ['nft', 'trades', 'blast']
+   description: "NFT trades view for fantasy"
+

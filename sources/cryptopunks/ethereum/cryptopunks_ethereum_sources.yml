@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: cryptopunks_ethereum
+    tables:
+      - name: CryptoPunksMarket_evt_PunkBought
+      - name: CryptoPunksMarket_evt_PunkBidEntered
+      - name: CryptoPunksMarket_evt_PunkOffered
+      - name: CryptoPunksMarket_evt_PunkNoLongerForSale
+      - name: CryptoPunksMarket_evt_PunkTransfer
+      - name: CryptoPunksMarket_evt_PunkBidWithdrawn
+      - name: CryptoPunksMarket_evt_Transfer
+      - name: CryptoPunksMarket_evt_Assign
+  - name: rarible_v1_ethereum
+    tables:
+      - name: ERC721Sale_v2_evt_Buy

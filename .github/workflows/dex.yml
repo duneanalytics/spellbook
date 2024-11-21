@@ -1,0 +1,19 @@
+name: DBT DEX sector run
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - dbt_subprojects/dex/**
+      - .github/workflows/dex.yml
+      - .github/workflows/dbt_run.yml
+
+concurrency:
+  group:  ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dbt-run:
+    uses: ./.github/workflows/dbt_run.yml
+    with:
+      project: 'dex'

@@ -1,0 +1,270 @@
+version: 2
+
+models:
+  - name: op_token_distributions_optimism_transfer_mapping
+    meta:
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','distributions']
+    description: >
+        A table containing best guess mappings of OP grants token distributions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_date
+              - evt_block_time
+              - evt_block_number
+              - evt_tx_hash
+              - evt_index
+    columns:
+      - &block_date
+        name: block_date
+      - &evt_block_time
+        name: evt_block_time
+      - &evt_block_number
+        name: evt_block_number
+      - &evt_index
+        name: evt_index
+      - &evt_tx_hash
+        name: evt_tx_hash
+      - &from_address
+        name: from_address
+        description: "Token transfer from address"
+      - &to_address
+        name: to_address
+        description: "Token transfer to address"
+      - &tx_to_address
+        name: tx_to_address
+        description: "Transaction to address"
+      - &tx_from_address
+        name: tx_from_address
+        description: "Transaction from address"
+      - &from_type
+        name: from_type
+        data_tests:
+          - not_null
+      - &to_type
+        name: to_type
+        data_tests:
+          - not_null
+      - &from_label
+        name: from_label
+        data_tests:
+          - not_null
+      - &to_label
+        name: to_label
+        data_tests:
+          - not_null
+      - &from_name
+        name: from_name
+        data_tests:
+          - not_null
+      - &to_name
+        name: to_name
+        data_tests:
+          - not_null
+      - &op_amount_decimal
+        name: op_amount_decimal
+        data_tests:
+          - not_null
+        description: "OP Amount Transferred"
+      - &tx_method
+        name: tx_method
+        description: "First 4 bytes of calldata, indicating the function call"
+      - &op_claimed
+        name: op_claimed
+        description: "OP Amount - if marked as claimed by an end user"
+      - &op_deployed
+        name: op_deployed
+        description: "OP Amount - if marked as deployed, leaving the project's wallet(s)"
+      - &op_to_project
+        name: op_to_project
+        description: "OP Amount - if transferred to the project"
+      - &op_between_projects
+        name: op_between_projects
+        description: "OP Amount - if transferred between projects receiving grants"
+      - &op_incoming_clawback
+        name: op_incoming_clawback
+        description: "OP Amount - if marked as clawed back by the project"
+      - &op_to_utility_contract
+        name: op_to_utility_contract
+        description: "OP Amount - if sent to a utility contract which deploys tokens"
+      - &op_incoming_other
+        name: op_incoming_other
+        description: "OP Amount - if marked as incoming from a non-project, non-OP source"
+      - &op_for_retropgf
+        name: op_for_retropgf
+        description: "OP Amount - if transferred from foundation grants wallet to a retropgf recipient (Note: This only captures if retroPGF was rewarded in OP - i.e. Round #2)"
+      - &og_to_name
+        name: og_to_name
+        description: "Orignal name for the to address (without additional mapping)"
+      - &og_from_name
+        name: og_from_name
+        description: "Orignal name for the from address (without additional mapping)"
+  
+  - name: op_token_distributions_optimism_other_distributions_claims
+    meta:
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','distributions']
+    description: >
+        A table containing best guess mappings of OP grants token distributions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_date
+              - evt_block_time
+              - evt_block_number
+              - evt_tx_hash
+              - evt_index
+    columns:
+      - *block_date
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_index
+      - *from_address
+      - *to_address
+      - *tx_to_address
+      - *tx_from_address
+      - *evt_tx_hash
+      - *from_label
+      - *from_type
+      - *from_name
+      - *to_label
+      - *to_type
+      - *to_name
+      - *op_amount_decimal
+      - *tx_method
+      - &min_evt_tfer_index
+        name: min_evt_tfer_index
+      - &max_evt_tfer_index
+        name: max_evt_tfer_index
+  
+  - name: op_token_distributions_optimism_foundation_wallet_approvals
+    meta:
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','distributions']
+    description: >
+        A table containing mappings of transfer approvals for OP grants token distributions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_date
+              - evt_block_time
+              - evt_block_number
+              - evt_tx_hash
+              - evt_index
+    columns:
+      - *block_date
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_tx_hash
+      - *evt_index
+      - &project_address
+        name: project_address
+      - &project_name
+        name: project_name
+      - *tx_from_address
+      - *tx_to_address
+      - &op_approved_to_project
+        name: op_approved_to_project
+
+  - name: op_token_distributions_optimism_project_name_mapping
+    meta:
+        blockchain: optimism
+        project: op
+        contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','project']
+    description: >
+        A table containing mappings from governance proposal names to Dune project names.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - proposal_name
+    columns:
+      - &proposal_name
+        name: proposal_name
+        data_tests:
+          - not_null
+      - *project_name
+  
+  - name: op_token_distributions_optimism_project_wallets
+    meta:
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','project']
+    description: >
+        A table containing mappings for project wallets that we want to track distributions for
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - address
+              - proposal_name
+              - address_descriptor
+    columns:
+      - &address
+        name: address
+        data_tests:
+          - unique
+      - &label
+        name: label
+      - *proposal_name
+      - &address_descriptor
+        name: address_descriptor
+        data_tests:
+          - not_null
+      - *project_name
+
+  - name: op_token_distributions_optimism_all_distributions_labels
+    meta:
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','addresses']
+    description: >
+        A table containing unifying labels for tagged wallets that we want to track distributions for
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - label
+            - address
+    columns:
+      - *address
+      - *label
+      - *proposal_name
+      - *address_descriptor
+      - *project_name
+  
+  - name: op_token_distributions_optimism_other_tags
+    meta:
+      blockchain: optimism
+      project: op
+      contributors: msilb7
+    config:
+      tags: ['optimism','op','grants','addresses']
+    description: >
+        A table containing labels for other addresses that we don't want to track distributions for, but we know what they are.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - label
+              - address
+    columns:
+      - *label
+      - *address
+      - &address_name
+        name: address_name
+        data_tests:
+          - not_null
+      

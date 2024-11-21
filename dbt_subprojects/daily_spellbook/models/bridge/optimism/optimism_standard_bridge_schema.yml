@@ -1,0 +1,98 @@
+version: 2
+
+models:
+  - name: optimism_standard_bridge_flows
+    meta:
+      project: optimism
+      contributors: msilb7, soispoke
+    config:
+      tags: ['bridge','standard_bridge', 'flows', 'cross-chain', 'optimism']
+    description: >
+        Table aggregating bridge transfers through Optimism's Standard Bridge.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - block_date
+              - blockchain
+              - tx_hash
+              - evt_index
+              - transfer_id
+    columns:
+      - &chain_data_source
+        name: chain_data_source
+        description: "Chain Used to Pull Data - What chain the bridge transfers are in prespective from"
+      - &project
+        name: project
+        description: Bridge protocol project
+      - &block_date
+        name: block_date
+        description: Date of the block time
+      - &block_time
+        name: block_time
+        description: block time of the transaction
+      - &source_chain_id
+        name: source_chain_id
+        description: Source Chain ID (EIP-155)
+      - &destination_chain_id
+        name: destination_chain_id
+        description: Destination Chain ID (EIP-155)
+      - &source_chain_name
+        name: source_chain_name
+        description: Source Chain Name (EIP-155)
+      - &destination_chain_name
+        name: destination_chain_name
+        description: Destination Chain ID (EIP-155)
+      - &bridged_token_symbol
+        name: bridged_token_symbol
+        description: Bridged Token Symbol
+      - &bridged_token_amount
+        name: bridged_token_amount
+        description: Bridged Token Amount (Decimal adjusted)
+      - &bridged_fee_amount
+        name: bridged_fee_amount
+        description: Bridged Token Fee Amount (Decimal adjusted)
+      - &bridged_amount_usd
+        name: bridged_amount_usd
+        description: Bridged Token Amount USD
+      - &bridged_fee_amount_usd
+        name: bridged_fee_amount_usd
+        description: Bridged Token Fee Amount USD
+      - &bridged_token_amount_raw
+        name: bridged_token_amount_raw
+        description: Bridged Token Amount (Not Decimal adjusted)
+      - &bridged_fee_amount_raw
+        name: bridged_fee_amount_raw
+        description: Bridged Token Fee Amount (Not Decimal adjusted)
+      - &bridged_token_address
+        name: bridged_token_address
+        description: Bridged Token Address
+      - &bridged_fee_address
+        name: bridged_fee_address
+        description: Bridged Token Fee Address
+      - &block_number
+        name: block_number
+        description: Block number of the transaction
+      - &tx_hash
+        name: tx_hash
+        description: Transaction hash
+      - &tx_from
+        name: tx_from
+        description: Transaction from address
+      - &tx_to
+        name: tx_to
+        description: Transaction to address
+      - &transfer_id
+        name: transfer_id
+        description: "Unique ID used to tie bridge events together across chains"
+      - &evt_index
+        name: evt_index
+        description: "Index value of the transaction"
+      - &trace_address
+        name: trace_address
+        description: "Trace address of the transaction"
+      - &tx_method_id
+        name: tx_method_id
+        description: "4byte function signature of the transaction (with leading 0x)"
+      - &block_month
+        name: block_month
+        description: Month of the block time

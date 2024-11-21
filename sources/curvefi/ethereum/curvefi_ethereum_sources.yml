@@ -1,0 +1,53 @@
+version: 2
+
+sources:
+  - name: curvefi_ethereum
+    description: "decoded events and function calls for curve.fi on ethereum"
+    tables:
+      - name: CurveFactory_call_deploy_plain_pool
+      - name: CurveFactory_call_deploy_metapool
+      - name: MetaPoolFactory_call_deploy_metapool
+      - name: CurveFactory_call_deploy_gauge
+      - name: CurveFactoryV2_evt_CryptoPoolDeployed
+      - name: CurveFactoryV2_call_deploy_pool
+      - name: CurveFactory_evt_LiquidityGaugeDeployed
+      - name: CurveFactoryV2_evt_LiquidityGaugeDeployed
+      - name: susd_swap_evt_TokenExchange
+      - name: susd_swap_evt_TokenExchangeUnderlying
+      - name: susd_evt_TokenExchange
+      - name: susd_evt_TokenExchangeUnderlying
+      - name: compound_evt_TokenExchange
+      - name: compound_v2_evt_TokenExchange
+      - name: compound_v2_evt_TokenExchangeUnderlying
+      - name: compound_swap_evt_TokenExchange
+      - name: compound_swap_evt_TokenExchangeUnderlying
+      - name: usdt_swap_evt_TokenExchange
+      - name: usdt_swap_evt_TokenExchangeUnderlying
+      - name: y_swap_evt_TokenExchange
+      - name: y_swap_evt_TokenExchangeUnderlying
+      - name: busd_swap_evt_TokenExchange
+      - name: busd_swap_evt_TokenExchangeUnderlying
+      - name: pax_swap_evt_TokenExchange
+      - name: pax_swap_evt_TokenExchangeUnderlying
+      - name: ren_swap_evt_TokenExchange
+      - name: sbtc_swap_evt_TokenExchange
+      - name: hbtc_swap_evt_TokenExchange
+      - name: threepool_swap_evt_TokenExchange
+      - name: steth_swap_evt_TokenExchange
+      - name: tricrypto_swap_evt_TokenExchange
+      - name: tricrypto2_swap_evt_TokenExchange
+      - name: rsr_frax_usdc_pool_evt_TokenExchange
+      - name: crvUSD_StableswapFactory_evt_PlainPoolDeployed
+      - name: crvUSD_StableswapFactory_call_deploy_plain_pool
+      - name: crvUSD_StableswapFactory_call_deploy_metapool
+      - name: CurveStableswapFactoryNG_evt_PlainPoolDeployed
+      - name: CurveStableswapFactoryNG_call_deploy_plain_pool
+      - name: CurveTwocryptoFactory_evt_TwocryptoPoolDeployed
+      - name: CurveTwocryptoFactory_call_deploy_pool
+      - name: CurveTwocryptoFactory_evt_LiquidityGaugeDeployed
+  - name: curvefi_v2_ethereum
+    description: "decoded events and function calls for curve.fi v2 on ethereum"
+    tables:
+      - name: CurveTricryptoFactory_evt_TricryptoPoolDeployed
+      - name: CurveTricryptoFactory_call_deploy_pool
+      - name: CurveTricryptoFactory_evt_LiquidityGaugeDeployed

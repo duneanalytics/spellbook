@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: hashflow_ethereum_crosschain_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: hashflow
+      contributors: BroderickBonelli
+    config:
+      tags: ['ethereum','hashflow','trades','dex','BroderickBonelli']
+    description: >
+        Table of Hashflow cross chain trades on ethereum. Includes unique data for cross chain trades such as source and destination chains for further analysis of Hashflow's cross chain activity.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - source_chain
+            - tx_hash
+    columns:
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each trade"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each trade"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the transaction"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the transaction"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &trader
+        name: trader
+        description: "Address of trader who sold a token"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction"
+      - &source_chain
+        name: source_chain
+        description: "Chain where the trade originated."
+      - &destination_chain
+        name: destination_chain
+        description: "Ending chain where swapped token balance will be received."

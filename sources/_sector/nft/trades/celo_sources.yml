@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: tofu_nft_celo
+    tables:
+      - name: MarketNG_call_run
+      - name: MarketNG_evt_EvInventoryUpdate

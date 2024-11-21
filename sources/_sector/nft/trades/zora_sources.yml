@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: zonic_zora
+    tables:
+      - name: ZonicMarketplace_evt_ZonicBasicOrderFulfilled

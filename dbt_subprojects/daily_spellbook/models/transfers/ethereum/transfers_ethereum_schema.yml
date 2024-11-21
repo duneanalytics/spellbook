@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: transfers_ethereum_eth
+    meta:
+      blockchain: ethereum
+      sector: transfers
+      project: eth
+      contributors: msilb7, chuxin
+    config:
+      tags: ["transfers", "ethereum", "eth"]
+    description: "Events of native ETH transfers on Ethereum."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - trace_address
+    columns:
+      - &from
+        name: from
+        description: "Wallet address that initiated the transaction"
+      - &to
+        name: to
+        description: "Wallet address that received the transaction"
+      - name: contract_address
+        description: "Using the ETH deposit placeholder address to match with prices tables"
+      - &value
+        name: value
+        description: "Amount of ETH transferred from sender to recipient"
+      - &value_decimal
+        name: value_decimal
+        description: "Amount of ETH transferred in decimals from sender to recipient"
+      - &tx_hash
+        name: tx_hash
+        description: "Primary key of the transaction"
+        data_tests:
+          - not_null
+      - name: trace_address
+        description: "All returned traces, gives the exact location in the call trace"
+      - &tx_block_time
+        name: tx_block_time
+        description: "Timestamp for block event time in UTC"
+      - &tx_block_number
+        name: tx_block_number
+        description: "Block number"
+      - &tx_method_id
+        name: tx_method_id
+        description: "Function calls specified by the first four bytes of data sent with a transaction"
+      - &tx_to
+        name: tx_to
+        description: "To Address for the Transaction"
+      - &tx_from
+        name: tx_from
+        description: "From Address for the Transaction"

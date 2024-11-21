@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: meteora_pools_solana
+    description: "meteora decoded tables"
+    tables:
+      - name: amm_call_initialize
+      - name: amm_call_swap
+  - name: meteora_vault_solana
+    description: "meteora vault decoded tables"
+    tables:
+      - name: vault_call_deposit
+  - name: meteora_solana
+    description: "meteora lb_clmm decoded tables"
+    tables:
+      - name: lb_clmm_call_swap
+        

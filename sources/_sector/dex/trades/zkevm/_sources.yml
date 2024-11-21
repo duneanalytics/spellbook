@@ -1,0 +1,26 @@
+version: 2
+
+sources:
+  - name: pancakeswap_v2_zkevm
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+  - name: pancakeswap_v3_zkevm
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: clipper_zkevm
+    tables:
+      - name: ClipperPackedOracleVerifiedExchange_evt_Swapped
+  - name: sushiswap_v2_zkevm
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: leetswap_zkevm
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: quickswap_zkevm
+    tables:
+      - name: algebra_pool_zkevm_evt_Swap
+      - name: algebra_factory_zkevm_evt_Pool

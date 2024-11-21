@@ -1,0 +1,83 @@
+version: 2
+
+sources:
+  - name: kyber_ethereum
+    description: "Ethereum decoded tables related to Kyberswap contract"
+    tables:
+      - name: Elastic_Pool_evt_Mint
+      - name: Elastic_Pool_evt_Burn
+      - name: Elastic_Pool_evt_BurnRTokens
+      - name: ElasticFactoryV2_evt_PoolCreated
+      - name: ElasticPoolV2_evt_Swap
+      - name: ElasticPoolV2_evt_Mint
+      - name: ElasticPoolV2_evt_Burn                      
+      - name: ElasticPoolV2_evt_BurnRTokens      
+
+  - name: uniswap_v3_ethereum
+    description: "Ethereum decoded tables related to Uniswap v3 contract"
+    tables:
+      - name: Pair_evt_Mint
+      - name: Pair_evt_Collect
+      - name: Pair_evt_Burn
+
+  - name: lido_ethereum
+    description: "Ethereum decoded tables related to Lido contract"
+    tables:
+      - name: WstETH_call_unwrap
+      - name: WstETH_call_wrap
+
+  - name: erc20_ethereum
+    description: "Ethereum decoded tables related to erc20 tokens"
+    tables:
+      - name: evt_Transfer
+        
+  - name: maverick_v1_ethereum
+    description: "Ethereum decoded tables related to Maverick DEX contracts"
+    tables:
+      - name: pool_call_addLiquidity
+      - name: pool_call_removeLiquidity
+  - name: frax_ethereum
+    description: "Ethereum decoded tables related to Frax contracts"
+    tables:
+      - name: sfrxETH_call_pricePerShare
+  - name: curvefi_ethereum
+    description: "Ethereum decoded tables related to Curve contracts"
+    tables:
+      - name: stETHconcentrated_evt_TokenExchange
+      - name: stETHng_evt_TokenExchange    
+      - name: frxeth_eth_pool_call_price_oracle
+      - name: frxETH_stETH_evt_TokenExchange 
+      - name: rETHwstETH_evt_TokenExchange    
+
+  - name: pancakeswap_v3_ethereum
+    description: "Ethereum decoded tables related to Pancakeswap v3 contract"
+    tables:
+      - name: PancakeV3Pool_evt_Mint
+      - name: PancakeV3Pool_evt_Collect
+      - name: PancakeV3Pool_evt_Burn
+
+      
+  - name: uniswap_v2_ethereum
+    description: "Ethereum decoded tables related to Uniswap v2 contract"
+    tables:
+      - name: Pair_evt_Mint
+      - name: Pair_evt_Burn
+
+  - name: mountain_ethereum
+    description: "Ethereum decoded tables related to Mountain Protocol contract"
+    tables:
+      - name: USDM_evt_RewardMultiplier
+
+  - name: solidly_ethereum
+    description: "Ethereum decoded tables related to Solidly contract"
+    tables:
+      - name: SolidlyV3Factory_evt_PoolCreated
+      - name: SolidlyV3Pool_evt_Swap      
+      - name: SolidlyV3Pool_evt_Mint
+      - name: SolidlyV3Pool_evt_Collect          
+
+  - name: puffer_ethereum
+    description: "Ethereum decoded tables related to Curve pufETH:wstETH pool contract"
+    tables:
+      - name: CurveStableSwapNG_evt_TokenExchange
+     

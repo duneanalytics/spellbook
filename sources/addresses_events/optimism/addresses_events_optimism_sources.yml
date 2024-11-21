@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: optimism_legacy_ovm1
+    description: >
+      optimism legacy ovm1 transactions table
+    tables:
+      - name: transactions

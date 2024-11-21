@@ -1,0 +1,151 @@
+version: 2
+
+models:
+  - name: safe_celo_singletons
+    meta:
+      blockchain: celo
+      project: safe
+      contributors: danielpartida
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'singletons', 'celo']
+    description: "Singletons addresses used with Safes"
+    columns:
+      - &address
+        name: address
+        description: "Safe contract address"
+        data_tests:
+          - unique
+          - not_null
+
+  - name: safe_celo_safes
+    meta:
+      blockchain: celo
+      project: safe
+      contributors: danielpartida
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'celo']
+    description: "Safe addresses"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain on which the Safe is deployed"
+      - *address
+      - &creation_version
+        name: creation_version
+        description: "Initial version during creation"
+      - &block_date
+        name: block_date
+      - &block_month
+        name: block_month
+      - &creation_time
+        name: creation_time
+        description: "Datetime of Safe creation"
+      - &tx_hash
+        name: tx_hash
+
+  - name: safe_celo_transactions
+    meta:
+      blockchain: celo
+      project: safe
+      contributors: danielpartida
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'celo']
+    description: "Safe transactions"
+    columns:
+      - *blockchain
+      - *block_date
+      - *block_month
+      - &block_time
+        name: block_time
+        description: "Datetime of block"
+      - &block_number
+        name: block_number
+        description: "Number of block"
+      - *tx_hash
+      - name: address
+        description: "Safe contract address"
+      - &to
+        name: to
+        description: "Destination address"
+      - &value
+        name: value
+        description: "Value of transaction"
+      - &gas
+        name: gas
+        description: "Gas limit set for transaction"
+      - &execution_gas_used
+        name: execution_gas_used
+        description: "Execution gas used during transaction, for more details see https://dune.com/docs/data-tables/raw/evm/traces/?h=traces#gas-used-in-traces"
+      - &total_gas_used
+        name: total_gas_used
+        description: "Total gas used during transaction"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &sub_traces
+        name: sub_traces
+        description: "Number of sub traces"
+      - &trace_address
+        name: trace_address
+        description: ""
+      - &success
+        name: success
+        description: "Success state of transaction"
+      - &error
+        name: error
+        description: "Error of transaction if any"
+      - &code
+        name: code
+        description: "Code"
+      - &input
+        name: input
+        description: "Input data"
+      - &output
+        name: output
+        description: "Output data"
+
+  - name: safe_celo_celo_transfers
+    meta:
+      blockchain: celo
+      project: safe
+      contributors: danielpartida
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    config:
+      tags: ['safe', 'transfers', 'celo']
+    description: "CELO transfers into or out of Safes"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+            - tx_hash
+            - trace_address
+    columns:
+      - *blockchain
+      - &symbol
+        name: symbol
+        description: "Symbol of native gas token: CELO"
+      - name: address
+        description: "Safe contract address"
+      - *block_date
+      - *block_month
+      - *block_time
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of transferred CELO"
+      - *tx_hash
+      - *trace_address
+      - &amount_usd
+        name: amount_usd
+        description: "USD amount of transferred CELO"

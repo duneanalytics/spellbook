@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: cow_protocol_gnosis_solvers
+    meta:
+      blockchain: gnosis
+      project: cow_protocol
+      contributors: bh2smith, gentrexha
+    config:
+      tags: ['gnosis_chain','cow_protocol','solver']
+    description: >
+      CoW Protocol solvers list on Gnosis Chain
+
+  - name: cow_protocol_gnosis_batches
+    meta:
+      blockchain: gnosis
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['gnosis','cow_protocol','trades', 'dex', 'aggregator', 'auction']
+    description: >
+      CoW Protocol enriched batches table on Gnosis Chain

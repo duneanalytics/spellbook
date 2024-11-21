@@ -1,0 +1,132 @@
+version: 2
+
+models:
+  - name: gmx_v2_arbitrum_collateral_tokens_data
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'collateral_tokens']
+    description: |
+      Extracts token information related to collateral from the Arbitrum API.
+      This model retrieves details such as contract addresses and decimals of tokens used as collateral 
+      in the GMX perpetual trading DEX on the Arbitrum blockchain.
+
+    columns:
+      - name: collateral_token
+        description: The contract address of the token used as collateral.
+        data_tests:
+          - not_null
+      - name: collateral_token_decimals
+        description: The number of decimal places for the collateral token.
+        data_tests:
+          - not_null
+
+  - name: gmx_v2_arbitrum_erc20
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'tokens', 'erc20']
+    description: |
+      This model extracts and parses ERC20 token information from the public GMX API.
+      It includes token symbols, contract addresses, decimals, and whether the token is synthetic.
+      The data reflects all available tokens on the decentralized exchange.
+      
+    columns:
+      - &blockchain
+        name: blockchain
+        description: The blockchain network where the token information was retrieved (Arbitrum)
+        data_tests:
+          - not_null
+      - &project
+        name: project
+        description: The project related to the tokens (GMX v2)
+        data_tests:
+          - not_null
+      - &symbol
+        name: symbol
+        description: The symbol of the ERC20 token
+        data_tests:
+          - not_null
+      - &contract_address
+        name: contract_address
+        description: The contract address of the ERC20 token
+        data_tests:
+          - not_null
+          - unique
+      - &decimals
+        name: decimals
+        description: The number of decimal places the token supports
+        data_tests:
+          - not_null
+      - &synthetic
+        name: synthetic
+        description: Indicates whether the token is synthetic or not
+        data_tests:
+          - not_null
+      - &last_update_utc
+        name: last_update_utc
+        description: The timestamp of when the data was last updated
+        data_tests:
+          - not_null
+
+
+  - name: gmx_v2_arbitrum_markets_data
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'markets']
+    description: |
+      This model retrieves market data for GMX on the Arbitrum blockchain, including information
+      about the index token, long token, and short token. The data is extracted from various tables
+      containing market creation events and ERC-20 token details, providing insights into the 
+      market tokens used within the GMX perpetual trading DEX. The `market_name` column is 
+      constructed using the format `index_token/USD [long_token-short_token]`, which represents 
+      the market pair.    
+
+    columns:
+      - name: market
+        description: The contract address of the market token.
+        data_tests:
+          - not_null
+      - name: market_name
+        description: |
+          The name of the market, formatted as `index_token/USD [long_token-short_token]`,
+          where `index_token` is the symbol of the index token, `short_token` is the symbol
+          of the short token used in the market, and `long_token` is the symbol of the long token used in the market.
+      - name: market_token_symbol
+        description: The symbol representing the market token.
+        data_tests:
+          - not_null
+      - name: market_token_decimals
+        description: The number of decimal places for the market token.
+        data_tests:
+          - not_null
+      - name: index_token_symbol
+        description: The symbol representing the index token in the market.
+      - name: index_token_decimals
+        description: The number of decimal places for the index token used in the market.
+      - name: long_token_symbol
+        description: The symbol representing the long token in the market.
+        data_tests:
+          - not_null
+      - name: long_token_decimals
+        description: The number of decimal places for the long token used in the market.
+        data_tests:
+          - not_null
+      - name: short_token_symbol
+        description: The symbol representing the short token in the market.
+        data_tests:
+          - not_null
+      - name: short_token_decimals
+        description: The number of decimal places for the short token used in the market.
+        data_tests:
+          - not_null  

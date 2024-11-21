@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+ethereum,radiant,1,19071053,2024-01-23 18:07:59.000 UTC,0x556a5b81607ad3f2ecc099ccad6748f0f742dfc4296f85e44c04e09823b397b6,218,deposit,0x2260fac5e5542a773aa44fbcfedf7c193bc2c599,0x5d7166ee0c633021cb502fa5302866316d86f701,5.8605954e+08
+ethereum,radiant,1,19071650,2024-01-23 20:09:23.000 UTC,0xed456c32bdace50dd9032f37df6293377cc0f25d39f0cf1b68a7ff3d202fa298,447,withdraw,0x83f20f44975d03b1b09e64809b757c47f942beea,0xd6cb7a7b544e24e5160a948a16c45b1096276f9d,-2.325e+22

@@ -1,0 +1,130 @@
+version: 2
+
+models:
+  - name: nexusmutual_ethereum_claims_v1
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "claims"]
+    description: "Nexus Mutual Claims v1"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - claim_id
+    columns:
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+        data_tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: "block number"
+        data_tests:
+          - not_null
+      - &submit_time
+        name: submit_time
+        description: "submit time"
+        data_tests:
+          - not_null
+      - &submit_date
+        name: submit_date
+        description: "submit date"
+      - &claim_id
+        name: claim_id
+        description: "claim id"
+        data_tests:
+          - not_null
+      - &cover_id
+        name: cover_id
+        description: "cover id"
+        data_tests:
+          - not_null
+      - &claimant
+        name: claimant
+        description: "claimant"
+      - &partial_claim_amount
+        name: partial_claim_amount
+        description: "partial claim amount"
+      - &claim_status
+        name: claim_status
+        description: "claim status"
+      - &tx_hash
+        name: tx_hash
+        description: "unique transaction hash value"
+        data_tests:
+          - not_null
+
+  - name: nexusmutual_ethereum_claims_v2
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "claims"]
+    description: "Nexus Mutual Claims v2"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - claim_id
+    columns:
+      - *block_time
+      - *block_number
+      - *submit_time
+      - *submit_date
+      - *claim_id
+      - *cover_id
+      - &product_id
+        name: product_id
+        description: "product id"
+      - &user
+        name: user
+        description: "user"
+      - &assessment_id
+        name: assessment_id
+        description: "assessment id"
+      - &cover_asset
+        name: cover_asset
+        description: "cover asset"
+      - &requested_amount
+        name: requested_amount
+        description: "requested amount"
+      - &is_payout_redeemed
+        name: is_payout_redeemed
+        description: "is payout redeemed"
+      - &ipfs_metadata
+        name: ipfs_metadata
+        description: "ipfs metadata"
+      - *tx_hash
+
+  - name: nexusmutual_ethereum_claims_paid
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "claims"]
+    description: "Nexus Mutual Claims v2"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - version
+            - claim_id
+    columns:
+      - name: version
+      - *cover_id
+      - *claim_id
+      - name: claim_date
+      - name: claim_payout_date
+      - name: product_type
+      - name: product_name
+      - name: eth_eth_claim_amount
+      - name: eth_usd_claim_amount
+      - name: dai_eth_claim_amount
+      - name: dai_usd_claim_amount
+      - name: usdc_eth_claim_amount
+      - name: usdc_usd_claim_amount
+      - name: cbbtc_eth_claim_amount
+      - name: cbbtc_usd_claim_amount

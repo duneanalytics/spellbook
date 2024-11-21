@@ -1,0 +1,325 @@
+version: 2
+
+models:
+  - name: cow_protocol_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: cow_protocol
+      contributors: bh2smith, gentrexha
+    config:
+      tags: ['ethereum','cow_protocol','trades','dex','aggregator','cross-chain']
+    description: >
+        CoW Protocol trades on all chains across all contracts and versions. 
+        This table will load dex trades downstream.
+        This particular version of the protocol trades table is intended to conform 
+        with the columns as specified in dex.trades sector. 
+        A more detailed version of the protocol trades table can be found under `cow_protocol_ethereum.trades`
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the project is deployed"
+      - &project 
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the project"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each trade"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each trade"
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address which executed the trade on the blockchain"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &tx_from
+        name: tx_from
+        description: "Trader address owning the order being filled"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the token bought"
+      - &trace_address
+        name: trace_address
+        description: ""
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding trade event"
+
+  - name: cow_protocol_arbitrum_trades
+    meta:
+      blockchain: arbitrum
+      project: cow_protocol
+      contributors: olgafetisova
+    config:
+      tags: ['arbitrum','cow_protocol','trades', 'dex', 'aggregator']
+    description: >
+      CoW Protocol enriched trades list on Arbitrum Chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - order_uid
+            - evt_index
+    columns:
+      - name: block_date
+        description: "UTC event block date of each trade"
+      - name: block_time
+        description: "Timestamp for block event time in UTC"
+      - name: tx_hash
+        description: "Transaction hash of trade"
+      - name: evt_index
+        description: "Index of the corresponding trade event"
+      - name: order_uid
+        description: "Unique identifier of order involved in trade. Note that partially fillable orders can be touched multiple times so this is not a unique ID for trade events."
+      - name: trader
+        description: "Owner of the order being traded (aka trader)"
+      - name: sell_token_address
+        description: "Arbitrum address of sellToken"
+      - name: sell_token
+        description: "Symbol of sellToken"
+      - name: buy_token_address
+        description: "Arbitrum address of buyToken"
+      - name: buy_token
+        description: "Symbol of buyToken"
+      - name: token_pair
+        description: "Ordered concatenation of buy/sell token symbols involved in trade"
+      - name: units_sold
+        description: "Units of sellToken sold (incorporates token decimals)."
+      - name: atoms_sold
+        description: "Amount (in atoms) of the sellToken sold"
+      - name: units_bought
+        description: "Units of buyToken bought (incorporates token decimals)."
+      - name: atoms_bought
+        description: "Amount (in atoms) of the buyToken bought"
+      - name: usd_value
+        description: "USD value of trade (taken as the max of buy value, sell value when both available, otherwise whichever is known)"
+      - name: buy_price
+        description: "USD price of buyToken at the time of trade"
+      - name: buy_value_usd
+        description: "USD value of buyToken amount"
+      - name: sell_price
+        description: "USD price of sellToken at the time of trade"
+      - name: sell_value_usd
+        description: "USD value of sellToken amount"
+      - name: fee
+        description: "Unit of fee taken (in sellToken) - incorporating token decimals"
+      - name: fee_atoms
+        description: "Amount (in atoms) of fee - taken in sellToken"
+      - name: fee_usd
+        description: "USD value of trade fee"
+      - name: app_data
+        description: "Hashed metadata related to trade event (full content available on IPFS)"
+      - name: receiver
+        description: "Recipient of trades buyToken"
+      - name: limit_sell_amount
+        description: "Sell amount side of the limit price"
+      - name: limit_buy_amount
+        description: "Buy amount side of the limit price"
+      - name: valid_to
+        description: "epoch timestamp (in seconds) until when the order was valid"
+      - name: flags
+        description: "bitmap with additional trade information (cf. https://github.com/cowprotocol/contracts/blob/main/src/contracts/libraries/GPv2Trade.sol#L58-L94)"
+      - name: surplus_usd
+        description: "USD value of surplus (difference between limit and executed price)"
+
+  - name: cow_protocol_ethereum_trades
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith, gentrexha
+    config:
+      tags: ['ethereum','cow_protocol','trades', 'dex', 'aggregator']
+    description: >
+      CoW Protocol enriched trades list on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - order_uid
+            - evt_index
+    columns:
+      - name: block_date
+        description: "UTC event block date of each trade"
+      - name: block_number
+        description: "Block number that the transaction was included"
+      - name: block_time
+        description: "Timestamp for block event time in UTC"
+      - name: tx_hash
+        description: "Transaction hash of trade"
+      - name: evt_index
+        description: "Index of the corresponding trade event"
+      - name: order_uid
+        description: "Unique identifier of order involved in trade. Note that partially fillable orders can be touched multiple times so this is not a unique ID for trade events."
+      - name: trader
+        description: "Owner of the order being traded (aka trader)"
+      - name: sell_token_address
+        description: "Ethereum address of sellToken"
+      - name: sell_token
+        description: "Symbol of sellToken"
+      - name: buy_token_address
+        description: "Ethereum address of buyToken"
+      - name: buy_token
+        description: "Symbol of buyToken"
+      - name: token_pair
+        description: "Ordered concatenation of buy/sell token symbols involved in trade"
+      - name: units_sold
+        description: "Units of sellToken sold (incorporates token decimals)."
+      - name: atoms_sold
+        description: "Amount (in atoms) of the sellToken sold"
+      - name: units_bought
+        description: "Units of buyToken bought (incorporates token decimals)."
+      - name: atoms_bought
+        description: "Amount (in atoms) of the buyToken bought"
+      - name: usd_value
+        description: "USD value of trade (taken as the max of buy value, sell value when both available, otherwise whichever is known)"
+      - name: buy_price
+        description: "USD price of buyToken at the time of trade"
+      - name: buy_value_usd
+        description: "USD value of buyToken amount"
+      - name: sell_price
+        description: "USD price of sellToken at the time of trade"
+      - name: sell_value_usd
+        description: "USD value of sellToken amount"
+      - name: fee
+        description: "Unit of fee taken (in sellToken) - incorporating token decimals"
+      - name: fee_atoms
+        description: "Amount (in atoms) of fee - taken in sellToken"
+      - name: fee_usd
+        description: "USD value of trade fee"
+      - name: app_data
+        description: "Hashed metadata related to trade event (full content available on IPFS)"
+      - name: receiver
+        description: "Recipient of trades buyToken"
+      - name: limit_sell_amount
+        description: "Sell amount side of the limit price"
+      - name: limit_buy_amount
+        description: "Buy amount side of the limit price"
+      - name: valid_to
+        description: "epoch timestamp (in seconds) until when the order was valid"
+      - name: flags
+        description: "bitmap with additional trade information (cf. https://github.com/cowprotocol/contracts/blob/main/src/contracts/libraries/GPv2Trade.sol#L58-L94)"
+      - name: surplus_usd
+        description: "USD value of surplus (difference between limit and executed price)"
+      - name: order_type
+        description: "SELL/BUY string indicating if the trade was a sell or buy order"
+      - name: partial_fill
+        description: "Boolean indicating if the order is partially fill-able"
+      - name: fill_proportion
+
+  - name: cow_protocol_gnosis_trades
+    meta:
+      blockchain: gnosis
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['gnosis','cow_protocol','trades', 'dex', 'aggregator']
+    description: >
+      CoW Protocol enriched trades list on Gnosis Chain
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - order_uid
+            - evt_index
+    columns:
+      - name: block_date
+        description: "UTC event block date of each trade"
+      - name: block_time
+        description: "Timestamp for block event time in UTC"
+      - name: tx_hash
+        description: "Transaction hash of trade"
+      - name: evt_index
+        description: "Index of the corresponding trade event"
+      - name: order_uid
+        description: "Unique identifier of order involved in trade. Note that partially fillable orders can be touched multiple times so this is not a unique ID for trade events."
+      - name: trader
+        description: "Owner of the order being traded (aka trader)"
+      - name: sell_token_address
+        description: "Ethereum address of sellToken"
+      - name: sell_token
+        description: "Symbol of sellToken"
+      - name: buy_token_address
+        description: "Ethereum address of buyToken"
+      - name: buy_token
+        description: "Symbol of buyToken"
+      - name: token_pair
+        description: "Ordered concatenation of buy/sell token symbols involved in trade"
+      - name: units_sold
+        description: "Units of sellToken sold (incorporates token decimals)."
+      - name: atoms_sold
+        description: "Amount (in atoms) of the sellToken sold"
+      - name: units_bought
+        description: "Units of buyToken bought (incorporates token decimals)."
+      - name: atoms_bought
+        description: "Amount (in atoms) of the buyToken bought"
+      - name: usd_value
+        description: "USD value of trade (taken as the max of buy value, sell value when both available, otherwise whichever is known)"
+      - name: buy_price
+        description: "USD price of buyToken at the time of trade"
+      - name: buy_value_usd
+        description: "USD value of buyToken amount"
+      - name: sell_price
+        description: "USD price of sellToken at the time of trade"
+      - name: sell_value_usd
+        description: "USD value of sellToken amount"
+      - name: fee
+        description: "Unit of fee taken (in sellToken) - incorporating token decimals"
+      - name: fee_atoms
+        description: "Amount (in atoms) of fee - taken in sellToken"
+      - name: fee_usd
+        description: "USD value of trade fee"
+      - name: app_data
+        description: "Hashed metadata related to trade event (full content available on IPFS)"
+      - name: receiver
+        description: "Recipient of trades buyToken"
+      - name: limit_sell_amount
+        description: "Sell amount side of the limit price"
+      - name: limit_buy_amount
+        description: "Buy amount side of the limit price"
+      - name: valid_to
+        description: "epoch timestamp (in seconds) until when the order was valid"
+      - name: flags
+        description: "bitmap with additional trade information (cf. https://github.com/cowprotocol/contracts/blob/main/src/contracts/libraries/GPv2Trade.sol#L58-L94)"
+      - name: surplus_usd
+        description: "USD value of surplus (difference between limit and executed price)"

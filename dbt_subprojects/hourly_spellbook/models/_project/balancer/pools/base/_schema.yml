@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: balancer_base_pools_tokens_weights
+    meta:
+      blockchain: base
+      project: balancer
+      contributors: jacektrocinski, viniabussafi
+    config:
+      tags: ['base', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer pools.
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &version
+        name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
+      - &pool_id
+        name: pool_id
+        description: 'Unique encoded identifier that refers to each pool'
+        data_tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: 'Contract address for the token'
+      - &normalized_weight
+        name: normalized_weight
+        description: 'Weight of the token in the pool.'
+
+  - name: balancer_v2_base_pools_tokens_weights
+    meta:
+      blockchain: base
+      project: balancer
+      contributors: jacektrocinski, viniabussafi
+    config:
+      tags: ['base', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer v2 pools.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - token_address
+    columns:
+      - *blockchain
+      - *version
+      - *pool_id
+      - *token_address
+      - *normalized_weight

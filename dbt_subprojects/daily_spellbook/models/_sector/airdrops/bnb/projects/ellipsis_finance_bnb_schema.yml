@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: ellipsis_finance_bnb_airdrop_claims
+    meta:
+      blockchain: bnb
+      sector: airdrop
+      project: ellipsis_finance
+      contributors: hildobby
+    config:
+      tags: ["table", "airdrop", "bnb", "claim", "ellipsis_finance"]
+    description: "List of claim transactions for the $EPS airdrop"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: block_time
+        description: "Block time of transaction"
+      - name: block_number
+        description: "Block number of transaction"
+      - name: project
+        description: "Project name"
+      - name: airdrop_number
+        description: "Airdrop identifier number"
+      - name: recipient
+        description: "Airdrop recipient"
+      - name: contract_address
+        description: "Contract addressed used"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: amount_raw
+        description: "Raw amount of tokens"
+      - name: amount_original
+        description: "Original amount of tokens"
+      - name: amount_usd
+        description: "USD value of tokens"
+      - name: token_address
+        description: "Token address"
+      - name: token_symbol
+        description: "Token symbol"
+      - name: evt_index
+        description: "Event index"

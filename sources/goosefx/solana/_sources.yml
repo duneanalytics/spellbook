@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: goosefx_solana
+    description: "goosefx_solana decoded tables"
+    tables:
+      - name: gfx_ssl_v2_call_createPair
+      - name: gfx_ssl_v2_call_swap
+        

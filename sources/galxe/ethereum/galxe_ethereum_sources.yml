@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: galaxy_ethereum
+    description: >
+      Galxe ethereum contracts
+    tables:
+      - name: MerkleDistributor_Airdrop_evt_Claimed

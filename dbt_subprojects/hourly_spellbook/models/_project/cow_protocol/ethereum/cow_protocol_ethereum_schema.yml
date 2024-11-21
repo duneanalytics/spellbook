@@ -1,0 +1,87 @@
+version: 2
+
+models:
+  - name: cow_protocol_ethereum_solvers
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith, gentrexha
+    config:
+      tags: ['ethereum','cow_protocol','solver']
+    description: >
+        CoW Protocol solvers list on Ethereum
+
+  - name: cow_protocol_ethereum_batches
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith, gentrexha
+    config:
+      tags: ['ethereum','cow_protocol','trades', 'dex', 'aggregator', 'auction']
+    description: >
+      CoW Protocol enriched batches table on Ethereum
+
+  - name: cow_protocol_ethereum_app_data
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['ethereum','cow_protocol','app_data', "metadata"]
+    description: >
+      CoW Protocol App Data is JSON content stored on IPFS corresponding to order AppHash (cf. CoW Documentation https://docs.cow.fi/front-end/creating-app-ids).
+
+  - name: cow_protocol_ethereum_order_rewards
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['ethereum','cow_protocol','app_data', "metadata"]
+    description: >
+        Order Rewards (or more appropriately named Order Meta) contains off-chain meta data relevant 
+        to the solver competition on the granularity level of orders.
+
+  - name: cow_protocol_ethereum_eth_flow_orders
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['ethereum','cow_protocol','eth-flow', "orders"]
+    description: >
+      ETHFlow enables the sale of Native ETH via CoW Protocol. This works essentially by placing an (onchain) order, 
+      through the ETHFlow contract (https://github.com/cowprotocol/ethflowcontract) sending native which then wraps 
+      the asset as an ERC20. The order is filled through this intermediary contract that uses ERC1271 signature 
+      verification to place the order on the user's behalf.
+
+  - name: cow_protocol_ethereum_referrals
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['ethereum','cow_protocol','affiliate', 'referrals']
+    description: >
+      The CoW Protocol Affiliate Program works based on referrals contained in AppData.
+      A referral is considered valid whenever a new trader comes and places their first 
+      order with referral address in the meta content. This table contains the relevant 
+      query to build the affiliate mapping.
+
+  - name: cow_protocol_ethereum_trade_slippage
+    meta:
+      blockchain: ethereum
+      project: cow_protocol
+      contributors: bh2smith, gentrexha, josojo
+    config:
+      tags: [ 'ethereum','cow_protocol','trade_slippage' ]
+    description: >
+      The query contains several measurements between the quoted price on cowswap and 
+      the executed price. The price difference between the quote and the actual price 
+      is called price improvement and is measured as percentage or in absolute dollars.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - order_uid
+            - block_number
+

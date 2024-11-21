@@ -1,0 +1,178 @@
+version: 2
+
+models:
+  - name: balancer_v2_polygon_transfers_bpt
+    meta:
+      blockchain: polygon
+      project: balancer_v2
+      contributors: victorstefenon, thetroyharris, viniabussafi
+    config:
+      tags: ['polygon', 'bpt', 'transfers']
+    description: >
+      Balancer Pool Token (BPT) transfer logs on Balancer, an automated portfolio manager and trading platform, on polygon.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - block_date
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &version
+        name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
+      - &contract_address
+        name: contract_address
+        description: 'polygon address for the liquidity pool used in transaction'
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each DEX trade"
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Transaction hash of transfer event'
+      - &evt_index
+        name: evt_index
+        description: 'Event index'
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time of transfer event'
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block number of transfer event'
+      - &from
+        name: from
+        description: 'Address of BPT provider of transfer event'
+      - &to
+        name: to
+        description: 'Address of BPT receiver of transfer event'
+      - &value
+        name: value
+        description: 'Amount of BPT transferred in transfer event'
+
+  - name: balancer_v2_polygon_bpt_prices
+    meta:
+      blockchain: polygon
+      project: balancer_v2
+      contributors: victorstefenon, thetroyharris, viniabussafi
+    config:
+      tags: ['polygon', 'bpt', 'prices']
+    description: >
+      Balancer Pool Token (BPT) daily price by pool on Balancer, an automated portfolio manager and trading platform.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - day
+            - contract_address
+    columns:
+      - *blockchain
+      - &day
+        name: day
+        description: "Block date in UTC"
+      - *version
+      - &decimals
+        name: decimals
+        description: "Token decimals. 18, by default, on BPTs"
+      - *contract_address
+      - &bpt_price
+        name: bpt_price
+        description: "Price of the BPT"
+
+  - name: balancer_v2_polygon_bpt_supply
+    meta:
+      blockchain: polygon
+      project: balancer_v2
+      contributors: thetroyharris, viniabussafi
+    config:
+      tags: ['polygon', 'bpt', 'supply']
+    description: >
+      Balancer Pool Token (BPT) supply by pool on Balancer, an automated portfolio manager and trading platform.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - blockchain
+            - token_address
+    columns:
+      - *day
+      - &pool_type
+        name: pool_type
+        description: "Pool attributes, determined by the pool's factory"    
+      - *version
+      - *blockchain
+      - &token_address
+        name: token_address
+        description: "Contract address of the BPT"
+      - &supply
+        name: supply
+        description: "Supply of the BPT, discounted of premints"
+
+  - name: balancer_v2_polygon_bpt_supply_changes
+    meta:
+      blockchain: polygon
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['polygon', 'bpt', 'supply', 'changes']
+    description: >
+      Balancer Pool Token (BPT) supply change events.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - evt_tx_hash
+            - evt_index
+            - label
+    columns:
+      - *block_date
+      - *evt_block_time
+      - *evt_block_number
+      - *blockchain
+      - *evt_tx_hash
+      - *evt_index
+      - *pool_type
+      - &pool_symbol
+        name: pool_symbol
+        description: "Token symbols, followed by their respective weights, if applicable"
+      - *version
+      - &label
+        name: label
+        description: "Nature of the transaction (Join/Exit via swap or Mint/Burn via transfer)"
+      - *token_address
+      - &delta_amount_raw
+        name: delta_amount_raw
+        description: "Raw value of the transaction on token supply at the time of execution in the original currency"
+      - &delta_amount
+        name: delta_amount
+        description: "Normalized value of the transaction on token supply at the time of execution in the original currency"
+
+  - name: balancer_v2_polygon_bpt_supply_changes_daily
+    meta:
+      blockchain: polygon
+      project: balancer_v2
+      contributors: viniabussafi
+    config:
+      tags: ['polygon', 'bpt', 'supply', 'changes']
+    description: >
+      Balancer Pool Token (BPT) supply change events. grouped by day
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - token_address
+    columns:
+      - *block_date
+      - *blockchain
+      - *pool_type
+      - *pool_symbol   
+      - *version 
+      - *token_address
+      - &daily_delta   
+        name: daily_delta
+        description: "Daily total impact on BPT supply"

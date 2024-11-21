@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: bend_ethereum
+    description: "bend ethereum decoded events"
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+
+  - name: benddao_ethereum
+    description: "bend ethereum decoded events"
+    tables:
+      - name: MerkleDistributor_evt_Claimed

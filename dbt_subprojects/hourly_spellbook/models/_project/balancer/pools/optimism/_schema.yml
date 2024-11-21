@@ -1,0 +1,93 @@
+version: 2
+
+models:
+  - name: balancer_optimism_pools_tokens_weights
+    meta:
+      blockchain: optimism
+      project: balancer
+      contributors: jacektrocinski, viniabussafi
+    config:
+      tags: ['optimism', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer pools.
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &version
+        name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
+      - &pool_id
+        name: pool_id
+        description: 'Unique encoded identifier that refers to each pool'
+        data_tests:
+          - not_null
+      - &token_address
+        name: token_address
+        description: 'Contract address for the token'
+      - &normalized_weight
+        name: normalized_weight
+        description: 'Weight of the token in the pool.'
+
+  - name: balancer_v2_optimism_pools_tokens_weights
+    meta:
+      blockchain: optimism
+      project: balancer
+      contributors: jacektrocinski, viniabussafi
+    config:
+      tags: ['optimism', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer v2 pools.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - token_address
+    columns:
+      - *blockchain
+      - *version
+      - *pool_id
+      - *token_address
+      - *normalized_weight
+
+  - name: balancer_optimism_gauge_mappings
+    meta:
+      blockchain: optimism
+      project: balancer
+      contributors: msilb7
+    config:
+      tags: ['optimism', 'balancer', 'gauges', 'incentives']
+    description: >
+      Balancer gauge to pool mappings on Optimism.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_contract
+            - incentives_contract
+    columns:
+      - *blockchain
+      - *version
+      - &pool_contract
+        name: pool_contract
+        description: "Address of the liquidity pool contract"
+      - *pool_id
+      - &incentives_contract
+        name: incentives_contract
+        description: "Address of the contract where incentives are stored and emitted."
+      - &incentives_type
+        name: incentives_type
+        description: "Description of the incentives address type."
+      - &evt_block_time
+        name: evt_block_time
+        description: "Block time in UTC"
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Event Block Number'
+      - &contract_address
+        name: contract_address
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Transaction hash'
+      - &evt_index
+        name: evT_index
+        description: 'Event Index'

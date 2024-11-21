@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: arrakis_finance_ethereum
+    description: "Ethereum decoded tables related to Arrakis Finance contracts"
+    tables:
+      - name: ArrakisV2Factory_evt_VaultCreated

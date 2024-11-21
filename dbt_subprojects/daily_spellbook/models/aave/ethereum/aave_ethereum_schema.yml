@@ -1,0 +1,265 @@
+version: 2
+
+models:
+  - name: aave_v2_ethereum_interest_rates
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave_v2
+      contributors: batwayne, chuxin
+    config:
+      tags: ['ethereum', 'aave_v2', 'interest', 'aave', 'lending']
+    description: "Hourly aave interest rates on ethereum"
+    columns:
+      - &reserve
+        name: reserve
+        description: "Aave reserve contract address"
+      - &symbol
+        name: symbol
+        description: "Symbol of the reserve"
+      - &hour
+        name: hour
+        description: "Block timestamp truncated to hours"
+      - &deposit_apy
+        name: deposit_apy
+        description: "Hourly deposit interest rate value of the reserve"
+      - &stable_borrow_apy
+        name: stable_borrow_apy
+        description: "Hourly stable borrow interest rate value of the reserve" 
+      - &variable_borrow_apy
+        name: variable_borrow_apy
+        description: "Hourly variable borrow interest rate value of the reserve"
+
+  - name: aave_ethereum_interest_rates
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin
+    config:
+      tags: ['ethereum', 'aave_v2', 'interest', 'aave', 'lending']
+    description: "Hourly aave interest rates on ethereum"
+    columns:
+      - *reserve
+      - *symbol
+      - *hour
+      - *deposit_apy
+      - *stable_borrow_apy
+      - *variable_borrow_apy
+
+  - name: aave_ethereum_votes
+    meta:
+      blockchain: ethereum
+      sector: dao
+      contributors: soispoke
+    config:
+      tags:   ['ethereum', 'votes', 'dao', 'cross-chain']
+    description: >
+      DAO votes on all chains across all contracts and versions
+    columns:
+      - name: blockchain
+      - name: project
+        description: "Project name of the DAO"
+      - name: version
+        description: "Version of the contract built and deployed by the DAO project"
+      - name: block_time
+        description: "UTC event block time of each DAO vote"
+      - name: tx_hash
+        description: "Unique transaction hash value tied to each vote on the DAO"
+      - &dao_name
+        name: dao_name
+        description: "DAO name"
+      - &dao_address
+        name: dao_address
+        description: "DAO wallet address"
+      - &proposal_id
+        name: proposal_id
+      - &votes
+        name: votes
+        description: "Votes weighted by the amount of governance tokens"
+      - &votes_share
+        name: votes_share
+        description: "Votes share in percent for a given proposal"
+      - &token_symbol
+        name: token_symbol
+      - name: token_address
+      - &votes_value_usd
+        name: votes_value_usd
+        description: "USD amount of governance tokens used at the time of the vote"
+      - &voter_address
+        name: voter_address
+      - &support
+        name: support
+        description: "0 = Against, 1 = For, 2 = Abstain votes"
+        data_tests:
+        - accepted_values:
+            values: ['for', 'against', 'abstain']
+      - &reason
+        name: reason
+        description: "Optional onchain comments to explain votes"
+
+  - name: aave_ethereum_supply
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin
+    config:
+      tags: ['ethereum', 'aave', 'supply', 'aave', 'lending']
+    description: "All aave transactions involving supply transactions on ethereum"
+    columns:
+      - &version
+        name: version
+        description: "Aave version"
+      - &transaction_type
+        name: transaction_type
+        description: "The transaction type"
+      - *symbol
+      - &token_address
+        name: token_address
+        description: "Aave reserve contract address"  
+      - &depositor
+        name: depositor
+        description: "Depositor wallet address"
+      - &on_behalf_of
+        name: on_behalf_of
+        description: "Wallet address tx was executed on behalf of"
+      - &withdrawn_to
+        name: withdrawn_to
+        description: "The wallet address where the tokens are withdrawn"
+      - &liquidator
+        name: liquidator
+        description: "Liquidator wallet address"
+      - &amount
+        name: amount
+        description: "Token amount present in the transaction. Note: withdraw amounts may be more than deposited amounts due to interest" 
+      - &usd_amount
+        name: usd_amount
+        description: "Token amount in USD" 
+      - &project_contract_address
+        name: project_contract_address
+        description: "Project contract address"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the event"
+      - &evt_index
+        name: evt_index
+        description: "Event index"   
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_number
+        name: block_number
+        description: "Event block number"
+
+  - name: aave_ethereum_borrow
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: batwayne, chuxin, tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'ethereum']
+    description: "All Aave transactions involving borrow transactions on Ethereum"
+    columns:
+      - *version
+      - *transaction_type
+      - *symbol
+      - *token_address
+      - &borrower
+        name: borrower
+        description: "Borrower wallet address"
+      - *on_behalf_of
+      - &repayer
+        name: repayer
+        description: "Repayer wallet address"
+      - *liquidator
+      - *amount
+      - *usd_amount
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+      - *block_time
+      - *block_number
+
+  - name: aave_ethereum_flashloans
+    meta:
+      blockchain: ethereum
+      sector: lending
+      project: aave
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'ethereum']
+    description: "All Aave transactions involving flashloans transactions on Ethereum"
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &project
+        name: project
+        description: "Project name"
+      - *version
+      - &recipient
+        name: recipient
+        description: "recipient wallet address"
+      - *amount
+      - *usd_amount
+      - &fee
+        name: fee
+      - *symbol
+      - *token_address
+      - &contract_address
+        name: contract_address
+      - &block_month
+        name: block_month
+        description: "Block month column used to partition data in this table"
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: aave_ethereum_proposals
+    meta:
+      blockchain: ethereum
+      sector: dao
+      contributors: soispoke
+    config:
+      tags: ['ethereum', 'proposals', 'dao', 'cross-chain']
+    description: >
+      DAO proposals on all chains across all contracts and versions
+    columns:
+      - name: blockchain
+      - name: project
+        description: "Project name of the DAO"
+      - name: version
+        description: "Version of the contract built and deployed by the DAO project"
+      - name: created_at
+        description: "UTC event block time at which the proposal was created"
+      - name: tx_hash
+        description: "Unique transaction hash value tied to each DAO proposal"
+      - *dao_name
+      - *dao_address
+      - name: proposal_id
+        data_tests:
+          - unique
+      - &votes_for
+        name: votes_for
+      - &votes_against
+        name: votes_against
+      - &votes_total
+        name: votes_total
+        description: "Total number of governance tokens used to vote on a given DAO proposal"
+      - &number_of_voters
+        name: number_of_voters
+      - &participation
+        name: participation
+        description: "Participation in percent: Number of governance tokens used to vote / Total token supply"
+      - &status
+        name: status
+        description: "Proposal status: Pending, Queued, Active, Executed, Canceled or Defeated"
+        data_tests:
+          - accepted_values:
+              values: ['Pending', 'Queued', 'Active', 'Executed', 'Canceled','Defeated']
+      - &description
+        name: description
+        description: "Description of the proposal"

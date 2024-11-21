@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: moolainterestbearingmoo_celo
+    description: "Decoded contracts for Moola on Celo"
+    tables:
+      - name: LendingPool_evt_Borrow
+      - name: LendingPool_evt_Repay
+      - name: LendingPool_evt_LiquidationCall

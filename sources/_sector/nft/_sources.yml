@@ -1,0 +1,51 @@
+version: 2
+
+sources:
+  - name: nft
+    tables:
+      - name: transfers
+  - name: nft_ethereum
+    tables:
+      - name: transfers
+  - name: nft_arbitrum
+    tables:
+      - name: transfers
+  - name: nft_avalanche_c
+    tables:
+      - name: transfers
+  - name: nft_base
+    tables:
+      - name: transfers
+  - name: nft_bnb
+    tables:
+      - name: transfers
+  - name: nft_celo
+    tables:
+      - name: transfers
+  - name: nft_fantom
+    tables:
+      - name: transfers
+  - name: nft_gnosis
+    tables:
+      - name: transfers
+  - name: nft_goerli
+    tables:
+      - name: transfers
+  - name: nft_optimism
+    tables:
+      - name: transfers
+  - name: nft_polygon
+    tables:
+      - name: transfers
+  - name: nft_zksync
+    tables:
+      - name: transfers
+  - name: nft_zora
+    tables:
+      - name: transfers
+  - name: nft_scroll
+    tables:
+      - name: transfers
+  - name: nft_sei
+    tables:
+      - name: transfers

@@ -1,0 +1,91 @@
+version: 2
+
+models:
+  - name: balances_bnb_bnb_hour
+    meta:
+      blockchain: bnb
+      sector: balances
+      project: bnb
+      contributors: Henrystats
+    config:
+      tags: ['balances', 'bnb', 'bnb', 'hour', 'Henrystats']
+    description: >
+        Hourly token balances of bnb for each address on bnb.
+        Depends on transfers_bnb_bnb
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_month
+        name: block_month
+        description: "UTC event block time truncated to the month mark"
+      - &block_hour
+        name: block_hour
+        description: "UTC event block time truncated to the hour mark"
+      - &wallet_address
+        name: wallet_address
+        description: "Address of the wallet holding bnb"
+      - &token_address
+        name: token_address
+        description: "bnb Dead Address on bnb"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of bnb token held *before* taking into account token decimals"
+      - &amount
+        name: amount
+        description: "Raw amount of bnb token held *after* taking into account token decimals"
+      - &amount_usd
+        name: amount_usd
+        description: "Amount of bnb token held in USD if we have it"
+      - &symbol
+        name: symbol
+        description: "Token symbol"
+
+  - name: balances_bnb_bnb_day
+    meta:
+      blockchain: bnb
+      sector: balances
+      project: bnb
+      contributors: Henrystats
+    config:
+      tags: ['balances', 'bnb', 'bnb', 'day', 'Henrystats']
+    description: >
+        Daily token balances of bnb for each address on bnb.
+        Depends on transfers_bnb_bnb.
+    columns:
+      - *blockchain
+      - *block_month
+      - &block_day
+        name: block_day
+        description: "UTC event block time truncated to the day mark"
+      - *wallet_address
+      - *token_address
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *symbol
+
+
+  - name: balances_bnb_bnb_latest
+    meta:
+      blockchain: bnb
+      sector: balances
+      project: bnb
+      contributors: Henrystats
+    config:
+      tags: ['balances', 'bnb', 'bnb', 'latest', 'Henrystats']
+    description: >
+        Latest token balances of bnb for each address on bnb.
+        Depends on transfers_bnb_bnb.
+    columns:
+      - *blockchain
+      - &last_updated
+        name: last_updated
+        description: "UTC timestamp when data was last updated"
+      - *wallet_address
+      - *token_address
+      - *amount_raw
+      - *amount
+      - *amount_usd
+      - *symbol
+

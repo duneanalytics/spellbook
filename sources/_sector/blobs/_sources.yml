@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: taikoxyz_ethereum
+    description: "Taiko smart contracts"
+    tables:
+      - name: TaikoL1_evt_BlockProposed

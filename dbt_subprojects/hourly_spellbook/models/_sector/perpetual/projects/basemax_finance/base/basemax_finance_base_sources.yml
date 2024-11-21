@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: basemax_finance_base
+    description: Base decoded tables related to basemax_finance protocol
+    tables:
+      - name: PositionVault_evt_IncreasePosition
+      - name: PositionVault_evt_DecreasePosition
+      - name: LiquidateVault_evt_LiquidatePosition

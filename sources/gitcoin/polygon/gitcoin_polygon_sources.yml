@@ -1,0 +1,7 @@
+version: 2
+
+sources: 
+  - name: gitcoin_polygon
+    description: "Polygon decoded tables related to Gitcoin contract"
+    tables:
+      - name: BulkCheckout_evt_DonationSent

@@ -1,0 +1,18 @@
+version: 2
+
+sources: 
+  - name: mummy_finance_optimism
+    description: >
+      Decoded event tables for DEX and Perpetual trades on mummy_finance
+    tables:
+      - name: Router_evt_Swap
+
+      - name: Vault_evt_CollectMarginFees
+
+      - name: PositionRouter_evt_ExecuteDecreasePosition
+
+      - name: PositionRouter_evt_ExecuteIncreasePosition
+
+      - name: Vault_evt_DecreasePosition
+
+      - name: Vault_evt_IncreasePosition

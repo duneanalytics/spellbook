@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: aave_v3_optimism
+    tables:
+      - name: Pool_evt_FlashLoan
+
+  - name: the_granary_optimism
+    tables:
+      - name: LendingPool_evt_FlashLoan

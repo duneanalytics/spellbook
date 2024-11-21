@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: eth2_ethereum
+    tables:
+      - name: DepositContract_evt_DepositEvent

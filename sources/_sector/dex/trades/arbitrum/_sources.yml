@@ -1,0 +1,171 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_arbitrum
+  - name: camelot_arbitrum
+    tables:
+      - name: CamelotPair_evt_Swap
+      - name: CamelotFactory_evt_PairCreated
+  - name: camelot_v3_arbitrum
+    tables:
+      - name: AlgebraPool_evt_Swap
+      - name: AlgebraFactory_evt_Pool
+  - name: airswap_arbitrum
+    tables:
+      - name: swap_evt_Swap
+      - name: SwapERC20_v4_evt_SwapERC20
+  - name: sushi_arbitrum
+    tables:
+      - name: Pair_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: sushiswap_arbitrum
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: sushi_v2_arbitrum
+    tables:
+      - name: Pool_evt_Swap
+      - name: Factory_evt_PoolCreated
+  - name: sushiswap_v3_pool_arbitrum
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+  - name: arbswap_arbitrum
+    tables:
+      - name: SwapPair_evt_Swap
+      - name: SwapFactory_evt_PairCreated
+      - name: ArbswapStableSwapTwoPool_evt_TokenExchange
+      - name: ArbswapStableSwapFactory_evt_NewStableSwapPair
+  - name: trader_joe_v2_2_arbitrum
+    tables:
+      - name: LBPair_evt_Swap
+      - name: LBFactory_evt_LBPairCreated
+  - name: trader_joe_v2_1_arbitrum
+  - name: trader_joe_arbitrum
+  - name: pancakeswap_v2_arbitrum
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+  - name: pancakeswap_v3_arbitrum
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: pancakeswap_v2_arbitrum
+    tables:
+      - name: PancakeStableSwapTwoPool_evt_TokenExchange
+      - name: PancakeStableSwapFactory_evt_NewStableSwapPair
+  - name: balancer_v2_arbitrum
+    tables:
+      - name: Vault_evt_Swap
+  - name: dodo_arbitrum
+    tables:
+      - name: DODO_evt_SellBaseToken
+      - name: DODO_evt_BuyBaseToken
+      - name: DVM_evt_DODOSwap
+      - name: DPPOracle_evt_DODOSwap
+      - name: DSP_evt_DODOSwap
+  - name: gmx_arbitrum
+    tables:
+      - name: Router_evt_Swap
+  - name: integral_size_arbitrum
+    tables:
+      - name: TwapPair_evt_Swap
+      - name: TwapFactory_evt_PairCreated
+  - name: kyber_arbitrum
+    tables:
+      - name: DMM_Pool_evt_Swap
+      - name: DMMFactory_evt_PoolCreated
+      - name: Elastic_Pool_evt_swap
+      - name: Elastic_Factory_evt_PoolCreated
+  - name: clipper_arbitrum
+    tables:
+      - name: ClipperCove_evt_CoveSwapped
+      - name: ClipperCove_v2_evt_CoveSwapped
+      - name: ClipperPackedVerifiedExchange_evt_Swapped
+      - name: ClipperPackedVerifiedExchange_v2_evt_Swapped
+  - name: ramses_arbitrum
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+      - name: RamsesV2Pool_evt_Swap
+      - name: RamsesV2Factory_evt_PoolCreated
+  - name: xchange_arbitrum
+    tables:
+      - name: XchangePair_evt_Swap
+      - name: XchangeFactory_evt_PairCreated
+  - name: fraxswap_arbitrum
+    tables:
+      - name: FraxswapPair_evt_Swap
+      - name: FraxswapFactory_evt_PairCreated
+  - name: chronos_arbitrum
+    tables:
+      - name: PoolAMM_evt_Swap
+      - name: PairFactoryAMM_evt_PairCreated
+  - name: zyberswap_arbitrum
+    tables:
+      - name: ZyberPair_evt_Swap
+      - name: ZyberFactory_evt_PairCreated
+  - name: solidlizard_arbitrum
+    tables:
+      - name: LizardPair_evt_Swap
+      - name: LizardFactory_evt_PairCreated
+  - name: woofi_swap_arbitrum
+    tables:
+      - name: WooPPV2_1_evt_WooSwap
+  - name: smardex_arbitrum
+    tables:
+      - name: SmardexPair_evt_Swap
+      - name: SmardexFactory_evt_PairCreated
+  - name: oasisswap_arbitrum
+    tables:
+      - name: OasisSwapPair_evt_Swap
+      - name: OasisSwapFactory_evt_PairCreated
+  - name: swaap_v2_arbitrum
+    tables:
+      - name: Vault_evt_Swap
+  - name: apeswap_arbitrum
+    tables:
+      - name: ApePair_evt_Swap
+      - name: ApeFactory_evt_PairCreated
+  - name: gridex_arbitrum
+    tables:
+      - name: Grid_evt_Swap
+      - name: GridFactory_evt_GridCreated
+  - name: sterling_finance_arbitrum
+    tables:
+      - name: StrPair_STR_WETH_evt_Swap
+      - name: Factory_evt_PairCreated
+  - name: sharkyswap_arbitrum
+    tables:
+      - name: SharkyPair_evt_Swap
+      - name: SharkyFactory_evt_PairCreated
+  - name: auragi_arbitrum
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+  - name: wombatexchange_arbitrum
+    tables:
+      - name: CrossChainPool_evt_SwapV2
+  - name: solidly_v3_arbitrum
+    tables:
+      - name: SolidlyV3Factory_evt_PoolCreated
+      - name: SolidlyV3Pool_evt_Swap
+  - name: dackieswap_v3_arbitrum
+    tables:
+      - name: PancakeV3Factory_evt_PoolCreated
+      - name: PancakeV3Pool_evt_Swap
+  - name: dackieswap_v2_arbitrum
+    tables:
+      - name: DackieFactory_evt_PairCreated
+      - name: DackiePair_evt_Swap
+  - name: maverick_v2_arbitrum
+    tables:
+      - name: V2Pool_evt_PoolSwap
+      - name: V2Factory_evt_PoolCreated
+  - name: valantis_arbitrum
+    tables:
+      - name: SovereignPool_evt_Swap
+      - name: ProtocolFactory_evt_SovereignPoolDeployed
+      - name: HOT_evt_HotSwap
+  - name: spartadex_arbitrum
+    tables:
+      - name: SpartaDexPair_evt_Swap
+      - name: SpartaDexFactory_evt_PairCreated

@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: agave_gnosis
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
+
+  - name: aave_v3_gnosis
+    tables:
+      - name: Pool_evt_Supply
+      - name: Pool_evt_Withdraw
+
+  - name: real_rmm_v1_gnosis
+    tables:
+      - name: LendingPool_evt_Deposit
+      - name: LendingPool_evt_Withdraw
+
+  - name: real_rmm_v2_gnosis
+    tables:
+      - name: Pool_evt_Supply
+      - name: Pool_evt_Withdraw

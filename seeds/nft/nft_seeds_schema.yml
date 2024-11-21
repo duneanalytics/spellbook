@@ -1,6 +1,0 @@
-version: 2
-
-seeds:
- - name: nft_wash_trades_refactor_seed
-   description: >
-     nft_wash_trades output using logic from commit 9ec0238 with sampled tables https://dune.com/queries/1642410

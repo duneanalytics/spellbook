@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: curvefi_gauge_mappings
+    meta:
+      blockchain: optimism
+      sector: dex
+      contributors: msilb7
+    config:
+      tags: ['curve','curvefi', 'amm', 'trades', 'dex', 'incentives']
+    description: >
+      Gauge to Pool mappings for curve on all chains
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain name"
+      - &project
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Version of the project"
+      - &pool_contract
+        name: pool_contract
+        description: "Address of the liquidity pool contract"
+      - &incentives_contract
+        name: incentives_contract
+        description: "Address of the contract where incentives are stored and emitted."
+      - &incentives_type
+        name: incentives_type
+        description: "Description of the incentives address type."
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time in UTC'
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block Number'
+      - &contract_address
+        name: contract_address
+        description: 'Gauge Creator Contract Address'
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Tx Hash'
+      - &evt_index
+        name: evt_index
+        description: "Event index"

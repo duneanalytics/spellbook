@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: mirror_optimism
+    description: "op mainnet decoded tables related to mirror contracts"
+    tables:
+      - name: SignatureDropDeployer_call_deploy
+      - name: WritingEditionsFactory_call_createWithSignature

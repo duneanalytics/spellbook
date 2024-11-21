@@ -1,0 +1,48 @@
+version: 2
+
+sources:
+  - name: sushiswap_v2_linea
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
+  - name: lynex_linea
+    tables:
+      - name: PairFactory_evt_PairCreated
+      - name: Pair_evt_Swap
+      - name: AlgebraPool_evt_Swap
+      - name: AlgebraFactory_evt_Pool
+  - name: nile_linea
+    tables:
+      - name: ClPoolFactory_evt_PoolCreated
+      - name: ClPool_evt_Swap
+  - name: echodex_linea
+    tables:
+      - name: EchodexFactory_evt_PairCreated
+      - name: EchodexPair_evt_Swap
+  - name: secta_linea
+    tables:
+      - name: SectaFactory_evt_PairCreated
+      - name: SectaPair_evt_Swap
+  - name: pancakeswap_v2_linea
+    tables:
+      - name: PancakePair_evt_Swap
+      - name: PancakeFactory_evt_PairCreated
+  - name: pancakeswap_v3_linea
+    tables:
+      - name: PancakeV3Pool_evt_Swap
+      - name: PancakeV3Factory_evt_PoolCreated
+  - name: horizondex_linea
+    tables:
+      - name: Pool_evt_Swap
+      - name: Factory_evt_PoolCreated
+  - name: uniswap_v3_linea
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: swaap_v2_linea
+    tables:
+      - name: Vault_evt_Swap
+  - name: leetswap_linea
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap

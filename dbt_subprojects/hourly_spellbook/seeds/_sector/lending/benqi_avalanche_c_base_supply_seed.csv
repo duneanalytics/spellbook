@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+avalanche_c,benqi,1,40866183,2024-01-26 16:14:55.000 UTC,0x520f43a75e1d8445f38e19edb99a30d66a6205de3d747dd3d1d03ac21a0b1d5e,12,deposit,0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7,0xa45b0a446b91ebdbbb041f491e7244aaeb7f557a,5e+09
+avalanche_c,benqi,1,40865521,2024-01-26 15:52:00.000 UTC,0x1728bbc339677dc787127d4c22baf88446ea70f88c571889831e6963cedcd21e,5,withdraw,0x2b2c81e08f1af8835a78bb2a90ae924ace0ea4be,0xc13cad139d0a54bb496cb05be126fcbff785aeae,-1.1729038895144095e+20

@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: bebop_jam_scroll
+    description: "BebopJAM decoded tables related to Bebop"
+    tables:
+      - name: JamSettlement_call_settle
+      - name: JamSettlement_call_settleWithPermitsSignatures
+      - name: JamSettlement_evt_Settlement

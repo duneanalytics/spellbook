@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: arbitrum_arbitrum
+    description: >
+      Arbitrum contracts on Arbitrum
+    tables:
+      - name: TokenDistributor_evt_HasClaimed

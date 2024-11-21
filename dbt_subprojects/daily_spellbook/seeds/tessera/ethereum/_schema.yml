@@ -1,0 +1,11 @@
+version: 2
+
+seeds:
+  - name: tessera_ethereum_vault_deploy_test_data
+    config:
+      column_types:
+        deployer: varbinary
+        origin: varbinary
+        owner: varbinary
+        vault: varbinary
+        tx_hash: varbinary

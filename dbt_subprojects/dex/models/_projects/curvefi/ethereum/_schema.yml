@@ -1,0 +1,109 @@
+version: 2
+
+models:
+  - name: curve_ethereum_pool_details
+    meta:
+      blockchain: ethereum
+      project: curve
+      contributors: [agaperste, yulesa]
+    config:
+      tags: ["ethereum", "curve", "view"]
+    description: >
+      a dictionary view of pool details for a lot of regular pools on Curve.fi on Ethereum
+    columns:
+      - &version_pool
+        name: version
+        description: "Versions of the pool: Regular, Factory V1 Plain, Factory V1 Meta, Factory V2"
+        data_tests:
+          - not_null
+      - &name
+        name: name
+        description: "Pool name"
+        data_tests:
+          - not_null
+      - &symbol
+        name: symbol
+        description: "Pool symbol"
+        data_tests:
+          - not_null
+      - &pool_address
+        name: pool_address
+        description: "Address for the pool"
+        data_tests:
+          - unique
+          - not_null
+      - &token_address
+        name: token_address
+        description: "Address for the pool token"
+      - &deposit_contract
+        name: deposit_contract
+        description: "Address for the deposit contract"
+      - &gauge_contract
+        name: gauge_contract
+        description: "Contract address for the liquidity gauge of the pool (https://resources.curve.fi/reward-gauges/understanding-gauges)"
+      - &coin0
+        name: coin0
+        description: "Address for the first token in the pool"
+      - &coin1
+        name: coin1
+        description: "Address for the second token in the pool, when applicable"
+      - &coin2
+        name: coin2
+        description: "Address for the third token in the pool, when applicable"
+      - &coin3
+        name: coin3
+        description: "Address for the fourth token in the pool, when applicable"
+      - &undercoin0
+        name: undercoin0
+        description: "Address for the first token in the pool, same as 'coin0' "
+      - &undercoin1
+        name: undercoin1
+        description: "Address for first underlying coin, when applicable. E.g. DAI/USDC/USDT token address will have 3 underlying coins: DAI, USDC, USDT."
+      - &undercoin2
+        name: undercoin2
+        description: "Address for second underlying coin, when applicable"
+      - &undercoin3
+        name: undercoin3
+        description: "Address for third underlying coin, when applicable"
+
+  - name: curve_ethereum_view_pools
+    meta:
+      blockchain: ethereum
+      project: curve
+      contributors: [agaperste, yulesa, ilemi, viniabussafi]
+    config:
+      tags: ["ethereum", "curve", "view_pools", "view"]
+    description: >
+      view details of pools for Curve.fi on Ethereum
+    columns:
+      - *version_pool
+      - *name
+      - *symbol
+      - *pool_address
+      - name: decoded
+        description: "Whether the contract for the pool is decoded on Dune or not"
+      - name: dune_namespace
+        description: "Namespace for the decoded contract on Dune"
+      - name: dune_table_name
+        description: "Table name for the decoded contract on Dune"
+      - name: amplification_param
+        description: "Amplification Parameter for Factory pools: [4,000 to 4,000,000,000] Larger value of A make the curve better resemble a straight line in the center (when pool is near balance).  Highly volatile assets should use a lower value, while assets that are closer together may be best with a higher value."
+      - name: mid_fee
+        description: "Mid Fee: [.005 to 100] Percentage.  Fee when the pool is maximally balanced.  This is the minimum fee."
+      - name: out_fee
+        description: "Out Fee: [Mid Fee to 100] Fee when the pool is imbalanced.  Must be larger than the Mid Fee and represents the maximum fee."
+      - *token_address
+      - *deposit_contract
+      - *coin0
+      - *coin1
+      - *coin2
+      - *coin3
+      - *undercoin0
+      - *undercoin1
+      - *undercoin2
+      - *undercoin3
+      - name: coins 
+        description: "All of the coins aggregated into an array, useful for exchange trades"
+      - name: undercoins 
+        description: "All of the undercoins aggregated into an array, useful for exchange_underlying trades"
+      - *gauge_contract

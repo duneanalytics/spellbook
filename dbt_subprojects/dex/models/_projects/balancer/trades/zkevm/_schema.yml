@@ -1,0 +1,106 @@
+version: 2
+
+models:
+  - name: balancer_zkevm_trades
+    meta:
+      blockchain: zkevm
+      sector: dex
+      contributors: bizzyvinci, viniabussafi
+    config:
+      tags: ['balancer', 'zkevm', 'amm', 'trades', 'dex']
+    description: >
+      DEX trades on balancer on zkevm
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &project
+        name: project
+        description: "Project name (balancer)"
+      - &version
+        name: version
+        description: "Version of the project"
+      - &block_month
+        name: block_month
+        description: "Block month in UTC"
+      - &block_date
+        name: block_date
+        description: "Block date in UTC"
+      - &block_time
+        name: block_time
+        description: 'Block time in UTC'
+      - &block_number
+        name: block_number
+        description: 'Block number'
+      - &token_bought_symbol
+        name: token_bought_symbol
+        description: "Token symbol for token bought in the trade"
+      - &token_sold_symbol
+        name: token_sold_symbol
+        description: "Token symbol for token sold in the trade"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for each token involved in the trade"
+      - &token_bought_amount
+        name: token_bought_amount
+        description: "Value of the token bought at time of execution in the original currency"
+      - &token_sold_amount
+        name: token_sold_amount
+        description: "Value of the token sold at time of execution in the original currency"
+      - &token_bought_amount_raw
+        name: token_bought_amount_raw
+        description: "Raw value of the token bought at time of execution in the original currency"
+      - &token_sold_amount_raw
+        name: token_sold_amount_raw
+        description: "Raw value of the token sold at time of execution in the original currency"
+      - &amount_usd
+        name: amount_usd
+        description: "USD value of the trade at time of execution"
+      - &token_bought_address
+        name: token_bought_address
+        description: "Contract address of the token bought"
+      - &token_sold_address
+        name: token_sold_address
+        description: "Contract address of the token sold"
+      - &taker
+        name: taker
+        description: "Address of trader who purchased a token"
+      - &maker
+        name: maker
+        description: "Address of trader who sold a token"
+      - &pool_id
+        name: pool_id
+        description: "Unique encoded identifier that refers to each pool"
+      - &swap_fee
+        name: swap_fee
+        description: 'Swap fee'
+      - &project_contract_address
+        name: project_contract_address
+        description: "Pool address"
+      - &pool_symbol
+        name: pool_symbol
+        description: "Token symbols, followed by their respective weights, if applicable"
+      - &pool_type
+        name: pool_type
+        description: "Pool attributes, determined by the pool's factory"
+      - &tx_hash
+        name: tx_hash
+        description: "Tx. Hash"
+      - &tx_from
+        name: tx_from
+        description: "transaction.from"
+      - &tx_to
+        name: tx_to
+        description: "transaction.to"
+      - &evt_index
+        name: evt_index
+        description: 'Event index'

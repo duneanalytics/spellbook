@@ -1,0 +1,624 @@
+version: 2
+
+models:
+  - name: dex_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      contributors: ["whale_hunter", "hosuke"]
+    config:
+      tags: ["solana", "dex", "bot", "trades"]
+      description: >
+        Trades by trading bots on Solana
+      columns:
+        - &bot
+          name: bot
+          description: "Trading bot which executed the trade"
+        - &blockchain
+          name: blockchain
+          description: "Blockchain which the DEX is deployed"
+        - &block_time
+          name: block_time
+          description: "UTC event block time of each DEX trade"
+        - &block_date
+          name: block_date
+          description: "UTC event block date of each DEX trade"
+        - &block_month
+          name: block_month
+          description: "UTC event block month of each DEX trade"
+        - &amount_usd
+          name: amount_usd
+          description: "USD value of the trade at time of execution"
+        - &type
+          name: type
+          description: "Wether the trade is a buy or sell"
+        - &token_bought_amount
+          name: token_bought_amount
+          description: "Value of the token bought at time of execution in the original currency"
+        - &token_bought_symbol
+          name: token_bought_symbol
+          description: "Token symbol for token bought in the trade"
+        - &token_bought_address
+          name: token_bought_address
+          description: "Contract address of the token bought"
+        - &token_sold_amount
+          name: token_sold_amount
+          description: "Value of the token sold at time of execution in the original currency"
+        - &token_sold_symbol
+          name: token_sold_symbol
+          description: "Token symbol for token sold in the trade"
+        - &token_sold_address
+          name: token_sold_address
+          description: "Contract address of the token sold"
+        - &fee_usd
+          name: fee_usd
+          description: "USD value of the fee at time of execution"
+        - &fee_token_amount
+          name: fee_token_amount
+          description: "Value of the fee paid at time of execution in the original currency"
+        - &fee_token_symbol
+          name: fee_token_symbol
+          description: "Token symbol for fee token"
+        - &fee_token_address
+          name: fee_token_address
+          description: "Contract address of the fee token"
+        - &project
+          name: project
+          description: "Project name of the DEX"
+        - &version
+          name: version
+          description: "Version of the contract built and deployed by the DEX project"
+        - &token_pair
+          name: token_pair
+          description: "Token symbol pair for each token involved in the trade"
+        - &project_contract_address
+          name: project_contract_address
+          description: "Project contract address which executed the trade on the blockchain"
+        - &user
+          name: user
+          description: "Address which initiated the trade"
+        - &tx_id
+          name: tx_id
+          description: "Unique transaction hash value tied to each transaction on the DEX"
+        - &tx_index
+          name: tx_index
+          description: "Index of the corresponding trade event"
+        - &outer_instruction_index
+          name: outer_instruction_index
+          description: "Index of the outer instruction in the transaction"
+        - &inner_instruction_index
+          name: inner_instruction_index
+          description: "Index of the inner instruction in the transaction"
+        - &is_last_trade_in_transaction
+          name: is_last_trade_in_transaction
+          description: "Wether the trade is the last hop of the trade transaction, in case of a multi-hop trade"
+
+  - name: bonkbot_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: bonkbot
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "bonkbot", "trades"]
+    description: >
+      Bonkbot trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('bonkbot_solana_trades_seed')
+          blockchain: solana
+
+  - name: trojan_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: trojan
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "bot", "trojan", "trades"]
+    description: >
+      Trojan trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('trojan_solana_trades_seed')
+          blockchain: solana
+
+  - name: banana_gun_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: banana_gun
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "banana_gun", "trades"]
+    description: >
+      Banana Gun trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('banana_gun_solana_trades_seed')
+          blockchain: solana
+
+  - name: sol_trading_bot_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: sol_trading_bot
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "soltradingbot", "trades"]
+    description: >
+      Sol Trading Bot trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('sol_trading_bot_solana_trades_seed')
+          blockchain: solana
+
+  - name: pepe_boost_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: pepe_boost
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "pepeboost", "trades"]
+    description: >
+      Pepe Boost trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('pepe_boost_solana_trades_seed')
+          blockchain: solana
+
+  - name: maestro_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: maestro
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "maestro", "trades"]
+    description: >
+      Maestro trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('maestro_solana_trades_seed')
+          blockchain: solana
+
+  - name: shuriken_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: shuriken
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "shuriken", "trades"]
+    description: >
+      Shuriken trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('shuriken_solana_trades_seed')
+          blockchain: solana
+
+  - name: magnum_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: magnum
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "magnum", "trades"]
+    description: >
+      Magnum trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('magnum_solana_trades_seed')
+          blockchain: solana
+
+  - name: readyswap_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: readyswap
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "readyswap", "trades"]
+    description: >
+      Readyswap trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('readyswap_solana_trades_seed')
+          blockchain: solana
+
+  - name: sol_gun_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: sol_gun
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "solgun", "trades"]
+    description: >
+      SolGun trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('sol_gun_solana_trades_seed')
+          blockchain: solana
+
+  - name: looter_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: looter
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "looter", "trades"]
+    description: >
+      Looter trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('looter_solana_trades_seed')
+          blockchain: solana
+
+  - name: consortium_key_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: consortium_key
+      contributors: clizzard
+    config:
+      tags: ["solana", "dex", "consortium_key", "trades"]
+    description: >
+      Consortium Key trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('consortium_key_solana_trades_seed')
+          blockchain: solana
+
+  - name: wifbot_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: wifbot
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "wifbot", "trades"]
+    description: >
+      Wifbot trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('wifbot_solana_trades_seed')
+          blockchain: solana
+
+  - name: soul_sniper_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: soul_sniper
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "soul_sniper", "trades"]
+    description: >
+      Soul Sniper trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('soul_sniper_solana_trades_seed')
+          blockchain: solana
+
+  - name: consortium_key_solana_bot_users
+    meta:
+      blockchain: solana
+      sector: dex
+      project: consortium_key
+      contributors: whale_hunter
+    description: >
+      consortium_key users on Solana
+    config:
+      tags: ["solana", "dex", "bot_trades"]
+      columns:
+        - name: user
+          data_tests: unique
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user
+
+  - name: soul_sniper_solana_bot_users
+    meta:
+      blockchain: solana
+      sector: dex
+      project: soul_sniper
+      contributors: whale_hunter
+    description: >
+      soul_sniper users on Solana
+    config:
+      tags: ["solana", "dex", "bot_trades"]
+      columns:
+        - name: user
+          data_tests: unique
+
+  - name: tirador_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: tirador
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "tirador", "trades"]
+    description: >
+      Tirador trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('tirador_solana_trades_seed')
+          blockchain: solana
+          
+  - name: unibot_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: unibot
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "unibot", "trades"]
+    description: >
+      Unibot trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('unibot_solana_trades_seed')
+          blockchain: solana
+
+  - name: mev_x_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: mev_x
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "mev_x", "trades"]
+    description: >
+      MevX trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('mev_x_solana_trades_seed')
+          blockchain: solana
+          
+  - name: alpha_dex_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: alpha_dex
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "alpha_dex", "trades"]
+    description: >
+      Alpha Dex trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('alpha_dex_solana_trades_seed')
+          blockchain: solana
+
+  - name: alpha_dex_solana_bot_users
+    meta:
+      blockchain: solana
+      sector: dex
+      project: alpha_dex
+      contributors: whale_hunter
+    description: >
+      alpha_dex users on Solana
+    config:
+      tags: ["solana", "dex", "bot_trades"]
+      columns:
+        - name: user
+          data_tests: unique
+
+  - name: jupbot_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: jupbot
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "jupbot", "trades"]
+    description: >
+      Jupbot trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('jupbot_solana_trades_seed')
+          blockchain: solana
+
+  - name: pinkpunk_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: pinkpunk
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "pinkpunk", "trades"]
+    description: >
+      Pinkpunk trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('pinkpunk_solana_trades_seed')
+          blockchain: solana
+          
+  - name: falcon_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: falcon
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "falcon", "trades"]
+    description: >
+      Falcon trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('falcon_solana_trades_seed') 
+          blockchain: solana
+
+  - name: bloom_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: bloom
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "bloom", "trades"]
+    description: >
+      Bloom trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('bloom_solana_trades_seed')
+          blockchain: solana

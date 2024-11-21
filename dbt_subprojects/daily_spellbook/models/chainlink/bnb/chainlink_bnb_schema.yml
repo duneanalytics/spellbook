@@ -1,0 +1,1633 @@
+version: 2
+
+models:
+  - name: chainlink_bnb_price_feeds
+    meta:
+      blockchain: bnb
+      project: chainlink
+      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
+    config:
+      tags: ["bnb", "chainlink", "oracle"]
+    description: >
+      Table pulling price updates for known Chainlink oracle addresses
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_time
+        name: block_time
+        description: "Block time"
+      - &block_date
+        name: block_date
+        description: "Block time truncated to date"
+      - &block_month
+        name: block_month
+        description: "Block time truncated to month"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &feed_name
+        name: feed_name
+        description: "Feed name from Chainlink docs"
+      - &oracle_price
+        name: oracle_price
+        description: "Price returned by Chainlink oracle update"
+      - &proxy_address
+        name: proxy_address
+        description: "Address of the proxy contract for the Chainlink oracle"
+      - &aggregator_address
+        name: aggregator_address
+        description: "Address of the aggregator contract tied to the proxy for the Chainlink oracle (via Read Contract)"
+      - &base
+        name: base
+        description: "Base token of the pair"
+      - &quote
+        name: quote
+        description: "Quote token of the pair"
+      - &underlying_token_price
+        name: underlying_token_price
+        description: "Price of the underlying token, with extra decimal adjustments if needed"
+
+  - name: chainlink_bnb_price_feeds_hourly
+    meta:
+      blockchain: bnb
+      project: chainlink
+      contributors: ["msilb7", "0xroll", "linkpool_ryan"]
+    config:
+      tags: ["bnb", "chainlink", "oracle"]
+    description: >
+      Table pulling price updates for known Chainlink oracle addresses, truncated to hourly average price for easier joining with other on-chain tables.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - hour
+            - proxy_address
+            - aggregator_address
+    columns:
+      - *blockchain
+      - &hour
+        name: hour
+        description: "Block time of the oracle update - truncated to hour"
+      - *block_date
+      - *block_month
+      - *feed_name
+      - *oracle_price
+      - *proxy_address
+      - *aggregator_address
+      - *base
+      - *quote
+      - *underlying_token_price
+
+  - name: chainlink_bnb_price_feeds_oracle_addresses
+    meta:
+      blockchain: bnb
+      project: chainlink
+      contributors: ["msilb7", "0xroll", "linkpool_ryan", "linkpool_jon"]
+    config:
+      tags: ["bnb", "chainlink", "oracle"]
+    description: >
+      Manually updated table for mapping chainlink feeds to proxy addresses and the aggregator addresses (where updates read to)
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - proxy_address
+            - aggregator_address
+    columns:
+      - *blockchain
+      - *feed_name
+      - &decimals
+        name: decimals
+        description: "Decimal adjustment for the oracle answer"
+      - *proxy_address
+      - *aggregator_address
+
+  - name: chainlink_bnb_ocr_gas_transmission_logs
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "gas", "transmission", "logs", "bnb"]
+    description: >
+      Chainlink OCR Gas Transmission Logs
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - tx_index
+    columns:
+      - *blockchain
+      - &block_hash
+        name: block_hash
+        description: "Block Hash"
+      - &contract_address
+        name: contract_address
+        description: "Contract Address"
+      - &data
+        name: data
+        description: "Data"
+      - &topic0
+        name: topic0
+        description: "Topic 0"
+      - &topic1
+        name: topic1
+        description: "Topic 1"
+      - &topic2
+        name: topic2
+        description: "Topic 2"
+      - &topic3
+        name: topic3
+        description: "Topic 3"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction Hash"
+      - *block_number
+      - *block_time
+      - &index
+        name: index
+        description: "Index"
+      - &tx_index
+        name: tx_index
+        description: "Transaction Index"
+
+  - name: chainlink_bnb_ocr_fulfilled_transactions
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "fulfilled", "transactions", "bnb"]
+    description: >
+      Chainlink OCR Fulfilled Transactions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - &date_month
+        name: date_month
+        description: "Date truncated by month"
+      - &node_address
+        name: node_address
+        description: "Node Address"
+      - &token_amount
+        name: token_amount
+        description: "Token Amount"
+      - &usd_amount
+        name: usd_amount
+        description: "USD Amount"
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_bnb_ocr_reverted_transactions
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "reverted", "transactions", "bnb"]
+    description: >
+      Chainlink OCR Reverted Transactions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_bnb_ocr_gas_daily
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "gas", "daily", "bnb"]
+    description: >
+      Chainlink OCR Gas Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - &date_start
+        name: date_start
+        description: "Date Start"
+      - *date_month
+      - *node_address
+      - &operator_name
+        name: operator_name
+        description: "Operator Name"
+      - &fulfilled_token_amount
+        name: fulfilled_token_amount
+        description: "Fulfilled Token Amount"
+      - &fulfilled_usd_amount
+        name: fulfilled_usd_amount
+        description: "Fulfilled USD Amount"
+      - &reverted_token_amount
+        name: reverted_token_amount
+        description: "Reverted Token Amount"
+      - &reverted_usd_amount
+        name: reverted_usd_amount
+        description: "Reverted USD Amount"
+      - &total_token_amount
+        name: total_token_amount
+        description: "Total Token Amount"
+      - &total_usd_amount
+        name: total_usd_amount
+        description: "Total USD Amount"
+
+  - name: chainlink_bnb_ocr_request_daily
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "request", "daily", "bnb"]
+    description: >
+      Chainlink OCR Request Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - &fulfilled_requests
+        name: fulfilled_requests
+        description: "Fulfilled Requests"
+      - &reverted_requests
+        name: reverted_requests
+        description: "Reverted Requests"
+      - &total_requests
+        name: total_requests
+        description: "Total Requests"
+
+  - name: chainlink_bnb_ocr_reward_transmission_logs
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "reward", "transmission", "logs", "bnb"]
+    description: >
+      Chainlink OCR Reward Transmission Logs
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+
+  - name: chainlink_bnb_ocr_reward_evt_transfer
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "reward", "evt", "transfer", "bnb"]
+    description: >
+      Chainlink OCR Reward Event Transfers
+    columns:
+      - *blockchain
+      - &evt_block_time
+        name: evt_block_time
+        description: "Event Block Time"
+      - &admin_address
+        name: admin_address
+        description: "Admin Address"
+      - *operator_name
+      - &token_value
+        name: token_value
+        description: "Token Value"
+
+  - name: chainlink_bnb_ocr_reward_evt_transfer_daily
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "reward", "evt", "transfer", "daily", "bnb"]
+    description: >
+      Chainlink OCR Reward Event Transfers Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_bnb_ocr_reward_daily
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_ryan
+    config:
+      tags: ["chainlink", "ocr", "reward", "daily", "bnb"]
+    description: >
+      Chainlink OCR Reward Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_bnb_fm_gas_daily
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "gas", "daily", "bnb"]
+    description: >
+      Chainlink FM Gas Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_token_amount
+      - *fulfilled_usd_amount
+      - *reverted_token_amount
+      - *reverted_usd_amount
+      - *total_token_amount
+      - *total_usd_amount
+
+  - name: chainlink_bnb_fm_gas_submission_logs
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "gas", "submission", "logs", "bnb"]
+    description: >
+      Chainlink FM Gas Transmission Logs
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+
+  - name: chainlink_bnb_fm_fulfilled_transactions
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "fulfilled", "transactions", "bnb"]
+    description: >
+      Chainlink FM Fulfilled Transactions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_bnb_fm_request_daily
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "request", "daily", "bnb"]
+    description: >
+      Chainlink FM Request Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_requests
+      - *reverted_requests
+      - *total_requests
+
+  - name: chainlink_bnb_fm_reverted_transactions
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reverted", "transactions", "bnb"]
+    description: >
+      Chainlink FM Reverted Transactions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_bnb_fm_reward_daily
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reward", "daily", "bnb"]
+    description: >
+      Chainlink FM Reward Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_bnb_fm_reward_evt_transfer
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reward", "evt", "transfer", "bnb"]
+    description: >
+      Chainlink FM Reward Event Transfers
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - *admin_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_bnb_fm_reward_evt_transfer_daily
+    meta:
+      blockchain: bnb
+      sector: chainlink
+      contributors: linkpool_jon
+    config:
+      tags: ["chainlink", "fm", "reward", "evt", "transfer", "daily", "bnb"]
+    description: >
+      Chainlink FM Reward Event Transfers Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - admin_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *admin_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_bnb_automation_fulfilled_transactions
+    meta:
+      blockchain: "bnb"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "fulfilled", "transactions", "bnb"]
+    description: >
+      Chainlink Automation Fulfilled Transactions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_bnb_automation_gas_daily
+    meta:
+      blockchain: "bnb"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "gas", "daily", "bnb"]
+    description: >
+      Chainlink Automation Gas Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_token_amount
+      - *fulfilled_usd_amount
+      - *reverted_token_amount
+      - *reverted_usd_amount
+      - *total_token_amount
+      - *total_usd_amount
+
+  - name: chainlink_bnb_automation_upkeep_performed_logs
+    meta:
+      blockchain: "bnb"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "upkeep", "performed", "logs", "bnb"]
+    description: >
+      Chainlink Automation Gas Submission Logs
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - &tx_from
+        name: tx_from
+        description: "Transaction From"
+
+  - name: chainlink_bnb_automation_request_daily
+    meta:
+      blockchain: "bnb"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "request", "daily", "bnb"]
+    description: >
+      Chainlink Automation Request Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_requests
+      - *reverted_requests
+      - *total_requests
+
+  - name: chainlink_bnb_automation_reverted_transactions
+    meta:
+      blockchain: "bnb"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "reverted", "transactions", "bnb"]
+    description: >
+      Chainlink Automation Reverted Transactions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_bnb_automation_reward_daily
+    meta:
+      blockchain: "bnb"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "reward", "daily", "bnb"]
+    description: >
+      Chainlink Automation Reward Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - keeper_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &keeper_address
+        name: keeper_address
+        description: "Keeper Address"
+      - *operator_name
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_bnb_automation_performed
+    meta:
+      blockchain: "bnb"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "performed", "bnb"]
+    description: >
+      Chainlink Automation Performed
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - *keeper_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_bnb_automation_performed_daily
+    meta:
+      blockchain: "bnb"
+      sector: oracle
+      project: chainlink
+      contributors: "linkpool_jon"
+    config:
+      tags: ["chainlink", "automation", "performed", "daily", "bnb"]
+    description: >
+      Chainlink Automation Performed Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - keeper_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *keeper_address
+      - *operator_name
+      - *token_value
+
+  - name: chainlink_bnb_vrf_fulfilled_transactions
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "fulfilled", "transactions", "bnb"]
+    description: >
+      Chainlink VRF Fulfilled Transactions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_bnb_vrf_gas_daily
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "gas", "daily", "bnb"]
+    description: >
+      Chainlink VRF Gas Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *fulfilled_token_amount
+      - *fulfilled_usd_amount
+      - *reverted_token_amount
+      - *reverted_usd_amount
+      - *total_token_amount
+      - *total_usd_amount
+
+  - name: chainlink_bnb_vrf_v1_random_fulfilled_logs
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "v1", "random", "fulfilled", "logs", "bnb"]
+    description: >
+      Chainlink VRF V1 Randomness Fulfilled Logs
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - *tx_from
+
+  - name: chainlink_bnb_vrf_v1_random_request_logs
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "v1", "random", "request", "logs", "bnb"]
+    description: >
+      Chainlink VRF V1 Randomness Requested Logs
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+
+  - name: chainlink_bnb_vrf_v2_random_fulfilled_logs
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "v2", "random", "fulfilled", "logs", "bnb"]
+    description: >
+      Chainlink VRF V2 Randomness Fulfilled Logs
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - *tx_from
+
+  - name: chainlink_bnb_vrf_request_daily
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "request", "daily", "bnb"]
+    description: >
+      Chainlink VRF Request Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *fulfilled_requests
+      - *reverted_requests
+      - *total_requests
+
+  - name: chainlink_bnb_vrf_reverted_transactions
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "reverted", "transactions", "bnb"]
+    description: >
+      Chainlink Automation Reverted Transactions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_bnb_vrf_reward_daily
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "reward", "daily", "bnb"]
+    description: >
+      Chainlink VRF Reward Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - operator_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &operator_address
+        name: operator_address
+        description: "Operator Address"
+      - *token_amount
+      - *usd_amount
+
+  - name: chainlink_bnb_vrf_request_fulfilled
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "request", "fulfilled", "bnb"]
+    description: >
+      Chainlink VRF Request Fulfilled
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - *operator_address
+      - *token_value
+
+  - name: chainlink_bnb_vrf_request_fulfilled_daily
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "vrf", "request", "fulfilled", "daily", "bnb"]
+    description: >
+      Chainlink VRF Request Fulfilled Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - operator_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *operator_address
+      - *token_value
+
+  - name: chainlink_bnb_read_requests_feeds_daily
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "read", "requests", "feeds", "daily", "bnb"]
+    description: >
+      Chainlink Read Requests Feeds Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - feed_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &feed_address
+        name: feed_address
+        description: "Feed Address"
+      - *feed_name
+      - *total_requests
+
+  - name: chainlink_bnb_read_requests_feeds
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "read", "requests", "feeds", "bnb"]
+    description: >
+      Chainlink Read Requests Feeds
+    columns:
+      - *blockchain
+      - *date_start
+      - *feed_name
+      - *feed_address
+
+  - name: chainlink_bnb_read_requests_logs
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "read", "requests", "logs", "bnb"]
+    description: >
+      Chainlink Read Requests Logs
+    columns:
+      - *blockchain
+      - *block_hash
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - &from
+        name: from
+        description: "From"
+      - &to
+        name: to
+        description: "To"
+      - &input
+        name: input
+        description: "Input"
+      - &output
+        name: output
+        description: "Output"
+
+  - name: chainlink_bnb_read_requests_requester_daily
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "read", "requests", "requester", "daily", "bnb"]
+    description: >
+      Chainlink Read Requests Requester Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - requester_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - &requester_address
+        name: requester_address
+        description: "Requester Address"
+      - &requester_name
+        name: requester_name
+        description: "Requester Name"
+      - *total_requests
+
+  - name: chainlink_bnb_read_requests_requester
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "read", "requests", "requester", "bnb"]
+    description: >
+      Chainlink Read Requests Requester
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *feed_address
+      - *feed_name
+      - *requester_address
+      - *requester_name
+
+  - name: chainlink_bnb_ccip_fulfilled_transactions
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "fulfilled", "transactions", "bnb"]
+    description: >
+      Chainlink CCIP Fulfilled Transactions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - caller_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_start
+      - *tx_hash
+      - &caller_address
+        name: caller_address
+        description: "Caller Address"
+      - *tx_index
+
+  - name: chainlink_bnb_ccip_gas_daily
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "gas", "daily", "bnb"]
+    description: >
+      Chainlink CCIP Gas Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - node_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *node_address
+      - *operator_name
+      - *fulfilled_token_amount
+      - *fulfilled_usd_amount
+      - *reverted_token_amount
+      - *reverted_usd_amount
+      - *total_token_amount
+      - *total_usd_amount
+
+  - name: chainlink_bnb_ccip_request_daily
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "request", "daily", "bnb"]
+    description: >
+      Chainlink CCIP Request Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *fulfilled_requests
+      - *reverted_requests
+      - *total_requests
+
+  - name: chainlink_bnb_ccip_reverted_transactions
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "reverted", "transactions", "bnb"]
+    description: >
+      Chainlink CCIP Reverted Transactions
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - caller_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_start
+      - *caller_address
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_bnb_ccip_reward_daily
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "reward", "daily", "bnb"]
+    description: >
+      Chainlink CCIP Reward Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - token
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *token_amount
+      - *usd_amount
+      - &token
+        name: token
+        description: "Token"
+
+  - name: chainlink_bnb_ccip_send_requested
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "send", "requested", "bnb"]
+    description: >
+      Chainlink CCIP Send Requested
+    columns:
+      - *blockchain
+      - *evt_block_time
+      - &fee_amount
+        name: fee_amount
+        description: "Fee Amount"
+      - *token
+      - &destination_blockchain
+        name: destination_blockchain
+        description: "Destination Blockchain"
+      - &destination_chain_selector
+        name: destination_chain_selector
+        description: "Destination Chain Selector"
+      - *tx_hash
+
+  - name: chainlink_bnb_ccip_send_requested_daily
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "send", "requested", "daily", "bnb"]
+    description: >
+      Chainlink CCIP Send Requested Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - date_start
+            - token
+            - destination_blockchain
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *fee_amount
+      - *token
+      - *destination_blockchain
+      - &count
+        name: count
+        description: "Count"
+
+  - name: chainlink_bnb_ccip_send_traces
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "send", "traces", "bnb"]
+    description: >
+      Chainlink CCIP Send Traces
+    columns:
+      - *blockchain
+      - *block_hash
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *from
+      - *to
+      - *input
+      - *output
+      - &tx_success
+        name: tx_success
+        description: "Transaction Success"
+      - &value
+        name: value
+        description: "Value"
+      - &chain_selector
+        name: chain_selector
+        description: "Chain Selector"
+      - &destination
+        name: destination
+        description: "Destination"
+      - &trace_address
+        name: trace_address
+        description: "Trace Address"
+
+  - name: chainlink_bnb_ccip_tokens_transferred_logs
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "tokens", "transferred", "logs", "bnb"]
+    description: >
+      Chainlink CCIP Tokens Transferred Logs
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - &total_tokens
+        name: total_tokens
+        description: "Total Tokens"
+
+  - name: chainlink_bnb_ccip_tokens_transferred
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "tokens", "transferred", "bnb"]
+    description: >
+      Chainlink CCIP Tokens Transferred
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - total_tokens
+            - token_symbol
+    columns:
+      - *blockchain
+      - *block_time
+      - *total_tokens
+      - *destination_blockchain
+      - *token
+      - &token_symbol
+        name: token_symbol
+        description: "Token Symbol"
+      - &token_price
+        name: token_price
+        description: "Token Price"
+
+  - name: chainlink_bnb_ccip_transmitted_fulfilled
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "transmitted", "fulfilled", "bnb"]
+    description: >
+      Chainlink CCIP Transmitted Fulfilled
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_bnb_ccip_transmitted_reverted
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "transmitted", "reverted", "bnb"]
+    description: >
+      Chainlink CCIP Transmitted Reverted
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - node_address
+    columns:
+      - *blockchain
+      - *block_time
+      - *date_month
+      - *node_address
+      - *token_amount
+      - *usd_amount
+      - *tx_hash
+      - *tx_index
+
+  - name: chainlink_bnb_ccip_transmitted_logs
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "transmitted", "logs", "bnb"]
+    description: >
+      Chainlink CCIP Transmitted Logs
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+
+  - name: chainlink_bnb_ccip_nop_paid_logs
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "nop", "paid", "logs", "bnb"]
+    description: >
+      Chainlink CCIP Nop Paid Logs
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - &nop_address
+        name: nop_address
+        description: "Nop Address"
+      - *total_tokens
+
+  - name: chainlink_bnb_ccip_nop_reward_daily
+    meta:
+      blockchain: "bnb"
+
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "nop", "reward", "daily", "bnb"]
+    description: >
+      Chainlink CCIP Nop Reward Daily
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - date_start
+            - nop_address
+    columns:
+      - *blockchain
+      - *date_start
+      - *date_month
+      - *token_amount
+      - *usd_amount
+      - *operator_name
+      - *nop_address
+
+  - name: chainlink_bnb_ccip_send_requested_logs_v1
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "send", "requested", "logs", "bnb"]
+    description: >
+      Chainlink CCIP Send Requested Logs v1
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - &fee_token_amount
+        name: fee_token_amount
+        description: "Fee Token Amount"
+      - &origin_selector
+        name: origin_selector
+        description: "Origin Selector"
+      - &fee_token
+        name: fee_token
+        description: "Fee Token"
+      - &destination_selector
+        name: destination_selector
+        description: "Destination Selector"
+      - *destination_blockchain
+
+  - name: chainlink_bnb_ccip_send_requested_logs_v1_2
+    meta:
+      blockchain: "bnb"
+      project: chainlink
+      contributors: ["linkpool_jon"]
+    config:
+      tags: ["chainlink", "ccip", "send", "requested", "logs", "bnb"]
+    description: >
+      Chainlink CCIP Send Requested Logs v1_2
+    columns:
+      - *blockchain
+      - *block_hash
+      - *contract_address
+      - *data
+      - *topic0
+      - *topic1
+      - *topic2
+      - *topic3
+      - *tx_hash
+      - *block_number
+      - *block_time
+      - *index
+      - *tx_index
+      - *fee_token_amount
+      - *origin_selector
+      - *fee_token
+      - *destination_selector
+      - *destination_blockchain

@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: synthetix_v3_base
+    description: "Synthetix V3 Base Decoded Events"
+    tables:
+      - name: PerpsMarket_evt_AccountCreated
+      - name: PerpsMarket_evt_MarketCreated
+      - name: PerpsMarket_evt_MarketUpdated
+      - name: PerpsMarket_evt_OrderSettled

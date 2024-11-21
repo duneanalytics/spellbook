@@ -1,0 +1,204 @@
+version: 2
+
+models:
+  - name: eas_schemas
+    meta:
+      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo, linea, nova
+      sector: attestation
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas' ]
+    description: "EAS schema registry"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - schema_uid
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain where EAS is deployed"
+        data_tests:
+          - not_null
+      - &project
+        name: project
+        description: "Project name"
+        data_tests:
+          - not_null
+      - &version
+        name: version
+        description: "Version of the EAS contract"
+        data_tests:
+          - not_null
+      - &schema_uid
+        name: schema_uid
+        description: "Schema unique identifier"
+        data_tests:
+          - not_null
+      - &registerer
+        name: registerer
+        description: "Wallet address that created the Schema"
+      - &resolver
+        name: resolver
+        description: "Optional contract assigned to the Schema for more complex use cases"
+      - &schema
+        name: schema
+        description: "ABI encoded Schema field types"
+      - &schema_array
+        name: schema_array
+        description: "Array of 2-element arrays representing Schmea pairs: [[data_type,field_name],[...]]"
+      - &is_revocable
+        name: is_revocable
+        description: "Is attestation against this Schema revocable?"
+      - &contract_address
+        name: contract_address
+        description: "EAS deployed contract address"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding transaction event"
+
+  - name: eas_schema_details
+    meta:
+      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo, linea, nova
+      sector: attestation
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas' ]
+    description: "EAS schema registry details"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - schema_uid
+            - ordinality
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *schema_uid
+      - &ordinality
+        name: ordinality
+        description: "Incremental unique number to order fields within each Schema"
+        data_tests:
+          - not_null
+      - &data_type
+        name: data_type
+        description: "Schema field data type. Schemas follow Solidity ABI for acceptable data types."
+      - &field_name
+        name: field_name
+        description: "Name of Schema field"
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *evt_index
+
+  - name: eas_attestations
+    meta:
+      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo, linea, nova
+      sector: attestation
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas' ]
+    description: "EAS attestations"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - schema_uid
+            - attestation_uid
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *schema_uid
+      - &attestation_uid
+        name: attestation_uid
+        description: "Attestation unique identifier"
+        data_tests:
+          - not_null
+      - &attester
+        name: attester
+        description: "Address that made the Attestation"
+      - &recipient
+        name: recipient
+        description: "Optional recipient of the Attestation that was made"
+      - &request
+        name: request
+        description: "Attestation JSON request"
+      - *is_revocable
+      - &ref_uid
+        name: ref_uid
+        description: "Optional Attestation that this Attestation is referencing"
+      - &raw_data
+        name: raw_data
+        description: "ABI encoded data for the Attestation"
+      - &raw_value
+        name: raw_value
+        description: "uint256 value to pass to the resolver"
+      - &expiration_time
+        name: expiration_time
+        description: "Optional date that the Attestation will expire if provided by the attestor"
+      - &revocation_time
+        name: revocation_time
+        description: "Time at which the attestation was revoked (if any)"
+      - &attestation_state
+        name: attestation_state
+        description: "Attestation state: valid or revoked"
+      - &is_revoked
+        name: is_revoked
+        description: "Is this Attestation revoked?"
+      - *contract_address
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *evt_index
+
+  - name: eas_attestation_details
+    meta:
+      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo, linea, nova
+      sector: attestation
+      contributors: tomfutago
+    config:
+      tags: [ 'attestation', 'eas' ]
+    description: "EAS attestation details"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - schema_uid
+            - attestation_uid
+            - ordinality
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *schema_uid
+      - *attestation_uid
+      - *ordinality
+      - *data_type
+      - *field_name
+      - &decoded_data
+        name: decoded_data
+        description: "Decoded data chunk (if successful otherwise blank) related to data_type/field_name pair"
+      - *is_revoked
+      - *block_number
+      - *block_time
+      - *tx_hash
+      - *evt_index

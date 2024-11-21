@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: curvefi_optimism
+    description: "decoded events and function calls for curve.fi on optimism"
+    tables:
+      - name: PoolFactory_call_deploy_plain_pool
+      - name: PoolFactory_evt_MetaPoolDeployed
+      - name: StableSwap_call_coins
+      - name: Vyper_contract_evt_DeployedGauge
+      - name: PoolFactory_evt_LiquidityGaugeDeployed
+      - name: CurveStableswapFactoryNG_call_deploy_plain_pool

@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: vela_arbitrum
+    description: arbitrum decoded tables related to Vela Exchange Protocol
+    tables:
+      - name: VaultUtils_evt_IncreasePosition
+      - name: VaultUtils_evt_DecreasePosition
+      - name: VaultUtils_evt_LiquidatePosition

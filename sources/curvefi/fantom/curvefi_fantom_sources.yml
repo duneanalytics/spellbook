@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: curvefi_fantom
+    description: "decoded events for curvefi on fantom"
+    tables:
+      - name: StableSwap_Factory_evt_BasePoolAdded
+      - name: StableSwap_Factory_call_deploy_plain_pool
+      - name: StableSwap_Factory_call_deploy_metapool

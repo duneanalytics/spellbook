@@ -1,0 +1,115 @@
+version: 2
+
+models:
+  - name: tokens_gnosis_base_transfers
+    description: "Basic token transfer records on the Gnosis blockchain."
+    meta:
+      blockchain: gnosis
+      sector: tokens
+      contributors: ['aalan3', 'jeff-dude', 'hdser']
+    config:
+      tags: ['tokens', 'base', 'transfers', 'gnosis']
+    columns: &base_columns
+      - name: unique_key
+        description: "Surrogate key to identify unique row."
+      - name: blockchain
+        description: "The blockchain where the transfer occurred."
+      - name: block_date
+        description: "The date of the block in which the transfer was recorded."
+      - name: block_time
+        description: "The exact time when the block was mined."
+      - name: block_number
+        description: "The number of the block in the blockchain."
+      - name: tx_hash
+        description: "The hash of the transaction."
+      - name: evt_index
+        description: "The log event index of the transfer if any."
+      - name: trace_address
+        description: "The trace address of the transfer if any."
+      - name: token_standard
+        description: "The token standard of the transfer."
+      - name: tx_from
+        description: "The transaction sender."
+      - name: tx_to
+        description: "The transaction receiver."
+      - name: tx_index
+        description: "The transaction index."
+      - name: from
+        description: "The sender of the transfer."
+      - name: to
+        description: "The receiver of the transfer."
+      - name: contract_address
+        description: "The contract address of the transfer."
+      - name: amount_raw
+        description: "The raw amount of the transfer."
+
+  - name: tokens_gnosis_transfers
+    description: "All token transfers on the Gnosis blockchain, enriched with additional data."
+    meta:
+      blockchain: gnosis
+      sector: tokens
+      contributors: ['aalan3', 'jeff-dude', 'hdser']
+    config:
+      tags: ['tokens', 'transfers', 'gnosis']
+    columns: 
+      - <<: *base_columns
+      - name: symbol
+        description: "The token symbol transferred."
+      - name: amount
+        description: "The formatted amount of the transfer."
+      - name: price_usd
+        description: "The USD price used to calculate the amount_usd."
+      - name: amount_usd
+        description: "The USD amount of the transfer."
+
+  - name: tokens_gnosis_suicide_transfers
+    description: "Token transfers related to account destruction or contract suicide on the Gnosis blockchain."
+    meta:
+      blockchain: gnosis
+      sector: tokens
+      contributors: ['hdser']
+    config:
+      tags: ['tokens', 'suicide', 'transfers', 'gnosis']
+    columns: 
+      - <<: *base_columns
+      - name: refund_address
+        description: "The refund address in case of a suicide transaction."
+
+  - name: tokens_gnosis_base_without_suicide_transfers
+    description: "All token transfers excluding suicides on the Gnosis blockchain."
+    meta:
+      blockchain: gnosis
+      sector: tokens
+      contributors: ['hdser']
+    config:
+      tags: ['tokens', 'base', 'non-suicide', 'transfers', 'gnosis']
+    columns: 
+      - <<: *base_columns
+
+  - name:  tokens_gnosis_base_non_standard_transfers
+    description: "Non-standard transfers involving RewardByBlock contract"
+    meta:
+      blockchain: gnosis
+      sector: tokens
+      contributors: ['hdser']
+    config:
+      tags: ['tokens', 'non-standard', 'transfers', 'gnosis']
+    columns: 
+      - <<: *base_columns
+      - name: transfer_type
+        description: "Type of transfer such as 'gas_fee', 'reward', or 'standard'."
+
+  - name: tokens_gnosis_base_full_transfers
+    description: "Comprehensive dataset of all types of transfers including standard, non-standard, and suicide-related on the Gnosis blockchain."
+    meta:
+      blockchain: gnosis
+      sector: tokens
+      contributors: ['hdser']
+    config:
+      tags: ['tokens', 'full', 'transfers', 'gnosis']
+    columns: 
+      - <<: *base_columns
+      - name: transfer_type
+        description: "Type of transfer such as 'gas_fee', 'reward', or 'standard'."
+
+

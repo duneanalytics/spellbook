@@ -1,0 +1,16 @@
+version: 2
+
+sources:    
+  - name: syncswap_linea
+    description: "Linea decoded tables related to SyncSwap contract"
+    tables:
+      - name: SyncSwapClassicPoolFactory_evt_PoolCreated
+      - name: SyncSwapClassicPool_evt_Mint
+      - name: SyncSwapClassicPool_evt_Burn
+      - name: SyncSwapClassicPool_evt_Swap
+
+  - name: lynex_linea
+    description: "Linea decoded tables related to Lynex contract"
+    tables:
+      - name: AlgebraPool_evt_Mint
+      - name: AlgebraPool_evt_Burn

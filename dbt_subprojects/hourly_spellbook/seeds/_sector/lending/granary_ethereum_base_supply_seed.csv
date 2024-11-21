@@ -1,0 +1,4 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+ethereum,granary,1,19079481,2024-01-24 22:29:59.000 UTC,0x112e6681b48bdfb507d6ec3c41b3511faa416b18e9d77bedf71ec6e65f010784,112,deposit,0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2,0xc4ae6cea0f15f5a44e0f8eea1d516af2eccb9709,4.71e+17
+ethereum,granary,1,16396375,2023-01-13 07:26:59.000 UTC,0x3ea4bedb3ba2addaee2f93f48e507d19628ecdd084b2239c2bf39bc22a3d249f,319,deposit_liquidation,0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2,0x1141eefa7a6e3ebe85fe60c7e6d8ed5a3d94c169,-2.679153281371157e+16
+ethereum,granary,1,19322182,2024-02-27 23:32:23.000 UTC,0x5176088d0042cb0a08ec96b6fc229bfe723234d4191c1ea13f64e8f4ab3f73af,284,withdraw,0x2260fac5e5542a773aa44fbcfedf7c193bc2c599,0x8df1de8254a0b1d13d3986035d1cf38ea315f66f,-9.260467e+06

@@ -1,0 +1,14 @@
+version: 2
+
+seeds:
+  - name: chainlink_get_price_seed
+    config:
+      column_types:
+        blockchain: varchar
+        block_time: timestamp
+        block_number: bigint
+        feed_name: varchar
+        oracle_price: double
+        proxy_address: varbinary
+        aggregator_address: varbinary
+        underlying_token_address: varbinary
