@@ -87,8 +87,9 @@ WITH tbl_all_logs AS (
                    topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65)
             THEN 1 END AS valid,
         COALESCE(bytearray_substring(logs.topic2,13,20), first_value(bytearray_substring(logs.topic1,13,20)) OVER (PARTITION BY logs.tx_hash ORDER BY index)) AS taker,
-        logs.contract_address AS maker_token,
-        first_value(logs.contract_address) OVER (PARTITION BY logs.tx_hash ORDER BY index) AS taker_token,
+        coalesce(case when (varbinary_substring(logs.topic2, 13, 20) = tx_from) then logs.contract_address end,
+            last_value(logs.contract_address) over (partition by logs.tx_hash order by index) ) as maker_token, 
+        case when (varbinary_substring(logs.topic1, 13, 20) in (settler_address, tx_from)) then logs.contract_address end as taker_token, 
         first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) AS int256)) OVER (PARTITION BY logs.tx_hash ORDER BY index) AS taker_amount,
         try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) AS int256) AS maker_amount,
         method_id,
@@ -114,13 +115,10 @@ WITH tbl_all_logs AS (
         AND topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
                    0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
-        AND topic1 != 0x0000000000000000000000000000000000000000000000000000000000000000
         AND zid != 0xa00000000000000000000000
         {% if is_direct %}
             AND (logs.tx_to = settler_address)
         {% else %}
-            AND (tx_to = settler_address OR varbinary_substring(logs.topic2, 13, 20) != 0x0000000000000000000000000000000000000000)
-            AND logs.tx_to != varbinary_substring(logs.topic1,13,20)
             AND logs.tx_to != settler_address
         {% endif %}
         {% if is_direct %}
@@ -134,7 +132,11 @@ WITH tbl_all_logs AS (
 
 tbl_valid_logs AS (
     SELECT
-        *,
+        *
+        ,LAST_VALUE(maker_token) IGNORE NULLS OVER (PARTITION BY tx_hash ORDER BY index
+                ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS maker_token
+        ,FIRST_VALUE(taker_token) IGNORE NULLS OVER (PARTITION BY tx_hash ORDER BY index
+                ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS taker_token
         ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY valid, index DESC) AS rn
     FROM
         tbl_all_logs
