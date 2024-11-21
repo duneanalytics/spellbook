@@ -244,7 +244,7 @@ logs as (
 -- output --
 
 select
-    blockchain
+    distinct blockchain
     , project
     , tag
     , map_concat(flags, map_from_entries(array[
