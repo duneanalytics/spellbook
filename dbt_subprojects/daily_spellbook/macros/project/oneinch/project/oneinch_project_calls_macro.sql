@@ -117,7 +117,7 @@ select
     , project
     , tag
     , map_concat(flags, map_from_entries(array[
-        ('direct', cardinality(trace_address) = 0 or blockchain = 'zksync' and call_from = tx_from and call_to = tx_to)
+        ('direct', cardinality(call_trace_address) = 0 or blockchain = 'zksync' and call_from = tx_from and call_to = tx_to)
         , ('cross_chain_method', cross_chain_method)
     ])) as flags
     , selector as call_selector
