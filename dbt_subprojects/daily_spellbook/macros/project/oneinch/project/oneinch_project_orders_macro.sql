@@ -13,7 +13,7 @@ logs as (
 {% for event, event_data in oneinch_project_orders_cfg_events_macro().items() %}
     select
         '{{ blockchain }}' as blockchain
-        , '{{ project }}' as project
+        , '{{event_data["project"]}}' as project
         , block_number
         , block_time
         , tx_hash
@@ -22,7 +22,7 @@ logs as (
         , index
         , contract_address
         , topic0
-        , '{{event_data["name"]}}' as event
+        , '{{ event_data["name"] }}' as event
         , {{ event_data.get("maker", "null") }} as log_maker
         , {{ event_data.get("taker", "null") }} as log_taker
         , {{ event_data.get("receiver", "null") }} as log_receiver
