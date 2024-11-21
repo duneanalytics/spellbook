@@ -1,13 +1,13 @@
 {% macro zeroex_v1_deduped_trades(blockchain, start_date) %}
 
-{%- set table_prefix = 'zeroex_' + blockchain -%}
+{% set table_name = 'zeroex_' ~ blockchain ~ '_api_fills' %}
 
 WITH fills_with_tx_fill_number
 AS
 (
     SELECT   row_number() OVER ( partition BY tx_hash ORDER BY evt_index ASC ) AS tx_fill_number
            , *
-    FROM {{ source(table_prefix, 'api_fills') }}
+    FROM {{ ref(table_name) }}
     WHERE 1=1
     AND swap_flag = true
     {% if is_incremental() %}
