@@ -14,7 +14,7 @@ with
 static as (
     select
           array['swap', 'settle', 'change', 'exact', 'batch', 'trade', 'sell', 'buy', 'fill', 'route', 'zap', 'symbiosis', 'aggregate', 'multicall', 'execute', 'wrap', 'transform', 'bridge', 'outboundtransfer', 'deposit', 'start', 'transfer'] as suitables
-        , array['add', 'remove', 'mint', 'increase', 'decrease', 'cancel', 'destroy', 'claim', 'rescue', 'withdraw', 'simulate', 'join', 'exit', 'interaction', '721', '1155', 'nft', 'create'] as exceptions
+        , array['add', 'remove', 'mint', 'increase', 'decrease', 'cancel', 'destroy', 'claim', 'rescue', 'withdraw', 'simulate', 'join', 'exit', 'interaction', '721', '1155', 'nft', 'create', 'finalize'] as exceptions
         , array['bridge', 'outboundtransfer', 'deposit', 'start', 'transfer'] as cross_chain_suitables
 )
 
@@ -69,7 +69,6 @@ static as (
             , "from" as call_from
             , "to" as call_to
             , trace_address as call_trace_address
-            , cardinality(trace_address) = 0 as direct
             , substr(input, 1, 4) as selector
             , success as call_success
             , tx_success
@@ -117,7 +116,10 @@ select
     , call_trace_address
     , project
     , tag
-    , map_concat(flags, map_from_entries(array[('direct', direct), ('cross_chain_method', cross_chain_method)])) as flags
+    , map_concat(flags, map_from_entries(array[
+        ('direct', cardinality(trace_address) = 0 or blockchain = 'zksync' and call_from = tx_from and call_to = tx_to)
+        , ('cross_chain_method', cross_chain_method)
+    ])) as flags
     , selector as call_selector
     , method
     , signature
