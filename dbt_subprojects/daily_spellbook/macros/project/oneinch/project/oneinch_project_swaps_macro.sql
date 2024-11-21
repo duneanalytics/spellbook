@@ -111,7 +111,7 @@ meta as (
             {% endif %}
             and (tx_success or tx_success is null)
             and call_success
-            and not (not flags['cross_chain'] and flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
+            and (flags['cross_chain'] or not flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
     )
     left join orders using(block_number, tx_hash, call_trace_address, project)
     join meta on true
