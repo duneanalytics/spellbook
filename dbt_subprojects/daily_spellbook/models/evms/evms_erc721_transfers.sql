@@ -28,6 +28,7 @@
      , ('blast', source('erc721_blast', 'evt_transfer'))
      , ('mantle', source('erc721_mantle', 'evt_transfer'))
      , ('sei', source('erc721_sei', 'evt_transfer'))
+     , ('bob', source('erc721_bob', 'evt_transfer'))
 ] %}
 
 SELECT *

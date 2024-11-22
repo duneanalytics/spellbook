@@ -28,6 +28,7 @@
      , ('blast', source('erc721_blast', 'evt_ApprovalForAll'))
      , ('mantle', source('erc721_mantle', 'evt_ApprovalForAll'))
      , ('sei', source('erc721_sei', 'evt_ApprovalForAll'))
+     , ('bob', source('erc721_bob', 'evt_ApprovalForAll'))
 ] %}
 
 SELECT *

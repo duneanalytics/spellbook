@@ -29,6 +29,7 @@
      , ('blast', source('blast', 'transactions'))
      , ('mantle', source('mantle', 'transactions'))
      , ('sei', source('sei', 'transactions'))
+     , ('bob', source('bob', 'transactions'))
 ] %}
 
 {% set unstructured_transactions_models = [

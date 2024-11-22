@@ -28,6 +28,7 @@
      , ('blast', source('erc1155_blast', 'evt_transfersingle'))
      , ('mantle', source('erc1155_mantle', 'evt_transfersingle'))
      , ('sei', source('erc1155_sei', 'evt_transfersingle'))
+     , ('bob', source('erc1155_bob', 'evt_transfersingle'))
 ] %}
 
 SELECT *

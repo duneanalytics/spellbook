@@ -28,6 +28,7 @@
      , ('blast', source('blast', 'traces_decoded'))
      , ('mantle', source('mantle', 'traces_decoded'))
      , ('sei', source('sei', 'traces_decoded'))
+     , ('bob', source('bob', 'traces_decoded'))
 ] %}
 
 SELECT *

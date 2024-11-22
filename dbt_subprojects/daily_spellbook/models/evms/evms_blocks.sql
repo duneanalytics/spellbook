@@ -29,6 +29,7 @@
      , ('mantle', source('mantle', 'blocks'))
      , ('mode', source('mode', 'blocks'))
      , ('sei', source('sei', 'blocks'))
+     , ('bob', source('bob', 'blocks'))
 ] %}
 
 SELECT *
