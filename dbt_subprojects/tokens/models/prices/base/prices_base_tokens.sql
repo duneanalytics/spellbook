@@ -190,6 +190,8 @@ FROM
     ('alf-alf', 'base', 'ALF',0x26f1bb40ea88b46ceb21557dc0ffac7b7c0ad40f, 18), 
     ('tad1-tadpole', 'base', 'TAD',0x55027a5b06f4340cc4c82dcc74c90ca93dcb173e, 18),
     ('blue-blue-guy', 'base', 'BLUE',0x891502ba08132653151f822a3a430198f1844115, 18),
-    ('alb-alienbase', 'base', 'ALB',0x1dd2d631c92b1acdfcdd51a0f7145a50130050c4, 18)
+    ('alb-alienbase', 'base', 'ALB',0x1dd2d631c92b1acdfcdd51a0f7145a50130050c4, 18),
+    ('fren-pet-fren-pet', 'base', 'FP',0xff0c532fdb8cd566ae169c1cb157ff2bdc83e105, 18)
+        
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
