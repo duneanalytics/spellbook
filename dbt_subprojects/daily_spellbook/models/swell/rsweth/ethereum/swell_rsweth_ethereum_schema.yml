@@ -1,0 +1,68 @@
+version: 2
+
+models:
+  - name: swell_rsweth_ethereum_withdrawals
+    meta:
+      blockchain: ethereum
+      project: swell
+      contributors: maybeYonas
+    
+    config:
+      tags: ['swell', 'restaking', 'lrt', 'withdrawals']
+    description: "rswETH withdrawals"
+
+    columns:
+      - &request_block_time
+        name: request_block_time
+        description: "timestamp at withdrawal request"
+      - &request_tx_hash
+        name: request_tx_hash
+        description: "hash of tx at withdrawal request"
+      - &request_block_number
+        name: request_block_number
+        description: "block at withdrawal request"
+      - &request_index
+        name: request_index
+        description: "event index at at withdrawal request"
+      - &token_id
+        name: token_id
+        description: "unique id of withdrawal"
+      - &owner
+        name: owner
+        description: "owner of withdrawn eth"
+      - &rswETH_amount
+        name: rswETH_amount
+        description: "amount of rsweth burned"
+      - &rswETH_request_rate
+        name: rswETH_request_rate
+        description: "rsweth to eth rate at withdrawal request"
+      - &processed_block_time
+        name: processed_block_time
+        description: "timestamp at withdrawal ready for completion"
+      - &processed_tx_hash
+        name: processed_tx_hash
+        description: "hash of tx at withdrawal ready for completion"
+      - &processed_block_number
+        name: processed_block_number
+        description: "block at withdrawal ready for completion"
+      - &processed_index
+        name: processed_index
+        description: "event index at at withdrawal ready for completion"
+      - &rswETH_processed_rate
+        name: rswETH_processed_rate
+        description: "rsweth to eth rate at withdrawal completion"
+      - &claim_block_time
+        name: claim_block_time
+        description: "timestamp at withdrawal claimed"
+      - &claim_tx_hash
+        name: claim_tx_hash
+        description: "hash of tx at withdrawal claimed"
+      - &claim_block_number
+        name: claim_block_number
+        description: "block at withdrawal claimed"
+      - &claim_index
+        name: claim_index
+        description: "event index at at withdrawal claimed"
+      - &ETH_amount
+        name: ETH_amount
+        description: "eth amount claimed by user"
