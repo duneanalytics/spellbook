@@ -32,7 +32,7 @@ transactions as (
         blockchain
         , block_date
         , tx_count
-        , (tx_count / cast(select sum(tx_count) from {{ ref('metrics_transactions_daily') }} where block_date = date '{{ baseline_date }}' as double)) * 10 as tx_index
+        , (tx_count / cast((select sum(tx_count) from {{ ref('metrics_transactions_daily') }} where block_date = date '{{ baseline_date }}') as double)) * 10 as tx_index
     from
         {{ ref('metrics_transactions_daily') }}
     where
@@ -46,7 +46,7 @@ transactions as (
         blockchain
         , block_date
         , net_transfer_amount_usd
-        , (net_transfer_amount_usd / cast(select sum(net_transfer_amount_usd) from {{ ref('metrics_transfers_daily') }} where block_date = date '{{ baseline_date }}' as double)) * 10 as transfers_index
+        , (net_transfer_amount_usd / cast((select sum(net_transfer_amount_usd) from {{ ref('metrics_transfers_daily') }} where block_date = date '{{ baseline_date }}') as double)) * 10 as transfers_index
     from
         {{ ref('metrics_transfers_daily') }}
     where
