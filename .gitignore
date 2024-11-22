@@ -149,3 +149,4 @@ logs/
 !target/run_results.json
 !target/sources.json
 
+dbt_subprojects/dex/spellbook-env/
