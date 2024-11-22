@@ -493,7 +493,9 @@ models:
     columns: 
       - name: chain_id
         description: "Chain ID"
-      - *blockchain
+      - name: blockchain
+        data_tests:
+          - unique
       - name: name
         description: "Capitalised name of the blockchain"
       - name: chain_type
