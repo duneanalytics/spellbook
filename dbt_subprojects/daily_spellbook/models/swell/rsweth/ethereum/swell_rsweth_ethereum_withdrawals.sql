@@ -15,7 +15,7 @@
 {% set incremental = """
         where evt_block_time >= (
             select min(request_block_time) 
-            from {{this}} 
+            from """{this}"""
             where claim_block_time is null
         )
 """%}
