@@ -10,6 +10,10 @@ models:
     config:
       tags: ['swell', 'restaking', 'lrt', 'withdrawals']
     description: "rswETH withdrawals"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_id
 
     columns:
       - &request_block_time
