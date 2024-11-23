@@ -44,13 +44,9 @@ rsweth_decoded_withdrawal_claimed as (
         exitClaimedETH
     from {{source ('swell_v3_ethereum', 'RswEXIT_evt_WithdrawalClaimed')}}
     -- from swell_v3_ethereum.RswEXIT_evt_WithdrawalClaimed
-    {% set incremental %}
-    where evt_block_time >= (
-        select min(request_block_time) 
-        from {{ this }}
-        where claim_block_time is null
-    )
-    {% endset %}
+    {% if is_incremental() %}
+    {{incremental}}
+    {% endif %}
 
 ),
 rsweth_decoded_withdrawal_processed as (
@@ -63,13 +59,9 @@ rsweth_decoded_withdrawal_processed as (
         processedExitedETH
     from {{source ('swell_v3_ethereum', 'RswEXIT_evt_WithdrawalsProcessed')}}
     -- from swell_v3_ethereum.RswEXIT_evt_WithdrawalsProcessed
-    {% set incremental %}
-    where evt_block_time >= (
-        select min(request_block_time) 
-        from {{ this }}
-        where claim_block_time is null
-    )
-    {% endset %}
+    {% if is_incremental() %}
+    {{incremental}}
+    {% endif %}
 )
 
 select 
