@@ -33,6 +33,22 @@ models:
             - claim_block_number
             - claim_index
             - ETH_amount
+          check_columns:
+            - request_tx_hash
+            - request_block_number
+            - request_index
+            - token_id
+            - owner
+            - rswETH_amount
+            - rswETH_request_rate
+            - processed_tx_hash
+            - processed_block_number
+            - processed_index
+            - rswETH_processed_rate
+            - claim_tx_hash
+            - claim_block_number
+            - claim_index
+            - ETH_amount
 
     columns:
       - &request_block_time
