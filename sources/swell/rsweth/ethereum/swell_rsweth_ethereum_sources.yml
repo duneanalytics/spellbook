@@ -5,7 +5,7 @@ sources:
     description: "swell decoded tables of ethereum contract"
     tables:
       - name: RswEXIT_evt_WithdrawRequestCreated
-        description: decoded table on `WithdrawRequestCreated` event emitted from RswEXIT contract `0x58749C46Ffe97e4d79508a2C781C440f4756f064`
+        description: 'decoded table on `WithdrawRequestCreated` event emitted from RswEXIT contract `0x58749C46Ffe97e4d79508a2C781C440f4756f064`. event emitted when a user initiates a new withdrawal request'
         columns:
           - &rswexit_contract_address
             name: contract_address
@@ -38,7 +38,7 @@ sources:
             description: 'rsweth-eth rate at withdrawal request'
 
       - name: RswEXIT_evt_WithdrawalsProcessed
-        description: decoded table on `WithdrawalsProcessed` event emitted from RswEXIT contract `0x58749C46Ffe97e4d79508a2C781C440f4756f064`
+        description: 'decoded table on `WithdrawalsProcessed` event emitted from RswEXIT contract `0x58749C46Ffe97e4d79508a2C781C440f4756f064`. event emitted when the protocol processes the withdrawal from beaconchain and make it available for user to claim'
         columns:
           - *rswexit_contract_address
           - *evt_tx_hash
@@ -57,7 +57,7 @@ sources:
             description: 'amount of eth exited'
 
       - name: RswEXIT_evt_WithdrawalClaimed
-        description: decoded table on `WithdrawalClaimed` event emitted from RswEXIT contract `0x58749C46Ffe97e4d79508a2C781C440f4756f064`
+        description: 'decoded table on `WithdrawalClaimed` event emitted from RswEXIT contract `0x58749C46Ffe97e4d79508a2C781C440f4756f064`. event emitted when a user claims the ETH withdrawn'
         columns:
           - *rswexit_contract_address
           - *evt_tx_hash
