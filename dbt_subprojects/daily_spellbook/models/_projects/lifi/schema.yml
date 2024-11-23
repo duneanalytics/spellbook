@@ -1,0 +1,67 @@
+version: 2
+
+models:
+  - name: lifi_ethereum_transfers
+    description: "Ethereum LiFi transfer events"
+    columns: &common_columns
+      - name: contract_address
+        description: "Contract address of the LiFi Diamond"
+      - name: evt_tx_hash
+        description: "Transaction hash"
+        tests:
+          - unique:
+              where: "evt_index IS NOT NULL"
+      - name: evt_index
+        description: "Event index in the transaction"
+      - name: evt_block_time
+        description: "Block timestamp of the event"
+      - name: evt_block_number
+        description: "Block number of the event"
+      - name: transactionId
+        description: "Unique identifier for the transfer transaction"
+      - name: bridge
+        description: "Bridge protocol used"
+      - name: integrator
+        description: "Integration partner"
+      - name: referrer
+        description: "Referrer address"
+      - name: sendingAssetId
+        description: "Source token address"
+      - name: receiver
+        description: "Recipient address"
+      - name: minAmount
+        description: "Minimum amount to be received"
+      - name: destinationChainId
+        description: "Target chain ID for the transfer"
+      - name: source_chain
+        description: "Source blockchain"
+      - name: sender
+        description: "Address that initiated the transaction"
+
+  - name: lifi_arbitrum_transfers
+    description: "Arbitrum LiFi transfer events"
+    columns: *common_columns
+
+  - name: lifi_avalanche_transfers
+    description: "Avalanche LiFi transfer events"
+    columns: *common_columns
+
+  - name: lifi_bnb_transfers
+    description: "BNB Chain LiFi transfer events"
+    columns: *common_columns
+
+  - name: lifi_fantom_transfers
+    description: "Fantom LiFi transfer events"
+    columns: *common_columns
+
+  - name: lifi_gnosis_transfers
+    description: "Gnosis Chain LiFi transfer events"
+    columns: *common_columns
+
+  - name: lifi_zksync_transfers
+    description: "zkSync LiFi transfer events"
+    columns: *common_columns
+
+  - name: LiFiDiamond_v2_evt_LiFiTransferStarted
+    description: "Combined LiFi transfer events across all supported chains"
+    columns: *common_columns
