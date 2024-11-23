@@ -13,13 +13,11 @@
 }}
 
 {% set incremental = """
-    {% if is_incremental() %}
         where evt_block_time >= (
             select min(request_block_time) 
             from {{this}} 
             where claim_block_time is null
         )
-    {% endif %}
 """%}
 
 with 
@@ -34,7 +32,10 @@ rsweth_decoded_withdrawal_requests as (
         rateWhenCreated
     from {{source ('swell_v3_ethereum', 'RswEXIT_evt_WithdrawRequestCreated')}}
     -- from swell_v3_ethereum.RswEXIT_evt_WithdrawRequestCreated
+
+    {% if is_incremental() %}
     {{incremental}}
+    {% endif %}
 ),
 rsweth_decoded_withdrawal_claimed as (
     select 
@@ -44,7 +45,9 @@ rsweth_decoded_withdrawal_claimed as (
         exitClaimedETH
     from {{source ('swell_v3_ethereum', 'RswEXIT_evt_WithdrawalClaimed')}}
     -- from swell_v3_ethereum.RswEXIT_evt_WithdrawalClaimed
+    {% if is_incremental() %}
     {{incremental}}
+    {% endif %}
 
 ),
 rsweth_decoded_withdrawal_processed as (
@@ -57,7 +60,9 @@ rsweth_decoded_withdrawal_processed as (
         processedExitedETH
     from {{source ('swell_v3_ethereum', 'RswEXIT_evt_WithdrawalsProcessed')}}
     -- from swell_v3_ethereum.RswEXIT_evt_WithdrawalsProcessed
+    {% if is_incremental() %}
     {{incremental}}
+    {% endif %}
 )
 
 select 
