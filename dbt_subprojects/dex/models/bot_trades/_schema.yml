@@ -104,20 +104,34 @@ models:
 
   - name: banana_gun_ethereum_bot_trades
     meta:
-      blockchain: ethereum, base, bnb, avalanche_c
+      blockchain: ethereum
       sector: dex
       project: banana_gun
       contributors: whale_hunter
     config:
       tags: ["evm", "dex", "banana_gun", "trades"]
     description: >
-      Banana Gun trades on EVM
+      Banana Gun trades on Ethereum
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - tx_hash
             - evt_index
-      {# - check_bot_trades_seed:
-          seed_file: ref('banana_gun_ethereum_trades_seed')
-          blockchain: ethereum #}
+
+  - name: banana_gun_base_bot_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: banana_gun
+      contributors: whale_hunter
+    config:
+      tags: ["evm", "dex", "banana_gun", "trades"]
+    description: >
+      Banana Gun trades on Base
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
