@@ -181,7 +181,7 @@ SELECT
   project_contract_address,
   -- User
   user,
-  tx_hash,
+  botTrades.tx_hash,
   evt_index,
   IF(evt_index = highestEventIndex, true, false) AS is_last_trade_in_transaction
 FROM
