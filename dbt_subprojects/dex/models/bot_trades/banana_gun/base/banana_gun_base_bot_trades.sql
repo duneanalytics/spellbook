@@ -83,9 +83,9 @@ WITH
       JOIN botContracts ON to = botContracts.address
     WHERE
       {% if is_incremental() %}
-      AND {{ incremental_predicate('block_time') }}
+      {{ incremental_predicate('block_time') }}
       {% else %}
-      AND block_time >= TIMESTAMP '{{project_start_date}}'
+      block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
       AND value > CAST(0 AS UINT256)
   ),
@@ -102,9 +102,9 @@ WITH
       JOIN botContracts ON "from" = botContracts.address
     WHERE
       {% if is_incremental() %}
-      AND {{ incremental_predicate('block_time') }}
+      {{ incremental_predicate('block_time') }}
       {% else %}
-      AND block_time >= TIMESTAMP '{{project_start_date}}'
+      block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
       AND value > CAST(0 AS UINT256)
   ),
