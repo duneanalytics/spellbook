@@ -166,7 +166,7 @@ SELECT
   (feeGwei / 1e18) * price AS fee_usd,
   feeGwei / 1e18 fee_token_amount,
   '{{fee_token_symbol}}' AS fee_token_symbol,
-  '{{weth}}' AS fee_token_address,
+  {{weth}} AS fee_token_address,
   -- Dex
   project,
   version,
