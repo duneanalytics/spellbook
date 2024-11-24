@@ -1,7 +1,8 @@
 {{ config(
     schema = 'lifi_gnosis',
     alias = 'transfers',
-    materialized = 'view'
+    materialized = 'view',
+    unique_key = ['evt_tx_hash', 'evt_index']
     )
 }}
 

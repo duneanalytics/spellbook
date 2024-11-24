@@ -3,7 +3,7 @@
         schema = 'lifi',
         alias = 'transfers',
         materialized = 'incremental',
-        unique_key = ['evt_block_time', 'evt_tx_hash', 'evt_index']
+        unique_key = ['evt_tx_hash', 'evt_index', 'source_chain']
     )
 }}
 
