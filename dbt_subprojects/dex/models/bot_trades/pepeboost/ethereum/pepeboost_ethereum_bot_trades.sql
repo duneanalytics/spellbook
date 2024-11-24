@@ -24,10 +24,7 @@ WITH
     FROM
       {{ source('ethereum','creation_traces') }}
     WHERE
-      (
         "from" = {{bot_deployer_1}}
-        OR  "from" = {{bot_deployer_2}}
-      )
       AND block_time >= TIMESTAMP '{{project_start_date}}'
   ),
   botTrades AS (
