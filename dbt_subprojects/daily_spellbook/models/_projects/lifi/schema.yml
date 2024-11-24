@@ -8,7 +8,7 @@ models:
         description: "Contract address of the LiFi Diamond"
       - name: evt_tx_hash
         description: "Transaction hash"
-        tests:
+        data_tests:
           - unique:
               where: "evt_index IS NOT NULL"
       - name: evt_index
