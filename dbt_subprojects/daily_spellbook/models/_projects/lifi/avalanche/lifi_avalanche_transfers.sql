@@ -21,7 +21,7 @@ with source_data as (
         json_extract_scalar(bridgeData, '$.minAmount') as minAmount,
         json_extract_scalar(bridgeData, '$.destinationChainId') as destinationChainId,
         'avalanche' as source_chain
-    from {{ source('lifi_avalanche', 'LiFiDiamond_v2_evt_LiFiTransferStarted') }}
+    from {{ source('lifi_avalanche_c', 'LiFiDiamond_v2_evt_LiFiTransferStarted') }}
 ),
 transactions as (
     select 
@@ -34,5 +34,5 @@ select
     s.*,
     t.sender
 from source_data s
-inner join transactions t
+left join transactions t
     on s.evt_tx_hash = t.tx_hash
