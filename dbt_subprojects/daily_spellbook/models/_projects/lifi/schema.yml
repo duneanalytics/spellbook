@@ -36,53 +36,53 @@ models:
         description: "Address that initiated the transaction"
     data_tests:
       - unique:
-          column_name: "evt_tx_hash || '-' || evt_index"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
 
   - name: lifi_arbitrum_transfers
     description: "Arbitrum LiFi transfer events"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "evt_tx_hash || '-' || evt_index"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
 
   - name: lifi_avalanche_transfers
     description: "Avalanche LiFi transfer events"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "evt_tx_hash || '-' || evt_index"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
 
   - name: lifi_bnb_transfers
     description: "BNB Chain LiFi transfer events"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "evt_tx_hash || '-' || evt_index"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
 
   - name: lifi_fantom_transfers
     description: "Fantom LiFi transfer events"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "evt_tx_hash || '-' || evt_index"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
 
   - name: lifi_gnosis_transfers
     description: "Gnosis Chain LiFi transfer events"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "evt_tx_hash || '-' || evt_index"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
 
   - name: lifi_zksync_transfers
     description: "zkSync LiFi transfer events"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "evt_tx_hash || '-' || evt_index"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
 
   - name: LiFiDiamond_v2_evt_LiFiTransferStarted
     description: "Combined LiFi transfer events across all supported chains"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "evt_tx_hash || '-' || evt_index"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
