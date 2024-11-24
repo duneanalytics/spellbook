@@ -11,8 +11,7 @@
 }}
 
 {% set project_name = 'Banana Gun' %}
-{# {% set project_start_date = '2024-03-05' %} #}
-{% set project_start_date = '2024-09-01' %}
+{% set project_start_date = '2024-03-05' %}
 {% set blockchain = 'base' %}
 {% set bot_deployer_1 = '0x37aAb97476bA8dC785476611006fD5dDA4eed66B' %}
 {% set weth = '0x4200000000000000000000000000000000000006' %}

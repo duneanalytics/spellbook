@@ -138,6 +138,7 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+
   - name: banana_gun_blast_bot_trades
     meta:
       blockchain: blast
