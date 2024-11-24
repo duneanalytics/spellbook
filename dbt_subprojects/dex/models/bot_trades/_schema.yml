@@ -118,6 +118,6 @@ models:
             - blockchain
             - tx_hash
             - evt_index
-      - check_bot_trades_seed:
+      {# - check_bot_trades_seed:
           seed_file: ref('banana_gun_ethereum_trades_seed')
-          blockchain: ethereum
+          blockchain: ethereum #}
