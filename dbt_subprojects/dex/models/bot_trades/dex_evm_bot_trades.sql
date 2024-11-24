@@ -23,6 +23,7 @@
 SELECT block_time,
        block_date,
        block_month,
+       bot,
        block_number,
        blockchain,
        -- Trade

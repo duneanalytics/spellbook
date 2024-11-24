@@ -26,6 +26,9 @@ models:
         - &block_month
           name: block_month
           description: "UTC event block month of each DEX trade"
+        - &bot
+          name: bot
+          description: "Trading bot which executed the trade"
         - &amount_usd
           name: amount_usd
           description: "USD value of the trade at time of execution"

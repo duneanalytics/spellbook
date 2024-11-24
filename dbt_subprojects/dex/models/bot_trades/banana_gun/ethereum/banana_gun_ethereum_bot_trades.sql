@@ -10,8 +10,9 @@
    )
 }}
 
+{% set project_name = 'Banana Gun' %}
 {# {% set project_start_date = '2023-05-26' %} #}
-{% set project_start_date = '2024-11-01' %}
+{% set project_start_date = '2024-09-01' %}
 {% set blockchain = 'ethereum' %}
 {% set bot_deployer_1 = '0xf414d478934c29d9a80244a3626c681a71e53bb2' %}
 {% set bot_deployer_2 = '0x37aAb97476bA8dC785476611006fD5dDA4eed66B' %}
@@ -150,6 +151,7 @@ SELECT
   block_time,
   date_trunc('day', botTrades.block_time) as block_date,
   date_trunc('month', botTrades.block_time) as block_month,
+  '{{project_name}}' as bot,
   block_number,
   '{{blockchain}}' AS blockchain,
   -- Trade
