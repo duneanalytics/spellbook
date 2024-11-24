@@ -1,6 +1,6 @@
 {{ config(
     alias = 'bot_trades',
-    schema = 'autsniper_solana',
+    schema = 'autsnipe_solana',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -10,7 +10,7 @@
    )
 }}
 
-{% set project_start_date = '2024-05-13' %}
+{% set project_start_date = '2024-11-13' %}
 {% set fee_receiver_1 = 'CWEfC6fLi552zE2KFxhPiBAZUWdT78gMd8NGENik2zfE' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
@@ -110,7 +110,7 @@ SELECT
   block_time,
   block_date,
   block_month,
-  'Autosniper' as bot,
+  'Autosnipe' as bot,
   blockchain,
   amount_usd,
   type,

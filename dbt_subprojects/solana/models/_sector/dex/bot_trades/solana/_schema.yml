@@ -623,16 +623,16 @@ models:
           seed_file: ref('bloom_solana_trades_seed')
           blockchain: solana
 
-  - name: autosniper_solana_bot_trades
+  - name: autosnipe_solana_bot_trades
     meta:
       blockchain: solana
       sector: dex
-      project: autosniper
+      project: autosnipe
       contributors: whale_hunter
     config:
-      tags: ["solana", "dex", "autosniper", "trades"]
+      tags: ["solana", "dex", "autosnipe", "trades"]
     description: >
-      Autosniper trades on Solana
+      Autosnipe trades on Solana
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -642,5 +642,5 @@ models:
             - outer_instruction_index
             - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('autosniper_solana_trades_seed')
+          seed_file: ref('autosnipe_solana_trades_seed')
           blockchain: solana
