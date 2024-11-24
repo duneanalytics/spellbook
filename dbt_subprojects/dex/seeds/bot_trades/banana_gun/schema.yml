@@ -5,7 +5,7 @@ seeds:
     config:
       column_types:
         version: varchar
-  - name: banana_base_ethereum_trades_seed
+  - name: banana_gun_base_trades_seed
     config:
       column_types:
         version: varchar
