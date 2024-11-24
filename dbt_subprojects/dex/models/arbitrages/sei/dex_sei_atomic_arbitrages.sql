@@ -12,7 +12,9 @@
 )
 }}
 
-{{dex_atomic_arbitrages(
-        blockchain = blockchain,
-        transactions = source(blockchain,'transactions')
-)}}
+{{
+    dex_atomic_arbitrages(
+        blockchain = blockchain
+        , transactions = source(blockchain,'transactions')
+    )
+}}

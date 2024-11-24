@@ -1,7 +1,6 @@
 {% set blockchain = 'sei' %}
 
 {{ config(
-        
         schema = 'dex_' + blockchain,
         alias = 'sandwiches',
         partition_by = ['block_month'],
@@ -12,7 +11,9 @@
 )
 }}
 
-{{dex_sandwiches(
+{{
+    dex_sandwiches(
         blockchain = blockchain
         , transactions = source(blockchain,'transactions')
-)}}
+    )
+}}
