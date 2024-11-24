@@ -41,11 +41,6 @@ SELECT block_time,
        fee_token_amount,
        fee_token_symbol,
        fee_token_address,
-       -- Bribes
-       bribe_usd,
-       bribe_token_amount,
-       bribe_token_symbol,
-       bribe_token_address,
        -- Dex
        project,
        version,

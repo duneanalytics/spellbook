@@ -68,18 +68,6 @@ models:
         - &fee_token_address
           name: fee_token_address
           description: "Contract address of the fee token"
-        - &bribe_usd
-          name: bribe_usd
-          description: "USD value of the bribe at time of execution"
-        - &bribe_token_amount
-          name: bribe_token_amount
-          description: "Value of the bribe paid at time of execution in the original currency"
-        - &bribe_token_symbol
-          name: bribe_token_symbol
-          description: "Token symbol for bribe token"
-        - &bribe_token_address
-          name: bribe_token_address
-          description: "Contract address of the bribe token"
         - &project
           name: project
           description: "Project name of the DEX"

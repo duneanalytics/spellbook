@@ -130,19 +130,6 @@ WITH
     GROUP BY
       tx_hash,
       block_number
-  ),
-  minerBribes AS (
-    SELECT
-      tx_hash,
-      SUM(deltaGwei * -1) / 1e18 AS bribeETH
-    FROM
-      botETHWithdrawals
-      JOIN {{ source('blast','blocks') }} AS blocks ON (
-        botETHWithdrawals.block_hash = blocks.hash
-        AND botETHWithdrawals.to = blocks.miner
-      )
-    GROUP BY
-      tx_hash
   )
 SELECT
   block_time,
@@ -170,11 +157,6 @@ SELECT
   feeGwei / 1e18 fee_token_amount,
   '{{fee_token_symbol}}' AS fee_token_symbol,
   '{{weth}}' AS fee_token_address,
-  -- Bribes
-  bribeETH * price AS bribe_usd,
-  bribeETH AS bribe_token_amount,
-  '{{fee_token_symbol}}' AS bribe_token_symbol,
-  '{{weth}}' AS bribe_token_address,
   -- Dex
   project,
   version,
@@ -189,7 +171,6 @@ FROM
   botTrades
   JOIN highestEventIndexForEachTrade ON botTrades.tx_hash = highestEventIndexForEachTrade.tx_hash
   LEFT JOIN botETHDeltas ON botTrades.tx_hash = botETHDeltas.tx_hash
-  LEFT JOIN minerBribes ON botTrades.tx_hash = minerBribes.tx_hash
   LEFT JOIN {{ source('prices', 'usd') }} ON (
     blockchain = '{{blockchain}}'
     AND contract_address = {{weth}}
