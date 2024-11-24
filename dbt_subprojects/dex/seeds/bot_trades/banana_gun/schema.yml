@@ -1,0 +1,11 @@
+version: 2
+
+seeds:
+  - name: banana_gun_ethereum_trades_seed
+    config:
+      column_types:
+        version: varchar
+  - name: banana_base_ethereum_trades_seed
+    config:
+      column_types:
+        version: varchar
