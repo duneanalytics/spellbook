@@ -112,7 +112,7 @@ models:
       tags: ["evm", "dex", "banana_gun", "trades"]
     description: >
       Banana Gun trades on EVM
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
