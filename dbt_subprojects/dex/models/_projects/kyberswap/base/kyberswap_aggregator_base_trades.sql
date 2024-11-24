@@ -32,9 +32,11 @@ WITH meta_router AS
             ,ARRAY[-1]              AS trace_address
         FROM
             {{ source('kyber_base', 'MetaAggregationRouterV2_evt_Swapped') }}
-        {% if is_incremental() %}
-        WHERE {{incremental_predicate('evt_block_time')}}
-        {% endif %}
+        WHERE
+            dstToken != 0xd1e24444591bf0ebea5cfe4e39c885b18129d940 --bug with MTK token
+            {% if is_incremental() %}
+            AND {{incremental_predicate('evt_block_time')}}
+            {% endif %}
 )
 SELECT
     'base'                                                          AS blockchain
