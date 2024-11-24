@@ -85,4 +85,4 @@ models:
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar), '-', source_chain)"
