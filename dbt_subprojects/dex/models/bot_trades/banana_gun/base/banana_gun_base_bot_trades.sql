@@ -57,7 +57,11 @@ WITH
       JOIN botContracts ON trades.tx_to = botContracts.address
     WHERE
       trades.blockchain = '{{blockchain}}'
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('trades.block_time') }}
+      {% else %}
       AND trades.block_time >= TIMESTAMP '{{project_start_date}}'
+      {% endif %}
   ),
   highestEventIndexForEachTrade AS (
     SELECT
@@ -72,20 +76,24 @@ WITH
     SELECT
       tx_hash,
       block_number,
-      CAST(value AS DECIMAL (38, 0)) AS deltaGwei,
-      CAST(value AS DECIMAL (38, 0)) AS depositGwei
+      value AS deltaGwei,
+      value AS depositGwei
     FROM
       {{ source('base','traces') }}
       JOIN botContracts ON to = botContracts.address
     WHERE
-      block_time >= TIMESTAMP '{{project_start_date}}'
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('block_time') }}
+      {% else %}
+      AND block_time >= TIMESTAMP '{{project_start_date}}'
+      {% endif %}
       AND value > CAST(0 AS UINT256)
   ),
   botETHWithdrawals AS (
     SELECT
       tx_hash,
       block_number,
-      CAST(value AS DECIMAL (38, 0)) * -1 AS deltaGwei,
+      value * -1 AS deltaGwei,
       0 AS depositGwei,
       block_hash,
       to
@@ -93,7 +101,11 @@ WITH
       {{ source('base','traces') }}
       JOIN botContracts ON "from" = botContracts.address
     WHERE
-      block_time >= TIMESTAMP '{{project_start_date}}'
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('block_time') }}
+      {% else %}
+      AND block_time >= TIMESTAMP '{{project_start_date}}'
+      {% endif %}
       AND value > CAST(0 AS UINT256)
   ),
   botEthTransfers AS (
