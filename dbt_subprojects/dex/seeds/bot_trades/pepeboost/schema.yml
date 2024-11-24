@@ -1,0 +1,8 @@
+version: 2
+
+seeds:
+  - name: pepeboost_ethereum_trades_seed
+    config:
+      column_types:
+        version: varchar
+
