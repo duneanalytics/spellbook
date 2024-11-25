@@ -20,6 +20,7 @@ select * from (values
 (0x3e40d73eb977dc6a537af587d48316fee66e9c8c, 'Aragon'),
 (0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5,  'NO (Curated)'),
 (0xaE7B191A31f627b4eB1d4DaC64eaB9976995b433,  'NO (DVT)'),
+(0xdA7dE2ECdDfccC6c3AF10108Db212ACBBf9EA83F,  'NO (CSM)'),
 (0x8B3f33234ABD88493c0Cd28De33D583B70beDe35,  'InsuranceFund')
 ) as list(address, name)
  ),
