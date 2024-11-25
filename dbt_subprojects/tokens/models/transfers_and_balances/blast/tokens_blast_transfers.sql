@@ -20,7 +20,8 @@
         , tokens_erc20_model = source('tokens', 'erc20')
         , prices_model = source('prices', 'usd')
         , evms_info_model = source('evms','info')
-        , transfers_start_date = '2020-04-22'
+        , transfers_start_date = '2024-10-01'
+        , transfers_end_date = '2024-10-10'
         , blockchain = 'blast'
     )
 }}
