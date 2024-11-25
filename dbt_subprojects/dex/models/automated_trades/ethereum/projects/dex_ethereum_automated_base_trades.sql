@@ -17,6 +17,7 @@ WITH base_union AS (
         SELECT
             blockchain
             , project
+            , project_status
             , version
             , dex_type
             , factory_address

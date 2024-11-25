@@ -1,8 +1,8 @@
 -- this should probably live somewhere else, just for testing purposes for now
 
 {{ config(
-    schema = 'uniswap_v2_arbitrum',
-    alias = 'fork_mapping',
+    schema = 'dex',
+    alias = 'mapping',  
     tags = ['static'],
     unique_key = ['factory_address', 'blockchain'])
 }}

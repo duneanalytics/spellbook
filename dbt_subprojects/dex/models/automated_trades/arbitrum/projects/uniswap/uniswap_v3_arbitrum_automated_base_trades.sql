@@ -14,7 +14,6 @@
     uniswap_v3_forks_trades(
         blockchain = 'arbitrum'
         , version = '3'
-        , project = 'null'
         , Pair_evt_Swap = ref('uniswap_v3_arbitrum_decoded_pool_evt_swap')
         , Factory_evt_PoolCreated = ref('uniswap_v3_arbitrum_decoded_factory_evt')
     )
