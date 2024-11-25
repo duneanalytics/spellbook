@@ -38,7 +38,8 @@ settler_trace_data AS (
         "to" AS contract_address,
         varbinary_substring(input,1,4) AS method_id,
         varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker,
-        a.settler_address
+        a.settler_address, 
+        row_number() OVER (PARTITION BY tr.tx_hash ORDER BY trace_address) AS rn
     FROM
         {{ source(blockchain, 'traces') }} AS tr
     JOIN
@@ -61,15 +62,14 @@ settler_txs AS (
         method_id,
         contract_address,
         settler_address,
-        MAX(varbinary_substring(tracker,2,12)) AS zid,
+        varbinary_substring(tracker,2,12) AS zid,
         CASE
-            WHEN method_id = 0x1fff991f THEN MAX(varbinary_substring(tracker,14,3))
-            WHEN method_id = 0xfd3ad6d4 THEN MAX(varbinary_substring(tracker,13,3))
+            WHEN method_id = 0x1fff991f THEN varbinary_substring(tracker,14,3)
+            WHEN method_id = 0xfd3ad6d4 THEN varbinary_substring(tracker,13,3)
         END AS tag
     FROM
         settler_trace_data
-    GROUP BY
-        1,2,3,4,5,6
+    WHERE rn = 1
 )
 
 SELECT * FROM settler_txs
