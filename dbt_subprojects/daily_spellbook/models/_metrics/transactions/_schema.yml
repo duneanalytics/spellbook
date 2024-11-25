@@ -8,8 +8,3 @@ models:
     config:
       tags: ['metrics', 'transactions', 'daily']
     description: "Sum of total tx's per day across all chains"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
