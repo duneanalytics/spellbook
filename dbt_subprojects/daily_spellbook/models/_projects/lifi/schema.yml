@@ -36,7 +36,7 @@ models:
         description: "Address that initiated the transaction"
       - name: transfer_id
         description: "Unique identifier for the transfer event"
-        tests:
+        data_tests:
           - unique
 
   - name: lifi_arbitrum_transfers
