@@ -188,7 +188,7 @@ SELECT
     , b.token_sold_mint_address
     , b.token_bought_vault
     , b.token_sold_vault
-    , NULL as project_program_id
+    , CAST(NULL as varchar) as project_program_id
     , 'stkitrT1Uoy18Dk1fTrgPw8W6MVzoCfYoAFT4MLsmhq' as project_main_id
     , b.trader_id
     , b.tx_id
