@@ -106,11 +106,11 @@ models:
         name: blockchain
         
 
-  - name: zeroex_ethereum_api_fills_deduped
+  - name: zeroex_v1_ethereum_deduped_trades
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: bakabhai993
+      contributors: bakabhai993, rantum
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >

@@ -12,9 +12,9 @@
 {% set zeroex_models = [  
   ref('zeroex_arbitrum_api_fills_deduped')
   ,ref('zeroex_avalanche_c_api_fills_deduped')
-  ,ref('zeroex_base_api_fills_deduped')
+  ,ref('zeroex_v1_base_deduped_trades')
   ,ref('zeroex_celo_api_fills_deduped')
-  ,ref('zeroex_ethereum_api_fills_deduped')
+  ,ref('zeroex_v1_ethereum_deduped_trades')
   ,ref('zeroex_fantom_api_fills_deduped')
   ,ref('zeroex_optimism_api_fills_deduped')
   ,ref('zeroex_polygon_api_fills_deduped')
