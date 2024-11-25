@@ -188,7 +188,7 @@ WITH pool_labels AS (
             l.name,
             s.amountOut AS amount
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} s
-        LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.poolId, 1, 20) = l.address
+        LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.pool, 1, 20) = l.address
         WHERE tokenOut = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
         {% if is_incremental() %}
         AND {{ incremental_predicate('s. evt_block_time') }}
@@ -208,8 +208,8 @@ WITH pool_labels AS (
             l.name,
             - s.amountIn AS amount
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} s
-        LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.poolId, 1, 20) = l.address
-        WHERE tokenIn = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
+        LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.pool, 1, 20) = l.address
+        WHERE tokenIn = BYTEARRAY_SUBSTRING(s.pool, 1, 20)
         {% if is_incremental() %}
         AND {{ incremental_predicate('s. evt_block_time') }}
         {% endif %}      

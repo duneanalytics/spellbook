@@ -9,6 +9,7 @@
     ref('sushiswap_v1_gnosis_base_trades')
     , ref('sushiswap_v2_gnosis_base_trades')
     , ref('balancer_v2_gnosis_base_trades')
+    , ref('balancer_v3_gnosis_base_trades')    
     , ref('honeyswap_v2_gnosis_base_trades')
 ] %}
 

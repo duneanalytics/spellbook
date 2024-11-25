@@ -188,8 +188,8 @@ WITH pool_labels AS (
             pool_type,
             SUM(amountOut / POWER(10, 18)) AS ajoins
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} 
-        LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
-        WHERE tokenOut = BYTEARRAY_SUBSTRING(poolId, 1, 20)       
+        LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(pool, 1, 20) = address
+        WHERE tokenOut = BYTEARRAY_SUBSTRING(pool, 1, 20)       
         GROUP BY 1, 2, 3
     ),
 
@@ -200,8 +200,8 @@ WITH pool_labels AS (
             pool_type,
             SUM(amountIn / POWER(10, 18)) AS aexits
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} 
-        LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(poolId, 1, 20) = address
-        WHERE tokenIn = BYTEARRAY_SUBSTRING(poolId, 1, 20)        
+        LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(pool, 1, 20) = address
+        WHERE tokenIn = BYTEARRAY_SUBSTRING(pool, 1, 20)        
         GROUP BY 1, 2, 3
     ),
 
@@ -234,5 +234,5 @@ WITH pool_labels AS (
     LEFT JOIN pool_labels l ON b.token = l.address
     GROUP BY 1, 2, 3, 4, 5
     HAVING SUM(b.supply + COALESCE(adelta, 0)) >= 0  --simple filter to remove outliers
-    
+
 {% endmacro %}
