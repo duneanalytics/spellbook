@@ -2,8 +2,7 @@
     config(
         schema = 'lifi',
         alias = 'transfers',
-        materialized = 'incremental',
-        unique_key = 'transfer_id'
+        materialized = 'incremental'
     )
 }}
 
@@ -20,7 +19,6 @@
 with chain_transfers as (
     {% for chain in chains %}
     select 
-        {{ dbt_utils.generate_surrogate_key(['evt_tx_hash', 'evt_index', 'source_chain']) }} as transfer_id,
         contract_address,
         evt_tx_hash,
         evt_index,
@@ -48,7 +46,6 @@ with chain_transfers as (
 )
 
 select 
-    transfer_id,
     contract_address,
     evt_tx_hash,
     evt_index,

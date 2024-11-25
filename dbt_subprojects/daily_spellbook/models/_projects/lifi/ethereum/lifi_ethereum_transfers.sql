@@ -1,8 +1,7 @@
 {{ config(
     schema = 'lifi_ethereum',
     alias = 'transfers',
-    materialized = 'view',
-    unique_key = 'transfer_id'
+    materialized = 'view'
     )
 }}
 
@@ -32,7 +31,6 @@ transactions as (
 )
 
 select 
-    {{ dbt_utils.generate_surrogate_key(['s.evt_tx_hash', 's.evt_index']) }} as transfer_id,
     s.*,
     t.sender
 from source_data s

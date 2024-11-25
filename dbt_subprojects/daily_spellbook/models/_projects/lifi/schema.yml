@@ -34,10 +34,6 @@ models:
         description: "Source blockchain"
       - name: sender
         description: "Address that initiated the transaction"
-      - name: transfer_id
-        description: "Unique identifier for the transfer event"
-        data_tests:
-          - unique
 
   - name: lifi_arbitrum_transfers
     description: "Arbitrum LiFi transfer events"
@@ -66,3 +62,9 @@ models:
   - name: LiFiDiamond_v2_evt_LiFiTransferStarted
     description: "Combined LiFi transfer events across all supported chains"
     columns: *common_columns
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - evt_tx_hash
+            - evt_index
+            - source_chain
