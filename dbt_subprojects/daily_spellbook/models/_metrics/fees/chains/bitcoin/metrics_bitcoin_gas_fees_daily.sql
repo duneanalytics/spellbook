@@ -38,9 +38,9 @@ with prices as (
 )
 select
     'bitcoin' as blockchain
-    , btc.block_date
-    , (btc.daily_fee * prices.price) as gas_fees_usd
+    , block_date
+    , (daily_fee * price) as gas_fees_usd
 from
     bitcoin_fees
 inner join prices
-    on btc.block_date = prices.day
+    on block_date = day
