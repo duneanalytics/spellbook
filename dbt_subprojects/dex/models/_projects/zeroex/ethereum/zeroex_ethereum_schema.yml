@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: danning.sui, bakabhai993, hosuke, rantum
+      contributors: danning.sui, bakabhai993, hosuke
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -106,11 +106,11 @@ models:
         name: blockchain
         
 
-  - name: zeroex_v1_ethereum_deduped_trades
+  - name: zeroex_ethereum_api_fills_deduped
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: bakabhai993, rantum
+      contributors: bakabhai993
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >

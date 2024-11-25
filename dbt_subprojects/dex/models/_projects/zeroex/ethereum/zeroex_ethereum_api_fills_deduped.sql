@@ -1,20 +1,36 @@
-{% macro zeroex_v1_deduped_trades(blockchain, start_date) %}
+{{  config(
 
-{% set table_name = 'zeroex_' ~ blockchain ~ '_api_fills' %}
+        schema = 'zeroex_ethereum',
+        alias = 'api_fills_deduped',
+        materialized='incremental',
+        partition_by = ['block_month'],
+        unique_key = ['block_date', 'tx_hash', 'evt_index'],
+        on_schema_change='sync_all_columns',
+        file_format ='delta',
+        incremental_strategy='merge',
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    )
+}}
+
+{% set zeroex_v3_start_date = '2019-12-01' %}
+--the code used to create the data for the insertion into the dex.trades table
+--this code is also the deduped version for the fills tables.
+--only the data for 0x API fills.
+--dependent on:zeroex_ethereum.api_fills.
 
 WITH fills_with_tx_fill_number
 AS
 (
     SELECT   row_number() OVER ( partition BY tx_hash ORDER BY evt_index ASC ) AS tx_fill_number
            , *
-    FROM {{ ref(table_name) }}
+    FROM {{ ref('zeroex_ethereum_api_fills') }}
     WHERE 1=1
     AND swap_flag = true
     {% if is_incremental() %}
     AND {{ incremental_predicate('block_time') }}
     {% endif %}
     {% if not is_incremental() %}
-    AND block_time >= DATE '{{start_date}}'
+    AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
     {% endif %}
 )
 , fills_first_last
@@ -50,7 +66,7 @@ AS
         , MAX(CASE WHEN maker_consider_flag = 0 THEN NULL ELSE maker_token_amount_raw END)  AS maker_token_amount_raw
         , COUNT(*)                                                                          AS fills_within
     FROM fills_first_last a
-    GROUP BY  tx_hash
+    GROUP BY  tx_hash,hop_count
 )
 SELECT  a.blockchain
       , '0x API'  as project
@@ -83,5 +99,3 @@ SELECT  a.blockchain
 FROM fills_with_tx_fill_number a
 INNER JOIN deduped_bridge_fills b
     ON a.tx_hash = b.tx_hash AND a.evt_index = b.evt_index
-{% endmacro %}
-
