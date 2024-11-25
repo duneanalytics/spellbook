@@ -314,11 +314,11 @@ meta as (
     select
         *
         , map_from_entries(array[
-              ('classic: direct', flags['direct'] and order_hash is null and not auction and not cross_chain_swap or second_side)
-            , ('classic: external', not flags['direct'] and order_hash is null and not auction and not cross_chain_swap)
+              ('classic: direct', flags['direct'] and order_hash is null and not auction and not cross_chain_swap and not contracts_only or second_side)
+            , ('classic: external', not flags['direct'] and order_hash is null and not auction and not contracts_only and not cross_chain_swap)
             , ('intent: intra-chain auction', auction and not cross_chain_swap)
-            , ('intent: intra-chain user limit order', order_hash is not null and not auction and not cross_chain_swap and not contracts_only)
-            , ('intent: intra-chain contracts only', contracts_only)
+            , ('intent: intra-chain user limit order', order_hash is not null and not auction and not cross_chain_swap and not contracts_only and not second_side)
+            , ('intent: intra-chain contracts only', contracts_only and not second_side)
             , ('cross-chain', cross_chain_swap)
         ]) as modes
     from (
