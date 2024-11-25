@@ -20,8 +20,8 @@
         , tokens_erc20_model = source('tokens', 'erc20')
         , prices_model = ref('prices_hour')
         , evms_info_model = source('evms','info')
-        , transfers_start_date = '2024-10-01'
-        , transfers_end_date = '2024-10-02'
+        , transfers_start_date = '2024-08-01'
+        , transfers_end_date = '2024-08-02'
         , blockchain = 'ethereum'
     )
 }}
