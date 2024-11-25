@@ -35,7 +35,7 @@ FROM (
         SELECT
         blockchain
         ,block_date
-        ,gas_fees_usd
+        ,tx_count
         FROM {{ ref('metrics_' + blockchain + '_transactions_daily') }}
         {% if not loop.last %}
         UNION ALL
