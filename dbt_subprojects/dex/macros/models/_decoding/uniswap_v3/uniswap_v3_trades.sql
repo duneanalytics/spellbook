@@ -1,7 +1,6 @@
 {% macro uniswap_v3_forks_trades(
     blockchain = null
     , dex_type = 'uni-v3'
-    , project = null
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PoolCreated = null
@@ -62,7 +61,6 @@ WITH evt_swap AS (
 , base_trades AS (
     SELECT
         '{{ blockchain }}' AS blockchain
-        , '{{ project }}' AS project
         , '{{ version }}' AS version
         , '{{dex_type}}' AS dex_type
         , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
@@ -84,7 +82,8 @@ WITH evt_swap AS (
 )
 
 SELECT  base_trades.blockchain
-        , COALESCE(contracts.namespace, base_trades.project) AS project
+        , CASE when dex_map.project_name is not NULL then dex_map.project_name else concat('unknown-uni-v3-', cast(varbinary_substring(factory_address, 1, 5) as varchar)) end as project_name
+        , CASE when dex_map.project_name is not NULL then 'identified' else 'unidentified' end as project_name_status
         , base_trades.version
         , base_trades.dex_type
         , base_trades.factory_address
@@ -116,16 +115,8 @@ INNER JOIN (
 ON transfers.tx_hash = base_trades.tx_hash
     AND contains(transfers.contract_addresses, base_trades.token_bought_address)
     AND contains(transfers.contract_addresses, base_trades.token_sold_address)
-LEFT JOIN (
-    SELECT
-        address,
-        blockchain,
-        namespace
-    FROM {{ source('evms', 'contracts') }}
-    WHERE blockchain = '{{ blockchain }}'
-        AND namespace IS NOT NULL
-) AS contracts
-ON base_trades.project_contract_address = contracts.address
-  AND base_trades.blockchain = contracts.blockchain
-
+LEFT JOIN {{ ref('dex_mapping') }} AS dex_map
+ON base_trades.factory_address = dex_map.factory_address
+  AND base_trades.blockchain = dex_map.blockchain
+where block_date >= '2024-06-01'
 {% endmacro %}
