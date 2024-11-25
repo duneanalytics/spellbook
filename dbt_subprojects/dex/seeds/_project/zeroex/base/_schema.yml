@@ -28,7 +28,7 @@ seeds:
         tx_from: varbinary
         tx_to: varbinary
 
-  - name: zeroex_base_settler_trades_sample
+  - name: zeroex_v2_base_trades_sample
     config:
       column_types:
         tx_hash: varbinary

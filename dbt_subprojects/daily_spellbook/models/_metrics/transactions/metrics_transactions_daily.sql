@@ -11,69 +11,73 @@
 
 with evm as (
     select
-        *
+        blockchain
+        , block_date
+        , approx_distinct(tx_hash) as tx_count --max 2% error, which is fine
     from
-        (
-            select
-                blockchain
-                , cast(date_trunc('day', block_time) as date) as block_date
-                , hash as tx_hash
-            from
-                {{ source('evms', 'transactions') }}
-            where
-                1 = 1
-                {% if is_incremental() %}
-                and {{ incremental_predicate('block_time') }}
-                {% endif %}
-        )
-    union all
-    select
-        *
-    from
-        (
-            select
-                'tron' as blockchain
-                , cast(date_trunc('day', block_time) as date) as block_date
-                , hash as tx_hash
-            from
-                {{ source('tron', 'transactions') }}
-            where
-                1 = 1
-                {% if is_incremental() %}
-                and {{ incremental_predicate('block_time') }}
-                {% endif %}
-        )
+        {{ source('tokens', 'transfers') }}
+    where
+        1 = 1
+        and amount_usd >=1
+        {% if is_incremental() %}
+        and {{ incremental_predicate('block_date') }}
+        {% endif %}
+    group by
+        blockchain
+        , block_date
 )
 , solana as (
     select
         'solana' as blockchain
         , block_date
-        , id as tx_hash
+        , approx_distinct(tx_id) as tx_count
     from
-        {{ source('solana', 'transactions') }}
+        {{ source('tokens_solana', 'transfers') }}
     where
         1 = 1
-        and block_date is not null --200m+ rows of nulls
+        and action != 'wrap'
+        and amount_usd > 1
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
+    group by
+        'solana'
+        , block_date
+)
+, bitcoin as (
+    select
+        blockchain
+        , block_date
+        , approx_distinct(tx_id) as tx_count
+    from
+        {{ source('transfers_bitcoin', 'satoshi') }}
+    where
+        1 = 1
+        and amount_transfer_usd > 1
+        {% if is_incremental() %}
+        and {{ incremental_predicate('block_date') }}
+        {% endif %}
+    group by
+        blockchain
+        , block_date
 )
 select
     blockchain
     , block_date
-    , count(tx_hash) as tx_count
+    , tx_count
 from
     evm
-group by
-    blockchain
-    , block_date
 union all
 select
     blockchain
     , block_date
-    , count(tx_hash) as tx_count
+    , tx_count
 from
     solana
-group by
+union all
+select
     blockchain
     , block_date
+    , tx_count
+from
+    bitcoin

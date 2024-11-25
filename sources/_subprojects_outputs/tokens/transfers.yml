@@ -94,3 +94,7 @@ sources:
   - name: tokens_degen
     tables:
       - name: transfers
+
+  - name: transfers_bitcoin
+    tables:
+      - name: satoshi

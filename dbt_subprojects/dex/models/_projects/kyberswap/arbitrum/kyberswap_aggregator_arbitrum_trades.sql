@@ -36,9 +36,11 @@ WITH meta_router AS
             ,ARRAY[-1]              AS trace_address
         FROM
             {{ source('kyber_arbitrum', 'MetaAggregationRouterV2_evt_Swapped') }}
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
-        {% endif %}
+        WHERE
+            dstToken != 0x7d3eedb40fbecd9fba383504e066fdf67382a835 --bug with MTK token
+            {% if is_incremental() %}
+            AND evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+            {% endif %}
 )
 SELECT
     'arbitrum'                                                          AS blockchain
