@@ -5,4 +5,9 @@ seeds:
     config:
       column_types:
         version: varchar
-
+        token_bought_address: varbinary
+        token_sold_address: varbinary
+        fee_token_address: varbinary
+        project_contract_address: varbinary
+        user: varbinary
+        tx_hash: varbinary
