@@ -111,7 +111,6 @@ models:
             - evt_index
       - check_bot_trades_seed:
           seed_file: ref('banana_gun_ethereum_trades_seed')
-          blockchain: ethereum
 
   - name: banana_gun_base_bot_trades
     meta:
@@ -131,7 +130,6 @@ models:
             - evt_index
       - check_bot_trades_seed:
           seed_file: ref('banana_gun_base_trades_seed')
-          blockchain: base
 
   - name: pepeboost_ethereum_bot_trades
     meta:
@@ -151,4 +149,3 @@ models:
             - evt_index
       - check_bot_trades_seed:
           seed_file: ref('pepeboost_ethereum_trades_seed')
-          blockchain: ethereum

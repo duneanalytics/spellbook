@@ -189,6 +189,9 @@ FROM
     blockchain = '{{blockchain}}'
     AND contract_address = {{weth}}
     AND minute = DATE_TRUNC('minute', block_time)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('minute') }}
+    {% endif %}  
   )
 ORDER BY
   block_time DESC,
