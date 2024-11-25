@@ -2,7 +2,7 @@
     schema = 'lifi_avalanche',
     alias = 'transfers',
     materialized = 'view',
-    unique_key = ['evt_tx_hash', 'evt_index']
+    unique_key = 'transfer_id'
     )
 }}
 
@@ -32,8 +32,9 @@ transactions as (
 )
 
 select 
+    {{ dbt_utils.generate_surrogate_key(['s.evt_tx_hash', 's.evt_index']) }} as transfer_id,
     s.*,
     t.sender
 from source_data s
-left join transactions t
+inner join transactions t
     on s.evt_tx_hash = t.tx_hash

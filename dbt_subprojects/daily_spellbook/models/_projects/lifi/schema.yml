@@ -34,55 +34,73 @@ models:
         description: "Source blockchain"
       - name: sender
         description: "Address that initiated the transaction"
+      - name: transfer_id
+        description: "Unique identifier for the transfer event"
     data_tests:
       - unique:
-          column_name: "{{ dbt_utils.generate_surrogate_key(['evt_tx_hash', 'evt_index']) }}"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
+      - unique:
+          column_name: transfer_id
 
   - name: lifi_arbitrum_transfers
     description: "Arbitrum LiFi transfer events"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "{{ dbt_utils.generate_surrogate_key(['evt_tx_hash', 'evt_index']) }}"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
+      - unique:
+          column_name: transfer_id
 
   - name: lifi_avalanche_transfers
     description: "Avalanche LiFi transfer events"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "{{ dbt_utils.generate_surrogate_key(['evt_tx_hash', 'evt_index']) }}"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
+      - unique:
+          column_name: transfer_id
 
   - name: lifi_bnb_transfers
     description: "BNB Chain LiFi transfer events"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "{{ dbt_utils.generate_surrogate_key(['evt_tx_hash', 'evt_index']) }}"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
+      - unique:
+          column_name: transfer_id
 
   - name: lifi_fantom_transfers
     description: "Fantom LiFi transfer events"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "{{ dbt_utils.generate_surrogate_key(['evt_tx_hash', 'evt_index']) }}"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
+      - unique:
+          column_name: transfer_id
 
   - name: lifi_gnosis_transfers
     description: "Gnosis Chain LiFi transfer events"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "{{ dbt_utils.generate_surrogate_key(['evt_tx_hash', 'evt_index']) }}"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
+      - unique:
+          column_name: transfer_id
 
   - name: lifi_zksync_transfers
     description: "zkSync LiFi transfer events"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "{{ dbt_utils.generate_surrogate_key(['evt_tx_hash', 'evt_index']) }}"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar))"
+      - unique:
+          column_name: transfer_id
 
   - name: LiFiDiamond_v2_evt_LiFiTransferStarted
     description: "Combined LiFi transfer events across all supported chains"
     columns: *common_columns
     data_tests:
       - unique:
-          column_name: "{{ dbt_utils.generate_surrogate_key(['evt_tx_hash', 'evt_index', 'source_chain']) }}"
+          column_name: "concat(cast(evt_tx_hash as varchar), '-', cast(evt_index as varchar), '-', source_chain)"
+      - unique:
+          column_name: transfer_id
