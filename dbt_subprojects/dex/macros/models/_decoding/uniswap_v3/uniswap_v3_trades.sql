@@ -118,5 +118,5 @@ ON transfers.tx_hash = base_trades.tx_hash
 LEFT JOIN {{ ref('dex_mapping') }} AS dex_map
 ON base_trades.factory_address = dex_map.factory_address
   AND base_trades.blockchain = dex_map.blockchain
-where block_date >= '2024-06-01'
+where block_date >= DATE ('2024-06-01')
 {% endmacro %}
