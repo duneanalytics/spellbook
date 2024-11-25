@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ethereum
       project: zeroex
-      contributors: danning.sui, bakabhai993, hosuke, rantum
+      contributors: danning.sui, bakabhai993, hosuke
     config:
       tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
     description: >
