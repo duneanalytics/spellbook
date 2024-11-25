@@ -82,7 +82,7 @@ WITH evt_swap AS (
 )
 
 SELECT  base_trades.blockchain
-        , CASE when dex_map.project_name is not NULL then dex_map.project_name else concat('unknown-uni-v3-', cast(varbinary_substring(factory_address, 1, 5) as varchar)) end as project
+        , CASE when dex_map.project_name is not NULL then dex_map.project_name else concat('unknown-uni-v3-', cast(varbinary_substring(base_trades.factory_address, 1, 5) as varchar)) end as project
         , CASE when dex_map.project_name is not NULL then true else false end as project_status
         , base_trades.version
         , base_trades.dex_type
