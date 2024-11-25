@@ -1,15 +1,15 @@
 {% macro zeroex_settler_txs_cte(blockchain, start_date) %}
 WITH tbl_addresses AS (
     SELECT 
-        varbinary_to_int256 (topic1) as token_id, 
-        bytearray_substring(logs.topic3,13,20) as settler_address,
+        token_id, 
+        "to" AS settler_address,
         block_time AS begin_block_time, 
         block_number AS begin_block_number
     FROM 
-        {{ source( blockchain, 'logs') }}
+        {{ source('nft', 'transfers') }}
     WHERE 
         contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae 
-        and topic0 = 0xaa94c583a45742b26ac5274d230aea34ab334ed5722264aa5673010e612bc0b2
+        AND blockchain = '{{ blockchain }}'
 ),
 
 tbl_end_times AS (
@@ -38,8 +38,7 @@ settler_trace_data AS (
         "to" AS contract_address,
         varbinary_substring(input,1,4) AS method_id,
         varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker,
-        a.settler_address, 
-        row_number() OVER (PARTITION BY tr.tx_hash ORDER BY trace_address) AS rn
+        a.settler_address
     FROM
         {{ source(blockchain, 'traces') }} AS tr
     JOIN
@@ -62,14 +61,15 @@ settler_txs AS (
         method_id,
         contract_address,
         settler_address,
-        varbinary_substring(tracker,2,12) AS zid,
+        MAX(varbinary_substring(tracker,2,12)) AS zid,
         CASE
-            WHEN method_id = 0x1fff991f THEN varbinary_substring(tracker,14,3)
-            WHEN method_id = 0xfd3ad6d4 THEN varbinary_substring(tracker,13,3)
+            WHEN method_id = 0x1fff991f THEN MAX(varbinary_substring(tracker,14,3))
+            WHEN method_id = 0xfd3ad6d4 THEN MAX(varbinary_substring(tracker,13,3))
         END AS tag
     FROM
         settler_trace_data
-    WHERE rn = 1
+    GROUP BY
+        1,2,3,4,5,6
 )
 
 SELECT * FROM settler_txs
@@ -171,6 +171,30 @@ prices AS (
         {% endif %}
 ),
 
+fills AS (
+    WITH signatures AS (
+        SELECT DISTINCT signature
+        FROM {{ source(blockchain, 'logs_decoded') }} l
+        JOIN tbl_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
+        WHERE event_name IN ('TokenExchange', 'OtcOrderFilled', 'SellBaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('l.block_time') }}
+        {% else %}
+            AND l.block_time >= DATE '{{start_date}}'
+        {% endif %}
+    )
+    SELECT tt.tx_hash, tt.block_number, tt.block_time, COUNT(*) AS fills_within
+    FROM {{ source(blockchain, 'logs') }} l
+    JOIN signatures ON signature = topic0
+    JOIN tbl_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
+    {% if is_incremental() %}
+        WHERE {{ incremental_predicate('l.block_time') }}
+    {% else %}
+        WHERE l.block_time >= DATE '{{start_date}}'
+    {% endif %}
+    GROUP BY 1,2,3
+),
+
 results AS (
     SELECT
         '{{blockchain}}' AS blockchain,
@@ -200,7 +224,8 @@ results AS (
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS maker_token_amount,
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) AS token_bought_amount,
         maker_amount / POW(10,COALESCE(tm.decimals,pm.decimals)) * pm.price AS maker_amount,
-        tag
+        tag,
+        fills_within
     FROM
         tbl_trades trades
     JOIN
@@ -210,6 +235,8 @@ results AS (
         {% else %}
             AND tr.block_time >= DATE '{{start_date}}'
         {% endif %}
+    LEFT JOIN
+        fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number
     LEFT JOIN
         tokens tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
     LEFT JOIN
@@ -269,28 +296,4 @@ order by block_time desc
 
 {% macro zeroex_v2_trades_indirect(blockchain, start_date) %}
 {{ zeroex_v2_trades(blockchain, start_date, false) }}
-{% endmacro %}
-
-{% macro zeroex_v2_trades_fills_count(blockchain, start_date) %}
-    WITH signatures AS (
-        SELECT DISTINCT signature
-        FROM {{ source(blockchain, 'logs_decoded') }} l
-        JOIN tbl_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
-        WHERE event_name IN ('TokenExchange', 'OtcOrderFilled', 'SellBaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('l.block_time') }}
-        {% else %}
-            AND l.block_time >= DATE '{{start_date}}'
-        {% endif %}
-    )
-    SELECT tt.tx_hash, tt.block_number, tt.block_time, COUNT(*) AS fills_within
-    FROM {{ source(blockchain, 'logs') }} l
-    JOIN signatures ON signature = topic0
-    JOIN tbl_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
-    {% if is_incremental() %}
-        WHERE {{ incremental_predicate('l.block_time') }}
-    {% else %}
-        WHERE l.block_time >= DATE '{{start_date}}'
-    {% endif %}
-    GROUP BY 1,2,3
 {% endmacro %}
