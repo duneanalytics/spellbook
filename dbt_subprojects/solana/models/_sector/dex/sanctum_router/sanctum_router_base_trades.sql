@@ -1,6 +1,6 @@
 {{
   config(
-        schema = 'sanctum_router_solana',
+        schema = 'sanctum_router',
         alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -13,7 +13,7 @@
 }}
 
 {% set project_start_date = '2023-02-03' %}
-{% set dev_start_date = "date_trunc('day', now() - interval '14' day)" %}
+{% set dev_start_date = "date_trunc('day', now() - interval '7' day)" %}
 
 WITH swap_via_stake AS (
     SELECT 
