@@ -139,9 +139,9 @@ WITH evt_data_1 AS (
         event_name,
         msg_sender,
 
-        from_hex(base_key) AS base_key,
-        from_hex("data") AS "data",
-        TRY_CAST("value" AS DOUBLE) / POWER(10, 30) AS "value"
+        from_hex(EDP.base_key) AS base_key,
+        from_hex(EDP."data") AS "data",
+        TRY_CAST(EDP."value" AS DOUBLE) / POWER(10, 30) AS "value"
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash
