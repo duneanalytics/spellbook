@@ -111,13 +111,13 @@ WITH evt_data_1 AS (
 -- full data 
 , full_data AS (
     SELECT 
-        blockchain,
+        ED.blockchain,
         block_time,
         DATE(block_time) AS block_date,
         block_number,
         ED.tx_hash,
         ED.index,
-        contract_address,
+        ED.contract_address,
         event_name,
         msg_sender,
 
@@ -126,8 +126,8 @@ WITH evt_data_1 AS (
         TRY_CAST(min_price AS DOUBLE) / POWER(10, 30 - ERC20.decimals) AS min_price,
         TRY_CAST(max_price AS DOUBLE) / POWER(10, 30 - ERC20.decimals) AS max_price,
         CASE 
-            WHEN "timestamp" = 0 THEN NULL
-            ELSE "timestamp"
+            WHEN TRY_CAST("timestamp" AS DOUBLE) = 0 THEN NULL
+            ELSE TRY_CAST("timestamp" AS DOUBLE)
         END AS "timestamp"
 
     FROM evt_data AS ED
