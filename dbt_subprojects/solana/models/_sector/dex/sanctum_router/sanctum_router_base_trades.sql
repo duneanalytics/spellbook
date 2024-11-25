@@ -12,7 +12,8 @@
   )
 }}
 
-{% set project_start_date = '2023-02-03' %} 
+{% set project_start_date = '2023-02-03' %}
+{% set dev_start_date = "date_trunc('day', now() - interval '14' day)" %}
 
 WITH swap_via_stake AS (
     SELECT 
@@ -38,7 +39,7 @@ WITH swap_via_stake AS (
     {% if is_incremental() %}
     AND {{incremental_predicate('call_block_time')}}
     {% else %}
-    AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+    AND call_block_time >= {{dev_start_date}}
     {% endif %}
 ),
 
@@ -66,7 +67,7 @@ prefund_swap_via_stake AS (
     {% if is_incremental() %}
     AND {{incremental_predicate('call_block_time')}}
     {% else %}
-    AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+    AND call_block_time >= {{dev_start_date}}
     {% endif %}
 ),
 
@@ -94,7 +95,7 @@ stake_wrapped_sol AS (
     {% if is_incremental() %}
     AND {{incremental_predicate('call_block_time')}}
     {% else %}
-    AND call_block_time >= TIMESTAMP '{{project_start_date}}'
+    AND call_block_time >= {{dev_start_date}}
     {% endif %}
 ),
 
@@ -126,7 +127,7 @@ withdraw_deposit AS (
     {% if is_incremental() %}
     AND {{incremental_predicate('w.call_block_time')}}
     {% else %}
-    AND w.call_block_time >= TIMESTAMP '{{project_start_date}}'
+    AND w.call_block_time >= {{dev_start_date}}
     {% endif %}
 ),
 
@@ -169,7 +170,7 @@ token_amounts AS (
         {% if is_incremental() %}
         AND {{incremental_predicate('ic.block_time')}}
         {% else %}
-        AND ic.block_time >= TIMESTAMP '{{project_start_date}}'
+        AND ic.block_time >= {{dev_start_date}}
         {% endif %}
 )
 
