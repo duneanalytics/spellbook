@@ -19,65 +19,228 @@
 
 {% set zeroex_v3_start_date = '2019-12-01' %}
 {% set zeroex_v4_start_date = '2021-01-06' %}
-{% set blockchain = 'base' %}
+
+-- Test Query here: https://dune.com/queries/2834419
 
 WITH zeroex_tx AS (
-     SELECT tx_hash,
-           block_time as block_time,
+    SELECT tx_hash,
            max(affiliate_address) as affiliate_address,
-           max(is_gasless) as is_gasless
+           is_gasless
     FROM (
-    {{
-        zeroex_v1_txs(
-            blockchain = blockchain,
-            zeroex_v3_start_date = zeroex_v3_start_date,
-        )
-    }}
+       SELECT tr.tx_hash,
+                CASE
+                            WHEN bytearray_position(INPUT, 0x869584cd ) <> 0 THEN SUBSTRING(INPUT
+                                                                                   FROM (bytearray_position(INPUT, 0x869584cd) + 16)
+                                                                                   FOR 20)
+                            WHEN bytearray_position(INPUT, 0xfbc019a7) <> 0 THEN SUBSTRING(INPUT
+                                                                                   FROM (bytearray_position(INPUT, 0xfbc019a7 ) + 16)
+                                                                                   FOR 20)
+                        END AS affiliate_address,
+                        case when  (varbinary_position(input,0x3d8d4082) <> 0  or varbinary_position(input,0x4f948110) <> 0  ) then 1 else 0 end as is_gasless
+        FROM {{ source('base', 'traces') }} tr
+        WHERE tr.to IN (
+                -- exchange contract
+                0xdef1c0ded9bec7f1a1670819833240f027b25eff,
+                -- forwarder addresses
+                0x6958f5e95332d93d21af0d7b9ca85b8212fee0a5,
+                0x4aa817c6f383c8e8ae77301d18ce48efb16fd2be,
+                0x4ef40d1bf0983899892946830abf99eca2dbc5ce,
+                -- exchange proxy
+                0xdef189deaef76e379df891899eb5a00a94cbc250
+                )
+                AND (
+                    bytearray_position(INPUT, 0x869584cd ) <> 0
+                    OR bytearray_position(INPUT, 0xfbc019a7 ) <> 0
+                )
 
+                {% if is_incremental() %}
+                AND {{ incremental_predicate('block_time') }}
+                {% endif %}
+                {% if not is_incremental() %}
+                AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
+                {% endif %}
     ) temp
-    group by tx_hash, block_time 
+    group by tx_hash , is_gasless
+
 ),
-ERC20BridgeTransfer as (
-    {{
-        ERC20BridgeTransfer(
-            blockchain = blockchain,
-            zeroex_v3_start_date = zeroex_v3_start_date
-        )
-    }}
+
+ERC20BridgeTransfer AS (
+    SELECT
+            logs.tx_hash,
+            logs.block_number                      AS block_number,
+            INDEX                                   AS evt_index,
+            logs.contract_address,
+            block_time                              AS block_time,
+            bytearray_substring(DATA, 142, 20) AS maker,
+            bytearray_substring(DATA, 172, 20) AS taker,
+            bytearray_substring(DATA, 14, 20) AS taker_token,
+            bytearray_substring(DATA, 45, 20) AS maker_token,
+            bytearray_to_uint256(bytearray_substring(DATA, 77, 20)) AS taker_token_amount_raw,
+            bytearray_to_uint256(bytearray_substring(DATA, 110, 20)) AS maker_token_amount_raw,
+            'ERC20BridgeTransfer'                   AS type,
+            zeroex_tx.affiliate_address             AS affiliate_address,
+            TRUE                                    AS swap_flag,
+            FALSE                                   AS matcha_limit_order_flag,
+            is_gasless
+    FROM {{ source('base', 'logs') }} logs
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    WHERE topic0 = 0x349fc08071558d8e3aa92dec9396e4e9f2dfecd6bb9065759d1932e7da43b8a9
+
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('block_time') }}
+    {% endif %}
+    {% if not is_incremental() %}
+    AND block_time >= cast('{{zeroex_v3_start_date}}' as date)
+    {% endif %}
+
 ),
-BridgeFill as (
-    {{
-        BridgeFill(
-            blockchain = blockchain,
-            zeroex_v4_start_date = zeroex_v4_start_date
-        )
-    }} 
+BridgeFill AS (
+    SELECT
+            logs.tx_hash,
+            logs.block_number                      AS block_number,
+            INDEX                                           AS evt_index,
+            logs.contract_address,
+            block_time                                      AS block_time,
+            bytearray_substring(DATA, 13, 20) AS maker,
+            0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
+            bytearray_substring(DATA, 45, 20) AS taker_token,
+            bytearray_substring(DATA, 77, 20) AS maker_token,
+            bytearray_to_uint256(bytearray_substring(DATA, 109, 20)) AS taker_token_amount_raw,
+            bytearray_to_uint256(bytearray_substring(DATA, 141, 20)) AS maker_token_amount_raw,
+            'BridgeFill'                                    AS type,
+            zeroex_tx.affiliate_address                     AS affiliate_address,
+            TRUE                                            AS swap_flag,
+            FALSE                                           AS matcha_limit_order_flag,
+            is_gasless
+    FROM {{ source('base', 'logs') }} logs
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    WHERE topic0 = 0xff3bc5e46464411f331d1b093e1587d2d1aa667f5618f98a95afc4132709d3a9
+        AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
+
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('block_time') }}
+        {% endif %}
+        {% if not is_incremental() %}
+        AND block_time >= cast('{{zeroex_v4_start_date}}' as date)
+        {% endif %}
 ),
-NewBridgeFill as (
-    {{
-        NewBridgeFill(
-            blockchain = blockchain,
-            zeroex_v4_start_date = zeroex_v4_start_date
-        )
-    }} 
+NewBridgeFill AS (
+    SELECT
+            logs.tx_hash as tx_hash,
+            logs.block_number                      AS block_number,
+            INDEX                                           AS evt_index,
+            logs.contract_address,
+            block_time                                      AS block_time,
+            bytearray_substring(DATA, 13, 20) AS maker,
+            0xdef1c0ded9bec7f1a1670819833240f027b25eff AS taker,
+            bytearray_substring(DATA, 45, 20) AS taker_token,
+            bytearray_substring(DATA, 77, 20) AS maker_token,
+            bytearray_to_uint256(bytearray_substring(DATA, 109, 20)) AS taker_token_amount_raw,
+            bytearray_to_uint256(bytearray_substring(DATA, 141, 20)) AS maker_token_amount_raw,
+            'BridgeFill'                                 AS type,
+            zeroex_tx.affiliate_address                     AS affiliate_address,
+            TRUE                                            AS swap_flag,
+            FALSE                                           AS matcha_limit_order_flag,
+            is_gasless
+    FROM {{ source('base' ,'logs') }} logs
+    INNER JOIN zeroex_tx ON zeroex_tx.tx_hash = logs.tx_hash
+    WHERE topic0 = 0xe59e71a14fe90157eedc866c4f8c767d3943d6b6b2e8cd64dddcc92ab4c55af8
+        AND contract_address = 0xdb6f1920a889355780af7570773609bd8cb1f498
+
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('block_time') }}
+        {% endif %}
+        {% if not is_incremental() %}
+        AND block_time >= cast('{{zeroex_v4_start_date}}' as date)
+        {% endif %}
 ),
+
 all_tx AS (
+
     SELECT *
     FROM ERC20BridgeTransfer
-    UNION ALL 
-    SELECT *
+    UNION ALL SELECT *
     FROM BridgeFill
     UNION ALL
     SELECT *
     FROM NewBridgeFill
-),
-tbl_trade_details AS (
-    {{
-        trade_details(
-            blockchain = blockchain,
-            zeroex_v3_start_date = zeroex_v3_start_date
-        )
-    }}
+
+
 )
-select * from tbl_trade_details
-order by block_time desc 
+
+SELECT
+        all_tx.tx_hash,
+        all_tx.block_number,
+        all_tx.evt_index,
+        all_tx.contract_address,
+        all_tx.block_time,
+        cast(date_trunc('day', all_tx.block_time) AS date) AS block_date,
+        cast(date_trunc('month', all_tx.block_time) AS date) AS block_month,
+        maker,
+        CASE
+            WHEN is_gasless = 1 then case when (varbinary_substring(data,177,19)  ) = 0x00000000000000000000000000000000000000 then varbinary_substring(data,81,20) else (varbinary_substring(data,177,20)  )  end
+            WHEN taker = 0xdef1c0ded9bec7f1a1670819833240f027b25eff THEN tx."from"
+            ELSE taker
+        END AS taker, -- fix the user masked by ProxyContract issue
+         taker_token,
+        ts.symbol AS taker_symbol,
+        maker_token,
+        ms.symbol AS maker_symbol,
+        CASE WHEN lower(ts.symbol) > lower(ms.symbol) THEN concat(ms.symbol, '-', ts.symbol) ELSE concat(ts.symbol, '-', ms.symbol) END AS token_pair,
+        taker_token_amount_raw / pow(10, tp.decimals) AS taker_token_amount,
+        taker_token_amount_raw,
+        maker_token_amount_raw / pow(10, mp.decimals) AS maker_token_amount,
+        maker_token_amount_raw,
+        all_tx.type,
+        max(affiliate_address) over (partition by all_tx.tx_hash) as affiliate_address,
+        swap_flag,
+        matcha_limit_order_flag,
+        CASE WHEN maker_token IN (0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22,0xeb466342c4d449bc9f53a865d5cb90586f405215 )
+             THEN (all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price
+             WHEN taker_token IN (0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22,0xeb466342c4d449bc9f53a865d5cb90586f405215,0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca )
+             THEN (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price
+             ELSE COALESCE((all_tx.maker_token_amount_raw / pow(10, mp.decimals)) * mp.price, (all_tx.taker_token_amount_raw / pow(10, tp.decimals)) * tp.price)
+             END AS volume_usd,
+        tx."from" AS tx_from,
+        tx.to AS tx_to,
+        'base' AS blockchain
+FROM all_tx
+INNER JOIN {{ source('base', 'transactions')}} tx ON all_tx.tx_hash = tx.hash
+
+{% if is_incremental() %}
+AND {{ incremental_predicate('tx.block_time') }}
+{% endif %}
+{% if not is_incremental() %}
+AND tx.block_time >= cast('{{zeroex_v3_start_date}}' as date)
+{% endif %}
+
+LEFT JOIN {{ source('prices', 'usd') }} tp ON date_trunc('minute', all_tx.block_time) = tp.minute
+AND CASE
+         WHEN all_tx.taker_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+        ELSE all_tx.taker_token
+    END = tp.contract_address
+AND tp.blockchain = 'base'
+
+{% if is_incremental() %}
+AND {{ incremental_predicate('tp.minute') }}
+{% endif %}
+{% if not is_incremental() %}
+AND tp.minute >= cast('{{zeroex_v3_start_date}}' as date)
+{% endif %}
+
+LEFT JOIN {{ source('prices', 'usd') }} mp ON DATE_TRUNC('minute', all_tx.block_time) = mp.minute
+AND CASE
+        WHEN all_tx.maker_token =  0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+        ELSE all_tx.maker_token
+    END = mp.contract_address
+AND mp.blockchain = 'base'
+
+{% if is_incremental() %}
+AND {{ incremental_predicate('mp.minute') }}
+{% endif %}
+{% if not is_incremental() %}
+AND mp.minute >= cast('{{zeroex_v3_start_date}}' as date)
+{% endif %}
+
+LEFT OUTER JOIN {{ source('tokens', 'erc20')  }} ts ON ts.contract_address = taker_token and ts.blockchain = 'base'
+LEFT OUTER JOIN {{ source('tokens', 'erc20')  }} ms ON ms.contract_address = maker_token and ms.blockchain = 'base'
