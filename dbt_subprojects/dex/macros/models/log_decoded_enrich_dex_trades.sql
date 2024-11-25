@@ -22,6 +22,7 @@ WITH base_trades as (
     SELECT
         base_trades.blockchain
         , base_trades.project
+        , base_trades.project_status
         , base_trades.version
         , base_trades.factory_address
         , base_trades.dex_type
@@ -71,6 +72,7 @@ WITH base_trades as (
 SELECT
     blockchain
     , project
+    , project_status
     , version
     , factory_address
     , dex_type
