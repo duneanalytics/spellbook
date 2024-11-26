@@ -1,74 +1,81 @@
-{{ config(
-        schema = 'metrics'
-        , alias = 'net_solana_transfers_daily'
-        , materialized = 'incremental'
-        , file_format = 'delta'
-        , incremental_strategy = 'merge'
-        , unique_key = ['blockchain', 'block_date']
-        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
-        )
-}}
+{% macro metrics_transactions_evm(blockchain) %}
 
 with raw_transfers as (
     select
-        'solana' as blockchain
+        blockchain
         , block_date
-        , from_owner as address
+        , "from" as address
         , 'sent' as transfer_direction
         , (sum(amount_usd) * -1) as transfer_amount_usd
     from
-        {{ source('tokens_solana', 'transfers') }}
+        {{ source('tokens', 'transfers') }}
     where
-        1 = 1
-        and action != 'wrap'
+        blockchain = '{{blockchain}}'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
-        'solana'
+        blockchain
         , block_date
-        , from_owner
+        , "from"
         , 'sent'
 
     union all
 
     select
-        'solana' as blockchain
+        blockchain
         , block_date
-        , to_owner as address
+        , to as address
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
     from
-        {{ source('tokens_solana', 'transfers') }}
+        {{ source('tokens', 'transfers') }}
     where
-        1 = 1
-        and action != 'wrap'
+        blockchain = '{{blockchain}}'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
-        'solana'
+        blockchain
         , block_date
-        , to_owner
+        , to
         , 'received'
+), labels as (
+    select
+        od.owner_key
+        , od.primary_category
+        , oa.blockchain
+        , oa.address
+    from
+        {{ source('labels', 'owner_addresses') }} as oa
+    inner join
+        {{ source('labels', 'owner_details') }} as od
+        on oa.owner_key = od.owner_key
+    where oa.blockchain = '{{blockchain}}'
 ), transfers_amount as (
     select
         t.blockchain
         , t.block_date
-        , t.address
+        , coalesce(l.owner_key, cast(t.address as varchar)) as address_owner
         , sum(case when t.transfer_direction = 'sent' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_sent
         , sum(case when t.transfer_direction = 'received' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_received
     from
         raw_transfers as t
+    left join
+        labels as l
+        on t.blockchain = l.blockchain
+        and t.address = l.address
+    where
+        coalesce(l.primary_category, 'n/a') not in ('Hacks and exploits', 'Social Engineering Scams') -- filter out scam addresses
     group by
         t.blockchain
         , t.block_date
-        , t.address
+        , coalesce(l.owner_key, cast(t.address as varchar))
 ), net_transfers as (
     select
         blockchain
         , block_date
-        , address
+        , address_owner
         , sum(coalesce(transfer_amount_usd_sent, 0)) as transfer_amount_usd_sent
         , sum(coalesce(transfer_amount_usd_received, 0)) as transfer_amount_usd_received
         , sum(coalesce(transfer_amount_usd_received, 0)) + sum(coalesce(transfer_amount_usd_sent, 0)) as net_transfer_amount_usd
@@ -77,7 +84,7 @@ with raw_transfers as (
     group by
         blockchain
         , block_date
-        , address
+        , address_owner
 )
 select
     blockchain
@@ -93,3 +100,5 @@ where
 group by
     blockchain
     , block_date
+
+{% endmacro %}
