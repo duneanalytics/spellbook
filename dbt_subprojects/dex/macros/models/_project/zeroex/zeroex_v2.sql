@@ -140,8 +140,6 @@ tbl_valid_logs AS (
         ,ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY index DESC) AS rn
     FROM
         tbl_all_logs
-    WHERE
-        taker_token != maker_token
 )
 
 SELECT * FROM tbl_valid_logs
