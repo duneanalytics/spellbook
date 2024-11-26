@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['day', 'address', 'token_address'],
+        unique_key = ['day', 'wallet_address', 'token_address'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.day')],
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
