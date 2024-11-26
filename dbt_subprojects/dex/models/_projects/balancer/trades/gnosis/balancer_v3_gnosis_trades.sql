@@ -1,9 +1,9 @@
 {{
     config(
-        schema = 'balancer_v3_ethereum',
+        schema = 'balancer_v3_gnosis',
         alias = 'trades',
         materialized = 'view',
-        post_hook = '{{ expose_spells(\'["ethereum"]\',
+        post_hook = '{{ expose_spells(\'["gnosis"]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
                                 contributors = \'["viniabussafi"]\') }}'
@@ -19,7 +19,7 @@ WITH
             swap_fee,
             pool_symbol,
             pool_type
-        FROM {{ ref('balancer_v3_ethereum_base_trades') }}
+        FROM {{ ref('balancer_v3_gnosis_base_trades') }}
     ),
     dexs AS (
         SELECT
@@ -55,7 +55,7 @@ WITH
             INNER JOIN dexs_base
                 ON dexs.tx_hash = dexs_base.tx_hash
                 AND dexs.evt_index = dexs_base.evt_index
-        WHERE dexs.blockchain = 'ethereum'
+        WHERE dexs.blockchain = 'gnosis'
             AND dexs.project = 'balancer'
             AND dexs.version = '3'
     ),
@@ -68,7 +68,7 @@ WITH
             dexs.block_time,
             MAX(bpt_prices.day) AS bpa_max_block_date
         FROM dexs
-            LEFT JOIN {{ source('balancer_v3_ethereum', 'bpt_prices') }} bpt_prices
+            LEFT JOIN {{ source('balancer_v3_gnosis', 'bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_bought_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
         GROUP BY 1, 2, 3, 4, 5
@@ -83,11 +83,11 @@ WITH
             dexs.block_time,
             MAX(bpt_prices.day) AS bpb_max_block_date
         FROM dexs
-            LEFT JOIN {{ source('balancer_v3_ethereum', 'bpt_prices') }} bpt_prices
+            LEFT JOIN {{ source('balancer_v3_gnosis', 'bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_sold_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
         GROUP BY 1, 2, 3, 4, 5
-    )
+    ),
 
 SELECT
     dexs.blockchain,
@@ -133,13 +133,13 @@ FROM dexs
         ON bpa.block_number = dexs.block_number
         AND bpa.tx_hash = dexs.tx_hash
         AND bpa.evt_index = dexs.evt_index
-    LEFT JOIN {{ source('balancer_v3_ethereum', 'bpt_prices') }} bpa_bpt_prices
+    LEFT JOIN {{ source('balancer_v3_gnosis', 'bpt_prices') }} bpa_bpt_prices
         ON bpa_bpt_prices.contract_address = bpa.contract_address
         AND bpa_bpt_prices.day = bpa.bpa_max_block_date
     INNER JOIN bpb
         ON bpb.block_number = dexs.block_number
         AND bpb.tx_hash = dexs.tx_hash
         AND bpb.evt_index = dexs.evt_index
-    LEFT JOIN {{ source('balancer_v3_ethereum', 'bpt_prices') }} bpb_bpt_prices
+    LEFT JOIN {{ source('balancer_v3_gnosis', 'bpt_prices') }} bpb_bpt_prices
         ON bpb_bpt_prices.contract_address = bpb.contract_address
         AND bpb_bpt_prices.day = bpb.bpb_max_block_date
