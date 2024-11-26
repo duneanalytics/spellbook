@@ -64,6 +64,6 @@ models:
     description: "zkSync LiFi transfer events"
     columns: *common_columns
 
-  - name: lifi_LiFiDiamond_v2_evt_LiFiTransferStarted
+  - name: LiFiDiamond_v2_evt_LiFiTransferStarted
     description: "Combined LiFi transfer events across all supported chains"
     columns: *common_columns
