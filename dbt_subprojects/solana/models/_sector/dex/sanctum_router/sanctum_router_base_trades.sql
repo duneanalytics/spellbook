@@ -190,11 +190,11 @@ SELECT
     , b.token_bought_vault
     , b.token_sold_vault
     , CAST(NULL as varchar) as project_program_id
-    --, 'stkitrT1Uoy18Dk1fTrgPw8W6MVzoCfYoAFT4MLsmhq' as project_main_id
+    , 'stkitrT1Uoy18Dk1fTrgPw8W6MVzoCfYoAFT4MLsmhq' as project_main_id
     , b.trader_id
     , b.tx_id
-    , b.outer_instruction_index
-    , b.inner_instruction_index
+    , CAST(b.outer_instruction_index as integer) as outer_instruction_index
+    , CAST(b.inner_instruction_index as integer) as inner_instruction_index
     , b.tx_index
 FROM all_trades b
 INNER JOIN token_amounts t
