@@ -265,6 +265,17 @@ WITH pool_labels AS (
         FROM bpt_prices_1
     ),
 
+    aave_prices AS(
+        SELECT
+            date_trunc('day', minute) AS day,
+            wrapped_token AS token,
+            decimals,
+            APPROX_PERCENTILE(median_price, 0.5) AS price,
+            next_change
+        FROM {{ ref('balancer_aave_static_token_prices') }}
+        WHERE blockchain = '{{blockchain}}'
+    ),    
+
     daily_protocol_fee_collected AS (
         SELECT 
             d.day, 
@@ -304,8 +315,8 @@ WITH pool_labels AS (
             t.symbol AS token_symbol,
             d.fee_type,
             SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
-            SUM(d.protocol_fee_amount_raw / power(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS token_amount,
-            SUM(COALESCE(p1.price, p2.price, p3.price) * protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS protocol_fee_collected_usd
+            SUM(d.protocol_fee_amount_raw / power(10, COALESCE(t.decimals,p1.decimals, p3.decimals, p4.decimals))) AS token_amount,
+            SUM(COALESCE(p1.price, p2.price, p3.price, p4.price) * protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals, p4.decimals))) AS protocol_fee_collected_usd
         FROM daily_protocol_fee_collected d
         LEFT JOIN prices p1
             ON p1.token = d.token_address
@@ -317,6 +328,9 @@ WITH pool_labels AS (
             ON p3.token = d.token_address
             AND p3.day <= d.day
             AND d.day < p3.day_of_next_change     
+        LEFT JOIN aave_prices p4 ON p4.day <= d.day
+            AND d.day < p4.next_change
+            AND p4.token_address = d.token_address            
         LEFT JOIN {{ source('tokens', 'erc20') }} t 
             ON t.contract_address = d.token_address
             AND t.blockchain = '{{blockchain}}'

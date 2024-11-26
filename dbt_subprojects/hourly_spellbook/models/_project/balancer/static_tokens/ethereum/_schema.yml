@@ -1,193 +1,69 @@
 version: 2
 
 models:
-  - name: balancer_ethereum_balances
+  - name: balancer_v3_ethereum_aave_static_token_mapping
     meta:
       blockchain: ethereum
       project: balancer
-      contributors: jacektrocinski, metacrypto, viniabussafi
-    config:
-      tags: ['ethereum', 'balancer', 'balances']
-    description: >
-      ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - pool
-            - token
-    columns:
-      - &day
-        name: day
-        description: "UTC event block time truncated to the day mark"
-        data_tests:
-          - not_null
-      - &pool
-        name: pool
-        description: "Balancer pool contract address"
-      - &token
-        name: token
-        description: "Token contract address"
-      - &cumulative_amount
-        name: cumulative_amount
-        description: "Balance of a token"
-
-  - name: balancer_v2_ethereum_token_balance_changes
-    meta:
-      blockchain: ethereum
-      project: balancer_v2
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'bpt', 'supply', 'changes']
+      tags: ['ethereum', 'static', 'token', 'mapping']
     description: >
-      Token Balance Changes on Balancer Pools.
+      Mapping of Aave tokens on Ethereum, including aTokens, staticATokens, and their corresponding underlying tokens.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - evt_tx_hash
-            - evt_index
-            - token_address
+            - atoken
     columns:
-      - &block_date
-        name: block_date
-        description: "UTC event block date of each DEX trade"
-      - &evt_block_time
-        name: evt_block_time
-        description: "Block time of transfer event"
-      - &evt_block_number
-        name: evt_block_number
-        description: "Block number of transfer event"
-      - &blockchain
-        name: blockchain
-        description: "Blockchain"
-      - &evt_tx_hash
-        name: evt_tx_hash
-        description: "Transaction hash of transfer event"
-      - &evt_index
-        name: evt_index
-        description: "Event index"
-      - &pool_id
-        name: pool_id
-        description: "Unique encoded identifier that refers to each pool"
-      - &pool_address
-        name: pool_address
-        description: "Pool address"
-      - &pool_symbol
-        name: pool_symbol
-        description: "Token symbols, followed by their respective weights, if applicable"
-      - &pool_type
-        name: pool_type
-        description: "Pool attributes, determined by the pool's factory"
-      - &version
-        name: version
-        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
-      - &token_address
-        name: token_address
-        description: "Contract address of the token"
-      - &token_symbol
-        name: token_symbol
-        description: "Token symbol"
-      - &delta_amount_raw
-        name: delta_amount_raw
-        description: "Raw value of the transaction at the time of execution in the original currency"
-      - &delta_amount
-        name: delta_amount
-        description: "Normalized value of the transaction at the time of execution in the original currency"
+      - name: blockchain
+        description: "Blockchain."    
+      - name: atoken
+        description: "Contract address of the aToken on Ethereum."
+      - name: atoken_symbol
+        description: "Symbol of the aToken."
+      - name: static_atoken
+        description: "Contract address of the staticAToken."
+      - name: static_atoken_name
+        description: "Name of the staticAToken."
+      - name: static_atoken_symbol
+        description: "Symbol of the staticAToken."
+      - name: underlying_token
+        description: "Contract address of the underlying token."
+      - name: underlying_token_symbol
+        description: "Symbol of the underlying token."
+      - name: underlying_token_decimals
+        description: "Decimal precision of the underlying token."
 
-  - name: balancer_v2_ethereum_token_balance_changes_daily
+  - name: balancer_v3_ethereum_aave_static_token_pricing
     meta:
       blockchain: ethereum
-      project: balancer_v2
+      project: balancer
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'bpt', 'supply', 'changes']
+      tags: ['ethereum', 'static', 'token', 'pricing']
     description: >
-      Token Balance Changes on Balancer Pools, grouped by day.
+      Pricing information for static tokens on Ethereum. Prices are derived from the ratio of underlying tokens deposited or withdrawn to shares issued or burned, multiplied by the underlying token price.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - pool_id
-            - token_address
+            - minute
+            - wrapped_token
     columns:
-      - *block_date
-      - *pool_id
-      - *pool_address
-      - *pool_symbol
-      - *version
-      - *blockchain
-      - *pool_type
-      - *token_address
-      - *token_symbol
-      - &daily_delta
-        name: daily_delta
-        description: "Daily total impact on token balance"
-      - &daily_delta_usd
-        name: daily_delta_usd
-        description: "Daily total impact on token balance, in USD"
-      - &daily_delta_eth
-        name: daily_delta_eth
-        description: "Daily total impact on token balance, in ETH"
-
-  - name: balancer_v3_ethereum_token_balance_changes
-    meta:
-      blockchain: ethereum
-      project: balancer_v3
-      contributors: viniabussafi
-    config:
-      tags: ['ethereum', 'bpt', 'supply', 'changes']
-    description: >
-      Token Balance Changes on Balancer Pools.
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - evt_tx_hash
-            - evt_index
-            - token_address
-    columns:
-      - *block_date
-      - *evt_block_time
-      - *evt_block_number
-      - *blockchain
-      - *evt_tx_hash
-      - *evt_index
-      - *pool_id
-      - *pool_address
-      - *pool_symbol
-      - *pool_type
-      - *version
-      - *token_address
-      - *token_symbol
-      - *delta_amount_raw
-      - *delta_amount
-
-  - name: balancer_v3_ethereum_token_balance_changes_daily
-    meta:
-      blockchain: ethereum
-      project: balancer_v3
-      contributors: viniabussafi
-    config:
-      tags: ['ethereum', 'bpt', 'supply', 'changes']
-    description: >
-      Token Balance Changes on Balancer Pools, grouped by day.
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - block_date
-            - pool_id
-            - token_address
-    columns:
-      - *block_date
-      - *pool_id
-      - *pool_address
-      - *pool_symbol   
-      - *version
-      - *blockchain
-      - *pool_type
-      - *token_address
-      - *token_symbol
-      - *daily_delta   
-      - *daily_delta_usd   
-      - *daily_delta_eth        
+      - name: minute
+        description: "Timestamp of the event, truncated to the nearest minute."
+      - name: blockchain
+        description: "Blockchain."
+      - name: wrapped_token
+        description: "Contract address of the wrapped token."
+      - name: underlying_token
+        description: "Contract address of the underlying token."
+      - name: static_atoken_symbol
+        description: "Symbol of the staticAToken."
+      - name: underlying_token_symbol
+        description: "Symbol of the underlying token."
+      - name: decimals
+        description: "Decimal precision for the token."
+      - name: median_price
+        description: "Median price of the static token, computed over the dataset."
+      - name: next_change
+        description: "Timestamp of the next expected pricing change or event affecting the price."

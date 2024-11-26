@@ -387,12 +387,14 @@ WITH pool_labels AS (
         GROUP BY 1
     ),
 
-    gyro_prices AS (
+    aave_prices AS(
         SELECT
-            token_address,
+            date_trunc('day', minute) AS day,
+            wrapped_token AS token,
             decimals,
-            price
-        FROM {{ source('gyroscope','gyro_tokens') }}
+            APPROX_PERCENTILE(median_price, 0.5) AS price,
+            next_change
+        FROM {{ ref('balancer_aave_static_token_prices') }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
@@ -552,7 +554,9 @@ WITH pool_labels AS (
         AND p2.token = b.token
         LEFT JOIN bpt_prices p3 ON p3.day = b.day
         AND p3.token = b.token
-        LEFT JOIN gyro_prices p4 ON p4.token_address = b.token
+        LEFT JOIN aave_prices p4 ON p4.day <= c.day
+        AND c.day < p4.next_change
+        AND p4.token_address = b.token
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
