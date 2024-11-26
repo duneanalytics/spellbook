@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'lifi_avalanche',
+    schema = 'lifi_avalanche_c',
     alias = 'transfers',
     materialized = 'incremental',
     file_format = 'delta',
@@ -10,7 +10,9 @@
 }}
 
 with source_data as (
-    {{ lifi_extract_bridge_data('avalanche') }}
+    select 
+        *
+    from {{ lifi_extract_bridge_data('avalanche_c') }}
 )
 
 {{

@@ -44,8 +44,8 @@ models:
     description: "Arbitrum LiFi transfer events"
     columns: *common_columns
 
-  - name: lifi_avalanche_transfers
-    description: "Avalanche LiFi transfer events"
+  - name: lifi_avalanche_c_transfers
+    description: "Avalanche C-Chain LiFi transfer events"
     columns: *common_columns
 
   - name: lifi_bnb_transfers

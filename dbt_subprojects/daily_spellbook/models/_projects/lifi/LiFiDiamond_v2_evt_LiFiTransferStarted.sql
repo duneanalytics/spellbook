@@ -9,7 +9,7 @@
 {% set chains = [
     'ethereum',
     'arbitrum',
-    'avalanche',
+    'avalanche_c',
     'bnb',
     'fantom',
     'gnosis',
