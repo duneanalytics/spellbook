@@ -150,7 +150,7 @@ models:
         name: fills_within
         description: "fills in then multihop, if present" 
     
-  - name: zeroex_avalanche_c_settler_trades 
+  - name: zeroex_v2_avalanche_c_trades 
     meta:
       blockchain: avalanche_c
       project: zeroex
