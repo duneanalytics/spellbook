@@ -182,15 +182,15 @@ SELECT
     , b.block_time
     , b.block_slot
     , b.trade_source
-    , t.amount_bought as token_bought_amount_raw
-    , b.token_sold_amount_raw
+    , CAST(t.amount_bought as uint256) as token_bought_amount_raw
+    , CAST(b.token_sold_amount_raw as uint256) as token_sold_amount_raw
     , CAST(NULL as double) as fee_tier
     , b.token_bought_mint_address
     , b.token_sold_mint_address
     , b.token_bought_vault
     , b.token_sold_vault
     , CAST(NULL as varchar) as project_program_id
-    , 'stkitrT1Uoy18Dk1fTrgPw8W6MVzoCfYoAFT4MLsmhq' as project_main_id
+    --, 'stkitrT1Uoy18Dk1fTrgPw8W6MVzoCfYoAFT4MLsmhq' as project_main_id
     , b.trader_id
     , b.tx_id
     , b.outer_instruction_index
