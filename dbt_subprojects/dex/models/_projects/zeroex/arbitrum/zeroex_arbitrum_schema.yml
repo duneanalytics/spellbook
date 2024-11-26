@@ -206,7 +206,7 @@ models:
         name: protocol_fee_paid_eth
         description: "The protocol fee paid in ETH"
 
-  - name: zeroex_arbitrum_v2_trades
+  - name: zeroex_v2_arbitrum_trades
     meta:
       blockchain: arbitrum
       project: zeroex
