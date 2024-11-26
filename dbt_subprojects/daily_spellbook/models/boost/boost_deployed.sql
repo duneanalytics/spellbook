@@ -32,7 +32,7 @@ select
     TRY(from_unixtime(end_time)) as end_time,
     reward_amount_raw,
     reward_token_address,
-    cast(max_participants as int) as max_participants,
+    max_participants,
     creation_time,
     creator as creator_address
 from
