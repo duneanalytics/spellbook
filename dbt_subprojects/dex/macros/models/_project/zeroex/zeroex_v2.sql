@@ -137,7 +137,7 @@ tbl_valid_logs AS (
                 ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS maker_token
         ,FIRST_VALUE(taker_token) IGNORE NULLS OVER (PARTITION BY tx_hash ORDER BY index
                 ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS taker_token
-        ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY index DESC) AS rn
+        ,ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY index DESC) AS rn
     FROM
         tbl_all_logs
     WHERE
