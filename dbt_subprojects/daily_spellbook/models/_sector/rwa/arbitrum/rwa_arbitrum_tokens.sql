@@ -95,9 +95,9 @@ from (values
     (0x3269a3C00AB86c753856fD135d97b87FACB0d848, 'FFM'      , 'Florence Finance'    , 'Governance' , 18, 'Stablecoin'),   
     (0xCa5Ca9083702c56b481D1eec86F1776FDbd2e594, 'RSR'      , 'Reserve Protocol'    , 'Governance' , 18, 'Stablecoin')
 ) as t(
-    token_contract,
+    token_address,
     symbol,
-    protocol,
+    project,
     type,
     decimals,
     category
