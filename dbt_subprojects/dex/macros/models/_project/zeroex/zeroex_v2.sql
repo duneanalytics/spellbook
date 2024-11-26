@@ -133,9 +133,9 @@ WITH tbl_all_logs AS (
 tbl_valid_logs AS (
     SELECT
         *
-        ,LAST_VALUE(maker_token) IGNORE NULLS OVER (PARTITION BY tx_hash ORDER BY index
+        ,LAST_VALUE(maker_token_) IGNORE NULLS OVER (PARTITION BY tx_hash ORDER BY index
                 ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS maker_token
-        ,FIRST_VALUE(taker_token) IGNORE NULLS OVER (PARTITION BY tx_hash ORDER BY index
+        ,FIRST_VALUE(taker_token_) IGNORE NULLS OVER (PARTITION BY tx_hash ORDER BY index
                 ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS taker_token
         ,ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY index DESC) AS rn
     FROM
