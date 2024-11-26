@@ -318,11 +318,20 @@ WITH evt_data_1 AS (
         ui_fee_amount / POWER(10, collateral_token_decimals) AS ui_fee_amount,
 
         total_rebate_factor / POWER(10, 30) AS total_rebate_factor,
-        adjusted_affiliate_reward_factor / POWER(10, 30) AS adjusted_affiliate_reward_factor,
         trader_discount_factor / POWER(10, 30) AS trader_discount_factor,
         total_rebate_amount / POWER(10, collateral_token_decimals) AS total_rebate_amount,
         trader_discount_amount / POWER(10, collateral_token_decimals) AS trader_discount_amount,
         affiliate_reward_amount / POWER(10, collateral_token_decimals) AS affiliate_reward_amount,
+
+        referral_total_rebate_factor / POWER(10, 30) AS referral_total_rebate_factor,
+        referral_adjusted_affiliate_reward_factor / POWER(10, 30) AS referral_adjusted_affiliate_reward_factor,
+        referral_trader_discount_factor / POWER(10, 30) AS referral_trader_discount_factor,
+        referral_total_rebate_amount / POWER(10, collateral_token_decimals) AS referral_total_rebate_amount,
+        referral_trader_discount_amount / POWER(10, collateral_token_decimals) AS referral_trader_discount_amount,
+        referral_affiliate_reward_amount / POWER(10, collateral_token_decimals) AS referral_affiliate_reward_amount,
+        
+        pro_trader_discount_factor / POWER(10, 30) AS pro_trader_discount_factor,
+        pro_trader_discount_amount / POWER(10, collateral_token_decimals) AS pro_trader_discount_amount,
 
         liquidation_fee_amount / POWER(10, collateral_token_decimals) AS liquidation_fee_amount,
         liquidation_fee_receiver_factor / POWER(10, 30) AS liquidation_fee_receiver_factor,
