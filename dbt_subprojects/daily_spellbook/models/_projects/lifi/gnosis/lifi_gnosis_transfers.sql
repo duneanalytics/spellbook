@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['transfer_id'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')]
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
