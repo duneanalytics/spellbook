@@ -25,9 +25,6 @@ WITH token_data AS (
             FROM {{ source('balancer_v3_gnosis', 'Vault_evt_PoolRegistered') }}
         ) AS pool_data
         CROSS JOIN UNNEST(tokenConfig, token_index_array) AS t(token, token_index)
-        {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
-        {% endif %}
         GROUP BY 1, 2 
     )
 
