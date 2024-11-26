@@ -140,14 +140,17 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'affiliate' THEN value END) AS affiliate,
         MAX(CASE WHEN key_name = 'trader' THEN value END) AS trader,
         MAX(CASE WHEN key_name = 'uiFeeReceiver' THEN value END) AS ui_fee_receiver,
+
         MAX(CASE WHEN key_name = 'collateralTokenPrice.min' THEN value END) AS collateral_token_price_min,
         MAX(CASE WHEN key_name = 'collateralTokenPrice.max' THEN value END) AS collateral_token_price_max,
         MAX(CASE WHEN key_name = 'tradeSizeUsd' THEN value END) AS trade_size_usd,
+
         MAX(CASE WHEN key_name = 'totalRebateFactor' THEN value END) AS total_rebate_factor,
         MAX(CASE WHEN key_name = 'traderDiscountFactor' THEN value END) AS trader_discount_factor,
         MAX(CASE WHEN key_name = 'totalRebateAmount' THEN value END) AS total_rebate_amount,
         MAX(CASE WHEN key_name = 'traderDiscountAmount' THEN value END) AS trader_discount_amount,
         MAX(CASE WHEN key_name = 'affiliateRewardAmount' THEN value END) AS affiliate_reward_amount,
+        
         MAX(CASE WHEN key_name = 'fundingFeeAmount' THEN value END) AS funding_fee_amount,
         MAX(CASE WHEN key_name = 'claimableLongTokenAmount' THEN value END) AS claimable_long_token_amount,
         MAX(CASE WHEN key_name = 'claimableShortTokenAmount' THEN value END) AS claimable_short_token_amount,
@@ -168,7 +171,9 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'totalCostAmount' THEN value END) AS total_cost_amount,
         MAX(CASE WHEN key_name = 'uiFeeReceiverFactor' THEN value END) AS ui_fee_receiver_factor,
         MAX(CASE WHEN key_name = 'uiFeeAmount' THEN value END) AS ui_fee_amount,
+        
         MAX(CASE WHEN key_name = 'isIncrease' THEN value END) AS is_increase,
+        
         MAX(CASE WHEN key_name = 'orderKey' THEN value END) AS order_key,
         MAX(CASE WHEN key_name = 'positionKey' THEN value END) AS position_key,
         MAX(CASE WHEN key_name = 'referralCode' THEN value END) AS referral_code

@@ -170,11 +170,20 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'uiFeeAmount' THEN value END) AS ui_fee_amount,
 
         MAX(CASE WHEN key_name = 'totalRebateFactor' THEN value END) AS total_rebate_factor,
-        MAX(CASE WHEN key_name = 'adjustedAffiliateRewardFactor' THEN value END) AS adjusted_affiliate_reward_factor,
         MAX(CASE WHEN key_name = 'traderDiscountFactor' THEN value END) AS trader_discount_factor,
         MAX(CASE WHEN key_name = 'totalRebateAmount' THEN value END) AS total_rebate_amount,
         MAX(CASE WHEN key_name = 'traderDiscountAmount' THEN value END) AS trader_discount_amount,
         MAX(CASE WHEN key_name = 'affiliateRewardAmount' THEN value END) AS affiliate_reward_amount,
+        
+        MAX(CASE WHEN key_name = 'referral.totalRebateFactor' THEN value END) AS referral_total_rebate_factor,
+        MAX(CASE WHEN key_name = 'referral.adjustedAffiliateRewardFactor' THEN value END) AS referral_adjusted_affiliate_reward_factor,
+        MAX(CASE WHEN key_name = 'referral.traderDiscountFactor' THEN value END) AS referral_trader_discount_factor,
+        MAX(CASE WHEN key_name = 'referral.totalRebateAmount' THEN value END) AS referral_total_rebate_amount,
+        MAX(CASE WHEN key_name = 'referral.traderDiscountAmount' THEN value END) AS referral_trader_discount_amount,
+        MAX(CASE WHEN key_name = 'referral.affiliateRewardAmount' THEN value END) AS referral_affiliate_reward_amount,
+
+        MAX(CASE WHEN key_name = 'pro.traderDiscountFactor' THEN value END) AS pro_trader_discount_factor,
+        MAX(CASE WHEN key_name = 'pro.traderDiscountAmount' THEN value END) AS pro_trader_discount_amount,
 
         MAX(CASE WHEN key_name = 'liquidationFeeAmount' THEN value END) AS liquidation_fee_amount,
         MAX(CASE WHEN key_name = 'liquidationFeeReceiverFactor' THEN value END) AS liquidation_fee_receiver_factor,
@@ -234,11 +243,20 @@ WITH evt_data_1 AS (
         TRY_CAST(ui_fee_amount AS DOUBLE) AS ui_fee_amount,
 
         TRY_CAST(total_rebate_factor AS DOUBLE) AS total_rebate_factor,
-        TRY_CAST(adjusted_affiliate_reward_factor AS DOUBLE) AS adjusted_affiliate_reward_factor,
         TRY_CAST(trader_discount_factor AS DOUBLE) AS trader_discount_factor,
         TRY_CAST(total_rebate_amount AS DOUBLE) AS total_rebate_amount,
         TRY_CAST(trader_discount_amount AS DOUBLE) AS trader_discount_amount,
         TRY_CAST(affiliate_reward_amount AS DOUBLE) AS affiliate_reward_amount,
+
+        TRY_CAST(referral_total_rebate_factor AS DOUBLE) AS referral_total_rebate_factor,
+        TRY_CAST(referral_adjusted_affiliate_reward_factor AS DOUBLE) AS referral_adjusted_affiliate_reward_factor,
+        TRY_CAST(referral_trader_discount_factor AS DOUBLE) AS referral_trader_discount_factor,
+        TRY_CAST(referral_total_rebate_amount AS DOUBLE) AS referral_total_rebate_amount,
+        TRY_CAST(referral_trader_discount_amount AS DOUBLE) AS referral_trader_discount_amount,
+        TRY_CAST(referral_affiliate_reward_amount AS DOUBLE) AS referral_affiliate_reward_amount,
+
+        TRY_CAST(pro_trader_discount_factor AS DOUBLE) AS pro_trader_discount_factor,
+        TRY_CAST(pro_trader_discount_amount AS DOUBLE) AS pro_trader_discount_amount,
 
         TRY_CAST(liquidation_fee_amount AS DOUBLE) AS liquidation_fee_amount,
         TRY_CAST(liquidation_fee_receiver_factor AS DOUBLE) AS liquidation_fee_receiver_factor,

@@ -283,10 +283,17 @@ WITH evt_data_1 AS (
             WHEN updated_at_time = 0 THEN NULL
             ELSE updated_at_time
         END AS updated_at_time,
-        valid_from_time,
+        CASE 
+            WHEN valid_from_time = 0 THEN NULL
+            ELSE valid_from_time
+        END AS valid_from_time,
         is_long,
         should_unwrap_native_token,
-        auto_cancel,
+
+        CASE
+            WHEN auto_cancel IS NULL THEN false
+            ELSE auto_cancel
+        END AS auto_cancel,
         key
 
     FROM event_data AS ED
