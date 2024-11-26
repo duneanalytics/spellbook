@@ -82,10 +82,6 @@ WITH tbl_all_logs AS (
         logs.block_time,
         logs.block_number,
         index,
-        CASE WHEN ((varbinary_substring(logs.topic2, 13, 20) = logs.tx_from) OR
-                   (varbinary_substring(logs.topic2, 13, 20) = first_value(bytearray_substring(logs.topic1,13,20)) OVER (PARTITION BY logs.tx_hash ORDER BY index)) OR
-                   topic0 = 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65)
-            THEN 1 END AS valid,
         COALESCE(bytearray_substring(logs.topic2,13,20), first_value(bytearray_substring(logs.topic1,13,20)) OVER (PARTITION BY logs.tx_hash ORDER BY index)) AS taker,
         coalesce(case when (varbinary_substring(logs.topic2, 13, 20) = tx_from) then logs.contract_address end,
             last_value(logs.contract_address) over (partition by logs.tx_hash order by index) ) as maker_token, 
@@ -116,17 +112,20 @@ WITH tbl_all_logs AS (
                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
                    0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
         AND zid != 0xa00000000000000000000000
-        {% if is_direct %}
-            AND (logs.tx_to = settler_address)
-        {% else %}
-            AND logs.tx_to != settler_address
+        
         {% endif %}
         {% if is_direct %}
-            AND (st.settler_address = bytearray_substring(logs.topic1,13,20)
-                OR st.settler_address = bytearray_substring(logs.topic2,13,20)
-                OR logs.tx_from = varbinary_substring(logs.topic1,13,20)
-                OR logs.tx_from = varbinary_substring(logs.topic2,13,20)
-                OR logs.tx_to = varbinary_substring(logs.topic1,13,20))
+            AND (logs.tx_to = settler_address)
+            AND (tx_from in (bytearray_substring(logs.topic2,13,20), bytearray_substring(logs.topic1,13,20))
+                OR tx_to in (bytearray_substring(logs.topic2,13,20), bytearray_substring(logs.topic1,13,20))
+                )
+        {% endif %}
+        {% if not is_direct %}
+            AND logs.tx_to != settler_address
+            and ( settler_address in (bytearray_substring(logs.topic2,13,20), bytearray_substring(logs.topic1,13,20))
+            OR tx_from in (bytearray_substring(logs.topic2,13,20), bytearray_substring(logs.topic1,13,20))
+            OR tx_to in (bytearray_substring(logs.topic2,13,20), bytearray_substring(logs.topic1,13,20))
+            )
         {% endif %}
 ),
 
@@ -137,7 +136,7 @@ tbl_valid_logs AS (
                 ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS maker_token
         ,FIRST_VALUE(taker_token) IGNORE NULLS OVER (PARTITION BY tx_hash ORDER BY index
                 ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS taker_token
-        ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY valid, index DESC) AS rn
+        ROW_NUMBER() OVER (PARTITION BY tx_hash ORDER BY index DESC) AS rn
     FROM
         tbl_all_logs
     WHERE
