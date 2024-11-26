@@ -10,9 +10,7 @@
 }}
 
 with source_data as (
-    select 
-        *
-    from {{ lifi_extract_bridge_data('avalanche_c') }}
+    {{ lifi_extract_bridge_data('avalanche_c') }}
 )
 
 {{
