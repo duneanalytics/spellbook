@@ -82,10 +82,12 @@ WITH tbl_all_logs AS (
         logs.block_time,
         logs.block_number,
         index,
-        COALESCE(bytearray_substring(logs.topic2,13,20), first_value(bytearray_substring(logs.topic1,13,20)) OVER (PARTITION BY logs.tx_hash ORDER BY index)) AS taker,
-        coalesce(case when (varbinary_substring(logs.topic2, 13, 20) = tx_from) then logs.contract_address end,
-            last_value(logs.contract_address) over (partition by logs.tx_hash order by index) ) as maker_token, 
-        case when (varbinary_substring(logs.topic1, 13, 20) in (settler_address, tx_from)) then logs.contract_address end as taker_token, 
+        {% if is_direct %} tx_from 
+            {% else %} case when (varbinary_substring(logs.topic1, 13, 20) in (tx_from)) then varbinary_substring(logs.topic1, 13, 20) end
+        {% endif %}
+         as taker,
+        case when (varbinary_substring(logs.topic1, 13, 20) in (tx_from, settler_address)) then logs.contract_address end as taker_token_, 
+        case when (varbinary_substring(logs.topic2, 13, 20) in (settler_address, tx_from)) then logs.contract_address end as maker_token_,
         first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) AS int256)) OVER (PARTITION BY logs.tx_hash ORDER BY index) AS taker_amount,
         try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) AS int256) AS maker_amount,
         method_id,
@@ -112,8 +114,7 @@ WITH tbl_all_logs AS (
                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
                    0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
         AND zid != 0xa00000000000000000000000
-        
-        {% endif %}
+
         {% if is_direct %}
             AND (logs.tx_to = settler_address)
             AND (tx_from in (bytearray_substring(logs.topic2,13,20), bytearray_substring(logs.topic1,13,20))
