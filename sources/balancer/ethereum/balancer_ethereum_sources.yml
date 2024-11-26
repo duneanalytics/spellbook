@@ -355,7 +355,7 @@ sources:
 
   - name: balancer_v3_ethereum
     description: >
-      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on Ethereum.
+      Decoded tables related to Balancer V3, an automated portfolio manager and trading platform, on Ethereum.
     tables:
       - name: Vault_evt_PoolRegistered
 
