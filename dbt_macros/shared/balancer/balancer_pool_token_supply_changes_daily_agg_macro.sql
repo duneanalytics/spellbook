@@ -37,6 +37,8 @@ WITH
         AND b.pool_type IS NOT NULL
     {% endmacro %}
 
+{# ######################################################################### #}
+
 {% macro 
     balancer_v3_compatible_bpt_supply_changes_daily_agg_macro(
         blockchain, version, project_decoded_as, base_spells_namespace

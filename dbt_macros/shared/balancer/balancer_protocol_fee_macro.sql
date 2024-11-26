@@ -177,6 +177,8 @@ WITH pool_labels AS (
 
 {% endmacro %}
 
+{# ######################################################################### #}
+
 {% macro 
     balancer_v3_compatible_protocol_fee_macro(
         blockchain, version, project_decoded_as, base_spells_namespace, pool_labels_spell

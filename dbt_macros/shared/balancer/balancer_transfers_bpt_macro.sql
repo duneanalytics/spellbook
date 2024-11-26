@@ -33,9 +33,9 @@
             {% if is_incremental() %}
             WHERE {{ incremental_predicate('evt_block_time') }}
             {% endif %} ) transfers
-
-
  {% endmacro %}
+
+ {# ######################################################################### #}
 
  {% macro 
     balancer_v3_compatible_transfers_bpt_macro(
@@ -72,6 +72,4 @@
             {% if is_incremental() %}
             WHERE {{ incremental_predicate('evt_block_time') }}
             {% endif %} ) transfers
-
-
  {% endmacro %}
