@@ -1,8 +1,11 @@
 {{ config(
         schema = 'balancer_v3_gnosis',
         alias = 'aave_static_token_prices',
-        materialized = 'table',
-        file_format = 'delta'
+        materialized = 'incremental',
+        file_format = 'delta',
+        incremental_strategy = 'merge',
+        unique_key = ['minute', 'wrapped_token'],
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.minute')]
     )
 }}
 
@@ -13,6 +16,9 @@ WITH wrap_unwrap AS(
             wrappedToken,
             CAST(mintedShares AS DOUBLE) / CAST(depositedUnderlying AS DOUBLE) AS ratio
         FROM {{ source('balancer_v3_gnosis', 'Vault_evt_Wrap') }}
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+        {% endif %}      
 
         UNION ALL
 
@@ -22,6 +28,9 @@ WITH wrap_unwrap AS(
             wrappedToken, 
             CAST(burnedShares AS DOUBLE) / CAST(withdrawnUnderlying AS DOUBLE) AS ratio
         FROM {{ source('balancer_v3_gnosis', 'Vault_evt_Unwrap') }}    
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+        {% endif %}      
     ),
 
 
