@@ -2,7 +2,7 @@
     config(
         schema = 'lifi',
         alias = 'LiFiDiamond_v2_evt_LiFiTransferStarted',
-        materialized = 'view',
+        materialized = 'view'
     )
 }}
 
@@ -20,10 +20,11 @@ with chain_transfers as (
     {% for chain in chains %}
     select 
         contract_address,
-        evt_tx_hash,
+        tx_hash,
         evt_index,
-        evt_block_time,
-        evt_block_number,
+        block_time,
+        block_number,
+        block_date,
         transactionId,
         bridge,
         integrator,
@@ -33,31 +34,14 @@ with chain_transfers as (
         minAmount,
         destinationChainId,
         source_chain,
-        tx_from,
-        transfer_id
+        transfer_id,
+        tx_from
     from {{ ref('lifi_' ~ chain ~ '_transfers') }}
-
     {% if not loop.last %}
     union all
     {% endif %}
     {% endfor %}
 )
 
-select 
-    contract_address,
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number,
-    transactionId,
-    bridge,
-    integrator,
-    referrer,
-    sendingAssetId,
-    receiver,
-    minAmount,
-    destinationChainId,
-    source_chain,
-    tx_from,
-    transfer_id
+select *
 from chain_transfers
