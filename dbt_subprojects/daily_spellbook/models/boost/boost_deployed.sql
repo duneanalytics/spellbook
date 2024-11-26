@@ -1,7 +1,6 @@
 {{
     config(
         schema='boost',
-        tags = ['prod_exclude'],
         alias='deployed',
         materialized='incremental',
         file_format='delta',
