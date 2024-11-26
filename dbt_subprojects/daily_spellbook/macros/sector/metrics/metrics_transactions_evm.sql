@@ -9,7 +9,7 @@ from
 where
     blockchain = '{{ blockchain }}'
     and amount_usd >=1
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     and {{ incremental_predicate('block_date') }}
     {% endif %}
 group by

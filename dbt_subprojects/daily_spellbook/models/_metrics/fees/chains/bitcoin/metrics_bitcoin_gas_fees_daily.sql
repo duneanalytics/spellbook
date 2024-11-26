@@ -18,7 +18,7 @@ with prices as (
         where
             symbol = 'BTC'
             and blockchain is null
-            {% if is_incremental() %}
+            {% if is_incremental() or true %}
             and {{ incremental_predicate('day') }}
             {% endif %}
 )
@@ -30,7 +30,7 @@ with prices as (
             {{ source('bitcoin', 'blocks') }}
         where
             date < cast(date_trunc('day', now()) as date) --exclude current day to match prices.usd_daily
-            {% if is_incremental() %}
+            {% if is_incremental() or true %}
             and {{ incremental_predicate('date') }}
             {% endif %}
         group by
