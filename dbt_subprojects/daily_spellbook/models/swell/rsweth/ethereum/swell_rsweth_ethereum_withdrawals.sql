@@ -9,7 +9,7 @@
                                 "project",
                                 "swell",
                                 \'["maybeYonas"]\') }}'
-        )
+    )
 }}
 
 {% set incremental %}
@@ -71,20 +71,20 @@ select
     r.evt_index as request_index,
     r.tokenId as token_id,
     r.owner as owner,
-    r.amount as rswETH_amount,
-    r.rateWhenCreated as rswETH_request_rate,
+    r.amount/1e18 as rswETH_amount,
+    r.rateWhenCreated/1e18 as rswETH_request_rate,
 
     p.evt_block_time as processed_block_time,
     p.evt_tx_hash as processed_tx_hash,
     p.evt_block_number as processed_block_number,
     p.evt_index as processed_index,
-    p.processedRate as rswETH_processed_rate,
+    p.processedRate/1e18 as rswETH_processed_rate,
     
     c.evt_block_time as claim_block_time,
     c.evt_tx_hash as claim_tx_hash,
     c.evt_block_number as claim_block_number,
     c.evt_index as claim_index,
-    c.exitClaimedETH as ETH_amount
+    c.exitClaimedETH/1e18 as ETH_amount
 from rsweth_decoded_withdrawal_requests r
     left join rsweth_decoded_withdrawal_processed p 
         on r.tokenId >= p.fromTokenId
