@@ -15,7 +15,6 @@
 ref('zeroex_native_fills')
 ] %}
 
-
 SELECT *
 FROM (
     {% for model in zeroex_models %}
