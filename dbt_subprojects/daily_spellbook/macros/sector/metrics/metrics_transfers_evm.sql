@@ -1,4 +1,4 @@
-{% macro metrics_transactions_evm(blockchain) %}
+{% macro metrics_transfers_evm(blockchain) %}
 
 with raw_transfers as (
     select
