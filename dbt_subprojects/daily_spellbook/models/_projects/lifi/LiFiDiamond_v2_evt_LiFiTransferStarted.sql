@@ -1,8 +1,8 @@
 {{
     config(
         schema = 'lifi',
-        alias = 'transfers',
-        materialized = 'incremental'
+        alias = 'LiFiDiamond_v2_evt_LiFiTransferStarted',
+        materialized = 'view',
     )
 }}
 
@@ -33,11 +33,9 @@ with chain_transfers as (
         minAmount,
         destinationChainId,
         source_chain,
-        sender
+        tx_from,
+        transfer_id
     from {{ ref('lifi_' ~ chain ~ '_transfers') }}
-    {% if is_incremental() %}
-    where evt_block_time >= date_trunc('day', now() - interval '7' day)
-    {% endif %}
 
     {% if not loop.last %}
     union all
@@ -60,5 +58,6 @@ select
     minAmount,
     destinationChainId,
     source_chain,
-    sender
+    tx_from,
+    transfer_id
 from chain_transfers

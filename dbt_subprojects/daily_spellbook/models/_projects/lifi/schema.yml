@@ -5,35 +5,40 @@ models:
     description: "Ethereum LiFi transfer events"
     columns: &common_columns
       - name: contract_address
-        description: "Contract address of the LiFi Diamond"
+        description: "Contract address of LiFi Diamond"
       - name: evt_tx_hash
         description: "Transaction hash"
       - name: evt_index
-        description: "Event index in the transaction"
+        description: "Event index"
       - name: evt_block_time
-        description: "Block timestamp of the event"
+        description: "Timestamp of the block"
       - name: evt_block_number
-        description: "Block number of the event"
+        description: "Block number"
       - name: transactionId
-        description: "Unique identifier for the transfer transaction"
+        description: "Unique transaction ID from LiFi"
       - name: bridge
-        description: "Bridge protocol used"
+        description: "Bridge used for the transfer"
       - name: integrator
-        description: "Integration partner"
+        description: "Integrator of the transfer"
       - name: referrer
-        description: "Referrer address"
+        description: "Referrer of the transfer"
       - name: sendingAssetId
-        description: "Source token address"
+        description: "Asset being transferred"
       - name: receiver
-        description: "Recipient address"
+        description: "Address receiving the transfer"
       - name: minAmount
         description: "Minimum amount to be received"
       - name: destinationChainId
         description: "Target chain ID for the transfer"
       - name: source_chain
         description: "Source blockchain"
-      - name: sender
+      - name: tx_from
         description: "Address that initiated the transaction"
+      - name: transfer_id
+        description: "Unique identifier for the transfer"
+        tests:
+          - unique
+          - not_null
 
   - name: lifi_arbitrum_transfers
     description: "Arbitrum LiFi transfer events"
@@ -44,7 +49,7 @@ models:
     columns: *common_columns
 
   - name: lifi_bnb_transfers
-    description: "BNB Chain LiFi transfer events"
+    description: "BNB LiFi transfer events"
     columns: *common_columns
 
   - name: lifi_fantom_transfers
@@ -52,19 +57,13 @@ models:
     columns: *common_columns
 
   - name: lifi_gnosis_transfers
-    description: "Gnosis Chain LiFi transfer events"
+    description: "Gnosis LiFi transfer events"
     columns: *common_columns
 
   - name: lifi_zksync_transfers
     description: "zkSync LiFi transfer events"
     columns: *common_columns
 
-  - name: LiFiDiamond_v2_evt_LiFiTransferStarted
+  - name: lifi_LiFiDiamond_v2_evt_LiFiTransferStarted
     description: "Combined LiFi transfer events across all supported chains"
     columns: *common_columns
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - evt_tx_hash
-            - evt_index
-            - source_chain
