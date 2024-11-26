@@ -245,3 +245,35 @@ sources:
           - name: assetManager
             description: 'Address of the contract which managed the asset from the vault'
 
+
+  - name: balancer_v3_gnosis
+    description: >
+      Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on Gnosis.
+    tables:
+      - name: Vault_evt_PoolRegistered
+
+      - name: WeightedPoolFactory_call_create
+
+      - name: Vault_evt_LiquidityAdded
+
+      - name: Vault_evt_LiquidityRemoved
+
+      - name: StablePoolFactory_evt_PoolCreated
+
+      - name: Vault_evt_PoolRegistered
+
+      - name: Vault_evt_Swap
+
+      - name: ProtocolFeeController_evt_ProtocolSwapFeeCollected
+
+      - name: ProtocolFeeController_evt_ProtocolYieldFeeCollected
+
+      - name: Vault_evt_Wrap
+
+      - name: Vault_evt_Unwrap
+
+      - name: Vault_evt_LiquidityAddedToBuffer      
+      
+      - name: Vault_evt_LiquidityRemovedFromBuffer   
+                  
+      - name: Vault_evt_SwapFeePercentageChanged
