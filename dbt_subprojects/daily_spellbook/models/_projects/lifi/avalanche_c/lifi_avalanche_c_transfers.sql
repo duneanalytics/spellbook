@@ -18,7 +18,7 @@ with source_data as (
 {{
     add_tx_columns(
         model_cte = 'source_data'
-        , blockchain = 'avalanche'
+        , blockchain = 'avalanche_c'
         , columns = ['from']
     )
 }}
