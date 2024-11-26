@@ -158,7 +158,7 @@ models:
     config:
       tags: ['avalanche_c','0x','dex_aggregator','dex','aggregator']
     description: >
-        0x API erc20 trades through 0x Settler contracts. No fills, only deduped transactions.
+        0x API erc20 trades through 0x v2 contracts. No fills, only deduped transactions.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
