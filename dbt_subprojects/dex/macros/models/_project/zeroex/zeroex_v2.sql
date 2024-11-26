@@ -233,7 +233,7 @@ results_usd AS (
 SELECT
         '{{blockchain}}' AS blockchain,
         '0x-API' AS project,
-        'settler' AS version,
+        'v2' AS version,
         DATE_TRUNC('day', block_time) block_date,
         DATE_TRUNC('month', block_time) AS block_month,
         block_time,
