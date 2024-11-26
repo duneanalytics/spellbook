@@ -14,7 +14,7 @@ WITH wrap_unwrap AS(
             evt_block_time,
             underlyingToken, 
             wrappedToken,
-            CAST(mintedShares AS DOUBLE) / CAST(depositedUnderlying AS DOUBLE) AS ratio
+            CAST(depositedUnderlying AS DOUBLE) / CAST(mintedShares AS DOUBLE) AS ratio
         FROM {{ source('balancer_v3_gnosis', 'Vault_evt_Wrap') }}
         {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
@@ -26,7 +26,7 @@ WITH wrap_unwrap AS(
             evt_block_time,
             underlyingToken,
             wrappedToken, 
-            CAST(burnedShares AS DOUBLE) / CAST(withdrawnUnderlying AS DOUBLE) AS ratio
+            CAST(withdrawnUnderlying AS DOUBLE) / CAST(burnedShares AS DOUBLE) AS ratio
         FROM {{ source('balancer_v3_gnosis', 'Vault_evt_Unwrap') }}    
         {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
