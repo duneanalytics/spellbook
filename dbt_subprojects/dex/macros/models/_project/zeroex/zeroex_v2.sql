@@ -83,7 +83,9 @@ WITH tbl_all_logs AS (
         logs.block_time,
         logs.block_number,
         index,
-        case when (varbinary_substring(logs.topic2, 13, 20) in (settler_address)) then varbinary_substring(logs.topic1, 13, 20) else tx_from end as taker_,
+        {% if is_direct %} tx_from as taker_,
+        {% else %} case when (varbinary_substring(logs.topic2, 13, 20) in (settler_address)) then varbinary_substring(logs.topic1, 13, 20) end as taker_,
+        {% endif %} 
         case when (varbinary_substring(logs.topic1, 13, 20) in (tx_from, settler_address)) then logs.contract_address end as taker_token_, 
         case when (varbinary_substring(logs.topic2, 13, 20) in (settler_address, tx_from)) then logs.contract_address end as maker_token_,
         case when (varbinary_substring(logs.topic1, 13, 20) in (tx_from, settler_address)) then try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256)end as taker_amount_, 
