@@ -98,7 +98,8 @@ WITH tbl_all_logs AS (
         st.settler_address AS contract_address,
         topic1,
         topic2,
-        tx_to
+        tx_to,
+        tx_from
     FROM
         {{ source(blockchain, 'logs') }} AS logs
     JOIN
@@ -183,8 +184,8 @@ results AS (
         trades.contract_address,
         method_id,
         trades.tx_hash,
-        "from" AS tx_from,
-        "to" AS tx_to,
+        tx_from,
+        tx_to,
         trades.index AS tx_index,
         taker,
         CAST(NULL AS varbinary) AS maker,
@@ -206,13 +207,6 @@ results AS (
         tag
     FROM
         tbl_trades trades
-    JOIN
-        {{ source(blockchain, 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('tr.block_time') }}
-        {% else %}
-            AND tr.block_time >= DATE '{{start_date}}'
-        {% endif %}
     LEFT JOIN
         tokens tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
     LEFT JOIN
