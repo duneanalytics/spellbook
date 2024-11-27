@@ -21,6 +21,7 @@ WITH
             pool_type
         FROM {{ ref('balancer_v3_gnosis_base_trades') }}
     ),
+
     dexs AS (
         SELECT
             dexs.blockchain,
@@ -59,6 +60,7 @@ WITH
             AND dexs.project = 'balancer'
             AND dexs.version = '3'
     ),
+    
     bpa AS (
         SELECT
             dexs.block_number,

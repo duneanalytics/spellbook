@@ -13,12 +13,12 @@
 SELECT
     'gnosis' AS blockchain,
     '3' AS version, 
-    pool AS pool_address,
-    evt_tx_hash,
-    evt_tx_index,
-    evt_index,
-    evt_block_time,
-    evt_block_number,
+    pool AS contract_address,
+    evt_tx_hash AS tx_hash,
+    evt_tx_index AS tx_index,
+    evt_index AS index,
+    evt_block_time AS block_time,
+    evt_block_number AS block_number,
     swapFeePercentage AS swap_fee_percentage
 FROM {{ source ('balancer_v2_gnosis', 'Vault_evt_SwapFeePercentageChanged ') }}
 WHERE 1 = 1 

@@ -36,10 +36,9 @@ WITH token_data AS (
           w.weights,
           cc.symbol,
           'weighted' AS pool_type
-        FROM token_date c
+        FROM token_data c
         INNER JOIN {{ source('balancer_v3_gnosis', 'WeightedPoolFactory_call_create') }} cc
-          ON c.evt_tx_hash = cc.call_tx_hash
-          AND c.pool = cc.output_pool
+        ON c.pool = cc.output_pool
         CROSS JOIN UNNEST(c.tokens) WITH ORDINALITY t(tokens, pos)
         CROSS JOIN UNNEST(cc.weights) WITH ORDINALITY w(weights, pos)
         WHERE t.pos = w.pos
@@ -56,8 +55,7 @@ WITH token_data AS (
         'stable' AS pool_type
       FROM {{ source('balancer_v3_gnosis', 'Vault_evt_PoolRegistered') }} c
       INNER JOIN {{ source('balancer_v3_gnosis', 'StablePoolFactory_call_create') }} cc
-        ON c.evt_tx_hash = cc.call_tx_hash
-        AND bytearray_substring(c.poolId, 1, 20) = cc.output_pool
+        ON c.pool = cc.output_pool
       CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     ),
 
@@ -69,7 +67,8 @@ WITH token_data AS (
         p.symbol AS pool_symbol,
         p.pool_type
       FROM pools p
-      LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = t.contract_address
+      LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = CAST(t.contract_address AS VARCHAR)
+      AND t.blockchain = 'gnosis'
     )
 
 SELECT 
