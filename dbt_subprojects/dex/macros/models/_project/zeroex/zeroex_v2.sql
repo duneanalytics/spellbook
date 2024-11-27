@@ -83,13 +83,10 @@ WITH tbl_all_logs AS (
         logs.block_time,
         logs.block_number,
         index,
-        case when tx_to in (0x0000000000001fF3684f28c67538d4D072C22734,
-                            0x0000000000005E88410CcDFaDe4a5EfaE4b49562,
-                            0x000000000000175a8b9bC6d539B3708EEd92EA6c) then tx_from
-             when (varbinary_substring(logs.topic2, 13, 20) in (settler_address)) then varbinary_substring(logs.topic1, 13, 20) end as taker_,
+        case when (varbinary_substring(logs.topic2, 13, 20) in (settler_address)) then varbinary_substring(logs.topic1, 13, 20) else tx_from end as taker_,
         case when (varbinary_substring(logs.topic1, 13, 20) in (tx_from, settler_address)) then logs.contract_address end as taker_token_, 
         case when (varbinary_substring(logs.topic2, 13, 20) in (settler_address, tx_from)) then logs.contract_address end as maker_token_,
-        first_value(try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) AS int256)) OVER (PARTITION BY logs.tx_hash ORDER BY index) AS taker_amount,
+        case when (varbinary_substring(logs.topic1, 13, 20) in (tx_from, settler_address)) then try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) as int256)end as taker_amount_, 
         try_cast(bytearray_to_uint256(bytearray_substring(DATA, 22,11)) AS int256) AS maker_amount,
         method_id,
         tag,
@@ -137,6 +134,8 @@ tbl_valid_logs AS (
         *
         ,FIRST_VALUE(taker_) IGNORE NULLS OVER (PARTITION BY tx_hash ORDER BY index
                 ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS taker
+        ,FIRST_VALUE(taker_amount_) IGNORE NULLS OVER (PARTITION BY tx_hash ORDER BY index
+                ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS taker_amount
         ,LAST_VALUE(maker_token_) IGNORE NULLS OVER (PARTITION BY tx_hash ORDER BY index
                 ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS maker_token
         ,FIRST_VALUE(taker_token_) IGNORE NULLS OVER (PARTITION BY tx_hash ORDER BY index
