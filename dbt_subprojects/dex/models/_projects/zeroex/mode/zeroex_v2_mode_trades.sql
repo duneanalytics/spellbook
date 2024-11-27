@@ -57,5 +57,5 @@ trade_details as (
 
 )
 select 
-    t.*, null as fills_within 
+    t.*, cast(null as int) as fills_within 
  from trade_details t 
