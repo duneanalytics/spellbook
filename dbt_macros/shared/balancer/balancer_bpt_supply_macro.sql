@@ -190,8 +190,8 @@ WITH pool_labels AS (
             pool_type,
             SUM(amountOut / POWER(10, 18)) AS ajoins
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} 
-        LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(pool, 1, 20) = address
-        WHERE tokenOut = BYTEARRAY_SUBSTRING(pool, 1, 20)       
+        LEFT JOIN pool_labels ON pool = address
+        WHERE tokenOut = pool       
         GROUP BY 1, 2, 3
     ),
 
@@ -202,8 +202,8 @@ WITH pool_labels AS (
             pool_type,
             SUM(amountIn / POWER(10, 18)) AS aexits
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} 
-        LEFT JOIN pool_labels ON BYTEARRAY_SUBSTRING(pool, 1, 20) = address
-        WHERE tokenIn = BYTEARRAY_SUBSTRING(pool, 1, 20)        
+        LEFT JOIN pool_labels ON pool = address
+        WHERE tokenIn = pool        
         GROUP BY 1, 2, 3
     ),
 

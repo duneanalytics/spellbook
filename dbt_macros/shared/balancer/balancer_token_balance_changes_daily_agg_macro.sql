@@ -127,7 +127,7 @@ WITH
         AND p2.token = b.token_address
         LEFT JOIN bpt_prices p3 ON p3.day = b.block_date
         AND p3.token = b.token_address
-        LEFT JOIN gyro_prices p4 ON p4.token_address = b.token_address
+        LEFT JOIN gyro_prices p4 ON p4.token = b.token_address
         WHERE b.token_address != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
@@ -264,14 +264,16 @@ WITH
         GROUP BY 1
     ),
 
-    gyro_prices AS (
+    aave_prices AS(
         SELECT
-            token_address,
+            date_trunc('day', minute) AS day,
+            wrapped_token AS token,
             decimals,
-            price
-        FROM {{ source('gyroscope','gyro_tokens') }}
+            APPROX_PERCENTILE(median_price, 0.5) AS price,
+            next_change
+        FROM {{ ref('balancer_aave_static_token_prices') }}
         WHERE blockchain = '{{blockchain}}'
-    ),
+    ),    
 
     daily_balance AS (
         SELECT
@@ -314,7 +316,9 @@ WITH
         AND p2.token = b.token_address
         LEFT JOIN bpt_prices p3 ON p3.day = b.block_date
         AND p3.token = b.token_address
-        LEFT JOIN gyro_prices p4 ON p4.token_address = b.token_address
+        LEFT JOIN aave_prices p4 ON p4.day <= c.day
+        AND c.day < p4.next_change
+        AND p4.token = b.token_address      
         WHERE b.token_address != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 

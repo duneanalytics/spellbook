@@ -63,7 +63,7 @@ WITH pool_labels AS (
         LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.poolId, 1, 20) = l.address
         WHERE tokenOut = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
         {% if is_incremental() %}
-        AND {{ incremental_predicate('s. evt_block_time') }}
+        AND {{ incremental_predicate(s.evt_block_time) }}
         {% endif %} 
 
     ),
@@ -86,7 +86,7 @@ WITH pool_labels AS (
         LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.poolId, 1, 20) = l.address
         WHERE tokenIn = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
         {% if is_incremental() %}
-        AND {{ incremental_predicate('s. evt_block_time') }}
+        AND {{ incremental_predicate(s.evt_block_time) }}
         {% endif %}      
     )
 
@@ -190,10 +190,10 @@ WITH pool_labels AS (
             l.name,
             s.amountOut AS amount
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} s
-        LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.pool, 1, 20) = l.address
-        WHERE tokenOut = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
+        LEFT JOIN pool_labels l ON pool = l.address
+        WHERE tokenOut = pool
         {% if is_incremental() %}
-        AND {{ incremental_predicate('s. evt_block_time') }}
+        AND {{ incremental_predicate(s.evt_block_time) }}
         {% endif %} 
 
     ),
@@ -210,14 +210,14 @@ WITH pool_labels AS (
             l.name,
             - s.amountIn AS amount
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} s
-        LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.pool, 1, 20) = l.address
-        WHERE tokenIn = BYTEARRAY_SUBSTRING(s.pool, 1, 20)
+        LEFT JOIN pool_labels l ON pool = l.address
+        WHERE tokenIn = pool
         {% if is_incremental() %}
-        AND {{ incremental_predicate('s. evt_block_time') }}
+        AND {{ incremental_predicate('s.evt_block_time') }}
         {% endif %}      
     )
 
-            SELECT
+        SELECT
             date_trunc('day', evt_block_time) AS block_date,
             evt_block_time,
             evt_block_number,

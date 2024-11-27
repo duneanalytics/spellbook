@@ -72,4 +72,5 @@
             {% if is_incremental() %}
             WHERE {{ incremental_predicate('evt_block_time') }}
             {% endif %} ) transfers
+            
  {% endmacro %}

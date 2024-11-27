@@ -226,7 +226,7 @@ WITH pool_labels AS (
         AND p2.token = b.token
         LEFT JOIN bpt_prices p3 ON p3.day = b.day
         AND p3.token = b.token
-        LEFT JOIN gyro_prices p4 ON p4.token_address = b.token
+        LEFT JOIN gyro_prices p4 ON p4.token = b.token
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
@@ -410,7 +410,7 @@ WITH pool_labels AS (
                     date_trunc('day', evt_block_time) AS day,
                     pool AS pool_id,
                     tokenIn AS token,
-                    CAST(amountIn as int256) AS delta
+                    CAST(amountIn AS INT256) AS delta
                 FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
 
                 UNION ALL
@@ -419,7 +419,7 @@ WITH pool_labels AS (
                     date_trunc('day', evt_block_time) AS day,
                     pool AS pool_id,
                     tokenOut AS token,
-                    -CAST(amountOut AS int256) AS delta
+                    -CAST(amountOut AS INT256) AS delta
                 FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
             ) swaps
         GROUP BY 1, 2, 3
@@ -430,7 +430,7 @@ WITH pool_labels AS (
             day,
             pool_id,
             category,
-            delta,
+            deltas,
             swapFeeAmountsRaw
         FROM
             (
@@ -438,7 +438,7 @@ WITH pool_labels AS (
                     date_trunc('day', evt_block_time) AS day,
                     pool AS pool_id,
                     'add' AS category,
-                    amountsAddedRaw AS delta,
+                    amountsAddedRaw AS deltas,
                     swapFeeAmountsRaw
                 FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_LiquidityAdded') }}
 
@@ -448,18 +448,16 @@ WITH pool_labels AS (
                     date_trunc('day', evt_block_time) AS day,
                     pool AS pool_id,
                     'remove' AS category,
-                    amountsRemovedRaw AS delta,
+                    amountsRemovedRaw AS deltas,
                     swapFeeAmountsRaw
                 FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_LiquidityRemoved') }}
             ) adds_and_removes
-        GROUP BY 1, 2
-
     ),
 
     zipped_balance_changes AS (
         SELECT
             date_trunc('day', evt_block_time) AS day,
-            poolId AS pool_id,
+            pool_id,
             t.tokens,
             CASE WHEN b.category = 'add'
             THEN d.deltas
@@ -468,7 +466,7 @@ WITH pool_labels AS (
             END AS deltas,
             p.swapFeeAmountsRaw
         FROM balance_changes b
-        JOIN token_data td ON b.pool = td.pool
+        JOIN token_data td ON b.pool_id = td.pool
         CROSS JOIN UNNEST (td.tokens) WITH ORDINALITY as t(tokens,i)
         CROSS JOIN UNNEST (b.deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (b.swapFeeAmountsRaw) WITH ORDINALITY as p(swapFeeAmountsRaw,i)
@@ -556,7 +554,7 @@ WITH pool_labels AS (
         AND p3.token = b.token
         LEFT JOIN aave_prices p4 ON p4.day <= c.day
         AND c.day < p4.next_change
-        AND p4.token_address = b.token
+        AND p4.token = b.token
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 
@@ -617,4 +615,5 @@ WITH pool_labels AS (
     AND w.token_address = c.token
     LEFT JOIN eth_prices e ON e.day = c.day
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(c.pool_id, 1, 20)
+
     {% endmacro %}

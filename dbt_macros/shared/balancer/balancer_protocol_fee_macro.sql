@@ -120,7 +120,7 @@ WITH pool_labels AS (
             d.token_address, 
             t.symbol AS token_symbol,
             SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
-            SUM(d.protocol_fee_amount_raw / power(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS token_amount,
+            SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS token_amount,
             SUM(COALESCE(p1.price, p2.price, p3.price) * protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals))) AS protocol_fee_collected_usd
         FROM daily_protocol_fee_collected d
         LEFT JOIN prices p1
@@ -315,7 +315,7 @@ WITH pool_labels AS (
             t.symbol AS token_symbol,
             d.fee_type,
             SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
-            SUM(d.protocol_fee_amount_raw / power(10, COALESCE(t.decimals,p1.decimals, p3.decimals, p4.decimals))) AS token_amount,
+            SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals, p4.decimals))) AS token_amount,
             SUM(COALESCE(p1.price, p2.price, p3.price, p4.price) * protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals, p4.decimals))) AS protocol_fee_collected_usd
         FROM daily_protocol_fee_collected d
         LEFT JOIN prices p1
@@ -330,7 +330,7 @@ WITH pool_labels AS (
             AND d.day < p3.day_of_next_change     
         LEFT JOIN aave_prices p4 ON p4.day <= d.day
             AND d.day < p4.next_change
-            AND p4.token_address = d.token_address            
+            AND p4.token = d.token_address            
         LEFT JOIN {{ source('tokens', 'erc20') }} t 
             ON t.contract_address = d.token_address
             AND t.blockchain = '{{blockchain}}'
@@ -374,4 +374,3 @@ WITH pool_labels AS (
     GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 14
 
 {% endmacro %}
-

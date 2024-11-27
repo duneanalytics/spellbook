@@ -231,7 +231,7 @@ WITH pool_labels AS (
             day,
             pool_id,
             category,
-            delta,
+            deltas,
             swapFeeAmountsRaw
         FROM
             (
@@ -239,7 +239,7 @@ WITH pool_labels AS (
                     date_trunc('day', evt_block_time) AS day,
                     pool AS pool_id,
                     'add' AS category,
-                    amountsAddedRaw AS delta,
+                    amountsAddedRaw AS deltas,
                     swapFeeAmountsRaw
                 FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_LiquidityAdded') }}
 
@@ -249,18 +249,16 @@ WITH pool_labels AS (
                     date_trunc('day', evt_block_time) AS day,
                     pool AS pool_id,
                     'remove' AS category,
-                    amountsRemovedRaw AS delta,
+                    amountsRemovedRaw AS deltas,
                     swapFeeAmountsRaw
                 FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_LiquidityRemoved') }}
             ) adds_and_removes
-        GROUP BY 1, 2
-
     ),
 
     zipped_balance_changes AS (
         SELECT
             date_trunc('day', evt_block_time) AS day,
-            poolId AS pool_id,
+            pool_id,
             t.tokens,
             CASE WHEN b.category = 'add'
             THEN d.deltas
@@ -269,7 +267,7 @@ WITH pool_labels AS (
             END AS deltas,
             p.swapFeeAmountsRaw
         FROM balance_changes b
-        JOIN token_data td ON b.pool = td.pool
+        JOIN token_data td ON b.pool_id = td.pool
         CROSS JOIN UNNEST (td.tokens) WITH ORDINALITY as t(tokens,i)
         CROSS JOIN UNNEST (b.deltas) WITH ORDINALITY as d(deltas,i)
         CROSS JOIN UNNEST (b.swapFeeAmountsRaw) WITH ORDINALITY as p(swapFeeAmountsRaw,i)
