@@ -10,6 +10,7 @@ WITH tbl_addresses AS (
     WHERE 
         contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae 
         and topic0 = 0xaa94c583a45742b26ac5274d230aea34ab334ed5722264aa5673010e612bc0b2
+        AND block_time >= DATE '2024-04-04'
 ),
 
 tbl_end_times AS (
