@@ -1,56 +1,44 @@
-{{ config(
-        schema = 'metrics'
-        , alias = 'net_bitcoin_transfers_daily'
-        , materialized = 'incremental'
-        , file_format = 'delta'
-        , incremental_strategy = 'merge'
-        , unique_key = ['blockchain', 'block_date']
-        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
-        )
-}}
-
+{% macro metrics_transfers_evm(blockchain) %}
 
 with raw_transfers as (
     select
-        'bitcoin' as blockchain
+        blockchain
         , block_date
-        , wallet_address as address
+        , "from" as address
         , 'sent' as transfer_direction
-        , (sum(abs(amount_transfer_usd)) * -1) as transfer_amount_usd
+        , (sum(amount_usd) * -1) as transfer_amount_usd
     from
-        {{ source('transfers_bitcoin', 'satoshi') }}
+        {{ source('tokens', 'transfers') }}
     where
-        1 = 1
-        and type = 'input'
+        blockchain = '{{blockchain}}'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
         blockchain
         , block_date
-        , wallet_address
+        , "from"
         , 'sent'
 
     union all
 
     select
-        'bitcoin' as blockchain
+        blockchain
         , block_date
-        , wallet_address as address
+        , to as address
         , 'received' as transfer_direction
-        , sum(abs(amount_transfer_usd)) as transfer_amount_usd
+        , sum(amount_usd) as transfer_amount_usd
     from
-        {{ source('transfers_bitcoin', 'satoshi') }}
+        {{ source('tokens', 'transfers') }}
     where
-        1 = 1
-        and type = 'output'
+        blockchain = '{{blockchain}}'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
         blockchain
         , block_date
-        , wallet_address
+        , to
         , 'received'
 ), labels as (
     select
@@ -63,6 +51,7 @@ with raw_transfers as (
     inner join
         {{ source('labels', 'owner_details') }} as od
         on oa.owner_key = od.owner_key
+    where oa.blockchain = '{{blockchain}}'
 ), transfers_amount as (
     select
         t.blockchain
@@ -75,7 +64,7 @@ with raw_transfers as (
     left join
         labels as l
         on t.blockchain = l.blockchain
-        and cast(t.address as varbinary) = l.address
+        and t.address = l.address
     where
         coalesce(l.primary_category, 'n/a') not in ('Hacks and exploits', 'Social Engineering Scams') -- filter out scam addresses
     group by
@@ -111,3 +100,5 @@ where
 group by
     blockchain
     , block_date
+
+{% endmacro %}

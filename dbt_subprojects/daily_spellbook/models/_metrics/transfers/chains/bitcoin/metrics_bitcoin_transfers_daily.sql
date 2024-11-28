@@ -1,6 +1,6 @@
 {{ config(
-        schema = 'metrics'
-        , alias = 'net_transfers_daily'
+        schema = 'metrics_bitcoin'
+        , alias = 'transfers_daily'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
@@ -9,45 +9,48 @@
         )
 }}
 
+
 with raw_transfers as (
     select
-        blockchain
+        'bitcoin' as blockchain
         , block_date
-        , "from" as address
+        , wallet_address as address
         , 'sent' as transfer_direction
-        , (sum(amount_usd) * -1) as transfer_amount_usd
+        , (sum(abs(amount_transfer_usd)) * -1) as transfer_amount_usd
     from
-        {{ source('tokens', 'transfers') }}
+        {{ source('transfers_bitcoin', 'satoshi') }}
     where
         1 = 1
+        and type = 'input'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
         blockchain
         , block_date
-        , "from"
+        , wallet_address
         , 'sent'
 
     union all
 
     select
-        blockchain
+        'bitcoin' as blockchain
         , block_date
-        , to as address
+        , wallet_address as address
         , 'received' as transfer_direction
-        , sum(amount_usd) as transfer_amount_usd
+        , sum(abs(amount_transfer_usd)) as transfer_amount_usd
     from
-        {{ source('tokens', 'transfers') }}
+        {{ source('transfers_bitcoin', 'satoshi') }}
     where
         1 = 1
+        and type = 'output'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
         blockchain
         , block_date
-        , to
+        , wallet_address
         , 'received'
 ), labels as (
     select
@@ -72,7 +75,7 @@ with raw_transfers as (
     left join
         labels as l
         on t.blockchain = l.blockchain
-        and t.address = l.address
+        and cast(t.address as varbinary) = l.address
     where
         coalesce(l.primary_category, 'n/a') not in ('Hacks and exploits', 'Social Engineering Scams') -- filter out scam addresses
     group by
