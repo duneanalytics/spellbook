@@ -1,6 +1,6 @@
 {{ config(
-        schema = 'metrics'
-        , alias = 'net_solana_transfers_daily'
+        schema = 'metrics_solana'
+        , alias = 'transfers_daily'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
