@@ -1,8 +1,9 @@
 {{
     config(
         schema = 'lifi',
-        alias = 'LiFiDiamond_v2_evt_LiFiTransferStarted',
-        materialized = 'view'
+        alias = 'transfers',
+        materialized = 'view',
+        contributor = 'lequangphu'
     )
 }}
 

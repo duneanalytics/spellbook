@@ -17,7 +17,7 @@ select
     evt_index,
     evt_block_time as block_time,
     evt_block_number as block_number,
-    date_trunc('day', evt_block_time) as block_date,
+    cast(date_trunc('day', evt_block_time) as date) as block_date,
     {% for field in bridge_data_fields %}
     json_extract_scalar(bridgeData, '$.{{ field }}') as {{ field }},
     {% endfor %}
