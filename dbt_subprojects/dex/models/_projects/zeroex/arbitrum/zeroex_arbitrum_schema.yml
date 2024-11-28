@@ -206,7 +206,7 @@ models:
         name: protocol_fee_paid_eth
         description: "The protocol fee paid in ETH"
 
-  - name: zeroex_v2_arbitrum_trades
+  - name: zeroex_arbitrum_settler_trades
     meta:
       blockchain: arbitrum
       project: zeroex
@@ -214,7 +214,7 @@ models:
     config:
       tags: ['arbitrum','0x','dex_aggregator','dex','aggregator']
     description: >
-        0x API erc20 trades through 0x v2 contracts. No fills, only deduped transactions.
+        0x API erc20 trades through 0x Settler contracts. No fills, only deduped transactions.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
