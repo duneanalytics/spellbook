@@ -1,7 +1,6 @@
 {{
   config(
         schema = 'sanctum_router',
-        tags = ['prod_exclude'],
         alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -17,7 +16,7 @@
 {% set dev_start_date = "date_trunc('day', now() - interval '7' day)" %}
 
 WITH swap_via_stake AS (
-    SELECT
+    SELECT 
         call_block_time as block_time
         , call_block_slot as block_slot
         , call_tx_signer as trader_id
@@ -30,9 +29,9 @@ WITH swap_via_stake AS (
         , account_srcTokenMint as token_sold_mint_address
         , account_destTokenMint as token_bought_mint_address
         , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data, 2, 8))) AS token_sold_amount_raw
-        , CASE
+        , CASE 
             WHEN call_outer_executing_account = 'stkitrT1Uoy18Dk1fTrgPw8W6MVzoCfYoAFT4MLsmhq' THEN 'direct'
-            ELSE call_outer_executing_account
+            ELSE call_outer_executing_account 
           END as trade_source
         , 'mintTo' as amount_type
     FROM {{ source('sanctum_router_solana', 'stakedex_call_SwapViaStake') }}
@@ -45,7 +44,7 @@ WITH swap_via_stake AS (
 ),
 
 prefund_swap_via_stake AS (
-    SELECT
+    SELECT 
         call_block_time as block_time
         , call_block_slot as block_slot
         , call_tx_signer as trader_id
@@ -58,9 +57,9 @@ prefund_swap_via_stake AS (
         , account_srcTokenMint as token_sold_mint_address
         , account_destTokenMint as token_bought_mint_address
         , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data, 2, 8))) AS token_sold_amount_raw
-        , CASE
+        , CASE 
             WHEN call_outer_executing_account = 'stkitrT1Uoy18Dk1fTrgPw8W6MVzoCfYoAFT4MLsmhq' THEN 'direct'
-            ELSE call_outer_executing_account
+            ELSE call_outer_executing_account 
           END as trade_source
         , 'transferChecked' as amount_type
     FROM {{ source('sanctum_router_solana', 'stakedex_call_PrefundSwapViaStake') }}
@@ -73,7 +72,7 @@ prefund_swap_via_stake AS (
 ),
 
 stake_wrapped_sol AS (
-    SELECT
+    SELECT 
         call_block_time as block_time
         , call_block_slot as block_slot
         , call_tx_signer as trader_id
@@ -86,9 +85,9 @@ stake_wrapped_sol AS (
         , account_wsolMint as token_sold_mint_address
         , account_destTokenMint as token_bought_mint_address
         , bytearray_to_bigint(bytearray_reverse(bytearray_substring(call_data, 2, 8))) AS token_sold_amount_raw
-        , CASE
+        , CASE 
             WHEN call_outer_executing_account = 'stkitrT1Uoy18Dk1fTrgPw8W6MVzoCfYoAFT4MLsmhq' THEN 'direct'
-            ELSE call_outer_executing_account
+            ELSE call_outer_executing_account 
           END as trade_source
         , 'transferChecked' as amount_type
     FROM {{ source('sanctum_router_solana', 'stakedex_call_StakeWrappedSol') }}
@@ -101,7 +100,7 @@ stake_wrapped_sol AS (
 ),
 
 withdraw_deposit AS (
-    SELECT
+    SELECT 
         w.call_block_time as block_time
         , w.call_block_slot as block_slot
         , w.call_tx_signer as trader_id
@@ -114,14 +113,14 @@ withdraw_deposit AS (
         , w.account_srcTokenMint as token_sold_mint_address
         , d.account_destTokenMint as token_bought_mint_address
         , bytearray_to_bigint(bytearray_reverse(bytearray_substring(w.call_data, 2, 8))) AS token_sold_amount_raw
-        , CASE
+        , CASE 
             WHEN w.call_outer_executing_account = 'stkitrT1Uoy18Dk1fTrgPw8W6MVzoCfYoAFT4MLsmhq' THEN 'direct'
-            ELSE w.call_outer_executing_account
+            ELSE w.call_outer_executing_account 
           END as trade_source
         , 'transferChecked' as amount_type
     FROM {{ source('sanctum_router_solana', 'stakedex_call_PrefundWithdrawStake') }} w
     INNER JOIN {{ source('sanctum_router_solana', 'stakedex_call_DepositStake') }} d
-        ON w.call_tx_id = d.call_tx_id
+        ON w.call_tx_id = d.call_tx_id 
         AND w.call_outer_instruction_index = d.call_outer_instruction_index
         AND w.call_inner_instruction_index < d.call_inner_instruction_index
     WHERE 1=1
@@ -134,7 +133,7 @@ withdraw_deposit AS (
 
 all_trades AS (
     SELECT * FROM swap_via_stake
-    UNION ALL
+    UNION ALL 
     SELECT * FROM prefund_swap_via_stake
     UNION ALL
     SELECT * FROM stake_wrapped_sol
@@ -143,29 +142,29 @@ all_trades AS (
 ),
 
 token_amounts AS (
-    SELECT
+    SELECT 
         ic.tx_id,
         ic.outer_instruction_index,
         ic.inner_instruction_index,
         bytearray_to_bigint(bytearray_reverse(bytearray_substring(ic.data, 2, 8))) AS amount_bought,
         ROW_NUMBER() OVER (
             PARTITION BY ic.tx_id, ic.outer_instruction_index
-            ORDER BY
-                CASE
+            ORDER BY 
+                CASE 
                     WHEN b.amount_type = 'mintTo' THEN ic.inner_instruction_index
                     ELSE -ic.inner_instruction_index
                 END
         ) as rn
     FROM all_trades b
-    INNER JOIN {{ source('solana','instruction_calls') }} ic
-        ON ic.tx_id = b.tx_id
+    INNER JOIN {{ source('solana','instruction_calls') }} ic  
+        ON ic.tx_id = b.tx_id 
         AND ic.outer_instruction_index = b.outer_instruction_index
         AND ic.block_slot = b.block_slot
     WHERE 1=1
         AND ic.executing_account = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
         AND (
             (b.amount_type = 'mintTo' AND bytearray_substring(ic.data, 1, 1) = 0x07 AND ELEMENT_AT(ic.account_arguments, 1) = b.token_bought_mint_address)
-            OR
+            OR 
             (b.amount_type = 'transferChecked' AND bytearray_substring(ic.data, 1, 1) = 0x0c AND ELEMENT_AT(ic.account_arguments, 2) = b.token_bought_mint_address AND ELEMENT_AT(ic.account_arguments, 3) = b.token_bought_vault)
         )
         {% if is_incremental() %}
@@ -199,6 +198,6 @@ SELECT
     , b.tx_index
 FROM all_trades b
 INNER JOIN token_amounts t
-    ON b.tx_id = t.tx_id
+    ON b.tx_id = t.tx_id 
     AND b.outer_instruction_index = t.outer_instruction_index
     AND t.rn = 1
