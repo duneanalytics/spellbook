@@ -405,5 +405,6 @@ FROM (VALUES
     , (0x574178357661527601482b79af6bb1ff7cc1306a, '1984', 18)
     , (0x63e14921ba4546cb15087d574346574eee055812, 'PVP', 18)
     , (0xd68470491eb513365322810e55e0eba80785dfdd, '243M theft', 18)
-    , (0xb0505e5a99abd03d94a1169e638b78edfed26ea4, 'uSUI', 18)    
+    , (0xb0505e5a99abd03d94a1169e638b78edfed26ea4, 'uSUI', 18)
+    , (0x5f7373Fa845692b1dD7bfaE576D6c743482bf26a, 'CLARK', 18)    
 ) AS temp_table (contract_address, symbol, decimals)
