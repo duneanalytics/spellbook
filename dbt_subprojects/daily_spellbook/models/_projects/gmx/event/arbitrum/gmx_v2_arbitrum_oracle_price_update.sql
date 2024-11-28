@@ -138,7 +138,7 @@ WITH evt_data_1 AS (
         ON from_hex(EDP.token) = ERC20.contract_address
 )
 
---can be removed once decoded tables are fully denormalized
+-- can be removed once decoded tables are fully denormalized
 {{
     add_tx_columns(
         model_cte = 'full_data'
