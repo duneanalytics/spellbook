@@ -721,18 +721,12 @@ models:
       - &liquidation_fee_amount
         name: liquidation_fee_amount
         description: The amount of fees charged during liquidation.
-        data_tests:
-          - not_null
       - &liquidation_fee_receiver_factor
         name: liquidation_fee_receiver_factor
         description: The factor used to calculate the liquidation fee allocated to the receiver.
-        data_tests:
-          - not_null
       - &liquidation_fee_amount_for_fee_receiver
         name: liquidation_fee_amount_for_fee_receiver
         description: The amount of liquidation fee allocated to the fee receiver.
-        data_tests:
-          - not_null
       - &is_increase
         name: is_increase
         description: Indicates whether the position is increased (true) or decreased (false)
