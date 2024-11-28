@@ -1,7 +1,7 @@
 {% macro 
     oneinch_project_swaps_macro(
         blockchain
-        , date_from = '2019-01-01'
+        , date_from = '2024-11-25'
     ) 
 %}
 
@@ -27,7 +27,7 @@ meta as (
         block_number
         , tx_hash
         , call_trace_address
-        , project
+        , project as order_project
         , order_hash
         , maker
         , taker
@@ -51,7 +51,7 @@ meta as (
         block_number
         , tx_hash
         , call_trace_address
-        , '1inch' as project
+        , '1inch' as order_project
         , coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int)))) as order_hash
         , maker
         , receiver as taker
@@ -81,7 +81,7 @@ meta as (
         , tx_from
         , tx_to
         , call_trace_address
-        , project
+        , coalesce(order_project, project) as project
         , tag
         , flags
         , call_selector
@@ -116,7 +116,7 @@ meta as (
             and call_success
             and (flags['cross_chain'] or not flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
     )
-    left join orders using(block_number, tx_hash, call_trace_address, project)
+    left join orders using(block_number, tx_hash, call_trace_address)
     join meta on true
     where
         reduce(call_trace_addresses, true, (r, x) -> if(r and x <> call_trace_address and slice(call_trace_address, 1, cardinality(x)) = x, false, r), r -> r) -- only not nested calls of the project in tx
@@ -314,11 +314,36 @@ meta as (
     select
         *
         , map_from_entries(array[
-              ('classic: direct', flags['direct'] and order_hash is null and not auction and not cross_chain_swap and not contracts_only or second_side)
-            , ('classic: external', not flags['direct'] and order_hash is null and not auction and not contracts_only and not cross_chain_swap)
-            , ('intent: intra-chain auction', auction and not cross_chain_swap)
-            , ('intent: intra-chain user limit order', order_hash is not null and not auction and not cross_chain_swap and not contracts_only and not second_side)
-            , ('intent: intra-chain contracts only', contracts_only and not second_side)
+              ('intra-chain: classic: direct',
+                flags['direct']
+                and order_hash is null
+                and not auction
+                and not cross_chain_swap
+                and not contracts_only
+                or second_side
+            )
+            , ('intra-chain: classic: external',
+                not flags['direct']
+                and order_hash is null
+                and not auction
+                and not contracts_only
+                and not cross_chain_swap
+            )
+            , ('intra-chain: intents: auction',
+                auction
+                and not cross_chain_swap
+            )
+            , ('intra-chain: intents: user limit order',
+                order_hash is not null
+                and not auction
+                and not cross_chain_swap
+                and not contracts_only
+                and not second_side
+            )
+            , ('intra-chain: intents: contracts only',
+                contracts_only
+                and not second_side
+            )
             , ('cross-chain', cross_chain_swap)
         ]) as modes
     from (
