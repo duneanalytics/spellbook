@@ -23,7 +23,7 @@
    , ref('meteora_v2_solana_base_trades')
    , ref('goosefx_ssl_v2_solana_base_trades')
    , ref('pumpdotfun_solana_base_trades')
-   , ref('sanctum_router_base_trades')
+--   , ref('sanctum_router_base_trades')
 ] %}
 
 {% for dex in solana_dexes %}
@@ -52,7 +52,7 @@ SELECT
 FROM
       {{ dex }}
 {% if is_incremental() %}
-WHERE 
+WHERE
       {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not loop.last %}
