@@ -35,10 +35,14 @@ models:
       - name: tx_from
         description: "Address that initiated the transaction"
       - name: transfer_id
-        description: "Unique identifier for the transfer"
-        data_tests:
+        description: "Unique identifier for each transfer"
+        tests:
           - unique
           - not_null
+      - name: amount_usd
+        description: "USD value of the transfer amount at the time of transfer"
+        tests:
+          - not_null: false
 
   - name: lifi_arbitrum_transfers
     description: "Arbitrum LiFi transfer events"
