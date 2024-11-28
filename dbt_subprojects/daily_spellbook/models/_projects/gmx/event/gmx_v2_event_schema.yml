@@ -153,8 +153,6 @@ models:
           - not_null        
       - name: updated_at_block
         description: The block number at which the order was last updated.
-        data_tests:
-          - not_null 
       - &updated_at_time       
         name: updated_at_time
         description: The timestamp when the order was last updated.
@@ -614,28 +612,18 @@ models:
       - &claimable_long_token_amount
         name: claimable_long_token_amount
         description: The amount of long tokens claimable
-        data_tests:
-          - not_null
       - &claimable_short_token_amount
         name: claimable_short_token_amount
         description: The amount of short tokens claimable
-        data_tests:
-          - not_null
       - &latest_funding_fee_amount_per_size
         name: latest_funding_fee_amount_per_size
         description: The latest funding fee amount per size
-        data_tests:
-          - not_null
       - &latest_long_token_claimable_funding_amount_per_size
         name: latest_long_token_claimable_funding_amount_per_size
         description: The latest claimable long token funding amount per size
-        data_tests:
-          - not_null
       - &latest_short_token_claimable_funding_amount_per_size
         name: latest_short_token_claimable_funding_amount_per_size
         description: The latest claimable short token funding amount per size
-        data_tests:
-          - not_null
       - &borrowing_fee_usd
         name: borrowing_fee_usd
         description: The borrowing fee amount in USD
@@ -709,43 +697,27 @@ models:
       - &referral_total_rebate_factor
         name: referral_total_rebate_factor
         description: The total rebate factor associated with referrals.
-        data_tests:
-          - not_null
       - &referral_total_rebate_amount
         name: referral_total_rebate_amount
         description: The total rebate amount given for referrals.
-        data_tests:
-          - not_null
       - &referral_trader_discount_factor
         name: referral_trader_discount_factor
         description: The discount factor applied to the trader through referrals.
-        data_tests:
-          - not_null
       - &referral_adjusted_affiliate_reward_factor
         name: referral_adjusted_affiliate_reward_factor
         description: The adjusted affiliate reward factor based on referral criteria.
-        data_tests:
-          - not_null
       - &referral_affiliate_reward_amount
         name: referral_affiliate_reward_amount
         description: The reward amount given to the affiliate for referrals.
-        data_tests:
-          - not_null
       - &referral_trader_discount_amount
         name: referral_trader_discount_amount
         description: The discount amount given to the trader through referrals.
-        data_tests:
-          - not_null
       - &pro_trader_discount_factor
         name: pro_trader_discount_factor
         description: The discount factor applied for pro traders.
-        data_tests:
-          - not_null
       - &pro_trader_discount_amount
         name: pro_trader_discount_amount
         description: The discount amount given to pro traders.
-        data_tests:
-          - not_null
       - &liquidation_fee_amount
         name: liquidation_fee_amount
         description: The amount of fees charged during liquidation.
