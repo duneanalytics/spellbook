@@ -186,3 +186,7 @@ sources:
     tables:
       - name: XchangePair_evt_Swap
       - name: XchangeFactory_evt_PairCreated
+  - name: infusion_base
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
