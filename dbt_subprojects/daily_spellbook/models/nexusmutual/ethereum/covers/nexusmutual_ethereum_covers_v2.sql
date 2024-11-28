@@ -88,7 +88,7 @@ cover_premiums as (
       when 7 then 'cbBTC'
       else 'NA'
     end as cover_asset,
-    c.sum_assured / if(c.cover_asset = 6, 1e6, 1e18) as sum_assured,
+    c.sum_assured / case c.cover_asset when 6 then 1e6 when 7 then 1e8 else 1e18 end as sum_assured,
     case c.payment_asset
       when 0 then 'ETH'
       when 1 then 'DAI'
