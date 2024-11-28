@@ -438,7 +438,7 @@ WITH evt_data_1 AS (
 --can be removed once decoded tables are fully denormalized
 {{
     add_tx_columns(
-        model_cte = 'full_data'
+        model_cte = 'full_data_2'
         , blockchain = blockchain_name
         , columns = ['from', 'to']
     )

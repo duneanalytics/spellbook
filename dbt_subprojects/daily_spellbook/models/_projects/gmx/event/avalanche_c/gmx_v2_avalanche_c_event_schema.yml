@@ -697,36 +697,58 @@ models:
       - &referral_total_rebate_factor
         name: referral_total_rebate_factor
         description: The total rebate factor associated with referrals.
+        data_tests:
+          - not_null
       - &referral_total_rebate_amount
         name: referral_total_rebate_amount
         description: The total rebate amount given for referrals.
+        data_tests:
+          - not_null
       - &referral_trader_discount_factor
         name: referral_trader_discount_factor
         description: The discount factor applied to the trader through referrals.
+        data_tests:
+          - not_null
       - &referral_adjusted_affiliate_reward_factor
         name: referral_adjusted_affiliate_reward_factor
         description: The adjusted affiliate reward factor based on referral criteria.
+        data_tests:
+          - not_null
       - &referral_affiliate_reward_amount
         name: referral_affiliate_reward_amount
         description: The reward amount given to the affiliate for referrals.
+        data_tests:
+          - not_null
       - &referral_trader_discount_amount
         name: referral_trader_discount_amount
         description: The discount amount given to the trader through referrals.
+        data_tests:
+          - not_null
       - &pro_trader_discount_factor
         name: pro_trader_discount_factor
         description: The discount factor applied for pro traders.
+        data_tests:
+          - not_null
       - &pro_trader_discount_amount
         name: pro_trader_discount_amount
         description: The discount amount given to pro traders.
+        data_tests:
+          - not_null
       - &liquidation_fee_amount
         name: liquidation_fee_amount
         description: The amount of fees charged during liquidation.
+        data_tests:
+          - not_null
       - &liquidation_fee_receiver_factor
         name: liquidation_fee_receiver_factor
         description: The factor used to calculate the liquidation fee allocated to the receiver.
+        data_tests:
+          - not_null
       - &liquidation_fee_amount_for_fee_receiver
         name: liquidation_fee_amount_for_fee_receiver
         description: The amount of liquidation fee allocated to the fee receiver.
+        data_tests:
+          - not_null
       - &is_increase
         name: is_increase
         description: Indicates whether the position is increased (true) or decreased (false)
