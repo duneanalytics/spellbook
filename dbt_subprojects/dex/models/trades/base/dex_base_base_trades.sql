@@ -50,6 +50,7 @@
     , ref('solidly_v3_base_base_trades')
     , ref('swaap_v2_base_base_trades')
     , ref('xchange_base_base_trades')
+    , ref('infusion_base_base_trades')
 ] %}
 
 WITH base_union AS (
