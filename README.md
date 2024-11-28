@@ -64,8 +64,6 @@ In order to scale Spellbook, the repo has introduced sub-projects to break out c
     - requires approval from Dune team to be hourly
   - `dex`
     - all spells which live in the `dex` or `dex_aggregator` schemas, including upstream spells to help build the final sector-level spells
-  - `nft`
-    - all spells which live in the `nft` schema, including upstream spells to help build the final sector-level spells
   - `solana`
     - solana specific spells, don't fit into EVM code structure as easily
   - `tokens`
