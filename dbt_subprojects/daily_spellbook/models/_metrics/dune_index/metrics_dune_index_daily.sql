@@ -23,7 +23,7 @@ fees as (
         {{ ref('metrics_gas_fees_daily') }}
     where
         block_date >= date '{{ start_date }}'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
 ),
@@ -37,7 +37,7 @@ transactions as (
         {{ ref('metrics_transactions_daily') }}
     where
         block_date >= date '{{ start_date }}'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
 )
@@ -51,7 +51,7 @@ transactions as (
         {{ ref('metrics_transfers_daily') }}
     where
         block_date >= date '{{ start_date }}'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
 )

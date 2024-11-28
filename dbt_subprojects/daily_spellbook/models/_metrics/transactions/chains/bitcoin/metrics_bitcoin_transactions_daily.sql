@@ -18,7 +18,7 @@ from
 where
     1 = 1
     and amount_transfer_usd > 1
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     and {{ incremental_predicate('block_date') }}
     {% endif %}
 group by

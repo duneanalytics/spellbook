@@ -22,7 +22,7 @@ with raw_transfers as (
     where
         1 = 1
         and type = 'input'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
@@ -44,7 +44,7 @@ with raw_transfers as (
     where
         1 = 1
         and type = 'output'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by

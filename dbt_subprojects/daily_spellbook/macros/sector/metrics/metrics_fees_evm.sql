@@ -7,7 +7,7 @@ select
 from
     {{ source('gas', 'fees') }}
 where blockchain = '{{blockchain}}'
-{% if is_incremental() or true %}
+{% if is_incremental() %}
 and
     {{ incremental_predicate('block_date') }}
 {% endif %}
