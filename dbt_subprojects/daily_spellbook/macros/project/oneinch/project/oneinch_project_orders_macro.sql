@@ -13,6 +13,7 @@ logs as (
 {% for event, event_data in oneinch_project_orders_cfg_events_macro().items() %}
     select
         '{{ blockchain }}' as blockchain
+        , '{{event_data["project"]}}' as project
         , block_number
         , block_time
         , tx_hash
@@ -21,7 +22,7 @@ logs as (
         , index
         , contract_address
         , topic0
-        , '{{event_data["name"]}}' as event
+        , '{{ event_data["name"] }}' as event
         , {{ event_data.get("maker", "null") }} as log_maker
         , {{ event_data.get("taker", "null") }} as log_taker
         , {{ event_data.get("receiver", "null") }} as log_receiver
@@ -215,7 +216,7 @@ logs as (
         , count(*) over(partition by block_number, tx_hash, call_trace_address, call_trade) as call_trade_logs -- logs for each trade
         , count(*) over(partition by block_number, tx_hash, index) as log_call_trades -- trades for each log
     from calls
-    full join logs using(blockchain, block_number, block_time, tx_hash, topic0)
+    full join logs using(blockchain, block_number, block_time, tx_hash, topic0, project)
     join (
         select * from {{ source('oneinch', 'blockchains') }}
         where blockchain = '{{blockchain}}'
@@ -243,7 +244,7 @@ logs as (
 -- output --
 
 select
-    blockchain
+    distinct blockchain
     , project
     , tag
     , map_concat(flags, map_from_entries(array[
