@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_atomic_arbitrages
     meta: 
-      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora
+      blockchain: ethereum, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, polygon, base, celo, zksync, scroll, zora, sei
       sector: dex
       contributors: hildobby
     config:
@@ -627,6 +627,49 @@ models:
             - project_contract_address
             - evt_index
     columns: 
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *trace_address
+      - *token_pair
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_sei_atomic_arbitrages
+    meta:
+      blockchain: sei
+      sector: dex
+      contributors: silointern
+    config:
+      tags: ['dex', 'mev', 'atomic', 'arbitrages', 'sei']
+    description: >
+      DEX MEV Arbitrage Trades on Sei
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - project_contract_address
+            - evt_index
+    columns:
       - *blockchain
       - *project
       - *version
