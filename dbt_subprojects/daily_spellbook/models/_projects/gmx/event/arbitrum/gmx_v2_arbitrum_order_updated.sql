@@ -208,14 +208,8 @@ WITH evt_data_1 AS (
             WHEN ED.updated_at_time = 0 THEN NULL
             ELSE ED.updated_at_time
         END AS updated_at_time,
-        CASE 
-            WHEN ED.valid_from_time = 0 THEN NULL
-            ELSE ED.valid_from_time
-        END AS valid_from_time,
-        CASE 
-            WHEN ED.auto_cancel IS NULL THEN false
-            ELSE ED.auto_cancel
-        END AS auto_cancel
+        ED.valid_from_time,
+        ED.auto_cancel
 
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_arbitrum_order_created') }} AS OC

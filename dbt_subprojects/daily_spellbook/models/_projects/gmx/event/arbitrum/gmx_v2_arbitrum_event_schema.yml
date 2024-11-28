@@ -158,6 +158,8 @@ models:
       - &updated_at_time     
         name: updated_at_time
         description: The timestamp when the order was last updated.
+      - name: valid_from_time
+        description: The time from which the order becomes valid for execution.
       - &is_long
         name: is_long
         description: A boolean indicating whether the position is long
@@ -165,8 +167,8 @@ models:
           - not_null
       - name: should_unwrap_native_token
         description: Boolean indicating if the native token should be unwrapped.
-      - name: is_frozen
-        description: Boolean indicating if the order is frozen.
+      - name: auto_cancel
+        description: Boolean indicating whether the order will be automatically canceled under certain conditions.
       - &key
         name: key
         description: The unique identifier for the order, stored as a bytes32 value.
@@ -604,31 +606,6 @@ models:
         description: The size of the trade in USD
         data_tests:
           - not_null        
-      - &total_rebate_factor
-        name: total_rebate_factor
-        description: The total rebate factor for the position
-        data_tests:
-          - not_null
-      - &trader_discount_factor
-        name: trader_discount_factor
-        description: The discount factor applied to the trader
-        data_tests:
-          - not_null
-      - &total_rebate_amount
-        name: total_rebate_amount
-        description: The total amount of rebate given
-        data_tests:
-          - not_null
-      - &trader_discount_amount
-        name: trader_discount_amount
-        description: The amount of discount given to the trader
-        data_tests:
-          - not_null
-      - &affiliate_reward_amount
-        name: affiliate_reward_amount
-        description: The reward amount given to the affiliate
-        data_tests:
-          - not_null
       - &funding_fee_amount
         name: funding_fee_amount
         description: The amount of funding fee charged
@@ -729,6 +706,61 @@ models:
         description: The total amount of UI fee collected
         data_tests:
           - not_null
+      - &referral_total_rebate_factor
+        name: referral_total_rebate_factor
+        description: The total rebate factor associated with referrals.
+        data_tests:
+          - not_null
+      - &referral_total_rebate_amount
+        name: referral_total_rebate_amount
+        description: The total rebate amount given for referrals.
+        data_tests:
+          - not_null
+      - &referral_trader_discount_factor
+        name: referral_trader_discount_factor
+        description: The discount factor applied to the trader through referrals.
+        data_tests:
+          - not_null
+      - &referral_adjusted_affiliate_reward_factor
+        name: referral_adjusted_affiliate_reward_factor
+        description: The adjusted affiliate reward factor based on referral criteria.
+        data_tests:
+          - not_null
+      - &referral_affiliate_reward_amount
+        name: referral_affiliate_reward_amount
+        description: The reward amount given to the affiliate for referrals.
+        data_tests:
+          - not_null
+      - &referral_trader_discount_amount
+        name: referral_trader_discount_amount
+        description: The discount amount given to the trader through referrals.
+        data_tests:
+          - not_null
+      - &pro_trader_discount_factor
+        name: pro_trader_discount_factor
+        description: The discount factor applied for pro traders.
+        data_tests:
+          - not_null
+      - &pro_trader_discount_amount
+        name: pro_trader_discount_amount
+        description: The discount amount given to pro traders.
+        data_tests:
+          - not_null
+      - &liquidation_fee_amount
+        name: liquidation_fee_amount
+        description: The amount of fees charged during liquidation.
+        data_tests:
+          - not_null
+      - &liquidation_fee_receiver_factor
+        name: liquidation_fee_receiver_factor
+        description: The factor used to calculate the liquidation fee allocated to the receiver.
+        data_tests:
+          - not_null
+      - &liquidation_fee_amount_for_fee_receiver
+        name: liquidation_fee_amount_for_fee_receiver
+        description: The amount of liquidation fee allocated to the fee receiver.
+        data_tests:
+          - not_null
       - &is_increase
         name: is_increase
         description: Indicates whether the position is increased (true) or decreased (false)
@@ -785,11 +817,6 @@ models:
       - *collateral_token_price_min
       - *collateral_token_price_max
       - *trade_size_usd
-      - *total_rebate_factor
-      - *trader_discount_factor
-      - *total_rebate_amount
-      - *trader_discount_amount
-      - *affiliate_reward_amount
       - *funding_fee_amount
       - *claimable_long_token_amount
       - *claimable_short_token_amount
@@ -810,6 +837,17 @@ models:
       - *total_cost_amount
       - *ui_fee_receiver_factor
       - *ui_fee_amount
+      - *referral_total_rebate_factor
+      - *referral_total_rebate_amount
+      - *referral_trader_discount_factor
+      - *referral_adjusted_affiliate_reward_factor
+      - *referral_affiliate_reward_amount
+      - *referral_trader_discount_amount
+      - *pro_trader_discount_factor
+      - *pro_trader_discount_amount
+      - *liquidation_fee_amount
+      - *liquidation_fee_receiver_factor
+      - *liquidation_fee_amount_for_fee_receiver
       - *is_increase
       - *order_key
       - *position_key
@@ -910,3 +948,7 @@ models:
       - *acceptable_price
       - *min_output_amount_raw   
       - *updated_at_time
+      - name: valid_from_time
+        description: The time from which the order becomes valid for execution.
+      - name: auto_cancel
+        description: Boolean indicating whether the order will be automatically canceled under certain conditions.

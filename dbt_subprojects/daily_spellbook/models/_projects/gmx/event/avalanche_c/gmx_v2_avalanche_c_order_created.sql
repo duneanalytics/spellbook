@@ -171,10 +171,11 @@ WITH evt_data_1 AS (
     
         MAX(CASE WHEN key_name = 'updatedAtBlock' THEN value END) AS updated_at_block,
         MAX(CASE WHEN key_name = 'updatedAtTime' THEN value END) AS updated_at_time,
+        MAX(CASE WHEN key_name = 'validFromTime' THEN value END) AS valid_from_time,
     
         MAX(CASE WHEN key_name = 'isLong' THEN value END) AS is_long,
         MAX(CASE WHEN key_name = 'shouldUnwrapNativeToken' THEN value END) AS should_unwrap_native_token,
-        MAX(CASE WHEN key_name = 'isFrozen' THEN value END) AS is_frozen,
+        MAX(CASE WHEN key_name = 'autoCancel' THEN value END) AS auto_cancel,
     
         MAX(CASE WHEN key_name = 'key' THEN value END) AS key
     FROM
@@ -213,9 +214,10 @@ WITH evt_data_1 AS (
         TRY_CAST(min_output_amount AS DOUBLE) AS min_output_amount,
         TRY_CAST(updated_at_block AS BIGINT) AS updated_at_block,
         TRY_CAST(updated_at_time AS DOUBLE) AS updated_at_time,
+        TRY_CAST(valid_from_time AS DOUBLE) AS valid_from_time,
         TRY_CAST(is_long AS BOOLEAN) AS is_long,
         TRY_CAST(should_unwrap_native_token AS BOOLEAN) AS should_unwrap_native_token,
-        TRY_CAST(is_frozen AS BOOLEAN) AS is_frozen,
+        TRY_CAST(auto_cancel AS BOOLEAN) AS auto_cancel,
         from_hex(key) AS key
         
     FROM evt_data AS ED
@@ -272,7 +274,7 @@ WITH evt_data_1 AS (
         END AS trigger_price,
         acceptable_price AS acceptable_price_raw,
         CASE 
-            WHEN index_token_decimals IS NULL THEN NULL
+            WHEN index_token_decimals IS NULL THEN NULL 
             ELSE acceptable_price / POWER(10, 30 - index_token_decimals) 
         END AS acceptable_price,
         execution_fee / POWER(10, 18) AS execution_fee,
@@ -284,9 +286,14 @@ WITH evt_data_1 AS (
             WHEN updated_at_time = 0 THEN NULL
             ELSE updated_at_time
         END AS updated_at_time,
+        valid_from_time,
         is_long,
         should_unwrap_native_token,
-        is_frozen,
+
+        CASE
+            WHEN auto_cancel IS NULL THEN false
+            ELSE auto_cancel
+        END AS auto_cancel,
         key
 
     FROM event_data AS ED

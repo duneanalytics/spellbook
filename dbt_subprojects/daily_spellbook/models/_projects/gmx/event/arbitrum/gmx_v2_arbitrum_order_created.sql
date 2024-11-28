@@ -169,6 +169,7 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'callbackGasLimit' THEN value END) AS callback_gas_limit,
         MAX(CASE WHEN key_name = 'minOutputAmount' THEN value END) AS min_output_amount,
     
+        MAX(CASE WHEN key_name = 'updatedAtBlock' THEN value END) AS updated_at_block,
         MAX(CASE WHEN key_name = 'updatedAtTime' THEN value END) AS updated_at_time,
         MAX(CASE WHEN key_name = 'validFromTime' THEN value END) AS valid_from_time,
     
@@ -211,6 +212,7 @@ WITH evt_data_1 AS (
         TRY_CAST(execution_fee AS DOUBLE) AS execution_fee,
         TRY_CAST(callback_gas_limit AS DOUBLE) AS callback_gas_limit,
         TRY_CAST(min_output_amount AS DOUBLE) AS min_output_amount,
+        TRY_CAST(updated_at_block AS BIGINT) AS updated_at_block,
         TRY_CAST(updated_at_time AS DOUBLE) AS updated_at_time,
         TRY_CAST(valid_from_time AS DOUBLE) AS valid_from_time,
         TRY_CAST(is_long AS BOOLEAN) AS is_long,
@@ -279,14 +281,12 @@ WITH evt_data_1 AS (
         callback_gas_limit,
         min_output_amount AS min_output_amount_raw, 
 
+        updated_at_block,
         CASE 
             WHEN updated_at_time = 0 THEN NULL
             ELSE updated_at_time
         END AS updated_at_time,
-        CASE 
-            WHEN valid_from_time = 0 THEN NULL
-            ELSE valid_from_time
-        END AS valid_from_time,
+        valid_from_time,
         is_long,
         should_unwrap_native_token,
 

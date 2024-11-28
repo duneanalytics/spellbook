@@ -346,6 +346,95 @@ WITH evt_data_1 AS (
         ON ED.collateral_token = CTD.collateral_token
 )
 
+, full_data_2 AS (
+    SELECT 
+        blockchain,
+        block_time,
+        block_date,
+        block_number,
+        tx_hash,
+        index,
+        contract_address,
+        event_name,
+        msg_sender,
+        
+        order_key,
+        position_key,
+        referral_code,
+    
+        market,
+        collateral_token,
+        affiliate,
+        trader,
+        ui_fee_receiver,
+        
+        collateral_token_price_min,
+        collateral_token_price_max,
+        trade_size_usd,
+        funding_fee_amount,
+        claimable_long_token_amount,
+        claimable_short_token_amount,
+        latest_funding_fee_amount_per_size,
+        latest_long_token_claimable_funding_amount_per_size,
+        latest_short_token_claimable_funding_amount_per_size,
+        borrowing_fee_usd,
+        borrowing_fee_amount,
+        borrowing_fee_receiver_factor,
+        borrowing_fee_amount_for_fee_receiver,
+        position_fee_factor,
+        protocol_fee_amount,
+        position_fee_receiver_factor,
+        fee_receiver_amount,
+        fee_amount_for_pool,
+        position_fee_amount_for_pool,
+        position_fee_amount,
+        total_cost_amount,
+        ui_fee_receiver_factor,
+        ui_fee_amount,
+    
+        CASE
+            WHEN total_rebate_factor IS NOT NULL THEN total_rebate_factor
+            WHEN referral_total_rebate_factor IS NOT NULL THEN referral_total_rebate_factor
+            ELSE 0
+        END AS referral_total_rebate_factor,
+        CASE
+            WHEN total_rebate_amount IS NOT NULL THEN total_rebate_amount
+            WHEN referral_total_rebate_amount IS NOT NULL THEN referral_total_rebate_amount
+            ELSE 0
+        END AS referral_total_rebate_amount,
+        CASE 
+            WHEN referral_trader_discount_factor IS NOT NULL THEN referral_trader_discount_factor
+            WHEN trader_discount_factor IS NOT NULL THEN trader_discount_factor * total_rebate_factor
+            ELSE 0
+        END AS referral_trader_discount_factor,
+        CASE 
+            WHEN referral_adjusted_affiliate_reward_factor IS NOT NULL THEN referral_adjusted_affiliate_reward_factor
+            WHEN affiliate_reward_amount IS NOT NULL THEN affiliate_reward_amount
+            ELSE 0
+        END AS referral_adjusted_affiliate_reward_factor,
+        CASE 
+            WHEN referral_affiliate_reward_amount IS NOT NULL THEN referral_affiliate_reward_amount
+            WHEN affiliate_reward_amount IS NOT NULL THEN affiliate_reward_amount
+            ELSE 0
+        END AS referral_affiliate_reward_amount,
+        CASE 
+            WHEN referral_trader_discount_amount IS NOT NULL THEN referral_trader_discount_amount
+            WHEN trader_discount_amount IS NOT NULL THEN trader_discount_amount
+            ELSE 0
+        END AS referral_trader_discount_amount,
+    
+        COALESCE(pro_trader_discount_factor, 0) AS pro_trader_discount_factor,
+        COALESCE(pro_trader_discount_amount, 0) AS pro_trader_discount_amount,
+    
+        COALESCE(liquidation_fee_amount, 0) AS liquidation_fee_amount,
+        COALESCE(liquidation_fee_receiver_factor, 0) AS liquidation_fee_receiver_factor,
+        COALESCE(liquidation_fee_amount_for_fee_receiver, 0) AS liquidation_fee_amount_for_fee_receiver, 
+    
+        is_increase
+    
+    FROM full_data
+)
+
 --can be removed once decoded tables are fully denormalized
 {{
     add_tx_columns(
