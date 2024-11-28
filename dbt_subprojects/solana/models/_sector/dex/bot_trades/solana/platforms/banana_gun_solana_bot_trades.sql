@@ -18,6 +18,7 @@
 {% set fee_receiver_5 = '4BBNEVRgrxVKv9f7pMNE788XM1tt379X9vNjpDH2KCL7' %}
 {% set fee_receiver_6 = '47hEzz83VFR23rLTEeVm9A7eFzjJwjvdupPPmX3cePqF' %}
 {% set fee_receiver_7 = 'EMbqD9Y9jLXEa3RbCR8AsEW1kVa3EiJgDLVgvKh4qNFP' %}
+{% set fee_receiver_8 = 'Lk693UiTzQC4vobasRS1QGcYA9D6RGYLjHp1bWreQtM' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
@@ -45,6 +46,7 @@ WITH
         OR address = '{{fee_receiver_5}}'
         OR address = '{{fee_receiver_6}}'
         OR address = '{{fee_receiver_7}}'
+        OR address = '{{fee_receiver_8}}'
       )
       AND tx_id != 'AT915GhHaLdGsdFkywx2uE6jqSXeyTauveYH2BQqWMyptGhUtjE6dcdr74ErELg79VY9apZ9Egiyc1VtA6Ddykb' -- Edge case that sent fees to multiple fee wallets
   ),
@@ -108,6 +110,7 @@ WITH
       AND trades.trader_id != '{{fee_receiver_5}}' -- Exclude trades signed by FeeWallet
       AND trades.trader_id != '{{fee_receiver_6}}' -- Exclude trades signed by FeeWallet
       AND trades.trader_id != '{{fee_receiver_7}}' -- Exclude trades signed by FeeWallet
+      AND trades.trader_id != '{{fee_receiver_8}}' -- Exclude trades signed by FeeWallet
       AND transactions.signer != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
       AND transactions.signer != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
       AND transactions.signer != '{{fee_receiver_3}}' -- Exclude trades signed by FeeWallet
@@ -115,6 +118,7 @@ WITH
       AND transactions.signer != '{{fee_receiver_5}}' -- Exclude trades signed by FeeWallet
       AND transactions.signer != '{{fee_receiver_6}}' -- Exclude trades signed by FeeWallet
       AND transactions.signer != '{{fee_receiver_7}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_8}}' -- Exclude trades signed by FeeWallet
       {% if is_incremental() %}
       AND {{ incremental_predicate('trades.block_time') }}
       {% else %}

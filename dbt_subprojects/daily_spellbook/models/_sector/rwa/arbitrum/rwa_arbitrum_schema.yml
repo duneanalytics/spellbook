@@ -30,6 +30,12 @@ models:
     - &type
       name: type
       description: "Type of Asset"
+    - &decimals
+      name: decimals
+      description: "Decimals of the asset"
+    - &category
+      name: category
+      description: "RWA category for the Asset"
 
   - name: rwa_arbitrum_dex_pools
 
