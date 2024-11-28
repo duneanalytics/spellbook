@@ -8,3 +8,11 @@ models:
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
     description: "Sum of total fees spent per day across all chains available in gas.fees and gas_solana.fees tables"
+
+  - name: metrics_gas_fees_stats
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'fees', 'gas']
+    description: "View of gas fees per blockchain aggregated to various levels. The goal is to output one row per chain."
