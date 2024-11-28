@@ -1,83 +1,44 @@
 {{ config(
         schema = 'metrics'
         , alias = 'transactions_daily'
-        , materialized = 'incremental'
-        , file_format = 'delta'
-        , incremental_strategy = 'merge'
-        , unique_key = ['blockchain', 'block_date']
-        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
+        , materialized = 'view'
         )
 }}
 
-with evm as (
-    select
+{% set chains = [
+     'arbitrum'
+    , 'avalanche_c'
+    , 'base'
+    , 'bitcoin'
+    , 'blast'
+    , 'bnb'
+    , 'celo'
+    , 'ethereum'
+    , 'fantom'
+    , 'gnosis'
+    , 'linea'
+    , 'mantle'
+    , 'optimism'
+    , 'polygon'
+    , 'scroll'
+    , 'sei'
+    , 'solana'
+    , 'tron'
+    , 'zkevm'
+    , 'zksync'
+    , 'zora'
+] %}
+
+SELECT *
+FROM (
+        {% for blockchain in chains %}
+        SELECT
         blockchain
-        , block_date
-        , approx_distinct(tx_hash) as tx_count --max 2% error, which is fine
-    from
-        {{ source('tokens', 'transfers') }}
-    where
-        1 = 1
-        and amount_usd >=1
-        {% if is_incremental() %}
-        and {{ incremental_predicate('block_date') }}
+        ,block_date
+        ,tx_count
+        FROM {{ ref('metrics_' + blockchain + '_transactions_daily') }}
+        {% if not loop.last %}
+        UNION ALL
         {% endif %}
-    group by
-        blockchain
-        , block_date
+        {% endfor %}
 )
-, solana as (
-    select
-        'solana' as blockchain
-        , block_date
-        , approx_distinct(tx_id) as tx_count
-    from
-        {{ source('tokens_solana', 'transfers') }}
-    where
-        1 = 1
-        and action != 'wrap'
-        and amount_usd > 1
-        {% if is_incremental() %}
-        and {{ incremental_predicate('block_date') }}
-        {% endif %}
-    group by
-        'solana'
-        , block_date
-)
-, bitcoin as (
-    select
-        blockchain
-        , block_date
-        , approx_distinct(tx_id) as tx_count
-    from
-        {{ source('transfers_bitcoin', 'satoshi') }}
-    where
-        1 = 1
-        and amount_transfer_usd > 1
-        {% if is_incremental() %}
-        and {{ incremental_predicate('block_date') }}
-        {% endif %}
-    group by
-        blockchain
-        , block_date
-)
-select
-    blockchain
-    , block_date
-    , tx_count
-from
-    evm
-union all
-select
-    blockchain
-    , block_date
-    , tx_count
-from
-    solana
-union all
-select
-    blockchain
-    , block_date
-    , tx_count
-from
-    bitcoin

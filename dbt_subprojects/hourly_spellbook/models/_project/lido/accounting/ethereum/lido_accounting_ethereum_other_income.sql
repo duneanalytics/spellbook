@@ -16,13 +16,13 @@
 with tokens AS (
 select * from (values
     (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32), --LDO
-    (0x6B175474E89094C44Da98b954EedeAC495271d0F),   --DAI
-    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48),   --USDC
+    (0x6B175474E89094C44Da98b954EedeAC495271d0F), --DAI
+    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48), --USDC
     (0xdAC17F958D2ee523a2206206994597C13D831ec7), -- USDT
-    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2),   --WETH
-    (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0),   --MATIC
-    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84),  --stETH
-    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0) --wstETH
+    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2), --WETH
+    (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0), --MATIC
+    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84), --stETH
+    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)  --wstETH
 ) as tokens(address)),
 
 
@@ -91,15 +91,6 @@ select * from  (values
 
 dai_referral_payments_addr AS (
     SELECT _recipient AS address FROM  {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientAdded')}}
-    WHERE
-    (
-        NOT EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
-        OR (
-            EXISTS (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
-            AND
-            _recipient NOT IN (SELECT _recipient FROM {{source('lido_ethereum','AllowedRecipientsRegistry_evt_RecipientRemoved')}})
-        )
-    )
     UNION ALL
     SELECT 0xaf8aE6955d07776aB690e565Ba6Fbc79B8dE3a5d --rhino
 ),
@@ -107,7 +98,7 @@ dai_referral_payments_addr AS (
 steth_referral_payments_addr AS (
     SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
 ),
-/*
+
 stonks as (
     select * from (values 
     ('STETH→DAI', 0x3e2D251275A92a8169A3B17A2C49016e2de492a7),
@@ -139,7 +130,7 @@ stonks_orders_txns as (
             ) 
     and to in (select address from cow_settlement)
 ),
-*/
+
 other_income_txns AS (
     SELECT
         evt_block_time,
@@ -167,7 +158,7 @@ other_income_txns AS (
         UNION ALL
         SELECT address FROM diversifications_addresses    
     )    
-  --  AND evt_tx_hash NOT IN (select evt_tx_hash from stonks_orders_txns)   
+    AND evt_tx_hash NOT IN (select evt_tx_hash from stonks_orders_txns)   
     
     UNION ALL
     --ETH staked by DAO
@@ -251,3 +242,4 @@ SELECT * from (
         from_base64(evt_tx_hash)
     FROM stsol_income
 ) WHERE amount_token != 0
+
