@@ -1,0 +1,158 @@
+version: 2
+
+sources:
+  # Boba Tables
+  - name: boba
+    description: "raw tables for the chain"
+
+    tables:
+      - name: transactions
+        meta:
+          docs_slug: /evm/boba/raw/transactions
+          short_description: The transactions table contains detailed information about transactions on the network.
+        description: '{{ doc("boba_transactions_doc") }}'
+
+        columns:
+          - &block_date
+            name: block_date
+            description: "The UTC date of the block in which this transaction was included"
+          - &block_time
+            name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
+          - &block_number
+            name: block_number
+            description: "The number of the block containing this transaction"
+          - &block_hash
+            name: block_hash
+            description: "The hash of the block containing this transaction"
+          - name: index
+            description: "The index position of the transaction within its block"
+          - name: hash
+            description: "The transaction hash"
+          - name: from
+            description: "The sending address"
+          - name: to
+            description: "The receiving address"
+          - name: value
+            description: "The value transferred in wei"
+          - name: gas_limit
+            description: "The maximum amount of gas units that can be consumed by the transaction"
+          - name: gas_price
+            description: "The price per unit of gas in wei"
+          - name: gas_used
+            description: "The actual amount of gas used for the transaction"
+          - name: nonce
+            description: "The number of transactions sent from this address before this one"
+          - name: success
+            description: "Whether the transaction was successful (1) or failed (0)"
+
+      - name: traces
+        meta:
+          docs_slug: /evm/boba/raw/traces
+          short_description: The traces table contains information about traces on the network.
+        description: '{{ doc("boba_traces_doc") }}'
+
+        columns:
+          - *block_number
+          - *block_time
+          - name: tx_hash
+            description: "The hash of the transaction this trace belongs to"
+          - name: from
+            description: "Address where the trace call originated from"
+          - name: to
+            description: "Address where the trace call was made to"
+          - name: value
+            description: "Value transferred in the trace in wei"
+          - name: gas
+            description: "Gas provided for the trace call"
+          - name: input
+            description: "The data sent along with the trace call"
+          - name: output
+            description: "The data returned from the trace call"
+          - name: type
+            description: "The type of trace (call, create, suicide, reward)"
+          - name: error
+            description: "Error message if the trace failed"
+
+      - name: logs
+        meta:
+          docs_slug: /evm/boba/raw/logs
+          short_description: The `boba.logs` table contains information about event logs emitted by smart contracts on the boba blockchain.
+        description: '{{ doc("boba_logs_doc") }}'
+
+        columns:
+          - *block_number
+          - *block_time
+          - name: tx_hash
+            description: "The hash of the transaction that emitted this log"
+          - name: contract_address
+            description: "The address of the contract that emitted this log"
+          - name: topic0
+            description: "The first topic (typically the event signature)"
+          - name: topic1
+            description: "The second topic (if any)"
+          - name: topic2
+            description: "The third topic (if any)"
+          - name: topic3
+            description: "The fourth topic (if any)"
+          - name: data
+            description: "The data field of the log"
+          - name: index
+            description: "The index of the log within its transaction"
+
+      - name: contracts
+        meta:
+          docs_slug: /evm/boba/raw/contracts
+          short_description: The `boba.contracts` table tracks decoded contracts on boba, including associated metadata such as namespace, name, address, ABI.
+        description: '{{ doc("boba_contracts_doc") }}'
+
+        columns:
+          - name: address
+            description: "The contract address"
+          - name: bytecode
+            description: "The contract bytecode"
+          - name: name
+            description: "The name of the contract"
+          - name: namespace
+            description: "The namespace the contract belongs to"
+          - name: abi
+            description: "The contract ABI"
+
+  # ERC Transfer Tables
+  - name: erc20_boba
+    description: "Transfer events for ERC20 tokens on boba"
+    tables:
+      - name: evt_transfer
+        columns:
+          - *block_number
+          - *block_time
+          - name: contract_address
+            description: "The address of the ERC20 token contract"
+          - name: from
+            description: "Address tokens are transferred from"
+          - name: to
+            description: "Address tokens are transferred to"
+          - name: value
+            description: "Amount of tokens transferred"
+
+  - name: erc1155_boba
+    description: "events related to ERC1155 tokens"
+    tables:
+      - name: evt_transfersingle
+        meta:
+          short_description: "Single transfer events for ERC1155 tokens"
+        columns:
+          - *block_number
+          - *block_time
+          - name: contract_address
+            description: "The address of the ERC1155 token contract"
+          - name: operator
+            description: "Address approved to make the transfer"
+          - name: from
+            description: "Address tokens are transferred from"
+          - name: to
+            description: "Address tokens are transferred to"
+          - name: id
+            description: "ID of the token"
+          - name: value
+            description: "Amount of tokens transferred"
