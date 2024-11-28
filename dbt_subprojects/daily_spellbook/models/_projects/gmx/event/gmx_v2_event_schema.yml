@@ -1165,10 +1165,9 @@ models:
         description: The associated data field, decoded from a hexadecimal value.
         data_tests:
           - not_null
-      - name: value
+      - name: value_raw
         description: |
-          The value associated with the event, normalized by dividing the raw value by `POWER(10, 30)`.
-          This ensures the value is represented in a standard floating-point format for analysis.
+          The value associated with the event.
         data_type: float
         data_tests:
           - not_null

@@ -141,7 +141,7 @@ WITH evt_data_1 AS (
 
         from_hex(EDP.base_key) AS base_key,
         from_hex(EDP."data") AS "data",
-        TRY_CAST(EDP."value" AS DOUBLE) / POWER(10, 30) AS "value"
+        TRY_CAST(EDP."value" AS DOUBLE) AS "value_raw"
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
         ON ED.tx_hash = EDP.tx_hash

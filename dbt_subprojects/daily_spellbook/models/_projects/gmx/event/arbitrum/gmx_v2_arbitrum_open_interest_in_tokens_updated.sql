@@ -21,8 +21,7 @@ WITH evt_data_1 AS (
         contract_address,
         eventName AS event_name,
         eventData AS data,
-        msgSender AS msg_sender,
-        varbinary_substring(topic1, 13, 20) as account
+        msgSender AS msg_sender
     FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC
@@ -39,8 +38,7 @@ WITH evt_data_1 AS (
         contract_address,
         eventName AS event_name,
         eventData AS data,
-        msgSender AS msg_sender,
-        varbinary_substring(topic2, 13, 20) as account
+        msgSender AS msg_sender
     FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     ORDER BY evt_block_time ASC

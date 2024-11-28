@@ -29,7 +29,7 @@ SELECT
     msg_sender,
     base_key,
     "data",
-    "value"
+    "value_raw"
 FROM {{ ref('gmx_v2_' ~ chain ~ '_set_uint') }}
 {% if not loop.last %}
 UNION ALL
