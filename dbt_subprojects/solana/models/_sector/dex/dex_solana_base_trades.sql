@@ -23,8 +23,9 @@
    , ref('meteora_v2_solana_base_trades')
    , ref('goosefx_ssl_v2_solana_base_trades')
    , ref('pumpdotfun_solana_base_trades')
---   , ref('sanctum_router_base_trades')
 ] %}
+
+-- excluded:    , ref('sanctum_router_base_trades')
 
 {% for dex in solana_dexes %}
 SELECT
