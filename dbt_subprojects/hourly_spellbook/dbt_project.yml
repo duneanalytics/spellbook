@@ -98,3 +98,20 @@ models:
         gnosis:
           +schema: cow_protocol_gnosis
 
+      seaport:
+        +schema: seaport
+        ethereum:
+          +schema: seaport_ethereum
+        bnb:
+          +schema: seaport_bnb
+        arbitrum:
+          +schema: seaport_arbitrum
+        optimism:
+          +schema: seaport_optimism
+        avalanche_c:
+          +schema: seaport_avalanche_c
+        polygon:
+          +schema: seaport_polygon
+        base:
+          +schema: seaport_base
+
