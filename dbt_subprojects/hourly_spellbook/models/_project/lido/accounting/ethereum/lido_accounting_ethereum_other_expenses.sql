@@ -18,13 +18,13 @@
 with tokens AS (
 select * from (values
     (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32), --LDO
-    (0x6B175474E89094C44Da98b954EedeAC495271d0F),   --DAI
-    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48),   --USDC
+    (0x6B175474E89094C44Da98b954EedeAC495271d0F), --DAI
+    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48), --USDC
     (0xdAC17F958D2ee523a2206206994597C13D831ec7), -- USDT
-    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2),   --WETH
-    (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0),   --MATIC
-    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84),  --stETH
-    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0) --wstETH
+    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2), --WETH
+    (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0), --MATIC
+    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84), --stETH
+    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)  --wstETH
 ) as tokens(address)),
 
 
@@ -99,7 +99,7 @@ dai_referral_payments_addr AS (
 steth_referral_payments_addr AS (
     SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
 ),
-/*
+
 stonks as (
     select * from (values
     ('STETH→DAI', 0x3e2D251275A92a8169A3B17A2C49016e2de492a7),
@@ -114,24 +114,7 @@ stonks as (
     ) as list(namespace, address)
 ),
 
-cow_settlement as (
-    select * from (values
-    (0x9008D19f58AAbD9eD0D60971565AA8510560ab41)
-    ) as list(address)
-),
 
-stonks_orders_txns as (
-    select evt_tx_hash
-    from {{source('lido_ethereum', 'steth_evt_Transfer')}}
-    where "from" in (
-            select cast(replace(topic1, 0x000000000000000000000000, 0x) as varbinary) as order_addr
-            from {{source('ethereum', 'logs')}} l
-            join stonks s on l.contract_address = s.address
-             and l.topic0 = 0x96a6d5477fba36522dca4102be8b3785435baf902ef6c4edebcb99850630c75f -- Stonks Deployed
-            )
-    and to in (select address from cow_settlement)
-),
-*/
 other_expenses_txns AS (
     SELECT
         evt_block_time,
@@ -160,8 +143,10 @@ other_expenses_txns AS (
             SELECT 0x0000000000000000000000000000000000000000
             UNION ALL
             SELECT address FROM diversifications_addresses
+            UNION ALL
+            SELECT address FROM stonks
         )
-  --      AND evt_tx_hash NOT IN (select evt_tx_hash from stonks_orders_txns)
+        
     UNION ALL
     --ETH outflow
     SELECT
@@ -199,4 +184,3 @@ other_expenses_txns AS (
     FROM other_expenses_txns
     WHERE contract_address IN (SELECT address FROM tokens)
       and value != 0
-
