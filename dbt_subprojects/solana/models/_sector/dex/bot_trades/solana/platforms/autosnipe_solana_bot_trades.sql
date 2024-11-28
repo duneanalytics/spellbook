@@ -10,7 +10,7 @@
    )
 }}
 
-{% set project_start_date = '2024-04-01' %}
+{% set project_start_date = '2024-05-22' %}
 {% set fee_receiver_1 = 'CWEfC6fLi552zE2KFxhPiBAZUWdT78gMd8NGENik2zfE' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
