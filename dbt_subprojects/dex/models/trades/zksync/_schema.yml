@@ -222,6 +222,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('zkswap_finance_zksync_base_trades_seed')
+          filter:
+            version: 1
 
   - name: zkswap_finance_v3_zksync_base_trades
     meta:
