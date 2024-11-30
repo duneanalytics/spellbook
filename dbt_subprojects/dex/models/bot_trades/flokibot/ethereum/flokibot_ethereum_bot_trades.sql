@@ -35,7 +35,7 @@ with
     ),
     treasury_fees as (
         select value / 1e18 as treasury_fee, tx_hash
-        from ethereum.traces
+        from {{ source('ethereum', 'traces') }}
         where
             (
                 to = {{ treasury_fee_wallet_1 }}
@@ -49,7 +49,7 @@ with
     ),
     buyback_fees as (
         select value / 1e18 as buyback_fee, block_number, tx_hash
-        from ethereum.traces
+        from {{ source('ethereum', 'traces') }}
         where
             to = {{ buyback_fee_wallet_1 }}
             and tx_success = true
