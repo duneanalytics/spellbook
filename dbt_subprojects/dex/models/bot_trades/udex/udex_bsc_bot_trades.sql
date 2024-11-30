@@ -13,6 +13,7 @@
 {% set project_name = 'Udex' %}
 {% set project_start_date = '2023-12-24' %}
 {% set blockchain = 'bnb' %}
+{% set vault = '0x1df00191a32184675baA3fc0416A57009C386ed9' %}
 {% set wbnb = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c' %}
 {% set fee_token_symbol = 'BNB' %}
 
@@ -52,7 +53,7 @@
       'BSC' AS blockchain,
       order_type,
       IF(
-        token_sold_address = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c, -- WBNB
+        token_sold_address = {{wbnb}}, -- WBNB
         'Buy',
         'Sell'
       ) AS type,
@@ -80,12 +81,12 @@
         trades_tx_hashes.evt_tx_hash = tx_hash
         AND trades_tx_hashes.evt_block_time = block_time
       )
-      LEFT JOIN erc20_bnb.evt_transfer as fee_payments ON (
+      LEFT JOIN {{ source('erc20_bnb','evt_transfer') }} as fee_payments ON (
         fee_payments.evt_tx_hash = tx_hash
         AND fee_payments.evt_block_time = block_time
         AND fee_payments.contract_address = token_sold_address
         AND "from" = router
-        AND to = 0x1df00191a32184675baA3fc0416A57009C386ed9 -- Vault
+        AND to = {{vault}} -- Vault
       )
       LEFT JOIN {{ source('prices', 'usd') }} AS fee_token_prices ON (
         fee_token_prices.blockchain = 'bnb'
