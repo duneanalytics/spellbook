@@ -106,10 +106,41 @@
       tx_hash
   )
 SELECT
-  bot_trades.*,
+  block_time,
   date_trunc('day', botTrades.block_time) as block_date,
   date_trunc('month', botTrades.block_time) as block_month,
-  IF(evt_index = highest_event_index, true, false) AS is_last_trade_in_transaction
+  '{{project_name}}' as bot,
+  block_number,
+  '{{blockchain}}' AS blockchain,
+  -- Trade
+  amount_usd,
+  type,
+  token_bought_amount,
+  token_bought_symbol,
+  token_bought_address,
+  token_sold_amount,
+  token_sold_symbol,
+  token_sold_address,
+  -- Fees
+  ROUND(
+    CAST(feeGwei AS DOUBLE) / CAST(depositGwei AS DOUBLE),
+    /* Round feePercentage to 0.01% steps */
+    4
+  ) AS fee_percentage_fraction,
+  (feeGwei / 1e18) * price AS fee_usd,
+  feeGwei / 1e18 fee_token_amount,
+  '{{fee_token_symbol}}' AS fee_token_symbol,
+  {{weth}} AS fee_token_address,
+  -- Dex
+  project,
+  version,
+  token_pair,
+  project_contract_address,
+  -- User
+  user AS user,
+  botTrades.tx_hash,
+  evt_index,
+  IF(evt_index = highestEventIndex, true, false) AS is_last_trade_in_transaction
 FROM
   bot_trades
   JOIN highest_event_index_for_each_trade ON bot_trades.tx_hash = highest_event_index_for_each_trade.tx_hash
