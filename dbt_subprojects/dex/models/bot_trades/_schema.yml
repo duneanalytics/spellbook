@@ -131,7 +131,6 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('banana_gun_base_trades_seed')
 
-
   - name: pepeboost_ethereum_bot_trades
     meta:
       blockchain: ethereum
@@ -151,7 +150,7 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('pepeboost_ethereum_trades_seed')
 
-  - name: udex_bsc_bot_trades
+  - name: udex_bnb_bot_trades
     meta:
       blockchain: bnb
       sector: dex
@@ -168,4 +167,4 @@ models:
             - tx_hash
             - evt_index
       - check_bot_trades_seed:
-          seed_file: ref('udex_bsc_trades_seed')
+          seed_file: ref('udex_bbn_trades_seed')
