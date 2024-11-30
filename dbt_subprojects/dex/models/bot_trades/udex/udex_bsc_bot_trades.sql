@@ -50,7 +50,6 @@
     SELECT
       block_time,
       amount_usd,
-      {{'blockchain'}} AS blockchain,
       order_type,
       IF(
         token_sold_address = {{wbnb}}, -- WBNB
@@ -65,8 +64,8 @@
       token_sold_address,
       (fee_payments.value / POWER(10, decimals)) * price AS fee_usd,
       (fee_payments.value / POWER(10, decimals)) AS fee_token_amount,
-      token_sold_symbol AS fee_token_symbol,
-      token_sold_address AS fee_token_address,
+      '{{fee_token_symbol}}' AS fee_token_symbol,
+      {{ wbnb }} AS fee_token_address,
       project,
       version,
       token_pair,
@@ -123,14 +122,13 @@ SELECT
   token_sold_address,
   -- Fees
   ROUND(
-    CAST(feeGwei AS DOUBLE) / CAST(depositGwei AS DOUBLE),
-    /* Round feePercentage to 0.01% steps */
-    4
+    CAST(fee_usd AS DOUBLE) / CAST(amount_usd AS DOUBLE),
+    4 -- Round feePercentage to 0.01% steps
   ) AS fee_percentage_fraction,
- (feeGwei / 1e18) * price AS fee_usd,
-feeGwei / 1e18 fee_token_amount,
-  '{{fee_token_symbol}}' AS fee_token_symbol,
-  {{weth}} AS fee_token_address,
+  fee_usd,
+  fee_token_amount,
+  fee_token_symbol,
+  fee_token_address,
   -- Dex
   project,
   version,
@@ -138,7 +136,7 @@ feeGwei / 1e18 fee_token_amount,
   project_contract_address,
   -- User
   user AS user,
-  botTrades.tx_hash,
+  bot_trades.tx_hash,
   evt_index,
   IF(evt_index = highestEventIndex, true, false) AS is_last_trade_in_transaction
 FROM
