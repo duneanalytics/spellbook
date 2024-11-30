@@ -110,7 +110,7 @@ SELECT
   IF(evt_index = highestEventIndex, true, false) AS is_last_trade_in_transaction
 FROM
   bot_trades
-  JOIN highest_event_index_for_each_trade ON botTrades.tx_hash = highest_event_index_for_each_trade.tx_hash
+  JOIN highest_event_index_for_each_trade ON bot_trades.tx_hash = highest_event_index_for_each_trade.tx_hash
 ORDER BY
   block_time DESC,
   evt_index DESC
