@@ -48,7 +48,7 @@ with
             {% endif %}
     ),
     buyback_fees as (
-        select value / 1e18 as buyback_fee, block_number, tx_hash
+        select value / 1e18 as buyback_fee, tx_hash
         from {{ source('ethereum', 'traces') }}
         where
             to = {{ buyback_fee_wallet_1 }}
@@ -59,7 +59,7 @@ with
             {% endif %}
     ),
     oneinch_aggregator_trades as (
-        select call_block_time as block_time, call_block_number as block_number, call_tx_hash as tx_hash
+        select call_block_time as block_time, call_tx_hash as tx_hash
         from {{ source('oneinch_ethereum', 'AggregationRouterV6_call_swap') }}
         where
             (
@@ -73,10 +73,10 @@ with
             {% endif %}
     ),
     trade_transactions as (
-        select block_time, block_number, address, null as tx_hash
+        select block_time, address, null as tx_hash
         from bot_contracts
         union all
-        select block_time, block_number, null as address, tx_hash
+        select block_time, null as address, tx_hash
         from oneinch_aggregator_trades
     ),
     bot_trades as (
