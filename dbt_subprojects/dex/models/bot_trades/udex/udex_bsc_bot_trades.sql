@@ -50,7 +50,7 @@
     SELECT
       block_time,
       amount_usd,
-      'BSC' AS blockchain,
+      {{'blockchain'}} AS blockchain,
       order_type,
       IF(
         token_sold_address = {{wbnb}}, -- WBNB
@@ -107,6 +107,8 @@
   )
 SELECT
   bot_trades.*,
+  date_trunc('day', botTrades.block_time) as block_date,
+  date_trunc('month', botTrades.block_time) as block_month,
   IF(evt_index = highest_event_index, true, false) AS is_last_trade_in_transaction
 FROM
   bot_trades
