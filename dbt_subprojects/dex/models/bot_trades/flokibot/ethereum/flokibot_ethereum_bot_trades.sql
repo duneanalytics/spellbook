@@ -75,8 +75,8 @@ WITH
     SELECT
       tx_hash,
       block_number,
-      CAST(value AS DECIMAL (38, 0)) AS deltaGwei,
-      CAST(value AS DECIMAL (38, 0)) AS depositGwei
+      CAST(value AS DECIMAL (38, 0)) AS delta_gwei,
+      CAST(value AS DECIMAL (38, 0)) AS deposit_gwei
     FROM
       {{ source('ethereum','traces') }}
       JOIN bot_contracts ON to = bot_contracts.address
@@ -92,8 +92,8 @@ WITH
     SELECT
       tx_hash,
       block_number,
-      CAST(value AS DECIMAL (38, 0)) * -1 AS deltaGwei,
-      0 AS depositGwei,
+      CAST(value AS DECIMAL (38, 0)) * -1 AS delta_gwei,
+      0 AS deposit_gwei,
       block_hash,
       to
     FROM
