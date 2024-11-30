@@ -18,6 +18,9 @@
 {% set blockchain = 'ethereum' %}
 {% set bot_deployer_1 = '0xdeb9E55E0F20bC59029271372ECea50E67182A3A' %}
 {% set bot_deployer_2 = '0xcE6a13955EC32B6B1b7EBe089302b536Ad40aeC3' %}
+{% set treasury_fee_wallet_1 = '0xc69df57dbb39e52d5836753e6abb71a9ab271c2d' %}
+{% set treasury_fee_wallet_2 = '0xffdc626bb733a8c2e906242598e2e99752dcb922' %}
+{% set aggregator_fee_wallet_2 = '0x7b41114eCB5C09d483343116C229Be3d3eb3b0fC' %}
 {% set weth = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
 {% set fee_token_symbol = 'ETH' %}
 
@@ -61,6 +64,45 @@ with
         select tx_hash, max(evt_index) as highest_event_index
         from bot_trades
         group by tx_hash
+    ),
+    treasury_fees as (
+        select value / 1e18 as treasury_fee, tx_hash
+        from ethereum.traces
+        where
+            (
+                to = {{ treasury_fee_wallet_1 }}
+                or to = {{ treasury_fee_wallet_2 }}
+            )
+            and tx_success
+            {% if is_incremental() %}
+                and {{ incremental_predicate('block_time') }}
+            {% else %} and block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
+    ),
+    buyback_fees as (
+        select value / 1e18 as buyback_fee, tx_hash
+        from ethereum.traces
+        where
+            to = {{ bubyack_fee_wallet_1 }}
+            and tx_success = true
+            {% if is_incremental() %}
+                and {{ incremental_predicate('block_time') }}
+            {% else %} and block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
+    ),
+    oneinch_aggregator_trades as (
+        select call_block_time as block_time, call_tx_hash as tx_hash
+        from {{ source('oneinch_ethereum', 'AggregationRouterV6_call_swap') }}
+        where
+            (
+                varbinary_position(data, {{ aggregator_fee_wallet_2 }}) > 0
+                or varbinary_position(data, {{ treasury_fee_wallet_2 }}) > 0
+            )
+            and call_success
+            {% if is_incremental() %}
+                and {{ incremental_predicate('call_block_time') }}
+            {% else %} and call_block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
     ),
     bot_eth_deposits as (
         select
@@ -128,8 +170,7 @@ select
     -- Fees
     round(
         cast(fee_gwei as double) / cast(deposit_gwei as double),
-        /* Round feePercentage to 0.01% steps */
-        4
+        4 -- Round feePercentage to 0.01% steps
     ) as fee_percentage_fraction,
     (fee_gwei / 1e18) * price as fee_usd,
     fee_gwei / 1e18 fee_token_amount,
