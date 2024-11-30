@@ -91,7 +91,7 @@ with
             token_sold_amount,
             token_sold_symbol,
             token_sold_address,
-            coalesce(treasuryFee, 0) + coalesce(buybackFee, 0) AS fee_token_amount,
+            coalesce(treasury_fee, 0) + coalesce(buyback_fee, 0) AS fee_token_amount,
             '{{fee_token_symbol}}' as fee_token_symbol,
             {{ weth }} as fee_token_address,
             project,
