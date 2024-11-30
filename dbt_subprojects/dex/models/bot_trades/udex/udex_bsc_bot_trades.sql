@@ -128,7 +128,7 @@ SELECT
     4
   ) AS fee_percentage_fraction,
   (feeGwei / 1e18) * price AS fee_usd,
-  feeGwei / 1e18 fee_token_amount,
+  feeGwei / 1e18 AS fee_token_amount,
   '{{fee_token_symbol}}' AS fee_token_symbol,
   {{weth}} AS fee_token_address,
   -- Dex
