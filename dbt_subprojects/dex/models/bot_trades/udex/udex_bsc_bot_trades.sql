@@ -1,0 +1,115 @@
+{{ config(
+    alias = 'bot_trades',
+    schema = 'udex_bnb',
+    partition_by = ['block_month'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    unique_key = ['blockchain', 'tx_hash', 'evt_index']
+   )
+}}
+
+{% set project_name = 'Udex' %}
+{% set project_start_date = '2023-12-24' %}
+{% set blockchain = 'bnb' %}
+{% set wbnb = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c' %}
+{% set fee_token_symbol = 'BNB' %}
+
+  WITH swaps AS (
+    SELECT DISTINCT
+      'Market' AS order_type,
+      evt_block_time,
+      evt_tx_hash,
+      contract_address AS router
+    FROM
+      {{ source('udex_bnb', 'SpotSwapRouter_evt_Swap') }}
+  ),
+  limit_orders_filled AS (
+    SELECT DISTINCT
+      'Limit' AS order_type,
+      evt_block_time,
+      evt_tx_hash,
+      contract_address AS router
+    FROM
+      {{ source('udex_bnb', 'SpotLimitOrderRouter_evt_SpotOrderFilled') }}
+  ),
+  trades_tx_hashes AS (
+    SELECT
+      *
+    FROM
+      swaps
+    UNION ALL
+    SELECT
+      *
+    FROM
+      limit_orders_filled
+  ),
+  bot_trades AS (
+    SELECT
+      block_time,
+      amount_usd,
+      'BSC' AS blockchain,
+      order_type,
+      IF(
+        token_sold_address = 0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c, -- WBNB
+        'Buy',
+        'Sell'
+      ) AS type,
+      token_bought_amount,
+      token_bought_symbol,
+      token_bought_address,
+      token_sold_amount,
+      token_sold_symbol,
+      token_sold_address,
+      (fee_payments.value / POWER(10, decimals)) * price AS fee_usd,
+      (fee_payments.value / POWER(10, decimals)) AS fee_token_amount,
+      token_sold_symbol AS fee_token_symbol,
+      token_sold_address AS fee_token_address,
+      project,
+      version,
+      token_pair,
+      CAST(project_contract_address AS VARCHAR) AS project_contract_address,
+      CAST(tx_from AS VARCHAR) AS user,
+      router AS bot,
+      CAST(tx_hash AS VARCHAR) AS tx_hash,
+      trades.evt_index
+    FROM
+      trades_tx_hashes
+      JOIN {{ source('dex', 'trades') }} as trades ON (
+        trades_tx_hashes.evt_tx_hash = tx_hash
+        AND trades_tx_hashes.evt_block_time = block_time
+      )
+      LEFT JOIN erc20_bnb.evt_transfer as fee_payments ON (
+        fee_payments.evt_tx_hash = tx_hash
+        AND fee_payments.evt_block_time = block_time
+        AND fee_payments.contract_address = token_sold_address
+        AND "from" = router
+        AND to = 0x1df00191a32184675baA3fc0416A57009C386ed9 -- Vault
+      )
+      LEFT JOIN {{ source('prices', 'usd') }} AS fee_token_prices ON (
+        fee_token_prices.blockchain = 'bnb'
+        AND fee_token_prices.contract_address = token_sold_address
+        AND date_trunc('minute', block_time) = minute
+      )
+    WHERE
+    trades.blockchain = 'bnb'
+  ),
+  highest_event_index_for_each_trade AS (
+    SELECT
+      tx_hash,
+      MAX(evt_index) AS highest_event_index
+    FROM
+      bot_trades
+    GROUP BY
+      tx_hash
+  )
+SELECT
+  bot_trades.*,
+  IF(evt_index = highestEventIndex, true, false) AS is_last_trade_in_transaction
+FROM
+  bot_trades
+  JOIN highest_event_index_for_each_trade ON botTrades.tx_hash = highest_event_index_for_each_trade.tx_hash
+ORDER BY
+  block_time DESC,
+  evt_index DESC
