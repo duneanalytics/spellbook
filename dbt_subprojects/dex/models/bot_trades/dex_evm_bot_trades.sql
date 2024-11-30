@@ -17,6 +17,7 @@
     ref('banana_gun_ethereum_bot_trades')
     ,ref('banana_gun_base_bot_trades')
     ,ref('pepeboost_ethereum_bot_trades')
+    ,ref('flokibot_ethereum_bot_trades')
 ] %}
 
 {% for bot in evm_trading_bots %}
