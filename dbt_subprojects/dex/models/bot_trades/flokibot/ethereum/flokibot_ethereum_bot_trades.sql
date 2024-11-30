@@ -20,6 +20,7 @@
 {% set bot_deployer_2 = '0xcE6a13955EC32B6B1b7EBe089302b536Ad40aeC3' %}
 {% set treasury_fee_wallet_1 = '0xc69df57dbb39e52d5836753e6abb71a9ab271c2d' %}
 {% set treasury_fee_wallet_2 = '0xffdc626bb733a8c2e906242598e2e99752dcb922' %}
+{% set buyback_fee_wallet_1 = '0xCc5374Be204990A3205EB9f93C5bD37B4f8e2c5e' %}
 {% set aggregator_fee_wallet_2 = '0x7b41114eCB5C09d483343116C229Be3d3eb3b0fC' %}
 {% set weth = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
 {% set fee_token_symbol = 'ETH' %}
@@ -31,39 +32,6 @@ with
         where
             ("from" = {{ bot_deployer_1 }} or "from" = {{ bot_deployer_2 }})
             and block_time >= timestamp '{{project_start_date}}'
-    ),
-    bot_trades as (
-        select
-            trades.block_time,
-            amount_usd,
-            if(token_sold_address = {{ weth }}, 'Buy', 'Sell') as type,
-            token_bought_amount,
-            token_bought_symbol,
-            token_bought_address,
-            token_sold_amount,
-            token_sold_symbol,
-            token_sold_address,
-            project,
-            version,
-            token_pair,
-            project_contract_address,
-            tx_from as user,
-            tx_to as bot,
-            trades.tx_hash,
-            evt_index
-        from {{ source('dex', 'trades') }} as trades
-        join bot_contracts on trades.tx_to = bot_contracts.address
-        where
-            trades.blockchain = '{{blockchain}}'
-            {% if is_incremental() %}
-                and {{ incremental_predicate('trades.block_time') }}
-            {% else %} and trades.block_time >= timestamp '{{project_start_date}}'
-            {% endif %}
-    ),
-    highest_event_index_for_each_trade as (
-        select tx_hash, max(evt_index) as highest_event_index
-        from bot_trades
-        group by tx_hash
     ),
     treasury_fees as (
         select value / 1e18 as treasury_fee, tx_hash
@@ -80,10 +48,10 @@ with
             {% endif %}
     ),
     buyback_fees as (
-        select value / 1e18 as buyback_fee, tx_hash
+        select value / 1e18 as buyback_fee, block_number, tx_hash
         from ethereum.traces
         where
-            to = {{ bubyack_fee_wallet_1 }}
+            to = {{ buyback_fee_wallet_1 }}
             and tx_success = true
             {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
@@ -91,7 +59,7 @@ with
             {% endif %}
     ),
     oneinch_aggregator_trades as (
-        select call_block_time as block_time, call_tx_hash as tx_hash
+        select call_block_time as block_time, call_block_number as block_number, call_tx_hash as tx_hash
         from {{ source('oneinch_ethereum', 'AggregationRouterV6_call_swap') }}
         where
             (
@@ -104,52 +72,57 @@ with
             {% else %} and call_block_time >= timestamp '{{project_start_date}}'
             {% endif %}
     ),
-    bot_eth_deposits as (
-        select
-            tx_hash,
-            block_number,
-            cast(value as decimal(38, 0)) as delta_gwei,
-            cast(value as decimal(38, 0)) as deposit_gwei
-        from {{ source('ethereum', 'traces') }}
-        join bot_contracts on to = bot_contracts.address
-        where
-            {% if is_incremental() %} {{ incremental_predicate('block_time') }}
-            {% else %} block_time >= timestamp '{{project_start_date}}'
-            {% endif %} and value > 0
-    ),
-    bot_eth_withdrawals as (
-        select
-            tx_hash,
-            block_number,
-            cast(value as decimal(38, 0)) * -1 as delta_gwei,
-            0 as deposit_gwei,
-            block_hash,
-            to
-        from {{ source('ethereum', 'traces') }}
-        join bot_contracts on "from" = bot_contracts.address
-        where
-            {% if is_incremental() %} {{ incremental_predicate('block_time') }}
-            {% else %} block_time >= timestamp '{{project_start_date}}'
-            {% endif %} and value > 0
-    ),
-    botethtransfers as (
-        /* Deposits */
-        (select tx_hash, block_number, delta_gwei, deposit_gwei from bot_eth_deposits)
+    trade_transactions as (
+        select block_time, block_number, address, null as tx_hash
+        from bot_contracts
         union all
-        /* Withdrawals */
-        (
-            select tx_hash, block_number, delta_gwei, deposit_gwei
-            from bot_eth_withdrawals
-        )
+        select block_time, block_number, null as address, tx_hash
+        from oneinch_aggregator_trades
     ),
-    bot_eth_deltas as (
+    bot_trades as (
         select
-            tx_hash,
-            block_number,
-            sum(delta_gwei) as fee_gwei,
-            sum(deposit_gwei) as deposit_gwei
-        from botethtransfers
-        group by tx_hash, block_number
+            trades.block_time,
+            trades.block_number,
+            amount_usd,
+            if(token_sold_address = {{ weth }}, 'Buy', 'Sell') as type,
+            token_bought_amount,
+            token_bought_symbol,
+            token_bought_address,
+            token_sold_amount,
+            token_sold_symbol,
+            token_sold_address,
+            coalesce(treasuryFee, 0) + coalesce(buybackFee, 0) AS fee_token_amount,
+            '{{fee_token_symbol}}' as fee_token_symbol,
+            {{ weth }} as fee_token_address,
+            project,
+            version,
+            token_pair,
+            project_contract_address,
+            tx_from as user,
+            tx_to as bot,
+            trades.tx_hash,
+            evt_index
+        from {{ source('dex', 'trades') }} as trades
+        join trade_transactions ON (
+          (
+            trades.tx_to = trade_transactions.address
+            OR trades.tx_hash = trade_transactions.tx_hash
+          )
+          AND trades.block_time = trade_transactions.block_time
+        )
+        left join treasury_fees on treasury_fees.tx_hash = trades.tx_hash
+        left join buyback_fees on buyback_fees.tx_hash = trades.tx_hash
+        where
+            trades.blockchain = '{{blockchain}}'
+            {% if is_incremental() %}
+                and {{ incremental_predicate('trades.block_time') }}
+            {% else %} and trades.block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
+    ),
+    highest_event_index_for_each_trade as (
+        select tx_hash, max(evt_index) as highest_event_index
+        from bot_trades
+        group by tx_hash
     )
 select
     block_time,
@@ -169,13 +142,13 @@ select
     token_sold_address,
     -- Fees
     round(
-        cast(fee_gwei as double) / cast(deposit_gwei as double),
+        fee_token_amount * price / cast(amount_usd as double),
         4 -- Round feePercentage to 0.01% steps
     ) as fee_percentage_fraction,
-    (fee_gwei / 1e18) * price as fee_usd,
-    fee_gwei / 1e18 fee_token_amount,
+    fee_token_amount * price as fee_usd,
+    fee_token_amount,
     '{{fee_token_symbol}}' as fee_token_symbol,
-    {{ weth }} as fee_token_address,
+    fee_token_address,
     -- Dex
     project,
     version,
@@ -190,7 +163,6 @@ from bot_trades
 join
     highest_event_index_for_each_trade
     on bot_trades.tx_hash = highest_event_index_for_each_trade.tx_hash
-left join bot_eth_deltas on bot_trades.tx_hash = bot_eth_deltas.tx_hash
 left join
     {{ source('prices', 'usd') }}
     on (
