@@ -21,6 +21,7 @@
     SELECT DISTINCT
       'Market' AS order_type,
       evt_block_time,
+      evt_block_number,
       evt_tx_hash,
       contract_address AS router
     FROM
@@ -30,6 +31,7 @@
     SELECT DISTINCT
       'Limit' AS order_type,
       evt_block_time,
+      evt_block_number,
       evt_tx_hash,
       contract_address AS router
     FROM
@@ -49,6 +51,7 @@
   bot_trades AS (
     SELECT
       block_time,
+      evt_block_number AS block_number,
       amount_usd,
       order_type,
       IF(
