@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: udex_bnb
+    description: >
+      BNB decoded tables related to Udex Protocol
+    tables:
+      - name: SpotSwapRouter_evt_Swap
+      - name: SpotLimitOrderRouter_evt_SpotOrderFilled
