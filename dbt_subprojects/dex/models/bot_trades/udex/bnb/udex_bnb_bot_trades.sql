@@ -72,10 +72,10 @@
       project,
       version,
       token_pair,
-      CAST(project_contract_address AS VARCHAR) AS project_contract_address,
-      CAST(tx_from AS VARCHAR) AS user,
+      project_contract_address,
+      user,
       router AS bot,
-      CAST(tx_hash AS VARCHAR) AS tx_hash,
+      tx_hash,
       trades.evt_index
     FROM
       trades_tx_hashes
