@@ -167,4 +167,4 @@ models:
             - tx_hash
             - evt_index
       - check_bot_trades_seed:
-          seed_file: ref('udex_bbn_trades_seed')
+          seed_file: ref('udex_bnb_trades_seed')
