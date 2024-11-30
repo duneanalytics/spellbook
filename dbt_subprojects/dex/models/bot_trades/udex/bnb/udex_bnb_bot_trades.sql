@@ -73,7 +73,7 @@
       version,
       token_pair,
       project_contract_address,
-      user,
+      tx_from AS user,
       router AS bot,
       tx_hash,
       trades.evt_index
