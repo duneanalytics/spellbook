@@ -141,7 +141,7 @@ SELECT
   user AS user,
   bot_trades.tx_hash,
   evt_index,
-  IF(evt_index = highestEventIndex, true, false) AS is_last_trade_in_transaction
+  IF(evt_index = highest_event_index, true, false) AS is_last_trade_in_transaction
 FROM
   bot_trades
   JOIN highest_event_index_for_each_trade ON bot_trades.tx_hash = highest_event_index_for_each_trade.tx_hash
