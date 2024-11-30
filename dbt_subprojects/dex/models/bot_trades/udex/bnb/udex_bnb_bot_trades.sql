@@ -94,6 +94,9 @@
         fee_token_prices.blockchain = 'bnb'
         AND fee_token_prices.contract_address = {{ wbnb }}
         AND date_trunc('minute', block_time) = minute
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('minute') }}
+        {% endif %}  
       )
     WHERE
     trades.blockchain = 'bnb'
