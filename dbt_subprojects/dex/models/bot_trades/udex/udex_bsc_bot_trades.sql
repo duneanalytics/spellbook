@@ -51,7 +51,7 @@
   bot_trades AS (
     SELECT
       block_time,
-      evt_block_number AS block_number,
+      trades_tx_hashes.evt_block_number AS block_number,
       amount_usd,
       order_type,
       IF(
