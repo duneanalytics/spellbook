@@ -27,7 +27,7 @@
 
 with
     bot_contracts as (
-        select address
+        select block_time, address
         from {{ source('ethereum', 'creation_traces') }}
         where
             ("from" = {{ bot_deployer_1 }} or "from" = {{ bot_deployer_2 }})
@@ -108,7 +108,7 @@ with
             trades.tx_to = trade_transactions.address
             OR trades.tx_hash = trade_transactions.tx_hash
           )
-          AND trades.block_time = trade_transactions.block_time
+          AND trades.block_time >= trade_transactions.block_time
         )
         left join treasury_fees on treasury_fees.tx_hash = trades.tx_hash
         left join buyback_fees on buyback_fees.tx_hash = trades.tx_hash
