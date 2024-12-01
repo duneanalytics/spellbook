@@ -18,7 +18,8 @@ from
 (
 select title, art_type, platform, edition_count, blockchain, token_standard, contract_address, min_token_id, max_token_id, category, link, mint_date
 from (VALUES
-        ('HEAVY', 'Edition', 'Manifold', 250, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 10, 10, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/10','2024-11-08')
+        ('ICXN', 'Generative', 'Art Blocks', 500, 'Ethereum', 'erc721', 0xc04e0000726ed7c5b9f0045bc0c4806321bc6c65, 0, 499, '', 'https://opensea.io/collection/xcore-2', '2024-11-21')
+        , ('HEAVY', 'Edition', 'Manifold', 250, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 10, 10, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/10','2024-11-08')
         , ('REIGN', 'Edition', 'Manifold', 500, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 9, 9, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/9','2024-11-07')
         , ('BOT_ROT', 'Edition', 'Manifold', 250, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 8, 8, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/8','2024-09-11')
         , ('SH_MASH_MA', 'Edition', 'Manifold', 250, 'Ethereum', 'erc1155', 0x3e34ff1790bf0a13efd7d77e75870cb525687338, 7, 7, 'DAMAGE CONTROL', 'https://opensea.io/assets/ethereum/0x3e34ff1790bf0a13efd7d77e75870cb525687338/7','2024-07-25')

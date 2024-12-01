@@ -3,7 +3,7 @@
         schema = 'oneinch',
         alias = 'project_swaps',
         materialized = 'view',
-        unique_key = ['blockchain', 'block_number', 'tx_hash', 'call_trace_address', 'call_trade_id']
+        unique_key = ['blockchain', 'block_number', 'tx_hash', 'second_side', 'call_trace_address', 'call_trade_id']
     )
 }}
 
