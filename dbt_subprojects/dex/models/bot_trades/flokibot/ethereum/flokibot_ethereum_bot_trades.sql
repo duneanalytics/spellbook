@@ -21,7 +21,7 @@
 {% set treasury_fee_wallet_1 = '0xc69df57dbb39e52d5836753e6abb71a9ab271c2d' %}
 {% set treasury_fee_wallet_2 = '0xffdc626bb733a8c2e906242598e2e99752dcb922' %}
 {% set buyback_fee_wallet_1 = '0xCc5374Be204990A3205EB9f93C5bD37B4f8e2c5e' %}
-{% set aggregator_fee_wallet_2 = '0x7b41114eCB5C09d483343116C229Be3d3eb3b0fC' %}
+{% set aggregator_fee_wallet_1 = '0x7b41114eCB5C09d483343116C229Be3d3eb3b0fC' %}
 {% set weth = '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' %}
 {% set fee_token_symbol = 'ETH' %}
 
@@ -55,7 +55,7 @@ with
         from {{ source('oneinch_ethereum', 'AggregationRouterV6_call_swap') }}
         where
             (
-                varbinary_position(data, {{ aggregator_fee_wallet_2 }}) > 0
+                varbinary_position(data, {{ aggregator_fee_wallet_1 }}) > 0
                 or varbinary_position(data, {{ treasury_fee_wallet_2 }}) > 0
             )
             and call_success
