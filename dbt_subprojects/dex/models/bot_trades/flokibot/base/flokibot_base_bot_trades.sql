@@ -28,7 +28,7 @@
 with
     bot_contracts as (
         select block_time, address
-        from {{ source({{ blockchain }}, 'creation_traces') }}
+        from {{ source('{{ blockchain }}', 'creation_traces') }}
         where
             ("from" = {{ bot_deployer_1 }} or "from" = {{ bot_deployer_2 }})
             and block_time >= timestamp '{{project_start_date}}'
