@@ -4,9 +4,8 @@
     alias = 'open_interest_updated',
     materialized = 'incremental',
     unique_key = ['tx_hash', 'index'],
-    incremental_strategy = 'delete+insert',
-    tags = ['increment_daily']
-    )
+    incremental_strategy = 'merge'
+  )
 }}
 
 {%- set event_name = 'OpenInterestUpdated' -%}
