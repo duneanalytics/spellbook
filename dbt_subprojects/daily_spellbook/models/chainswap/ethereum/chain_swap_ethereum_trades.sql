@@ -9,7 +9,7 @@
         incremental_predicates=[
             incremental_predicate("DBT_INTERNAL_DEST.block_time")
         ],
-        unique_key=["blockchain", "tx_hash", "evt_index"],
+        unique_key=['blockchain', 'tx_hash', 'evt_index', 'fee_token_address'],
     )
 }}
 
