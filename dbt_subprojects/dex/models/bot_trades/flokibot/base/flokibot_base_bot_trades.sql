@@ -35,7 +35,7 @@ with
     ),
     fees as (
       select sum(value) / 1e18 as fee_token_amount, tx_hash
-        from {{ source({{ blockchain }}, 'traces') }}
+        from {{ source('{{ blockchain }}', 'traces') }}
         where
          (
                 to = {{ treasury_fee_wallet_1 }}
@@ -52,7 +52,7 @@ with
     ),
     oneinch_aggregator_trades as (
         select call_block_time as block_time, call_tx_hash as tx_hash
-        from {{ source('oneinch_' + {{ blockchain }}, 'AggregationRouterV6_call_swap') }}
+        from {{ source('oneinch_' + '{{ blockchain }}', 'AggregationRouterV6_call_swap') }}
         where
             (
                 varbinary_position(data, {{ aggregator_fee_wallet_1 }}) > 0
