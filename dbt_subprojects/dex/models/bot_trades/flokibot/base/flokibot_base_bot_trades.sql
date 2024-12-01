@@ -14,10 +14,10 @@
 }}
 
 {% set project_name = 'Floki Trading Bot' %}
-{% set project_start_date = '2024-05-27' %}
+{% set project_start_date = '2024-02-13' %}
 {% set blockchain = 'base' %}
-{% set bot_deployer_1 = '0x1Ef87bbC50CB2c977e89b2E4948BFaAD696387dc' %}
-{% set bot_deployer_2 = '0xfE188fee982CF9588841ea8540bD490a495D9f2c' %}
+{% set bot_deployer_1 = '0xdeb9e55e0f20bc59029271372ecea50e67182a3a' %}
+{% set bot_deployer_2 = '0xcE6a13955EC32B6B1b7EBe089302b536Ad40aeC3' %}
 {% set treasury_fee_wallet_1 = '0xc69df57dbb39e52d5836753e6abb71a9ab271c2d' %}
 {% set treasury_fee_wallet_2 = '0x800E2f14a25Ae52300209b2D7Fb45cC27ae91a9d' %}
 {% set buyback_fee_wallet_1 = '0xCc5374Be204990A3205EB9f93C5bD37B4f8e2c5e' %}
