@@ -1,7 +1,6 @@
 {{ config(
     alias = 'bot_trades',
     schema = 'bonkbot_solana',
-    tags = ['prod_exclude'],
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -63,6 +62,33 @@ WITH
       tx_id,
       fee_token_mint_address
   ),
+  solFeePayments AS (
+    SELECT 
+      * 
+    FROM 
+      allFeePayments 
+    WHERE 
+      feeTokenType = 'SOL'
+  ),
+  splFeePayments AS (
+    SELECT 
+      * 
+    FROM 
+      allFeePayments 
+    WHERE 
+      feeTokenType = 'SPL'
+  ),
+  -- Eliminate duplicates (e.g. both SOL + SPL payment in a single transaction)
+  allFeePaymentsWithSOLPaymentPreferred AS (
+    SELECT 
+      COALESCE(solFeePayments.tx_id, splFeePayments.tx_id) AS tx_id,
+      COALESCE(solFeePayments.feeTokenType, splFeePayments.feeTokenType) AS feeTokenType,
+      COALESCE(solFeePayments.fee_token_amount, splFeePayments.fee_token_amount) AS fee_token_amount,
+      COALESCE(solFeePayments.fee_token_mint_address, splFeePayments.fee_token_mint_address) AS fee_token_mint_address
+    FROM
+      solFeePayments 
+      FULL JOIN splFeePayments ON solFeePayments.tx_id = splFeePayments.tx_id
+  ),
   botTrades AS (
     SELECT
       trades.block_time,
@@ -96,7 +122,7 @@ WITH
       inner_instruction_index
     FROM
       {{ ref('dex_solana_trades') }} AS trades
-      JOIN allFeePayments AS feePayments ON trades.tx_id = feePayments.tx_id
+      JOIN allFeePaymentsWithSOLPaymentPreferred AS feePayments ON trades.tx_id = feePayments.tx_id
       LEFT JOIN {{ source('prices', 'usd') }} AS feeTokenPrices ON (
         feeTokenPrices.blockchain = 'solana'
         AND fee_token_mint_address = toBase58 (feeTokenPrices.contract_address)

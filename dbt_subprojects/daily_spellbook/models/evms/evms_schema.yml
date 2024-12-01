@@ -484,7 +484,7 @@ models:
 
   - name: evms_info
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, goerli, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin
       sector: evms
       contributors: hildobby
     config:
@@ -493,7 +493,9 @@ models:
     columns: 
       - name: chain_id
         description: "Chain ID"
-      - *blockchain
+      - name: blockchain
+        data_tests:
+          - unique
       - name: name
         description: "Capitalised name of the blockchain"
       - name: chain_type
@@ -514,6 +516,8 @@ models:
         description:  "Chain where proofs are submitted to"
       - name: settlement
         description:  "Chain that is being settled on"
+      - name: is_on_dune
+        description: "Is the chain on Dune"
 
   - name: evms_non_app_method_ids
     meta:

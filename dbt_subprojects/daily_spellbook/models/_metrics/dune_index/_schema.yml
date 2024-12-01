@@ -4,7 +4,7 @@ models:
   - name: metrics_dune_index_daily
     meta:
       sector: metrics
-      contributors: jeff-dude
+      contributors: jeff-dude, 0xRob
     config:
       tags: ['metrics', 'dune', 'index', 'daily']
     description: "Combine transactions, transfers and fees index values to get a daily dune index value"
@@ -13,10 +13,11 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+
   - name: metrics_dune_index_stats
     meta:
       sector: metrics
       contributors: jeff-dude
     config:
-      tags: ['metrics', 'dune', 'index', 'daily']
+      tags: [ 'metrics', 'dune', 'index', 'daily' ]
     description: "View containing various time aggregations of the dune index"
