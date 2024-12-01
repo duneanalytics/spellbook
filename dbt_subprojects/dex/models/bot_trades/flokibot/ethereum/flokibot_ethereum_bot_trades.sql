@@ -33,30 +33,22 @@ with
             ("from" = {{ bot_deployer_1 }} or "from" = {{ bot_deployer_2 }})
             and block_time >= timestamp '{{project_start_date}}'
     ),
-    treasury_fees as (
-        select value / 1e18 as treasury_fee, tx_hash
+    fees as (
+      select sum(value) / 1e18 as fee_token_amount, tx_hash
         from {{ source('ethereum', 'traces') }}
         where
-            (
+         (
                 to = {{ treasury_fee_wallet_1 }}
                 or to = {{ treasury_fee_wallet_2 }}
+                or to = {{ buyback_fee_wallet_1 }}
             )
-            and tx_success
-            {% if is_incremental() %}
-                and {{ incremental_predicate('block_time') }}
-            {% else %} and block_time >= timestamp '{{project_start_date}}'
-            {% endif %}
-    ),
-    buyback_fees as (
-        select value / 1e18 as buyback_fee, tx_hash
-        from {{ source('ethereum', 'traces') }}
-        where
-            to = {{ buyback_fee_wallet_1 }}
             and tx_success = true
+            and value > 0
             {% if is_incremental() %}
                 and {{ incremental_predicate('block_time') }}
             {% else %} and block_time >= timestamp '{{project_start_date}}'
             {% endif %}
+        group by tx_hash
     ),
     oneinch_aggregator_trades as (
         select call_block_time as block_time, call_tx_hash as tx_hash
@@ -91,7 +83,7 @@ with
             token_sold_amount,
             token_sold_symbol,
             token_sold_address,
-            coalesce(treasury_fee, 0) + coalesce(buyback_fee, 0) AS fee_token_amount,
+            fee_token_amount,
             '{{fee_token_symbol}}' as fee_token_symbol,
             {{ weth }} as fee_token_address,
             project,
@@ -110,8 +102,7 @@ with
           )
           AND trades.block_time >= trade_transactions.block_time
         )
-        left join treasury_fees on treasury_fees.tx_hash = trades.tx_hash
-        left join buyback_fees on buyback_fees.tx_hash = trades.tx_hash
+        left join fees on fees.tx_hash = trades.tx_hash
         where
             trades.blockchain = '{{blockchain}}'
             {% if is_incremental() %}
