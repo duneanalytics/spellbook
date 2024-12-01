@@ -67,8 +67,8 @@
       token_sold_address,
       (fee_payments.value / POWER(10, decimals)) * price AS fee_usd,
       (fee_payments.value / POWER(10, decimals)) AS fee_token_amount,
-      '{{fee_token_symbol}}' AS fee_token_symbol,
-      {{ wbnb }} AS fee_token_address,
+      token_sold_symbol AS fee_token_symbol,
+      token_sold_address AS fee_token_address,
       project,
       version,
       token_pair,
@@ -86,13 +86,13 @@
       LEFT JOIN {{ source('erc20_bnb','evt_transfer') }} as fee_payments ON (
         fee_payments.evt_tx_hash = tx_hash
         AND fee_payments.evt_block_time = block_time
-        AND fee_payments.contract_address = {{ wbnb }}
+        AND fee_payments.contract_address = token_sold_address
         AND "from" = router
         AND to = {{vault}}
       )
       LEFT JOIN {{ source('prices', 'usd') }} AS fee_token_prices ON (
         fee_token_prices.blockchain = 'bnb'
-        AND fee_token_prices.contract_address = {{ wbnb }}
+        AND fee_token_prices.contract_address = token_sold_address
         AND date_trunc('minute', block_time) = minute
         {% if is_incremental() %}
         AND {{ incremental_predicate('minute') }}
