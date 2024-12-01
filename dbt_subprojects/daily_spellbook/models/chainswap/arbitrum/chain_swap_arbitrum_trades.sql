@@ -102,7 +102,11 @@ with
             (to = {{ fee_recipient_1 }} or to = {{ fee_recipient_2 }})
             and block_time >= timestamp '{{project_start_date}}'
             and value > 0
-
+    ),
+    aggregated_fee_deposits as (
+        select evt_tx_hash, sum(fee_token_amount) as fee_token_amount, fee_token_address 
+        from fee_deposits 
+        group by evt_tx_hash, fee_token_address
     )
 select distinct
     block_time,
@@ -137,8 +141,7 @@ from bot_trades
 join
     highest_event_index_for_each_trade
     on bot_trades.tx_hash = highest_event_index_for_each_trade.tx_hash
-/* Left Outer Join to support 0 fee trades */
-left join fee_deposits on bot_trades.tx_hash = fee_deposits.evt_tx_hash
+left join aggregated_fee_deposits as fee_deposits on bot_trades.tx_hash = fee_deposits.evt_tx_hash
 left join
     {{ source('prices', 'usd') }}
     on (
