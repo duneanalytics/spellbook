@@ -978,7 +978,11 @@ models:
       Extracts and processes decoded event data for open interest updates on the GMX platform, 
       specifically on the Arbitrum blockchain. This model normalizes data, including key metrics like 
       delta and next_value, ensuring consistent scaling based on token decimals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
