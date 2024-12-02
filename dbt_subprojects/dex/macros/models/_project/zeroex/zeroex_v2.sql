@@ -11,6 +11,7 @@ WITH tbl_addresses AS (
         contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae 
         and topic0 = 0xaa94c583a45742b26ac5274d230aea34ab334ed5722264aa5673010e612bc0b2
         AND block_time >= DATE '2024-04-04'
+        /* no need to filter incrmeentally, as this returns small subset of addresses tracked as settler address over time */
 ),
 
 tbl_end_times AS (
@@ -77,6 +78,10 @@ SELECT * FROM settler_txs
 {% endmacro %}
 
 {% macro zeroex_v2_trades(blockchain, start_date, is_direct=true) %}
+/* 
+    this macro is called twice -- once for direct, once for indirect trades
+    this is required due to how logs joins back to input settler address tx's
+*/
 WITH tbl_all_logs AS (
     SELECT
         logs.tx_hash,
@@ -160,26 +165,20 @@ WHERE rn = 1
 
 {% macro zeroex_v2_trades_detail(blockchain, start_date) %}
 WITH tokens AS (
-    SELECT DISTINCT token, te.*
-    FROM (
-        SELECT maker_token AS token FROM tbl_trades
-        UNION ALL
-        SELECT taker_token FROM tbl_trades
-    ) t
-    JOIN {{ source('tokens', 'erc20') }} AS te ON te.contract_address = t.token
-    WHERE te.blockchain = '{{blockchain}}'
+    SELECT *
+    FROM {{ source('tokens', 'erc20') }}
+    WHERE blockchain = '{{blockchain}}'
 ),
 
 prices AS (
-    SELECT DISTINCT pu.*
-    FROM {{ source('prices', 'usd') }} AS pu
-    JOIN tbl_trades ON (pu.contract_address IN (taker_token, maker_token)) AND DATE_TRUNC('minute', block_time) = minute
+    SELECT *
+    FROM {{ source('prices', 'usd') }}
     WHERE
-        pu.blockchain = '{{blockchain}}'
+        blockchain = '{{blockchain}}'
         {% if is_incremental() %}
-            AND {{ incremental_predicate('pu.minute') }}
+            AND {{ incremental_predicate('minute') }}
         {% else %}
-            AND pu.minute >= DATE '{{start_date}}'
+            AND minute >= DATE '{{start_date}}'
         {% endif %}
 ),
 
