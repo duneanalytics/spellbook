@@ -4455,3 +4455,23 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
+
+- name: stablebase_base_base_trades_seed
+  config:
+    column_types:
+      blockchain: varchar
+      project: varchar
+      version: varchar
+      block_month: varchar
+      block_date: date
+      block_time: timestamp
+      block_number: uint256
+      token_sold_amount_raw: varchar
+      token_bought_amount_raw: varchar
+      token_sold_id: uint256
+      token_bought_id: uint256
+      maker: varbinary
+      taker: varbinary
+      project_contract_address: varbinary
+      tx_hash: varbinary
+      evt_index: uint256
