@@ -172,6 +172,9 @@ sources:
     tables:
       - name: PairFactory_evt_PairCreated
       - name: Pair_evt_Swap
+  - name: stablebase_base
+    tables:
+      - name: SwapFlashLoan_evt_TokenSwap
   - name: basex_base
     tables:
       - name: UniswapV3Pool_evt_Swap
