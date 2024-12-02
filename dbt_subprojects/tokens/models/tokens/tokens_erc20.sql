@@ -13,6 +13,7 @@
                                         ,"celo"
                                         ,"ethereum"
                                         ,"fantom"
+                                        ,"flare"
                                         ,"fuse"
                                         ,"gnosis"
                                         ,"goerli"
@@ -34,7 +35,7 @@
                                     ]\',
                                     "sector",
                                     "tokens",
-                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum"]\') }}'
+                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum","yakufff"]\') }}'
     )
 }}
 
@@ -51,6 +52,7 @@
     ,'tokens_celo': {'blockchain': 'celo', 'model': ref('tokens_celo_erc20')}
     ,'tokens_ethereum': {'blockchain': 'ethereum', 'model': ref('tokens_ethereum_erc20')}
     ,'tokens_fantom': {'blockchain': 'fantom', 'model': ref('tokens_fantom_erc20')}
+    ,'tokens_fantom': {'blockchain': 'flare', 'model': ref('tokens_flare_erc20')}
     ,'tokens_fuse': {'blockchain': 'fuse', 'model': ref('tokens_fuse_erc20')}
     ,'tokens_gnosis': {'blockchain': 'gnosis', 'model': ref('tokens_gnosis_erc20')}
     ,'tokens_goerli': {'blockchain': 'goerli', 'model': ref('tokens_goerli_erc20')}
