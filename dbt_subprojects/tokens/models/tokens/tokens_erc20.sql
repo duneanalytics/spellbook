@@ -71,6 +71,7 @@
     ,'tokens_tron': {'blockchain': 'tron', 'model': ref('tokens_tron_erc20')}
     ,'tokens_ronin': {'blockchain': 'ronin', 'model': ref('tokens_ronin_erc20')}
     ,'tokens_bob': {'blockchain': 'bob', 'model': ref('tokens_bob_erc20')}
+    ,'tokens_flare': {'blockchain': 'flare', 'model': ref('tokens_flare_erc20')}
 } %}
 
 with automated_source as (
