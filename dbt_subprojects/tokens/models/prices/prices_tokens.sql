@@ -15,6 +15,7 @@
                                         , "celo"
                                         , "ethereum"
                                         , "fantom"
+                                        , "flare"
                                         , "gnosis"
                                         , "kaia"
                                         , "linea"
@@ -45,6 +46,7 @@ ref('prices_native_tokens')
 ,ref('prices_cardano_tokens')
 ,ref('prices_ethereum_tokens')
 ,ref('prices_fantom_tokens')
+,ref('prices_flare_tokens')
 ,ref('prices_gnosis_tokens')
 ,ref('prices_optimism_tokens')
 ,ref('prices_polygon_tokens')

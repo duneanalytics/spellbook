@@ -1,0 +1,195 @@
+version: 2
+
+sources:
+  # flare Tables
+  - name: flare
+    description: "raw tables for the chain"
+
+    tables:
+      - name: transactions
+        meta:
+          docs_slug: /evm/flare/raw/transactions
+          short_description: The transactions table contains detailed information about transactions on the network.
+        description: '{{ doc("flare_transactions_doc") }}'
+
+        columns:
+          - &block_date
+            name: block_date
+            description: "The UTC date of the block in which this transaction was included"
+          - &block_time
+            name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
+          - &block_number
+            name: block_number
+            description: "The number of the block containing this transaction"
+          - &block_hash
+            name: block_hash
+            description: "The hash of the block containing this transaction"
+          - name: index
+            description: "The index position of the transaction within its block"
+          - name: hash
+            description: "The transaction hash"
+          - name: from
+            description: "The sending address"
+          - name: to
+            description: "The receiving address"
+          - name: value
+            description: "The value transferred in wei"
+          - name: gas_limit
+            description: "The maximum amount of gas units that can be consumed by the transaction"
+          - name: gas_price
+            description: "The price per unit of gas in wei"
+          - name: gas_used
+            description: "The actual amount of gas used for the transaction"
+          - name: nonce
+            description: "The number of transactions sent from this address before this one"
+          - name: success
+            description: "Whether the transaction was successful (1) or failed (0)"
+
+      - name: traces
+        meta:
+          docs_slug: /evm/flare/raw/traces
+          short_description: The traces table contains information about traces on the network.
+        description: '{{ doc("flare_traces_doc") }}'
+
+        columns:
+          - *block_number
+          - *block_time
+          - name: tx_hash
+            description: "The hash of the transaction this trace belongs to"
+          - name: from
+            description: "Address where the trace call originated from"
+          - name: to
+            description: "Address where the trace call was made to"
+          - name: value
+            description: "Value transferred in the trace in wei"
+          - name: gas
+            description: "Gas provided for the trace call"
+          - name: input
+            description: "The data sent along with the trace call"
+          - name: output
+            description: "The data returned from the trace call"
+          - name: type
+            description: "The type of trace (call, create, suicide, reward)"
+          - name: error
+            description: "Error message if the trace failed"
+
+      - name: logs
+        meta:
+          docs_slug: /evm/flare/raw/logs
+          short_description: The `flare.logs` table contains information about event logs emitted by smart contracts on the flare blockchain.
+        description: '{{ doc("flare_logs_doc") }}'
+
+        columns:
+          - *block_number
+          - *block_time
+          - name: tx_hash
+            description: "The hash of the transaction that emitted this log"
+          - name: contract_address
+            description: "The address of the contract that emitted this log"
+          - name: topic0
+            description: "The first topic (typically the event signature)"
+          - name: topic1
+            description: "The second topic (if any)"
+          - name: topic2
+            description: "The third topic (if any)"
+          - name: topic3
+            description: "The fourth topic (if any)"
+          - name: data
+            description: "The data field of the log"
+          - name: index
+            description: "The index of the log within its transaction"
+
+      - name: contracts
+        meta:
+          docs_slug: /evm/flare/raw/contracts
+          short_description: The `flare.contracts` table tracks decoded contracts on flare, including associated metadata such as namespace, name, address, ABI.
+        description: '{{ doc("flare_contracts_doc") }}'
+
+        columns:
+          - name: address
+            description: "The contract address"
+          - name: bytecode
+            description: "The contract bytecode"
+          - name: name
+            description: "The name of the contract"
+          - name: namespace
+            description: "The namespace the contract belongs to"
+          - name: abi
+            description: "The contract ABI"
+          - *block_number
+          - *block_hash
+          - *tx_count
+          - *difficulty
+          - *gas_limit
+          - *gas_used
+          - *miner
+          - *nonce
+          - *parent_hash
+          - *size
+          - *total_difficulty
+          - *extra_data
+
+      - name: transactions
+        loaded_at_field: block_time
+        description: "Transactions on the Flare Network"
+        columns:
+          - *blockchain
+          - *block_time
+          - *block_number
+          - *tx_hash
+          - *tx_index
+          - *tx_from
+          - *tx_to
+          - *tx_success
+          - *tx_gas_used
+          - *tx_gas_limit
+          - *tx_gas_price
+          - *tx_nonce
+          - *tx_value
+          - *tx_input
+          - *tx_type
+          - *max_fee_per_gas
+          - *max_priority_fee_per_gas
+          - *priority_fee_per_gas
+
+      - name: traces
+        loaded_at_field: block_time
+        description: "Traces of transactions on the Flare Network"
+        columns:
+          - *blockchain
+          - *block_time
+          - *block_number
+          - *tx_hash
+          - *tx_index
+          - *tx_from
+          - *tx_to
+          - *tx_success
+          - *tx_gas_used
+          - *tx_gas_limit
+          - *tx_value
+          - *tx_input
+          - *trace_index
+          - *trace_address
+          - *trace_type
+          - *trace_status
+          - *trace_error
+          - *trace_output
+          - *sub_traces
+
+      - name: logs
+        loaded_at_field: block_time
+        description: "Logs of transactions on the Flare Network"
+        columns:
+          - *blockchain
+          - *block_time
+          - *block_number
+          - *tx_hash
+          - *tx_index
+          - *log_index
+          - *contract_address
+          - *topic0
+          - *topic1
+          - *topic2
+          - *topic3
+          - *data
