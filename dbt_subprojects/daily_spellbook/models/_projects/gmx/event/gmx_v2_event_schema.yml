@@ -1178,3 +1178,76 @@ models:
       - name: tx_index
         description: The index value related to the transaction, used for unique identification.
 
+
+  - name: gmx_v2_execution_fee_refund
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'event', 'execution_fee_refund']
+    description: |
+      Processes decoded event data for `ExecutionFeeRefund` events on the GMX platform in the Arbitrum and Avalanche blockchains.
+      This model extracts key details such as the refund amount, receiver, and transaction details to 
+      enable analysis of refunded execution fees.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: tx_from
+        description: The address that initiated the transaction.
+      - name: tx_to
+        description: The destination address of the transaction.
+      - name: event_name
+        description: The type of event recorded, always `ExecutionFeeRefund` for this model.
+        data_tests:
+          - not_null
+      - *msg_sender
+      - name: receiver
+        description: The address that received the refunded execution fee.
+      - name: refund_fee_amount
+        description: The amount of the refunded execution fee, denominated in the native token of the blockchain (e.g., ETH).
+
+
+  - name: gmx_v2_keeper_execution_fee
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'event', 'keeper_execution_fee']
+    description: |
+      Processes decoded event data for `KeeperExecutionFee` events on the GMX platform in the Arbitrum and Avalanche blockchains.
+      This model extracts key details such as the keeper's address, execution fee amount, and transaction details, enabling
+      analysis of fees associated with keeper-based executions.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: tx_from
+        description: The address that initiated the transaction.
+      - name: tx_to
+        description: The destination address of the transaction.
+      - name: event_name
+        description: The type of event recorded, always `KeeperExecutionFee` for this model.
+        data_tests:
+          - not_null
+      - *msg_sender
+      - name: keeper
+        description: The address of the keeper responsible for executing the transaction.
+      - name: execution_fee_amount
+        description: The amount of the execution fee, denominated in the native token of the blockchain (e.g., ETH, AVAX).
+
+
