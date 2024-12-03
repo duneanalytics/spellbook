@@ -11,13 +11,13 @@
 WITH token_swaps AS (
     SELECT
         evt_block_number AS block_number,
-        evt_block_time AS block_time,
+        CAST(evt_block_time AS timestamp(3) with time zone) AS block_time,
         evt_tx_from AS maker,
         evt_tx_to AS taker,
         tokensSold AS token_sold_amount_raw,
         tokensBought AS token_bought_amount_raw,
-        soldId AS token_sold_address,
-        boughtId AS token_bought_address,
+        CAST(soldId AS varbinary) AS token_sold_address,
+        CAST(boughtId AS varbinary) AS token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         evt_index AS evt_index
