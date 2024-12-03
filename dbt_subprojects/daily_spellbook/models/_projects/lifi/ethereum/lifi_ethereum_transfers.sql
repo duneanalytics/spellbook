@@ -13,15 +13,26 @@ with source_data as (
     {{ lifi_extract_bridge_data('ethereum') }}
 ),
 
+tokens_mapped as (
+    select
+        *,
+        case
+            when sendingAssetId = '0x0000000000000000000000000000000000000000'
+            then '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2' -- WETH
+            else sendingAssetId
+        end as sending_asset_price_address
+    from source_data
+),
+
 price_data as (
     select 
-        source_data.*,
-        p.price * cast(source_data.minAmount as double) / power(10, p.decimals) as amount_usd
-    from source_data
+        tokens_mapped.*,
+        p.price * cast(tokens_mapped.minAmount as double) / power(10, p.decimals) as amount_usd
+    from tokens_mapped
     left join {{ source('prices', 'usd') }} p 
-        on cast(p.contract_address as varchar) = source_data.sendingAssetId
+        on cast(p.contract_address as varchar) = tokens_mapped.sending_asset_price_address
         and p.blockchain = 'ethereum'
-        and p.minute = date_trunc('minute', source_data.block_time)
+        and p.minute = date_trunc('minute', tokens_mapped.block_time)
 )
 
 {{
