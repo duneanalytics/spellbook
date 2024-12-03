@@ -41,16 +41,14 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('aerodrome_base_base_trades_seed')
-
-
   - name: stablebase_base_base_trades
     meta:
       blockchain: base
       sector: dex
       project: stablebase
-      contributors: Princi
+      contributors: principatel
     config:
-      tags: ['base', 'dex', 'trades', 'stablebase']
+      tags: [ 'base', 'dex', 'trades', 'stablebase' ]
     description: stablebase base trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -59,6 +57,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('stablebase_base_base_trades_seed')
+
+
 
 
 
