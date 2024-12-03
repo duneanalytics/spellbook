@@ -130,7 +130,7 @@ select distinct
     fee_token_amount / power(10, decimals) * price as fee_usd,
     fee_token_amount / power(10, decimals) as fee_token_amount,
     symbol as fee_token_symbol,
-    cast(coalesce(fee_token_address, {{wavax_contract_address}}) as varchar) as fee_token_address,
+    coalesce(fee_token_address, {{wavax_contract_address}}) as fee_token_address,
     -- Dex
     project,
     version,
