@@ -16,7 +16,7 @@
 {% set evm_trading_bots = [
     ref('banana_gun_ethereum_bot_trades')
     ,ref('banana_gun_base_bot_trades')
-    ,ref('readyswap_ethereum_trades_seed')
+
 ] %}
 
 {% for bot in evm_trading_bots %}
