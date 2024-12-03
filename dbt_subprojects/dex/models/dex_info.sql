@@ -12,7 +12,6 @@ SELECT project, name, marketplace_type, x_username
 FROM (VALUES
     	('uniswap', 'Uniswap', 'Direct', 'Uniswap')
     , ('pancakeswap', 'PancakeSwap', 'Direct', 'PancakeSwap')
-    , ('stablebase', 'Stablebase', 'Direct', 'stablebase_org')
     , ('curve', 'Curve', 'Direct', 'CurveFinance')
     , ('sushiswap', 'SushiSwap', 'Direct', 'SushiSwap')
     , ('mdex', 'Mdex', 'Direct', 'Mdextech')
@@ -186,4 +185,5 @@ FROM (VALUES
     , ('kaia_swap', 'KaiaSwap', 'Direct', 'KaiaSwap')
     , ('defi_kingdoms', 'DeFi Kingdoms', 'Direct', 'DeFiKingdoms')
     , ('hyperjump', 'HyperJump', 'Direct', 'Hyperjump_fi')
+    , ('stablebase', 'Stablebase', 'Direct', 'stablebasefi')
     ) AS temp_table (project, name, marketplace_type, x_username)
