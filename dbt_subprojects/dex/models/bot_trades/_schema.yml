@@ -150,6 +150,25 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('pepeboost_ethereum_trades_seed')
 
+  - name: readyswap_ethereum_bot_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: readyswap
+      contributors: whale_hunter
+    config:
+      tags: ["evm", "dex", "readyswap", "trades"]
+    description: >
+      ReadySwap trades on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+      - check_bot_trades_seed:
+          seed_file: ref('readyswap_ethereum_trades_seed')
+          
   - name: flokibot_ethereum_bot_trades
     meta:
       blockchain: ethereum
