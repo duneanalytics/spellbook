@@ -20,7 +20,6 @@
     , 'mantle'
     , 'optimism'
     , 'polygon'
-    , 'ronin'
     , 'scroll'
     , 'sei'
     , 'solana'
