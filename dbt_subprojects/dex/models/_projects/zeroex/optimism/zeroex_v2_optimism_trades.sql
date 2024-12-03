@@ -1,5 +1,5 @@
 {{  config(
-    schema = 'zeroex_v2_ethereum',
+    schema = 'zeroex_v2_optimism',
     alias = 'trades',
     materialized='incremental',
     partition_by = ['block_month'],
@@ -11,7 +11,7 @@
 )}}
 
 {% set zeroex_settler_start_date = '2024-07-15' %}
-{% set blockchain = 'ethereum' %}
+{% set blockchain = 'optimism' %}
 
 WITH zeroex_tx AS (
     {{
@@ -68,3 +68,4 @@ select
     t.*, fills_within 
  from trade_details t 
     left join fills_count f on t.tx_hash = f.tx_hash and t.block_time = f.block_time 
+    
