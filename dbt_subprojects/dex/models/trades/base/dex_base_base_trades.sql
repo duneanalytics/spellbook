@@ -51,6 +51,7 @@
     , ref('swaap_v2_base_base_trades')
     , ref('xchange_base_base_trades')
     , ref('flashliquidity_base_base_trades')
+    , ref('akronswap_base_base_trades')
 ] %}
 
 WITH base_union AS (

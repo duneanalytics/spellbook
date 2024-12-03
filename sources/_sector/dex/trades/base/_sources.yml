@@ -190,3 +190,7 @@ sources:
     tables:
       - name: FlashLiquidityPair_evt_Swap
       - name: FlashLiquidityFactory_evt_PairCreated
+  - name: akronswap_base
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
