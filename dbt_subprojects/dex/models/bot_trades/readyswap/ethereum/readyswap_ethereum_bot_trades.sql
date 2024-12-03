@@ -73,6 +73,7 @@ with
             {% if is_incremental() %} and {{ incremental_predicate('block_time') }}
             {% else %} and block_time >= timestamp '{{project_start_date}}'
             {% endif %} 
+        group by tx_hash
     ),
     bot_eth_deposits as (
         select
@@ -85,6 +86,7 @@ with
             {% else %} block_time >= timestamp '{{project_start_date}}'
             {% endif %} 
             and value > 0
+        group by tx_hash
     ),
     bot_deposits_and_fee_payments as (
         select 
