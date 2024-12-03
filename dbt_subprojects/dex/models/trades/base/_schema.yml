@@ -50,7 +50,7 @@ models:
       project: stablebase
       contributors: Princi
     config:
-      tags: [ 'base', 'dex', 'trades', 'stablebase' ]
+      tags: ['base', 'dex', 'trades', 'stablebase']
     description: stablebase base trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -59,6 +59,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('stablebase_base_base_trades_seed')
+
+
 
 
   - name: sushiswap_v1_base_base_trades
