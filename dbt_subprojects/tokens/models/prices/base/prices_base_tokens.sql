@@ -191,6 +191,7 @@ FROM
     ('tad1-tadpole', 'base', 'TAD',0x55027a5b06f4340cc4c82dcc74c90ca93dcb173e, 18),
     ('blue-blue-guy', 'base', 'BLUE',0x891502ba08132653151f822a3a430198f1844115, 18),
     ('alb-alienbase', 'base', 'ALB',0x1dd2d631c92b1acdfcdd51a0f7145a50130050c4, 18),
+    ('clark-coinbase-mascot','base','CLARK',0x5f7373Fa845692b1dD7bfaE576D6c743482bf26a, 18),
     ('gyd-gyro-dollar','base','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 18),
     ('virtual-virtual-protocol', 'base', 'VIRTUAL', 0x0b3e328455c4059EEb9e3f84b5543F74E24e7E1b, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
