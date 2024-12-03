@@ -1,5 +1,5 @@
 {{  config(
-    schema = 'zeroex_v2_ethereum',
+    schema = 'zeroex_v2_mantle',
     alias = 'trades',
     materialized='incremental',
     partition_by = ['block_month'],
@@ -11,7 +11,7 @@
 )}}
 
 {% set zeroex_settler_start_date = '2024-07-15' %}
-{% set blockchain = 'ethereum' %}
+{% set blockchain = 'mantle' %}
 
 WITH zeroex_tx AS (
     {{

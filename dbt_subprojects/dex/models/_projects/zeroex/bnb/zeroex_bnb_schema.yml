@@ -197,7 +197,7 @@ models:
         name: protocol_fee_paid_eth
         description: "The protocol fee paid in ETH"
 
-  - name: zeroex_bnb_settler_trades 
+  - name: zeroex_v2_bnb_trades 
     meta:
       blockchain: bnb
       project: zeroex
@@ -205,7 +205,7 @@ models:
     config:
       tags: ['bnb','0x','dex_aggregator','dex','aggregator']
     description: >
-        0x API erc20 trades through 0x Settler contracts. No fills, only deduped transactions.
+        0x API erc20 trades through 0x v2 contracts. No fills, only deduped transactions.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
