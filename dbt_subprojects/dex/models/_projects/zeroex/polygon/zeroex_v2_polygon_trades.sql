@@ -46,14 +46,6 @@ tbl_trades AS (
     SELECT *
     FROM zeroex_v2_trades_indirect
 ),
-fills_count as(
-    {{
-        zeroex_v2_trades_fills_count(
-            blockchain = blockchain,
-            start_date = zeroex_settler_start_date
-        )   
-    }}
-),
 trade_details as (
     {{
         zeroex_v2_trades_detail(
@@ -65,6 +57,5 @@ trade_details as (
 
 )
 select 
-    t.*, fills_within 
- from trade_details t 
-    left join fills_count f on t.tx_hash = f.tx_hash and t.block_time = f.block_time 
+    *
+ from trade_details 
