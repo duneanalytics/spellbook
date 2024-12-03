@@ -62,52 +62,37 @@ with
         from bot_trades
         group by tx_hash
     ),
+    fee_payments as (
+        select
+            tx_hash,
+            sum(value) as fee_gwei
+        from {{ source('ethereum', 'traces') }}
+        where
+            to = {{ fee_wallet_1 }}
+            and value > 0
+            {% if is_incremental() %} and {{ incremental_predicate('block_time') }}
+            {% else %} and block_time >= timestamp '{{project_start_date}}'
+            {% endif %} 
+    ),
     bot_eth_deposits as (
         select
             tx_hash,
-            block_number,
-            cast(value as decimal(38, 0)) as delta_gwei,
-            cast(value as decimal(38, 0)) as deposit_gwei
+            sum(value) as deposit_gwei
         from {{ source('ethereum', 'traces') }}
         join bot_contracts on to = bot_contracts.address
         where
             {% if is_incremental() %} {{ incremental_predicate('block_time') }}
             {% else %} block_time >= timestamp '{{project_start_date}}'
-            {% endif %} and value > 0
+            {% endif %} 
+            and value > 0
     ),
-    bot_eth_withdrawals as (
-        select
-            tx_hash,
-            block_number,
-            cast(value as decimal(38, 0)) * -1 as delta_gwei,
-            0 as deposit_gwei,
-            block_hash,
-            to
-        from {{ source('ethereum', 'traces') }}
-        join bot_contracts on "from" = bot_contracts.address
-        where
-            {% if is_incremental() %} {{ incremental_predicate('block_time') }}
-            {% else %} block_time >= timestamp '{{project_start_date}}'
-            {% endif %} and value > 0
-    ),
-    botethtransfers as (
-        /* Deposits */
-        (select tx_hash, block_number, delta_gwei, deposit_gwei from bot_eth_deposits)
-        union all
-        /* Withdrawals */
-        (
-            select tx_hash, block_number, delta_gwei, deposit_gwei
-            from bot_eth_withdrawals
-        )
-    ),
-    bot_eth_deltas as (
-        select
-            tx_hash,
-            block_number,
-            sum(delta_gwei) as fee_gwei,
-            sum(deposit_gwei) as deposit_gwei
-        from botethtransfers
-        group by tx_hash, block_number
+    bot_deposits_and_fee_payments as (
+        select 
+            coalesce(bot_eth_deposits.tx_hash, fee_payments.tx_hash) as tx_hash,
+            coalesce(fee_gwei, cast(0 AS UINT256)) as fee_gwei,
+            coalesce(deposit_gwei, cast(0 AS UINT256)) as deposit_gwei
+        from fee_payments
+        full outer join bot_eth_deposits on fee_payments.tx_hash = bot_eth_deposits.tx_hash
     )
 select
     block_time,
@@ -148,7 +133,7 @@ from bot_trades
 join
     highest_event_index_for_each_trade
     on bot_trades.tx_hash = highest_event_index_for_each_trade.tx_hash
-left join bot_eth_deltas on bot_trades.tx_hash = bot_eth_deltas.tx_hash
+left join bot_deposits_and_fee_payments on bot_trades.tx_hash = bot_deposits_and_fee_payments.tx_hash
 left join
     {{ source('prices', 'usd') }}
     on (
