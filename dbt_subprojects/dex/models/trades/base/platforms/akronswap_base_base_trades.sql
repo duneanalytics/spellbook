@@ -13,7 +13,7 @@
 {{
     uniswap_compatible_v2_trades(
         blockchain = 'base',
-        project = 'akronswap_base',
+        project = 'akronswap',
         version = '2',
         Pair_evt_Swap = source('akronswap_base', 'UniswapV2Pair_evt_Swap'),
         Factory_evt_PairCreated = source('akronswap_base', 'UniswapV2Factory_evt_PairCreated')
