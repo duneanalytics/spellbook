@@ -997,6 +997,23 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('xchange_base_base_trades_seed')
 
+  - name: flashliquidity_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: flashliquidity
+      contributors: archie
+    config:
+      tags: [ 'base', 'dex', 'trades', 'flashliquidity' ]
+    description: "flashliquidity base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('flashliquidity_base_base_trades_seed')
+          
   - name: akronswap_base_base_trades
     meta:
       blockchain: base
