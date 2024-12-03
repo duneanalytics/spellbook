@@ -154,7 +154,7 @@ models:
     meta:
       blockchain: ethereum
       sector: dex
-      project: pepeboost
+      project: readyswap
       contributors: whale_hunter
     config:
       tags: ["evm", "dex", "readyswap", "trades"]
