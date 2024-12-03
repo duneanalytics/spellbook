@@ -136,5 +136,6 @@ FROM
     ('pendle-pendle', 'PENDLE',0xbc7b1ff1c6989f006a1185318ed4e7b5796e66e1, 18),
     ('trb-tellor', 'TRB', 0xaf8ca653fa2772d58f4368b0a71980e9e3ceb888, 18),
     ('dtoro-dextoro', 'DTORO', 0x1cef2d62af4cd26673c7416957cc4ec619a696a7, 18),
-    ('osak-osaka-protocol', 'OSAK', 0xbfd5206962267c7b4b4a8b3d76ac2e1b2a5c4d5e, 18)
+    ('osak-osaka-protocol', 'OSAK', 0xbfd5206962267c7b4b4a8b3d76ac2e1b2a5c4d5e, 18),
+    ('gyd-gyro-dollar','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
