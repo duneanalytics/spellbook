@@ -168,3 +168,60 @@ models:
             - evt_index
       - check_bot_trades_seed:
           seed_file: ref('readyswap_ethereum_trades_seed')
+          
+  - name: flokibot_ethereum_bot_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: flokibot
+      contributors: whale_hunter
+    config:
+      tags: ["evm", "dex", "flokibot", "trades"]
+    description: >
+      Flokibot trades on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+      - check_bot_trades_seed:
+          seed_file: ref('flokibot_ethereum_trades_seed')
+
+  - name: flokibot_base_bot_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: flokibot
+      contributors: whale_hunter
+    config:
+      tags: ["evm", "dex", "flokibot", "trades"]
+    description: >
+      Flokibot trades on Base
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+      - check_bot_trades_seed:
+          seed_file: ref('flokibot_base_trades_seed')
+
+  - name: flokibot_bnb_bot_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: flokibot
+      contributors: whale_hunter
+    config:
+      tags: ["evm", "dex", "flokibot", "trades"]
+    description: >
+      Flokibot trades on BNB
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+      - check_bot_trades_seed:
+          seed_file: ref('flokibot_bnb_trades_seed')
