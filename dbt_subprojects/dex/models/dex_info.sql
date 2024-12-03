@@ -185,5 +185,5 @@ FROM (VALUES
     , ('kaia_swap', 'KaiaSwap', 'Direct', 'KaiaSwap')
     , ('defi_kingdoms', 'DeFi Kingdoms', 'Direct', 'DeFiKingdoms')
     , ('hyperjump', 'HyperJump', 'Direct', 'Hyperjump_fi')
-    , ('stablebase', 'Stablebase', 'Direct', 'stablebasefi')
+    , ('stablebase', 'StableBase', 'Direct', 'stablebasefi')
     ) AS temp_table (project, name, marketplace_type, x_username)
