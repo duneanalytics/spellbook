@@ -13,7 +13,7 @@
 {{
     uniswap_compatible_v2_trades(
         blockchain = 'base',
-        project = 'flashliquidity_base',
+        project = 'flashliquidity',
         version = '1',
         Pair_evt_Swap = source('flashliquidity_base', 'FlashLiquidityPair_evt_Swap'),
         Factory_evt_PairCreated = source('flashliquidity_base', 'FlashLiquidityFactory_evt_PairCreated')
