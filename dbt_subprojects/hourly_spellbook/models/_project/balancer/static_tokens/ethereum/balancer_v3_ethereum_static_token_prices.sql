@@ -1,6 +1,6 @@
 {{ config(
         schema = 'balancer_v3_ethereum',
-        alias = 'aave_static_token_prices',
+        alias = 'static_token_prices',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -58,5 +58,5 @@ SELECT
     APPROX_PERCENTILE(adjusted_price, 0.5) AS median_price,
     LEAD(DATE_TRUNC('day', p.evt_block_time), 1, NOW()) OVER (PARTITION BY p.underlyingToken ORDER BY p.evt_block_time) AS next_change
 FROM price_join p
-JOIN {{ref('balancer_v3_ethereum_aave_static_token_mapping')}} m ON m.underlying_token = p.underlyingToken
+JOIN {{ref('balancer_v3_ethereum_static_token_mapping')}} m ON m.underlying_token = p.underlyingToken
 GROUP BY 1, 2, 3, 4, 5, 6

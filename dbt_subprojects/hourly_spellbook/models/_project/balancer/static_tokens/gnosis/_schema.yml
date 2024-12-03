@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: balancer_v3_gnosis_aave_static_token_mapping
+  - name: balancer_v3_gnosis_static_token_mapping
     meta:
       blockchain: gnosis
       project: balancer
@@ -34,7 +34,7 @@ models:
       - name: underlying_token_decimals
         description: "Decimal precision of the underlying token."
 
-  - name: balancer_v3_gnosis_aave_static_token_pricing
+  - name: balancer_v3_gnosis_static_token_pricing
     meta:
       blockchain: gnosis
       project: balancer

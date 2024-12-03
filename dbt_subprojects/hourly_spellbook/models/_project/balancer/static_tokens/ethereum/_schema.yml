@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: balancer_v3_ethereum_aave_static_token_mapping
+  - name: balancer_v3_ethereum_static_token_mapping
     meta:
       blockchain: ethereum
       project: balancer
@@ -17,10 +17,6 @@ models:
     columns:
       - name: blockchain
         description: "Blockchain."    
-      - name: atoken
-        description: "Contract address of the aToken on Ethereum."
-      - name: atoken_symbol
-        description: "Symbol of the aToken."
       - name: static_atoken
         description: "Contract address of the staticAToken."
       - name: static_atoken_name
@@ -34,7 +30,7 @@ models:
       - name: underlying_token_decimals
         description: "Decimal precision of the underlying token."
 
-  - name: balancer_v3_ethereum_aave_static_token_pricing
+  - name: balancer_v3_ethereum_static_token_pricing
     meta:
       blockchain: ethereum
       project: balancer

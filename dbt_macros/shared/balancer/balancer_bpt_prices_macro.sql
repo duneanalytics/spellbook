@@ -402,7 +402,7 @@ WITH pool_labels AS (
             decimals,
             APPROX_PERCENTILE(median_price, 0.5) AS price,
             next_change
-        FROM {{ ref('balancer_aave_static_token_prices') }}
+        FROM {{ ref('balancer__static_token_prices') }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
