@@ -24,7 +24,7 @@
 {% set deployer_7 = "0xc8378819fbB95130c34D62f520167F745B13C305" %}
 {% set wmatic_contract_address = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270' %}
 {% set usdc_contract_address = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359' %}
-{% set usdt_contract_address = '0xdac17f958d2ee523a2206206994597c13d831ec7' %}
+{% set usdt_contract_address = '0xc2132d05d31c914a87c6611c10748aeb04b58e8f' %}
 {% set fee_recipient_1 = '0x415EEc63c95e944D544b3088bc682B759edB8548' %}
 {% set fee_recipient_2 = '0xe1ff5a4c489b11e094bfbb5d23c6d4597a3a79ad' %}
 

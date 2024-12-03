@@ -24,6 +24,7 @@
 {% set deployer_7 = "0xc8378819fbB95130c34D62f520167F745B13C305" %}
 {% set weth_contract_address = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" %}
 {% set usdc_contract_address = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48" %}
+{% set usdt_contract_address = "0xdac17f958d2ee523a2206206994597c13d831ec7" %}
 {% set fee_recipient_1 = "0x415EEc63c95e944D544b3088bc682B759edB8548" %}
 {% set fee_recipient_2 = "0xe1ff5a4c489b11e094bfbb5d23c6d4597a3a79ad" %}
 
@@ -90,6 +91,7 @@ with
             and (
                 contract_address = {{ weth_contract_address }}
                 or contract_address = {{ usdc_contract_address }}
+                or contract_address = {{ usdt_contract_address }}
             )
             {% if is_incremental() %}
             and {{ incremental_predicate('evt_block_time') }}
