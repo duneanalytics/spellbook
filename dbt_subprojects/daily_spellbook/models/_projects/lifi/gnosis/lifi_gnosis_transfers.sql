@@ -20,7 +20,7 @@ tokens_mapped as (
             when sendingAssetId = '0x0000000000000000000000000000000000000000'
             then '0xe91d153e0b41518a2ce8dd3d7944fa863463a97d' -- WXDAI
             else sendingAssetId
-        end as sending_asset_price_address
+        end as sendingAssetId_adjusted
     from source_data
 ),
 
@@ -30,7 +30,7 @@ price_data as (
         p.price * cast(tokens_mapped.minAmount as double) / power(10, p.decimals) as amount_usd
     from tokens_mapped
     left join {{ source('prices', 'usd') }} p 
-        on cast(p.contract_address as varchar) = tokens_mapped.sending_asset_price_address
+        on cast(p.contract_address as varchar) = tokens_mapped.sendingAssetId_adjusted
         and p.blockchain = 'gnosis'
         and p.minute = date_trunc('minute', tokens_mapped.block_time)
 )

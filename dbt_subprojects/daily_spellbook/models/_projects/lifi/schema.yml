@@ -32,8 +32,6 @@ models:
         description: "Target chain ID for the transfer"
       - name: source_chain
         description: "Source blockchain"
-      - name: tx_from
-        description: "Address that initiated the transaction"
       - name: transfer_id
         description: "Unique identifier for each transfer"
         data_tests:
@@ -41,6 +39,10 @@ models:
           - not_null
       - name: amount_usd
         description: "USD value of the transfer amount at the time of transfer"
+      - name: sendingAssetId_adjusted
+        description: "Sending asset address adjusted for native token price lookup"
+      - name: tx_from
+        description: "Address that initiated the transaction"
 
   - name: lifi_arbitrum_transfers
     description: "Arbitrum LiFi transfer events"

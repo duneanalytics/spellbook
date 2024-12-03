@@ -36,6 +36,7 @@ with chain_transfers as (
         destinationChainId,
         source_chain,
         transfer_id,
+        sendingAssetId_adjusted,
         amount_usd,
         tx_from
     from {{ ref('lifi_' ~ chain ~ '_transfers') }}
