@@ -65,6 +65,7 @@ with
     fee_payments as (
         select
             tx_hash,
+            block_number,
             sum(value) as fee_gwei
         from {{ source('ethereum', 'traces') }}
         where
@@ -73,11 +74,12 @@ with
             {% if is_incremental() %} and {{ incremental_predicate('block_time') }}
             {% else %} and block_time >= timestamp '{{project_start_date}}'
             {% endif %} 
-        group by tx_hash
+        group by tx_hash, block_number
     ),
     bot_eth_deposits as (
         select
             tx_hash,
+            block_number,
             sum(value) as deposit_gwei
         from {{ source('ethereum', 'traces') }}
         join bot_contracts on to = bot_contracts.address
@@ -86,11 +88,12 @@ with
             {% else %} block_time >= timestamp '{{project_start_date}}'
             {% endif %} 
             and value > 0
-        group by tx_hash
+        group by tx_hash, block_number
     ),
     bot_deposits_and_fee_payments as (
         select 
             coalesce(bot_eth_deposits.tx_hash, fee_payments.tx_hash) as tx_hash,
+            coalesce(bot_eth_deposits.block_number, fee_payments.block_number) as block_number,
             coalesce(fee_gwei, cast(0 AS UINT256)) as fee_gwei,
             coalesce(deposit_gwei, cast(0 AS UINT256)) as deposit_gwei
         from fee_payments
