@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: flare
       sector: prices
-      contributors: hosuke
+      contributors: hosuke, yakufff
     config:
       tags: ['prices', 'tokens', 'usd', 'flare']
     description: "Price tokens on Flare Network EVM chain"
