@@ -1012,7 +1012,7 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-        seed_file: ref('infusion_base_base_trades_seed')
+          seed_file: ref('infusion_base_base_trades_seed')
 
   - name: flashliquidity_base_base_trades
     meta:
