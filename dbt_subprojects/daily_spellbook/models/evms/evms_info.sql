@@ -12,6 +12,7 @@
                                         , "celo"
                                         , "ethereum"
                                         , "fantom"
+                                        , "flare"
                                         , "gnosis"
                                         , "kaia"
                                         , "linea"
@@ -91,4 +92,5 @@ FROM (
         , (5000, 'mantle', 'Mantle', 'Layer 2', 'Optimistic Rollup', 'MNT', 0x78c1b0c915c4faa5fffa6cabf0219da63d7f4cb8, 'https://mantlescan.xyz/', timestamp '2023-07-02 18:21', 'Optimistic Virtual Machine', 'Ethereum', 'Ethereum', true)
         , (42170, 'nova', 'Arbitrum Nova', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x722e8bdd2ce80a4422e880164f2079488e115365, 'https://nova-explorer.arbitrum.io/', timestamp '2022-06-25 04:01', 'Arbitrum', 'Ethereum', 'Ethereum', true)
         , (2020, 'ronin', 'Ronin', 'Layer 1', null, 'RON', 0xe514d9deb7966c8be0ca922de8a064264ea6bcd4, 'https://app.roninchain.com/', timestamp '2021-01-25 10:49', NULL, NULL, NULL, true)
+        , (14, 'flare', 'Flare', 'Layer 1', NULL, 'FLR', NULL, 'https://flare-explorer.flare.network/', timestamp '2022-07-13 15:32', NULL, NULL, NULL, true)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune)
