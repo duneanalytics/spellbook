@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  # flare Tables
+  # Flare Tables
   - name: flare
     description: "raw tables for the chain"
 
@@ -13,107 +13,530 @@ sources:
         description: '{{ doc("flare_transactions_doc") }}'
 
         columns:
-          - &block_date
-            name: block_date
-            description: "The UTC date of the block in which this transaction was included"
-          - &block_time
-            name: block_time
-            description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
-          - &block_number
-            name: block_number
-            description: "The number of the block containing this transaction"
-          - &block_hash
-            name: block_hash
-            description: "The hash of the block containing this transaction"
-          - name: index
-            description: "The index position of the transaction within its block"
-          - name: hash
-            description: "The transaction hash"
-          - name: from
-            description: "The sending address"
-          - name: to
-            description: "The receiving address"
+          - name: block_time
+            description: "The exact UTC timestamp when this transaction was included"
+            data_type: timestamp
+          - name: block_number
+            description: "The sequential number of the block containing this transaction"
+            data_type: bigint
           - name: value
-            description: "The value transferred in wei"
+            description: "Amount of native tokens transferred in this transaction"
+            data_type: uint256
           - name: gas_limit
-            description: "The maximum amount of gas units that can be consumed by the transaction"
+            description: "Maximum amount of gas that can be used by this transaction"
+            data_type: bigint
           - name: gas_price
-            description: "The price per unit of gas in wei"
+            description: "Price per unit of gas specified by the sender"
+            data_type: uint256
           - name: gas_used
-            description: "The actual amount of gas used for the transaction"
+            description: "Amount of gas used by this transaction"
+            data_type: bigint
+          - name: max_fee_per_gas
+            description: "Maximum total fee per unit of gas (EIP-1559)"
+            data_type: bigint
+          - name: max_priority_fee_per_gas
+            description: "Maximum priority fee per unit of gas (EIP-1559)"
+            data_type: bigint
+          - name: priority_fee_per_gas
+            description: "Actual priority fee per unit of gas (EIP-1559)"
+            data_type: bigint
           - name: nonce
-            description: "The number of transactions sent from this address before this one"
+            description: "Number of transactions sent by the sender prior to this one"
+            data_type: bigint
+          - name: index
+            description: "Index of this transaction within the block"
+            data_type: bigint
           - name: success
-            description: "Whether the transaction was successful (1) or failed (0)"
+            description: "Whether the transaction was successful"
+            data_type: boolean
+          - name: from
+            description: "Address that sent the transaction"
+            data_type: varbinary
+          - name: to
+            description: "Address that received the transaction"
+            data_type: varbinary
+          - name: block_hash
+            description: "Hash of the block containing this transaction"
+            data_type: varbinary
+          - name: data
+            description: "Data payload of the transaction"
+            data_type: varbinary
+          - name: hash
+            description: "Unique identifier (hash) of this transaction"
+            data_type: varbinary
+          - name: type
+            description: "Transaction type (0 = legacy, 1 = access list, 2 = EIP-1559)"
+            data_type: varchar
+          - name: access_list
+            description: "List of addresses and storage keys that the transaction plans to access"
+            data_type: array(row(address varbinary,storageKeys array(varbinary)))
+          - name: block_date
+            description: "UTC date of the block containing this transaction"
+            data_type: date
 
       - name: traces
         meta:
           docs_slug: /evm/flare/raw/traces
-          short_description: The traces table contains information about traces on the network.
+          short_description: The `flare.traces` table contains all transaction traces on the flare blockchain.
         description: '{{ doc("flare_traces_doc") }}'
-
         columns:
-          - *block_number
-          - *block_time
-          - name: tx_hash
-            description: "The hash of the transaction this trace belongs to"
-          - name: from
-            description: "Address where the trace call originated from"
-          - name: to
-            description: "Address where the trace call was made to"
+          - name: block_time
+            description: "The exact UTC timestamp when this trace was created"
+            data_type: timestamp
+          - name: block_number
+            description: "The sequential number of the block containing this trace"
+            data_type: bigint
           - name: value
-            description: "Value transferred in the trace in wei"
+            description: "Amount of native tokens transferred in this trace"
+            data_type: uint256
           - name: gas
-            description: "Gas provided for the trace call"
-          - name: input
-            description: "The data sent along with the trace call"
-          - name: output
-            description: "The data returned from the trace call"
-          - name: type
-            description: "The type of trace (call, create, suicide, reward)"
+            description: "Gas limit for this trace"
+            data_type: bigint
+          - name: gas_used
+            description: "Amount of gas used by this trace"
+            data_type: bigint
+          - name: block_hash
+            description: "Hash of the block containing this trace"
+            data_type: varbinary
+          - name: success
+            description: "Whether this trace was successful"
+            data_type: boolean
+          - name: tx_index
+            description: "Index of the transaction within the block"
+            data_type: integer
+          - name: tx_from
+            description: "Address that sent the transaction"
+            data_type: varbinary
+          - name: tx_to
+            description: "Address that received the transaction"
+            data_type: varbinary
+          - name: sub_traces
+            description: "Number of sub-traces"
+            data_type: bigint
           - name: error
             description: "Error message if the trace failed"
+            data_type: varchar
+          - name: tx_success
+            description: "Whether the parent transaction was successful"
+            data_type: boolean
+          - name: tx_hash
+            description: "Hash of the transaction"
+            data_type: varbinary
+          - name: from
+            description: "Address initiating this trace"
+            data_type: varbinary
+          - name: to
+            description: "Address receiving this trace"
+            data_type: varbinary
+          - name: trace_address
+            description: "Array indicating the position in the call trace tree"
+            data_type: array(bigint)
+          - name: type
+            description: "Type of the trace (call, create, suicide, reward)"
+            data_type: varchar
+          - name: address
+            description: "Address of the contract if this is a create trace"
+            data_type: varbinary
+          - name: code
+            description: "Contract code for create traces"
+            data_type: varbinary
+          - name: call_type
+            description: "Type of call (call, delegatecall, staticcall)"
+            data_type: varchar
+          - name: input
+            description: "Input data for the trace"
+            data_type: varbinary
+          - name: output
+            description: "Output data from the trace"
+            data_type: varbinary
+          - name: refund_address
+            description: "Address receiving refund for self-destruct"
+            data_type: varbinary
+          - name: revert_reason
+            description: "Reason for revert if the trace failed"
+            data_type: varchar
+          - name: block_date
+            description: "UTC date of the block containing this trace"
+            data_type: date
+
+      - name: traces_decoded
+        meta:
+          docs_slug: /evm/flare/raw/traces_decoded
+          short_description: The `flare.traces_decoded` table contains decoded traces from known contracts on the flare blockchain.
+        description: '{{ doc("flare_traces_decoded_doc") }}'
+        columns:
+          - name: block_date
+            description: "UTC date of the block containing this trace"
+            data_type: date
+          - name: block_time
+            description: "The exact UTC timestamp when this trace was created"
+            data_type: timestamp
+          - name: block_number
+            description: "The sequential number of the block containing this trace"
+            data_type: bigint
+          - name: namespace
+            description: "Project namespace for the contract"
+            data_type: varchar
+          - name: contract_name
+            description: "Name of the contract"
+            data_type: varchar
+          - name: to
+            description: "Address receiving this trace"
+            data_type: varbinary
+          - name: trace_address
+            description: "Array indicating the position in the call trace tree"
+            data_type: array(bigint)
+          - name: tx_hash
+            description: "Hash of the transaction"
+            data_type: varbinary
+          - name: tx_from
+            description: "Address that sent the transaction"
+            data_type: varbinary
+          - name: tx_to
+            description: "Address that received the transaction"
+            data_type: varbinary
+          - name: signature
+            description: "Function signature hash"
+            data_type: varbinary
+          - name: function_name
+            description: "Name of the called function"
+            data_type: varchar
+
+      - name: creation_traces
+        meta:
+          docs_slug: /evm/flare/raw/creation_traces
+          short_description: The creation_traces table contains information about contract creation events.
+        description: '{{ doc("flare_creation_traces_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this creation was added to the chain"
+            data_type: timestamp
+          - name: block_number
+            description: "The sequential number of the block containing this creation"
+            data_type: bigint
+          - name: tx_hash
+            description: "Unique 256-bit identifier (hash) of the transaction"
+            data_type: varbinary
+          - name: address
+            description: "Address of the deployed contract"
+            data_type: varbinary
+          - name: from
+            description: "Address of the account that created the contract"
+            data_type: varbinary
+          - name: code
+            description: "Bytecode of the deployed contract"
+            data_type: varbinary
+          - name: block_month
+            description: "The month of the block date"
+            data_type: date
 
       - name: logs
         meta:
           docs_slug: /evm/flare/raw/logs
-          short_description: The `flare.logs` table contains information about event logs emitted by smart contracts on the flare blockchain.
+          short_description: The `flare.logs` table contains all event logs emitted by contracts on the flare blockchain.
         description: '{{ doc("flare_logs_doc") }}'
-
         columns:
-          - *block_number
-          - *block_time
-          - name: tx_hash
-            description: "The hash of the transaction that emitted this log"
+          - name: block_time
+            description: "The exact UTC timestamp when this log was emitted"
+            data_type: timestamp
+          - name: block_number
+            description: "The sequential number of the block containing this log"
+            data_type: bigint
+          - name: block_hash
+            description: "Hash of the block containing this log"
+            data_type: varbinary
           - name: contract_address
-            description: "The address of the contract that emitted this log"
+            description: "Address of the contract that emitted this log"
+            data_type: varbinary
           - name: topic0
-            description: "The first topic (typically the event signature)"
+            description: "First topic of the log (typically the event signature)"
+            data_type: varbinary
           - name: topic1
-            description: "The second topic (if any)"
+            description: "Second topic of the log"
+            data_type: varbinary
           - name: topic2
-            description: "The third topic (if any)"
+            description: "Third topic of the log"
+            data_type: varbinary
           - name: topic3
-            description: "The fourth topic (if any)"
+            description: "Fourth topic of the log"
+            data_type: varbinary
           - name: data
-            description: "The data field of the log"
+            description: "Additional data included in the log"
+            data_type: varbinary
+          - name: tx_hash
+            description: "Hash of the transaction that generated this log"
+            data_type: varbinary
           - name: index
-            description: "The index of the log within its transaction"
+            description: "Index of this log within the transaction"
+            data_type: integer
+          - name: tx_index
+            description: "Index of the transaction within the block"
+            data_type: integer
+          - name: block_date
+            description: "UTC date of the block containing this log"
+            data_type: date
+          - name: tx_from
+            description: "Address that sent the transaction"
+            data_type: varbinary
+          - name: tx_to
+            description: "Address that received the transaction"
+            data_type: varbinary
 
-      - name: contracts
+      - name: logs_decoded
         meta:
-          docs_slug: /evm/flare/raw/contracts
-          short_description: The `flare.contracts` table tracks decoded contracts on flare, including associated metadata such as namespace, name, address, ABI.
-        description: '{{ doc("flare_contracts_doc") }}'
-
+          docs_slug: /evm/flare/raw/logs_decoded
+          short_description: The `flare.logs_decoded` table contains decoded event logs from known contracts on the flare blockchain.
+        description: '{{ doc("flare_logs_decoded_doc") }}'
         columns:
-          - name: address
-            description: "The contract address"
-          - name: bytecode
-            description: "The contract bytecode"
-          - name: name
-            description: "The name of the contract"
+          - name: block_date
+            description: "UTC date of the block containing this log"
+            data_type: date
+          - name: block_time
+            description: "The exact UTC timestamp when this log was emitted"
+            data_type: timestamp
+          - name: block_number
+            description: "The sequential number of the block containing this log"
+            data_type: bigint
           - name: namespace
-            description: "The namespace the contract belongs to"
-          - name: abi
-            description: "The contract ABI"
+            description: "Project namespace for the contract"
+            data_type: varchar
+          - name: contract_name
+            description: "Name of the contract that emitted this event"
+            data_type: varchar
+          - name: contract_address
+            description: "Address of the contract that emitted this event"
+            data_type: varbinary
+          - name: tx_hash
+            description: "Hash of the transaction that generated this event"
+            data_type: varbinary
+          - name: tx_from
+            description: "Address that sent the transaction"
+            data_type: varbinary
+          - name: tx_to
+            description: "Address that received the transaction"
+            data_type: varbinary
+          - name: index
+            description: "Index of this event within the transaction"
+            data_type: integer
+          - name: signature
+            description: "Event signature hash"
+            data_type: varbinary
+          - name: event_name
+            description: "Name of the emitted event"
+            data_type: varchar
+
+      - name: blocks
+        meta:
+          docs_slug: /evm/flare/raw/blocks
+          short_description: The `flare.blocks` table contains information about blocks on the flare blockchain.
+        description: '{{ doc("flare_blocks_doc") }}'
+        columns:
+          - name: time
+            description: "The exact UTC timestamp when this block was added to the chain"
+            data_type: timestamp
+          - name: number
+            description: "The sequential number of this block in the chain"
+            data_type: bigint
+          - name: gas_limit
+            description: "Maximum amount of gas that could be used by all transactions in this block"
+            data_type: decimal(38,0)
+          - name: gas_used
+            description: "Actual amount of gas used by all transactions in this block"
+            data_type: decimal(38,0)
+          - name: difficulty
+            description: "Numerical value indicating the computational effort required to mine this block"
+            data_type: bigint
+          - name: total_difficulty
+            description: "Sum of block difficulties up to this block"
+            data_type: decimal(38,0)
+          - name: size
+            description: "Size of this block in bytes"
+            data_type: bigint
+          - name: base_fee_per_gas
+            description: "Base fee per gas in the block (post-EIP-1559)"
+            data_type: bigint
+          - name: hash
+            description: "Unique 256-bit identifier (hash) of this block"
+            data_type: varbinary
+          - name: parent_hash
+            description: "Hash of the previous block in the chain"
+            data_type: varbinary
+          - name: miner
+            description: "Address of the validator that produced this block"
+            data_type: varbinary
+          - name: nonce
+            description: "Value used to demonstrate proof of work for this block"
+            data_type: varbinary
+          - name: state_root
+            description: "Root hash of the state trie"
+            data_type: varbinary
+          - name: transactions_root
+            description: "Root hash of the transactions trie"
+            data_type: varbinary
+          - name: receipts_root
+            description: "Root hash of the receipts trie"
+            data_type: varbinary
+          - name: date
+            description: "The UTC date when this block was added to the chain"
+            data_type: date
+
+  # ERC Transfer Tables
+  - name: erc20_flare
+    description: "Transfer events for ERC20 tokens on flare"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/flare/decoded/interfaces/erc20/evt_transfer
+          short_description: This table contains individual transfer events for ERC20 tokens on the flare blockchain. Each row represents a single token transfer event.
+        description: '{{ doc("erc20_flare_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract that emitted this event"
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - &evt_index
+            name: evt_index
+            description: "Index position of this event within the transaction"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - &evt_block_number
+            name: evt_block_number
+            description: "The block number containing this event"
+          - *from
+          - *to
+          - name: value
+            description: "Amount of ERC20 tokens transferred, in the token's flare unit"
+
+      - name: evt_approval
+        meta:
+          docs_slug: /evm/flare/decoded/interfaces/erc20/evt_approval
+          short_description: The `flare.evt_approval` table contains approval events for ERC20 tokens on flare, allowing an address to spend tokens on behalf of the owner.
+        description: '{{ doc("erc20_flare_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: owner
+            description: "address of the token owner granting approval"
+          - name: spender
+            description: "address being granted permission to spend tokens"
+          - name: value
+            description: "Amount of ERC20 tokens approved for spending, in the token's smallest unit"
+
+  - name: erc1155_flare
+    description: "events related to ERC1155 tokens"
+    tables:
+      - name: evt_transfersingle
+        meta:
+          docs_slug: /evm/flare/decoded/interfaces/erc1155/evt_transfersingle
+          short_description: This table contains single transfer events for ERC1155 tokens on the network.
+        description: '{{ doc("erc1155_flare_evt_transfersingle_doc") }}'
+        columns:
+          - name: contract_address
+            description: "address of the ERC1155 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "the address that is authorized to execute the transfer on behalf of the owner"
+          - *from
+          - *to
+          - name: id
+            description: "Unique identifier of the ERC1155 token being transferred"
+          - name: value
+            description: "Quantity of the ERC1155 token transferred"
+      - name: evt_transferbatch
+        meta:
+          docs_slug: /evm/flare/decoded/interfaces/erc1155/evt_transferbatch
+          short_description: This table contains all batch transfer events for ERC1155 tokens on the network.
+        description: '{{ doc("erc1155_ethereum_evt_transferbatch_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Contract address of the ERC1155 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - name: operator
+            description: "Contract address authorized to execute the batch transfer on behalf of the owner"
+          - *from
+          - *to
+          - name: ids
+            description: "Array of unique identifiers of the ERC1155 tokens being transferred"
+          - name: values
+            description: "Array of quantities for each ERC1155 token transferred, corresponding to the ids array"
+      - name: evt_ApprovalForAll
+        meta:
+          docs_slug: /evm/flare/decoded/interfaces/erc1155/evt_ApprovalForAll
+          short_description: This table contains approval events for all tokens of an ERC1155 contract on this network.
+        description: '{{ doc("erc1155_ethereum_evt_ApprovalForAll_doc") }}'
+        columns:
+          - name: contract_address
+            description: "flare address of the ERC1155 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - &approved
+            name: approved
+            description: "Boolean indicating whether approval is granted (true) or revoked (false)"
+          - &owner
+            name: owner
+            description: "flare address of the token owner granting or revoking approval"
+          - name: operator
+            description: "flare address being granted or revoked permission to operate all tokens"
+
+  - name: erc721_flare
+    description: '{{ doc("erc721_flare_evt_transfer_doc") }}'
+    tables:
+      - name: evt_transfer
+        description: "Transfer events for ERC721 tokens on this network"
+        columns:
+          - name: contract_address
+            description: "Contract address of the ERC721 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *from
+          - *to
+          - name: tokenId
+            description: "Unique identifier of the ERC721 token (NFT) being transferred"
+      - name: evt_Approval
+        meta:
+          docs_slug: /evm/flare/decoded/interfaces/erc721/evt_Approval
+          short_description: "Approval events for ERC721 tokens on this network"
+        description: '{{ doc("erc721_ethereum_evt_Approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Contract address of the ERC721 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved
+          - *owner
+          - name: tokenId
+            description: "Unique identifier of the ERC721 token (NFT) for which approval is granted or revoked"
+      - name: evt_ApprovalForAll
+        meta:
+          docs_slug: /evm/flare/decoded/interfaces/erc721/evt_ApprovalForAll
+          short_description: The `flare.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the flare blockchain.
+        description: '{{ doc("erc721_ethereum_evt_ApprovalForAll_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
+          - *approved
+          - *owner
+          - name: operator
+            description: "The address being granted or revoked permission to operate all tokens"
