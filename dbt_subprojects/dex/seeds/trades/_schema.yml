@@ -4454,9 +4454,9 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-
-  - name: stablebase_base_base_trades_seed
-   config:
+        
+  - name: flashliquidity_base_base_trades_seed
+    config:
       column_types:
         blockchain: varchar
         project: varchar
@@ -4469,8 +4469,8 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
-  - name: flashliquidity_base_base_trades_seed
+
+  - name: stablebase_base_base_trades_seed
     config:
       column_types:
         blockchain: varchar
