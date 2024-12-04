@@ -35,7 +35,6 @@ FROM
     ('eos-eos', null, 'EOS', null, null),
     ('etc-ethereum-classic', null, 'ETC', null, null),
     ('eth-ethereum', null, 'ETH', null, null),
-    ('flare-flare', null, 'FLR', null, null),
     ('ftm-fantom', null, 'FTM', null, null),
     ('hbar-hedera-hashgraph', null, 'HBAR', null, null),
     ('icp-internet-computer', null, 'ICP', null, null),
