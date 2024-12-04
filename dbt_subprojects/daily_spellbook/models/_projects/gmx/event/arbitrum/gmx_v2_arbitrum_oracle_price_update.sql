@@ -26,10 +26,11 @@ WITH evt_data_1 AS (
         msgSender AS msg_sender
     FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
-        AND evt_block_time > DATE '2023-08-01'
-    {% if is_incremental() %}
+        {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
+        {% else %}
+        AND evt_block_time > DATE '2023-08-01'
+        {% endif %}
 )
 
 , evt_data_2 AS (
@@ -46,10 +47,11 @@ WITH evt_data_1 AS (
         msgSender AS msg_sender
     FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
-        AND evt_block_time > DATE '2023-08-01'
-    {% if is_incremental() %}
+        {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
+        {% else %}
+        AND evt_block_time > DATE '2023-08-01'
+        {% endif %}
 )
 
 -- unite 2 tables
