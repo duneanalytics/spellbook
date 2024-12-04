@@ -186,4 +186,6 @@ FROM (VALUES
     , ('defi_kingdoms', 'DeFi Kingdoms', 'Direct', 'DeFiKingdoms')
     , ('hyperjump', 'HyperJump', 'Direct', 'Hyperjump_fi')
     , ('infusion', 'Infusion', 'Direct', 'infusionfinance')
+    , ('flashliquidity', 'Flashliquidity', 'Direct', 'flashliquidity')
+    , ('akronswap', 'Akronswap', 'Direct', 'AkronFinance')
     ) AS temp_table (project, name, marketplace_type, x_username)
