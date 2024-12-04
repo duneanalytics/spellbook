@@ -4,10 +4,6 @@
         , alias = 'erc20'
         , tags = ['static']
         , materialized = 'table'
-        , post_hook='{{ expose_spells(\'["flare"]\',
-                                 "sector",
-                                 "tokens",
-                                 \'["hosuke"]\') }}'
     )
 }}
 
