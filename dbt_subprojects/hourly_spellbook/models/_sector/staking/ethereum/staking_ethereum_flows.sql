@@ -18,7 +18,7 @@ WITH indexes AS (
     , MAX(sub_entity_category) AS sub_entity_category
     , MAX(sub_entity_unique_name) AS sub_entity_unique_name
     FROM {{ ref('staking_ethereum_deposits')}}
-    INNER JOIN {{source('dune', 'hildobby', 'dataset_ethereum_validators')}} i USING (pubkey)
+    INNER JOIN {{source('hildobby', 'dataset_ethereum_validators', database='dune')}} i USING (pubkey)
     GROUP BY 1
     )
 
@@ -44,7 +44,7 @@ WITH indexes AS (
     , d.withdrawal_credentials_type
     , d.evt_index
     FROM {{ ref('staking_ethereum_deposits')}} d
-    INNER JOIN {{source('dune', 'hildobby', 'dataset_ethereum_validators')}} i USING (pubkey)
+    INNER JOIN {{source('hildobby', 'dataset_ethereum_validators', database='dune')}} i USING (pubkey)
     )
     
 SELECT block_time
