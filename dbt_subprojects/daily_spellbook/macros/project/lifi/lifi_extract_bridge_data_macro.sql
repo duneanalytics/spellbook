@@ -19,11 +19,17 @@ select
     evt_block_number as block_number,
     cast(date_trunc('day', evt_block_time) as date) as block_date,
     {% for field in bridge_data_fields %}
-    json_extract_scalar(bridgeData, '$.{{ field }}') as {{ field }},
+    {% if field in ['transactionId', 'referrer', 'sendingAssetId', 'receiver'] %}
+    from_hex(json_extract_scalar(bridgedata, '$.{{ field }}')) as {{ field }},
+    {% elif field == 'minamount' %}
+    cast(json_extract_scalar(bridgedata, '$.{{ field }}') as double) as {{ field }},
+    {% else %}
+    json_extract_scalar(bridgedata, '$.{{ field }}') as {{ field }},
+    {% endif %}
     {% endfor %}
     '{{ blockchain }}' as source_chain,
     {{ dbt_utils.generate_surrogate_key(['evt_tx_hash', 'evt_index']) }} as transfer_id
-from {{ source('lifi_' ~ blockchain, 'LiFiDiamond_v2_evt_LiFiTransferStarted') }}
+from {{ source('lifi_' ~ blockchain, 'lifidiamond_v2_evt_lifitransferstarted') }}
 {% if is_incremental() %}
 where {{ incremental_predicate('evt_block_time') }}
 {% endif %}

@@ -27,12 +27,15 @@ tokens_mapped as (
 price_data as (
     select 
         tokens_mapped.*,
-        p.price * cast(tokens_mapped.minAmount as double) / power(10, p.decimals) as amount_usd
+        p.price * minAmount / power(10, p.decimals) as amount_usd
     from tokens_mapped
     left join {{ source('prices', 'usd') }} p 
-        on cast(p.contract_address as varchar) = tokens_mapped.sendingAssetId_adjusted
+        on p.contract_address = tokens_mapped.sendingAssetId_adjusted
         and p.blockchain = 'ethereum'
         and p.minute = date_trunc('minute', tokens_mapped.block_time)
+        {% if is_incremental() %}
+        and {{ incremental_predicate('p.minute') }}
+        {% endif %}
 )
 
 {{
