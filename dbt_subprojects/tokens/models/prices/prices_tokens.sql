@@ -11,6 +11,7 @@
                                         , "bitcoin"
                                         , "blast"
                                         , "bnb"
+                                        , "boba"
                                         , "cardano"
                                         , "celo"
                                         , "ethereum"
@@ -66,6 +67,7 @@ ref('prices_native_tokens')
 ,ref('prices_kaia_tokens')
 ,ref('prices_tron_tokens')
 ,ref('prices_ronin_tokens')
+,ref('prices_boba_tokens')
 ] %}
 
 

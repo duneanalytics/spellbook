@@ -8,6 +8,7 @@ models:
       contributors: hildobby, 0xManny, dot2dotseurat, soispoke, mtitus6, wuligy, angus_1, Henrystats, viniabussafi, jeff-dude, rantum, hosuke
     config:
       tags: ['tokens','erc20', 'arbitrum', 'avalanche_c', 'bnb', 'ethereum', 'gnosis', 'mantle', 'optimism', 'fantom', 'base', 'blast', 'sei', 'nova', 'linea', 'worldchain', 'kaia', 'ronin', 'boba', 'flare']
+
     description: >
         Crosschain ERC20 tokens
     data_tests:

@@ -185,4 +185,6 @@ FROM (VALUES
     , ('kaia_swap', 'KaiaSwap', 'Direct', 'KaiaSwap')
     , ('defi_kingdoms', 'DeFi Kingdoms', 'Direct', 'DeFiKingdoms')
     , ('hyperjump', 'HyperJump', 'Direct', 'Hyperjump_fi')
+    , ('flashliquidity', 'Flashliquidity', 'Direct', 'flashliquidity')
+    , ('akronswap', 'Akronswap', 'Direct', 'AkronFinance')
     ) AS temp_table (project, name, marketplace_type, x_username)

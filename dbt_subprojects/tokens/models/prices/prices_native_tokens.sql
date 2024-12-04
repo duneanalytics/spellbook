@@ -25,6 +25,7 @@ FROM
     ('avax-avalanche', null, 'AVAX', null, null),
     ('bch-bitcoin-cash', null, 'BCH', null, null),
     ('bnb-binance-coin', null, 'BNB', null, null),
+    ('boba-boba-network', null, 'BOBA', null, null),
     ('bsv-bitcoin-sv', null, 'BSV', null, null),
     ('btc-bitcoin', null, 'BTC', null, null),
     ('celo-celo', null, 'CELO', null, null),
