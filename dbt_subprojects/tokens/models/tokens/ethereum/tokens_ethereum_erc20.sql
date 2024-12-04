@@ -4723,4 +4723,6 @@ FROM (VALUES
     , ( 0x7cc6694cf75c18d488d16fb4bf3c71a3b31cc7fb, 'stataEthETHx', 18)
     , ( 0x58D97B57BB95320F9a05dC918Aef65434969c2B2, 'MORPHO', 18)
     , ( 0x9994E35Db50125E0DF82e4c2dde62496CE330999, 'legacyMORPHO', 18)
+    , ( 0xc824a08db624942c5e5f330d56530cd1598859fd, 'hgETH', 18)
+    , ( 0x6e6B7ADfC7Db9fEeB8896418aC3422966f65D0A5, 'NET', 18)
 ) AS temp_table (contract_address, symbol, decimals)
