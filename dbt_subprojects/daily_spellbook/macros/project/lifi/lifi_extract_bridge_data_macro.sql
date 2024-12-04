@@ -29,7 +29,7 @@ select
     {% endfor %}
     '{{ blockchain }}' as source_chain,
     {{ dbt_utils.generate_surrogate_key(['evt_tx_hash', 'evt_index']) }} as transfer_id
-from {{ source('lifi_' ~ blockchain, 'lifidiamond_v2_evt_lifitransferstarted') }}
+from {{ source('lifi_' ~ blockchain, 'LiFiDiamond_v2_evt_LiFiTransferStarted') }}
 {% if is_incremental() %}
 where {{ incremental_predicate('evt_block_time') }}
 {% endif %}
