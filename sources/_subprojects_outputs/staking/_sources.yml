@@ -1,0 +1,10 @@
+version: 2
+sources:
+  - name: hildobby
+    tables:
+      - name: dataset_ethereum_validators
+        columns:
+          - name: pubkey
+            data_type: varbinary
+          - name: validator_index
+            data_type: integer
