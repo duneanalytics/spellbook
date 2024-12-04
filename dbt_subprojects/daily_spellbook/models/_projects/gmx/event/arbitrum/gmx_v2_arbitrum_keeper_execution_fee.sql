@@ -2,7 +2,9 @@
   config(
     schema = 'gmx_v2_arbitrum',
     alias = 'keeper_execution_fee',
-    materialized = 'table'
+    materialized = 'incremental',
+    unique_key = ['tx_hash', 'index'],
+    incremental_strategy = 'merge'
     )
 }}
 
@@ -24,7 +26,9 @@ WITH evt_data_1 AS (
         msgSender AS msg_sender
     FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
-    ORDER BY evt_block_time ASC
+    {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
 )
 
 , evt_data_2 AS (
@@ -41,7 +45,9 @@ WITH evt_data_1 AS (
         msgSender AS msg_sender
     FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
-    ORDER BY evt_block_time ASC
+    {% if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
 )
 
 -- unite 2 tables
