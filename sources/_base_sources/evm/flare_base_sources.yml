@@ -1,17 +1,14 @@
 version: 2
 
 sources:
-  # Flare Tables
   - name: flare
-    description: "raw tables for the chain"
-
+    description: "Raw tables for the Flare blockchain"
     tables:
       - name: transactions
         meta:
-          docs_slug: /evm/flare/raw/transactions
-          short_description: The transactions table contains detailed information about transactions on the network.
+          docs_slug: "/evm/flare/raw/transactions"
+          short_description: "The `flare.transactions` table contains all transactions on the Flare blockchain."
         description: '{{ doc("flare_transactions_doc") }}'
-
         columns:
           - name: block_time
             description: "The exact UTC timestamp when this transaction was included"
@@ -76,8 +73,8 @@ sources:
 
       - name: traces
         meta:
-          docs_slug: /evm/flare/raw/traces
-          short_description: The `flare.traces` table contains all transaction traces on the flare blockchain.
+          docs_slug: "/evm/flare/raw/traces"
+          short_description: "The `flare.traces` table contains all transaction traces on the Flare blockchain."
         description: '{{ doc("flare_traces_doc") }}'
         columns:
           - name: block_time
@@ -161,8 +158,8 @@ sources:
 
       - name: traces_decoded
         meta:
-          docs_slug: /evm/flare/raw/traces_decoded
-          short_description: The `flare.traces_decoded` table contains decoded traces from known contracts on the flare blockchain.
+          docs_slug: "/evm/flare/raw/traces_decoded"
+          short_description: "The `flare.traces_decoded` table contains decoded traces from known contracts on the Flare blockchain."
         description: '{{ doc("flare_traces_decoded_doc") }}'
         columns:
           - name: block_date
@@ -204,8 +201,8 @@ sources:
 
       - name: creation_traces
         meta:
-          docs_slug: /evm/flare/raw/creation_traces
-          short_description: The creation_traces table contains information about contract creation events.
+          docs_slug: "/evm/flare/raw/creation_traces"
+          short_description: "The `flare.creation_traces` table contains information about contract creation events."
         description: '{{ doc("flare_creation_traces_doc") }}'
         columns:
           - name: block_time
@@ -232,8 +229,8 @@ sources:
 
       - name: logs
         meta:
-          docs_slug: /evm/flare/raw/logs
-          short_description: The `flare.logs` table contains all event logs emitted by contracts on the flare blockchain.
+          docs_slug: "/evm/flare/raw/logs"
+          short_description: "The `flare.logs` table contains all event logs emitted by contracts on the Flare blockchain."
         description: '{{ doc("flare_logs_doc") }}'
         columns:
           - name: block_time
@@ -284,8 +281,8 @@ sources:
 
       - name: logs_decoded
         meta:
-          docs_slug: /evm/flare/raw/logs_decoded
-          short_description: The `flare.logs_decoded` table contains decoded event logs from known contracts on the flare blockchain.
+          docs_slug: "/evm/flare/raw/logs_decoded"
+          short_description: "The `flare.logs_decoded` table contains decoded event logs from known contracts on the Flare blockchain."
         description: '{{ doc("flare_logs_decoded_doc") }}'
         columns:
           - name: block_date
@@ -327,8 +324,8 @@ sources:
 
       - name: blocks
         meta:
-          docs_slug: /evm/flare/raw/blocks
-          short_description: The `flare.blocks` table contains information about blocks on the flare blockchain.
+          docs_slug: "/evm/flare/raw/blocks"
+          short_description: "The `flare.blocks` table contains information about blocks on the Flare blockchain."
         description: '{{ doc("flare_blocks_doc") }}'
         columns:
           - name: time
@@ -380,117 +377,146 @@ sources:
             description: "The UTC date when this block was added to the chain"
             data_type: date
 
-  # ERC Transfer Tables
   - name: erc20_flare
-    description: "Transfer events for ERC20 tokens on flare"
+    description: "Transfer events for ERC20 tokens on Flare blockchain"
     tables:
       - name: evt_transfer
         meta:
-          docs_slug: /evm/flare/decoded/interfaces/erc20/evt_transfer
-          short_description: This table contains individual transfer events for ERC20 tokens on the flare blockchain. Each row represents a single token transfer event.
+          docs_slug: "/evm/flare/decoded/interfaces/erc20/evt_transfer"
+          short_description: "This table contains individual transfer events for ERC20 tokens on the Flare blockchain. Each row represents a single token transfer event."
         description: '{{ doc("erc20_flare_evt_transfer_doc") }}'
         columns:
           - name: contract_address
             description: "Address of the ERC20 token contract that emitted this event"
-          - &evt_tx_hash
-            name: evt_tx_hash
+          - name: evt_tx_hash
             description: "Hash of the transaction containing this event"
-          - &evt_index
-            name: evt_index
+          - name: evt_index
             description: "Index position of this event within the transaction"
-          - &evt_block_time
-            name: evt_block_time
+          - name: evt_block_time
             description: "Timestamp of the block containing this event"
-          - &evt_block_number
-            name: evt_block_number
+          - name: evt_block_number
             description: "The block number containing this event"
-          - *from
-          - *to
+          - name: from
+            description: "Address that sent the transaction"
+            data_type: varbinary
+          - name: to
+            description: "Address that received the transaction"
+            data_type: varbinary
           - name: value
-            description: "Amount of ERC20 tokens transferred, in the token's flare unit"
+            description: "Amount of ERC20 tokens transferred, in the token's Flare unit"
 
       - name: evt_approval
         meta:
-          docs_slug: /evm/flare/decoded/interfaces/erc20/evt_approval
-          short_description: The `flare.evt_approval` table contains approval events for ERC20 tokens on flare, allowing an address to spend tokens on behalf of the owner.
+          docs_slug: "/evm/flare/decoded/interfaces/erc20/evt_approval"
+          short_description: "The `flare.evt_approval` table contains approval events for ERC20 tokens on Flare, allowing an address to spend tokens on behalf of the owner."
         description: '{{ doc("erc20_flare_evt_approval_doc") }}'
         columns:
           - name: contract_address
             description: "Address of the ERC20 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "The block number containing this event"
           - name: owner
-            description: "address of the token owner granting approval"
+            description: "Address of the token owner granting approval"
+            data_type: varbinary
           - name: spender
-            description: "address being granted permission to spend tokens"
+            description: "Address being granted permission to spend tokens"
+            data_type: varbinary
           - name: value
             description: "Amount of ERC20 tokens approved for spending, in the token's smallest unit"
 
   - name: erc1155_flare
-    description: "events related to ERC1155 tokens"
+    description: "Events related to ERC1155 tokens on Flare blockchain"
     tables:
       - name: evt_transfersingle
         meta:
-          docs_slug: /evm/flare/decoded/interfaces/erc1155/evt_transfersingle
-          short_description: This table contains single transfer events for ERC1155 tokens on the network.
+          docs_slug: "/evm/flare/decoded/interfaces/erc1155/evt_transfersingle"
+          short_description: "This table contains single transfer events for ERC1155 tokens on the network."
         description: '{{ doc("erc1155_flare_evt_transfersingle_doc") }}'
         columns:
           - name: contract_address
-            description: "address of the ERC1155 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
+            description: "Address of the ERC1155 token contract"
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "The block number containing this event"
           - name: operator
-            description: "the address that is authorized to execute the transfer on behalf of the owner"
-          - *from
-          - *to
+            description: "The address that is authorized to execute the transfer on behalf of the owner"
+            data_type: varbinary
+          - name: from
+            description: "Address that sent the transaction"
+            data_type: varbinary
+          - name: to
+            description: "Address that received the transaction"
+            data_type: varbinary
           - name: id
             description: "Unique identifier of the ERC1155 token being transferred"
           - name: value
             description: "Quantity of the ERC1155 token transferred"
+
       - name: evt_transferbatch
         meta:
-          docs_slug: /evm/flare/decoded/interfaces/erc1155/evt_transferbatch
-          short_description: This table contains all batch transfer events for ERC1155 tokens on the network.
+          docs_slug: "/evm/flare/decoded/interfaces/erc1155/evt_transferbatch"
+          short_description: "This table contains all batch transfer events for ERC1155 tokens on the network."
         description: '{{ doc("erc1155_ethereum_evt_transferbatch_doc") }}'
         columns:
           - name: contract_address
             description: "Contract address of the ERC1155 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "The block number containing this event"
           - name: operator
             description: "Contract address authorized to execute the batch transfer on behalf of the owner"
-          - *from
-          - *to
+            data_type: varbinary
+          - name: from
+            description: "Address that sent the transaction"
+            data_type: varbinary
+          - name: to
+            description: "Address that received the transaction"
+            data_type: varbinary
           - name: ids
             description: "Array of unique identifiers of the ERC1155 tokens being transferred"
           - name: values
             description: "Array of quantities for each ERC1155 token transferred, corresponding to the ids array"
+
       - name: evt_ApprovalForAll
         meta:
-          docs_slug: /evm/flare/decoded/interfaces/erc1155/evt_ApprovalForAll
-          short_description: This table contains approval events for all tokens of an ERC1155 contract on this network.
+          docs_slug: "/evm/flare/decoded/interfaces/erc1155/evt_ApprovalForAll"
+          short_description: "This table contains approval events for all tokens of an ERC1155 contract on this network."
         description: '{{ doc("erc1155_ethereum_evt_ApprovalForAll_doc") }}'
         columns:
           - name: contract_address
-            description: "flare address of the ERC1155 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - &approved
-            name: approved
+            description: "Flare address of the ERC1155 token contract"
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "The block number containing this event"
+          - name: approved
             description: "Boolean indicating whether approval is granted (true) or revoked (false)"
-          - &owner
-            name: owner
-            description: "flare address of the token owner granting or revoking approval"
+          - name: owner
+            description: "Flare address of the token owner granting or revoking approval"
+            data_type: varbinary
           - name: operator
-            description: "flare address being granted or revoked permission to operate all tokens"
+            description: "Flare address being granted or revoked permission to operate all tokens"
+            data_type: varbinary
 
   - name: erc721_flare
     description: '{{ doc("erc721_flare_evt_transfer_doc") }}'
@@ -500,43 +526,68 @@ sources:
         columns:
           - name: contract_address
             description: "Contract address of the ERC721 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - *from
-          - *to
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "The block number containing this event"
+          - name: from
+            description: "Address that sent the transaction"
+            data_type: varbinary
+          - name: to
+            description: "Address that received the transaction"
+            data_type: varbinary
           - name: tokenId
             description: "Unique identifier of the ERC721 token (NFT) being transferred"
+
       - name: evt_Approval
         meta:
-          docs_slug: /evm/flare/decoded/interfaces/erc721/evt_Approval
+          docs_slug: "/evm/flare/decoded/interfaces/erc721/evt_Approval"
           short_description: "Approval events for ERC721 tokens on this network"
         description: '{{ doc("erc721_ethereum_evt_Approval_doc") }}'
         columns:
           - name: contract_address
             description: "Contract address of the ERC721 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - *approved
-          - *owner
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "The block number containing this event"
+          - name: approved
+            description: "Boolean indicating whether approval is granted (true) or revoked (false)"
+          - name: owner
+            description: "Address of the token owner granting or revoking approval"
+            data_type: varbinary
           - name: tokenId
             description: "Unique identifier of the ERC721 token (NFT) for which approval is granted or revoked"
+
       - name: evt_ApprovalForAll
         meta:
-          docs_slug: /evm/flare/decoded/interfaces/erc721/evt_ApprovalForAll
-          short_description: The `flare.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the flare blockchain.
+          docs_slug: "/evm/flare/decoded/interfaces/erc721/evt_ApprovalForAll"
+          short_description: "The `flare.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the Flare blockchain."
         description: '{{ doc("erc721_ethereum_evt_ApprovalForAll_doc") }}'
         columns:
           - name: contract_address
             description: "Address of the ERC721 token contract"
-          - *evt_tx_hash
-          - *evt_index
-          - *evt_block_time
-          - *evt_block_number
-          - *approved
-          - *owner
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "The block number containing this event"
+          - name: approved
+            description: "Boolean indicating whether approval is granted (true) or revoked (false)"
+          - name: owner
+            description: "Address of the token owner granting or revoking approval"
+            data_type: varbinary
           - name: operator
             description: "The address being granted or revoked permission to operate all tokens"
+            data_type: varbinary
