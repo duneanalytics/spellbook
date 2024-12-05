@@ -150,7 +150,7 @@ models:
             - address
             - token_address
     meta:
-      blockchain: arbitrum
+      blockchain: base
       project: safe
       contributors: safeintern
     config:
