@@ -64,7 +64,8 @@ WITH evt_data_1 AS (
         index, 
         json_query(data, 'lax $.bytes32Items' OMIT QUOTES) AS bytes32_items,
         json_query(data, 'lax $.addressItems' OMIT QUOTES) AS address_items,
-        json_query(data, 'lax $.uintItems' OMIT QUOTES) AS uint_items
+        json_query(data, 'lax $.uintItems' OMIT QUOTES) AS uint_items,
+        json_query(data, 'lax $.boolItems' OMIT QUOTES) AS bool_items
     FROM
         evt_data
 )
@@ -108,6 +109,19 @@ WITH evt_data_1 AS (
         ) AS t(item)
 )
 
+, bool_items_parsed AS (
+    SELECT 
+        tx_hash,
+        index,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
+    FROM 
+        parsed_data,
+        UNNEST(
+            CAST(json_extract(bool_items, '$.items') AS ARRAY(JSON))
+        ) AS t(item)
+)
+
 , combined AS (
     SELECT *
     FROM bytes32_items_parsed
@@ -117,6 +131,9 @@ WITH evt_data_1 AS (
     UNION ALL
     SELECT *
     FROM uint_items_parsed
+    UNION ALL 
+    SELECT *
+    FROM bool_items_parsed
 )
 
 , evt_data_parsed AS (
@@ -129,7 +146,9 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'acceptablePrice' THEN value END) AS acceptable_price,
         MAX(CASE WHEN key_name = 'triggerPrice' THEN value END) AS trigger_price,
         MAX(CASE WHEN key_name = 'minOutputAmount' THEN value END) AS min_output_amount,
-        MAX(CASE WHEN key_name = 'updatedAtTime' THEN value END) AS updated_at_time
+        MAX(CASE WHEN key_name = 'updatedAtTime' THEN value END) AS updated_at_time,
+        MAX(CASE WHEN key_name = 'validFromTime' THEN value END) AS valid_from_time,
+        MAX(CASE WHEN key_name = 'autoCancel' THEN value END) AS auto_cancel
     FROM
         combined
     GROUP BY tx_hash, index
@@ -153,7 +172,9 @@ WITH evt_data_1 AS (
         TRY_CAST(acceptable_price AS DOUBLE) AS acceptable_price,
         TRY_CAST(trigger_price AS DOUBLE) AS trigger_price,
         TRY_CAST(min_output_amount AS DOUBLE) AS min_output_amount,
-        TRY_CAST(updated_at_time AS DOUBLE) AS updated_at_time
+        TRY_CAST(updated_at_time AS DOUBLE) AS updated_at_time,
+        TRY_CAST(valid_from_time AS DOUBLE) AS valid_from_time,
+        TRY_CAST(auto_cancel AS BOOLEAN) AS auto_cancel
         
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -192,7 +213,9 @@ WITH evt_data_1 AS (
         CASE 
             WHEN ED.updated_at_time = 0 THEN NULL
             ELSE ED.updated_at_time
-        END AS updated_at_time
+        END AS updated_at_time,
+        ED.valid_from_time,
+        ED.auto_cancel
 
     FROM event_data AS ED
     LEFT JOIN {{ ref('gmx_v2_avalanche_c_order_created') }} AS OC
