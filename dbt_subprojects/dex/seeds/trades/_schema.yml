@@ -4506,11 +4506,11 @@ seeds:
         blockchain: varchar
         project: varchar
         version: varchar
-        tx_hash: varchar  # Keep as varchar for hexadecimal string
-        evt_index: bigint  # Change to bigint or int, as it should be numeric
-        block_number: bigint  # Use bigint for block number (or use int if appropriate)
-        token_bought_address: varchar  # Keep as varchar for address
-        token_sold_address: varchar  # Keep as varchar for address
+        tx_hash: varchar  
+        evt_index: bigint 
+        block_number: bigint 
+        token_bought_address: varchar  
+        token_sold_address: varchar 
         token_bought_amount_raw: varchar
         token_sold_amount_raw: varchar
         block_date: timestamp
