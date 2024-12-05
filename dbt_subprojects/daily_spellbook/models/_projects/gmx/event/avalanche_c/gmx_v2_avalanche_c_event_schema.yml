@@ -13,7 +13,11 @@ models:
       Extracts and decodes the `OrderCreated` event log data from the Avalanche blockchain. 
       This model processes log entries related to created orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for cancellation.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - &blockchain  
         name: blockchain
@@ -187,7 +191,11 @@ models:
       Extracts and decodes the `OrderExecuted` event log data from the Avalanche blockchain. 
       This model processes log entries related to executed orders, extracting key variables such as 
       account addresses, event keys, and integer values.
-    
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -230,7 +238,11 @@ models:
       Extracts and decodes the `OrderCancelled` event log data from the Avalanche blockchain. 
       This model processes log entries related to cancelled orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for cancellation.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -344,7 +356,11 @@ models:
       This model extracts and parses `PositionIncrease` events from the Avalanche blockchain.
       It includes transaction details, addresses, and various metrics related to the event, 
       such as market data, collateral amounts, price impacts, and more.
-    
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -477,7 +493,11 @@ models:
       This model extracts and parses `PositionDecrease` events from the Avalanche blockchain.
       It includes transaction details, addresses, and various metrics related to the event, 
       such as market data, collateral amounts, price impacts, and more.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -558,7 +578,11 @@ models:
       This model extracts and parses `PositionFeesCollected` events from the Avalanche blockchain.
       It includes details about the transaction, addresses involved, and various metrics related to 
       fees collected from positions, including fee amounts and related market data.
-    
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -775,7 +799,11 @@ models:
       This model extracts and parses `PositionFeesInfo` events from the Avalanche blockchain.
       It includes details about the transaction, addresses involved, and various metrics related to 
       position fees, including fee amounts and related market data.
-    
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -858,7 +886,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - key
+            - index
 
     columns:
       - *blockchain
@@ -903,7 +931,11 @@ models:
       Extracts and decodes the `OrderUpdated` event log data from the Avalanche blockchain. 
       This model processes log entries related to updated orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for cancellation.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -952,7 +984,11 @@ models:
       Combines and processes decoded event data to produce a normalized dataset of updated orders 
       on the GMX platform for the Avalanche blockchain. 
       This model integrates data from the `open_interest_in_tokens_updated` table, enriching it with market-specific details.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1006,7 +1042,11 @@ models:
       Extracts and processes decoded event data for open interest updates on the GMX platform, 
       specifically on the Avalanche blockchain. This model normalizes data, including key metrics like 
       delta and next_value, ensuring consistent scaling based on token decimals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1066,7 +1106,11 @@ models:
       Processes decoded event data for Oracle Price Updates on the GMX platform in the Avalanche blockchain. 
       The model normalizes price data (min_price and max_price) using token-specific decimals and extracts 
       additional details such as the provider and token involved in the update.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1117,7 +1161,11 @@ models:
       Processes decoded event data for Pool Amount Updates on the GMX platform in the Avalanche blockchain.
       This model normalizes token values (next_value and delta) based on token-specific decimals and extracts
       additional details such as the market and token involved in the pool update.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1171,7 +1219,11 @@ models:
       Processes decoded event data for `SetUint` events on the GMX platform in the Avalanche blockchain.
       This model normalizes the value field and extracts additional details such as the base key and associated data,
       ensuring compatibility with downstream analyses.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1219,7 +1271,11 @@ models:
       Processes decoded event data for `ExecutionFeeRefund` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the refund amount, receiver, and transaction details to 
       enable analysis of refunded execution fees.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1255,7 +1311,11 @@ models:
       Processes decoded event data for `KeeperExecutionFee` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the keeper's address, execution fee amount, and transaction details, enabling
       analysis of fees associated with keeper-based executions.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time

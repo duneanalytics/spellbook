@@ -13,6 +13,11 @@ models:
       Extracts and decodes the `OrderCreated` event log data from the Arbitrum and Avalanche blockchains. 
       This model processes log entries related to created orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for cancellation.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
 
     columns:
       - &blockchain  
