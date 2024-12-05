@@ -17,8 +17,8 @@ tokens_mapped as (
     select
         *,
         case
-            when sendingAssetId = '0x0000000000000000000000000000000000000000'
-            then '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7' -- WAVAX
+            when sendingAssetId = 0x0000000000000000000000000000000000000000
+            then 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7 -- WAVAX
             else sendingAssetId
         end as sendingAssetId_adjusted
     from source_data

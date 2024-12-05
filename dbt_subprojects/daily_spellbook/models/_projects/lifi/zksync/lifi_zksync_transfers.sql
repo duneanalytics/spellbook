@@ -17,8 +17,8 @@ tokens_mapped as (
     select
         *,
         case
-            when sendingAssetId = '0x0000000000000000000000000000000000000000'
-            then '0x000000000000000000000000000000000000800a' -- WETH
+            when sendingAssetId = 0x0000000000000000000000000000000000000000
+            then 0x000000000000000000000000000000000000800a -- WETH
             else sendingAssetId
         end as sendingAssetId_adjusted
     from source_data

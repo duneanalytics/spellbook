@@ -17,10 +17,10 @@ tokens_mapped as (
     select
         *,
         case
-            when sendingAssetId = '0x0000000000000000000000000000000000000000'
-            then '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' -- WETH
-            when sendingAssetId = '0x3405a1bd46b85c5c029483fbecf2f3e611026e45'
-            then '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8' -- USDC
+            when sendingAssetId = 0x0000000000000000000000000000000000000000
+            then 0x82af49447d8a07e3bd95bd0d56f35241523fbab1 -- WETH
+            when sendingAssetId = 0x3405a1bd46b85c5c029483fbecf2f3e611026e45
+            then 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8 -- USDC
             else sendingAssetId
         end as sendingAssetId_adjusted
     from source_data
