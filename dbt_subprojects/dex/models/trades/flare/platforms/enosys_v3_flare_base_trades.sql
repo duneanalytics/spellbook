@@ -16,7 +16,7 @@ WITH dexs AS
         blockchain = 'flare'
         , project = 'enosys'
         , version = '3'
-        , Pool_evt_Swap = source('enosys_flare', 'EnosysDexV3Pool_evt_Swap')
+        , Pair_evt_Swap = source('enosys_flare', 'EnosysDexV3Pool_evt_Swap')
         , Factory_evt_PoolCreated = source('enosys_flare', 'EnosysDexV3Factory_evt_PoolCreated')
     )
     }}
