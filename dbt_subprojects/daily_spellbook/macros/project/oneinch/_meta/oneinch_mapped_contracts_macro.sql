@@ -1,8 +1,6 @@
 -- this macro helps to optimize the etl in case of adding new contract to a certain chain so it triggers pipeline only for this chain
 {% macro oneinch_mapped_contracts_macro(blockchain) %}
 
-
-
 {% set 
     config = [
           ('0xc586bef4a0992c495cf22e1aeee4e446cecdee0e', 'true', '1inch'                , 'OneSplit'                , ['ethereum'])
