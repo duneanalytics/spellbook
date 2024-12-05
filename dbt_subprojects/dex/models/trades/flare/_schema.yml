@@ -1,0 +1,78 @@
+version: 2
+
+models:
+  - name: dex_flare_base_trades
+    meta:
+      blockchain: flare
+      sector: dex
+      project: dex
+      contributors: hosuke
+    config:
+      tags: ['flare', 'dex', 'trades']
+    description: >
+      Flare DEX trades
+    columns:
+      - name: blockchain
+        description: "Blockchain"
+      - name: project
+        description: "Project name of the DEX"
+      - name: version
+        description: "Version of the DEX protocol"
+      - name: block_month
+        description: "UTC event block month"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number"
+      - name: token_bought_amount_raw
+        description: "Raw amount of token bought (not normalized)"
+      - name: token_sold_amount_raw
+        description: "Raw amount of token sold (not normalized)"
+      - name: token_bought_address
+        description: "Contract address of the token bought"
+      - name: token_sold_address
+        description: "Contract address of the token sold"
+      - name: taker
+        description: "Address of trader who initiated the trade"
+      - name: maker
+        description: "Address of trader who provided liquidity"
+      - name: project_contract_address
+        description: "Project's contract address that executed the trade"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Event index"
+    data_tests:
+      - check_dex_info_relationship
+
+  - name: enosys_v2_flare_base_trades
+    meta:
+      blockchain: flare
+      sector: dex
+      project: enosys
+      contributors: hosuke
+    config:
+      tags: [ 'flare', 'dex', 'trades', 'enosys', 'v2' ]
+    description: "Enosys V2 Flare base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: enosys_v3_flare_base_trades
+    meta:
+      blockchain: flare
+      sector: dex
+      project: enosys
+      contributors: hosuke
+    config:
+      tags: [ 'flare', 'dex', 'trades', 'enosys', 'v3' ]
+    description: "Enosys V3 Flare base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index

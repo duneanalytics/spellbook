@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: blazeswap_flare
+    tables:
+      - name: BlazeSwapFactory_evt_PairCreated
+      # - name: BlazeSwapPair_evt_Swap not existed yet
+  
+  - name: sparkdex_flare
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV2Factory_evt_PairCreated
+
+  - name: enosys_flare
+    tables:
+      - name: EnosysDexPair_evt_Swap
+      - name: EnosysDexFactory_evt_PairCreated
+      - name: EnosysDexV3Pool_evt_Swap
+      - name: EnosysDexV3Factory_evt_PoolCreated
