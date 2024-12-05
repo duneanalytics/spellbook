@@ -21,7 +21,7 @@ select
     {% for field in bridge_data_fields %}
     {% if field in ['transactionId', 'referrer', 'sendingAssetId', 'receiver'] %}
     from_hex(json_extract_scalar(bridgedata, '$.{{ field }}')) as {{ field }},
-    {% elif field == 'minamount' %}
+    {% elif field == 'minAmount' %}
     cast(json_extract_scalar(bridgedata, '$.{{ field }}') as double) as {{ field }},
     {% else %}
     json_extract_scalar(bridgedata, '$.{{ field }}') as {{ field }},
