@@ -26,7 +26,6 @@ swap_events AS (
     FROM {{ source('swapline_base', 'LBPair_evt_Swap') }} t
 ),
 
--- Extract Pair Creation Events
 pair_creation_events AS (
     SELECT
         t.evt_tx_hash AS tx_hash,
