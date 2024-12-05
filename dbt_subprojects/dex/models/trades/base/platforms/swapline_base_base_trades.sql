@@ -10,10 +10,7 @@
     )
 }}
 
-WITH 
-
--- Extract Swap Events
-swap_events AS (
+WITH swap_events AS (
     SELECT
         t.evt_tx_hash AS tx_hash,
         t.evt_index,
