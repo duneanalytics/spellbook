@@ -925,8 +925,6 @@ models:
           - not_null
       - name: market
         description: The market in which the order was updated
-        data_tests:
-          - not_null 
       - name: account
         description: The address associated with the order.
       - *size_delta_usd
