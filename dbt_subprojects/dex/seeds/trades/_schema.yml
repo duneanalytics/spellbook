@@ -4511,7 +4511,7 @@ seeds:
         block_number: bigint  # Use bigint for block number (or use int if appropriate)
         token_bought_address: varchar  # Keep as varchar for address
         token_sold_address: varchar  # Keep as varchar for address
-        token_bought_amount_raw: uint256
-        token_sold_amount_raw: uint256
+        token_bought_amount_raw: varchar
+        token_sold_amount_raw: varchar
         block_date: timestamp
 
