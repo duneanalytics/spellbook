@@ -46,9 +46,10 @@ SELECT
     min_output_amount_raw, 
     updated_at_block,
     updated_at_time,
+    valid_from_time,
     is_long,
     should_unwrap_native_token,
-    is_frozen,
+    auto_cancel,
     key
 FROM {{ ref('gmx_v2_' ~ chain ~ '_order_created') }}
 {% if not loop.last %}
