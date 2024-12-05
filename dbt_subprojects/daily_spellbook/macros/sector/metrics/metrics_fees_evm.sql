@@ -19,7 +19,7 @@ left join
     on oa.owner_key = od.owner_key
 where
     fees.blockchain = '{{blockchain}}'
-{% if is_incremental() %}
+{% if is_incremental() or true %}
     and {{ incremental_predicate('fees.block_date') }}
 {% endif %}
 group by
