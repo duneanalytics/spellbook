@@ -3,7 +3,7 @@
 select
     fees.blockchain
     , fees.block_date
-    , fees.tx_from
+    , fees.tx_from as address
     , coalesce(od.name, 'Unknown') as name
     , coalesce(od.primary_category, 'Uncategorized') as primary_category
     , coalesce(od.country_name, 'Unknown') as country_name
