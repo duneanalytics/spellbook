@@ -142,13 +142,13 @@ models:
         name: output
         description: "Output data"
 
-- name: safe_base_balances
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
+  - name: safe_base_balances
+      data_tests:
+        - dbt_utils.unique_combination_of_columns:
+            combination_of_columns:
+              - day
+              - address
+              - token_address
     meta:
       blockchain: base
       project: safe
