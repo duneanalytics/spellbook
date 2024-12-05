@@ -197,3 +197,7 @@ sources:
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UniswapV2Factory_evt_PairCreated
+  - name: swapline_base
+    tables:
+      - name: LBPair_evt_Swap
+      - name: LBFactory_evt_LBPairCreated
