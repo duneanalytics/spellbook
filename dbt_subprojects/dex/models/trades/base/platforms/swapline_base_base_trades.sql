@@ -51,5 +51,5 @@ SELECT DISTINCT
     swap.token_sold_amount_raw
 FROM swap_events AS swap
 LEFT JOIN pair_creation_events AS pair
-ON swap.tx_hash = pair.tx_hash
-AND swap.evt_index = pair.evt_index;
+    ON swap.tx_hash = pair.tx_hash
+    AND swap.evt_index = pair.evt_index;
