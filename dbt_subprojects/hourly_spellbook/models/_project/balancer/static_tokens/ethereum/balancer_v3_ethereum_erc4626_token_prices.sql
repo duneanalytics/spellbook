@@ -1,6 +1,6 @@
 {{ config(
         schema = 'balancer_v3_ethereum',
-        alias = 'static_token_prices',
+        alias = 'erc4626_token_prices',
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -52,11 +52,11 @@ SELECT
     'ethereum' AS blockchain,
     p.wrappedToken AS wrapped_token,
     p.underlyingToken AS underlying_token,
-    m.staticATokenSymbol AS static_atoken_symbol,
+    m.erc4626TokenSymbol AS erc4626_token_symbol,
     m.underlyingTokenSymbol AS underlying_token_symbol,
     p.decimals AS decimals,
     APPROX_PERCENTILE(adjusted_price, 0.5) AS median_price,
     LEAD(DATE_TRUNC('day', p.evt_block_time), 1, NOW()) OVER (PARTITION BY p.underlyingToken ORDER BY p.evt_block_time) AS next_change
 FROM price_join p
-JOIN {{ref('balancer_v3_ethereum_static_token_mapping')}} m ON m.underlying_token = p.underlyingToken
+JOIN {{ref('balancer_v3_ethereum_erc4626_token_mapping')}} m ON m.underlying_token = p.underlyingToken
 GROUP BY 1, 2, 3, 4, 5, 6
