@@ -38,7 +38,6 @@ pair_creation_events AS (
     FROM {{ source('swapline_base', 'LBFactory_evt_LBPairCreated') }} t
 )
 
--- Match Events by Transaction Hash
 SELECT DISTINCT
     'base' AS blockchain,
     'swapline' AS project,
