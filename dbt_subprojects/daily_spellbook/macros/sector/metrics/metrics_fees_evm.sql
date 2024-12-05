@@ -1,18 +1,32 @@
 {% macro metrics_fees_evm(blockchain) %}
 
 select
-    blockchain
-    , block_date
-    , sum(tx_fee_usd) as gas_fees_usd
+    fees.blockchain
+    , fees.block_date
+    , fees.tx_from
+    , coalesce(od.name, 'Unknown') as name
+    , coalesce(od.primary_category, 'Uncategorized') as primary_category
+    , coalesce(od.country_name, 'Unknown') as country_name
+    , sum(fees.tx_fee_usd) as gas_fees_usd
 from
-    {{ source('gas', 'fees') }}
-where blockchain = '{{blockchain}}'
+    {{ source('gas', 'fees') }} as fees
+left join
+    {{ source('labels', 'owner_addresses') }} as oa
+    on fees.blockchain = oa.blockchain
+    and fees.tx_from = oa.address
+left join
+    {{ source('labels', 'owner_details') }} as od
+    on oa.owner_key = od.owner_key
+where
+    fees.blockchain = '{{blockchain}}'
 {% if is_incremental() %}
-and
-    {{ incremental_predicate('block_date') }}
+    and {{ incremental_predicate('fees.block_date') }}
 {% endif %}
 group by
-    blockchain
-    ,block_date
-
+    fees.blockchain
+    , fees.block_date
+    , fees.tx_from
+    , coalesce(od.name, 'Unknown')
+    , coalesce(od.primary_category, 'Uncategorized')
+    , coalesce(od.country_name, 'Unknown')
 {% endmacro %}
