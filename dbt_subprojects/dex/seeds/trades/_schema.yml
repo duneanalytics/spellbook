@@ -4526,8 +4526,8 @@ seeds:
         block_number: uint256
         token_bought_address: varbinary
         token_sold_address: varbinary
-        token_bought_amount_raw: uint256
-        token_sold_amount_raw: uint256
+        token_bought_amount_raw: varchar
+        token_sold_amount_raw: varchar
         block_date: timestamp
 
 
