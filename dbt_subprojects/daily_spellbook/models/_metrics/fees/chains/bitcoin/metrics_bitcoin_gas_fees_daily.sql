@@ -43,6 +43,10 @@ with prices as (
 select
     '{{ blockchain }}' as blockchain
     , fees.block_date
+    , fees.address
+    , coalesce(od.name, 'Unknown') as name
+    , coalesce(od.primary_category, 'Uncategorized') as primary_category
+    , coalesce(od.country_name, 'Unknown') as hq_country
     , (fees.daily_fee * prices.price) as gas_fees_usd
 from
     bitcoin_fees as fees
