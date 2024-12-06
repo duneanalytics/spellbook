@@ -3,7 +3,18 @@
         schema = 'lifi',
         alias = 'transfers',
         materialized = 'view',
-        contributor = 'lequangphu'
+        post_hook='{{ expose_spells(\'[
+                                        "arbitrum"
+                                        , "avalanche_c"
+                                        , "bnb"
+                                        , "ethereum"
+                                        , "fantom"
+                                        , "gnosis"
+                                        , "zksync"
+                                    ]\',
+                                    "project",
+                                    "lifi",
+                                    \'["lequangphu"]\') }}'
     )
 }}
 
