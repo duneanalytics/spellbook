@@ -21,7 +21,7 @@ with fees as (
         {{ source('gas', 'fees') }}
     where
         blockchain = '{{ blockchain }}'
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
@@ -39,7 +39,7 @@ with fees as (
         {{ source('gas_solana', 'vote_fees') }}
     where
         1 = 1
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
