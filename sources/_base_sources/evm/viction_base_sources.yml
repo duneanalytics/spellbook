@@ -1,0 +1,528 @@
+version: 2
+
+sources:
+  - name: viction
+    description: "Raw data from the Viction blockchain"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: blocks
+        meta:
+          docs_slug: "/evm/viction/raw/blocks"
+          short_description: "The `viction.blocks` table contains block-level data for the Viction blockchain."
+        description: '{{ doc("viction_blocks_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when this block was added to the chain"
+            data_type: timestamp
+          - name: block_number
+            description: "The block height or block number"
+            data_type: bigint
+          - name: block_hash
+            description: "The unique hash of this block"
+            data_type: varbinary
+          - name: parent_hash
+            description: "The hash of the parent block"
+            data_type: varbinary
+          - name: gas_limit
+            description: "The maximum amount of gas that could be used in this block"
+            data_type: bigint
+          - name: gas_used
+            description: "The actual amount of gas used in this block"
+            data_type: bigint
+          - name: miner
+            description: "The address of the miner who mined this block"
+            data_type: varbinary
+          - name: nonce
+            description: "A random value used in block creation"
+            data_type: varbinary
+          - name: difficulty
+            description: "The mining difficulty at this block"
+            data_type: uint256
+          - name: size
+            description: "The size of this block in bytes"
+            data_type: bigint
+          - name: base_fee_per_gas
+            description: "The base fee per gas in this block (post EIP-1559)"
+            data_type: uint256
+
+      - name: transactions
+        meta:
+          docs_slug: "/evm/viction/raw/transactions"
+          short_description: "The `viction.transactions` table contains transaction-level data for the Viction blockchain."
+        description: '{{ doc("viction_transactions_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
+            data_type: timestamp
+          - name: block_number
+            description: "The block height or block number"
+            data_type: bigint
+          - name: block_hash
+            description: "The hash of the block containing this transaction"
+            data_type: varbinary
+          - name: hash
+            description: "The unique hash of this transaction"
+            data_type: varbinary
+          - name: from
+            description: "The address initiating this transaction"
+            data_type: varbinary
+          - name: to
+            description: "The address receiving this transaction"
+            data_type: varbinary
+          - name: success
+            description: "Whether this transaction was successful"
+            data_type: bool
+          - name: value
+            description: "The amount of native currency (VIC) transferred"
+            data_type: uint256
+          - name: gas_limit
+            description: "The maximum amount of gas that could be used in this transaction"
+            data_type: bigint
+          - name: gas_used
+            description: "The actual amount of gas used in this transaction"
+            data_type: bigint
+          - name: gas_price
+            description: "The price of gas (in wei) for this transaction"
+            data_type: uint256
+          - name: nonce
+            description: "The transaction count from this address"
+            data_type: bigint
+          - name: index
+            description: "The index position of this transaction in the block"
+            data_type: bigint
+          - name: type
+            description: "The transaction type"
+            data_type: string
+
+      - name: traces
+        meta:
+          docs_slug: "/evm/viction/raw/traces"
+          short_description: "The `viction.traces` table contains internal transaction traces for the Viction blockchain."
+        description: '{{ doc("viction_traces_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this trace was added to the chain"
+            data_type: timestamp
+          - name: block_number
+            description: "The block height or block number"
+            data_type: bigint
+          - name: block_hash
+            description: "The hash of the block containing this trace"
+            data_type: varbinary
+          - name: tx_hash
+            description: "The hash of the transaction containing this trace"
+            data_type: varbinary
+          - name: from
+            description: "The address initiating this internal transaction"
+            data_type: varbinary
+          - name: to
+            description: "The address receiving this internal transaction"
+            data_type: varbinary
+          - name: success
+            description: "Whether this trace was successful"
+            data_type: bool
+          - name: value
+            description: "The amount of native currency (VIC) transferred"
+            data_type: uint256
+          - name: gas_limit
+            description: "The maximum amount of gas that could be used in this trace"
+            data_type: bigint
+          - name: gas_used
+            description: "The actual amount of gas used in this trace"
+            data_type: bigint
+          - name: tx_index
+            description: "The index position of the parent transaction in the block"
+            data_type: bigint
+          - name: trace_address
+            description: "The trace address array indicating the location in the call trace tree"
+            data_type: array(bigint)
+          - name: sub_traces
+            description: "The number of sub-traces"
+            data_type: bigint
+          - name: type
+            description: "The trace type"
+            data_type: string
+          - name: address
+            description: "The address of the called contract"
+            data_type: varbinary
+          - name: code
+            description: "The contract code if this trace creates a contract"
+            data_type: string
+          - name: call_type
+            description: "The type of call made to the contract"
+            data_type: string
+          - name: input
+            description: "The input data provided to the called contract"
+            data_type: string
+          - name: output
+            description: "The output data from the called contract"
+            data_type: string
+          - name: refund_address
+            description: "The address that receives the refund"
+            data_type: varbinary
+
+      - name: logs
+        meta:
+          docs_slug: "/evm/viction/raw/logs"
+          short_description: "The `viction.logs` table contains event logs emitted by smart contracts on the Viction blockchain."
+        description: '{{ doc("viction_logs_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this log was added to the chain"
+            data_type: timestamp
+          - name: block_number
+            description: "The block height or block number"
+            data_type: bigint
+          - name: block_hash
+            description: "The hash of the block containing this log"
+            data_type: varbinary
+          - name: tx_hash
+            description: "The hash of the transaction that created this log"
+            data_type: varbinary
+          - name: contract_address
+            description: "The address of the contract that generated this log"
+            data_type: varbinary
+          - name: topic0
+            description: "The first topic (typically the event signature)"
+            data_type: varbinary
+          - name: topic1
+            description: "The second topic (if any)"
+            data_type: varbinary
+          - name: topic2
+            description: "The third topic (if any)"
+            data_type: varbinary
+          - name: topic3
+            description: "The fourth topic (if any)"
+            data_type: varbinary
+          - name: data
+            description: "The data included in this log"
+            data_type: string
+          - name: tx_index
+            description: "The index position of the transaction in the block"
+            data_type: bigint
+          - name: index
+            description: "The index position of this log in the block"
+            data_type: bigint
+
+      - name: creation_traces
+        meta:
+          docs_slug: "/evm/viction/raw/creation_traces"
+          short_description: "The `viction.creation_traces` table contains information about contract creation events."
+        description: '{{ doc("viction_creation_traces_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this creation was added to the chain"
+            data_type: timestamp
+          - name: block_number
+            description: "The block height or block number"
+            data_type: bigint
+          - name: block_hash
+            description: "The hash of the block containing this creation trace"
+            data_type: varbinary
+          - name: tx_hash
+            description: "The hash of the transaction containing this creation trace"
+            data_type: varbinary
+          - name: from
+            description: "The address that created the contract"
+            data_type: varbinary
+          - name: to
+            description: "The address of the created contract"
+            data_type: varbinary
+          - name: success
+            description: "Whether the contract creation was successful"
+            data_type: bool
+          - name: value
+            description: "The amount of native currency (VIC) sent with the creation"
+            data_type: uint256
+          - name: gas_limit
+            description: "The maximum amount of gas that could be used in this creation"
+            data_type: bigint
+          - name: gas_used
+            description: "The actual amount of gas used in this creation"
+            data_type: bigint
+          - name: tx_index
+            description: "The index position of the transaction in the block"
+            data_type: bigint
+          - name: trace_address
+            description: "The trace address array indicating the location in the call trace tree"
+            data_type: array(bigint)
+          - name: sub_traces
+            description: "The number of sub-traces"
+            data_type: bigint
+          - name: init
+            description: "The constructor input data"
+            data_type: string
+          - name: created_contract_code
+            description: "The code of the created contract"
+            data_type: string
+
+  - name: erc20_viction
+    description: "Transfer events for ERC20 tokens on Viction blockchain"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: "/evm/viction/decoded/interfaces/erc20/evt_transfer"
+          short_description: "This table contains individual transfer events for ERC20 tokens on the Viction blockchain."
+        description: '{{ doc("erc20_viction_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+            data_type: varbinary
+          - name: from
+            description: "Address sending the tokens"
+            data_type: varbinary
+          - name: to
+            description: "Address receiving the tokens"
+            data_type: varbinary
+          - name: value
+            description: "Amount of tokens transferred"
+            data_type: uint256
+          - name: evt_tx_hash
+            description: "Transaction hash of the event"
+            data_type: varbinary
+          - name: evt_index
+            description: "Index of the event in the transaction"
+            data_type: bigint
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+            data_type: timestamp
+          - name: evt_block_number
+            description: "Block number containing this event"
+            data_type: bigint
+
+      - name: evt_approval
+        meta:
+          docs_slug: "/evm/viction/decoded/interfaces/erc20/evt_approval"
+          short_description: "The `viction.evt_approval` table contains approval events for ERC20 tokens on Viction."
+        description: '{{ doc("erc20_viction_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+            data_type: varbinary
+          - name: owner
+            description: "Address of the token owner"
+            data_type: varbinary
+          - name: spender
+            description: "Address being approved to spend tokens"
+            data_type: varbinary
+          - name: value
+            description: "Amount of tokens approved"
+            data_type: uint256
+          - name: evt_tx_hash
+            description: "Transaction hash of the event"
+            data_type: varbinary
+          - name: evt_index
+            description: "Index of the event in the transaction"
+            data_type: bigint
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+            data_type: timestamp
+          - name: evt_block_number
+            description: "Block number containing this event"
+            data_type: bigint
+
+  - name: erc1155_viction
+    description: "Events related to ERC1155 tokens on Viction blockchain"
+    tables:
+      - name: evt_transfersingle
+        meta:
+          docs_slug: "/evm/viction/decoded/interfaces/erc1155/evt_transfersingle"
+          short_description: "This table contains single transfer events for ERC1155 tokens on the Viction blockchain."
+        description: '{{ doc("erc1155_viction_evt_transfersingle_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+            data_type: varbinary
+          - name: operator
+            description: "Address that initiated the transfer"
+            data_type: varbinary
+          - name: from
+            description: "Address sending the tokens"
+            data_type: varbinary
+          - name: to
+            description: "Address receiving the tokens"
+            data_type: varbinary
+          - name: id
+            description: "ID of the token being transferred"
+            data_type: uint256
+          - name: value
+            description: "Amount of tokens transferred"
+            data_type: uint256
+          - name: evt_tx_hash
+            description: "Transaction hash of the event"
+            data_type: varbinary
+          - name: evt_index
+            description: "Index of the event in the transaction"
+            data_type: bigint
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+            data_type: timestamp
+          - name: evt_block_number
+            description: "Block number containing this event"
+            data_type: bigint
+
+      - name: evt_transferbatch
+        meta:
+          docs_slug: "/evm/viction/decoded/interfaces/erc1155/evt_transferbatch"
+          short_description: "This table contains batch transfer events for ERC1155 tokens on the Viction blockchain."
+        description: '{{ doc("erc1155_viction_evt_transferbatch_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Contract address of the ERC1155 token contract"
+            data_type: varbinary
+          - name: operator
+            description: "Address that initiated the transfer"
+            data_type: varbinary
+          - name: from
+            description: "Address sending the tokens"
+            data_type: varbinary
+          - name: to
+            description: "Address receiving the tokens"
+            data_type: varbinary
+          - name: ids
+            description: "Array of token IDs being transferred"
+            data_type: array(uint256)
+          - name: values
+            description: "Array of amounts being transferred"
+            data_type: array(uint256)
+          - name: evt_tx_hash
+            description: "Transaction hash of the event"
+            data_type: varbinary
+          - name: evt_index
+            description: "Index of the event in the transaction"
+            data_type: bigint
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+            data_type: timestamp
+          - name: evt_block_number
+            description: "Block number containing this event"
+            data_type: bigint
+
+      - name: evt_ApprovalForAll
+        meta:
+          docs_slug: "/evm/viction/decoded/interfaces/erc1155/evt_approvalforall"
+          short_description: "This table contains approval events for all tokens of an ERC1155 contract on the Viction blockchain."
+        description: '{{ doc("erc1155_viction_evt_approvalforall_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Viction address of the ERC1155 token contract"
+            data_type: varbinary
+          - name: owner
+            description: "Address of the token owner"
+            data_type: varbinary
+          - name: operator
+            description: "Address being approved to manage all tokens"
+            data_type: varbinary
+          - name: approved
+            description: "Whether approval is being granted or revoked"
+            data_type: bool
+          - name: evt_tx_hash
+            description: "Transaction hash of the event"
+            data_type: varbinary
+          - name: evt_index
+            description: "Index of the event in the transaction"
+            data_type: bigint
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+            data_type: timestamp
+          - name: evt_block_number
+            description: "Block number containing this event"
+            data_type: bigint
+
+  - name: erc721_viction
+    description: "Events related to ERC721 tokens on Viction blockchain"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: "/evm/viction/decoded/interfaces/erc721/evt_transfer"
+          short_description: "This table contains transfer events for ERC721 tokens on the Viction blockchain."
+        description: '{{ doc("erc721_viction_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Contract address of the ERC721 token contract"
+            data_type: varbinary
+          - name: from
+            description: "Address sending the token"
+            data_type: varbinary
+          - name: to
+            description: "Address receiving the token"
+            data_type: varbinary
+          - name: tokenId
+            description: "ID of the token being transferred"
+            data_type: uint256
+          - name: evt_tx_hash
+            description: "Transaction hash of the event"
+            data_type: varbinary
+          - name: evt_index
+            description: "Index of the event in the transaction"
+            data_type: bigint
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+            data_type: timestamp
+          - name: evt_block_number
+            description: "Block number containing this event"
+            data_type: bigint
+
+      - name: evt_Approval
+        meta:
+          docs_slug: "/evm/viction/decoded/interfaces/erc721/evt_approval"
+          short_description: "This table contains approval events for ERC721 tokens on the Viction blockchain."
+        description: '{{ doc("erc721_viction_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Contract address of the ERC721 token contract"
+            data_type: varbinary
+          - name: owner
+            description: "Address of the token owner"
+            data_type: varbinary
+          - name: approved
+            description: "Address being approved to transfer the token"
+            data_type: varbinary
+          - name: tokenId
+            description: "ID of the token being approved"
+            data_type: uint256
+          - name: evt_tx_hash
+            description: "Transaction hash of the event"
+            data_type: varbinary
+          - name: evt_index
+            description: "Index of the event in the transaction"
+            data_type: bigint
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+            data_type: timestamp
+          - name: evt_block_number
+            description: "Block number containing this event"
+            data_type: bigint
+
+      - name: evt_ApprovalForAll
+        meta:
+          docs_slug: "/evm/viction/decoded/interfaces/erc721/evt_approvalforall"
+          short_description: "This table contains approval events for all tokens of an ERC721 contract on the Viction blockchain."
+        description: '{{ doc("erc721_viction_evt_approvalforall_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+            data_type: varbinary
+          - name: owner
+            description: "Address of the token owner"
+            data_type: varbinary
+          - name: operator
+            description: "Address being approved to manage all tokens"
+            data_type: varbinary
+          - name: approved
+            description: "Whether approval is being granted or revoked"
+            data_type: bool
+          - name: evt_tx_hash
+            description: "Transaction hash of the event"
+            data_type: varbinary
+          - name: evt_index
+            description: "Index of the event in the transaction"
+            data_type: bigint
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+            data_type: timestamp
+          - name: evt_block_number
+            description: "Block number containing this event"
+            data_type: bigint

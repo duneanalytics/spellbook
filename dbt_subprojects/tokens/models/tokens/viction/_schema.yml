@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: tokens_viction_erc20
+    meta:
+      blockchain: viction
+      sector: tokens
+      contributors: hosuke
+    config:
+      tags: ['tokens', 'viction', 'erc20']
+    description: >
+        Viction ERC20 tokens
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+    columns:
+      - name: contract_address
+        description: "ERC20 Token's contract address"
+      - name: symbol
+        description: "ERC20 Token's symbol"
+      - name: decimals
+        description: "ERC20 Token's number of decimals"
