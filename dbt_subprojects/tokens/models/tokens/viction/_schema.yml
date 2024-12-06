@@ -10,7 +10,7 @@ models:
       tags: ['tokens', 'viction', 'erc20']
     description: >
         Viction ERC20 tokens
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - contract_address
