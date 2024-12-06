@@ -4521,6 +4521,7 @@ seeds:
         blockchain: varchar
         project: varchar
         version: varchar
+        project_contact_address: varchar
         tx_hash: varchar  
         evt_index: bigint 
         block_number: bigint 
