@@ -283,33 +283,7 @@ sources:
           - name: function_name
             description: "The name of the called function"
             data_type: varchar
-      - name: creation_traces
-        meta:
-          docs_slug: "/evm/viction/raw/creation_traces"
-          short_description: "The `viction.creation_traces` table contains information about contract creation events."
-        description: '{{ doc("viction_creation_traces_doc") }}'
-        columns:
-          - name: block_time
-            description: "The exact UTC timestamp when the block containing this creation was added to the chain"
-            data_type: timestamp
-          - name: block_number
-            description: "The block height or block number"
-            data_type: bigint
-          - name: tx_hash
-            description: "The hash of the transaction containing this creation trace"
-            data_type: varbinary
-          - name: address
-            description: "The address of the created contract"
-            data_type: varbinary
-          - name: from
-            description: "The address that created the contract"
-            data_type: varbinary
-          - name: code
-            description: "The code of the created contract"
-            data_type: varbinary
-          - name: block_month
-            description: "The month of the block containing this creation trace"
-            data_type: date
+
       - name: logs
         meta:
           docs_slug: "/evm/viction/raw/logs"
@@ -403,6 +377,7 @@ sources:
           - name: event_name
             description: "The name of the event"
             data_type: varchar
+
       - name: creation_traces
         meta:
           docs_slug: "/evm/viction/raw/creation_traces"
