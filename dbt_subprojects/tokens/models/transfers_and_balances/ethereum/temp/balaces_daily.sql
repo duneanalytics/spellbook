@@ -7,4 +7,4 @@
 
 
 select * from {{ref('tokens_ethereum_balances_daily')}}
-where block_time > now() - interval '30' day
+where day > now() - interval '30' day
