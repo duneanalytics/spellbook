@@ -73,7 +73,7 @@ from combined_fees as fees
 left join
     {{ source('labels', 'owner_addresses') }} as oa
     on fees.blockchain = oa.blockchain
-    and fees.tx_from = oa.address
+    and fees.address = oa.address
 left join
     {{ source('labels', 'owner_details') }} as od
     on oa.owner_key = od.owner_key
