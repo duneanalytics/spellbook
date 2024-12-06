@@ -74,6 +74,7 @@
     ,'tokens_bob': {'blockchain': 'bob', 'model': ref('tokens_bob_erc20')}
     ,'tokens_flare': {'blockchain': 'flare', 'model': ref('tokens_flare_erc20')}
     ,'tokens_boba': {'blockchain': 'boba', 'model': ref('tokens_boba_erc20')}
+    ,'tokens_viction': {'blockchain': 'viction', 'model': ref('tokens_viction_erc20')}
 } %}
 
 with automated_source as (
