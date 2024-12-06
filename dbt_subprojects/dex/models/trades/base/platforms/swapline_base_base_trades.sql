@@ -33,7 +33,7 @@ pair_creation_events AS (
         t.tokenX AS token_sold_address
     FROM {{ source('swapline_base', 'LBFactory_evt_LBPairCreated') }} t
 )
-
+-- //added comment
 SELECT DISTINCT
     'base' AS blockchain,
     'swapline' AS project,
