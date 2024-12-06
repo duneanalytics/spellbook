@@ -1,10 +1,12 @@
+{% set blockchain = 'bitcoin' %}
+
 {{ config(
-        schema = 'metrics_bitcoin'
+        schema = 'metrics_' + blockchain
         , alias = 'gas_fees_daily'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
-        , unique_key = ['blockchain', 'block_date']
+        , unique_key = ['blockchain', 'block_date', 'address']
         , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
         )
 }}
@@ -25,9 +27,10 @@ with prices as (
 , bitcoin_fees as (
         select
             date as block_date
-            , sum(total_fees) as daily_fee
+            , input[1][6][1] as address
+            , sum(fee) as daily_fee
         from
-            {{ source('bitcoin', 'blocks') }}
+            {{ source(blockchain, 'transactions') }}
         where
             date < cast(date_trunc('day', now()) as date) --exclude current day to match prices.usd_daily
             {% if is_incremental() %}
@@ -35,12 +38,20 @@ with prices as (
             {% endif %}
         group by
             date
+            , input[1][6][1]
 )
 select
-    'bitcoin' as blockchain
-    , block_date
-    , (daily_fee * price) as gas_fees_usd
+    '{{ blockchain }}' as blockchain
+    , fees.block_date
+    , (fees.daily_fee * prices.price) as gas_fees_usd
 from
-    bitcoin_fees
+    bitcoin_fees as fees
+left join
+    {{ source('labels', 'owner_addresses') }} as oa
+    on oa.blockchain = '{{ blockchain }}'
+    and fees.address = oa.address
+left join
+    {{ source('labels', 'owner_details') }} as od
+    on oa.owner_key = od.owner_key
 inner join prices
-    on block_date = day
+    on fees.block_date = prices.day
