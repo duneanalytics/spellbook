@@ -34,6 +34,7 @@ pair_creation_events AS (
     FROM {{ source('swapline_base', 'LBFactory_evt_LBPairCreated') }} t
 )
 -- //added comment
+-- //added comment
 SELECT DISTINCT
     'base' AS blockchain,
     'swapline' AS project,
@@ -49,4 +50,4 @@ SELECT DISTINCT
 FROM swap_events AS swap
 LEFT JOIN pair_creation_events AS pair
     ON swap.tx_hash = pair.tx_hash
-    AND swap.evt_index = pair.evt_index;
+    AND swap.evt_index = pair.evt_index
