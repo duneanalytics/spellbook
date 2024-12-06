@@ -147,8 +147,9 @@ models:
       - &output
         name: output
         description: "Output data"
-
- - name: safe_linea_balances
+        
+        
+  - name: safe_linea_balances
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
