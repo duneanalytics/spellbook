@@ -1,6 +1,6 @@
 {{ config(
         schema = 'temp',
-        alias = 'balances_raw',
+        alias = 'balances_daily',
         materialized = 'table'
         )
 }}
