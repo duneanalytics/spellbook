@@ -22,7 +22,7 @@ WITH swap_events AS (
         t.amountsIn AS token_sold_amount_raw
     FROM {{ source('swapline_base', 'LBPair_evt_Swap') }} t
 ),
-
+-- //added comment
 pair_creation_events AS (
     SELECT
         t.evt_tx_hash AS tx_hash,
