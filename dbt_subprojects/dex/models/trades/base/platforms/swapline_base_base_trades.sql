@@ -37,6 +37,8 @@ SELECT DISTINCT
     'swapline' AS project,
     '1' AS version,
     swap.block_time AS block_time,
+    CAST(date_trunc('month', swap.block_time) AS date) AS block_month,
+    CAST(date_trunc('day', swap.block_time) AS date) AS block_date,
     swap.tx_hash,
     swap.evt_index,
     COALESCE(swap.token_bought_address, pair.token_bought_address) AS token_bought_address,
