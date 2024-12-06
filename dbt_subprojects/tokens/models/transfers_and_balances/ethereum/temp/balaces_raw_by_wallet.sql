@@ -10,5 +10,5 @@
 select
 *
 ,varbinary_substring(address, 0,2) as address_partition
-from {{source('tokens_ethereum','balances_daily')}}
+from {{ref('tokens_ethereum_balances_daily')}}
 where block_time > now() - interval '30' day

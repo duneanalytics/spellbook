@@ -6,5 +6,5 @@
 }}
 
 
-select * from {{source('tokens_ethereum','balances_daily')}}
+select * from {{ref('tokens_ethereum_balances')}}
 where block_time > now() - interval '30' day
