@@ -1,6 +1,6 @@
 {{ config(
         schema = 'temp',
-        alias = 'balances_raw',
+        alias = 'balances_raw_by_wallet',
         materialized = 'table',
         partition_by = ['address_partition']
         )
