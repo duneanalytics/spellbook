@@ -1,17 +1,17 @@
 {{  config(
-        schema = 'cow_protocol_gnosis',
-        alias='trades',
-        materialized='incremental',
-        partition_by = ['block_month'],
-        unique_key = ['tx_hash', 'order_uid', 'evt_index'],
-        on_schema_change='sync_all_columns',
-        file_format ='delta',
-        incremental_strategy='merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        post_hook='{{ expose_spells(\'["gnosis"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha", "olgafetisova"]\') }}'
+    schema='cow_protocol_gnosis',
+    alias='trades',
+    materialized='incremental',
+    partition_by = ['block_month'],
+    unique_key = ['tx_hash', 'order_uid', 'evt_index'],
+    on_schema_change='sync_all_columns',
+    file_format ='delta',
+    incremental_strategy='merge',
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+    post_hook='{{ expose_spells(\'["gnosis"]\',
+                                "project",
+                                "cow_protocol",
+                                \'["bh2smith", "gentrexha", "olgafetisova"]\') }}'
     )
 }}
 
@@ -26,17 +26,17 @@ trades_with_prices AS (
            evt_block_number          as block_number,
            evt_tx_hash               as tx_hash,
            evt_index,
-           settlement.contract_address          as project_contract_address,
+           trade.contract_address    as project_contract_address,
            owner                     as trader,
            orderUid                  as order_uid,
            sellToken                 as sell_token,
            buyToken                  as buy_token,
-           (sellAmount - feeAmount)  as sell_amount,
+           sellAmount - feeAmount    as sell_amount,
            buyAmount                 as buy_amount,
            feeAmount                 as fee_amount,
            ps.price                  as sell_price,
            pb.price                  as buy_price
-    FROM {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Trade') }} settlement
+    FROM {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Trade') }} trade
              LEFT OUTER JOIN {{ source('prices', 'usd') }} as ps
                              ON sellToken = ps.contract_address
                                  AND ps.minute = date_trunc('minute', evt_block_time)
@@ -78,7 +78,7 @@ trades_with_token_units as (
                END)                          as sell_token,
            buy_token                         as buy_token_address,
            (CASE
-                WHEN tb.symbol IS NULL THEN cast(buy_token AS varchar)
+                WHEN tb.symbol IS NULL THEN cast(buy_token as varchar)
                 WHEN buy_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 'xDAI'
                 ELSE tb.symbol
                END)                          as buy_token,
@@ -157,6 +157,25 @@ uid_to_app_id as (
       i = j
 ),
 
+eth_flow_senders as (
+    select
+        sender,
+        bytearray_concat(
+            bytearray_concat(
+                output_orderHash,
+                bytearray_substring(event.contract_address, 1, 20)
+            ),
+            0xffffffff
+        ) AS order_uid
+    from {{ source('cow_protocol_gnosis', 'CoWSwapEthFlow_evt_OrderPlacement') }} event
+    inner join {{ source('cow_protocol_gnosis', 'CoWSwapEthFlow_call_createOrder') }} call
+        on call_block_number = evt_block_number
+        and call_tx_hash = evt_tx_hash
+    {% if is_incremental() %}
+    where {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
+),
+
 valued_trades as (
     SELECT block_date,
            block_month,
@@ -167,8 +186,9 @@ valued_trades as (
            ARRAY[-1] as trace_address,
            project_contract_address,
            trades.order_uid,
-           trader,
-           sell_token_address,
+           -- ETH Flow orders have trader = sender of orderCreation.
+           case when sender is not null then sender else trader end as trader,
+           case when sender is not null then 'xDAI' else sell_token end as sell_token,
            sell_token,
            buy_token_address,
            buy_token,
@@ -227,11 +247,12 @@ valued_trades as (
     JOIN uid_to_app_id
         ON uid = trades.order_uid
         AND hash=tx_hash
+    LEFT OUTER JOIN eth_flow_senders efs
+            ON trades.order_uid = efs.order_uid
 )
 
-select
-    *,
-    -- Relative surplus (in %) is the difference between limit price and executed price as a ratio of the limit price.
-    -- Absolute surplus (in USD) is relative surplus multiplied with the value of the trade
-    usd_value * (atoms_bought * limit_sell_amount - atoms_sold * limit_buy_amount) / (atoms_bought * limit_sell_amount) as surplus_usd
+select *,
+  -- Relative surplus (in %) is the difference between limit price and executed price as a ratio of the limit price.
+  -- Absolute surplus (in USD) is relative surplus multiplied with the value of the trade
+  usd_value * (atoms_bought * limit_sell_amount - atoms_sold * limit_buy_amount) / (atoms_bought * limit_sell_amount) as surplus_usd
 from valued_trades
