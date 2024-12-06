@@ -36,7 +36,7 @@ SELECT DISTINCT
     'base' AS blockchain,
     'swapline' AS project,
     '1' AS version,
-    swap.block_time AS block_date,
+    swap.block_time AS block_time,
     swap.tx_hash,
     swap.evt_index,
     COALESCE(swap.token_bought_address, pair.token_bought_address) AS token_bought_address,
