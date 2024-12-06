@@ -283,7 +283,6 @@ sources:
           - name: function_name
             description: "The name of the called function"
             data_type: varchar
-
       - name: logs
         meta:
           docs_slug: "/evm/viction/raw/logs"
@@ -377,7 +376,6 @@ sources:
           - name: event_name
             description: "The name of the event"
             data_type: varchar
-
       - name: creation_traces
         meta:
           docs_slug: "/evm/viction/raw/creation_traces"
@@ -405,99 +403,6 @@ sources:
           - name: block_month
             description: "The month of the block containing this creation trace"
             data_type: date
-      - name: logs
-        meta:
-          docs_slug: "/evm/viction/raw/logs"
-          short_description: "The `viction.logs` table contains event logs emitted by smart contracts on the Viction blockchain."
-        description: '{{ doc("viction_logs_doc") }}'
-        columns:
-          - name: block_time
-            description: "The exact UTC timestamp when the block containing this log was added to the chain"
-            data_type: timestamp
-          - name: block_number
-            description: "The block height or block number"
-            data_type: bigint
-          - name: block_hash
-            description: "The hash of the block containing this log"
-            data_type: varbinary
-          - name: contract_address
-            description: "The address of the contract that generated this log"
-            data_type: varbinary
-          - name: topic0
-            description: "The first topic (typically the event signature)"
-            data_type: varbinary
-          - name: topic1
-            description: "The second topic (if any)"
-            data_type: varbinary
-          - name: topic2
-            description: "The third topic (if any)"
-            data_type: varbinary
-          - name: topic3
-            description: "The fourth topic (if any)"
-            data_type: varbinary
-          - name: data
-            description: "The data included in this log"
-            data_type: varbinary
-          - name: tx_hash
-            description: "The hash of the transaction that created this log"
-            data_type: varbinary
-          - name: index
-            description: "The index position of this log in the block"
-            data_type: integer
-          - name: tx_index
-            description: "The index position of the transaction in the block"
-            data_type: integer
-          - name: block_date
-            description: "The UTC date of the block containing this log"
-            data_type: date
-          - name: tx_from
-            description: "The address that sent the transaction"
-            data_type: varbinary
-          - name: tx_to
-            description: "The address that received the transaction"
-            data_type: varbinary
-      - name: logs_decoded
-        meta:
-          docs_slug: "/evm/viction/decoded/logs"
-          short_description: "The `viction.logs_decoded` table contains decoded event logs from the Viction blockchain."
-        description: '{{ doc("viction_logs_decoded_doc") }}'
-        columns:
-          - name: block_date
-            description: "The UTC date of the block containing this log"
-            data_type: date
-          - name: block_time
-            description: "The exact UTC timestamp when the block containing this log was added to the chain"
-            data_type: timestamp
-          - name: block_number
-            description: "The block height or block number"
-            data_type: bigint
-          - name: namespace
-            description: "The namespace of the contract"
-            data_type: varchar
-          - name: contract_name
-            description: "The name of the contract"
-            data_type: varchar
-          - name: contract_address
-            description: "The address of the contract that generated this log"
-            data_type: varbinary
-          - name: tx_hash
-            description: "The hash of the transaction that created this log"
-            data_type: varbinary
-          - name: tx_from
-            description: "The address that sent the transaction"
-            data_type: varbinary
-          - name: tx_to
-            description: "The address that received the transaction"
-            data_type: varbinary
-          - name: index
-            description: "The index position of this log in the block"
-            data_type: integer
-          - name: signature
-            description: "The event signature"
-            data_type: varbinary
-          - name: event_name
-            description: "The name of the event"
-            data_type: varchar
 
   - name: erc20_viction
     description: "Transfer events for ERC20 tokens on Viction blockchain"
