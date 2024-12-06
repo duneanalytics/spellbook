@@ -43,7 +43,6 @@ SELECT DISTINCT
     swap.evt_index,
     COALESCE(swap.token_bought_address, pair.token_bought_address) AS token_bought_address,
     COALESCE(swap.token_sold_address, pair.token_sold_address) AS token_sold_address,
-    DATE_TRUNC('month', swap.block_time) AS block_month,
     swap.block_number,
     swap.token_bought_amount_raw,
     swap.token_sold_amount_raw
