@@ -13,3 +13,4 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+            - address
