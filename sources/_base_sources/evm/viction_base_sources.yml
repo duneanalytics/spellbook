@@ -2,16 +2,17 @@ version: 2
 
 sources:
   - name: viction
-    description: "Raw data from the Viction blockchain"
+    description: "Viction blockchain data"
     freshness:
       warn_after: { count: 12, period: hour }
       error_after: { count: 24, period: hour }
     tables:
       - name: blocks
+        loaded_at_field: block_time
         meta:
           docs_slug: "/evm/viction/raw/blocks"
           short_description: "The `viction.blocks` table contains block-level data for the Viction blockchain."
-        description: '{{ doc("viction_blocks_doc") }}'
+        description: "Block-level data for the Viction blockchain"
         columns:
           - name: time
             description: "The exact UTC timestamp when this block was added to the chain"
@@ -62,10 +63,11 @@ sources:
             description: "The UTC date of this block"
             data_type: date
       - name: transactions
+        loaded_at_field: block_time
         meta:
           docs_slug: "/evm/viction/raw/transactions"
           short_description: "The `viction.transactions` table contains transaction-level data for the Viction blockchain."
-        description: '{{ doc("viction_transactions_doc") }}'
+        description: "Transaction-level data for the Viction blockchain"
         columns:
           - name: block_time
             description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
@@ -158,10 +160,11 @@ sources:
             description: "The L1 batch transaction index (for L2 chains)"
             data_type: bigint
       - name: traces
+        loaded_at_field: block_time
         meta:
           docs_slug: "/evm/viction/raw/traces"
           short_description: "The `viction.traces` table contains internal transaction traces for the Viction blockchain."
-        description: '{{ doc("viction_traces_doc") }}'
+        description: "Internal transaction traces for the Viction blockchain"
         columns:
           - name: block_time
             description: "The exact UTC timestamp when the block containing this trace was added to the chain"
@@ -242,10 +245,11 @@ sources:
             description: "The UTC date of the block containing this trace"
             data_type: date
       - name: traces_decoded
+        loaded_at_field: block_time
         meta:
           docs_slug: "/evm/viction/decoded/traces"
           short_description: "The `viction.traces_decoded` table contains decoded internal transaction traces for the Viction blockchain."
-        description: '{{ doc("viction_traces_decoded_doc") }}'
+        description: "Decoded internal transaction traces for the Viction blockchain"
         columns:
           - name: block_date
             description: "The UTC date of the block containing this trace"
@@ -284,10 +288,11 @@ sources:
             description: "The name of the called function"
             data_type: varchar
       - name: logs
+        loaded_at_field: block_time
         meta:
           docs_slug: "/evm/viction/raw/logs"
           short_description: "The `viction.logs` table contains event logs emitted by smart contracts on the Viction blockchain."
-        description: '{{ doc("viction_logs_doc") }}'
+        description: "Event logs emitted by smart contracts on the Viction blockchain"
         columns:
           - name: block_time
             description: "The exact UTC timestamp when the block containing this log was added to the chain"
@@ -335,10 +340,11 @@ sources:
             description: "The address that received the transaction"
             data_type: varbinary
       - name: logs_decoded
+        loaded_at_field: block_time
         meta:
           docs_slug: "/evm/viction/decoded/logs"
           short_description: "The `viction.logs_decoded` table contains decoded event logs from the Viction blockchain."
-        description: '{{ doc("viction_logs_decoded_doc") }}'
+        description: "Decoded event logs from the Viction blockchain"
         columns:
           - name: block_date
             description: "The UTC date of the block containing this log"
@@ -377,10 +383,11 @@ sources:
             description: "The name of the event"
             data_type: varchar
       - name: creation_traces
+        loaded_at_field: block_time
         meta:
           docs_slug: "/evm/viction/raw/creation_traces"
           short_description: "The `viction.creation_traces` table contains information about contract creation events."
-        description: '{{ doc("viction_creation_traces_doc") }}'
+        description: "Information about contract creation events on the Viction blockchain"
         columns:
           - name: block_time
             description: "The exact UTC timestamp when the block containing this creation was added to the chain"
@@ -411,7 +418,7 @@ sources:
         meta:
           docs_slug: "/evm/viction/decoded/interfaces/erc20/evt_transfer"
           short_description: "This table contains individual transfer events for ERC20 tokens on the Viction blockchain."
-        description: '{{ doc("erc20_viction_evt_transfer_doc") }}'
+        description: "Individual transfer events for ERC20 tokens on the Viction blockchain"
         columns:
           - name: contract_address
             description: "Address of the ERC20 token contract"
@@ -442,7 +449,7 @@ sources:
         meta:
           docs_slug: "/evm/viction/decoded/interfaces/erc20/evt_approval"
           short_description: "The `viction.evt_approval` table contains approval events for ERC20 tokens on Viction."
-        description: '{{ doc("erc20_viction_evt_approval_doc") }}'
+        description: "Approval events for ERC20 tokens on Viction"
         columns:
           - name: contract_address
             description: "Address of the ERC20 token contract"
@@ -476,7 +483,7 @@ sources:
         meta:
           docs_slug: "/evm/viction/decoded/interfaces/erc1155/evt_transfersingle"
           short_description: "This table contains single transfer events for ERC1155 tokens on the Viction blockchain."
-        description: '{{ doc("erc1155_viction_evt_transfersingle_doc") }}'
+        description: "Single transfer events for ERC1155 tokens on the Viction blockchain"
         columns:
           - name: contract_address
             description: "Address of the ERC1155 token contract"
@@ -513,7 +520,7 @@ sources:
         meta:
           docs_slug: "/evm/viction/decoded/interfaces/erc1155/evt_transferbatch"
           short_description: "This table contains batch transfer events for ERC1155 tokens on the Viction blockchain."
-        description: '{{ doc("erc1155_viction_evt_transferbatch_doc") }}'
+        description: "Batch transfer events for ERC1155 tokens on the Viction blockchain"
         columns:
           - name: contract_address
             description: "Contract address of the ERC1155 token contract"
@@ -550,7 +557,7 @@ sources:
         meta:
           docs_slug: "/evm/viction/decoded/interfaces/erc1155/evt_approvalforall"
           short_description: "This table contains approval events for all tokens of an ERC1155 contract on the Viction blockchain."
-        description: '{{ doc("erc1155_viction_evt_approvalforall_doc") }}'
+        description: "Approval events for all tokens of an ERC1155 contract on the Viction blockchain"
         columns:
           - name: contract_address
             description: "Viction address of the ERC1155 token contract"
@@ -584,7 +591,7 @@ sources:
         meta:
           docs_slug: "/evm/viction/decoded/interfaces/erc721/evt_transfer"
           short_description: "This table contains transfer events for ERC721 tokens on the Viction blockchain."
-        description: '{{ doc("erc721_viction_evt_transfer_doc") }}'
+        description: "Transfer events for ERC721 tokens on the Viction blockchain"
         columns:
           - name: contract_address
             description: "Contract address of the ERC721 token contract"
@@ -615,7 +622,7 @@ sources:
         meta:
           docs_slug: "/evm/viction/decoded/interfaces/erc721/evt_approval"
           short_description: "This table contains approval events for ERC721 tokens on the Viction blockchain."
-        description: '{{ doc("erc721_viction_evt_approval_doc") }}'
+        description: "Approval events for ERC721 tokens on the Viction blockchain"
         columns:
           - name: contract_address
             description: "Contract address of the ERC721 token contract"
@@ -646,7 +653,7 @@ sources:
         meta:
           docs_slug: "/evm/viction/decoded/interfaces/erc721/evt_approvalforall"
           short_description: "This table contains approval events for all tokens of an ERC721 contract on the Viction blockchain."
-        description: '{{ doc("erc721_viction_evt_approvalforall_doc") }}'
+        description: "Approval events for all tokens of an ERC721 contract on the Viction blockchain"
         columns:
           - name: contract_address
             description: "Address of the ERC721 token contract"
