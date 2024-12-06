@@ -22,7 +22,6 @@ WITH swap_events AS (
         t.amountsIn AS token_sold_amount_raw
     FROM {{ source('swapline_base', 'LBPair_evt_Swap') }} t
 ),
--- //added comment
 pair_creation_events AS (
     SELECT
         t.evt_tx_hash AS tx_hash,
@@ -33,8 +32,6 @@ pair_creation_events AS (
         t.tokenX AS token_sold_address
     FROM {{ source('swapline_base', 'LBFactory_evt_LBPairCreated') }} t
 )
--- //added comment
--- //added comment
 SELECT DISTINCT
     'base' AS blockchain,
     'swapline' AS project,
@@ -44,7 +41,7 @@ SELECT DISTINCT
     swap.evt_index,
     COALESCE(swap.token_bought_address, pair.token_bought_address) AS token_bought_address,
     COALESCE(swap.token_sold_address, pair.token_sold_address) AS token_sold_address,
-    DATE_TRUNC('month', t.evt_block_time) AS block_month,
+    DATE_TRUNC('month', swap.block_time) AS block_month, -- Fixed reference to swap.block_time
     swap.block_number,
     swap.token_bought_amount_raw,
     swap.token_sold_amount_raw
