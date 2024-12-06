@@ -20,7 +20,7 @@ WITH swap_events AS (
         t.sender AS token_sold_address,
         t.amountsOut AS token_bought_amount_raw,
         t.amountsIn AS token_sold_amount_raw
-    FROM {{ source('swapline_base', 'Swap') }} t
+    FROM {{ source('swapline_base', 'LBPair_evt_Swap') }} t
 ),
 pair_creation_events AS (
     SELECT
@@ -30,7 +30,7 @@ pair_creation_events AS (
         t.evt_block_number AS block_number,
         t.tokenY AS token_bought_address,
         t.tokenX AS token_sold_address
-    FROM {{ source('swapline_base', 'LBPairCreated') }} t
+    FROM {{ source('swapline_base', 'LBFactory_evt_LBPairCreated') }} t
 )
 SELECT DISTINCT
     'base' AS blockchain,
