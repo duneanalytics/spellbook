@@ -26,18 +26,18 @@ with prices as (
 )
 , bitcoin_fees as (
         select
-            date as block_date
+            block_date
             , input[1][6][1] as address
             , sum(fee) as daily_fee
         from
             {{ source(blockchain, 'transactions') }}
         where
-            date < cast(date_trunc('day', now()) as date) --exclude current day to match prices.usd_daily
+            block_date < cast(date_trunc('day', now()) as date) --exclude current day to match prices.usd_daily
             {% if is_incremental() or true %}
-            and {{ incremental_predicate('date') }}
+            and {{ incremental_predicate('block_date') }}
             {% endif %}
         group by
-            date
+            block_date
             , input[1][6][1]
 )
 select
