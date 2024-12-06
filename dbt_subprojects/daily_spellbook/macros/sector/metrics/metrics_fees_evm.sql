@@ -6,7 +6,7 @@ select
     , fees.tx_from as address
     , coalesce(od.name, 'Unknown') as name
     , coalesce(od.primary_category, 'Uncategorized') as primary_category
-    , coalesce(od.country_name, 'Unknown') as country_name
+    , coalesce(od.country_name, 'Unknown') as hq_country
     , sum(fees.tx_fee_usd) as gas_fees_usd
 from
     {{ source('gas', 'fees') }} as fees
