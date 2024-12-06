@@ -148,7 +148,7 @@ models:
         name: output
         description: "Output data"
 
- - name: safe_arbitrum_balances
+ - name: safe_linea_balances
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -156,11 +156,11 @@ models:
             - address
             - token_address
     meta:
-      blockchain: arbitrum
+      blockchain: linea
       project: safe
       contributors: safeintern
     config:
-      tags: ['safe', 'arbitrum']
+      tags: ['safe', 'linea']
     description: “Safe addresses balances”
     columns:
       - name: day
