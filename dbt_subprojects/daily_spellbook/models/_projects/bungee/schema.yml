@@ -23,6 +23,8 @@ models:
         description: "Amount of tokens transferred"
       - name: token
         description: "Address of the transferred token"
+      - name: token_adjusted
+        description: "Adjusted token address (maps native token to wrapped version)"
       - name: toChainId
         description: "Destination chain ID"
       - name: bridgeName
@@ -35,6 +37,8 @@ models:
         description: "Additional transfer metadata"
       - name: source_chain
         description: "Source blockchain of the transfer"
+      - name: amount_usd
+        description: "USD value of the transferred amount at the time of transfer"
 
   - name: bungee_ethereum_bridges
     description: "Ethereum bridges data from Bungee's Socket Bridge"
@@ -95,3 +99,5 @@ models:
   - name: bungee_fantom_bridges
     description: "Fantom bridges data from Bungee's Socket Bridge"
     columns: *common_columns
+
+</```rewritten_file>
