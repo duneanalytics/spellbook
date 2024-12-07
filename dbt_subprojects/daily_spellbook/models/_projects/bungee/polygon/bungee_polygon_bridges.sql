@@ -18,7 +18,7 @@ tokens_mapped as (
     select
         *,
         case
-            when token = 0x0000000000000000000000000000000000000000
+            when token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
             then 0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270 -- WMATIC
             else token
         end as token_adjusted

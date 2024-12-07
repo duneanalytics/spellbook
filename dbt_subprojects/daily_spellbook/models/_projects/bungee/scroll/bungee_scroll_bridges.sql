@@ -18,7 +18,7 @@ tokens_mapped as (
     select
         *,
         case
-            when token = 0x0000000000000000000000000000000000000000
+            when token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
             then 0x5300000000000000000000000000000000000004 -- WETH on Scroll
             else token
         end as token_adjusted

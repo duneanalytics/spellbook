@@ -18,7 +18,7 @@ tokens_mapped as (
     select
         *,
         case
-            when token = 0x0000000000000000000000000000000000000000
+            when token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
             then 0x78c1b0c915c4faa5fffa6cabf0219da63d7f4cb8 -- WMNT
             else token
         end as token_adjusted

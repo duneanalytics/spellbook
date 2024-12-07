@@ -18,7 +18,7 @@ tokens_mapped as (
     select
         *,
         case
-            when token = 0x0000000000000000000000000000000000000000
+            when token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
             then 0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f -- WETH on Linea
             else token
         end as token_adjusted

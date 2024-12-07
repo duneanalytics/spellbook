@@ -18,7 +18,7 @@ tokens_mapped as (
     select
         *,
         case
-            when token = 0x0000000000000000000000000000000000000000
+            when token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
             then 0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9 -- WETH on zkEVM
             else token
         end as token_adjusted

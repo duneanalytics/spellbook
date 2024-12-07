@@ -18,7 +18,7 @@ tokens_mapped as (
     select
         *,
         case
-            when token = 0x0000000000000000000000000000000000000000
+            when token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
             then 0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7 -- WAVAX
             else token
         end as token_adjusted

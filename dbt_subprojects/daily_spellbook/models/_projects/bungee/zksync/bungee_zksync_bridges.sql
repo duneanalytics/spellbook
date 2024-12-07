@@ -18,7 +18,7 @@ tokens_mapped as (
     select
         *,
         case
-            when token = 0x0000000000000000000000000000000000000000
+            when token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
             then 0x5aea5775959fbc2557cc8789bc1bf90a239d9a91 -- WETH on zkSync
             else token
         end as token_adjusted

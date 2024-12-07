@@ -18,7 +18,7 @@ tokens_mapped as (
     select
         *,
         case
-            when token = 0x0000000000000000000000000000000000000000
+            when token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
             then 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d -- WXDAI
             else token
         end as token_adjusted
