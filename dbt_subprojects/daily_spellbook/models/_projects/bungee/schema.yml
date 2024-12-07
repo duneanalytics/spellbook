@@ -99,5 +99,3 @@ models:
   - name: bungee_fantom_bridges
     description: "Fantom bridges data from Bungee's Socket Bridge"
     columns: *common_columns
-
-</```rewritten_file>
