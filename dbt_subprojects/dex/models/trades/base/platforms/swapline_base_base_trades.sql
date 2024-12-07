@@ -19,8 +19,8 @@ WITH swap_events AS (
         t.evt_block_number AS block_number,
         t.to AS token_bought_address,
         t.sender AS token_sold_address,
-        t.amountsOut AS token_bought_amount_raw,
-        t.amountsIn AS token_sold_amount_raw
+        NULL AS token_bought_amount_raw, -- Set to NULL
+        NULL AS token_sold_amount_raw -- Set to NULL
     FROM {{ source('swapline_base', 'LBPair_evt_Swap') }} t
 ),
 pair_creation_events AS (
