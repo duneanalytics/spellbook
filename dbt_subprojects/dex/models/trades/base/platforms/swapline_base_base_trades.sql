@@ -18,9 +18,9 @@ WITH swap_events AS (
         t.evt_block_time AS block_time,
         t.evt_block_number AS block_number,
         t.to AS token_bought_address,
-        t.sender AS token_sold_address
-        -- CAST(NULL AS DECIMAL(38, 0)) AS token_bought_amount_raw, -- Explicitly cast to DECIMAL
-        -- CAST(NULL AS DECIMAL(38, 0)) AS token_sold_amount_raw -- Explicitly cast to DECIMAL
+        t.sender AS token_sold_address,
+        CAST(0 AS DECIMAL(38, 0)) AS token_bought_amount_raw, -- Fixed as 0
+        CAST(0 AS DECIMAL(38, 0)) AS token_sold_amount_raw -- Fixed as 0
     FROM {{ source('swapline_base', 'LBPair_evt_Swap') }} t
 ),
 pair_creation_events AS (
@@ -48,9 +48,9 @@ SELECT DISTINCT
     COALESCE(swap.token_sold_address, pair.token_sold_address) AS token_sold_address,
     CAST(NULL AS VARBINARY) AS taker,
     CAST(NULL AS VARBINARY) AS maker,
-    swap.block_number
-    -- swap.token_bought_amount_raw, -- This is now explicitly cast
-    -- swap.token_sold_amount_raw -- This is now explicitly cast
+    swap.block_number,
+    swap.token_bought_amount_raw, -- Fixed as 0 in swap_events
+    swap.token_sold_amount_raw -- Fixed as 0 in swap_events
 FROM swap_events AS swap
 LEFT JOIN pair_creation_events AS pair
     ON swap.tx_hash = pair.tx_hash
