@@ -454,7 +454,7 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('tirador_solana_trades_seed')
           blockchain: solana
-          
+
   - name: unibot_solana_bot_trades
     meta:
       blockchain: solana
@@ -498,7 +498,7 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('mev_x_solana_trades_seed')
           blockchain: solana
-          
+
   - name: alpha_dex_solana_bot_trades
     meta:
       blockchain: solana
@@ -578,7 +578,7 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('pinkpunk_solana_trades_seed')
           blockchain: solana
-          
+
   - name: falcon_solana_bot_trades
     meta:
       blockchain: solana
@@ -598,7 +598,7 @@ models:
             - outer_instruction_index
             - inner_instruction_index
       - check_bot_trades_seed:
-          seed_file: ref('falcon_solana_trades_seed') 
+          seed_file: ref('falcon_solana_trades_seed')
           blockchain: solana
 
   - name: bloom_solana_bot_trades
@@ -643,4 +643,26 @@ models:
             - inner_instruction_index
       - check_bot_trades_seed:
           seed_file: ref('autosnipe_solana_trades_seed')
+          blockchain: solana
+
+  - name: bitfoot_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: bitfoot
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "bitfoot", "trades"]
+    description: >
+      Bitfoot trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('bitfoot_solana_trades_seed')
           blockchain: solana

@@ -35,6 +35,7 @@
     , ref('looter_solana_bot_trades')
     , ref('wifbot_solana_bot_trades')
     , ref('autosnipe_solana_bot_trades')
+    , ref('bitfoot_solana_bot_trades')
 ] %}
 
 {% for bot in solana_trading_bot %}
