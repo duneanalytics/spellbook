@@ -50,30 +50,33 @@ WITH
             AND ((sp.call_is_inner = false AND tr_1.inner_instruction_index = 1)
                 OR (sp.call_is_inner = true AND tr_1.inner_instruction_index = sp.call_inner_instruction_index + 1))
             AND tr_1.token_version = 'spl_token'
-            {% if is_incremental() %}
-            AND {{incremental_predicate('tr_1.block_time')}}
-            {% else %}
-            AND tr_1.block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
-        --swap out can be either 2nd or 3rd transfer.
-        INNER JOIN {{ ref('tokens_solana_transfers') }} tr_2
+  
+        --     {% if is_incremental() %}
+        --     AND {{incremental_predicate('tr_1.block_time')}}
+        --     {% else %}
+        --     AND tr_1.block_time >= TIMESTAMP '{{project_start_date}}'
+        --     {% endif %}
+        -- --swap out can be either 2nd or 3rd transfer.
+  
+        -- INNER JOIN {{ ref('tokens_solana_transfers') }} tr_2
             ON tr_2.tx_id = sp.call_tx_id
             AND tr_2.outer_instruction_index = sp.call_outer_instruction_index
             AND ((sp.call_is_inner = false AND (tr_2.inner_instruction_index = 2 OR tr_2.inner_instruction_index = 3))
                 OR (sp.call_is_inner = true AND (tr_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR tr_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
                 )
             AND tr_2.token_version = 'spl_token'
-            {% if is_incremental() %}
-            AND {{incremental_predicate('tr_2.block_time')}}
-            {% else %}
-            AND tr_2.block_time >= TIMESTAMP '{{project_start_date}}'
-            {% endif %}
-        WHERE 1=1
-        {% if is_incremental() %}
-        AND {{incremental_predicate('sp.call_block_time')}}
-        {% else %}
-        AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
+  
+        --     {% if is_incremental() %}
+        --     AND {{incremental_predicate('tr_2.block_time')}}
+        --     {% else %}
+        --     AND tr_2.block_time >= TIMESTAMP '{{project_start_date}}'
+        --     {% endif %}
+        -- WHERE 1=1
+        -- {% if is_incremental() %}
+        -- AND {{incremental_predicate('sp.call_block_time')}}
+        -- {% else %}
+        -- AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'
+        -- {% endif %}
     )
 
 SELECT
@@ -99,4 +102,5 @@ SELECT
     , tb.inner_instruction_index
     , tb.tx_index
 FROM all_swaps tb
-WHERE first_transfer_out = 1
+
+--WHERE first_transfer_out = 1
