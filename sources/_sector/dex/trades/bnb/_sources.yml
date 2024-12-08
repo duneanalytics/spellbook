@@ -121,3 +121,7 @@ sources:
     tables:
       - name: ThugswapPair_evt_Swap
       - name: ThugswapFactory_evt_PairCreated
+  - name: akronswap_bnb
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
