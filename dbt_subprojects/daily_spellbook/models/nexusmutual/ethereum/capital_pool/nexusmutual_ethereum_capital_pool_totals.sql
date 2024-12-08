@@ -273,7 +273,7 @@ daily_reth_eth_prices as (
   select
     date_trunc('day', call_block_time) as block_date,
     avg(output_0 / 1e18) as avg_reth_eth_price
-  from rocketpool_ethereum.RocketTokenRETH_call_getExchangeRate
+  from {{ source('rocketpool_ethereum', 'RocketTokenRETH_call_getExchangeRate') }}
   where call_block_time >= timestamp '2023-04-18'
   group by 1
 ),
