@@ -577,3 +577,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('hyperjump_bnb_base_trades_seed')
+
+
+  - name: akronswap_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: akronswap
+      contributors: intensodefi
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'akronswap' ]
+    description: "akronswap base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('akronswap_bnb_base_trades_seed')
