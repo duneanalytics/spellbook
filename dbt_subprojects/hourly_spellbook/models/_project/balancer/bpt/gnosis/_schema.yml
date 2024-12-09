@@ -227,7 +227,7 @@ models:
       - *version
       - *decimals
       - *contract_address
-      - &bpt_price
+      - *bpt_price
 
   - name: balancer_v3_gnosis_bpt_supply
     meta:

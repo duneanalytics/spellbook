@@ -260,8 +260,6 @@ sources:
 
       - name: StablePoolFactory_evt_PoolCreated
 
-      - name: Vault_evt_PoolRegistered
-
       - name: Vault_evt_Swap
 
       - name: ProtocolFeeController_evt_ProtocolSwapFeeCollected
