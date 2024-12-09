@@ -55,7 +55,7 @@ Within models, such as uniswap v2, call macro code with [this approach](/dbt_sub
    - Macros with lists for for-loops in models, like [`all_evm_chains`](/dbt_macros/shared/all_evm_chains.sql).
 3. **Dune Team Specific Cases** (`dbt_macros/dune`)
    - Overriding dbt-trino core macros for Spellbook-specific scenarios.
-   - Backend database specific code in pre or post hooks for spell optimization.
+   - Backend database specific code in pre- or post-hooks for spell optimization.
 
 ## Future Developments
 
