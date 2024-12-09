@@ -12,7 +12,6 @@
 WITH wrap_unwrap AS(
         SELECT 
             evt_block_time,
-            underlyingToken, 
             wrappedToken,
             CAST(depositedUnderlying AS DOUBLE) / CAST(mintedShares AS DOUBLE) AS ratio
         FROM {{ source('balancer_v3_gnosis', 'Vault_evt_Wrap') }}
@@ -24,7 +23,6 @@ WITH wrap_unwrap AS(
 
         SELECT 
             evt_block_time,
-            underlyingToken,
             wrappedToken, 
             CAST(withdrawnUnderlying AS DOUBLE) / CAST(burnedShares AS DOUBLE) AS ratio
         FROM {{ source('balancer_v3_gnosis', 'Vault_evt_Unwrap') }}    
