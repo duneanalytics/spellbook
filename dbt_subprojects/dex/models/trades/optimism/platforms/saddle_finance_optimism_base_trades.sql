@@ -16,7 +16,7 @@ WITH dexs AS (
     WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
 )
-
+-- //compiled code added
 SELECT  
     'optimism' AS blockchain,
     'saddle_finance' AS project,
