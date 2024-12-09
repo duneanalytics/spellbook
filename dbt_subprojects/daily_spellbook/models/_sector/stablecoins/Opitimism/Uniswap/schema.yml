@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: op_token_balances
+    description: "Tracks OP token balances in Uniswap pools on Optimism."
+    meta:
+      blockchain: optimism
+      sector: DEX
+      project: uniswap
+      contributors: jason
+    config:
+      tags: ['optimism', 'op_token', 'balances', 'uniswap']
+    columns:
+      - name: pool_address
+        description: "Address of the Uniswap pool."
+      - name: token0
+        description: "Address of token0 in the pool."
+      - name: token1
+        description: "Address of token1 in the pool."
+      - name: fee_tier
+        description: "Fee tier for the Uniswap pool."
+      - name: creation_time
+        description: "Timestamp when the pool was created."
+      - name: op_balance
+        description: "Balance of OP token in the pool."
+      - name: snapshot_day
+        description: "Date of the balance snapshot."
