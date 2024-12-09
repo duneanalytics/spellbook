@@ -567,6 +567,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('swaap_optimism_base_trades_seed') 
           filter:
+            version: 2
 
   - name: saddle_finance_optimism_base_trades
     meta:
