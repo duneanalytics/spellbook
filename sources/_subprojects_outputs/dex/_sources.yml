@@ -40,6 +40,12 @@ sources:
   - name: balancer_v2_zkevm
     tables:
       - name: trades
+  - name: balancer_v3_ethereum
+    tables:
+      - name: trades
+  - name: balancer_v3_gnosis
+    tables:
+      - name: trades
   - name: balancer
     tables:
       - name: trades
@@ -57,6 +63,10 @@ sources:
       - name: balancer_v2_pools_polygon
       - name: balancer_v2_pools_zkevm
       - name: balancer_cowswap_amm_pools     
+      - name: balancer_v3_pools
+      - name: balancer_v3_pools_ethereum
+      - name: balancer_v3_pools_gnosis
+
   - name: uniswap_v3_optimism
     tables:
       - name: ovm1_pool_mapping
