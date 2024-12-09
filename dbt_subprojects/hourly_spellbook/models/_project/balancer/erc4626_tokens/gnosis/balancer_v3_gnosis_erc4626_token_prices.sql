@@ -42,7 +42,7 @@ WITH wrap_unwrap AS(
         p.decimals,
         ratio * price AS adjusted_price
     FROM wrap_unwrap w
-    JOIN {{ source('prices', 'usd') }} p w.underlyingToken = p.contract_address
+    JOIN {{ source('prices', 'usd') }} p ON w.underlyingToken = p.contract_address
     AND p.blockchain = 'gnosis'
     AND DATE_TRUNC('minute', w.evt_block_time) = DATE_TRUNC('minute', p.minute)
     )
