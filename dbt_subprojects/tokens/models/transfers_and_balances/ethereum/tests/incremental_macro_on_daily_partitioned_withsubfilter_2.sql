@@ -1,7 +1,7 @@
 {{
    config(
      schema = 'tests',
-     alias = 'macro_on_daily_partitioned_2',
+     alias = 'macro_on_daily_partitioned_withsubfilter_2',
      materialized = 'incremental',
      file_format = 'delta',
      incremental_strategy = 'merge',
