@@ -91,7 +91,7 @@ WITH curve AS (
         , evt_index
     FROM
         {{ model }}
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     WHERE
         {{ incremental_predicate('block_time') }}
     {% endif %}

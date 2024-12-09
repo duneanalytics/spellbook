@@ -64,7 +64,7 @@ with base_union as (
             {{ model }}
         WHERE
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not loop.last %}
