@@ -34,7 +34,7 @@ models:
       - name: underlying_token_decimals
         description: "Decimal precision of the underlying token."
 
-  - name: balancer_v3_erc4626_token_pricing
+  - name: balancer_v3_erc4626_token_prices
     meta:
       blockchain: ethereum, gnosis
       project: balancer
