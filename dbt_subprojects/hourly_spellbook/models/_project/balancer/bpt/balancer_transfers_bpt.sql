@@ -18,7 +18,7 @@
     ref('balancer_v2_polygon_transfers_bpt'),
     ref('balancer_v2_zkevm_transfers_bpt'),
     ref('balancer_v3_ethereum_transfers_bpt'),
-    ref('balancer_v3_gnosis_transfers_bpt'),    
+    ref('balancer_v3_gnosis_transfers_bpt')   
 ] %}
 
 SELECT *
