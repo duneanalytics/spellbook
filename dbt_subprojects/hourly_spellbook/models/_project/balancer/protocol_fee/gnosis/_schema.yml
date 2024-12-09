@@ -87,9 +87,7 @@ models:
       - *version
       - *blockchain
       - *pool_type        
-      - &fee_type
-        name: fee_type
-        description: "Labels whether fee comes from swaps or yield" 
+      - *fee_type
       - *token_address
       - *token_symbol
       - *token_amount_raw
