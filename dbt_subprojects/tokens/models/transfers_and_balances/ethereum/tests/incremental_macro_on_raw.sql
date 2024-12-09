@@ -1,6 +1,7 @@
 {{
    config(
      schema = 'tests',
+     tags = ['prod_exclude'],
      alias = 'macro_on_draw',
      materialized = 'incremental',
      file_format = 'delta',
