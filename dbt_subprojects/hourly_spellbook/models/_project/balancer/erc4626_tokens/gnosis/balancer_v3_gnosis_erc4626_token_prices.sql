@@ -37,10 +37,12 @@ WITH wrap_unwrap AS(
         w.evt_block_time,
         m.underlying_token,
         w.wrappedToken,
+        m.erc4626TokenSymbol,
+        m.underlyingTokenSymbol,
         p.decimals,
         ratio * price AS adjusted_price
     FROM wrap_unwrap w
-    JOIN {{ref('balancer_v3_ethereum_erc4626_token_mapping')}} m ON m.erc4626_token = w.wrappedToken
+    JOIN {{ref('balancer_v3_gnosis_erc4626_token_mapping')}} m ON m.erc4626_token = w.wrappedToken
     JOIN {{ source('prices', 'usd') }} p ON m.underlying_token = p.contract_address
     AND p.blockchain = 'gnosis'
     AND DATE_TRUNC('minute', w.evt_block_time) = DATE_TRUNC('minute', p.minute)
@@ -49,13 +51,12 @@ WITH wrap_unwrap AS(
 SELECT
     DATE_TRUNC('minute', p.evt_block_time) AS minute,
     'gnosis' AS blockchain,
-    p.wrappedToken AS wrapped_token,
-    p.underlying_token,
-    m.erc4626TokenSymbol AS erc4626_token_symbol,
-    m.underlyingTokenSymbol AS underlying_token_symbol,
-    p.decimals AS decimals,
+    wrappedToken AS wrapped_token,
+    underlying_token,
+    erc4626TokenSymbol AS erc4626_token_symbol,
+    underlyingTokenSymbol AS underlying_token_symbol,
+    decimals,
     APPROX_PERCENTILE(adjusted_price, 0.5) AS median_price,
     LEAD(DATE_TRUNC('day', p.evt_block_time), 1, NOW()) OVER (PARTITION BY p.underlyingToken ORDER BY p.evt_block_time) AS next_change
 FROM price_join p
-JOIN {{ref('balancer_v3_gnosis_erc4626_token_mapping')}} m ON m.underlying_token = p.underlyingToken
 GROUP BY 1, 2, 3, 4, 5, 6
