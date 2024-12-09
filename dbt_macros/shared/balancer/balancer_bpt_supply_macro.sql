@@ -170,7 +170,8 @@ WITH pool_labels AS (
         FROM  {{ ref(base_spells_namespace + '_transfers_bpt') }} t
         WHERE blockchain = '{{blockchain}}'   
         AND version = '{{version}}'
-        GROUP BY 1, 2)
+        GROUP BY 1, 2
+        ),
 
     -- Calculate token balances over time
     balances AS (
@@ -232,7 +233,6 @@ WITH pool_labels AS (
     FROM calendar c 
     LEFT JOIN balances b ON b.day <= c.day AND c.day < b.day_of_next_change
     LEFT JOIN joins_and_exits j ON c.day = j.block_date AND b.token = j.bpt
-    LEFT JOIN premints p ON b.token = p.bpt
     LEFT JOIN pool_labels l ON b.token = l.address
     GROUP BY 1, 2, 3, 4, 5
     HAVING SUM(b.supply + COALESCE(adelta, 0)) >= 0  --simple filter to remove outliers
