@@ -49,7 +49,7 @@ WITH wrap_unwrap AS(
     )
 
 SELECT
-    DATE_TRUNC('minute', p.evt_block_time) AS minute,
+    p.evt_block_time AS minute,
     'ethereum' AS blockchain,
     wrappedToken AS wrapped_token,
     underlying_token,
@@ -57,6 +57,6 @@ SELECT
     underlying_token_symbol,
     decimals,
     APPROX_PERCENTILE(adjusted_price, 0.5) AS median_price,
-    LEAD(DATE_TRUNC('day', p.evt_block_time), 1, NOW()) OVER (PARTITION BY wrappedToken ORDER BY DATE_TRUNC('minute', p.evt_block_time)) AS next_change
+    LEAD(DATE_TRUNC('day', p.evt_block_time), 1, NOW()) OVER (PARTITION BY wrappedToken ORDER BY p.evt_block_time) AS next_change
 FROM price_join p
 GROUP BY 1, 2, 3, 4, 5, 6, 7
