@@ -14,7 +14,7 @@ with safes as (
     select
         address,
         blockchain
-    from safe.ethereum_safes
+    from safe_ethereum.safes
     where blockchain = 'ethereum'
     limit 100000
 ),
