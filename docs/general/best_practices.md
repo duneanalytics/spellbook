@@ -15,7 +15,7 @@
 ## Incremental model setup
 - Make sure your unique key columns are *exactly* the same in the model config block, schema yml file, and seed match columns (where applicable)
 - There cannot be nulls in the unique key columns
-    - Be sure to double check key columns are correct or `COALESCE()` as needed on key column(s), otherwise the tests may fail on duplicates
+    - Be sure to double-check key columns are correct or `COALESCE()` as needed on key column(s), otherwise the tests may fail on duplicates
 
 ## 🪄 Use the built CI tables for testing 🪄
 
