@@ -17,7 +17,7 @@ WITH op_pools AS (
     fee AS fee_tier,
     evt_block_time AS creation_time
   FROM 
-    uniswap_v3_optimism.UniswapV3Factory_evt_PoolCreated
+    {{ source('uniswap_v3_optimism', 'UniswapV3Factory_evt_PoolCreated') }}
   WHERE 
     token0 = 0x4200000000000000000000000000000000000042
     OR token1 = 0x4200000000000000000000000000000000000042
@@ -28,7 +28,7 @@ filtered_balances AS (
     balance AS op_balance,
     day AS snapshot_day
   FROM 
-    tokens_optimism.balances_daily
+  {{ source('tokens_optimism', 'balances_daily') }}
   WHERE 
     token_address = 0x4200000000000000000000000000000000000042
 )
