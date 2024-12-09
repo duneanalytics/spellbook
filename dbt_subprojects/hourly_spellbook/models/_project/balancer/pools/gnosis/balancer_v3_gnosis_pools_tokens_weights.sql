@@ -14,7 +14,6 @@
 --
 WITH token_data AS (
         SELECT
-            evt_block_time,
             pool,
             ARRAY_AGG(json_extract_scalar(token, '$.token') ORDER BY token_index) AS tokens 
         FROM (
@@ -25,8 +24,8 @@ WITH token_data AS (
             FROM {{ source('balancer_v3_gnosis', 'Vault_evt_PoolRegistered') }}
         ) AS pool_data
         CROSS JOIN UNNEST(tokenConfig, token_index_array) AS t(token, token_index)
-        GROUP BY 1, 2 
-    )
+        GROUP BY 1
+    ),
 
 weighted_pool_factory AS (
     SELECT
@@ -55,9 +54,8 @@ normalized_weights AS (
 SELECT 
     'gnosis' AS blockchain, 
     '3' AS version,
-    r.pool_id, 
+    w.pool_id, 
     w.token_address, 
     w.normalized_weight 
 FROM normalized_weights w 
-LEFT JOIN registered r ON BYTEARRAY_SUBSTRING(r.pool_id,1,20) = w.pool_id
 WHERE w.pool_id IS NOT NULL
