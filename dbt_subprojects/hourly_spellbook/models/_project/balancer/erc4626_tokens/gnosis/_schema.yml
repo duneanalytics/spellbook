@@ -34,13 +34,13 @@ models:
       - name: underlying_token_decimals
         description: "Decimal precision of the underlying token."
 
-  - name: balancer_v3_gnosis_erc4626_token_pricing
+  - name: balancer_v3_gnosis_erc4626_token_prices
     meta:
       blockchain: gnosis
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['gnosis', 'static', 'token', 'pricing']
+      tags: ['gnosis', 'static', 'token', 'prices']
     description: >
       Pricing information for ERC4626 tokens on Gnosis. Prices are derived from the ratio of underlying tokens deposited or withdrawn to shares issued or burned, multiplied by the underlying token price.
     data_tests:

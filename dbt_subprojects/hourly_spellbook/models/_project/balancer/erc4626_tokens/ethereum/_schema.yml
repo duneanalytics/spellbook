@@ -30,13 +30,13 @@ models:
       - name: underlying_token_decimals
         description: "Decimal precision of the underlying token."
 
-  - name: balancer_v3_ethereum_erc4626_token_pricing
+  - name: balancer_v3_ethereum_erc4626_token_prices
     meta:
       blockchain: ethereum
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'static', 'token', 'pricing']
+      tags: ['ethereum', 'static', 'token', 'prices']
     description: >
       Pricing information for ERC4626 tokens on Ethereum. Prices are derived from the ratio of underlying tokens deposited or withdrawn to shares issued or burned, multiplied by the underlying token price.
     data_tests:
