@@ -164,7 +164,7 @@ WITH pool_labels AS (
         AND blockchain = '{{blockchain}}'
         LEFT JOIN prices p1 ON p1.day = b.day
         AND p1.token = b.token
-        LEFT JOIN gyro_prices p4 ON p4.token = b.token
+        LEFT JOIN gyro_prices p4 ON p4.token_address = b.token
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 

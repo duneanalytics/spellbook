@@ -127,7 +127,7 @@ WITH
         AND p2.token = b.token_address
         LEFT JOIN bpt_prices p3 ON p3.day = b.block_date
         AND p3.token = b.token_address
-        LEFT JOIN gyro_prices p4 ON p4.token = b.token_address
+        LEFT JOIN gyro_prices p4 ON p4.token_address = b.token_address
         WHERE b.token_address != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
     ),
 

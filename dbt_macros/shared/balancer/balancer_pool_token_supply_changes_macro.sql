@@ -63,7 +63,7 @@ WITH pool_labels AS (
         LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.poolId, 1, 20) = l.address
         WHERE tokenOut = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
         {% if is_incremental() %}
-        AND {{ incremental_predicate(s.evt_block_time) }}
+        AND {{ incremental_predicate('s.evt_block_time') }}
         {% endif %} 
 
     ),
@@ -86,7 +86,7 @@ WITH pool_labels AS (
         LEFT JOIN pool_labels l ON BYTEARRAY_SUBSTRING(s.poolId, 1, 20) = l.address
         WHERE tokenIn = BYTEARRAY_SUBSTRING(s.poolId, 1, 20)
         {% if is_incremental() %}
-        AND {{ incremental_predicate(s.evt_block_time) }}
+        AND {{ incremental_predicate('s.evt_block_time') }}
         {% endif %}      
     )
 
@@ -193,7 +193,7 @@ WITH pool_labels AS (
         LEFT JOIN pool_labels l ON pool = l.address
         WHERE tokenOut = pool
         {% if is_incremental() %}
-        AND {{ incremental_predicate(s.evt_block_time) }}
+        AND {{ incremental_predicate('s.evt_block_time') }}
         {% endif %} 
 
     ),
