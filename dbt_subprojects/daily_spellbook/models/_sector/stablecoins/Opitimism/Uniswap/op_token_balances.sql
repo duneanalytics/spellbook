@@ -43,4 +43,4 @@ SELECT
 FROM 
   op_pools p
 LEFT JOIN 
-  filtered_balances b ON p.pool_address = b.pool_address;
+  filtered_balances b ON p.pool_address = b.pool_address
