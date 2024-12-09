@@ -16,10 +16,8 @@ WITH token_swaps AS (
         evt_tx_to AS taker,
         sender AS token_sold_address,
         "to" AS token_bought_address,
-        -- CAST(FROM_BASE(HEX(amountsIn), 16) AS DECIMAL) AS token_sold_amount_raw, -- Convert amountsIn to numeric
-        -- CAST(FROM_BASE(HEX(amountsOut), 16) AS DECIMAL) AS token_bought_amount_raw, -- Convert amountsOut to numeric
-        CAST(FROM_BASE(HEX(amountsIn), 16) AS DECIMAL) / POWER(10, 18) AS token_sold_amount_raw,
-        CAST(FROM_BASE(HEX(amountsOut), 16) AS DECIMAL) / POWER(10, 18) AS token_bought_amount_raw,
+        amountsIn AS token_sold_amount_raw,
+        amountsOut AS token_bought_amount_raw,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         evt_index AS evt_index
