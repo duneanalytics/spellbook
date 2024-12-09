@@ -1,15 +1,16 @@
 {{
   config(
     schema = 'gmx_v2_arbitrum',
-    alias = 'order_frozen',
+    alias = 'open_interest_updated',
     materialized = 'incremental',
     unique_key = ['tx_hash', 'index'],
     incremental_strategy = 'merge'
-    )
+  )
 }}
 
-{%- set event_name = 'OrderFrozen' -%}
+{%- set event_name = 'OpenInterestUpdated' -%}
 {%- set blockchain_name = 'arbitrum' -%}
+
 
 WITH evt_data_1 AS (
     SELECT 
@@ -62,26 +63,12 @@ WITH evt_data_1 AS (
     SELECT
         tx_hash,
         index, 
-        json_query(data, 'lax $.bytes32Items' OMIT QUOTES) AS bytes32_items,
         json_query(data, 'lax $.addressItems' OMIT QUOTES) AS address_items,
-        json_query(data, 'lax $.bytesItems' OMIT QUOTES) AS bytes_items,
-        json_query(data, 'lax $.stringItems' OMIT QUOTES) AS string_items
-        
+        json_query(data, 'lax $.uintItems' OMIT QUOTES) AS uint_items,
+        json_query(data, 'lax $.intItems' OMIT QUOTES) AS int_items,
+        json_query(data, 'lax $.boolItems' OMIT QUOTES) AS bool_items
     FROM
         evt_data
-)
-
-, bytes32_items_parsed AS (
-    SELECT 
-        tx_hash,
-        index,
-        json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
-        json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
-    FROM 
-        parsed_data,
-        UNNEST(
-            CAST(json_extract(bytes32_items, '$.items') AS ARRAY(JSON))
-        ) AS t(item)
 )
 
 , address_items_parsed AS (
@@ -97,7 +84,7 @@ WITH evt_data_1 AS (
         ) AS t(item)
 )
 
-, bytes_items_parsed AS (
+, uint_items_parsed AS (
     SELECT 
         tx_hash,
         index,
@@ -106,11 +93,11 @@ WITH evt_data_1 AS (
     FROM 
         parsed_data,
         UNNEST(
-            CAST(json_extract(bytes_items, '$.items') AS ARRAY(JSON))
+            CAST(json_extract(uint_items, '$.items') AS ARRAY(JSON))
         ) AS t(item)
 )
 
-, string_items_parsed AS (
+, int_items_parsed AS (
     SELECT 
         tx_hash,
         index,
@@ -119,32 +106,46 @@ WITH evt_data_1 AS (
     FROM 
         parsed_data,
         UNNEST(
-            CAST(json_extract(string_items, '$.items') AS ARRAY(JSON))
+            CAST(json_extract(int_items, '$.items') AS ARRAY(JSON))
+        ) AS t(item)
+)
+
+, bool_items_parsed AS (
+    SELECT 
+        tx_hash,
+        index,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.key') AS key_name,
+        json_extract_scalar(CAST(item AS VARCHAR), '$.value') AS value
+    FROM 
+        parsed_data,
+        UNNEST(
+            CAST(json_extract(bool_items, '$.items') AS ARRAY(JSON))
         ) AS t(item)
 )
 
 , combined AS (
     SELECT *
-    FROM bytes32_items_parsed
+    FROM address_items_parsed
     UNION ALL      
     SELECT *
-    FROM address_items_parsed
+    FROM uint_items_parsed
     UNION ALL    
     SELECT *
-    FROM bytes_items_parsed
+    FROM int_items_parsed
     UNION ALL
     SELECT *
-    FROM string_items_parsed
+    FROM bool_items_parsed
 )
 
 , evt_data_parsed AS (
     SELECT
         tx_hash,
         index,
-        MAX(CASE WHEN key_name = 'key' THEN value END) AS key,
-        MAX(CASE WHEN key_name = 'account' THEN value END) AS account,
-        MAX(CASE WHEN key_name = 'reasonBytes' THEN value END) AS reason_bytes,
-        MAX(CASE WHEN key_name = 'reason' THEN value END) AS reason
+        MAX(CASE WHEN key_name = 'market' THEN value END) AS market,
+        MAX(CASE WHEN key_name = 'collateralToken' THEN value END) AS collateral_token,
+        MAX(CASE WHEN key_name = 'isLong' THEN value END) AS is_long,
+        MAX(CASE WHEN key_name = 'delta' THEN value END) AS delta,
+        MAX(CASE WHEN key_name = 'nextValue' THEN value END) AS next_value
     FROM
         combined
     GROUP BY tx_hash, index
@@ -162,11 +163,12 @@ WITH evt_data_1 AS (
         contract_address,
         event_name,
         msg_sender,
-        
-        from_hex(key) AS key,
-        from_hex(account) AS account,
-        from_hex(reason_bytes) AS reason_bytes,
-        reason
+
+        from_hex(market) AS market,
+        from_hex(collateral_token) AS collateral_token,
+        TRY_CAST(is_long AS BOOLEAN) AS is_long,
+        TRY_CAST(delta AS DOUBLE) / POWER(10, 30) AS delta,
+        TRY_CAST(next_value AS DOUBLE) / POWER(10, 30) AS next_value
 
     FROM evt_data AS ED
     LEFT JOIN evt_data_parsed AS EDP
@@ -179,6 +181,6 @@ WITH evt_data_1 AS (
     add_tx_columns(
         model_cte = 'full_data'
         , blockchain = blockchain_name
-        , columns = ['from', 'to']
+        , columns = ['from', 'to', 'index']
     )
 }}
