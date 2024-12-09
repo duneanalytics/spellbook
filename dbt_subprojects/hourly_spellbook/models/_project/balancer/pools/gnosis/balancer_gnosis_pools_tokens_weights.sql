@@ -20,6 +20,7 @@ FROM (
         token_address,
         normalized_weight
     FROM {{ model }}
+    WHERE pool_id IS NOT NULL
     {% if not loop.last %}
     UNION ALL
     {% endif %}

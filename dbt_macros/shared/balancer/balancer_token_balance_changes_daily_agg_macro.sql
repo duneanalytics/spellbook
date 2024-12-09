@@ -288,6 +288,7 @@ WITH
             SUM(delta_amount) AS daily_amount
         FROM {{ ref(base_spells_namespace + '_token_balance_changes') }}
         WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
         GROUP BY 1, 2, 3, 4, 5, 6
     ),
 

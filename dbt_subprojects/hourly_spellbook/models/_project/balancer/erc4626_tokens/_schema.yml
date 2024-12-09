@@ -13,14 +13,10 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - atoken
+            - erc4626_token
     columns:
       - name: blockchain
         description: "Blockchain."    
-      - name: atoken
-        description: "Contract address of the aToken on Ethereum."
-      - name: atoken_symbol
-        description: "Symbol of the aToken."
       - name: erc4626_token
         description: "Contract address of the erc4626 token."
       - name: erc4626_token_name

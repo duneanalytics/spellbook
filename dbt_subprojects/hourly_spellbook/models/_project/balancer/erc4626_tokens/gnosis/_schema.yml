@@ -9,18 +9,14 @@ models:
     config:
       tags: ['gnosis', 'static', 'token', 'mapping']
     description: >
-      Mapping of ERC4626 tokens on Gnosis, including aTokens and their corresponding underlying tokens.
+      Mapping of ERC4626 tokens on gnosis, including aTokens and MetaMorpho tokens, and their corresponding underlying tokens.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - atoken
+            - erc4626_token
     columns:
       - name: blockchain
         description: "Blockchain."    
-      - name: atoken
-        description: "Contract address of the aToken on gnosis."
-      - name: atoken_symbol
-        description: "Symbol of the aToken."
       - name: erc4626_token
         description: "Contract address of the erc4626 token."
       - name: erc4626_token_name
@@ -42,7 +38,7 @@ models:
     config:
       tags: ['gnosis', 'static', 'token', 'prices']
     description: >
-      Pricing information for ERC4626 tokens on Gnosis. Prices are derived from the ratio of underlying tokens deposited or withdrawn to shares issued or burned, multiplied by the underlying token price.
+      Pricing information for ERC4626 tokens on gnosis. Prices are derived from the ratio of underlying tokens deposited or withdrawn to shares issued or burned, multiplied by the underlying token price.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

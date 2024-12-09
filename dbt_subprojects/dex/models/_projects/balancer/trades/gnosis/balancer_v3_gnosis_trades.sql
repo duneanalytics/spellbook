@@ -85,7 +85,7 @@ WITH
             dexs.block_time,
             MAX(bpt_prices.day) AS bpb_max_block_date
         FROM dexs
-            LEFT JOIN {{ source('balancer_v3_gnosis', 'bpt_prices') }} bpt_prices
+            LEFT JOIN {{ source('balancer_v3', 'bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_sold_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
         GROUP BY 1, 2, 3, 4, 5
