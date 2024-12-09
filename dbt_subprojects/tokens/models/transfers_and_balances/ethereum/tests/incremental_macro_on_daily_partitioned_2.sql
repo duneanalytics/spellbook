@@ -1,8 +1,7 @@
 {{
    config(
      schema = 'tests',
-     tags = ['prod_exclude'],
-     alias = 'macro_on_draw',
+     alias = 'macro_on_daily_partitioned',
      materialized = 'incremental',
      file_format = 'delta',
      incremental_strategy = 'merge',
@@ -25,7 +24,7 @@ balances as (
              blockchain = 'ethereum',
              address_list  = 'safes',
              start_date = '2021-07-01',
-             balances_source = ref('balances_raw')
+             balances_source = ref('balances_daily_by_wallet_and_day')
        )
      }}
 )

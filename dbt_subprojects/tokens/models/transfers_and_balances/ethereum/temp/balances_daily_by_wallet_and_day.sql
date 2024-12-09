@@ -1,8 +1,8 @@
 {{ config(
         schema = 'temp',
-        alias = 'balances_daily_by_wallet',
+        alias = 'balances_daily_by_wallet_and_day',
         materialized = 'table',
-        partition_by = ['address_partition']
+        partition_by = ['day','address_partition']
         )
 }}
 
