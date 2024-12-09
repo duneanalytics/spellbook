@@ -1,20 +1,8 @@
-{{
-    config(
-        schema = 'saddle_finance_optimism',
-        alias = 'base_trades',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['evt_tx_hash', 'evt_index'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.evt_block_time')]
-    )
-}}
-
 WITH dexs AS (
     SELECT
         evt_block_number AS block_number,
         evt_block_time AS block_time,
-       evt_tx_to AS maker,
+        evt_tx_to AS maker,
         evt_tx_from AS taker,
         tokensBought AS token_bought_amount_raw,
         tokensSold AS token_sold_amount_raw,
@@ -29,7 +17,7 @@ WITH dexs AS (
     {% endif %}
 )
 
-SELECT
+SELECT  
     'optimism' AS blockchain,
     'saddle_finance' AS project,
     '1' AS version,

@@ -4517,5 +4517,3 @@ seeds:
         maker: varchar
         taker: varchar
         project_contract_address: varchar
-        tx_hash: varbinary
-        evt_index: uint256
