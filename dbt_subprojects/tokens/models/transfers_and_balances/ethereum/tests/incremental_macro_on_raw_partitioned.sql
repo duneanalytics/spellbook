@@ -17,7 +17,6 @@ with safes as (
         blockchain
     from safe_ethereum.safes
     where blockchain = 'ethereum'
-    limit 100000
 ),
 
 balances as (
