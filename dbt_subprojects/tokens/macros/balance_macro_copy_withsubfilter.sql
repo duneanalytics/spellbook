@@ -11,7 +11,7 @@
 
 #}
 
-{%- macro balance_macro_copy(
+{%- macro balance_macro_copy_withsubfilter(
         blockchain,
         start_date,
         address_list = none,
