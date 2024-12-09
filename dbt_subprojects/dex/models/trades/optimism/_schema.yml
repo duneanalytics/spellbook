@@ -568,3 +568,22 @@ models:
           seed_file: ref('swaap_optimism_base_trades_seed') 
           filter:
             version: 2
+
+  - name: saddle_finance_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: saddle_finance
+      contributors: patelprinci
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'saddle_finance', 'v1']
+    description: "saddle_finance optimism base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('saddle_finance_optimism_base_trades_seed') 
+          filter:
+            version: 2
