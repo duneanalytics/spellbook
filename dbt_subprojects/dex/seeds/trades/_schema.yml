@@ -4513,4 +4513,4 @@ seeds:
         token_sold_address: varbinary
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
-        block_date: timestamp
+        block_date: timestamp(3) with time zone
