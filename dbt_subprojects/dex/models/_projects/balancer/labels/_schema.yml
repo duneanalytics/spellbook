@@ -364,14 +364,7 @@ models:
       project: balancer_v3
       contributors: balancerlabs, viniabussafi
     config:
-      tags:
-        [
-          'labels',
-          'ethereum',
-          'gnosis', 
-          'balancer',
-          'pools',
-        ]
+      tags: ['labels', 'ethereum', 'gnosis', 'balancer', 'pools']
     description: 'Balancer V3 liquidity pools created across blockchains.'
     columns:
       - *blockchain
