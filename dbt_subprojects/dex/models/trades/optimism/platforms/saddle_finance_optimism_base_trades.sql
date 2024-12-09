@@ -14,7 +14,8 @@ WITH dexs AS (
     SELECT
         evt_block_number AS block_number,
         evt_block_time AS block_time,
-        -- buyer AS taker,
+        evt_tx_to AS taker,
+        evt_tx_from AS maker,
         tokensBought AS token_bought_amount_raw,
         tokensSold AS token_sold_amount_raw,
         evt_tx_from AS token_bought_address,
@@ -40,7 +41,8 @@ SELECT
     dexs.token_sold_amount_raw,
     dexs.token_bought_address,
     dexs.token_sold_address,
-    -- dexs.taker,
+    dexs.taker,
+    dexs.maker,
     dexs.project_contract_address,
     dexs.tx_hash,
     dexs.evt_index
