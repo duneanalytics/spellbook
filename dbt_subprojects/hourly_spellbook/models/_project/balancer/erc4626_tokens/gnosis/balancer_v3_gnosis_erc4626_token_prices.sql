@@ -37,8 +37,8 @@ WITH wrap_unwrap AS(
         w.evt_block_time,
         m.underlying_token,
         w.wrappedToken,
-        m.erc4626TokenSymbol,
-        m.underlyingTokenSymbol,
+        m.erc4626_token_symbol,
+        m.underlying_token_symbol,
         p.decimals,
         ratio * price AS adjusted_price
     FROM wrap_unwrap w
@@ -53,8 +53,8 @@ SELECT
     'gnosis' AS blockchain,
     wrappedToken AS wrapped_token,
     underlying_token,
-    erc4626TokenSymbol AS erc4626_token_symbol,
-    underlyingTokenSymbol AS underlying_token_symbol,
+    erc4626_token_symbol,
+    underlying_token_symbol,
     decimals,
     APPROX_PERCENTILE(adjusted_price, 0.5) AS median_price,
     LEAD(DATE_TRUNC('day', p.evt_block_time), 1, NOW()) OVER (PARTITION BY p.underlyingToken ORDER BY p.evt_block_time) AS next_change

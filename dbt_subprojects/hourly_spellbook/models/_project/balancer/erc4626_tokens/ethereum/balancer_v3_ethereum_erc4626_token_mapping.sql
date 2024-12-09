@@ -9,15 +9,15 @@
 
 WITH aave_tokens AS(
 SELECT 
-    b.staticAToken AS erc4626_token,
-    a.staticATokenName AS erc4626_token_name,
-    a.staticATokenSymbol AS erc4626_token_symbol,
+    b.staticaToken AS erc4626_token,
+    a.staticaTokenName AS erc4626_token_name,
+    a.staticaTokenSymbol AS erc4626_token_symbol,
     b.underlying AS underlying_token,
     t.symbol AS underlying_token_symbol,
     t.decimals AS underlying_token_decimals
 FROM {{ source('aave_ethereum', 'StaticATokenLM_evt_Initialized') }} a
 JOIN {{ source('aave_ethereum', 'StaticATokenFactory_evt_StaticTokenCreated') }} b
-ON b.staticAToken = a.contract_address
+ON b.staticaToken = a.contract_address
 JOIN {{ source('aave_v3_ethereum', 'VariableDebtToken_evt_Initialized') }} c
 ON a.aToken = c.contract_address
 JOIN {{ source('tokens', 'erc20') }} t
