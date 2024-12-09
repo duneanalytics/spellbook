@@ -40,7 +40,7 @@ WITH token_data AS (
         INNER JOIN {{ source('balancer_v3_gnosis', 'WeightedPoolFactory_call_create') }} cc
         ON c.pool = cc.output_pool
         CROSS JOIN UNNEST(c.tokens) WITH ORDINALITY t(tokens, pos)
-        CROSS JOIN UNNEST(cc.weights) WITH ORDINALITY w(weights, pos)
+        CROSS JOIN UNNEST(cc.normalizedWeights) WITH ORDINALITY w(weights, pos)
         WHERE t.pos = w.pos
       ) zip
 
@@ -48,7 +48,7 @@ WITH token_data AS (
       UNION ALL
 
       SELECT
-        c.poolId AS pool_id,
+        c.pool AS pool_id,
         t.tokens,
         0 AS weights,
         cc.symbol,

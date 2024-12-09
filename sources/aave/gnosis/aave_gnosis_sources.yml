@@ -4,4 +4,4 @@ sources:
   - name: aave_v3_gnosis
     description: "Decoded contracts for Aave v3 on Gnosis"
     tables:
-      - name: AToken_evt_Initialized      
+      - name: AToken_evt_Initialized    

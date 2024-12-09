@@ -382,8 +382,7 @@ sources:
       - name: Vault_evt_Unwrap
 
       - name: Vault_evt_LiquidityAddedToBuffer      
-      
+
       - name: Vault_evt_LiquidityRemovedFromBuffer       
-            
+
       - name: Vault_evt_SwapFeePercentageChanged
-      

@@ -245,7 +245,6 @@ sources:
           - name: assetManager
             description: 'Address of the contract which managed the asset from the vault'
 
-
   - name: balancer_v3_gnosis
     description: >
       Decoded tables related to Balancer V2, an automated portfolio manager and trading platform, on Gnosis.
@@ -275,8 +274,7 @@ sources:
       - name: Vault_evt_Unwrap
 
       - name: Vault_evt_LiquidityAddedToBuffer      
-      
+
       - name: Vault_evt_LiquidityRemovedFromBuffer       
-            
+
       - name: Vault_evt_SwapFeePercentageChanged
-      

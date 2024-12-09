@@ -311,10 +311,10 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v3
-      contributors: viniabussafi
+      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
-    description: 'Balancer V2 liquidity pools created on Ethereum.'
+    description: 'Balancer V3 liquidity pools created on Ethereum.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -336,9 +336,9 @@ models:
       blockchain: gnosis
       sector: labels
       project: balancer_v3
-      contributors: viniabussafi
+      contributors: balancerlabs, viniabussafi
     config:
-      tags: ['labels', 'gnosis', 'balancer', 'pools']
+      tags: ['labels', 'zkevm', 'balancer', 'pools']
     description: 'Balancer V3 liquidity pools created on Gnosis.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -362,7 +362,7 @@ models:
       blockchain: ethereum, gnosis
       sector: labels
       project: balancer_v3
-      contributors: viniabussafi
+      contributors: balancerlabs, viniabussafi
     config:
       tags:
         [
