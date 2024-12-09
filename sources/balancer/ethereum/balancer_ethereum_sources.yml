@@ -359,6 +359,8 @@ sources:
     tables:
       - name: Vault_evt_PoolRegistered
 
+      - name: WeightedPoolFactory_evt_PoolCreated
+
       - name: WeightedPoolFactory_call_create
 
       - name: Vault_evt_LiquidityAdded
@@ -366,6 +368,8 @@ sources:
       - name: Vault_evt_LiquidityRemoved
 
       - name: StablePoolFactory_evt_PoolCreated
+
+      - name: StablePoolFactory_call_create  
 
       - name: Vault_evt_Swap
 
