@@ -52,7 +52,7 @@ jobs:
         run: "./scripts/list_modified_downstream.sh"
 
       - name: dbt run initial model(s)
-        run: "dbt -x run $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+        run: "dbt -x run $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR} --threads 1"
 
       - name: dbt test initial model(s)
         run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
@@ -63,7 +63,7 @@ jobs:
 
       - name: dbt run incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
-        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR} --threads 1"
 
       - name: dbt test incremental model(s) if applicable
         if: env.INC_MODEL_COUNT > 0
