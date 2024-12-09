@@ -15,7 +15,7 @@ SELECT
     '3' AS version, 
     pool AS contract_address,
     evt_tx_hash AS tx_hash,
-    evt_tx_index AS tx_index,
+    evt_index AS tx_index,
     evt_index AS index,
     evt_block_time AS block_time,
     evt_block_number AS block_number,
