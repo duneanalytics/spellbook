@@ -37,12 +37,13 @@ WITH wrap_unwrap AS(
     price_join AS(
     SELECT 
         w.evt_block_time,
-        w.underlyingToken,
+        m.underlying_token,
         w.wrappedToken,
         p.decimals,
         ratio * price AS adjusted_price
     FROM wrap_unwrap w
-    JOIN {{ source('prices', 'usd') }} p ON w.underlyingToken = p.contract_address
+    JOIN {{ref('balancer_v3_ethereum_erc4626_token_mapping')}} m ON m.erc4626_token = w.wrappedToken
+    JOIN {{ source('prices', 'usd') }} p ON w.underlying_token = p.contract_address
     AND p.blockchain = 'gnosis'
     AND DATE_TRUNC('minute', w.evt_block_time) = DATE_TRUNC('minute', p.minute)
     )
