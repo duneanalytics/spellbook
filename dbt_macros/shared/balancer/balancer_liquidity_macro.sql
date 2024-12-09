@@ -387,14 +387,14 @@ WITH pool_labels AS (
         GROUP BY 1
     ),
 
-    aave_prices AS(
+    erc4626_prices AS(
         SELECT
             date_trunc('day', minute) AS day,
             wrapped_token AS token,
             decimals,
             APPROX_PERCENTILE(median_price, 0.5) AS price,
             next_change
-        FROM {{ ref('balancer_erc4626_token_prices') }}
+        FROM {{ ref('balancer_v3_erc4626_token_prices') }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
@@ -552,7 +552,7 @@ WITH pool_labels AS (
         AND p2.token = b.token
         LEFT JOIN bpt_prices p3 ON p3.day = b.day
         AND p3.token = b.token
-        LEFT JOIN aave_prices p4 ON p4.day <= c.day
+        LEFT JOIN erc4626_prices p4 ON p4.day <= c.day
         AND c.day < p4.next_change
         AND p4.token = b.token
         WHERE b.token != BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
