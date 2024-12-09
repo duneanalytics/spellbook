@@ -9,8 +9,8 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_v3_ethereum_erc4626_tokens_mapping'),
-    ref('balancer_v3_gnosis_erc4626_tokens_mapping')
+    ref('balancer_v3_ethereum_erc4626_token_mapping'),
+    ref('balancer_v3_gnosis_erc4626_token_mapping')
 ] %}
 
 SELECT *

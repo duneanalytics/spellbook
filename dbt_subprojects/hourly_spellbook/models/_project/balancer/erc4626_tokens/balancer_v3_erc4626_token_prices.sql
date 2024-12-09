@@ -9,8 +9,8 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_v3_ethereum_erc4626_tokens_prices'),
-    ref('balancer_v3_gnosis_erc4626_tokens_prices')
+    ref('balancer_v3_ethereum_erc4626_token_prices'),
+    ref('balancer_v3_gnosis_erc4626_token_prices')
 ] %}
 
 SELECT *
