@@ -1,0 +1,24 @@
+version: 2
+
+seeds:
+  - name: swell_rsweth_ethereum_withdrawals_seed
+    config:
+      column_types:
+        request_block_time: timestamp 
+        request_tx_hash: varbinary 
+        request_block_number: bigint 
+        request_index: integer 
+        token_id: integer
+        owner: varbinary
+        rswETH_amount: double
+        rswETH_request_rate: double
+        processed_block_time: timestamp 
+        processed_tx_hash: varbinary 
+        processed_block_number: bigint 
+        processed_index: integer 
+        rswETH_processed_rate: double
+        claim_block_time: timestamp 
+        claim_tx_hash: varbinary 
+        claim_block_number: bigint 
+        claim_index: integer 
+        ETH_amount: double

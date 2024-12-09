@@ -27,9 +27,10 @@ meta as (
         block_number
         , tx_hash
         , call_trace_address
-        , project
+        , project as order_project
         , order_hash
         , maker
+        , taker
         , maker_asset
         , making_amount
         , taker_asset
@@ -50,14 +51,15 @@ meta as (
         block_number
         , tx_hash
         , call_trace_address
-        , '1inch' as project
+        , '1inch' as order_project
         , coalesce(order_hash, concat(tx_hash, to_big_endian_32(cast(counter as int)))) as order_hash
         , maker
+        , receiver as taker
         , maker_asset
         , making_amount
         , taker_asset
         , taking_amount
-        , flags as order_flags
+        , map_concat(flags, map_from_entries(array[('cross_chain', hashlock is not null)])) as order_flags
     from (
         select *, row_number() over(partition by block_number, tx_hash order by call_trace_address) as counter
         from {{ source('oneinch_' + blockchain, 'lop') }}
@@ -79,7 +81,7 @@ meta as (
         , tx_from
         , tx_to
         , call_trace_address
-        , project
+        , coalesce(order_project, project) as project
         , tag
         , flags
         , call_selector
@@ -89,11 +91,12 @@ meta as (
         , order_hash
         , order_flags
         , maker
+        , taker
         , replace(maker_asset, {{ zero_address }}, {{ native_address }}) as maker_asset
         , making_amount
         , replace(taker_asset, {{ zero_address }}, {{ native_address }}) as taker_asset
         , taking_amount
-        , array_agg(call_trace_address) over(partition by block_number, tx_hash, project) as call_trace_addresses -- to update the array after filtering nested calls of the project
+        , array_agg(call_trace_address) over(partition by block_number, tx_hash, coalesce(order_project, project)) as call_trace_addresses -- to update the array after filtering nested calls of the project
         , if(maker_asset in {{native_addresses}}, wrapped_native_token_address, maker_asset) as _maker_asset
         , if(taker_asset in {{native_addresses}}, wrapped_native_token_address, taker_asset) as _taker_asset
         , coalesce(order_hash, to_big_endian_64(counter)) as call_trade_id -- without call_trade for the correctness of the max transfer approach
@@ -111,8 +114,9 @@ meta as (
             {% endif %}
             and (tx_success or tx_success is null)
             and call_success
+            and (flags['cross_chain'] or not flags['cross_chain_method']) -- without cross-chain methods calls in non cross-chain protocols
     )
-    left join orders using(block_number, tx_hash, call_trace_address, project)
+    left join orders using(block_number, tx_hash, call_trace_address)
     join meta on true
     where
         reduce(call_trace_addresses, true, (r, x) -> if(r and x <> call_trace_address and slice(call_trace_address, 1, cardinality(x)) = x, false, r), r -> r) -- only not nested calls of the project in tx
@@ -208,6 +212,15 @@ meta as (
             ) -- the user_amount & caller_amount of untrusted tokens takes precedence over the call_amount of trusted tokens
             , greatest(user_amount_usd_trusted, caller_amount_usd_trusted)
         ) as amount_usd
+        , coalesce(element_at(order_flags, 'fusion'), false) or coalesce(element_at(order_flags, 'auction'), false) as auction -- 1inch Fusion or any other auction
+        , coalesce(element_at(order_flags, 'cross_chain'), false) -- 1inch cross-chain
+            or coalesce(element_at(flags, 'cross_chain'), false) and not coalesce(element_at(flags, 'multi'), false) -- any suitable swap method call of exclusively cross-chain protocol
+            or coalesce(element_at(flags, 'cross_chain'), false) and coalesce(element_at(flags, 'cross_chain_method'), false) -- calls of exclusively cross-chain methods of any cross-chain protocol
+        as cross_chain_swap
+        , not flags['user']
+            or position('RFQ' in method) > 0
+            or coalesce(element_at(order_flags, 'partial') and not element_at(order_flags, 'multiple'), false)
+        as contracts_only
     from (
         select
             blockchain
@@ -287,13 +300,67 @@ meta as (
             and calls.tx_hash = transfers.tx_hash
             and slice(transfer_trace_address, 1, cardinality(call_trace_address)) = call_trace_address -- nested transfers only
             and reduce(array_distinct(call_trace_addresses), call_trace_address, (r, x) -> if(slice(transfer_trace_address, 1, cardinality(x)) = x and x > r, x, r), r -> r) = call_trace_address -- transfers related to the call only
-            and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and maker in (transfer_from, transfer_to)) -- transfers related to the order only
+            and (order_hash is null or contract_address in (_maker_asset, _taker_asset) and cardinality(array_intersect(array[call_from, maker, taker], array[transfer_from, transfer_to])) > 0) -- transfers related to the order only
         left join prices using(contract_address, minute)
         left join tokens using(contract_address)
         left join trusted_tokens using(contract_address)
         left join creations as creations_from on creations_from.address = transfers.transfer_from
         left join creations as creations_to on creations_to.address = transfers.transfer_to
         group by 1, 2, 3, 4, 5
+    )
+)
+
+, sides as (
+    select
+        *
+        , map_from_entries(array[
+              ('intra-chain: classic: direct',
+                flags['direct']
+                and order_hash is null
+                and not auction
+                and not cross_chain_swap
+                and not contracts_only
+                or second_side
+            )
+            , ('intra-chain: classic: external',
+                not flags['direct']
+                and order_hash is null
+                and not auction
+                and not contracts_only
+                and not cross_chain_swap
+            )
+            , ('intra-chain: intents: auction',
+                auction
+                and not cross_chain_swap
+            )
+            , ('intra-chain: intents: user limit order',
+                order_hash is not null
+                and not auction
+                and not cross_chain_swap
+                and not contracts_only
+                and not second_side
+            )
+            , ('intra-chain: intents: contracts only',
+                contracts_only
+                and not second_side
+            )
+            , ('cross-chain', cross_chain_swap)
+        ]) as modes
+    from (
+        select *, coalesce(maker, tx_from) as user, false as second_side
+        from swaps
+        
+        union all
+        
+        select *, tx_from as user, true as second_side
+        from swaps
+        where
+            true
+            and flags['direct']
+            and order_hash is not null -- intent
+            and maker is not null
+            and not auction
+            and not cross_chain_swap
     )
 )
 
@@ -309,11 +376,16 @@ select
     , call_trace_address
     , project
     , tag
-    , flags
+    , map_concat(flags, map_from_entries(array[
+        ('intent', order_hash is not null and not second_side)
+        , ('auction', auction and not cross_chain_swap)
+        , ('cross_chain_swap', cross_chain_swap)
+    ])) as flags
     , call_selector
     , method
     , call_from
     , call_to
+    , user
     , order_hash
     , maker
     , maker_asset
@@ -338,6 +410,10 @@ select
     , receivers
     , date(date_trunc('month', block_time)) as block_month
     , call_trade_id
-from swaps
+    , second_side
+    , modes
+    , reduce(map_keys(modes), 0, (r, x) -> r + if(modes[x], 1, 0), r -> r) as modes_count
+    , reduce(map_keys(modes), 'other', (r, x) -> if(r = 'other' and modes[x], x, r), r -> r) as mode
+from sides
 
 {% endmacro %}

@@ -100,6 +100,7 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+            - fee_token_address
     columns:
       - *blockchain
       - *block_time
@@ -142,6 +143,7 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+            - fee_token_address
     columns:
       - *blockchain
       - *block_time
@@ -184,6 +186,7 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+            - fee_token_address
     columns:
       - *blockchain
       - *block_time
@@ -226,6 +229,7 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+            - fee_token_address
     columns:
       - *blockchain
       - *block_time
@@ -268,6 +272,7 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+            - fee_token_address
     columns:
       - *blockchain
       - *block_time
@@ -310,6 +315,7 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+            - fee_token_address
     columns:
       - *blockchain
       - *block_time
@@ -352,6 +358,7 @@ models:
             - blockchain
             - tx_hash
             - evt_index
+            - fee_token_address
 
     columns:
       - *blockchain
