@@ -9,6 +9,6 @@
 
 select
 *
-,cast(varbinary_substring(address, 0,2) as varchar) as address_partition
+,cast(varbinary_substring(address, 0,1) as varchar) as address_partition
 from {{ref('tokens_ethereum_balances_daily_agg')}}
 where day > now() - interval '30' day and token_standard in ('native', 'erc20')
