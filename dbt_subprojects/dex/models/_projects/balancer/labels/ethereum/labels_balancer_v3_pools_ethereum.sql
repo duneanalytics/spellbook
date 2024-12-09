@@ -42,8 +42,6 @@ WITH token_data AS (
         CROSS JOIN UNNEST(c.tokens) WITH ORDINALITY t(tokens, pos)
         CROSS JOIN UNNEST(cc.normalizedWeights) WITH ORDINALITY w(weights, pos)
         WHERE t.pos = w.pos
-      ) zip
-
 
       UNION ALL
 
@@ -53,11 +51,12 @@ WITH token_data AS (
         0 AS weights,
         cc.symbol,
         'stable' AS pool_type
-      FROM {{ source('balancer_v3_ethereum', 'Vault_evt_PoolRegistered') }} c
+      FROM token_data c
       INNER JOIN {{ source('balancer_v3_ethereum', 'StablePoolFactory_call_create') }} cc
         ON c.pool = cc.output_pool
-      CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-    ),
+      CROSS JOIN UNNEST(c.tokens) AS t(tokens)
+    ) zip 
+          ),
 
     settings AS (
       SELECT
