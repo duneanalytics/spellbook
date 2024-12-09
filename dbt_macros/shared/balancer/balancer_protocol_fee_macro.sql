@@ -315,9 +315,9 @@ WITH pool_labels AS (
             d.token_address, 
             t.symbol AS token_symbol,
             d.fee_type,
-            SUM(d.protocol_fee_amount_raw) AS token_amount_raw, 
-            SUM(d.protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals, p4.decimals))) AS token_amount,
-            SUM(COALESCE(p1.price, p2.price, p3.price, p4.price) * protocol_fee_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals, p4.decimals))) AS protocol_fee_collected_usd
+            SUM(d.token_amount_raw) AS token_amount_raw, 
+            SUM(d.token_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals, p4.decimals))) AS token_amount,
+            SUM(COALESCE(p1.price, p2.price, p3.price, p4.price) * token_amount_raw / POWER(10, COALESCE(t.decimals,p1.decimals, p3.decimals, p4.decimals))) AS protocol_fee_collected_usd
         FROM daily_protocol_fee_collected d
         LEFT JOIN prices p1
             ON p1.token = d.token_address

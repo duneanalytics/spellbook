@@ -89,7 +89,7 @@ WITH
                 ON bpt_prices.contract_address = dexs.token_sold_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
         GROUP BY 1, 2, 3, 4, 5
-    ),
+    )
 
 SELECT
     dexs.blockchain,
