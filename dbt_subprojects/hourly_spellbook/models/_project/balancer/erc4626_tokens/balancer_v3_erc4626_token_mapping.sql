@@ -18,8 +18,6 @@ FROM (
     {% for model in balancer_models %}
     SELECT
         blockchain,
-        aToken,
-        atoken_symbol,
         erc4626_token,
         erc4626_token_name,
         erc4626_token_symbol,
