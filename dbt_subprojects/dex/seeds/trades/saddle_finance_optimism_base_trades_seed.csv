@@ -1,0 +1,2 @@
+blockchain,project,version,block_month,block_date,block_time,block_number,token_sold_amount_raw,token_bought_amount_raw,token_sold_address,token_bought_address,maker,taker,project_contract_address,tx_hash,evt_index
+optimism,saddle_finance,1,2022-08-01 00:00,2022-08-05 00:00,2022-08-05 19:11,17943155,74907384,74857799085655995549,0,1,0xf6c2e0adc659007ba7c48446f5a4e4e94dfe08b5,0xd131f1bcdd547e067af447dd3c36c99d6be9fdeb,0xf6c2e0adc659007ba7c48446f5a4e4e94dfe08b5,0xbccdcd4ab61e5ad3384eb173156c3c0507d3bb3f2d2f5a406379e74aafbec38d,3

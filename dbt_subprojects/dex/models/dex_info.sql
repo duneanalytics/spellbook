@@ -188,4 +188,5 @@ FROM (VALUES
     , ('stablebase', 'StableBase', 'Direct', 'stablebasefi')
     , ('flashliquidity', 'Flashliquidity', 'Direct', 'flashliquidity')
     , ('akronswap', 'Akronswap', 'Direct', 'AkronFinance')
+    , ('saddle_finance', 'Saddle_Finance', 'Direct', 'saddlefinance')
     ) AS temp_table (project, name, marketplace_type, x_username)
