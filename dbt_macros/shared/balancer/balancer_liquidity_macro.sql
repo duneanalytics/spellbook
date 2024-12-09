@@ -428,7 +428,7 @@ WITH pool_labels AS (
 
     balance_changes AS(
         SELECT
-            day,
+            evt_block_time,
             pool_id,
             category,
             deltas,
@@ -436,7 +436,7 @@ WITH pool_labels AS (
         FROM
             (
                 SELECT
-                    date_trunc('day', evt_block_time) AS day,
+                    evt_block_time,
                     pool AS pool_id,
                     'add' AS category,
                     amountsAddedRaw AS deltas,
@@ -446,7 +446,7 @@ WITH pool_labels AS (
                 UNION ALL
 
                 SELECT
-                    date_trunc('day', evt_block_time) AS day,
+                    evt_block_time,
                     pool AS pool_id,
                     'remove' AS category,
                     amountsRemovedRaw AS deltas,
