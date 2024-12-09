@@ -1,57 +1,50 @@
-{{
-    config(
-        schema = 'swapline_base',
-        alias = 'base_trades',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['tx_hash', 'evt_index'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    )
-}}
+{{ config(
+    schema = 'swapline_base',
+    alias = 'base_trades',
+    partition_by = ['block_month'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+) }}
 
-WITH swap_events AS (
+WITH token_swaps AS (
     SELECT
-        t.evt_tx_hash AS tx_hash,
-        t.evt_index,
-        t.contract_address,
-        t.evt_block_time AS block_time,
-        t.evt_block_number AS block_number,
-        t.to AS token_bought_address,
-        t.sender AS token_sold_address,
-        CAST(0 AS DECIMAL(38, 0)) AS token_bought_amount_raw, -- Fixed as 0
-        CAST(0 AS DECIMAL(38, 0)) AS token_sold_amount_raw -- Fixed as 0
-    FROM {{ source('swapline_base', 'LBPair_evt_Swap') }} t
-),
-pair_creation_events AS (
-    SELECT
-        t.evt_tx_hash AS tx_hash,
-        t.evt_index,
-        t.contract_address,
-        t.evt_block_time AS block_time,
-        t.evt_block_number AS block_number,
-        t.tokenY AS token_bought_address,
-        t.tokenX AS token_sold_address
-    FROM {{ source('swapline_base', 'LBFactory_evt_LBPairCreated') }} t
+        evt_block_number AS block_number,
+        CAST(evt_block_time AS timestamp(3) with time zone) AS block_time,
+        evt_tx_from AS maker,
+        evt_tx_to AS taker,
+        sender AS token_sold_address,
+        "to" AS token_bought_address,
+        amountsIn AS token_sold_amount_raw,
+        amountsOut AS token_bought_amount_raw,
+        contract_address AS project_contract_address,
+        evt_tx_hash AS tx_hash,
+        evt_index AS evt_index
+    FROM
+        {{ source('swapline_base', 'LBPair_evt_Swap') }}
+    {% if is_incremental() %}
+    WHERE
+        {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
 )
-SELECT DISTINCT
+
+SELECT
     'base' AS blockchain,
     'swapline' AS project,
     '1' AS version,
-    swap.contract_address AS project_contract_address,
-    swap.block_time AS block_time,
-    CAST(date_trunc('month', swap.block_time) AS date) AS block_month,
-    CAST(date_trunc('day', swap.block_time) AS date) AS block_date,
-    swap.tx_hash,
-    swap.evt_index,
-    COALESCE(swap.token_bought_address, pair.token_bought_address) AS token_bought_address,
-    COALESCE(swap.token_sold_address, pair.token_sold_address) AS token_sold_address,
-    CAST(NULL AS VARBINARY) AS taker,
-    CAST(NULL AS VARBINARY) AS maker,
-    swap.block_number,
-    swap.token_bought_amount_raw, -- Fixed as 0 in swap_events
-    swap.token_sold_amount_raw -- Fixed as 0 in swap_events
-FROM swap_events AS swap
-LEFT JOIN pair_creation_events AS pair
-    ON swap.tx_hash = pair.tx_hash
-    AND swap.evt_index = pair.evt_index
+    CAST(date_trunc('month', token_swaps.block_time) AS date) AS block_month,
+    CAST(date_trunc('day', token_swaps.block_time) AS date) AS block_date,
+    token_swaps.block_time,
+    token_swaps.block_number,
+    token_swaps.token_sold_amount_raw,
+    token_swaps.token_bought_amount_raw,
+    token_swaps.token_sold_address,
+    token_swaps.token_bought_address,
+    token_swaps.maker,
+    token_swaps.taker,
+    token_swaps.project_contract_address,
+    token_swaps.tx_hash,
+    token_swaps.evt_index
+FROM
+    token_swaps
