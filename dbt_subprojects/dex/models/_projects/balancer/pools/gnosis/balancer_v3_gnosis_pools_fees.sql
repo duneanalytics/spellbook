@@ -20,7 +20,7 @@ SELECT
     evt_block_time AS block_time,
     evt_block_number AS block_number,
     swapFeePercentage AS swap_fee_percentage
-FROM {{ source ('balancer_v3_gnosis', 'Vault_evt_SwapFeePercentageChanged ') }}
+FROM {{ source ('balancer_v3_gnosis', 'Vault_evt_SwapFeePercentageChanged') }}
 WHERE 1 = 1 
 {% if is_incremental() %}
 AND {{ incremental_predicate('evt_block_time') }}
