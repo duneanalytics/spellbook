@@ -10,7 +10,7 @@
 WITH token_data AS (
         SELECT
             pool,
-            ARRAY_AGG(json_extract_scalar(token, '$.token') ORDER BY token_index) AS tokens 
+            ARRAY_AGG(FROM_HEX(json_extract_scalar(token, '$.token')) ORDER BY token_index) AS tokens 
         FROM (
             SELECT
                 pool,
@@ -67,7 +67,7 @@ WITH token_data AS (
         p.symbol AS pool_symbol,
         p.pool_type
       FROM pools p
-      LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = CAST(t.contract_address AS VARCHAR)
+      LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = t.contract_address
       AND t.blockchain = 'ethereum'
     )
 

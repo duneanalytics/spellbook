@@ -187,7 +187,7 @@ WITH pool_labels AS (
     token_data AS (
         SELECT
             pool,
-            ARRAY_AGG(json_extract_scalar(token, '$.token') ORDER BY token_index) AS tokens 
+            ARRAY_AGG(FROM_HEX(json_extract_scalar(token, '$.token')) ORDER BY token_index) AS tokens 
         FROM (
             SELECT
                 pool,
@@ -201,14 +201,20 @@ WITH pool_labels AS (
 
     swaps_changes AS (
         SELECT
-            day,
+            evt_block_time,
+            evt_block_number,
+            evt_tx_hash,
+            evt_index,
             pool_id,
             token,
             SUM(COALESCE(delta, INT256 '0')) AS delta
         FROM
             (
                 SELECT
-                    date_trunc('day', evt_block_time) AS day,
+                    evt_block_time,
+                    evt_block_number,
+                    evt_tx_hash,
+                    evt_index,
                     pool AS pool_id,
                     tokenIn AS token,
                     CAST(amountIn as int256) AS delta
@@ -217,18 +223,24 @@ WITH pool_labels AS (
                 UNION ALL
 
                 SELECT
-                    date_trunc('day', evt_block_time) AS day,
+                    evt_block_time,
+                    evt_block_number,
+                    evt_tx_hash,
+                    evt_index,
                     pool AS pool_id,
                     tokenOut AS token,
                     -CAST(amountOut AS int256) AS delta
                 FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
             ) swaps
-        GROUP BY 1, 2, 3
+        GROUP BY 1, 2, 3, 4, 5, 6
     ),
 
     balance_changes AS(
         SELECT
-            day,
+            evt_block_time,
+            evt_block_number,
+            evt_tx_hash,
+            evt_index,
             pool_id,
             category,
             deltas,
@@ -236,7 +248,10 @@ WITH pool_labels AS (
         FROM
             (
                 SELECT
-                    date_trunc('day', evt_block_time) AS day,
+                    evt_block_time,
+                    evt_block_number,
+                    evt_tx_hash,
+                    evt_index,
                     pool AS pool_id,
                     'add' AS category,
                     amountsAddedRaw AS deltas,
@@ -246,7 +261,10 @@ WITH pool_labels AS (
                 UNION ALL
 
                 SELECT
-                    date_trunc('day', evt_block_time) AS day,
+                    evt_block_time,
+                    evt_block_number,
+                    evt_tx_hash,
+                    evt_index,
                     pool AS pool_id,
                     'remove' AS category,
                     amountsRemovedRaw AS deltas,
@@ -257,7 +275,10 @@ WITH pool_labels AS (
 
     zipped_balance_changes AS (
         SELECT
-            date_trunc('day', evt_block_time) AS day,
+            evt_block_time,
+            evt_block_number,
+            evt_tx_hash,
+            evt_index,
             pool_id,
             t.tokens,
             CASE WHEN b.category = 'add'
@@ -278,13 +299,16 @@ WITH pool_labels AS (
 
     balances_changes AS (
         SELECT
-            day,
+            evt_block_time,
+            evt_block_number,
+            evt_tx_hash,
+            evt_index,
             pool_id,
             tokens AS token,
             deltas - CAST(swapFeeAmountsRaw as int256) AS delta
         FROM zipped_balance_changes
         ORDER BY 1, 2, 3
-    ),
+    )
 
 
         SELECT

@@ -370,7 +370,7 @@ WITH pool_labels AS (
     token_data AS (
         SELECT
             pool,
-            ARRAY_AGG(json_extract_scalar(token, '$.token') ORDER BY token_index) AS tokens 
+            ARRAY_AGG(FROM_HEX(json_extract_scalar(token, '$.token')) ORDER BY token_index) AS tokens 
         FROM (
             SELECT
                 pool,
