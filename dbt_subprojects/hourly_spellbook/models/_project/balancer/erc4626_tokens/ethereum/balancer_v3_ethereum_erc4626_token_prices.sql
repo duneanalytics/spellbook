@@ -13,7 +13,7 @@ WITH wrap_unwrap AS(
         SELECT 
             evt_block_time,
             wrappedToken,
-            CAST(mintedShares AS DOUBLE) / CAST(depositedUnderlying AS DOUBLE) AS ratio
+            CAST(depositedUnderlying AS DOUBLE) / CAST(mintedShares AS DOUBLE) AS ratio
         FROM {{ source('balancer_v3_ethereum', 'Vault_evt_Wrap') }}
         {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
@@ -24,7 +24,7 @@ WITH wrap_unwrap AS(
         SELECT 
             evt_block_time,
             wrappedToken, 
-            CAST(burnedShares AS DOUBLE) / CAST(withdrawnUnderlying AS DOUBLE) AS ratio
+            CAST(withdrawnUnderlying AS DOUBLE) / CAST(burnedShares AS DOUBLE) AS ratio
         FROM {{ source('balancer_v3_ethereum', 'Vault_evt_Unwrap') }}    
         {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
@@ -37,6 +37,8 @@ WITH wrap_unwrap AS(
         w.evt_block_time,
         m.underlying_token,
         w.wrappedToken,
+        m.erc4626TokenSymbol,
+        m.underlyingTokenSymbol,
         p.decimals,
         ratio * price AS adjusted_price
     FROM wrap_unwrap w
@@ -49,13 +51,12 @@ WITH wrap_unwrap AS(
 SELECT
     DATE_TRUNC('minute', p.evt_block_time) AS minute,
     'ethereum' AS blockchain,
-    p.wrappedToken AS wrapped_token,
-    p.underlying_token,
-    m.erc4626TokenSymbol AS erc4626_token_symbol,
-    m.underlyingTokenSymbol AS underlying_token_symbol,
-    p.decimals AS decimals,
+    wrappedToken AS wrapped_token,
+    underlying_token,
+    erc4626TokenSymbol AS erc4626_token_symbol,
+    underlyingTokenSymbol AS underlying_token_symbol,
+    decimals,
     APPROX_PERCENTILE(adjusted_price, 0.5) AS median_price,
     LEAD(DATE_TRUNC('day', p.evt_block_time), 1, NOW()) OVER (PARTITION BY p.underlyingToken ORDER BY p.evt_block_time) AS next_change
 FROM price_join p
-JOIN {{ref('balancer_v3_ethereum_erc4626_token_mapping')}} m ON m.underlying_token = p.underlyingToken
 GROUP BY 1, 2, 3, 4, 5, 6
