@@ -2,7 +2,7 @@
         schema = 'temp',
         alias = 'balances_daily_by_wallet',
         materialized = 'table',
-        partition_by = ['address_partition']
+        partition_by = ['day','address_partition']
         )
 }}
 
