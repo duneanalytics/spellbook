@@ -1,62 +1,50 @@
-{{ config(
+{{
+    config(
         schema = 'balancer_v3_ethereum',
-        alias = 'erc4626_token_prices',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['minute', 'wrapped_token'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.minute')]
+        alias = 'erc4626_tokens_mapping', 
+        materialized = 'table',
+        file_format = 'delta'
     )
 }}
 
-WITH wrap_unwrap AS(
-        SELECT 
-            evt_block_time,
-            wrappedToken,
-            CAST(depositedUnderlying AS DOUBLE) / CAST(mintedShares AS DOUBLE) AS ratio
-        FROM {{ source('balancer_v3_ethereum', 'Vault_evt_Wrap') }}
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('evt_block_time') }}
-        {% endif %}      
+WITH aave_tokens AS(
+SELECT 
+    b.staticAToken AS erc4626_token,
+    a.staticATokenName AS erc4626_token_name,
+    a.staticATokenSymbol AS erc4626_token_symbol,
+    b.underlying AS underlying_token,
+    t.symbol AS underlying_token_symbol,
+    t.decimals AS underlying_token_decimals
+FROM {{ source('aave_ethereum', 'StaticATokenLM_evt_Initialized') }} a
+JOIN {{ source('aave_ethereum', 'StaticATokenFactory_evt_StaticTokenCreated') }} b
+ON b.staticAToken = a.contract_address
+JOIN {{ source('aave_v3_ethereum', 'VariableDebtToken_evt_Initialized') }} c
+ON a.aToken = c.contract_address
+JOIN {{ source('tokens', 'erc20') }} t
+ON t.blockchain = 'ethereum'
+AND b.underlying = t.contract_address),
 
-        UNION ALL
+morpho_tokens AS(
+SELECT DISTINCT
+    a.metaMorpho AS erc4626_token,
+    a.name AS erc4626_token_name,
+    a.symbol AS erc4626_token_symbol,
+    a.asset AS underlying_token,
+    t.symbol AS underlying_token_symbol,
+    t.decimals AS underlying_token_decimals
+FROM {{ source('metamorpho_factory_ethereum', 'MetaMorphoFactory_evt_CreateMetaMorpho') }} a
+JOIN {{ source('tokens', 'erc20') }} t
+ON t.blockchain = 'ethereum'
+AND a.asset = t.contract_address)
 
-        SELECT 
-            evt_block_time,
-            wrappedToken, 
-            CAST(withdrawnUnderlying AS DOUBLE) / CAST(burnedShares AS DOUBLE) AS ratio
-        FROM {{ source('balancer_v3_ethereum', 'Vault_evt_Unwrap') }}    
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('evt_block_time') }}
-        {% endif %}      
-    ),
+SELECT 
+    'ethereum' AS blockchain, 
+    * 
+FROM aave_tokens
 
+UNION 
 
-    price_join AS(
-    SELECT 
-        w.evt_block_time,
-        m.underlying_token,
-        w.wrappedToken,
-        m.erc4626TokenSymbol,
-        m.underlyingTokenSymbol,
-        p.decimals,
-        ratio * price AS adjusted_price
-    FROM wrap_unwrap w
-    JOIN {{ref('balancer_v3_ethereum_erc4626_token_mapping')}} m ON m.erc4626_token = w.wrappedToken
-    JOIN {{ source('prices', 'usd') }} p ON m.underlying_token = p.contract_address
-    AND p.blockchain = 'ethereum'
-    AND DATE_TRUNC('minute', w.evt_block_time) = DATE_TRUNC('minute', p.minute)
-    )
-
-SELECT
-    DATE_TRUNC('minute', p.evt_block_time) AS minute,
-    'ethereum' AS blockchain,
-    wrappedToken AS wrapped_token,
-    underlying_token,
-    erc4626TokenSymbol AS erc4626_token_symbol,
-    underlyingTokenSymbol AS underlying_token_symbol,
-    decimals,
-    APPROX_PERCENTILE(adjusted_price, 0.5) AS median_price,
-    LEAD(DATE_TRUNC('day', p.evt_block_time), 1, NOW()) OVER (PARTITION BY p.underlyingToken ORDER BY p.evt_block_time) AS next_change
-FROM price_join p
-GROUP BY 1, 2, 3, 4, 5, 6
+SELECT 
+    'ethereum' AS blockchain, 
+    * 
+FROM morpho_tokens
