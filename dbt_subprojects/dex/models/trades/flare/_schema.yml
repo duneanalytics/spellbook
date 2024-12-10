@@ -91,3 +91,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sparkdex_flare_base_trades_seed')
+          filter:
+            version: 3
