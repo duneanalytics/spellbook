@@ -24,7 +24,7 @@ decoded_events as (
             then p.borrow_token
             else p.supply_token
         end as token_bought_address,
-        case when !swap0to1 
+        case when not(swap0to1)
             then p.borrow_token
             else p.supply_token
         end as token_sold_address,
