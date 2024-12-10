@@ -24,7 +24,7 @@ decoded_events as (
         substr(topic2, 13) as supplyToken,
         substr(topic3, 13) as borrowToken,
         bytearray_to_uint256(data) as dexId
-    from ethereum.logs
+    from {{ source('ethereum', 'logs')}}
     where topic0 = 0x3fecd5f7aca6136a20a999e7d11ff5dcea4bd675cb125f93ccd7d53f98ec57e4 
     -- DexT1Deployed -> sample tx: https://etherscan.io/tx/0xabf5c0e676e69de941c283400d7ac5f47b17a09d870f225b5240522f95da501c#eventlog
     and block_number > 20776998
