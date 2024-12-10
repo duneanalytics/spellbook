@@ -31,7 +31,7 @@ set delta_configs = [
 %}  
 with entities as (
     {% for blockchain, entity, table, contract_field_name, time_field_name, hash_field_name, conditional in delta_configs %}
-        select '{{ entity }}' as entity, '{{ blockchain }}' as blockchain, {{contract_field_name}} as contract_address, {{time_field_name}}, {{hash_field_name}} from {{ table }}
+        select '{{ entity }}' as entity, '{{ blockchain }}' as blockchain, {{contract_field_name}} as contract_address, {{time_field_name}} as block_time, {{hash_field_name}} as tx_hash from {{ table }}
         where 
             ({{time_field_name}} BETWEEN {{date_from}} AND {{date_to}})
             {% if conditional %}
@@ -39,8 +39,14 @@ with entities as (
             {% endif %}
         {% if not loop.last %} union all {% endif %}
     {% endfor %}
+),
+ordered_entities as (
+    select 
+        entity, blockchain, contract_address, block_time, tx_hash
+    from entities
+    order by block_time, tx_hash
 )
-select blockchain, entity, contract_address, count(*) as qty
-from entities
+select blockchain, entity, contract_address, count(*) as qty, sum(varbinary_to_decimal(from_hex(substring(to_hex(tx_hash),1,0+8)))) as txhash_checksum
+from ordered_entities
 group by 1,2,3
-order by qty desc 
+order by qty desc
