@@ -27,7 +27,7 @@ with prices as (
 , bitcoin_fees as (
         select
             block_date
-            , input[1][6][1] as address
+            , from_hex(input[1][6][1]) as address
             , sum(fee) as daily_fee
         from
             {{ source(blockchain, 'transactions') }}
@@ -38,7 +38,7 @@ with prices as (
             {% endif %}
         group by
             block_date
-            , input[1][6][1]
+            , from_hex(input[1][6][1])
 )
 select
     '{{ blockchain }}' as blockchain
