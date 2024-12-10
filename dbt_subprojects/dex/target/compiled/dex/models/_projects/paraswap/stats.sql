@@ -1,3 +1,5 @@
+-- NB: this is a generated query, do not edit it directly, instead edit the template and re-generate the query
+-- hydrate the generated ouput here: https://dune.com/queries/4403433
 
 
 
