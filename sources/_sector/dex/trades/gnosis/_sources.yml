@@ -16,3 +16,7 @@ sources:
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UniswapV2Factory_evt_PairCreated
+  - name: elk_finance_gnosis
+    tables:
+      - name: ElkPair_evt_Swap
+      - name: ElkFactory_evt_PairCreated
