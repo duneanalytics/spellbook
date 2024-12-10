@@ -11,7 +11,7 @@
 
 #}
 
-{%- macro balance_macro_copy_withdaily(
+{%- macro balance_macro_copy_noprices(
         blockchain,
         start_date,
         address_list = none,
@@ -87,15 +87,17 @@ filtered_daily_agg_balances as (
     select * from (
         select
             blockchain
-            ,day
+            ,max(day) as day
             ,address
             ,token_symbol
             ,token_address
             ,token_standard
             ,token_id
-            ,balance
-        from {{this}}
-        where day = (select max(day) from {{this}} where not {{ incremental_predicate('day') }})
+            ,max_by(balance, day) as balance
+        from filtered_daily_agg_balances
+        where day >= cast('{{start_date}}' as date)
+        and not {{ incremental_predicate('day') }}
+        group by 1,3,4,5,6,7
         )
     {% endif %}
     )
@@ -137,7 +139,6 @@ select
     b.token_standard,
     b.token_id,
     b.balance,
-    b.balance * p.price as balance_usd,
     b.last_updated,
     b.next_update
 from(
@@ -148,18 +149,4 @@ from(
     {% endif %}
 
 ) b
-left join {{source('prices','usd_daily')}} p
-    on 1=1
-    {% if is_incremental() %}
-       and {{ incremental_predicate('p.day') }}
-    {% endif %}
-    and ((token_standard = 'erc20'
-        and p.blockchain = '{{blockchain}}'
-        and b.token_address = p.contract_address
-        and b.day = p.day)
-    or (token_standard = 'native'
-        and p.blockchain is null
-        and p.contract_address is null
-        and p.symbol = (select native_token_symbol from {{source('evms','info')}} where blockchain = '{{blockchain}}')
-        and b.day = p.day))
 {% endmacro %}
