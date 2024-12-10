@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: fluid_ethereum_pools
+    meta: 
+      blockchain: ethereum
+      sector: dex
+      project: fluid
+      contributor: maybeYonas
+    config:
+      tags: ['ethereum', 'trades', 'fluid', 'dex']
+    description: "fluid pools"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - dex
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "blockchain where the pool is deployed"
+      - &project
+        name: project
+        description: "project name"
+      - &block_time
+        name: block_time
+        description: "utc block timestamp when the pool is deployed"
+      - &block_number
+        name: block_number
+        description: "block number at which the pool is deployed"
+      - &evt_index
+        name: evt_index
+        description: "index of log emitted"
+      - &tx_hash
+        name: tx_hash
+        description: "hash of tx in which pool is deployed"
+      - &factory
+        name: factory
+        description: "factory contract deploying the pool"
+      - &dex
+        name: dex
+        description: "pool contract address"
+      - &supply_token
+        name: supply_token
+        description: "supply token"
+      - &borrow_token
+        name: borrow_token
+        description: "borrow token"
+      - &dex_id
+        name: dex_id
+        description: "nonce unique to factory and pool"
+
