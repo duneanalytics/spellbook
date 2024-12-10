@@ -9,9 +9,7 @@
     )
 }}
 
-WITH dexs AS
-(
-    {{
+{{
     uniswap_compatible_v2_trades(
         blockchain = 'flare'
         , project = 'enosys'
@@ -19,10 +17,4 @@ WITH dexs AS
         , Pair_evt_Swap = source('enosys_flare', 'EnosysDexPair_evt_Swap')
         , Factory_evt_PairCreated = source('enosys_flare', 'EnosysDexFactory_evt_PairCreated')
     )
-    }}
-)
-
-SELECT 
-    *
-FROM 
-    dexs
+}}
