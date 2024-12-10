@@ -1,6 +1,6 @@
 {{
    config(
-     schema = 'safe_base',
+     schema = 'safe_polygon',
      alias = 'balances',
      partition_by = ['day'],
      materialized = 'incremental',
@@ -15,14 +15,14 @@ with safes as (
     select
         address,
         blockchain
-    from {{ ref('safe_base_safes') }}
-    where blockchain = 'base'
+    from {{ source('safe_polygon','safes') }}
+    where blockchain = 'polygon'
 ),
 
 balances as (
      {{
        balances_incremental_subset_daily(
-             blockchain = 'base',
+             blockchain = 'polygon',
              address_list  = 'safes',
              start_date = '2021-07-01'
        )
