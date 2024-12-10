@@ -16,7 +16,7 @@ WITH wrap_unwrap AS(
             CAST(depositedUnderlying AS DOUBLE) / CAST(mintedShares AS DOUBLE) AS ratio
         FROM {{ source('balancer_v3_ethereum', 'Vault_evt_Wrap') }}
         {% if is_incremental() %}
-        AND {{ incremental_predicate('evt_block_time') }}
+        WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}      
 
         UNION ALL
@@ -27,7 +27,7 @@ WITH wrap_unwrap AS(
             CAST(withdrawnUnderlying AS DOUBLE) / CAST(burnedShares AS DOUBLE) AS ratio
         FROM {{ source('balancer_v3_ethereum', 'Vault_evt_Unwrap') }}    
         {% if is_incremental() %}
-        AND {{ incremental_predicate('evt_block_time') }}
+        WHERE {{ incremental_predicate('evt_block_time') }}
         {% endif %}      
     ),
 

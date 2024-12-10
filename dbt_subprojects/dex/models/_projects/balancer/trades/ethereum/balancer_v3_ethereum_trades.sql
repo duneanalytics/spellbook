@@ -73,7 +73,7 @@ WITH
             LEFT JOIN {{ source('balancer', 'bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_bought_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
-                AND bpt_prices.blockchaih = 'ethereum'                
+                AND bpt_prices.blockchain = 'ethereum'                
         GROUP BY 1, 2, 3, 4, 5
     ),
     
@@ -89,7 +89,7 @@ WITH
             LEFT JOIN {{ source('balancer', 'bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_sold_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
-                AND bpt_prices.blockchaih = 'ethereum'
+                AND bpt_prices.blockchain = 'ethereum'
         GROUP BY 1, 2, 3, 4, 5
     )
 
@@ -140,7 +140,7 @@ FROM dexs
     LEFT JOIN {{ source('balancer', 'bpt_prices') }} bpa_bpt_prices
         ON bpa_bpt_prices.contract_address = bpa.contract_address
         AND bpa_bpt_prices.day = bpa.bpa_max_block_date
-        AND bpa_bpt_prices.blockchaih = 'ethereum'        
+        AND bpa_bpt_prices.blockchain = 'ethereum'        
     INNER JOIN bpb
         ON bpb.block_number = dexs.block_number
         AND bpb.tx_hash = dexs.tx_hash
@@ -148,4 +148,4 @@ FROM dexs
     LEFT JOIN {{ source('balancer', 'bpt_prices') }} bpb_bpt_prices
         ON bpb_bpt_prices.contract_address = bpb.contract_address
         AND bpb_bpt_prices.day = bpb.bpb_max_block_date
-        AND bpb_bpt_prices.blockchaih = 'ethereum'
+        AND bpb_bpt_prices.blockchain = 'ethereum'
