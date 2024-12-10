@@ -4,7 +4,7 @@ sources:
   - name: blazeswap_flare
     tables:
       - name: BlazeSwapFactory_evt_PairCreated
-      - name: BlazeSwapPair_evt_Swap
+#      - name: BlazeSwapPair_evt_Swap
   
   - name: sparkdex_flare
     tables:
