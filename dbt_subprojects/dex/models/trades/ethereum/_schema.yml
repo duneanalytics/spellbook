@@ -626,3 +626,18 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: fluid_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: fluid
+      contributors: maybeYonas, pyor_xyz
+    config:
+      tags: ["ethereum", "dex", "trades", "fluid"]
+    description: "fluid dex ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
