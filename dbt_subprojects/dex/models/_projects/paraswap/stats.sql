@@ -1,10 +1,10 @@
 -- NB: this is a generated query, do not edit it directly, instead edit the template and re-generate the query
 -- hydrate the generated ouput here: https://dune.com/queries/4403433
 {%
-set date_to = "DATE_TRUNC('day', CURRENT_TIMESTAMP)"
+set date_to = "timestamp '{{date_to}}'"
 %}
 {%
-set date_from = "DATE_TRUNC('day', CURRENT_TIMESTAMP) - INTERVAL '1' day"
+set date_from = "timestamp '{{date_from}}'"
 %}
 
 {%
