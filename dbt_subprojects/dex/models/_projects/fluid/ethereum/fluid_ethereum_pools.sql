@@ -6,7 +6,11 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['dex'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
+        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                    spell_type = "project", 
+                                    spell_name = "fluid", 
+                                    contributors = \'["maybeYonas", "pyor_xyz"]\') }}'
     )
 }}
 
