@@ -14,7 +14,7 @@
         blockchain = 'polygon',
         project = 'jetswap',
         version = '1',
-        Pair_evt_Swap = source('jetswap_polygon', 'jetswap_polygon.JetswapPair_evt_Swap'),
+        Pair_evt_Swap = source('jetswap_polygon', 'JetswapPair_evt_Swap'),
         Factory_evt_PairCreated = source('jetswap_polygon', 'JetswapFactory_evt_PairCreated')
     )
 }}
