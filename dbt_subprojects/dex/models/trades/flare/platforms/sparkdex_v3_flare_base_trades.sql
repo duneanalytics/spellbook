@@ -11,7 +11,7 @@
 }}
 
 {{
-    uniswap_v3_compatible_trades(
+    uniswap_compatible_v3_trades(
         blockchain = 'flare',
         project = 'sparkdex',
         version = '3',
