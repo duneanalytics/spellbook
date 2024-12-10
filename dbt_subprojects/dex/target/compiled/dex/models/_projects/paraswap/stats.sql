@@ -101,7 +101,13 @@ ordered_entities as (
     from entities
     order by block_time, tx_hash
 )
-select blockchain, entity, contract_address, count(*) as qty, sum(varbinary_to_decimal(from_hex(substring(to_hex(tx_hash),1,0+8)))) as txhash_checksum
+select 
+    blockchain, 
+    entity, 
+    contract_address, 
+    count(*) as qty, 
+    -- a rubbish but tolerable way to get the checksum of the txhash. Is consistent with internal counterparty query though
+    sum(varbinary_to_decimal(from_hex(substring(to_hex(tx_hash),1,0+8)))) as txhash_checksum
 from ordered_entities
 group by 1,2,3
 order by qty desc
