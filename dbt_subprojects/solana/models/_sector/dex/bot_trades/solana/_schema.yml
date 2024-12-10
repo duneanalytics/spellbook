@@ -688,3 +688,25 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('tradewiz_solana_trades_seed')
           blockchain: solana
+
+  - name: prophetbots_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: prophetbots
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "prophetbots", "trades"]
+    description: >
+      ProphetBots trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('prophetbots_solana_trades_seed')
+          blockchain: solana
