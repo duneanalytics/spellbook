@@ -1,7 +1,7 @@
 {{
    config(
      schema = 'tests',
-     alias = 'macro_on_daily_noprices',
+     alias = 'macro_on_daily_incremental',
      materialized = 'incremental',
      file_format = 'delta',
      incremental_strategy = 'merge',
