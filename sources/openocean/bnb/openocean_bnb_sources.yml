@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: openocean_v2_bnb
+    tables:
+      - name: OpenOceanExchange_evt_Swapped
