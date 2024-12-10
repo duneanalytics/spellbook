@@ -27,6 +27,7 @@
                                         , "scroll"
                                         , "sei"
                                         , "solana"
+                                        , "viction"
                                         , "worldchain"
                                         , "zksync"
                                         , "zkevm"
@@ -68,6 +69,7 @@ ref('prices_native_tokens')
 ,ref('prices_tron_tokens')
 ,ref('prices_ronin_tokens')
 ,ref('prices_boba_tokens')
+,ref('prices_viction_tokens')
 ] %}
 
 
