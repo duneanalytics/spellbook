@@ -20,7 +20,7 @@ WITH
     SELECT
       tx_id,
       'SOL' AS feeTokenType,
-      balance_change / 1e9 AS fee_token_amount,
+      sum(balance_change) / 1e9 AS fee_token_amount,
       '{{wsol_token}}' AS fee_token_mint_address
     FROM
       {{ source('solana','account_activity') }}
