@@ -2,6 +2,7 @@
    config(
      schema = 'tests',
      alias = 'macro_on_daily_withthis',
+     tags =['prod_exclude'],
      materialized = 'incremental',
      file_format = 'delta',
      incremental_strategy = 'merge',

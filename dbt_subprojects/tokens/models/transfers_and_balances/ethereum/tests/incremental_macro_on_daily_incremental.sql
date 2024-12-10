@@ -1,8 +1,7 @@
 {{
    config(
      schema = 'tests',
-     alias = 'macro_on_daily_partitioned',
-     tags =['prod_exclude'],
+     alias = 'macro_on_daily_noprices',
      materialized = 'incremental',
      file_format = 'delta',
      incremental_strategy = 'merge',
@@ -21,11 +20,11 @@ with safes as (
 
 balances as (
      {{
-       balance_macro_copy(
+       balance_macro_copy_noprices(
              blockchain = 'ethereum',
              address_list  = 'safes',
              start_date = '2021-07-01',
-             balances_source = ref('balances_daily_by_wallet')
+             balances_source = ref('balances_daily')
        )
      }}
 )
