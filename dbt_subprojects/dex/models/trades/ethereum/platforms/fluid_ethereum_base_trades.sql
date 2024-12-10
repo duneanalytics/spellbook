@@ -57,4 +57,4 @@ SELECT
     dexs.project_contract_address,
     dexs.tx_hash,
     dexs.evt_index
-FROM dexs 
+FROM decoded_events dexs 
