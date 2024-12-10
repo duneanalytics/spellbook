@@ -191,4 +191,5 @@ FROM (VALUES
     , ('akronswap', 'Akronswap', 'Direct', 'AkronFinance')
     , ('katana', 'Katana', 'Direct', 'AxieInfinity')
     , ('jetswap', 'JetSwap', 'Direct', 'Jetfuelfinance')
+    , ('fluid', 'Fluid DEX', 'Direct', '0xfluid')
     ) AS temp_table (project, name, marketplace_type, x_username)
