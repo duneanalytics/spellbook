@@ -20,7 +20,7 @@ with safes as (
 
 balances as (
      {{
-       balance_macro_copy_incremental(
+       balance_macro_copy_withincremental(
              blockchain = 'ethereum',
              address_list  = 'safes',
              start_date = '2021-07-01',
