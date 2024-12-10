@@ -152,6 +152,9 @@ WITH trusted_tokens AS (
                 , ('zkevm', 0x37eaa0ef3549a5bb7d431be78a3d99bd360d19e5)
                 , ('zkevm', 0xa2036f0538221a77a3937f1379699f44945018d0)
                 , ('zkevm', 0xb23c20efce6e24acca0cef9b7b7aa196b84ec942)
+                , ('viction', 0xC054751BdBD24Ae713BA3Dc9Bd9434aBe2abc1ce)  -- WVIC
+                , ('viction', 0x381B31409e4D220919B2cFF012ED94d70135A59e)  -- USDT
+                , ('viction', 0x20cC4574f263C54eb7aD630c9AC6d4d9068Cf127)  -- USDC
                 , ('zksync', 0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4)
                 , ('zksync', 0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181)
                 , ('zksync', 0x5aea5775959fbc2557cc8789bc1bf90a239d9a91)
