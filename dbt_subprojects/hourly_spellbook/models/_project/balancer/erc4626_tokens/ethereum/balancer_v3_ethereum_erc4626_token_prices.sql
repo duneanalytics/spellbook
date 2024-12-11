@@ -39,7 +39,7 @@ WITH wrap_unwrap AS(
         w.wrappedToken,
         m.erc4626_token_symbol,
         m.underlying_token_symbol,
-        p.decimals,
+        m.decimals,
         ratio * price AS adjusted_price
     FROM wrap_unwrap w
     JOIN {{ref('balancer_v3_ethereum_erc4626_token_mapping')}} m ON m.erc4626_token = w.wrappedToken

@@ -27,7 +27,7 @@ models:
         description: "Contract address of the underlying token."
       - name: underlying_token_symbol
         description: "Symbol of the underlying token."
-      - name: underlying_token_decimals
+      - name: token_decimals
         description: "Decimal precision of the underlying token."
 
   - name: balancer_v3_gnosis_erc4626_token_prices
