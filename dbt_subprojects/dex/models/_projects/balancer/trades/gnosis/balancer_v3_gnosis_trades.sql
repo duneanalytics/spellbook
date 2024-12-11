@@ -103,7 +103,7 @@ WITH
         FROM {{ source('balancer_v3', 'erc_4626_token_prices') }}
         WHERE blockchain = 'gnosis'
         GROUP BY 1, 2, 3, 5
-    ),
+    )
 
 SELECT
     dexs.blockchain,
