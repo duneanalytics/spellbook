@@ -91,7 +91,19 @@ WITH
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
                 AND bpt_prices.blockchain = 'gnosis'
         GROUP BY 1, 2, 3, 4, 5
-    )
+    ),
+
+    erc4626_prices AS(
+        SELECT
+            minute,
+            wrapped_token,
+            decimals,
+            APPROX_PERCENTILE(median_price, 0.5) AS price,
+            LEAD(minute, 1, NOW()) OVER (PARTITION BY wrapped_token ORDER BY minute) AS time_of_next_change
+        FROM {{ source('balancer_v3', 'erc_4626_token_prices') }}
+        WHERE blockchain = 'gnosis'
+        GROUP BY 1, 2, 3, 5
+    ),
 
 SELECT
     dexs.blockchain,
@@ -110,8 +122,8 @@ SELECT
     dexs.token_sold_amount_raw,
     COALESCE(
         dexs.amount_usd,
-        dexs.token_bought_amount_raw / POWER(10, COALESCE(erc20a.decimals, erc_4626_prices_a.decimals, 18)) * COALESCE(bpa_bpt_prices.bpt_price, erc_4626_prices_a.price)
-        dexs.token_sold_amount_raw / POWER(10, COALESCE(erc20b.decimals, erc_4626_prices_b.decimals, 18))  * COALESCE(bpb_bpt_prices.bpt_price, erc_4626_prices_b.price)
+        dexs.token_bought_amount_raw / POWER(10, COALESCE(erc20a.decimals, erc4626a.decimals, 18)) * COALESCE(bpa_bpt_prices.bpt_price, erc4626a.price),
+        dexs.token_sold_amount_raw / POWER(10, COALESCE(erc20b.decimals, erc4626b.decimals, 18))  * COALESCE(bpb_bpt_prices.bpt_price, erc4626b.price)
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
@@ -149,9 +161,11 @@ FROM dexs
         ON bpb_bpt_prices.contract_address = bpb.contract_address
         AND bpb_bpt_prices.day = bpb.bpb_max_block_date
         AND bpb_bpt_prices.blockchain = 'gnosis'
-    LEFT JOIN{{ source('balancer_v3', 'erc_4626_token_prices') }} erc_4626_prices_a
-        ON erc_4626_prices_a.wrapped_token = dexs.token_bought_address
-        AND erc_4626_prices_a.blockchain = dexs.blockchain 
-    LEFT JOIN{{ source('balancer_v3', 'erc_4626_token_prices') }} erc_4626_prices_b
-        ON erc_4626_prices_b.wrapped_token = dexs.token_sold_address
-        AND erc_4626_prices_b.blockchain = dexs.blockchain         
+    LEFT JOIN erc4626_prices erc4626a
+        ON erc4626a.wrapped_token = dexs.token_bought_address
+        AND erc4626a.minute <= dexs.block_time
+        AND c.day < erc4626a.time_of_next_change
+    LEFT JOIN erc4626_prices erc4626b
+        ON erc4626b.wrapped_token = dexs.token_sold_address
+        AND erc4626b.minute <= dexs.block_time
+        AND c.day < erc4626b.time_of_next_change   
