@@ -4733,4 +4733,7 @@ FROM (VALUES
     , ( 0xbEEFC01767ed5086f35deCb6C00e6C12bc7476C1, 'csUSDL', 18)
     , ( 0xbeef01735c132ada46aa9aa4c54623caa92a64cb, 'steakUSDC', 18)  
     , ( 0xbdC7c08592Ee4aa51D06C27Ee23D5087D65aDbcD, 'USDL', 18)          
+    , ( 0x358d94b5b2F147D741088803d932Acb566acB7B6, 'rSWELL', 18)
+    , ( 0x9Ed15383940CC380fAEF0a75edacE507cC775f22, 'earnETH', 18)
+    , ( 0x66E47E6957B85Cf62564610B76dD206BB04d831a, 'earnBTC', 8)
 ) AS temp_table (contract_address, symbol, decimals)

@@ -99,3 +99,21 @@ models:
           seed_file: ref('honeyswap_gnosis_base_trades_seed')
           filter:
             version: 2
+
+  - name: elk_finance_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: elk_finance
+      contributors: blanchemaria6
+    config:
+      tags: ['gnosis', 'dex', 'trades', 'elk_finance']
+    description: "elk finance gnosis base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('elk_finance_gnosis_base_trades_seed')
+  
