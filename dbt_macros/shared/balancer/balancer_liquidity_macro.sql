@@ -618,3 +618,4 @@ WITH pool_labels AS (
     LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(c.pool_id, 1, 20)
 
     {% endmacro %}
+    
