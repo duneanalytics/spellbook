@@ -8,6 +8,7 @@
 {% set base_models = [
     ref('enosys_v2_flare_base_trades')
     , ref('enosys_v3_flare_base_trades')
+    , ref('sparkdex_v2_flare_base_trades')
     , ref('sparkdex_v3_flare_base_trades')
 ] %}
 

@@ -77,6 +77,21 @@ models:
             - tx_hash
             - evt_index
 
+  - name: sparkdex_v2_flare_base_trades
+    meta:
+      blockchain: flare
+      sector: dex
+      project: sparkdex
+      contributors: hosuke
+    config:
+      tags: ['flare', 'dex', 'trades', 'sparkdex', 'v2']
+    description: "SparkDex (UniswapV2 fork) base trades on Flare"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
   - name: sparkdex_v3_flare_base_trades
     meta:
       blockchain: flare
