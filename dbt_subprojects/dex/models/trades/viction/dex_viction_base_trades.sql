@@ -6,10 +6,11 @@
 }}
 
 {% set base_models = [
-    ref('victionswap_viction_base_trades')
-    , ref('baryon_viction_base_trades')
-    , ref('rabbitswap_viction_base_trades')
-    , ref('mori_viction_base_trades')
+    -- Pending for Swap event tables
+    ref('baryon_viction_base_trades'),
+    ref('rabbitswap_viction_base_trades')
+    -- Pending for contract deployment and event tables
+    -- ref('mori_viction_base_trades')
 ] %}
 
 WITH base_union AS (

@@ -5,21 +5,6 @@ models:
     data_tests:
       - check_dex_info_relationship
 
-  - name: victionswap_viction_base_trades
-    meta:
-      blockchain: viction
-      sector: dex
-      project: victionswap
-      contributors: hosuke
-    config:
-      tags: [ 'viction', 'dex', 'trades', 'victionswap', 'v2' ]
-    description: "VictionSwap base trades"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-
   - name: baryon_viction_base_trades
     meta:
       blockchain: viction

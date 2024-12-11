@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: baryon_viction
+    tables:
+      - name: CONTRACT_FACTORY_evt_PairCreated
+      # Pending for Swap event table
+      # - name: CONTRACT_PAIR_evt_Swap
+  
+  - name: rabbitswap_xyz_viction
+    tables:
+      - name: RabbitSwapV3Factory_evt_PoolCreated
+      # Pending for Swap event table
+      # - name: RabbitSwapV3Pool_evt_Swap
+  
+  # Pending for contract deployment and event tables
+  # - name: mori_viction
+  #   tables:
+  #     - name: UniswapV3Pool_evt_Swap
+  #     - name: UniswapV3Factory_evt_PoolCreated
