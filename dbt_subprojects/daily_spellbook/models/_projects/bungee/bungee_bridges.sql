@@ -19,6 +19,7 @@
 ] %}
 
 with bungee_bridges as (
+    {% for chain in chains %}
     select
         contract_address,
         evt_tx_hash,
@@ -38,6 +39,7 @@ with bungee_bridges as (
     {% if not loop.last %}
     union all
     {% endif %}
+    {% endfor %}
 )
 
 select *
