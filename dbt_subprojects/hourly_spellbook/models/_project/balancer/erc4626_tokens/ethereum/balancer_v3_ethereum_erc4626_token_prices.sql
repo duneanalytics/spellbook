@@ -46,6 +46,9 @@ WITH wrap_unwrap AS(
     JOIN {{ source('prices', 'usd') }} p ON m.underlying_token = p.contract_address
     AND p.blockchain = 'ethereum'
     AND DATE_TRUNC('minute', w.evt_block_time) = DATE_TRUNC('minute', p.minute)
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('p.minute') }}
+    {% endif %}            
     )
 
 SELECT
