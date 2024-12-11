@@ -19,3 +19,48 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: baryon_viction_base_trades
+    meta:
+      blockchain: viction
+      sector: dex
+      project: baryon
+      contributors: hosuke
+    config:
+      tags: [ 'viction', 'dex', 'trades', 'baryon', 'v2' ]
+    description: "Baryon base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: rabbitswap_viction_base_trades
+    meta:
+      blockchain: viction
+      sector: dex
+      project: rabbitswap
+      contributors: hosuke
+    config:
+      tags: [ 'viction', 'dex', 'trades', 'rabbitswap', 'v3' ]
+    description: "RabbitSwap base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: mori_viction_base_trades
+    meta:
+      blockchain: viction
+      sector: dex
+      project: mori
+      contributors: hosuke
+    config:
+      tags: [ 'viction', 'dex', 'trades', 'mori', 'v3' ]
+    description: "Mori base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
