@@ -47,7 +47,7 @@ WITH wrap_unwrap AS(
     AND p.blockchain = 'gnosis'
     AND DATE_TRUNC('minute', w.evt_block_time) = DATE_TRUNC('minute', p.minute)
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('p.minute') }}
+    AND {{ incremental_predicate('p.minute') }}
     {% endif %}          
     )
 
