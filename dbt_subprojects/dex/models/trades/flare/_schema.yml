@@ -110,3 +110,18 @@ models:
           seed_file: ref('sparkdex_flare_base_trades_seed')
           filter:
             version: 3
+
+  - name: blazeswap_flare_base_trades
+    meta:
+      blockchain: flare
+      sector: dex
+      project: blazeswap
+      contributors: hosuke
+    config:
+      tags: [ 'flare', 'dex', 'trades', 'blazeswap' ]
+    description: "Blazeswap Flare base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
