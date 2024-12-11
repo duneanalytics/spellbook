@@ -38,7 +38,6 @@ with bungee_bridges as (
     {% if not loop.last %}
     union all
     {% endif %}
-    {% endfor %}
 )
 
 select *
