@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'balance_v3',
+    schema = 'balancer_v3',
     alias = 'erc4626_token_prices',
     post_hook='{{ expose_spells(blockchains = \'["ethereum", "gnosis"]\',
                                 spell_type = "project",
