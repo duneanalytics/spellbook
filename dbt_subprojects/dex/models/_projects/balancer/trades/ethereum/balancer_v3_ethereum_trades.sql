@@ -1,9 +1,9 @@
 {{
     config(
-        schema = 'balancer_v3_gnosis',
+        schema = 'balancer_v3_ethereum',
         alias = 'trades',
         materialized = 'view',
-        post_hook = '{{ expose_spells(\'["gnosis"]\',
+        post_hook = '{{ expose_spells(\'["ethereum"]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
                                 contributors = \'["viniabussafi"]\') }}'
@@ -19,7 +19,7 @@ WITH
             swap_fee,
             pool_symbol,
             pool_type
-        FROM {{ ref('balancer_v3_gnosis_base_trades') }}
+        FROM {{ ref('balancer_v3_ethereum_base_trades') }}
     ),
 
     dexs AS (
@@ -56,7 +56,7 @@ WITH
             INNER JOIN dexs_base
                 ON dexs.tx_hash = dexs_base.tx_hash
                 AND dexs.evt_index = dexs_base.evt_index
-        WHERE dexs.blockchain = 'gnosis'
+        WHERE dexs.blockchain = 'ethereum'
             AND dexs.project = 'balancer'
             AND dexs.version = '3'
     ),
@@ -73,7 +73,7 @@ WITH
             LEFT JOIN {{ source('balancer', 'bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_bought_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
-                AND bpt_prices.blockchain = 'gnosis'                
+                AND bpt_prices.blockchain = 'ethereum'                
         GROUP BY 1, 2, 3, 4, 5
     ),
     
@@ -89,7 +89,7 @@ WITH
             LEFT JOIN {{ source('balancer', 'bpt_prices') }} bpt_prices
                 ON bpt_prices.contract_address = dexs.token_sold_address
                 AND bpt_prices.day <= DATE_TRUNC('day', dexs.block_time)
-                AND bpt_prices.blockchain = 'gnosis'
+                AND bpt_prices.blockchain = 'ethereum'
         GROUP BY 1, 2, 3, 4, 5
     ),
 
@@ -101,7 +101,7 @@ WITH
             APPROX_PERCENTILE(median_price, 0.5) AS price,
             LEAD(minute, 1, NOW()) OVER (PARTITION BY wrapped_token ORDER BY minute) AS time_of_next_change
         FROM {{ source('balancer_v3', 'erc_4626_token_prices') }}
-        WHERE blockchain = 'gnosis'
+        WHERE blockchain = 'ethereum'
         GROUP BY 1, 2, 3, 5
     ),
 
@@ -152,7 +152,7 @@ FROM dexs
     LEFT JOIN {{ source('balancer', 'bpt_prices') }} bpa_bpt_prices
         ON bpa_bpt_prices.contract_address = bpa.contract_address
         AND bpa_bpt_prices.day = bpa.bpa_max_block_date
-        AND bpa_bpt_prices.blockchain = 'gnosis'        
+        AND bpa_bpt_prices.blockchain = 'ethereum'        
     INNER JOIN bpb
         ON bpb.block_number = dexs.block_number
         AND bpb.tx_hash = dexs.tx_hash
@@ -160,7 +160,7 @@ FROM dexs
     LEFT JOIN {{ source('balancer', 'bpt_prices') }} bpb_bpt_prices
         ON bpb_bpt_prices.contract_address = bpb.contract_address
         AND bpb_bpt_prices.day = bpb.bpb_max_block_date
-        AND bpb_bpt_prices.blockchain = 'gnosis'
+        AND bpb_bpt_prices.blockchain = 'ethereum'
     LEFT JOIN erc4626_prices erc4626a
         ON erc4626a.wrapped_token = dexs.token_bought_address
         AND erc4626a.minute <= dexs.block_time
