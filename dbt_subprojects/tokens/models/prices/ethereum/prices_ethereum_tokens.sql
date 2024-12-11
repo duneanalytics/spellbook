@@ -1868,7 +1868,9 @@ FROM
     ('shrub-shrub', 'ethereum', 'SHRUB', 0x3b991130eae3cca364406d718da22fa1c3e7c256, 18),
     ('sbr-strategic-bitcoin-reserve', 'ethereum', 'SBR', 0xd6203889c22d9fe5e938a9200f50fdffe9dd8e02, 9),
     ('sigma2-sigma', 'ethereum', 'SIGMA', 0x18a8D75F70eAEad79B5A55903D036ce337F623A5, 18),
-    ('mstr-mstr2100', 'ethereum', 'MSTR', 0x42069026EAC8Eee0Fd9b5f7aDFa4f6E6D69a2B39, 9)
+    ('mstr-mstr2100', 'ethereum', 'MSTR', 0x42069026EAC8Eee0Fd9b5f7aDFa4f6E6D69a2B39, 9), 
+    ('usdl-lift-dollar', 'ethereum', 'USDL', 0xbdC7c08592Ee4aa51D06C27Ee23D5087D65aDbcD, 18), 
+    ('usr-resolv-usr', 'ethereum', 'USR', 0x66a1e37c9b0eaddca17d3662d6c05f4decf3e110, 18)               
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
