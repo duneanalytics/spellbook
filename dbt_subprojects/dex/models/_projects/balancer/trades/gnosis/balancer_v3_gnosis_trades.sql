@@ -100,7 +100,7 @@ WITH
             decimals,
             APPROX_PERCENTILE(median_price, 0.5) AS price,
             LEAD(minute, 1, NOW()) OVER (PARTITION BY wrapped_token ORDER BY minute) AS time_of_next_change
-        FROM {{ source('balancer_v3', 'erc_4626_token_prices') }}
+        FROM {{ source('balancer_v3', 'erc4626_token_prices') }}
         WHERE blockchain = 'gnosis'
         GROUP BY 1, 2, 3, 5
     )

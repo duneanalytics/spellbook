@@ -116,10 +116,9 @@ sources:
   - name: balancer_v3_gnosis
     tables:
       - name: bpt_prices
-
   - name: balancer_v3
     tables:
-      - name: erc_4626_token_prices
+      - name: erc4626_token_prices
 
   - name: addresses_ethereum
     tables:
