@@ -33,7 +33,7 @@ with fees as (
     select
         blockchain
         , block_date
-        , tx_from as address
+        , from_base58(signer) as address
         , sum(tx_fee_usd) as gas_fees_usd
     from
         {{ source('gas_solana', 'vote_fees') }}
@@ -45,19 +45,18 @@ with fees as (
     group by
         blockchain
         , block_date
-        , tx_from
+        , from_base58(signer)
 ), combined_fees as (
     select
-        fees.blockchain
-        , fees.block_date
-        , fees.address
-        , fees.gas_fees_usd + coalesce(solana_vote_fees.gas_fees_usd, 0) as gas_fees_usd
+        coalesce(fees.blockchain, solana_vote_fees.blockchain) as blockchain
+        , coalesce(fees.block_date, solana_vote_fees.block_date) as block_date
+        , coalesce(fees.address, solana_vote_fees.address) as address
+        , coalesce(fees.gas_fees_usd, 0) + coalesce(solana_vote_fees.gas_fees_usd, 0) as gas_fees_usd
     from
         fees
-    left join
+    full outer join
         solana_vote_fees
-    on
-        fees.blockchain = solana_vote_fees.blockchain
+        on fees.blockchain = solana_vote_fees.blockchain
         and fees.block_date = solana_vote_fees.block_date
         and fees.address = solana_vote_fees.address
 )
