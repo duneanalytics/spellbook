@@ -27,18 +27,19 @@ with prices as (
 , bitcoin_fees as (
         select
             block_date
-            , from_hex(input[1][6][1]) as address
+            , from_base58(input[1][6][1]) as address
             , sum(fee) as daily_fee
         from
             {{ source(blockchain, 'transactions') }}
         where
-            block_date < cast(date_trunc('day', now()) as date) --exclude current day to match prices.usd_daily
+            regexp_like(input[1][6][1], '^[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]+$') --filter out invalid addresses
+            and block_date < cast(date_trunc('day', now()) as date) --exclude current day to match prices.usd_daily
             {% if is_incremental() or true %}
             and {{ incremental_predicate('block_date') }}
             {% endif %}
         group by
             block_date
-            , from_hex(input[1][6][1])
+            , from_base58(input[1][6][1])
 )
 select
     '{{ blockchain }}' as blockchain
