@@ -923,6 +923,9 @@ FROM (VALUES
     , (0xf6230e7e98d2bbebf96d14888020e9c3e8c27d69, 'Korbit', 'Korbit 10', 'hildobby', date '2024-05-04')
     , (0x223674cc4433a50caddf13c65f92151d75996e41, 'Korbit', 'Korbit 11', 'hildobby', date '2024-05-27')
     , (0x8e2040ab7a6af6bba67e6d9b280c6fea7f930c87, 'Korbit', 'Korbit 12', 'hildobby', date '2024-10-06')
+    , (0x3a70c2528265f0624e7ac8495b212a367b5b61b2, 'Korbit', 'Korbit 13', 'hildobby', date '2024-12-12')
+    , (0x5bd811987ee931ac85ed0eda8871282f9c5c88a4, 'Korbit', 'Korbit 14', 'hildobby', date '2024-12-12')
+    , (0x455ae9f6d25fd49ed7be9f3d8dd1cf58a79a5958, 'Korbit', 'Korbit 15', 'hildobby', date '2024-12-12')
     , (0xd17e26529e5fca53901f65f1a914317877cab08a, 'Korbit', 'Korbit Gas Supplier 1', 'hildobby', date '2024-10-06')
     , (0xd77f7f8868f20835fdfc8c7e851f6f23ce9f651d, 'Korbit', 'Korbit Gas Supplier 2', 'hildobby', date '2024-10-06')
     -- KuCoin
@@ -1286,6 +1289,7 @@ FROM (VALUES
     , (0xee7c0bf91f9ac8117b490c8e028714acbcb41364, 'Bitstamp', 'Bitstamp 44', 'hildobby', date '2024-04-20')
     , (0xc3b7336d5a5158215599572012cedd4403a81629, 'Bitstamp', 'Bitstamp 45', 'hildobby', date '2024-05-04')
     , (0x3d9256ad37128e9f47b34a82e06e981719477c18, 'Bitstamp', 'Bitstamp 46', 'hildobby', date '2024-10-06')
+    , (0x1f69d824c3b4f906ac3fc8826e2391bcb9330e02, 'Bitstamp', 'Bitstamp 47', 'hildobby', date '2024-12-12')
     , (0xfca70e67b3f93f679992cd36323eeb5a5370c8e4, 'Bitstamp', 'Bitstamp Old Address 1', 'hildobby', date '2022-08-28')
     , (0x964771f6df31eea2d927fa71d7bd78e81bcdce05, 'Bitstamp', 'Bitstamp Contract 1', 'hildobby', date '2023-08-31')
     , (0x538d72ded42a76a30f730292da939e0577f22f57, 'Bitstamp', 'Bitstamp Deployer', 'hildobby', date '2023-08-31')
@@ -2525,6 +2529,7 @@ FROM (VALUES
     , (0xc97a4ed29f03fd549c4ae79086673523122d2bc5, 'ZB.com', 'ZB.com 5', 'hildobby', date '2024-05-04')
     , (0x38b78904a6b44f63eb81d98937fc6614870cfbb9, 'ZB.com', 'ZB.com 6', 'hildobby', date '2024-05-04')
     , (0xf0d9fcb4fefdbd3e7929374b4632f8ad511bd7e3, 'ZB.com', 'ZB.com 7', 'hildobby', date '2024-10-06')
+    , (0xcb45822dfa8a65b97bc854a1a61b674153a42967, 'ZB.com', 'ZB.com 8', 'hildobby', date '2024-12-12')
     , (0x734ac651dd95a339c633cded410228515f97faff, 'ZB.com', 'ZB.com Gas Supplier 1', 'hildobby', date '2023-11-23')
     , (0xdb7248d26ea60170a4fdc2ea44dc839c9e8c9ee4, 'ZB.com', 'ZB.com Gas Supplier 2', 'hildobby', date '2024-05-04')
     , (0x5e91e8ccae2dd2c6db87f677e161ed1e07d6ccc8, 'ZB.com', 'ZB.com Gas Supplier 3', 'hildobby', date '2024-10-06')
@@ -2689,6 +2694,7 @@ FROM (VALUES
     , (0xe2933566f172d08f8c90144fed5ae28e9d54b1ec, 'Woo X', 'Woo X Team', 'hildobby', date '2024-01-04')
     , (0x15271e572267def474366bb683719cc59489efbe, 'Woo X', 'Woo X Treasury 1', 'hildobby', date '2024-01-04')
     , (0xd7d8bcae65537cb5079a4fb249b9fbb4526e4084, 'Woo X', 'Woo X Treasury 2', 'hildobby', date '2024-06-03')
+    , (0xfa2d1f15557170f6c4a4c5249e77f534184cdb79, 'Woo X', 'Woo X Treasury 3', 'hildobby', date '2024-12-12')
     , (0xe64eb20471491956338eedc0f98242bc3ad0c91b, 'Woo X', 'Woo X Deployer 1', 'hildobby', date '2024-06-03')
     -- FastEx
     , (0x85e1de87a7575c6581f7930f857a3813b66a14d8, 'FastEx', 'FastEx 1', 'hildobby', date '2023-11-23')
@@ -2773,6 +2779,7 @@ FROM (VALUES
     -- OPNX
     , (0x610887f0ae329557d1ae067f6b7697ff07032116, 'OPNX', 'OPNX 1', 'hildobby', date '2024-01-04')
     , (0xe5241ac645cad844e94a2e7486283ed6398fb3aa, 'OPNX', 'OPNX 2', 'hildobby', date '2024-01-04')
+    , (0x05d618a67786e4d078c0fbc8e601ad9765787c5d, 'OPNX', 'OPNX Safe 1', 'hildobby', date '2024-12-12')
     , (0xcd5f17b1fe981ba260c40c67e740b7290b50ea50, 'OPNX', 'OPNX Contract 1', 'hildobby', date '2024-01-04')
     , (0x78a0a62fba6fb21a83fe8a3433d44c73a4017a6f, 'OPNX', 'OPNX OX Token', 'hildobby', date '2024-01-04')
     , (0x28901cf869d94c9d892fbd86c8e57b801e8fdd87, 'OPNX', 'OPNX veOX Token', 'hildobby', date '2024-01-04')
