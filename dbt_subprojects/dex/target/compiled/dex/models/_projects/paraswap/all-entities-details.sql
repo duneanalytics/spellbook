@@ -103,4 +103,4 @@ select
     entity, blockchain, contract_address, block_time, tx_hash    
 from entities
 where blockchain = '{{blockchain}}' and contract_address = {{contract_address}}
-order by block_time, tx_hash
+order by block_time desc, tx_hash
