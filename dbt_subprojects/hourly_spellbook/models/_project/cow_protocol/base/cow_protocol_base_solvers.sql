@@ -7,7 +7,6 @@
                                     contributors = \'["felix"]\') }}'
 )}}
 
--- Find the PoC Query here: https://dune.com/queries/3840597
 WITH
 -- Aggregate the solver added and removed events into a single table
 -- with true/false for adds/removes respectively
