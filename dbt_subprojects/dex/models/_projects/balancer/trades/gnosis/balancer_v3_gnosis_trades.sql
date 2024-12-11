@@ -110,8 +110,8 @@ SELECT
     dexs.token_sold_amount_raw,
     COALESCE(
         dexs.amount_usd,
-        dexs.token_bought_amount_raw / POWER(10, COALESCE(erc20a.decimals, 18)) * bpa_bpt_prices.bpt_price,
-        dexs.token_sold_amount_raw / POWER(10, COALESCE(erc20b.decimals, 18))  * bpb_bpt_prices.bpt_price
+        dexs.token_bought_amount_raw / POWER(10, COALESCE(erc20a.decimals, erc_4626_prices_a.decimals, 18)) * COALESCE(bpa_bpt_prices.bpt_price, erc_4626_prices_a.price)
+        dexs.token_sold_amount_raw / POWER(10, COALESCE(erc20b.decimals, erc_4626_prices_b.decimals, 18))  * COALESCE(bpb_bpt_prices.bpt_price, erc_4626_prices_b.price)
     ) AS amount_usd,
     dexs.token_bought_address,
     dexs.token_sold_address,
@@ -149,3 +149,9 @@ FROM dexs
         ON bpb_bpt_prices.contract_address = bpb.contract_address
         AND bpb_bpt_prices.day = bpb.bpb_max_block_date
         AND bpb_bpt_prices.blockchain = 'gnosis'
+    LEFT JOIN{{ source('balancer_v3', 'erc_4626_token_prices') }} erc_4626_prices_a
+        ON erc_4626_prices_a.wrapped_token = dexs.token_bought_address
+        AND erc_4626_prices_a.blockchain = dexs.blockchain 
+    LEFT JOIN{{ source('balancer_v3', 'erc_4626_token_prices') }} erc_4626_prices_b
+        ON erc_4626_prices_b.wrapped_token = dexs.token_sold_address
+        AND erc_4626_prices_b.blockchain = dexs.blockchain         
