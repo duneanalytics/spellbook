@@ -18,9 +18,28 @@
     'avalanche_c', 'fantom'
 ] %}
 
-{% for chain in chains %}
-    {{ bungee_SocketBridge(chain) }}
+with bungee_bridges as (
+    select
+        contract_address,
+        evt_tx_hash,
+        evt_index,
+        evt_block_time,
+        evt_block_number,
+        amount,
+        token,
+        toChainId,
+        bridgeName,
+        sender,
+        receiver,
+        metadata,
+        source_chain,
+        transfer_id
+    from {{ ref( 'bungee_' ~ chain ~ '_bridges' ) }}
     {% if not loop.last %}
-        UNION ALL
+    union all
     {% endif %}
-{% endfor %}
+    {% endfor %}
+)
+
+select *
+from bungee_bridges
