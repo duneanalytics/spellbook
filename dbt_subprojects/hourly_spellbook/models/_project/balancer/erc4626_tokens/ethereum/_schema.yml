@@ -27,8 +27,8 @@ models:
         description: "Contract address of the underlying token."
       - name: underlying_token_symbol
         description: "Symbol of the underlying token."
-      - name: token_decimals
-        description: "Decimal precision of the underlying token."
+      - name: decimals
+        description: "Decimal precision of the ERC4626 token."
 
   - name: balancer_v3_ethereum_erc4626_token_prices
     meta:
