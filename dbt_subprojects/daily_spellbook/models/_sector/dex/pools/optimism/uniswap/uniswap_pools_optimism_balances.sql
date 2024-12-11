@@ -1,12 +1,13 @@
 {{
   config(
-    schema = 'optimism',
-    alias = 'op_token_balances',
+    schema = 'uniswap_pools_optimism',
+    alias = 'balances',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['pool_address', 'snapshot_day']
-  )
+    unique_key = ['pool_address', 'snapshot_day'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.snapshot_day')]
+    )
 }}
 
 WITH op_pools AS (
@@ -18,9 +19,9 @@ WITH op_pools AS (
     evt_block_time AS creation_time
   FROM 
     {{ source('uniswap_v3_optimism', 'UniswapV3Factory_evt_PoolCreated') }}
-  WHERE 
-    token0 = 0x4200000000000000000000000000000000000042
-    OR token1 = 0x4200000000000000000000000000000000000042
+  WHERE
+    (token0 = 0x4200000000000000000000000000000000000042
+    OR token1 = 0x4200000000000000000000000000000000000042)
 ),
 filtered_balances AS (
   SELECT 
@@ -29,8 +30,13 @@ filtered_balances AS (
     day AS snapshot_day
   FROM 
   {{ source('tokens_optimism', 'balances_daily') }}
-  WHERE 
+  WHERE
     token_address = 0x4200000000000000000000000000000000000042
+    {% if is_incremental() %}
+    and {{ incremental_predicate('day') }}
+    {% else %}
+    and day >= date '2021-11-11' --first pool initiated
+    {% endif %}
 )
 SELECT 
   p.pool_address,
