@@ -3,6 +3,7 @@
 
 
 
+
   
 with entities as (
     
@@ -94,8 +95,9 @@ with entities as (
             
         
     
-),
-ordered_entities as (
+)
+
+,ordered_entities as (
     select 
         entity, blockchain, contract_address, block_time, tx_hash
     from entities
