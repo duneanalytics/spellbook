@@ -35,7 +35,8 @@ with prices as (
         from
             {{ source(blockchain, 'transactions') }}
         where
-            block_date < cast(date_trunc('day', now()) as date) --exclude current day to match prices.usd_daily
+            input[1][6][1] is not null --first transaction of the block is the mined value and has no address
+            and block_date < cast(date_trunc('day', now()) as date) --exclude current day to match prices.usd_daily
             {% if is_incremental() or true %}
             and {{ incremental_predicate('block_date') }}
             {% endif %}
