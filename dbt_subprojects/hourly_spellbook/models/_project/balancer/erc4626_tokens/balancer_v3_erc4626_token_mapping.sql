@@ -23,7 +23,7 @@ FROM (
         erc4626_token_symbol,
         underlying_token,
         underlying_token_symbol,
-        token_decimals
+        decimals
     FROM {{ model }}
     {% if not loop.last %}
     UNION ALL
