@@ -7820,4 +7820,5 @@ FROM (VALUES
     , ( 0x8418d17640a74f1614ac3e1826f29e78714488a1, 'stataGnoEURe', 18)
     , ( 0xecfd0638175e291ba3f784a58fb9d38a25418904, 'stataGnowstETH', 18)
     , ( 0xf0e7ec247b918311afa054e0aedb99d74c31b809, 'stataGnoUSDCe', 6)
+    , ( 0xFECB3F7c54E2CAAE9dC6Ac9060A822D47E053760, 'BRLA', 18)
 ) AS temp_table (contract_address, symbol, decimals)

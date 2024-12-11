@@ -34,8 +34,9 @@ SELECT
     trigger_price,
     trigger_price_raw,
     min_output_amount_raw,
-    updated_at_time
-
+    updated_at_time,
+    valid_from_time,
+    auto_cancel
 FROM {{ ref('gmx_v2_' ~ chain ~ '_order_updated') }}
 {% if not loop.last %}
 UNION ALL

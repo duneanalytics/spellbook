@@ -10,6 +10,7 @@
                                         ,"base"
                                         ,"blast"
                                         ,"bnb"
+                                        ,"boba"
                                         ,"celo"
                                         ,"ethereum"
                                         ,"fantom"
@@ -71,6 +72,9 @@
     ,'tokens_tron': {'blockchain': 'tron', 'model': ref('tokens_tron_erc20')}
     ,'tokens_ronin': {'blockchain': 'ronin', 'model': ref('tokens_ronin_erc20')}
     ,'tokens_bob': {'blockchain': 'bob', 'model': ref('tokens_bob_erc20')}
+    ,'tokens_flare': {'blockchain': 'flare', 'model': ref('tokens_flare_erc20')}
+    ,'tokens_boba': {'blockchain': 'boba', 'model': ref('tokens_boba_erc20')}
+    ,'tokens_viction': {'blockchain': 'viction', 'model': ref('tokens_viction_erc20')}
 } %}
 
 with automated_source as (
