@@ -585,3 +585,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('saddle_finance_optimism_base_trades_seed') 
+
+  - name: bridgers_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: bridgers
+      contributors: princi
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'bridgers']
+    description: "bridgers optimism base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('bridgers_optimism_base_trades_seed') 

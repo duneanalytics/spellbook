@@ -98,3 +98,6 @@ sources:
   - name: saddle_finance_optimism
     tables:
       - name: SwapFlashLoan_evt_TokenSwap
+  - name: bridgers_optimism
+    tables:
+      - name: Bridgers_evt_Swap
