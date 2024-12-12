@@ -17,7 +17,7 @@ with fees as (
     from
         {{ source('gas', 'fees') }}
     where blockchain = 'tron'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     and
         {{ incremental_predicate('block_date') }}
     {% endif %}
@@ -34,6 +34,6 @@ from fees
 left join {{ref('tron_fee_correction')}} t
     on block_date = t.day
     and blockchain = 'tron'
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     and {{ incremental_predicate('day') }}
     {% endif %}
