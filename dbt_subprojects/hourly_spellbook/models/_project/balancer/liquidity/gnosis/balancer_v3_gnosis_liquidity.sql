@@ -1,3 +1,6 @@
+
+{% set blockchain = 'gnosis' %}
+
 {{
     config(
     schema = 'balancer_v3_gnosis',
@@ -9,7 +12,7 @@
 
 {{ 
     balancer_v3_compatible_liquidity_macro(
-        blockchain = 'gnosis',
+        blockchain = blockchain,
         version = '3',        
         project_decoded_as = 'balancer_v3',
         base_spells_namespace = 'balancer',
