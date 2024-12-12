@@ -1,4 +1,4 @@
-name: PR auto-labeler
+name: PR automation
 
 on:
   pull_request:
@@ -8,7 +8,6 @@ on:
       - converted_to_draft
       - synchronize
       - labeled
-      - unlabeled
 
 permissions:
   pull-requests: write
@@ -39,3 +38,13 @@ jobs:
         uses: actions/labeler@v5
         with:
           sync-labels: true
+
+      - name: Set draft when WIP label
+        if: (github.event.action == 'labeled' && github.event.label.name == 'WIP')
+        run: gh pr ready "$NUMBER" --undo
+
+      - name: Set ready when ready-for-review label
+        if: (github.event.action == 'labeled' && github.event.label.name == 'ready-for-review')
+        run: gh pr ready "$NUMBER"
+
+
