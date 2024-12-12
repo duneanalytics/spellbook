@@ -9,14 +9,14 @@
 }}
 
 {% set balancer_models = [
-    ref('balancer_v2_arbitrum_pools_tokens_weights'),
-    ref('balancer_v2_avalanche_c_pools_tokens_weights'),
-    ref('balancer_v2_base_pools_tokens_weights'),
-    ref('balancer_v2_ethereum_pools_tokens_weights'),
-    ref('balancer_v2_gnosis_pools_tokens_weights'),
-    ref('balancer_v2_optimism_pools_tokens_weights'),
-    ref('balancer_v2_polygon_pools_tokens_weights'),
-    ref('balancer_v2_zkevm_pools_tokens_weights')
+    ref('balancer_arbitrum_pools_tokens_weights'),
+    ref('balancer_avalanche_c_pools_tokens_weights'),
+    ref('balancer_base_pools_tokens_weights'),
+    ref('balancer_ethereum_pools_tokens_weights'),
+    ref('balancer_gnosis_pools_tokens_weights'),
+    ref('balancer_optimism_pools_tokens_weights'),
+    ref('balancer_polygon_pools_tokens_weights'),
+    ref('balancer_zkevm_pools_tokens_weights')
 ] %}
 
 

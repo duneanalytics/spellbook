@@ -110,6 +110,12 @@ sources:
   - name: balancer
     tables:
       - name: bpt_prices
+  - name: balancer_v3_ethereum
+    tables:
+      - name: bpt_prices
+  - name: balancer_v3_gnosis
+    tables:
+      - name: bpt_prices
 
   - name: addresses_ethereum
     tables:
