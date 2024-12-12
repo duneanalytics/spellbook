@@ -146,7 +146,6 @@ models:
       comprehensive analysis of GLV markets.
 
     columns:
-      - *blockchain
       - name: glv
         description: The identifier of the GLV market.
       - name: glv_market_name
