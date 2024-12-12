@@ -9,33 +9,35 @@ on:
 
 permissions:
   pull-requests: write
+  issues: write
 
 jobs:
   pr-automation:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
       - name: Add WIP Label on Open
         if: github.event.action == 'opened'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_NUMBER=$(gh pr view --json number --jq .number)
-          gh issue edit "$PR_NUMBER" --add-label "WIP"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+          LABELS: WIP
+        run: gh issue edit "$NUMBER" --add-label "$LABELS"
 
       - name: Add WIP Label on Draft
         if: github.event.action == 'converted_to_draft'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_NUMBER=$(gh pr view --json number --jq .number)
-          gh issue edit "$PR_NUMBER" --add-label "WIP"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+          LABELS: WIP
+        run: gh issue edit "$NUMBER" --add-label "$LABELS"
 
       - name: Remove WIP and Add Ready Label
         if: github.event.action == 'ready_for_review'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          PR_NUMBER=$(gh pr view --json number --jq .number)
-          gh issue edit "$PR_NUMBER" --remove-label "WIP" --add-label "ready-for-review"
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+          LABELS: -WIP,ready-for-review
+        run: gh issue edit "$NUMBER" --add-label "$LABELS"
