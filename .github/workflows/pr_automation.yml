@@ -21,8 +21,8 @@ jobs:
       GH_REPO: ${{ github.repository }}
       NUMBER: ${{ github.event.number }}
     steps:
-      - name: Mark PR as Draft
-        if: github.event.pull_request.draft == false
+      - name: Mark new PR as Draft
+        if: (github.event.action == 'opened' && github.event.pull_request.draft == false)
         run: gh pr ready "$NUMBER" --undo
 
       - name: Set labels on Open
