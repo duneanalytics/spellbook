@@ -33,8 +33,7 @@ jobs:
                 isDraft
               }
             }
-          }
-        '
+          }'
 
       - name: Set labels on Open
         if: github.event.action == 'opened'
