@@ -34,9 +34,13 @@ SELECT *
 FROM (
         {% for blockchain in chains %}
         SELECT
-        blockchain
-        ,block_date
-        ,gas_fees_usd
+            blockchain
+            ,block_date
+            ,address
+            ,name
+            ,primary_category
+            ,hq_country
+            ,gas_fees_usd
         FROM {{ ref('metrics_' + blockchain + '_gas_fees_daily_address') }}
         {% if not loop.last %}
         UNION ALL
