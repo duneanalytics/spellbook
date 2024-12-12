@@ -9,33 +9,33 @@ on:
 
 permissions:
   pull-requests: write
-  issues: write
 
 jobs:
   pr-automation:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+
       - name: Add WIP Label on Open
         if: github.event.action == 'opened'
-        uses: actions/github-labels@v2
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          labels: |
-            WIP
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=$(gh pr view --json number --jq .number)
+          gh issue edit "$PR_NUMBER" --add-label "WIP"
 
       - name: Add WIP Label on Draft
         if: github.event.action == 'converted_to_draft'
-        uses: actions/github-labels@v2
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          labels: |
-            WIP
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=$(gh pr view --json number --jq .number)
+          gh issue edit "$PR_NUMBER" --add-label "WIP"
 
       - name: Remove WIP and Add Ready Label
         if: github.event.action == 'ready_for_review'
-        uses: actions/github-labels@v2
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          labels: |
-            -WIP
-            ready-for-review
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=$(gh pr view --json number --jq .number)
+          gh issue edit "$PR_NUMBER" --remove-label "WIP" --add-label "ready-for-review"
