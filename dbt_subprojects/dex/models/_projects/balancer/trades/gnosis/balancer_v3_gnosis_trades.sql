@@ -164,8 +164,8 @@ FROM dexs
     LEFT JOIN erc4626_prices erc4626a
         ON erc4626a.wrapped_token = dexs.token_bought_address
         AND erc4626a.minute <= dexs.block_time
-        AND c.day < erc4626a.time_of_next_change
+        AND dexs.block_time < erc4626a.time_of_next_change
     LEFT JOIN erc4626_prices erc4626b
         ON erc4626b.wrapped_token = dexs.token_sold_address
         AND erc4626b.minute <= dexs.block_time
-        AND c.day < erc4626b.time_of_next_change   
+        AND dexs.block_time < erc4626b.time_of_next_change   
