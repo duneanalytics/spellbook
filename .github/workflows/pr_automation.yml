@@ -1,0 +1,67 @@
+name: PR Automation
+
+on:
+  pull_request:
+    types:
+      - opened
+      - ready_for_review
+      - converted_to_draft
+
+jobs:
+  pr-automation:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+
+    steps:
+      - name: Mark PR as Draft
+        if: github.event.action == 'opened'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.pullRequest.number,
+              draft: true
+            })
+
+      - name: Add WIP Label on Draft
+        if: github.event.action == 'converted_to_draft'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.pullRequest.number,
+              labels: ['WIP']
+            })
+
+      - name: Remove WIP and Add Ready Label
+        if: github.event.action == 'ready_for_review'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            // Remove WIP label
+            try {
+              await github.rest.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.pullRequest.number,
+                name: 'WIP'
+              });
+            } catch (error) {
+              console.log('WIP label not found, continuing...');
+            }
+
+            // Add ready-for-review label
+            github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.pullRequest.number,
+              labels: ['ready-for-review']
+            })
