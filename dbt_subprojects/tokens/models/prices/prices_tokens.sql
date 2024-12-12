@@ -32,6 +32,7 @@
                                         , "zksync"
                                         , "zkevm"
                                         , "zora"
+                                        , "ronin"
                                     ]\',
                                     "sector",
                                     "prices",

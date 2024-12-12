@@ -162,6 +162,7 @@ WITH trusted_tokens AS (
                 , ('zksync', 0x000000000000000000000000000000000000800a)
                 , ('zksync', 0xbbeb516fb02a01611cbbe0453fe3c580d7281011)
                 , ('zora', 0x4200000000000000000000000000000000000006)
+                , ('ronin', 0xe514d9deb7966c8be0ca922de8a064264ea6bcd4) -- WRON
         ) AS t (blockchain, contract_address)
 ), erc20 as (
         SELECT
