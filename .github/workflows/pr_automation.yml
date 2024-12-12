@@ -7,11 +7,13 @@ on:
       - ready_for_review
       - converted_to_draft
 
+permissions:
+  pull-requests: write
+  contents: read
+
 jobs:
   pr-automation:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
 
     steps:
       - name: Mark PR as Draft
