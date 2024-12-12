@@ -30,7 +30,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
           NUMBER: ${{ github.event.number }}
-        run: echo $GH_REPO && gh pr edit "$NUMBER" --add-label "WIP"
+        run: gh auth status
 
       - name: Remove WIP and Add Ready Label
         if: github.event.action == 'ready_for_review'
