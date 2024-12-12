@@ -122,3 +122,39 @@ sources:
           - &value
             name: value
             description: ETH amount (in WEI) being passed into contract interaction
+  - name: cow_protocol_arbitrum
+    description: "Arbitrum decoded tables related to CoW Protocol contract's"
+    tables:
+      - name: CoWSwapEthFlow_evt_OrderPlacement
+        description: "CoWSwapEthFlow Order Placement Events"
+        columns:
+          - *contract_address
+          - *evt_block_number
+          - *evt_block_time
+          - *evt_index
+          - *evt_tx_hash
+          - &order
+            name: order
+            description: "Contains json encoded data for an EthFlowOrder: https://github.com/cowprotocol/ethflowcontract/blob/main/src/libraries/EthFlowOrder.sol#L19-L45"
+          - &data
+            name: data
+            description: "Hex Encoded data containing quoteId and validTo: https://github.com/cowprotocol/ethflowcontract/blob/9c74c8ba36ff9ff3e255172b02454f831c066865/src/CoWSwapEthFlow.sol#L110-L113"
+          - &sender
+            name: sender
+            description: "User who placed the order"
+          - &signature
+            name: signature
+            description: "Onchain EIP1271 signature"
+      - name: CoWSwapEthFlow_call_createOrder
+        description: "CoWSwapEthFlow createOrder function calls with input parameters and return value"
+        columns:
+          - *call_block_number
+          - *call_block_time
+          - *call_success
+          - *call_trace_address
+          - *call_tx_hash
+          - *contract_address
+          - *order
+          - &output_orderHash
+            name: output_orderHash
+            description: "ETH Flow Order Hash corresponds directly to a GPv2 Order Uid by concatenation with owner = contract_address and validTo = `ffffffff`"

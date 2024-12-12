@@ -190,5 +190,10 @@ FROM (VALUES
     , ('flashliquidity', 'Flashliquidity', 'Direct', 'flashliquidity')
     , ('akronswap', 'Akronswap', 'Direct', 'AkronFinance')
     , ('saddle_finance', 'Saddle Finance', 'Direct', 'saddlefinance')
+<<<<<<< HEAD
     , ('bridgers', 'Bridgers', 'Direct', 'Bridgersxyz')
+=======
+    , ('katana', 'Katana', 'Direct', 'AxieInfinity')
+    , ('jetswap', 'JetSwap', 'Direct', 'Jetfuelfinance')
+>>>>>>> aa735b3cece448ce9d18127a7d43197c1bd9be1d
     ) AS temp_table (project, name, marketplace_type, x_username)
