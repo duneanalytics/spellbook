@@ -1,6 +1,6 @@
 {{ config(
     alias = 'bot_trades',
-    schema = 'tradewiz',
+    schema = 'cswap',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -10,8 +10,8 @@
    )
 }}
 
-{% set project_start_date = '2024-11-27' %}
-{% set fee_receiver_1 = '97VmzkjX9w8gMFS2RnHTSjtMEDbifGXBq9pgosFdFnM' %}
+{% set project_start_date = '2024-12-06' %}
+{% set fee_receiver_1 = 'CSWAP5SpPcVjvpsA1H2n2HjNjMsRaPnZuX8H8bVJN5wy' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
@@ -111,7 +111,7 @@ SELECT
   block_time,
   block_date,
   block_month,
-  'Tradewiz' as bot,
+  'ChainSwap' as bot,
   blockchain,
   amount_usd,
   type,
