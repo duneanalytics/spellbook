@@ -21,6 +21,12 @@ jobs:
       GH_REPO: ${{ github.repository }}
       NUMBER: ${{ github.event.number }}
     steps:
+      - name: Mark PR as Draft
+        if: github.event.pull_request.draft == false
+        uses: voiceflow/draft-pr@latest
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Set labels on Open
         if: github.event.action == 'opened'
         run: gh pr edit "$NUMBER" --add-label "WIP"
@@ -38,13 +44,5 @@ jobs:
         uses: actions/labeler@v5
         with:
           sync-labels: true
-
-      - name: Set draft when WIP label
-        if: (github.event.action == 'labeled' && github.event.label.name == 'WIP')
-        run: gh pr ready "$NUMBER" --undo
-
-      - name: Set ready when ready-for-review label
-        if: (github.event.action == 'labeled' && github.event.label.name == 'ready-for-review')
-        run: gh pr ready "$NUMBER"
 
 
