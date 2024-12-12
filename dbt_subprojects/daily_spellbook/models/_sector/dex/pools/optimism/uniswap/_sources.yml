@@ -4,6 +4,3 @@ sources:
   - name: uniswap_v3_optimism
     tables:
       - name: UniswapV3Factory_evt_PoolCreated
-  - name: tokens_optimism
-    tables:
-      - name: balances_daily
