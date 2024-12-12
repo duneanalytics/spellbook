@@ -13,6 +13,18 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+  - name: metrics_arbitrum_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
             - address
 
   - name: metrics_avalanche_c_gas_fees_daily
@@ -22,6 +34,19 @@ models:
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
     description: "Sum of total fees spent per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: metrics_avalanche_c_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -41,6 +66,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+
+  - name: metrics_base_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
             - address
 
   - name: metrics_blast_gas_fees_daily
@@ -50,6 +88,19 @@ models:
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
     description: "Sum of total fees spent per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: metrics_blast_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -69,6 +120,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+
+  - name: metrics_bnb_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
             - address
 
   - name: metrics_celo_gas_fees_daily
@@ -78,6 +142,19 @@ models:
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
     description: "Sum of total fees spent per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: metrics_celo_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -97,6 +174,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+
+  - name: metrics_ethereum_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
             - address
 
   - name: metrics_fantom_gas_fees_daily
@@ -106,6 +196,19 @@ models:
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
     description: "Sum of total fees spent per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: metrics_fantom_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -125,6 +228,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+
+  - name: metrics_gnosis_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
             - address
 
   - name: metrics_linea_gas_fees_daily
@@ -134,6 +250,19 @@ models:
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
     description: "Sum of total fees spent per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: metrics_linea_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -153,6 +282,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+
+  - name: metrics_mantle_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
             - address
 
   - name: metrics_optimism_gas_fees_daily
@@ -162,6 +304,19 @@ models:
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
     description: "Sum of total fees spent per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: metrics_optimism_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -181,6 +336,46 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+
+  - name: metrics_polygon_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
+
+  - name: metrics_ronin_gas_fees_daily
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: metrics_ronin_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
             - address
 
   - name: metrics_scroll_gas_fees_daily
@@ -190,6 +385,19 @@ models:
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
     description: "Sum of total fees spent per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: metrics_scroll_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -209,6 +417,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+
+  - name: metrics_sei_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
             - address
 
   - name: metrics_zkevm_gas_fees_daily
@@ -218,6 +439,19 @@ models:
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
     description: "Sum of total fees spent per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: metrics_zkevm_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -237,6 +471,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+
+  - name: metrics_zksync_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
             - address
 
   - name: metrics_zora_gas_fees_daily
@@ -251,15 +498,14 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-            - address
 
-  - name: metrics_ronin_gas_fees_daily
+  - name: metrics_zora_gas_fees_daily_address
     meta:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
-    description: "Sum of total fees spent per day"
+    description: "Sum of total fees spent per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

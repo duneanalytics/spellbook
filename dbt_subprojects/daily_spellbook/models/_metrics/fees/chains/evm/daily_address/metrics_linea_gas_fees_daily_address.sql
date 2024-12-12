@@ -1,0 +1,15 @@
+{% set blockchain = 'linea' %}
+
+{{ config(
+        schema = 'metrics_' + blockchain
+        , alias = 'gas_fees_daily_address'
+        , materialized = 'incremental'
+        , file_format = 'delta'
+        , incremental_strategy = 'merge'
+        , unique_key = ['blockchain', 'block_date', 'address']
+        , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
+        )
+}}
+
+
+{{ metrics_daily_address_fees_evm(blockchain) }}

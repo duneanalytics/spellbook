@@ -22,4 +22,17 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+
+  - name: metrics_tron_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
             - address

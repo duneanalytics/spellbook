@@ -1,8 +1,8 @@
-{% set blockchain = 'scroll' %}
+{% set blockchain = 'optimism' %}
 
 {{ config(
         schema = 'metrics_' + blockchain
-        , alias = 'gas_fees_daily'
+        , alias = 'gas_fees_daily_address'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
@@ -12,4 +12,4 @@
 }}
 
 
-{{ metrics_fees_evm(blockchain) }}
+{{ metrics_daily_address_fees_evm(blockchain) }}

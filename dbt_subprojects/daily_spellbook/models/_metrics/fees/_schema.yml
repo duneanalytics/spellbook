@@ -7,7 +7,14 @@ models:
       contributors: jeff-dude
     config:
       tags: ['metrics', 'fees', 'gas', 'daily']
-    description: "Sum of total fees spent per day across all chains available in gas.fees and gas_solana.fees tables"
+    description: "Sum of total fees spent per day across various chains available on Dune"
+  - name: metrics_gas_fees_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'fees', 'gas', 'daily']
+    description: "Sum of total fees spent per day per address across various chains available on Dune"
 
   - name: metrics_gas_fees_stats
     meta:
