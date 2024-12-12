@@ -23,7 +23,18 @@ jobs:
     steps:
       - name: Mark PR as Draft
         if: github.event.pull_request.draft == false
-        run: gh pr ready "$NUMBER" --undo
+        run: |
+          gh api graphql -F id=${{ inputs.pull-request-node-id }}  -f query='
+          mutation($id: ID!) {
+            convertPullRequestToDraft(input: { pullRequestId: $id }) {
+              pullRequest {
+                id
+                number
+                isDraft
+              }
+            }
+          }
+        '
 
       - name: Set labels on Open
         if: github.event.action == 'opened'
