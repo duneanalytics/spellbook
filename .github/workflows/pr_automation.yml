@@ -10,14 +10,10 @@ on:
 permissions:
   pull-requests: write
   contents: read
-  issues: write
 
 jobs:
   pr-automation:
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      issues: write
     steps:
       - name: Add WIP Label on Open
         if: github.event.action == 'opened'
