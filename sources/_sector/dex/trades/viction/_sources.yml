@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: baryon_viction
     tables:
-      - name: CONTRACT_FACTORY_evt_PairCreated
+      - name: BaryonFactory_evt_PairCreated
       # Pending for Swap event table
       # - name: CONTRACT_PAIR_evt_Swap
   
