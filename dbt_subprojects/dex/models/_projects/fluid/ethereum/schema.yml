@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: fluid_ethereum_pools
+  - name: fluid_v1_ethereum_pools
     meta: 
       blockchain: ethereum
       sector: dex
@@ -21,6 +21,9 @@ models:
       - &project
         name: project
         description: "project name"
+      - &version
+        name: version
+        description: "project version"
       - &block_time
         name: block_time
         description: "utc block timestamp when the pool is deployed"

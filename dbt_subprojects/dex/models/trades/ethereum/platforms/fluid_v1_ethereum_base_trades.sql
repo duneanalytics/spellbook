@@ -32,7 +32,7 @@ decoded_events as (
         t.evt_tx_hash as tx_hash,
         t.evt_index
     from {{ source('fluid_ethereum', 'FluidDexT1_evt_Swap') }} t
-        inner join {{ ref('fluid_ethereum_pools') }} p
+        inner join {{ ref('fluid_v1_ethereum_pools') }} p
             on t.contract_address = p.dex
     {% if is_incremental() %}
     where {{ incremental_predicate('t.evt_block_time') }}

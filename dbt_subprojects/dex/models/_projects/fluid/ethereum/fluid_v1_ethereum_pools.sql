@@ -40,6 +40,7 @@ decoded_events as (
 select 
     'ethereum' as blockchain,
     'fluid' as project,
+    '1' as version,
     block_time,
     block_number,
     evt_index,
