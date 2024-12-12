@@ -20,4 +20,4 @@
 
 "dbt: tokens":
 - changed-files:
-    - any-glob-to-any-file: 'dbt_subprojects/dex/**'
+    - any-glob-to-any-file: 'dbt_subprojects/tokens/**'
