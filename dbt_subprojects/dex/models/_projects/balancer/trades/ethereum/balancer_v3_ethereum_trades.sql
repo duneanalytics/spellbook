@@ -102,7 +102,7 @@ WITH
             LEAD(minute, 1, NOW()) OVER (PARTITION BY wrapped_token ORDER BY minute) AS time_of_next_change
         FROM {{ source('balancer_v3', 'erc4626_token_prices') }}
         WHERE blockchain = 'ethereum'
-        GROUP BY 1, 2, 3, 5
+        GROUP BY 1, 2, 3
     )
 
 SELECT
