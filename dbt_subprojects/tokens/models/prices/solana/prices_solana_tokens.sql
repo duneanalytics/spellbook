@@ -707,5 +707,8 @@ FROM
         ('moodeng-moo-deng-moodengsolcom', 'solana', 'MOODENG', 'ED5nyyWEzpPPiWimP8vYm7sD7TD3LAt3Q3gRTWHzPJBY', 6),
         ('scf-smoking-chicken-fish', 'solana', 'SCF', 'GiG7Hr61RVm4CSUxJmgiCoySFQtdiwxtqf64MsRppump', 6),
         ('luna-luna-by-virtuals', 'solana', 'LUNA', '9se6kma7LeGcQWyRBNcYzyxZPE3r9t9qWZ8SnjnN3jJ7', 8),
-        ('goat-goatseus-maximus', 'solana', 'GOAT', 'CzLSujWBLFsSjncfkh59rUFqvafWcY5tzedWJSuypump', 6)
+        ('goat-goatseus-maximus', 'solana', 'GOAT', 'CzLSujWBLFsSjncfkh59rUFqvafWcY5tzedWJSuypump', 6),
+        ('fwog-fwog', 'solana', 'FWOG', 'A8C3xuqscfmyLrte3VmTqrAq8kgMASius9AFNANwpump', 6),
+        ('lester-litecoin-mascot', 'solana', 'LESTER', '5z3iCe53hUANTiG8Js8RjHNE2Arjik7L2CXLyr2rpump', 6),
+        ('happy-happycat', 'solana', 'HAPPY', 'HAPPYwgFcjEJDzRtfWE6tiHE9zGdzpNky2FvjPHsvvGZ', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

@@ -23,6 +23,7 @@
                                         , "nova"
                                         , "optimism"
                                         , "polygon"
+                                        , "ronin"
                                         , "scroll"
                                         , "sei"
                                         , "zkevm"

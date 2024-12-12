@@ -16,41 +16,13 @@
 }}
 
 WITH
--- Find the PoC Query here: https://dune.com/queries/3840594
-solver_activation_events AS (
-    SELECT
-      solver,
-      evt_block_number,
-      evt_index,
-      TRUE AS activated
-    FROM {{ source('gnosis_protocol_v2_arbitrum', 'GPv2AllowListAuthentication_evt_SolverAdded') }}
-    UNION
-    SELECT
-      solver,
-      evt_block_number,
-      evt_index,
-      FALSE AS activated
-    FROM {{ source('gnosis_protocol_v2_arbitrum', 'GPv2AllowListAuthentication_evt_SolverRemoved') }}
-  ),
-  ranked_solver_events as (
-    select
-        rank() over (partition by solver order by evt_block_number desc, evt_index desc) as rk,
-        solver,
-        evt_block_number,
-        evt_index,
-        activated as active
-    from solver_activation_events
-),
-registered_solvers as (
-    select solver as address, active
-    from ranked_solver_events
-    where rk = 1
-),
 batch_counts as (
     select try_cast(date_trunc('day', s.evt_block_time) as date) as block_date,
+           s.evt_block_number,
            s.evt_block_time,
            s.evt_tx_hash,
            solver,
+           name,
            sum(
                case
                    when selector != 0x2e1a7d4d -- unwrap
@@ -66,12 +38,12 @@ batch_counts as (
             {% if is_incremental() %}
             AND {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
-        join registered_solvers
+        join {{ ref('cow_protocol_arbitrum_solvers') }}
             on solver = address
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
-    group by s.evt_tx_hash, solver, s.evt_block_time
+    group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, solver, name
 ),
 
 batch_values as (
@@ -98,6 +70,7 @@ batch_values as (
 combined_batch_info as (
     select
         b.block_date,
+        evt_block_number                               as block_number,
         evt_block_time                                 as block_time,
         num_trades,
         dex_swaps,
@@ -117,7 +90,7 @@ combined_batch_info as (
         inner join {{ source('arbitrum', 'transactions') }} tx
             on evt_tx_hash = hash
             {% if is_incremental() %}
-            AND {{ incremental_predicate('tx.block_time') }}
+            AND {{ incremental_predicate('block_time') }}
             {% endif %}
     where num_trades > 0 --! Exclude Withdraw Batches
 )

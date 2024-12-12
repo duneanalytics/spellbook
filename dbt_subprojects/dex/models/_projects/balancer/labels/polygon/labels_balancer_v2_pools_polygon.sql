@@ -273,6 +273,7 @@ settings AS (
     p.pool_type
   FROM pools p
   LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = t.contract_address
+  AND t.blockchain = 'polygon'
 )
 
 SELECT 
