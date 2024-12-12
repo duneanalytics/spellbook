@@ -1,4 +1,4 @@
-name: PR Automation
+name: PR auto-labeler
 
 on:
   pull_request:
@@ -6,6 +6,9 @@ on:
       - opened
       - ready_for_review
       - converted_to_draft
+      - synchronize
+      - labeled
+      - unlabeled
 
 permissions:
   pull-requests: write
@@ -14,27 +17,25 @@ permissions:
 jobs:
   pr-automation:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      NUMBER: ${{ github.event.number }}
     steps:
-      - name: Add WIP Label on Open
+      - name: Set labels on Open
         if: github.event.action == 'opened'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
-          NUMBER: ${{ github.event.number }}
         run: gh pr edit "$NUMBER" --add-label "WIP"
 
-      - name: Add WIP Label on Draft
+      - name: Set labels on Draft
         if: github.event.action == 'converted_to_draft'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
-          NUMBER: ${{ github.event.number }}
         run: gh pr edit "$NUMBER" --add-label "WIP" --remove-label "ready-for-review"
 
-      - name: Remove WIP and Add Ready Label
+      - name: Set labels on ready-for-review
         if: github.event.action == 'ready_for_review'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_REPO: ${{ github.repository }}
-          NUMBER: ${{ github.event.number }}
         run: gh pr edit "$NUMBER" --add-label "ready-for-review" --remove-label "WIP"
+
+      - name: Add subproject labels
+        if: contains('synchronize,opened,reopened', github.event.action)
+        uses: actions/labeler@v5
+        with:
+          sync-labels: true
