@@ -23,7 +23,7 @@ jobs:
             github.rest.pulls.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.pullRequest.number,
+              pull_number: context.issue.number,
               draft: true
             })
 
@@ -36,7 +36,7 @@ jobs:
             github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.pullRequest.number,
+              issue_number: context.issue.number,
               labels: ['WIP']
             })
 
@@ -51,7 +51,7 @@ jobs:
               await github.rest.issues.removeLabel({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.pullRequest.number,
+                issue_number: context.issue.number,
                 name: 'WIP'
               });
             } catch (error) {
@@ -62,6 +62,6 @@ jobs:
             github.rest.issues.addLabels({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.pullRequest.number,
+              issue_number: context.issue.number,
               labels: ['ready-for-review']
             })
