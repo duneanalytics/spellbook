@@ -4736,5 +4736,7 @@ FROM (VALUES
     , ( 0x358d94b5b2F147D741088803d932Acb566acB7B6, 'rSWELL', 18)
     , ( 0x9Ed15383940CC380fAEF0a75edacE507cC775f22, 'earnETH', 18)
     , ( 0x66E47E6957B85Cf62564610B76dD206BB04d831a, 'earnBTC', 8)
-    , (0x9Ba021B0a9b958B5E75cE9f6dff97C7eE52cb3E6, 'apxETH', 18)
+    , ( 0x9Ba021B0a9b958B5E75cE9f6dff97C7eE52cb3E6, 'apxETH', 18)
+    , ( 0xa4f6b2cdcb67bf8f48baa459a333d2667aa4b100, 'shezETH', 8)
+    , ( 0x7F4B66FF703336CfC35b901144614496Ae0b0D27, 'shezUSD', 18)    
 ) AS temp_table (contract_address, symbol, decimals)
