@@ -21,7 +21,7 @@ with fees as (
         {{ source('gas', 'fees') }}
     where 
         blockchain = '{{ blockchain }}'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
@@ -42,7 +42,7 @@ from fees
 left join {{ref('tron_fee_correction')}} t
     on fees.block_date = t.day
     and fees.blockchain = '{{ blockchain }}'
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     and {{ incremental_predicate('t.day') }}
     {% endif %}
 left join

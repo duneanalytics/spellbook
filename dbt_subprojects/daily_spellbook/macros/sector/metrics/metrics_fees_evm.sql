@@ -8,7 +8,7 @@ from
     {{ source('gas', 'fees') }}
 where
     blockchain = '{{blockchain}}'
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     and {{ incremental_predicate('block_date') }}
     {% endif %}
 group by
@@ -40,7 +40,7 @@ left join
     on oa.owner_key = od.owner_key
 where
     fees.blockchain = '{{blockchain}}'
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     and {{ incremental_predicate('fees.block_date') }}
     {% endif %}
 group by
