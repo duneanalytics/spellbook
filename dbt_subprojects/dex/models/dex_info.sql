@@ -191,9 +191,15 @@ FROM (VALUES
     , ('akronswap', 'Akronswap', 'Direct', 'AkronFinance')
     , ('saddle_finance', 'Saddle Finance', 'Direct', 'saddlefinance')
 <<<<<<< HEAD
+<<<<<<< HEAD
     , ('bridgers', 'Bridgers', 'Direct', 'Bridgersxyz')
 =======
     , ('katana', 'Katana', 'Direct', 'AxieInfinity')
     , ('jetswap', 'JetSwap', 'Direct', 'Jetfuelfinance')
 >>>>>>> aa735b3cece448ce9d18127a7d43197c1bd9be1d
+=======
+    , ('bridgers', 'Bridgers', 'Direct', 'Bridgersxyz')
+    , ('katana', 'Katana', 'Direct', 'AxieInfinity')
+    , ('jetswap', 'JetSwap', 'Direct', 'Jetfuelfinance')
+>>>>>>> 0daa224e94b89f010036a36312e71e43b806b150
     ) AS temp_table (project, name, marketplace_type, x_username)
