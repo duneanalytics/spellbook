@@ -20,24 +20,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
-          NUMBER: ${{ github.event.issue.number }}
-          LABELS: WIP
-        run: gh issue edit "$NUMBER" --add-label "$LABELS"
+          NUMBER: ${{ github.event.number }}
+        run: gh pr edit "$NUMBER" --add-label "WIP"
 
       - name: Add WIP Label on Draft
         if: github.event.action == 'converted_to_draft'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
-          NUMBER: ${{ github.event.issue.number }}
-          LABELS: WIP
-        run: gh issue edit "$NUMBER" --add-label "$LABELS"
+          NUMBER: ${{ github.event.number }}
+        run: gh pr edit "$NUMBER" --add-label "WIP"
 
       - name: Remove WIP and Add Ready Label
         if: github.event.action == 'ready_for_review'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_REPO: ${{ github.repository }}
-          NUMBER: ${{ github.event.issue.number }}
-          LABELS: -WIP,ready-for-review
-        run: gh issue edit "$NUMBER" --add-label "$LABELS"
+          NUMBER: ${{ github.event.number }}
+        run: gh pr edit "$NUMBER" --add-label "ready-for-review" --remove-label "WIP"
