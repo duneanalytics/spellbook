@@ -40,6 +40,12 @@ sources:
   - name: balancer_v2_zkevm
     tables:
       - name: trades
+  - name: balancer_v3_ethereum
+    tables:
+      - name: trades
+  - name: balancer_v3_gnosis
+    tables:
+      - name: trades
   - name: balancer
     tables:
       - name: trades

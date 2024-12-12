@@ -1,6 +1,6 @@
 {{  config(
+        schema = 'cow_protocol_ethereum',
         alias = 'batches',
-
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash'],
@@ -8,10 +8,10 @@
         file_format ='delta',
         incremental_strategy='merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha"]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                    spell_type = "project",
+                                    spell_name = "cow_protocol",
+                                    contributors = \'["bh2smith", "gentrexha"]\') }}'
     )
 }}
 
@@ -39,7 +39,7 @@ batch_counts as (
             {% if is_incremental() %}
             AND {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
-        join cow_protocol_ethereum.solvers
+        join {{ ref('cow_protocol_ethereum_solvers') }}
             on solver = address
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
