@@ -24,7 +24,7 @@ jobs:
       - name: Mark PR as Draft
         if: github.event.pull_request.draft == false
         run: |
-          gh api graphql -F id=${{ inputs.pull-request-node-id }}  -f query='
+          gh api graphql -F id=${{ github.event.pull_request.node_id }}  -f query='
           mutation($id: ID!) {
             convertPullRequestToDraft(input: { pullRequestId: $id }) {
               pullRequest {
