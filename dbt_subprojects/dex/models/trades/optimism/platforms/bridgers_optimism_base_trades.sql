@@ -16,8 +16,9 @@ WITH token_swaps AS (
         evt_tx_to AS taker,
         fromAmount AS token_sold_amount_raw,
         minReturnAmount AS token_bought_amount_raw,
-        CAST(sender AS varbinary) AS token_sold_address,
-        CAST(destination AS varbinary)  AS token_bought_address,
+        -- CAST(sender AS varbinary) AS token_sold_address,
+        sender AS token_sold_address,
+        destination AS token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         evt_index AS evt_index
