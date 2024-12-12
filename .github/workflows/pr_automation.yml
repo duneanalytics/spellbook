@@ -23,7 +23,7 @@ jobs:
     steps:
       - name: Mark PR as Draft
         if: github.event.pull_request.draft == false
-        run: gr pr ready "$NUMBER" --undo
+        run: gh pr ready "$NUMBER" --undo
 
       - name: Set labels on Open
         if: github.event.action == 'opened'
