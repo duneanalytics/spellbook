@@ -6,7 +6,7 @@
     post_hook='{{ expose_spells(\'["bitcoin", "ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom"]\',
                                 "sector",
                                 "labels",
-                                \'["soispoke", "hildobby", "ilemi", "hosuke", "kaiblade"]\') }}')
+                                \'["soispoke", "hildobby", "ilemi", "hosuke", "kaiblade", "viniabussafi"]\') }}')
 }}
 
 -- single category labels (no subsets), needs label_type and model_name added still.
