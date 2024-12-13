@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'fluid_ethereum',
+        schema = 'fluid_v1_ethereum',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
