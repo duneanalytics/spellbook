@@ -1,6 +1,6 @@
 {{ config(
-      schema = 'tokens_arbitrum'
-      , alias = 'erc20_rwa'
+      schema = 'tokens_ethereum'
+      , alias = 'rwa'
       , tags=['static']
       , post_hook='{{ expose_spells(\'["ethereum"]\',
                                   "sector",

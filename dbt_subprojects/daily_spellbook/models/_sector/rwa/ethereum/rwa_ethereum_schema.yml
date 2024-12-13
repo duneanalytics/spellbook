@@ -1,17 +1,17 @@
 version: 2
 
 models:
-  - name: stablecoins_arbitrum_balances
+  - name: rwa_ethereum_balances
 
     meta:
-      blockchain: arbitrum
-      sector: stablecoin
-      project: stablecoin
+      blockchain: ethereum
+      sector: rwa
+      project: rwa
       contributors: synthquest
 
     config:
-      tags: ['stablecoin', 'balances']
-    description: "Balances of stablecoin token holders"
+      tags: ['rwa', 'balances']
+    description: "Balances of rwa token holders"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
