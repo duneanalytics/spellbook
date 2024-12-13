@@ -13,7 +13,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-
+  - name: metrics_arbitrum_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
   - name: metrics_avalanche_c_transactions_daily
     meta:
       sector: metrics
@@ -26,7 +38,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-
+  - name: metrics_avalanche_c_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
   - name: metrics_base_transactions_daily
     meta:
       sector: metrics
@@ -39,7 +63,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-
+  - name: metrics_base_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
   - name: metrics_blast_transactions_daily
     meta:
       sector: metrics
@@ -52,7 +88,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-
+  - name: metrics_blast_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
   - name: metrics_bnb_transactions_daily
     meta:
       sector: metrics
@@ -65,20 +113,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-
-  - name: metrics_celo_transactions_daily
+  - name: metrics_bnb_transactions_daily_address
     meta:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
       tags: ['metrics', 'transactions', 'daily']
-    description: "Sum of total tx's per day"
+    description: "Sum of total tx's per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - block_date
-
+            - address
   - name: metrics_ethereum_transactions_daily
     meta:
       sector: metrics
@@ -91,7 +138,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-
+  - name: metrics_ethereum_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
   - name: metrics_fantom_transactions_daily
     meta:
       sector: metrics
@@ -104,7 +163,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-
+  - name: metrics_fantom_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
   - name: metrics_gnosis_transactions_daily
     meta:
       sector: metrics
@@ -117,7 +188,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-
+  - name: metrics_gnosis_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
   - name: metrics_linea_transactions_daily
     meta:
       sector: metrics
@@ -130,7 +213,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-
+  - name: metrics_linea_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
   - name: metrics_mantle_transactions_daily
     meta:
       sector: metrics
@@ -143,7 +238,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-
+  - name: metrics_mantle_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
   - name: metrics_optimism_transactions_daily
     meta:
       sector: metrics
@@ -156,7 +263,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-
+  - name: metrics_optimism_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
   - name: metrics_polygon_transactions_daily
     meta:
       sector: metrics
@@ -169,85 +288,19 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-
-  - name: metrics_scroll_transactions_daily
+  - name: metrics_polygon_transactions_daily_address
     meta:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
       tags: ['metrics', 'transactions', 'daily']
-    description: "Sum of total tx's per day"
+    description: "Sum of total tx's per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - block_date
-
-  - name: metrics_sei_transactions_daily
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transactions', 'daily']
-    description: "Sum of total tx's per day"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-
-  - name: metrics_tron_transactions_daily
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transactions', 'daily']
-    description: "Sum of total tx's per day"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-
-  - name: metrics_zkevm_transactions_daily
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transactions', 'daily']
-    description: "Sum of total tx's per day"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-
-  - name: metrics_zksync_transactions_daily
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transactions', 'daily']
-    description: "Sum of total tx's per day"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-
-  - name: metrics_zora_transactions_daily
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transactions', 'daily']
-    description: "Sum of total tx's per day"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-
+            - address
   - name: metrics_ronin_transactions_daily
     meta:
       sector: metrics
@@ -260,3 +313,166 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+  - name: metrics_ronin_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
+  - name: metrics_scroll_transactions_daily
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+  - name: metrics_scroll_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
+  - name: metrics_sei_transactions_daily
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+  - name: metrics_sei_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
+  - name: metrics_tron_transactions_daily
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+  - name: metrics_tron_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
+  - name: metrics_zkevm_transactions_daily
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+  - name: metrics_zkevm_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
+  - name: metrics_zksync_transactions_daily
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+  - name: metrics_zksync_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
+  - name: metrics_zora_transactions_daily
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+  - name: metrics_zora_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address

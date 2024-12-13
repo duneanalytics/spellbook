@@ -8,6 +8,13 @@ models:
     config:
       tags: ['metrics', 'transactions', 'daily']
     description: "Sum of total tx's per day across all chains"
+  - name: metrics_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address across all chains"
 
   - name: metrics_transactions_stats
     meta:
