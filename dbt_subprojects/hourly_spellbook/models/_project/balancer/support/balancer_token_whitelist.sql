@@ -29,6 +29,8 @@ WITH whitelist_token as (
     (0xe91d153e0b41518a2ce8dd3d7944fa863463a97d, 'WXDAI', 'gnosis'),
     (0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1, 'WETH', 'gnosis'),    
     (0x6c76971f98945ae98dd7d4dfca8711ebea946ea6, 'WSTETH', 'gnosis'),
+    (0xaf204776c7245bf4147c2612bf6e5972ee483701, 'SDAI', 'gnosis'),    
+    (0x9c58bacc331c9aa871afd802db6379a98e80cedb, 'GNO', 'gnosis'),        
     (0xdAC17F958D2ee523a2206206994597C13D831ec7, 'USDT', 'ethereum'),
     (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48, 'USDC', 'ethereum'),
     (0x6B175474E89094C44Da98b954EedeAC495271d0F, 'DAI', 'ethereum'),
