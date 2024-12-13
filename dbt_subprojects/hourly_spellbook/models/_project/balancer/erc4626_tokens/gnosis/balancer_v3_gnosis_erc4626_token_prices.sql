@@ -58,7 +58,7 @@ SELECT
     underlying_token,
     erc4626_token_symbol,
     underlying_token_symbol,
-    decimals,
+  --  decimals,
     APPROX_PERCENTILE(adjusted_price, 0.5) AS median_price,
     LEAD(p.evt_block_time, 1, CURRENT_DATE + INTERVAL '1' day) OVER (PARTITION BY wrappedToken ORDER BY p.evt_block_time) AS next_change
 FROM price_join p
