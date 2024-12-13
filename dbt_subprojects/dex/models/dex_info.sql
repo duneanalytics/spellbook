@@ -192,4 +192,5 @@ FROM (VALUES
     , ('katana', 'Katana', 'Direct', 'AxieInfinity')
     , ('jetswap', 'JetSwap', 'Direct', 'Jetfuelfinance')
     , ('levinswap', 'Levinswap', 'Direct', 'levinswap')
+    , ('gravity_finance', 'GravityFinance', 'Direct', 'Gravity_Finance')
     ) AS temp_table (project, name, marketplace_type, x_username)
