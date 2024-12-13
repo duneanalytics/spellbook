@@ -126,6 +126,31 @@ models:
             - blockchain
             - block_date
             - address
+  - name: metrics_celo_transactions_daily
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+  - name: metrics_celo_transactions_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['metrics', 'transactions', 'daily']
+    description: "Sum of total tx's per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
   - name: metrics_ethereum_transactions_daily
     meta:
       sector: metrics
