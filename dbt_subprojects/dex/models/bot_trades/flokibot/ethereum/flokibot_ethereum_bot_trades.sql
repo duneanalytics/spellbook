@@ -64,12 +64,25 @@ with
             {% else %} and call_block_time >= timestamp '{{project_start_date}}'
             {% endif %}
     ),
+    openocean_aggregator_trades as (
+        select evt_block_time as block_time, evt_tx_hash as tx_hash
+        from {{ source('openocean_v2_ethereum', 'OpenOceanExchange_evt_Swapped') }}
+        where
+            referrer = {{ treasury_fee_wallet_2 }}
+            {% if is_incremental() %}
+                and {{ incremental_predicate('evt_block_time') }}
+            {% else %} and evt_block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
+    ),
     trade_transactions as (
         select block_time, address, null as tx_hash
         from bot_contracts
         union all
         select block_time, null as address, tx_hash
         from oneinch_aggregator_trades
+        union all
+        select block_time, null as address, tx_hash
+        from openocean_aggregator_trades
     ),
     bot_trades as (
         select
