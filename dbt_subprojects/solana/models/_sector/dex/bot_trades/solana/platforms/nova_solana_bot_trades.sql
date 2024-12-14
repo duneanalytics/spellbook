@@ -1,6 +1,6 @@
 {{ config(
     alias = 'bot_trades',
-    schema = 'nova',
+    schema = 'nova_solana',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
