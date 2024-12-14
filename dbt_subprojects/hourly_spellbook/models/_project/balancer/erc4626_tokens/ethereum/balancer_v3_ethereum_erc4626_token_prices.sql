@@ -9,6 +9,7 @@
     )
 }}
 
+        
 WITH wrap_unwrap AS(
         SELECT 
             evt_block_time,
@@ -63,3 +64,4 @@ SELECT
     LEAD(p.evt_block_time, 1, CURRENT_DATE + INTERVAL '1' day) OVER (PARTITION BY wrappedToken ORDER BY p.evt_block_time) AS next_change
 FROM price_join p
 GROUP BY 1, 2, 3, 4, 5, 6, 7
+

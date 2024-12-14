@@ -34,7 +34,8 @@ with bungee_bridges as (
         receiver,
         metadata,
         source_chain,
-        transfer_id
+        transfer_id,
+        amount_usd
     from {{ ref( 'bungee_' ~ chain ~ '_bridges' ) }}
     {% if not loop.last %}
     union all
