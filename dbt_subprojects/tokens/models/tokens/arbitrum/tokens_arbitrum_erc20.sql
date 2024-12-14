@@ -121,4 +121,6 @@ FROM (VALUES
     , (0xb59c8912c83157a955f9d715e556257f432c35d7, 'TRUF', 18)
     , (0xe1d3495717f9534db67a6a8d4940dd17435b6a9e, 'LOCUS', 18)
     , (0x764bfc309090e7f93edce53e5befa374cdcb7b8e, 'GRIMACE', 18)
+    , (0xB0BDE111812EAC913b392D80D51966eC977bE3A2, 'jUSDC', 18)
+    , (0xf3b7994e4dA53E04155057Fd61dc501599d57877, 'farmdWETHV3', 18)
 ) AS temp_table (contract_address, symbol, decimals)
