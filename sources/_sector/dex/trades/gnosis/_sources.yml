@@ -20,3 +20,7 @@ sources:
     tables:
       - name: ElkPair_evt_Swap
       - name: ElkFactory_evt_PairCreated
+  - name: levinswap_gnosis
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated

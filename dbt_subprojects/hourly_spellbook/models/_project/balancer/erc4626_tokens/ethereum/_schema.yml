@@ -7,7 +7,7 @@ models:
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'static', 'token', 'mapping']
+      tags: ['ethereum', 'token', 'mapping']
     description: >
       Mapping of ERC4626 tokens on Ethereum, including aTokens and MetaMorpho tokens, and their corresponding underlying tokens.
     data_tests:
@@ -36,7 +36,7 @@ models:
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'static', 'token', 'prices']
+      tags: ['ethereum', 'token', 'prices']
     description: >
       Pricing information for ERC4626 tokens on Ethereum. Prices are derived from the ratio of underlying tokens deposited or withdrawn to shares issued or burned, multiplied by the underlying token price.
     data_tests:

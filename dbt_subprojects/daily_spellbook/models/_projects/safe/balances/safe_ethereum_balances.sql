@@ -14,7 +14,7 @@ with safes as (
     select
         address,
         blockchain
-    from {{ ref('safe_ethereum_safes') }}
+    from {{ source('safe_ethereum','safes') }}
     where blockchain = 'ethereum'
 ),
 

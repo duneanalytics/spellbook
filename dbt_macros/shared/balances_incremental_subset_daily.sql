@@ -149,14 +149,18 @@ from(
     {% endif %}
 
 ) b
-left join {{source('prices','usd')}} p
-    on (token_standard = 'erc20'
+left join {{source('prices','usd_daily')}} p
+    on 1=1
+    {% if is_incremental() %}
+    and {{ incremental_predicate('p.day') }}
+    {% endif %}
+    and ((token_standard = 'erc20'
         and p.blockchain = '{{blockchain}}'
         and b.token_address = p.contract_address
-        and b.day = p.minute)
+        and b.day = p.day)
     or (token_standard = 'native'
         and p.blockchain is null
         and p.contract_address is null
         and p.symbol = (select native_token_symbol from {{source('evms','info')}} where blockchain = '{{blockchain}}')
-        and b.day = p.minute)
+        and b.day = p.day))
 {% endmacro %}
