@@ -32,7 +32,7 @@ outputs as (
         o.address,
         o.type,
         o.script_hex,
-        o.index,
+        o.index
     from bitcoin.outputs o
     where block_time > date'2024-08-22'
     and block_height >= 857909
