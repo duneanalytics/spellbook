@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: babylon_btc_finality_providers
+
+    meta:
+      blockchain: bitcoin
+      sector: restaking
+      project: babylon
+      contributors: maybeYonas, pyor_xyz
+
+    config:
+      tags: ['babylon', 'bitcon']
+    description: "json dump of finality providers from babylon api"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - btc_pk
+    columns:
+      - name: active_delegations
+        description: "active delegations"
+      - name: active_tvl
+        description: "active tvl"
+      - name: btc_pk
+        description: "private key of the finality provider, serves are unique id"
+      - name: commission
+        description: "% charged by the finality providers on rewards ?"
+      - name: details
+        description: "description of finality provider"
+      - name: identity
+        description: "another unique id ?"
+      - name: moniker
+        description: "name of finality provider"
+      - name: security_contact
+        description: "email to send 'wen airdrop'"
+      - name: website
+        description: "website of finality provider"
+      - name: total_delegations
+        description: "total delegations"
+      - name: total_tvl
+        description: "total tvl"
