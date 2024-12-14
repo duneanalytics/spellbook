@@ -17,6 +17,12 @@ latest_block as (
     select max(block_height) as max_block 
     from bitcoin.transactions
 ),
+{% if is_incremental() %}
+max_timestamp as (
+    select max(block_time) as max_block_time
+    from {{this}}
+)
+{% endif %}
 outputs as (
     select 
         o.block_time,
@@ -29,6 +35,21 @@ outputs as (
     from bitcoin.outputs 0
     where block_time > date'2024-08-22'
     and block_height >= 857909
+    {% if is_incremental() %}
+        and block_time > (select max_block_time from max_timestamp)
+
+    union all
+    select
+        o.block_time,
+        o.block_height,
+        o.tx_id,
+        o.value,
+        o.address,
+        o.type,
+        o.script_hex
+    from {{this}} o
+    where unstake_tx_id is null
+    {% endif %}
 ),
 inputs as (
     select 
@@ -38,12 +59,25 @@ inputs as (
     from bitcoin.inputs i
     where block_time > date'2024-08-22'
     and block_height >= 857909
+    {% if is_incremental() %}
+        and block_time > (select max_block_time from max_timestamp)
+    {% endif %}
 ),
 transactions as ( 
     select id,index
     from bitcoin.transactions
     where block_time > date'2024-08-22'
     and block_height >= 857909
+    {% if is_incremental() %}
+        and block_time > (select max_block_time from max_timestamp)
+
+    union all
+    select
+        i.tx_id as id,
+        i.index
+    from {{this}} i
+    where unstake_tx_id is null
+    {% endif %}
 ),
 restaking_txs as (
     select 

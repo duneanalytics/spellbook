@@ -39,3 +39,57 @@ models:
         description: "total delegations"
       - name: total_tvl
         description: "total tvl"
+
+  - name: babylon_bitcoin_staking_outputs
+
+    meta:
+      blockchain: bitcoin
+      sector: restaking
+      project: babylon
+      contributors: maybeYonas, pyor_xyz
+
+    config:
+      tags: ['babylon', 'bitcon']
+    description: "all babylon bitcoin staking outputs and their statuses"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_id
+    
+    columns:
+      - name: block_time
+        description: ""
+      - name: block_height
+        description: ""
+      - name: tx_id
+        description: ""
+      - name: value
+        description: ""
+      - name: address
+        description: ""
+      - name: type
+        description: ""
+      - name: version
+        description: ""
+      - name: staker
+        description: ""
+      - name: finality_provider
+        description: ""
+      - name: stakingtime
+        description: ""
+      - name: index
+        description: ""
+      - name: finality_provider_name
+        description: ""
+      - name: unstake_tx_id
+        description: ""
+      - name: unstake_block_time
+        description: ""
+      - name: total_btc
+        description: ""
+      - name: status
+        description: ""
+      - name: babylon_acceptance
+        description: ""
+      - name: babylon_status
+        description: ""
