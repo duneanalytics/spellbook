@@ -4,7 +4,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['tx_id'], # there can only be one stake per tx
+        unique_key = ['tx_id'],
         post_hook='{{ expose_spells(\'["bitcoin"]\',
                                 "project",
                                 "babylon",
@@ -21,7 +21,7 @@ latest_block as (
 max_timestamp as (
     select max(block_time) as max_block_time
     from {{this}}
-)
+),
 {% endif %}
 outputs as (
     select 
@@ -113,7 +113,8 @@ restake_info as (
         d.data__description__moniker as finality_provider_name,
         
         i.tx_id as unstake_tx_id,
-        i.block_time as unstake_block_time
+        i.block_time as unstake_block_time,
+        o.script_hex
     from outputs o
         join restaking_txs r 
             on o.tx_id = r.tx_id
@@ -136,7 +137,23 @@ data as (
         latest_block l
 )
 
-select *,
+select 
+    block_time,
+    block_height,
+    tx_id,
+    value,
+    address,
+    type,
+    version,
+    staker,
+    finality_provider,
+    stakingtime,
+    index,
+    finality_provider_name,
+    unstake_tx_id,
+    unstake_block_time,
+    total_btc,
+    status,
     case when 
         total_btc - value < 1000 
         or
@@ -151,4 +168,5 @@ select *,
         then 'unstaked' 
         else 'staked' 
     end as babylon_status
+    script_hex
 from data

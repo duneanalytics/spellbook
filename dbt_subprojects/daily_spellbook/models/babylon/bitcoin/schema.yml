@@ -93,3 +93,5 @@ models:
         description: ""
       - name: babylon_status
         description: ""
+      - name: script_hex
+        description: ""
