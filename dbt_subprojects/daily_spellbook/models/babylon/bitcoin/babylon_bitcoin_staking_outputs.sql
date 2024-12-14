@@ -15,7 +15,7 @@
 with
 latest_block as (
     select max(block_height) as max_block 
-    from {{ src('bitcoin', 'transactions') }}
+    from {{ source('bitcoin', 'transactions') }}
 ),
 {% if is_incremental() %}
 max_timestamp as (
@@ -33,7 +33,7 @@ outputs as (
         o.type,
         o.script_hex,
         o.index
-    from {{ src('bitcoin', 'outputs') }} o
+    from {{ source('bitcoin', 'outputs') }} o
     where block_time > date'2024-08-22'
     and block_height >= 857909
     {% if is_incremental() %}
@@ -59,7 +59,7 @@ inputs as (
         i.spent_tx_id,
         i.block_time,
         i.address
-    from {{ src('bitcoin', 'inputs') }} i
+    from {{ source('bitcoin', 'inputs') }} i
     where block_time > date'2024-08-22'
     and block_height >= 857909
     {% if is_incremental() %}
@@ -68,7 +68,7 @@ inputs as (
 ),
 transactions as ( 
     select id,index
-    from {{ src('bitcoin', 'transactions') }}
+    from {{ source('bitcoin', 'transactions') }}
     where block_time > date'2024-08-22'
     and block_height >= 857909
     {% if is_incremental() %}
