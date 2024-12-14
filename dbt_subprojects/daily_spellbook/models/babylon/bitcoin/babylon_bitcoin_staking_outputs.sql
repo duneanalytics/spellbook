@@ -31,7 +31,8 @@ outputs as (
         o.value,
         o.address,
         o.type,
-        o.script_hex
+        o.script_hex,
+        o.index,
     from bitcoin.outputs o
     where block_time > date'2024-08-22'
     and block_height >= 857909
@@ -46,7 +47,8 @@ outputs as (
         o.value,
         o.address,
         o.type,
-        o.script_hex
+        o.script_hex,
+        0 as index
     from {{this}} o
     where unstake_tx_id is null
     {% endif %}
@@ -55,7 +57,8 @@ inputs as (
     select 
         i.tx_id,
         i.spent_tx_id,
-        i.block_time
+        i.block_time,
+        i.address
     from bitcoin.inputs i
     where block_time > date'2024-08-22'
     and block_height >= 857909
@@ -110,7 +113,7 @@ restake_info as (
         r.finality_provider,
         r.stakingtime,
         r.index,
-        d.data__description__moniker as finality_provider_name,
+        d.moniker as finality_provider_name,
         
         i.tx_id as unstake_tx_id,
         i.block_time as unstake_block_time,
@@ -119,7 +122,7 @@ restake_info as (
         join restaking_txs r 
             on o.tx_id = r.tx_id
         left join {{ref('babylon_bitcoin_finality_providers')}} d
-            on r.finality_provider = from_hex('0x'||d.data__btc_pk)
+            on r.finality_provider = from_hex('0x'||d.btc_pk)
         left join inputs i 
             on o.tx_id = i.spent_tx_id
             and o.address = i.address
@@ -167,6 +170,6 @@ select
         when unstake_tx_id is not null 
         then 'unstaked' 
         else 'staked' 
-    end as babylon_status
+    end as babylon_status,
     script_hex
 from data
