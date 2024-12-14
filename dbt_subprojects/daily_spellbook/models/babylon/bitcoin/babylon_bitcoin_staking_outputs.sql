@@ -32,7 +32,7 @@ outputs as (
         o.address,
         o.type,
         o.script_hex
-    from bitcoin.outputs 0
+    from bitcoin.outputs o
     where block_time > date'2024-08-22'
     and block_height >= 857909
     {% if is_incremental() %}
