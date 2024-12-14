@@ -3,7 +3,6 @@
     config(
         schema = 'babylon_btc'
         ,alias = 'finality_providers'
-        -- ,materialized = 'view'
         ,materialized = 'table'
         ,post_hook='{{ expose_spells(\'["bitcoin"]\',
                         "project",
