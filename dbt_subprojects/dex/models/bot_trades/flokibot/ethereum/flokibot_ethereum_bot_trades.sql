@@ -66,7 +66,7 @@ with
     ),
     openocean_aggregator_trades as (
         select evt_block_time as block_time, evt_tx_hash as tx_hash
-        from {{ source('openocean_v2_ethereum', 'OpenOceanExchange_evt_Swapped') }}
+        from {{ source('openocean_v2_ethereum', 'OpenOceanExchangeProxy_evt_Swapped') }}
         where
             referrer = {{ treasury_fee_wallet_2 }}
             {% if is_incremental() %}
