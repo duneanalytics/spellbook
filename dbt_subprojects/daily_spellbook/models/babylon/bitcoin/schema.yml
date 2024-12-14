@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: babylon_btc_finality_providers
+  - name: babylon_bitcoin_finality_providers
 
     meta:
       blockchain: bitcoin
@@ -11,7 +11,7 @@ models:
 
     config:
       tags: ['babylon', 'bitcon']
-    description: "json dump of finality providers from babylon api"
+    description: "json dump of finality providers from babylon api -> 'https://staking-api.babylonlabs.io/v1/finality-providers?pagination_key='"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
