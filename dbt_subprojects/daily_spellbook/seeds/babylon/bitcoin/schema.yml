@@ -1,0 +1,22 @@
+version: 2
+
+seeds:
+  - name: babylon_bitcoin_staking_outputs_seed
+    config:
+      column_types:
+        block_time: timestamp
+        block_height: bigint
+        tx_id: varbinary
+        value: double
+        address: varchar
+        type: varchar
+        version: varbinary
+        staker: varbinary
+        finality_provider: varbinary
+        stakingtime: varbinary
+        index: integer
+        unstake_tx_id: varbinary
+        unstake_block_time: timestamp
+        status: varchar
+        babylon_acceptance: varchar
+        babylon_status: varchar

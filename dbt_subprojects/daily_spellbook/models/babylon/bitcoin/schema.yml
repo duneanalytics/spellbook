@@ -55,6 +55,26 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_id
+      - check_seed:
+          seed_file: ref('babylon_bitcoin_staking_outputs_seed')
+          match_columns:
+            - tx_id
+          check_columns:
+            - block_time
+            - block_height
+            - value
+            - address
+            - type
+            - version
+            - staker
+            - finality_provider
+            - stakingtime
+            - index
+            - unstake_tx_id
+            - unstake_block_time
+            - status
+            - babylon_acceptance
+            - babylon_status
     
     columns:
       - name: block_time
