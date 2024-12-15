@@ -92,5 +92,20 @@ FROM
     ('hon-heroes-of-nft','avalanche_c','HON',0xed2b42d3c9c6e97e11755bb37df29b6375ede3eb,18),
     ('bawls-bawls-onu','avalanche_c','BAWLS',0x2da8312e2c08b79104c6b18ba26bc7065abec704,18),
     ('shrap-shrapnel', 'avalanche_c', 'SHRAP', 0xd402298a793948698b9a63311404fbbee944eafd, 18),
-    ('bal-balancer', 'avalanche_c', 'BAL', 0xe15bcb9e0ea69e6ab9fa080c4c4a5632896298c3, 18)
+    ('bal-balancer', 'avalanche_c', 'BAL', 0xe15bcb9e0ea69e6ab9fa080c4c4a5632896298c3, 18),
+    ('ausd-agora-dollar', 'avalanche_c', 'AUSD', 0x00000000eFE302BEAA2b3e6e1b18d08D69a9012a, 6),
+    ('stg-stargatetoken', 'avalanche_c', 'STG', 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590, 18),
+    ('tus-treasure-under-sea', 'avalanche_c', 'TUS', 0xf693248f96fe03422fea95ac0afbbbc4a8fdd172, 18),
+    ('cra-crabada', 'avalanche_c', 'CRA', 0xa32608e873f9ddef944b24798db69d80bbb4d1ed, 18),
+    ('gmx-gmx', 'avalanche_c', 'GMX', 0x62edc0692bd897d2295872a9ffcac5425011c661, 18),
+    ('klo-kalao', 'avalanche_c', 'KLO', 0xb27c8941a7df8958a1778c0259f76d1f8b711c35, 18),
+    ('solvbtc-solv-protocol-solvbtc', 'avalanche_c', 'SolvBTC', 0xbc78d84ba0c46dfe32cf2895a19939c86b81a777, 18),
+    ('yusd-yusd-stablecoin', 'avalanche_c', 'YUSD', 0x111111111111ed1d73f860f57b2798b683f2d325, 18),
+    ('sb-snowbank', 'avalanche_c', 'SB', 0x7d1232b90d3f809a54eeaeebc639c62df8a8942f, 9),
+    ('euroc-euro-coin', 'avalanche_c', 'EUROC', 0xC891EB4cbdEFf6e073e859e987815Ed1505c2ACD, 6),
+    ('renbtc-renbtc', 'avalanche_c', 'renBTC', 0xdbf31df14b66535af65aac99c32e9ea844e14501, 8),
+    ('arena-the-arena', 'avalanche_c', 'ARENA', 0xb8d7710f7d8349a506b75dd184f05777c82dad0c, 18),
+    ('zro-layerzero', 'avalanche_c', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
+    ('beam-beam-eth', 'avalanche_c', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18)
+
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
