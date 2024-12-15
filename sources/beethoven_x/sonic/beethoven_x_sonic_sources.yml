@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: beethoven_x_v2_sonic
+    description: "sonic decoded tables related to beethoven x's contracts"
+    tables:
+      - name: Vault_evt_Swap
+      - name: Vault_evt_PoolRegistered
+      - name: WeightedPoolFactory_call_create
+      - name: Vault_evt_PoolBalanceChanged
+      - name: Vault_evt_PoolBalanceManaged
+      - name: ComposableStablePoolFactory_call_create
+
+  - name: beethoven_x_v3_sonic
+    description: >
+      Decoded tables related to Beethoven X, an automated portfolio manager and trading platform, on Sonic.
+    tables:
+      - name: Vault_evt_PoolRegistered
+      - name: WeightedPoolFactory_evt_PoolCreated
+      - name: WeightedPoolFactory_call_create
+      - name: Vault_evt_LiquidityAdded
+      - name: Vault_evt_LiquidityRemoved
+      - name: StablePoolFactory_evt_PoolCreated
+      - name: StablePoolFactory_call_create  
+      - name: Vault_evt_Swap
+      - name: ProtocolFeeController_evt_ProtocolSwapFeeCollected
+      - name: ProtocolFeeController_evt_ProtocolYieldFeeCollected
+      - name: Vault_evt_Wrap
+      - name: Vault_evt_Unwrap
+      - name: Vault_evt_LiquidityAddedToBuffer      
+      - name: Vault_evt_LiquidityRemovedFromBuffer       
+      - name: Vault_evt_SwapFeePercentageChanged            
