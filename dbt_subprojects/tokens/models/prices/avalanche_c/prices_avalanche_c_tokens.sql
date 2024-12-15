@@ -102,7 +102,7 @@ FROM
     ('solvbtc-solv-protocol-solvbtc', 'avalanche_c', 'SolvBTC', 0xbc78d84ba0c46dfe32cf2895a19939c86b81a777, 18),
     ('yusd-yusd-stablecoin', 'avalanche_c', 'YUSD', 0x111111111111ed1d73f860f57b2798b683f2d325, 18),
     ('sb-snowbank', 'avalanche_c', 'SB', 0x7d1232b90d3f809a54eeaeebc639c62df8a8942f, 9),
-    ('euroc-euro-coin', 'avalanche_c', 'EUROC', 0xC891EB4cbdEFf6e073e859e987815Ed1505c2ACD, 6),
+    ('euroc-euro-coin', 'avalanche_c', 'EURC', 0xC891EB4cbdEFf6e073e859e987815Ed1505c2ACD, 6),
     ('renbtc-renbtc', 'avalanche_c', 'renBTC', 0xdbf31df14b66535af65aac99c32e9ea844e14501, 8),
     ('arena-the-arena', 'avalanche_c', 'ARENA', 0xb8d7710f7d8349a506b75dd184f05777c82dad0c, 18),
     ('zro-layerzero', 'avalanche_c', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
