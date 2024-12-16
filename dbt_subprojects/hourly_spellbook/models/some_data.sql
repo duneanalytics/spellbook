@@ -1,6 +1,7 @@
 {{ config(
         alias = 'data',
-        schema = 'some_test'
+        schema = 'some_test',
+        materialized = 'table'
         )
 }}
 
