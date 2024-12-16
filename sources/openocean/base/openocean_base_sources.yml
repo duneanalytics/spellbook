@@ -1,6 +1,0 @@
-version: 2
-
-sources:
-  - name: openocean_v2_base
-    tables:
-      - name: OpenOceanExchange_evt_Swapped
