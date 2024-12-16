@@ -20,4 +20,6 @@ FROM (VALUES
     , (0x18d2bdef572c67127e218c425f546fe64430a92c, 'LUAUSD', 18)
     , (0x7eae20d11ef8c779433eb24503def900b9d28ad7, 'PIXEL', 18)
     , (0xd61bbbb8369c46c15868ad9263a2710aced156c4, 'LUA', 18)
+    , (0x7894b3088d069e70895effa4e8f7d2c243fd04c1, 'APRS', 18)
+    , (0xf80132fc0a86add011bffce3aedd60a86e3d704d, 'ANIMA', 18)
 ) AS temp_table (contract_address, symbol, decimals)
