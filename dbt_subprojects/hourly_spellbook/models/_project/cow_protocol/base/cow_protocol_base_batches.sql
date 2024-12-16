@@ -1,6 +1,6 @@
 {{  config(
+        schema = 'cow_protocol_base',
         alias = 'batches',
-
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash'],
@@ -8,15 +8,14 @@
         file_format ='delta',
         incremental_strategy='merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        post_hook='{{ expose_spells(\'["gnosis"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith"]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["base"]\',
+                                    spell_type = "project",
+                                    spell_name = "cow_protocol",
+                                    contributors = \'["felix"]\') }}'
     )
 }}
 
 WITH
--- Find the PoC Query here: https://dune.com/queries/1722419
 batch_counts as (
     select try_cast(date_trunc('day', s.evt_block_time) as date) as block_date,
            s.evt_block_number,
@@ -33,18 +32,18 @@ batch_counts as (
                 end)                                                as dex_swaps,
            sum(case when selector = 0x2e1a7d4d then 1 else 0 end) as unwraps,
            sum(case when selector = 0x095ea7b3 then 1 else 0 end) as token_approvals
-    from {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Settlement') }} s
-        left outer join {{ source('gnosis_protocol_v2_gnosis', 'GPv2Settlement_evt_Interaction') }} i
+    from {{ source('gnosis_protocol_v2_base', 'GPv2Settlement_evt_Settlement') }} s
+        left outer join {{ source('gnosis_protocol_v2_base', 'GPv2Settlement_evt_Interaction') }} i
             on i.evt_tx_hash = s.evt_tx_hash
             {% if is_incremental() %}
             AND {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
-        join {{ ref('cow_protocol_gnosis_solvers') }}
+        join {{ ref('cow_protocol_base_solvers') }}
             on solver = address
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
-    group by s.evt_block_number, s.evt_tx_hash, solver, s.evt_block_time, name
+    group by s.evt_block_number, s.evt_block_time, s.evt_tx_hash, solver, name
 ),
 
 batch_values as (
@@ -54,14 +53,14 @@ batch_values as (
         sum(usd_value)  as batch_value,
         sum(fee_usd)    as fee_value,
         price           as eth_price
-    from {{ source('cow_protocol_gnosis', 'trades') }}
+    from  {{ source('cow_protocol_base', 'trades') }}
         left outer join {{ source('prices', 'usd') }} as p
-            on p.contract_address = 0xe91d153e0b41518a2ce8dd3d7944fa863463a97d
+            on p.contract_address = 0x4200000000000000000000000000000000000006
             {% if is_incremental() %}
             and {{ incremental_predicate('minute') }}
             {% endif %}
             and p.minute = date_trunc('minute', block_time)
-            and blockchain = 'gnosis'
+            and blockchain = 'base'
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -88,11 +87,11 @@ combined_batch_info as (
     from batch_counts b
         join batch_values t
             on b.evt_tx_hash = t.tx_hash
-        inner join {{ source('gnosis', 'transactions') }} tx
+        inner join {{ source('base', 'transactions') }} tx
             on evt_tx_hash = hash
             and evt_block_number = block_number
             {% if is_incremental() %}
-            AND {{ incremental_predicate('tx.block_time') }}
+            AND {{ incremental_predicate('block_time') }}
             {% endif %}
     where num_trades > 0 --! Exclude Withdraw Batches
 )
