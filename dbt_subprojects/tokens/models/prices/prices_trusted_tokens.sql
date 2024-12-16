@@ -67,6 +67,7 @@ WITH trusted_tokens AS (
                 , ('ethereum', 0x6b175474e89094c44da98b954eedeac495271d0f)
                 , ('ethereum', 0x2260fac5e5542a773aa44fbcfedf7c193bc2c599)
                 , ('ethereum', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e)
+                , ('ethereum', 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0) -- wstETH
                 , ('fantom', 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83)
                 , ('flare', 0x1D80c49BbBCd1C0911346656B529DF9E5c2F783d)
                 , ('fantom', 0x04068da6c83afcfa0e13ba15a6696662335d5b75)

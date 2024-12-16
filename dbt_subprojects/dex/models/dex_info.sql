@@ -193,4 +193,5 @@ FROM (VALUES
     , ('jetswap', 'JetSwap', 'Direct', 'Jetfuelfinance')
     , ('levinswap', 'Levinswap', 'Direct', 'levinswap')
     , ('sparkdex', 'SparkDEX', 'Direct', 'SparkDexAI')
+    , ('fluid', 'Fluid DEX', 'Direct', '0xfluid')
     ) AS temp_table (project, name, marketplace_type, x_username)
