@@ -5,5 +5,4 @@
         )
 }}
 
-select * from
-FROM {{ source("resident_wizards", "dataset_uploaded_data", database = "dune") }}
+select * FROM {{ source("resident_wizards", "dataset_uploaded_data", database = "dune") }}
