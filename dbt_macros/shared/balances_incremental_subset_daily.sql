@@ -2,6 +2,9 @@
 
     @NOTICE this macro constructs the address level token balances table for given input table
     @NOTICE aka, you give lists of tokens and/or address, it generates table with daily balances of the address-token pair
+    
+    @WARN this macro has a dependancy on erc20.tokens. 
+    @WARN if your token is not in the default list, manually add it via spellbook/dbt_subprojects/tokens/models/tokens/<chain>/tokens_<chain>_erc20.sql
 
     @PARAM blockchain               -- blockchain name
     @PARAM address_list             -- must have an address column, can be none if only filtering on tokens
