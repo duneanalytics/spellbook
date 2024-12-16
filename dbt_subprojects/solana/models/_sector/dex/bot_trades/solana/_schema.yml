@@ -755,3 +755,25 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('nova_solana_trades_seed')
           blockchain: solana
+      
+  - name: sanji_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: sanji
+      contributors: whale_hunter
+    config:
+      tags: ["solana", "dex", "sanji", "trades"]
+    description: >
+      Sanji trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('sanji_solana_trades_seed')
+          blockchain: solana
