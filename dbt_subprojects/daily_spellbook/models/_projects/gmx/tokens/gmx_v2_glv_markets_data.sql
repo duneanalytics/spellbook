@@ -20,8 +20,10 @@ SELECT
     glv_market_name,
     market_token_symbol,
     market_token_decimals,
+    long_token,
     long_token_symbol,
     long_token_decimals,
+    short_token,
     short_token_symbol,
     short_token_decimals  
 FROM {{ ref('gmx_v2_' ~ chain ~ '_glv_markets_data') }}
