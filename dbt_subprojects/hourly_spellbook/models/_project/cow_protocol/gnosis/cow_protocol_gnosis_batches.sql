@@ -70,6 +70,7 @@ batch_values as (
 combined_batch_info as (
     select
         b.block_date,
+        evt_block_number                               as block_number,
         evt_block_time                                 as block_time,
         num_trades,
         dex_swaps,
