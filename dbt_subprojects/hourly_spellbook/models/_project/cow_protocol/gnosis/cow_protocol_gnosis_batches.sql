@@ -44,7 +44,7 @@ batch_counts as (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
-    group by s.evt_tx_hash, solver, s.evt_block_time, name
+    group by s.evt_block_number, s.evt_tx_hash, solver, s.evt_block_time, name
 ),
 
 batch_values as (
