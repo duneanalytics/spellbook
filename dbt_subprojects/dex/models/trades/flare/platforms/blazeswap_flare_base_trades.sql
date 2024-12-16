@@ -15,7 +15,7 @@
         blockchain = 'flare',
         project = 'blazeswap',
         version = '2',
-        Pair_evt_Swap = source('blazeswap_flare', 'BlazeSwapPair_evt_Swap'),
+        Pair_evt_Swap = source('blazeswap_flare', 'BLAZE_LP_evt_Swap'),
         Factory_evt_PairCreated = source('blazeswap_flare', 'BlazeSwapFactory_evt_PairCreated')
     )
 }}
