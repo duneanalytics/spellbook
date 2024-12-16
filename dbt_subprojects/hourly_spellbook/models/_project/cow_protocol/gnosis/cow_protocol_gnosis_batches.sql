@@ -88,6 +88,7 @@ combined_batch_info as (
             on b.evt_tx_hash = t.tx_hash
         inner join {{ source('gnosis', 'transactions') }} tx
             on evt_tx_hash = hash
+            and evt_block_number = block_number
             {% if is_incremental() %}
             AND {{ incremental_predicate('tx.block_time') }}
             {% endif %}
