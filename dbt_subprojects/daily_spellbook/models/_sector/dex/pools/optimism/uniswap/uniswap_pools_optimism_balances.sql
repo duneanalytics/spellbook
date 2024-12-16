@@ -15,6 +15,7 @@ WITH op_pools AS (
     pool AS pool_address,
     token0,
     token1,
+    
     fee AS fee_tier,
     evt_block_time AS creation_time
   FROM 

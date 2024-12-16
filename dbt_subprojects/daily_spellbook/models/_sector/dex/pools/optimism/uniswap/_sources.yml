@@ -1,6 +1,0 @@
-version: 2
- 
-sources:
-  - name: uniswap_v3_optimism
-    tables:
-      - name: UniswapV3Factory_evt_PoolCreated

@@ -8,6 +8,7 @@ sources:
     tables:
       - name: balances_daily_agg
       - name: balances_daily_agg_base
+      - name: balances_daily
   - name: tokens_polygon
     tables:
       - name: balances_daily_agg
@@ -40,6 +41,3 @@ sources:
     tables:
       - name: balances_daily_agg
       - name: balances_daily_agg_base
-  - name: tokens_optimism
-    tables:
-      - name: balances_daily
