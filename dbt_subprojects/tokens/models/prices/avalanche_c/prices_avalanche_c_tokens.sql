@@ -100,7 +100,6 @@ FROM
     ('gmx-gmx', 'avalanche_c', 'GMX', 0x62edc0692bd897d2295872a9ffcac5425011c661, 18),
     ('klo-kalao', 'avalanche_c', 'KLO', 0xb27c8941a7df8958a1778c0259f76d1f8b711c35, 18),
     ('solvbtc-solv-protocol-solvbtc', 'avalanche_c', 'SolvBTC', 0xbc78d84ba0c46dfe32cf2895a19939c86b81a777, 18),
-    ('yusd-yusd-stablecoin', 'avalanche_c', 'YUSD', 0x111111111111ed1d73f860f57b2798b683f2d325, 18),
     ('sb-snowbank', 'avalanche_c', 'SB', 0x7d1232b90d3f809a54eeaeebc639c62df8a8942f, 9),
     ('euroc-euro-coin', 'avalanche_c', 'EURC', 0xC891EB4cbdEFf6e073e859e987815Ed1505c2ACD, 6),
     ('renbtc-renbtc', 'avalanche_c', 'renBTC', 0xdbf31df14b66535af65aac99c32e9ea844e14501, 8),
