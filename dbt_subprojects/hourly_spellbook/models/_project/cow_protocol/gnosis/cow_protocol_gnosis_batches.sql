@@ -19,6 +19,7 @@ WITH
 -- Find the PoC Query here: https://dune.com/queries/1722419
 batch_counts as (
     select try_cast(date_trunc('day', s.evt_block_time) as date) as block_date,
+           s.evt_block_number,
            s.evt_block_time,
            s.evt_tx_hash,
            solver,
