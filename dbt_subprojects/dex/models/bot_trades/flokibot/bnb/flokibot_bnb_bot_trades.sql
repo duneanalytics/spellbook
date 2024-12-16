@@ -71,7 +71,8 @@ with
         select evt_block_time as block_time, evt_tx_hash as tx_hash
         from {{ source('openocean_v2_bnb', 'OpenOceanExchange_evt_Swapped') }}
         where
-            referrer = {{ treasury_fee_wallet_3 }}
+            referrer = {{ treasury_fee_wallet_2 }}
+            OR referrer {{ treasury_fee_wallet_3 }}
             {% if is_incremental() %}
                 and {{ incremental_predicate('evt_block_time') }}
             {% else %} and evt_block_time >= timestamp '{{project_start_date}}'
