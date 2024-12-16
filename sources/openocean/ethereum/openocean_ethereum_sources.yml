@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: openocean_v2_ethereum
+    tables:
+      - name: OpenOceanExchangeProxy_evt_Swapped

@@ -193,4 +193,5 @@ FROM (VALUES
     , ('jetswap', 'JetSwap', 'Direct', 'Jetfuelfinance')
     , ('levinswap', 'Levinswap', 'Direct', 'levinswap')
     , ('gravity_finance', 'GravityFinance', 'Direct', 'Gravity_Finance')
+    , ('fluid', 'Fluid DEX', 'Direct', '0xfluid')
     ) AS temp_table (project, name, marketplace_type, x_username)
