@@ -129,3 +129,63 @@ This table is essential for:
 - Understanding contract deployment costs
 
 {% enddocs %}
+
+{% docs erc20_sonic_evt_transfer_doc %}
+
+The `erc20_sonic.evt_transfer` table contains ERC20 token transfer events on the Sonic blockchain. Each record represents a token transfer and includes:
+
+- Block information and timestamps
+- Transaction details
+- Token contract address
+- Sender and receiver addresses
+- Transfer amount
+- Event index and transaction index
+
+This table is essential for:
+- Tracking token transfers and flows
+- Analyzing token holder behavior
+- Monitoring token activity
+- Understanding token economics
+- Tracking cross-chain token movements
+
+{% enddocs %}
+
+{% docs erc721_sonic_evt_transfer_doc %}
+
+The `erc721_sonic.evt_transfer` table contains ERC721 (NFT) transfer events on the Sonic blockchain. Each record represents an NFT transfer and includes:
+
+- Block information and timestamps
+- Transaction details
+- NFT contract address
+- Sender and receiver addresses
+- Token ID
+- Event index and transaction index
+
+This table is crucial for:
+- Tracking NFT ownership changes
+- Analyzing NFT trading patterns
+- Monitoring NFT market activity
+- Understanding NFT collections
+- Tracking cross-chain NFT movements
+
+{% enddocs %}
+
+{% docs erc1155_sonic_evt_transfer_doc %}
+
+The `erc1155_sonic.evt_transfer` table contains ERC1155 multi-token transfer events on the Sonic blockchain. Each record represents a token transfer and includes:
+
+- Block information and timestamps
+- Transaction details
+- Token contract address
+- Sender and receiver addresses
+- Token ID and amount
+- Event index and transaction index
+
+This table is used for:
+- Tracking multi-token transfers
+- Analyzing gaming asset movements
+- Monitoring collection activity
+- Understanding token usage patterns
+- Tracking cross-chain token movements
+
+{% enddocs %}
