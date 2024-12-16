@@ -40,8 +40,10 @@ with
         from {{ source('bnb', 'traces') }}
         where
          (
-                to = {{ treasury_fee_wallet_1 }}
+                to = {{ aggregator_fee_wallet_1 }}
+                or to = {{ treasury_fee_wallet_1 }}
                 or to = {{ treasury_fee_wallet_2 }}
+                or to = {{ treasury_fee_wallet_3 }}
                 or to = {{ buyback_fee_wallet_1 }}
             )
             and tx_success = true
@@ -58,8 +60,10 @@ with
         where
             (
                 varbinary_position(data, {{ aggregator_fee_wallet_1 }}) > 0
+                or varbinary_position(data, {{ treasury_fee_wallet_1 }}) > 0
                 or varbinary_position(data, {{ treasury_fee_wallet_2 }}) > 0
                 or varbinary_position(data, {{ treasury_fee_wallet_3 }}) > 0
+                or varbinary_position(data, {{ buyback_fee_wallet_1 }}) > 0
             )
             and call_success
             {% if is_incremental() %}
@@ -72,8 +76,10 @@ with
         from {{ source('openocean_v2_bnb', 'OpenOceanExchange_evt_Swapped') }}
         where
             referrer = {{ aggregator_fee_wallet_1 }}
+            OR referrer = {{ treasury_fee_wallet_1 }}
             OR referrer = {{ treasury_fee_wallet_2 }}
             OR referrer = {{ treasury_fee_wallet_3 }}
+            OR referrer = {{ buyback_fee_wallet_1 }}
             {% if is_incremental() %}
                 and {{ incremental_predicate('evt_block_time') }}
             {% else %} and evt_block_time >= timestamp '{{project_start_date}}'
