@@ -183,9 +183,72 @@ The `erc1155_sonic.evt_transfer` table contains ERC1155 multi-token transfer eve
 
 This table is used for:
 - Tracking multi-token transfers
-- Analyzing gaming asset movements
-- Monitoring collection activity
-- Understanding token usage patterns
-- Tracking cross-chain token movements
+- Analyzing token usage patterns
+- Monitoring protocol activity
+- Understanding multi-token operations
+- Tracking DeFi integrations
+
+{% enddocs %}
+
+{% docs erc20_sonic_evt_approval_doc %}
+
+The `erc20_sonic.evt_approval` table contains approval events for ERC20 tokens on the Sonic blockchain. Each record represents a token approval and includes:
+
+- Block information and timestamps
+- Transaction details
+- Token contract address
+- Owner address
+- Spender address
+- Approved amount
+- Event index and transaction index
+
+This table is essential for:
+- Tracking token approvals
+- Monitoring DeFi allowances
+- Analyzing smart contract permissions
+- Understanding protocol integrations
+- Tracking liquidity provisions
+
+{% enddocs %}
+
+{% docs erc1155_sonic_evt_transfersingle_doc %}
+
+The `erc1155_sonic.evt_transfersingle` table contains single transfer events for ERC1155 tokens on the Sonic blockchain. Each record represents a single token transfer and includes:
+
+- Block information and timestamps
+- Transaction details
+- Token contract address
+- Operator address
+- Sender and receiver addresses
+- Token ID and amount
+- Event index and transaction index
+
+This table is used for:
+- Tracking individual token transfers
+- Analyzing token usage patterns
+- Monitoring protocol activity
+- Understanding multi-token operations
+- Tracking DeFi integrations
+
+{% enddocs %}
+
+{% docs erc1155_sonic_evt_transferbatch_doc %}
+
+The `erc1155_sonic.evt_transferbatch` table contains batch transfer events for ERC1155 tokens on the Sonic blockchain. Each record represents a batch token transfer and includes:
+
+- Block information and timestamps
+- Transaction details
+- Token contract address
+- Operator address
+- Sender and receiver addresses
+- Array of token IDs and amounts
+- Event index and transaction index
+
+This table is crucial for:
+- Tracking bulk token transfers
+- Analyzing batch operations
+- Monitoring large-scale movements
+- Understanding protocol migrations
+- Tracking multi-token operations
 
 {% enddocs %}
