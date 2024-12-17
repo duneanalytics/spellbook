@@ -1871,7 +1871,7 @@ FROM
     ('mstr-mstr2100', 'ethereum', 'MSTR', 0x42069026EAC8Eee0Fd9b5f7aDFa4f6E6D69a2B39, 9), 
     ('usdl-lift-dollar', 'ethereum', 'USDL', 0xbdC7c08592Ee4aa51D06C27Ee23D5087D65aDbcD, 18), 
     ('usr-resolv-usr', 'ethereum', 'USR', 0x66a1e37c9b0eaddca17d3662d6c05f4decf3e110, 18),
-    ('sovrn-sovrun','ethereum', 'SOVRN', '0x031B8d752d73d7Fe9678ACEf26e818280D0646b4', 18)
+    ('sovrn-sovrun','ethereum', 'SOVRN', 0x031B8d752d73d7Fe9678ACEf26e818280D0646b4, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
