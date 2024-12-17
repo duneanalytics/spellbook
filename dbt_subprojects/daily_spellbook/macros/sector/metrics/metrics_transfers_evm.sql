@@ -118,7 +118,7 @@ with raw_transfers as (
         {{ source('tokens', 'transfers') }}
     where
         blockchain = '{{blockchain}}'
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
@@ -139,7 +139,7 @@ with raw_transfers as (
         {{ source('tokens', 'transfers') }}
     where
         blockchain = '{{blockchain}}'
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
