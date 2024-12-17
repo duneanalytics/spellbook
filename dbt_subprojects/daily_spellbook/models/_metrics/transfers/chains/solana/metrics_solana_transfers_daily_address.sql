@@ -84,9 +84,9 @@ select
     , block_date
     , address
     /* when solana labels are available, we can add them here */
-    , NULL as name
-    , NULL as primary_category
-    , NULL as hq_country
+    , cast(NULL as varchar) as name
+    , cast(NULL as varchar) as primary_category
+    , cast(NULL as varchar) as hq_country
     , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
     , sum(transfer_amount_usd_received) as transfer_amount_usd_received
     , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received)) as transfer_amount_usd
@@ -99,3 +99,6 @@ group by
     blockchain
     , block_date
     , address
+    , name
+    , primary_category
+    , hq_country
