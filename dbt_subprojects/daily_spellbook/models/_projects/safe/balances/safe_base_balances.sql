@@ -1,6 +1,6 @@
 {{
    config(
-     schema = 'safe_avalanche_c',
+     schema = 'safe_base',
      alias = 'balances',
      partition_by = ['day'],
      materialized = 'incremental',
@@ -15,14 +15,14 @@ with safes as (
     select
         address,
         blockchain
-    from {{ ref('safe_avalanche_c_safes') }}
-    where blockchain = 'avalanche_c'
+    from {{ source('safe_base','safes') }}
+    where blockchain = 'base'
 ),
 
 balances as (
      {{
        balances_incremental_subset_daily(
-             blockchain = 'avalanche_c',
+             blockchain = 'base',
              address_list  = 'safes',
              start_date = '2021-07-01'
        )
