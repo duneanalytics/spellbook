@@ -95,3 +95,6 @@ sources:
   - name: swaap_v2_optimism
     tables:
       - name: Vault_evt_Swap
+  - name: timeswap_v2_optimism
+    tables:
+      - name: TimeswapV2Option_evt_Swap
