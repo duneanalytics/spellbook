@@ -18,6 +18,13 @@ models:
       with the positive net received (aka received) it adds up to 0 since the net sent should equal the net received. 
       For example, if I give you $1 that's -1 sent (from me) and +1 received (by you) which adds to 0. 
       This query counts the received to show that $1 was effectively transfered."
+  - name: metrics_transfers_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'net_transfers']
+    description: *net_transfers_description
 
   - name: metrics_transfers_stats
     meta:
@@ -40,6 +47,19 @@ models:
             - blockchain
             - block_date
 
+  - name: metrics_solana_transfers_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'net_transfers', 'solana']
+    description: *net_transfers_description
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
   - name: metrics_bitcoin_transfers_daily
     meta:
       sector: metrics
@@ -52,3 +72,17 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
+
+  - name: metrics_bitcoin_transfers_daily_address
+    meta:
+      sector: metrics
+      contributors: jeff-dude
+    config:
+      tags: ['metrics', 'net_transfers', 'bitcoin']
+    description: *net_transfers_description
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
