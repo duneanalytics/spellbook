@@ -2,7 +2,8 @@ version: 2
 
 sources:
   - name: beethoven_x_v2_sonic
-    description: "sonic decoded tables related to beethoven x's contracts"
+    description: >
+      Decoded tables related to Beethoven X, an automated portfolio manager and trading platform, on Sonic.
     tables:
       - name: Vault_evt_Swap
       - name: Vault_evt_PoolRegistered
@@ -10,6 +11,8 @@ sources:
       - name: Vault_evt_PoolBalanceChanged
       - name: Vault_evt_PoolBalanceManaged
       - name: ComposableStablePoolFactory_call_create
+      - name: Vault_evt_FlashLoan
+      - name: Vault_evt_TokensRegistered
 
   - name: beethoven_x_v3_sonic
     description: >
