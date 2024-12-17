@@ -179,3 +179,78 @@ SELECT
 FROM dexs
 
 {% endmacro %}
+
+{# ######################################################################### #}
+
+{% macro balancer_compatible_v3_trades(
+        blockchain = '',
+        project = '',
+        version = '',
+        project_decoded_as = 'balancer_v3',
+        Vault_evt_Swap = 'Vault_evt_Swap'
+    )
+%}
+
+WITH 
+
+pool_labels AS (
+    SELECT
+        blockchain, 
+        address AS pool_address,
+        name AS pool_symbol,
+        pool_type
+    FROM {{ ref('labels_balancer_v3_pools') }}
+),
+
+dexs AS (
+    SELECT
+        swap.evt_block_number AS block_number,
+        swap.evt_block_time AS block_time,
+        CAST(NULL AS VARBINARY) AS taker,
+        CAST(NULL AS VARBINARY) AS maker,
+        swap.amountOut AS token_bought_amount_raw,
+        swap.amountIn AS token_sold_amount_raw,
+        swap.tokenOut AS token_bought_address,
+        swap.tokenIn AS token_sold_address,
+        swap.pool AS project_contract_address,
+        swap.pool AS pool_id,
+        l.pool_symbol,
+        l.pool_type,
+        swap.SwapFeePercentage / POWER(10, 18) AS swap_fee,
+        swap.evt_tx_hash AS tx_hash,
+        swap.evt_index
+    FROM {{ source(project_decoded_as ~ '_' ~ blockchain, Vault_evt_Swap) }} swap
+    LEFT JOIN pool_labels l 
+        ON l.blockchain = '{{ blockchain }}'
+        AND l.pool_address = swap.pool
+    WHERE swap.tokenIn <> swap.pool
+        AND swap.tokenOut <> swap.pool
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('swap.evt_block_time') }}
+        {% endif %}
+)
+
+SELECT
+    '{{ blockchain }}' AS blockchain,
+    '{{ project }}' AS project,
+    '{{ version }}' AS version,
+    CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,
+    CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
+    dexs.block_time,
+    dexs.block_number,
+    dexs.token_bought_amount_raw,
+    dexs.token_sold_amount_raw,
+    dexs.token_bought_address,
+    dexs.token_sold_address,
+    dexs.taker,
+    dexs.maker,
+    dexs.project_contract_address,
+    dexs.tx_hash,
+    dexs.evt_index,
+    dexs.pool_id,
+    dexs.swap_fee,
+    dexs.pool_symbol,
+    dexs.pool_type
+FROM dexs
+
+{% endmacro %}
