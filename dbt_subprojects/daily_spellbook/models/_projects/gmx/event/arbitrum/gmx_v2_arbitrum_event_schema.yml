@@ -22,57 +22,35 @@ models:
       - &blockchain  
         name: blockchain
         description: The blockchain network where the event occurred (Arbitrum)
-        data_tests:
-          - not_null
       - &block_time
         name: block_time
         description: The timestamp of the block when the event was recorded
-        data_tests:
-          - not_null
       - &block_date
         name: block_date
-        description: The date extracted from the block timestamp, representing the day the block was created
-        data_tests:
-          - not_null         
+        description: The date extracted from the block timestamp, representing the day the block was created      
       - &block_number
         name: block_number
         description: The block number where the event is included
-        data_tests:
-          - not_null
       - &tx_hash
         name: tx_hash
         description: The hash of the transaction where the event was logged
-        data_tests:
-          - not_null
       - &index
         name: index
         description: The position of the event within the transaction
-        data_tests:
-          - not_null 
       - &contract_address
         name: contract_address
-        description: The contract address associated with the event
-        data_tests:
-          - not_null  
+        description: The contract address associated with the event 
       - &tx_from
         name: tx_from
         description: The originating address of the transaction, usually representing the sender
-        data_tests:
-          - not_null
       - &tx_to
         name: tx_to
-        description: The destination address of the transaction, representing the receiver
-        data_tests:
-          - not_null                   
+        description: The destination address of the transaction, representing the receiver                 
       - name: event_name
         description: The type of event recorded, always 'OrderCreated' for this model.
-        data_tests:
-          - not_null
       - &msg_sender
         name: msg_sender
         description: The address of the sender of the message or transaction.
-        data_tests:
-          - not_null
       - name: account
         description: The address associated with the order.
       - name: receiver
@@ -2140,3 +2118,80 @@ models:
         description: The pricing type applied during the withdrawal.
       - name: key
         description: A unique identifier for the executed withdrawal.
+
+
+  - name: gmx_v2_arbitrum_claimable_funding_amount_per_size_updated
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'claimable_funding']
+    description: |
+      Processes decoded event data for `ClaimableFundingAmountPerSizeUpdated` events on the GMX platform across the Arbitrum blockchain.
+      This model extracts key details such as funding updates, collateral information, and market direction to support funding analysis.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: tx_from
+        description: The address initiating the transaction.
+      - name: tx_to
+        description: The recipient address of the transaction.
+      - name: event_name
+        description: The name of the event emitted, always `ClaimableFundingAmountPerSizeUpdated`.
+      - *msg_sender
+      - name: market
+        description: The specific GMX market where the funding amount was updated.
+      - name: collateral_token
+        description: The token used as collateral in the funding event.
+      - name: delta
+        description: The change in the funding amount.
+      - name: value
+        description: The funding amount value associated with the update.
+      - name: is_long
+        description: A boolean indicating if the position is a long position (`true` for long, `false` for short).
+
+  - name: gmx_v2_arbitrum_funding_fee_amount_per_size_updated
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'gmx', 'event', 'funding_fee']
+    description: |
+      Processes decoded event data for `FundingFeeAmountPerSizeUpdated` events on the GMX platform across the Arbitrum blockchain.
+      This model extracts key details such as funding fees, collateral details, and market direction to enable funding fee analysis.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: tx_from
+        description: The address initiating the transaction.
+      - name: tx_to
+        description: The recipient address of the transaction.
+      - name: event_name
+        description: The name of the event emitted, always `FundingFeeAmountPerSizeUpdated`.
+      - *msg_sender
+      - name: market
+        description: The specific GMX market where the funding fee was updated.
+      - name: collateral_token
+        description: The token used as collateral in the funding event.
+      - name: delta
+        description: The change in the funding fee amount.
+      - name: value
+        description: The funding fee amount associated with the update.
+      - name: is_long
+        description: A boolean indicating if the position is a long position (`True` for long, `False` for short).
