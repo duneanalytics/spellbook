@@ -9,7 +9,7 @@
         incremental_predicates=[
             incremental_predicate('DBT_INTERNAL_DEST.block_time')
         ],
-        unique_key=['blockchain', 'tx_hash', 'evt_index'],
+        unique_key=['blockchain', 'tx_hash', 'evt_index', 'fee_token_address'],
     )
 }}
 
@@ -21,8 +21,11 @@
 {% set deployer_4 = '0x3A510C5a32bCb381c53704AED9c02b0c70041F7A' %}
 {% set deployer_5 = '0xB7B953e81612c57256fF0aebD62B6a2F0546F7dA' %}
 {% set deployer_6 = '0xa24e8cE77D4A7Ce869DA3730e6560BfB66553F94' %}
+{% set deployer_7 = "0xc8378819fbB95130c34D62f520167F745B13C305" %}
+{% set deployer_8 = "0xde7Cb3d58D4004ff0De70995C0604089cc945EAF" %}
 {% set wmatic_contract_address = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270' %}
 {% set usdc_contract_address = '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359' %}
+{% set usdt_contract_address = '0xc2132d05d31c914a87c6611c10748aeb04b58e8f' %}
 {% set fee_recipient_1 = '0x415EEc63c95e944D544b3088bc682B759edB8548' %}
 {% set fee_recipient_2 = '0xe1ff5a4c489b11e094bfbb5d23c6d4597a3a79ad' %}
 
@@ -38,6 +41,8 @@ with
                 or "from" = {{ deployer_4 }}
                 or "from" = {{ deployer_5 }}
                 or "from" = {{ deployer_6 }}
+                or "from" = {{ deployer_7 }}
+                or "from" = {{ deployer_8 }}
             )
             and block_time >= timestamp '{{project_start_date}}'
     ),
@@ -88,6 +93,7 @@ with
             and (
                 contract_address = {{ wmatic_contract_address }}
                 or contract_address = {{ usdc_contract_address }}
+                or contract_address = {{ usdt_contract_address }}
             )
             {% if is_incremental() %}
             and {{ incremental_predicate('evt_block_time') }}
@@ -108,9 +114,12 @@ with
             {% else %}
             and block_time >= timestamp '{{project_start_date}}'
             {% endif %}
+    ),
+    aggregated_fee_deposits as (
+        select evt_tx_hash, sum(fee_token_amount) as fee_token_amount, fee_token_address 
+        from fee_deposits 
+        group by evt_tx_hash, fee_token_address
     )
-
-
 select distinct
     block_time,
     date_trunc('day', block_time) as block_date,
@@ -129,7 +138,7 @@ select distinct
     fee_token_amount / power(10, decimals) * price as fee_usd,
     fee_token_amount / power(10, decimals) as fee_token_amount,
     symbol as fee_token_symbol,
-    cast(fee_token_address as varchar) as fee_token_address,
+    coalesce(fee_token_address, {{wmatic_contract_address}}) as fee_token_address,
     -- Dex
     project,
     version,
@@ -145,7 +154,7 @@ join
     highest_event_index_for_each_trade
     on bot_trades.tx_hash = highest_event_index_for_each_trade.tx_hash
 /* Left Outer Join to support 0 fee trades */
-left join fee_deposits on bot_trades.tx_hash = fee_deposits.evt_tx_hash
+left join aggregated_fee_deposits as fee_deposits on bot_trades.tx_hash = fee_deposits.evt_tx_hash
 left join
     {{ source('prices', 'usd') }}
     on (
