@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'balancer_v3_ethereum',
-        alias = 'erc4626_tokens_mapping', 
+        alias = 'erc4626_token_mapping', 
         materialized = 'table',
         file_format = 'delta'
     )

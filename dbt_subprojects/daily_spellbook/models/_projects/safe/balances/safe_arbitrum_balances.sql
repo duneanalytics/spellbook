@@ -1,6 +1,6 @@
 {{
    config(
-     schema = 'safe_scroll',
+     schema = 'safe_arbitrum',
      alias = 'balances',
      partition_by = ['day'],
      materialized = 'incremental',
@@ -15,14 +15,14 @@ with safes as (
     select
         address,
         blockchain
-    from {{ ref('safe_scroll_safes') }}
-    where blockchain = 'scroll'
+    from {{ source('safe_arbitrum','safes') }}
+    where blockchain = 'arbitrum'
 ),
 
 balances as (
      {{
        balances_incremental_subset_daily(
-             blockchain = 'scroll',
+             blockchain = 'arbitrum',
              address_list  = 'safes',
              start_date = '2021-07-01'
        )
