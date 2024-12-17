@@ -1,15 +1,21 @@
 version: 2
 
 models:
-  - name: balancer_cowswap_amm_balances
+  - name: balancer_cowswap_amm_base_balances
     meta:
-      blockchain: arbitrum, base, ethereum, gnosis
+      blockchain: base
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'base', 'ethereum', 'gnosis', 'balancer', 'balances']
+      tags: ['base', 'balancer', 'balances']
     description: >
       ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_address
+            - token_address
     columns:
       - &day
         name: day
@@ -29,15 +35,21 @@ models:
         name: token_balance_raw
         description: "Balance of a token"
 
-  - name: balancer_cowswap_amm_liquidity
+  - name: balancer_cowswap_amm_base_liquidity
     meta:
-      blockchain: arbitrum, base, ethereum, gnosis
+      blockchain: base
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['arbitrum', 'base', 'ethereum', 'gnosis', 'balancer', 'pools', 'liquidity']
+      tags: ['base', 'balancer', 'pools', 'liquidity']
     description: >
-      Balancer CoWSwap AMM pools liquidity by token in Ethereum.
+      Balancer CoWSwap AMM pools liquidity by token in base.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
     columns:
       - *day
       - name: pool_id
@@ -65,4 +77,4 @@ models:
         description: "Pool liquidity in USD"
       - &pool_liquidity_eth
         name: pool_liquidity_eth
-        description: "Pool liquidity in ETH"          
+        description: "Pool liquidity in ETH"        
