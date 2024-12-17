@@ -129,3 +129,6 @@ sources:
       - name: SovereignPool_evt_Swap
       - name: ProtocolFactory_evt_SovereignPoolDeployed
       - name: HOT_evt_HotSwap
+  - name: fluid_ethereum
+    tables: 
+      - name: FluidDexT1_evt_Swap
