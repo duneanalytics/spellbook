@@ -15,6 +15,7 @@
     , source('labels', 'labels_balancer_v1_pools')
     , source('labels', 'balancer_v2_pools')
     , source('labels', 'balancer_v3_pools')    
+    , source('labels', 'balancer_cowswap_amm_pools')   
     , ref('labels_balancer_v2_gauges')
     , ref('labels_cex')
     , ref('labels_contracts')
