@@ -35,6 +35,7 @@
     , ref('elk_finance_optimism_base_trades')
     , ref('fraxswap_optimism_base_trades')
     , ref('swaap_v2_optimism_base_trades')
+    , ref('timeswap_v2_optimism_base_trades')
 ] %}
 
 WITH base_union AS (

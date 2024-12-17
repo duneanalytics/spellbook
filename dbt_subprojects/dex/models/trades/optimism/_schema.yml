@@ -568,3 +568,22 @@ models:
           seed_file: ref('swaap_optimism_base_trades_seed') 
           filter:
             version: 2
+
+  - name: timeswap_v2_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: timeswap_v2
+      contributors: archie
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'timeswap', 'v2']
+    description: "timeswap v2 optimism base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('timeswap_v2_optimism_base_trades_seed') 
+          filter:
+            version: 2
