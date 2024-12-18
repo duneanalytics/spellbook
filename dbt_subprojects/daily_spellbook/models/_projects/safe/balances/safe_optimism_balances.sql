@@ -20,7 +20,7 @@ with safes as (
     select
         address,
         blockchain
-    from {{ ref('safe_optimism_safes') }}
+    from {{ source('safe_optimism','safes') }}
     where blockchain = 'optimism'
 ),
 balances as (

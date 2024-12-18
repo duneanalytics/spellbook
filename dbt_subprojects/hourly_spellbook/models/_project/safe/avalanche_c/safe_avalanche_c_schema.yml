@@ -80,7 +80,7 @@ models:
         name: value
         description: "Value of transaction"
       - &gas
-        name: gas 
+        name: gas
         description: "Gas limit set for transaction"
       - &execution_gas_used
         name: execution_gas_used
