@@ -16,7 +16,7 @@ WITH op_pools AS (
     token0,
     token1,
     fee AS fee_tier,
-    evt_block_time AS creation_time
+    creation_block_time AS creation_time
   FROM 
     {{ source('uniswap_v3_optimism', 'pools') }}
   WHERE
