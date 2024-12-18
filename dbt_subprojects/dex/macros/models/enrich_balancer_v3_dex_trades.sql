@@ -78,7 +78,7 @@ WITH base_trades as (
 )
 
 SELECT
-    blockchain
+    dexs.blockchain
     , project
     , version
     , block_month
