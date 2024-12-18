@@ -203,6 +203,6 @@ FROM
     ('usdt-tether', 'base', 'USDT', 0xfde4c96c8593536e31f229ea8f37b2ada2699bb2, 6),
     ('klima-klimadao', 'base', 'KLIMA', 0xdcefd8c8fcc492630b943abcab3429f12ea9fea2, 9),
     ('void-the-void', 'base', 'VOID', 0x21eceaf3bf88ef0797e3927d855ca5bb569a47fc, 18),
-    ('yfi-yearnfinance', 'base', 'YFI', 0x9eaf8c1e34f05a589eda6bafdf391cf6ad3cb239, 18),
-    ('well-moonwell' ,'base', 'WELL', 0xa88594d404727625a9437c3f886c7643872296ae, 18)
+    ('yfi-yearnfinance', 'base', 'YFI', 0x9eaf8c1e34f05a589eda6bafdf391cf6ad3cb239, 18)
+    --('well-moonwell' ,'base', 'WELL', 0xa88594d404727625a9437c3f886c7643872296ae, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
