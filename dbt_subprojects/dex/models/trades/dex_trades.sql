@@ -53,11 +53,21 @@ WITH curve AS (
         )
     }}
 )
+,balancer_v3 AS (
+    -- due to Balancer V3 having trades between ERC4626 tokens, which won't be priced on prices.usd, enrich separately
+    {{
+        enrich_balancer_v3_dex_trades(
+            base_trades = ref('dex_base_trades')
+            , filter = "project = 'balancer' AND version = '3'"
+            , tokens_erc20_model = source('tokens', 'erc20')
+        )
+    }}
+)
 , dexs AS (
     {{
         enrich_dex_trades(
             base_trades = ref('dex_base_trades')
-            , filter = "project != 'curve'"
+            , filter = "project != 'curve' AND (project != 'balancer AND version != '3'"
             , tokens_erc20_model = source('tokens', 'erc20')
         )
     }}
