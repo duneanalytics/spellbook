@@ -40,7 +40,7 @@ WITH meta_router AS
         -- There are 2 weird transactions with this token where the return and spent amounts in the event are not correct
         -- these result in inflated volume, so we'll ignore this token in any trades.
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+        AND evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
         {% endif %}
 )
 SELECT
