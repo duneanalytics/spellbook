@@ -67,7 +67,7 @@ WITH curve AS (
     {{
         enrich_dex_trades(
             base_trades = ref('dex_base_trades')
-            , filter = "project != 'curve' AND (project != 'balancer AND version != '3'"
+            , filter = "project != 'curve' AND (project != 'balancer AND version != '3')"
             , tokens_erc20_model = source('tokens', 'erc20')
         )
     }}
