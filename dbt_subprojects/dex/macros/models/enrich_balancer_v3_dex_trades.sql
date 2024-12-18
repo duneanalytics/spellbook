@@ -75,7 +75,7 @@ WITH base_trades as (
             LEAD(minute, 1, NOW()) OVER (PARTITION BY wrapped_token ORDER BY minute) AS time_of_next_change
         FROM {{ source('balancer_v3', 'erc4626_token_prices') }}
         WHERE blockchain = 'ethereum'
-        GROUP BY 1, 2, 3
+        GROUP BY 1, 2, 3, 4
 )
 
 SELECT
