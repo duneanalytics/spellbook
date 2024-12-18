@@ -15,11 +15,10 @@ WITH op_pools AS (
     pool AS pool_address,
     token0,
     token1,
-    
     fee AS fee_tier,
     evt_block_time AS creation_time
   FROM 
-    {{ source('uniswap_v3_optimism', 'UniswapV3Factory_evt_PoolCreated') }}
+    {{ source('uniswap_optimism', 'pools') }}
   WHERE
     (token0 = 0x4200000000000000000000000000000000000042
     OR token1 = 0x4200000000000000000000000000000000000042)

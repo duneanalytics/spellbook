@@ -74,4 +74,7 @@ sources:
       - name: trades      
   - name: beethoven_x
     tables:
-      - name: trades            
+      - name: trades
+  - name: uniswap_optimism            
+    tables:
+      - name: pools            
