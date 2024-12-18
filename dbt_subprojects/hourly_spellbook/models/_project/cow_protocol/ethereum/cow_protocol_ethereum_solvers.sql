@@ -119,6 +119,7 @@ known_solver_metadata (address, environment, name) as (
                  (0x95480d3f27658e73b2785d30beb0c847d78294c7, 'prod', 'Fractal'),
                  (0x00806DaA2Cfe49715eA05243FF259DeB195760fC, 'prod', 'Quasilabs'),
                  (0x28B1bd44996105b5c14c4dE41093226Ff78A4eB1, 'prod', '0x'),
+                 (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
                  (0xcC73072B53697911Ff394ae01D3de59c9900b0b0, 'barn', '0x'),
                  (0xd0bA1b1782fbdE45edAb392428f60e14827D08EC, 'barn', 'Laita'),
                  (0x7E2eF26AdccB02e57258784957922AEEFEe807e5, 'barn', 'Quasilabs'),
