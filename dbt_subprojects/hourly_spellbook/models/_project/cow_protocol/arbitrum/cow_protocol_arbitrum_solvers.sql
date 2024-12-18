@@ -36,7 +36,8 @@ registered_solvers as (
 -- Manually inserting environment and name for each "known" solver
 known_solver_metadata (address, environment, name) as (
     SELECT *
-    FROM (VALUES
+    FROM (
+      VALUES
                 (0xA70892d1Af41aBD2F648FEC74Ea2c17e56Ac3B9A, 'prod', 'Naive'),
                 (0xba36CEfb45d1CdD2Ae30a899C432c5081E095Ff8, 'prod', 'Baseline'),
                 (0xF017C6F66D68d11AF00FD243494E3fa0EBf44C66, 'prod', 'Quasimodo'),
@@ -44,7 +45,7 @@ known_solver_metadata (address, environment, name) as (
                 (0xc46Ac109FDe084192BE59C24C3680D818763b0fd, 'prod', 'Gnosis_ParaSwap'),
                 (0xD31E0CE8154Da6b8086d961eB3068Ef74C4322b6, 'prod', 'Gnosis_0x'),
                 (0xAa224676d096B6Fc257F8C386C67d9e96e53AD59, 'prod', 'Gnosis_BalancerSOR'),
-                (0x5932b2c05172aAfE097CE0Fbd27d18a7d5A45eE1, 'prod', 'Furucombo'),
+                (0x5932b2c05172aAfE097CE0Fbd27d18a7d5A45eE1, 'prod', 'Portus'),
                 (0x3A485742Bd85e660e72dE0f49cC27AD7a62911B5, 'prod', 'Seasolver'),
                 (0x059aefdF9d9F47def37cF7066DA83fEB91fDd089, 'prod', 'Barter'),
                 (0x40798d2261f8b7F11BFa73623c99C876844dD05A, 'prod', 'OpenOcean_Aggregator'),
@@ -63,18 +64,19 @@ known_solver_metadata (address, environment, name) as (
                 (0x9C803d345615aDe1e5ae07A789968403fAc9171a, 'barn', 'Gnosis_ParaSwap'),
                 (0x69433b336952e84Db44EF40b16B338F139B8baA1, 'barn', 'Gnosis_0x'),
                 (0xCED55FC88186f672105712fe177374cce4861FDF, 'barn', 'Gnosis_BalancerSOR'),
-                (0xE376a730037D8B495864FD5ed6373BE89643cD06, 'barn', 'Furucombo'),
+                (0xE376a730037D8B495864FD5ed6373BE89643cD06, 'barn', 'Portus'),
                 (0x2633bd8e5FDf7C72Aca1d291CA11bdB717A6aa3d, 'barn', 'Seasolver'),
                 (0x7B0211286d8Dfdb717f4A2E5Fa5131eD911097e1, 'barn', 'Barter'),
                 (0xc8371B2898FBaEeAe658f9FaeE8ddeDA24e37012, 'barn', 'OpenOcean_Aggregator'),
                 (0x2aeC288B42C99D2e8e984c5C324FB069f7705186, 'barn', 'Rizzolver'),
                 (0x26B5e3bF135D3Dd05A220508dD61f25BF1A47cBD, 'barn', 'Rizzolver')
-         ) as _
+    ) as _
 )
 -- Combining the metadata with current activation status for final table
 select solver as address,
-      case when environment is not null then environment else 'new' end as environment,
-      case when name is not null then name else 'Uncatalogued' end      as name,
+       case when environment is not null then environment else 'new' end as environment,
+       case when name is not null then name else 'Uncatalogued'      end as name,
       active
 from registered_solvers
-    left outer join known_solver_metadata on solver = address;
+left outer join known_solver_metadata on solver = address
+
