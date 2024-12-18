@@ -116,6 +116,7 @@ WITH curve AS (
     'curve'
     , 'as_is_dexs'
     , 'dexs'
+    , 'balancer_v3'
     ]
 %}
 
