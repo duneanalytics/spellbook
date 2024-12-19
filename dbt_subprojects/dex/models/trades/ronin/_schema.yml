@@ -5,19 +5,36 @@ models:
     data_tests:
       - check_dex_info_relationship
 
-  - name: katana_ronin_base_trades
+  - name: katana_v2_ronin_base_trades
     meta:
       blockchain: ronin
       sector: dex
       project: katana
-      contributors: jeff-dude
+      contributors: jeff-dude, cxheng315
     config:
-      tags: [ 'ronin', 'dex', 'trades', 'katana' ]
-    description: "Katana ronin base trades"
+      tags: ["ronin", "dex", "trades", "katana"]
+    description: "Katana v2 ronin base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('katana_ronin_base_trades_seed')
+          seed_file: ref('katana_v2_ronin_base_trades_seed')
+
+  - name: katana_v3_ronin_base_trades
+    meta:
+      blockchain: ronin
+      sector: dex
+      project: katana
+      contributors: cxheng315
+    config:
+      tags: ["ronin", "dex", "trades", "katana"]
+    description: "Katana v3 ronin base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('katana_v3_ronin_base_trades_seed')
