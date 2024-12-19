@@ -41,7 +41,7 @@ select
   FROM_HEX(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[4].recipient')) as creator_royalty_address,
   CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[4].ratio') AS DOUBLE) as creator_royalty_fee,
   CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[4].value') AS DOUBLE) as creator_royalty_fee_amount_raw,
-  CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[5].ratio')AS DOUBLE) AS seller_percentage_fee
+  CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[5].ratio')AS DOUBLE) AS seller_percentage_fee,
   CAST(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[5].value')AS DOUBLE) AS seller_amount_raw
   FROM
     {{ source('mavis_marketplace_ronin','MavisMarketPlace_evt_OrderMatched') }}
