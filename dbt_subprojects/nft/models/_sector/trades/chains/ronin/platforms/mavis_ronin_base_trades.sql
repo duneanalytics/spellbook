@@ -25,7 +25,7 @@ select
   json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')), '$.kind') as kind,
   cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.erc')as INT) as erc,
   FROM_HEX(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.addr')) as nft_contract_address,
-  json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.id') as nft_token_id,
+  cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.id') as double) as nft_token_id,
   json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.quantity') as quantity,
   FROM_HEX(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')), '$.paymentToken')) as currency_address,
   CAST(json_extract_scalar("order", '$.realPrice') AS DOUBLE) as price_raw,
