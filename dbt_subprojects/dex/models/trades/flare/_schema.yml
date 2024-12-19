@@ -11,39 +11,6 @@ models:
       tags: ['flare', 'dex', 'trades']
     description: >
       Flare DEX trades
-    columns:
-      - name: blockchain
-        description: "Blockchain"
-      - name: project
-        description: "Project name of the DEX"
-      - name: version
-        description: "Version of the DEX protocol"
-      - name: block_month
-        description: "UTC event block month"
-      - name: block_date
-        description: "UTC event block date"
-      - name: block_time
-        description: "UTC event block time"
-      - name: block_number
-        description: "Block number"
-      - name: token_bought_amount_raw
-        description: "Raw amount of token bought (not normalized)"
-      - name: token_sold_amount_raw
-        description: "Raw amount of token sold (not normalized)"
-      - name: token_bought_address
-        description: "Contract address of the token bought"
-      - name: token_sold_address
-        description: "Contract address of the token sold"
-      - name: taker
-        description: "Address of trader who initiated the trade"
-      - name: maker
-        description: "Address of trader who provided liquidity"
-      - name: project_contract_address
-        description: "Project's contract address that executed the trade"
-      - name: tx_hash
-        description: "Transaction hash"
-      - name: evt_index
-        description: "Event index"
     data_tests:
       - check_dex_info_relationship
 
