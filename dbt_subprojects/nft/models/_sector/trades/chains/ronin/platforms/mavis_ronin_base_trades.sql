@@ -74,7 +74,7 @@ base_trades as (
   tx_hash,
   platform_address as platform_fee_address,
   platform_fee_amount_raw,
-  creator_royalty_address as royalty_fee_receive_address,
+  creator_royalty_address as royalty_fee_address,
   creator_royalty_fee_amount_raw as royalty_fee_amount_raw,
   -- axie_fee_amount_raw,
   -- ronin_treasury_fee_amount_raw,
