@@ -4503,7 +4503,7 @@ seeds:
   - name: bridgers_optimism_base_trades_seed
     config:
       column_types:
-        blockchain: varchar
+        blockchain: varbinary
         project: varchar
         version: varchar
         tx_hash: varbinary
