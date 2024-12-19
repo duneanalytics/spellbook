@@ -15,7 +15,7 @@
         blockchain = 'flare',
         project = 'sparkdex',
         version = '2',
-        Pair_evt_Swap = source('sparkdex_flare', 'UniswapV2Pair_evt_Swap'),
+        Pair_evt_Swap = source('sparkdex_flare', 'UniswapV2Pool_evt_Swap'),
         Factory_evt_PairCreated = source('sparkdex_flare', 'UniswapV2Factory_evt_PairCreated')
     )
 }}
