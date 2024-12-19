@@ -1328,7 +1328,11 @@ models:
       Processes decoded event data for `DepositCancelled` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, cancellation reason, and transaction details, enabling
       analysis of deposit cancellations on the platform.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1366,7 +1370,11 @@ models:
       Processes decoded event data for `DepositCreated` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, deposit details, and transaction specifics, enabling
       analysis of deposits created on the platform.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1430,7 +1438,11 @@ models:
       Processes decoded event data for `DepositExecuted` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, execution details, and transaction specifics, enabling
       analysis of deposits executed on the platform.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1472,7 +1484,11 @@ models:
       Processes decoded event data for `GLVCreated` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the GLV token, associated tokens, and transaction specifics, enabling
       analysis of GLV creation events on the platform.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1516,7 +1532,11 @@ models:
       Processes decoded event data for `GLVDepositCancelled` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, cancellation reason, and transaction specifics, enabling
       analysis of cancelled GLV deposits.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1554,7 +1574,11 @@ models:
       Processes decoded event data for `GLVDepositCreated` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, deposit details, and transaction specifics, enabling
       analysis of created GLV deposits.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1624,7 +1648,11 @@ models:
       Processes decoded event data for `GLVDepositExecuted` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, received GLV tokens, and transaction specifics, enabling
       analysis of executed GLV deposits.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1662,7 +1690,11 @@ models:
       Processes decoded event data for `GLVShiftCancelled` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the cancellation reason and transaction specifics, enabling
       analysis of cancelled GLV shifts.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1698,7 +1730,11 @@ models:
       Processes decoded event data for `GLVShiftCreated` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the source and destination markets, GLV details, and transaction specifics, enabling
       analysis of created GLV shifts.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1742,7 +1778,11 @@ models:
       Processes decoded event data for `GLVShiftExecuted` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the received market tokens and transaction specifics, enabling
       analysis of executed GLV shifts.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1776,7 +1816,11 @@ models:
       Processes decoded event data for `GLVWithdrawalCancelled` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, cancellation reason, and transaction specifics, enabling
       analysis of cancelled GLV withdrawals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1816,7 +1860,11 @@ models:
       Processes decoded event data for `GLVWithdrawalCreated` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, withdrawal details, and transaction specifics, enabling
       analysis of created GLV withdrawals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1880,7 +1928,11 @@ models:
       Processes decoded event data for `GLVWithdrawalExecuted` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address and transaction specifics, enabling
       analysis of executed GLV withdrawals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1916,7 +1968,11 @@ models:
       Processes decoded event data for `ShiftCreated` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, market details, and transaction specifics, enabling
       analysis of created shifts.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -1968,7 +2024,11 @@ models:
       Processes decoded event data for `ShiftExecuted` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, received market tokens, and transaction specifics, enabling
       analysis of executed shifts.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2004,7 +2064,11 @@ models:
       Processes decoded event data for `WithdrawalCancelled` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, cancellation reason, and transaction specifics, enabling
       analysis of cancelled withdrawals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2042,7 +2106,11 @@ models:
       Processes decoded event data for `WithdrawalCreated` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, withdrawal details, and transaction specifics, enabling
       analysis of created withdrawals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2096,7 +2164,11 @@ models:
       Processes decoded event data for `WithdrawalExecuted` events on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as the account address, pricing type, and transaction specifics, enabling
       analysis of executed withdrawals.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2131,7 +2203,11 @@ models:
     description: |
       Processes decoded event data for `ClaimableFundingAmountPerSizeUpdated` events on the GMX platform across the Arbitrum blockchain.
       This model extracts key details such as funding updates, collateral information, and market direction to support funding analysis.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2169,7 +2245,11 @@ models:
     description: |
       Processes decoded event data for `FundingFeeAmountPerSizeUpdated` events on the GMX platform across the Arbitrum blockchain.
       This model extracts key details such as funding fees, collateral details, and market direction to enable funding fee analysis.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
