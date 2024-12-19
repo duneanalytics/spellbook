@@ -19,6 +19,7 @@ select
   evt_tx_from  as tx_from,
   evt_tx_to as tx_to,
   evt_index,
+  contract_address,
   COALESCE(FROM_HEX(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[5].recipient')),FROM_HEX(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')), '$.maker'))) as seller,
   FROM_HEX(json_extract_scalar("order", '$.recipient')) as buyer,
   json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')), '$.kind') as kind,
