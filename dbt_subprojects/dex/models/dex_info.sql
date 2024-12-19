@@ -193,4 +193,6 @@ FROM (VALUES
     , ('bridgers', 'Bridgers', 'Direct', 'Bridgersxyz')
     , ('katana', 'Katana', 'Direct', 'AxieInfinity')
     , ('jetswap', 'JetSwap', 'Direct', 'Jetfuelfinance')
+    , ('levinswap', 'Levinswap', 'Direct', 'levinswap')
+    , ('fluid', 'Fluid DEX', 'Direct', '0xfluid')
     ) AS temp_table (project, name, marketplace_type, x_username)
