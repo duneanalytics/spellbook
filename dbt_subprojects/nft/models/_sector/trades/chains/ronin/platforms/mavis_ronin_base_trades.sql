@@ -23,7 +23,7 @@ select
   COALESCE(FROM_HEX(json_extract_scalar(json_parse(cast(concat('[', array_join(receivedAllocs, ','), ']') as varchar)),'$[5].recipient')),FROM_HEX(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')), '$.maker'))) as seller,
   FROM_HEX(json_extract_scalar("order", '$.recipient')) as buyer,
   json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')), '$.kind') as kind,
-  cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.erc')as INT) as erc,
+  cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.erc') as uint256) as erc,
   cast(FROM_HEX(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.addr')) as nft_contract_address,
   cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.id') as uint256) as nft_token_id,
   cast(json_extract_scalar(replace(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')),'$.assets[0]'),'\\', ''),'$.quantity') as uint256) as quantity,
