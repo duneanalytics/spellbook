@@ -49,4 +49,3 @@ SELECT
     token_swaps.evt_index
 FROM
     token_swaps
-

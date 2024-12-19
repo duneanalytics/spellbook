@@ -100,5 +100,4 @@ sources:
       - name: SwapFlashLoan_evt_TokenSwap
   - name: bridgers_optimism
     tables:
-      - name: Bridgers_evt_Swap
-    
+      - name: Bridgers_evt_Swap    
