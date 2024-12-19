@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: mavis_marketplace_ronin
+    tables:
+      - name: MavisMarketPlace_evt_OrderMatched
+  
