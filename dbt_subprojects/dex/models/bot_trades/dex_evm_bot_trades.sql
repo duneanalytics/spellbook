@@ -4,7 +4,7 @@
         alias = 'bot_trades',
         materialized = 'view',
         post_hook = '{{ expose_spells(
-                        blockchains = \'["ethereum", "base", "blast", "arbitrum", "bnb", "avalanche_c"]\',
+                        blockchains = \'["ethereum", "base", "bnb", "sonic"]\',
                         spell_type = "sector",
                         spell_name = "bot_trades",
                         contributors = \'["whale_hunter"]\') }}'
@@ -16,6 +16,7 @@
 {% set evm_trading_bots = [
     ref('banana_gun_base_bot_trades')
     ,ref('banana_gun_ethereum_bot_trades')
+    ,ref('banana_gun_sonic_bot_trades')
     ,ref('readyswap_ethereum_bot_trades')
     ,ref('pepeboost_ethereum_bot_trades')
     ,ref('flokibot_base_bot_trades')
