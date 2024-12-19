@@ -13,13 +13,13 @@ sources:
         columns:
           - name: block_time
             description: "Block timestamp"
-            tests:
+            data_tests:
               - not_null
             data_type: timestamp
           
           - name: block_date
             description: "Block date"
-            tests:
+            data_tests:
               - not_null
             data_type: date
           
