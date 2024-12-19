@@ -11,7 +11,7 @@ sources:
       - name: UniswapV3Factory_evt_PoolCreated
       - name: UniswapV2Factory_evt_PairCreated
       - name: UniswapV3Pool_evt_Swap
-      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Pool_evt_Swap
 
   - name: enosys_flare
     tables:
