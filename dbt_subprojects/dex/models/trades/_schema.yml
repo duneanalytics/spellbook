@@ -4,7 +4,7 @@ models:
   - name: dex_trades
     meta:
       docs_slug: /curated/trading/DEX/dex-trades
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin, flare
       sector: dex
       short_description: The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs). This table contains a detailed breakdown of trade execution containing one or many trades per transaction. 
       contributors: 0xRob, hosuke, jeff-dude, tomfutago
