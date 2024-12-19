@@ -73,7 +73,7 @@ base_trades as (
   contract_address as project_contract_address,
   tx_hash,
   platform_fee_amount_raw,
-  creator_royalty_fee_amount_raw,
+  creator_royalty_fee_amount_raw as royalty_fee_amount_raw,
   -- axie_fee_amount_raw,
   -- ronin_treasury_fee_amount_raw,
   evt_index as sub_tx_trade_id
