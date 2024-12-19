@@ -1,0 +1,123 @@
+version: 2
+
+models:
+  - name: safe_arbitrum_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: arbitrum
+      project: safe
+      contributors: safeintern
+    config:
+      tags: ['safe', 'arbitrum']
+    description: “Safe addresses balances”
+
+  - name: safe_avalanche_c_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: avalanche_c
+      project: safe
+      contributors: safeintern
+    config:
+      tags: [ 'safe', 'avalanche_c' ]
+    description: “Safe addresses balances”
+
+  - name: safe_base_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: base
+      project: safe
+      contributors: safeintern
+    config:
+      tags: [ 'safe', 'base' ]
+    description: “Safe addresses balances”
+
+  - name: safe_ethereum_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: ethereum
+      project: safe
+      contributors: safeintern
+    config:
+      tags: [ 'safe', 'ethereum' ]
+    description: “Safe addresses balances”
+
+  - name: safe_linea_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: linea
+      project: safe
+      contributors: safeintern
+    config:
+      tags: [ 'safe', 'linea' ]
+    description: “Safe addresses balances”
+
+  - name: safe_optimism_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: optimism
+      project: safe
+      contributors: safeintern
+    config:
+      tags: [ 'safe', 'optimism' ]
+    description: “Safe addresses balances”
+
+  - name: safe_polygon_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: polygon
+      project: safe
+      contributors: safeintern
+    config:
+      tags: [ 'safe', 'polygon' ]
+    description: “Safe addresses balances”
+
+  - name: safe_scroll_balances
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - address
+            - token_address
+    meta:
+      blockchain: scroll
+      project: safe
+      contributors: safeintern
+    config:
+      tags: [ 'safe', 'scroll' ]
+    description: “Safe addresses balances”
+

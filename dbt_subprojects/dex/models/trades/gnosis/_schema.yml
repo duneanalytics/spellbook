@@ -117,3 +117,19 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('elk_finance_gnosis_base_trades_seed')
   
+  - name: levinswap_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: levinswap
+      contributors: intensodefi
+    config:
+      tags: ['gnosis', 'dex', 'trades', 'levinswap']
+    description: "levinswap gnosis base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('levinswap_gnosis_base_trades_seed')
