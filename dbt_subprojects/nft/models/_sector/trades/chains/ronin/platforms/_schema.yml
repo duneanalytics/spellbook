@@ -1,0 +1,31 @@
+version: 2
+
+models:
+ - name: mavis_marketplace_ronin_base_trades
+   meta:
+     blockchain: ronin
+     sector: nft
+     project: mavis_marketplace
+     contributors: petertherock
+   config:
+     tags: ['ronin', 'nft', 'trades', 'mavis']
+   description: "Mavis Marketplace base trades"
+   data_tests:
+     - check_columns_nft_base_trades
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns: ['block_number','tx_hash','sub_tx_trade_id']
+     - equal_rowcount_with_sources:
+         evt_sources:
+           - source('mavis_marketplace_ronin','MavisMarketPlace_evt_OrderMatched')
+     - check_seed:
+         seed_file: ref('mavis_marketplace_ronin_base_trades_seed')
+         match_columns:
+           - block_number
+           - tx_hash
+           - sub_tx_trade_id
+         check_columns:
+           - buyer
+           - seller
+           - nft_contract_address
+           - nft_token_id
+           - price_raw
