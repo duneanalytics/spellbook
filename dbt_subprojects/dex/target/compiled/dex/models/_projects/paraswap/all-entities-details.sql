@@ -31,6 +31,8 @@ with entities as (
         where 
             (evt_block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
+            AND evt_tx_from <> 0xace5ae3de4baffc4a45028659c5ee330764e4f53
+            
          union all 
     
         select 'augustus' as entity, 'ethereum' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash from dex_aggregator.trades
