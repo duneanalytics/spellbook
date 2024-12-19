@@ -9,6 +9,7 @@
     )
 }}
 
+        
 WITH wrap_unwrap AS(
         SELECT 
             evt_block_time,
@@ -60,6 +61,7 @@ SELECT
     underlying_token_symbol,
     decimals,
     APPROX_PERCENTILE(adjusted_price, 0.5) AS median_price,
-    LEAD(DATE_TRUNC('day', p.evt_block_time), 1, NOW()) OVER (PARTITION BY wrappedToken ORDER BY p.evt_block_time) AS next_change
+    LEAD(p.evt_block_time, 1, CURRENT_DATE + INTERVAL '1' day) OVER (PARTITION BY wrappedToken ORDER BY p.evt_block_time) AS next_change
 FROM price_join p
 GROUP BY 1, 2, 3, 4, 5, 6, 7
+
