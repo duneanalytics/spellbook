@@ -69,7 +69,7 @@ base_trades as (
   '' as trade_category,
   '' as trade_type,
   price_raw,
-  currency_address,
+  currency_address as currency_contract,
   contract_address as project_contract_address,
   tx_hash,
   platform_fee_amount_raw,
