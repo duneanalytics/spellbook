@@ -1,4 +1,4 @@
-{% set blockchain = 'ethereum' %}
+{% set blockchain = 'base' %}
 
 {{config(
     schema = 'labels',
@@ -14,7 +14,7 @@ WITH events AS (
            contract_address  AS pool,
            token,
            denorm
-    FROM {{ source('b_cow_amm_ethereum', 'BCoWPool_call_bind') }}
+    FROM {{ source('b_cow_amm_base', 'BCoWPool_call_bind') }}
     WHERE call_success
 
     UNION all
@@ -24,7 +24,7 @@ WITH events AS (
             contract_address AS pool,
             token,
             uint256 '0' AS denorm
-    FROM {{ source('b_cow_amm_ethereum', 'BCoWPool_call_unbind') }}
+    FROM {{ source('b_cow_amm_base', 'BCoWPool_call_unbind') }}
     WHERE call_success
 ),
 
@@ -59,7 +59,7 @@ settings AS (
       'query' AS source,
       timestamp '2024-07-20' AS created_at,
       now() AS updated_at,
-      'balancer_cowswap_amm_pools_ethereum' AS model_name,
+      'balancer_cowswap_amm_pools_base' AS model_name,
       'identifier' as label_type
     FROM   (
         SELECT s1.pool, symbol, cast(100*denorm/total_denorm AS integer) AS norm_weight FROM settings s1
