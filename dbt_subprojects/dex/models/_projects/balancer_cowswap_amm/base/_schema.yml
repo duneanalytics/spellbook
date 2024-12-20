@@ -1,15 +1,20 @@
 version: 2
 
 models:
-  - name: balancer_cowswap_amm_trades
+  - name: balancer_cowswap_amm_base_trades
     meta:
-      blockchain: arbitrum, base, ethereum, gnosis
+      blockchain: base
       sector: trades
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['balancer', 'cowswap', 'arbitrum', 'base', 'ethereum', 'gnosis', 'amm', 'trades']
+      tags: ['balancer', 'cowswap', 'base', 'amm', 'trades']
     description: "Trades on Balancer CoWSwap AMM pools"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
     columns:
       - &blockchain
         name: blockchain
@@ -87,15 +92,19 @@ models:
       - name: pool_symbol
       - name: swap_fee
 
-  - name: labels_balancer_cowswap_amm_pools
+  - name: labels_balancer_cowswap_amm_pools_base
     meta:
-      blockchain: arbitrum, base, ethereum, gnosis
+      blockchain: base
       sector: labels
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['labels', 'arbitrum', 'base', 'ethereum', 'gnosis', 'balancer', 'pools']
-    description: "Balancer CoWSwap AMM liquidity pools created on Ethereum."
+      tags: ['labels', 'base', 'balancer', 'pools']
+    description: "Balancer CoWSwap AMM liquidity pools created on base."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     columns:
       - *blockchain
       - &address
@@ -104,6 +113,7 @@ models:
       - &name
         name: name
         description: "Label name of pool containing the token symbols and their respective weights (if applicable)"
+      - name: pool_type
       - &category
         name: category
         description: "Label category"
