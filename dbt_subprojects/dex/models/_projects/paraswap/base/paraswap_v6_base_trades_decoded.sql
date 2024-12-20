@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.blockTime')],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.blocktime')],
     unique_key = ['call_tx_hash', 'method', 'call_trace_address'],
     post_hook='{{ expose_spells(blockchains = \'["base"]\',
 	                                spell_type = "project",
