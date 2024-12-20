@@ -45,6 +45,8 @@ known_solver_metadata (address, environment, name) as (
                 (0x147d05987f3008A6C9Ec3E93A4ead430907ac3E1, 'barn', 'Gnosis_0x'),
                 (0x9451D27C993f7a61096BFC33e0241644a7566F66, 'barn', 'Gnosis_BalancerSOR'),
                 (0x0AC9287C83C2386A6a0bb27F847Ce59a0034183C, 'barn', 'Laita'),
+                (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
+                (0x6bf97aFe2D2C790999cDEd2a8523009eB8a0823f, 'prod', 'Portus'),
                 (0x69d7F96dFD091652f317D0734A5F2B492ACcbE07, 'prod', 'Baseline'),
                 (0x4cb862E4821fea2dabBD1f0A69c17d52da2A58f6, 'prod', 'Seasolver'),
                 (0xF401ceF222F1CA2fE84a8C7BFC75A636A4542A74, 'prod', 'Naive'),
