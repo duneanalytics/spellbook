@@ -12,6 +12,7 @@
 	                                spell_name = "paraswap_v6",
 	                                contributors = \'["eptighte", "mwamedacen"]\') }}'
     )
+
 }}
 
 {{ paraswap_v6_trades_master('arbitrum', 'paraswap') }}
