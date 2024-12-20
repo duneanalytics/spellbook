@@ -189,6 +189,7 @@ FROM (VALUES
     , ('stablebase', 'StableBase', 'Direct', 'stablebasefi')
     , ('flashliquidity', 'Flashliquidity', 'Direct', 'flashliquidity')
     , ('akronswap', 'Akronswap', 'Direct', 'AkronFinance')
+    , ('saddle_finance', 'Saddle Finance', 'Direct', 'saddlefinance')
     , ('katana', 'Katana', 'Direct', 'AxieInfinity')
     , ('jetswap', 'JetSwap', 'Direct', 'Jetfuelfinance')
     , ('levinswap', 'Levinswap', 'Direct', 'levinswap')
