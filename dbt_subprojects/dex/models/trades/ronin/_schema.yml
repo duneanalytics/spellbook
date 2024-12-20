@@ -20,7 +20,9 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('katana_v2_ronin_base_trades_seed')
+          seed_file: ref('katana_ronin_base_trades_seed')
+          filter:
+            version: 2
 
   - name: katana_v3_ronin_base_trades
     meta:
@@ -37,4 +39,6 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('katana_v3_ronin_base_trades_seed')
+          seed_file: ref('katana_ronin_base_trades_seed')
+          filter:
+            version: 3
