@@ -124,6 +124,7 @@ known_solver_metadata (address, environment, name) as (
                  (0x34717040928D7fd8154d4612f3228EFf14521023, 'prod', 'Laita'),
                  (0xBab555BaBEe5d867983902bC8db8F707157245Be, 'barn', 'Project_Blanc'),
                  (0x854490ef1d402D4f6fce05aBefE1C676eB0DCD74, 'barn', 'ApeOut_1Inch'),
+                 (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
                  (0xcC73072B53697911Ff394ae01D3de59c9900b0b0, 'barn', '0x'),
                  (0xd0bA1b1782fbdE45edAb392428f60e14827D08EC, 'barn', 'Laita'),
                  (0x7E2eF26AdccB02e57258784957922AEEFEe807e5, 'barn', 'Quasilabs'),
