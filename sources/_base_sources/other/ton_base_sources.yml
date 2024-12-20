@@ -1,0 +1,920 @@
+version: 2
+
+sources:
+  - name: ton
+    description: "TON blockchain raw data tables"
+    freshness:
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: blocks
+        loaded_at_field: ingested_at
+        description: "TON blockchain blocks"
+        columns:
+          - name: block_time
+            description: "Block timestamp"
+            tests:
+              - not_null
+            data_type: timestamp
+          
+          - name: block_date
+            description: "Block date"
+            tests:
+              - not_null
+            data_type: date
+          
+          - name: workchain
+            description: "Workchain identifier"
+            data_type: integer
+          
+          - name: shard
+            description: "Shard identifier"
+            data_type: bigint
+          
+          - name: seqno
+            description: "Block sequence number"
+            data_type: integer
+          
+          - name: root_hash
+            description: "Root hash of the block"
+            data_type: varchar
+          
+          - name: file_hash
+            description: "File hash of the block"
+            data_type: varchar
+          
+          - name: mc_block_workchain
+            description: "Masterchain block workchain"
+            data_type: integer
+          
+          - name: mc_block_shard
+            description: "Masterchain block shard"
+            data_type: bigint
+          
+          - name: mc_block_seqno
+            description: "Masterchain block sequence number"
+            data_type: integer
+          
+          - name: global_id
+            description: "Global identifier"
+            data_type: integer
+          
+          - name: version
+            description: "Block version"
+            data_type: integer
+          
+          - name: after_merge
+            description: "Flag indicating if block is after merge"
+            data_type: boolean
+          
+          - name: before_split
+            description: "Flag indicating if block is before split"
+            data_type: boolean
+          
+          - name: after_split
+            description: "Flag indicating if block is after split"
+            data_type: boolean
+          
+          - name: want_merge
+            description: "Flag indicating if block wants to merge"
+            data_type: boolean
+          
+          - name: want_split
+            description: "Flag indicating if block wants to split"
+            data_type: boolean
+          
+          - name: key_block
+            description: "Flag indicating if block is a key block"
+            data_type: boolean
+          
+          - name: vert_seqno_incr
+            description: "Vertical sequence number increment flag"
+            data_type: boolean
+          
+          - name: flags
+            description: "Block flags"
+            data_type: integer
+          
+          - name: gen_utime
+            description: "Generation unix time"
+            data_type: bigint
+          
+          - name: start_lt
+            description: "Start logical time"
+            data_type: bigint
+          
+          - name: end_lt
+            description: "End logical time"
+            data_type: bigint
+          
+          - name: validator_list_hash_short
+            description: "Short hash of validator list"
+            data_type: integer
+          
+          - name: gen_catchain_seqno
+            description: "Generation catchain sequence number"
+            data_type: integer
+          
+          - name: min_ref_mc_seqno
+            description: "Minimum reference masterchain sequence number"
+            data_type: integer
+          
+          - name: prev_key_block_seqno
+            description: "Previous key block sequence number"
+            data_type: integer
+          
+          - name: vert_seqno
+            description: "Vertical sequence number"
+            data_type: integer
+          
+          - name: master_ref_seqno
+            description: "Master reference sequence number"
+            data_type: integer
+          
+          - name: rand_seed
+            description: "Random seed"
+            data_type: varchar
+          
+          - name: created_by
+            description: "Block creator address"
+            data_type: varchar
+          
+          - name: tx_count
+            description: "Number of transactions in block"
+            data_type: integer
+          
+          - name: updated_at
+            description: "Last update timestamp"
+            data_type: timestamp
+          
+          - name: ingested_at
+            description: "Time at which the block was ingested"
+            data_type: timestamp
+
+      - name: messages
+        loaded_at_field: ingested_at
+        description: "TON blockchain messages"
+        columns:
+          - name: block_time
+            description: "Block timestamp"
+            data_type: timestamp
+          
+          - name: block_date
+            description: "Block date"
+            data_type: date
+          
+          - name: tx_hash
+            description: "Transaction hash"
+            data_type: varchar
+          
+          - name: tx_lt
+            description: "Transaction logical time"
+            data_type: bigint
+          
+          - name: tx_now
+            description: "Transaction timestamp"
+            data_type: integer
+          
+          - name: msg_hash
+            description: "Message hash"
+            data_type: varchar
+          
+          - name: direction
+            description: "Message direction"
+            data_type: varchar
+          
+          - name: trace_id
+            description: "Trace identifier"
+            data_type: varchar
+          
+          - name: source
+            description: "Source address"
+            data_type: varchar
+          
+          - name: destination
+            description: "Destination address"
+            data_type: varchar
+          
+          - name: value
+            description: "Message value"
+            data_type: bigint
+          
+          - name: fwd_fee
+            description: "Forward fee"
+            data_type: bigint
+          
+          - name: ihr_fee
+            description: "IHR fee"
+            data_type: bigint
+          
+          - name: created_lt
+            description: "Creation logical time"
+            data_type: bigint
+          
+          - name: created_at
+            description: "Creation timestamp"
+            data_type: bigint
+          
+          - name: opcode
+            description: "Operation code"
+            data_type: integer
+          
+          - name: ihr_disabled
+            description: "IHR disabled flag"
+            data_type: boolean
+          
+          - name: bounce
+            description: "Bounce flag"
+            data_type: boolean
+          
+          - name: bounced
+            description: "Bounced flag"
+            data_type: boolean
+          
+          - name: import_fee
+            description: "Import fee"
+            data_type: bigint
+          
+          - name: body_hash
+            description: "Message body hash"
+            data_type: varchar
+          
+          - name: body_boc
+            description: "Message body BOC"
+            data_type: varbinary
+          
+          - name: comment
+            description: "Message comment"
+            data_type: varchar
+          
+          - name: init_state_hash
+            description: "Initial state hash"
+            data_type: varchar
+          
+          - name: init_state_boc
+            description: "Initial state BOC"
+            data_type: varbinary
+          
+          - name: updated_at
+            description: "Last update timestamp"
+            data_type: timestamp
+          
+          - name: ingested_at
+            description: "Time at which the message was ingested"
+            data_type: timestamp
+
+      - name: transactions
+        loaded_at_field: ingested_at
+        description: "TON blockchain transactions"
+        columns:
+          - name: block_time
+            description: "Block timestamp"
+            data_type: timestamp
+          
+          - name: block_date
+            description: "Block date"
+            data_type: date
+          
+          - name: account
+            description: "Account address"
+            data_type: varchar
+          
+          - name: hash
+            description: "Transaction hash"
+            data_type: varchar
+          
+          - name: lt
+            description: "Logical time"
+            data_type: bigint
+          
+          - name: block_workchain
+            description: "Block workchain identifier"
+            data_type: integer
+          
+          - name: block_shard
+            description: "Block shard identifier"
+            data_type: bigint
+          
+          - name: block_seqno
+            description: "Block sequence number"
+            data_type: integer
+          
+          - name: mc_block_seqno
+            description: "Masterchain block sequence number"
+            data_type: integer
+          
+          - name: trace_id
+            description: "Trace identifier"
+            data_type: varchar
+          
+          - name: prev_trans_hash
+            description: "Previous transaction hash"
+            data_type: varchar
+          
+          - name: prev_trans_lt
+            description: "Previous transaction logical time"
+            data_type: bigint
+          
+          - name: now
+            description: "Transaction timestamp"
+            data_type: integer
+          
+          - name: orig_status
+            description: "Original status"
+            data_type: varchar
+          
+          - name: end_status
+            description: "End status"
+            data_type: varchar
+          
+          - name: total_fees
+            description: "Total transaction fees"
+            data_type: bigint
+          
+          - name: account_state_hash_before
+            description: "Account state hash before transaction"
+            data_type: varchar
+          
+          - name: account_state_hash_after
+            description: "Account state hash after transaction"
+            data_type: varchar
+          
+          - name: account_state_code_hash_before
+            description: "Account state code hash before transaction"
+            data_type: varchar
+          
+          - name: account_state_code_hash_after
+            description: "Account state code hash after transaction"
+            data_type: varchar
+          
+          - name: account_state_balance_before
+            description: "Account balance before transaction"
+            data_type: bigint
+          
+          - name: account_state_balance_after
+            description: "Account balance after transaction"
+            data_type: bigint
+          
+          - name: descr
+            description: "Transaction description"
+            data_type: varchar
+          
+          - name: aborted
+            description: "Transaction aborted flag"
+            data_type: boolean
+          
+          - name: destroyed
+            description: "Account destroyed flag"
+            data_type: boolean
+          
+          - name: credit_first
+            description: "Credit first flag"
+            data_type: boolean
+          
+          - name: is_tock
+            description: "Is tock transaction flag"
+            data_type: boolean
+          
+          - name: installed
+            description: "Code installed flag"
+            data_type: boolean
+          
+          - name: storage_fees_collected
+            description: "Storage fees collected"
+            data_type: bigint
+          
+          - name: storage_fees_due
+            description: "Storage fees due"
+            data_type: bigint
+          
+          - name: storage_status_change
+            description: "Storage status change"
+            data_type: varchar
+          
+          - name: credit_due_fees_collected
+            description: "Credit due fees collected"
+            data_type: bigint
+          
+          - name: credit
+            description: "Credit amount"
+            data_type: bigint
+          
+          - name: compute_skipped
+            description: "Compute phase skipped flag"
+            data_type: boolean
+          
+          - name: skipped_reason
+            description: "Reason for skipping compute phase"
+            data_type: varchar
+          
+          - name: compute_success
+            description: "Compute phase success flag"
+            data_type: boolean
+          
+          - name: compute_msg_state_used
+            description: "Message state used in compute phase"
+            data_type: boolean
+          
+          - name: compute_account_activated
+            description: "Account activated in compute phase"
+            data_type: boolean
+          
+          - name: compute_gas_fees
+            description: "Gas fees in compute phase"
+            data_type: bigint
+          
+          - name: compute_gas_used
+            description: "Gas used in compute phase"
+            data_type: bigint
+          
+          - name: compute_gas_limit
+            description: "Gas limit in compute phase"
+            data_type: bigint
+          
+          - name: compute_gas_credit
+            description: "Gas credit in compute phase"
+            data_type: bigint
+          
+          - name: compute_mode
+            description: "Compute phase mode"
+            data_type: integer
+          
+          - name: compute_exit_code
+            description: "Compute phase exit code"
+            data_type: integer
+          
+          - name: compute_exit_arg
+            description: "Compute phase exit argument"
+            data_type: integer
+          
+          - name: compute_vm_steps
+            description: "VM steps in compute phase"
+            data_type: bigint
+          
+          - name: compute_vm_init_state_hash
+            description: "VM initial state hash"
+            data_type: varchar
+          
+          - name: compute_vm_final_state_hash
+            description: "VM final state hash"
+            data_type: varchar
+          
+          - name: action_success
+            description: "Action phase success flag"
+            data_type: boolean
+          
+          - name: action_valid
+            description: "Action phase validity flag"
+            data_type: boolean
+          
+          - name: action_no_funds
+            description: "No funds for action phase flag"
+            data_type: boolean
+          
+          - name: action_status_change
+            description: "Action phase status change"
+            data_type: varchar
+          
+          - name: action_total_fwd_fees
+            description: "Total forward fees in action phase"
+            data_type: bigint
+          
+          - name: action_total_action_fees
+            description: "Total action fees"
+            data_type: bigint
+          
+          - name: action_result_code
+            description: "Action phase result code"
+            data_type: integer
+          
+          - name: action_result_arg
+            description: "Action phase result argument"
+            data_type: integer
+          
+          - name: action_tot_actions
+            description: "Total number of actions"
+            data_type: integer
+          
+          - name: action_spec_actions
+            description: "Number of special actions"
+            data_type: integer
+          
+          - name: action_skipped_actions
+            description: "Number of skipped actions"
+            data_type: integer
+          
+          - name: action_msgs_created
+            description: "Number of messages created"
+            data_type: integer
+          
+          - name: action_action_list_hash
+            description: "Action list hash"
+            data_type: varchar
+          
+          - name: action_tot_msg_size_cells
+            description: "Total message size in cells"
+            data_type: bigint
+          
+          - name: action_tot_msg_size_bits
+            description: "Total message size in bits"
+            data_type: bigint
+          
+          - name: bounce
+            description: "Bounce status"
+            data_type: varchar
+          
+          - name: bounce_msg_size_cells
+            description: "Bounce message size in cells"
+            data_type: bigint
+          
+          - name: bounce_msg_size_bits
+            description: "Bounce message size in bits"
+            data_type: bigint
+          
+          - name: bounce_req_fwd_fees
+            description: "Required forward fees for bounce"
+            data_type: bigint
+          
+          - name: bounce_msg_fees
+            description: "Bounce message fees"
+            data_type: bigint
+          
+          - name: bounce_fwd_fees
+            description: "Bounce forward fees"
+            data_type: bigint
+          
+          - name: split_info_cur_shard_pfx_len
+            description: "Current shard prefix length"
+            data_type: integer
+          
+          - name: split_info_acc_split_depth
+            description: "Account split depth"
+            data_type: integer
+          
+          - name: split_info_this_addr
+            description: "This address in split info"
+            data_type: varchar
+          
+          - name: split_info_sibling_addr
+            description: "Sibling address in split info"
+            data_type: varchar
+          
+          - name: updated_at
+            description: "Last update timestamp"
+            data_type: timestamp
+          
+          - name: ingested_at
+            description: "Time at which the transaction was ingested"
+            data_type: timestamp
+
+      - name: dex_pools
+        loaded_at_field: ingested_at
+        description: "TON DEX pools information"
+        columns:
+          - name: block_time
+            description: "Block timestamp"
+            data_type: timestamp
+          
+          - name: block_date
+            description: "Block date"
+            data_type: date
+          
+          - name: pool
+            description: "Pool address"
+            data_type: varchar
+          
+          - name: project
+            description: "DEX project name"
+            data_type: varchar
+          
+          - name: version
+            description: "DEX version"
+            data_type: integer
+          
+          - name: discovered_at
+            description: "Pool discovery timestamp"
+            data_type: integer
+          
+          - name: jetton_left
+            description: "Left token address"
+            data_type: varchar
+          
+          - name: jetton_right
+            description: "Right token address"
+            data_type: varchar
+          
+          - name: reserves_left
+            description: "Left token reserves"
+            data_type: decimal(38,0)
+          
+          - name: reserves_right
+            description: "Right token reserves"
+            data_type: decimal(38,0)
+          
+          - name: total_supply
+            description: "Total supply of LP tokens"
+            data_type: decimal(38,0)
+          
+          - name: tvl_usd
+            description: "Total value locked in USD"
+            data_type: decimal(20,6)
+          
+          - name: tvl_ton
+            description: "Total value locked in TON"
+            data_type: decimal(20,9)
+          
+          - name: last_updated
+            description: "Last update timestamp"
+            data_type: integer
+          
+          - name: is_liquid
+            description: "Liquidity status flag"
+            data_type: boolean
+          
+          - name: lp_fee
+            description: "LP fee percentage"
+            data_type: decimal(12,10)
+          
+          - name: protocol_fee
+            description: "Protocol fee percentage"
+            data_type: decimal(12,10)
+          
+          - name: referral_fee
+            description: "Referral fee percentage"
+            data_type: decimal(12,10)
+          
+          - name: updated_at
+            description: "Last update timestamp"
+            data_type: timestamp
+          
+          - name: ingested_at
+            description: "Time at which the pool data was ingested"
+            data_type: timestamp
+
+      - name: dex_trades
+        loaded_at_field: ingested_at
+        description: "TON DEX trades information"
+        columns:
+          - name: block_time
+            description: "Block timestamp"
+            data_type: timestamp
+          
+          - name: block_date
+            description: "Block date"
+            data_type: date
+          
+          - name: tx_hash
+            description: "Transaction hash"
+            data_type: varchar
+          
+          - name: trace_id
+            description: "Trace identifier"
+            data_type: varchar
+          
+          - name: project_type
+            description: "Project type"
+            data_type: varchar
+          
+          - name: project
+            description: "DEX project name"
+            data_type: varchar
+          
+          - name: version
+            description: "DEX version"
+            data_type: integer
+          
+          - name: event_time
+            description: "Event timestamp"
+            data_type: integer
+          
+          - name: event_type
+            description: "Event type"
+            data_type: varchar
+          
+          - name: trader_address
+            description: "Trader address"
+            data_type: varchar
+          
+          - name: pool_address
+            description: "Pool address"
+            data_type: varchar
+          
+          - name: router_address
+            description: "Router address"
+            data_type: varchar
+          
+          - name: token_sold_address
+            description: "Sold token address"
+            data_type: varchar
+          
+          - name: token_bought_address
+            description: "Bought token address"
+            data_type: varchar
+          
+          - name: amount_sold_raw
+            description: "Raw amount of tokens sold"
+            data_type: decimal(38,0)
+          
+          - name: amount_bought_raw
+            description: "Raw amount of tokens bought"
+            data_type: decimal(38,0)
+          
+          - name: referral_address
+            description: "Referral address"
+            data_type: varchar
+          
+          - name: platform_tag
+            description: "Platform tag"
+            data_type: varchar
+          
+          - name: query_id
+            description: "Query identifier"
+            data_type: decimal(20,0)
+          
+          - name: volume_usd
+            description: "Trade volume in USD"
+            data_type: decimal(20,6)
+          
+          - name: volume_ton
+            description: "Trade volume in TON"
+            data_type: decimal(20,9)
+          
+          - name: updated_at
+            description: "Last update timestamp"
+            data_type: timestamp
+          
+          - name: ingested_at
+            description: "Time at which the trade was ingested"
+            data_type: timestamp
+
+      - name: jetton_events
+        loaded_at_field: ingested_at
+        description: "TON jetton events"
+        columns:
+          - name: block_time
+            description: "Block timestamp"
+            data_type: timestamp
+          
+          - name: block_date
+            description: "Block date"
+            data_type: date
+          
+          - name: type
+            description: "Event type"
+            data_type: varchar
+          
+          - name: tx_hash
+            description: "Transaction hash"
+            data_type: varchar
+          
+          - name: tx_lt
+            description: "Transaction logical time"
+            data_type: bigint
+          
+          - name: utime
+            description: "Unix timestamp"
+            data_type: integer
+          
+          - name: trace_id
+            description: "Trace identifier"
+            data_type: varchar
+          
+          - name: tx_aborted
+            description: "Transaction aborted flag"
+            data_type: boolean
+          
+          - name: query_id
+            description: "Query identifier"
+            data_type: decimal(20,0)
+          
+          - name: amount
+            description: "Token amount"
+            data_type: decimal(38,0)
+          
+          - name: source
+            description: "Source address"
+            data_type: varchar
+          
+          - name: destination
+            description: "Destination address"
+            data_type: varchar
+          
+          - name: jetton_wallet
+            description: "Jetton wallet address"
+            data_type: varchar
+          
+          - name: jetton_master
+            description: "Jetton master contract address"
+            data_type: varchar
+          
+          - name: response_destination
+            description: "Response destination address"
+            data_type: varchar
+          
+          - name: custom_payload
+            description: "Custom payload data"
+            data_type: varbinary
+          
+          - name: forward_ton_amount
+            description: "Forward TON amount"
+            data_type: decimal(38,0)
+          
+          - name: forward_payload
+            description: "Forward payload data"
+            data_type: varbinary
+          
+          - name: comment
+            description: "Event comment"
+            data_type: varchar
+          
+          - name: updated_at
+            description: "Last update timestamp"
+            data_type: timestamp
+          
+          - name: ingested_at
+            description: "Time at which the event was ingested"
+            data_type: timestamp
+
+      - name: jetton_metadata
+        loaded_at_field: ingested_at
+        description: "TON jetton metadata"
+        columns:
+          - name: address
+            description: "Jetton address"
+            data_type: varchar
+          
+          - name: update_time_onchain
+            description: "On-chain update timestamp"
+            data_type: integer
+          
+          - name: update_time_metadata
+            description: "Metadata update timestamp"
+            data_type: integer
+          
+          - name: mintable
+            description: "Mintable flag"
+            data_type: boolean
+          
+          - name: admin_address
+            description: "Admin address"
+            data_type: varchar
+          
+          - name: jetton_content_onchain
+            description: "On-chain jetton content"
+            data_type: varchar
+          
+          - name: jetton_wallet_code_hash
+            description: "Jetton wallet code hash"
+            data_type: varchar
+          
+          - name: code_hash
+            description: "Contract code hash"
+            data_type: varchar
+          
+          - name: metadata_status
+            description: "Metadata status"
+            data_type: integer
+          
+          - name: symbol
+            description: "Token symbol"
+            data_type: varchar
+          
+          - name: name
+            description: "Token name"
+            data_type: varchar
+          
+          - name: description
+            description: "Token description"
+            data_type: varchar
+          
+          - name: image
+            description: "Token image URL"
+            data_type: varchar
+          
+          - name: image_data
+            description: "Token image data"
+            data_type: varchar
+          
+          - name: decimals
+            description: "Token decimals"
+            data_type: integer
+          
+          - name: sources
+            description: "Original metadata sources"
+            data_type: row(symbol varchar, name varchar, description varchar, image varchar, image_data varchar, decimals varchar)
+          
+          - name: tonapi_image_url
+            description: "TON API image URL"
+            data_type: varchar
+          
+          - name: adding_date
+            description: "Token adding timestamp"
+            data_type: integer
+          
+          - name: updated_at
+            description: "Last update timestamp"
+            data_type: timestamp
+          
+          - name: ingested_at
+            description: "Time at which the metadata was ingested"
+            data_type: timestamp
