@@ -1,6 +1,6 @@
 {{config(
-  alias = 'beethoven_x_pools_fantom',
-  post_hook = '{{ expose_spells(\'["fantom"]\',
+  alias = 'beethoven_x_pools_sonic',
+  post_hook = '{{ expose_spells(\'["sonic"]\',
                                "sector",
                                "labels",
                                \'["viniabussafi"]\') }}'
@@ -63,7 +63,7 @@ settings AS (
 )
 
 SELECT 
-  'fantom' AS blockchain,
+  'sonic' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
   CASE WHEN pool_type IN ('stable') 
   THEN lower(pool_symbol)
@@ -78,7 +78,7 @@ SELECT
   'query' AS source,
   TIMESTAMP'2024-12-15 00:00' AS created_at,
   now() AS updated_at,
-  'beethoven_x_pools_fantom' AS model_name,
+  'beethoven_x_pools_sonic' AS model_name,
   'identifier' AS label_type
 FROM (
   SELECT
