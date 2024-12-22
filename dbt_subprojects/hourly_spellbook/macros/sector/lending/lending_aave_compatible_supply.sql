@@ -141,6 +141,7 @@ src_LendingPool_evt_Withdraw as (
   {% endif %}
 ),
 
+{% if 'aave' in project %}
 src_WrappedTokenGatewayV2_call_withdrawETH as (
   select *
   from {{ source(project_decoded_as ~ '_' ~ blockchain, 'WrappedTokenGatewayV2_call_withdrawETH') }}
@@ -148,6 +149,7 @@ src_WrappedTokenGatewayV2_call_withdrawETH as (
   where {{ incremental_predicate('call_block_time') }}
   {% endif %}
 ),
+{% endif %}
 
 src_LendingPool_evt_LiquidationCall as (
   select *
@@ -177,7 +179,11 @@ base_supply as (
     'withdraw' as transaction_type,
     w.reserve as token_address,
     w.user as depositor,
-    cast(wrap.to as varbinary) as on_behalf_of,
+    {% if 'aave' in project %}
+      cast(wrap.to as varbinary)
+    {% else %}
+      cast(null as varbinary)
+    {% endif %} as on_behalf_of,
     w.to as withdrawn_to,
     cast(null as varbinary) as liquidator,
     -1 * cast(w.amount as double) as amount,
@@ -187,12 +193,14 @@ base_supply as (
     w.evt_block_time,
     w.evt_block_number
   from src_LendingPool_evt_Withdraw w
+  {% if 'aave' in project %}
     left join src_WrappedTokenGatewayV2_call_withdrawETH wrap
       on w.evt_block_number = wrap.call_block_number
       and w.evt_tx_hash = wrap.call_tx_hash
       and w.to = wrap.contract_address
       and w.amount = wrap.amount
       and wrap.call_success
+  {% endif %}
   union all
   select
     'deposit_liquidation' as transaction_type,
@@ -262,6 +270,7 @@ src_LendingPool_evt_Withdraw as (
   {% endif %}
 ),
 
+{% if 'aave' in project %}
 src_WrappedTokenGatewayV3_call_withdrawETH as (
   select *
   from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_wrapped_token_gateway_name ~ '_call_withdrawETH') }}
@@ -269,6 +278,7 @@ src_WrappedTokenGatewayV3_call_withdrawETH as (
   where {{ incremental_predicate('call_block_time') }}
   {% endif %}
 ),
+{% endif %}
 
 src_LendingPool_evt_Repay as (
   select *
@@ -307,7 +317,11 @@ base_supply as (
     'withdraw' as transaction_type,
     w.reserve as token_address,
     w.user as depositor,
-    cast(wrap.to as varbinary) as on_behalf_of,
+    {% if 'aave' in project %}
+      cast(wrap.to as varbinary)
+    {% else %}
+      cast(null as varbinary)
+    {% endif %} as on_behalf_of,
     w.to as withdrawn_to,
     cast(null as varbinary) as liquidator,
     -1 * cast(w.amount as double) as amount,
@@ -317,12 +331,14 @@ base_supply as (
     w.evt_block_time,
     w.evt_block_number
   from src_LendingPool_evt_Withdraw w
+  {% if 'aave' in project %}
     left join src_WrappedTokenGatewayV3_call_withdrawETH wrap
       on w.evt_block_number = wrap.call_block_number
       and w.evt_tx_hash = wrap.call_tx_hash
       and w.to = wrap.contract_address
       and w.amount = wrap.amount
       and wrap.call_success
+  {% endif %}
   union all
   select
     'repay_with_atokens' as transaction_type,
