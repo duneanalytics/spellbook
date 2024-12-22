@@ -5,6 +5,7 @@ sources:
     tables:
       - name: L2Pool_evt_Supply
       - name: L2Pool_evt_Withdraw
+      - name: WrappedTokenGatewayV3_call_withdrawETH
 
   - name: layer_bank_scroll
     tables:

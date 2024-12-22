@@ -10,6 +10,7 @@ sources:
     tables:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
+      - name: WrappedTokenGatewayV3_call_withdrawETH
 
   - name: the_granary_bnb
     tables:

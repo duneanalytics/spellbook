@@ -11,21 +11,25 @@ sources:
     tables:
       - name: LendingPool_evt_Deposit
       - name: LendingPool_evt_Withdraw
+      - name: WrappedTokenGatewayV2_call_withdrawETH
 
   - name: aave_v3_ethereum
     tables:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
       - name: Pool_evt_ReserveDataUpdated
+      - name: WrappedTokenGatewayV3_call_withdrawETH
       - name: LidoPool_evt_Supply
       - name: LidoPool_evt_Withdraw
       - name: LidoPool_evt_ReserveDataUpdated
+      - name: LidoWrappedTokenGatewayV3_call_withdrawETH
 
   - name: aave_v3_etherfi_ethereum
     tables:
       - name: PoolInstance_evt_Supply
       - name: PoolInstance_evt_Withdraw
       - name: PoolInstance_evt_ReserveDataUpdated
+      - name: WrappedTokenGatewayV3_call_withdrawETH
 
   - name: compound_v2_ethereum
     tables:

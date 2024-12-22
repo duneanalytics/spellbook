@@ -15,6 +15,7 @@
     blockchain = 'ethereum',
     project = 'aave_lido',
     version = '3',
-    decoded_contract_name = 'LidoPool'
+    decoded_contract_name = 'LidoPool',
+    decoded_wrapped_token_gateway_name = 'LidoWrappedTokenGatewayV3'
   )
 }}

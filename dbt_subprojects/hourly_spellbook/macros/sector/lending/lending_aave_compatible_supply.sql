@@ -141,6 +141,14 @@ src_LendingPool_evt_Withdraw as (
   {% endif %}
 ),
 
+src_WrappedTokenGatewayV2_call_withdrawETH as (
+  select *
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, 'WrappedTokenGatewayV2_call_withdrawETH') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('call_block_time') }}
+  {% endif %}
+),
+
 src_LendingPool_evt_LiquidationCall as (
   select *
   from {{ source(project_decoded_as ~ '_' ~ blockchain, 'LendingPool_evt_LiquidationCall') }}
@@ -167,18 +175,24 @@ base_supply as (
   union all
   select
     'withdraw' as transaction_type,
-    reserve as token_address,
-    user as depositor,
-    cast(null as varbinary) as on_behalf_of,
-    to as withdrawn_to,
+    w.reserve as token_address,
+    w.user as depositor,
+    cast(wrap.to as varbinary) as on_behalf_of,
+    w.to as withdrawn_to,
     cast(null as varbinary) as liquidator,
-    -1 * cast(amount as double) as amount,
-    contract_address,
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number
-  from src_LendingPool_evt_Withdraw
+    -1 * cast(w.amount as double) as amount,
+    w.contract_address,
+    w.evt_tx_hash,
+    w.evt_index,
+    w.evt_block_time,
+    w.evt_block_number
+  from src_LendingPool_evt_Withdraw w
+    left join src_WrappedTokenGatewayV2_call_withdrawETH wrap
+      on w.evt_block_number = wrap.call_block_number
+      and w.evt_tx_hash = wrap.call_tx_hash
+      and w.to = wrap.contract_address
+      and w.amount = wrap.amount
+      and wrap.call_success
   union all
   select
     'deposit_liquidation' as transaction_type,
@@ -225,7 +239,8 @@ from base_supply
     project,
     version,
     project_decoded_as = 'aave_v3',
-    decoded_contract_name = 'Pool'
+    decoded_contract_name = 'Pool',
+    decoded_wrapped_token_gateway_name = 'WrappedTokenGatewayV3'
   )
 %}
 
@@ -244,6 +259,14 @@ src_LendingPool_evt_Withdraw as (
   from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_contract_name ~ '_evt_Withdraw') }}
   {% if is_incremental() %}
   where {{ incremental_predicate('evt_block_time') }}
+  {% endif %}
+),
+
+src_WrappedTokenGatewayV3_call_withdrawETH as (
+  select *
+  from {{ source(project_decoded_as ~ '_' ~ blockchain, decoded_wrapped_token_gateway_name ~ '_call_withdrawETH') }}
+  {% if is_incremental() %}
+  where {{ incremental_predicate('call_block_time') }}
   {% endif %}
 ),
 
@@ -282,18 +305,24 @@ base_supply as (
   union all
   select
     'withdraw' as transaction_type,
-    reserve as token_address,
-    user as depositor,
-    cast(null as varbinary) as on_behalf_of,
-    to as withdrawn_to,
+    w.reserve as token_address,
+    w.user as depositor,
+    cast(wrap.to as varbinary) as on_behalf_of,
+    w.to as withdrawn_to,
     cast(null as varbinary) as liquidator,
-    -1 * cast(amount as double) as amount,
-    contract_address,
-    evt_tx_hash,
-    evt_index,
-    evt_block_time,
-    evt_block_number
-  from src_LendingPool_evt_Withdraw
+    -1 * cast(w.amount as double) as amount,
+    w.contract_address,
+    w.evt_tx_hash,
+    w.evt_index,
+    w.evt_block_time,
+    w.evt_block_number
+  from src_LendingPool_evt_Withdraw w
+    left join src_WrappedTokenGatewayV3_call_withdrawETH wrap
+      on w.evt_block_number = wrap.call_block_number
+      and w.evt_tx_hash = wrap.call_tx_hash
+      and w.to = wrap.contract_address
+      and w.amount = wrap.amount
+      and wrap.call_success
   union all
   select
     'repay_with_atokens' as transaction_type,
