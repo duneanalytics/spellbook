@@ -58,3 +58,10 @@ sources:
         loaded_at_field: call_block_time  
       - name: AugustusV6_2_call_swapExactAmountInOutOnMakerPSM
         loaded_at_field: call_block_time  
+
+  - name: paraswapdelta_ethereum
+    description: >
+      Delta V1 calls tables
+    tables:
+      - name: ParaswapDeltav1_call_settleSwap
+      - name: ParaswapDeltav1_call_safeSettleBatchSwap      

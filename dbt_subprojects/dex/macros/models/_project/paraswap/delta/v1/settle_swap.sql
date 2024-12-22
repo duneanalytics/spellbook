@@ -9,9 +9,8 @@ settle_swap_withParsedOrderData AS (
         call_block_number, 
         call_tx_hash, 
         JSON_EXTRACT(data, '$.orderData') AS parsed_order_data,
-        contract_address
-    FROM 
-        paraswapdelta_{{blockchain}}.ParaswapDeltav1_call_settleSwap
+        contract_address    
+    FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav1_call_settleSwap") }}        
         where call_success = true
         {% if is_incremental() %}
             AND {{ incremental_predicate('call_block_time') }}

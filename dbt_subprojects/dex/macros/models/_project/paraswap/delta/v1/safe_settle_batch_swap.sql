@@ -9,7 +9,7 @@ safe_settle_batch_swap_ExpandedOrders AS (
     output_successfulOrders,
     JSON_EXTRACT(data, '$.ordersData') AS parsed_orders,
     contract_address
-  FROM paraswapdelta_{{blockchain}}.ParaswapDeltav1_call_safeSettleBatchSwap
+  FROM {{ source("paraswapdelta_"+blockchain, "ParaswapDeltav1_call_safeSettleBatchSwap") }}
    where call_success = true
    {% if is_incremental() %}
       AND {{ incremental_predicate('call_block_time') }}
