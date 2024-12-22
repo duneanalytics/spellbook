@@ -300,7 +300,7 @@ models:
   
   - name: paraswap_delta_v1_ethereum_trades
     description: "Paraswap Delta V1 trades"
-    tests:
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - method
