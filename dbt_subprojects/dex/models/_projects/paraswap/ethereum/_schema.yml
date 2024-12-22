@@ -306,7 +306,7 @@ models:
             - method
             - call_tx_hash
             - call_trace_address  
-            - index
+            - order_index
     columns:
       - name: method
         description: "Call Method"
