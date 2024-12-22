@@ -75,7 +75,7 @@ SELECT
     d.price *  CAST (w.dest_amount AS uint256) / POWER(10, d.decimals)  AS dest_token_order_usd
     
 FROM safe_settle_batch_swap_withUSDs w 
-LEFT JOIN prices.usd d
+LEFT JOIN {{ source('prices', 'usd') }} d
   ON d.blockchain = '{{blockchain}}'
   AND d.minute > TIMESTAMP '2024-06-01'
   {% if is_incremental() %}
@@ -83,7 +83,7 @@ LEFT JOIN prices.usd d
    {% endif %}
   AND d.contract_address = w.dest_token_for_joining
   AND d.minute = DATE_TRUNC('minute', w.call_block_time)
-LEFT JOIN prices.usd s
+LEFT JOIN {{ source('prices', 'usd') }} s
   ON s.blockchain = '{{blockchain}}'
   AND s.minute > TIMESTAMP '2024-06-01'
   {% if is_incremental() %}
