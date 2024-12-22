@@ -1,6 +1,10 @@
 version: 2
 
 sources:
+  - name: aave_v3_zksync
+    tables:
+      - name: Pool_evt_FlashLoan
+
   - name: zerolend_zksync
     tables:
       - name: Pool_evt_FlashLoan
