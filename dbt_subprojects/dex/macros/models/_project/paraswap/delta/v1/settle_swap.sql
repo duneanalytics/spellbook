@@ -28,7 +28,7 @@ settle_swap_parsedOrderWithSig AS (
 settle_swap_unparsedOrders AS (
   SELECT
     JSON_EXTRACT(JSON_PARSE(TRY_CAST(orderWithSig AS VARCHAR)), '$.order') AS "order",
-    JSON_EXTRACT(JSON_PARSE(TRY_CAST(orderWithSig AS VARCHAR)), '$.signature') AS signature,
+    JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST(orderWithSig AS VARCHAR)), '$.signature') AS signature,
     *
   FROM settle_swap_parsedOrderWithSig
 ),
