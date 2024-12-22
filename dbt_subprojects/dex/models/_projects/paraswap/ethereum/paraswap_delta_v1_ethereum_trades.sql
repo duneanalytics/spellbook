@@ -9,7 +9,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.call_block_time')],
-    unique_key = ['method', 'call_tx_hash', 'call_trace_address'],
+    unique_key = ['method', 'call_tx_hash', 'call_trace_address', 'order_index'],
     post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
                                 spell_type = "project",
                                 spell_name = "paraswap_delta_v1",
@@ -24,6 +24,7 @@ with
 ,{{ delta_safe_settle_batch_swap('ethereum') }}
 select 
     'delta_v1_settle_swap_model' as method,
+    0 as order_index,
     call_trace_address,
     call_block_number,
     call_block_time,
@@ -53,6 +54,7 @@ select
 union all
 select 
     'delta_v1_safe_settle_batch_swap_model' as method,
+    order_index,
     call_trace_address,
     call_block_number,
     call_block_time,

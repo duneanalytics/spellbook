@@ -306,9 +306,12 @@ models:
             - method
             - call_tx_hash
             - call_trace_address  
+            - index
     columns:
       - name: method
         description: "Call Method"
+      - name: order_index
+        description: "Index of the Order in Batch (0 if single order swap)"
       - name: call_trace_address
         description: "Call Trace Address"
       - name: call_block_number

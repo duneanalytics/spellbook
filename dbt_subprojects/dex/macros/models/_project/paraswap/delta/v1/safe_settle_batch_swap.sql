@@ -16,7 +16,7 @@ safe_settle_batch_swap_ExpandedOrders AS (
    {% endif %}
 ), safe_settle_batch_swap_parsedOrderItems AS (
   SELECT
-    index,
+    index as order_index,
     JSON_ARRAY_GET(parsed_orders, index) AS parsed_order_data,
     *
   FROM safe_settle_batch_swap_ExpandedOrders
