@@ -168,7 +168,7 @@ seeds:
         token_address: varbinary
         borrower: varbinary
         amount: double
-- name: aave_zksync_base_borrow_seed
+  - name: aave_zksync_base_borrow_seed
     config:
       column_types:
         blockchain: varchar
