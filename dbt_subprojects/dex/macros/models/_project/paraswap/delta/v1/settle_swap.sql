@@ -20,7 +20,7 @@ settle_swap_parsedOrderWithSig AS (
     SELECT 
         JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST(parsed_order_data AS VARCHAR)), '$.feeAmount') AS feeAmount,
         JSON_EXTRACT(JSON_PARSE(TRY_CAST(parsed_order_data AS VARCHAR)), '$.orderWithSig') AS orderWithSig,
-        JSON_EXTRACT(JSON_PARSE(TRY_CAST(parsed_order_data AS VARCHAR)), '$.calldataToExecute') AS calldataToExecute,
+        JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST(parsed_order_data AS VARCHAR)), '$.calldataToExecute') AS calldataToExecute,
         * 
     FROM 
         settle_swap_withParsedOrderData

@@ -27,7 +27,7 @@ safe_settle_batch_swap_ExpandedOrders AS (
   SELECT
     JSON_EXTRACT_SCALAR(parsed_order_data, '$.feeAmount') AS feeAmount,
     JSON_EXTRACT(parsed_order_data, '$.orderWithSig') AS orderWithSig,
-    JSON_EXTRACT(parsed_order_data, '$.calldataToExecute') AS calldataToExecute,
+    JSON_EXTRACT_SCALAR(parsed_order_data, '$.calldataToExecute') AS calldataToExecute,
     *
   FROM safe_settle_batch_swap_parsedOrderItems
 ), safe_settle_batch_swap_unparsedOrders AS (
