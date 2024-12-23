@@ -298,6 +298,63 @@ models:
         description: "Is take surplus"
 
   
+  - name: paraswap_delta_v2_ethereum_trades
+    description: "Paraswap Delta V2 trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - method
+            - call_tx_hash
+            - call_trace_address  
+            - order_index
+    columns:
+      - name: method
+        description: "Call Method"
+      - name: order_index
+        description: "Index of the Order in Batch (0 if single order swap)"
+      - name: call_trace_address
+        description: "Call Trace Address"
+      - name: call_block_number
+        description: "Call Block Number"
+      - name: call_block_time
+        description: "Call Block Time"
+      - name: call_tx_hash
+        description: "Call Transaction Hash"
+      - name: fee_amount
+        description: "Fee Amount"      
+      - name: calldata_to_execute
+        description: "Calldata to Execute"
+      - name: signature
+        description: "Signature"
+      - name: order_owner
+        description: "Order Owner"
+      - name: src_token
+        description: "Source Token"
+      - name: dest_token
+        description: "Destination Token"
+      - name: src_amount
+        description: "Source Amount"
+      - name: dest_amount
+        description: "Destination Amount"
+      - name: src_token_for_joining
+        description: "Source Token for Joining"
+      - name: dest_token_for_joining
+        description: "Destination Token for Joining"
+      - name: fee_token
+        description: "Fee Token"
+      - name: src_token_price_usd
+        description: "Source Token Price (USD)"
+      - name: dest_token_price_usd
+        description: "Destination Token Price (USD)"
+      - name: gas_fee_usd
+        description: "Gas Fee (USD)"
+      - name: src_token_order_usd
+        description: "Source Token Order Value (USD)"
+      - name: dest_token_order_usd
+        description: "Destination Token Order Value (USD)"
+      - name: contract_address
+        description: "Contract Address"
+
   - name: paraswap_delta_v1_ethereum_trades
     description: "Paraswap Delta V1 trades"
     data_tests:
@@ -321,13 +378,9 @@ models:
       - name: call_tx_hash
         description: "Call Transaction Hash"
       - name: fee_amount
-        description: "Fee Amount"
-      - name: order_with_sig
-        description: "Order with Signature"
+        description: "Fee Amount"      
       - name: calldata_to_execute
         description: "Calldata to Execute"
-      - name: order
-        description: "Order"
       - name: signature
         description: "Signature"
       - name: order_owner

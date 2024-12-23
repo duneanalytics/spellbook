@@ -61,7 +61,8 @@ sources:
 
   - name: paraswapdelta_ethereum
     description: >
-      Delta V1 calls tables
+      Delta V1, V2 calls tables
     tables:
       - name: ParaswapDeltav1_call_settleSwap
-      - name: ParaswapDeltav1_call_safeSettleBatchSwap      
+      - name: ParaswapDeltav1_call_safeSettleBatchSwap
+      - name: ParaswapDeltav2_call_swapSettle      
