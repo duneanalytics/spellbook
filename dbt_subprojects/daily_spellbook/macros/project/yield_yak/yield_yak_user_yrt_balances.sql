@@ -63,9 +63,9 @@ new_transfers AS (
         LEFT JOIN existing_contracts c
             ON c.contract_address = s.contract_address
         WHERE
-            (({{ incremental_predicate('s.block_time') }}
+            ({{ incremental_predicate('s.block_time') }}
             AND s.block_time > c.max_from_time)
-            OR c.contract_address IS NULL) -- This line allows for new contract_addresses being appended that were not already included in previous runs but also allows their entire historical data to be loaded
+            OR c.contract_address IS NULL -- This line allows for new contract_addresses being appended that were not already included in previous runs but also allows their entire historical data to be loaded
         {%- endif %}
     {%- endfor %}
 ),
