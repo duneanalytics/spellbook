@@ -4741,4 +4741,5 @@ FROM (VALUES
     , ( 0x7F4B66FF703336CfC35b901144614496Ae0b0D27, 'shezUSD', 18)    
     , ( 0xa7b66dda0d7c7c1e43d3130491216172993d163d, 'EVS', 6)        
     , ( 0x2371e134e3455e0593363cbf89d3b6cf53740618, 'gtWETH', 18)        
+    , ( 0x634ed807647e07a7c038ef1956a58adbc6695f88, 'shezUSD', 18)        
 ) AS temp_table (contract_address, symbol, decimals)
