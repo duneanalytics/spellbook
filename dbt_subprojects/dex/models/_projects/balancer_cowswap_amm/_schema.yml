@@ -3,12 +3,12 @@ version: 2
 models:
   - name: balancer_cowswap_amm_trades
     meta:
-      blockchain: arbitrum, ethereum, gnosis
+      blockchain: arbitrum, base, ethereum, gnosis
       sector: trades
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['balancer', 'cowswap', 'ethereum', 'gnosis', 'amm', 'trades']
+      tags: ['balancer', 'cowswap', 'arbitrum', 'base', 'ethereum', 'gnosis', 'amm', 'trades']
     description: "Trades on Balancer CoWSwap AMM pools"
     columns:
       - &blockchain
@@ -89,12 +89,12 @@ models:
 
   - name: labels_balancer_cowswap_amm_pools
     meta:
-      blockchain: arbitrum, ethereum, gnosis
+      blockchain: arbitrum, base, ethereum, gnosis
       sector: labels
       project: balancer_cowswap_amm
       contributors: viniabussafi
     config:
-      tags: ['labels', 'ethereum', 'gnosis', 'balancer', 'pools']
+      tags: ['labels', 'arbitrum', 'base', 'ethereum', 'gnosis', 'balancer', 'pools']
     description: "Balancer CoWSwap AMM liquidity pools created on Ethereum."
     columns:
       - *blockchain
