@@ -44,14 +44,8 @@ v2_swap_settle_parsedOrders AS (
 ),
 v2_swap_settle_withUSDs AS (
   SELECT
-    CASE 
-        WHEN dest_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 
-        ELSE dest_token 
-    END AS dest_token_for_joining,
-    CASE 
-        WHEN src_token = 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee THEN 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 
-        ELSE src_token 
-    END AS src_token_for_joining,
+{{to_wrapped_native_token(blockchain, 'dest_token', 'dest_token_for_joining')}},
+{{to_wrapped_native_token(blockchain, 'src_token', 'src_token_for_joining')}},
     *
   FROM v2_swap_settle_parsedOrders
 ), delta_v2_swap_settle_model as (

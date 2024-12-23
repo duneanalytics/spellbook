@@ -37,3 +37,11 @@ sources:
         loaded_at_field: call_block_time  
       - name: AugustusV6_2_call_swapExactAmountInOutOnMakerPSM
         loaded_at_field: call_block_time  
+        
+  - name: paraswapdelta_base
+    description: >
+      Delta V1, V2 calls tables
+    tables:
+      - name: ParaswapDeltav1_call_settleSwap
+      - name: ParaswapDeltav1_call_safeSettleBatchSwap
+      - name: ParaswapDeltav2_call_swapSettle      
