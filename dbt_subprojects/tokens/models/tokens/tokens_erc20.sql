@@ -32,10 +32,11 @@
                                         ,"zksync"
                                         ,"zora"
                                         ,"bob"
+                                        ,"sonic"
                                     ]\',
                                     "sector",
                                     "tokens",
-                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum"]\') }}'
+                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum", "irishlatte19]\') }}'
     )
 }}
 
