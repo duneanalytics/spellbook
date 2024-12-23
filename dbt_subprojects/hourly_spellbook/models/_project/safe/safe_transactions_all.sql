@@ -23,6 +23,7 @@
 ,ref('safe_mantle_transactions')
 ,ref('safe_optimism_transactions')
 ,ref('safe_polygon_transactions')
+,ref('safe_ronin_transactions')
 ,ref('safe_scroll_transactions')
 ,ref('safe_worldchain_transactions')
 ,ref('safe_zkevm_transactions')
