@@ -27,6 +27,7 @@
                                         , "scroll"
                                         , "sei"
                                         , "solana"
+                                        , "sonic"
                                         , "viction"
                                         , "worldchain"
                                         , "zksync"
@@ -70,6 +71,7 @@ ref('prices_native_tokens')
 ,ref('prices_ronin_tokens')
 ,ref('prices_boba_tokens')
 ,ref('prices_viction_tokens')
+,ref('prices_sonic_tokens')
 ] %}
 
 
