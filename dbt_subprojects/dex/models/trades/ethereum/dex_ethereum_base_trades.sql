@@ -20,6 +20,7 @@
     , ref('shibaswap_v1_ethereum_base_trades')
     , ref('balancer_v1_ethereum_base_trades')
     , ref('balancer_v2_ethereum_base_trades')
+    , ref('balancer_v3_ethereum_base_trades')    
     , ref('fraxswap_ethereum_base_trades')
     , ref('bancor_ethereum_base_trades')
     , ref('verse_dex_ethereum_base_trades')
@@ -39,6 +40,7 @@
     , ref('swaap_v2_ethereum_base_trades')
     , ref('valantis_hot_ethereum_base_trades')
     , ref('xchange_v2_ethereum_base_trades')
+    , ref('fluid_v1_ethereum_base_trades')
 ] %}
 
 WITH base_union AS (
