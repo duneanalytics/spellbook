@@ -7,25 +7,25 @@
   
 with entities as (
     
-        select 'delta-v1-single' as entity, 'ethereum' as blockchain, contract_address as contract_address, call_block_time as block_time, call_tx_hash as tx_hash from paraswapdelta_ethereum.ParaswapDeltav1_call_settleSwap
+        select 'delta-v1-single' as entity, 'ethereum' as blockchain, contract_address as contract_address, call_block_time as block_time, call_tx_hash as tx_hash, 0 as usd_value from paraswapdelta_ethereum.ParaswapDeltav1_call_settleSwap
         where 
             (call_block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
          union all 
     
-        select 'delta-v1-batch' as entity, 'ethereum' as blockchain, contract_address as contract_address, call_block_time as block_time, call_tx_hash as tx_hash from paraswapdelta_ethereum.ParaswapDeltav1_call_safeSettleBatchSwap
+        select 'delta-v1-batch' as entity, 'ethereum' as blockchain, contract_address as contract_address, call_block_time as block_time, call_tx_hash as tx_hash, 0 as usd_value from paraswapdelta_ethereum.ParaswapDeltav1_call_safeSettleBatchSwap
         where 
             (call_block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
          union all 
     
-        select 'delta-v2' as entity, 'ethereum' as blockchain, contract_address as contract_address, evt_block_time as block_time, evt_tx_hash as tx_hash from paraswapdelta_ethereum.ParaswapDeltav2_evt_OrderSettled
+        select 'delta-v2' as entity, 'ethereum' as blockchain, contract_address as contract_address, evt_block_time as block_time, evt_tx_hash as tx_hash, 0 as usd_value from paraswapdelta_ethereum.ParaswapDeltav2_evt_OrderSettled
         where 
             (evt_block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
          union all 
     
-        select 'delta-v2' as entity, 'base' as blockchain, contract_address as contract_address, evt_block_time as block_time, evt_tx_hash as tx_hash from paraswapdelta_base.ParaswapDeltav2_evt_OrderSettled
+        select 'delta-v2' as entity, 'base' as blockchain, contract_address as contract_address, evt_block_time as block_time, evt_tx_hash as tx_hash, 0 as usd_value from paraswapdelta_base.ParaswapDeltav2_evt_OrderSettled
         where 
             (evt_block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
@@ -33,7 +33,7 @@ with entities as (
             
          union all 
     
-        select 'augustus' as entity, 'ethereum' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash from dex_aggregator.trades
+        select 'augustus' as entity, 'ethereum' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash, amount_usd as usd_value from dex_aggregator.trades
         where 
             (block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
@@ -41,7 +41,7 @@ with entities as (
             
          union all 
     
-        select 'augustus' as entity, 'polygon' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash from dex_aggregator.trades
+        select 'augustus' as entity, 'polygon' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash, amount_usd as usd_value from dex_aggregator.trades
         where 
             (block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
@@ -49,7 +49,7 @@ with entities as (
             
          union all 
     
-        select 'augustus' as entity, 'bnb' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash from dex_aggregator.trades
+        select 'augustus' as entity, 'bnb' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash, amount_usd as usd_value from dex_aggregator.trades
         where 
             (block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
@@ -57,7 +57,7 @@ with entities as (
             
          union all 
     
-        select 'augustus' as entity, 'arbitrum' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash from dex_aggregator.trades
+        select 'augustus' as entity, 'arbitrum' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash, amount_usd as usd_value from dex_aggregator.trades
         where 
             (block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
@@ -65,7 +65,7 @@ with entities as (
             
          union all 
     
-        select 'augustus' as entity, 'avalanche_c' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash from dex_aggregator.trades
+        select 'augustus' as entity, 'avalanche_c' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash, amount_usd as usd_value from dex_aggregator.trades
         where 
             (block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
@@ -73,7 +73,7 @@ with entities as (
             
          union all 
     
-        select 'augustus' as entity, 'fantom' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash from dex_aggregator.trades
+        select 'augustus' as entity, 'fantom' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash, amount_usd as usd_value from dex_aggregator.trades
         where 
             (block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
@@ -81,7 +81,7 @@ with entities as (
             
          union all 
     
-        select 'augustus' as entity, 'optimism' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash from dex_aggregator.trades
+        select 'augustus' as entity, 'optimism' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash, amount_usd as usd_value from dex_aggregator.trades
         where 
             (block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
@@ -89,7 +89,7 @@ with entities as (
             
          union all 
     
-        select 'augustus' as entity, 'base' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash from dex_aggregator.trades
+        select 'augustus' as entity, 'base' as blockchain, project_contract_address as contract_address, block_time as block_time, tx_hash as tx_hash, amount_usd as usd_value from dex_aggregator.trades
         where 
             (block_time BETWEEN timestamp '{{date_from}}' AND timestamp '{{date_to}}')
             
@@ -101,7 +101,7 @@ with entities as (
 
 ,ordered_entities as (
     select 
-        entity, blockchain, contract_address, block_time, tx_hash
+        entity, blockchain, contract_address, block_time, tx_hash, usd_value
     from entities
     order by block_time, tx_hash
 )
@@ -110,6 +110,7 @@ select
     entity, 
     contract_address, 
     count(*) as qty, 
+    sum(usd_value) as usd_volume,
     -- a rubbish but tolerable way to get the checksum of the txhash. Is consistent with internal counterparty query though
     sum(varbinary_to_decimal(from_hex(substring(to_hex(tx_hash),1,0+8)))) as txhash_checksum
 from ordered_entities

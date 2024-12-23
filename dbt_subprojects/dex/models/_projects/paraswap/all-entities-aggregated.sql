@@ -3,7 +3,7 @@
 {{ paraswap_all_entities() }}
 ,ordered_entities as (
     select 
-        entity, blockchain, contract_address, block_time, tx_hash
+        entity, blockchain, contract_address, block_time, tx_hash, usd_value
     from entities
     order by block_time, tx_hash
 )
@@ -12,6 +12,7 @@ select
     entity, 
     contract_address, 
     count(*) as qty, 
+    sum(usd_value) as usd_volume,
     -- a rubbish but tolerable way to get the checksum of the txhash. Is consistent with internal counterparty query though
     sum(varbinary_to_decimal(from_hex(substring(to_hex(tx_hash),1,0+8)))) as txhash_checksum
 from ordered_entities
