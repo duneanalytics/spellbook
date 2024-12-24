@@ -55,6 +55,7 @@ known_solver_metadata (address, environment, name) as (
                 (0x0148538e6cA813D41eA5988008Cdc9B72d4e65A7, 'prod', 'Laita'),
                 (0x1FA2FF499b327f53cD9a82BcAFE36093563E32e4, 'prod', 'Apollo'),
                 (0x0148538e6cA813D41eA5988008Cdc9B72d4e65A7, 'prod', 'Laita'),
+                (0x9C75aae1Bd2f96D7B4E67e8C5344f3304382276E, 'prod', 'Enso'),
                 (0x034F6Aca83F1900b0157b0123F514A29456eeA59, 'barn', 'Laita'),
                 (0x6bf97aFe2D2C790999cDEd2a8523009eB8a0823f, 'prod', 'Portus'),
                 (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
