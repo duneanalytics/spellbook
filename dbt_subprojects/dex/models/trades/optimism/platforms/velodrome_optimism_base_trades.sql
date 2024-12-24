@@ -38,7 +38,7 @@ dexs_v2 AS (
 ),
 
 dexs_v2_cl AS (
-        {{
+    {{
         uniswap_compatible_v3_trades(
             blockchain = 'optimism',
             project = 'velodrome',
@@ -51,58 +51,62 @@ dexs_v2_cl AS (
 )
 
 SELECT
-    dexs_v1.blockchain,
-    dexs_v1.project,
-    dexs_v1.version,
-    dexs_v1.block_month,
-    dexs_v1.block_date,
-    dexs_v1.block_time,
-    dexs_v1.block_number,
-    dexs_v1.token_bought_amount_raw,
-    dexs_v1.token_sold_amount_raw,
-    dexs_v1.token_bought_address,
-    dexs_v1.token_sold_address,
-    dexs_v1.taker,
-    dexs_v1.maker,
-    dexs_v1.project_contract_address,
-    dexs_v1.tx_hash,
-    dexs_v1.evt_index
+    blockchain,
+    project,
+    version,
+    block_month,
+    block_date,
+    block_time,
+    block_number,
+    token_bought_amount_raw,
+    token_sold_amount_raw,
+    token_bought_address,
+    token_sold_address,
+    taker,
+    maker,
+    project_contract_address,
+    tx_hash,
+    evt_index
 FROM dexs_v1
+
 UNION ALL
+
 SELECT
-    dexs_v2.blockchain,
-    dexs_v2.project,
-    dexs_v2.version,
-    dexs_v2.block_month,
-    dexs_v2.block_date,
-    dexs_v2.block_time,
-    dexs_v2.block_number,
-    dexs_v2.token_bought_amount_raw,
-    dexs_v2.token_sold_amount_raw,
-    dexs_v2.token_bought_address,
-    dexs_v2.token_sold_address,
-    dexs_v2.taker,
-    dexs_v2.maker,
-    dexs_v2.project_contract_address,
-    dexs_v2.tx_hash,
-    dexs_v2.evt_index
+    blockchain,
+    project,
+    version,
+    block_month,
+    block_date,
+    block_time,
+    block_number,
+    token_bought_amount_raw,
+    token_sold_amount_raw,
+    token_bought_address,
+    token_sold_address,
+    taker,
+    maker,
+    project_contract_address,
+    tx_hash,
+    evt_index
 FROM dexs_v2
+
 UNION ALL
+
 SELECT
-    dexs_v2_cl.blockchain,
-    dexs_v2_cl.project,
-    dexs_v2_cl.version,
-    dexs_v2_cl.block_month,
-    dexs_v2_cl.block_date,
-    dexs_v2_cl.block_time,
-    dexs_v2_cl.block_number,
-    dexs_v2_cl.token_bought_amount_raw,
-    dexs_v2_cl.token_sold_amount_raw,
-    dexs_v2_cl.token_bought_address,
-    dexs_v2_cl.token_sold_address,
-    dexs_v2_cl.taker,
-    dexs_v2_cl.maker,
-    dexs_v2_cl.project_contract_address,
-    dexs_v2_cl.tx_hash,
-    dexs_v2_cl.evt_index
+    blockchain,
+    project,
+    version,
+    block_month,
+    block_date,
+    block_time,
+    block_number,
+    token_bought_amount_raw,
+    token_sold_amount_raw,
+    token_bought_address,
+    token_sold_address,
+    taker,
+    maker,
+    project_contract_address,
+    tx_hash,
+    evt_index
 FROM dexs_v2_cl
