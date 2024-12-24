@@ -38,7 +38,7 @@ WITH meta_router AS
             {{ source('kyber_arbitrum', 'MetaAggregationRouterV2_evt_Swapped') }}
         WHERE
             dstToken not in (0x7d3eedb40fbecd9fba383504e066fdf67382a835 --bug with MTK token
-                        ,0x2C29c2Bbdcb8c5de36FA3dBe0e7797B5396B0E61 --bug with MyToken token
+                        ,0x2C29c2Bbdcb8c5de36FA3dBe0e7797B5396B0E61) --bug with MyToken token
             {% if is_incremental() %}
             AND evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
             {% endif %}
