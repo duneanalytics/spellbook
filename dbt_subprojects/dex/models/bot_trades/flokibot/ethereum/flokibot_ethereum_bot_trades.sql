@@ -40,6 +40,7 @@ with
          (
                 to = {{ treasury_fee_wallet_1 }}
                 or to = {{ treasury_fee_wallet_2 }}
+                or to = {{ aggregator_fee_wallet_1 }}
                 or to = {{ buyback_fee_wallet_1 }}
             )
             and tx_success = true
@@ -56,12 +57,27 @@ with
         where
             (
                 varbinary_position(data, {{ aggregator_fee_wallet_1 }}) > 0
+                or varbinary_position(data, {{ treasury_fee_wallet_1 }}) > 0
                 or varbinary_position(data, {{ treasury_fee_wallet_2 }}) > 0
+                or varbinary_position(data, {{ buyback_fee_wallet_1 }}) > 0
             )
             and call_success
             {% if is_incremental() %}
                 and {{ incremental_predicate('call_block_time') }}
             {% else %} and call_block_time >= timestamp '{{project_start_date}}'
+            {% endif %}
+    ),
+    openocean_aggregator_trades as (
+        select evt_block_time as block_time, evt_tx_hash as tx_hash
+        from {{ source('openocean_v2_ethereum', 'OpenOceanExchangeProxy_evt_Swapped') }}
+        where
+            referrer = {{ treasury_fee_wallet_1 }}
+            or referrer = {{ treasury_fee_wallet_2 }}
+            or referrer = {{ aggregator_fee_wallet_1 }}
+            or referrer = {{ buyback_fee_wallet_1 }}
+            {% if is_incremental() %}
+                and {{ incremental_predicate('evt_block_time') }}
+            {% else %} and evt_block_time >= timestamp '{{project_start_date}}'
             {% endif %}
     ),
     trade_transactions as (
@@ -70,6 +86,9 @@ with
         union all
         select block_time, null as address, tx_hash
         from oneinch_aggregator_trades
+        union all
+        select block_time, null as address, tx_hash
+        from openocean_aggregator_trades
     ),
     bot_trades as (
         select

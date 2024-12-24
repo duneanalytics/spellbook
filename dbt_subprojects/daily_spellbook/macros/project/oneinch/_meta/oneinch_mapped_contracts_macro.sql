@@ -79,7 +79,7 @@
         , ('0xbf1fc29668e5f5eaa819948599c9ac1b1e03e75f', 'true', 'Cone'                 , 'ConeRouter01'            , ['bnb'])
         , ('0x11984dc4465481512eb5b777e44061c158cf2259', 'true', 'Connext'              , 'ConnextDiamond'          , ['polygon'])
         , ('0xee9dec2712cce65174b561151701bf54b99c24c8', 'true', 'Connext'              , 'ConnextDiamond'          , ['arbitrum'])
-        , ('0x9008d19f58aabd9ed0d60971565aa8510560ab41', 'true', 'CoWSwap'              , 'GPv2Settlement'          , ['ethereum','gnosis','arbitrum'])
+        , ('0x9008d19f58aabd9ed0d60971565aa8510560ab41', 'true', 'CoWSwap'              , 'GPv2Settlement'          , ['ethereum','gnosis','arbitrum','base'])
         , ('0xfa43de785dd3cd0ef3dae0dd2b8be3f1b5112d1a', 'true', 'CrossCurve'           , 'UnifiedRouterV2v1'       , ['ethereum','bnb','polygon','gnosis','arbitrum','avalanche_c','optimism','base','fantom'])
         , ('0xa2a786ff9148f7c88ee93372db8cbe9e94585c74', 'true', 'CrossCurve'           , 'UnifiedRouterV2v5'       , ['ethereum','bnb','polygon','gnosis','arbitrum','avalanche_c','optimism','base','fantom','blast','linea','mantle'])
         , ('0xe7db62c7960183895190274f26925388db4a3be4', 'true', 'CrossCurve'           , 'UnifiedRouterV2'         , ['ethereum','bnb','polygon','gnosis','arbitrum','avalanche_c','optimism','base','fantom'])
