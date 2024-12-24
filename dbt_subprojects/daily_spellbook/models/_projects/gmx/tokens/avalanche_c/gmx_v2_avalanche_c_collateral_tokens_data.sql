@@ -2,7 +2,7 @@
   config(
     schema = 'gmx_v2_avalanche_c',
     alias = 'collateral_tokens_data',    
-    materialized = 'view'
+    materialized = 'table'
     )
 }}
 

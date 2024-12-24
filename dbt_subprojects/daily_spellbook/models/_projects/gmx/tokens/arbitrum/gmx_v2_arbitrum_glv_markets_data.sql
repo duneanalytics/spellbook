@@ -2,7 +2,7 @@
   config(
     schema = 'gmx_v2_arbitrum',
     alias = 'glv_markets_data',    
-    materialized = 'view'
+    materialized = 'table'
     )
 }}
 
