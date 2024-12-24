@@ -6,7 +6,7 @@
     post_hook='{{ expose_spells(\'["bitcoin", "ethereum", "solana", "arbitrum", "gnosis", "optimism", "bnb", "avalanche_c", "fantom"]\',
                                 "sector",
                                 "labels",
-                                \'["soispoke", "hildobby", "ilemi", "hosuke", "kaiblade"]\') }}')
+                                \'["soispoke", "hildobby", "ilemi", "hosuke", "kaiblade", "viniabussafi"]\') }}')
 }}
 
 -- single category labels (no subsets), needs label_type and model_name added still.
@@ -14,6 +14,8 @@
     ref('labels_aztec_v2_contracts_ethereum')
     , source('labels', 'labels_balancer_v1_pools')
     , source('labels', 'balancer_v2_pools')
+    , source('labels', 'balancer_v3_pools')    
+    , source('labels', 'balancer_cowswap_amm_pools')   
     , ref('labels_balancer_v2_gauges')
     , ref('labels_cex')
     , ref('labels_contracts')
