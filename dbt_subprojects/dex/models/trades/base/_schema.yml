@@ -1041,3 +1041,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('akronswap_base_base_trades_seed')
+          
+  - name: curvefi_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: curvefi
+      contributors: patelprinci
+    config:
+      tags: [ 'base', 'dex', 'trades', 'curvefi' ]
+    description: "curvefi base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('curvefi_base_base_trades_seed')
