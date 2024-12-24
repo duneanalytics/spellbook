@@ -1,0 +1,75 @@
+version: 2
+
+models:
+  - name: velodrome_optimism_base_trades
+    meta:
+      blockchain: optimism
+      project: velodrome
+      contributors: ['IvyLabs-Analytics', 'crStiv']
+    config:
+      tags: ['optimism','velodrome','dex','trades']
+    description: >
+      Velodrome v1 and v2 trades on Optimism including both regular and concentrated liquidity pools
+    columns:
+      - name: blockchain
+        description: "Blockchain which the DEX is deployed on"
+        tests:
+          - not_null
+      - name: project
+        description: "Project name"
+        tests:
+          - not_null
+      - name: version
+        description: "Version of the contract (1, 2, or 2_cl for concentrated liquidity pools)"
+        tests:
+          - not_null
+      - name: block_month
+        description: "UTC month of the block time"
+        tests:
+          - not_null
+      - name: block_date
+        description: "UTC date of the block time"
+        tests:
+          - not_null
+      - name: block_time
+        description: "UTC timestamp of the block time"
+        tests:
+          - not_null
+      - name: block_number
+        description: "Block number"
+        tests:
+          - not_null
+      - name: token_bought_amount_raw
+        description: "Raw amount of tokens bought (not normalized)"
+        tests:
+          - not_null
+      - name: token_sold_amount_raw
+        description: "Raw amount of tokens sold (not normalized)"
+        tests:
+          - not_null
+      - name: token_bought_address
+        description: "Contract address of the token bought"
+        tests:
+          - not_null
+      - name: token_sold_address
+        description: "Contract address of the token sold"
+        tests:
+          - not_null
+      - name: taker
+        description: "Address of the trader who initiated the trade"
+        tests:
+          - not_null
+      - name: maker
+        description: "Address of the liquidity provider"
+      - name: project_contract_address
+        description: "Contract address of the pool"
+        tests:
+          - not_null
+      - name: tx_hash
+        description: "Transaction hash"
+        tests:
+          - not_null
+      - name: evt_index
+        description: "Event index within the transaction"
+        tests:
+          - not_null
