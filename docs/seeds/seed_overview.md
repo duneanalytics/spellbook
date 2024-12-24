@@ -6,12 +6,12 @@ Seeds will be required in these sector-level spell additions to ensure proper le
 
 ## Using `dex.trades` as an Example for Sector-Level Spell Design Approach to Seeds:
 
-1. Add new model seed to [the schema file](/seeds/_sector/dex/_schema.yml), to ensure proper data type assignments.
+1. Add new model seed to [the schema file](/dbt_subprojects/dex/seeds/trades/_schema.yml), to ensure proper data type assignments.
 2. Build a seed file in CSV format, which contains:
    - All the unique keys on the model for downstream join conditions in tests.
    - Fields which we want to test the results of the model execution.
-   - Example seed file [here](/seeds/_sector/dex/aerodrome_base_base_trades_seed.csv).
-3. Within the [model schema file](/models/_sector/dex/trades/arbitrum/_schema.yml#L20-L23), call the [generic seed test](/tests/generic/check_dex_base_trades_seed.sql) with parameters necessary:
+   - Example seed file [here](/dbt_subprojects/dex/seeds/trades/aerodrome_base_base_trades_seed.csv).
+3. Within the [model schema file](/dbt_subprojects/dex/models/trades/arbitrum/_schema.yml#23-25), call the [generic seed test](/dbt_subprojects/dex/tests/generic/check_dex_base_trades_seed.sql) with parameters necessary:
    - Seed file name.
    - Filter(s) for project versions, if the spell is split into versions per project.
 4. Ultimately, following the above steps, the test query built and executed against seed files lives in the generic seed macro [here](/dbt_macros/generic-tests/check_seed_macro.sql).
