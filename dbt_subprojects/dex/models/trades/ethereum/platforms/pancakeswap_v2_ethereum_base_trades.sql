@@ -25,6 +25,44 @@ dexs_macro AS (
     }}
 ),
 
+dexs_pcsx AS (
+    -- PancakeSwapX
+    SELECT
+        'pcsx' AS version,
+        a.evt_block_number AS block_number,
+        a.evt_block_time AS block_time,
+        a.swapper AS taker,
+        a.filler AS maker,
+        receive.amount_raw AS token_bought_amount_raw,
+        send.amount_raw AS token_sold_amount_raw,
+        receive.contract_address AS token_bought_address,
+        send.contract_address AS token_sold_address,     
+        a.contract_address AS project_contract_address,
+        a.evt_tx_hash AS tx_hash,
+        a.evt_index
+    
+    FROM {{ source('pancakeswap_ethereum', 'ExclusiveDutchOrderReactor_evt_Fill') }} a 
+
+    LEFT JOIN (
+        select * from {{ source('tokens', 'transfers') }}
+        where blockchain = 'ethereum'
+        and block_date >= date '2024-09-20' 
+        and tx_hash in (select evt_tx_hash from {{ source('pancakeswap_ethereum', 'ExclusiveDutchOrderReactor_evt_Fill') }})
+        ) send 
+    ON a.evt_tx_hash = send.tx_hash AND a.swapper = send."from"
+
+    LEFT JOIN (
+        select * from {{ source('tokens', 'transfers') }}
+        where blockchain = 'ethereum'
+        and block_date >= date '2024-09-20' 
+        and tx_hash in (select evt_tx_hash from {{ source('pancakeswap_ethereum', 'ExclusiveDutchOrderReactor_evt_Fill') }})
+        ) receive 
+    on a.evt_tx_hash = receive.tx_hash and a.swapper = receive."to"
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('a.evt_block_time') }}
+    {% endif %}
+),
+
 dexs_mm AS (
     -- PancakeSwap v2 MMPool
     SELECT
@@ -129,3 +167,22 @@ SELECT
     dexs_ss.tx_hash,
     dexs_ss.evt_index
 FROM dexs_ss
+UNION ALL
+SELECT
+    'ethereum' AS blockchain,
+    'pancakeswap' AS project,
+    dexs_pcsx.version,
+    CAST(date_trunc('month', dexs_pcsx.block_time) AS date) AS block_month,
+    CAST(date_trunc('day', dexs_pcsx.block_time) AS date) AS block_date,
+    dexs_pcsx.block_time,
+    dexs_pcsx.block_number,
+    dexs_pcsx.token_bought_amount_raw,
+    dexs_pcsx.token_sold_amount_raw,
+    dexs_pcsx.token_bought_address,
+    dexs_pcsx.token_sold_address,
+    dexs_pcsx.taker,
+    dexs_pcsx.maker,
+    dexs_pcsx.project_contract_address,
+    dexs_pcsx.tx_hash,
+    dexs_pcsx.evt_index
+FROM dexs_pcsx
