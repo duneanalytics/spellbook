@@ -132,4 +132,6 @@ sources:
   - name: fluid_ethereum
     tables: 
       - name: FluidDexT1_evt_Swap
->>>>>>> 6a2d09f5025520e2b1db53453c73e75a7e303ad2
+  - name: pancakeswap_ethereum
+    tables:
+      - name: ExclusiveDutchOrderReactor_evt_Fill
