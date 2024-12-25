@@ -1047,7 +1047,7 @@ models:
       blockchain: base
       sector: dex
       project: curvefi
-      contributors: patelprinci
+      contributors: princi
     config:
       tags: [ 'base', 'dex', 'trades', 'curvefi' ]
     description: "curvefi base base trades"
