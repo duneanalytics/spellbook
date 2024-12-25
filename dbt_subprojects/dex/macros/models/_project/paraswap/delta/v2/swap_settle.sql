@@ -37,7 +37,7 @@ v2_swap_settle_parsedOrders AS (
     JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.destAmount')  AS "dest_amount",
     JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.permit')  AS "permit",
 
-    varbinary_to_uint256(varbinary_rtrim(varbinary_substring(executorData,  181 + 4, 32))) as "feeAmount",
+    varbinary_to_uint256(varbinary_rtrim(varbinary_substring(executorData,  161, 32))) as "feeAmount",
     -- substring(executorData FROM 141 FOR 20) AS dynamic_extracted_dest_token
     *
   FROM v2_swap_settle_unparsedOrders
