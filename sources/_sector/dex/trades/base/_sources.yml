@@ -203,5 +203,5 @@ sources:
       - name: UniswapV2Factory_evt_PairCreated
   - name: curvefi_base
     tables:
-      - name: CurveRouter_evt_Exchange
+      - name: StableSwap_evt_TokenExchange
 

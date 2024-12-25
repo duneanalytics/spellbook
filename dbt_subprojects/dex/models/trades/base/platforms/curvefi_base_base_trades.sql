@@ -5,7 +5,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['tx_hash', 'evt_index']
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
 ) }}
 
 WITH token_swaps AS (
@@ -14,15 +14,15 @@ WITH token_swaps AS (
         CAST(evt_block_time AS timestamp(3) with time zone) AS block_time,
         evt_tx_from AS maker,
         evt_tx_to AS taker,
-        in_amount AS token_sold_amount_raw,
-        out_amount AS token_bought_amount_raw,
-        sender AS token_sold_address,
-        receiver AS token_bought_address,
+        tokens_sold AS token_sold_amount_raw,
+        tokens_bought AS token_bought_amount_raw,
+        CAST(sold_id AS varbinary) AS token_sold_address,
+        CAST(bought_id AS varbinary) AS token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         evt_index AS evt_index
     FROM
-        {{ source('curvefi_base', 'CurveRouter_evt_Exchange') }}
+        {{ source('curvefi_base', 'StableSwap_evt_TokenExchange') }}
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('evt_block_time') }}
