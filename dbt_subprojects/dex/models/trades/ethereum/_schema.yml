@@ -252,7 +252,7 @@ models:
       blockchain: ethereum
       sector: dex
       project: balancer
-      contributors: bizzyvinci, thetroyharris, tomfutago
+      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
     config:
       tags: ["ethereum", "dex", "trades", "balancer"]
     description: "Balancer v2 ethereum base trades"
@@ -265,6 +265,25 @@ models:
           seed_file: ref('balancer_ethereum_base_trades_seed')
           filter:
             version: 2
+
+  - name: balancer_v3_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: balancer
+      contributors: viniabussafi
+    config:
+      tags: ["ethereum", "dex", "trades", "balancer"]
+    description: "Balancer v3 ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_ethereum_base_trades_seed')
+          filter:
+            version: 3
 
   - name: fraxswap_ethereum_base_trades
     meta:
@@ -627,3 +646,22 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+
+  - name: fluid_v1_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: fluid
+      contributors: maybeYonas, pyor_xyz
+    config:
+      tags: ["ethereum", "dex", "trades", "fluid"]
+    description: "fluid dex ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('fluid_ethereum_base_trades_seed')
+          filter:
+            version: 1

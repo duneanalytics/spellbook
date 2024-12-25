@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v1
-      contributors: balancerlabs
+      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer V1 liquidity pools created on Ethereum. "
@@ -51,7 +51,7 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v1
-      contributors: balancerlabs
+      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer V1 liquidity pools created across blockchains."
@@ -305,3 +305,75 @@ models:
       - *updated_at
       - *model_name
       - *label_type
+
+  - name: labels_balancer_v3_pools_ethereum
+    meta:
+      blockchain: ethereum
+      sector: labels
+      project: balancer_v3
+      contributors: balancerlabs, viniabussafi
+    config:
+      tags: ['labels', 'ethereum', 'balancer', 'pools']
+    description: 'Balancer V3 liquidity pools created on Ethereum.'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+  - name: labels_balancer_v3_pools_gnosis
+    meta:
+      blockchain: gnosis
+      sector: labels
+      project: balancer_v3
+      contributors: balancerlabs, viniabussafi
+    config:
+      tags: ['labels', 'zkevm', 'balancer', 'pools']
+    description: 'Balancer V3 liquidity pools created on Gnosis.'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type
+
+
+  - name: labels_balancer_v3_pools
+    meta:
+      blockchain: ethereum, gnosis
+      sector: labels
+      project: balancer_v3
+      contributors: balancerlabs, viniabussafi
+    config:
+      tags: ['labels', 'ethereum', 'gnosis', 'balancer', 'pools']
+    description: 'Balancer V3 liquidity pools created across blockchains.'
+    columns:
+      - *blockchain
+      - *address
+      - *name
+      - *category
+      - *contributor
+      - *source
+      - *created_at
+      - *updated_at
+      - *model_name
+      - *label_type      

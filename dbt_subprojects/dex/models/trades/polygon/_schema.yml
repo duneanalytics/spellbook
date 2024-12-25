@@ -396,3 +396,37 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('dfyn_polygon_base_trades_seed')
+
+  - name: jetswap_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: jetswap
+      contributors: intensodefi
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'jetswap' ]
+    description: "jetswap polygon base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('jetswap_polygon_base_trades_seed')
+
+  - name: gravity_finance_polygon_base_trades
+    meta:
+      blockchain: polygon
+      sector: dex
+      project: gravity_finance
+      contributors: blanchemaria6
+    config:
+      tags: [ 'polygon', 'dex', 'trades', 'gravity_finance' ]
+    description: "gravity_finance polygon base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('gravity_finance_polygon_base_trades_seed')

@@ -129,6 +129,7 @@ sources:
       - name: SovereignPool_evt_Swap
       - name: ProtocolFactory_evt_SovereignPoolDeployed
       - name: HOT_evt_HotSwap
-  - name: pancakeswap_ethereum
-    tables:
-      - name: ExclusiveDutchOrderReactor_evt_Fill
+  - name: fluid_ethereum
+    tables: 
+      - name: FluidDexT1_evt_Swap
+>>>>>>> 6a2d09f5025520e2b1db53453c73e75a7e303ad2

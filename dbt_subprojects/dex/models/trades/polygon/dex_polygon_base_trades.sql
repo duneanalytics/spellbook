@@ -26,6 +26,8 @@
     , ref('gridex_polygon_base_trades')
     , ref('swaap_v2_polygon_base_trades')
     , ref('dfyn_polygon_base_trades')
+    , ref('jetswap_polygon_base_trades')
+    , ref('gravity_finance_polygon_base_trades')
 ] %}
 
 WITH base_union AS (

@@ -11,10 +11,10 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 - Are you building something new? **Please make sure to open a Draft PR**, so we minimize duplicated work, and other wizards can help you if you need
 - Don't know where to start? The docs below will guide you, but as a summary:
   - Want to make an incremental improvement to one of our spells? (add a new project, fix a bug you found), simply open a PR with your changes.
-    - Follow the guide for [Submitting a PR](), [Setting up your dev environment]() and [Using dbt to write spells]() if you find yourself lost.
-    - Not sure how to start? Follow the walkthrough [here](https://dune.com/docs/spellbook/).
+    - Follow the guide for [Submitting a PR](#submitting-a-pr), [Setting up your dev environment](#setting-up-your-local-dev-environment) and [Using dbt to write spells](#how-to-use-dbt-to-create-spells) if you find yourself lost.
+    - Not sure how to start? Follow the walkthrough [here](#introduction).
     - Make sure to open a draft PR if you will work on your spell for longer than a few days, to avoid duplicated work
-  - Do you want to get started building spells and you don't know what to build? Check [Issues]() to see what the community needs.
+  - Do you want to get started building spells and you don't know what to build? Check [Issues](https://github.com/duneanalytics/spellbook/issues) to see what the community needs.
   - Check the Discussions section to see what problems the community is trying to solve (i.e. non-incremental changes) or propose your own!
 - Have questions? Head over to #spellbook on our [discord](https://discord.com/channels/757637422384283659/999683200563564655) and the community will be happy to help out!
 - Like with most OSS projects, your contributions to Spellbook are your own IP, you can find more details in the [Contributor License Agreement](CLA.md)
@@ -124,12 +124,6 @@ cd user\directory\github\spellbook
 # Change this to wherever spellbook is stored locally on your machine.
 ```
 
-Within Spellbook repo, there are multiple dbt projects, located in the root directory. Navigate to the correct project, depending on your use case.
-
-```console
-cd ../spellbook/dbt_subprojects/<subproject_name>/
-```
-
 Using the pipfile located in the spellbook repo, run the below install command to create a pipenv.
 
 ```console
@@ -153,20 +147,30 @@ pipenv shell
 
 You have now created a virtual environment for this project. You can read more about virtual environments [here](https://realpython.com/pipenv-guide/).
 
-To pull the dbt project dependencies run:
+Within the Spellbook repo, there are multiple dbt projects, located in the root directory. Navigate to the correct project, depending on your use case.
 
 ```console
-dbt deps
+cd ../spellbook/dbt_subprojects/<subproject_name>/
 ```
 
-Ensure you are in Spellbook root directory, then run the following command:
+Each subproject has it's own dbt project file with varying configs. Once your CLI has navigated to the correct project directory, follow the below steps:
+- To clean up the dbt project
+  ```console
+  dbt clean
+  ```
 
-```console
-dbt compile
-```
+- To pull the dbt project dependencies run:
+  ```console
+  dbt deps
+  ```
 
-Spellbook root directory includes a `profiles.yml` file, which helps tell dbt how to run commands. The profile is located in the root directory [here](profiles.yml). This should never need modified, unless done intentionally by the Dune team.  
-Due to the `profiles.yml` file being stored in the root directory, this is why users **must** be in the root directory on the command line to run `dbt compile`.
+- To compile models into raw SQL, to run on the dune app and validate:
+  ```console
+  dbt compile
+  ```
+
+Each Spellbook subproject includes a `profiles.yml` file, which helps tell dbt how to run commands. The profile is located in each subproject directory, such as [here](./dbt_subprojects/dex/profiles.yml). This should never need modified, unless done intentionally by the Dune team.  
+Due to the `profiles.yml` file being stored in the root directory of each subproject, this is why users **must** be in the root directory per subproject on the command line to run `dbt compile` as expected.
 
 dbt compile will compile the JINJA and SQL templated SQL into plain SQL which can be executed in the Dune UI. Your spellbook directory now has a folder named `target` containing plain SQL versions of all models in Dune. If you have made changes to the repo before completing all these actions, you can now be certain that at least the compile process works correctly, if there are big errors the compile process will not complete.
 If you haven't made changes to the directory beforehand, you can now start adding, editing, or deleting files within the repository.
