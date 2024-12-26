@@ -186,3 +186,5 @@ SELECT
     dexs_pcsx.tx_hash,
     dexs_pcsx.evt_index
 FROM dexs_pcsx
+WHERE token_sold_amount_raw > 0
+AND token_bought_amount_raw > 0
