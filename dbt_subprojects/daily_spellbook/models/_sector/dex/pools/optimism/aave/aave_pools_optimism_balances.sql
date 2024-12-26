@@ -44,4 +44,4 @@ net_balance AS (
 
 SELECT *
 FROM net_balance
-WHERE op_balance > 0;
+WHERE op_balance > 0
