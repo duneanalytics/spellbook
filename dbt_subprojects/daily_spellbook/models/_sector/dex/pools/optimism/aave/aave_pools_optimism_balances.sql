@@ -16,7 +16,7 @@ WITH supply_op AS (
     SUM(amount) AS total_supplied,
     CAST(evt_block_time AS DATE) AS snapshot_day
   FROM {{ source('aave_v3_optimism', 'supply') }}
-  WHERE token_address = '0x4200000000000000000000000000000000000042'
+  WHERE token_address = 0x4200000000000000000000000000000000000042
   GROUP BY wallet_address, token_address, snapshot_day
 ),
 borrow_op AS (
@@ -26,7 +26,7 @@ borrow_op AS (
     SUM(amount) AS total_borrowed,
     CAST(evt_block_time AS DATE) AS snapshot_day
   FROM {{ source('aave_v3_optimism', 'borrow') }}
-  WHERE token_address = '0x4200000000000000000000000000000000000042'
+  WHERE token_address = 0x4200000000000000000000000000000000000042
   GROUP BY wallet_address, token_address, snapshot_day
 ),
 net_balance AS (
