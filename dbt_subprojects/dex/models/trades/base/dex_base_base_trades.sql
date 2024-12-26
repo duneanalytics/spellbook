@@ -10,6 +10,7 @@
     , ref('sushiswap_v1_base_base_trades')
     , ref('sushiswap_v2_base_base_trades')
     , ref('stablebase_base_base_trades')
+    , ref('curvefi_base_base_trades')
     , ref('aerodrome_base_base_trades')
     , ref('pancakeswap_v2_base_base_trades')
     , ref('pancakeswap_v3_base_base_trades')

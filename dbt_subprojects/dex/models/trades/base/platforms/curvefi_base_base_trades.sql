@@ -31,7 +31,7 @@ WITH token_swaps AS (
 
 SELECT
     'base' AS blockchain,
-    'stablebase' AS project,
+    'curvefi' AS project,
     '1' AS version,
     CAST(date_trunc('month', token_swaps.block_time) AS date) AS block_month,
     CAST(date_trunc('day', token_swaps.block_time) AS date) AS block_date,
