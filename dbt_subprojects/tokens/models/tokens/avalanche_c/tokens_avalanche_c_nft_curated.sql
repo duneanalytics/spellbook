@@ -12037,5 +12037,6 @@ FROM (VALUES
         (0xffd2a1cf6dbb896c4db0df992e68e99e329f7a52, 'Angels® Mike Trout 1987 35th Anniversary Chrome T87C-50 Super Rare', 'MLB-22S1-S-1987AC37-M-CHR'),
         (0xffddfe5194e693c8954ddd9fa9bfb54625bf434c, 'Arne Maier FCA Color Splash Facsimile Signature Team Color TK-67 Legendary', 'BUND-22TK-L-CSTK-67-S-TMC'),
         (0xffe416277c4a301d3525bacaba00bc4f2000c29e, 'Miami Marlins® Bryan De La Cruz Base Independence Day RWB 22 Rare', 'MLB-22S1-R-B22-M-RWB'),
-        (0xfff6fa52337d60dbbd222671c0397d5908e5e31d, 'Lil Walter Drip', 'LWD')
+        (0xfff6fa52337d60dbbd222671c0397d5908e5e31d, 'Lil Walter Drip', 'LWD'),
+        (0xd1b4367dd9f235f9ee61878019d66e31511e98ee, 'Voidcaller', 'VOIDCALLER')
   ) AS temp_table (contract_address, name, symbol)
