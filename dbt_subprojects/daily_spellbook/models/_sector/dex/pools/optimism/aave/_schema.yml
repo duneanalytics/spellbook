@@ -1,0 +1,17 @@
+version: 3
+
+models:
+  - name:  aave_pools_optimism_balances
+    description: "Tracks OP token balances in Aave pools on Optimism."
+    meta:
+      blockchain: optimism
+      sector: DEX
+      project: aave
+      contributors: jason
+    config:
+      tags: ['optimism', 'op_token', 'balances', 'aave']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_address
+            - snapshot_day
