@@ -9,6 +9,7 @@
 
 SELECT contract_address, name, symbol
 FROM (VALUES
+      (0xaaaea1fb9f3de3f70e89f37b69ab11b47eb9ce6f, 'Voting Escrow Pharaoh', 'vePHAR'),
       (0x7098b1918eb2aa13945b8a489975bbbf0d5dd79b, 'Long Long Legacy', 'LLL'),
       (0xc732518034c5df52cdddf17486b9409bc7721e2c, 'Sausagers', 'MEAT'),
       (0x00bf1594507ccf60b41ad64524d4aba23b059f4b, 'Ferdy Frends', 'FREN'),
