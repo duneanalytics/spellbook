@@ -11,23 +11,23 @@
 
 WITH supply_op AS (
   SELECT
-    depositor AS wallet_address,
+    CAST(depositor AS varchar) AS wallet_address, -- Explicitly cast depositor
     token_address,
     SUM(amount) AS total_supplied,
     CAST(evt_block_time AS DATE) AS snapshot_day
   FROM {{ source('aave_v3_optimism', 'supply') }}
-  WHERE token_address = '0x4200000000000000000000000000000000000042'
-  GROUP BY wallet_address, token_address, snapshot_day
+  WHERE token_address = CAST(FROM_HEX('4200000000000000000000000000000000000042') AS varbinary)
+  GROUP BY depositor, token_address, CAST(evt_block_time AS DATE)
 ),
 borrow_op AS (
   SELECT
-    borrower AS wallet_address,
+    CAST(borrower AS varchar) AS wallet_address, -- Explicitly cast borrower
     token_address,
     SUM(amount) AS total_borrowed,
     CAST(evt_block_time AS DATE) AS snapshot_day
   FROM {{ source('aave_v3_optimism', 'borrow') }}
-  WHERE token_address = '0x4200000000000000000000000000000000000042'
-  GROUP BY wallet_address, token_address, snapshot_day
+  WHERE token_address = CAST(FROM_HEX('4200000000000000000000000000000000000042') AS varbinary)
+  GROUP BY borrower, token_address, CAST(evt_block_time AS DATE)
 ),
 net_balance AS (
   SELECT
