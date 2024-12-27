@@ -25,6 +25,16 @@ dexs_macro AS (
     }}
 ),
 
+, transfer as (
+  select * from {{ source('tokens', 'transfers') }}
+  where blockchain = 'ethereum'
+  and block_date >= date '2024-09-20' 
+  and tx_hash in (select evt_tx_hash from {{ source('pancakeswap_ethereum', 'ExclusiveDutchOrderReactor_evt_Fill') }})
+  {% if is_incremental() %}
+  WHERE {{ incremental_predicate('a.evt_block_time') }}
+  {% endif %}
+)
+
 dexs_pcsx AS (
     -- PancakeSwapX
     SELECT
@@ -43,20 +53,10 @@ dexs_pcsx AS (
     
     FROM {{ source('pancakeswap_ethereum', 'ExclusiveDutchOrderReactor_evt_Fill') }} a 
 
-    LEFT JOIN (
-        select * from {{ source('tokens', 'transfers') }}
-        where blockchain = 'ethereum'
-        and block_date >= date '2024-09-20' 
-        and tx_hash in (select evt_tx_hash from {{ source('pancakeswap_ethereum', 'ExclusiveDutchOrderReactor_evt_Fill') }})
-        ) send 
+    LEFT JOIN transfer as send 
     ON a.evt_tx_hash = send.tx_hash AND a.swapper = send."from"
 
-    LEFT JOIN (
-        select * from {{ source('tokens', 'transfers') }}
-        where blockchain = 'ethereum'
-        and block_date >= date '2024-09-20' 
-        and tx_hash in (select evt_tx_hash from {{ source('pancakeswap_ethereum', 'ExclusiveDutchOrderReactor_evt_Fill') }})
-        ) receive 
+    LEFT JOIN transfer as receive 
     on a.evt_tx_hash = receive.tx_hash and a.swapper = receive."to"
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('a.evt_block_time') }}
