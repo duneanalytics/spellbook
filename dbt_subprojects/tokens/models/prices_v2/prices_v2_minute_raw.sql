@@ -21,7 +21,7 @@ FROM
 (
     {% for model in prices_models %}
     SELECT
-        , blockchain
+        blockchain
         , contract_address
         , timestamp
         , price
