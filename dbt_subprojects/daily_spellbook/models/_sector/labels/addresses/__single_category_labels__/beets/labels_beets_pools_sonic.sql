@@ -1,5 +1,5 @@
 {{config(
-  alias = 'beethoven_x_pools_sonic',
+  alias = 'beets_pools_sonic',
   post_hook = '{{ expose_spells(\'["sonic"]\',
                                "sector",
                                "labels",
@@ -73,12 +73,12 @@ SELECT
   pool_name AS poolname,
   pool_type,
   '2' AS version,
-  'beethoven_x_v2_pool' AS category,
-  'beethoven_x' AS contributor,
+  'beets_v2_pool' AS category,
+  'beets' AS contributor,
   'query' AS source,
   TIMESTAMP'2024-12-15 00:00' AS created_at,
   now() AS updated_at,
-  'beethoven_x_pools_sonic' AS model_name,
+  'beets_pools_sonic' AS model_name,
   'identifier' AS label_type
 FROM (
   SELECT
@@ -168,12 +168,12 @@ SELECT
   END AS name,
   pool_type,
   '3' AS version,
-  'beethoven_x_v3_pool' AS category,
-  'beethoven_x' AS contributor,
+  'beets_v3_pool' AS category,
+  'beets' AS contributor,
   'query' AS source,
   TIMESTAMP'2024-12-15 00:00' AS created_at,
   now() AS updated_at,
-  'balancer_v3_pools_sonic' AS model_name,
+  'beets_pools_sonic' AS model_name,
   'identifier' AS label_type
 FROM (
   SELECT
