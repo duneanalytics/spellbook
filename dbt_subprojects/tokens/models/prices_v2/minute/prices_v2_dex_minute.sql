@@ -11,7 +11,7 @@
 
 WITH dex_trades_filter_and_unnest as (
     SELECT
-        d.blockchain
+        d.blockchain,
         d.token_bought_address as contract_address,
         d.block_time as timestamp,
         d.amount_usd/d.token_bought_amount as price,
@@ -31,7 +31,7 @@ WITH dex_trades_filter_and_unnest as (
     UNION ALL
 
     SELECT
-        d.blockchain
+        d.blockchain,
         d.token_sold_address as contract_address,
         d.block_time as timestamp,
         d.amount_usd/d.token_sold_amount as price,
