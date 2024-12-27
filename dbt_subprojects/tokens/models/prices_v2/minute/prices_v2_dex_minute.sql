@@ -52,7 +52,7 @@ WITH dex_trades_filter_and_unnest as (
 )
 
 SELECT
-    blockchain
+    blockchain,
     contract_address,
     date_trunc('minute',timestamp) as timestamp,
     sum(price*volume)/sum(volume) as price, -- vwap

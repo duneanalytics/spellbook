@@ -14,7 +14,7 @@ select
     , ptt.contract_address
     , p.minute as timestamp
     , p.price
-    , null as volume
+    , cast(null as double) as volume
     , 'coinpaprika' as source
 from
     {{ source('prices','usd_0003') }} as p  -- todo: fix this source
