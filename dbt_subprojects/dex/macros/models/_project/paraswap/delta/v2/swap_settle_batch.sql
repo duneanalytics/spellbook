@@ -26,12 +26,14 @@
 
     delta_v2_swap_settle_batch_ExpandedOrders as (
         select
+            'swapSettleBatch' as method,
+            index as order_index,
             contract_address, -- varbinary
             -- call_success, -- boolean
             call_tx_hash, -- varbinary
             -- call_tx_from, -- varbinary
             -- call_tx_to, -- varbinary
-            -- call_trace_address, -- array(bigint)
+            call_trace_address, -- array(bigint)
             call_block_time, -- timestamp
             call_block_number, -- bigint
             -- ordersWithSigs[index] as extractedOrderWithSig,
