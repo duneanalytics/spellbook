@@ -10,7 +10,7 @@
 
 
 SELECT
-    , blockchain
+    blockchain
     , contract_address
     , max(timestamp) as timestamp
     , max_by(price,timestamp) as price
