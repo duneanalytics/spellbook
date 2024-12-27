@@ -4,7 +4,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'contract_address', 'minute']
+    , unique_key = ['blockchain', 'contract_address', 'timestamp']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.timestamp')]
     )
 }}
