@@ -53,5 +53,10 @@ with
 
 -- union all 
 select 
+    method,
+    call_tx_hash,
+    date_trunc('month', call_block_time) AS block_month,
+    order_index,
+    call_trace_address,
     *
 from delta_v2_swap_settle_batch_model
