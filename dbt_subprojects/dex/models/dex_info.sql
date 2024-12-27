@@ -187,6 +187,7 @@ FROM (VALUES
     , ('hyperjump', 'HyperJump', 'Direct', 'Hyperjump_fi')
     , ('infusion', 'Infusion', 'Direct', 'infusionfinance')
     , ('stablebase', 'StableBase', 'Direct', 'stablebasefi')
+    , ('otsea', 'OTSea', 'Direct', 'otseaERC20')
     , ('flashliquidity', 'Flashliquidity', 'Direct', 'flashliquidity')
     , ('akronswap', 'Akronswap', 'Direct', 'AkronFinance')
     , ('saddle_finance', 'Saddle Finance', 'Direct', 'saddlefinance')

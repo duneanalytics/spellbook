@@ -1041,3 +1041,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('akronswap_base_base_trades_seed')
+          
+  - name: otsea_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: otsea
+      contributors: PatelPrinci
+    config:
+      tags: [ 'base', 'dex', 'trades', 'otsea' ]
+    description: "otsea base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('otsea_base_base_trades_seed')

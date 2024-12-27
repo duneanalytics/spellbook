@@ -175,6 +175,9 @@ sources:
   - name: stablebase_base
     tables:
       - name: SwapFlashLoan_evt_TokenSwap
+  - name: otsea_base
+    tables:
+      - name: OTSeaV2_evt_SwappedTokensForETH
   - name: basex_base
     tables:
       - name: UniswapV3Pool_evt_Swap
