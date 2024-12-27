@@ -25,7 +25,7 @@ dexs_macro AS (
     }}
 ),
 
-, transfer as (
+transfer as (
   select * from {{ source('tokens', 'transfers') }}
   where blockchain = 'ethereum'
   and block_date >= date '2024-09-20' 
