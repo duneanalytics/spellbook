@@ -12,7 +12,7 @@
 
 {% set prices_models = [
     ref('prices_v2_dex_minute')
-    ,ref('prices_v2_trusted_minute')
+    ,ref('prices_v2_coinpaprika_minute')
 ] %}
 
 
