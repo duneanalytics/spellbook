@@ -9,6 +9,16 @@
 
 SELECT contract_address, name, symbol
 FROM (VALUES
+      (0x2b9328d83becd4f04de05f129ba56781fa191e67, 'Cattopya', 'CAT'),
+      (0x34b4da1a0b06cfb09cb0efb46f02e667330e17db, 'Humping Unicorns', 'HUMP'),
+      (0x47d42b18d54ee0b94b59c3e41dcac3260e995e48, 'Doggerinos Accessories', 'DOGACC'),
+      (0x824ca4209DebA44Da8d2d71A4c52Bc0E62265FfA, 'Dev and Draw Presale Pass', 'DND PP'),
+      (0x8d904c8b6bb673d88cdbcd5798cda439f33cb3a4, 'Doggerinos', 'DOGGERINOS'),
+      (0x9190ba4c3d0a30128509517fa8c0f080fc603f99, 'Fragments of the City', 'CITY'),
+      (0xb563420b7b8119114968C70093c4966630ad16d3, 'Bruskies', 'Bruskies'),
+      (0xC93e7eFE0E863a1E4ffC6D2dcF7AfC1d3CCCE0b4, 'Mamboners', 'BONER'),
+      (0xe6cc79cA731A5e406024015bB2dE5346B52eCA2F, 'Peons V2', 'Peons V2'),
+      (0xfE09E309726FcDb92B05Df5f682185a0B0590dD9, 'RIPPED DAO', 'RIPPED'),
       (0x7098b1918eb2aa13945b8a489975bbbf0d5dd79b, 'Long Long Legacy', 'LLL'),
       (0xc732518034c5df52cdddf17486b9409bc7721e2c, 'Sausagers', 'MEAT'),
       (0x00bf1594507ccf60b41ad64524d4aba23b059f4b, 'Ferdy Frends', 'FREN'),
