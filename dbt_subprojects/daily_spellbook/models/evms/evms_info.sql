@@ -10,6 +10,7 @@
                                         , "bnb"
                                         , "boba"
                                         , "celo"
+                                        , "corn"
                                         , "ethereum"
                                         , "fantom"
                                         , "flare"
@@ -69,7 +70,7 @@ FROM (
         , (288, 'boba', 'Boba Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://bobascan.com/', timestamp '2021-10-28 05:03', 'OP Stack', 'Ethereum', 'Ethereum', true)
         , (7700, 'canto', 'Canto', 'Layer 2', NULL, 'ETH', NULL, 'https://evm.explorer.canto.io/', timestamp '2022-07-26 19:27', NULL, 'Ethereum', 'Ethereum', false)
         , (420, 'optimism_goerli', 'Optimism Goerli', 'Testnet', 'Optimistic Rollup', 'GTH', 0x4200000000000000000000000000000000000006, 'https://optimism-goerli.blockscout.com/', timestamp '2022-06-09 16:55', 'OP Stack', 'Goerli', 'Goerli', false)
-        , (1313161554, 'aurora', 'Aurora', 'Layer 2', NULL, 'ETH', 0xC9BdeEd33CD01541e1eeD10f90519d2C06Fe3feB, 'https://explorer.aurora.dev/', timestamp '2020-07-21 21:50:11', NULL, NULL, NULL, false)
+        , (1313161554, 'aurora', 'Aurora', 'Layer 2', NULL, 'ETH', 0xC9BdeDd158A2e3b13e9badaeABaFc5516e95e8C7, 'https://explorer.aurora.dev/', timestamp '2020-07-21 21:50:11', NULL, NULL, NULL, false)
         , (8217, 'kaia', 'Kaia', 'Layer 1', NULL, 'KAIA', 0xe4f05a66ec68b54a58b17c22107b02e0232cc817, 'https://kaiascope.com/', timestamp '2019-06-25 13:41:14', NULL, NULL, NULL, true)
         , (34443, 'mode', 'Mode', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.mode.network/', timestamp '2023-11-16 20:46:23', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true)
         , (291, 'orderly', 'Orderly Network', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.orderly.network/', timestamp '2023-10-06 16:03:49', 'OP Stack', 'Ethereum', 'Ethereum', false)
@@ -95,4 +96,5 @@ FROM (
         , (2020, 'ronin', 'Ronin', 'Layer 1', null, 'RON', 0xe514d9deb7966c8be0ca922de8a064264ea6bcd4, 'https://app.roninchain.com/', timestamp '2021-01-25 10:49', NULL, NULL, NULL, true)
         , (14, 'flare', 'Flare', 'Layer 1', NULL, 'FLR', NULL, 'https://flare-explorer.flare.network/', timestamp '2022-07-13 15:32', NULL, NULL, NULL, true)
         , (88, 'viction', 'Viction', 'Layer 1', NULL, 'VIC', 0xC054751BdBD24Ae713BA3Dc9Bd9434aBe2abc1ce, 'https://vicscan.xyz/', timestamp '2018-12-14 07:50:20', NULL, NULL, NULL, true)
+        , (21000000, 'corn', 'Corn', 'Layer 1', NULL, 'BTCN', NULL, 'https://cornscan.io/', timestamp '2024-11-19 10:29:11', NULL, NULL, NULL, false)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune)
