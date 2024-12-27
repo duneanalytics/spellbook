@@ -33,7 +33,7 @@ transfer as (
   {% if is_incremental() %}
   WHERE {{ incremental_predicate('a.evt_block_time') }}
   {% endif %}
-)
+),
 
 dexs_pcsx AS (
     -- PancakeSwapX
