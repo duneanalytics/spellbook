@@ -25,8 +25,7 @@
 --- access data: JSON_EXTRACT / JSON_EXTRACT_SCALAR 
 
     delta_v2_swap_settle_batch_ExpandedOrders as (
-        select
-            'swapSettleBatch' as method,
+        select            
             index as order_index,
             contract_address, -- varbinary
             -- call_success, -- boolean

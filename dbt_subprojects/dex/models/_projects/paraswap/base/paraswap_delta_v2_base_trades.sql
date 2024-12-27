@@ -53,7 +53,7 @@ with
 
 -- union all 
 select 
-    method,
+    'swapSettleBatch' as method,
     call_tx_hash,
     date_trunc('month', call_block_time) AS block_month,
     order_index,
