@@ -17,7 +17,7 @@ select
     , null as volume
     , 'coinpaprika' as source
 from
-    {{ source('prices','usd') }} as p
+    {{ source('prices','usd_0003') }} as p  -- todo: fix this source
 inner join
     {{ ref('prices_trusted_tokens') }} as ptt
     on p.token_id = ptt.token_id
