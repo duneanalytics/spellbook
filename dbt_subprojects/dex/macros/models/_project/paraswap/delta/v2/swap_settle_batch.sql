@@ -69,6 +69,7 @@
       
       (
         SELECT * FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_evt_OrderSettled") }}
+        WHERE evt_tx_hash in (select call_tx_hash from delta_v2_swap_settle_batch_ExpandedOrders)
         {% if is_incremental() %}
             AND {{ incremental_predicate('call_block_time') }}
           {% endif %}        
@@ -105,7 +106,7 @@ delta_v2_swap_settle_batch_model as (
 from
     delta_v2_swap_settle_batch_ExpandedOrders orders
     left join delta_v2_swap_settle_batch_OrderSettledEvents events on
-    orders.rn = events.rn
+    orders.rn = events.rn    
 
     limit 1000
 )
