@@ -118,7 +118,7 @@ WITH check_date AS (
         CROSS JOIN UNNEST(s.creator_address_lineage) AS t(lineage_address)
         JOIN new_contracts nc ON s.contract_address = nc.creator_address_intermediate
 
-        -- We don't need to select creators from prior iterations because we well reinitialize
+        -- We don't need to select creators from prior iterations because we will reinitialize
         -- the incremental build on any updates to deterministic deployer & smart account methods
         -- Keeping the raw code below (commented out) in case we do need this however.
 
