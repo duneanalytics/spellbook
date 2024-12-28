@@ -69,13 +69,16 @@
       
       (
         SELECT * FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_evt_OrderSettled") }}
+        -- important conditional - since OrderSettled is emitted by multilple methods
+        -- thist filtering still not 100% fix -- as theoretically multiple methods can be combined in on call
+        -- consider case when settleSwap and settleBatchSwap are combined in one call
         WHERE evt_tx_hash in (select call_tx_hash from delta_v2_swap_settle_batch_ExpandedOrders)
         {% if is_incremental() %}
             AND {{ incremental_predicate('call_block_time') }}
           {% endif %}        
       )
     ),
-delta_v2_swap_settle_batch_model as (
+delta_v2_swap_settle_batch_parsed_orders as (
   select
 -- {
 --   "owner": "0xb0326588271f2531fbfc9a13d52d3da45be1d956",
@@ -90,25 +93,57 @@ delta_v2_swap_settle_batch_model as (
 --   "partnerAndFee": 0,
 --   "permit": "0x"
 -- }
-    JSON_EXTRACT_SCALAR("order", '$.owner') as owner,
-    JSON_EXTRACT_SCALAR("order", '$.beneficiary') as beneficiary,
-    JSON_EXTRACT_SCALAR("order", '$.srcToken') as srcToken,
-    JSON_EXTRACT_SCALAR("order", '$.destToken') as destToken,
-    JSON_EXTRACT_SCALAR("order", '$.srcAmount') as srcAmount,
-    JSON_EXTRACT_SCALAR("order", '$.destAmount') as destAmount,
-    JSON_EXTRACT_SCALAR("order", '$.expectedDestAmount') as expectedDestAmount,
+    from_hex(JSON_EXTRACT_SCALAR("order", '$.owner')) as owner,
+    from_hex(JSON_EXTRACT_SCALAR("order", '$.beneficiary')) as beneficiary,
+    from_hex(JSON_EXTRACT_SCALAR("order", '$.srcToken')) as srcToken,
+    from_hex(JSON_EXTRACT_SCALAR("order", '$.destToken')) as destToken,
+    cast(JSON_EXTRACT_SCALAR("order", '$.srcAmount') as uint256) as srcAmount,
+    cast(JSON_EXTRACT_SCALAR("order", '$.destAmount') as uint256) as destAmount,
+    cast(JSON_EXTRACT_SCALAR("order", '$.expectedDestAmount') as uint256) as expectedDestAmount,
     JSON_EXTRACT_SCALAR("order", '$.deadline') as deadline,
     JSON_EXTRACT_SCALAR("order", '$.nonce') as nonce,
     JSON_EXTRACT_SCALAR("order", '$.partnerAndFee') as partnerAndFee,
-    JSON_EXTRACT_SCALAR("order", '$.permit') as permit,
-    orders.*,
-    events.*    
+    JSON_EXTRACT_SCALAR("order", '$.permit') as permit,    
+    * 
 from
-    delta_v2_swap_settle_batch_ExpandedOrders orders
-    left join delta_v2_swap_settle_batch_OrderSettledEvents events on
-    orders.rn = events.rn    
+    delta_v2_swap_settle_batch_ExpandedOrders    
+), delta_v2_swap_settle_batch_model as (
+  SELECT 
+    events.returnAmount,
+    events.protocolFee,
+    events.partnerFee,
+    orders.*    
+  FROM delta_v2_swap_settle_batch_parsed_orders orders
+  LEFT JOIN delta_v2_swap_settle_batch_OrderSettledEvents events 
+    ON orders.rn = events.rn 
+    AND orders.call_tx_hash = events.evt_tx_hash
+    AND orders.owner = events.owner
+    AND orders.beneficiary = events.beneficiary    
+    AND orders.srcToken = events.srcToken
+    AND orders.destToken = events.destToken
+    AND orders.srcAmount = events.srcAmount
+    AND orders.destAmount = events.destAmount
 
-    limit 1000
+    
+
+-- ParaswapDeltav2_evt_OrderSettled
+-- contract_address varbinary
+-- evt_tx_hash varbinary
+-- evt_tx_from varbinary
+-- evt_tx_to varbinary
+-- evt_index bigint
+-- evt_block_time timestamp
+-- evt_block_number bigint
+-- owner varbinary
+-- beneficiary varbinary
+-- orderHash varbinary
+-- srcToken varbinary
+-- destToken varbinary
+-- srcAmount uint256
+-- destAmount uint256
+-- returnAmount uint256
+-- protocolFee uint256
+-- partnerFee uint256   
 )
 --- NB: sourcing from calls and joining events, not the opposite, because some methods emit different events (*fill* -> OrderSettled / OrderPartiallyFilled). Sorting them by evt_index would make them match orders sorted by their index in array + call_trace_address -> source of truth bettr be calls
 -- TODO: 1. join data from events
