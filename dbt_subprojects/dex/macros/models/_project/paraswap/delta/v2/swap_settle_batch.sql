@@ -74,7 +74,7 @@
         -- consider case when settleSwap and settleBatchSwap are combined in one call
         WHERE evt_tx_hash in (select call_tx_hash from delta_v2_swap_settle_batch_ExpandedOrders)
         {% if is_incremental() %}
-            AND {{ incremental_predicate('call_block_time') }}
+            AND {{ incremental_predicate('evt_block_time') }}
           {% endif %}        
       )
     ),
