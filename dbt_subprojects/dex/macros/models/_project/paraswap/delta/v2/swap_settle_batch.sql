@@ -26,35 +26,53 @@
 
     delta_v2_swap_settle_batch_ExpandedOrders as (
         select            
-            index as order_index,
-            contract_address, -- varbinary
-            -- call_success, -- boolean
-            call_tx_hash, -- varbinary
-            -- call_tx_from, -- varbinary
-            -- call_tx_to, -- varbinary
-            call_trace_address, -- array(bigint)
-            call_block_time, -- timestamp
-            call_block_number, -- bigint
-            -- ordersWithSigs[index] as extractedOrderWithSig,
-            -- JSON_EXTRACT(JSON_PARSE(TRY_CAST(ordersWithSigs[index] AS VARCHAR)), '$.order') AS "order", -- kinda works, but returns a string
-            
-            JSON_EXTRACT_SCALAR(ordersWithSigs[index], '$.order') as "order", -- works best, returns json
-            JSON_EXTRACT_SCALAR(ordersWithSigs[index], '$.signature') as signature, -- works best, returns json            
-            -- JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(ordersWithSigs[index], '$.order'), '$.owner') as owner,
-            
-            executor,
-            executorData[index] as extractedExecutor                     
-          FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettleBatch") }}                    
-            CROSS JOIN UNNEST (
-                -- SQL array indices start at 1
-                -- also NB: if one order fails -- whole batch fails
-                SEQUENCE(1, CARDINALITY(ordersWithSigs) )
-            ) AS t (index)
-        WHERE 
-          call_success = true
-          {% if is_incremental() %}
+            ROW_NUMBER() OVER (ORDER BY call_block_time, call_tx_hash, call_trace_address, order_index) AS rn,
+            * from 
+            (
+                  SELECT 
+                  order_index,
+                  contract_address, -- varbinary
+                  -- call_success, -- boolean
+                  call_tx_hash, -- varbinary
+                  -- call_tx_from, -- varbinary
+                  -- call_tx_to, -- varbinary
+                  call_trace_address, -- array(bigint)
+                  call_block_time, -- timestamp
+                  call_block_number, -- bigint
+                  -- ordersWithSigs[order_index] as extractedOrderWithSig,
+                  -- JSON_EXTRACT(JSON_PARSE(TRY_CAST(ordersWithSigs[order_index] AS VARCHAR)), '$.order') AS "order", -- kinda works, but returns a string
+                  
+                  JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.order') as "order", -- works best, returns json
+                  JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.signature') as signature, -- works best, returns json            
+                  -- JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.order'), '$.owner') as owner,
+                  
+                  executor,
+                  executorData[order_index] as extractedExecutor                     
+                FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettleBatch") }}                    
+                  CROSS JOIN UNNEST (
+                      -- SQL array indices start at 1
+                      -- also NB: if one order fails -- whole batch fails
+                      SEQUENCE(1, CARDINALITY(ordersWithSigs) )
+                  ) AS t (order_index)        
+              WHERE 
+                call_success = true
+                {% if is_incremental() %}
+                  AND {{ incremental_predicate('call_block_time') }}
+                {% endif %}        
+            )
+    ),
+    delta_v2_swap_settle_batch_OrderSettledEvents as (
+      SELECT 
+        ROW_NUMBER() OVER (ORDER BY evt_block_time, evt_tx_hash, evt_index) AS rn,
+        *
+      FROM 
+      
+      (
+        SELECT * FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_evt_OrderSettled") }}
+        {% if is_incremental() %}
             AND {{ incremental_predicate('call_block_time') }}
-          {% endif %}
+          {% endif %}        
+      )
     ),
 delta_v2_swap_settle_batch_model as (
   select
@@ -82,9 +100,14 @@ delta_v2_swap_settle_batch_model as (
     JSON_EXTRACT_SCALAR("order", '$.nonce') as nonce,
     JSON_EXTRACT_SCALAR("order", '$.partnerAndFee') as partnerAndFee,
     JSON_EXTRACT_SCALAR("order", '$.permit') as permit,
-    *    
+    orders.*,
+    events.*    
 from
-    delta_v2_swap_settle_batch_ExpandedOrders
+    delta_v2_swap_settle_batch_ExpandedOrders orders
+    left join delta_v2_swap_settle_batch_OrderSettledEvents events on
+    orders.rn = events.rn
+
+    limit 1000
 )
 --- NB: sourcing from calls and joining events, not the opposite, because some methods emit different events (*fill* -> OrderSettled / OrderPartiallyFilled). Sorting them by evt_index would make them match orders sorted by their index in array + call_trace_address -> source of truth bettr be calls
 -- TODO: 1. join data from events
