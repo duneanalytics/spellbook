@@ -47,7 +47,7 @@
                   -- JSON_EXTRACT_SCALAR(JSON_EXTRACT_SCALAR(ordersWithSigs[order_index], '$.order'), '$.owner') as owner,
                   
                   executor,
-                  executorData[order_index] as extractedExecutor                     
+                  executorData[order_index] as executorData                     
                 FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_call_swapSettleBatch") }}                    
                   CROSS JOIN UNNEST (
                       -- SQL array indices start at 1
@@ -104,16 +104,36 @@ delta_v2_swap_settle_batch_parsed_orders as (
     JSON_EXTRACT_SCALAR("order", '$.nonce') as nonce,
     JSON_EXTRACT_SCALAR("order", '$.partnerAndFee') as partnerAndFee,
     JSON_EXTRACT_SCALAR("order", '$.permit') as permit,    
+    -- NB: at the time of writting the only ExecutorData shape known is following. On adding new executors needs to be-reconsidered 
+    -- struct ExecutorData {
+--         // The address of the src token
+--         address srcToken;
+--         // The address of the dest token
+--         address destToken;
+--         // The amount of fee to be paid for the swap 
+--         uint256 feeAmount;                                                                   <- the field in question
+--         // The calldata to execute the swap
+--         bytes calldataToExecute;
+--         // The address to execute the swap
+--         address executionAddress;
+--         // The address to receive the fee, if not set the tx.origin will receive the fee
+--         address feeRecipient;
+--     }
+    varbinary_to_uint256(varbinary_substring(executorData,  161, 32)) as "executorFeeAmount",
     * 
 from
     delta_v2_swap_settle_batch_ExpandedOrders    
-), delta_v2_swap_settle_batch_model as (
+), delta_v2_swap_settle_batch_withWrapped as (
   SELECT 
+  -- TODO: 2. native to wrapped conversion before joining with USD
+    {{to_wrapped_native_token(blockchain, 'orders.destToken', 'dest_token_for_joining')}},
+    {{to_wrapped_native_token(blockchain, 'orders.srcToken', 'src_token_for_joining')}},
     events.returnAmount,
     events.protocolFee,
     events.partnerFee,
     orders.*    
   FROM delta_v2_swap_settle_batch_parsed_orders orders
+  --- NB: sourcing from calls and joining events, not the opposite, because some methods emit different events (*fill* -> OrderSettled / OrderPartiallyFilled). Sorting them by evt_index would make them match orders sorted by their index in array + call_trace_address -> source of truth bettr be calls
   LEFT JOIN delta_v2_swap_settle_batch_OrderSettledEvents events 
     ON orders.rn = events.rn 
     AND orders.call_tx_hash = events.evt_tx_hash
@@ -123,7 +143,42 @@ from
     AND orders.destToken = events.destToken
     AND orders.srcAmount = events.srcAmount
     AND orders.destAmount = events.destAmount
+), delta_v2_swap_settle_batch_model as (
 
+select 
+    COALESCE(CAST(s.price AS DECIMAL(38,18)), 0) AS src_token_price_usd,
+    COALESCE(CAST(d.price AS DECIMAL(38,18)), 0) AS dest_token_price_usd, 
+    COALESCE( 
+        d.price * w.executorFeeAmount / POWER(10, d.decimals),
+        -- src cost 
+        
+        -- TODO: not sure about this calc, needs verifying 
+        -- (s.price *  CAST (w.src_amount AS uint256) / POWER(10, s.decimals))
+        -- * CAST (w.feeAmount AS DECIMAL) / (CAST (w.dest_amount AS DECIMAL)+ CAST (w.feeAmount AS DECIMAL)),
+        0
+        
+    )  AS gas_fee_usd,
+    s.price *  w.srcAmount / POWER(10, s.decimals)  AS src_token_order_usd,
+    d.price *  w.destAmount / POWER(10, d.decimals)  AS dest_token_order_usd,
+    w.*
+from delta_v2_swap_settle_batch_withWrapped w
+
+ LEFT JOIN {{ source('prices', 'usd') }} d
+    ON d.blockchain = '{{blockchain}}'
+    AND d.minute > TIMESTAMP '2024-06-01'
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('d.minute') }}
+    {% endif %}
+    AND d.contract_address = w.dest_token_for_joining
+    AND d.minute = DATE_TRUNC('minute', w.call_block_time)
+    LEFT JOIN {{ source('prices', 'usd') }} s
+    ON s.blockchain = '{{blockchain}}'
+    AND s.minute > TIMESTAMP '2024-06-01'
+    {% if is_incremental() %}
+      AND {{ incremental_predicate('s.minute') }}
+    {% endif %}
+    AND s.contract_address = w.src_token_for_joining
+    AND s.minute = DATE_TRUNC('minute', w.call_block_time)
     
 
 -- ParaswapDeltav2_evt_OrderSettled
@@ -145,11 +200,6 @@ from
 -- protocolFee uint256
 -- partnerFee uint256   
 )
---- NB: sourcing from calls and joining events, not the opposite, because some methods emit different events (*fill* -> OrderSettled / OrderPartiallyFilled). Sorting them by evt_index would make them match orders sorted by their index in array + call_trace_address -> source of truth bettr be calls
--- TODO: 1. join data from events
--- TODO: 2. native to wrapped conversion before joining with USD
-{# {{to_wrapped_native_token(blockchain, 'dest_token', 'dest_token_for_joining')}}, #}
-{# {{to_wrapped_native_token(blockchain, 'src_token', 'src_token_for_joining')}}, #}
 -- TODO: 2. then from USD prices
 
 {% endmacro %}

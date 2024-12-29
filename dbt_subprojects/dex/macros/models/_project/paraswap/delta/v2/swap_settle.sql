@@ -36,7 +36,21 @@ v2_swap_settle_parsedOrders AS (
     JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.srcAmount')  AS "src_amount",
     JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.destAmount')  AS "dest_amount",
     JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.permit')  AS "permit",
-
+-- NB: at the time of writting the only ExecutorData shape known is following. On adding new executors needs to be-reconsidered 
+-- struct ExecutorData {
+--         // The address of the src token
+--         address srcToken;
+--         // The address of the dest token
+--         address destToken;
+--         // The amount of fee to be paid for the swap 
+--         uint256 feeAmount;                                                                   <- the field in question
+--         // The calldata to execute the swap
+--         bytes calldataToExecute;
+--         // The address to execute the swap
+--         address executionAddress;
+--         // The address to receive the fee, if not set the tx.origin will receive the fee
+--         address feeRecipient;
+--     }
     varbinary_to_uint256(varbinary_substring(executorData,  161, 32)) as "feeAmount",
     -- substring(executorData FROM 141 FOR 20) AS dynamic_extracted_dest_token
     *
