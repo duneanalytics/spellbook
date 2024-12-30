@@ -192,6 +192,7 @@ FROM (VALUES
     , ('saddle_finance', 'Saddle Finance', 'Direct', 'saddlefinance')
     , ('katana', 'Katana', 'Direct', 'AxieInfinity')
     , ('jetswap', 'JetSwap', 'Direct', 'Jetfuelfinance')
+    , ('bridgers', 'Bridgers', 'Direct', 'Bridgersxyz')
     , ('levinswap', 'Levinswap', 'Direct', 'levinswap')
     , ('gravity_finance', 'GravityFinance', 'Direct', 'Gravity_Finance')
     , ('fluid', 'Fluid DEX', 'Direct', '0xfluid')
