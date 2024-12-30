@@ -19,31 +19,38 @@ models:
     columns:
       - &blockchain
         name: blockchain
-        description: "Blockchain which the DEX is deployed"
+        description: "Blockchain"
+      - &version
+        name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
       - &contract_address
         name: contract_address
-        description: 'sonic address for the liquidity pool used in transaction'
+        description: 'zkevm address for the liquidity pool used in transaction'
         data_tests:
           - not_null
       - &tx_hash
         name: tx_hash
-        description: "Unique transaction hash value tied to each transaction on the DEX"
+        description: 'Transaction hash'
+        data_tests:
+          - not_null
       - &index
         name: index
-        description: ''
+        description: 'Event Index'
         data_tests:
           - not_null
       - &tx_index
         name: tx_index
-        description: ''
+        description: 'Transaction Index'
         data_tests:
           - not_null
       - &block_time
         name: block_time
-        description: "UTC event block time of each DEX trade"
+        description: 'Block time in UTC'
+        data_tests:
+          - not_null
       - &block_number
         name: block_number
-        description: 'Block number'
+        description: 'Event Block Number'
         data_tests:
           - not_null
       - &swap_fee_percentage
