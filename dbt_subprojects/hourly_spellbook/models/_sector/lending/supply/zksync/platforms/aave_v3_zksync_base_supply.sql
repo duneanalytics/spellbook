@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'aave_lido_v3_ethereum',
+    schema = 'aave_v3_zksync',
     alias = 'base_supply',
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,10 +12,8 @@
 
 {{
   lending_aave_v3_compatible_supply(
-    blockchain = 'ethereum',
-    project = 'aave_lido',
-    version = '3',
-    decoded_contract_name = 'LidoPool',
-    decoded_wrapped_token_gateway_name = 'LidoWrappedTokenGatewayV3'
+    blockchain = 'zksync',
+    project = 'aave',
+    version = '3'
   )
 }}
