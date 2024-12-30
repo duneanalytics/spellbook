@@ -4454,7 +4454,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: infusion_base_base_trades_seed
     config:
       column_types:
@@ -4514,7 +4514,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: akronswap_base_base_trades_seed
     config:
       column_types:
@@ -4529,7 +4529,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: katana_ronin_base_trades_seed
     config:
       column_types:
@@ -4559,7 +4559,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: elk_finance_gnosis_base_trades_seed
     config:
       column_types:
@@ -4574,7 +4574,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-  
+
   - name: levinswap_gnosis_base_trades_seed
     config:
       column_types:
@@ -4604,7 +4604,7 @@ seeds:
         token_bought_amount_raw: uint256
         token_sold_amount_raw: uint256
         block_date: timestamp
-        
+
   - name: fluid_ethereum_base_trades_seed
     config:
       column_types:
