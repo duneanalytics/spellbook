@@ -1,10 +1,17 @@
 # Sector-level Spell Design
 
+## Contents
+- [Introduction](#introduction)
+- [Model level of granularity](#model-level-of-granularity)
+- [Base-level spells within sector lineage](#base-level-spells-within-sector-lineage)
+
+## Введение
+
 Within Spellbook, there are two main spells which are considered the most popular and get the most usage – `dex.trades` and `nft.trades`. Both of these are considered sector-level spells. At the sector level, spells in this category typically span across many projects and blockchains. Due to these spells' heavy usage & importance to keep up-to-date, all sector-level spells follow a similar design pattern.
 
 **Note**: not all sectors are up-to-date in the new structure, but will be considered moving forward
 
-Since these sector-level spells will have their own dedicated `readme` within their directory with specifics, this will remain a high-level overview. Example dex readme [here](/dbt_subprojects/dex/README.md).
+Since these sector-level spells will have their own dedicated `readme` within their directory with specifics, this will remain a high-level overview. Example DEX documentation can be found in [dbt_subprojects/dex/README.md](../../dbt_subprojects/dex/README.md).
 
 ## Model level of granularity
 
@@ -17,6 +24,14 @@ Each model in Spellbook should follow a consistent pattern on level of granulari
 Not all spells will fit into a sector-wide downstream spell. Standalone spells will only fit into a few parts of the above format. When building, keep these principles in mind and submit as you see fit and the team will help validate as needed.
 
 ## Base-level spells within sector lineage
+
+### Structure Overview
+```
+project_name/
+├── base_trades/         # Raw data only
+├── chain_level/         # Chain-specific aggregations
+└── cross_chain/         # Cross-chain unified view
+```
 
 The upstream spells within the sector-level DBT lineages, as noted in the level of granularity above, are the project-level raw data, by version if applicable (i.e. `uniswap_v1_ethereum.base_trades`, `uniswap_v2_ethereum.base_trades`, etc). The following should be considered in design:
 
