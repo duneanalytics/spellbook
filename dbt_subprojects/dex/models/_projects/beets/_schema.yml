@@ -1,11 +1,11 @@
 version: 2
 
 models:
-  - name: beets_sonic_pools_fees
+  - name: beets_pools_fees
     meta:
       blockchain: sonic
       project: beets
-      contributors: jacektrocinski, thetroyharris, tomfutago, viniabussafi
+      contributors: viniabussafi
     config:
       tags: ['sonic', 'beets', 'pools_fees']
     description: >
