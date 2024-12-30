@@ -194,9 +194,7 @@ models:
       - &pool_type
         name: pool_type
         description: "Pool attributes, determined by the pool's factory"
-      - &tx_hash
-        name: tx_hash
-        description: "Tx. Hash"
+      - *tx_hash
       - &tx_from
         name: tx_from
         description: "transaction.from"
