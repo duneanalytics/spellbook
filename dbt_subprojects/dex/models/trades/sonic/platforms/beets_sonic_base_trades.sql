@@ -30,8 +30,7 @@ v3_trades AS(
         project = 'beets',
         version = '3',
         project_decoded_as = 'beethoven_x_v3',
-        Vault_evt_Swap = 'Vault_evt_Swap',
-        pools_fees = 'pools_fees'
+        Vault_evt_Swap = 'Vault_evt_Swap'
     )
 }})
 
