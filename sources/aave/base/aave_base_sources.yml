@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: aave_v3_base
+    description: "Decoded contracts for aave v3 on Base"
+
+    tables:
+      - name: Pool_evt_ReserveDataUpdated
+        description: "Provides the liquidity index, stable and variable borrow rates for aave v3 reserves."
+        columns:
+        - &contract_address
+          name: contract_address
+          description: "Aave token contract address"       
+        - &evt_block_number
+          name: evt_block_number
+          description: "Event block number"  
+        - &evt_block_time
+          name: evt_block_time
+          description: "Timestamp for block event time in UTC"
+        - &evt_index
+          name: evt_index
+          description: "Event index"  
+        - &evt_tx_hash
+          name: evt_tx_hash
+          description: "Transaction hash of the event" 
+        - name: liquidityIndex
+          description: "Liquidity index value of the reserve"
+        - name: liquidityRate
+          description: "Liquidity rate value of the reserve"
+        - &reserve
+          name: reserve
+          description: "Aave reserve contract address"
+        - name: stableBorrowRate
+          description: "Stable borrow rate value of the reserve"  
+        - name: variableBorrowIndex
+          description: "Variable borrow index value of the reserve"
+        - name: variableBorrowRate
+          description: "Variable borrow rate value of the reserve"     
