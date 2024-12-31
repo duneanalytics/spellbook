@@ -25,4 +25,8 @@ ON
     p.pool = b.address
 WHERE 
     p.token = '0x4200000000000000000000000000000000000042'
-    AND b.token_address = '0x4200000000000000000000000000000000000042';
+    AND b.token_address = '0x4200000000000000000000000000000000000042'
+    {% if is_incremental() %}
+      AND b.day > (SELECT MAX(snapshot_day) FROM {{ this }})
+    {% endif %}
+;
