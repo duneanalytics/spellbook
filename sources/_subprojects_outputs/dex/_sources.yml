@@ -71,6 +71,7 @@ sources:
   - name: uniswap_v3_optimism
     tables:
       - name: ovm1_pool_mapping
+      - name: pools
   - name: cow_protocol_ethereum
     tables:
       - name: trades
@@ -89,6 +90,6 @@ sources:
   - name: beethoven_x
     tables:
       - name: trades
-  - name: uniswap_v3_optimism            
+  - name: curve_optimism            
     tables:
       - name: pools
