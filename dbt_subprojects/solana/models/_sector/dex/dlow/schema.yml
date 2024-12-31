@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 models:
   - name: dflow_clearpool_base_trades
