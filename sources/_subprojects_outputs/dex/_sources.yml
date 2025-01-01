@@ -90,6 +90,3 @@ sources:
   - name: beethoven_x
     tables:
       - name: trades
-  - name: curve_optimism            
-    tables:
-      - name: pools
