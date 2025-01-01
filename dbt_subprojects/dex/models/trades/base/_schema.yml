@@ -12,7 +12,7 @@ models:
       project: uniswap
       contributors: wuligy
     config:
-      tags: [ 'base', 'dex', 'trades', 'uniswap', 'v3' ]
+      tags: ["base", "dex", "trades", "uniswap", "v3"]
     description: "uniswap base v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -24,7 +24,6 @@ models:
           filter:
             version: 3
 
-
   - name: aerodrome_base_base_trades
     meta:
       blockchain: base
@@ -32,7 +31,7 @@ models:
       project: aerodrome
       contributors: msilb7, tomfutago, Henrystats
     config:
-      tags: [ 'base', 'dex', 'trades', 'aerodrome' ]
+      tags: ["base", "dex", "trades", "aerodrome"]
     description: aerodrome base trades
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -42,6 +41,22 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('aerodrome_base_base_trades_seed')
 
+  - name: stablebase_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: stablebase
+      contributors: principatel
+    config:
+      tags: ["base", "dex", "trades", "stablebase"]
+    description: stablebase base trades
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('stablebase_base_base_trades_seed')
 
   - name: sushiswap_v1_base_base_trades
     meta:
@@ -50,7 +65,7 @@ models:
       project: sushiswap
       contributors: tomfutago
     config:
-      tags: [ 'base', 'dex', 'trades', 'sushiswap', 'v1' ]
+      tags: ["base", "dex", "trades", "sushiswap", "v1"]
     description: "sushiswap base v1 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -62,7 +77,6 @@ models:
           filter:
             version: 1
 
-
   - name: sushiswap_v2_base_base_trades
     meta:
       blockchain: base
@@ -70,7 +84,7 @@ models:
       project: sushiswap
       contributors: wuligy, tomfutago
     config:
-      tags: [ 'base', 'dex', 'trades', 'sushiswap', 'v2' ]
+      tags: ["base", "dex", "trades", "sushiswap", "v2"]
     description: "sushiswap base v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -89,7 +103,7 @@ models:
       project: pancakeswap
       contributors: chef_seaweed, tomfutago
     config:
-      tags: [ 'base', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v2' ]
+      tags: ["base", "dex", "trades", "pancakeswap", "uniswap", "v2"]
     description: "Pancakeswap Base v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -108,7 +122,7 @@ models:
       project: balancer
       contributors: bizzyvinci, thetroyharris, tomfutago
     config:
-      tags: [ 'base', 'dex', 'trades', 'balancer' ]
+      tags: ["base", "dex", "trades", "balancer"]
     description: "Balancer v2 base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -127,7 +141,7 @@ models:
       project: pancakeswap
       contributors: chef_seaweed, tomfutago
     config:
-      tags: [ 'base', 'dex', 'trades', 'pancakeswap', 'uniswap', 'v3' ]
+      tags: ["base", "dex", "trades", "pancakeswap", "uniswap", "v3"]
     description: "Pancakeswap Base v3 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -146,7 +160,7 @@ models:
       project: dodo
       contributors: owen05, tomfutago
     config:
-      tags: [ 'base', 'dex', 'trades', 'dodo' ]
+      tags: ["base", "dex", "trades", "dodo"]
     description: "Dodo base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -165,7 +179,7 @@ models:
       project: maverick
       contributors: get620v, tomfutago
     config:
-      tags: [ 'base', 'dex', 'trades', 'maverick' ]
+      tags: ["base", "dex", "trades", "maverick"]
     description: "Maverick Base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -184,7 +198,7 @@ models:
       project: maverick
       contributors: get620v
     config:
-      tags: [ 'base', 'dex', 'trades', 'maverick' ]
+      tags: ["base", "dex", "trades", "maverick"]
     description: "Maverick Base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -203,7 +217,7 @@ models:
       project: smardex
       contributors: Chain_L
     config:
-      tags: [ 'base', 'dex', 'trades', 'smardex' ]
+      tags: ["base", "dex", "trades", "smardex"]
     description: "smardex base trades on base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -220,7 +234,7 @@ models:
       project: baseswap
       contributors: ARDev097
     config:
-      tags: [ 'base', 'dex', 'trades', 'baseswap' ]
+      tags: ["base", "dex", "trades", "baseswap"]
     description: "baseswap base trades on base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -239,7 +253,7 @@ models:
       project: baseswap
       contributors: chef_seaweed
     config:
-      tags: [ 'base', 'dex', 'trades', 'baseswap' ]
+      tags: ["base", "dex", "trades", "baseswap"]
     description: "baseswap base trades on base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -258,7 +272,7 @@ models:
       project: dackieswap
       contributors: Chain_L
     config:
-      tags: [ 'base', 'dex', 'trades', 'dackieswap' ]
+      tags: ["base", "dex", "trades", "dackieswap"]
     description: "dackieswap base trades on base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -275,7 +289,7 @@ models:
       project: scale
       contributors: ARDev097
     config:
-      tags: [ 'base', 'dex', 'trades', 'scale' ]
+      tags: ["base", "dex", "trades", "scale"]
     description: "scale base trades on base"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -292,7 +306,7 @@ models:
       project: rubicon
       contributors: denver, tomfutago
     config:
-      tags: [ 'base', 'dex', 'trades', 'rubicon' ]
+      tags: ["base", "dex", "trades", "rubicon"]
     description: "rubicon base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -302,7 +316,6 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('rubicon_base_base_trades_seed')
 
-
   - name: kyberswap_base_base_trades
     meta:
       blockchain: base
@@ -310,7 +323,7 @@ models:
       project: kyberswap
       contributors: lldao
     config:
-      tags: [ 'base', 'dex', 'trades', 'kyberswap' ]
+      tags: ["base", "dex", "trades", "kyberswap"]
     description: "kyberswap base  base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -322,7 +335,6 @@ models:
           filter:
             version: 2
 
-
   - name: woofi_base_base_trades
     meta:
       blockchain: base
@@ -330,7 +342,7 @@ models:
       project: woofi
       contributors: lldao
     config:
-      tags: [ 'base', 'dex', 'trades', 'woofi' ]
+      tags: ["base", "dex", "trades", "woofi"]
     description: "woofi base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -342,7 +354,6 @@ models:
           filter:
             version: 2
 
-
   - name: velocimeter_v2_base_base_trades
     meta:
       blockchain: base
@@ -350,7 +361,7 @@ models:
       project: velocimeter_v2
       contributors: lldao
     config:
-      tags: [ 'base', 'dex', 'trades', 'velocimeter_v2' ]
+      tags: ["base", "dex", "trades", "velocimeter_v2"]
     description: "velocimeter_v2 base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -362,7 +373,6 @@ models:
           filter:
             version: 2
 
-
   - name: moonbase_base_base_trades
     meta:
       blockchain: base
@@ -370,7 +380,7 @@ models:
       project: moonbase
       contributors: LLDAO
     config:
-      tags: [ 'base', 'dex', 'trades', 'moonbase' ]
+      tags: ["base", "dex", "trades", "moonbase"]
     description: "moonbase base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -382,7 +392,6 @@ models:
           filter:
             version: 1
 
-
   - name: sobal_base_base_trades
     meta:
       blockchain: base
@@ -390,7 +399,7 @@ models:
       project: sobal
       contributors: LLDAO
     config:
-      tags: [ 'base', 'dex', 'trades', 'sobal' ]
+      tags: ["base", "dex", "trades", "sobal"]
     description: "sobal base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -402,7 +411,6 @@ models:
           filter:
             version: 1
 
-
   - name: plantbaseswap_base_base_trades
     meta:
       blockchain: base
@@ -410,7 +418,7 @@ models:
       project: plantbaseswap
       contributors: LLDAO
     config:
-      tags: [ 'base', 'dex', 'trades', 'plantbaseswap' ]
+      tags: ["base", "dex", "trades", "plantbaseswap"]
     description: "plantbaseswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -422,7 +430,6 @@ models:
           filter:
             version: 2
 
-
   - name: derpdex_base_base_trades
     meta:
       blockchain: base
@@ -430,7 +437,7 @@ models:
       project: derpdex
       contributors: LLDAO
     config:
-      tags: [ 'base', 'dex', 'trades', 'derpdex' ]
+      tags: ["base", "dex", "trades", "derpdex"]
     description: "derpdex base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -442,8 +449,6 @@ models:
           filter:
             version: 1
 
-
-
   - name: torus_base_base_trades
     meta:
       blockchain: base
@@ -451,7 +456,7 @@ models:
       project: torus
       contributors: LLDAO
     config:
-      tags: [ 'base', 'dex', 'trades', 'torus', 'v1' ]
+      tags: ["base", "dex", "trades", "torus", "v1"]
     description: "torus base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -461,7 +466,6 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('torus_base_base_trades_seed')
 
-
   - name: throne_exchange_v2_base_base_trades
     meta:
       blockchain: base
@@ -469,7 +473,7 @@ models:
       project: throne_exchange
       contributors: LLDAO
     config:
-      tags: [ 'base', 'dex', 'trades', 'throne_exchange' ]
+      tags: ["base", "dex", "trades", "throne_exchange"]
     description: "throne_exchange base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -481,7 +485,6 @@ models:
           filter:
             version: 2
 
-
   - name: sharkswap_base_base_trades
     meta:
       blockchain: base
@@ -489,7 +492,7 @@ models:
       project: sharkswap
       contributors: LLDAO
     config:
-      tags: [ 'base', 'dex', 'trades', 'sharkswap' ]
+      tags: ["base", "dex", "trades", "sharkswap"]
     description: "sharkswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -501,7 +504,6 @@ models:
           filter:
             version: 1
 
-
   - name: throne_exchange_v3_base_base_trades
     meta:
       blockchain: base
@@ -509,7 +511,7 @@ models:
       project: throne_exchange
       contributors: LLDAO
     config:
-      tags: [ 'base', 'dex', 'trades', 'throne_exchange' ]
+      tags: ["base", "dex", "trades", "throne_exchange"]
     description: "throne_exchange base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -521,7 +523,6 @@ models:
           filter:
             version: 3
 
-
   - name: horizondex_base_base_trades
     meta:
       blockchain: base
@@ -529,7 +530,7 @@ models:
       project: horizondex
       contributors: p2c2e
     config:
-      tags: [ 'base', 'dex', 'trades', 'horizondex' ]
+      tags: ["base", "dex", "trades", "horizondex"]
     description: "horizondex dex swaps on base chain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -541,7 +542,6 @@ models:
           filter:
             version: 1
 
-
   - name: citadelswap_base_base_trades
     meta:
       blockchain: base
@@ -549,7 +549,7 @@ models:
       project: citadelswap
       contributors: LLDAO
     config:
-      tags: [ 'base', 'dex', 'trades', 'citadelswap' ]
+      tags: ["base", "dex", "trades", "citadelswap"]
     description: "citadelswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -561,7 +561,6 @@ models:
           filter:
             version: 1
 
-
   - name: autotronic_base_base_trades
     meta:
       blockchain: base
@@ -569,7 +568,7 @@ models:
       project: autotronic
       contributors: LLDAO
     config:
-      tags: [ 'base', 'dex', 'trades', 'autotronic' ]
+      tags: ["base", "dex", "trades", "autotronic"]
     description: "autotronic base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -581,7 +580,6 @@ models:
           filter:
             version: 1
 
-
   - name: uniswap_v2_base_base_trades
     meta:
       blockchain: base
@@ -589,7 +587,7 @@ models:
       project: uniswap
       contributors: Henrystats
     config:
-      tags: [ 'base', 'dex', 'trades', 'uniswap', 'v2' ]
+      tags: ["base", "dex", "trades", "uniswap", "v2"]
     description: "uniswap base v2 base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -601,7 +599,6 @@ models:
           filter:
             version: 2
 
-
   - name: soswap_base_base_trades
     meta:
       blockchain: base
@@ -609,7 +606,7 @@ models:
       project: soswap
       contributors: archie
     config:
-      tags: [ 'base', 'dex', 'trades', 'soswap' ]
+      tags: ["base", "dex", "trades", "soswap"]
     description: "soswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -621,7 +618,6 @@ models:
           filter:
             version: 1
 
-
   - name: elk_finance_base_base_trades
     meta:
       blockchain: base
@@ -629,7 +625,7 @@ models:
       project: elk_finance
       contributors: archie
     config:
-      tags: [ 'base', 'dex', 'trades', 'elk_finance' ]
+      tags: ["base", "dex", "trades", "elk_finance"]
     description: "elk_finance base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -641,7 +637,6 @@ models:
           filter:
             version: 1
 
-
   - name: oasisswap_base_base_trades
     meta:
       blockchain: base
@@ -649,7 +644,7 @@ models:
       project: oasisswap
       contributors: archie
     config:
-      tags: [ 'base', 'dex', 'trades', 'oasisswap' ]
+      tags: ["base", "dex", "trades", "oasisswap"]
     description: "oasisswap base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -661,7 +656,6 @@ models:
           filter:
             version: 1
 
-
   - name: leetswap_v2_base_base_trades
     meta:
       blockchain: base
@@ -669,7 +663,7 @@ models:
       project: leetswap_v2
       contributors: archie
     config:
-      tags: [ 'base', 'dex', 'trades', 'leetswap' ]
+      tags: ["base", "dex", "trades", "leetswap"]
     description: "leetswap_v2 base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -688,7 +682,7 @@ models:
       project: openocean
       contributors: Henrystats, tomfutago
     config:
-      tags: [ 'base', 'dex', 'trades', 'openocean' ]
+      tags: ["base", "dex", "trades", "openocean"]
     description: "openocean base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -705,7 +699,7 @@ models:
       project: rocketswap
       contributors: intensodefi
     config:
-      tags: [ 'base', 'dex', 'trades', 'rocketswap' ]
+      tags: ["base", "dex", "trades", "rocketswap"]
     description: "rocketswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -724,7 +718,7 @@ models:
       project: wombat_exchange
       contributors: Henrystats
     config:
-      tags: [ 'base', 'dex', 'trades', 'wombat_exchange' ]
+      tags: ["base", "dex", "trades", "wombat_exchange"]
     description: "wombat exchange base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -743,7 +737,7 @@ models:
       project: icecreamswap
       contributors: sofiat
     config:
-      tags: [ 'base', 'dex', 'trades', 'icecreamswap' ]
+      tags: ["base", "dex", "trades", "icecreamswap"]
     description: "icecreamswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -760,7 +754,7 @@ models:
       project: alienbase
       contributors: intensodefi
     config:
-      tags: [ 'base', 'dex', 'trades', 'alienbase' ]
+      tags: ["base", "dex", "trades", "alienbase"]
     description: "alienbase base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -779,7 +773,7 @@ models:
       project: swapbased
       contributors: intensodefi
     config:
-      tags: [ 'base', 'dex', 'trades', 'swapbased' ]
+      tags: ["base", "dex", "trades", "swapbased"]
     description: "swapbased base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -798,7 +792,7 @@ models:
       project: gridex
       contributors: sofiat
     config:
-      tags: [ 'base', 'dex', 'trades', 'gridex' ]
+      tags: ["base", "dex", "trades", "gridex"]
     description: "gridex base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -817,7 +811,7 @@ models:
       project: baseswap
       contributors: sofiat
     config:
-      tags: [ 'base', 'dex', 'trades', 'baseswap' ]
+      tags: ["base", "dex", "trades", "baseswap"]
     description: "baseswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -836,7 +830,7 @@ models:
       project: synthswap
       contributors: sofiat
     config:
-      tags: [ 'base', 'dex', 'trades', 'synthswap' ]
+      tags: ["base", "dex", "trades", "synthswap"]
     description: "synthswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -855,7 +849,7 @@ models:
       project: solidly
       contributors: sofiat
     config:
-      tags: [ 'base', 'dex', 'trades', 'solidly' ]
+      tags: ["base", "dex", "trades", "solidly"]
     description: "solidly base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -874,7 +868,7 @@ models:
       project: energon
       contributors: sofiat
     config:
-      tags: [ 'base', 'dex', 'trades', 'energon' ]
+      tags: ["base", "dex", "trades", "energon"]
     description: "energon base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -893,7 +887,7 @@ models:
       project: voltswap
       contributors: sofiat
     config:
-      tags: [ 'base', 'dex', 'trades', 'voltswap' ]
+      tags: ["base", "dex", "trades", "voltswap"]
     description: "voltswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -912,7 +906,7 @@ models:
       project: crescentswap
       contributors: sofiat
     config:
-      tags: [ 'base', 'dex', 'trades', 'crescentswap' ]
+      tags: ["base", "dex", "trades", "crescentswap"]
     description: "crescentswap base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -931,7 +925,7 @@ models:
       project: baso_finance
       contributors: sofiat
     config:
-      tags: [ 'base', 'dex', 'trades', 'baso_finance' ]
+      tags: ["base", "dex", "trades", "baso_finance"]
     description: "baso finance base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -948,7 +942,7 @@ models:
       project: clipper
       contributors: amalashkevich
     config:
-      tags: [ 'base', 'dex', 'trades', 'clipper' ]
+      tags: ["base", "dex", "trades", "clipper"]
     description: "clipper base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -968,7 +962,7 @@ models:
       project: swaap
       contributors: borelien
     config:
-      tags: [ 'base', 'dex', 'trades', 'swaap', 'v2']
+      tags: ["base", "dex", "trades", "swaap", "v2"]
     description: "swaap v2 base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -987,7 +981,7 @@ models:
       project: xchange
       contributors: mike-x7f
     config:
-      tags: [ 'base', 'dex', 'trades', 'xchange' ]
+      tags: ["base", "dex", "trades", "xchange"]
     description: "xchange base base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -996,3 +990,54 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('xchange_base_base_trades_seed')
+
+  - name: infusion_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: infusion
+      contributors: jason
+    config:
+      tags: [ 'base', 'dex', 'trades', 'infusion' ]
+    description: "infusion base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('infusion_base_base_trades_seed')
+
+  - name: flashliquidity_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: flashliquidity
+      contributors: archie
+    config:
+      tags: [ 'base', 'dex', 'trades', 'flashliquidity' ]
+    description: "flashliquidity base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('flashliquidity_base_base_trades_seed')
+          
+  - name: akronswap_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: akronswap
+      contributors: archie
+    config:
+      tags: [ 'base', 'dex', 'trades', 'akronswap' ]
+    description: "akronswap base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('akronswap_base_base_trades_seed')

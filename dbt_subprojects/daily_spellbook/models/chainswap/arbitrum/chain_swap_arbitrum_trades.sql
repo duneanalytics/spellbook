@@ -9,7 +9,7 @@
         incremental_predicates=[
             incremental_predicate('DBT_INTERNAL_DEST.block_time')
         ],
-        unique_key=['blockchain', 'tx_hash', 'evt_index'],
+        unique_key=['blockchain', 'tx_hash', 'evt_index', 'fee_token_address'],
     )
 }}
 
@@ -22,6 +22,8 @@
 {% set deployer_5 = '0xb7b953e81612c57256ff0aebd62b6a2f0546f7da' %}
 {% set deployer_6 = '0xb252f0ab7bdf1be4d5bbf607eb5c220b2d902a2c' %}
 {% set deployer_7 = '0xa24e8cE77D4A7Ce869DA3730e6560BfB66553F94' %}
+{% set deployer_8 = '0xc8378819fbB95130c34D62f520167F745B13C305' %}
+{% set deployer_9 = '0xde7Cb3d58D4004ff0De70995C0604089cc945EAF' %}
 {% set weth_contract_address = '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1' %}
 {% set usdc_contract_address = '0xaf88d065e77c8cC2239327C5EDb3A432268e5831' %}
 {% set fee_recipient_1 = '0x415EEc63c95e944D544b3088bc682B759edB8548' %}
@@ -40,6 +42,8 @@ with
                 or "from" = {{ deployer_5 }}
                 or "from" = {{ deployer_6 }}
                 or "from" = {{ deployer_7 }}
+                or "from" = {{ deployer_8 }}
+                or "from" = {{ deployer_9 }}
             )
             and block_time >= timestamp '{{project_start_date}}'
     ),
@@ -102,7 +106,11 @@ with
             (to = {{ fee_recipient_1 }} or to = {{ fee_recipient_2 }})
             and block_time >= timestamp '{{project_start_date}}'
             and value > 0
-
+    ),
+    aggregated_fee_deposits as (
+        select evt_tx_hash, sum(fee_token_amount) as fee_token_amount, fee_token_address 
+        from fee_deposits 
+        group by evt_tx_hash, fee_token_address
     )
 select distinct
     block_time,
@@ -122,7 +130,7 @@ select distinct
     fee_token_amount / power(10, decimals) * price as fee_usd,
     fee_token_amount / power(10, decimals) as fee_token_amount,
     symbol as fee_token_symbol,
-    cast(fee_token_address as varchar) as fee_token_address,
+    coalesce(fee_token_address, {{weth_contract_address}}) as fee_token_address,
     -- Dex
     project,
     version,
@@ -137,8 +145,7 @@ from bot_trades
 join
     highest_event_index_for_each_trade
     on bot_trades.tx_hash = highest_event_index_for_each_trade.tx_hash
-/* Left Outer Join to support 0 fee trades */
-left join fee_deposits on bot_trades.tx_hash = fee_deposits.evt_tx_hash
+left join aggregated_fee_deposits as fee_deposits on bot_trades.tx_hash = fee_deposits.evt_tx_hash
 left join
     {{ source('prices', 'usd') }}
     on (

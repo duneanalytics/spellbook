@@ -475,7 +475,7 @@
 {% set _taker_data = "4 + 32*4 + bytearray_to_bigint(substr(input, 4 + 32*13 + 24 + 1, 8))" %}
 {% set _recipients = "bytearray_to_bigint(substr(input, " ~ _taker_data ~ " + 32*1 + 24 + 1, 8))" %}
 {% set methods = methods + [{
-    "project":          "Uniswap",
+    "project":          "UniswapX",
     "selector":         "0x3f62192e",
     "tag":              "'UniswapXV1'",
     "name":             "execute",
@@ -501,7 +501,7 @@
 {% set _taker_data = "4 + 32*5 + bytearray_to_bigint(substr(input, 4 + 32*14 + 24 + 1, 8))" %}
 {% set _recipients = "bytearray_to_bigint(substr(input, " ~ _taker_data ~ " + 32*1 + 24 + 1, 8))" %}
 {% set methods = methods + [{
-    "project":          "Uniswap",
+    "project":          "UniswapX",
     "selector":         "0x0d335884",
     "tag":              "'UniswapXV1'",
     "name":             "executeWithCallback",
@@ -528,7 +528,7 @@
 {% set _taker_data = "bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + 32*12 + 24 + 1, 8))" %}
 {% set _recipients = "bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + " ~ _taker_data ~ " + 32*4 + 24 + 1, 8))" %}
 {% set methods = methods + [{
-    "project":          "Uniswap",
+    "project":          "UniswapX",
     "selector":         "0x0d7a16c3",
     "tag":              "'UniswapXV1'",
     "name":             "executeBatch",
@@ -557,7 +557,7 @@
 {% set _taker_data = "bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + 32*12 + 24 + 1, 8))" %}
 {% set _recipients = "bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + " ~ _taker_data ~ " + 32*4 + 24 + 1, 8))" %}
 {% set methods = methods + [{
-    "project":          "Uniswap",
+    "project":          "UniswapX",
     "selector":         "0x13fb72c7",
     "tag":              "'UniswapXV1'",
     "name":             "executeBatchWithCallback",
@@ -584,7 +584,7 @@
 {% set _taker_data = "4 + 32*1 + bytearray_to_bigint(substr(input, 4 + 32*10 + 24 + 1, 8))" %}
 {% set _recipients = "bytearray_to_bigint(substr(input, " ~ _taker_data ~ " + 32*4 + 24 + 1, 8))" %}
 {% set methods = methods + [{
-    "project":          "Uniswap",
+    "project":          "UniswapX",
     "selector":         "0x3f62192e",
     "tag":              "'UniswapXV2'",
     "name":             "execute",
@@ -610,7 +610,7 @@
 {% set _taker_data = "4 + 32*2 + bytearray_to_bigint(substr(input, 4 + 32*11 + 24 + 1, 8))" %}
 {% set _recipients = "bytearray_to_bigint(substr(input, " ~ _taker_data ~ " + 32*4 + 24 + 1, 8))" %}
 {% set methods = methods + [{
-    "project":          "Uniswap",
+    "project":          "UniswapX",
     "selector":         "0x0d335884",
     "tag":              "'UniswapXV2'",
     "name":             "executeWithCallback",
@@ -638,7 +638,7 @@
 {% set _taker_data = "bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + 32*9 + 24 + 1, 8))" %}
 {% set _recipients = "bytearray_to_bigint(substr(input, " ~ _order_beginning ~ " + " ~ _taker_data ~ " + 32*4 + 24 + 1, 8))" %}
 {% set methods = methods + [{
-    "project":          "Uniswap",
+    "project":          "UniswapX",
     "selector":         "0x13fb72c7",
     "tag":              "'UniswapXV2'",
     "name":             "executeBatchWithCallback",

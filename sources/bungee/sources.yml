@@ -1,0 +1,116 @@
+version: 2
+
+sources:
+  - name: socket_v2_ethereum
+    description: "Ethereum Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: &common_columns
+          - name: contract_address
+            description: "Contract address of the Socket Gateway"
+          - name: evt_tx_hash
+            description: "Transaction hash of the event"
+          - name: evt_index
+            description: "Event index in the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block when the event was emitted"
+          - name: evt_block_number
+            description: "Block number when the event was emitted"
+          - name: amount
+            description: "Amount of tokens being bridged"
+          - name: token
+            description: "Address of the token being bridged"
+          - name: toChainId
+            description: "Destination chain ID"
+          - name: bridgeName
+            description: "Name of the bridge used"
+          - name: sender
+            description: "Address of the sender"
+          - name: receiver
+            description: "Address of the receiver"
+          - name: metadata
+            description: "Additional bridge metadata"
+
+  - name: socket_v2_arbitrum
+    description: "Arbitrum Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_optimism
+    description: "Optimism Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_avalanche_c
+    description: "Avalanche C-Chain Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_bnb
+    description: "BNB Chain Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_polygon
+    description: "Polygon Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_fantom
+    description: "Fantom Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_gnosis
+    description: "Gnosis Chain Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_zksync
+    description: "zkSync Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_base
+    description: "Base Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_zkevm
+    description: "zkEVM Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_scroll
+    description: "Scroll Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_linea
+    description: "Linea Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_mantle
+    description: "Mantle Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
+
+  - name: socket_v2_blast
+    description: "Blast Socket Gateway events"
+    tables:
+      - name: SocketGateway_evt_SocketBridge
+        columns: *common_columns
