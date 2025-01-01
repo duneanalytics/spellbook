@@ -1,0 +1,17 @@
+version: 1
+
+models:
+  - name:  curve_pools_optimism_balances
+    description: "Tracks OP token balances in curve pools on Optimism."
+    meta:
+      blockchain: optimism
+      sector: DEX
+      project: curve
+      contributors: jason
+    config:
+      tags: ['optimism', 'op_token', 'balances', 'curve']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_address
+            - snapshot_day
