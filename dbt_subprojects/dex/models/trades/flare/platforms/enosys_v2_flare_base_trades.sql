@@ -14,7 +14,7 @@
         blockchain = 'flare'
         , project = 'enosys'
         , version = '2'
-        , Pair_evt_Swap = source('enosys_flare', 'EnosysDexPair_evt_Swap')
+        , Pair_evt_Swap = source('enosys_flare', 'EnosysPair_evt_Swap')
         , Factory_evt_PairCreated = source('enosys_flare', 'EnosysDexFactory_evt_PairCreated')
     )
 }}
