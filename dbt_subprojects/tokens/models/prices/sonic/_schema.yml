@@ -18,5 +18,7 @@ models:
         description: "Token symbol"
       - name: contract_address
         description: "Contract address of the token"
+        data_tests:
+          - unique
       - name: decimals
         description: "Number of decimal places for the token"
