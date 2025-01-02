@@ -17,7 +17,7 @@ WITH token_swaps AS (
         swapped AS token_sold_amount_raw,
         received AS token_bought_amount_raw,
         account AS token_sold_address,
-        CAST('0x0000000000000000000000000000000000000000' AS STRING) AS token_bought_address,
+        CAST('0x0000000000000000000000000000000000000000' AS VARCHAR) AS token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         evt_index AS evt_index
@@ -36,7 +36,7 @@ eth_swaps AS (
         evt_tx_to AS taker,
         swapped AS token_sold_amount_raw,
         received AS token_bought_amount_raw,
-        CAST('0x0000000000000000000000000000000000000000' AS STRING) AS token_sold_address,
+        CAST('0x0000000000000000000000000000000000000000' AS VARCHAR) AS token_sold_address,
         token AS token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
