@@ -127,3 +127,26 @@ models:
         data_tests:
           - accepted_values:
               values: ['erc721', 'erc1155' , 'erc20', 'cryptopunks','superrare']
+
+  - name: tokens_ethereum_rwa
+    meta:
+      blockchain: ethereum
+      sector: rwa
+      contributors: synthquest
+    config:
+      tags: ['tokens', 'ethereum', 'rwa']
+    description: >
+      Selection of RWA token addresses.
+    columns:
+      - name: blockchain
+        description: "Blockchain name"
+      - name: contract_address
+        description: "RWA token contract address"
+      - name: backing
+        description: "RWA token backing"
+      - name: symbol
+        description: "RWA token symbol"
+      - name: name
+        description: "RWA token project name"
+      - name: decimals
+        description: "Number of decimals"
