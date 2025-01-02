@@ -5,7 +5,7 @@
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "avalanche_c", "bnb", "fantom", "optimism", "polygon", "zksync", "zora", "celo", "base"]\',
                                     "sector",
                                     "cex",
-                                    \'["hildobby", "soispoke", "web3_data", "msilb7", "Henrystats", "sankinyue"]\') }}')}}
+                                    \'["hildobby", "soispoke", "web3_data", "msilb7", "Henrystats", "sankinyue", "synthquest"]\') }}')}}
 
 SELECT address, cex_name, distinct_name, added_by, added_date
 FROM (VALUES
@@ -150,6 +150,7 @@ FROM (VALUES
     , (0x4230c402c08cb66dcf3820649a115e54661fce9d, 'Bybit', 'Bybit 8', 'hildobby', date '2023-11-15')
     , (0x3d5202a0564de9b05ecd07c955bcca964585ea03, 'Bybit', 'Bybit 9', 'hildobby', date '2024-05-09')
     , (0x1e32760a3285550278aeafa776e5641bc581c845, 'Bybit', 'Bybit 10', 'hildobby', date '2024-10-06')
+    , (0x88a1493366d48225fc3cefbdae9ebb23e323ade3, 'Bybit', 'Bybit 11', 'synthquest', date '2024-11-27')
     , (0xab97925eb84fe0260779f58b7cb08d77dcb1ee2b, 'Bybit', 'Bybit Gas Supplier 1', 'hildobby', date '2023-11-15')
     , (0xa95b83af96d0b8a90bd507f2bd82ad8f3dbb86bc, 'Bybit', 'Bybit Gas Supplier 2', 'hildobby', date '2023-11-20')
     , (0xf65d698d18bc37bf36e4c8d4fe4f051ef570e2b6, 'Bybit', 'Bybit Gas Supplier 3', 'hildobby', date '2023-11-23')
@@ -260,6 +261,30 @@ FROM (VALUES
     , (0x3dd87411a3754deea8cc52c4cf57e2fc254924cc, 'Coinbase', 'Coinbase 56', 'hildobby', date '2024-05-04')
     , (0x441cacfd43856409b163b90e094bb42aeb70a70e, 'Coinbase', 'Coinbase 57', 'hildobby', date '2024-05-25')
     , (0xa14d57f5ea867572b0d239798d2c1dde13153902, 'Coinbase', 'Coinbase 58', 'hildobby', date '2024-05-25')
+    , (0x9ebe8ae7dbc0285b04e93dab86a081ca32ccf52e, 'Coinbase', 'Coinbase 59', 'synthquest', date '2024-11-27')
+    , (0x3dc474a2a65507f32b05c5f80d852515b25b2134, 'Coinbase', 'Coinbase 60', 'synthquest', date '2024-11-27')
+    , (0xcf63fc571adcec4fd4a750ecacc3af1f5b748101, 'Coinbase', 'Coinbase 61', 'synthquest', date '2024-11-27')
+    , (0x00aac037c2ca137972f963693d38a57d0e9f7475, 'Coinbase', 'Coinbase 62', 'synthquest', date '2024-11-27')
+    , (0x60eb0250e3a428a51ccb1e44e0aadbd1fd213ff3, 'Coinbase', 'Coinbase 63', 'synthquest', date '2024-11-27')
+    , (0x336307f2d8390035ba926a61a86b45ca9dc91e57, 'Coinbase', 'Coinbase 64', 'synthquest', date '2024-11-27')
+    , (0x57a7560d0ec28065762203c0d633943298eac7c0, 'Coinbase', 'Coinbase 65', 'synthquest', date '2024-11-27')
+    , (0x0b0a5886664376f59c351ba3f598c8a8b4d0a6f3, 'Coinbase', 'Coinbase 66', 'synthquest', date '2024-11-27')
+    , (0xee81b5afc73cf528778e0ed98622e434e5efadb4, 'Coinbase', 'Coinbase 67', 'synthquest', date '2024-11-27')
+    , (0x9b4fc9e22b46487f0810ef5dfa230b9f139e5179, 'Coinbase', 'Coinbase 68', 'synthquest', date '2024-11-27')
+    , (0x95f90ce2e3abaed29eeebdb42e1fdb146e0f848a, 'Coinbase', 'Coinbase 69', 'synthquest', date '2024-11-27')
+    , (0x122fdd9fecbc82f7d4237c0549a5057e31c8ef8d, 'Coinbase', 'Coinbase 70', 'synthquest', date '2024-11-27')
+    , (0x8196f70b2c17ba58d8ef56ad62087ee8231be33a, 'Coinbase', 'Coinbase 71', 'synthquest', date '2024-11-27')
+    , (0xadbbe373b5b5f72c59c0311cffbded51f0c5f434, 'Coinbase', 'Coinbase 72', 'synthquest', date '2024-11-27')
+    , (0x67857ee12929e74082f1cae64ef4221830c39113, 'Coinbase', 'Coinbase 73', 'synthquest', date '2024-11-27')
+    , (0xa2908f1758d1cc3990f4a2da8dea0aa2ecf1b913, 'Coinbase', 'Coinbase 74', 'synthquest', date '2024-11-27')
+    , (0xd451e3919950963e9c1ca2f78a987dbd7937c0fb, 'Coinbase', 'Coinbase 75', 'synthquest', date '2024-11-27')
+    , (0x27724b0d4fb98a89a092e6a4adbc09154c182637, 'Coinbase', 'Coinbase 76', 'synthquest', date '2024-11-27')
+    , (0x7c310a03f4cfa19f7f3d7f36dd3e05828629fa78, 'Coinbase', 'Coinbase 77', 'synthquest', date '2024-11-27')
+    , (0x21bd501f86a0b5ce0907651df3368da905b300a9, 'Coinbase', 'Coinbase 78', 'synthquest', date '2024-11-27')
+    , (0x7c41fdced2ea646ed85665d1a9b28e6632b61c41, 'Coinbase', 'Coinbase 79', 'synthquest', date '2024-11-27')
+    , (0x607094ed3a8361bb5e94dd21bcbef2997b687478, 'Coinbase', 'Coinbase 80', 'synthquest', date '2024-11-27')
+    , (0x1b4c15b991543a6082213a88276e7a83c9985676, 'Coinbase', 'Coinbase 81', 'synthquest', date '2024-11-27')
+    , (0xd5c41fd4a31eaaf5559ffcc60ec051fcb8ecc375, 'Coinbase', 'Coinbase 82', 'synthquest', date '2024-11-27')
     , (0xa090e606e30bd747d4e6245a1517ebe430f0057e, 'Coinbase', 'Coinbase Miscellaneous', 'hildobby', date '2022-08-28')
     , (0xf6874c88757721a02f47592140905c4336dfbc61, 'Coinbase', 'Coinbase Commerce', 'hildobby', date '2022-08-28')
     , (0x881d4032abe4188e2237efcd27ab435e81fc6bb1, 'Coinbase', 'Coinbase Commerce 2', 'hildobby', date '2022-08-28')

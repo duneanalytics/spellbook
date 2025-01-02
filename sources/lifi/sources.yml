@@ -1,0 +1,56 @@
+version: 2
+
+sources:
+  - name: lifi_ethereum
+    description: "Ethereum LiFi events"
+    tables:
+      - name: LiFiDiamond_v2_evt_LiFiTransferStarted
+        columns: &common_columns
+          - name: contract_address
+            description: "Contract address of the LiFi Diamond"
+          - name: evt_tx_hash
+            description: "Transaction hash of the event"
+          - name: evt_index
+            description: "Event index in the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block when the event was emitted"
+          - name: evt_block_number
+            description: "Block number when the event was emitted"
+          - name: bridgeData
+            description: "JSON data containing bridge transfer information including transactionId, bridge, integrator, referrer, sendingAssetId, receiver, minAmount, and destinationChainId"
+
+  - name: lifi_arbitrum
+    description: "Arbitrum LiFi events"
+    tables:
+      - name: LiFiDiamond_v2_evt_LiFiTransferStarted
+        columns: *common_columns
+
+  - name: lifi_avalanche_c
+    description: "Avalanche C-Chain LiFi events"
+    tables:
+      - name: LiFiDiamond_v2_evt_LiFiTransferStarted
+        columns: *common_columns
+
+  - name: lifi_bnb
+    description: "BNB Chain LiFi events"
+    tables:
+      - name: LiFiDiamond_v2_evt_LiFiTransferStarted
+        columns: *common_columns
+
+  - name: lifi_fantom
+    description: "Fantom LiFi events"
+    tables:
+      - name: LiFiDiamond_v2_evt_LiFiTransferStarted
+        columns: *common_columns
+
+  - name: lifi_gnosis
+    description: "Gnosis Chain LiFi events"
+    tables:
+      - name: LiFiDiamond_v2_evt_LiFiTransferStarted
+        columns: *common_columns
+
+  - name: lifi_zksync
+    description: "zkSync LiFi events"
+    tables:
+      - name: LiFiDiamond_v2_evt_LiFiTransferStarted
+        columns: *common_columns

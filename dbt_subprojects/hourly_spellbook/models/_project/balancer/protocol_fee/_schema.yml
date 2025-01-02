@@ -37,7 +37,10 @@ models:
         description: "Blockchain"
       - &pool_type
         name: pool_type
-        description: "Pool attributes, determined by the pool's factory"              
+        description: "Pool attributes, determined by the pool's factory"     
+      - &fee_type
+        name: fee_type
+        description: "Labels whether fee comes from swaps or yield for V3. V2 fees are labeled as 'v2'."                          
       - &token_address
         name: token_address
         description: "Contract address of the token in which protocol fees were collected"

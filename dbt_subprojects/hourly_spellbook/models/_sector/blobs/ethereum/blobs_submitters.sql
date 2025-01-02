@@ -57,6 +57,7 @@ SELECT address
         , (0x8cda8351236199af7532bad53d683ddd9b275d89, 'RACE', 'RACEecosystem')
         , (0x7f9d9c1bce1062e1077845ea39a0303429600a06, 'Binary', 'thebinaryhldgs')
         , (0x4d875acfd836eb3d8a2f25ba03de16c97ec9fc0f, 'PandaSea', 'pandaseaweb3')
+        , (0xf4559766b24402f0fff8fc5a6835d5f6e837aed3, 'PandaSea', 'pandaseaweb3')
         , (0xf7ca543d652e38692fd12f989eb55b5327ec9a20, 'Shape', 'Shape_L2')
         , (0xde794bec196832474f2f218135bfd0f7ca7fb038, 'Swan Chain', 'swan_chain')
         , (0x67a44ce38627f46f20b1293960559ed85dd194f1, 'Polynomial', 'PolynomialFi')
@@ -76,4 +77,5 @@ SELECT address
         , (0xb6cf39ee72e0127e6ea6059e38b8c197227a6ac7, 'Morph', 'MorphL2')
         , (0x2986bf308d0684ad77cd32ee1c60429e6573b5af, 'R0AR Chain', 'th3r0ar')
         , (0x2f60a5184c63ca94f82a27100643dbabe4f3f7fd, 'Unichain', 'unichain')
+        , (0xf854cd5b26bfd73d51236c0122798907ed65b1f2, 'Swell', 'swellnetworkio')
         ) AS x(address, entity, x_username)
