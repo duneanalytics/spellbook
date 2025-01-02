@@ -5,10 +5,10 @@
   , incremental_strategy = 'merge'
   , unique_key = ['reserve', 'symbol', 'hour']
   , alias = 'interest'
-  , post_hook='{{ expose_spells(\'["base"]\',
-                                  "project",
-                                  "aave_v3",
-                                  \'["mikeghen1","batwayne", "chuxin"]\') }}'
+  , post_hook='{{ expose_spells(blockchains = \'["base"]\',
+                                spell_type = "project",
+                                spell_name = "aave_v3",
+                                contributors = \'["mikeghen1","batwayne", "chuxin"]\') }}'
   )
 }}
 
@@ -23,6 +23,6 @@ from {{ source('aave_v3_base', 'Pool_evt_ReserveDataUpdated') }} a
 left join {{ source('tokens_base', 'erc20') }} t
 on a.reserve = t.contract_address
 {% if is_incremental() %}
-    WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+    WHERE {{ incremental_predicate('evt_block_time') }}
 {% endif %}
 group by 1,2,3

@@ -1,10 +1,10 @@
 {{ config(
     schema = 'aave_base'
     , alias = 'interest_rates'
-    , post_hook='{{ expose_spells(\'["base"]\',
-                                  "project",
-                                  "aave",
-                                  \'["mikeghen1","batwayne", "chuxin"]\') }}'
+    , post_hook='{{ expose_spells(blockchains = \'["base"]\',
+                                  spell_type = "project",
+                                  spell_name = "aave",
+                                  contributors = \'["mikeghen1","batwayne", "chuxin"]\') }}'
   )
 }}
 
