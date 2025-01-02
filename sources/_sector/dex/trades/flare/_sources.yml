@@ -15,7 +15,7 @@ sources:
 
   - name: enosys_flare
     tables:
-      - name: EnosysDexPair_evt_Swap
+      - name: EnosysPair_evt_Swap
       - name: EnosysDexFactory_evt_PairCreated
       - name: EnosysDexV3Pool_evt_Swap
       - name: EnosysDexV3Factory_evt_PoolCreated
