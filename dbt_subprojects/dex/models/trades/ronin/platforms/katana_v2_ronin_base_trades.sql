@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'katana_ronin'
+    schema = 'katana_v2_ronin'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
