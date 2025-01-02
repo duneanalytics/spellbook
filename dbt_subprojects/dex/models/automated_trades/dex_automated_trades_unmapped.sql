@@ -8,4 +8,4 @@
 
 SELECT * 
 FROM {{ ref('dex_automated_trades_all') }}
-WHERE project_status = 'false' 
+WHERE project_status = false
