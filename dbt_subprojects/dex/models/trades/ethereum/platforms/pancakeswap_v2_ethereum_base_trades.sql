@@ -31,7 +31,7 @@ transfer as (
   and block_date >= date '2024-09-20' 
   and tx_hash in (select evt_tx_hash from {{ source('pancakeswap_ethereum', 'ExclusiveDutchOrderReactor_evt_Fill') }})
   {% if is_incremental() %}
-  and {{ incremental_predicate('evt_block_time') }}
+  and {{ incremental_predicate('block_time') }}
   {% endif %}
 ),
 
