@@ -1,13 +1,3 @@
-{{ config(
-    schema = 'otsea_base',
-    alias = 'base_trades',
-    partition_by = ['block_month'],
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
-) }}
-
 WITH token_swaps AS (
     SELECT
         evt_block_number AS block_number,
@@ -15,9 +5,9 @@ WITH token_swaps AS (
         evt_tx_from AS maker,
         evt_tx_to AS taker,
         swapped AS token_sold_amount_raw,
-        received AS token_bought_amount_raw,        
+        received AS token_bought_amount_raw,
         account AS token_sold_address,
-        token AS token_bought_address,
+        CAST('0x0000000000000000000000000000000000000000' AS VARBINARY) AS token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
         evt_index AS evt_index
@@ -35,8 +25,8 @@ eth_swaps AS (
         evt_tx_from AS maker,
         evt_tx_to AS taker,
         swapped AS token_sold_amount_raw,
-        received AS token_bought_amount_raw,        
-        account AS token_sold_address,
+        received AS token_bought_amount_raw,
+        CAST('0x0000000000000000000000000000000000000000' AS VARBINARY) AS token_sold_address,
         token AS token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
