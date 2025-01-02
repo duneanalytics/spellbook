@@ -1,10 +1,10 @@
 {{ config(
    schema = 'aave_v3_base'
+  , alias = 'interest_rates'
   , materialized = 'incremental'
   , file_format = 'delta'
   , incremental_strategy = 'merge'
   , unique_key = ['reserve', 'symbol', 'hour']
-  , alias = 'interest'
   , post_hook='{{ expose_spells(blockchains = \'["base"]\',
                                 spell_type = "project",
                                 spell_name = "aave_v3",
