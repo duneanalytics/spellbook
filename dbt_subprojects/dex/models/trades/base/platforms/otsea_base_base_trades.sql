@@ -1,3 +1,13 @@
+{{ config(
+    schema = 'otsea_base',
+    alias = 'base_trades',
+    partition_by = ['block_month'],
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+) }}
+
 WITH token_swaps AS (
     SELECT
         evt_block_number AS block_number,
