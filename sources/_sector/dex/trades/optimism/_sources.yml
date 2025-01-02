@@ -101,4 +101,3 @@ sources:
   - name: bridgers_optimism
     tables:
       - name: Bridgers_evt_Swap
-    
