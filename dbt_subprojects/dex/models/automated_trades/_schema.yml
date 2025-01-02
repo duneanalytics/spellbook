@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: dex_automated_trades
+  - name: dex_automated_trades_mapped
     meta:
       docs_slug: /curated/trading/DEX/dex-trades
       blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei

@@ -1,6 +1,6 @@
 {{ config(
     schema = 'dex'
-    , alias = 'automated_trades'
+    , alias = 'automated_trades_all'
     , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -43,5 +43,4 @@ with dexs AS (
     }}
 )
 
-Select * from dexs 
-
+Select * from dexs  

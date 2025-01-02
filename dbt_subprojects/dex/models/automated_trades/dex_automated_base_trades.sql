@@ -43,7 +43,6 @@ with base_union as (
             , evt_index
             , tx_from
             , tx_to
-            , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
         FROM
             {{ model }}
         WHERE
@@ -56,8 +55,6 @@ with base_union as (
         {% endif %}
         {% endfor %}
     )
-    WHERE
-        duplicates_rank = 1
 )
 select
     *
