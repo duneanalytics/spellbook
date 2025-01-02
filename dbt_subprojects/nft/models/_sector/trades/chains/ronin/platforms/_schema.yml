@@ -1,0 +1,12 @@
+version: 2
+
+models:
+ - name: mavis_ronin_base_trades
+   meta:
+     blockchain: ronin
+     sector: nft
+     project: mavis_ronin
+     contributors: ['peterrliem' ]
+   config:
+     tags: [ 'ronin', 'nft', 'trades', 'mavis' ]
+   description: "mavis marketplace base trades"
