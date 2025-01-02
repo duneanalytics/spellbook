@@ -12,7 +12,7 @@
 }}
 
 SELECT 
-    p.pool,
+    p.pool as pool_address,
     p.tokenid,
     p.token,
     b.balance AS op_balance,
@@ -25,4 +25,4 @@ ON
     p.pool = b.address
 WHERE 
     p.token = '0x4200000000000000000000000000000000000042'
-    AND b.token_address = '0x4200000000000000000000000000000000000042';
+    AND b.token_address = '0x4200000000000000000000000000000000000042'
