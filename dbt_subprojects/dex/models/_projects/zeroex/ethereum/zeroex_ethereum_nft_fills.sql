@@ -1,4 +1,5 @@
 {{  config(
+        tags=['prod_exclude'],
         schema = 'zeroex_ethereum',
         alias = 'nft_fills',
         materialized='incremental',

@@ -45,6 +45,7 @@
     , "mantle"
     , "optimism"
     , "polygon"
+    , "ronin"
     , "scroll"
     , "sei"
     , "tron"
@@ -89,7 +90,7 @@ FROM
     {% endfor %}
 
     UNION ALL
-    
+
     SELECT
         blockchain
         , block_month

@@ -1,0 +1,101 @@
+version: 2
+
+models:
+  - name: bungee_bridges
+    description: "Unified cross-chain bridges data from Bungee's Socket Bridge"
+    columns: &common_columns
+      - name: transfer_id
+        description: "Unique identifier for each transfer"
+        data_tests:
+          - unique
+          - not_null
+      - name: contract_address
+        description: "Address of the Socket Gateway contract"
+      - name: evt_tx_hash
+        description: "Transaction hash of the transfer event"
+      - name: evt_index
+        description: "Index of the event in the transaction"
+      - name: evt_block_time
+        description: "Timestamp of the block containing the transfer"
+      - name: evt_block_number
+        description: "Block number containing the transfer"
+      - name: amount
+        description: "Amount of tokens transferred"
+      - name: token
+        description: "Address of the transferred token"
+      - name: token_adjusted
+        description: "Adjusted token address (maps native token to wrapped version)"
+      - name: toChainId
+        description: "Destination chain ID"
+      - name: bridgeName
+        description: "Name of the bridge used"
+      - name: sender
+        description: "Address of the sender"
+      - name: receiver
+        description: "Address of the receiver"
+      - name: metadata
+        description: "Additional transfer metadata"
+      - name: source_chain
+        description: "Source blockchain of the transfer"
+      - name: amount_usd
+        description: "USD value of the transferred amount at the time of transfer"
+
+  - name: bungee_ethereum_bridges
+    description: "Ethereum bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_zkevm_bridges
+    description: "zkEVM bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_scroll_bridges
+    description: "Scroll bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_blast_bridges
+    description: "Blast bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_linea_bridges
+    description: "Linea bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_mantle_bridges
+    description: "Mantle bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_optimism_bridges
+    description: "Optimism bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_gnosis_bridges
+    description: "Gnosis bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_arbitrum_bridges
+    description: "Arbitrum bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_zksync_bridges
+    description: "zkSync bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_base_bridges
+    description: "Base bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_bnb_bridges
+    description: "BNB Chain bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_polygon_bridges
+    description: "Polygon bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_avalanche_c_bridges
+    description: "Avalanche C-Chain bridges data from Bungee's Socket Bridge"
+    columns: *common_columns
+
+  - name: bungee_fantom_bridges
+    description: "Fantom bridges data from Bungee's Socket Bridge"
+    columns: *common_columns

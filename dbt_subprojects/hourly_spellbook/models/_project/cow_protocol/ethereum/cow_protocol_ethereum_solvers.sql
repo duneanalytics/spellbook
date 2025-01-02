@@ -1,10 +1,10 @@
 {{ config(
+        schema = 'cow_protocol_ethereum',
         alias='solvers',
-        
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha"]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                    spell_type = "project",
+                                    spell_name = "cow_protocol",
+                                    contributors = \'["bh2smith", "gentrexha"]\') }}'
 )}}
 
 -- Find the PoC Query here: https://dune.com/queries/1276806
@@ -105,7 +105,7 @@ known_solver_metadata (address, environment, name) as (
                  (0xD1508A211D98bb81195dC1F9533eDcdf68aDF036, 'prod', 'Furucombo'),
                  (0x8646Ee3c5e82b495Be8F9FE2f2f213701EeD0edc, 'prod', 'Seasolver_v2'),
                  (0x9528e8c42F7e109bADED964E2D927fD5B6ca71E9, 'prod', 'Odos'),
-                 (0x755BaE1cd46C9C27A3230AeF0CE923BDa13d29F7, 'prod', 'FractalSolver'),
+                 (0x755BaE1cd46C9C27A3230AeF0CE923BDa13d29F7, 'prod', 'Fractal'),
                  (0x8F70A86c1309d8B1F5BefC58948e7386Fd495875, 'prod', 'Tsolver'),
                  (0xbAda55BaBEE5D2B7F3B551f9da846838760E068C, 'prod', 'Project_Blanc'),
                  (0xA883710b6DBf008a1CC25722C54583E35884a209, 'prod', 'Horadrim'),
@@ -116,6 +116,18 @@ known_solver_metadata (address, environment, name) as (
                  (0x2224eAaCC7c2DBf85d5355BAb9E9271e01d30b55, 'prod', 'Sector_Finance'),
                  (0x9DFc9Bb0FfF2dc96728D2bb94eaCee6ba3592351, 'prod', 'Rizzolver'),
                  (0x6bf97aFe2D2C790999cDEd2a8523009eB8a0823f, 'prod', 'Portus'),
+                 (0x95480d3f27658e73b2785d30beb0c847d78294c7, 'prod', 'Fractal'),
+                 (0x00806DaA2Cfe49715eA05243FF259DeB195760fC, 'prod', 'Quasilabs'),
+                 (0x28B1bd44996105b5c14c4dE41093226Ff78A4eB1, 'prod', '0x'),
+                 (0x04B89dBce06e7Aa2F4BBA78969ADD4576eB94788, 'prod', 'ApeOut_1Inch'),
+                 (0xbada5552a3e5e2fb57db982e29257821a2cf192d, 'prod', 'Project_Blanc'),
+                 (0x34717040928D7fd8154d4612f3228EFf14521023, 'prod', 'Laita'),
+                 (0xBab555BaBEe5d867983902bC8db8F707157245Be, 'barn', 'Project_Blanc'),
+                 (0x854490ef1d402D4f6fce05aBefE1C676eB0DCD74, 'barn', 'ApeOut_1Inch'),
+                 (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
+                 (0xcC73072B53697911Ff394ae01D3de59c9900b0b0, 'barn', '0x'),
+                 (0xd0bA1b1782fbdE45edAb392428f60e14827D08EC, 'barn', 'Laita'),
+                 (0x7E2eF26AdccB02e57258784957922AEEFEe807e5, 'barn', 'Quasilabs'),
                  (0x5131590ca2E9D3edC182581352b289dcaE83430c, 'barn', 'Portus'),
                  (0x2a2883ade8ce179265f12fc7b48a4b50b092f1fd, 'barn', 'Fractal'),
                  (0x26B5e3bF135D3Dd05A220508dD61f25BF1A47cBD, 'barn', 'Rizzolver'),
@@ -124,7 +136,7 @@ known_solver_metadata (address, environment, name) as (
                  (0x2c3A1c33d96C9DcA1c34EB234B1e65F79dEaE60e, 'barn', 'Horadrim'),
                  (0xa5559C2E1302c5Ce82582A6b1E4Aec562C2FbCf4, 'barn', 'Project_Blanc'),
                  (0xa432cea087311d7cd07925d70f799eE94E7893a4, 'barn', 'Tsolver'),
-                 (0xAb11302CB4f7C417e527A4d39C22Aa9f04EdB07D, 'barn', 'FractalSolver'),
+                 (0xAb11302CB4f7C417e527A4d39C22Aa9f04EdB07D, 'barn', 'Fractal'),
                  (0xf13eaf9093a210EBdaBa581f5448ffA545EE2E65, 'barn', 'Odos'),
                  (0x94aEF67903bFe8Bf65193A78074C887ba901d043, 'barn', 'Seasolver_v2'),
                  (0x279fb872beaF64E94890376725C423c0820eDA97, 'barn', 'Furucombo'),                 

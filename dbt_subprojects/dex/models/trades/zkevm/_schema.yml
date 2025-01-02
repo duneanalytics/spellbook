@@ -112,4 +112,18 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('leetswap_zkevm_base_trades_seed')
-  
+
+  - name: quickswap_v3_zkevm_base_trades
+    meta:
+      blockchain: zkevm
+      sector: dex
+      project: quickswap
+      contributors: sofiat, surfquery
+    config:
+      tags: [ 'zkevm', 'dex', 'trades', 'quickswap' ]
+    description: "Quickswap zkevm base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index

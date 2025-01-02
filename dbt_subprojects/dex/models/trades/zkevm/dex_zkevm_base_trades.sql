@@ -12,6 +12,7 @@
     , ref('clipper_zkevm_base_trades')
     , ref('sushiswap_v2_zkevm_base_trades')
     , ref('leetswap_zkevm_base_trades')
+    , ref('quickswap_v3_zkevm_base_trades')
 ] %}
 
 WITH base_union AS (

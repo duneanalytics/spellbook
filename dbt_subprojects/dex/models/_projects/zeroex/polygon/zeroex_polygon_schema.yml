@@ -267,11 +267,11 @@ models:
         name: protocol_fee_paid_eth
         description: "The protocol fee paid in ETH"
 
-  - name: zeroex_polygon_settler_trades 
+  - name: zeroex_v2_polygon_trades 
     meta:
       blockchain: polygon
       project: zeroex
-      contributors: rantum, bakabhai993
+      contributors: rantum
     config:
       tags: ['polygon','0x','dex_aggregator','dex','aggregator']
     description: >
@@ -283,16 +283,14 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('zeroex_polygon_settler_trades_sample')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - taker
-            - maker_token
-            - taker_token
     columns:
       - *blockchain
+      - &project
+        name: project
+        description: "name of the project"
+      - &version
+        name: version
+        description: "version of the project"
       - *block_date
       - *block_month
       - *block_time
@@ -308,11 +306,19 @@ models:
       - *maker_token
       - *taker
       - *maker
-      - *affiliate_address
+      - &tag
+        name: tag
+        description: "tag of the trade"
+      - &zid 
+        name: zid
+        description: "0x order id"
       - *tx_hash
       - *tx_from
       - *tx_to
       - *evt_index
+      - &trace_address
+        name: trace_address
+        description: "trace address of the transaction"
       - *type
       - *swap_flag
       - *contract_address

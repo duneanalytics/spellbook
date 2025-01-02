@@ -82,7 +82,7 @@
             "gnosis":        "array[0xcbdb7490968d4dbf183c60fc899c2e9fbd445308, 0xfb2809a5314473e1165f6b58018e20ed8f07b840]",
             "fantom":        "array[0xa218543cc21ee9388fa1e509f950fd127ca82155, 0xfb2809a5314473e1165f6b58018e20ed8f07b840]",
             "base":          "array[0x7f069df72b7a39bce9806e3afaf579e54d8cf2b9, 0xfb2809a5314473e1165f6b58018e20ed8f07b840]",
-            "zksync":        "array[0x11de482747d1b39e599f120d526af512dd1a9326]",
+            "zksync":        "array[0x11de482747d1b39e599f120d526af512dd1a9326, 0x0302b42c86540e636e438395c6344ed88c55b70e]",
             "aurora":        "array[0xd41b24bba51fac0e4827b6f94c0d6ddeb183cd64, 0xfb2809a5314473e1165f6b58018e20ed8f07b840]",
             "klaytn":        "array[0xa218543cc21ee9388fa1e509f950fd127ca82155, 0xfb2809a5314473e1165f6b58018e20ed8f07b840]",
         },

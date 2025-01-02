@@ -25,6 +25,8 @@
    , ref('pumpdotfun_solana_base_trades')
 ] %}
 
+-- excluded:    , ref('sanctum_router_base_trades')
+
 {% for dex in solana_dexes %}
 SELECT
       blockchain
@@ -51,7 +53,7 @@ SELECT
 FROM
       {{ dex }}
 {% if is_incremental() %}
-WHERE 
+WHERE
       {{incremental_predicate('block_time')}}
 {% endif %}
 {% if not loop.last %}
