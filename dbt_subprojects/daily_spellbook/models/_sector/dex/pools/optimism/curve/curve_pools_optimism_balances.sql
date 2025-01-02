@@ -1,4 +1,3 @@
-
 {{
   config(
     schema = 'curve_pools_optimism',
@@ -12,7 +11,7 @@
 }}
 
 SELECT 
-    p.pool as pool_address,
+    CAST(p.pool AS varchar(42)) as pool_address,
     p.tokenid,
     p.token,
     b.balance AS op_balance,
@@ -22,7 +21,7 @@ FROM
 JOIN 
     {{ source('tokens_optimism', 'balances_daily') }} b
 ON 
-    p.pool = b.address
+    CAST(p.pool AS varchar(42)) = CAST(b.address AS varchar(42))
 WHERE 
-    p.token = '0x4200000000000000000000000000000000000042'
-    AND b.token_address = '0x4200000000000000000000000000000000000042'
+    CAST(p.token AS varchar(42)) = '0x4200000000000000000000000000000000000042'
+    AND CAST(b.token_address AS varchar(42)) = '0x4200000000000000000000000000000000000042'
