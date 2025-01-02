@@ -1,0 +1,6 @@
+version: 2
+
+sources: 
+  - name: rocketpool_ethereum
+    tables:
+      - name: RocketTokenRETH_call_getExchangeRate

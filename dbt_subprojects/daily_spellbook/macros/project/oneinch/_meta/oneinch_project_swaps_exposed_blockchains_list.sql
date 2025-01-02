@@ -8,6 +8,7 @@
         'bnb', 
         'gnosis', 
         'fantom', 
-        'base', 
+        'base',
+        'zksync',
     ]) }}
 {% endmacro %}

@@ -6,7 +6,7 @@
     config(
         schema = 'oneinch_' + blockchain,
         alias = 'project_swaps',
-        partition_by = ['block_month'],
+        partition_by = ['block_month', 'project'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',

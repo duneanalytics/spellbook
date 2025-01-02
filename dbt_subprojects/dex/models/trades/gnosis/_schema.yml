@@ -48,7 +48,7 @@ models:
       blockchain: gnosis
       sector: dex
       project: balancer
-      contributors: bizzyvinci, thetroyharris, tomfutago
+      contributors: bizzyvinci, thetroyharris, tomfutago, viniabussafi
     config:
       tags: [ 'gnosis', 'dex', 'trades', 'balancer' ]
     description: "Balancer v2 gnosis base trades"
@@ -61,6 +61,25 @@ models:
           seed_file: ref('balancer_gnosis_base_trades_seed')
           filter:
             version: 2
+
+  - name: balancer_v3_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: balancer
+      contributors: viniabussafi
+    config:
+      tags: [ 'gnosis', 'dex', 'trades', 'balancer' ]
+    description: "Balancer v3 gnosis base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_gnosis_base_trades_seed')
+          filter:
+            version: 3
 
   - name: honeyswap_v2_gnosis_base_trades
     meta:
@@ -80,3 +99,37 @@ models:
           seed_file: ref('honeyswap_gnosis_base_trades_seed')
           filter:
             version: 2
+
+  - name: elk_finance_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: elk_finance
+      contributors: blanchemaria6
+    config:
+      tags: ['gnosis', 'dex', 'trades', 'elk_finance']
+    description: "elk finance gnosis base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('elk_finance_gnosis_base_trades_seed')
+  
+  - name: levinswap_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: levinswap
+      contributors: intensodefi
+    config:
+      tags: ['gnosis', 'dex', 'trades', 'levinswap']
+    description: "levinswap gnosis base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('levinswap_gnosis_base_trades_seed')

@@ -7,6 +7,7 @@
 
 {% set b_cow_amm_models = [
     ref('labels_balancer_cowswap_amm_pools_arbitrum'),
+    ref('labels_balancer_cowswap_amm_pools_base'),
     ref('labels_balancer_cowswap_amm_pools_ethereum'),
     ref('labels_balancer_cowswap_amm_pools_gnosis')
 ] %}
