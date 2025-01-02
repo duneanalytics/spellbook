@@ -19,7 +19,7 @@ select
   avg(CAST(a.liquidityRate AS DOUBLE)) / 1e27 as deposit_apy, 
   avg(CAST(a.stableBorrowRate AS DOUBLE)) / 1e27 as stable_borrow_apy, 
   avg(CAST(a.variableBorrowRate AS DOUBLE)) / 1e27 as variable_borrow_apy
-from {{ source('aave_v3_base', 'Pool_evt_ReserveDataUpdated') }} a
+from {{ source('aave_v3_base', 'L2Pool_evt_ReserveDataUpdated') }} a
 left join {{ source('tokens', 'erc20') }} t
 on a.reserve = t.contract_address and t.blockchain = 'base'
 {% if is_incremental() %}
