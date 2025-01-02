@@ -3,11 +3,11 @@ version: 2
 models:
   - name: evms_transactions
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'transactions']
+      tags: ["evms", "transactions"]
     description: "An EVM transaction refers to an action initiated by an externally-owned account (i.e., an account managed by a human, not a contract)."
     columns:
       - &blockchain
@@ -76,11 +76,11 @@ models:
 
   - name: evms_traces
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'traces']
+      tags: ["evms", "traces"]
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide."
     columns:
       - *blockchain
@@ -127,11 +127,11 @@ models:
 
   - name: evms_traces_decoded
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'traces', 'decoded']
+      tags: ["evms", "traces", "decoded"]
     description: "An EVM trace is a small atomic action that modify the internal state of the Ethereum Virtual Machine. The three main trace types are call, create, and suicide. Decoded traces include additional information based on submitted smart contracts and their ABI"
     columns:
       - *blockchain
@@ -153,11 +153,11 @@ models:
 
   - name: evms_logs
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest, rantum]
     config:
-      tags:   ['evms', 'logs']
+      tags: ["evms", "logs"]
     description: "An EVM log can be used to describe an event within a smart contract, like a token transfer or a change of ownership."
     columns:
       - *blockchain
@@ -183,11 +183,11 @@ models:
 
   - name: evms_logs_decoded
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'logs', 'decoded']
+      tags: ["evms", "logs", "decoded"]
     description: "An EVM log can be used to describe an event within a smart contract, like a token transfer or a change of ownership. Those logs are decoded based on submitted smart contracts to make them human readable."
     columns:
       - *blockchain
@@ -209,11 +209,11 @@ models:
 
   - name: evms_blocks
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, mode, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'blocks']
+      tags: ["evms", "blocks"]
     description: "Blocks are batches of transactions with a hash of the previous block in the chain. This links blocks together (in a chain) because hashes are cryptographically derived from the block data."
     columns:
       - *blockchain
@@ -232,17 +232,17 @@ models:
 
   - name: evms_contracts
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'contracts']
+      tags: ["evms", "contracts"]
     description: "A view keeping track of what contracts are decoded across EVM chains on Dune; contains information associated with the decoded contract such as namespace, name, address, ABI."
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - address
+            - blockchain
+            - address
     columns:
       - *blockchain
       - name: abi
@@ -270,14 +270,14 @@ models:
               values: ["factory", "base", "dynamic"]
       - name: created_at
         description: "Timestamp for contract creation"
-      
+
   - name: evms_creation_traces
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'traces', 'creation', 'contracts']
+      tags: ["evms", "traces", "creation", "contracts"]
     description: "EVM chains creation traces"
     columns:
       - *blockchain
@@ -293,11 +293,11 @@ models:
 
   - name: evms_erc20_transfers
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'erc20', 'transfers']
+      tags: ["evms", "erc20", "transfers"]
     description: "Transfers events for ERC20 tokens on EVM chains."
     columns:
       - *blockchain
@@ -322,11 +322,11 @@ models:
 
   - name: evms_erc20_approvals
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'erc20', 'approvals']
+      tags: ["evms", "erc20", "approvals"]
     description: "Approval events for ERC20 tokens on EVM chains."
     columns:
       - *blockchain
@@ -345,11 +345,11 @@ models:
 
   - name: evms_erc1155_transferssingle
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'erc1155', 'transfers', 'single']
+      tags: ["evms", "erc1155", "transfers", "single"]
     description: "Single transfers events for ERC1155 tokens on EVM chains."
     columns:
       - *blockchain
@@ -370,11 +370,11 @@ models:
 
   - name: evms_erc1155_transfersbatch
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'erc1155', 'transfers', 'batch']
+      tags: ["evms", "erc1155", "transfers", "batch"]
     description: "Batch transfers events for ERC1155 tokens on EVM chains."
     columns:
       - *blockchain
@@ -395,11 +395,11 @@ models:
 
   - name: evms_erc1155_approvalsforall
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'erc1155', 'approvals']
+      tags: ["evms", "erc1155", "approvals"]
     description: "Approval for all events for ERC1155 tokens on EVM chains."
     columns:
       - *blockchain
@@ -420,11 +420,11 @@ models:
 
   - name: evms_erc721_transfers
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'erc721', 'transfers']
+      tags: ["evms", "erc721", "transfers"]
     description: "Transfers events for ERC721 tokens on EVM chains."
     columns:
       - *blockchain
@@ -441,11 +441,11 @@ models:
 
   - name: evms_erc721_approvals
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'erc721', 'approvals']
+      tags: ["evms", "erc721", "approvals"]
     description: "Approval events for ERC721 tokens on EVM chains."
     columns:
       - *blockchain
@@ -464,11 +464,11 @@ models:
 
   - name: evms_erc721_approvalsforall
     meta:
-      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, fantom, optimism, arbitrum, celo, base, zksync, zora, scroll, linea, zkevm, blast, mantle, sei, ronin
       sector: evms
       contributors: [hildobby, synthquest]
     config:
-      tags:   ['evms', 'erc721', 'approvals']
+      tags: ["evms", "erc721", "approvals"]
     description: "Approval for all events for ERC721 tokens on EVM chains."
     columns:
       - *blockchain
@@ -488,9 +488,9 @@ models:
       sector: evms
       contributors: hildobby
     config:
-      tags:   ['evms', 'info']
+      tags: ["evms", "info"]
     description: "Some information about the EVM chains"
-    columns: 
+    columns:
       - name: chain_id
         description: "Chain ID"
       - name: blockchain
@@ -513,54 +513,54 @@ models:
       - name: codebase
         description: "Codebase used"
       - name: data_availability
-        description:  "Chain where proofs are submitted to"
+        description: "Chain where proofs are submitted to"
       - name: settlement
-        description:  "Chain that is being settled on"
+        description: "Chain that is being settled on"
       - name: is_on_dune
         description: "Is the chain on Dune"
 
   - name: evms_non_app_method_ids
     meta:
-      blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,goerli,bnb,base,celo
+      blockchain: ethereum, optimism, arbitrum, polygon, gnosis, avalanche_c, fantom, goerli, bnb, base, celo, ronin
       project: method_ids
       contributors: msilb7
     config:
-      tags: ['method_ids','methods','function','signature']
+      tags: ["method_ids", "methods", "function", "signature"]
     description: >
-        A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
+      A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - method_id
+            - blockchain
+            - method_id
     columns:
       - *blockchain
-      - &method_id 
+      - &method_id
         name: method_id
         description: "Method ID (first 4 bytes of calldata), in '0x....' format"
-      - &method_descriptor 
+      - &method_descriptor
         name: method_descriptor
-        description: "Manual descriptor of the method ID."  
-  
+        description: "Manual descriptor of the method ID."
+
   - name: evm_smart_account_method_ids
     meta:
       blockchain: ethereum,optimism,arbitrum,polygon,gnosis,avalanche_c,fantom,goerli,bnb,base,celo,zora
       project: method_ids
       contributors: msilb7
     config:
-      tags: ['method_ids','methods','function','signature']
+      tags: ["method_ids", "methods", "function", "signature"]
     description: >
-        A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
+      A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - method_id
+            - blockchain
+            - method_id
     columns:
       - *blockchain
-      - *method_id 
-      - *method_descriptor 
-      - &contract_project 
+      - *method_id
+      - *method_descriptor
+      - &contract_project
         name: contract_project
         description: "Project associated with the method"
 
@@ -570,16 +570,16 @@ models:
       project: method_ids
       contributors: msilb7
     config:
-      tags: ['method_ids','methods','function','signature']
+      tags: ["method_ids", "methods", "function", "signature"]
     description: >
-        A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
+      A table containing mappings for method ids (function signatures) that can be considered to be non-app transactions.  There will be one row per blockchain x method_id combination.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-              - blockchain
-              - method_id
+            - blockchain
+            - method_id
     columns:
       - *blockchain
-      - *method_id 
-      - *method_descriptor 
-      - *contract_project 
+      - *method_id
+      - *method_descriptor
+      - *contract_project

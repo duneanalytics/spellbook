@@ -117,3 +117,12 @@ sources:
           - *evt_index
           - *evt_tx_hash
           - *id
+
+      - name: StaticATokenLM_evt_Initialized
+
+      - name: StaticATokenFactory_evt_StaticTokenCreated
+
+  - name: aave_v3_ethereum
+    description: "Decoded contracts for Aave v3 on Ethereum"
+    tables:
+      - name: VariableDebtToken_evt_Initialized      
