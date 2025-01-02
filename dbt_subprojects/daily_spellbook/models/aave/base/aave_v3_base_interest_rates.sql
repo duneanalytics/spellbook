@@ -20,8 +20,8 @@ select
   avg(CAST(a.stableBorrowRate AS DOUBLE)) / 1e27 as stable_borrow_apy, 
   avg(CAST(a.variableBorrowRate AS DOUBLE)) / 1e27 as variable_borrow_apy
 from {{ source('aave_v3_base', 'Pool_evt_ReserveDataUpdated') }} a
-left join {{ source('tokens_base', 'erc20') }} t
-on a.reserve = t.contract_address
+left join {{ source('tokens', 'erc20') }} t
+on a.reserve = t.contract_address and t.blockchain = 'base'
 {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
 {% endif %}
