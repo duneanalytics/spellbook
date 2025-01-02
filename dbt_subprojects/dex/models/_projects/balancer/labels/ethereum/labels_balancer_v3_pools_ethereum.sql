@@ -10,7 +10,7 @@
 WITH token_data AS (
         SELECT
             pool,
-            ARRAY_AGG(json_extract_scalar(token, '$.token') ORDER BY token_index) AS tokens 
+            ARRAY_AGG(FROM_HEX(json_extract_scalar(token, '$.token')) ORDER BY token_index) AS tokens 
         FROM (
             SELECT
                 pool,
@@ -42,8 +42,6 @@ WITH token_data AS (
         CROSS JOIN UNNEST(c.tokens) WITH ORDINALITY t(tokens, pos)
         CROSS JOIN UNNEST(cc.normalizedWeights) WITH ORDINALITY w(weights, pos)
         WHERE t.pos = w.pos
-      ) zip
-
 
       UNION ALL
 
@@ -53,11 +51,12 @@ WITH token_data AS (
         0 AS weights,
         cc.symbol,
         'stable' AS pool_type
-      FROM {{ source('balancer_v3_ethereum', 'Vault_evt_PoolRegistered') }} c
+      FROM token_data c
       INNER JOIN {{ source('balancer_v3_ethereum', 'StablePoolFactory_call_create') }} cc
         ON c.pool = cc.output_pool
-      CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-    ),
+      CROSS JOIN UNNEST(c.tokens) AS t(tokens)
+    ) zip 
+          ),
 
     settings AS (
       SELECT
@@ -67,7 +66,7 @@ WITH token_data AS (
         p.symbol AS pool_symbol,
         p.pool_type
       FROM pools p
-      LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = CAST(t.contract_address AS VARCHAR)
+      LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = t.contract_address
       AND t.blockchain = 'ethereum'
     )
 

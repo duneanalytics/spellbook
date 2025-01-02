@@ -118,9 +118,9 @@ sources:
           - *evt_tx_hash
           - *id
 
-      - name: erc4626TokenLM_evt_Initialized
+      - name: StaticATokenLM_evt_Initialized
 
-      - name: erc4626TokenFactory_evt_StaticTokenCreated
+      - name: StaticATokenFactory_evt_StaticTokenCreated
 
   - name: aave_v3_ethereum
     description: "Decoded contracts for Aave v3 on Ethereum"

@@ -77,4 +77,5 @@ SELECT address
         , (0xb6cf39ee72e0127e6ea6059e38b8c197227a6ac7, 'Morph', 'MorphL2')
         , (0x2986bf308d0684ad77cd32ee1c60429e6573b5af, 'R0AR Chain', 'th3r0ar')
         , (0x2f60a5184c63ca94f82a27100643dbabe4f3f7fd, 'Unichain', 'unichain')
+        , (0xf854cd5b26bfd73d51236c0122798907ed65b1f2, 'Swell', 'swellnetworkio')
         ) AS x(address, entity, x_username)

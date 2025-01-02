@@ -352,7 +352,7 @@ sources:
             description: "veBAL holder that voted for the gauge"
           - name: weight
             description: "Weight of the user for the gauge"
-            
+
   - name: balancer_v3_ethereum
     description: >
       Decoded tables related to Balancer V3, an automated portfolio manager and trading platform, on Ethereum.

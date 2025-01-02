@@ -6,7 +6,7 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v1
-      contributors: balancerlabs
+      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer V1 liquidity pools created on Ethereum. "
@@ -51,7 +51,7 @@ models:
       blockchain: ethereum
       sector: labels
       project: balancer_v1
-      contributors: balancerlabs
+      contributors: balancerlabs, viniabussafi
     config:
       tags: ['labels', 'ethereum', 'balancer', 'pools']
     description: "Balancer V1 liquidity pools created across blockchains."
@@ -364,20 +364,7 @@ models:
       project: balancer_v3
       contributors: balancerlabs, viniabussafi
     config:
-      tags:
-        [
-          'labels',
-          'ethereum',
-          'polygon',
-          'arbitrum',
-          'optimism',
-          'avalanche_c', 
-          'base', 
-          'gnosis', 
-          'zkevm',
-          'balancer',
-          'pools',
-        ]
+      tags: ['labels', 'ethereum', 'gnosis', 'balancer', 'pools']
     description: 'Balancer V3 liquidity pools created across blockchains.'
     columns:
       - *blockchain

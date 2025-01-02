@@ -1,0 +1,12 @@
+version: 2
+
+seeds:
+  - name: swell_balances_ethereum_core_assets_seed
+    config:
+      column_types:
+        blockchain: varchar 
+        day: timestamp
+        wallet_address: varbinary
+        token_address: varbinary
+        balance: double
+        last_updated: timestamp

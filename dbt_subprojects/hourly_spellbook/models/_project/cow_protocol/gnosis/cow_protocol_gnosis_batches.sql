@@ -19,6 +19,7 @@ WITH
 -- Find the PoC Query here: https://dune.com/queries/1722419
 batch_counts as (
     select try_cast(date_trunc('day', s.evt_block_time) as date) as block_date,
+           s.evt_block_number,
            s.evt_block_time,
            s.evt_tx_hash,
            solver,
@@ -43,7 +44,7 @@ batch_counts as (
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}
     {% endif %}
-    group by s.evt_tx_hash, solver, s.evt_block_time, name
+    group by s.evt_block_number, s.evt_tx_hash, solver, s.evt_block_time, name
 ),
 
 batch_values as (
@@ -70,6 +71,7 @@ batch_values as (
 combined_batch_info as (
     select
         b.block_date,
+        evt_block_number                               as block_number,
         evt_block_time                                 as block_time,
         num_trades,
         dex_swaps,
@@ -88,6 +90,7 @@ combined_batch_info as (
             on b.evt_tx_hash = t.tx_hash
         inner join {{ source('gnosis', 'transactions') }} tx
             on evt_tx_hash = hash
+            and evt_block_number = block_number
             {% if is_incremental() %}
             AND {{ incremental_predicate('tx.block_time') }}
             {% endif %}
