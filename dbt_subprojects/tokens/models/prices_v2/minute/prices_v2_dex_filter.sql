@@ -6,8 +6,9 @@
 }}
 
 WITH dex_volume_over_10k as (
-    blockchain
-    ,contract_address
+    select
+        blockchain
+        ,contract_address
     from(
         SELECT
             d.blockchain,
