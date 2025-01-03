@@ -55,7 +55,10 @@ FROM
       {{ dex }}
 {% if is_incremental() %}
 WHERE
-      {{incremental_predicate('block_time')}}
+      {{incremental_predicate('block_time')}} AND block_time >= '2024-12-01'
+{% else %}
+WHERE
+      block_time >= '2024-12-01'
 {% endif %}
 {% if not loop.last %}
 UNION ALL
