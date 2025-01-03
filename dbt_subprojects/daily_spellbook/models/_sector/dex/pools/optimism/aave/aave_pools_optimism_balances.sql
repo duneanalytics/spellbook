@@ -13,26 +13,24 @@
 WITH supply_op AS (
   SELECT
     depositor AS pool_address,
-    token_address,
-    SUM(amount) AS total_supplied,
-    DATE(evt_block_time) AS snapshot_day
+    DATE(evt_block_time) AS snapshot_day,
+    SUM(amount) AS total_supplied
   FROM {{ source('aave_v3_optimism', 'supply') }}
   WHERE token_address = 0x4200000000000000000000000000000000000042
-  GROUP BY 1, 2, 4
+  GROUP BY 1, 2
 ),
 
 borrow_op AS (
   SELECT
     borrower AS pool_address,
-    token_address,
-    SUM(amount) AS total_borrowed,
-    DATE(evt_block_time) AS snapshot_day
+    DATE(evt_block_time) AS snapshot_day,
+    SUM(amount) AS total_borrowed
   FROM {{ source('aave_v3_optimism', 'borrow') }}
   WHERE token_address = 0x4200000000000000000000000000000000000042
-  GROUP BY 1, 2, 4
+  GROUP BY 1, 2
 ),
 
-net_balance AS (
+daily_balances AS (
   SELECT
     COALESCE(s.pool_address, b.pool_address) AS pool_address,
     'aave' AS protocol_name,
@@ -45,6 +43,12 @@ net_balance AS (
     AND s.snapshot_day = b.snapshot_day
 )
 
-SELECT *
-FROM net_balance
+SELECT
+  pool_address,
+  protocol_name,
+  protocol_version,
+  snapshot_day,
+  SUM(op_balance) AS op_balance  -- Aggregate in case there are multiple entries per day
+FROM daily_balances
 WHERE op_balance > 0
+GROUP BY 1, 2, 3, 4
