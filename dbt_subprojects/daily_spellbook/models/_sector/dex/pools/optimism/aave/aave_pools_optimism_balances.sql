@@ -7,7 +7,7 @@
     incremental_strategy = 'merge',
     unique_key = ['pool_address', 'snapshot_day'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.snapshot_day')]
-    )
+  )
 }}
 
 WITH supply_op AS (
@@ -15,23 +15,24 @@ WITH supply_op AS (
     depositor AS pool_address,
     token_address,
     SUM(amount) AS total_supplied,
-    CAST(evt_block_time AS DATE) AS snapshot_day
+    DATE(evt_block_time) AS snapshot_day
   FROM {{ source('aave_v3_optimism', 'supply') }}
-  WHERE token_address = '0x4200000000000000000000000000000000000042'
-  GROUP BY pool_address, token_address, snapshot_day
+  WHERE token_address = 0x4200000000000000000000000000000000000042
+  GROUP BY 1, 2, 4
 ),
+
 borrow_op AS (
   SELECT
     borrower AS pool_address,
     token_address,
     SUM(amount) AS total_borrowed,
-    CAST(evt_block_time AS DATE) AS snapshot_day
+    DATE(evt_block_time) AS snapshot_day
   FROM {{ source('aave_v3_optimism', 'borrow') }}
-  WHERE token_address = '0x4200000000000000000000000000000000000042'
-  GROUP BY pool_address, token_address, snapshot_day
-)
-SELECT *
-FROM (
+  WHERE token_address = 0x4200000000000000000000000000000000000042
+  GROUP BY 1, 2, 4
+),
+
+net_balance AS (
   SELECT
     COALESCE(s.pool_address, b.pool_address) AS pool_address,
     'aave' AS protocol_name,
@@ -42,5 +43,8 @@ FROM (
   FULL OUTER JOIN borrow_op b
     ON s.pool_address = b.pool_address
     AND s.snapshot_day = b.snapshot_day
-) net_balance
-WHERE op_balance > 0;
+)
+
+SELECT *
+FROM net_balance
+WHERE op_balance > 0
