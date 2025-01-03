@@ -44,7 +44,7 @@ WITH dex_trades_filter_and_unnest as (
     LEFT JOIN {{ref('prices_trusted_tokens')}} anti_t
         on anti_t.blockchain = d.blockchain
         and anti_t.contract_address = d.token_sold_address -- the subjected token is already in trusted
-    WHERE d.amount_usd > 0 and token_sold_amount > 0
+    WHERE d.amount_usd > 0 and token_sold_amount > 0 and token_sold_address is not null
     and anti_t.contract_address is null
     {% if is_incremental() %}
     AND {{ incremental_predicate('d.block_time') }}
