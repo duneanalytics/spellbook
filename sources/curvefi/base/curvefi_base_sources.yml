@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: curvefi_base
+    description: "decoded events and function calls for curve.fi on Base"
+    tables:
+      - name: StableSwap_call_coins
