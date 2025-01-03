@@ -1,4 +1,4 @@
-version: 3
+version: 2
 
 models:
   - name:  aave_pools_optimism_balances
