@@ -1,4 +1,5 @@
 {{ config(
+    tags=['prod_exclude'],
     schema = 'saddle_finance_optimism',
     alias = 'base_trades',
     partition_by = ['block_month'],
