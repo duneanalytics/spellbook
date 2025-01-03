@@ -24,6 +24,7 @@
     )
     SELECT
         'sonic' AS blockchain,
+        '2' AS version,
         logs.contract_address,
         logs.tx_hash,
         logs.tx_index,
