@@ -51,6 +51,7 @@ WITH dex_trades_filter_and_unnest as (
     {% endif %}
 )
 
+
 SELECT
     blockchain,
     contract_address,
