@@ -23,6 +23,7 @@
                                         , "ronin"
                                         , "scroll"
                                         , "sei"
+                                        , "sonic"
                                         , "viction"
                                         , "worldchain"
                                         , "zksync"
@@ -97,4 +98,5 @@ FROM (
         , (14, 'flare', 'Flare', 'Layer 1', NULL, 'FLR', NULL, 'https://flare-explorer.flare.network/', timestamp '2022-07-13 15:32', NULL, NULL, NULL, true)
         , (88, 'viction', 'Viction', 'Layer 1', NULL, 'VIC', 0xC054751BdBD24Ae713BA3Dc9Bd9434aBe2abc1ce, 'https://vicscan.xyz/', timestamp '2018-12-14 07:50:20', NULL, NULL, NULL, true)
         , (21000000, 'corn', 'Corn', 'Layer 1', NULL, 'BTCN', NULL, 'https://cornscan.io/', timestamp '2024-11-19 10:29:11', NULL, NULL, NULL, false)
+        , (146, 'sonic', 'Sonic', 'Layer 1', NULL, 'SONIC', NULL, 'https://sonicscan.org/', timestamp '2024-12-01 00:00', NULL, NULL, NULL, true)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune)
