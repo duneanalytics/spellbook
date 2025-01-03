@@ -11,7 +11,7 @@ models:
           combination_of_columns:
             - blockchain
             - contract_address
-            - minute
+            - timestamp
 
   - name: prices_v2_coinpaprika_minute
     meta:
@@ -23,7 +23,7 @@ models:
           combination_of_columns:
             - blockchain
             - contract_address
-            - minute
+            - timestamp
 
   - name: prices_v2_minute_raw
     meta:
@@ -35,4 +35,4 @@ models:
           combination_of_columns:
             - blockchain
             - contract_address
-            - minute
+            - timestamp
