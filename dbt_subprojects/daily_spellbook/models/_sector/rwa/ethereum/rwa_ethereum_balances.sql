@@ -24,7 +24,7 @@ rwa_tokens as (
       balances_incremental_subset_daily(
             blockchain = 'ethereum',
             token_list = 'rwa_tokens',
-            start_date = '2024-12-26'
+            start_date = '2020-01-01'
       )
     }}
 )
