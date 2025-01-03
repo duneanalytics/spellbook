@@ -47,6 +47,6 @@ SELECT
   COALESCE(b.op_balance, 0) AS op_balance,
   COALESCE(b.snapshot_day, CURRENT_DATE) AS snapshot_day
 FROM 
-  op_pools p
-LEFT JOIN 
-  filtered_balances b ON p.pool_address = b.pool_address
+  filtered_balances b
+RIGHT JOIN
+   op_pools p ON p.pool_address = b.pool_address
