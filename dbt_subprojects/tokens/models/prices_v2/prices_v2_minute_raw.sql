@@ -2,6 +2,7 @@
         schema='prices_v2',
         alias = 'minute_raw',
         file_format = 'delta',
+        materialized = 'incremental',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'contract_address', 'timestamp'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.timestamp')]
