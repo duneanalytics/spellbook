@@ -11,7 +11,8 @@
 }}
 
 {% set models = [
-    ref('dex_arbitrum_base_trades')
+    ref('dex_sonic_base_trades')
+    /*ref('dex_arbitrum_base_trades')
     , ref('dex_avalanche_c_base_trades')
     , ref('dex_base_base_trades')
     , ref('dex_blast_base_trades')
@@ -33,7 +34,7 @@
     , ref('dex_worldchain_base_trades')
     , ref('dex_zkevm_base_trades')
     , ref('dex_zksync_base_trades')
-    , ref('dex_zora_base_trades')
+    , ref('dex_zora_base_trades')*/
 ] %}
 
 with base_union as (
