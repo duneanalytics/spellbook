@@ -2,7 +2,6 @@
     schema='prices_v2'
     , alias = 'dex_minute_raw'
     , materialized = 'incremental'
-    , partition_by = ['date_trunc(\'day\',timestamp)']
     , file_format = 'delta'
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'contract_address', 'timestamp']
