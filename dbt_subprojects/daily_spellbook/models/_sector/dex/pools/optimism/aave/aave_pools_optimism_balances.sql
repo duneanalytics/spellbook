@@ -10,45 +10,82 @@
   )
 }}
 
-WITH supply_op AS (
+WITH supply_events AS (
   SELECT
     depositor AS pool_address,
     DATE(evt_block_time) AS snapshot_day,
-    SUM(amount) AS total_supplied
+    evt_block_time,
+    evt_block_number,
+    evt_tx_hash,
+    amount AS supply_amount,
+    'supply' as event_type
   FROM {{ source('aave_v3_optimism', 'supply') }}
   WHERE token_address = 0x4200000000000000000000000000000000000042
-  GROUP BY 1, 2
 ),
 
-borrow_op AS (
+borrow_events AS (
   SELECT
     borrower AS pool_address,
     DATE(evt_block_time) AS snapshot_day,
-    SUM(amount) AS total_borrowed
+    evt_block_time,
+    evt_block_number,
+    evt_tx_hash,
+    amount AS borrow_amount,
+    'borrow' as event_type
   FROM {{ source('aave_v3_optimism', 'borrow') }}
-  WHERE token_address = 0x4200000000000000000000000000000000000042
+  WHERE token_address = 0x4200000000000000000000000000000042
+),
+
+combined_events AS (
+  SELECT
+    pool_address,
+    snapshot_day,
+    evt_block_time,
+    evt_block_number,
+    evt_tx_hash,
+    supply_amount AS amount,
+    event_type
+  FROM supply_events
+  
+  UNION ALL
+  
+  SELECT
+    pool_address,
+    snapshot_day,
+    evt_block_time,
+    evt_block_number,
+    evt_tx_hash,
+    -borrow_amount AS amount, -- Negative for borrows
+    event_type
+  FROM borrow_events
+),
+
+-- Calculate running balance per day
+daily_balances AS (
+  SELECT
+    pool_address,
+    snapshot_day,
+    SUM(amount) as net_balance
+  FROM combined_events
   GROUP BY 1, 2
 ),
 
-daily_balances AS (
-  SELECT
-    COALESCE(s.pool_address, b.pool_address) AS pool_address,
+-- Final output with metadata
+final_balances AS (
+  SELECT DISTINCT
+    pool_address,
     'aave' AS protocol_name,
     'v3' AS protocol_version,
-    COALESCE(s.snapshot_day, b.snapshot_day) AS snapshot_day,
-    COALESCE(s.total_supplied, 0) - COALESCE(b.total_borrowed, 0) AS op_balance
-  FROM supply_op s
-  FULL OUTER JOIN borrow_op b
-    ON s.pool_address = b.pool_address
-    AND s.snapshot_day = b.snapshot_day
+    snapshot_day,
+    net_balance as op_balance
+  FROM daily_balances
+  WHERE net_balance > 0
 )
 
-SELECT
+SELECT 
   pool_address,
   protocol_name,
   protocol_version,
   snapshot_day,
-  SUM(op_balance) AS op_balance  -- Aggregate in case there are multiple entries per day
-FROM daily_balances
-WHERE op_balance > 0
-GROUP BY 1, 2, 3, 4
+  op_balance
+FROM final_balances
