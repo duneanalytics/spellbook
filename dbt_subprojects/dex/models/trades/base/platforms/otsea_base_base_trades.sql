@@ -16,7 +16,7 @@ WITH token_swaps AS (
         evt_tx_to AS taker,
         swapped AS token_sold_amount_raw,
         received AS token_bought_amount_raw,
-        CAST(account AS varbinary) AS token_sold_address,
+        CAST(token AS varbinary) AS token_sold_address,
         -- CAST('0x0000000000000000000000000000000000000000' AS varbinary) AS token_bought_address,
         0x0000000000000000000000000000000000000000 AS token_bought_address,
         contract_address AS project_contract_address,
