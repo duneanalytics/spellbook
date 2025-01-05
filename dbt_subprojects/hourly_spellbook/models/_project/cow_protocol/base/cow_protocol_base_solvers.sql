@@ -48,6 +48,8 @@ known_solver_metadata (address, environment, name) as (
                 (0x172FaCC5d970df43462b0f3aDe670d8cB86DC816, 'barn', 'ApeOut_1inch'),
                 (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
                 (0xDF580073E21fFd7968F317B5359B934Eb6d58804, 'barn', 'Barter'),
+                (0x9775be2Bb0B72d4eA98Bfd38024EF733dc048a30, 'barn', 'Apollo'),
+                (0x41f387db8470c99b7f376212075e2E289f085Ce9, 'prod', 'Apollo'),
                 (0x36Fd8A0C24B08F7bb4af8d6eaA6245C3884fC682, 'prod', 'Barter'),
                 (0x1a72876ebE781E42aB2Ee4278B539688D8B80E2D, 'prod', 'ApeOut_1inch'),
                 (0x6bf97aFe2D2C790999cDEd2a8523009eB8a0823f, 'prod', 'Portus'),
