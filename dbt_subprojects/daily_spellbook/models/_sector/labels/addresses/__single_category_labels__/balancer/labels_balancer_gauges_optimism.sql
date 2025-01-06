@@ -118,8 +118,8 @@ kill_unkill AS(
         call_block_time,
         action,
         ROW_NUMBER() OVER(PARTITION BY contract_address ORDER BY call_block_time DESC) AS rn
+    FROM kill_unkill_1
 )
-
     SELECT DISTINCT
           g.blockchain
          , g.address
