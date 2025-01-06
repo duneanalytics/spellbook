@@ -61,7 +61,7 @@ WITH token_swaps AS (
         {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 )
-, base_trades AS (
+
 SELECT
     'optimism' AS blockchain,
     'saddle_finance' AS project,
@@ -81,12 +81,3 @@ SELECT
     token_swaps.evt_index
 FROM
     token_swaps
-)
-
-{{
-    add_tx_columns(
-        model_cte = 'base_trades'
-        , blockchain = 'optimism'
-        , columns = ['from', 'to', 'index']
-    )
-}}
