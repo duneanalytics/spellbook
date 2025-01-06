@@ -11,18 +11,15 @@
 }}
 
 WITH op_pools AS (
-  SELECT
-    pool AS pool_address,
-    tokenid,
-    token,
-    creation_time
+  SELECT DISTINCT
+    CAST(pool AS varchar) AS pool_address
   FROM {{ source('curve_optimism', 'pools') }}
   WHERE token = 0x4200000000000000000000000000000042
 ),
 
 filtered_balances AS (
   SELECT
-    address AS pool_address,
+    CAST(address AS varchar) AS pool_address,
     balance AS op_balance,
     day AS snapshot_day
   FROM {{ source('tokens_optimism', 'balances_daily') }}
@@ -30,17 +27,17 @@ filtered_balances AS (
   {% if is_incremental() %}
     AND {{ incremental_predicate('day') }}
   {% else %}
-    AND day >= date '2021-11-11' --first pool initiated
+    AND day >= date '2021-11-11'
   {% endif %}
 )
 
 SELECT 
   p.pool_address,
-  p.tokenid,
-  p.token,
-  p.creation_time,
-  COALESCE(b.op_balance, 0) AS op_balance,
-  COALESCE(b.snapshot_day, CURRENT_DATE) AS snapshot_day
-FROM filtered_balances b
-RIGHT JOIN op_pools p 
+  'curve' as protocol_name,
+  'v1' as protocol_version,
+  b.snapshot_day,
+  COALESCE(b.op_balance, 0) as op_balance
+FROM op_pools p
+LEFT JOIN filtered_balances b 
   ON p.pool_address = b.pool_address
+WHERE COALESCE(b.op_balance, 0) > 0
