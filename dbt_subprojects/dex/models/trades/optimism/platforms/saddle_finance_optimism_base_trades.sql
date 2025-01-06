@@ -9,8 +9,8 @@
 ) }}
 
 -- Id mapping:
--- 0 DAI https://optimistic.etherscan.io/token/0xda10009cbd5d07dd0cecc66161fc93d7c9000da1
--- 1 USDC.e https://optimistic.etherscan.io/token/0x7f5c764cbc14f9669b88837ca1490cca17c31607
+-- 0 USDC.e https://optimistic.etherscan.io/token/0x7f5c764cbc14f9669b88837ca1490cca17c31607
+-- 1 FRAX https://optimistic.etherscan.io/token/0x2e3d870790dc77a83dd1d18184acc7439a53f475
 -- 2 USDT https://optimistic.etherscan.io/token/0x94b008aa00579c1307b0ef2c499ad98a8ce58e58
 
 WITH token_swaps AS (
@@ -22,13 +22,13 @@ WITH token_swaps AS (
         tokensSold AS token_sold_amount_raw,
         tokensBought AS token_bought_amount_raw,
         CASE soldId
-            WHEN 0 THEN 0xda10009cbd5d07dd0cecc66161fc93d7c9000da1
-            WHEN 1 THEN 0x7f5c764cbc14f9669b88837ca1490cca17c31607
+            WHEN 0 THEN 0x7f5c764cbc14f9669b88837ca1490cca17c31607
+            WHEN 1 THEN 0x2e3d870790dc77a83dd1d18184acc7439a53f475
             WHEN 2 THEN 0x94b008aa00579c1307b0ef2c499ad98a8ce58e58
         END AS token_sold_address,
         CASE boughtId
-            WHEN 0 THEN 0xda10009cbd5d07dd0cecc66161fc93d7c9000da1
-            WHEN 1 THEN 0x7f5c764cbc14f9669b88837ca1490cca17c31607
+            WHEN 0 THEN 0x7f5c764cbc14f9669b88837ca1490cca17c31607
+            WHEN 1 THEN 0x2e3d870790dc77a83dd1d18184acc7439a53f475
             WHEN 2 THEN 0x94b008aa00579c1307b0ef2c499ad98a8ce58e58
         END AS token_bought_address,
         contract_address AS project_contract_address,
