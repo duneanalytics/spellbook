@@ -128,7 +128,7 @@ kill_unkill AS(
          , g.name
          , CASE WHEN k.action = 'kill'
             THEN 'inactive'
-           WHEN WHEN k.action = 'unkill'
+           WHEN k.action = 'unkill'
             THEN 'active'
            ELSE 'active'
            END AS status
