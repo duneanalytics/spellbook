@@ -15,6 +15,7 @@ WITH dexs AS
     SELECT
         t.evt_block_number AS block_number
         -- , t.evt_block_date AS block_date
+        -- , t.evt_block_date AS block_date
         , t.evt_block_time AS block_time
         , CAST(null AS VARBINARY) AS taker
         , t.contract_address AS maker
