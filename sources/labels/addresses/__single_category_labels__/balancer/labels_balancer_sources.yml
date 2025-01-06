@@ -889,6 +889,15 @@ sources:
           - name: addr
           - name: gauge_type
           - name: weight    
+
+      - name: GnosisRootGauge_call_killGauge
+      - name: ArbitrumRootGauge_call_killGauge         
+      - name: AvalancheRootGauge_call_killGauge
+      - name: BaseRootGauge_call_killGauge               
+      - name: OptimismRootGauge_call_killGauge         
+      - name: PolygonRootGauge_call_killGauge
+      - name: PolygonZkEVMGauge_call_killGauge               
+      - name: LiquidityGauge_call_killGauge                   
           
   - name: balancer_polygon
     description: >

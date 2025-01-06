@@ -1,6 +1,6 @@
 {{config(
         
-        alias = 'balancer_v2_gauges_polygon',
+        alias = 'balancer_gauges_polygon',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",
                                     "labels",
@@ -13,12 +13,12 @@ SELECT
     pools.address AS pool_address,
     streamer.gauge AS child_gauge_address,
     'pol:' || pools.name  AS name,
-    'balancer_v2_gauges' AS category,
+    'balancer_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,
     TIMESTAMP '2022-01-13'  AS created_at,
     NOW() AS updated_at,
-    'balancer_v2_gauges_polygon' AS model_name,
+    'balancer_gauges_polygon' AS model_name,
     'identifier' AS label_type
 FROM
     {{ source('balancer_ethereum', 'PolygonRootGaugeFactory_evt_PolygonRootGaugeCreated') }} gauge
@@ -33,12 +33,12 @@ SELECT
     pools.address AS pool_address,
     streamer.gauge AS child_gauge_address,
     'pol:' || pools.name  AS name,
-    'balancer_v2_gauges' AS category,
+    'balancer_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,
     TIMESTAMP '2022-01-13'  AS created_at,
     NOW() AS updated_at,
-    'balancer_v2_gauges_polygon' AS model_name,
+    'balancer_gauges_polygon' AS model_name,
     'identifier' AS label_type
 FROM
     {{ source('balancer_ethereum', 'CappedPolygonRootGaugeFactory_evt_GaugeCreated') }} gauge
@@ -53,12 +53,12 @@ SELECT distinct
     pools.address AS pool_address,
     child.output_0 AS child_gauge_address,    
     'pol:' || pools.name AS name,
-    'balancer_v2_gauges' AS category,
+    'balancer_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,
     TIMESTAMP '2022-01-13'  AS created_at,
     NOW() AS updated_at,
-    'balancer_v2_gauges_polygon' AS model_name,
+    'balancer_gauges_polygon' AS model_name,
     'identifier' AS label_type
 FROM {{ source('balancer_ethereum', 'CappedPolygonRootGaugeFactory_call_create') }} call
     LEFT JOIN {{ source('balancer_polygon', 'ChildChainGaugeFactory_call_create') }} child ON child.output_0 = call.recipient
@@ -69,19 +69,7 @@ SELECT * FROM reward_gauges
 WHERE name IS NOT NULL
 UNION ALL
 SELECT * FROM child_gauges
-WHERE name IS NOT NULL),
-
-controller AS( --to allow filtering for active gauges only
-SELECT
-    c.evt_tx_hash,
-    c.evt_index,
-    c.evt_block_time,
-    c.evt_block_number,
-    c.addr AS address,
-    ROW_NUMBER() OVER (PARTITION BY g.pool_address ORDER BY evt_block_time DESC) AS rn
-FROM {{ source('balancer_ethereum', 'GaugeController_evt_NewGauge') }} c
-INNER JOIN gauges g ON g.address = c.addr
-)
+WHERE name IS NOT NULL)
 
     SELECT
           g.blockchain
@@ -89,9 +77,9 @@ INNER JOIN gauges g ON g.address = c.addr
          , g.pool_address
          , g.child_gauge_address
          , g.name
-         , CASE WHEN c.rn = 1 
-            THEN 'active'
-            ELSE 'inactive'
+         , CASE WHEN k.call_success
+            THEN 'inactive'
+            ELSE 'active'
             END AS status
          , g.category
          , g.contributor
@@ -101,4 +89,4 @@ INNER JOIN gauges g ON g.address = c.addr
          , g.model_name
          , g.label_type
     FROM gauges g
-    INNER JOIN controller c ON g.address = c.address
+    LEFT JOIN {{ source('balancer_ethereum', 'PolygonRootGauge_call_killGauge') }} ON g.address = k.contract_address
