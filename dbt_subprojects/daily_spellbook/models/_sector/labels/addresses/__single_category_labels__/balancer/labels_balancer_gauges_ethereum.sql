@@ -65,7 +65,7 @@ FROM
 WHERE
     blockchain = 'ethereum')
 
-    SELECT
+    SELECT DISTINCT
           g.blockchain
          , g.address
          , g.pool_address

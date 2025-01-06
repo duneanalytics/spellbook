@@ -898,7 +898,7 @@ sources:
       - name: PolygonRootGauge_call_killGauge
       - name: PolygonZkEVMRootGauge_call_killGauge               
       - name: LiquidityGauge_call_killGauge                   
-      - name: LiquidityGaugeV5_call_killGauge        
+      - name: LiquidityGaugeV5_call_killGauge
           
   - name: balancer_polygon
     description: >

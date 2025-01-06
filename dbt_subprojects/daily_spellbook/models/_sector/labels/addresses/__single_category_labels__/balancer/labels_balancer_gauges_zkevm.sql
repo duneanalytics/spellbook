@@ -23,7 +23,7 @@ FROM {{ source('balancer_ethereum', 'PolygonZkEVMRootGaugeFactory_call_create') 
     LEFT JOIN {{ source('balancer_zkevm', 'ChildChainGaugeFactory_call_create') }} child ON child.output_0 = call.recipient
     LEFT JOIN {{ source('labels', 'balancer_v2_pools_zkevm') }} pools ON pools.address = child.pool)
 
-    SELECT
+    SELECT DISTINCT
           g.blockchain
          , g.address
          , g.pool_address

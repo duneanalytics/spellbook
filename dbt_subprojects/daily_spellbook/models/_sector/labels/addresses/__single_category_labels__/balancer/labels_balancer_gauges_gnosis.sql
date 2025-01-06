@@ -24,7 +24,7 @@ FROM {{ source('balancer_ethereum', 'GnosisRootGaugeFactory_call_create') }} cal
     LEFT JOIN {{ source('labels', 'balancer_v2_pools_gnosis') }} v2pools ON v2pools.address = child.pool
     LEFT JOIN {{ source('labels', 'balancer_v3_pools_gnosis') }} v3pools ON v3pools.address = child.pool)
 
-    SELECT
+    SELECT DISTINCT
           g.blockchain
          , g.address
          , g.pool_address

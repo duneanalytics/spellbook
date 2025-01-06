@@ -70,7 +70,7 @@ UNION ALL
 SELECT * FROM child_gauges
 WHERE name IS NOT NULL)
 
-    SELECT
+    SELECT DISTINCT
           g.blockchain
          , g.address
          , g.pool_address
