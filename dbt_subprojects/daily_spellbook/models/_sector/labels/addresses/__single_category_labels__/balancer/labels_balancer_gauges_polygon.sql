@@ -76,10 +76,12 @@ WHERE name IS NOT NULL)
          , g.pool_address
          , g.child_gauge_address
          , g.name
-         , CASE WHEN k.call_success
+         , CASE WHEN k1.call_success
             THEN 'inactive'
-            ELSE 'active'
-            END AS status
+           WHEN k2.call_success
+            THEN 'inactive'
+           ELSE 'active'
+           END AS status
          , g.category
          , g.contributor
          , g.source
@@ -89,3 +91,4 @@ WHERE name IS NOT NULL)
          , g.label_type
     FROM gauges g
     LEFT JOIN {{ source('balancer_ethereum', 'PolygonRootGauge_call_killGauge') }} k ON g.address = k.contract_address AND k.call_success
+    LEFT JOIN {{ source('balancer_ethereum', 'CappedPolygonRootGauge_call_killGauge') }} k2 ON g.address = k2.contract_address AND k2.call_success
