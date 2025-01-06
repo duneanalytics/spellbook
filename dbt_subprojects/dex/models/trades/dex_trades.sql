@@ -53,6 +53,7 @@ WITH curve AS (
         )
     }}
 )
+
 , balancer_v3 AS (
     -- due to Balancer V3 having trades between ERC4626 tokens, which won't be priced on prices.usd, enrich separately
     {{
