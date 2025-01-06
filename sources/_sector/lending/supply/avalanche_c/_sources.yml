@@ -6,12 +6,14 @@ sources:
       - name: LendingPool_evt_Deposit
       - name: LendingPool_evt_Withdraw
       - name: LendingPool_evt_RedeemUnderlying
+      - name: WrappedTokenGatewayV2_call_withdrawETH
 
   - name: aave_v3_avalanche_c
     tables:
       - name: Pool_evt_Supply
       - name: Pool_evt_Withdraw
       - name: Pool_evt_RedeemUnderlying
+      - name: WrappedTokenGatewayV3_call_withdrawETH
 
   - name: benqi_finance_avalanche_c
     tables:

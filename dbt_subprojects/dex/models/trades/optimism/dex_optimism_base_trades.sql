@@ -5,6 +5,8 @@
     )
 }}
 
+--exclude, until resolved at model level: , ref('saddle_finance_optimism_base_trades')
+
 {% set base_models = [
     ref('uniswap_v3_optimism_base_trades')
     , ref('woofi_optimism_base_trades')
@@ -37,6 +39,7 @@
     , ref('swaap_v2_optimism_base_trades')
     , ref('timeswap_v2_optimism_base_trades')
     , ref('saddle_finance_optimism_base_trades')
+    , ref('bridgers_optimism_base_trades')
 ] %}
 
 WITH base_union AS (
