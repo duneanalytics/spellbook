@@ -896,7 +896,7 @@ sources:
       - name: BaseRootGauge_call_killGauge               
       - name: OptimismRootGauge_call_killGauge         
       - name: PolygonRootGauge_call_killGauge
-      - name: PolygonZkEVMGauge_call_killGauge               
+      - name: PolygonZkEVMRootGauge_call_killGauge               
       - name: LiquidityGauge_call_killGauge                   
           
   - name: balancer_polygon
