@@ -41,4 +41,4 @@ FROM {{ source('balancer_ethereum', 'AvalancheRootGaugeFactory_call_create') }} 
          , g.model_name
          , g.label_type
     FROM gauges g
-    LEFT JOIN {{ source('balancer_ethereum', 'AvalancheRootGauge_call_killGauge') }} k ON g.address = k.contract_address
+    LEFT JOIN {{ source('balancer_ethereum', 'AvalancheRootGauge_call_killGauge') }} k ON g.address = k.contract_address AND k.call_success

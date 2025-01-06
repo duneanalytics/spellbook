@@ -88,4 +88,4 @@ WHERE name IS NOT NULL)
          , g.model_name
          , g.label_type
     FROM gauges g
-    LEFT JOIN {{ source('balancer_ethereum', 'OptimismRootGauge_call_killGauge') }} k ON g.address = k.contract_address
+    LEFT JOIN {{ source('balancer_ethereum', 'OptimismRootGauge_call_killGauge') }} k ON g.address = k.contract_address AND k.call_success

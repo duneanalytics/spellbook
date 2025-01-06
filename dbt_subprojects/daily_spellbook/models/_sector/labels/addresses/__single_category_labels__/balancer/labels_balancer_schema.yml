@@ -10,6 +10,11 @@ models:
     config:
       tags: ['labels', 'ethereum', 'polygon', 'optimism', 'arbitrum', 'avalanche_c', 'base', 'gnosis', 'zkevm', 'gauges']
     description: 'Balancer gauge labels.'
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - address
     columns:
       - &blockchain
         name: blockchain
@@ -59,10 +64,6 @@ models:
     config:
       tags: ['labels', 'ethereum', 'gauges']
     description: 'Balancer gauge labels.'
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
     columns:
       - *blockchain
       - *address
@@ -87,10 +88,6 @@ models:
     config:
       tags: ['labels', 'polygon', 'gauges']
     description: 'Balancer gauge labels.'
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
     columns:
       - *blockchain
       - *address
@@ -115,10 +112,6 @@ models:
     config:
       tags: ['labels', 'arbitrum', 'gauges']
     description: 'Balancer gauge labels.'
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
     columns:
       - *blockchain
       - *address
@@ -143,10 +136,6 @@ models:
     config:
       tags: ['labels', 'optimism', 'gauges']
     description: 'Balancer gauge labels.'
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
     columns:
       - *blockchain
       - *address
@@ -171,10 +160,6 @@ models:
     config:
       tags: ['labels', 'avalanche_c', 'gauges']
     description: 'Balancer gauge labels.'
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
     columns:
       - *blockchain
       - *address
@@ -199,10 +184,6 @@ models:
     config:
       tags: ['labels', 'base', 'gauges']
     description: 'Balancer gauge labels.'
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
     columns:
       - *blockchain
       - *address
@@ -227,10 +208,6 @@ models:
     config:
       tags: ['labels', 'gnosis', 'gauges']
     description: 'Balancer gauge labels.'
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
     columns:
       - *blockchain
       - *address
@@ -255,10 +232,6 @@ models:
     config:
       tags: ['labels', 'zkevm', 'gauges']
     description: 'Balancer gauge labels.'
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - address
     columns:
       - *blockchain
       - *address

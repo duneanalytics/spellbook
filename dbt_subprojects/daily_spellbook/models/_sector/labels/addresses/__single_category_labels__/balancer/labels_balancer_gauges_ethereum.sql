@@ -71,10 +71,12 @@ WHERE
          , g.pool_address
          , g.child_gauge_address
          , g.name
-         , CASE WHEN k1.call_success OR k2.call_success
+         , CASE WHEN k1.call_success
             THEN 'inactive'
-            ELSE 'active'
-            END AS status
+           WHEN k2.call_success
+            THEN 'inactive'
+           ELSE 'active'
+           END AS status
          , g.category
          , g.contributor
          , g.source
@@ -83,5 +85,5 @@ WHERE
          , g.model_name
          , g.label_type
     FROM gauges g
-    LEFT JOIN {{ source('balancer_ethereum', 'LiquidityGauge_call_killGauge') }} k1 ON g.address = k1.contract_address
-    LEFT JOIN {{ source('balancer_ethereum', 'LiquidityGaugeV5_call_killGauge') }} k2 ON g.address = k2.contract_address
+    LEFT JOIN {{ source('balancer_ethereum', 'LiquidityGauge_call_killGauge') }} k1 ON g.address = k1.contract_address AND k1.call_success
+    LEFT JOIN {{ source('balancer_ethereum', 'LiquidityGaugeV5_call_killGauge') }} k2 ON g.address = k2.contract_address AND k2.call_success
