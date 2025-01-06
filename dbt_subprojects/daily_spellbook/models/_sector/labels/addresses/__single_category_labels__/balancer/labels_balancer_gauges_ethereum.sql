@@ -70,7 +70,7 @@ kill_unkill_1 AS(
         contract_address,
         call_block_time,
         'kill' AS action
-    FROM {{ source('balancer_ethereum', 'LiquidityGaugeRootGauge_call_killGauge') }}
+    FROM {{ source('balancer_ethereum', 'LiquidityGauge_call_killGauge') }}
     WHERE call_success
 
     UNION ALL
@@ -79,7 +79,7 @@ kill_unkill_1 AS(
         contract_address,
         call_block_time,
         'kill' AS action
-    FROM {{ source('balancer_ethereum', 'LiquidityGaugeV5RootGauge_call_killGauge') }}
+    FROM {{ source('balancer_ethereum', 'LiquidityGaugeV5_call_killGauge') }}
     WHERE call_success
 
     UNION ALL
@@ -97,7 +97,7 @@ kill_unkill_1 AS(
         contract_address,
         call_block_time,
         'unkill' AS action
-    FROM {{ source('balancer_ethereum', 'LiquidityGaugeRootGauge_call_initialize') }}
+    FROM {{ source('balancer_ethereum', 'LiquidityGauge_call_initialize') }}
     WHERE call_success
 
     UNION ALL
@@ -106,7 +106,7 @@ kill_unkill_1 AS(
         contract_address,
         call_block_time,
         'unkill' AS action
-    FROM {{ source('balancer_ethereum', 'LiquidityGaugeV5RootGauge_call_initialize') }}
+    FROM {{ source('balancer_ethereum', 'LiquidityGaugeV5_call_initialize') }}
     WHERE call_success
 
     UNION ALL
