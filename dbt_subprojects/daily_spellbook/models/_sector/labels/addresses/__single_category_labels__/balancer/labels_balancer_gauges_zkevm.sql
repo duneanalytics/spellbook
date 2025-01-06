@@ -41,4 +41,4 @@ FROM {{ source('balancer_ethereum', 'PolygonZkEVMRootGaugeFactory_call_create') 
          , g.model_name
          , g.label_type
     FROM gauges g
-    LEFT JOIN {{ source('balancer_ethereum', 'PolygonZkEVMRootGauge_call_killGauge') }} ON g.address = k.contract_address
+    LEFT JOIN {{ source('balancer_ethereum', 'PolygonZkEVMRootGauge_call_killGauge') }} k ON g.address = k.contract_address
