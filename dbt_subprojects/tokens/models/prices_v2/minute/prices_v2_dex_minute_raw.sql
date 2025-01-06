@@ -3,6 +3,7 @@
     , alias = 'dex_minute_raw'
     , materialized = 'incremental'
     , file_format = 'delta'
+    , partition_by = ['date']
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'contract_address', 'timestamp']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.timestamp')]
@@ -58,6 +59,7 @@ SELECT
     date_trunc('minute',timestamp) as timestamp,
     sum(price*volume)/sum(volume) as price, -- vwap
     sum(volume) as volume,
-    'dex.trades' as source
+    'dex.trades' as source,
+    date_trunc('day',timestamp) as date -- partition
 FROM dex_trades_filter_and_unnest
-group by 1,2,3
+group by 1,2,3,7

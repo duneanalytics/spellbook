@@ -3,6 +3,7 @@
         alias = 'minute_raw',
         file_format = 'delta',
         materialized = 'incremental',
+        partition_by = ['date'],
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'contract_address', 'timestamp'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.timestamp')]
@@ -28,6 +29,7 @@ FROM
         , price
         , volume    -- can be null
         , source    -- dex.trades/coinpaprika/..
+        , date      -- partition
     FROM {{ model }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('timestamp') }}

@@ -3,6 +3,7 @@
         , alias = 'coinpaprika_minute'
         , materialized = 'incremental'
         , file_format = 'delta'
+        , partition_by = ['date']
         , incremental_strategy = 'merge'
         , unique_key = ['blockchain', 'contract_address', 'timestamp']
         , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.timestamp')]
@@ -16,6 +17,7 @@ select
     , p.price
     , cast(null as double) as volume
     , 'coinpaprika' as source
+    , date_trunc('day', p.minute) as date --partition
 from
     {{ source('prices','usd_0003') }} as p  -- todo: fix this source
 inner join
