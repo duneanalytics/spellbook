@@ -65,6 +65,8 @@ known_solver_metadata (address, environment, name) as (
                  (0x53F5378A6f8bb24333aD8D68FD28816504a467b2, 'barn', 'Copium_Capital'),
                  (0xC4dd6355Fbc6Eb108FD1C100389789C5B1A9A980, 'barn', 'Barter'),
                  (0x4398129426Cb1377E9E10395b8dfBDa153c7Fe7D, 'barn', 'Fractal'),
+                 (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
+                 (0x6bf97aFe2D2C790999cDEd2a8523009eB8a0823f, 'prod', 'Portus'),
                  (0x727EB77c6f84ef148403f641aA32d75b7f6902A7, 'prod', 'Fractal'),
                  (0x0a360134553feED49FE5eb273074d80B6e45941F, 'prod', 'Barter'),
                  (0xb4694FE6590acd1281Dc34a966bbAE224559BaD4, 'prod', 'Copium_Capital'),

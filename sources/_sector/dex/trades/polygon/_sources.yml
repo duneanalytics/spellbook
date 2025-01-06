@@ -79,3 +79,7 @@ sources:
     tables:
       - name: JetswapPair_evt_Swap
       - name: JetswapFactory_evt_PairCreated
+  - name: gravity_finance_polygon
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated

@@ -193,5 +193,15 @@ FROM
     ('alb-alienbase', 'base', 'ALB',0x1dd2d631c92b1acdfcdd51a0f7145a50130050c4, 18),
     ('clark-coinbase-mascot','base','CLARK',0x5f7373Fa845692b1dD7bfaE576D6c743482bf26a, 18),
     ('gyd-gyro-dollar','base','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 18),
-    ('virtual-virtual-protocol', 'base', 'VIRTUAL', 0x0b3e328455c4059EEb9e3f84b5543F74E24e7E1b, 18)
+    ('virtual-virtual-protocol', 'base', 'VIRTUAL', 0x0b3e328455c4059EEb9e3f84b5543F74E24e7E1b, 18),
+    ('bomb-fbomb', 'base', 'BOMB', 0x74ccbe53f77b08632ce0cb91d3a545bf6b8e0979, 18),
+    ('play9-play', 'base', 'PLAY', 0x7404ac09adf614603d9c16a7ce85a1101f3514ba, 18),
+    ('champ-super-champs', 'base', 'CHAMP', 0xeb6d78148f001f3aa2f588997c5e102e489ad341, 18),
+    ('euroc-euro-coin', 'base', 'EURC', 0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42, 6),
+    ('fai-freysa', 'base', 'FAI', 0xb33ff54b9f7242ef1593d2c9bcd8f9df46c77935, 18),
+    ('ogn-origin-protocol', 'base', 'OGN', 0x7002458b1df59eccb57387bc79ffc7c29e22e6f7, 18),
+    ('usdt-tether', 'base', 'USDT', 0xfde4c96c8593536e31f229ea8f37b2ada2699bb2, 6),
+    ('klima-klimadao', 'base', 'KLIMA', 0xdcefd8c8fcc492630b943abcab3429f12ea9fea2, 9),
+    ('yfi-yearnfinance', 'base', 'YFI', 0x9eaf8c1e34f05a589eda6bafdf391cf6ad3cb239, 18)
+    --('well-moonwell' ,'base', 'WELL', 0xa88594d404727625a9437c3f886c7643872296ae, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
