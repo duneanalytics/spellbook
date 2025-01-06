@@ -63,7 +63,69 @@ SELECT
 FROM
     {{ source('balancer','single_recipient_gauges') }}
 WHERE
-    blockchain = 'ethereum')
+    blockchain = 'ethereum'),
+
+kill_unkill_1 AS(
+    SELECT
+        contract_address,
+        call_block_time,
+        'kill' AS action
+    FROM {{ source('balancer_ethereum', 'LiquidityGaugeRootGauge_call_killGauge') }}
+    WHERE call_success
+
+    UNION ALL
+
+    SELECT
+        contract_address,
+        call_block_time,
+        'kill' AS action
+    FROM {{ source('balancer_ethereum', 'LiquidityGaugeV5RootGauge_call_killGauge') }}
+    WHERE call_success
+
+    UNION ALL
+
+    SELECT
+        contract_address,
+        call_block_time,
+        'unkill' AS action
+    FROM {{ source('balancer_ethereum', 'CappedLiquidityGaugeV5_call_kill') }}
+    WHERE call_success        
+
+    UNION ALL
+
+    SELECT
+        contract_address,
+        call_block_time,
+        'unkill' AS action
+    FROM {{ source('balancer_ethereum', 'LiquidityGaugeRootGauge_call_initialize') }}
+    WHERE call_success
+
+    UNION ALL
+
+    SELECT
+        contract_address,
+        call_block_time,
+        'unkill' AS action
+    FROM {{ source('balancer_ethereum', 'LiquidityGaugeV5RootGauge_call_initialize') }}
+    WHERE call_success
+
+    UNION ALL
+
+    SELECT
+        contract_address,
+        call_block_time,
+        'unkill' AS action
+    FROM {{ source('balancer_ethereum', 'CappedLiquidityGaugeV5_call_initialize') }}
+    WHERE call_success    
+),
+
+kill_unkill AS(
+    SELECT
+        contract_address,
+        call_block_time,
+        action,
+        ROW_NUMBER() OVER(PARTITION BY contract_address ORDER BY call_block_time DESC) AS rn
+)
 
     SELECT DISTINCT
           g.blockchain
@@ -71,12 +133,10 @@ WHERE
          , g.pool_address
          , g.child_gauge_address
          , g.name
-         , CASE WHEN k1.call_success
+         , CASE WHEN k.action = 'kill'
             THEN 'inactive'
-           WHEN k2.call_success
-            THEN 'inactive'
-           WHEN k3.call_success
-            THEN 'inactive'            
+           WHEN WHEN k.action = 'unkill'
+            THEN 'active'
            ELSE 'active'
            END AS status
          , g.category
@@ -87,6 +147,4 @@ WHERE
          , g.model_name
          , g.label_type
     FROM gauges g
-    LEFT JOIN {{ source('balancer_ethereum', 'LiquidityGauge_call_killGauge') }} k1 ON g.address = k1.contract_address AND k1.call_success
-    LEFT JOIN {{ source('balancer_ethereum', 'LiquidityGaugeV5_call_killGauge') }} k2 ON g.address = k2.contract_address AND k2.call_success
-    LEFT JOIN {{ source('balancer_ethereum', 'CappedLiquidityGaugeV5_call_killGauge') }} k3 ON g.address = k3.contract_address AND k3.call_success
+    LEFT JOIN kill_unkill k ON g.address = k.contract_address AND k.rn = 1
