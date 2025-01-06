@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: dune_blockchains
+    meta:
+      sector: dune
+      contributors: 0xRob
+    description: >
+        Core table listing blockchains on Dune with meta info
+    columns:
+      - name: name
+        description: "The namespaces of the blockchain as used on Dune"
+      - name: chain_id
+        description: "The chain ID (only for EVM)"
+      - name: display_name
+        description: "Nicely formatted name"
+      - name: protocol
+        description: "evm or non_evm"
+      - name: token_address
+        description: "The token address used on Dune to represent the native token"
+      - name: token_symbol
+        description: "The token symbol of the native token"
+      - name: token_decimals
+        description: "The token decimals of the native token"
