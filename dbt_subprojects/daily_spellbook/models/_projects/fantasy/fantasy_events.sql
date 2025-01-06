@@ -220,5 +220,5 @@ SELECT block_time
 FROM {{ source('tokens_blast', 'transfers') }} tt
 WHERE block_number >= 4917909
 AND to = 0x4af1f00f50efbfcdf7a8f2ac02e9bc24825438ac
-AND contract_address = 0x4300000000000000000000000000000000000004
 AND amount > 0
+AND contract_address = 0x4300000000000000000000000000000000000004
