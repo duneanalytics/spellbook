@@ -98,3 +98,9 @@ sources:
   - name: timeswap_v2_optimism
     tables:
       - name: TimeswapV2Option_evt_Swap
+  - name: saddle_finance_optimism
+    tables:
+      - name: SwapFlashLoan_evt_TokenSwap
+  - name: bridgers_optimism
+    tables:
+      - name: Bridgers_evt_Swap    

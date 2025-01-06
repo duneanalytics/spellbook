@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('zerolend_zksync_base_supply')
+    ref('zerolend_zksync_base_supply'),
+    ref('aave_v3_zksync_base_supply')
   ]
 %}
 
