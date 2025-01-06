@@ -63,8 +63,6 @@ FROM {{ source('balancer_ethereum', 'CappedPolygonRootGaugeFactory_call_create')
     LEFT JOIN {{ source('balancer_polygon', 'ChildChainGaugeFactory_call_create') }} child ON child.output_0 = call.recipient
     LEFT JOIN {{ source('labels', 'balancer_v2_pools_polygon') }} pools ON pools.address = child.pool),
 
-,
-
 gauges AS(
     SELECT 
         * 
