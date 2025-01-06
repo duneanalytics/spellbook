@@ -9,6 +9,7 @@
 
 SELECT contract_address, name, symbol
 FROM (VALUES
+      (0xaaaea1fb9f3de3f70e89f37b69ab11b47eb9ce6f, 'Voting Escrow Pharaoh', 'vePHAR'),
       (0x2b9328d83becd4f04de05f129ba56781fa191e67, 'Cattopya', 'CAT'),
       (0x34b4da1a0b06cfb09cb0efb46f02e667330e17db, 'Humping Unicorns', 'HUMP'),
       (0x47d42b18d54ee0b94b59c3e41dcac3260e995e48, 'Doggerinos Accessories', 'DOGACC'),
