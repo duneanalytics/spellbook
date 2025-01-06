@@ -5,8 +5,8 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['evt_tx_hash', 'evt_index'],
-        incremental_predicates = [incremental_predicate('t.evt_block_date')]
+        unique_key = ['tx_hash', 'evt_index'],
+        incremental_predicates = [incremental_predicate('dbt_internal_dest.block_time')]
     )
 }}
 
@@ -14,7 +14,7 @@ WITH dexs AS
 (
     SELECT
         t.evt_block_number AS block_number
-        , t.evt_block_date AS block_date
+        -- , t.evt_block_date AS block_date
         , t.evt_block_time AS block_time
         , CAST(null AS VARBINARY) AS taker
         , t.contract_address AS maker
