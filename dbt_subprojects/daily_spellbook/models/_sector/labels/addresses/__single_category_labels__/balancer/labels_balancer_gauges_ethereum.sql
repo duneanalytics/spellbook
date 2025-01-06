@@ -89,4 +89,4 @@ WHERE
     FROM gauges g
     LEFT JOIN {{ source('balancer_ethereum', 'LiquidityGauge_call_killGauge') }} k1 ON g.address = k1.contract_address AND k1.call_success
     LEFT JOIN {{ source('balancer_ethereum', 'LiquidityGaugeV5_call_killGauge') }} k2 ON g.address = k2.contract_address AND k2.call_success
-    LEFT JOIN {{ source('balancer_ethereum', 'CappedLiquidityGaugeV5_call_killGauge') }} k3 ON g.address = k2.contract_address AND k3.call_success
+    LEFT JOIN {{ source('balancer_ethereum', 'CappedLiquidityGaugeV5_call_killGauge') }} k3 ON g.address = k3.contract_address AND k3.call_success
