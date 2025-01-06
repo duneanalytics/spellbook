@@ -27,8 +27,8 @@ filtered_balances AS (
   {% if is_incremental() %}
     AND {{ incremental_predicate('day') }}
   {% else %}
-    AND day >= date '2021-11-11'
-  {% endif %}
+--     AND day >= date '2021-11-11'
+--   {% endif %}
 )
 
 SELECT 
