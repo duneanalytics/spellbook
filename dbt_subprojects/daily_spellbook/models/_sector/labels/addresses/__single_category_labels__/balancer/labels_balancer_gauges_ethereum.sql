@@ -88,15 +88,6 @@ kill_unkill_1 AS(
         contract_address,
         call_block_time,
         'unkill' AS action
-    FROM {{ source('balancer_ethereum', 'CappedLiquidityGaugeV5_call_kill') }}
-    WHERE call_success        
-
-    UNION ALL
-
-    SELECT
-        contract_address,
-        call_block_time,
-        'unkill' AS action
     FROM {{ source('balancer_ethereum', 'LiquidityGauge_call_initialize') }}
     WHERE call_success
 
