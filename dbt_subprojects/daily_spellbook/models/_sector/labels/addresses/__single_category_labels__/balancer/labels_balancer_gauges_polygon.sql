@@ -1,5 +1,4 @@
 {{config(
-        
         alias = 'balancer_gauges_polygon',
         post_hook='{{ expose_spells(\'["polygon"]\',
                                     "sector",

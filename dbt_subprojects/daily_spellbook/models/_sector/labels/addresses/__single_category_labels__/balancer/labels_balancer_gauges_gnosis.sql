@@ -1,5 +1,4 @@
 {{config(
-        
         alias = 'balancer_gauges_gnosis',
         post_hook='{{ expose_spells(\'["gnosis"]\',
                                     "sector",

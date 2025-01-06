@@ -1,5 +1,4 @@
 {{config(
-        
         alias = 'balancer_gauges_avalanche_c',
         post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                     "sector",

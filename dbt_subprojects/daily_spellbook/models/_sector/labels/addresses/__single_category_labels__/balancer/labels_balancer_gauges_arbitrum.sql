@@ -1,5 +1,4 @@
 {{config(
-        
         alias = 'balancer_gauges_arbitrum',
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "sector",
