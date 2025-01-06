@@ -82,4 +82,5 @@ SELECT address
         , (0x500d7ea63cf2e501dadaa5feec1fc19fe2aa72ac, 'Ink', 'inkonchain')
         , (0x68d5bbf3a01ecbb47ce38cf64a7d6c0ea618040f, 'Binary Network', 'thebinaryhldgs')
         , (0xf263a0aa8afeaa7d516b596d49d7ba6c0feb102c, 'R0AR Chain', 'th3r0ar')
+        , (0x9391791f7cb74f8bfda65edc0749efd964311b55, 'HashKey', 'HashKeyHSK')
         ) AS x(address, entity, x_username)
