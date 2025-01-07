@@ -1,7 +1,7 @@
 {{ config(
     schema='prices_v2'
     , alias = 'comparison'
-    , materialized = 'tabe'
+    , materialized = 'table'
     , file_format = 'delta'
     )
 }}
