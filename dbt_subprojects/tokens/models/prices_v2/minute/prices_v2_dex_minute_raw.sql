@@ -61,6 +61,5 @@ SELECT
     sum(volume) as volume,
     'dex.trades' as source,
     date_trunc('day',timestamp) as date, -- partition
-    sum(volume*price)/sum(volume) as vwap_price  --vwap
 FROM dex_trades_filter_and_unnest
 group by 1,2,3,7
