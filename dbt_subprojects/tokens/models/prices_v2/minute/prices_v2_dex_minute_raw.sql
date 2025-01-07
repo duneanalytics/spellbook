@@ -57,7 +57,7 @@ SELECT
     blockchain,
     contract_address,
     date_trunc('minute',timestamp) as timestamp,
-    sum(price*volume)/sum(volume) as price, -- vwap
+    approx_percentile(price,0.5) as price, -- median
     sum(volume) as volume,
     'dex.trades' as source,
     date_trunc('day',timestamp) as date -- partition
