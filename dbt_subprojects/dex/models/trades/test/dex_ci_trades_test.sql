@@ -23,10 +23,12 @@ WITH base_union AS (
     {% endfor %}
 )
 
-{{
-    enrich_dex_trades(
-        base_trades = 'base_union'
-        , tokens_erc20_model = source('tokens', 'erc20')
-        , filter = "1=1"
-    )
-}}
+SELECT * FROM (
+    {{
+        enrich_dex_trades(
+            base_trades = 'base_union'
+            , tokens_erc20_model = source('tokens', 'erc20')
+            , filter = "1=1"
+        )
+    }}
+)
