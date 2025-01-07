@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: dex_ci_trades_test
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin
+      sector: dex
+      contributors: hosuke
+    config:
+      tags: ['dex', 'trades', 'ci_test']
+    description: "CI test view that processes modified base_trades models to verify their integration with the dex.trades pipeline"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - name: project
+        data_tests:
+          - relationships:
+              to: ref('dex_info')
+              field: project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - name: amount_usd
+        data_tests:
+          - dbt_utils.accepted_range:
+              max_value: 1000000000
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index

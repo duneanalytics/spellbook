@@ -9,11 +9,58 @@ on:
       - .github/workflows/dbt_run.yml
 
 concurrency:
-  group:  ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  check-base-trades:
+    runs-on: ubuntu-latest
+    outputs:
+      has_changes: ${{ steps.check.outputs.has_changes }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: check
+        name: Check for base_trades changes
+        run: |
+          CHANGES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -E "dbt_subprojects/dex/models/.*/.*_base_trades\.sql$" || true)
+          if [ ! -z "$CHANGES" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Found changes in base_trades files:"
+            echo "$CHANGES"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No base_trades changes found"
+          fi
+
+  test-base-trades:
+    needs: check-base-trades
+    if: needs.check-base-trades.outputs.has_changes == 'true'
+    runs-on: [ self-hosted, linux, spellbook-trino-ci ]
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup variables
+        run: |
+          echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
+          echo "PROJECT_DIR=dbt_subprojects/dex" >> $GITHUB_ENV
+          
+      - name: dbt dependencies
+        working-directory: ${{env.PROJECT_DIR}}
+        run: "dbt deps"
+        
+      - name: Run CI Test Models
+        working-directory: ${{env.PROJECT_DIR}}
+        run: |
+          dbt run $PROFILE --select dex_ci_trades_test --project-dir ${PROJECT_DIR}
+          
+      - name: Test Results
+        working-directory: ${{env.PROJECT_DIR}}
+        run: |
+          dbt test $PROFILE --select dex_ci_trades_test --project-dir ${PROJECT_DIR}
+
   dbt-run:
+    needs: [check-base-trades, test-base-trades]
+    if: always() && (needs.check-base-trades.outputs.has_changes == 'false' || needs.test-base-trades.result == 'success')
     uses: ./.github/workflows/dbt_run.yml
     with:
       project: 'dex'
