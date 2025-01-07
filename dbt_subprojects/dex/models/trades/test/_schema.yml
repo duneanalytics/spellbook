@@ -18,35 +18,58 @@ models:
             - tx_hash
             - evt_index
     columns:
-      - *blockchain
-      - *project
+      - name: blockchain
+        description: "Blockchain on which this trade occurred"
       - name: project
+        description: "Name of the dex on which the trade occurred"
         data_tests:
           - relationships:
               to: ref('dex_info')
               field: project
-      - *version
-      - *block_month
-      - *block_date
-      - *block_time
-      - *block_number
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
+      - name: version
+        description: "Version of the DEX protocol/contract"
+      - name: block_month
+        description: "UTC event block month"
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_time
+        description: "UTC event block time"
+      - name: block_number
+        description: "Block number of the block in which the trade occurred"
+      - name: token_bought_symbol
+        description: "Symbol of the token bought in the trade"
+      - name: token_sold_symbol
+        description: "Symbol of the token sold in the trade"
+      - name: token_pair
+        description: "symbol pair for the tokens involved in the trade. e.g. 'ETH/USDC'. Always alphabetical order, not trade order."
+      - name: token_bought_amount
+        description: "Amount of the token bought in the display unit"
+      - name: token_sold_amount
+        description: "Amount of the token sold in the display unit"
+      - name: token_bought_amount_raw
+        description: "Amount of the token bought in the base unit"
+      - name: token_sold_amount_raw
+        description: "Amount of the token sold in the base unit"
       - name: amount_usd
+        description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
         data_tests:
           - dbt_utils.accepted_range:
-              max_value: 1000000000
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *evt_index
+              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+      - name: token_bought_address
+        description: "Contract address of the token bought"
+      - name: token_sold_address
+        description: "Contract address of the token sold"
+      - name: taker
+        description: "Address of account which purchased tokens. Can be contracts or EOA addresses. "
+      - name: maker
+        description: "Address of account which sold tokens. Can be contracts or EOA addresses."
+      - name: project_contract_address
+        description: "Smart contract address which emitted the event associated with this trade."
+      - name: tx_hash
+        description: "The hash of the transaction that this trade was included in"
+      - name: tx_from
+        description: "EOA address that sent the trade transaction"
+      - name: tx_to
+        description: "Address that got called in the first call of this transaction"
+      - name: evt_index
+        description: "Index of the event in the transaction"
