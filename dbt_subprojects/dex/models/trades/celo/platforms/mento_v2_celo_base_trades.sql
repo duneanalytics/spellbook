@@ -10,7 +10,6 @@
   )
 }}
 
--- refresh for testing
 {{
     generic_spot_compatible_trades(
         blockchain = 'celo',
