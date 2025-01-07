@@ -1,6 +1,6 @@
 {{ config(
     schema='prices_v2'
-    , alias = 'dex_minute_raw'
+    , alias = 'comparison'
     , materialized = 'tabe'
     , file_format = 'delta'
     )
