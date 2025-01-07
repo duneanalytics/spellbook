@@ -1,20 +1,19 @@
 {{config(
-        
-        alias = 'balancer_v2_gauges',
+        alias = 'balancer_gauges',
         post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "optimism", "polygon", "avalanche_c", "base", "gnosis", "zkevm"]\',
                                     "sector",
                                     "labels",
                                     \'["jacektrocinski", "viniabussafi"]\') }}')}}
 
 {% set gauges_models = [
-    ref('labels_balancer_v2_gauges_ethereum')
-    , ref('labels_balancer_v2_gauges_polygon')
-    , ref('labels_balancer_v2_gauges_arbitrum')
-    , ref('labels_balancer_v2_gauges_optimism')
-    , ref('labels_balancer_v2_gauges_avalanche_c')
-    , ref('labels_balancer_v2_gauges_base')        
-    , ref('labels_balancer_v2_gauges_gnosis')     
-    , ref('labels_balancer_v2_gauges_zkevm')           
+    ref('labels_balancer_gauges_ethereum')
+    , ref('labels_balancer_gauges_polygon')
+    , ref('labels_balancer_gauges_arbitrum')
+    , ref('labels_balancer_gauges_optimism')
+    , ref('labels_balancer_gauges_avalanche_c')
+    , ref('labels_balancer_gauges_base')        
+    , ref('labels_balancer_gauges_gnosis')     
+    , ref('labels_balancer_gauges_zkevm')           
 ] %}
 
 SELECT *
