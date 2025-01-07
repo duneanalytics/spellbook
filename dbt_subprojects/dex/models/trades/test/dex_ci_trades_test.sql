@@ -25,7 +25,7 @@ WITH base_union AS (
 {{
     enrich_dex_trades(
         base_trades = 'base_union'
-        , filter = "1=1"  -- Date filter already applied in base_union
         , tokens_erc20_model = source('tokens', 'erc20')
+        , filter = "1=1"
     )
 }}
