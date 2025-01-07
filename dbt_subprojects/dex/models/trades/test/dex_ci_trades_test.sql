@@ -9,12 +9,12 @@
 -- This view is only for CI testing purpose
 -- It directly processes modified base_trades models and enriches them with token information
 
-{% set modified_base_trades = dbt_utils.get_modified_models('base_trades') %}
+{% set modified_models = get_modified_base_trades() %}
 
 WITH base_union AS (
-    {% for model in modified_base_trades %}
+    {% for model in modified_models %}
     SELECT *
-    FROM {{ model }}
+    FROM {{ ref(model) }}
     WHERE block_date = current_date - interval '1' day
     {% if not loop.last %}
     UNION ALL
