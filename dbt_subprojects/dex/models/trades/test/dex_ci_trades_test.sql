@@ -16,7 +16,22 @@ WITH base_trades AS (
     {% for file in modified_models %}
     {% set model_name = file.split('/')[-1].replace('.sql', '') %}
     SELECT
-        *,
+        blockchain,
+        project,
+        version,
+        block_month,
+        block_date,
+        block_time,
+        block_number,
+        token_bought_amount_raw,
+        token_sold_amount_raw,
+        CAST(token_bought_address AS varbinary) as token_bought_address,
+        CAST(token_sold_address AS varbinary) as token_sold_address,
+        CAST(taker AS varbinary) as taker,
+        CAST(maker AS varbinary) as maker,
+        CAST(project_contract_address AS varbinary) as project_contract_address,
+        tx_hash,
+        evt_index,
         cast(null as varbinary) as tx_from,  -- For testing only, not used in production
         cast(null as varbinary) as tx_to     -- For testing only, not used in production
     FROM delta_prod.test_schema.{{ git_schema }}_{{ model_name }}
