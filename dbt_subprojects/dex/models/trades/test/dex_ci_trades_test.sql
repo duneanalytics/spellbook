@@ -16,7 +16,7 @@ WITH base_union AS (
     {% for file in modified_models %}
     {% set model_name = file.split('/')[-1].replace('.sql', '') %}
     SELECT *
-    FROM test_schema.{{ git_schema }}.{{ model_name }}
+    FROM delta_prod.test_schema.{{ git_schema }}_{{ model_name }}
     WHERE block_date = current_date - interval '1' day
     {% if not loop.last %}
     UNION ALL
