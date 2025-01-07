@@ -17,8 +17,8 @@ WITH base_trades AS (
     {% set model_name = file.split('/')[-1].replace('.sql', '') %}
     SELECT
         *,
-        evt_tx_hash as tx_from,  -- For testing only, not used in production
-        evt_tx_hash as tx_to     -- For testing only, not used in production
+        cast(null as varbinary) as tx_from,  -- For testing only, not used in production
+        cast(null as varbinary) as tx_to     -- For testing only, not used in production
     FROM delta_prod.test_schema.{{ git_schema }}_{{ model_name }}
     WHERE block_date = current_date - interval '1' day
     {% if not loop.last %}
