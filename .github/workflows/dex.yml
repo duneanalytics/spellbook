@@ -20,10 +20,18 @@ jobs:
       modified_files: ${{ steps.check.outputs.modified_files }}
     steps:
       - uses: actions/checkout@v3
-      - id: check
-        name: Check for base_trades changes
+        with:
+          fetch-depth: 0
+      - name: Check for base_trades changes
+        id: check
         run: |
-          CHANGES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -E "dbt_subprojects/dex/models/.*/.*_base_trades\.sql$" || true)
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            git fetch origin ${{ github.base_ref }}
+            CHANGES=$(git diff --name-only origin/${{ github.base_ref }}..HEAD | grep -E "dbt_subprojects/dex/models/.*/.*_base_trades\.sql$" || true)
+          else
+            CHANGES=$(git diff --name-only HEAD~1 | grep -E "dbt_subprojects/dex/models/.*/.*_base_trades\.sql$" || true)
+          fi
+          
           if [ ! -z "$CHANGES" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
             echo "modified_files=$CHANGES" >> $GITHUB_OUTPUT
