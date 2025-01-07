@@ -25,9 +25,9 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             git fetch origin ${{ github.base_ref }}
-            CHANGES=$(git diff --name-only origin/${{ github.base_ref }}..HEAD | grep -E "dbt_subprojects/${{ inputs.project }}/models/.*/.*_base_trades\.sql$" || true)
+            CHANGES=$(git diff --name-only origin/${{ github.base_ref }}..HEAD | grep -E "dbt_subprojects/${{ inputs.project }}/models/.*/platforms/(?!dex_).*_base_trades\.sql$" || true)
           else
-            CHANGES=$(git diff --name-only HEAD~1 | grep -E "dbt_subprojects/${{ inputs.project }}/models/.*/.*_base_trades\.sql$" || true)
+            CHANGES=$(git diff --name-only HEAD~1 | grep -E "dbt_subprojects/${{ inputs.project }}/models/.*/platforms/(?!dex_).*_base_trades\.sql$" || true)
           fi
           
           if [ ! -z "$CHANGES" ]; then
