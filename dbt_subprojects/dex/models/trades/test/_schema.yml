@@ -67,9 +67,5 @@ models:
         description: "Smart contract address which emitted the event associated with this trade."
       - name: tx_hash
         description: "The hash of the transaction that this trade was included in"
-      - name: tx_from
-        description: "EOA address that sent the trade transaction"
-      - name: tx_to
-        description: "Address that got called in the first call of this transaction"
       - name: evt_index
         description: "Index of the event in the transaction"
