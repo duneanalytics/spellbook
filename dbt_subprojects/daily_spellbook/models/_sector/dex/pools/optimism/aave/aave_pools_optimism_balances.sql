@@ -29,9 +29,10 @@ raw_borrow AS (
     evt_block_number,
     amount
   FROM {{ source('aave_v3_optimism', 'borrow') }}
-  WHERE token_address = 0x4200000000000000000000000000000042
+  WHERE token_address = 0x4200000000000000000000000042
 ),
 
+-- Aggregate supply transactions per day
 supply_daily AS (
   SELECT
     pool_address,
@@ -41,6 +42,7 @@ supply_daily AS (
   GROUP BY 1, 2
 ),
 
+-- Aggregate borrow transactions per day
 borrow_daily AS (
   SELECT
     pool_address,
@@ -50,6 +52,7 @@ borrow_daily AS (
   GROUP BY 1, 2
 ),
 
+-- Combine supply and borrow data with proper deduplication
 combined_daily AS (
   SELECT
     COALESCE(s.pool_address, b.pool_address) as pool_address,
@@ -63,16 +66,17 @@ combined_daily AS (
     AND s.snapshot_day = b.snapshot_day
 ),
 
+-- Add final deduplication step
 final_balances AS (
-  SELECT DISTINCT
+  SELECT DISTINCT ON (pool_address, snapshot_day)
     pool_address,
     'aave' as protocol_name,
     'v3' as protocol_version,
     snapshot_day,
-    net_balance as op_balance,
-    ROW_NUMBER() OVER (PARTITION BY pool_address, snapshot_day ORDER BY net_balance DESC) as rn
+    net_balance as op_balance
   FROM combined_daily
   WHERE net_balance > 0
+  ORDER BY pool_address, snapshot_day, net_balance DESC
 )
 
 SELECT
@@ -82,4 +86,3 @@ SELECT
   snapshot_day,
   op_balance
 FROM final_balances
-WHERE rn = 1
