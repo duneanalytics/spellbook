@@ -7,10 +7,14 @@
 	file_format = 'delta',
 	incremental_strategy = 'merge',
 	unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
+    post_hook='{{ expose_spells(\'["optimism"]\',
+                                "project",
+                                "pika",
+                                \'["msilb7", "drethereum", "rplust","principatel"]\') }}'
+     post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
                                     spell_type = "project",
                                     spell_name = "pika",
-                                    contributors = \'["msilb7", "drethereum", "rplust","princi"]\') }}'                            
+                                    contributors = \'["msilb7", "drethereum", "rplust","principatel"]\') }}'                            
 	)
 }}
 
@@ -35,7 +39,7 @@ WITH positions AS (
 		,'4' AS version
 	FROM {{ source('pika_protocol_v4_optimism', 'PikaPerpV4_evt_NewPosition') }}
 	{% if is_incremental() %}
-	WHERE {{incremental_predicate('evt_block_time')}}
+	WHERE evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 	{% endif %}
 
 	UNION ALL
@@ -58,7 +62,7 @@ WITH positions AS (
 		,'4' AS version
 	FROM {{ source('pika_protocol_v4_optimism', 'PikaPerpV4_evt_ClosePosition') }}
 	{% if is_incremental() %}
-	WHERE {{incremental_predicate('evt_block_time')}}
+	WHERE evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 	{% endif %}
 ),
 
@@ -167,5 +171,5 @@ INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	AND tx.block_time >= DATE '{{project_start_date}}'
 	{% endif %}
 	{% if is_incremental() %}
-    AND {{incremental_predicate('evt_block_time')}}
+	AND tx.block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
 	{% endif %}
