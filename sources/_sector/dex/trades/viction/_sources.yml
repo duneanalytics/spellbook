@@ -13,8 +13,3 @@ sources:
       # Pending for Swap event table
       # - name: RabbitSwapV3Pool_evt_Swap
   
-  # Pending for contract deployment and event tables
-  # - name: mori_viction
-  #   tables:
-  #     - name: UniswapV3Pool_evt_Swap
-  #     - name: UniswapV3Factory_evt_PoolCreated
