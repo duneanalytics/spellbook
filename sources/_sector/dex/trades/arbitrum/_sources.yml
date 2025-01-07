@@ -40,6 +40,9 @@ sources:
       - name: LBFactory_evt_LBPairCreated
   - name: trader_joe_v2_1_arbitrum
   - name: trader_joe_arbitrum
+  - name: pancakeswap_arbitrum
+    tables:
+      - name: ExclusiveDutchOrderReactor_evt_Fill
   - name: pancakeswap_v2_arbitrum
     tables:
       - name: PancakePair_evt_Swap
