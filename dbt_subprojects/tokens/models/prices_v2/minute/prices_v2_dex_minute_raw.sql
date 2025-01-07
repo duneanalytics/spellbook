@@ -60,6 +60,7 @@ SELECT
     approx_percentile(price,0.5) as price, -- median
     sum(volume) as volume,
     'dex.trades' as source,
-    date_trunc('day',timestamp) as date -- partition
+    date_trunc('day',timestamp) as date, -- partition
+    sum(amount_usd*b.price)/sum(amount_usd) as vwap_price  --vwap
 FROM dex_trades_filter_and_unnest
 group by 1,2,3,7

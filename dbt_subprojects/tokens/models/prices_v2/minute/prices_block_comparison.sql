@@ -27,6 +27,8 @@ select
     ,b.price as block_based_price
     ,m.price as minute_raw_price
     ,(m.price - b.price) as absolute_difference
-    ,(m.price - b.price)/m.price as percent_difference
+    ,(m.price - b.price)/b.price as percent_difference
+    ,(m.vwap_price - b.price) as absolute_difference_vwap
+    ,(m.vwap_price - b.price)/b.price as percent_difference_vwap
 from prices_block_vwap b
 full outer join {{ref('prices_v2_dex_minute_raw')}} m using (blockchain,contract_address,timestamp)
