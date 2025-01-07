@@ -7,14 +7,10 @@
 	file_format = 'delta',
 	incremental_strategy = 'merge',
 	unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["optimism"]\',
-                                "project",
-                                "pika",
-                                \'["msilb7", "drethereum", "rplust","principatel"]\') }}'
-     post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
+    post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
                                     spell_type = "project",
                                     spell_name = "pika",
-                                    contributors = \'["msilb7", "drethereum", "rplust","principatel"]\') }}'                            
+                                    contributors = \'["msilb7", "drethereum", "rplust","principatel"]\') }}'                  
 	)
 }}
 
