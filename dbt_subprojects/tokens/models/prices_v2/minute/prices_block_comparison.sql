@@ -12,7 +12,7 @@ SELECT
     b.contract_address,
     date_trunc('minute',block_time) as timestamp,
     sum(amount_usd*b.price)/sum(amount_usd) as price  --vwap
-FROM dex.prices_block b
+FROM {{source('dex','prices_block')}} b
 inner join {{ref('prices_v2_dex_minute_raw')}} m
     on b.blockchain= m.blockchain
     and b.contract_address = m.contract_address

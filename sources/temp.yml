@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: dex
+    tables:
+      - name: prices_block
