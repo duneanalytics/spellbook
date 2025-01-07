@@ -1,10 +1,10 @@
 {{ config(
+        schema = 'cow_protocol_ethereum',
         alias='solvers',
-        
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha"]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                    spell_type = "project",
+                                    spell_name = "cow_protocol",
+                                    contributors = \'["bh2smith", "gentrexha"]\') }}'
 )}}
 
 -- Find the PoC Query here: https://dune.com/queries/1276806
@@ -118,6 +118,14 @@ known_solver_metadata (address, environment, name) as (
                  (0x6bf97aFe2D2C790999cDEd2a8523009eB8a0823f, 'prod', 'Portus'),
                  (0x95480d3f27658e73b2785d30beb0c847d78294c7, 'prod', 'Fractal'),
                  (0x00806DaA2Cfe49715eA05243FF259DeB195760fC, 'prod', 'Quasilabs'),
+                 (0x28B1bd44996105b5c14c4dE41093226Ff78A4eB1, 'prod', '0x'),
+                 (0x04B89dBce06e7Aa2F4BBA78969ADD4576eB94788, 'prod', 'ApeOut_1Inch'),
+                 (0xbada5552a3e5e2fb57db982e29257821a2cf192d, 'prod', 'Project_Blanc'),
+                 (0x34717040928D7fd8154d4612f3228EFf14521023, 'prod', 'Laita'),
+                 (0xBab555BaBEe5d867983902bC8db8F707157245Be, 'barn', 'Project_Blanc'),
+                 (0x854490ef1d402D4f6fce05aBefE1C676eB0DCD74, 'barn', 'ApeOut_1Inch'),
+                 (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
+                 (0xcC73072B53697911Ff394ae01D3de59c9900b0b0, 'barn', '0x'),
                  (0xd0bA1b1782fbdE45edAb392428f60e14827D08EC, 'barn', 'Laita'),
                  (0x7E2eF26AdccB02e57258784957922AEEFEe807e5, 'barn', 'Quasilabs'),
                  (0x5131590ca2E9D3edC182581352b289dcaE83430c, 'barn', 'Portus'),

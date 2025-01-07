@@ -160,3 +160,61 @@ This table is used for:
 It's essentially a filtered version of the `boba.traces` table where `type = create`.
 
 {% enddocs %}
+
+{% docs erc20_boba_evt_transfer_doc %}
+
+The `erc20_boba.evt_transfer` table contains Transfer events from ERC20 token contracts on the Boba blockchain. Each record represents a token transfer and includes:
+
+- Token contract address
+- Sender and recipient addresses
+- Amount of tokens transferred
+- Block and transaction information
+- Event log details
+
+This table is essential for:
+- Tracking token transfers and holder activity
+- Analyzing token distribution patterns
+- Monitoring token holder behavior
+- Calculating token balances
+- Understanding token velocity and liquidity
+
+{% enddocs %}
+
+{% docs erc721_boba_evt_transfer_doc %}
+
+The `erc721_boba.evt_transfer` table contains Transfer events from ERC721 (NFT) token contracts on the Boba blockchain. Each record represents an NFT transfer and includes:
+
+- NFT contract address
+- Token ID
+- Sender and recipient addresses
+- Block and transaction information
+- Event log details
+
+This table is used for:
+- Tracking NFT ownership changes
+- Analyzing NFT trading patterns
+- Monitoring NFT collection activity
+- Building NFT holder histories
+- Understanding NFT market dynamics
+
+{% enddocs %}
+
+{% docs erc1155_boba_evt_transfer_doc %}
+
+The `erc1155_boba.evt_transfersingle` and `erc1155_boba.evt_transferbatch` tables contain Transfer events from ERC1155 token contracts on the Boba blockchain. These tables track both fungible and non-fungible token transfers within the same contract. They include:
+
+- Token contract address
+- Token IDs
+- Amounts transferred
+- Sender, operator, and recipient addresses
+- Block and transaction information
+- Event log details
+
+These tables are essential for:
+- Tracking multi-token transfers
+- Analyzing gaming asset movements
+- Monitoring hybrid token systems
+- Understanding complex token ecosystems
+- Building token holder analytics
+
+{% enddocs %}

@@ -19,6 +19,7 @@
 {% set deployer_2 = '0x3A510C5a32bCb381c53704AED9c02b0c70041F7A' %}
 {% set deployer_3 = '0xa24e8cE77D4A7Ce869DA3730e6560BfB66553F94' %}
 {% set deployer_4 = '0xc8378819fbB95130c34D62f520167F745B13C305' %}
+{% set deployer_5 = '0xde7Cb3d58D4004ff0De70995C0604089cc945EAF' %}
 {% set wbnb_contract_address = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c' %}
 {% set usdc_contract_address = '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d' %}
 {% set fee_recipient_1 = '0x415EEc63c95e944D544b3088bc682B759edB8548' %}
@@ -34,6 +35,7 @@ with
                 or "from" = {{ deployer_2 }}
                 or "from" = {{ deployer_3 }}
                 or "from" = {{ deployer_4 }}
+                or "from" = {{ deployer_5 }}
             
             )
             and block_time >= timestamp '{{project_start_date}}'

@@ -67,7 +67,9 @@ WITH trusted_tokens AS (
                 , ('ethereum', 0x6b175474e89094c44da98b954eedeac495271d0f)
                 , ('ethereum', 0x2260fac5e5542a773aa44fbcfedf7c193bc2c599)
                 , ('ethereum', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e)
+                , ('ethereum', 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0) -- wstETH
                 , ('fantom', 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83)
+                , ('flare', 0x1D80c49BbBCd1C0911346656B529DF9E5c2F783d)
                 , ('fantom', 0x04068da6c83afcfa0e13ba15a6696662335d5b75)
                 , ('fantom', 0x74b23882a30290451a17c44f4f05243b6b58c76d)
                 , ('fantom', 0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e)
@@ -141,6 +143,10 @@ WITH trusted_tokens AS (
                 , ('solana', from_base58('mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So'))
                 , ('solana', from_base58('Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB'))
                 , ('solana', from_base58('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'))
+                , ('sonic', 0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38)
+                , ('sonic', 0x29219dd400f2Bf60E5a23d13Be72B486D4038894)
+                , ('sonic', 0x50c42dEAcD8Fc9773493ED674b675bE577f2634b)
+                , ('sonic', 0xe715cba7b5ccb33790cebff1436809d36cb17e57)
                 , ('worldchain', 0x2cFc85d8E48F8EAB294be644d9E25C3030863003)
                 , ('worldchain', 0x79A02482A880bCE3F13e09Da970dC34db4CD24d1)
                 , ('worldchain', 0x03C7054BCB39f7b2e5B2c7AcB37583e32D70Cfa3)
@@ -151,6 +157,9 @@ WITH trusted_tokens AS (
                 , ('zkevm', 0x37eaa0ef3549a5bb7d431be78a3d99bd360d19e5)
                 , ('zkevm', 0xa2036f0538221a77a3937f1379699f44945018d0)
                 , ('zkevm', 0xb23c20efce6e24acca0cef9b7b7aa196b84ec942)
+                , ('viction', 0xC054751BdBD24Ae713BA3Dc9Bd9434aBe2abc1ce)  -- WVIC
+                , ('viction', 0x381B31409e4D220919B2cFF012ED94d70135A59e)  -- USDT
+                , ('viction', 0x20cC4574f263C54eb7aD630c9AC6d4d9068Cf127)  -- USDC
                 , ('zksync', 0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4)
                 , ('zksync', 0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181)
                 , ('zksync', 0x5aea5775959fbc2557cc8789bc1bf90a239d9a91)

@@ -172,6 +172,9 @@ sources:
     tables:
       - name: PairFactory_evt_PairCreated
       - name: Pair_evt_Swap
+  - name: stablebase_base
+    tables:
+      - name: SwapFlashLoan_evt_TokenSwap
   - name: basex_base
     tables:
       - name: UniswapV3Pool_evt_Swap
@@ -186,6 +189,10 @@ sources:
     tables:
       - name: XchangePair_evt_Swap
       - name: XchangeFactory_evt_PairCreated
+  - name: infusion_base
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
   - name: flashliquidity_base
     tables:
       - name: FlashLiquidityPair_evt_Swap
@@ -194,3 +201,4 @@ sources:
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UniswapV2Factory_evt_PairCreated
+

@@ -16,7 +16,9 @@
     ref('balancer_v2_gnosis_bpt_supply_changes_daily'),
     ref('balancer_v2_optimism_bpt_supply_changes_daily'),
     ref('balancer_v2_polygon_bpt_supply_changes_daily'),
-    ref('balancer_v2_zkevm_bpt_supply_changes_daily')
+    ref('balancer_v2_zkevm_bpt_supply_changes_daily'),
+    ref('balancer_v3_ethereum_bpt_supply_changes_daily'),
+    ref('balancer_v3_gnosis_bpt_supply_changes_daily')   
 ] %}
 
 SELECT *

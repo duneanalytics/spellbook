@@ -269,6 +269,15 @@ daily_avg_cbbtc_prices as (
   group by 1
 ),
 
+daily_reth_eth_prices as (
+  select
+    date_trunc('day', call_block_time) as block_date,
+    avg(output_0 / 1e18) as avg_reth_eth_price
+  from {{ source('rocketpool_ethereum', 'RocketTokenRETH_call_getExchangeRate') }}
+  where call_block_time >= timestamp '2023-04-18'
+  group by 1
+),
+
 day_sequence as (
   select cast(d.seq_date as timestamp) as block_date
   from (select sequence(date '2019-05-23', current_date, interval '1' day) as days) as days_s
@@ -337,7 +346,7 @@ daily_running_totals_enriched as (
     -- rETH
     coalesce(drt.reth_total, 0) as reth_total,
     coalesce(drt.reth_total * p_avg_reth.price_usd, 0) as avg_reth_usd_total,
-    coalesce(drt.reth_total * p_avg_reth.price_usd / p_avg_eth.price_usd, 0) as avg_reth_eth_total,
+    coalesce(drt.reth_total * p_reth_eth.avg_reth_eth_price, 0) as avg_reth_eth_total,
     -- USDC
     coalesce(drt.usdc_total, 0) as usdc_total,
     coalesce(drt.usdc_total * p_avg_usdc.price_usd, 0) as avg_usdc_usd_total,
@@ -362,6 +371,7 @@ daily_running_totals_enriched as (
     left join daily_avg_reth_prices p_avg_reth on drt.block_date = p_avg_reth.block_date
     left join daily_avg_usdc_prices p_avg_usdc on drt.block_date = p_avg_usdc.block_date
     left join daily_avg_cbbtc_prices p_avg_cbbtc on drt.block_date = p_avg_cbbtc.block_date
+    left join daily_reth_eth_prices p_reth_eth on drt.block_date = p_reth_eth.block_date
 )
 
 select

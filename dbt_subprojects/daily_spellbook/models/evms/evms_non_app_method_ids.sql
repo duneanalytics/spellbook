@@ -3,7 +3,7 @@
         tags = [ 'static'],
         schema = 'non_app_method_ids',
         alias = 'non_app_method_ids',
-        post_hook='{{ expose_spells(\'["ethereum","optimism","arbitrum","polygon","gnosis","avalanche_c","fantom","goerli","bnb","base","celo", "zora"]\',
+        post_hook='{{ expose_spells(\'["ethereum","optimism","arbitrum","polygon","gnosis","avalanche_c","fantom","goerli","bnb","base","celo", "zora", "ronin"]\',
                                 "sector",
                                 "method_ids",
                                 \'["msilb7"]\') }}'
@@ -23,6 +23,7 @@
     ,'bnb'
     ,'base'
     ,'celo'
+    , 'ronin'
     ] %}
 
 WITH aggrregate_methods AS (

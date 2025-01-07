@@ -333,3 +333,112 @@ sources:
             description: "Excess blob gas in this block"
           - name: parent_beacon_block_root
             description: "Root hash of the parent beacon block"
+
+  - name: erc20_boba
+    description: "Transfer events for ERC20 tokens on Boba blockchain"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/boba/raw/erc20_transfers
+          short_description: The evt_transfer table contains all ERC20 token transfer events on the Boba blockchain.
+        description: '{{ doc("erc20_boba_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC20 token contract"
+          - name: from
+            description: "The address sending the tokens"
+          - name: to
+            description: "The address receiving the tokens"
+          - name: value
+            description: "The amount of tokens transferred"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
+
+  - name: erc721_boba
+    description: "Transfer events for ERC721 tokens on Boba blockchain"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/boba/raw/erc721_transfers
+          short_description: The evt_transfer table contains all ERC721 token transfer events on the Boba blockchain.
+        description: '{{ doc("erc721_boba_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC721 token contract"
+          - name: from
+            description: "The address sending the NFT"
+          - name: to
+            description: "The address receiving the NFT"
+          - name: tokenId
+            description: "The unique identifier of the NFT being transferred"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
+
+  - name: erc1155_boba
+    description: "Transfer events for ERC1155 tokens on Boba blockchain"
+    tables:
+      - name: evt_transfersingle
+        meta:
+          docs_slug: /evm/boba/raw/erc1155_transfers_single
+          short_description: The evt_transfersingle table contains single token transfer events from ERC1155 contracts on the Boba blockchain.
+        description: '{{ doc("erc1155_boba_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC1155 token contract"
+          - name: operator
+            description: "The address authorized to make the transfer"
+          - name: from
+            description: "The address sending the tokens"
+          - name: to
+            description: "The address receiving the tokens"
+          - name: id
+            description: "The identifier for the token being transferred"
+          - name: value
+            description: "The amount of tokens being transferred"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
+
+      - name: evt_transferbatch
+        meta:
+          docs_slug: /evm/boba/raw/erc1155_transfers_batch
+          short_description: The evt_transferbatch table contains batch token transfer events from ERC1155 contracts on the Boba blockchain.
+        description: '{{ doc("erc1155_boba_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC1155 token contract"
+          - name: operator
+            description: "The address authorized to make the transfer"
+          - name: from
+            description: "The address sending the tokens"
+          - name: to
+            description: "The address receiving the tokens"
+          - name: ids
+            description: "The array of token identifiers being transferred"
+          - name: values
+            description: "The array of amounts being transferred for each token id"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
