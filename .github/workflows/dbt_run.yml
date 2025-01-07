@@ -7,6 +7,16 @@ on:
         description: 'DBT run for project'
         required: true
         type: string
+      base_trades_changes:
+        description: 'Whether there are base_trades changes'
+        required: false
+        type: string
+        default: 'false'
+      modified_base_trades:
+        description: 'List of modified base_trades files'
+        required: false
+        type: string
+        default: ''
 
 jobs:
   dbt-test:
@@ -24,6 +34,7 @@ jobs:
           echo "S3_LOCATION=s3://manifest-spellbook-dunesql/${{inputs.project}}" >> $GITHUB_ENV
           PROJECT_DIR=dbt_subprojects/${{ inputs.project }}
           echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
+
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_dunesql_$GIT_SHA"
 
@@ -53,6 +64,13 @@ jobs:
 
       - name: dbt run initial model(s)
         run: "dbt -x run $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+
+      - name: Test base_trades changes
+        if: inputs.base_trades_changes == 'true'
+        working-directory: ${{env.PROJECT_DIR}}
+        run: |
+          dbt run $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ inputs.modified_base_trades }}'}"
+          dbt test $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ inputs.modified_base_trades }}'}"
 
       - name: dbt test initial model(s)
         run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"

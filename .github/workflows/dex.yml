@@ -42,35 +42,10 @@ jobs:
             echo "No base_trades changes found"
           fi
 
-  test-base-trades:
-    needs: check-base-trades
-    if: needs.check-base-trades.outputs.has_changes == 'true'
-    runs-on: [ self-hosted, linux, spellbook-trino-ci ]
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup variables
-        run: |
-          echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
-          echo "PROJECT_DIR=dbt_subprojects/dex" >> $GITHUB_ENV
-          
-      - name: dbt dependencies
-        working-directory: ${{env.PROJECT_DIR}}
-        run: "dbt deps"
-        
-      - name: Run CI Test Models
-        working-directory: ${{env.PROJECT_DIR}}
-        run: |
-          dbt run $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ needs.check-base-trades.outputs.modified_files }}'}"
-          
-      - name: Test Results
-        working-directory: ${{env.PROJECT_DIR}}
-        run: |
-          dbt test $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ needs.check-base-trades.outputs.modified_files }}'}"
-
   dbt-run:
-    needs: [check-base-trades, test-base-trades]
-    if: always() && (needs.check-base-trades.outputs.has_changes == 'false' || needs.test-base-trades.result == 'success')
+    needs: check-base-trades
     uses: ./.github/workflows/dbt_run.yml
     with:
       project: 'dex'
+      base_trades_changes: ${{ needs.check-base-trades.outputs.has_changes }}
+      modified_base_trades: ${{ needs.check-base-trades.outputs.modified_files }}
