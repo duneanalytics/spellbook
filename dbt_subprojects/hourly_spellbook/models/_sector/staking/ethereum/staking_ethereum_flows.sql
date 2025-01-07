@@ -9,16 +9,16 @@
 }}
 
 WITH indexes AS (
-    SELECT pubkey
-    , i.validator_index AS validator_index
+    SELECT d.pubkey
+    , i.index AS validator_index
     , MAX(entity) AS entity
     , MAX(entity_category) AS entity_category
     , MAX(entity_unique_name) AS entity_unique_name
     , MAX(sub_entity) AS sub_entity
     , MAX(sub_entity_category) AS sub_entity_category
     , MAX(sub_entity_unique_name) AS sub_entity_unique_name
-    FROM {{ ref('staking_ethereum_deposits')}}
-    INNER JOIN {{source('hildobby', 'dataset_ethereum_validators', database='dune')}} i USING (pubkey)
+    FROM {{ ref('staking_ethereum_deposits')}} d
+    INNER JOIN {{ref('beacon_lido_validators')}} i ON d.pubkey=i.public_key
     GROUP BY 1
     )
 
@@ -36,15 +36,15 @@ WITH indexes AS (
     , d.tx_hash
     , d.tx_from
     , d.deposit_index
-    , i.validator_index
-    , pubkey
+    , i.index AS validator_index
+    , d.pubkey
     , d.signature
     , d.withdrawal_address
     , d.withdrawal_credentials
     , d.withdrawal_credentials_type
     , d.evt_index
     FROM {{ ref('staking_ethereum_deposits')}} d
-    INNER JOIN {{source('hildobby', 'dataset_ethereum_validators', database='dune')}} i USING (pubkey)
+    INNER JOIN {{ref('beacon_lido_validators')}} i ON d.pubkey=i.public_key
     )
     
 SELECT block_time
