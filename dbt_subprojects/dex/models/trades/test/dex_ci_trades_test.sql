@@ -12,9 +12,10 @@
 {% set modified_models = get_modified_base_trades() %}
 
 WITH base_union AS (
-    {% for model in modified_models %}
+    {% for file in modified_models %}
+    {% set model_name = file.split('/')[-1].replace('.sql', '') %}
     SELECT *
-    FROM {{ ref(model) }}
+    FROM {{ source('dex', model_name) }}
     WHERE block_date = current_date - interval '1' day
     {% if not loop.last %}
     UNION ALL
