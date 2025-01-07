@@ -1,5 +1,21 @@
 version: 2
 
+sources:
+  - name: dex
+    database: spellbook
+    schema: dex
+    tables:
+      - name: mento_v2_celo_base_trades
+      - name: mento_v1_celo_base_trades
+      - name: uniswap_v3_base_base_trades
+      - name: uniswap_v3_arbitrum_base_trades
+      - name: uniswap_v3_optimism_base_trades
+      - name: uniswap_v3_polygon_base_trades
+      - name: uniswap_v3_ethereum_base_trades
+      - name: uniswap_v2_ethereum_base_trades
+      - name: sushiswap_v1_ethereum_base_trades
+      - name: sushiswap_v2_ethereum_base_trades
+
 models:
   - name: dex_ci_trades_test
     meta:
