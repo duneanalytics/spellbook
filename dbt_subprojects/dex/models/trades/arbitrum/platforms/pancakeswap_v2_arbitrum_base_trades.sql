@@ -145,4 +145,3 @@ SELECT
 FROM dexs_pcsx
 WHERE token_sold_amount_raw > 0
 AND token_bought_amount_raw > 0
-
