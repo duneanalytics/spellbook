@@ -889,6 +889,33 @@ sources:
           - name: addr
           - name: gauge_type
           - name: weight    
+
+      - name: GnosisRootGauge_call_initialize
+      - name: ArbitrumRootGauge_call_initialize         
+      - name: AvalancheRootGauge_call_initialize
+      - name: BaseRootGauge_call_initialize               
+      - name: OptimismRootGauge_call_initialize         
+      - name: PolygonRootGauge_call_initialize
+      - name: PolygonZkEVMRootGauge_call_initialize               
+      - name: LiquidityGauge_call_initialize                   
+      - name: LiquidityGaugeV5_call_initialize
+      - name: CappedArbitrumRootGauge_call_initialize      
+      - name: CappedOptimismRootGauge_call_initialize  
+      - name: CappedPolygonRootGauge_call_initialize        
+      - name: CappedLiquidityGaugeV5_call_initialize        
+      - name: GnosisRootGauge_call_killGauge
+      - name: ArbitrumRootGauge_call_killGauge         
+      - name: AvalancheRootGauge_call_killGauge
+      - name: BaseRootGauge_call_killGauge               
+      - name: OptimismRootGauge_call_killGauge         
+      - name: PolygonRootGauge_call_killGauge
+      - name: PolygonZkEVMRootGauge_call_killGauge               
+      - name: LiquidityGauge_call_killGauge                   
+      - name: LiquidityGaugeV5_call_killGauge
+      - name: CappedArbitrumRootGauge_call_killGauge      
+      - name: CappedOptimismRootGauge_call_killGauge  
+      - name: CappedPolygonRootGauge_call_killGauge        
+      - name: CappedLiquidityGaugeV5_call_killGauge                    
           
   - name: balancer_polygon
     description: >
