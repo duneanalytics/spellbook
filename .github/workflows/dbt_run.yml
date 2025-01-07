@@ -32,7 +32,8 @@ jobs:
           
           if [ ! -z "$CHANGES" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "modified_files=$CHANGES" >> $GITHUB_OUTPUT
+            MODIFIED_FILES=$(echo "$CHANGES" | tr '\n' ',' | sed 's/,$//')
+            echo "modified_files=$MODIFIED_FILES" >> $GITHUB_OUTPUT
             echo "Found changes in base_trades files:"
             echo "$CHANGES"
           else
