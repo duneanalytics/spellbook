@@ -61,6 +61,10 @@ WITH trusted_tokens AS (
                 , ('celo', 0xd629eb00deced2a080b7ec630ef6ac117e614f1b)
                 , ('celo', 0x639a647fbe20b6c8ac19e48e2de44ea792c62c5c)
                 , ('celo', 0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e)
+                , ('corn', 0xda5ddd7270381a7c2717ad10d1c0ecb19e3cdfb2) -- WBTCN
+                , ('corn', 0xecac9c5f704e954931349da37f60e39f515c11c1) -- LBTC
+                , ('corn', 0xdf0b24095e15044538866576754f3c964e902ee6) -- USDC.e
+                , ('corn', 0xf469fbd2abcd6b9de8e169d128226c0fc90a012e) -- pumpBTC
                 , ('ethereum', 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)
                 , ('ethereum', 0xdac17f958d2ee523a2206206994597c13d831ec7)
                 , ('ethereum', 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)
