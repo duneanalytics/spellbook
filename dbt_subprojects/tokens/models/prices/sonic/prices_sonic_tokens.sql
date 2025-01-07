@@ -23,7 +23,6 @@ FROM
     , ('weth-weth', 'WETH', 0x50c42dEAcD8Fc9773493ED674b675bE577f2634b, 18)
     , ('euroc-euro-coin', 'EURC.e', 0xe715cba7b5ccb33790cebff1436809d36cb17e57, 6)
     , ('beets-beethoven-x', 'BEETS', 0x2d0e0814e62d80056181f5cd932274405966e4f0, 18)
-    , ('brush-brush', 'BRUSH', 0xE51EE9868C1f0d6cd968A8B8C8376Dc2991BFE44, 18)
     , ('goglz-goggles', 'GOGLZ', 0x9fDbC3f8Abc05Fa8f3Ad3C17D2F806c1230c4564, 18)
     , ('fsonic-fantomsonicinu', 'FSONIC', 0x05e31a691405d06708A355C029599c12d5da8b28, 18)
     , ('scusd-sonic-usd', 'scUSD', 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE, 6)
