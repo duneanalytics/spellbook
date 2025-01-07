@@ -151,6 +151,8 @@ WITH trusted_tokens AS (
                 , ('sonic', 0x29219dd400f2Bf60E5a23d13Be72B486D4038894)
                 , ('sonic', 0x50c42dEAcD8Fc9773493ED674b675bE577f2634b)
                 , ('sonic', 0xe715cba7b5ccb33790cebff1436809d36cb17e57)
+                , ('sonic', 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE)
+                , ('sonic', 0xe5da20f15420ad15de0fa650600afc998bbe3955)                
                 , ('worldchain', 0x2cFc85d8E48F8EAB294be644d9E25C3030863003)
                 , ('worldchain', 0x79A02482A880bCE3F13e09Da970dC34db4CD24d1)
                 , ('worldchain', 0x03C7054BCB39f7b2e5B2c7AcB37583e32D70Cfa3)
