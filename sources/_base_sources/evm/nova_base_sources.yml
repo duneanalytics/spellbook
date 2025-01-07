@@ -84,7 +84,7 @@ sources:
           - name: error
             description: "Error log"
           - name: tx_success
-            description: "Whether the transaction was completed sucessfully"
+            description: "Whether the transaction was completed successfully"
           - &tx_hash
             name: tx_hash
             description: "Primary key of the transaction"
@@ -321,7 +321,7 @@ sources:
             description: "Is approved"
           - &operator
             name: operator
-            description: "Opperator"
+            description: "Operator"
 
   - name: erc721_nova
     description: "Transfers events for ERC721 tokens on Nova."
@@ -373,7 +373,6 @@ sources:
           - *evt_tx_from
           - *evt_tx_to
           - *evt_tx_index
-          - *evt_index
           - *evt_index
           - *evt_block_time
           - *evt_block_number
