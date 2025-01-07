@@ -1,14 +1,12 @@
-{{
-    config(
-        schema = 'iziswap_scroll',
-        alias = 'base_trades',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['tx_hash', 'evt_index'],
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
-    )
-}}
+{{ config(
+    schema = 'iziswap_scroll',
+    alias = 'base_trades',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['tx_hash', 'evt_index'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+)}}
 
 {% set iziswap_start_date = "2023-10-13" %}
 
@@ -35,4 +33,3 @@ WHERE {{incremental_predicate('evt_block_time')}}
 {% else %}
 WHERE evt_block_time >= TIMESTAMP '{{iziswap_start_date}}'
 {% endif %}
-
