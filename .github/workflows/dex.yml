@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       has_changes: ${{ steps.check.outputs.has_changes }}
+      modified_files: ${{ steps.check.outputs.modified_files }}
     steps:
       - uses: actions/checkout@v3
       - id: check
@@ -25,6 +26,7 @@ jobs:
           CHANGES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -E "dbt_subprojects/dex/models/.*/.*_base_trades\.sql$" || true)
           if [ ! -z "$CHANGES" ]; then
             echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "modified_files=$CHANGES" >> $GITHUB_OUTPUT
             echo "Found changes in base_trades files:"
             echo "$CHANGES"
           else
@@ -43,6 +45,7 @@ jobs:
         run: |
           echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
           echo "PROJECT_DIR=dbt_subprojects/dex" >> $GITHUB_ENV
+          echo "MODIFIED_BASE_TRADES=${{ needs.check-base-trades.outputs.modified_files }}" >> $GITHUB_ENV
           
       - name: dbt dependencies
         working-directory: ${{env.PROJECT_DIR}}
