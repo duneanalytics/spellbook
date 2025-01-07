@@ -7,16 +7,6 @@ on:
         description: 'DBT run for project'
         required: true
         type: string
-      base_trades_changes:
-        description: 'Whether there are base_trades changes'
-        required: false
-        type: string
-        default: 'false'
-      modified_base_trades:
-        description: 'List of modified base_trades files'
-        required: false
-        type: string
-        default: ''
 
 jobs:
   dbt-test:
@@ -26,6 +16,28 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check for base_trades changes
+        id: check_base_trades
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            git fetch origin ${{ github.base_ref }}
+            CHANGES=$(git diff --name-only origin/${{ github.base_ref }}..HEAD | grep -E "dbt_subprojects/${{ inputs.project }}/models/.*/.*_base_trades\.sql$" || true)
+          else
+            CHANGES=$(git diff --name-only HEAD~1 | grep -E "dbt_subprojects/${{ inputs.project }}/models/.*/.*_base_trades\.sql$" || true)
+          fi
+          
+          if [ ! -z "$CHANGES" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "modified_files=$CHANGES" >> $GITHUB_OUTPUT
+            echo "Found changes in base_trades files:"
+            echo "$CHANGES"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No base_trades changes found"
+          fi
 
       - name: Setup variables
         run: | # Spellbook is a special case because it's not a subdirectory
@@ -66,11 +78,11 @@ jobs:
         run: "dbt -x run $PROFILE --select state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: Test base_trades changes
-        if: inputs.base_trades_changes == 'true'
+        if: steps.check_base_trades.outputs.has_changes == 'true'
         working-directory: ${{env.PROJECT_DIR}}
         run: |
-          dbt run $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ inputs.modified_base_trades }}'}"
-          dbt test $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ inputs.modified_base_trades }}'}"
+          dbt run $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ steps.check_base_trades.outputs.modified_files }}'}"
+          dbt test $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ steps.check_base_trades.outputs.modified_files }}'}"
 
       - name: dbt test initial model(s)
         run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"

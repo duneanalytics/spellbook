@@ -13,39 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check-base-trades:
-    runs-on: ubuntu-latest
-    outputs:
-      has_changes: ${{ steps.check.outputs.has_changes }}
-      modified_files: ${{ steps.check.outputs.modified_files }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Check for base_trades changes
-        id: check
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            git fetch origin ${{ github.base_ref }}
-            CHANGES=$(git diff --name-only origin/${{ github.base_ref }}..HEAD | grep -E "dbt_subprojects/dex/models/.*/.*_base_trades\.sql$" || true)
-          else
-            CHANGES=$(git diff --name-only HEAD~1 | grep -E "dbt_subprojects/dex/models/.*/.*_base_trades\.sql$" || true)
-          fi
-          
-          if [ ! -z "$CHANGES" ]; then
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "modified_files=$CHANGES" >> $GITHUB_OUTPUT
-            echo "Found changes in base_trades files:"
-            echo "$CHANGES"
-          else
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No base_trades changes found"
-          fi
-
   dbt-run:
-    needs: check-base-trades
     uses: ./.github/workflows/dbt_run.yml
     with:
       project: 'dex'
-      base_trades_changes: ${{ needs.check-base-trades.outputs.has_changes }}
-      modified_base_trades: ${{ needs.check-base-trades.outputs.modified_files }}
