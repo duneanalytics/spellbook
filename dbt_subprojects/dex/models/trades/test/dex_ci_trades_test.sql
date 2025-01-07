@@ -10,12 +10,13 @@
 -- It directly processes modified base_trades models and enriches them with token information
 
 {% set modified_models = get_modified_base_trades() %}
+{% set git_schema = 'git_dunesql_' ~ env_var('GIT_SHA', '') %}
 
 WITH base_union AS (
     {% for file in modified_models %}
     {% set model_name = file.split('/')[-1].replace('.sql', '') %}
     SELECT *
-    FROM {{ source('dex', model_name) }}
+    FROM {{ target.database }}.{{ git_schema }}.{{ model_name }}
     WHERE block_date = current_date - interval '1' day
     {% if not loop.last %}
     UNION ALL
