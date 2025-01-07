@@ -33,4 +33,6 @@ FROM (VALUES
     , (0x2d10a2e2d680564a942e98ee43e35553db990807, 'STEQILA', 18)
     , (0x3854fd4712eb3a5aa51c949c29cace84f7ed2efc, 'Shilly', 18)   
     , (0x2d0e0814e62d80056181f5cd932274405966e4f0, 'BEETS', 18)
+    , (0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE, 'scUSD', 6)   
+    , (0x3bce5cb273f0f148010bbea2470e7b5df84c7812, 'scETH', 18)    
 ) as temp (contract_address, symbol, decimals)
