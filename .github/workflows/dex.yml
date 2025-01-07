@@ -45,7 +45,6 @@ jobs:
         run: |
           echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
           echo "PROJECT_DIR=dbt_subprojects/dex" >> $GITHUB_ENV
-          echo "MODIFIED_BASE_TRADES=${{ needs.check-base-trades.outputs.modified_files }}" >> $GITHUB_ENV
           
       - name: dbt dependencies
         working-directory: ${{env.PROJECT_DIR}}
@@ -54,12 +53,12 @@ jobs:
       - name: Run CI Test Models
         working-directory: ${{env.PROJECT_DIR}}
         run: |
-          dbt run $PROFILE --select dex_ci_trades_test --project-dir ${PROJECT_DIR}
+          dbt run $PROFILE --select dex_ci_trades_test --project-dir ${PROJECT_DIR} --vars "{'MODIFIED_BASE_TRADES': '${{ needs.check-base-trades.outputs.modified_files }}'}"
           
       - name: Test Results
         working-directory: ${{env.PROJECT_DIR}}
         run: |
-          dbt test $PROFILE --select dex_ci_trades_test --project-dir ${PROJECT_DIR}
+          dbt test $PROFILE --select dex_ci_trades_test --project-dir ${PROJECT_DIR} --vars "{'MODIFIED_BASE_TRADES': '${{ needs.check-base-trades.outputs.modified_files }}'}"
 
   dbt-run:
     needs: [check-base-trades, test-base-trades]
