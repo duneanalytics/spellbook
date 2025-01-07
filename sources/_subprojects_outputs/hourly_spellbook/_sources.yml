@@ -83,3 +83,7 @@ sources:
   - name: evms
     tables:
       - name: transaction_metrics
+
+  - name: beets
+    tables:
+      - name: pools_metrics_daily
