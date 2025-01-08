@@ -8,6 +8,7 @@
 
 {% set b_cow_amm_models = [
     ref('balancer_cowswap_amm_arbitrum_liquidity'),
+    ref('balancer_cowswap_amm_base_liquidity'),
     ref('balancer_cowswap_amm_ethereum_liquidity'),
     ref('balancer_cowswap_amm_gnosis_liquidity')
 ] %}

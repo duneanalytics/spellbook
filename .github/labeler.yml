@@ -1,0 +1,23 @@
+"dbt: daily":
+- changed-files:
+    - any-glob-to-any-file: 'dbt_subprojects/daily_spellbook/**'
+
+"dbt: dex":
+- changed-files:
+    - any-glob-to-any-file: 'dbt_subprojects/dex/**'
+
+"dbt: hourly":
+- changed-files:
+    - any-glob-to-any-file: 'dbt_subprojects/hourly_spellbook/**'
+
+"dbt: nft":
+- changed-files:
+    - any-glob-to-any-file: 'dbt_subprojects/nft/**'
+
+"dbt: solana":
+- changed-files:
+    - any-glob-to-any-file: 'dbt_subprojects/solana/**'
+
+"dbt: tokens":
+- changed-files:
+    - any-glob-to-any-file: 'dbt_subprojects/tokens/**'

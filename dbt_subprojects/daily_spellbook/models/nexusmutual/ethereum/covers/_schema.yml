@@ -246,6 +246,7 @@ models:
       - &is_migrated
         name: is_migrated
         description: "is migrated flag"
+      - name: cover_ipfs_data
       - name: trace_address
       - *tx_hash
 
