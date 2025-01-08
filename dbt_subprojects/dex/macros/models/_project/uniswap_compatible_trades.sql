@@ -182,6 +182,10 @@ SELECT
     , CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw
     , dexs.token_bought_address
     , dexs.token_sold_address
+    , dexs.sender as router
+    , dexs.fee 
+    , dexs.hooks -- if 0x00 null address then no hook, else yes hook
+    't.sender', 'f.fee', 'f.hooks'
     , dexs.taker
     , dexs.maker
     , dexs.project_contract_address
