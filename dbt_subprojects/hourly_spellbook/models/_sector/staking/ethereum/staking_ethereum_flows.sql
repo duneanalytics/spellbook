@@ -18,7 +18,7 @@ WITH indexes AS (
     , MAX(sub_entity_category) AS sub_entity_category
     , MAX(sub_entity_unique_name) AS sub_entity_unique_name
     FROM {{ ref('staking_ethereum_deposits')}} d
-    INNER JOIN {{ref('beacon_lido_validators')}} i ON d.pubkey=i.public_key
+    INNER JOIN {{source('beacon_lido', 'validators')}} i ON d.pubkey=i.public_key
     GROUP BY 1
     )
 
@@ -44,7 +44,7 @@ WITH indexes AS (
     , d.withdrawal_credentials_type
     , d.evt_index
     FROM {{ ref('staking_ethereum_deposits')}} d
-    INNER JOIN {{ref('beacon_lido_validators')}} i ON d.pubkey=i.public_key
+    INNER JOIN {{source('beacon_lido', 'validators')}} i ON d.pubkey=i.public_key
     )
     
 SELECT block_time

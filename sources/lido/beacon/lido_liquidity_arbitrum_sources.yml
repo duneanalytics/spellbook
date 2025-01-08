@@ -1,0 +1,7 @@
+version: 2
+
+sources:    
+  - name: beacon_lido
+    description: "Beacon chain data imported onto Dune by Lido"
+    tables:
+      - name: validators
