@@ -3,7 +3,7 @@
 - Why is my PR running more models than included in the CI test runs?
     - Steps within the CI test workflow depend on DBT manifest file to be up-to-date on the main branch
     - When other PRs are merged, main is updated, therefore a new manifest file needs uploaded to storage for CI to read
-    - The GH workflow to do this lives here: https://github.com/duneanalytics/spellbook/actions/workflows/commit_manifest.yml
+    - The GH workflow to do this lives [here](https://github.com/duneanalytics/spellbook/actions/workflows/commit_manifest.yml)
     - If the latest run failed and/or is in progress, then it’s possible manifest files are out of date and your PR will run more than it should
     - Wait for it to complete or Dune team to fix any failures
 - I’m modifying an existing spell within my PR that contains a seed test on it via the schema YML file. CI is failing on the seed test, as it can’t find the seed. How do I get around this?
