@@ -7,46 +7,40 @@
     incremental_strategy = 'merge',
     unique_key = ['pool_address', 'snapshot_day'],
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.snapshot_day')]
-    )
+  )
 }}
 
-WITH op_pools AS (
-  SELECT 
-    pool AS pool_address,
+with op_pools as (
+  select 
+    pool as pool_address,
     token0,
     token1,
-    fee AS fee_tier,
-    creation_block_time AS creation_time
-  FROM 
+    fee as fee_tier,
+    creation_block_time as creation_time
+  from 
     {{ source('uniswap_v3_optimism', 'pools') }}
-  WHERE
-    (token0 = 0x4200000000000000000000000000000000000042
-    OR token1 = 0x4200000000000000000000000000000000000042)
-),
-filtered_balances AS (
-  SELECT 
-    address AS pool_address,
-    balance AS op_balance,
-    day AS snapshot_day
-  FROM 
-  {{ source('tokens_optimism', 'balances_daily') }}
-  WHERE
-    token_address = 0x4200000000000000000000000000000000000042
-    {% if is_incremental() %}
-    and {{ incremental_predicate('day') }}
-    {% else %}
-    and day >= date '2021-11-11' --first pool initiated
-    {% endif %}
+  where
+    token0 = '0x4200000000000000000000000000000000000042'
+    or token1 = '0x4200000000000000000000000000000000000042'
 )
-SELECT 
+
+, filtered_balances as (
+  {{ balances_subset_daily(
+       blockchain='optimism',
+       token_address="'0x4200000000000000000000000000000000000042'",
+       start_date='2021-11-11'
+  ) }}
+)
+
+select 
   p.pool_address,
   p.token0,
   p.token1,
   p.fee_tier,
   p.creation_time,
-  COALESCE(b.op_balance, 0) AS op_balance,
-  COALESCE(b.snapshot_day, CURRENT_DATE) AS snapshot_day
-FROM 
+  coalesce(b.token_balance, 0) as op_balance,
+  coalesce(b.snapshot_day, current_date) as snapshot_day
+from 
   filtered_balances b
-RIGHT JOIN
-   op_pools p ON p.pool_address = b.pool_address
+right join
+  op_pools p on p.pool_address = b.pool_address
