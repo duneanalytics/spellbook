@@ -681,7 +681,7 @@ FROM (VALUES
     , (0xecd8b3877d8e7cd0739de18a5b545bc0b3538566, 'HTX', 'HTX Old Address 33', 'hildobby', date '2022-08-28')
     , (0xef54f559b5e3b55b783c7bc59850f83514b6149c, 'HTX', 'HTX Old Address 34', 'hildobby', date '2022-08-28')
     , (0x9d6d492bd500da5b33cf95a5d610a73360fcaaa0, 'HTX', 'HTX Mining Pool', 'hildobby', date '2022-08-28')
-    , (0xfd54078badd5653571726c3370afb127351a6f26, 'HTX', 'HTX Gas Supplier', 'hildobby', date '2023-08-31')
+    , (0xfd54078badd5653571726c3370afb127351a6f26, 'HTX', 'HTX Gas Supplier 1', 'hildobby', date '2023-08-31')
     , (0x18916e1a2933cb349145a280473a5de8eb6630cb, 'HTX', 'HTX Gas Supplier 2', 'hildobby', date '2023-08-31')
     , (0xdb0e89a9b003a28a4055ef772e345e8089987bfd, 'HTX', 'HTX Gas Supplier 3', 'hildobby', date '2023-08-31')
     , (0xf0458aaaf6d49192d3b4711960635d5fa2114e71, 'HTX', 'HTX Gas Supplier 4', 'hildobby', date '2023-08-31')
@@ -751,7 +751,7 @@ FROM (VALUES
     , (0x187c0e0aa33282096b39a33457939f1dc3ea8e0f, 'CoinList', 'CoinList 4', 'hildobby', date '2024-02-20')
     -- Duelbits
     , (0x4e80744fa23cec76e1621ce0dfaceb4b1d532e12, 'Duelbits', 'Duelbits 1', 'hildobby', date '2023-11-15')
-    , (0x3e97ae61ceda35b857b05e6b579c54abd5568c36, 'Duelbits', 'Duelbits First Funder 1', 'hildobby', date '2024-10-06')
+    , (0x3e97ae61ceda35b857b05e6b579c54abd5568c36, 'Duelbits', 'Duelbits 2', 'hildobby', date '2024-10-06')
     -- Coincheck
     , (0x9c19b0497997fe9e75862688a295168070456951, 'Coincheck', 'Coincheck 1', 'hildobby', date '2023-11-19')
     , (0xd52814615dc129e1eea3520e7e7f8d44dbfc6c5b, 'Coincheck', 'Coincheck 2', 'hildobby', date '2023-11-19')
@@ -767,7 +767,7 @@ FROM (VALUES
     , (0x85faa6c1f2450b9caea300838981c2e6e120c35c, 'Gate.io', 'Gate.io 7', 'hildobby', date '2024-04-20')
     , (0x925206b8a707096ed26ae47c84747fe0bb734f59, 'Gate.io', 'Gate.io 8', 'hildobby', date '2024-04-20')
     , (0xeb01f8cdae433e7b55023ff0b2da44c4c712dce2, 'Gate.io', 'Gate.io 9', 'hildobby', date '2024-04-20')
-    , (0x6596da8b65995d5feacff8c2936f0b7a2051b0d0, 'Gate.io', 'Gate.io Gas Supplier', 'web3_data', date '2023-02-07')
+    , (0x6596da8b65995d5feacff8c2936f0b7a2051b0d0, 'Gate.io', 'Gate.io Gas Supplier 1', 'web3_data', date '2023-02-07')
     , (0xd793281182a0e3e023116004778f45c29fc14f19, 'Gate.io', 'Gate.io Contract', 'web3_data', date '2023-02-07')
     -- Kraken
     , (0x2910543af39aba0cd09dbb2d50200b3e800a63d2, 'Kraken', 'Kraken 1', 'hildobby', date '2022-08-28')
@@ -1425,7 +1425,7 @@ FROM (VALUES
     , (0xdf21fa922215b1a56f5a6d6294e6e36c85a0acfb, 'Poloniex', 'Poloniex 6', 'hildobby', date '2023-11-17')
     , (0x8fca4ade3a517133ff23ca55cdaea29c78c990b8, 'Poloniex', 'Poloniex 7', 'hildobby', date '2024-04-04')
     , (0x007abbe8057433641acb791d966d33a12cf82d01, 'Poloniex', 'Poloniex 8', 'hildobby', date '2024-06-03')
-    , (0xb42b20ddbeabdc2a288be7ff847ff94fb48d2579, 'Poloniex', 'Poloniex Gas Supplier', 'hildobby', date '2023-09-09')
+    , (0xb42b20ddbeabdc2a288be7ff847ff94fb48d2579, 'Poloniex', 'Poloniex Gas Supplier 1', 'hildobby', date '2023-09-09')
     , (0xaa9fa73dfe17ecaa2c89b39f0bb2779613c5fc3b, 'Poloniex', 'Poloniex BAT', 'hildobby', date '2022-08-28')
     , (0x2fa2bc2ce6a4f92952921a4caa46b3727d24a1ec, 'Poloniex', 'Poloniex BNT', 'hildobby', date '2022-08-28')
     , (0x31a2feb9b5d3b5f4e76c71d6c92fc46ebb3cb1c1, 'Poloniex', 'Poloniex CVC', 'hildobby', date '2022-08-28')
@@ -1976,8 +1976,8 @@ FROM (VALUES
     , (0xea81ce54a0afa10a027f65503bd52fba83d745b8, 'Kuna', 'Kuna 1', 'hildobby', date '2022-08-28')
     , (0x77ab999d1e9f152156b4411e1f3e2a42dab8cd6d, 'Kuna', 'Kuna 2', 'hildobby', date '2022-08-28')
     , (0x9030a104a49141459f4b419bd6f56e4ba6fcd800, 'Kuna', 'Kuna 3', 'hildobby', date '2023-11-23')
-    , (0xfac0f29459896ed8550e002344734989d958de01, 'Kuna', 'Kuna First Funder 1', 'hildobby', date '2024-10-06')
-    , (0x04196627190ff624492427317d853deaa270f9d2, 'Kuna', 'Kuna First Funder 2', 'hildobby', date '2024-10-06')
+    , (0xfac0f29459896ed8550e002344734989d958de01, 'Kuna', 'Kuna Gas Supplier 1', 'hildobby', date '2024-10-06')
+    , (0x04196627190ff624492427317d853deaa270f9d2, 'Kuna', 'Kuna Gas Supplier 2', 'hildobby', date '2024-10-06')
     -- BW.com
     , (0xbcdfc35b86bedf72f0cda046a3c16829a2ef41d1, 'BW.com', 'BW.com Old Address 1', 'hildobby', date '2022-08-28')
     , (0x73957709695e73fd175582105c44743cf0fb6f2f, 'BW.com', 'BW.com 1', 'hildobby', date '2022-08-28')
