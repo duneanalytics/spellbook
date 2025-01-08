@@ -574,7 +574,7 @@ models:
       blockchain: optimism
       sector: dex
       project: saddle_finance
-      contributors: princi
+      contributors: princi, hosuke
     config:
       tags: [ 'optimism', 'dex', 'trades', 'saddle_finance']
     description: "saddle finance optimism base trades"
