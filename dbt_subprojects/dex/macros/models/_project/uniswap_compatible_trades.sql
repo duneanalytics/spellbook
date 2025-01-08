@@ -127,7 +127,7 @@ FROM
     , version = null
     , Pair_evt_Swap = null 
     , Factory_evt_PoolCreated = null 
-    , taker_column_name = 't.evt_tx_from'
+    , taker_column_name = 'evt_tx_from'
     , maker_column_name = null
     , optional_columns = ['t.sender', 'f.fee', 'f.hooks']
     , pair_column_name = 'id'
@@ -140,7 +140,7 @@ WITH dexs AS
         , t.evt_block_time AS block_time
         , t.{{ taker_column_name }} AS taker
         , {% if maker_column_name %}
-                t.{{ maker_column_name }}
+                {{ maker_column_name }}
             {% else %}
                 cast(null as varbinary)
             {% endif %} as maker
