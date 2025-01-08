@@ -185,7 +185,6 @@ SELECT
     , dexs.sender as router
     , dexs.fee 
     , dexs.hooks -- if 0x00 null address then no hook, else yes hook
-    't.sender', 'f.fee', 'f.hooks'
     , dexs.taker
     , dexs.maker
     , dexs.project_contract_address
