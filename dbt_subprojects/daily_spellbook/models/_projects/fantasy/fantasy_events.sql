@@ -56,7 +56,7 @@ SELECT m.evt_block_time AS block_time
 , m.firstTokenId+80, m.firstTokenId+81, m.firstTokenId+82, m.firstTokenId+83, m.firstTokenId+84, m.firstTokenId+85, m.firstTokenId+86, m.firstTokenId+87, m.firstTokenId+88, m.firstTokenId+89
 , m.firstTokenId+90, m.firstTokenId+91, m.firstTokenId+92, m.firstTokenId+93, m.firstTokenId+94, m.firstTokenId+95, m.firstTokenId+96, m.firstTokenId+97, m.firstTokenId+98, m.firstTokenId+99
     ], x -> x <= lastTokenId) AS minted_ids
-, CAST(NULL AS boolean) AS burned_ids
+, CAST(NULL AS ARRAY<UINT256>) AS burned_ids
 , CAST(NULL AS ARRAY<UINT256>) AS traded_ids
 , CAST(NULL AS varbinary) AS traded_with
 , m.evt_tx_from AS tx_from
