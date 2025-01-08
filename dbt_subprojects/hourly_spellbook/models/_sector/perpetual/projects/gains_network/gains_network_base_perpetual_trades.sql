@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'gains_network_base',
+    schema = 'gains_network_perpetual_trades',
     alias = 'perpetual_trades',
     post_hook='{{ expose_spells(\'["base"]\',
                                     "project",
