@@ -3180,4 +3180,9 @@ FROM (VALUES
     , (0x8f3ab2c3b651382b07a76653d2be9eb4b87e1630, 'YOOBTC', 'YOOBTC 1', 'hildobby', date '2024-05-25')
     -- Mbcbit
     , (0x5e6ad578fe3a2da7bbd0255f04179e1e77317d1a, 'Mbcbit', 'Mbcbit 1', 'hildobby', date '2024-07-05')
+    -- Arkham Exchange
+    , (0x679fb19dec9d66c34450a8563ffdfd29c04e615a, 'Arkham', 'Arkham 1', 'hildobby', date '2024-12-13')
+    , (0x0323718324218dcbff7c9f89ba5a5954f61a6c74, 'Arkham', 'Arkham 2', 'hildobby', date '2024-12-13')
+    , (0x34407900475cef87ace1597670a9a42f31961d02, 'Arkham', 'Arkham 3', 'hildobby', date '2024-12-13')
+    , (0xdc2822d0685c0cceab07b35d6de4ac9280fb9cff, 'Arkham', 'Arkham 4', 'hildobby', date '2024-12-13')
     ) AS x (address, cex_name, distinct_name, added_by, added_date)
