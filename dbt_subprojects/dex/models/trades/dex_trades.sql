@@ -13,6 +13,7 @@
                                         , "base"
                                         , "blast"
                                         , "bnb"
+                                        , "boba"
                                         , "celo"
                                         , "ethereum"
                                         , "fantom"
