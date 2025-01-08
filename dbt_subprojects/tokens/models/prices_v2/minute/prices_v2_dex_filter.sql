@@ -40,4 +40,4 @@ WITH dex_volume_over_10k as (
 select *
 from dex_volume_over_10k
 where (blockchain, contract_address)
-    not in (select (blockchain,contract_address) from manual_filter)
+    not in (select blockchain, contract_address from manual_filter)
