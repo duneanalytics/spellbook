@@ -29,13 +29,12 @@ WITH dex_volume_over_10k as (
 )
 , manual_filter as (
     SELECT
-            blockchain,
-            contract_address
+        blockchain,
+        contract_address
     FROM (
-        VALUES (
+        VALUES
             ('ethereum', 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3)    -- USDe has bad events (ex https://etherscan.io/tx/0x0c9464ff4fea893667a43e96e830073031f5587d8f3b33fb27a8464979f12897#eventlog#151)
-        ) as temp_table (blockchain, contract_address)
-    )
+    ) as t(blockchain, contract_address)
 )
 
 select *
