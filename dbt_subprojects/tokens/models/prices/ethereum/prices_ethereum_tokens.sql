@@ -1255,7 +1255,6 @@ FROM
     ('donk-donkey', 'ethereum', 'DONK', 0xe4f6d46c244bb7cf3e218cdfb5c35cf9a4d9c920, 18),
     ('evn-evolution-finance', 'ethereum', 'EVN', 0x9af15d7b8776fa296019979e70a5be53c714a7ec, 18),
     ('fair-fairgame', 'ethereum', 'FAIR', 0x9b20dabcec77f6289113e61893f7beefaeb1990a, 18),
-    ('gm-gm-token', 'ethereum', 'GM', 0xbc7250c8c3eca1dfc1728620af835fca489bfdf3, 9),
     ('gnft-gnft', 'ethereum', 'GNFT', 0xc502002aeb1b9309fccb016adf50507987fc6c2b, 18),
     ('happy-happyfans', 'ethereum', 'HAPPY', 0x3079f61704e9efa2bcf1db412f735d8d4cfa26f4, 18),
     ('hmt-human-protocol', 'ethereum', 'HMT', 0xd1ba9bac957322d6e8c07a160a3a8da11a0d2867, 18),
@@ -1899,4 +1898,5 @@ where contract_address not in (
     ,0xee06a81a695750e71a662b51066f2c74cf4478a0   -- DG, bad price feed
     ,0x9e24415d1e549ebc626a13a482bb117a2b43e9cf   -- LOVELY, rugpull
     ,0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3   -- BUBBLE, bad price feed
+    ,0xbc7250c8c3eca1dfc1728620af835fca489bfdf3   -- GM, bad price feed
 )
