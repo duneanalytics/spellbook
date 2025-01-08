@@ -4,6 +4,7 @@
         file_format = 'delta',
         materialized = 'incremental',
         partition_by = ['date'],
+        event_time = 'timestamp'
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'contract_address', 'timestamp'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.timestamp')]

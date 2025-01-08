@@ -36,3 +36,15 @@ models:
             - blockchain
             - contract_address
             - timestamp
+
+  - name: prices_v2_day_raw
+    meta:
+      sector: prices
+      contributors: 0xRob
+    description: "sparse day-level prices from all sources"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - timestamp
