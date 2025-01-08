@@ -76,6 +76,7 @@ with base_union as (
     )
     WHERE
         duplicates_rank = 1
+        and block_date >= now() - interval '7' day
 )
 select
     *
