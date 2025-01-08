@@ -20,14 +20,14 @@ with op_pools as (
   from 
     {{ source('uniswap_v3_optimism', 'pools') }}
   where
-    token0 = '0x4200000000000000000000000000000000000042'
-    or token1 = '0x4200000000000000000000000000000000000042'
+    token0 = from_hex('0x4200000000000000000000000000000000000042')
+    or token1 = from_hex('0x4200000000000000000000000000000000000042')
 )
 
 , filtered_balances as (
   {{ balances_subset_daily(
        blockchain='optimism',
-       token_address="'0x4200000000000000000000000000000000000042'",
+       token_address="from_hex('0x4200000000000000000000000000000000000042')",
        start_date='2021-11-11'
   ) }}
 )
