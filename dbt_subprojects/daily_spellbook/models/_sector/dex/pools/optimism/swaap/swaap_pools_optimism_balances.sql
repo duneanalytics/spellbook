@@ -1,15 +1,3 @@
-{{
-  config(
-    schema = 'swaap_pools_optimism',
-    alias = 'balances',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['pool_address', 'snapshot_day'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.snapshot_day')]
-  )
-}}
-
 WITH swaap_pools AS (
   SELECT
     poolId AS pool_address,
@@ -28,7 +16,7 @@ filtered_balances AS (
       blockchain='optimism',
       token_address='0x4200000000000000000000000000000000000042',
       start_date='2024-06-07'
-    ) }}
+  ) }}
 )
 
 SELECT
