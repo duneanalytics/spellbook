@@ -16,6 +16,7 @@
     , ref('dex_base_base_trades')
     , ref('dex_blast_base_trades')
     , ref('dex_bnb_base_trades')
+    , ref('dex_boba_base_trades')
     , ref('dex_celo_base_trades')
     , ref('dex_ethereum_base_trades')
     , ref('dex_fantom_base_trades')
