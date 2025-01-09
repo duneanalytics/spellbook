@@ -41,4 +41,8 @@ sources:
   - name: ethereum
     tables:
       - name: blobs_submissions
-      
+
+  - name: balancer_v3
+    tables:
+      - name: erc4626_token_prices
+      - name: erc4626_token_mapping
