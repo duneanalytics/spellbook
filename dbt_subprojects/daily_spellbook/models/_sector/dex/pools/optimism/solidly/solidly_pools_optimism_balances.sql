@@ -1,3 +1,15 @@
+{{
+  config(
+    schema = 'solidly_pools_optimism',  -- Add a custom schema
+    alias = 'balances',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['pool_address', 'snapshot_day'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.snapshot_day')]
+  )
+}}
+
 WITH solidly_pools AS (
   SELECT
     pool AS pool_address,
