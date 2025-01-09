@@ -32,7 +32,7 @@ WITH position_changes AS (
         collateralPriceUsd,
         oraclePrice,
         leverageDelta,
-        values,
+        "values" as value_data,  -- Changed reserved keyword
         'decrease' as action
     FROM {{ source('gains_network_base', 'GNSMultiCollatDiamond_evt_PositionSizeDecreaseExecuted') }}
     {% if is_incremental() %}
@@ -57,7 +57,7 @@ WITH position_changes AS (
         collateralPriceUsd,
         oraclePrice,
         leverageDelta,
-        values,
+        "values" as value_data,  -- Changed reserved keyword
         'increase' as action
     FROM {{ source('gains_network_base', 'GNSMultiCollatDiamond_evt_PositionSizeIncreaseExecuted') }}
     {% if is_incremental() %}
@@ -98,7 +98,7 @@ perps AS (
         END AS virtual_asset,
 
         CASE pairIndex
-             WHEN 0 THEN 'BTC-USD'
+            WHEN 0 THEN 'BTC-USD'
             WHEN 1 THEN 'ETH-USD'
             WHEN 2 THEN 'LINK-USD'
             WHEN 3 THEN 'DOGE-USD'
@@ -126,7 +126,7 @@ perps AS (
         END AS underlying_asset,
 
         CASE pairIndex
-             WHEN 0 THEN 'BTC-USD'
+            WHEN 0 THEN 'BTC-USD'
             WHEN 1 THEN 'ETH-USD'
             WHEN 2 THEN 'LINK-USD'
             WHEN 3 THEN 'DOGE-USD'
@@ -155,7 +155,7 @@ perps AS (
 
         contract_address AS market_address,
         (collateralDelta * collateralPriceUsd * leverageDelta) / 1e36 AS volume_usd,
-        CAST(JSON_EXTRACT_PATH_TEXT(values, 'vaultFeeCollateral') AS double) / 1e18 AS fee_usd,
+        CAST(JSON_EXTRACT_PATH_TEXT(value_data, 'vaultFeeCollateral') AS double) / 1e18 AS fee_usd,  -- Changed values to value_data
         collateralDelta / 1e18 AS margin_usd,
 
         CASE 
@@ -169,7 +169,7 @@ perps AS (
         '1' AS version,
         'gains_network' AS frontend,
         trader,
-        collateralDelta * leverageDelta AS volume_raw,  -- Adjust based on your needs
+        collateralDelta * leverageDelta AS volume_raw,
         evt_tx_hash AS tx_hash,
         evt_index
     FROM position_changes
