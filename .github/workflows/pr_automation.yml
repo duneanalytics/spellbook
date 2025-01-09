@@ -1,0 +1,46 @@
+name: PR automation
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - ready_for_review
+      - converted_to_draft
+      - synchronize
+      - labeled
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+  pr-automation:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      NUMBER: ${{ github.event.number }}
+    steps:
+      - name: Mark new PR as Draft
+        if: (github.event.action == 'opened' && github.event.pull_request.draft == false)
+        run: gh pr ready "$NUMBER" --undo
+
+      - name: Set labels on Open
+        if: github.event.action == 'opened'
+        run: gh pr edit "$NUMBER" --add-label "WIP"
+
+      - name: Set labels on Draft
+        if: github.event.action == 'converted_to_draft'
+        run: gh pr edit "$NUMBER" --add-label "WIP" --remove-label "ready-for-review"
+
+      - name: Set labels on ready-for-review
+        if: github.event.action == 'ready_for_review'
+        run: gh pr edit "$NUMBER" --add-label "ready-for-review" --remove-label "WIP"
+
+      - name: Add subproject labels
+        if: contains('synchronize,opened,reopened', github.event.action)
+        uses: actions/labeler@v5
+        with:
+          sync-labels: true
+
+
