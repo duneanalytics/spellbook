@@ -35,4 +35,7 @@ FROM (VALUES
     , (0x2d0e0814e62d80056181f5cd932274405966e4f0, 'BEETS', 18)
     , (0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE, 'scUSD', 6)   
     , (0x3bce5cb273f0f148010bbea2470e7b5df84c7812, 'scETH', 18)    
+    , (0xddf26b42c1d903de8962d3f79a74a501420d5f19, 'EQUAL', 18)
+    , (0x313636D4f23859142b523a7965B76F6e3965Af64, 'SonicSwap', 18)
+    , (0x4eec869d847a6d13b0f6d1733c5dec0d1e741b4f, 'INDI', 18)
 ) as temp (contract_address, symbol, decimals)
