@@ -14,7 +14,7 @@ WITH registered AS (
     SELECT
         poolID AS pool_id,
         evt_block_time
-    FROM {{ source('beethoven_x_v2_', 'Vault_evt_PoolRegistered') }}
+    FROM {{ source('beethoven_x_v2_sonic', 'Vault_evt_PoolRegistered') }}
     {% if is_incremental() %}
     WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
     {% endif %}
