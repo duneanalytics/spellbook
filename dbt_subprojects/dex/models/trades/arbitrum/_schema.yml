@@ -230,6 +230,7 @@ models:
             version:
               - 2
               - stableswap
+              - pcsx
 
   - name: balancer_v2_arbitrum_base_trades
     meta:
