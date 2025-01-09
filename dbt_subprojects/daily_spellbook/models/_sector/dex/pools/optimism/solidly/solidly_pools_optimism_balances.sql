@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'solidly_pools_optimism',  -- Add a custom schema
+    schema = 'solidly_pools_optimism',
     alias = 'balances',
     materialized = 'incremental',
     file_format = 'delta',
@@ -30,7 +30,7 @@ filtered_balances AS (
       blockchain='optimism',
       token_address='0x4200000000000000000000000000000000000042',
       start_date='2024-01-30'
-  ) }}
+    ) }}
 )
 
 SELECT
