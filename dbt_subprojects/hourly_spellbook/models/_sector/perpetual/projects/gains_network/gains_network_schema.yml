@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: gains_network_perpetual_trades
+  - name: gains_network_v1_base_perpetual_trades
     meta:
       blockchain: base
       sector: perpetual
