@@ -195,6 +195,11 @@ models:
     config:
       tags: [ 'prices', 'stability' ]
     description: "List of trusted tokens across blockchains"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
 
   - name: prices_usd_trusted_tokens
     meta:

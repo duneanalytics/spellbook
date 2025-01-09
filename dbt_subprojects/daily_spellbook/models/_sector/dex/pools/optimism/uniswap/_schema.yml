@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name:  uniswap_pools_optimism_balances
-    description: "Tracks OP token balances in uniswap pools on Optimism."
+    description: "Tracks OP token balances in Uniswap pools on Optimism."
     meta:
       blockchain: optimism
       sector: DEX
