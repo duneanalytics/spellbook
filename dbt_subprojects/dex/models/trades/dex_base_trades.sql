@@ -71,7 +71,8 @@ with base_union as (
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
-    {% else %}
+            AND block_date >= now() - interval '7' day -- TODO remove after testing
+    {   % else %}
             AND block_date >= now() - interval '7' day -- TODO remove after testing
         {% endif %}
         {% if not loop.last %}
@@ -81,7 +82,6 @@ with base_union as (
     )
     WHERE
         duplicates_rank = 1
-        and block_date >= now() - interval '7' day -- TODO remove after testing
 )
 select
     *
