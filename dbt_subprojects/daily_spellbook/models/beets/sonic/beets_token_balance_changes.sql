@@ -13,7 +13,7 @@ WITH v2 AS(
         version = '2',
         project_decoded_as = 'beethoven_x_v2',
         base_spells_namespace = 'beets',
-        pool_labels_spell = ref('labels_beethoven_x_pools_sonic')
+        pool_labels_spell = ref('labels_beets_pools_sonic')
     )
 }}),
 
