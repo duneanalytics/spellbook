@@ -60,7 +60,6 @@ sources:
   - name: uniswap_v3_optimism
     tables:
       - name: ovm1_pool_mapping
-      - name: pools
   - name: cow_protocol_ethereum
     tables:
       - name: trades
