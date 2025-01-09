@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name:  velodrome_pools_optimism_balances
+    description: "Tracks OP token balances in Velodrome pools on Optimism."
+    meta:
+      blockchain: optimism
+      sector: DEX
+      project: velodrome
+      contributors: jason
+    config:
+      tags: ['optimism', 'op_token', 'balances', 'velodrome']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_address
+            - snapshot_day
