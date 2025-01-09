@@ -159,6 +159,7 @@ WITH dexs AS
         {% endif %}
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
+        , row_number() over (partition by t.evt_tx_hash, t.evt_index order by t.evt_block_time desc) as duplicates_rank -- TODO remove after testing
     FROM
         {{ Pair_evt_Swap }} t
     INNER JOIN
@@ -192,4 +193,5 @@ SELECT
     , dexs.evt_index
 FROM
     dexs
+WHERE duplicates_rank = 1 -- TODO remove after testing
 {% endmacro %}
