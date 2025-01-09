@@ -27,6 +27,7 @@
                                         , "ronin"
                                         , "scroll"
                                         , "sei"
+                                        , "sonic"
                                         , "zkevm"
                                         , "zksync"
                                         , "zora"

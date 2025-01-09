@@ -199,5 +199,6 @@ FROM (VALUES
     , ('enosys', 'Enosys', 'Direct', 'enosys_global')
     , ('gravity_finance', 'GravityFinance', 'Direct', 'Gravity_Finance')
     , ('fluid', 'Fluid DEX', 'Direct', '0xfluid')
+    , ('beets', 'Beets DEX', 'Direct', 'beets_fi')
     , ('icecreamswap', 'IceCreamSwap', 'Direct', 'icecream_swap')
     ) AS temp_table (project, name, marketplace_type, x_username)
