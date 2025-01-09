@@ -57,7 +57,7 @@ SELECT m.evt_block_time AS block_time
 , m.firstTokenId+90, m.firstTokenId+91, m.firstTokenId+92, m.firstTokenId+93, m.firstTokenId+94, m.firstTokenId+95, m.firstTokenId+96, m.firstTokenId+97, m.firstTokenId+98, m.firstTokenId+99
     ], x -> x <= lastTokenId) AS minted_ids
 , CAST(NULL AS ARRAY<UINT256>) AS burned_ids
-, CAST(NULL AS ARRAY<UINT256>) AS traded_ids
+, CAST(NULL AS DOUBLE) AS traded_ids
 , CAST(NULL AS varbinary) AS traded_with
 , m.evt_tx_from AS tx_from
 , m.evt_tx_to AS tx_to
@@ -94,7 +94,7 @@ SELECT evt_block_time AS block_time
 , CAST(cardinality(burntTokenIds) AS double) AS cards_burned
 , ARRAY[mintedTokenId] AS minted_ids
 , burntTokenIds AS burned_ids
-, CAST(NULL AS ARRAY<UINT256>) AS traded_ids
+, CAST(NULL AS DOUBLE) AS traded_ids
 , CAST(NULL AS varbinary) AS traded_with
 , evt_tx_from AS tx_from
 , evt_tx_to AS tx_to
@@ -127,7 +127,7 @@ SELECT evt_block_time AS block_time
 , CAST(cardinality(burntTokenIds) AS double) AS cards_burned
 , mintedTokenIds AS minted_ids
 , burntTokenIds AS burned_ids
-, CAST(NULL AS ARRAY<UINT256>) AS traded_ids
+, CAST(NULL AS DOUBLE) AS traded_ids
 , CAST(NULL AS varbinary) AS traded_with
 , evt_tx_from AS tx_from
 , evt_tx_to AS tx_to
@@ -200,7 +200,7 @@ SELECT block_time
 , CAST(0 AS double) AS cards_burned
 , CAST(NULL AS ARRAY<UINT256>) AS minted_ids
 , CAST(NULL AS ARRAY<UINT256>) AS burned_ids
-, CAST(NULL AS ARRAY<UINT256>) AS traded_ids
+, CAST(NULL AS DOUBLE) AS traded_ids
 , CAST(NULL AS varbinary) AS traded_with
 , tx_from
 , tx_to
