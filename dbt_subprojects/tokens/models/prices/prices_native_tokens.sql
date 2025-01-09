@@ -25,6 +25,7 @@ FROM
     ('avax-avalanche', null, 'AVAX', null, null),
     ('bch-bitcoin-cash', null, 'BCH', null, null),
     ('bnb-binance-coin', null, 'BNB', null, null),
+    ('boba-boba-network', null, 'BOBA', null, null),
     ('bsv-bitcoin-sv', null, 'BSV', null, null),
     ('btc-bitcoin', null, 'BTC', null, null),
     ('celo-celo', null, 'CELO', null, null),
@@ -87,5 +88,6 @@ FROM
     ('ton-toncoin', null, 'TON', null,null),
     ('strk-starknet', null, 'STRK', null,null),
     ('kda-kadena', null, 'KDA', null, null),
-    ('ron-ronin-token', null, 'RON', null, null)
+    ('ron-ronin-token', null, 'RON', null, null),
+    ('hype-hyperliquid', null, 'HYPE', null, null)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

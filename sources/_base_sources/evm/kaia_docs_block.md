@@ -85,7 +85,7 @@ The `kaia.contracts` table tracks all contracts that have been submitted to Dune
 
 {% docs kaia_creation_traces_doc %}
 
-The `kaiam.creation_traces` table contains data about contract creation events on the kaia blockchain. It includes:
+The `kaia.creation_traces` table contains data about contract creation events on the kaia blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash

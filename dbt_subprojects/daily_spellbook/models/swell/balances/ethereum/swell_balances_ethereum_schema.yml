@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: swell_balances_ethereum_core_assets
+
+    meta:
+      blockchain: ethereum
+      project: swell
+      contributors: maybeYonas
+
+    config:
+      tags: ['swell', 'restaking', 'lrt', 'lst', 'vaults', 'balances']
+    description: "balances of swell asset holders"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - wallet_address
+            - token_address
+      - check_seed:
+          seed_file: ref('swell_balances_ethereum_core_assets_seed')
+          match_columns: 
+            - blockchain
+            - day
+            - wallet_address
+            - token_address
+          check_columns:
+            - balance
+            - last_updated
+    columns:
+    - &blockchain
+      name: blockchain
+      description: "blockchain"
+    - &day
+      name: day
+      description: "date on which the token balance is logged"
+    - &wallet_address
+      name: wallet_address
+      description: "wallet address of the holder"
+    - &token_symbol
+      name: token_symbol
+      description: "token symbol"
+    - &token_address
+      name: token_address
+      description: "token address"
+    - &token_standard
+      name: token_standard
+      description: "standard of the token (erc20)"
+    - &token_id
+      name: token_id
+      description: "ID of the token"
+    - &balance
+      name: balance
+      description: "asset balance of the wallet"
+    - &balance_usd
+      name: balance_usd
+      description: "usd value of token balance of the wallet"
+    - &last_updated
+      name: last_updated
+      description: "UTC timestamp when balance was last updated"
+    - &next_update
+      name: next_update
+      description: "UTC timestamp when balance is next updated"

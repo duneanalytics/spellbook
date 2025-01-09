@@ -11,10 +11,13 @@
                                         , "bitcoin"
                                         , "blast"
                                         , "bnb"
+                                        , "boba"
                                         , "cardano"
                                         , "celo"
+                                        , "corn"
                                         , "ethereum"
                                         , "fantom"
+                                        , "flare"
                                         , "gnosis"
                                         , "kaia"
                                         , "linea"
@@ -25,6 +28,8 @@
                                         , "scroll"
                                         , "sei"
                                         , "solana"
+                                        , "sonic"
+                                        , "viction"
                                         , "worldchain"
                                         , "zksync"
                                         , "zkevm"
@@ -45,6 +50,7 @@ ref('prices_native_tokens')
 ,ref('prices_cardano_tokens')
 ,ref('prices_ethereum_tokens')
 ,ref('prices_fantom_tokens')
+,ref('prices_flare_tokens')
 ,ref('prices_gnosis_tokens')
 ,ref('prices_optimism_tokens')
 ,ref('prices_polygon_tokens')
@@ -64,6 +70,10 @@ ref('prices_native_tokens')
 ,ref('prices_kaia_tokens')
 ,ref('prices_tron_tokens')
 ,ref('prices_ronin_tokens')
+,ref('prices_boba_tokens')
+,ref('prices_viction_tokens')
+,ref('prices_corn_tokens')
+,ref('prices_sonic_tokens')
 ] %}
 
 
