@@ -4665,7 +4665,7 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
         
-  - name: blazeswap_flare_base_trades_seed    
+  - name: blazeswap_flare_base_trades_seed
     config:
       column_types:
         blockchain: varchar
@@ -4680,7 +4680,8 @@ seeds:
         token_sold_amount_raw: uint256
         block_date: timestamp
 
-  - name: icecreamswap_boba_base_trades_seed    config:
+  - name: icecreamswap_boba_base_trades_seed
+    config:
       column_types:
         blockchain: varchar
         project: varchar
