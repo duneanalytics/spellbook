@@ -30,7 +30,10 @@ FROM (VALUES
     ('ethereum', 0xe4A6f23Fb9e00Fca037Aa0EA0a6954dE0a6C53bF, 'Gold-backed', 'TXAU', 18, 'Aurus'),
     ('ethereum', 0x34ABce75D2f8f33940c721dCA0f562617787bfF3, 'Silver-backed', 'TXAG', 18, 'Aurus'),
     ('ethereum', 0x6d57B2E05F26C26b549231c866bdd39779e4a488, 'Gold-backed', 'VNXAU', 18, 'VNX'),
-    ('ethereum', 0x19b22DbADc298c359A1D1b59e35f352A2b40E33c, 'Platinum-backed', 'TXPT', 18, 'Aurus')
+    ('ethereum', 0x19b22DbADc298c359A1D1b59e35f352A2b40E33c, 'Platinum-backed', 'TXPT', 18, 'Aurus'),
+    ('ethereum', 0xC139190F447e929f090Edeb554D95AbB8b18aC1C, 'Treasury-backed', 'USDtb', 18, 'Ethena'),
+    ('ethereum', 0x35D8949372D46B7a3D5A56006AE77B215fc69bC0, 'Treasury-backed', 'USD0++', 18, 'Usual')
+    
 
 
     ) AS temp_table (blockchain, contract_address, backing, symbol, decimals, name)
