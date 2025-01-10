@@ -8,16 +8,16 @@
 with
 filtered_balances as (
     select
-        address as pool_address,
+        CAST(address AS varchar) as pool_address,
         balance as token_balance,
         day as snapshot_day
     from {{ source('tokens_' ~ blockchain, 'balances_daily') }}
     where
-        token_address = {{ token_address }}
+        CAST(token_address AS varchar) = CAST({{ token_address }} AS varchar)
         {% if is_incremental() %}
         and {{ incremental_predicate('day') }}
         {% else %}
-        and day >= DATE '{{ start_date }}'  -- Modified this line
+        and day >= DATE '{{ start_date }}'
         {% endif %}
 )
 

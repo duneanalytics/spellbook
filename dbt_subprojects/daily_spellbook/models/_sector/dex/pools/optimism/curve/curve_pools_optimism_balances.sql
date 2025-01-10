@@ -14,13 +14,13 @@ WITH op_pools AS (
   SELECT DISTINCT
     CAST(pool AS varchar) AS pool_address
   FROM {{ source('curve_optimism', 'pools') }}
-  WHERE CAST(token AS varchar) = '0x4200000000000000000000000000000042'
+  WHERE CAST(token AS varchar) = '0x4200000000000000000000000042'
 ),
 
 filtered_balances AS (
   {{ balances_subset_daily(
       blockchain='optimism',
-      token_address="'0x4200000000000000000000000000000042'",
+      token_address="'0x4200000000000000000000000042'",
       start_date='2021-11-11'
     ) }}
 )
@@ -33,5 +33,5 @@ SELECT
   COALESCE(b.token_balance, 0) AS op_balance
 FROM op_pools p
 LEFT JOIN filtered_balances b 
-  ON CAST(p.pool_address AS varchar) = CAST(b.pool_address AS varchar)
+  ON p.pool_address = b.pool_address
 WHERE COALESCE(b.token_balance, 0) > 0
