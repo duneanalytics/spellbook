@@ -21,7 +21,7 @@ filtered_balances AS (
   {{ balances_subset_daily(
       blockchain='optimism',
       token_address="'0x4200000000000000000000000000000042'",
-      start_date='2021-11-11'  
+      start_date='2021-11-11'
     ) }}
 )
 
@@ -34,4 +34,4 @@ SELECT
 FROM op_pools p
 LEFT JOIN filtered_balances b 
   ON p.pool_address = b.pool_address
-WHERE COALESCE(b.token_balance, 0) > 0;
+WHERE COALESCE(b.token_balance, 0) > 0

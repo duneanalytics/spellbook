@@ -21,14 +21,14 @@ WITH solidly_pools AS (
   FROM
     {{ source('solidly_v3_optimism', 'SolidlyV3Factory_evt_PoolCreated') }}
   WHERE
-    (token0 = '0x4200000000000000000000000000000000000042'
-    OR token1 = '0x4200000000000000000000000000000000000042')
+    (token0 = '0x4200000000000000000000000000000042'
+    OR token1 = '0x4200000000000000000000000000000042')
 ),
 
 filtered_balances AS (
   {{ balances_subset_daily(
       blockchain='optimism',
-      token_address='0x4200000000000000000000000000000000000042',
+      token_address='0x4200000000000000000000000000000042',
       start_date='2024-01-30'
     ) }}
 )
@@ -45,4 +45,4 @@ SELECT
 FROM
   solidly_pools p
 LEFT JOIN
-  filtered_balances b ON p.pool_address = b.pool_address;
+  filtered_balances b ON p.pool_address = b.pool_address
