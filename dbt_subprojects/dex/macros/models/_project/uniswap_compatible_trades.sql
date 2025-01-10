@@ -139,18 +139,18 @@ WITH dexs AS
         t.evt_block_number AS block_number
         , t.evt_block_time AS block_time
         , {{ taker_column_name }} as taker
-        , {% if maker_column_name %} {{ maker_column_name }} {% else %} cast(null as varbinary) {% endif %} as maker        
+        , {% if maker_column_name -%} {{ maker_column_name }} {% else -%} cast(null as varbinary) {% endif -%} as maker      
         -- in v4, when amount is negative, then user are selling the token (so things are done from the perspective of the user instead of the pool)
         , CASE WHEN amount0 < INT256 '0' THEN abs(amount1) ELSE abs(amount0) END AS token_bought_amount_raw 
         , CASE WHEN amount0 < INT256 '0' THEN abs(amount0) ELSE abs(amount1) END AS token_sold_amount_raw
         , CASE WHEN amount0 < INT256 '0' THEN f.currency1 ELSE f.currency0 END AS token_bought_address
         , CASE WHEN amount0 < INT256 '0' THEN f.currency0 ELSE f.currency1 END AS token_sold_address
         , t.contract_address as project_contract_address
-        {% if optional_columns %}
-        {% for optional_column in optional_columns %}
+        {%- if optional_columns %}
+        {%- for optional_column in optional_columns %}
         , {{ optional_column }}
-        {% endfor %}
-        {% endif %}
+        {%- endfor %}
+        {%- endif %}
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
         , row_number() over (partition by t.evt_tx_hash, t.evt_index order by t.evt_block_time desc) as duplicates_rank -- TODO remove after testing
@@ -159,14 +159,14 @@ WITH dexs AS
     INNER JOIN
         {{ Factory_evt_PoolCreated }} f
         ON {{ pair_column_name }} = t.id
-    {% if is_incremental() %}
+    {%- if is_incremental() -%}
     WHERE
         {{ incremental_predicate('t.evt_block_time') }}
-    {% endif %}
+    {%- endif %}
 )
 
 SELECT
-    {% if blockchain %} '{{ blockchain }}' {% else %} 'Unassigned' {% endif %} as blockchain
+    {% if blockchain -%} '{{ blockchain }}' {% else -%} 'Unassigned' {% endif -%} as blockchain
     , '{{ project }}' AS project
     , '{{ version }}' AS version
     , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
