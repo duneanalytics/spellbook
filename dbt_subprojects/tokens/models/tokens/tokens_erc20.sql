@@ -12,6 +12,7 @@
                                         ,"bnb"
                                         ,"boba"
                                         ,"celo"
+                                        ,"corn"
                                         ,"ethereum"
                                         ,"fantom"
                                         ,"fuse"
@@ -77,6 +78,7 @@
     ,'tokens_boba': {'blockchain': 'boba', 'model': ref('tokens_boba_erc20')}
     ,'tokens_viction': {'blockchain': 'viction', 'model': ref('tokens_viction_erc20')}
     ,'tokens_sonic': {'blockchain': 'sonic', 'model': ref('tokens_sonic_erc20')}
+    ,'tokens_corn': {'blockchain': 'corn', 'model': ref('tokens_corn_erc20')}
 } %}
 
 with automated_source as (
