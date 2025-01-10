@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'uniswap_v3_sepolia'
+    schema = 'uniswap_v4_sepolia'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
