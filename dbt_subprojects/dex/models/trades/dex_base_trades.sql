@@ -69,15 +69,15 @@ with base_union as (
         WHERE
             token_sold_amount_raw >= 0
             AND token_bought_amount_raw >= 0
-            {% if is_incremental() %}
+            {%- if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
-            {% else %}
+            {%- else %}
             AND block_time >= timestamp '2025-01-01' -- TODO remove after testing
-            {% endif %}
-        {% if not loop.last %}
+            {%- endif %}
+        {%- if not loop.last %}
         UNION ALL
-        {% endif %}
-        {% endfor %}
+        {%- endif %}
+        {%- endfor %}
     )
     WHERE
         duplicates_rank = 1
