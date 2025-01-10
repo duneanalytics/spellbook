@@ -2287,7 +2287,11 @@ models:
     description: |
       Processes decoded event data for `SwapFeesCollected` events on the GMX platform across the Avalanche blockchain.
       This model extracts key details such as fee amounts, trade keys, and fee types for analyzing swap fee collection behavior.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time
@@ -2339,7 +2343,11 @@ models:
     description: |
       Processes decoded event data for `PositionImpactPoolDistributed` events on the GMX platform across the Avalanche blockchain.
       This model extracts key details such as distribution amounts and pool impact metrics to analyze the effect of position impact distribution.
-
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
     columns:
       - *blockchain
       - *block_time

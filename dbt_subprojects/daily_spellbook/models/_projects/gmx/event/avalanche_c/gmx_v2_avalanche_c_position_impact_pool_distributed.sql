@@ -151,12 +151,12 @@ WITH evt_data_1 AS (
 
         ED.market,
         CASE
-            WHEN MD.index_token_decimals IS NOT NULL THEN distribution_amount / POWER(10, MD.index_token_decimals)
-            ELSE distribution_amount / POWER(10, 18)
+            WHEN distribution_amount = 0 THEN 0
+            ELSE distribution_amount / POWER(10, MD.index_token_decimals)
         END AS distribution_amount,
         CASE
-            WHEN MD.index_token_decimals IS NOT NULL THEN next_position_impact_pool_amount / POWER(10, MD.index_token_decimals)
-            ELSE next_position_impact_pool_amount / POWER(10, 18)
+            WHEN next_position_impact_pool_amount = 0 THEN 0
+            ELSE next_position_impact_pool_amount / POWER(10, MD.index_token_decimals)
         END AS next_position_impact_pool_amount
         
     FROM event_data AS ED
