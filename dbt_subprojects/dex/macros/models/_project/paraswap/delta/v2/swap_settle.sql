@@ -1,5 +1,5 @@
 {% macro delta_v2_swap_settle(blockchain) %}
--- TODO: source this data from events, as multiple method emit the same events -- will be simpler to source from there
+-- since this call always is a whole-order-at-once fulfillment, can source it from method calls and no need to join with events as all data is in the call
 v2_swap_settle_withParsedOrderData AS (
     SELECT
         call_trace_address,
@@ -51,8 +51,7 @@ v2_swap_settle_parsedOrders AS (
 --         // The address to receive the fee, if not set the tx.origin will receive the fee
 --         address feeRecipient;
 --     }
-    varbinary_to_uint256(varbinary_substring(executorData,  161, 32)) as "feeAmount",
-    -- substring(executorData FROM 141 FOR 20) AS dynamic_extracted_dest_token
+    varbinary_to_uint256(varbinary_substring(executorData,  161, 32)) as "feeAmount",    
     *
   FROM v2_swap_settle_unparsedOrders
 ),
