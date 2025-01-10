@@ -131,7 +131,7 @@ sources:
       - name: traces_decoded
         meta:
           docs_slug: /evm/optimism/decoded/traces_decoded
-          short_description: The `optimism.traces_decoded` table contains decoded traces, including additional information optimismd on submitted smart contracts and their ABIs.
+          short_description: The `optimism.traces_decoded` table contains decoded traces, including additional information optimised on submitted smart contracts and their ABIs.
         description: '{{ doc("optimism_traces_decoded_doc") }}'
         columns:
           - *block_date
