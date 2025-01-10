@@ -12,21 +12,21 @@
 
 WITH velo_pools AS (
   SELECT 
-    pool AS pool_address,
-    token0,
-    token1,
+    CAST(pool AS varchar) AS pool_address,
+    CAST(token0 AS varchar) AS token0,
+    CAST(token1 AS varchar) AS token1,
     evt_block_time AS creation_time
   FROM 
     {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PoolCreated') }}
   WHERE
-    token0 = '0x4200000000000000000000000000000042'
-    OR token1 = '0x4200000000000000000000000000000042'
+    CAST(token0 AS varchar) = '0x4200000000000000000000000042'
+    OR CAST(token1 AS varchar) = '0x4200000000000000000000000042'
 ),
 
 filtered_balances AS (
   {{ balances_subset_daily(
       blockchain='optimism',
-      token_address='0x4200000000000000000000000000000042',
+      token_address='0x4200000000000000000000000042',
       start_date='2023-06-22'
     ) }}
 )

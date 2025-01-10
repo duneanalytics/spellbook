@@ -12,21 +12,21 @@
 
 WITH swaap_pools AS (
   SELECT
-    poolId AS pool_address,
-    tokenIn,
-    tokenOut,
+    CAST(poolId AS varchar) AS pool_address,
+    CAST(tokenIn AS varchar) AS tokenIn,
+    CAST(tokenOut AS varchar) AS tokenOut,
     evt_block_time AS creation_time
   FROM
     {{ source('swaap_v2_optimism', 'Vault_evt_Swap') }}
   WHERE
-    (tokenIn = '0x4200000000000000000000000000000042'
-    OR tokenOut = '0x4200000000000000000000000000000042')
+    CAST(tokenIn AS varchar) = '0x4200000000000000000000000042'
+    OR CAST(tokenOut AS varchar) = '0x4200000000000000000000000042'
 ),
 
 filtered_balances AS (
   {{ balances_subset_daily(
       blockchain='optimism',
-      token_address='0x4200000000000000000000000000000042',
+      token_address='0x4200000000000000000000000042',
       start_date='2024-06-07'
     ) }}
 )
