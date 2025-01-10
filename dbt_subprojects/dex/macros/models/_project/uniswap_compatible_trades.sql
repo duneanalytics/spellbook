@@ -159,7 +159,7 @@ WITH dexs AS
     INNER JOIN
         {{ Factory_evt_PoolCreated }} f
         ON {{ pair_column_name }} = t.id
-    {%- if is_incremental() -%}
+    {%- if is_incremental() %}
     WHERE
         {{ incremental_predicate('t.evt_block_time') }}
     {%- endif %}
