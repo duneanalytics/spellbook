@@ -5,7 +5,7 @@
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    , unique_key = ['block_month', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
@@ -31,13 +31,12 @@
     , ref('dex_ronin_base_trades')
     , ref('dex_scroll_base_trades')
     , ref('dex_sei_base_trades')
+    , ref('dex_sepolia_base_trades')
     , ref('dex_sonic_base_trades')
     , ref('dex_worldchain_base_trades')
     , ref('dex_zkevm_base_trades')
     , ref('dex_zksync_base_trades')
     , ref('dex_zora_base_trades')
-    , ref('dex_flare_base_trades')
-    , ref('dex_sepolia_base_trades')
 ] %}
 
 with base_union as (
@@ -68,13 +67,13 @@ with base_union as (
         FROM
             {{ model }}
         WHERE
-           token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if is_incremental() %}
+            token_sold_amount_raw >= 0
+            AND token_bought_amount_raw >= 0
+            {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
-            AND block_date >= now() - interval '7' day -- TODO remove after testing
-    {   % else %}
-            AND block_date >= now() - interval '7' day -- TODO remove after testing
-        {% endif %}
+            {% else %}
+            AND block_time >= timestamp '2025-01-01' -- TODO remove after testing
+            {% endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -82,7 +81,6 @@ with base_union as (
     )
     WHERE
         duplicates_rank = 1
-        AND block_date >= now() - interval '7' day -- TODO remove after testing
 )
 select
     *
