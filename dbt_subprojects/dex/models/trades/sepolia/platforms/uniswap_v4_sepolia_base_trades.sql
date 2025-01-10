@@ -15,6 +15,7 @@
         , project = 'uniswap'
         , version = '4'
         , Pair_evt_Swap = source('uniswap_v4_sepolia', 'PoolManager_evt_Swap') 
-        , Factory_evt_PoolCreated = source('uniswap_v4_sepolia', 'PoolManager_evt_Initialize') 
+        , Factory_evt_PoolCreated = source('uniswap_v4_sepolia', 'PoolManager_evt_Initialize')
+        , optional_columns = ['t.sender', 'f.fee', 'f.hooks']
     )
 }}
