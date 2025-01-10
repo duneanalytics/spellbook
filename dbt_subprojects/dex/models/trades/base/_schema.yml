@@ -46,7 +46,7 @@ models:
       blockchain: base
       sector: dex
       project: stablebase
-      contributors: principatel
+      contributors: principatel, hosuke
     config:
       tags: ["base", "dex", "trades", "stablebase"]
     description: stablebase base trades

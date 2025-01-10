@@ -414,6 +414,10 @@ sources:
       - name: SonicStrategyForSA_evt_Withdraw
       - name: SonicStrategyForSA_evt_Reinvest
       - name: SonicStrategyForSA_evt_Transfer
+      - name: StableJackStrategy_evt_Deposit
+      - name: StableJackStrategy_evt_Withdraw
+      - name: StableJackStrategy_evt_Reinvest
+      - name: StableJackStrategy_evt_Transfer
       - name: StableVaultStrategyForS3D_evt_Deposit
       - name: StableVaultStrategyForS3D_evt_Withdraw
       - name: StableVaultStrategyForS3D_evt_Reinvest
@@ -446,6 +450,10 @@ sources:
       - name: SynapseStrategy_evt_Withdraw
       - name: SynapseStrategy_evt_Reinvest
       - name: SynapseStrategy_evt_Transfer
+      - name: TokenMillStrategy_evt_Deposit
+      - name: TokenMillStrategy_evt_Withdraw
+      - name: TokenMillStrategy_evt_Reinvest
+      - name: TokenMillStrategy_evt_Transfer
       - name: UnipoolStrategyV1_evt_Deposit
       - name: UnipoolStrategyV1_evt_Withdraw
       - name: UnipoolStrategyV1_evt_Reinvest
