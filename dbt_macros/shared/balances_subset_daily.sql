@@ -17,7 +17,7 @@ filtered_balances as (
         {% if is_incremental() %}
         and {{ incremental_predicate('day') }}
         {% else %}
-        and day >= cast('{{ start_date }}' as date)
+        and day >= DATE '{{ start_date }}'  -- Modified this line
         {% endif %}
 )
 

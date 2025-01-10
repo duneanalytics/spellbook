@@ -21,7 +21,7 @@ filtered_balances AS (
   {{ balances_subset_daily(
       blockchain='optimism',
       token_address="'0x4200000000000000000000000000000042'",
-      start_date="'2021-11-11'"
+      start_date='2021-11-11'  
     ) }}
 )
 
