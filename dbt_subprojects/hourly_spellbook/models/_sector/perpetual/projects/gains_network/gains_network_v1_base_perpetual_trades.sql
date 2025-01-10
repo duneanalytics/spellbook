@@ -13,7 +13,7 @@
 )
 }}
 
-{% set project_start_date = '2024-01-01' %}
+-- {% set project_start_date = '2024-01-01' %}
 
 WITH position_changes AS (
     -- Position Size Decreases
@@ -32,12 +32,9 @@ WITH position_changes AS (
         collateralPriceUsd,
         oraclePrice,
         leverageDelta,
-        "values" as value_data,  -- Changed reserved keyword
+        "values" as value_data,
         'decrease' as action
-    FROM {{ source('gains_network_base', 'GNSMultiCollatDiamond_evt_PositionSizeDecreaseExecuted') }}
-    {% if is_incremental() %}
-    WHERE evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
-    {% endif %}
+    FROM delta_prod.gains_network_base.GNSMultiCollatDiamond_evt_PositionSizeDecreaseExecuted
 
     UNION ALL
 
@@ -57,12 +54,9 @@ WITH position_changes AS (
         collateralPriceUsd,
         oraclePrice,
         leverageDelta,
-        "values" as value_data,  -- Changed reserved keyword
+        "values" as value_data,
         'increase' as action
-    FROM {{ source('gains_network_base', 'GNSMultiCollatDiamond_evt_PositionSizeIncreaseExecuted') }}
-    {% if is_incremental() %}
-    WHERE evt_block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
-    {% endif %}
+    FROM delta_prod.gains_network_base.GNSMultiCollatDiamond_evt_PositionSizeIncreaseExecuted
 ),
 
 perps AS (
@@ -155,7 +149,7 @@ perps AS (
 
         contract_address AS market_address,
         (collateralDelta * collateralPriceUsd * leverageDelta) / 1e36 AS volume_usd,
-        CAST(JSON_EXTRACT_PATH_TEXT(value_data, 'vaultFeeCollateral') AS double) / 1e18 AS fee_usd,  -- Changed values to value_data
+        CAST(JSON_EXTRACT(value_data, '$.vaultFeeCollateral') AS double) / 1e18 AS fee_usd,  -- Changed to JSON_EXTRACT
         collateralDelta / 1e18 AS margin_usd,
 
         CASE 
@@ -198,12 +192,7 @@ SELECT
     tx."to" AS tx_to,
     perps.evt_index
 FROM perps
-INNER JOIN {{ source('base', 'transactions') }} AS tx
+INNER JOIN delta_prod.base.transactions AS tx
     ON perps.tx_hash = tx.hash
     AND perps.block_number = tx.block_number
-    {% if not is_incremental() %}
-    AND tx.block_time >= DATE '{{project_start_date}}'
-    {% endif %}
-    {% if is_incremental() %}
-    AND tx.block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
-    {% endif %}
+    AND tx.block_time >= DATE '2024-01-01'
