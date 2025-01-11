@@ -19,28 +19,6 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Check for dex_base_trades changes
-        id: check_base_trades
-        if: inputs.project == 'dex'
-        run: |
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            git fetch origin main
-            CHANGES=$(git diff --name-only origin/main..HEAD | grep -E "dbt_subprojects/${{ inputs.project }}/models/.*/platforms/.*_base_trades\.sql$" || true)
-          else
-            CHANGES=$(git diff --name-only HEAD~1 | grep -E "dbt_subprojects/${{ inputs.project }}/models/.*/platforms/.*_base_trades\.sql$" || true)
-          fi
-          
-          if [ ! -z "$CHANGES" ]; then
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-            MODIFIED_FILES=$(echo "$CHANGES" | tr '\n' ',' | sed 's/,$//')
-            echo "modified_files=$MODIFIED_FILES" >> $GITHUB_OUTPUT
-            echo "Found changes in base_trades files:"
-            echo "$CHANGES"
-          else
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No base_trades changes found"
-          fi
-
       - name: Setup variables
         run: | # Spellbook is a special case because it's not a subdirectory
           echo "GIT_SHA=$(echo ${{ github.sha }} | tr - _ | cut -c1-7)" >> $GITHUB_ENV
@@ -82,6 +60,28 @@ jobs:
       - name: dbt test initial model(s)
         run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
+      - name: Check for dex_base_trades changes
+        id: check_base_trades
+        if: inputs.project == 'dex'
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            git fetch origin main
+            CHANGES=$(git diff --name-only origin/main..HEAD | grep -E "dbt_subprojects/${{ inputs.project }}/models/.*/platforms/.*_base_trades\.sql$" || true)
+          else
+            CHANGES=$(git diff --name-only HEAD~1 | grep -E "dbt_subprojects/${{ inputs.project }}/models/.*/platforms/.*_base_trades\.sql$" || true)
+          fi
+          
+          if [ ! -z "$CHANGES" ]; then
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            MODIFIED_FILES=$(echo "$CHANGES" | tr '\n' ',' | sed 's/,$//')
+            echo "modified_files=$MODIFIED_FILES" >> $GITHUB_OUTPUT
+            echo "Found changes in base_trades files:"
+            echo "$CHANGES"
+          else
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No base_trades changes found"
+          fi
+        
       - name: Test base_trades changes
         if: steps.check_base_trades.outputs.has_changes == 'true' && inputs.project == 'dex'
         working-directory: ${{env.PROJECT_DIR}}
