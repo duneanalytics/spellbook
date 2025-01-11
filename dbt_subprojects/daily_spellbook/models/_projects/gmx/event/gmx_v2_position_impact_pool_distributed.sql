@@ -1,10 +1,10 @@
 {{ config(
         schema='gmx_v2',
         alias = 'position_impact_pool_distributed',
-        post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c"]\',
-                                    "project",
-                                    "gmx",
-                                    \'["ai_data_master","gmx-io"]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["arbitrum", "avalanche_c"]\',
+                                    spell_type = "project",
+                                    spell_name = "gmx",
+                                    contributors = \'["ai_data_master","gmx-io"]\') }}'
         )
 }}
 
