@@ -19,7 +19,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check for base_trades changes
+      - name: Check for dex_base_trades changes
         id: check_base_trades
         if: inputs.project == 'dex'
         run: |
