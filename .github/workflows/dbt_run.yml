@@ -17,7 +17,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 2
 
       - name: Check for dex_base_trades changes
         id: check_base_trades
