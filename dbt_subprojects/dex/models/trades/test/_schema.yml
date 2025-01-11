@@ -2,12 +2,6 @@ version: 2
 
 models:
   - name: dex_ci_trades_test
-    meta:
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia, optimism, polygon, scroll, zksync, linea, blast, sei, ronin
-      sector: dex
-      contributors: hosuke
-    config:
-      tags: ['dex', 'trades', 'ci_test']
     description: "CI test view that processes modified base_trades models to verify their integration with the dex.trades pipeline"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
