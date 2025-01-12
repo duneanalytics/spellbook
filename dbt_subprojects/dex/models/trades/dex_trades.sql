@@ -13,6 +13,7 @@
                                         , "base"
                                         , "blast"
                                         , "bnb"
+                                        , "boba"
                                         , "celo"
                                         , "ethereum"
                                         , "fantom"
@@ -26,13 +27,14 @@
                                         , "ronin"
                                         , "scroll"
                                         , "sei"
+                                        , "sonic"
                                         , "zkevm"
                                         , "zksync"
                                         , "zora"
                                     ]\',
                                     "sector",
                                     "dex",
-                                    \'["hosuke", "0xrob", "jeff-dude", "tomfutago"]\') }}')
+                                    \'["hosuke", "0xrob", "jeff-dude", "tomfutago", "viniabussafi"]\') }}')
 }}
 
 -- keep existing dbt lineages for the following projects, as the team built themselves and use the spells throughout the entire lineage
@@ -53,11 +55,21 @@ WITH curve AS (
         )
     }}
 )
+, balancer_v3 AS (
+    -- due to Balancer V3 having trades between ERC4626 tokens, which won't be priced on prices.usd, enrich separately
+    {{
+        enrich_balancer_v3_dex_trades(
+            base_trades = ref('dex_base_trades')
+            , filter = "(project = 'balancer' AND version = '3')"
+            , tokens_erc20_model = source('tokens', 'erc20')
+        )
+    }}
+)
 , dexs AS (
     {{
         enrich_dex_trades(
             base_trades = ref('dex_base_trades')
-            , filter = "project != 'curve'"
+            , filter = "project != 'curve' AND NOT (project = 'balancer' AND version = '3')"
             , tokens_erc20_model = source('tokens', 'erc20')
         )
     }}
@@ -106,6 +118,7 @@ WITH curve AS (
     'curve'
     , 'as_is_dexs'
     , 'dexs'
+    , 'balancer_v3'
     ]
 %}
 
