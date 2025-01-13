@@ -304,7 +304,6 @@ results AS (
         trades.block_number,
         zid,
         trades.contract_address,
-        method_id,
         trades.tx_hash,
         "from" AS tx_from,
         "to" AS tx_to,
