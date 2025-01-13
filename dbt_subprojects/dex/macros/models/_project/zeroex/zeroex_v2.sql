@@ -139,7 +139,7 @@ cow_trades as (
             buy_token_address as maker_token, 
             atoms_bought as maker_amount, 
             logs.contract_address as taker_token
-    FROM {{ source(cow_protocol_ethereum, 'trades') }} AS trades 
+    FROM {{ source('cow_protocol_ethereum', 'trades') }} AS trades 
     JOIN all_logs as logs using (block_time, block_number, tx_hash)
     where trades.sell_token_address = logs.contract_address and trades.atoms_sold = logs.amount  
         AND block_time > TIMESTAMP '2024-07-15'  
