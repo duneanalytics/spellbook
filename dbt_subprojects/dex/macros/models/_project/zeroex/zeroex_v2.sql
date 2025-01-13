@@ -233,7 +233,8 @@ select  block_time,
         tx_index,
         settler_address,
         zid,
-        tag
+        tag,
+        settler_address as contract_address 
     from taker_logs
     join maker_logs using (block_time, block_number, tx_hash)
 
