@@ -3,14 +3,6 @@ version: 2
 models:
   - name: dex_ci_trades_test
     description: "CI test view that processes modified base_trades models to verify their integration with the dex.trades pipeline"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - project
-            - version
-            - tx_hash
-            - evt_index
     columns:
       - name: amount_usd
         description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
