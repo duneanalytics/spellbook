@@ -249,9 +249,9 @@ select * from tbl_trades
 WITH tokens AS (
     SELECT DISTINCT token, te.*
     FROM (
-        SELECT maker_token AS token FROM tbl_trades
+        SELECT maker_token AS token FROM zeroex_v2_trades
         UNION ALL
-        SELECT taker_token FROM tbl_trades
+        SELECT taker_token FROM zeroex_v2_trades
     ) t
     JOIN {{ source('tokens', 'erc20') }} AS te ON te.contract_address = t.token
     WHERE te.blockchain = '{{blockchain}}'
@@ -260,7 +260,7 @@ WITH tokens AS (
 prices AS (
     SELECT DISTINCT pu.*
     FROM {{ source('prices', 'usd') }} AS pu
-    JOIN tbl_trades ON (pu.contract_address IN (taker_token, maker_token)) AND DATE_TRUNC('minute', block_time) = minute
+    JOIN zeroex_v2_trades ON (pu.contract_address IN (taker_token, maker_token)) AND DATE_TRUNC('minute', block_time) = minute
     WHERE
         pu.blockchain = '{{blockchain}}'
         {% if is_incremental() %}
@@ -274,7 +274,7 @@ fills AS (
     WITH signatures AS (
         SELECT DISTINCT signature
         FROM {{ source(blockchain, 'logs_decoded') }} l
-        JOIN tbl_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
+        JOIN zeroex_v2_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
         WHERE event_name IN ('TokenExchange', 'OtcOrderFilled', 'SellBaseToken', 'Swap', 'BuyGem', 'DODOSwap', 'SellGem', 'Submitted')
         {% if is_incremental() %}
             AND {{ incremental_predicate('l.block_time') }}
@@ -285,7 +285,7 @@ fills AS (
     SELECT tt.tx_hash, tt.block_number, tt.block_time, COUNT(*) AS fills_within
     FROM {{ source(blockchain, 'logs') }} l
     JOIN signatures ON signature = topic0
-    JOIN tbl_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
+    JOIN zeroex_v2_trades tt ON tt.tx_hash = l.tx_hash AND l.block_time = tt.block_time AND l.block_number = tt.block_number
     {% if is_incremental() %}
         WHERE {{ incremental_predicate('l.block_time') }}
     {% else %}
