@@ -326,7 +326,7 @@ results AS (
         tag,
         fills_within
     FROM
-        tbl_trades trades
+        zeroex_v2_trades trades
     JOIN
         {{ source(blockchain, 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
         {% if is_incremental() %}
