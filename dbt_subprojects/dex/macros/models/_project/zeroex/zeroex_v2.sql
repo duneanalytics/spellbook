@@ -96,6 +96,7 @@ WITH tbl_all_logs AS (
         tx_to,
         tx_from,
         taker,
+        tx_index,
         (try_cast(bytearray_to_uint256(bytearray_substring(logs.DATA, 22,11)) as int256)) as amount
     FROM
         {{ source(blockchain, 'logs') }} AS logs
