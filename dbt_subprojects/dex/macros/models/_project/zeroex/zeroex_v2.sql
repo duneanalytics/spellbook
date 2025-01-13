@@ -41,7 +41,8 @@ settler_trace_data AS (
         case when varbinary_substring(input,17,6) in (0x,0x000000000000) then "from"
             else first_value(varbinary_substring(input,17,20)) over (partition by tr.tx_hash order by trace_address desc) 
             end as taker,
-        a.settler_address
+        a.settler_address,
+        trace_address
     FROM
         {{ source(blockchain, 'traces') }} AS tr
     JOIN
