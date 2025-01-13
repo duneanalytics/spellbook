@@ -238,6 +238,8 @@ select  block_time,
 
     select * from cow_trades
 )
+select * from tbl_trades 
+
 {% endmacro %}
 
 {% macro zeroex_v2_trades_detail(blockchain, start_date) %}
