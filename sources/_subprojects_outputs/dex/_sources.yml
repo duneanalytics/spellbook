@@ -89,7 +89,3 @@ sources:
   - name: beethoven_x
     tables:
       - name: trades
-
-  - name: beets
-    tables:
-      - name: trades

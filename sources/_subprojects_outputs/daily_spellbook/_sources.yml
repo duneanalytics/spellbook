@@ -46,3 +46,11 @@ sources:
     tables:
       - name: erc4626_token_prices
       - name: erc4626_token_mapping
+
+  - name: beets
+    tables:
+      - name: pools_metrics_daily
+
+  - name: beets
+    tables:
+      - name: trades      
