@@ -143,7 +143,7 @@ cow_trades as (
             atoms_bought as maker_amount, 
             logs.contract_address as taker_token
     FROM {{ source('cow_protocol_ethereum', 'trades') }} AS trades 
-    JOIN all_logs as logs using (block_time, block_number, tx_hash)
+    JOIN tbl_all_logs as logs using (block_time, block_number, tx_hash)
     where trades.sell_token_address = logs.contract_address and trades.atoms_sold = logs.amount  
         AND block_time > TIMESTAMP '2024-07-15'  
     ),
@@ -185,7 +185,7 @@ taker_logs as (
         amount as taker_amount,
         row_number() over (partition by logs.tx_hash order by (logs.index)) rn,
         bytearray_substring(logs.topic1,13,20) as taker__
-    from all_logs logs
+    from tbl_all_logs logs
     where taker != 0x9008D19f58AAbD9eD0D60971565AA8510560ab41 
         and logs.block_time > TIMESTAMP '2024-07-15' 
     )
@@ -209,7 +209,7 @@ maker_logs as (
         amount as maker_amount,
         row_number() over (partition by logs.tx_hash order by logs.index desc ) rn,
         taker
-    from all_logs as logs 
+    from tbl_all_logs as logs 
     join taker_logs tl on tl.tx_hash = logs.tx_hash and  bytearray_substring(logs.topic2,13,20) in (tl.taker__, tx_from)
     WHERE  topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef, 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65) 
     )
