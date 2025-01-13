@@ -915,7 +915,8 @@ sources:
       - name: CappedArbitrumRootGauge_call_killGauge      
       - name: CappedOptimismRootGauge_call_killGauge  
       - name: CappedPolygonRootGauge_call_killGauge        
-      - name: CappedLiquidityGaugeV5_call_killGauge                    
+      - name: CappedLiquidityGaugeV5_call_killGauge          
+      - name: AuthorizerAdaptorEntrypoint_evt_ActionPerformed                    
           
   - name: balancer_polygon
     description: >
