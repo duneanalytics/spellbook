@@ -68,7 +68,8 @@ settler_txs AS (
         CASE
             WHEN method_id = 0x1fff991f THEN MAX(varbinary_substring(tracker,12,3))
             WHEN method_id = 0xfd3ad6d4 THEN MAX(varbinary_substring(tracker,13,3))
-        END AS tag
+        END AS tag,
+        taker
     FROM
         settler_trace_data
     GROUP BY
