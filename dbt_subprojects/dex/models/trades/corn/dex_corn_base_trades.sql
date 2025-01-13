@@ -6,9 +6,9 @@
 }}
 
 {% set base_models = [
-    ref('oku_corn_base_trades')
+    ref('camelot_yak_corn_base_trades')
     , ref('camelot_v3_corn_base_trades')
-    , ref('camelot_v2_corn_base_trades')
+    , ref('oku_corn_base_trades')
 ] %}
 
 WITH base_union AS (
