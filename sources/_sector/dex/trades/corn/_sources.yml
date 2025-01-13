@@ -5,11 +5,9 @@ sources:
     tables:
       - name: UniswapV3Factory_evt_PoolCreated
       - name: UniswapV3Pool_evt_Swap
-  - name: camelot_corn_v3
+  - name: camelot_corn
     tables:
       - name: AlgebraFactory_evt_Pool
       - name: AlgebraPool_evt_Swap
-  - name: camelot_corn_v2
-    tables:
       - name: CamelotFactory_evt_PairCreated
       - name: CamelotYakRouter_evt_YakSwap
