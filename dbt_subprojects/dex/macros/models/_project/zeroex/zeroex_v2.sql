@@ -167,7 +167,8 @@ cow_trades as (
         tx_index,
         b.settler_address,
         zid,
-        tag
+        tag,
+        contract_address
         from base_logs_rn b
         join zeroex_tx s on rn = cow_trade_rn 
             and b.block_time = s.block_time 
