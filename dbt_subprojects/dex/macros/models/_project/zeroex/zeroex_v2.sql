@@ -141,7 +141,8 @@ cow_trades as (
             evt_index, 
             buy_token_address as maker_token, 
             atoms_bought as maker_amount, 
-            logs.contract_address as taker_token
+            logs.contract_address as taker_token,
+            settler_address as contract_address 
     FROM {{ source('cow_protocol_ethereum', 'trades') }} AS trades 
     JOIN tbl_all_logs as logs using (block_time, block_number, tx_hash)
     where trades.sell_token_address = logs.contract_address and trades.atoms_sold = logs.amount  
