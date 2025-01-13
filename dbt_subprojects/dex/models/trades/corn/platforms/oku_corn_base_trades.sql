@@ -15,9 +15,9 @@
         blockchain = 'corn',
         project = 'oku',
         version = '3',
-        Pair_evt_Swap = source('oku_corn', 'UniswapV3Pool_evt_Swap'),
-        Factory_evt_PoolCreated = source('oku_corn', 'UniswapV3Factory_evt_PoolCreated'),
-        taker_column_name = 'recipient',
-        optional_columns = ['f.fee']
+        Pair_evt_Swap = source('oku_corn', 'OkuV3Pair_evt_Swap'),
+        Factory_evt_PoolCreated = source('oku_corn', 'v3CoreFactoryAddress_evt_PoolCreated'),
+        pair_column_name = 'pool',
+        optional_columns = []
     )
 }}

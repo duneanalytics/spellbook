@@ -3,8 +3,8 @@ version: 2
 sources:
   - name: oku_corn
     tables:
-      - name: UniswapV3Factory_evt_PoolCreated
-      - name: UniswapV3Pool_evt_Swap
+      - name: v3CoreFactoryAddress_evt_PoolCreated
+      - name: OkuV3Pair_evt_Swap
   - name: camelot_corn
     tables:
       - name: AlgebraFactory_evt_Pool
