@@ -1,10 +1,6 @@
 version: 2
 
 models:
-  - name: dex_corn_base_trades
-    data_tests:
-      - check_dex_info_relationship
-
   - name: oku_corn_base_trades
     meta:
       blockchain: corn
@@ -13,7 +9,7 @@ models:
       contributors: hosuke
     config:
       tags: ["corn", "dex", "trades", "oku"]
-    description: "Oku DEX base trades"
+    description: "Oku DEX trades on Corn"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -30,7 +26,7 @@ models:
       contributors: hosuke
     config:
       tags: ["corn", "dex", "trades", "camelot", "v3"]
-    description: "Camelot V3 DEX base trades"
+    description: "Camelot v3 DEX trades on Corn"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -41,21 +37,28 @@ models:
       #     filter:
       #       version: 3
 
-  - name: camelot_v2_corn_base_trades
+  - name: camelot_yak_corn_base_trades
     meta:
       blockchain: corn
       sector: dex
       project: camelot
       contributors: hosuke
     config:
-      tags: ["corn", "dex", "trades", "camelot", "v2"]
-    description: "Camelot V2 DEX base trades"
+      tags: ["corn", "dex", "trades", "camelot", "yak"]
+    description: "Camelot Yak DEX trades on Corn"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
-      # - check_dex_base_trades_seed:
-      #     seed_file: ref('camelot_corn_base_trades_seed')
-      #     filter:
-      #       version: 2
+
+  - name: dex_corn_base_trades
+    meta:
+      blockchain: corn
+      sector: dex
+      contributors: hosuke
+    config:
+      tags: ["corn", "dex", "trades"]
+    description: "All DEX trades on Corn"
+    data_tests:
+      - check_dex_info_relationship
