@@ -15,8 +15,8 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      # - check_dex_base_trades_seed:
-      #     seed_file: ref('oku_corn_base_trades_seed')
+      - check_dex_base_trades_seed:
+          seed_file: ref('oku_corn_base_trades_seed')
 
   - name: camelot_v3_corn_base_trades
     meta:
@@ -32,10 +32,10 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
-      # - check_dex_base_trades_seed:
-      #     seed_file: ref('camelot_corn_base_trades_seed')
-      #     filter:
-      #       version: 3
+      - check_dex_base_trades_seed:
+          seed_file: ref('camelot_corn_base_trades_seed')
+          filter:
+            version: 3
 
   - name: camelot_yak_corn_base_trades
     meta:
@@ -51,6 +51,10 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('camelot_corn_base_trades_seed')
+          filter:
+            version: yak
 
   - name: dex_corn_base_trades
     meta:
