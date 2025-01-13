@@ -183,8 +183,7 @@ taker_logs as (
         row_number() over (partition by logs.tx_hash order by (logs.index)) rn,
         bytearray_substring(logs.topic1,13,20) as taker__
     from all_logs logs
-    where case when {{tx_hash}} = 0x then 1=1 else logs.tx_hash = {{tx_hash}} end 
-        and taker != 0x9008D19f58AAbD9eD0D60971565AA8510560ab41 
+    where taker != 0x9008D19f58AAbD9eD0D60971565AA8510560ab41 
         and logs.block_time > TIMESTAMP '2024-07-15' 
     )
     select * from tbl_base 
