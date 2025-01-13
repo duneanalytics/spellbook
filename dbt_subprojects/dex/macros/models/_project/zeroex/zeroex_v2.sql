@@ -38,6 +38,9 @@ settler_trace_data AS (
         "to" AS contract_address,
         varbinary_substring(input,1,4) AS method_id,
         varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker,
+        case when varbinary_substring(input,17,6) in (0x,0x000000000000) then "from"
+            else first_value(varbinary_substring(input,17,20)) over (partition by tr.tx_hash order by trace_address desc) 
+            end as taker,
         a.settler_address
     FROM
         {{ source(blockchain, 'traces') }} AS tr
