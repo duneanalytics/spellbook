@@ -17,6 +17,8 @@
         version = '3',
         Pair_evt_Swap = source('camelot_corn', 'AlgebraPool_evt_Swap'),
         Factory_evt_PoolCreated = source('camelot_corn', 'AlgebraFactory_evt_Pool'),
-        pair_column_name = 'pool'
+        pair_column_name = 'pool',
+        taker_column_name = 'recipient',
+        optional_columns = []
     )
 }}

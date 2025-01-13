@@ -16,6 +16,8 @@
         project = 'oku',
         version = '3',
         Pair_evt_Swap = source('oku_corn', 'UniswapV3Pool_evt_Swap'),
-        Factory_evt_PoolCreated = source('oku_corn', 'UniswapV3Factory_evt_PoolCreated')
+        Factory_evt_PoolCreated = source('oku_corn', 'UniswapV3Factory_evt_PoolCreated'),
+        taker_column_name = 'recipient',
+        optional_columns = ['f.fee']
     )
 }}
