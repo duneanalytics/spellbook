@@ -1,6 +1,17 @@
 version: 2
 
 models:
+  - name: dex_corn_base_trades
+    meta:
+      blockchain: corn
+      sector: dex
+      contributors: hosuke
+    config:
+      tags: ["corn", "dex", "trades"]
+    description: "All DEX trades on Corn"
+    data_tests:
+      - check_dex_info_relationship
+
   - name: oku_corn_base_trades
     meta:
       blockchain: corn
@@ -55,14 +66,3 @@ models:
           seed_file: ref('camelot_corn_base_trades_seed')
           filter:
             version: yak
-
-  - name: dex_corn_base_trades
-    meta:
-      blockchain: corn
-      sector: dex
-      contributors: hosuke
-    config:
-      tags: ["corn", "dex", "trades"]
-    description: "All DEX trades on Corn"
-    data_tests:
-      - check_dex_info_relationship
