@@ -64,7 +64,7 @@ settler_txs AS (
         method_id,
         contract_address,
         settler_address,
-        MAX(varbinary_substring(tracker,2,12)) AS zid,
+        (varbinary_substring(tracker,2,12)) AS zid,
         CASE
             WHEN method_id = 0x1fff991f THEN (varbinary_substring(tracker,12,3))
             WHEN method_id = 0xfd3ad6d4 THEN (varbinary_substring(tracker,13,3))
