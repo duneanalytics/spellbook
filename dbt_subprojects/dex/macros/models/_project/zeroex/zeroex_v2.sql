@@ -69,7 +69,8 @@ settler_txs AS (
             WHEN method_id = 0x1fff991f THEN (varbinary_substring(tracker,12,3))
             WHEN method_id = 0xfd3ad6d4 THEN (varbinary_substring(tracker,13,3))
         END AS tag,
-        taker
+        taker,
+        row_number() over (partition by tx_hash order by trace_address desc) rn
     FROM
         settler_trace_data
     
