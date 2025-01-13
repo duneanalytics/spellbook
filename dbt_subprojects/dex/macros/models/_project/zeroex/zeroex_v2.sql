@@ -66,14 +66,13 @@ settler_txs AS (
         settler_address,
         MAX(varbinary_substring(tracker,2,12)) AS zid,
         CASE
-            WHEN method_id = 0x1fff991f THEN MAX(varbinary_substring(tracker,12,3))
-            WHEN method_id = 0xfd3ad6d4 THEN MAX(varbinary_substring(tracker,13,3))
+            WHEN method_id = 0x1fff991f THEN (varbinary_substring(tracker,12,3))
+            WHEN method_id = 0xfd3ad6d4 THEN (varbinary_substring(tracker,13,3))
         END AS tag,
         taker
     FROM
         settler_trace_data
-    GROUP BY
-        1,2,3,4,5,6
+    
 )
 
 SELECT * FROM settler_txs
