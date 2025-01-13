@@ -93,8 +93,6 @@ WITH tbl_all_logs AS (
         tag,
         st.settler_address,
         zid,
-        topic1,
-        topic2,
         tx_to,
         tx_from,
         taker,
