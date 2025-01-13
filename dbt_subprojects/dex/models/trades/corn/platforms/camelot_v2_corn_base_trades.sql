@@ -15,7 +15,7 @@
         blockchain = 'corn',
         project = 'camelot',
         version = '2',
-        Pair_evt_Swap = source('camelot_corn_v2', 'CamelotYakRouter_evt_YakSwap'),
-        Factory_evt_PairCreated = source('camelot_corn_v2', 'CamelotFactory_evt_PairCreated')
+        Pair_evt_Swap = source('camelot_corn', 'CamelotYakRouter_evt_YakSwap'),
+        Factory_evt_PairCreated = source('camelot_corn', 'CamelotFactory_evt_PairCreated')
     )
 }}

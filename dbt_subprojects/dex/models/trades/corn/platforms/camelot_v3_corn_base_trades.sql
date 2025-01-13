@@ -15,8 +15,8 @@
         blockchain = 'corn',
         project = 'camelot',
         version = '3',
-        Pair_evt_Swap = source('camelot_corn_v3', 'AlgebraPool_evt_Swap'),
-        Factory_evt_PoolCreated = source('camelot_corn_v3', 'AlgebraFactory_evt_Pool'),
+        Pair_evt_Swap = source('camelot_corn', 'AlgebraPool_evt_Swap'),
+        Factory_evt_PoolCreated = source('camelot_corn', 'AlgebraFactory_evt_Pool'),
         pair_column_name = 'pool'
     )
 }}
