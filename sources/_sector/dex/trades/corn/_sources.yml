@@ -10,4 +10,5 @@ sources:
       - name: AlgebraFactory_evt_Pool
       - name: AlgebraPool_evt_Swap
       - name: CamelotFactory_evt_PairCreated
+      - name: CamelotPair_evt_Swap
       - name: CamelotYakRouter_evt_YakSwap
