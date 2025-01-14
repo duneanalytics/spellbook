@@ -58,10 +58,18 @@ FROM
     ('zkid-zksync-id', 'zksync', 'ZKID', 0x2141d7fe06A1d69c016fC638bA75b6Ef92Fa1435, 18),
     ('zk-zksync', 'zksync', 'ZK', 0x5A7d6b2F92C77FAD6CCaBd7EE0624E64907Eaf3E, 18),
     ('weeth-wrapped-eeth', 'zksync', 'weETH', 0xc1fa6e2e8667d9be0ca938a54c7e0285e9df924a, 18),
-    ('koi4-koi', 'zksync', 'KOI4', 0xa995ad25ce5eb76972ab356168f5e1d9257e4d05, 18),
+    ('koi4-koi', 'zksync', 'KOI', 0xa995ad25ce5eb76972ab356168f5e1d9257e4d05, 18),
     ('mvx-metavault-trade', 'zksync', 'MVX', 0xc8ac6191cdc9c7bf846ad6b52aaaa7a0757ee305, 18),
     ('zf-zkswap-finance', 'zksync', 'ZF', 0x31c2c031fdc9d33e974f327ab0d9883eae06ca4a, 18),
     ('rseth-rseth', 'zksync', 'wrsETH', 0xd4169e045bcf9a86cc00101225d9ed61d2f51af2, 18),
     ('usdc-usd-coin', 'zksync', 'USDC', 0x1d17cbcf0d6d143135ae902365d2e5e2a16538d4, 6),
-    ('usdm-mountain-protocol-usd', 'zksync', 'USDM', 0x7715c206a14ac93cb1a6c0316a6e5f8ad7c9dc31, 18)
+    ('usdm-mountain-protocol-usd', 'zksync', 'USDM', 0x7715c206a14ac93cb1a6c0316a6e5f8ad7c9dc31, 18),
+    ('usde-ethena-usde', 'zksync', 'USDe', 0x39Fe7a0DACcE31Bd90418e3e659fb0b5f0B3Db0d, 18),
+    ('susde-ethena-staked-usde', 'zksync', 'sUSDe', 0xAD17Da2f6Ac76746EF261E835C50b2651ce36DA8, 18),
+    ('ena-ethena', 'zksync', 'ENA', 0x686b311F82b407f0be842652a98e5619F64cC25F, 18),
+    ('m-btc-merlins-seal-btc', 'zksync', 'M-BTC', 0xe757355edba7ced7b8c0271bba4efda184ad75ab, 18),
+    ('bnb-binance-coin', 'zksync', 'BNB', 0x7400793aad94c8ca801aa036357d10f5fd0ce08f, 18),
+    ('xvs-venus', 'zksync', 'XVS', 0xd78abd81a3d57712a3af080dc4185b698fe9ac5a, 18),
+    ('usd-overnightfi-usd-arbitrum', 'zksync', 'USD+', 0x8e86e46278518efc1c5ced245cba2c7e3ef11557, 6),
+    ('vno-veno-finance', 'zksync', 'VNO', 0xe75a17b4f5c4f844688d5670b684515d7c785e63, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

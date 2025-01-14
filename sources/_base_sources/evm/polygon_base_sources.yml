@@ -262,7 +262,7 @@ sources:
           - name: polygon
             description: "Boolean indicating if this is a manual individual submission of a contract."
           - name: factory
-            description: "Boolean indicating if this submission was submitted to Dune with the 'factory' flag enabled. If yes, our decoder will search for contract's deployed by the same factory and decode them into the same namespace as the initial contract." 
+            description: "Boolean indicating if this submission was submitted to Dune with the 'factory' flag enabled. If yes, our decoder will search for contracts deployed by the same factory and decode them into the same namespace as the initial contract." 
           - name: detection_source
             description: "Method used to detect and decode this contract: 'factory', 'polygon', or 'dynamic'. "
           - name: created_at

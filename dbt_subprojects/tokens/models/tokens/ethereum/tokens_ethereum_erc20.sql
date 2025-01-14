@@ -4746,4 +4746,5 @@ FROM (VALUES
     , ( 0x7204b7dbf9412567835633b6f00c3edc3a8d6330, 'csUSDC', 18)
     , ( 0xbeefc011e94f43b8b7b455ebab290c7ab4e216f1, 'csUSDL', 18)
     , ( 0xc4441c2be5d8fa8126822b9929ca0b81ea0de38e, 'USUAL', 18)
+    , ( 0xC71Ea051a5F82c67ADcF634c36FFE6334793D24C, 'waEthLidoGHO', 18)
 ) AS temp_table (contract_address, symbol, decimals)
