@@ -16,8 +16,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
 
       - name: Setup variables
         run: | # Spellbook is a special case because it's not a subdirectory
