@@ -1776,8 +1776,8 @@ FROM (VALUES
     , (0x079a892628ebf28d0ed8f00151cff225a093dc63, 'Bitvavo', 'Bitvavo Hot 1', 'hildobby', date '2023-11-17')
     , (0x95b564f3b3bae3f206aa418667ba000afafacc8a, 'Bitvavo', 'Bitvavo Hot 2', 'hildobby', date '2023-11-17')
     , (0xab782bc7d4a2b306825de5a7730034f8f63ee1bc, 'Bitvavo', 'Bitvavo Hot 3', 'hildobby', date '2024-03-13')
-    , (0x1a1c87d9a6f55d3bbb064bff1059ad37b6bdc097, 'Bitvavo', 'Bitvavo Deposit Supplier', 'hildobby', date '2023-11-17')
-    0x897321a0ee56b57ef56f284037ffe4b63287d52a
+    , (0x1a1c87d9a6f55d3bbb064bff1059ad37b6bdc097, 'Bitvavo', 'Bitvavo Gas Supplier 1', 'hildobby', date '2023-11-17')
+    , (0x897321a0ee56b57ef56f284037ffe4b63287d52a, 'Bitvavo', 'Bitvavo Gas Supplier 2', 'hildobby', date '2024-01-13')
     -- QuadrigaCX
     , (0x027beefcbad782faf69fad12dee97ed894c68549, 'QuadrigaCX', 'QuadrigaCX 1', 'hildobby', date '2023-09-09')
     , (0xb6aac3b56ff818496b747ea57fcbe42a9aae6218, 'QuadrigaCX', 'QuadrigaCX 2', 'hildobby', date '2023-09-09')
