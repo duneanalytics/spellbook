@@ -8,21 +8,53 @@
         max_value: Maximum allowed USD amount (default: $1B)
 #}
 
-WITH validation AS (
+WITH base_trades AS (
     SELECT
-        {{ column_name }} as amount_usd,
+        blockchain,
+        project,
+        version,
+        block_month,
+        block_date,
+        block_time,
+        block_number,
+        token_bought_amount_raw,
+        token_sold_amount_raw,
+        token_bought_address,
+        token_sold_address,
+        taker,
+        maker,
+        project_contract_address,
+        tx_hash,
+        evt_index
+    FROM {{ model }}
+    WHERE block_time >= NOW() - INTERVAL '1' day  -- Only check recent trades
+),
+
+enriched_trades AS (
+    {{
+        enrich_dex_trades(
+            base_trades = 'base_trades'
+            , tokens_erc20_model = source('tokens', 'erc20')
+            , filter = "1=1"
+        )
+    }}
+),
+
+validation AS (
+    SELECT
         blockchain,
         project,
         version,
         tx_hash,
         evt_index,
-        block_time
-    FROM {{ model }}
-    WHERE {{ column_name }} > {{ max_value }}
+        block_time,
+        amount_usd
+    FROM enriched_trades
+    WHERE amount_usd > {{ max_value }}
+    AND amount_usd is not null
 )
 
 SELECT *
 FROM validation
-WHERE amount_usd is not null
 
 {% endmacro %}
