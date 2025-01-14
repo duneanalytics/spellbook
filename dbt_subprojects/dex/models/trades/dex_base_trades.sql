@@ -68,7 +68,6 @@ with base_union as (
             {{ model }}
         WHERE
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-           and block_time >= timestamp '2025-01-01'
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% endif %}
