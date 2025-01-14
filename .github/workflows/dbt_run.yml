@@ -79,7 +79,7 @@ jobs:
             echo "$CHANGES"
           else
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No base_trades changes found"
+            echo "No dex_base_trades changes found"
           fi
         
       - name: Test base_trades changes
