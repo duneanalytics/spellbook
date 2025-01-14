@@ -189,6 +189,7 @@ taker_logs as (
         bytearray_substring(logs.topic1,13,20) as taker__
     from tbl_all_logs logs
     where taker != 0x9008D19f58AAbD9eD0D60971565AA8510560ab41 
+        and tx_to != 0x9008D19f58AAbD9eD0D60971565AA8510560ab41
         and logs.block_time > TIMESTAMP '2024-07-15' 
     )
     select * from tbl_base 
