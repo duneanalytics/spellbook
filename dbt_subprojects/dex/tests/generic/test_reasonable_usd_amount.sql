@@ -1,4 +1,4 @@
-{% macro test_reasonable_usd_amount(model, column_name, max_value=1000000000) %}
+{% test test_reasonable_usd_amount(model, column_name, max_value=1000000000) %}
 
 {# 
     Test to ensure USD amounts are within a reasonable range
@@ -57,4 +57,4 @@ validation AS (
 SELECT *
 FROM validation
 
-{% endmacro %}
+{% endtest %}
