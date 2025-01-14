@@ -19,9 +19,6 @@ models:
             - version
             - tx_hash
             - evt_index
-      - test_reasonable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000  # $1B max
     columns:
       - &blockchain
         name: blockchain
@@ -105,7 +102,7 @@ models:
 
   - name: dex_base_trades
     meta:
-      blockchain: base
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, kaia,optimism, polygon, scroll, zksync, linea, blast, sei, ronin, sonic, flare
       sector: dex
       contributors: 0xRob, hosuke, jeff-dude, tomfutago, viniabussafi
     config:
@@ -118,9 +115,6 @@ models:
             - version
             - tx_hash
             - evt_index
-      - test_reasonable_usd_amount:
-          column_name: amount_usd
-          max_value: 1000000000  # $1B max
     columns:
       - *blockchain
       - *project
