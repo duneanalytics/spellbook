@@ -86,8 +86,8 @@ jobs:
         if: steps.check_dex_base_trades.outputs.has_changes == 'true' && inputs.project == 'dex'
         working-directory: ${{env.PROJECT_DIR}}
         run: |
-          dbt run $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ steps.check_base_trades.outputs.modified_files }}'}"
-          dbt test $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ steps.check_base_trades.outputs.modified_files }}'}"
+          dbt run $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ steps.check_dex_base_trades.outputs.modified_files }}'}"
+          dbt test $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ steps.check_dex_base_trades.outputs.modified_files }}'}"
 
       - name: Set environment variable for incremental model count
         run: |
