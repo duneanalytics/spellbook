@@ -10,32 +10,15 @@
 
 WITH base_trades AS (
     SELECT
-        blockchain,
-        project,
-        version,
-        block_month,
-        block_date,
-        block_time,
-        block_number,
-        token_bought_amount_raw,
-        token_sold_amount_raw,
-        token_bought_address,
-        token_sold_address,
-        taker,
-        maker,
-        project_contract_address,
-        tx_hash,
-        evt_index
+        *
     FROM {{ model }}
     WHERE block_time >= NOW() - INTERVAL '1' day  -- Only check recent trades
 ),
 
-enriched_trades AS (
+trades_with_prices AS (
     {{
-        enrich_dex_trades(
-            base_trades = 'base_trades'
-            , tokens_erc20_model = source('tokens', 'erc20')
-            , filter = "1=1"
+        add_amount_usd(
+            trades_cte = 'base_trades'
         )
     }}
 ),
@@ -49,7 +32,7 @@ validation AS (
         evt_index,
         block_time,
         amount_usd
-    FROM enriched_trades
+    FROM trades_with_prices
     WHERE amount_usd > {{ max_value }}
     AND amount_usd is not null
 )
