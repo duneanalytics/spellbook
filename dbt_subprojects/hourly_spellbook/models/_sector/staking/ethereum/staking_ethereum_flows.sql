@@ -19,7 +19,7 @@ WITH indexes AS (
     , MAX(sub_entity_unique_name) AS sub_entity_unique_name
     FROM {{ ref('staking_ethereum_deposits')}} d
     INNER JOIN {{source('beacon', 'validators')}} i ON d.pubkey=i.public_key
-    GROUP BY 1
+    GROUP BY 1, 2
     )
 
 , deposits AS (
