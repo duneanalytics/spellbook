@@ -75,7 +75,7 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
             MODIFIED_FILES=$(echo "$CHANGES" | tr '\n' ',' | sed 's/,$//')
             echo "modified_files=$MODIFIED_FILES" >> $GITHUB_OUTPUT
-            echo "Found changes in base_trades files:"
+            echo "Found changes in dex_base_trades files:"
             echo "$CHANGES"
           else
             echo "has_changes=false" >> $GITHUB_OUTPUT
