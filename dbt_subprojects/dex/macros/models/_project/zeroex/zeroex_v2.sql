@@ -308,7 +308,7 @@ results AS (
         "from" AS tx_from,
         "to" AS tx_to,
         tx_index,
-        CASE WHEN varbinary_substring(tr.data,1,4) = 0x500c22bc THEN "from" ELSE taker END AS taker,
+        taker,
         CAST(NULL AS varbinary) AS maker,
         taker_token,
         taker_token AS token_sold_address,
@@ -329,13 +329,6 @@ results AS (
         fills_within
     FROM
         zeroex_v2_trades trades
-    JOIN
-        {{ source(blockchain, 'transactions') }} tr ON tr.hash = trades.tx_hash AND tr.block_time = trades.block_time AND tr.block_number = trades.block_number
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('tr.block_time') }}
-        {% else %}
-            AND tr.block_time >= DATE '{{start_date}}'
-        {% endif %}
     LEFT JOIN
         fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number
     LEFT JOIN
