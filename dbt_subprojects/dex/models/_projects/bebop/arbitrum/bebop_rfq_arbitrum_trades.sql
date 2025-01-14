@@ -1,6 +1,7 @@
 {{ config(
     schema = 'bebop_rfq_arbitrum',
     alias = 'trades',
+    tags = ['prod_exclude'],
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -10,7 +11,7 @@
 
 {% set project_start_date = '2023-03-30' %}
 
-WITH 
+WITH
 
 bebop_raw_data AS (
     SELECT
@@ -76,11 +77,11 @@ unnested_array_taker AS (
         taker_length,
         maker_length,
         element_at(CAST(json_extract(taker_tokens_json, '$[0]') AS ARRAY<VARCHAR>), sequence_number) AS taker_token_address,
-        element_at(CAST(json_extract(taker_amounts_json, '$[0]') AS ARRAY<VARCHAR>), sequence_number) AS taker_token_amounts, 
+        element_at(CAST(json_extract(taker_amounts_json, '$[0]') AS ARRAY<VARCHAR>), sequence_number) AS taker_token_amounts,
         sequence_number - 1 AS taker_index
     FROM bebop_raw_data
     CROSS JOIN UNNEST(sequence(1, json_array_length(json_extract(taker_tokens_json, '$[0]')))) AS t(sequence_number)
-), 
+),
 
 unnested_array_maker AS (
     SELECT
@@ -102,43 +103,43 @@ unnested_array_maker AS (
         taker_length,
         maker_length,
         element_at(CAST(json_extract(maker_tokens_json, '$[0]') AS ARRAY<VARCHAR>), sequence_number) AS maker_token_address,
-        element_at(CAST(json_extract(maker_amounts_json, '$[0]') AS ARRAY<VARCHAR>), sequence_number) AS maker_token_amounts, 
+        element_at(CAST(json_extract(maker_amounts_json, '$[0]') AS ARRAY<VARCHAR>), sequence_number) AS maker_token_amounts,
         sequence_number - 1 AS maker_index
     FROM unnested_array_taker
     CROSS JOIN UNNEST(sequence(1, json_array_length(json_extract(maker_tokens_json, '$[0]')))) AS t(sequence_number)
-), 
+),
 
 simple_trades as (
-    SELECT 
-      block_time, 
+    SELECT
+      block_time,
       block_number,
-      contract_address, 
-      tx_hash, 
+      contract_address,
+      tx_hash,
       evt_index,
-      taker_address, 
+      taker_address,
       maker_address,
       taker_length,
       maker_length,
-      CASE 
+      CASE
         WHEN taker_length = 1 AND maker_length > 1 THEN CAST(array[taker_index, maker_index] as array<bigint>)
         WHEN maker_length = 1 AND taker_length > 1 THEN CAST(array[maker_index, taker_index] as array<bigint>)
       ELSE CAST(array[taker_index, maker_index] as array<bigint>)
       END as trace_address,
-      CASE 
-        WHEN taker_length = 1 AND maker_length > 1 THEN 'Multi-Buy' -- inverted 
-        WHEN maker_length = 1 AND taker_length > 1 THEN 'Multi-Sell' -- inverted, noted below... 
+      CASE
+        WHEN taker_length = 1 AND maker_length > 1 THEN 'Multi-Buy' -- inverted
+        WHEN maker_length = 1 AND taker_length > 1 THEN 'Multi-Sell' -- inverted, noted below...
       ELSE 'Simple-Swap'
       END as trade_type,
       from_hex(maker_token_address) as token_bought_address, -- for some weird reason, this is inverted, based on the spark version of this query & also on arbiscan
-      from_hex(taker_token_address) as token_sold_address, -- noted above 
+      from_hex(taker_token_address) as token_sold_address, -- noted above
       CAST(maker_token_amounts as UINT256) as token_bought_amount_raw,
       CAST(maker_token_amounts as double) as token_bought_amount,
       CAST(taker_token_amounts as UINT256) as token_sold_amount_raw,
       CAST(taker_token_amounts as double) as token_sold_amount
-    FROM 
+    FROM
     unnested_array_maker
-    WHERE maker_token_address IS NOT NULL 
-    AND taker_token_address IS NOT NULL 
+    WHERE maker_token_address IS NOT NULL
+    AND taker_token_address IS NOT NULL
 )
 
 SELECT
@@ -159,7 +160,7 @@ SELECT
   t.token_sold_amount / power(10, coalesce(t_sold.decimals, 0)) AS token_sold_amount,
   t.token_bought_amount_raw,
   t.token_sold_amount_raw,
-  CASE 
+  CASE
     WHEN t.trade_type = 'Multi-Buy' THEN COALESCE(
         (t.token_bought_amount / power(10, t_bought.decimals)) * p_bought.price,
         (t.token_sold_amount / power(10, t_sold.decimals)) * p_sold.price / maker_length
@@ -171,8 +172,8 @@ SELECT
     ELSE COALESCE(
         (t.token_bought_amount / power(10, t_bought.decimals)) * p_bought.price,
         (t.token_sold_amount / power(10, t_sold.decimals)) * p_sold.price
-    ) 
-    END as amount_usd, -- when there's a Multi-trade, the usd value of the multi tokens traded is used as the amount_usd 
+    )
+    END as amount_usd, -- when there's a Multi-trade, the usd value of the multi tokens traded is used as the amount_usd
     t.token_bought_address,
     t.token_sold_address,
     t.taker_address AS taker,
@@ -185,7 +186,7 @@ SELECT
     t.evt_index
 FROM
 simple_trades t
-INNER JOIN 
+INNER JOIN
 {{ source('arbitrum', 'transactions')}} tx
     ON t.tx_hash = tx.hash
     {% if not is_incremental() %}
@@ -194,16 +195,16 @@ INNER JOIN
     {% if is_incremental() %}
     AND {{ incremental_predicate('tx.block_time') }}
     {% endif %}
-  LEFT JOIN 
-  {{ source('tokens', 'erc20') }} t_bought 
+  LEFT JOIN
+  {{ source('tokens', 'erc20') }} t_bought
     ON t_bought.contract_address = t.token_bought_address
     AND t_bought.blockchain = 'arbitrum'
-  LEFT JOIN 
+  LEFT JOIN
   {{ source('tokens', 'erc20') }} t_sold
     ON t_sold.contract_address = t.token_sold_address
     AND t_sold.blockchain = 'arbitrum'
-  LEFT JOIN 
-  {{ source('prices', 'usd') }} p_bought 
+  LEFT JOIN
+  {{ source('prices', 'usd') }} p_bought
     ON p_bought.minute = date_trunc('minute', t.block_time)
     AND p_bought.contract_address = t.token_bought_address
     AND p_bought.blockchain = 'arbitrum'
@@ -213,8 +214,8 @@ INNER JOIN
   {% if is_incremental() %}
   AND {{ incremental_predicate('p_bought.minute') }}
   {% endif %}
-  LEFT JOIN 
-  {{ source('prices', 'usd') }} p_sold 
+  LEFT JOIN
+  {{ source('prices', 'usd') }} p_sold
     ON p_sold.minute = date_trunc('minute', t.block_time)
     AND p_sold.contract_address = t.token_sold_address
     AND p_sold.blockchain = 'arbitrum'

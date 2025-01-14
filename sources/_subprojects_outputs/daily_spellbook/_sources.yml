@@ -41,4 +41,8 @@ sources:
   - name: ethereum
     tables:
       - name: blobs_submissions
-      
+
+  - name: beets
+    tables:
+      - name: pools_metrics_daily
+      - name: trades      
