@@ -61,7 +61,7 @@ jobs:
         run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
       - name: Check for dex_base_trades changes
-        id: check_base_trades
+        id: check_dex_base_trades
         if: inputs.project == 'dex'
         run: |
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
