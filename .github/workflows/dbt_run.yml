@@ -60,6 +60,18 @@ jobs:
       - name: dbt test initial model(s)
         run: "dbt test $PROFILE --select state:new state:modified --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
 
+      - name: Set environment variable for incremental model count
+        run: |
+          echo "INC_MODEL_COUNT=$(echo dbt ls $PROFILE --select state:modified,config.materialized:incremental --state . --resource-type model  --project-dir ${PROJECT_DIR} | wc -l)" >> $GITHUB_ENV
+
+      - name: dbt run incremental model(s) if applicable
+        if: env.INC_MODEL_COUNT > 0
+        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+
+      - name: dbt test incremental model(s) if applicable
+        if: env.INC_MODEL_COUNT > 0
+        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
+
       - name: Check for dex_base_trades changes
         id: check_dex_base_trades
         if: inputs.project == 'dex'
@@ -81,22 +93,10 @@ jobs:
             echo "has_changes=false" >> $GITHUB_OUTPUT
             echo "No dex_base_trades changes found"
           fi
-        
+
       - name: Test dex_base_trades changes
         if: steps.check_dex_base_trades.outputs.has_changes == 'true' && inputs.project == 'dex'
         working-directory: ${{env.PROJECT_DIR}}
         run: |
           dbt run $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ steps.check_dex_base_trades.outputs.modified_files }}'}"
           dbt test $PROFILE --select dex_ci_trades_test --vars "{'MODIFIED_BASE_TRADES': '${{ steps.check_dex_base_trades.outputs.modified_files }}'}"
-
-      - name: Set environment variable for incremental model count
-        run: |
-          echo "INC_MODEL_COUNT=$(echo dbt ls $PROFILE --select state:modified,config.materialized:incremental --state . --resource-type model  --project-dir ${PROJECT_DIR} | wc -l)" >> $GITHUB_ENV
-
-      - name: dbt run incremental model(s) if applicable
-        if: env.INC_MODEL_COUNT > 0
-        run: "dbt run $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
-
-      - name: dbt test incremental model(s) if applicable
-        if: env.INC_MODEL_COUNT > 0
-        run: "dbt test $PROFILE --select state:modified,config.materialized:incremental --exclude tag:prod_exclude tag:remove --defer --state . --project-dir ${PROJECT_DIR}"
