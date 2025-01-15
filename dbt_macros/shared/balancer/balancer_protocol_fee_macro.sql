@@ -146,7 +146,7 @@ WITH pool_labels AS (
             WHEN day < DATE '2022-07-03' THEN 0.25 -- veBAL release
             WHEN day >= DATE '2022-07-03' AND day < DATE '2023-01-23' THEN 0.25 -- BIP 19
             WHEN day >= DATE '2023-01-23' AND day < DATE '2023-07-24' THEN 0.35 -- BIP 161
-            WHEN day >= DATE '2023-07-24' THEN 0.175 -- BIP 371
+            WHEN day >= DATE '2023-07-24' THEN 0.175 -- BIP 371 and BIP 734
         END AS treasury_share
     FROM UNNEST(SEQUENCE(DATE '2022-03-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
     )
@@ -155,19 +155,20 @@ WITH pool_labels AS (
     SELECT
         f.day,
         f.pool_id,
-        BYTEARRAY_SUBSTRING(f.pool_id,1,20) as pool_address,
+        BYTEARRAY_SUBSTRING(f.pool_id,1,20) AS pool_address,
         l.name AS pool_symbol,
-        '{{version}}' as version,
-        '{{blockchain}}' as blockchain,
+        '{{version}}' AS version,
+        '{{blockchain}}' AS blockchain,
         l.pool_type,
         'v2' AS fee_type,
         f.token_address,
         f.token_symbol,
-        SUM(f.token_amount_raw) as token_amount_raw,
-        SUM(f.token_amount) as token_amount,
-        SUM(f.protocol_fee_collected_usd) as protocol_fee_collected_usd, 
+        SUM(f.token_amount_raw) AS token_amount_raw,
+        SUM(f.token_amount) AS token_amount,
+        SUM(f.protocol_fee_collected_usd) AS protocol_fee_collected_usd, 
         r.treasury_share,
-        SUM(f.protocol_fee_collected_usd) * r.treasury_share as treasury_revenue_usd
+        SUM(f.protocol_fee_collected_usd) * r.treasury_share AS treasury_fee_usd,
+        SUM(f.protocol_fee_collected_usd) AS lp_fee_collected_usd
     FROM decorated_protocol_fee f
     INNER JOIN revenue_share r 
         ON r.day = f.day
@@ -342,12 +343,9 @@ WITH pool_labels AS (
         SELECT
         day,
         CASE 
-            WHEN day < DATE '2022-07-03' THEN 0.25 -- veBAL release
-            WHEN day >= DATE '2022-07-03' AND day < DATE '2023-01-23' THEN 0.25 -- BIP 19
-            WHEN day >= DATE '2023-01-23' AND day < DATE '2023-07-24' THEN 0.35 -- BIP 161
-            WHEN day >= DATE '2023-07-24' THEN 0.175 -- BIP 371
+            WHEN day >= DATE '2024-12-01' THEN 0.175 -- BIP 734
         END AS treasury_share
-    FROM UNNEST(SEQUENCE(DATE '2022-03-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
+    FROM UNNEST(SEQUENCE(DATE '2024-12-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
     )
 
 
@@ -366,7 +364,10 @@ WITH pool_labels AS (
         SUM(f.token_amount) as token_amount,
         SUM(f.protocol_fee_collected_usd) as protocol_fee_collected_usd, 
         r.treasury_share,
-        SUM(f.protocol_fee_collected_usd) * r.treasury_share as treasury_revenue_usd
+        SUM(f.protocol_fee_collected_usd) * r.treasury_share as treasury_feee_usd,
+        SUM(CASE WHEN f.fee_type = 'swap_fee' THEN f.protocol_fee_collected_usd
+        WHEN f.fee_type = 'yield_fee' THEN f.protocol_fee_collected_usd * 9 END) 
+            AS lp_fee_collected_usd
     FROM decorated_protocol_fee f
     INNER JOIN revenue_share r 
         ON r.day = f.day
