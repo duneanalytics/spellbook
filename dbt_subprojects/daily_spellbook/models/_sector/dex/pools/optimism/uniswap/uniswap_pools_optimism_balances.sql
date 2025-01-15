@@ -20,8 +20,9 @@ with op_addresses as (
   from 
     {{ source('uniswap_v3_optimism', 'pools') }}
   where
-    lower(hex(token0)) = '0x4200000000000000000000000000000000000042'
-    or lower(hex(token1)) = '0x4200000000000000000000000000000000000042'
+    token0 = from_hex('0x4200000000000000000000000000000000000042')
+    or token1 = from_hex('0x4200000000000000000000000000000000000042')
+
 ),
 
 op_token as (
