@@ -10,45 +10,40 @@
   )
 }}
 
-WITH velo_pools AS (
-  SELECT DISTINCT
-    CAST(pool AS varchar) AS pool_address,
-    CAST(token0 AS varchar) AS token0,
-    CAST(token1 AS varchar) AS token1,
-    evt_block_time AS creation_time
-  FROM 
-    {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PoolCreated') }}
+WITH op_addresses AS (
+  SELECT
+    pool as address,
+    token0,
+    token1,
+    evt_block_time as creation_time
+  FROM {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PoolCreated') }}
   WHERE
-    CAST(token0 AS varchar) = '0x4200000000000000000042'
-    OR CAST(token1 AS varchar) = '0x4200000000000000000042'
+    token0 = from_hex('0x4200000000000000000000000000000000000042')
+    OR token1 = from_hex('0x4200000000000000000000000000000000000042')
 ),
 
-token_list AS (
-  SELECT DISTINCT 
-    '0x4200000000000000000042' AS token_address
+op_token AS (
+  SELECT 
+    from_hex('0x4200000000000000000000000000000000000042') as token_address
 ),
 
-balances AS (
-  {{
-    balances_incremental_subset_daily(
-      blockchain='optimism',
-      token_list='token_list',
-      start_date='2023-06-22'
-    )
-  }}
+filtered_balances AS (
+  {{ balances_incremental_subset_daily(
+       blockchain='optimism',
+       start_date='2023-06-22',
+       address_list='op_addresses',  
+       token_list='op_token'         
+  ) }}
 )
 
-SELECT DISTINCT
-  p.pool_address,
-  p.token0,
-  p.token1,
+SELECT 
+  lower(to_hex(p.address)) as pool_address,
+  lower(to_hex(p.token0)) as token0,
+  lower(to_hex(p.token1)) as token1,
   p.creation_time,
-  COALESCE(b.balance, 0) AS op_balance,
-  CAST(COALESCE(b.day, CURRENT_DATE) AS date) AS snapshot_day
+  COALESCE(b.balance, 0) as op_balance,
+  COALESCE(b.day, current_date) as snapshot_day
 FROM 
-  velo_pools p
-LEFT JOIN 
-  balances b 
-  ON p.pool_address = b.address
-WHERE TRUE
-ORDER BY p.pool_address, snapshot_day;
+  filtered_balances b
+RIGHT JOIN
+  op_addresses p on b.address = p.address

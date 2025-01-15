@@ -10,48 +10,44 @@
   )
 }}
 
-WITH solidly_pools AS (
-  SELECT DISTINCT
-    CAST(pool AS varchar) AS pool_address,
-    CAST(token0 AS varchar) AS token0,
-    CAST(token1 AS varchar) AS token1,
+WITH op_addresses AS (
+  SELECT
+    pool as address,
+    token0,
+    token1,
     fee,
     tickSpacing,
-    evt_block_time AS creation_time
-  FROM
-    {{ source('solidly_v3_optimism', 'SolidlyV3Factory_evt_PoolCreated') }}
+    evt_block_time as creation_time
+  FROM {{ source('solidly_v3_optimism', 'SolidlyV3Factory_evt_PoolCreated') }}
   WHERE
-    CAST(token0 AS varchar) = '0x4200000000000000000042'
-    OR CAST(token1 AS varchar) = '0x4200000000000000000042'
+    token0 = from_hex('0x4200000000000000000000000000000000000042')
+    OR token1 = from_hex('0x4200000000000000000000000000000000000042')
 ),
 
-token_list AS (
-  SELECT DISTINCT 
-    '0x4200000000000000000042' AS token_address
+op_token AS (
+  SELECT 
+    from_hex('0x4200000000000000000000000000000000000042') as token_address
 ),
 
-balances AS (
-  {{
-    balances_incremental_subset_daily(
-      blockchain='optimism',
-      token_list='token_list',
-      start_date='2024-01-30'
-    )
-  }}
+filtered_balances AS (
+  {{ balances_incremental_subset_daily(
+       blockchain='optimism',
+       start_date='2024-01-30',
+       address_list='op_addresses',  
+       token_list='op_token'         
+  ) }}
 )
 
-SELECT DISTINCT
-  p.pool_address,
-  p.token0,
-  p.token1,
+SELECT 
+  lower(to_hex(p.address)) as pool_address,
+  lower(to_hex(p.token0)) as token0,
+  lower(to_hex(p.token1)) as token1,
   p.fee,
   p.tickSpacing,
   p.creation_time,
-  COALESCE(b.balance, 0) AS op_balance,
-  CAST(b.day AS date) AS snapshot_day
-FROM
-  solidly_pools p
-LEFT JOIN
-  balances b ON p.pool_address = b.address
-WHERE TRUE
-ORDER BY p.pool_address, snapshot_day;
+  COALESCE(b.balance, 0) as op_balance,
+  COALESCE(b.day, current_date) as snapshot_day
+FROM 
+  filtered_balances b
+RIGHT JOIN
+  op_addresses p on b.address = p.address
