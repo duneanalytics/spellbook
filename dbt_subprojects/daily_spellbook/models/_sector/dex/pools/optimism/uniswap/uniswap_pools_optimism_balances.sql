@@ -33,8 +33,8 @@ filtered_balances as (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2021-11-11',
-       address_list="op_addresses",  -- Ensure address_list is varchar-compatible
-       token_list="op_token"         -- Ensure token_list is varchar-compatible
+       address_list='op_addresses',  
+       token_list='op_token'         
   ) }}
 )
 
