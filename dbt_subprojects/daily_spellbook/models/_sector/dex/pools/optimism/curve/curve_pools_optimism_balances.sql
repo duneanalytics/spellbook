@@ -14,12 +14,12 @@ WITH op_pools AS (
   SELECT DISTINCT
     CAST(pool AS varchar) AS pool_address
   FROM {{ source('curve_optimism', 'pools') }}
-  WHERE CAST(token AS varchar) = '0x4200000000000000000000000042'
+  WHERE CAST(token AS varchar) = '0x4200000000000000000042'
 ),
 
 token_list AS (
   SELECT DISTINCT 
-    '0x4200000000000000000000000042' AS token_address
+    '0x4200000000000000000042' AS token_address
 ),
 
 balances AS (
@@ -32,12 +32,15 @@ balances AS (
   }}
 )
 
-SELECT 
+SELECT DISTINCT 
   p.pool_address,
   'curve' AS protocol_name,
   'v1' AS protocol_version,
-  b.day AS snapshot_day,
+  CAST(b.day AS date) AS snapshot_day,
   COALESCE(b.balance, 0) AS op_balance
 FROM op_pools p
 LEFT JOIN balances b 
-  ON p.pool_address = b.address;
+  ON p.pool_address = b.address
+WHERE TRUE
+ORDER BY p.pool_address, snapshot_day
+;

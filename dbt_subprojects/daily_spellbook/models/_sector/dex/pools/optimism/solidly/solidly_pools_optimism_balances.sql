@@ -11,7 +11,7 @@
 }}
 
 WITH solidly_pools AS (
-  SELECT
+  SELECT DISTINCT
     CAST(pool AS varchar) AS pool_address,
     CAST(token0 AS varchar) AS token0,
     CAST(token1 AS varchar) AS token1,
@@ -21,13 +21,13 @@ WITH solidly_pools AS (
   FROM
     {{ source('solidly_v3_optimism', 'SolidlyV3Factory_evt_PoolCreated') }}
   WHERE
-    CAST(token0 AS varchar) = '0x4200000000000000000000000042'
-    OR CAST(token1 AS varchar) = '0x4200000000000000000000000042'
+    CAST(token0 AS varchar) = '0x4200000000000000000042'
+    OR CAST(token1 AS varchar) = '0x4200000000000000000042'
 ),
 
 token_list AS (
   SELECT DISTINCT 
-    '0x4200000000000000000000000042' AS token_address
+    '0x4200000000000000000042' AS token_address
 ),
 
 balances AS (
@@ -40,7 +40,7 @@ balances AS (
   }}
 )
 
-SELECT
+SELECT DISTINCT
   p.pool_address,
   p.token0,
   p.token1,
@@ -48,8 +48,11 @@ SELECT
   p.tickSpacing,
   p.creation_time,
   COALESCE(b.balance, 0) AS op_balance,
-  b.day AS snapshot_day
+  CAST(b.day AS date) AS snapshot_day
 FROM
   solidly_pools p
 LEFT JOIN
-  balances b ON p.pool_address = b.address;
+  balances b ON p.pool_address = b.address
+WHERE TRUE
+ORDER BY p.pool_address, snapshot_day
+;

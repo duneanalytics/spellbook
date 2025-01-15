@@ -19,7 +19,7 @@ WITH swaap_pools AS (
   FROM
     {{ source('swaap_v2_optimism', 'Vault_evt_Swap') }}
   WHERE
-    CAST(tokenIn AS varchar) = '0x4200000000000000000000000042'
+    CAST(tokenIn AS varchar) = '0x4200000000000000000042'
     OR CAST(tokenOut AS varchar) = '0x4200000000000000000042'
 ),
 
@@ -38,14 +38,17 @@ balances AS (
   }}
 )
 
-SELECT
+SELECT DISTINCT
   p.pool_address,
   p.tokenIn,
   p.tokenOut,
   p.creation_time,
   COALESCE(b.balance, 0) AS op_balance,
-  b.day AS snapshot_day
+  CAST(b.day AS date) AS snapshot_day
 FROM
   swaap_pools p
 LEFT JOIN
-  balances b ON p.pool_address = b.address;
+  balances b ON p.pool_address = b.address
+WHERE TRUE
+ORDER BY p.pool_address, snapshot_day
+;

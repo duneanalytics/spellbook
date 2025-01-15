@@ -11,7 +11,7 @@
 }}
 
 WITH velo_pools AS (
-  SELECT 
+  SELECT DISTINCT -- Added DISTINCT to ensure uniqueness
     CAST(pool AS varchar) AS pool_address,
     CAST(token0 AS varchar) AS token0,
     CAST(token1 AS varchar) AS token1,
@@ -38,14 +38,18 @@ balances AS (
   }}
 )
 
-SELECT 
+SELECT DISTINCT -- Added DISTINCT to final select
   p.pool_address,
   p.token0,
   p.token1,
   p.creation_time,
   COALESCE(b.balance, 0) AS op_balance,
-  b.day AS snapshot_day
+  CAST(COALESCE(b.day, CURRENT_DATE) AS date) AS snapshot_day
 FROM 
   velo_pools p
 LEFT JOIN 
-  balances b ON p.pool_address = b.address;
+  balances b 
+  ON p.pool_address = b.address
+WHERE TRUE -- Added explicit WHERE clause
+ORDER BY p.pool_address, snapshot_day -- Added ORDER BY clause
+;
