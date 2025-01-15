@@ -264,19 +264,6 @@ WITH tokens AS (
     WHERE te.blockchain = '{{blockchain}}'
 ),
 
-prices AS (
-    SELECT DISTINCT pu.*
-    FROM {{ source('prices', 'usd') }} AS pu
-    JOIN zeroex_v2_trades ON (pu.contract_address IN (taker_token, maker_token)) AND DATE_TRUNC('minute', block_time) = minute
-    WHERE
-        pu.blockchain = '{{blockchain}}'
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('pu.minute') }}
-        {% else %}
-            AND pu.minute >= DATE '{{start_date}}'
-        {% endif %}
-),
-
 fills AS (
     WITH signatures AS (
         SELECT DISTINCT signature
@@ -340,9 +327,9 @@ results AS (
     LEFT JOIN
         tokens tm ON tm.blockchain = '{{blockchain}}' AND tm.contract_address = maker_token
     LEFT JOIN
-        prices pt ON pt.blockchain = '{{blockchain}}' AND pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
+        {{ source('prices', 'usd') }} pt ON pt.blockchain = '{{blockchain}}' AND pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
     LEFT JOIN
-        prices pm ON pm.blockchain = '{{blockchain}}' AND pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
+        {{ source('prices', 'usd') }} pm ON pm.blockchain = '{{blockchain}}' AND pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
 ),
 
 results_usd AS (
