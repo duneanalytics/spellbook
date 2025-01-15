@@ -42,7 +42,8 @@ settler_trace_data AS (
             else first_value(varbinary_substring(input,17,20)) over (partition by tr.tx_hash order by trace_address desc) 
             end as taker,
         a.settler_address,
-        trace_address
+        trace_address,
+        case when varbinary_position(input,0x9008d19f58aabd9ed0d60971565aa8510560ab41) <> 0 then 1 end as cow_trade 
     FROM
         {{ source(blockchain, 'traces') }} AS tr
     JOIN
@@ -71,7 +72,8 @@ settler_txs AS (
             WHEN method_id = 0xfd3ad6d4 THEN (varbinary_substring(tracker,13,3))
         END AS tag,
         taker,
-        row_number() over (partition by tx_hash order by trace_address desc) rn
+        case when cow_trade is null then row_number() over (partition by tx_hash order by trace_address) end as trade_rn, 
+        case when cow_trade = 1 then row_number() over (partition by tx_hash order by trace_address) end as cow_rn
     FROM
         settler_trace_data
     
@@ -99,7 +101,7 @@ WITH tbl_all_logs AS (
         tx_from,
         taker,
         tx_index,
-        (try_cast(bytearray_to_uint256(bytearray_substring(logs.DATA, 22,11)) as int256)) as amount
+        (try_cast(bytearray_to_uint256(bytearray_substring(logs.DATA, 21,12)) as int256)) as amount
     FROM
         {{ source(blockchain, 'logs') }} AS logs
     JOIN
@@ -142,16 +144,17 @@ cow_trades as (
             buy_token_address as maker_token, 
             atoms_bought as maker_amount, 
             logs.contract_address as taker_token,
-            settler_address as contract_address 
+            settler_address as contract_address,
+            row_number() over (partition by tx_hash, logs.contract_address, amount order by index) rn 
     FROM {{ source('cow_protocol_ethereum', 'trades') }} AS trades 
     JOIN tbl_all_logs as logs using (block_time, block_number, tx_hash)
     where trades.sell_token_address = logs.contract_address and trades.atoms_sold = logs.amount  
         AND block_time > TIMESTAMP '2024-07-15'  
     ),
     base_logs_rn as (
-        select *, 
-            row_number() over (partition by tx_hash order by evt_index) cow_trade_rn
+        select *, row_number() over (partition by tx_hash order by index) cow_trade_rn 
         from base_logs
+        where rn = 1
         )
     select 
         b.block_time,
@@ -170,7 +173,7 @@ cow_trades as (
         tag,
         s.settler_address as contract_address 
         from base_logs_rn b
-        join zeroex_tx s on rn = cow_trade_rn 
+        join zeroex_tx s on cow_rn = cow_trade_rn 
             and b.block_time = s.block_time 
             and b.tx_hash = s.tx_hash 
             and b.block_number = s.block_number 
@@ -188,8 +191,7 @@ taker_logs as (
         row_number() over (partition by logs.tx_hash order by (logs.index)) rn,
         bytearray_substring(logs.topic1,13,20) as taker__
     from tbl_all_logs logs
-    where taker != 0x9008D19f58AAbD9eD0D60971565AA8510560ab41 
-        and tx_to != 0x9008D19f58AAbD9eD0D60971565AA8510560ab41
+    where cow_rn is null 
         and logs.block_time > TIMESTAMP '2024-07-15' 
     )
     select * from tbl_base 
@@ -211,7 +213,7 @@ maker_logs as (
         tag,
         amount as maker_amount,
         row_number() over (partition by logs.tx_hash order by logs.index desc ) rn,
-        case when logs.tx_to = settler_address then tx_from else taker end as taker
+        taker
     from tbl_all_logs as logs 
     join taker_logs tl on tl.tx_hash = logs.tx_hash and  bytearray_substring(logs.topic2,13,20) in (tl.taker__, tx_from)
     WHERE  topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef, 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65) 
