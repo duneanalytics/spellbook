@@ -23,12 +23,19 @@ WITH swaap_pools AS (
     OR CAST(tokenOut AS varchar) = '0x4200000000000000000000000042'
 ),
 
-filtered_balances AS (
-  {{ balances_subset_daily(
+token_list AS (
+  SELECT DISTINCT 
+    '0x4200000000000000000000000042' AS token_address
+),
+
+balances AS (
+  {{
+    balances_incremental_subset_daily(
       blockchain='optimism',
-      token_address='0x4200000000000000000000000042',
+      token_list='token_list',
       start_date='2024-06-07'
-    ) }}
+    )
+  }}
 )
 
 SELECT
@@ -36,9 +43,9 @@ SELECT
   p.tokenIn,
   p.tokenOut,
   p.creation_time,
-  COALESCE(b.token_balance, 0) AS op_balance,
-  COALESCE(b.snapshot_day, CURRENT_DATE) AS snapshot_day
+  COALESCE(b.balance, 0) AS op_balance,
+  COALESCE(b.day, CURRENT_DATE) AS snapshot_day
 FROM
   swaap_pools p
 LEFT JOIN
-  filtered_balances b ON p.pool_address = b.pool_address
+  balances b ON p.pool_address = b.address;

@@ -17,21 +17,28 @@ WITH op_pools AS (
   WHERE CAST(token AS varchar) = '0x4200000000000000000000000042'
 ),
 
-filtered_balances AS (
-  {{ balances_subset_daily(
+token_list AS (
+  SELECT DISTINCT 
+    '0x4200000000000000000000000042' AS token_address
+),
+
+balances AS (
+  {{
+    balances_incremental_subset_daily(
       blockchain='optimism',
-      token_address="'0x4200000000000000000000000042'",
+      token_list='token_list',
       start_date='2021-11-11'
-    ) }}
+    )
+  }}
 )
 
 SELECT 
   p.pool_address,
   'curve' AS protocol_name,
   'v1' AS protocol_version,
-  b.snapshot_day,
-  COALESCE(b.token_balance, 0) AS op_balance
+  b.day AS snapshot_day,
+  COALESCE(b.balance, 0) AS op_balance
 FROM op_pools p
-LEFT JOIN filtered_balances b 
-  ON p.pool_address = b.pool_address
-WHERE COALESCE(b.token_balance, 0) > 0
+LEFT JOIN balances b 
+  ON p.pool_address = b.address
+WHERE COALESCE(b.balance, 0) > 0;

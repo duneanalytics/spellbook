@@ -10,7 +10,8 @@
   )
 }}
 
-WITH velo_pools AS (
+WITH 
+velo_pools AS (
   SELECT 
     CAST(pool AS varchar) AS pool_address,
     CAST(token0 AS varchar) AS token0,
@@ -23,12 +24,19 @@ WITH velo_pools AS (
     OR CAST(token1 AS varchar) = '0x4200000000000000000000000042'
 ),
 
-filtered_balances AS (
-  {{ balances_subset_daily(
+token_list AS (
+  SELECT DISTINCT 
+    '0x4200000000000000000000000042' AS token_address
+),
+
+balances AS (
+  {{
+    balances_incremental_subset_daily(
       blockchain='optimism',
-      token_address='0x4200000000000000000000000042',
+      token_list='token_list',
       start_date='2023-06-22'
-    ) }}
+    )
+  }}
 )
 
 SELECT 
@@ -36,9 +44,9 @@ SELECT
   p.token0,
   p.token1,
   p.creation_time,
-  COALESCE(b.token_balance, 0) AS op_balance,
-  COALESCE(b.snapshot_day, CURRENT_DATE) AS snapshot_day
+  COALESCE(b.balance, 0) AS op_balance,
+  COALESCE(b.day, CURRENT_DATE) AS snapshot_day
 FROM 
   velo_pools p
 LEFT JOIN 
-  filtered_balances b ON p.pool_address = b.pool_address
+  balances b ON p.pool_address = b.address;
