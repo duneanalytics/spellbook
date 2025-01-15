@@ -25,7 +25,9 @@ WITH base_trades AS (
         maker,
         project_contract_address,
         tx_hash,
-        evt_index
+        evt_index,
+        tx_from,
+        tx_to
     FROM {{ model }}
     WHERE block_time >= NOW() - INTERVAL '1' day  -- Only check recent trades
 ),
