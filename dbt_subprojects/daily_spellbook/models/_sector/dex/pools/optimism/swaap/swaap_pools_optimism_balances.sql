@@ -12,10 +12,10 @@
 
 WITH op_addresses AS (
   SELECT DISTINCT
-    poolId as address,
+    poolId AS address,
     tokenIn,
     tokenOut,
-    evt_block_time as creation_time
+    evt_block_time AS creation_time
   FROM {{ source('swaap_v2_optimism', 'Vault_evt_Swap') }}
   WHERE
     tokenIn = from_hex('0x4200000000000000000000000000000000000042')
@@ -24,7 +24,7 @@ WITH op_addresses AS (
 
 op_token AS (
   SELECT 
-    from_hex('0x4200000000000000000000000000000000000042') as token_address
+    from_hex('0x4200000000000000000000000000000000000042') AS token_address
 ),
 
 filtered_balances AS (
@@ -36,31 +36,16 @@ filtered_balances AS (
   ) }}
 )
 
-deduplicated_balances AS (
-  SELECT
-    address,
-    day,
-    balance,
-    ROW_NUMBER() OVER (PARTITION BY address, day ORDER BY balance DESC) AS row_num
-  FROM filtered_balances
-),
-unique_balances AS (
-  SELECT
-    address,
-    day,
-    balance
-  FROM deduplicated_balances
-  WHERE row_num = 1
-)
-
 SELECT 
-  LOWER(to_hex(p.address)) AS pool_address,
-  LOWER(to_hex(p.tokenIn)) AS tokenIn,
-  LOWER(to_hex(p.tokenOut)) AS tokenOut,
+  lower(to_hex(p.address)) AS pool_address,
+  lower(to_hex(p.tokenIn)) AS tokenIn,
+  lower(to_hex(p.tokenOut)) AS tokenOut,
   p.creation_time,
   COALESCE(b.balance, 0) AS op_balance,
-  COALESCE(b.day, CURRENT_DATE) AS snapshot_day
+  COALESCE(b.day, current_date) AS snapshot_day
 FROM 
-  unique_balances b
+  filtered_balances b
 RIGHT JOIN
   op_addresses p ON b.address = p.address
+GROUP BY 
+  pool_address, tokenIn, tokenOut, p.creation_time, b.balance, b.day
