@@ -30,7 +30,7 @@ sources:
             tests:
               - not_null
           - name: gas_price
-            description: "Price per unit of gas for this transaction, in wei"
+            description: "Price per unit of gas for this transaction"
             tests:
               - not_null
           - name: gas_used
@@ -81,21 +81,6 @@ sources:
             description: "The UTC date of the block containing this transaction"
             tests:
               - not_null
-          - name: l1_gas_used
-            description: "The gas used on Ethereum L1 to publish this L2 transaction"
-          - name: l1_gas_price
-            description: "Gas price on the L1 at the time of L2 transaction submission"
-          - name: l1_fee
-            description: "L1 Fees that the network pays to submit L2 transactions to Ethereum L1"
-          - name: l1_fee_scalar
-            description: "Scalar value used to calculate L1 fee, covering potential changes in L1 gas price and network costs"
-          - name: l1_block_number
-            description: "Block number on the L1 where this L2 transaction was batch submitted"
-          - name: l1_timestamp
-            description: "The timestamp when the L2 transaction was batched and confirmed on the L1"
-          - name: l1_tx_origin
-            description: "L1 transaction origin address for L2 transactions that were initiated on L1"
-
       - name: traces
         meta:
           docs_slug: /evm/ink/raw/traces
