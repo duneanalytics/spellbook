@@ -12,21 +12,21 @@
 
 with op_addresses as (
   select
-    lower(to_hex(pool)) as address,  -- Changed hex() to to_hex()
-    lower(to_hex(token0)) as token0, -- Changed hex() to to_hex()
-    lower(to_hex(token1)) as token1, -- Changed hex() to to_hex()
+    lower(to_hex(pool)) as address,
+    lower(to_hex(token0)) as token0,
+    lower(to_hex(token1)) as token1,
     fee as fee_tier,
     creation_block_time as creation_time
   from 
     {{ source('uniswap_v3_optimism', 'pools') }}
   where
     token0 = from_hex('0x4200000000000000000000000000000000000042')
-    or token1 = from_hex('0x4200000000000000000000000000000000000042')
+    or token1 = from_hex('0x4200000000000000000000000000000042')
 ),
 
 op_token as (
   select 
-    lower('0x4200000000000000000000000000000000000042') as token_address
+    from_hex('0x4200000000000000000000000000000000000042') as token_address  -- Changed to varbinary
 ),
 
 filtered_balances as (
@@ -49,4 +49,4 @@ select
 from 
   filtered_balances b
 right join
-  op_addresses p on p.address = b.address
+  op_addresses p on lower(to_hex(b.address)) = p.address  -- Ensure type consistency in join
