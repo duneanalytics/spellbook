@@ -48,4 +48,4 @@ FROM
 RIGHT JOIN
   op_addresses p ON b.address = p.address
 GROUP BY 
-  pool_address, tokenIn, tokenOut, p.creation_time, b.balance, b.day;
+  pool_address, tokenIn, tokenOut, p.creation_time, b.balance, b.day
