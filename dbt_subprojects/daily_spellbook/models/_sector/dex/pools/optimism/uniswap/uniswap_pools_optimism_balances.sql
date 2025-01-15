@@ -10,9 +10,9 @@
   )
 }}
 
-with op_pools as (
-  select 
-    pool as pool_address,
+with op_addresses as (
+  select
+    pool as address,  
     token0,
     token1,
     fee as fee_tier,
@@ -24,22 +24,22 @@ with op_pools as (
     or token1 = from_hex('0x4200000000000000000000000000000000000042')
 ),
 
- op_token as (
+op_token as (
   select 
     '0x4200000000000000000000000000000000000042' as token_address
 ),
 
- filtered_balances as (
+filtered_balances as (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2021-11-11',
-       address_list="op_pools",
-       token_list="op_token" 
+       address_list="op_addresses",  
+       token_list="op_token"         
   ) }}
 )
 
 select 
-  p.pool_address,
+  p.address as pool_address,
   p.token0,
   p.token1,
   p.fee_tier,
@@ -49,4 +49,4 @@ select
 from 
   filtered_balances b
 right join
-  op_pools p on p.pool_address = b.pool_address
+  op_addresses p on p.address = b.address
