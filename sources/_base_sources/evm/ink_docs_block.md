@@ -1,218 +1,193 @@
 {% docs ink_transactions_doc %}
 
-The `ink.transactions` table contains detailed information about transactions on the Ink L2 blockchain. It includes:
+The `ink.transactions` table contains detailed information about transactions on the Ink blockchain. It includes:
 
-- Block information: number, timestamp, hash
-- Transaction details: hash, from_address, to_address, value
-- L2 gas data: gas_price (lower than L1), gas_limit, gas_used
-- L2 fee data: max_fee_per_gas, priority_fee_per_gas (optimized for L2)
-- L1 data submission costs: l1_gas_used, l1_gas_price, l1_fee
-- L1 reference data: l1_block_number, l1_timestamp (for cross-chain verification)
-- Status: success or failure
-- Input data for contract interactions
-- Nonce (L2-specific sequence) and chain_id
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction details: hash, from, to, value
+- Gas metrics: gas_price, gas_limit, gas_used
+- EIP-1559 fee parameters: max_fee_per_gas, max_priority_fee_per_gas, priority_fee_per_gas
+- Transaction metadata: nonce, index, success
+- Smart contract interaction: data
 - Transaction type and access list
+- Chain identification: chain_id
 
-This table is used for analyzing L2 transaction patterns, understanding L2 gas optimization, tracking L1-L2 cost relationships, and monitoring network activity.
+This table is used for analyzing transaction patterns, gas usage, value transfers, and network activity on Ink.
 
 {% enddocs %}
 
 {% docs ink_traces_doc %}
 
-The `ink.traces` table contains records of execution steps for transactions on the Ink L2 blockchain. Each trace represents an atomic operation within the L2 execution environment, which is optimized for faster and cheaper transactions while maintaining EVM compatibility. Key components include:
+The `ink.traces` table contains records of execution steps for transactions on the Ink blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
 
-- Transaction hash and L2 block information
-- From and to addresses (both L2 native and L1 bridged)
-- Value transferred on L2
-- L2 gas metrics (significantly lower than L1)
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction context: tx_hash, tx_index, tx_from, tx_to
+- Value transfer details
+- Gas metrics: gas, gas_used
 - Input and output data
-- L2 call types (CALL, DELEGATECALL, CREATE)
+- Call type (CALL, DELEGATECALL, CREATE)
 - Error information and revert reasons
 - Trace address for nested calls
-- L1-L2 message passing information
+- Contract creation data: address, code
 
 This table is essential for:
-- Analyzing internal transactions within the L2 network
-- Debugging L2 smart contract interactions
-- Tracking value flows through L2 transactions
-- Understanding L2 contract deployments
-- Monitoring cross-chain message passing
-- Verifying L2 transaction execution
+- Analyzing internal transactions
+- Debugging smart contract interactions
+- Tracking value flows through complex transactions
+- Understanding contract creation and deployment
 
 {% enddocs %}
 
 {% docs ink_traces_decoded_doc %}
 
-The `ink.traces_decoded` table contains decoded traces from the Ink L2 blockchain, focusing on verified smart contracts. It includes:
+The `ink.traces_decoded` table contains decoded traces from verified smart contracts on the Ink blockchain. It includes:
 
-- L2 block information and transaction details
-- Contract name and namespace
-- Decoded function names and signatures
-- L2 execution path tracking
-- Transaction origin (L1 or L2) and destination
-- Function parameters (when available)
+- Block information: block_date, block_time, block_number
+- Contract context: namespace, contract_name
+- Transaction details: tx_hash, tx_from, tx_to
+- Execution path: trace_address
+- Function identification: signature, function_name
 
-This table is used for analyzing smart contract interactions on L2, with particular focus on cross-chain contract calls and L2-optimized protocols.
+This table is used for analyzing smart contract interactions with decoded function calls.
 
 {% enddocs %}
 
 {% docs ink_logs_doc %}
 
-The `ink.logs` table contains event logs emitted by smart contracts on the Ink L2 blockchain. It includes:
+The `ink.logs` table contains event logs emitted by smart contracts on the Ink blockchain. It includes:
 
-- L2 block information: number, timestamp, hash
-- L2 transaction details: hash, index, from, to
-- Contract address (L2 native or L1 bridged)
-- Topic0 (event signature)
-- Additional topics (indexed parameters)
-- Data field (non-indexed parameters)
-- Log index and transaction index
-- Cross-chain event information
+- Block information: block_time, block_number, block_hash, block_date
+- Transaction details: tx_hash, tx_index, tx_from, tx_to
+- Contract address
+- Event topics: topic0 (event signature), topic1, topic2, topic3
+- Event data
+- Log position: index
 
 This table is crucial for:
-- Tracking L2-specific events
-- Monitoring L2 contract activity
-- Analyzing token transfers on L2
+- Tracking on-chain events
+- Monitoring contract activity
+- Analyzing token transfers
 - Following protocol-specific events
-- Understanding cross-chain interactions
-- Verifying L1-L2 message processing
 
 {% enddocs %}
 
 {% docs ink_logs_decoded_doc %}
 
-The `ink.logs_decoded` table contains decoded logs from verified smart contracts on the Ink L2 blockchain. It includes:
+The `ink.logs_decoded` table contains decoded logs from verified smart contracts on the Ink blockchain. It includes:
 
-- L2 block and transaction information
-- Contract details (name, namespace, L2 address)
-- Decoded event names and signatures
-- Transaction origin (L1 or L2) and destination
-- Event parameters (when available)
-- Cross-chain event context
+- Block information: block_date, block_time, block_number
+- Contract details: namespace, contract_name, contract_address
+- Transaction context: tx_hash, tx_from, tx_to
+- Event identification: signature, event_name
+- Log position: index
 
-This table is used for high-level analysis of L2 contract events, particularly focusing on cross-chain interactions and L2-specific protocol behavior.
+This table is used for analyzing smart contract events with decoded event data.
 
 {% enddocs %}
 
 {% docs ink_blocks_doc %}
 
-The `ink.blocks` table contains information about blocks on the Ink L2 blockchain. It provides essential data about each L2 block, including:
+The `ink.blocks` table contains information about blocks on the Ink blockchain. It includes:
 
-- L2 block identifiers and timestamps
-- L2 gas metrics (optimized for lower costs)
-- L2 block size and capacity
-- State and transaction roots
-- L2-specific sequencing data
-- L1 reference information
-- Blob gas metrics (for L2 data availability)
-- Cross-chain synchronization data
+- Block identifiers: number, hash, time, date
+- Gas metrics: gas_limit, gas_used
+- Block characteristics: size, base_fee_per_gas
+- Block roots: state_root, transactions_root, receipts_root
+- Consensus data: difficulty, total_difficulty, nonce
+- Block producer: miner
+- Parent block: parent_hash
+- Data availability: blob_gas_used, excess_blob_gas
+- Beacon chain: parent_beacon_block_root
 
 This table is fundamental for analyzing:
-- L2 block production and sequencing
-- L2 network performance and capacity
-- L1-L2 block relationships
-- L2 state progression
-- Data availability and compression
-- Cross-chain finality guarantees
+- Block production and timing
+- Network capacity and usage
+- Chain structure and growth
+- Network performance metrics
 
 {% enddocs %}
 
 {% docs ink_contracts_doc %}
 
-The `ink.contracts` table tracks verified smart contracts on the Ink L2 blockchain, including:
+The `ink.contracts` table tracks verified smart contracts on the Ink blockchain, including:
 
-- L2 contract address
-- Contract bytecode (optimized for L2)
+- Contract address
+- Contract bytecode
 - Contract name and namespace
 - Complete ABI
-- L2 deployment timestamp
+- Creation timestamp
 - Verification status
-- L1 bridge relationship (if applicable)
 
 This table is used for:
-- L2 contract verification
-- Cross-chain protocol analysis
-- L2 development optimization
-- Smart contract security on L2
+- Contract verification and analysis
+- Protocol research and monitoring
+- Development and debugging
+- Smart contract security analysis
 
 {% enddocs %}
 
 {% docs ink_contracts_submitted_doc %}
 
-The `ink.contracts_submitted` table tracks contracts submitted for verification on the Ink L2 blockchain. It includes:
+The `ink.contracts_submitted` table tracks contracts submitted for verification on the Ink blockchain. It includes:
 
-- L2 contract address
-- Submission metadata
+- Contract address
+- Submission metadata (timestamp, submitter)
 - Contract name and namespace
 - Verification status
-- L1 relationship status
 
-This table helps track the progress of L2 contract verification and ecosystem development.
+This table helps track the progress of contract verification and community contributions.
 
 {% enddocs %}
 
 {% docs ink_creation_traces_doc %}
 
-The `ink.creation_traces` table contains data about contract creation events on the Ink L2 blockchain. It includes:
+The `ink.creation_traces` table contains data about contract creation events on the Ink blockchain. It includes:
 
-- L2 block information
-- Transaction details
-- Creator's address (L1 or L2)
-- Created L2 contract address
-- L2-optimized bytecode
-- Creation status
-- L2 gas consumption
-- L1 data availability costs
+- Block information: block_time, block_number, block_month
+- Transaction details: tx_hash
+- Contract details: address, from, code
 
 This table is used for:
-- Analyzing L2 contract deployment patterns
-- Tracking L2 protocol launches
-- Monitoring cross-chain contract deployment
-- Understanding L2 deployment costs
-- Optimizing contract creation
-
-It's essentially a filtered version of the `ink.traces` table where `type = create`.
+- Analyzing contract deployment patterns
+- Tracking smart contract origins
+- Monitoring protocol deployments
+- Understanding contract creation
 
 {% enddocs %}
 
 {% docs erc20_ink_evt_transfer_doc %}
 
-The `erc20_ink.evt_transfer` table contains Transfer events from ERC20 token contracts on the Ink L2 blockchain. Each record represents a token transfer and includes:
+The `erc20_ink.evt_transfer` table contains Transfer events from ERC20 token contracts on the Ink blockchain. Each record represents a token transfer and includes:
 
-- L2 token contract address
-- Sender and recipient addresses (L1 or L2)
-- Token amount transferred
-- L2 block and transaction information
-- Cross-chain transfer flags
-- Bridge interaction details (if applicable)
+- Token contract address
+- Sender and recipient addresses
+- Amount of tokens transferred
+- Block and transaction information
+- Event log details
 
 This table is essential for:
-- Tracking L2 token transfers
-- Analyzing token bridging patterns
-- Monitoring L2 token activity
-- Calculating L2 token balances
-- Understanding L2 token economics
-- Tracking cross-chain token flows
+- Tracking token transfers
+- Analyzing token distribution patterns
+- Monitoring token holder behavior
+- Calculating token balances
+- Understanding token velocity
 
 {% enddocs %}
 
 {% docs erc721_ink_evt_transfer_doc %}
 
-The `erc721_ink.evt_transfer` table contains Transfer events from ERC721 (NFT) token contracts on the Ink L2 blockchain. Each record represents an NFT transfer and includes:
+The `erc721_ink.evt_transfer` table contains Transfer events from ERC721 (NFT) token contracts on the Ink blockchain. Each record represents an NFT transfer and includes:
 
-- L2 NFT contract address
+- NFT contract address
 - Token ID
-- Sender and recipient addresses (L1 or L2)
-- L2 block and transaction information
-- Bridge transfer information
-- Cross-chain ownership data
+- Sender and recipient addresses
+- Block and transaction information
+- Event log details
 
 This table is used for:
-- Tracking L2 NFT movements
-- Analyzing NFT bridging patterns
-- Monitoring L2 NFT activity
-- Building cross-chain NFT histories
-- Understanding L2 NFT market dynamics
-- Optimizing NFT operations on L2
+- Tracking NFT ownership changes
+- Analyzing NFT trading patterns
+- Monitoring NFT collection activity
+- Building NFT holder histories
+- Understanding NFT market dynamics
 
 {% enddocs %}
