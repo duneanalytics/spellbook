@@ -28,7 +28,7 @@ with op_pools as (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2021-11-11',
-       token_list="from_hex('0x4200000000000000000000000000000000000042')"
+       token_list="'0x4200000000000000000000000000000000000042'" 
   ) }}
 )
 
