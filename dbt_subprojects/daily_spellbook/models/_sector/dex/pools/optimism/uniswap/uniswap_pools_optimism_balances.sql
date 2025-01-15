@@ -12,9 +12,9 @@
 
 with op_addresses as (
   select
-    pool as address,  -- Keep as varbinary
-    token0,          -- Keep as varbinary
-    token1,          -- Keep as varbinary
+    pool as address,  
+    token0,          
+    token1,          
     fee as fee_tier,
     creation_block_time as creation_time
   from 
@@ -39,9 +39,9 @@ filtered_balances as (
 )
 
 select 
-  lower(to_hex(p.address)) as pool_address,  -- Convert to hex string only in final output
-  lower(to_hex(p.token0)) as token0,         -- Convert to hex string only in final output
-  lower(to_hex(p.token1)) as token1,         -- Convert to hex string only in final output
+  lower(to_hex(p.address)) as pool_address, 
+  lower(to_hex(p.token0)) as token0,         
+  lower(to_hex(p.token1)) as token1,         
   p.fee_tier,
   p.creation_time,
   coalesce(b.balance, 0) as op_balance,
@@ -49,4 +49,4 @@ select
 from 
   filtered_balances b
 right join
-  op_addresses p on b.address = p.address    -- Compare varbinary with varbinary
+  op_addresses p on b.address = p.address    
