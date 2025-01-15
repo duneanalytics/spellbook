@@ -54,5 +54,4 @@ FROM
 LEFT JOIN
   balances b ON p.pool_address = b.address
 WHERE TRUE
-ORDER BY p.pool_address, snapshot_day
-;
+ORDER BY p.pool_address, snapshot_day;

@@ -11,7 +11,7 @@
 }}
 
 WITH velo_pools AS (
-  SELECT DISTINCT -- Added DISTINCT to ensure uniqueness
+  SELECT DISTINCT
     CAST(pool AS varchar) AS pool_address,
     CAST(token0 AS varchar) AS token0,
     CAST(token1 AS varchar) AS token1,
@@ -19,7 +19,7 @@ WITH velo_pools AS (
   FROM 
     {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PoolCreated') }}
   WHERE
-    CAST(token0 AS varchar) = '0x4200000000000000000000000042'
+    CAST(token0 AS varchar) = '0x4200000000000000000042'
     OR CAST(token1 AS varchar) = '0x4200000000000000000042'
 ),
 
@@ -38,7 +38,7 @@ balances AS (
   }}
 )
 
-SELECT DISTINCT -- Added DISTINCT to final select
+SELECT DISTINCT
   p.pool_address,
   p.token0,
   p.token1,
@@ -50,6 +50,5 @@ FROM
 LEFT JOIN 
   balances b 
   ON p.pool_address = b.address
-WHERE TRUE -- Added explicit WHERE clause
-ORDER BY p.pool_address, snapshot_day -- Added ORDER BY clause
-;
+WHERE TRUE
+ORDER BY p.pool_address, snapshot_day;
