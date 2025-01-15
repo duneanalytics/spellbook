@@ -11,15 +11,16 @@
 }}
 
 WITH op_addresses AS (
-  SELECT DISTINCT
+  SELECT DISTINCT  -- Added DISTINCT to remove duplicates
     poolId as address,
-    tokenIn,
-    tokenOut,
-    evt_block_time as creation_time
+    first_value(tokenIn) OVER (PARTITION BY poolId ORDER BY evt_block_time DESC) as tokenIn,  -- Take most recent tokenIn
+    first_value(tokenOut) OVER (PARTITION BY poolId ORDER BY evt_block_time DESC) as tokenOut,  -- Take most recent tokenOut
+    min(evt_block_time) as first_seen_time  
   FROM {{ source('swaap_v2_optimism', 'Vault_evt_Swap') }}
   WHERE
     tokenIn = from_hex('0x4200000000000000000000000000000000000042')
-    OR tokenOut = from_hex('0x4200000000000000000000000000000000000042')
+    OR tokenOut = from_hex('0x4200000000000000000000000000000042')
+  GROUP BY poolId, evt_block_time
 ),
 
 op_token AS (
@@ -36,11 +37,11 @@ filtered_balances AS (
   ) }}
 )
 
-SELECT 
+SELECT DISTINCT  
   lower(to_hex(p.address)) as pool_address,
   lower(to_hex(p.tokenIn)) as tokenIn,
   lower(to_hex(p.tokenOut)) as tokenOut,
-  p.creation_time,
+  p.first_seen_time,
   COALESCE(b.balance, 0) as op_balance,
   COALESCE(b.day, current_date) as snapshot_day
 FROM 
