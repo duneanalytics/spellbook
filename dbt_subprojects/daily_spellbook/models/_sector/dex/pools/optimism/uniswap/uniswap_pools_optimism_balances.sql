@@ -1,15 +1,3 @@
-{{
-  config(
-    schema = 'uniswap_pools_optimism',
-    alias = 'balances',
-    materialized = 'incremental',
-    file_format = 'delta',
-    incremental_strategy = 'merge',
-    unique_key = ['pool_address', 'snapshot_day'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.snapshot_day')]
-  )
-}}
-
 with op_pools as (
   select 
     pool as pool_address,
@@ -28,7 +16,8 @@ with op_pools as (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2021-11-11',
-       token_list="'0x4200000000000000000000000000000000000042'" 
+       address_list='op_pools',  -- Pass the pool addresses here
+       token_list="'0x4200000000000000000000000000000000000042'"  -- OP token address
   ) }}
 )
 
@@ -43,4 +32,4 @@ select
 from 
   filtered_balances b
 right join
-  op_pools p on p.pool_address = b.pool_address
+  op_pools p on p.pool_address = b.address  
