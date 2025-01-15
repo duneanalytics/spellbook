@@ -12,9 +12,9 @@
 
 with op_addresses as (
   select
-    lower(hex(pool)) as address,  -- Convert to lowercase hex (varchar)
-    lower(hex(token0)) as token0, -- Ensure token0 is varchar
-    lower(hex(token1)) as token1, -- Ensure token1 is varchar
+    lower(to_hex(pool)) as address,  -- Changed hex() to to_hex()
+    lower(to_hex(token0)) as token0, -- Changed hex() to to_hex()
+    lower(to_hex(token1)) as token1, -- Changed hex() to to_hex()
     fee as fee_tier,
     creation_block_time as creation_time
   from 
@@ -22,12 +22,11 @@ with op_addresses as (
   where
     token0 = from_hex('0x4200000000000000000000000000000000000042')
     or token1 = from_hex('0x4200000000000000000000000000000000000042')
-
 ),
 
 op_token as (
   select 
-    lower('0x4200000000000000000000000000000000000042') as token_address  -- Convert to lowercase (varchar)
+    lower('0x4200000000000000000000000000000000000042') as token_address
 ),
 
 filtered_balances as (
@@ -50,4 +49,4 @@ select
 from 
   filtered_balances b
 right join
-  op_addresses p on p.address = b.address  -- Ensure both columns are varchar
+  op_addresses p on p.address = b.address
