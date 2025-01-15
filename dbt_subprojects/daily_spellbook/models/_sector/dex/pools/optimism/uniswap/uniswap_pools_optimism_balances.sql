@@ -12,29 +12,29 @@
 
 with op_addresses as (
   select
-    pool as address,  
-    token0,
-    token1,
+    lower(hex(pool)) as address,  -- Convert to lowercase hex (varchar)
+    lower(hex(token0)) as token0, -- Ensure token0 is varchar
+    lower(hex(token1)) as token1, -- Ensure token1 is varchar
     fee as fee_tier,
     creation_block_time as creation_time
   from 
     {{ source('uniswap_v3_optimism', 'pools') }}
   where
-    token0 = from_hex('0x4200000000000000000000000000000000000042')
-    or token1 = from_hex('0x4200000000000000000000000000000000000042')
+    lower(hex(token0)) = '0x4200000000000000000000000000000000000042'
+    or lower(hex(token1)) = '0x4200000000000000000000000000000000000042'
 ),
 
 op_token as (
   select 
-    '0x4200000000000000000000000000000000000042' as token_address
+    lower('0x4200000000000000000000000000000000000042') as token_address  -- Convert to lowercase (varchar)
 ),
 
 filtered_balances as (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2021-11-11',
-       address_list="op_addresses",  
-       token_list="op_token"         
+       address_list="op_addresses",  -- Ensure address_list is varchar-compatible
+       token_list="op_token"         -- Ensure token_list is varchar-compatible
   ) }}
 )
 
@@ -49,4 +49,4 @@ select
 from 
   filtered_balances b
 right join
-  op_addresses p on p.address = b.address
+  op_addresses p on p.address = b.address  -- Ensure both columns are varchar
