@@ -22,14 +22,19 @@ with op_pools as (
   where
     token0 = from_hex('0x4200000000000000000000000000000000000042')
     or token1 = from_hex('0x4200000000000000000000000000000000000042')
-)
+),
 
-, filtered_balances as (
+ op_token as (
+  select 
+    '0x4200000000000000000000000000000000000042' as token_address
+),
+
+ filtered_balances as (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2021-11-11',
        address_list="op_pools",
-       token_list="'0x4200000000000000000000000000000000000042'" 
+       token_list="op_token" 
   ) }}
 )
 
