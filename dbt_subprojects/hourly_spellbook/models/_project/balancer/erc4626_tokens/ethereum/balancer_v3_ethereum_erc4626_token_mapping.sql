@@ -39,7 +39,8 @@ FROM (VALUES
      (0x0bfc9d54fc184518a81162f8fb99c2eaca081202, 'Static Aave Ethereum WETH', 'WaEthWETH', 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2, 'WETH', 18),
      (0x0fe906e030a44ef24ca8c7dc7b7c53a6c4f00ce9, 'Static Aave Ethereum Lido WETH', 'waEthLidoWETH', 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2, 'WETH', 18),
      (0x775f661b0bd1739349b9a2a3ef60be277c5d2d29, 'Static Aave Ethereum Lido wstETH', 'waEthLidowstETH', 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0, 'wstETH', 18),
-     (0x5F9D59db355b4A60501544637b00e94082cA575b, 'Static Aave Ethereum USDe', 'waEthUSDe', 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3, 'USDe', 18)
+     (0x5F9D59db355b4A60501544637b00e94082cA575b, 'Static Aave Ethereum USDe', 'waEthUSDe', 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3, 'USDe', 18),
+     (0xC71Ea051a5F82c67ADcF634c36FFE6334793D24C, 'Static Aave Ethereum Lido GHO', 'waEthLidoGHO', 0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f, 'GHO', 18)
     ) AS temp_table (erc4626_token, erc4626_token_name, erc4626_token_symbol, underlying_token, underlying_token_symbol, decimals)
 ),
 
