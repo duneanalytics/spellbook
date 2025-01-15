@@ -59,10 +59,10 @@ transfer as (
   where blockchain = 'arbitrum'
   and block_date >= date '2024-08-01' 
   and tx_hash in (select evt_tx_hash from {{ source('pancakeswap_arbitrum', 'ExclusiveDutchOrderReactor_evt_Fill') }})
-  group by 1,2,3,4
   {% if is_incremental() %}
   and {{ incremental_predicate('block_time') }}
   {% endif %}
+  group by 1,2,3,4
 ),
 
 dexs_pcsx AS (
@@ -151,3 +151,4 @@ SELECT
 FROM dexs_pcsx
 WHERE token_sold_amount_raw > 0
 AND token_bought_amount_raw > 0
+AND token_bought_address is not NULL
