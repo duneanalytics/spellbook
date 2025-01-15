@@ -101,7 +101,8 @@ WITH tbl_all_logs AS (
         tx_from,
         taker,
         tx_index,
-        (try_cast(bytearray_to_uint256(bytearray_substring(logs.DATA, 21,12)) as int256)) as amount
+        (try_cast(bytearray_to_uint256(bytearray_substring(logs.DATA, 21,12)) as int256)) as amount, 
+        cow_rn 
     FROM
         {{ source(blockchain, 'logs') }} AS logs
     JOIN
