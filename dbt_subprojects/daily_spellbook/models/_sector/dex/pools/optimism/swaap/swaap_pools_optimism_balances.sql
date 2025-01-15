@@ -11,7 +11,7 @@
 }}
 
 WITH swaap_pools AS (
-  SELECT DISTINCT  -- Added DISTINCT to deduplicate pool addresses
+  SELECT DISTINCT
     CAST(poolId AS varchar) AS pool_address,
     CAST(tokenIn AS varchar) AS tokenIn,
     CAST(tokenOut AS varchar) AS tokenOut,
@@ -44,10 +44,8 @@ SELECT
   p.tokenOut,
   p.creation_time,
   COALESCE(b.balance, 0) AS op_balance,
-  CAST(COALESCE(b.day, CURRENT_DATE) AS date) AS snapshot_day
+  b.day AS snapshot_day
 FROM
   swaap_pools p
 LEFT JOIN
-  balances b ON p.pool_address = b.address
-WHERE 1=1
-GROUP BY 1,2,3,4,5,6;
+  balances b ON p.pool_address = b.address;

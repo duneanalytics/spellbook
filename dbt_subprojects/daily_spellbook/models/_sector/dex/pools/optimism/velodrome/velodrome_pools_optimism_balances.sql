@@ -10,8 +10,7 @@
   )
 }}
 
-WITH 
-velo_pools AS (
+WITH velo_pools AS (
   SELECT 
     CAST(pool AS varchar) AS pool_address,
     CAST(token0 AS varchar) AS token0,
@@ -21,12 +20,12 @@ velo_pools AS (
     {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PoolCreated') }}
   WHERE
     CAST(token0 AS varchar) = '0x4200000000000000000000000042'
-    OR CAST(token1 AS varchar) = '0x4200000000000000000000000042'
+    OR CAST(token1 AS varchar) = '0x4200000000000000000042'
 ),
 
 token_list AS (
   SELECT DISTINCT 
-    '0x4200000000000000000000000042' AS token_address
+    '0x4200000000000000000042' AS token_address
 ),
 
 balances AS (
@@ -45,11 +44,8 @@ SELECT
   p.token1,
   p.creation_time,
   COALESCE(b.balance, 0) AS op_balance,
-  CAST(COALESCE(b.day, CURRENT_DATE) AS date) AS snapshot_day
+  b.day AS snapshot_day
 FROM 
   velo_pools p
 LEFT JOIN 
-  balances b ON p.pool_address = b.address
-WHERE 1=1  -- Add WHERE clause to ensure proper SQL syntax
-GROUP BY 1,2,3,4,5,6  -- Add GROUP BY clause if needed 
-;
+  balances b ON p.pool_address = b.address;
