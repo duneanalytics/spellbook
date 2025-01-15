@@ -36,9 +36,11 @@ SELECT
   p.pool_address,
   'curve' AS protocol_name,
   'v1' AS protocol_version,
-  b.day AS snapshot_day,
+  CAST(b.day AS date) AS snapshot_day,
   COALESCE(b.balance, 0) AS op_balance
 FROM op_pools p
 LEFT JOIN balances b 
   ON p.pool_address = b.address
-WHERE COALESCE(b.balance, 0) > 0;
+WHERE COALESCE(b.balance, 0) > 0
+GROUP BY 1,2,3,4,5  -- Add GROUP BY clause
+;

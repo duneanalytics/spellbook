@@ -11,7 +11,7 @@
 }}
 
 WITH swaap_pools AS (
-  SELECT
+  SELECT DISTINCT  -- Added DISTINCT to deduplicate pool addresses
     CAST(poolId AS varchar) AS pool_address,
     CAST(tokenIn AS varchar) AS tokenIn,
     CAST(tokenOut AS varchar) AS tokenOut,
@@ -20,12 +20,12 @@ WITH swaap_pools AS (
     {{ source('swaap_v2_optimism', 'Vault_evt_Swap') }}
   WHERE
     CAST(tokenIn AS varchar) = '0x4200000000000000000000000042'
-    OR CAST(tokenOut AS varchar) = '0x4200000000000000000000000042'
+    OR CAST(tokenOut AS varchar) = '0x4200000000000000000042'
 ),
 
 token_list AS (
   SELECT DISTINCT 
-    '0x4200000000000000000000000042' AS token_address
+    '0x4200000000000000000042' AS token_address
 ),
 
 balances AS (
@@ -44,8 +44,10 @@ SELECT
   p.tokenOut,
   p.creation_time,
   COALESCE(b.balance, 0) AS op_balance,
-  COALESCE(b.day, CURRENT_DATE) AS snapshot_day
+  CAST(COALESCE(b.day, CURRENT_DATE) AS date) AS snapshot_day
 FROM
   swaap_pools p
 LEFT JOIN
-  balances b ON p.pool_address = b.address;
+  balances b ON p.pool_address = b.address
+WHERE 1=1
+GROUP BY 1,2,3,4,5,6;

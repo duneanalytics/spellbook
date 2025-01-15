@@ -48,8 +48,10 @@ SELECT
   p.tickSpacing,
   p.creation_time,
   COALESCE(b.balance, 0) AS op_balance,
-  COALESCE(b.day, CURRENT_DATE) AS snapshot_day
+  CAST(COALESCE(b.day, CURRENT_DATE) AS date) AS snapshot_day
 FROM
   solidly_pools p
 LEFT JOIN
-  balances b ON p.pool_address = b.address;
+  balances b ON p.pool_address = b.address
+WHERE 1=1
+GROUP BY 1,2,3,4,5,6,7,8;
