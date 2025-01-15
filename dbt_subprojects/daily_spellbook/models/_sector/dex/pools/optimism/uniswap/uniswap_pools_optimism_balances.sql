@@ -12,21 +12,21 @@
 
 with op_addresses as (
   select
-    lower(to_hex(pool)) as address,
-    lower(to_hex(token0)) as token0,
-    lower(to_hex(token1)) as token1,
+    pool as address,  -- Keep as varbinary
+    token0,          -- Keep as varbinary
+    token1,          -- Keep as varbinary
     fee as fee_tier,
     creation_block_time as creation_time
   from 
     {{ source('uniswap_v3_optimism', 'pools') }}
   where
     token0 = from_hex('0x4200000000000000000000000000000000000042')
-    or token1 = from_hex('0x4200000000000000000000000000000042')
+    or token1 = from_hex('0x4200000000000000000000000000000000000042')
 ),
 
 op_token as (
   select 
-    from_hex('0x4200000000000000000000000000000000000042') as token_address  -- Changed to varbinary
+    from_hex('0x4200000000000000000000000000000000000042') as token_address
 ),
 
 filtered_balances as (
@@ -39,9 +39,9 @@ filtered_balances as (
 )
 
 select 
-  p.address as pool_address,
-  p.token0,
-  p.token1,
+  lower(to_hex(p.address)) as pool_address,  -- Convert to hex string only in final output
+  lower(to_hex(p.token0)) as token0,         -- Convert to hex string only in final output
+  lower(to_hex(p.token1)) as token1,         -- Convert to hex string only in final output
   p.fee_tier,
   p.creation_time,
   coalesce(b.balance, 0) as op_balance,
@@ -49,4 +49,4 @@ select
 from 
   filtered_balances b
 right join
-  op_addresses p on lower(to_hex(b.address)) = p.address  -- Ensure type consistency in join
+  op_addresses p on b.address = p.address    -- Compare varbinary with varbinary
