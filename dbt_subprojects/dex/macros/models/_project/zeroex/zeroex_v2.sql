@@ -214,7 +214,7 @@ maker_logs as (
         tag,
         amount as maker_amount,
         row_number() over (partition by logs.tx_hash order by logs.index desc ) rn,
-        taker
+        logs.taker__ as taker
     from tbl_all_logs as logs 
     join taker_logs tl on tl.tx_hash = logs.tx_hash and  bytearray_substring(logs.topic2,13,20) in (tl.taker__, tx_from)
     WHERE  topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef, 0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65) 
