@@ -253,18 +253,7 @@ select * from tbl_trades
 {% endmacro %}
 
 {% macro zeroex_v2_trades_detail(blockchain, start_date) %}
-WITH tokens AS (
-    SELECT DISTINCT token, te.*
-    FROM (
-        SELECT maker_token AS token FROM zeroex_v2_trades
-        UNION ALL
-        SELECT taker_token FROM zeroex_v2_trades
-    ) t
-    JOIN {{ source('tokens', 'erc20') }} AS te ON te.contract_address = t.token
-    WHERE te.blockchain = '{{blockchain}}'
-),
-
-fills AS (
+WITH fills AS (
     WITH signatures AS (
         SELECT DISTINCT signature
         FROM {{ source(blockchain, 'logs_decoded') }} l
@@ -323,9 +312,9 @@ results AS (
     LEFT JOIN
         fills f ON f.tx_hash = trades.tx_hash AND f.block_time = trades.block_time AND f.block_number = trades.block_number
     LEFT JOIN
-        tokens tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
+        {{ source('tokens', 'erc20') }} tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
     LEFT JOIN
-        tokens tm ON tm.blockchain = '{{blockchain}}' AND tm.contract_address = maker_token
+        {{ source('tokens', 'erc20') }} tm ON tm.blockchain = '{{blockchain}}' AND tm.contract_address = maker_token
     LEFT JOIN
         {{ source('prices', 'usd') }} pt ON pt.blockchain = '{{blockchain}}' AND pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
     LEFT JOIN
