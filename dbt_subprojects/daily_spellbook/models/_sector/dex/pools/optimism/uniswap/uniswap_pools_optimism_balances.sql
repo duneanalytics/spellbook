@@ -25,10 +25,10 @@ with op_pools as (
 )
 
 , filtered_balances as (
-  {{ balances_subset_daily(
+  {{ balances_incremental_subset_daily(
        blockchain='optimism',
-       token_address="from_hex('0x4200000000000000000000000000000000000042')",
-       start_date='2021-11-11'
+       start_date='2021-11-11',
+       token_list="from_hex('0x4200000000000000000000000000000000000042')"
   ) }}
 )
 
@@ -38,8 +38,8 @@ select
   p.token1,
   p.fee_tier,
   p.creation_time,
-  coalesce(b.token_balance, 0) as op_balance,
-  coalesce(b.snapshot_day, current_date) as snapshot_day
+  coalesce(b.balance, 0) as op_balance,
+  coalesce(b.day, current_date) as snapshot_day
 from 
   filtered_balances b
 right join
