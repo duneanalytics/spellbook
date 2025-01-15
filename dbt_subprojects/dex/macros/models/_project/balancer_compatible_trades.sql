@@ -218,8 +218,8 @@ dexs AS (
         CAST(NULL AS VARBINARY) AS maker,
         swap.amountOut AS token_bought_amount_raw,
         swap.amountIn AS token_sold_amount_raw,
-        e1.underlying_token AS token_bought_address,
-        e2.underlying_token AS token_sold_address,
+        COALESCE(e1.underlying_token, tokenOut) AS token_bought_address,
+        COALESCE(e2.underlying_token, tokenIn) AS token_sold_address,
         swap.pool AS project_contract_address,
         swap.pool AS pool_id,
         l.pool_symbol,
@@ -234,7 +234,7 @@ dexs AS (
     LEFT JOIN erc4626_tokens e1
         ON e1.erc4626_token = swap.tokenOut
     LEFT JOIN erc4626_tokens e2
-        ON e1.erc4626_token = swap.tokenIn
+        ON e2.erc4626_token = swap.tokenIn
     WHERE swap.tokenIn <> swap.pool
         AND swap.tokenOut <> swap.pool
         {% if is_incremental() %}
