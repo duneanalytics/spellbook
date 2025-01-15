@@ -6,7 +6,7 @@ models:
       - check_dex_info_relationship
       - test_reasonable_usd_amount:
           column_name: amount_usd
-          max_value: 1000000000  # $1B max
+          max_value: 1000000000
 
   - name: beets_sonic_base_trades
     meta:
