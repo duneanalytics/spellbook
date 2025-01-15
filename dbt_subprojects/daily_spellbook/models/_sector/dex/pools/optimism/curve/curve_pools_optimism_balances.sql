@@ -14,7 +14,8 @@ WITH op_addresses AS (
   SELECT
     pool as address,
     token,
-    evt_block_time as creation_time
+    version,
+    tokenid
   FROM {{ source('curve_optimism', 'pools') }}
   WHERE token = from_hex('0x4200000000000000000000000000000000000042')
 ),
@@ -36,7 +37,8 @@ filtered_balances AS (
 SELECT 
   lower(to_hex(p.address)) as pool_address,
   lower(to_hex(p.token)) as token,
-  p.creation_time,
+  p.version,
+  p.tokenid,
   COALESCE(b.balance, 0) as op_balance,
   COALESCE(b.day, current_date) as snapshot_day
 FROM 
