@@ -2141,3 +2141,89 @@ models:
         description: The funding fee amount associated with the update.
       - name: is_long
         description: A boolean indicating if the position is a long position (`True` for long, `False` for short).
+
+  - name: gmx_v2_swap_fees_collected
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'event', 'swap_fee']
+    description: |
+      Processes decoded event data for `SwapFeesCollected` events on the GMX platform across the Arbitrum and Avalanche blockchains.
+      This model extracts key details such as fee amounts, trade keys, and fee types for analyzing swap fee collection behavior.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: tx_from
+        description: The address initiating the transaction.
+      - name: tx_to
+        description: The recipient address of the transaction.
+      - name: event_name
+        description: The name of the event emitted, always `SwapFeesCollected`.
+      - *msg_sender
+      - name: ui_fee_receiver
+        description: The address receiving the UI fee.
+      - name: market
+        description: The specific GMX market where the swap occurred.
+      - name: token
+        description: The token involved in the swap transaction.
+      - name: token_price
+        description: The price of the token at the time of the swap.
+      - name: fee_receiver_amount
+        description: The amount received by the fee receiver.
+      - name: fee_amount_for_pool
+        description: The amount of fees sent to the pool.
+      - name: amount_after_fees
+        description: The amount remaining after fees were deducted.
+      - name: ui_fee_receiver_factor
+        description: The factor used to calculate the UI fee.
+      - name: ui_fee_amount
+        description: The total UI fee amount deducted from the transaction.
+      - name: trade_key
+        description: A unique identifier for the trade.
+      - name: swap_fee_type
+        description: The type of fee associated with the swap.
+      - name: action_type
+        description: The action performed in the swap event (e.g., deposit, withdrawal, or swap).
+
+  - name: gmx_v2_position_impact_pool_distributed
+    meta:
+      blockchain: arbitrum, avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'event', 'position_impact']
+    description: |
+      Processes decoded event data for `PositionImpactPoolDistributed` events on the GMX platform across the Arbitrum and Avalanche blockchains.
+      This model extracts key details such as distribution amounts and pool impact metrics to analyze the effect of position impact distribution.
+
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: tx_from
+        description: The address initiating the transaction.
+      - name: tx_to
+        description: The recipient address of the transaction.
+      - name: event_name
+        description: The name of the event emitted, always `PositionImpactPoolDistributed`.
+      - *msg_sender
+      - name: market
+        description: The specific GMX market where the position impact occurred.
+      - name: distribution_amount
+        description: The amount distributed to the impact pool.
+      - name: next_position_impact_pool_amount
+        description: The updated position impact pool amount after the event.
