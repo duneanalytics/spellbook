@@ -12,6 +12,7 @@
      ,ref('nftrade_bnb_base_trades')
      ,ref('pancakeswap_nft_bnb_base_trades')
      ,ref('tofu_bnb_base_trades')
+     ,ref('magiceden_bnb_base_trades')
 ] %}
 
 with base_union as (
