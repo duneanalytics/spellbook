@@ -56,7 +56,7 @@ models:
         description: "Date of Eth transfer"
       - &amount_raw
         name: amount_raw
-        description: "Raw amount of transfered Eth"
+        description: "Raw amount of transferred Eth"
       - *tx_hash
       - &trace_address
         name: trace_address
