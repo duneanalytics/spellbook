@@ -48,4 +48,4 @@ SELECT
 FROM 
   filtered_balances b
 LEFT JOIN
-  op_addresses p ON b.address = p.address;
+  op_addresses p ON b.address = p.address

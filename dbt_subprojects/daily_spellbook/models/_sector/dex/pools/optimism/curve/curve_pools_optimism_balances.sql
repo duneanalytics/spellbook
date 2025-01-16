@@ -10,16 +10,18 @@
   )
 }}
 
-WITH op_addresses AS (
+WITH op_addresses as (
   SELECT
-    pool AS address,
-    token AS token_address,
+    pool as address,
+    token as token_address,
     version
-  FROM {{ source('curve_optimism', 'pools') }}
-  WHERE token = 0x4200000000000000000000000000000000000042
+  FROM 
+    {{ source('curve_optimism', 'pools') }}
+  WHERE
+     token = 0x4200000000000000000000000000000000000042
 ),
 
-filtered_balances AS (
+filtered_balances as (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2021-11-11',
@@ -28,12 +30,12 @@ filtered_balances AS (
 )
 
 SELECT 
-  p.address AS pool_address,
-  p.token_address AS token,
+  p.address as pool_address,
+  p.token_address as token,
   p.version,
-  COALESCE(b.balance, 0) AS op_balance,
-  COALESCE(b.day, current_date) AS snapshot_day
+  COALESCE(b.balance, 0) as op_balance,
+  COALESCE(b.day, current_date) as snapshot_day
 FROM 
   filtered_balances b
 LEFT JOIN
-  op_addresses p ON b.address = p.address;
+  op_addresses p on b.address = p.address
