@@ -364,7 +364,7 @@ WITH pool_labels AS (
         SUM(f.token_amount) as token_amount,
         SUM(f.protocol_fee_collected_usd) as protocol_fee_collected_usd, 
         r.treasury_share,
-        SUM(f.protocol_fee_collected_usd) * r.treasury_share as treasury_feee_usd,
+        SUM(f.protocol_fee_collected_usd) * r.treasury_share as treasury_fee_usd,
         SUM(CASE WHEN f.fee_type = 'swap_fee' THEN f.protocol_fee_collected_usd
         WHEN f.fee_type = 'yield_fee' THEN f.protocol_fee_collected_usd * 9 END) 
             AS lp_fee_collected_usd
