@@ -3,7 +3,7 @@
         post_hook='{{ expose_spells(\'["base"]\',
                                     "project",
                                     "cow_protocol",
-                                    \'["bh2smith", "pauljcow"]\') }}'
+                                    \'["bh2smith"]\') }}'
 )}}
 
 -- Find the PoC Query here: https://dune.com/queries/1751965
