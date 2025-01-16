@@ -6,10 +6,10 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["base"]\',
-                                "project",
-                                "avantis",
-                                \'["princi"]\') }}'
+    post_hook='{{ expose_spells(blockchain = \'["base"]\',
+                                spell_type = "project",
+                                spell_name = "avantis",
+                                contributors = \'["princi"]\') }}'
 )
 }}
 
@@ -32,7 +32,7 @@ WITH trading_events AS (
         executionFee / 1e18 as fee_usd,
         isBuy,
         'limit_order' as event_type
-    FROM delta_prod.avantis_base.Trading_evt_OpenLimitPlaced
+    FROM {{ source('avantis_base', 'Trading_evt_OpenLimitPlaced') }}
 
     UNION ALL
 
@@ -56,7 +56,7 @@ WITH trading_events AS (
             ELSE NULL
         END as isBuy,
         'margin_update' as event_type
-    FROM delta_prod.avantis_base.Trading_evt_MarginUpdated
+    FROM {{ source('avantis_base', 'Trading_evt_MarginUpdated') }}
 ),
 
 perps AS (
