@@ -12,36 +12,31 @@
 
 WITH op_addresses AS (
   SELECT
-    pool as address,
-    token,
+    pool AS address,
+    token AS token_address,
     version,
     tokenid
   FROM {{ source('curve_optimism', 'pools') }}
-  WHERE token = from_hex('0x4200000000000000000000000000000000000042')
+  WHERE token = '0x4200000000000000000000000000000000000042'
 ),
 
-op_token AS (
-  SELECT 
-    from_hex('0x4200000000000000000000000000000000000042') as token_address
-),
 
 filtered_balances AS (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2021-11-11',
-       address_list='op_addresses',  
-       token_list='op_token'         
+       address_list='op_addresses',           
   ) }}
 )
 
 SELECT 
-  lower(to_hex(p.address)) as pool_address,
-  lower(to_hex(p.token)) as token,
+  p.address AS pool_address,
+  p.token AS token,
   p.version,
   p.tokenid,
-  COALESCE(b.balance, 0) as op_balance,
-  COALESCE(b.day, current_date) as snapshot_day
+  COALESCE(b.balance, 0) AS op_balance,
+  COALESCE(b.day, current_date) AS snapshot_day
 FROM 
   filtered_balances b
-RIGHT JOIN
-  op_addresses p on b.address = p.address
+left JOIN
+  op_addresses p ON b.address = p.address;

@@ -12,42 +12,41 @@
 
 WITH op_addresses AS (
   SELECT
-    pool as address,
+    pool AS address,
     token0,
     token1,
+     -- Add a column for token_address where it matches the Optimism token address
+    case
+      when token0 = 0x4200000000000000000000000000000000000042 then token0
+      when token1 = 0x4200000000000000000000000000000000000042 then token1
+    end as token_address, 
     fee,
     tickSpacing,
-    evt_block_time as creation_time
+    evt_block_time AS creation_time
   FROM {{ source('solidly_v3_optimism', 'SolidlyV3Factory_evt_PoolCreated') }}
   WHERE
-    token0 = from_hex('0x4200000000000000000000000000000000000042')
-    OR token1 = from_hex('0x4200000000000000000000000000000000000042')
-),
-
-op_token AS (
-  SELECT 
-    from_hex('0x4200000000000000000000000000000000000042') as token_address
+    token0 = '0x4200000000000000000000000000000000000042'
+    OR token1 = '0x4200000000000000000000000000000000000042'
 ),
 
 filtered_balances AS (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2024-01-30',
-       address_list='op_addresses',  
-       token_list='op_token'         
+       address_list='op_addresses',          
   ) }}
 )
 
 SELECT 
-  lower(to_hex(p.address)) as pool_address,
-  lower(to_hex(p.token0)) as token0,
-  lower(to_hex(p.token1)) as token1,
+  p.address AS pool_address,
+  p.token0 AS token0,
+  p.token1 AS token1,
   p.fee,
   p.tickSpacing,
   p.creation_time,
-  COALESCE(b.balance, 0) as op_balance,
-  COALESCE(b.day, current_date) as snapshot_day
+  COALESCE(b.balance, 0) AS op_balance,
+  COALESCE(b.day, current_date) AS snapshot_day
 FROM 
   filtered_balances b
-RIGHT JOIN
-  op_addresses p on b.address = p.address
+LEFT JOIN
+  op_addresses p ON b.address = p.address;
