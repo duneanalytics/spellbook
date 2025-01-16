@@ -14,7 +14,12 @@ with op_addresses as (
   select      
     pool as address,  
     token0,          
-    token1,          
+    token1,
+     -- Add a column for token_address where it matches the Optimism token address
+    case
+      when token0 = 0x4200000000000000000000000000000000000042 then token0
+      when token1 = 0x4200000000000000000000000000000000000042 then token1
+    end as token_address,          
     fee as fee_tier,
     creation_block_time as creation_time
   from 
