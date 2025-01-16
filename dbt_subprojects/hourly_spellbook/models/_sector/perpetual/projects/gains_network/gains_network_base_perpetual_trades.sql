@@ -2,9 +2,9 @@
     schema = 'gains_network_perpetual_trades',
     alias = 'perpetual_trades',
     post_hook='{{ expose_spells(\'["base"]\',
-                                    "project",
-                                    "gains_network",
-                                    \'["princi"]\') }}'
+                                    spell_type = "project",
+                                    spell_name = "gains_network",
+                                    contributors = \'["princi"]\') }}'
         )
 }}
 
@@ -17,7 +17,7 @@ FROM
 (
     {% for gains_network_perpetual_trades in gains_network_base_perpetual_trade_models %}
     SELECT
-		blockchain
+		 blockchain
 		,block_date
         ,block_month
         ,block_time

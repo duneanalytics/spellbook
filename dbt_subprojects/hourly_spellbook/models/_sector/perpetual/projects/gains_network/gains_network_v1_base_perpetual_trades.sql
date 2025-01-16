@@ -7,9 +7,9 @@
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
     post_hook='{{ expose_spells(\'["base"]\',
-                                "project",
-                                "gains_network",
-                                \'["princi"]\') }}'
+                                spell_type = "project",
+                                spell_name = "gains_network",
+                                contributors = \'["princi"]\') }}'
 )
 }}
 
@@ -34,7 +34,7 @@ WITH position_changes AS (
         leverageDelta,
         "values" as value_data,
         'decrease' as action
-    FROM delta_prod.gains_network_base.GNSMultiCollatDiamond_evt_PositionSizeDecreaseExecuted
+    FROM {{source('gains_network_base','GNSMultiCollatDiamond_evt_PositionSizeDecreaseExecuted')}}
 
     UNION ALL
 
@@ -56,7 +56,7 @@ WITH position_changes AS (
         leverageDelta,
         "values" as value_data,
         'increase' as action
-    FROM delta_prod.gains_network_base.GNSMultiCollatDiamond_evt_PositionSizeIncreaseExecuted
+    FROM {{ source('gains_network_base','GNSMultiCollatDiamond_evt_PositionSizeIncreaseExecuted')}}
 ),
 
 perps AS (
@@ -192,7 +192,7 @@ SELECT
     tx."to" AS tx_to,
     perps.evt_index
 FROM perps
-INNER JOIN delta_prod.base.transactions AS tx
+INNER JOIN {{ source('base', 'transactions') }} AS tx
     ON perps.tx_hash = tx.hash
     AND perps.block_number = tx.block_number
     AND tx.block_time >= DATE '2024-01-01'
