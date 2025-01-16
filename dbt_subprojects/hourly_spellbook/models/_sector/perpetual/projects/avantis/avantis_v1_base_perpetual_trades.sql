@@ -33,6 +33,9 @@ WITH trading_events AS (
         isBuy,
         'limit_order' as event_type
     FROM {{ source('avantis_base', 'Trading_evt_OpenLimitPlaced') }}
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
 
     UNION ALL
 
@@ -57,6 +60,9 @@ WITH trading_events AS (
         END as isBuy,
         'margin_update' as event_type
     FROM {{ source('avantis_base', 'Trading_evt_MarginUpdated') }}
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
+    {% endif %}
 ),
 
 perps AS (
@@ -199,3 +205,4 @@ INNER JOIN delta_prod.base.transactions AS tx
     ON perps.tx_hash = tx.hash
     AND perps.block_number = tx.block_number
     AND tx.block_time >= DATE '2024-01-01'
+    
