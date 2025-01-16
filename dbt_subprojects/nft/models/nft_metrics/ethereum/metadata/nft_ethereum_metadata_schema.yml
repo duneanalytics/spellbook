@@ -102,7 +102,7 @@ models:
         description: "Day Zero?"
       - &harmonic
         name: harmonic
-        description: "Harmoninc?"
+        description: "Harmonic?"
 
   - name: nft_ethereum_metadata_terraforms
     meta:
