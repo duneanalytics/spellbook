@@ -5,7 +5,5 @@ sources:
     tables:
       - name: KatanaPair_evt_Swap
       - name: KatanaFactory_evt_PairCreated
-  - name: katana_dex_ronin
-    tables:
       - name: KatanaV3Pool_evt_Swap
       - name: KatanaV3Factory_evt_PoolCreated
