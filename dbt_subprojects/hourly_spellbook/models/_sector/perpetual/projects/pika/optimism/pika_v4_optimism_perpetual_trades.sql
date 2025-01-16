@@ -82,7 +82,6 @@ perps AS (
 		WHEN productId = UINT256 '12' OR productId = UINT256 '26' THEN 'UNI'
 		ELSE CONCAT ('product_id_', CAST(productId as VARCHAR))
 		END AS virtual_asset
-7
 		,CASE
 		WHEN productId = UINT256 '1' OR productId = UINT256 '16' THEN 'ETH'
 		WHEN productId = UINT256 '2' OR productId = UINT256 '17' THEN 'BTC'
