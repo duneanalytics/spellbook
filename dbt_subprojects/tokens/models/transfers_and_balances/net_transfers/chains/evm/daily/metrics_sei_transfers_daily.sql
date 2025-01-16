@@ -1,8 +1,8 @@
 {% set blockchain = 'sei' %}
 
 {{ config(
-        schema = 'metrics_' + blockchain
-        , alias = 'transfers_daily'
+        schema = 'tokens_' + blockchain
+        , alias = 'net_transfers_daily'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
@@ -12,4 +12,4 @@
 }}
 
 
-{{ metrics_transfers_evm(blockchain) }}
+{{ net_transfers_evm(blockchain) }}
