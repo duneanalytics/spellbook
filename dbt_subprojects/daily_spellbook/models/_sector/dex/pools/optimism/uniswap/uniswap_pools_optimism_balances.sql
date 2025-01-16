@@ -11,10 +11,7 @@
 }}
 
 with op_addresses as (
-  select
-    pool as address,  
-    token0,          
-    token1,          
+  select      
     pool as address,  
     token0,          
     token1,          
