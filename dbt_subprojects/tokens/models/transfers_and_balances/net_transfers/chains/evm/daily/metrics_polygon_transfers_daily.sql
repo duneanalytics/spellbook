@@ -12,4 +12,7 @@
 }}
 
 
-{{ net_transfers_evm(blockchain) }}
+{{ net_transfers_evm(
+    blockchain = 'polygon',
+    blockchain_id = xxx
+) }}
