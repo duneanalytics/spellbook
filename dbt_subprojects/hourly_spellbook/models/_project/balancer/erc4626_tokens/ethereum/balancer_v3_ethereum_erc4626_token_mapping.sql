@@ -55,7 +55,22 @@ FROM {{ source('metamorpho_factory_ethereum', 'MetaMorphoFactory_evt_CreateMetaM
 JOIN {{ source('tokens', 'erc20') }} t
 ON t.blockchain = 'ethereum'
 AND a.asset = t.contract_address
+
+UNION 
+
+SELECT 
+    erc4626_token,
+    erc4626_token_name,
+    erc4626_token_symbol,
+    underlying_token,
+    underlying_token_symbol,
+    decimals
+FROM (VALUES 
+     (0x7204b7dbf9412567835633b6f00c3edc3a8d6330, 'CoinShift USDC', 'csUSDC', 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48, 'USDC', 18),
+     (0xbeefc011e94f43b8b7b455ebab290c7ab4e216f1, 'CoinShift USDL', 'csUSDL', 0xbdC7c08592Ee4aa51D06C27Ee23D5087D65aDbcD, 'wUSDL', 18)
+    ) AS temp_table (erc4626_token, erc4626_token_name, erc4626_token_symbol, underlying_token, underlying_token_symbol, decimals)
 )
+
 
 SELECT 
     'ethereum' AS blockchain, 
