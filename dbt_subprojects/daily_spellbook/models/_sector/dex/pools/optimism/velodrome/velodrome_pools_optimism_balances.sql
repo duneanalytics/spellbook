@@ -25,11 +25,17 @@ WITH op_addresses AS (
 
 
 filtered_balances AS (
+   SELECT
+    address,
+    balance,
+    day,
+    ROW_NUMBER() OVER (PARTITION BY address, day ORDER BY balance DESC) AS row_num
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2023-06-22',
        address_list='op_addresses',
   ) }}
+   WHERE row_num = 1
 )
 
 SELECT DISTINCT
