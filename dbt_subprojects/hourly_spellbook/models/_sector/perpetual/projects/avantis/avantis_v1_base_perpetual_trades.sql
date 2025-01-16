@@ -201,7 +201,7 @@ SELECT
     tx."to" AS tx_to,
     perps.evt_index
 FROM perps
-INNER JOIN delta_prod.base.transactions AS tx
+INNER JOIN {{ source('base', 'transactions') }} AS tx
     ON perps.tx_hash = tx.hash
     AND perps.block_number = tx.block_number
     AND tx.block_time >= DATE '2024-01-01'
