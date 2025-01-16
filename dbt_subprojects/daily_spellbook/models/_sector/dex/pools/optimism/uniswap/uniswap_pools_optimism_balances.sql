@@ -15,6 +15,9 @@ with op_addresses as (
     pool as address,  
     token0,          
     token1,          
+    pool as address,  
+    token0,          
+    token1,          
     fee as fee_tier,
     creation_block_time as creation_time
   from 
