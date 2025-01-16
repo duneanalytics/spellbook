@@ -15,11 +15,11 @@ WITH op_addresses AS (
     pool AS address,
     token0,
     token1,
-     -- Add a column for token_address where it matches the Optimism token address
-    case
-      when token0 = 0x4200000000000000000000000000000000000042 then token0
-      when token1 = 0x4200000000000000000000000000000000000042 then token1
-    end as token_address, 
+    -- Add a column for token_address where it matches the Optimism token address
+    CASE
+      WHEN token0 = 0x4200000000000000000000000000000000000042 THEN token0
+      WHEN token1 = 0x4200000000000000000000000000000000000042 THEN token1
+    END AS token_address,
     fee,
     tickSpacing,
     evt_block_time AS creation_time
