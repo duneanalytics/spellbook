@@ -15,11 +15,7 @@ WITH op_addresses AS (
     pool AS address,
     token0,
     token1,
-    -- Add a column for token_address where it matches the Optimism token address
-    CASE
-      WHEN token0 = 0x4200000000000000000000000000000000000042 THEN token0
-      WHEN token1 = 0x4200000000000000000000000000000000000042 THEN token1
-    END AS token_address,
+    0x4200000000000000000000000000000000000042 as token_address,
     evt_block_time AS creation_time
   FROM {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PoolCreated') }}
   WHERE
@@ -36,7 +32,7 @@ filtered_balances AS (
   ) }}
 )
 
-SELECT 
+SELECT DISTINCT
   p.address AS pool_address,
   p.token0 AS token0,
   p.token1 AS token1,

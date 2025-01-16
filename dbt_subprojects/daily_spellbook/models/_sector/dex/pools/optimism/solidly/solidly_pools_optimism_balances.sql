@@ -15,10 +15,7 @@ WITH op_addresses AS (
     pool AS address,
     token0,
     token1,
-    CASE
-      WHEN token0 = 0x4200000000000000000000000000000000000042 THEN token0
-      WHEN token1 = 0x4200000000000000000000000000000000000042 THEN token1
-    END AS token_address, 
+    0x4200000000000000000000000000000000000042 as token_address, 
     fee,
     tickSpacing,
     evt_block_time AS creation_time
@@ -36,7 +33,7 @@ filtered_balances AS (
   ) }}
 )
 
-SELECT 
+SELECT DISTINCT
   p.address AS pool_address,
   p.token0 AS token0,
   p.token1 AS token1,

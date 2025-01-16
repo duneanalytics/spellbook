@@ -29,7 +29,7 @@ filtered_balances as (
   ) }}
 )
 
-SELECT 
+SELECT DISTINCT
   p.address as pool_address,
   p.token_address as token,
   p.version,
