@@ -50,6 +50,8 @@ bebop_raw_data AS (
     {% if is_incremental() %}
     AND {{ incremental_predicate('evt.evt_block_time') }}
     {% endif %}
+    AND json_array_length(json_extract((JSON_EXTRACT(ex."order", '$.maker_tokens')), '$[0]')) > 0
+    AND json_array_length(json_extract((JSON_EXTRACT(ex."order", '$.taker_tokens')), '$[0]')) > 0
 ),
 
 unnested_array_taker AS (
