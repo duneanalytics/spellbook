@@ -4,6 +4,8 @@ version: 2
 sources:
   - name: prices
     description: "Prices tables across blockchains"
+    config:
+      event_time: minute
     tables:
       - name: usd_0003
         description: "raw, versioned USD prices table"

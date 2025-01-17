@@ -2,6 +2,8 @@ version: 2
 
 sources:
   - name: spl_token_solana
+    config:
+      event_time: call_block_time
     description: "spl_token decoded tables"
     tables:
       - name: spl_token_call_initializeMint

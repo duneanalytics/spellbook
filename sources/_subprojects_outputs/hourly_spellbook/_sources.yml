@@ -12,6 +12,8 @@ sources:
       - name: view_registrations
 
   - name: prices
+    config:
+      event_time: minute
     tables:
       - name: usd_latest
       - name: usd_daily
