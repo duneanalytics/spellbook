@@ -13,7 +13,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_arbitrum_transfers_daily_address
+  - name: tokens_arbitrum_transfers_daily_address
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -26,7 +26,7 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_avalanche_c_transfers_daily
+  - name: tokens_avalanche_c_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -38,7 +38,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_avalanche_c_transfers_daily_address
+  - name: tokens_avalanche_c_transfers_daily_address
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -51,7 +51,7 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_base_transfers_daily
+  - name: tokens_base_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -101,9 +101,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_bnb_transfers_daily
+  - name: tokens_bnb_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -113,9 +113,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_bnb_transfers_daily_address
+  - name: tokens_bnb_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -126,9 +126,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_celo_transfers_daily
+  - name: tokens_celo_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -138,9 +138,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_celo_transfers_daily_address
+  - name: tokens_celo_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -151,9 +151,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_ethereum_transfers_daily
+  - name: tokens_ethereum_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -163,9 +163,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_ethereum_transfers_daily_address
+  - name: tokens_ethereum_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -176,9 +176,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_fantom_transfers_daily
+  - name: tokens_fantom_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -188,9 +188,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_fantom_transfers_daily_address
+  - name: tokens_fantom_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -201,9 +201,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_gnosis_transfers_daily
+  - name: tokens_gnosis_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -213,9 +213,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_gnosis_transfers_daily_address
+  - name: tokens_gnosis_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -226,9 +226,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_linea_transfers_daily
+  - name: tokens_linea_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -238,9 +238,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_linea_transfers_daily_address
+  - name: tokens_linea_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -252,9 +252,9 @@ models:
             - block_date
             - address
 
-  - name: metrics_mantle_transfers_daily
+  - name: tokens_mantle_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -265,9 +265,9 @@ models:
             - blockchain
             - block_date
 
-  - name: metrics_mantle_transfers_daily_address
+  - name: tokens_mantle_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -278,9 +278,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_optimism_transfers_daily
+  - name: tokens_optimism_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -290,9 +290,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_optimism_transfers_daily_address
+  - name: tokens_optimism_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -303,9 +303,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_polygon_transfers_daily
+  - name: tokens_polygon_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -315,9 +315,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_polygon_transfers_daily_address
+  - name: tokens_polygon_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -328,9 +328,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_ronin_transfers_daily
+  - name: tokens_ronin_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: [ 'tokens', 'net_transfers', 'daily' ]
@@ -340,9 +340,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_ronin_transfers_daily_address
+  - name: tokens_ronin_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: [ 'tokens', 'net_transfers', 'daily' ]
@@ -353,9 +353,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_scroll_transfers_daily
+  - name: tokens_scroll_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -365,9 +365,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_scroll_transfers_daily_address
+  - name: tokens_scroll_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -378,9 +378,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_sei_transfers_daily
+  - name: tokens_sei_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -390,9 +390,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_sei_transfers_daily_address
+  - name: tokens_sei_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -403,9 +403,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_tron_transfers_daily
+  - name: tokens_tron_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -415,9 +415,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_tron_transfers_daily_address
+  - name: tokens_tron_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -428,9 +428,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_zkevm_transfers_daily
+  - name: tokens_zkevm_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -440,9 +440,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_zkevm_transfers_daily_address
+  - name: tokens_zkevm_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -453,9 +453,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_zksync_transfers_daily
+  - name: tokens_zksync_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -465,9 +465,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_zksync_transfers_daily_address
+  - name: tokens_zksync_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -478,9 +478,9 @@ models:
             - blockchain
             - block_date
             - address
-  - name: metrics_zora_transfers_daily
+  - name: tokens_zora_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
@@ -490,9 +490,9 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_zora_transfers_daily_address
+  - name: tokens_zora_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
       tags: ['tokens', 'net_transfers', 'daily']
