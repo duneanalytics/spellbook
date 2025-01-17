@@ -121,6 +121,20 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+      - name: rwa
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: backing
+            data_type: varchar
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+          - name: name
+            data_type: varchar
 
 
   - name: tokens_arbitrum
@@ -174,6 +188,7 @@ sources:
             data_type: integer
           - name: name
             data_type: varchar
+      
 
 
   - name: tokens_base
@@ -276,6 +291,20 @@ sources:
           - name: symbol
             data_type: varchar
       - name: erc20_stablecoins
+        columns:
+          - name: blockchain
+            data_type: varchar
+          - name: contract_address
+            data_type: varbinary
+          - name: backing
+            data_type: varchar
+          - name: symbol
+            data_type: varchar
+          - name: decimals
+            data_type: integer
+          - name: name
+            data_type: varchar
+      - name: rwa
         columns:
           - name: blockchain
             data_type: varchar

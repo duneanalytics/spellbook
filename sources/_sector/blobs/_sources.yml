@@ -5,3 +5,4 @@ sources:
     description: "Taiko smart contracts"
     tables:
       - name: TaikoL1_evt_BlockProposed
+      - name: TaikoL1_evt_BlockProposedV2

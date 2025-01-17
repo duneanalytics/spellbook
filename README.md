@@ -11,10 +11,10 @@ Welcome to [Spellbook](https://youtu.be/o7p0BNt7NHs). Cast a magical incantation
 - Are you building something new? **Please make sure to open a Draft PR**, so we minimize duplicated work, and other wizards can help you if you need
 - Don't know where to start? The docs below will guide you, but as a summary:
   - Want to make an incremental improvement to one of our spells? (add a new project, fix a bug you found), simply open a PR with your changes.
-    - Follow the guide for [Submitting a PR](), [Setting up your dev environment]() and [Using dbt to write spells]() if you find yourself lost.
-    - Not sure how to start? Follow the walkthrough [here](https://dune.com/docs/spellbook/).
+    - Follow the guide for [Submitting a PR](#submitting-a-pr), [Setting up your dev environment](#setting-up-your-local-dev-environment) and [Using dbt to write spells](#how-to-use-dbt-to-create-spells) if you find yourself lost.
+    - Not sure how to start? Follow the walkthrough [here](#introduction).
     - Make sure to open a draft PR if you will work on your spell for longer than a few days, to avoid duplicated work
-  - Do you want to get started building spells and you don't know what to build? Check [Issues]() to see what the community needs.
+  - Do you want to get started building spells and you don't know what to build? Check [Issues](https://github.com/duneanalytics/spellbook/issues) to see what the community needs.
   - Check the Discussions section to see what problems the community is trying to solve (i.e. non-incremental changes) or propose your own!
 - Have questions? Head over to #spellbook on our [discord](https://discord.com/channels/757637422384283659/999683200563564655) and the community will be happy to help out!
 - Like with most OSS projects, your contributions to Spellbook are your own IP, you can find more details in the [Contributor License Agreement](CLA.md)

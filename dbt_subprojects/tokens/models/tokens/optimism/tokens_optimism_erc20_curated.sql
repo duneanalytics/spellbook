@@ -450,7 +450,8 @@ WITH raw_token_list AS (
     ,(0xe62dda84e579e6a37296bcfc74c97349d2c59ce3, 'ysWETH', 18, 'receipt')
     ,(0xd08C3F25862077056cb1b710937576Af899a4959, 'InstETH', 18, 'underlying')    
     ,(0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 'wUSDM', 18, 'receipt')
-    ,(0xbfd5206962267c7b4b4a8b3d76ac2e1b2a5c4d5e, 'OSAK', 18, 'underlying')        
+    ,(0xbfd5206962267c7b4b4a8b3d76ac2e1b2a5c4d5e, 'OSAK', 18, 'underlying')     
+    , (0xCA5d8F8a8d49439357d3CF46Ca2e720702F132b8, 'GYD', 18, 'underlying')     
     ) AS temp_table (contract_address, symbol, decimals, token_type)
 )
 SELECT
