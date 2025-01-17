@@ -271,7 +271,7 @@ models:
             - block_date
             - address
   
-  - name: tokens_zora_transfers_daily_address
+  - name: tokens_zora_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
