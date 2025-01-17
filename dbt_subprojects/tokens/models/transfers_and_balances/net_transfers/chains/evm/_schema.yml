@@ -13,7 +13,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_arbitrum_transfers_daily_address
+  - name: tokens_arbitrum_transfers_daily     
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -38,7 +38,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_avalanche_c_transfers_daily_address
+  - name: tokens_avalanche_c_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -63,7 +63,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_base_transfers_daily_address
+  - name: tokens_base_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -88,7 +88,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_blast_transfers_daily_address
+  - name: tokens_blast_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -113,7 +113,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_bnb_transfers_daily_address
+  - name: tokens_bnb_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -138,7 +138,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_celo_transfers_daily_address
+  - name: tokens_celo_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -163,7 +163,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_ethereum_transfers_daily_address
+  - name: tokens_ethereum_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -188,7 +188,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_fantom_transfers_daily_address
+  - name: tokens_fantom_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -213,7 +213,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_gnosis_transfers_daily_address
+  - name: tokens_gnosis_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -238,7 +238,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_linea_transfers_daily_address
+  - name: tokens_linea_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -265,7 +265,7 @@ models:
             - blockchain
             - block_date
 
-  - name: tokens_mantle_transfers_daily_address
+  - name: tokens_mantle_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -290,7 +290,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_optimism_transfers_daily_address
+  - name: tokens_optimism_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -315,7 +315,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_polygon_transfers_daily_address
+  - name: tokens_polygon_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -340,7 +340,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_ronin_transfers_daily_address
+  - name: tokens_ronin_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -365,7 +365,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_scroll_transfers_daily_address
+  - name: tokens_scroll_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -390,7 +390,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_sei_transfers_daily_address
+  - name: tokens_sei_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -415,7 +415,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_tron_transfers_daily_address
+  - name: tokens_tron_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -440,7 +440,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_zkevm_transfers_daily_address
+  - name: tokens_zkevm_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -465,7 +465,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_zksync_transfers_daily_address
+  - name: tokens_zksync_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
@@ -490,7 +490,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: tokens_zora_transfers_daily_address
+  - name: tokens_zora_transfers_daily
     meta:
       sector: tokens
       contributors: jeff-dude, 0xRob
