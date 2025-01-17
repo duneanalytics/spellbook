@@ -407,61 +407,6 @@ sources:
           - name: parent_beacon_block_root
             description: "Root hash of the parent beacon block"
 
-      - name: logs
-        meta:
-          docs_slug: /evm/ink/raw/logs
-          short_description: The logs table contains event logs emitted by smart contracts.
-        description: '{{ doc("ink_logs_doc") }}'
-        columns:
-          - name: block_time
-            description: "The exact UTC timestamp when the block containing this log was added to the chain"
-            tests:
-              - not_null
-          - name: block_number
-            description: "The sequential number of the block containing this log"
-            tests:
-              - not_null
-          - name: block_hash
-            description: "Hash of the block containing this log"
-            tests:
-              - not_null
-          - name: contract_address
-            description: "Address of the contract that emitted this log"
-            tests:
-              - not_null
-          - name: topic0
-            description: "First topic (event signature hash)"
-          - name: topic1
-            description: "Second topic (if any)"
-          - name: topic2
-            description: "Third topic (if any)"
-          - name: topic3
-            description: "Fourth topic (if any)"
-          - name: data
-            description: "Additional data included in the log"
-          - name: tx_hash
-            description: "Hash of the transaction that generated this log"
-            tests:
-              - not_null
-          - name: index
-            description: "Index position of the log in the block"
-            tests:
-              - not_null
-          - name: tx_index
-            description: "Index position of the transaction in the block"
-            tests:
-              - not_null
-          - name: block_date
-            description: "The UTC date of the block containing this log"
-            tests:
-              - not_null
-          - name: tx_from
-            description: "Address that initiated the transaction"
-            tests:
-              - not_null
-          - name: tx_to
-            description: "Recipient address of the transaction"
-
   - name: erc20_ink
     description: "Transfer events for ERC20 tokens on Ink blockchain"
     tables:
@@ -487,6 +432,28 @@ sources:
             description: "The timestamp of the block containing this transfer"
           - name: evt_block_number
             description: "The block number containing this transfer"
+      - name: evt_approval
+        meta:
+          docs_slug: /evm/ink/decoded/interfaces/erc20/evt_approval
+          short_description: The `ink.evt_approval` table contains approval events for ERC20 tokens on ink, allowing an address to spend tokens on behalf of the owner.
+        description: '{{ doc("erc20_ink_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: owner
+            description: "address of the token owner granting approval"
+          - name: spender
+            description: "address being granted permission to spend tokens"
+          - name: value
+            description: "Amount of ERC20 tokens approved for spending, in the token's smallest unit"
 
   - name: erc721_ink
     description: "Transfer events for ERC721 tokens on Ink blockchain"
@@ -513,6 +480,50 @@ sources:
             description: "The timestamp of the block containing this transfer"
           - name: evt_block_number
             description: "The block number containing this transfer"
+      - name: evt_Approval
+        meta:
+          docs_slug: /evm/ink/decoded/interfaces/erc721/evt_Approval
+          short_description: "Approval events for ERC721 tokens on this network"
+        description: '{{ doc("erc721_ink_evt_Approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Contract address of the ERC721 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: approved
+            description: "The address being granted or revoked permission to operate all tokens"
+          - name: owner
+            description: "The address of the token owner granting approval"
+          - name: tokenId
+            description: "Unique identifier of the ERC721 token (NFT) for which approval is granted or revoked"
+      - name: evt_ApprovalForAll
+        meta:
+          docs_slug: /evm/ink/decoded/interfaces/erc721/evt_ApprovalForAll
+          short_description: The `ink.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the ink blockchain.
+        description: '{{ doc("erc721_ink_evt_ApprovalForAll_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: approved
+            description: "The address being granted or revoked permission to operate all tokens"
+          - name: owner
+            description: "The address of the token owner granting approval"
+          - name: operator
+            description: "The address being granted or revoked permission to operate all tokens"
 
   - name: erc1155_ink
     description: "Transfer events for ERC1155 tokens on Ink blockchain"
@@ -521,7 +532,7 @@ sources:
         meta:
           docs_slug: /evm/ink/raw/erc1155_transfers_single
           short_description: The evt_transfersingle table contains single token transfer events from ERC1155 contracts on the Ink blockchain.
-        description: '{{ doc("erc1155_ink_evt_transfer_doc") }}'
+        description: '{{ doc("erc1155_ink_evt_transfersingle_doc") }}'
         columns:
           - name: contract_address
             description: "The address of the ERC1155 token contract"
@@ -548,7 +559,7 @@ sources:
         meta:
           docs_slug: /evm/ink/raw/erc1155_transfers_batch
           short_description: The evt_transferbatch table contains batch token transfer events from ERC1155 contracts on the Ink blockchain.
-        description: '{{ doc("erc1155_ink_evt_transfer_doc") }}'
+        description: '{{ doc("erc1155_ink_evt_transferbatch_doc") }}'
         columns:
           - name: contract_address
             description: "The address of the ERC1155 token contract"
@@ -570,3 +581,25 @@ sources:
             description: "The timestamp of the block containing this transfer"
           - name: evt_block_number
             description: "The block number containing this transfer"
+      - name: evt_ApprovalForAll
+        meta:
+          docs_slug: /evm/ink/decoded/interfaces/erc1155/evt_ApprovalForAll
+          short_description: This table contains approval events for all tokens of an ERC1155 contract on this network.
+        description: '{{ doc("erc1155_ink_evt_ApprovalForAll_doc") }}'
+        columns:
+          - name: contract_address
+            description: "ink address of the ERC1155 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: approved
+            description: "Boolean indicating whether approval is granted (true) or revoked (false)"
+          - name: owner
+            description: "ink address of the token owner granting or revoking approval"
+          - name: operator
+            description: "ink address being granted or revoked permission to operate all tokens"
