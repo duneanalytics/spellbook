@@ -15,5 +15,5 @@ These tests would benefit all sector-level spells, first introduced in `nft.trad
 
 ## Where to Store Tests?
 
-- Project-specific tests can live in their own directory, following ‘spellbook/test/<project>/’.
-- Generic tests, which are applied universally and typically call a macro, must live in ‘spellbook/test/generic/’.
+- Project-specific tests can live in their own directory, following ‘spellbook/tests/<project>/’.
+- Generic tests, which are applied universally and typically call a macro, must live in ‘spellbook/tests/generic/’.
