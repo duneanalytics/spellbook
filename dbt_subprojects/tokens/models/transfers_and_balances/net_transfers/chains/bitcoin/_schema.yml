@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: tokens_bitcoin_transfers_daily
+    meta:
+      sector: tokens
+      contributors: jeff-dude, 0xRob
+    config:
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address for Bitcoin"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
