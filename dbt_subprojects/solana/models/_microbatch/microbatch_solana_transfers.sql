@@ -6,8 +6,8 @@
     file_format = 'delta',
     incremental_strategy='microbatch',
     event_time='block_time',
-    begin='2025-01-01',
-    batch_size='month',
+    begin='2025-01-10',
+    batch_size='day',
     lookback=1,
     unique_key = ['block_date', 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'block_slot']
 ) }}
