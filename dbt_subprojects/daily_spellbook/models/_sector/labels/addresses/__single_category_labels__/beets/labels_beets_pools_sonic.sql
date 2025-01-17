@@ -55,7 +55,8 @@ WITH v2_pools AS(
     t.tokens AS token_address,
     0 AS normalized_weight,
     cc.symbol,
-    'ECLP' AS pool_type
+    'ECLP' AS pool_type,
+    cc.name
   FROM {{ source('beethoven_x_v2_sonic', 'Vault_evt_PoolRegistered') }} c
   INNER JOIN {{ source('gyroscope_sonic', 'GyroECLPPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
