@@ -95,3 +95,4 @@ sources:
   - name: swaap_v2_optimism
     tables:
       - name: Vault_evt_Swap
+      - name: Vault_evt_PoolRegistered
