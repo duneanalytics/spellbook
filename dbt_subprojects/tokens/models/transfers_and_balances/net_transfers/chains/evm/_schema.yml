@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: metrics_arbitrum_transfers_daily
+  - name: tokens_arbitrum_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -15,11 +15,11 @@ models:
             - block_date
   - name: metrics_arbitrum_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -28,10 +28,10 @@ models:
             - address
   - name: metrics_avalanche_c_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
+      tags: ['tokens', 'transfers', 'daily']
     description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -40,11 +40,11 @@ models:
             - block_date
   - name: metrics_avalanche_c_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -53,48 +53,48 @@ models:
             - address
   - name: metrics_base_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_base_transfers_daily_address
+  - name: tokens_base_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - block_date
             - address
-  - name: metrics_blast_transfers_daily
+  - name: tokens_blast_transfers_daily
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_blast_transfers_daily_address
+  - name: tokens_blast_transfers_daily_address
     meta:
-      sector: metrics
+      sector: tokens
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -106,8 +106,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -118,8 +118,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -131,8 +131,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -143,8 +143,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -156,8 +156,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -168,8 +168,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -181,8 +181,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -193,8 +193,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -206,8 +206,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -218,8 +218,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -231,8 +231,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -243,8 +243,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -257,8 +257,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -270,8 +270,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -283,8 +283,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -295,8 +295,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -308,8 +308,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -320,8 +320,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -333,8 +333,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: [ 'metrics', 'transfers', 'daily' ]
-    description: "Total transfer amount per day"
+      tags: [ 'tokens', 'net_transfers', 'daily' ]
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -345,8 +345,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: [ 'metrics', 'transfers', 'daily' ]
-    description: "Total transfer amount per day per address"
+      tags: [ 'tokens', 'net_transfers', 'daily' ]
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -358,8 +358,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -370,8 +370,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -383,8 +383,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -395,8 +395,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -408,8 +408,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -420,8 +420,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -433,8 +433,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -445,8 +445,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -458,8 +458,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -470,8 +470,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -483,8 +483,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -495,8 +495,8 @@ models:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total net transfer amount per day per address"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
