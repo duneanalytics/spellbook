@@ -1,7 +1,6 @@
 {{ config(
     schema = 'bebop_rfq_arbitrum',
     alias = 'trades',
-    tags = ['prod_exclude'],
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
