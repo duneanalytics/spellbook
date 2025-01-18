@@ -100,9 +100,9 @@ SELECT
         dexs.token_bought_amount * erc4626a.price,
         dexs.token_sold_amount * erc4626a.price
     ) AS amount_usd
-    , COALESCE(erc4626a.underlying_token_symbol, 
+    , COALESCE(erc4626a.underlying_token, 
         token_bought_address) AS token_bought_address
-    , COALESCE(erc4626b.underlying_token_symbol, 
+    , COALESCE(erc4626b.underlying_token, 
         token_sold_address) AS token_sold_address
     , taker
     , maker
