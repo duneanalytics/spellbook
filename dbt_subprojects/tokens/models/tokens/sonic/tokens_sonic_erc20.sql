@@ -38,4 +38,8 @@ FROM (VALUES
     , (0xddf26b42c1d903de8962d3f79a74a501420d5f19, 'EQUAL', 18)
     , (0x313636D4f23859142b523a7965B76F6e3965Af64, 'SonicSwap', 18)
     , (0x4eec869d847a6d13b0f6d1733c5dec0d1e741b4f, 'INDI', 18)
+    , (0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba, 'stkscUSD', 6)
+    , (0x455d5f11Fea33A8fa9D3e285930b478B6bF85265, 'stkscETH', 18)
+    , (0x541FD749419CA806a8bc7da8ac23D346f2dF8B77, 'SolvBTC', 18)
+    , (0xCC0966D8418d412c599A6421b760a847eB169A8c, 'solvBTC.bbn', 18)
 ) as temp (contract_address, symbol, decimals)
