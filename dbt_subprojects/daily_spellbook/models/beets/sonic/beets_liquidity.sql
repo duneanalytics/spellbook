@@ -31,6 +31,7 @@ v3 AS(
     )
 }})
 
+
 SELECT * FROM v2
 
 UNION

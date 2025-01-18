@@ -1872,7 +1872,8 @@ FROM
     ('usr-resolv-usr', 'ethereum', 'USR', 0x66a1e37c9b0eaddca17d3662d6c05f4decf3e110, 18),
     ('sovrn-sovrun','ethereum', 'SOVRN', 0x031B8d752d73d7Fe9678ACEf26e818280D0646b4, 18),
     ('apw-spectra','ethereum', 'APW', 0x4104b135dbc9609fc1a9490e61369036497660c8, 18),
-    ('wagmi5-wagmi', 'ethereum', 'WAGMI', 0x92CC36D66e9d739D50673d1f27929a371FB83a67, 18)
+    ('wagmi5-wagmi', 'ethereum', 'WAGMI', 0x92CC36D66e9d739D50673d1f27929a371FB83a67, 18),
+    ('deusd-elixir-deusd','ethereum', 'DEUSD', 0x15700b564ca08d9439c58ca5053166e8317aa138, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
