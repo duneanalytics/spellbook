@@ -1,0 +1,513 @@
+version: 2
+
+sources:
+  # Ink Tables
+  - name: ink
+    description: "Ink is a Layer 2 (L2) blockchain developed by Kraken to connect users to decentralized finance (DeFi). It's built on Optimism's Superchain, which is a network of L2 blockchains that share security, governance, and other resources."
+
+    tables:
+      - name: transactions
+        meta:
+          docs_slug: /evm/ink/raw/transactions
+          short_description: The transactions table contains detailed information about transactions on the Ink network.
+        description: '{{ doc("ink_transactions_doc") }}'
+
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this transaction"
+          - name: value
+            description: "Amount of native tokens transferred in this transaction"
+          - name: gas_limit
+            description: "Maximum amount of gas units that this transaction can consume"
+          - name: gas_price
+            description: "Price per unit of gas for this transaction"
+          - name: gas_used
+            description: "Actual amount of gas units consumed by this transaction's execution"
+          - name: max_fee_per_gas
+            description: "Maximum total fee per gas the sender is willing to pay (base fee + priority fee)"
+          - name: max_priority_fee_per_gas
+            description: "Maximum additional fee per gas the sender is willing to pay to validators"
+          - name: priority_fee_per_gas
+            description: "Actual priority fee per gas paid to validators"
+          - name: nonce
+            description: "Sequential number representing the count of transactions sent from the sender's address"
+          - name: index
+            description: "Position of this transaction within its containing block"
+          - name: success
+            description: "Boolean indicating whether the transaction executed successfully"
+          - name: from
+            description: "Address that initiated and signed this transaction"
+          - name: to
+            description: "Recipient address of this transaction"
+          - name: block_hash
+            description: "Hash of the block containing this transaction"
+          - name: data
+            description: "Input data of the transaction, containing function calls or contract interaction data"
+          - name: hash
+            description: "Unique hash identifier of this transaction"
+          - name: type
+            description: "Transaction type (e.g., legacy, EIP-1559, EIP-2930)"
+          - name: access_list
+            description: "List of addresses and storage keys the transaction plans to access (EIP-2930)"
+          - name: chain_id
+            description: "Identifier of the blockchain network"
+          - name: block_date
+            description: "The UTC date of the block containing this transaction"
+      - name: traces
+        meta:
+          docs_slug: /evm/ink/raw/traces
+          short_description: The traces table contains detailed execution traces of transactions.
+        description: '{{ doc("ink_traces_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this trace was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this trace"
+          - name: value
+            description: "Amount of native tokens transferred in this trace"
+          - name: gas
+            description: "Amount of gas allocated for this trace's execution"
+          - name: gas_used
+            description: "Actual amount of gas consumed by this trace"
+          - name: block_hash
+            description: "Hash of the block containing this trace"
+          - name: success
+            description: "Boolean indicating whether this trace executed successfully"
+          - name: tx_index
+            description: "Index position of the parent transaction in the block"
+          - name: tx_from
+            description: "Address that initiated the parent transaction"
+          - name: tx_to
+            description: "Recipient address of the parent transaction"
+          - name: sub_traces
+            description: "Number of child traces spawned by this trace"
+          - name: error
+            description: "Error message if the trace execution failed"
+          - name: tx_success
+            description: "Boolean indicating whether the parent transaction was successful"
+          - name: tx_hash
+            description: "Hash of the parent transaction"
+          - name: from
+            description: "Address that initiated this trace"
+          - name: to
+            description: "Recipient address of this trace"
+          - name: trace_address
+            description: "Array indicating the position of this trace in the trace tree"
+          - name: type
+            description: "Type of trace (call, create, suicide, etc.)"
+          - name: address
+            description: "Address of the contract if this is a contract creation trace"
+          - name: code
+            description: "Contract bytecode if this is a contract creation trace"
+          - name: call_type
+            description: "Type of call (call, delegatecall, staticcall)"
+          - name: input
+            description: "Input data provided to this trace"
+          - name: output
+            description: "Output data returned by this trace"
+          - name: refund_address
+            description: "Address to receive any gas refund"
+          - name: revert_reason
+            description: "Reason for reversion if the trace was reverted"
+          - name: block_date
+            description: "The UTC date of the block containing this trace"
+
+      - name: traces_decoded
+        meta:
+          docs_slug: /evm/ink/decoded/traces_decoded
+          short_description: The traces_decoded table contains decoded traces with additional information based on contract ABIs.
+        description: '{{ doc("ink_traces_decoded_doc") }}'
+        columns:
+          - name: block_date
+            description: "The UTC date of the block containing this trace"
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this trace was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this trace"
+          - name: namespace
+            description: "Categorical grouping or project name associated with the contract"
+          - name: contract_name
+            description: "Human-readable name of the smart contract involved in this trace"
+          - name: to
+            description: "Address of the contract receiving this trace"
+          - name: trace_address
+            description: "Array indicating the position of this trace in the trace tree"
+          - name: tx_hash
+            description: "Hash of the parent transaction"
+          - name: tx_from
+            description: "Address that initiated the parent transaction"
+          - name: tx_to
+            description: "Recipient address of the parent transaction"
+          - name: signature
+            description: "Function signature hash"
+          - name: function_name
+            description: "Human-readable name of the called function"
+
+      - name: logs
+        meta:
+          docs_slug: /evm/ink/raw/logs
+          short_description: The logs table contains event logs emitted by smart contracts on the ink blockchain.
+        description: '{{ doc("ink_logs_doc") }}'
+        columns:
+          - name: block_date
+            description: "The UTC date of the block in which this transaction was included"
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this transaction"
+          - name: block_hash
+            description: "Unique 256-bit identifier (hash) of the block containing this transaction"
+          - name: tx_index
+            description: "Position of the parent transaction within its containing block"
+          - name: tx_hash
+            description: "Unique 256-bit identifier (hash) of the parent transaction"
+          - name: contract_address
+            description: "Address of the smart contract that emitted this log"
+          - name: topic0
+            description: "First 32-byte topic, typically containing the event signature hash"
+          - name: topic1
+            description: "Second 32-byte topic, often containing indexed event parameters"
+          - name: topic2
+            description: "Third 32-byte topic, often containing indexed event parameters"
+          - name: topic3
+            description: "Fourth 32-byte topic, often containing indexed event parameters"
+          - name: data
+            description: "ABI-encoded data of the log, containing non-indexed event parameters"
+          - name: index
+            description: "Position of this log within the block"
+          - name: tx_from
+            description: "Address that initiated the transaction which created this log"
+          - name: tx_to
+            description: "Recipient address of the transaction which created this log"
+
+      - name: logs_decoded
+        meta:
+          docs_slug: /evm/ink/decoded/logs_decoded
+          short_description: The logs_decoded table contains decoded event logs with additional information based on contract ABIs.
+        description: '{{ doc("ink_logs_decoded_doc") }}'
+        columns:
+          - name: block_date
+            description: "The UTC date of the block containing this log"
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this log was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this log"
+          - name: namespace
+            description: "Categorical grouping or project name associated with the contract"
+          - name: contract_name
+            description: "Human-readable name of the smart contract that emitted this event"
+          - name: contract_address
+            description: "Address of the contract that emitted this event"
+          - name: tx_hash
+            description: "Hash of the transaction that generated this event"
+          - name: tx_from
+            description: "Address that initiated the transaction"
+          - name: tx_to
+            description: "Recipient address of the transaction"
+          - name: index
+            description: "Index position of the log in the block"
+          - name: signature
+            description: "Event signature hash"
+          - name: event_name
+            description: "Human-readable name of the emitted event"
+
+      - name: contracts
+        meta:
+          docs_slug: /evm/ink/raw/contracts
+          short_description: The contracts table tracks decoded contracts on ink, including associated metadata such as namespace, name, address, ABI. It is populated manually by the Dune Community via [contract decoding submissions](https://dune.com/contracts/new).
+        description: '{{ doc("ink_contracts_doc") }}'
+        columns:
+          - name: address
+            description: "Unique address of the contract on the blockchain"
+          - name: bytecode
+            description: "Compiled bytecode of the contract"
+          - name: name
+            description: "Human-readable name of the contract"
+          - name: namespace
+            description: "Project or protocol name associated with the contract"
+          - name: abi
+            description: "JSON representation of the contract's Application Binary Interface"
+          - name: created_at
+            description: "Timestamp when this contract entry was created in the table"
+
+      - name: contracts_submitted
+        meta:
+          docs_slug: /evm/ink/decoded/contracts_submitted
+          short_description: The contracts_submitted table contains information about contracts submitted for decoding.
+        description: '{{ doc("ink_contracts_submitted_doc") }}'
+        columns:
+          - name: address
+            description: "Address of the submitted contract"
+          - name: namespace
+            description: "Project or protocol name associated with the contract"
+          - name: name
+            description: "Name of the submitted contract"
+          - name: submitted_at
+            description: "Timestamp when the contract was submitted for decoding"
+          - name: submitted_by
+            description: "Address or identifier of the user who submitted the contract"
+
+      - name: creation_traces
+        meta:
+          docs_slug: /evm/ink/raw/creation_traces
+          short_description: The creation_traces table contains information about contract creation traces on the network.
+        description: '{{ doc("ink_creation_traces_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this contract creation was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this contract creation"
+          - name: tx_hash
+            description: "Unique 256-bit identifier (hash) of the transaction that created this contract"
+          - name: address
+            description: "The address of the newly created contract"
+          - name: from
+            description: "The address that initiated the contract creation"
+          - name: code
+            description: "The deployment bytecode of the contract"
+          - name: block_month
+            description: "The UTC month of the block in which this contract creation occurred"
+
+      - name: blocks
+        meta:
+          docs_slug: /evm/ink/raw/blocks
+          short_description: The blocks table contains detailed information about blocks on the network.
+        description: '{{ doc("ink_blocks_doc") }}'
+        columns:
+          - name: time
+            description: "The exact UTC timestamp when this block was added to the chain"
+          - name: number
+            description: "The sequential block number"
+          - name: gas_limit
+            description: "Maximum amount of gas that could be used in this block"
+          - name: gas_used
+            description: "Actual amount of gas used in this block"
+          - name: difficulty
+            description: "Mining difficulty for this block"
+          - name: total_difficulty
+            description: "Total chain difficulty up to this block"
+          - name: size
+            description: "Size of the block in bytes"
+          - name: base_fee_per_gas
+            description: "Base fee per gas in this block (EIP-1559)"
+          - name: hash
+            description: "Unique 256-bit identifier (hash) of this block"
+          - name: parent_hash
+            description: "Hash of the parent block"
+          - name: miner
+            description: "Address of the miner/validator who produced this block"
+          - name: nonce
+            description: "Nonce value used in block mining"
+          - name: state_root
+            description: "Root hash of the state trie after this block"
+          - name: transactions_root
+            description: "Root hash of the transaction trie of this block"
+          - name: receipts_root
+            description: "Root hash of the receipts trie of this block"
+          - name: date
+            description: "The UTC date of this block"
+          - name: blob_gas_used
+            description: "Amount of blob gas used in this block (EIP-4844)"
+          - name: excess_blob_gas
+            description: "Excess blob gas in this block (EIP-4844)"
+          - name: parent_beacon_block_root
+            description: "Root hash of the parent beacon block"
+
+  - name: erc20_ink
+    description: "Transfer events for ERC20 tokens on Ink blockchain"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/ink/raw/erc20_transfers
+          short_description: The evt_transfer table contains all ERC20 token transfer events on the Ink blockchain.
+        description: '{{ doc("erc20_ink_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC20 token contract"
+          - name: from
+            description: "The address sending the tokens"
+          - name: to
+            description: "The address receiving the tokens"
+          - name: value
+            description: "The amount of tokens transferred"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
+      - name: evt_approval
+        meta:
+          docs_slug: /evm/ink/decoded/interfaces/erc20/evt_approval
+          short_description: The `ink.evt_approval` table contains approval events for ERC20 tokens on ink, allowing an address to spend tokens on behalf of the owner.
+        description: '{{ doc("erc20_ink_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: owner
+            description: "address of the token owner granting approval"
+          - name: spender
+            description: "address being granted permission to spend tokens"
+          - name: value
+            description: "Amount of ERC20 tokens approved for spending, in the token's smallest unit"
+
+  - name: erc721_ink
+    description: "Transfer events for ERC721 tokens on Ink blockchain"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/ink/raw/erc721_transfers
+          short_description: The evt_transfer table contains all ERC721 token transfer events on the Ink blockchain.
+        description: '{{ doc("erc721_ink_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC721 token contract"
+          - name: from
+            description: "The address sending the NFT"
+          - name: to
+            description: "The address receiving the NFT"
+          - name: tokenId
+            description: "The unique identifier of the NFT being transferred"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
+      - name: evt_Approval
+        meta:
+          docs_slug: /evm/ink/decoded/interfaces/erc721/evt_Approval
+          short_description: "Approval events for ERC721 tokens on this network"
+        description: '{{ doc("erc721_ink_evt_Approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Contract address of the ERC721 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: approved
+            description: "The address being granted or revoked permission to operate all tokens"
+          - name: owner
+            description: "The address of the token owner granting approval"
+          - name: tokenId
+            description: "Unique identifier of the ERC721 token (NFT) for which approval is granted or revoked"
+      - name: evt_ApprovalForAll
+        meta:
+          docs_slug: /evm/ink/decoded/interfaces/erc721/evt_ApprovalForAll
+          short_description: The `ink.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the ink blockchain.
+        description: '{{ doc("erc721_ink_evt_ApprovalForAll_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: approved
+            description: "The address being granted or revoked permission to operate all tokens"
+          - name: owner
+            description: "The address of the token owner granting approval"
+          - name: operator
+            description: "The address being granted or revoked permission to operate all tokens"
+
+  - name: erc1155_ink
+    description: "Transfer events for ERC1155 tokens on Ink blockchain"
+    tables:
+      - name: evt_transfersingle
+        meta:
+          docs_slug: /evm/ink/raw/erc1155_transfers_single
+          short_description: The evt_transfersingle table contains single token transfer events from ERC1155 contracts on the Ink blockchain.
+        description: '{{ doc("erc1155_ink_evt_transfersingle_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC1155 token contract"
+          - name: operator
+            description: "The address authorized to make the transfer"
+          - name: from
+            description: "The address sending the tokens"
+          - name: to
+            description: "The address receiving the tokens"
+          - name: id
+            description: "The identifier for the token being transferred"
+          - name: value
+            description: "The amount of tokens being transferred"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
+
+      - name: evt_transferbatch
+        meta:
+          docs_slug: /evm/ink/raw/erc1155_transfers_batch
+          short_description: The evt_transferbatch table contains batch token transfer events from ERC1155 contracts on the Ink blockchain.
+        description: '{{ doc("erc1155_ink_evt_transferbatch_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC1155 token contract"
+          - name: operator
+            description: "The address authorized to make the transfer"
+          - name: from
+            description: "The address sending the tokens"
+          - name: to
+            description: "The address receiving the tokens"
+          - name: ids
+            description: "The array of token identifiers being transferred"
+          - name: values
+            description: "The array of amounts being transferred for each token id"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
+      - name: evt_ApprovalForAll
+        meta:
+          docs_slug: /evm/ink/decoded/interfaces/erc1155/evt_ApprovalForAll
+          short_description: This table contains approval events for all tokens of an ERC1155 contract on this network.
+        description: '{{ doc("erc1155_ink_evt_ApprovalForAll_doc") }}'
+        columns:
+          - name: contract_address
+            description: "ink address of the ERC1155 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: approved
+            description: "Boolean indicating whether approval is granted (true) or revoked (false)"
+          - name: owner
+            description: "ink address of the token owner granting or revoking approval"
+          - name: operator
+            description: "ink address being granted or revoked permission to operate all tokens"
