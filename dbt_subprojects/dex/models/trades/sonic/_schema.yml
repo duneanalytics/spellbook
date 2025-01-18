@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: dex_sonic_base_trades
+    data_tests:
+      - check_dex_info_relationship
+
+  - name: beets_sonic_base_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      project: beets
+      contributors: viniabussafi
+    config:
+      tags: ['sonic', 'dex', 'trades', 'beets']
+    description: "beets sonic base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('beets_sonic_base_trades_seed')
