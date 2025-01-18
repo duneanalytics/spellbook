@@ -39,6 +39,7 @@
     , ref('tradewiz_solana_bot_trades')
     , ref('prophetbots_solana_bot_trades')
     , ref('sanji_solana_bot_trades')
+    , ref('fasol_solana_bot_trades')
 ] %}
 
 {% for bot in solana_trading_bot %}
