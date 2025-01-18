@@ -113,7 +113,7 @@ WITH
    daily_usd_balance AS (
         SELECT
             c.day AS block_date,
-            '{{blockchain}}"' as blockchain,
+            '{{blockchain}}' as blockchain,
             b.pool_id,
             b.pool_symbol,
             b.pool_type,
@@ -308,7 +308,7 @@ WITH
    daily_usd_balance AS (
         SELECT
             c.day AS block_date,
-            '{{blockchain}}"' as blockchain,
+            '{{blockchain}}' as blockchain,
             b.pool_id,
             b.pool_symbol,
             b.pool_type,
