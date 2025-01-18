@@ -1,13 +1,13 @@
 {{ config(
 	
-	schema = 'pika_v4_optimism',
-	alias = 'perpetual_trades',
-	partition_by = ['block_month'],
-	materialized = 'incremental',
-	file_format = 'delta',
-	incremental_strategy = 'merge',
-	unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
+		schema = 'pika_v4_optimism',
+		alias = 'perpetual_trades',
+		partition_by = ['block_month'],
+		materialized = 'incremental',
+		file_format = 'delta',
+		incremental_strategy = 'merge',
+		unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
+	post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
                                     spell_type = "project",
                                     spell_name = "pika",
                                     contributors = \'["msilb7", "drethereum", "rplust","principatel"]\') }}'                  
@@ -80,7 +80,8 @@ perps AS (
 		WHEN productId = UINT256 '10' OR productId = UINT256 '24' THEN 'APE'
 		WHEN productId = UINT256 '11' OR productId = UINT256 '25' THEN 'AXS'
 		WHEN productId = UINT256 '12' OR productId = UINT256 '26' THEN 'UNI'
-		ELSE CONCAT ('product_id_', CAST(productId as VARCHAR))
+		-- ELSE CONCAT ('product_id_', CAST(productId as VARCHAR))
+		'product_id_' || productId
 		END AS virtual_asset
 		,CASE
 		WHEN productId = UINT256 '1' OR productId = UINT256 '16' THEN 'ETH'
@@ -95,7 +96,8 @@ perps AS (
 		WHEN productId = UINT256 '10' OR productId = UINT256 '24' THEN 'APE'
 		WHEN productId = UINT256 '11' OR productId = UINT256 '25' THEN 'AXS'
 		WHEN productId = UINT256 '12' OR productId = UINT256 '26' THEN 'UNI'
-		ELSE CONCAT ('product_id_', CAST(productId as VARCHAR))
+		-- ELSE CONCAT ('product_id_', CAST(productId as VARCHAR))
+		'product_id_' || productId
 		END AS underlying_asset
 
 		,CASE
@@ -111,7 +113,8 @@ perps AS (
 		WHEN productId = UINT256 '10' OR productId = UINT256 '24' THEN 'APE'
 		WHEN productId = UINT256 '11' OR productId = UINT256 '25' THEN 'AXS'
 		WHEN productId = UINT256 '12' OR productId = UINT256 '26' THEN 'UNI'
-		ELSE CONCAT ('product_id_', CAST(productId as VARCHAR))
+		-- ELSE CONCAT ('product_id_', CAST(productId as VARCHAR))
+		'product_id_' || productId
 		END AS market
 		
 		,contract_address AS market_address
