@@ -1,4 +1,4 @@
-{% test test_reasonable_usd_amount(model, column_name, max_value=1000000000) %}
+{% test test_reasonable_usd_amount(model, column_name, max_value=1000000000, days_back=30) %}
 
 {# 
     Test to ensure USD amounts are within a reasonable range
@@ -6,12 +6,13 @@
         model: The model to test
         column_name: The column containing USD amounts
         max_value: Maximum allowed USD amount (default: $1B)
+        days_back: Number of days to look back (default: 30)
 #}
 
 WITH base_trades AS (
     SELECT *
     FROM {{ model }}
-    WHERE block_time >= NOW() - INTERVAL '1' day  -- Only check recent trades
+    WHERE block_time >= NOW() - INTERVAL '{{ days_back }}' day  -- Check trades for the specified days
 ),
 
 enrichments AS (
@@ -64,7 +65,7 @@ prices AS (
         minute,
         price
     FROM {{ source('prices', 'usd') }}
-    WHERE minute >= NOW() - INTERVAL '1' day  -- Match base_trades time filter
+    WHERE minute >= NOW() - INTERVAL '{{ days_back }}' day  -- Match base_trades time filter
 ),
 
 trusted_tokens AS (
