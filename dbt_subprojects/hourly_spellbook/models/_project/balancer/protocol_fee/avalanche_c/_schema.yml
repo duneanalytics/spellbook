@@ -59,3 +59,6 @@ models:
       - &treasury_revenue_usd
         name: treasury_revenue_usd
         description: "USD value of fee directed to Balancer DAO's treasury"
+      - &lp_fee_collected_usd
+        name: lp_fee_collected_usd
+        description: "USD value of the fee returned to liquidity providers"        
