@@ -166,5 +166,5 @@ INNER JOIN {{ source('optimism', 'transactions') }} AS tx
 	AND tx.block_time >= DATE '{{project_start_date}}'
 	{% endif %}
 	{% if is_incremental() %}
-	AND tx.block_time >= DATE_TRUNC('DAY', NOW() - INTERVAL '7' Day)
+	AND {{incremental_predicate('tx.block_time')}}
 	{% endif %}
