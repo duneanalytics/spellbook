@@ -27,6 +27,19 @@ filtered_balances as (
        start_date='2021-11-11',
        address_list='op_addresses'
   ) }}
+),
+
+--  this CTE to deduplicate the data
+deduplicated_balances as (
+  SELECT 
+    address,
+    balance,
+    day,
+    ROW_NUMBER() OVER (
+      PARTITION BY address, day 
+      ORDER BY balance DESC 
+    ) as rn
+  FROM filtered_balances
 )
 
 SELECT DISTINCT
@@ -36,6 +49,8 @@ SELECT DISTINCT
   COALESCE(b.balance, 0) as op_balance,
   COALESCE(b.day, current_date) as snapshot_day
 FROM 
-  filtered_balances b
+  deduplicated_balances b
 LEFT JOIN
   op_addresses p on b.address = p.address
+WHERE
+  b.rn = 1  -- Only take the first row for each address/day combination

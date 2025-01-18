@@ -22,18 +22,30 @@ WITH op_addresses AS (
   FROM {{ source('solidly_v3_optimism', 'SolidlyV3Factory_evt_PoolCreated') }}
   WHERE
     token0 = 0x4200000000000000000000000000000000000042
-    OR token1 = 0x4200000000000000000000000000000000000042
+    OR token1 = 0x4200000000000000000000000000000042
 ),
 
 filtered_balances AS (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2024-01-30',
-       address_list='op_addresses',          
+       address_list='op_addresses'          
   ) }}
+),
+
+deduplicated_balances AS (
+  SELECT 
+    address,
+    balance,
+    day,
+    ROW_NUMBER() OVER (
+      PARTITION BY address, day 
+      ORDER BY balance DESC
+    ) as rn
+  FROM filtered_balances
 )
 
-SELECT DISTINCT
+SELECT
   p.address AS pool_address,
   p.token0 AS token0,
   p.token1 AS token1,
@@ -43,6 +55,8 @@ SELECT DISTINCT
   COALESCE(b.balance, 0) AS op_balance,
   COALESCE(b.day, current_date) AS snapshot_day
 FROM 
-  filtered_balances b
+  deduplicated_balances b
 LEFT JOIN
   op_addresses p ON b.address = p.address
+WHERE
+  b.rn = 1
