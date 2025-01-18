@@ -19,6 +19,7 @@
                                         , "fantom"
                                         , "flare"
                                         , "gnosis"
+                                        , "ink"
                                         , "kaia"
                                         , "linea"
                                         , "nova"
@@ -74,6 +75,7 @@ ref('prices_native_tokens')
 ,ref('prices_viction_tokens')
 ,ref('prices_corn_tokens')
 ,ref('prices_sonic_tokens')
+,ref('prices_ink_tokens')
 ] %}
 
 
