@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: tokens_corn_erc20
+    meta:
+      blockchain: corn
+      sector: tokens
+      contributors: hosuke
+    config:
+      tags: ['tokens', 'corn', 'erc20']
+    description: "Known CORN ERC20 tokens"
+    columns:
+      - name: contract_address
+        description: "Contract address of the ERC20 token"
+        data_tests:
+          - unique
+          - not_null
+      - name: symbol
+        description: "Symbol of the token"
+        data_tests:
+          - not_null
+      - name: decimals
+        description: "Number of decimals the token has"
+        data_tests:
+          - not_null

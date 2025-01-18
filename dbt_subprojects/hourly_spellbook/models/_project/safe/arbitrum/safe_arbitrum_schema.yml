@@ -6,9 +6,6 @@ models:
       blockchain: arbitrum
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'singletons', 'arbitrum']
     description: "Singletons addresses used with Safes"
@@ -25,9 +22,6 @@ models:
       blockchain: arbitrum
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'arbitrum']
     description: "Safe addresses"
@@ -54,9 +48,6 @@ models:
       blockchain: arbitrum
       project: safe
       contributors: tschubotz, danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'arbitrum']
     description: "Safe transactions"
@@ -118,9 +109,6 @@ models:
       blockchain: arbitrum
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'transfers', 'arbitrum']
     description: "ETH transfers into or out of Safes"
@@ -149,49 +137,3 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD amount of transferred ETH"
-
-  - name: safe_arbitrum_balances
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - day
-            - address
-            - token_address
-    meta:
-      blockchain: arbitrum
-      project: safe
-      contributors: safeintern
-    config:
-      tags: ['safe', 'arbitrum']
-    description: “Safe addresses balances”
-    columns:
-      - name: day
-      - name: blockchain
-      - name: address
-      - &token_symbol
-        name: token_symbol
-        description: "Symbol for the token"
-      - &token_address
-        name: token_address
-        description: "Address for the token"
-      - &token_standard
-        name: token_standard
-        description: "Standard for the token"
-      - &token_id
-        name: token_id
-        description: "ID for the token"
-      - &balance
-        name: balance
-        description: "Balance for the user"
-      - &balance_usd
-        name: balance_usd
-        description: "USD value of balance for the user"
-      - &last_updated
-        name: last_updated
-        description: "UTC timestamp when data was last updated"
-      - &next_update
-        name: next_update
-        description: "UTC timestamp when data is next updated"
-      - &unique_key_id
-        name: unique_key_id
-        description: " unique key"

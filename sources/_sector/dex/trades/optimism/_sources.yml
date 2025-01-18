@@ -95,6 +95,13 @@ sources:
   - name: swaap_v2_optimism
     tables:
       - name: Vault_evt_Swap
+      - name: Vault_evt_PoolRegistered
+  - name: saddle_finance_optimism
+    tables:
+      - name: SwapFlashLoan_evt_TokenSwap
+  - name: bridgers_optimism
+    tables:
+      - name: Bridgers_evt_Swap 
   - name: aave_v3_optimism
     tables:
       - name: supply

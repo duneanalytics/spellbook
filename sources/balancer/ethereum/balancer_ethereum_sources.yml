@@ -352,3 +352,37 @@ sources:
             description: "veBAL holder that voted for the gauge"
           - name: weight
             description: "Weight of the user for the gauge"
+
+  - name: balancer_v3_ethereum
+    description: >
+      Decoded tables related to Balancer V3, an automated portfolio manager and trading platform, on Ethereum.
+    tables:
+      - name: Vault_evt_PoolRegistered
+
+      - name: WeightedPoolFactory_evt_PoolCreated
+
+      - name: WeightedPoolFactory_call_create
+
+      - name: Vault_evt_LiquidityAdded
+
+      - name: Vault_evt_LiquidityRemoved
+
+      - name: StablePoolFactory_evt_PoolCreated
+
+      - name: StablePoolFactory_call_create  
+
+      - name: Vault_evt_Swap
+
+      - name: ProtocolFeeController_evt_ProtocolSwapFeeCollected
+
+      - name: ProtocolFeeController_evt_ProtocolYieldFeeCollected
+
+      - name: Vault_evt_Wrap
+
+      - name: Vault_evt_Unwrap
+
+      - name: Vault_evt_LiquidityAddedToBuffer      
+
+      - name: Vault_evt_LiquidityRemovedFromBuffer       
+
+      - name: Vault_evt_SwapFeePercentageChanged
