@@ -49,3 +49,6 @@ sources:
   - name: nft_sei
     tables:
       - name: transfers
+  - name: nft_ronin
+    tables:
+      - name: transfers

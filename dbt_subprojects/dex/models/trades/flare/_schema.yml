@@ -1,0 +1,85 @@
+version: 2
+
+models:
+  - name: dex_flare_base_trades
+    meta:
+      blockchain: flare
+      sector: dex
+      project: dex
+      contributors: hosuke
+    config:
+      tags: ['flare', 'dex', 'trades']
+    description: >
+      Flare DEX trades
+    data_tests:
+      - check_dex_info_relationship
+
+  - name: enosys_v2_flare_base_trades
+    meta:
+      blockchain: flare
+      sector: dex
+      project: enosys
+      contributors: hosuke
+    config:
+      tags: [ 'flare', 'dex', 'trades', 'enosys', 'v2' ]
+    description: "Enosys V2 Flare base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: sparkdex_v2_flare_base_trades
+    meta:
+      blockchain: flare
+      sector: dex
+      project: sparkdex
+      contributors: hosuke
+    config:
+      tags: ['flare', 'dex', 'trades', 'sparkdex', 'v2']
+    description: "SparkDex (UniswapV2 fork) base trades on Flare"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sparkdex_flare_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: sparkdex_v3_flare_base_trades
+    meta:
+      blockchain: flare
+      sector: dex
+      project: sparkdex
+      contributors: hosuke
+    config:
+      tags: [ 'flare', 'dex', 'trades', 'sparkdex', 'v3' ]
+    description: "SparkDex (UniswapV3 fork) base trades on Flare"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sparkdex_flare_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: blazeswap_flare_base_trades
+    meta:
+      blockchain: flare
+      sector: dex
+      project: blazeswap
+      contributors: hosuke
+    config:
+      tags: [ 'flare', 'dex', 'trades', 'blazeswap' ]
+    description: "Blazeswap Flare base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('blazeswap_flare_base_trades_seed')
