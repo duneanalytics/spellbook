@@ -13,19 +13,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_arbitrum_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_avalanche_c_transfers_daily
     meta:
       sector: metrics
@@ -38,19 +26,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_avalanche_c_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+ 
   - name: metrics_base_transfers_daily
     meta:
       sector: metrics
@@ -63,19 +39,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_base_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_blast_transfers_daily
     meta:
       sector: metrics
@@ -88,19 +52,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_blast_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_bnb_transfers_daily
     meta:
       sector: metrics
@@ -113,19 +65,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_bnb_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_celo_transfers_daily
     meta:
       sector: metrics
@@ -138,19 +78,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_celo_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_ethereum_transfers_daily
     meta:
       sector: metrics
@@ -163,19 +91,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_ethereum_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_fantom_transfers_daily
     meta:
       sector: metrics
@@ -188,19 +104,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_fantom_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_gnosis_transfers_daily
     meta:
       sector: metrics
@@ -213,19 +117,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_gnosis_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_linea_transfers_daily
     meta:
       sector: metrics
@@ -238,19 +130,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_linea_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
 
   - name: metrics_mantle_transfers_daily
     meta:
@@ -265,19 +145,7 @@ models:
             - blockchain
             - block_date
 
-  - name: metrics_mantle_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_optimism_transfers_daily
     meta:
       sector: metrics
@@ -290,19 +158,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_optimism_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_polygon_transfers_daily
     meta:
       sector: metrics
@@ -315,19 +171,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_polygon_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_ronin_transfers_daily
     meta:
       sector: metrics
@@ -340,19 +184,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_ronin_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: [ 'metrics', 'transfers', 'daily' ]
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_scroll_transfers_daily
     meta:
       sector: metrics
@@ -365,19 +197,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_scroll_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_sei_transfers_daily
     meta:
       sector: metrics
@@ -390,19 +210,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_sei_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_tron_transfers_daily
     meta:
       sector: metrics
@@ -415,19 +223,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_tron_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_zkevm_transfers_daily
     meta:
       sector: metrics
@@ -440,19 +236,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_zkevm_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+  
   - name: metrics_zksync_transfers_daily
     meta:
       sector: metrics
@@ -465,19 +249,7 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_zksync_transfers_daily_address
-    meta:
-      sector: metrics
-      contributors: jeff-dude, 0xRob
-    config:
-      tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - block_date
-            - address
+ 
   - name: metrics_zora_transfers_daily
     meta:
       sector: metrics
@@ -490,16 +262,15 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-  - name: metrics_zora_transfers_daily_address
+  - name: metrics_zora_transfers_daily
     meta:
       sector: metrics
       contributors: jeff-dude, 0xRob
     config:
       tags: ['metrics', 'transfers', 'daily']
-    description: "Total transfer amount per day per address"
+    description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - block_date
-            - address
