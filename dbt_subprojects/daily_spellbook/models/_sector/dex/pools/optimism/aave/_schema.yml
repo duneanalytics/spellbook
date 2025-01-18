@@ -5,7 +5,7 @@ models:
     description: "Tracks OP token balances in Aave pools on Optimism."
     meta:
       blockchain: optimism
-      sector: DEX
+      sector: Leding
       project: aave
       contributors: jason
     config:

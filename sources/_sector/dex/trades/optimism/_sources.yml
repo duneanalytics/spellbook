@@ -53,6 +53,7 @@ sources:
   - name: openxswap_optimism
     tables:
       - name: Aggregator_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
   - name: openocean_v2_optimism
     tables:
       - name: OpenOceanExchangeProxy_evt_Swapped
