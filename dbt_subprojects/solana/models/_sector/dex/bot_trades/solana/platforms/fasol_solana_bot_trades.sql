@@ -35,6 +35,36 @@ WITH
         address = '{{fee_receiver_1}}'
       )
   ),
+  prices_filtered AS (
+    SELECT
+      blockchain,
+      minute,
+      contract_address,
+      price
+    FROM 
+      {{ source('prices', 'usd') }}
+    WHERE
+      blockchain = 'solana'
+      {% if is_incremental() %}
+      AND {{ incremental_predicate('minute') }}
+      {% else %}
+      AND minute >= TIMESTAMP '{{project_start_date}}'
+      {% endif %}
+  ),
+  transactions_filtered AS (
+    SELECT
+      id,
+      block_time,
+      signer
+    FROM 
+      {{ source('solana','transactions') }}
+    WHERE
+      {% if is_incremental() %}
+      {{ incremental_predicate('block_time') }}
+      {% else %}
+      block_time >= TIMESTAMP '{{project_start_date}}'
+      {% endif %}
+  ),
   botTrades AS (
     SELECT
       trades.block_time,
@@ -69,23 +99,12 @@ WITH
     FROM
       {{ ref('dex_solana_trades') }} AS trades
       JOIN allFeePayments AS feePayments ON trades.tx_id = feePayments.tx_id
-      LEFT JOIN {{ source('prices', 'usd') }} AS feeTokenPrices ON (
-        feeTokenPrices.blockchain = 'solana'
-        AND fee_token_mint_address = toBase58 (feeTokenPrices.contract_address)
+      LEFT JOIN prices_filtered AS feeTokenPrices ON (
+        fee_token_mint_address = toBase58(feeTokenPrices.contract_address)
         AND date_trunc('minute', block_time) = minute
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('minute') }}
-        {% else %}
-        AND minute >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
       )
-      JOIN {{ source('solana','transactions') }} AS transactions ON (
+      JOIN transactions_filtered AS transactions ON (
         trades.tx_id = id
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('transactions.block_time') }}
-        {% else %}
-        AND transactions.block_time >= TIMESTAMP '{{project_start_date}}'
-        {% endif %}
       )
     WHERE
       trades.trader_id != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
