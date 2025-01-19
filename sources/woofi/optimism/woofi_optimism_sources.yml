@@ -20,7 +20,7 @@ sources:
 
       - name: WooRouterV2_evt_WooRouterSwap
         description: >
-          'Decoded table related to swap events from  the router contract that routes to 3rd party DEXs incase there is less liquidity in liquidity reserves'
+          'Decoded table related to swap events from  the router contract that routes to 3rd party DEXs in case there is less liquidity in liquidity reserves'
         columns:
           - name: contract_address
             description: 'optimism address for the router contract'
