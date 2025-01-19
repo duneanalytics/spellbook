@@ -77,7 +77,7 @@ models:
       - name: minter
         description: "the account_payer or account_leafOwner that minted the NFT"
       - name: version
-        description: "version of the NFT - Token Metdata, cNFT, etc"
+        description: "version of the NFT - Token Metadata, cNFT, etc"
       - name: token_standard
       - name: token_name
       - name: token_symbol
