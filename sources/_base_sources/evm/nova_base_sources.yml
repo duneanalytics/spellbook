@@ -171,7 +171,7 @@ sources:
           - name: name
             description: "Name of the decoded contract"
           - name: namespace
-            description: "Namesapce of the decoded contract"
+            description: "Namespace of the decoded contract"
           - name: dynamic
             description: "Boolean indicating whether the contract is dynamic or not"
           - name: base
