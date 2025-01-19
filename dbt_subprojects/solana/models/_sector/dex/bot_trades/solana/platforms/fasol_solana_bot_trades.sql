@@ -40,7 +40,8 @@ WITH
       blockchain,
       minute,
       contract_address,
-      price
+      price,
+      symbol
     FROM 
       {{ source('prices', 'usd') }}
     WHERE
