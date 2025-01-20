@@ -69,7 +69,7 @@ models:
         description: "The size of the position in raw form"
       - &tx_hash
         name: tx_hash
-        description: "The hash of the transaction"
+        description: "The hash of the transactions"
       - &tx_from
         name: tx_from
         description: "The address that originated the transaction; based on the base.transactions table"
