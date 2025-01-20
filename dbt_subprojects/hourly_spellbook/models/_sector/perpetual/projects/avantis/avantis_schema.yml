@@ -8,17 +8,13 @@ models:
       contributors: princi
     config:
       tags: ['base', 'perpetuals', 'perps', 'avantis','cross-chain']
-    description: >
+    description: 
       Perpetual swaps/trades table on avantis protocol across blockchains
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - evt_index  
-      #  - check_perpetuals_seed:
-      #     blockchain: base
-      #     project: avantis
-      #     version: 1          
+            - evt_index        
     columns:
       - &blockchain
         name: blockchain
