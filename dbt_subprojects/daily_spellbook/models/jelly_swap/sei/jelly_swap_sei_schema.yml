@@ -77,7 +77,7 @@ models:
     config:
       tags: ['sei', 'revenue', 'fees']
     description: >
-      Daily Protocol Fee collected and Revenue by pool on JellySwap, an automated portfolio manager and trading platform built on jelly_swap.
+      Daily Protocol Fee collected and Revenue by pool on JellySwap, an automated portfolio manager and trading platform, Friendly Fork of Balancer.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -103,9 +103,12 @@ models:
       - &treasury_share
         name: treasury_share
         description: "Share of total fee that is directed to jelly_swap DAO's treasury, as per BIPs 19, 161 and 371"
-      - &treasury_revenue_usd
+      - &treasury_fee_usd
         name: treasury_revenue_usd
-        description: "USD value of fee directed to jelly_swap DAO's treasury"
+        description: "USD value of fee directed to Jelly Swap DAO's treasury"
+      - &lp_fee_collected_usd
+        name: lp_fee_collected_usd
+        description: "USD value of the fee returned to liquidity providers" 
         
   - name: jelly_swap_sei_bpt_supply
     meta:

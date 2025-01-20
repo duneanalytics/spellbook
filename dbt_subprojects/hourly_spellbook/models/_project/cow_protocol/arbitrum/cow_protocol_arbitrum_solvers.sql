@@ -56,6 +56,7 @@ known_solver_metadata (address, environment, name) as (
                 (0x1FA2FF499b327f53cD9a82BcAFE36093563E32e4, 'prod', 'Apollo'),
                 (0x0148538e6cA813D41eA5988008Cdc9B72d4e65A7, 'prod', 'Laita'),
                 (0x9C75aae1Bd2f96D7B4E67e8C5344f3304382276E, 'prod', 'Enso'),
+                (0x5156808c3f9440191ef600587a73c87bb23c92b2, 'barn', 'Enso'),
                 (0x034F6Aca83F1900b0157b0123F514A29456eeA59, 'barn', 'Laita'),
                 (0x6bf97aFe2D2C790999cDEd2a8523009eB8a0823f, 'prod', 'Portus'),
                 (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
@@ -76,7 +77,9 @@ known_solver_metadata (address, environment, name) as (
                 (0x2aeC288B42C99D2e8e984c5C324FB069f7705186, 'barn', 'Rizzolver'),
                 (0x26B5e3bF135D3Dd05A220508dD61f25BF1A47cBD, 'barn', 'Rizzolver'),
                 (0x8C3f83f6A489cCbA2E3df304034F8C120cEb3527, 'barn', 'GlueX_Protocol'),
-                (0x49E1F55D4a695291533BB0A993aca5D58E90C613, 'prod', 'GlueX_Protocol')
+                (0x49E1F55D4a695291533BB0A993aca5D58E90C613, 'prod', 'GlueX_Protocol'),
+                (0x3144a51a7699c629070d6aAEf68256c2d07a6334, 'barn', 'OKX'),
+                (0x7F636D152AB0Cfc68A899d4dF441F2322cd78C6B, 'prod', 'OKX')
     ) as _
 )
 -- Combining the metadata with current activation status for final table
