@@ -17,7 +17,7 @@ FROM
 (
     {% for gains_network_perpetual_trades in gains_network_base_perpetual_trade_models %}
     SELECT
-		 blockchain
+		blockchain
 		,block_date
         ,block_month
         ,block_time
