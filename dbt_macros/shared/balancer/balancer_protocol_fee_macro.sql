@@ -31,12 +31,15 @@ WITH pool_labels AS (
 
     dex_prices_1 AS (
         SELECT
-            date_trunc('day', hour) AS DAY,
+            date_trunc('day', HOUR) AS DAY,
             contract_address AS token,
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ source('dex', 'prices') }}
-        WHERE blockchain = '{{blockchain}}'
+       WHERE
+    (('{{blockchain}}' = 'sonic' AND contract_address != 0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38)
+        OR ('{{blockchain}}' = 'fantom' AND contract_address NOT IN (0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757)))
+    AND blockchain = '{{blockchain}}'
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -213,12 +216,15 @@ WITH pool_labels AS (
 
     dex_prices_1 AS (
         SELECT
-            date_trunc('day', hour) AS DAY,
+            date_trunc('day', HOUR) AS DAY,
             contract_address AS token,
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ source('dex', 'prices') }}
-        WHERE blockchain = '{{blockchain}}'
+       WHERE
+    (('{{blockchain}}' = 'sonic' AND contract_address != 0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38)
+        OR ('{{blockchain}}' = 'fantom' AND contract_address NOT IN (0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757)))
+    AND blockchain = '{{blockchain}}'
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
