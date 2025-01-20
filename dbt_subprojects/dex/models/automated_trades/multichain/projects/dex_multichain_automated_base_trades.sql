@@ -1,13 +1,13 @@
 {{ config(
-    schema = 'dex_ethereum'
+    schema = 'dex_multichain'
     , alias = 'automated_base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-      ref('uniswap_v2_ethereum_automated_base_trades')
-    , ref('uniswap_v3_ethereum_automated_base_trades')
+      ref('uniswap_v2_multichain_automated_base_trades')
+    , ref('uniswap_v3_multichain_automated_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -46,7 +46,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'ethereum'
+        , blockchain = 'evms'
         , columns = ['from', 'to', 'index']
     )
 }}

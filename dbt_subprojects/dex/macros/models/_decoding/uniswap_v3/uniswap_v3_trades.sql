@@ -1,6 +1,5 @@
 {% macro uniswap_v3_forks_trades(
-    blockchain = null
-    , dex_type = 'uni-v3'
+    dex_type = 'uni-v3'
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PoolCreated = null
@@ -12,7 +11,8 @@
 
 WITH evt_swap AS (
     SELECT
-        block_number
+        blockchain
+        , block_number
         , block_time
         , {{ taker_column_name }}
         {% if maker_column_name %}
@@ -32,8 +32,9 @@ WITH evt_swap AS (
 , dexs AS
 (
     SELECT
-        t.block_number
-        ,t.block_time
+        t.blockchain
+        , t.block_number
+        , t.block_time
         , t.{{ taker_column_name }} AS taker
         , {% if maker_column_name %}
                 t.{{ maker_column_name }}
@@ -53,14 +54,16 @@ WITH evt_swap AS (
     INNER JOIN
         {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
-    INNER JOIN {{ source(blockchain, 'creation_traces') }} ct 
+        AND f.blockchain = t.blockchain
+    INNER JOIN {{ source('evms', 'creation_traces') }} ct 
         ON f.{{ pair_column_name }} = ct.address 
         AND f.contract_address = ct."from"
+        AND ct.blockchain = t.blockchain
 )
 
 , base_trades AS (
     SELECT
-        '{{ blockchain }}' AS blockchain
+        blockchain
         , '{{ version }}' AS version
         , '{{dex_type}}' AS dex_type
         , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
@@ -103,16 +106,17 @@ SELECT  base_trades.blockchain
 FROM base_trades
 INNER JOIN (
     SELECT
+        blockchain,
         tx_hash,
         array_agg(DISTINCT contract_address) as contract_addresses
     FROM {{ source('tokens', 'transfers') }}
-    WHERE blockchain = '{{ blockchain }}'
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
-        {% endif %}
-    GROUP BY tx_hash
+    {% if is_incremental() %}
+    WHERE {{ incremental_predicate('block_time') }}
+    {% endif %}
+    GROUP BY blockchain, tx_hash
 ) AS transfers
 ON transfers.tx_hash = base_trades.tx_hash
+    AND transfers.blockchain = base_trades.blockchain
     AND contains(transfers.contract_addresses, base_trades.token_bought_address)
     AND contains(transfers.contract_addresses, base_trades.token_sold_address)
 LEFT JOIN {{ ref('dex_mapping') }} AS dex_map
