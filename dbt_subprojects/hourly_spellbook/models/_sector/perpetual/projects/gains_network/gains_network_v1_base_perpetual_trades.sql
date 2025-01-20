@@ -35,7 +35,11 @@ WITH position_changes AS (
         "values" as value_data,
         'decrease' as action
     FROM {{source('gains_network_base','GNSMultiCollatDiamond_evt_PositionSizeDecreaseExecuted')}}
-
+        {% if not is_incremental() %}
+    WHERE evt_block_time >= DATE '{{project_start_date}}'
+        {% else %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
+        {% endif %}
     UNION ALL
 
     -- Position Size Increases
@@ -57,6 +61,11 @@ WITH position_changes AS (
         "values" as value_data,
         'increase' as action
     FROM {{ source('gains_network_base','GNSMultiCollatDiamond_evt_PositionSizeIncreaseExecuted')}}
+        {% if not is_incremental() %}
+    WHERE evt_block_time >= DATE '{{project_start_date}}'
+        {% else %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
+        {% endif %}
 ),
 
 perps AS (
@@ -88,7 +97,7 @@ perps AS (
             WHEN 31 THEN 'LUNA-USD'
             WHEN 32 THEN 'YFI-USD'
             WHEN 33 THEN 'SOL-USD'
-            ELSE CONCAT('pair_index_', CAST(pairIndex as VARCHAR))
+            ELSE 'pair_index_' || CAST(pairIndex AS VARCHAR)
         END AS virtual_asset,
 
         CASE pairIndex
@@ -116,7 +125,7 @@ perps AS (
             WHEN 31 THEN 'LUNA-USD'
             WHEN 32 THEN 'YFI-USD'
             WHEN 33 THEN 'SOL-USD'
-            ELSE CONCAT('pair_index_', CAST(pairIndex as VARCHAR))
+            ELSE 'pair_index_' || CAST(pairIndex AS VARCHAR)
         END AS underlying_asset,
 
         CASE pairIndex
@@ -144,7 +153,7 @@ perps AS (
             WHEN 31 THEN 'LUNA-USD'
             WHEN 32 THEN 'YFI-USD'
             WHEN 33 THEN 'SOL-USD'
-            ELSE CONCAT('pair_index_', CAST(pairIndex as VARCHAR))
+            ELSE 'pair_index_' || CAST(pairIndex AS VARCHAR)
         END AS market,
 
         contract_address AS market_address,
