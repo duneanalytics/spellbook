@@ -87,10 +87,12 @@ SELECT
     , block_date
     , block_time
     , block_number
-    , token_bought_symbol
-    , token_sold_symbol
+    , COALESCE(erc4626a.underlying_token_symbol,
+        token_bought_symbol) AS token_bought_symbol
+    , COALESCE(erc4626b.underlying_token_symbol,
+        token_sold_symbol) AS token_sold_symbol
     , CONCAT(COALESCE(erc4626a.underlying_token_symbol, token_bought_symbol), '-', 
-        COALESCE(erc4626a.underlying_token_symbol, token_sold_symbol)) AS token_pair
+        COALESCE(erc4626b.underlying_token_symbol, token_sold_symbol)) AS token_pair
     , token_bought_amount
     , token_sold_amount
     , token_bought_amount_raw
