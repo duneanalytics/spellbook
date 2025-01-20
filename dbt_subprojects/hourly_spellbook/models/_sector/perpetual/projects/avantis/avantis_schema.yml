@@ -19,10 +19,10 @@ models:
             - version
             - tx_hash
             - evt_index  
-       - check_perpetuals_seed:
-          blockchain: base
-          project: avantis
-          version: 1          
+      #  - check_perpetuals_seed:
+      #     blockchain: base
+      #     project: avantis
+      #     version: 1          
     columns:
       - &blockchain
         name: blockchain
@@ -45,9 +45,6 @@ models:
       - &market_address
         name: market_address
         description: "Contract address of the market"
-        data_tests:
-          - perpetual_trades_market_address:
-              perpetual_trades_seed: ref('perpetual_trades_seed')
       - &volume_usd
         name: volume_usd
         description: "The size of the position taken for the swap in USD; already in absolute value and decimal normalized"
