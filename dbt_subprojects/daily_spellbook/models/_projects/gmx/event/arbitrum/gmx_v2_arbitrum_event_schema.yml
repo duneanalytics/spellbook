@@ -991,7 +991,7 @@ models:
         description: A boolean flag indicating whether the order is a long position (true) or short position (false).
       - name: next_value
         description: |
-          Represents the updated open interest vlaue after the transaction. It is derived by normalizing 
+          Represents the updated open interest value after the transaction. It is derived by normalizing 
           the raw value using index token decimals.
           This ensures consistent scaling of the value across tokens with varying decimals.
       - name: delta
