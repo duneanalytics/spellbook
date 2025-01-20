@@ -29,11 +29,11 @@ filtered_balances AS (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2024-01-30',
-       address_list='op_addresses',          
+       address_token_list='op_addresses',          
   ) }}
 )
 
-SELECT DISTINCT
+SELECT 
   p.address AS pool_address,
   p.token0 AS token0,
   p.token1 AS token1,

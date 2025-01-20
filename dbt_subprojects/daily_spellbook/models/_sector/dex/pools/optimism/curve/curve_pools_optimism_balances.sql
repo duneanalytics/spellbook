@@ -13,7 +13,7 @@
 WITH op_addresses as (
   SELECT
     pool as address,
-    token as token_address,
+    0x4200000000000000000000000000000000000042 as token_address,
     version
   FROM 
     {{ source('curve_optimism', 'pools') }}
@@ -25,11 +25,11 @@ filtered_balances as (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2021-11-11',
-       address_list='op_addresses'
+       address_token_list='op_addresses'
   ) }}
 )
 
-SELECT DISTINCT
+SELECT 
   p.address as pool_address,
   p.token_address as token,
   p.version,
