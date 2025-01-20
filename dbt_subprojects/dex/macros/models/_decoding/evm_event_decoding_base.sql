@@ -12,7 +12,21 @@ FROM TABLE (
     decode_evm_event (
       abi => '{{abi}}',
       input => TABLE (
-        SELECT l.* 
+        SELECT  block_number,
+                block_time,
+                block_date,
+                block_hash,
+                contract_address, 
+                topic0,
+                topic1,
+                topic2,
+                topic3,
+                data,
+                tx_hash, 
+                index,
+                tx_index, 
+                tx_from,
+                tx_to
         FROM {{logs}} l
         WHERE topic0 = {{topic0}}
             {% if is_incremental() %}

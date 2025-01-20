@@ -13,7 +13,17 @@
 {%
     set blockchains = [
         "ethereum",
-        "bnb"
+        "bnb",
+        "polygon",
+        "avalanche_c",
+        "gnosis",
+        "fantom",
+        "optimism",
+        "arbitrum",
+        "celo",
+        "base",
+        "zksync",
+        "zora"
     ]
 %}
 
