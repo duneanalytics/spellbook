@@ -15,35 +15,24 @@ WITH op_addresses AS (
     pool AS address,
     token0,
     token1,
-    0x4200000000000000000000000000000042 as token_address,
+    0x4200000000000000000000000000000000000042 as token_address,
     evt_block_time AS creation_time
   FROM {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PoolCreated') }}
   WHERE
-    token0 = 0x4200000000000000000000000000000042
-    OR token1 = 0x4200000000000000000000000042
+    token0 = 0x4200000000000000000000000000000000000042
+    OR token1 = 0x4200000000000000000000000000000000000042
 ),
+
 
 filtered_balances AS (
   {{ balances_incremental_subset_daily(
        blockchain='optimism',
        start_date='2023-06-22',
-       address_list='op_addresses'
+       address_list='op_addresses',
   ) }}
-),
-
-deduplicated_balances AS (
-  SELECT 
-    address,
-    balance,
-    day,
-    ROW_NUMBER() OVER (
-      PARTITION BY address, day 
-      ORDER BY balance DESC
-    ) as rn
-  FROM filtered_balances
 )
 
-SELECT
+SELECT DISTINCT
   p.address AS pool_address,
   p.token0 AS token0,
   p.token1 AS token1,
@@ -51,8 +40,6 @@ SELECT
   COALESCE(b.balance, 0) AS op_balance,
   COALESCE(b.day, current_date) AS snapshot_day
 FROM 
-  deduplicated_balances b
-LEFT JOIN
+  filtered_balances b
+left JOIN
   op_addresses p ON b.address = p.address
-WHERE
-  b.rn = 1
