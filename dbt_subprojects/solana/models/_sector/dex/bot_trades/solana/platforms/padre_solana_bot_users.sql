@@ -30,3 +30,4 @@ where
     tx_success
     and balance_change > 0
     and address = '{{fee_receiver}}'
+    and "from" != "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD"
