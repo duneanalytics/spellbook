@@ -3,7 +3,6 @@
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PairCreated = null
-    , pair_column_name = 'pair'
     )
 %}
 
@@ -46,10 +45,10 @@ WITH evt_swap AS (
         evt_swap t
     INNER JOIN
         {{ Factory_evt_PairCreated }} f
-        ON f.{{ pair_column_name }} = t.contract_address 
+        ON f.pair = t.contract_address 
         AND f.blockchain = t.blockchain
     INNER JOIN {{ source('evms', 'creation_traces') }} ct
-        ON f.{{ pair_column_name }} = ct.address
+        ON f.pair = ct.address
         AND f.contract_address = ct."from"
         AND ct.blockchain = t.blockchain
 )

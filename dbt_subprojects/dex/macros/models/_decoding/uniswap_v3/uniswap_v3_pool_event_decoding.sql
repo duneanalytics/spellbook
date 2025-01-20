@@ -7,6 +7,6 @@
 {% set topic0 = '0xc42079f94a6350d7e6235f29174924f928cc2ac818eb64fed8004e115fbcca67' %}
 
 {{ evm_event_decoding_base(logs, abi, topic0) }}
-
+where block_date >= DATE ('2024-06-01')
 {% endmacro %}
 
