@@ -10,6 +10,11 @@ models:
       tags: ['base', 'perpetuals', 'perps', 'avantis','cross-chain']
     description: >
       Perpetual swaps/trades table on avantis protocol across blockchains
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index  
     columns:
       - &blockchain
         name: blockchain
@@ -74,3 +79,4 @@ models:
       - &block_month
         name: block_month
         description: "Month of the transaction"
+        

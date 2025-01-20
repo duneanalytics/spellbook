@@ -17,7 +17,7 @@ FROM
 (
     {% for avantis_perpetual_trades in avantis_base_perpetual_trade_models %}
     SELECT
-		blockchain
+		 blockchain
 		,block_date
         ,block_month
         ,block_time
