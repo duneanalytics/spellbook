@@ -18,7 +18,11 @@ models:
             - project
             - version
             - tx_hash
-            - evt_index      
+            - evt_index  
+       - check_perpetuals_seed:
+          blockchain: base
+          project: avantis
+          version: 1          
     columns:
       - &blockchain
         name: blockchain
