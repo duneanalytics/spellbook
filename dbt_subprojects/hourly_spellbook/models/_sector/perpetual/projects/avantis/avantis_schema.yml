@@ -15,7 +15,7 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index  
-      - check_dex_base_trades_seed:
+      - check_perpetuals_seed:
           seed_file: ref('perpetual_trades_seed')      
     columns:
       - &blockchain
