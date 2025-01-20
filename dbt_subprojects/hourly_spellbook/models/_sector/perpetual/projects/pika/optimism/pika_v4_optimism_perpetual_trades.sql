@@ -78,7 +78,7 @@ perps AS (
             WHEN productId = UINT256 '10' OR productId = UINT256 '24' THEN 'APE'
             WHEN productId = UINT256 '11' OR productId = UINT256 '25' THEN 'AXS'
             WHEN productId = UINT256 '12' OR productId = UINT256 '26' THEN 'UNI'
-            ELSE 'product_id_' || productId
+            ELSE 'product_id_' || CAST(productId AS VARCHAR)
         END AS virtual_asset
         ,CASE
             WHEN productId = UINT256 '1' OR productId = UINT256 '16' THEN 'ETH'
@@ -93,7 +93,7 @@ perps AS (
             WHEN productId = UINT256 '10' OR productId = UINT256 '24' THEN 'APE'
             WHEN productId = UINT256 '11' OR productId = UINT256 '25' THEN 'AXS'
             WHEN productId = UINT256 '12' OR productId = UINT256 '26' THEN 'UNI'
-            ELSE 'product_id_' || productId
+            ELSE 'product_id_' || CAST(productId AS VARCHAR)
         END AS underlying_asset
         ,CASE
             WHEN productId = UINT256 '1' OR productId = UINT256 '16' THEN 'ETH'
@@ -108,7 +108,7 @@ perps AS (
             WHEN productId = UINT256 '10' OR productId = UINT256 '24' THEN 'APE'
             WHEN productId = UINT256 '11' OR productId = UINT256 '25' THEN 'AXS'
             WHEN productId = UINT256 '12' OR productId = UINT256 '26' THEN 'UNI'
-            ELSE 'product_id_' || productId
+            ELSE 'product_id_' || CAST(productId AS VARCHAR)
         END AS market
 		
         ,contract_address AS market_address
