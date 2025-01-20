@@ -6,7 +6,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['block_date', 'blockchain', 'project', 'version', 'tx_hash', 'evt_index'],
-    post_hook='{{ expose_spells(\'["base"]\',
+    post_hook='{{ expose_spells(blockchains = \'["base"]\',
                                 spell_type = "project",
                                 spell_name = "gains_network",
                                 contributors = \'["princi"]\') }}'
