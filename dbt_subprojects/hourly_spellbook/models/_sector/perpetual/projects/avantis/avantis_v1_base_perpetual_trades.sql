@@ -18,7 +18,7 @@
 WITH trading_events AS (
     -- OpenLimitPlaced events
     SELECT
-        evt_block_time,''
+        evt_block_time,
         evt_block_number,
         evt_tx_hash,
         evt_tx_from,
