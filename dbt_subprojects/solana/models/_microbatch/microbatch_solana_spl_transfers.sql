@@ -1,6 +1,7 @@
 {{ config(
     schema = 'microbatch',
     alias = 'solana_spl_transfers_current',
+    tags=['prod_exclude'],
     partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
