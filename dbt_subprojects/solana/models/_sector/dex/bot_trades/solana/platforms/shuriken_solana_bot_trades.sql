@@ -11,7 +11,8 @@
 }}
 
 {% set project_start_date = '2024-01-14' %}
-{% set fee_receiver = '9cSuF94JWPb1HQzWMcifJzkoggwAtfjsojcUqny5XuJy' %}
+{% set fee_receiver_1 = '9cSuF94JWPb1HQzWMcifJzkoggwAtfjsojcUqny5XuJy' %}
+{% set fee_receiver_2 = 'shuvodtwMMFFB6KmqCDYaiAe1hRokCVwr4LkT1pLAL5' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
@@ -31,7 +32,8 @@ WITH
       {% endif %}
       AND tx_success
       AND balance_change > 0
-      AND address = '{{fee_receiver}}'
+      AND address = '{{fee_receiver_1}}'
+      OR address = '{{fee_receiver_2}}'
   ),
   botTrades AS (
     SELECT
@@ -86,8 +88,10 @@ WITH
         {% endif %}
       )
     WHERE
-      trades.trader_id != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
-      AND transactions.signer != '{{fee_receiver}}' -- Exclude trades signed by FeeWallet
+      trades.trader_id != '{{fee_receiver_1}}'
+      AND trades.trader_id != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{fee_receiver_1}}'
+      AND transactions.signer != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
       {% if is_incremental() %}
       AND {{ incremental_predicate('trades.block_time') }}
       {% else %}
