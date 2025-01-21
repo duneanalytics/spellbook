@@ -55,7 +55,6 @@ sources:
   - name: openxswap_optimism
     tables:
       - name: Aggregator_evt_Swap
-      - name: UniswapV2Factory_evt_PairCreated
   - name: openocean_v2_optimism
     tables:
       - name: OpenOceanExchangeProxy_evt_Swapped
@@ -98,7 +97,6 @@ sources:
   - name: swaap_v2_optimism
     tables:
       - name: Vault_evt_Swap
-      - name: Vault_evt_PoolRegistered
   - name: saddle_finance_optimism
     tables:
       - name: SwapFlashLoan_evt_TokenSwap
