@@ -43,11 +43,13 @@ WITH base_union AS (
     )
 )
 
-{{
-    add_tx_columns(
-        model_cte = 'base_union'
-        , blockchain = 'evms'
-        , columns = ['from', 'to', 'index']
-    )
-}}
-
+Select 
+    model.*
+    , tx."from" as tx_from
+    , tx."to" as tx_to
+    , tx."index" as tx_index
+from base_union model
+inner join {{source('evms', 'transactions')}} tx
+    on model.block_number = tx.block_number
+    and model.tx_hash = tx.hash
+where model.block_date >= DATE ('2024-06-01')
