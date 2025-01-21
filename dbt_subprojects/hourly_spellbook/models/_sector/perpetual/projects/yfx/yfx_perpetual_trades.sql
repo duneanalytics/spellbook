@@ -43,3 +43,4 @@ FROM
     UNION ALL
     {% endif %}
     {% endfor %}
+)
