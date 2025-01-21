@@ -6,9 +6,6 @@ models:
       blockchain: celo
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'singletons', 'celo']
     description: "Singletons addresses used with Safes"
@@ -25,9 +22,6 @@ models:
       blockchain: celo
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'celo']
     description: "Safe addresses"
@@ -54,9 +48,6 @@ models:
       blockchain: celo
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'celo']
     description: "Safe transactions"
@@ -118,9 +109,6 @@ models:
       blockchain: celo
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'transfers', 'celo']
     description: "CELO transfers into or out of Safes"
