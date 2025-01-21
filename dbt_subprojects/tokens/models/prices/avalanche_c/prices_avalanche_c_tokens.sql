@@ -105,6 +105,7 @@ FROM
     ('renbtc-renbtc', 'avalanche_c', 'renBTC', 0xdbf31df14b66535af65aac99c32e9ea844e14501, 8),
     ('arena-the-arena', 'avalanche_c', 'ARENA', 0xb8d7710f7d8349a506b75dd184f05777c82dad0c, 18),
     ('zro-layerzero', 'avalanche_c', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
-    ('beam-beam-eth', 'avalanche_c', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18)
+    ('beam-beam-eth', 'avalanche_c', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18),
+    ('ggp-gogopool', 'avalanche_c', 'GGP', 0x69260B9483F9871ca57f81A90D91E2F96c2Cd11d, 18)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
