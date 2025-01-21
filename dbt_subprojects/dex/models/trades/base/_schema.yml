@@ -46,7 +46,7 @@ models:
       blockchain: base
       sector: dex
       project: stablebase
-      contributors: principatel
+      contributors: principatel, hosuke
     config:
       tags: ["base", "dex", "trades", "stablebase"]
     description: stablebase base trades
@@ -1058,3 +1058,20 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('otsea_base_base_trades_seed')
+          
+  - name: jojo_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: jojo
+      contributors: princi
+    config:
+      tags: [ 'base', 'dex', 'trades', 'jojo' ]
+    description: "jojo base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('jojo_base_base_trades_seed')

@@ -102,10 +102,13 @@ models:
         description: "Fee collected in the pool in USD"
       - &treasury_share
         name: treasury_share
-        description: "Share of total fee that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
-      - &treasury_revenue_usd
+        description: "Share of total fee that is directed to Beethoven DAO's treasury, as per BIPs 19, 161 and 371"
+      - &treasury_fee_usd
         name: treasury_revenue_usd
-        description: "USD value of fee directed to Balancer DAO's treasury"
+        description: "USD value of fee directed to Beethoven X DAO's treasury"
+      - &lp_fee_collected_usd
+        name: lp_fee_collected_usd
+        description: "USD value of the fee returned to liquidity providers" 
         
   - name: beethoven_x_fantom_bpt_supply
     meta:
@@ -115,7 +118,7 @@ models:
     config:
       tags: ['fantom', 'bpt', 'supply']
     description: >
-      Balancer Pool Token (BPT) supply for Beethoven X pools built on Balancer.
+      Balancer Pool Token (BPT) supply for Beethoven X pools built on Beethoven X.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
