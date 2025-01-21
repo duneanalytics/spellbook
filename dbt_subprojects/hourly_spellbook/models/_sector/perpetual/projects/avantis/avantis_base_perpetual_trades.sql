@@ -1,10 +1,10 @@
 {{ config(
     schema = 'avantis_perpetual_trades',
     alias = 'perpetual_trades',
-    post_hook='{{ expose_spells(\'["base"]\',
-                                    "project",
-                                    "avantis",
-                                    \'["princi"]\') }}'
+    post_hook='{{ expose_spells(blockchains = \'["base"]\',
+                                    spell_type = "project",
+                                    spell_name = "avantis",
+                                    contributors = \'["princi"]\') }}'
         )
 }}
 
@@ -17,7 +17,7 @@ FROM
 (
     {% for avantis_perpetual_trades in avantis_base_perpetual_trade_models %}
     SELECT
-		 blockchain
+        blockchain
 		,block_date
         ,block_month
         ,block_time
