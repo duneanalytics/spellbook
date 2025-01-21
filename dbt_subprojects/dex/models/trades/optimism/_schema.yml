@@ -4,7 +4,7 @@ models:
   - name: dex_optimism_base_trades
     data_tests:
       - check_dex_info_relationship
-      - test_reasonable_usd_amount:
+      - test_acceptable_usd_amount:
           column_name: amount_usd
           max_value: 1000000000
 

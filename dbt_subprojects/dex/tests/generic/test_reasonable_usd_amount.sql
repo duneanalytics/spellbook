@@ -1,4 +1,4 @@
-{% test test_reasonable_usd_amount(model, column_name, max_value=1000000000, days_back=30) %}
+{% test test_acceptable_usd_amount(model, column_name, max_value=1000000000, days_back=30) %}
 
 {# 
     Test to ensure USD amounts are within a reasonable range
