@@ -30,7 +30,7 @@ staking_pools_created as (
     call_tx_hash as tx_hash_created
   from {{ source('nexusmutual_ethereum', 'Cover_call_createStakingPool') }}
   where call_success
-    and contract_address = 0xcafeac0fF5dA0A2777d915531bfA6B29d282Ee62
+    and contract_address = 0xcafeac0fF5dA0A2777d915531bfA6B29d282Ee62 -- proxy
   union all
   select
     call_block_time as block_time_created,

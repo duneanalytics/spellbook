@@ -38,6 +38,7 @@ cover_sales as (
   from {{ source('nexusmutual_ethereum', 'Cover_call_buyCover') }} c
     cross join unnest(c.poolAllocationRequests) as t(pool_allocation)
   where c.call_success
+    and c.contract_address = 0xcafeac0fF5dA0A2777d915531bfA6B29d282Ee62 -- proxy
 ),
 
 staking_product_premiums as (
