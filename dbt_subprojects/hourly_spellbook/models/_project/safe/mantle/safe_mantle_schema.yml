@@ -6,9 +6,6 @@ models:
       blockchain: mantle
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'mantle']
     description: "Safe addresses"
@@ -42,9 +39,6 @@ models:
       blockchain: mantle
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'transfers', 'mantle']
     description: "MNT transfers for safes"
@@ -81,9 +75,6 @@ models:
       blockchain: mantle
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'singletons', 'mantle']
     description: "Singletons addresses used with Safes"
@@ -96,9 +87,6 @@ models:
       blockchain: mantle
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'mantle']
     description: "Safe transactions"

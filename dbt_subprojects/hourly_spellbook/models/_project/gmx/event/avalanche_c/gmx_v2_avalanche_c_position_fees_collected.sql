@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'gmx_v2_arbitrum',
+    schema = 'gmx_v2_avalanche_c',
     alias = 'position_fees_collected',
     materialized = 'incremental',
     unique_key = ['tx_hash', 'index'],
@@ -9,7 +9,7 @@
 }}
 
 {%- set event_name = 'PositionFeesCollected' -%}
-{%- set blockchain_name = 'arbitrum' -%}
+{%- set blockchain_name = 'avalanche_c' -%}
 
 WITH evt_data_1 AS (
     SELECT 
@@ -23,7 +23,7 @@ WITH evt_data_1 AS (
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
-    FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog1')}}
+    FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog1')}}
     WHERE eventName = '{{ event_name }}'
     {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
@@ -42,7 +42,7 @@ WITH evt_data_1 AS (
         eventName AS event_name,
         eventData AS data,
         msgSender AS msg_sender
-    FROM {{ source('gmx_v2_arbitrum','EventEmitter_evt_EventLog2')}}
+    FROM {{ source('gmx_v2_avalanche_c','EventEmitter_evt_EventLog2')}}
     WHERE eventName = '{{ event_name }}'
     {% if is_incremental() %}
         AND {{ incremental_predicate('evt_block_time') }}
@@ -302,9 +302,9 @@ WITH evt_data_1 AS (
         collateral_token_price_min / POWER(10, 30 - collateral_token_decimals) AS collateral_token_price_min,
         collateral_token_price_max / POWER(10, 30 - collateral_token_decimals) AS collateral_token_price_max,    
         trade_size_usd / POWER(10, 30) AS trade_size_usd,        
-        funding_fee_amount / POWER(10, collateral_token_decimals + 15) AS funding_fee_amount,
-        claimable_long_token_amount / POWER(10, long_token_decimals + 15) AS claimable_long_token_amount,
-        claimable_short_token_amount / POWER(10, short_token_decimals + 15) AS claimable_short_token_amount,
+        funding_fee_amount / POWER(10, collateral_token_decimals) AS funding_fee_amount,
+        claimable_long_token_amount / POWER(10, long_token_decimals) AS claimable_long_token_amount,
+        claimable_short_token_amount / POWER(10, short_token_decimals) AS claimable_short_token_amount,
         latest_funding_fee_amount_per_size / POWER(10, collateral_token_decimals + 15) AS latest_funding_fee_amount_per_size,
         latest_long_token_claimable_funding_amount_per_size / POWER(10, long_token_decimals + 15) AS latest_long_token_claimable_funding_amount_per_size,
         latest_short_token_claimable_funding_amount_per_size / POWER(10, short_token_decimals + 15) AS latest_short_token_claimable_funding_amount_per_size,
@@ -346,9 +346,9 @@ WITH evt_data_1 AS (
         is_increase
 
     FROM event_data AS ED
-    LEFT JOIN {{ ref('gmx_v2_arbitrum_markets_data') }} AS MD
+    LEFT JOIN {{ ref('gmx_v2_avalanche_c_markets_data') }} AS MD
         ON ED.market = MD.market
-    LEFT JOIN {{ ref('gmx_v2_arbitrum_collateral_tokens_data') }} AS CTD
+    LEFT JOIN {{ ref('gmx_v2_avalanche_c_collateral_tokens_data') }} AS CTD
         ON ED.collateral_token = CTD.collateral_token
 )
 

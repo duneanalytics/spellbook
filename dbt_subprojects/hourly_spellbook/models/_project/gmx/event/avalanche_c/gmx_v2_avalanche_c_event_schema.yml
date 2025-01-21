@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: gmx_v2_arbitrum_order_created
+  - name: gmx_v2_avalanche_c_order_created
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'order_created']
+      tags: ['avalanche_c', 'gmx', 'event', 'order_created']
     description: |
-      Extracts and decodes the `OrderCreated` event log data from the Arbitrum blockchain. 
+      Extracts and decodes the `OrderCreated` event log data from the Avalanche blockchain. 
       This model processes log entries related to created orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for cancellation.
     data_tests:
@@ -21,13 +21,13 @@ models:
     columns:
       - &blockchain  
         name: blockchain
-        description: The blockchain network where the event occurred (Arbitrum)
+        description: The blockchain network where the event occurred (Avalanche)
       - &block_time
         name: block_time
         description: The timestamp of the block when the event was recorded
       - &block_date
         name: block_date
-        description: The date extracted from the block timestamp, representing the day the block was created      
+        description: The date extracted from the block timestamp, representing the day the block was created         
       - &block_number
         name: block_number
         description: The block number where the event is included
@@ -39,7 +39,7 @@ models:
         description: The position of the event within the transaction
       - &contract_address
         name: contract_address
-        description: The contract address associated with the event 
+        description: The contract address associated with the event
       - &tx_from
         name: tx_from
         description: The originating address of the transaction, usually representing the sender
@@ -119,7 +119,7 @@ models:
         description: The original minimum acceptable price for order execution before adjustments.
       - &acceptable_price
         name: acceptable_price
-        description: The adjusted acceptable price based on the index token decimals, ensuring correct scaling of the value.
+        description: The adjusted acceptable price based on the index token decimals, ensuring correct scaling of the value.     
       - name: execution_fee
         description: The fee paid for executing the order in native tokens
         data_tests:
@@ -127,14 +127,14 @@ models:
       - name: callback_gas_limit
         description: The gas limit set for callback functions.
         data_tests:
-          - not_null        
-      - &min_output_amount_raw
+          - not_null 
+      - &min_output_amount_raw       
         name: min_output_amount_raw
         description: The minimum amount of output tokens expected from the order, based on the markets in the swap path.
         data_tests:
           - not_null        
       - name: updated_at_block
-        description: The block number at which the order was last updated. 
+        description: The block number at which the order was last updated.
       - &updated_at_time     
         name: updated_at_time
         description: The timestamp when the order was last updated.
@@ -157,23 +157,23 @@ models:
           - unique
 
 
-  - name: gmx_v2_arbitrum_order_executed
+  - name: gmx_v2_avalanche_c_order_executed
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'order_executed']
+      tags: ['avalanche_c', 'gmx', 'event', 'order_executed']
     description: |      
-      Extracts and decodes the `OrderExecuted` event log data from the Arbitrum blockchain. 
+      Extracts and decodes the `OrderExecuted` event log data from the Avalanche blockchain. 
       This model processes log entries related to executed orders, extracting key variables such as 
       account addresses, event keys, and integer values.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - index
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -204,16 +204,16 @@ models:
           - not_null
 
 
-  - name: gmx_v2_arbitrum_order_cancelled
+  - name: gmx_v2_avalanche_c_order_cancelled
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'order_cancelled']
+      tags: ['avalanche_c', 'gmx', 'event', 'order_cancelled']
     description: |
-      Extracts and decodes the `OrderCancelled` event log data from the Arbitrum blockchain. 
+      Extracts and decodes the `OrderCancelled` event log data from the Avalanche blockchain. 
       This model processes log entries related to cancelled orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for cancellation.
     data_tests:
@@ -230,7 +230,7 @@ models:
       - *index
       - *contract_address
       - *tx_from
-      - *tx_to      
+      - *tx_to
       - name: event_name
         description: The type of event recorded, always 'OrderCancelled' for this model
         data_tests:
@@ -249,16 +249,16 @@ models:
           - not_null
 
 
-  - name: gmx_v2_arbitrum_market_created
+  - name: gmx_v2_avalanche_c_market_created
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'market_created']
+      tags: ['avalanche_c', 'gmx', 'event', 'market_created']
     description: |
-      This model extracts and parses `MarketCreated` events from the Arbitrum blockchain.
+      This model extracts and parses `MarketCreated` events from the Avalanche blockchain.
       It includes transaction details, addresses, and other relevant metrics related to 
       the creation of markets within the GMX protocol.
 
@@ -271,7 +271,7 @@ models:
       - *index
       - *contract_address
       - *tx_from
-      - *tx_to      
+      - *tx_to
       - name: event_name
         description: The type of event recorded, always 'MarketCreated' for this model
         data_tests:
@@ -322,23 +322,23 @@ models:
           - not_null         
 
 
-  - name: gmx_v2_arbitrum_position_increase
+  - name: gmx_v2_avalanche_c_position_increase
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum','gmx','event','position_increase']
+      tags: ['avalanche_c','gmx','event','position_increase']
     description: |
-      This model extracts and parses `PositionIncrease` events from the Arbitrum blockchain.
+      This model extracts and parses `PositionIncrease` events from the Avalanche blockchain.
       It includes transaction details, addresses, and various metrics related to the event, 
       such as market data, collateral amounts, price impacts, and more.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - index
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -346,9 +346,9 @@ models:
       - *block_number
       - *tx_hash
       - *index
-      - *contract_address   
+      - *contract_address
       - *tx_from
-      - *tx_to       
+      - *tx_to   
       - name: event_name
         description: The type of event recorded, always 'PositionIncrease' for this model
         data_tests:
@@ -459,16 +459,16 @@ models:
         description: A unique key identifying the position
 
 
-  - name: gmx_v2_arbitrum_position_decrease
+  - name: gmx_v2_avalanche_c_position_decrease
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum','gmx','event','position_decrease']
+      tags: ['avalanche_c','gmx','event','position_decrease']
     description: |
-      This model extracts and parses `PositionDecrease` events from the Arbitrum blockchain.
+      This model extracts and parses `PositionDecrease` events from the Avalanche blockchain.
       It includes transaction details, addresses, and various metrics related to the event, 
       such as market data, collateral amounts, price impacts, and more.
     data_tests:
@@ -485,7 +485,7 @@ models:
       - *index
       - *contract_address
       - *tx_from
-      - *tx_to      
+      - *tx_to
       - name: event_name
         description: The type of event recorded, always 'PositionDecrease' for this model
         data_tests:
@@ -544,23 +544,23 @@ models:
       - *position_key
 
 
-  - name: gmx_v2_arbitrum_position_fees_collected
+  - name: gmx_v2_avalanche_c_position_fees_collected
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'position_fees_collected']
+      tags: ['avalanche_c', 'gmx', 'event', 'position_fees_collected']
     description: |
-      This model extracts and parses `PositionFeesCollected` events from the Arbitrum blockchain.
+      This model extracts and parses `PositionFeesCollected` events from the Avalanche blockchain.
       It includes details about the transaction, addresses involved, and various metrics related to 
       fees collected from positions, including fee amounts and related market data.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - index
+            - index    
     columns:
       - *blockchain
       - *block_time
@@ -570,7 +570,7 @@ models:
       - *index
       - *contract_address
       - *tx_from
-      - *tx_to      
+      - *tx_to
       - name: event_name
         description: The type of event recorded, always 'PositionFeesCollected' for this model
         data_tests:
@@ -765,16 +765,16 @@ models:
           - not_null   
 
 
-  - name: gmx_v2_arbitrum_position_fees_info
+  - name: gmx_v2_avalanche_c_position_fees_info
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'position_fees_info']
+      tags: ['avalanche_c', 'gmx', 'event', 'position_fees_info']
     description: |
-      This model extracts and parses `PositionFeesInfo` events from the Arbitrum blockchain.
+      This model extracts and parses `PositionFeesInfo` events from the Avalanche blockchain.
       It includes details about the transaction, addresses involved, and various metrics related to 
       position fees, including fee amounts and related market data.
     data_tests:
@@ -789,9 +789,9 @@ models:
       - *block_number
       - *tx_hash
       - *index
-      - *contract_address 
+      - *contract_address
       - *tx_from
-      - *tx_to       
+      - *tx_to 
       - name: event_name
         description: The type of event recorded, always 'PositionFeesInfo' for this model
         data_tests:
@@ -848,16 +848,16 @@ models:
       - *referral_code
 
 
-  - name: gmx_v2_arbitrum_order_frozen
+  - name: gmx_v2_avalanche_c_order_frozen
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'order_frozen']
+      tags: ['avalanche_c', 'gmx', 'event', 'order_frozen']
     description: |
-      Extracts and decodes the `OrderFrozen` event log data from the Arbitrum blockchain. 
+      Extracts and decodes the `OrderFrozen` event log data from the Avalanche blockchain. 
       This model processes log entries related to frozen orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for the order being frozen.
     data_tests:
@@ -865,6 +865,7 @@ models:
           combination_of_columns:
             - tx_hash
             - index
+
     columns:
       - *blockchain
       - *block_time
@@ -896,16 +897,16 @@ models:
           - not_null
 
 
-  - name: gmx_v2_arbitrum_order_updated
+  - name: gmx_v2_avalanche_c_order_updated
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'order_updated']
+      tags: ['avalanche_c', 'gmx', 'event', 'order_updated']
     description: |
-      Extracts and decodes the `OrderUpdated` event log data from the Arbitrum blockchain. 
+      Extracts and decodes the `OrderUpdated` event log data from the Avalanche blockchain. 
       This model processes log entries related to updated orders, extracting key variables such as 
       account addresses, event keys, and strings representing the reason for cancellation.
     data_tests:
@@ -933,7 +934,7 @@ models:
         data_tests:
           - not_null
       - name: market
-        description: The market in which the order was updated
+        description: The market in which the order was updated.
       - name: account
         description: The address associated with the order.
       - *size_delta_usd
@@ -949,17 +950,17 @@ models:
         description: Boolean indicating whether the order will be automatically canceled under certain conditions.
 
 
-  - name: gmx_v2_arbitrum_open_interest_in_tokens_updated
+  - name: gmx_v2_avalanche_c_open_interest_in_tokens_updated
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'open_interest_in_tokens_updated']
+      tags: ['avalanche_c', 'gmx', 'event', 'open_interest_in_tokens_updated']
     description: |
       Combines and processes decoded event data to produce a normalized dataset of updated orders 
-      on the GMX platform for the Arbitrum blockchain. 
+      on the GMX platform for the Avalanche blockchain. 
       This model integrates data from the `open_interest_in_tokens_updated` table, enriching it with market-specific details.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -1007,17 +1008,17 @@ models:
         description: Index value related to the transaction
 
 
-  - name: gmx_v2_arbitrum_open_interest_updated
+  - name: gmx_v2_avalanche_c_open_interest_updated
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'open_interest_updated']
+      tags: ['avalanche_c', 'gmx', 'event', 'open_interest_updated']
     description: |
       Extracts and processes decoded event data for open interest updates on the GMX platform, 
-      specifically on the Arbitrum blockchain. This model normalizes data, including key metrics like 
+      specifically on the Avalanche blockchain. This model normalizes data, including key metrics like 
       delta and next_value, ensuring consistent scaling based on token decimals.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -1070,17 +1071,17 @@ models:
       - name: tx_index
         description: The index value related to the transaction.
 
-  
-  - name: gmx_v2_arbitrum_oracle_price_update
+
+  - name: gmx_v2_avalanche_c_oracle_price_update
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'oracle_price_update']
+      tags: ['avalanche_c', 'gmx', 'event', 'oracle_price_update']
     description: |
-      Processes decoded event data for Oracle Price Updates on the GMX platform in the Arbitrum blockchain. 
+      Processes decoded event data for Oracle Price Updates on the GMX platform in the Avalanche blockchain. 
       The model normalizes price data (min_price and max_price) using token-specific decimals and extracts 
       additional details such as the provider and token involved in the update.
     data_tests:
@@ -1126,16 +1127,16 @@ models:
         description: The index value related to the transaction, used for unique identification.
 
 
-  - name: gmx_v2_arbitrum_pool_amount_updated
+  - name: gmx_v2_avalanche_c_pool_amount_updated
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'pool_amount_updated']
+      tags: ['avalanche_c', 'gmx', 'event', 'pool_amount_updated']
     description: |
-      Processes decoded event data for Pool Amount Updates on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for Pool Amount Updates on the GMX platform in the Avalanche blockchain.
       This model normalizes token values (next_value and delta) based on token-specific decimals and extracts
       additional details such as the market and token involved in the pool update.
     data_tests:
@@ -1184,16 +1185,16 @@ models:
         description: The index value related to the transaction, used for unique identification.
 
 
-  - name: gmx_v2_arbitrum_set_uint
+  - name: gmx_v2_avalanche_c_set_uint
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'set_uint']
+      tags: ['avalanche_c', 'gmx', 'event', 'set_uint']
     description: |
-      Processes decoded event data for `SetUint` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `SetUint` events on the GMX platform in the Avalanche blockchain.
       This model normalizes the value field and extracts additional details such as the base key and associated data,
       ensuring compatibility with downstream analyses.
     data_tests:
@@ -1236,16 +1237,16 @@ models:
         description: The index value related to the transaction, used for unique identification.
 
 
-  - name: gmx_v2_arbitrum_execution_fee_refund
+  - name: gmx_v2_avalanche_c_execution_fee_refund
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'execution_fee_refund']
+      tags: ['avalanche_c', 'gmx', 'event', 'execution_fee_refund']
     description: |
-      Processes decoded event data for `ExecutionFeeRefund` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `ExecutionFeeRefund` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the refund amount, receiver, and transaction details to 
       enable analysis of refunded execution fees.
     data_tests:
@@ -1276,16 +1277,16 @@ models:
         description: The amount of the refunded execution fee, denominated in the native token of the blockchain (e.g., ETH).
 
 
-  - name: gmx_v2_arbitrum_keeper_execution_fee
+  - name: gmx_v2_avalanche_c_keeper_execution_fee
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'keeper_execution_fee']
+      tags: ['avalanche_c', 'gmx', 'event', 'keeper_execution_fee']
     description: |
-      Processes decoded event data for `KeeperExecutionFee` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `KeeperExecutionFee` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the keeper's address, execution fee amount, and transaction details, enabling
       analysis of fees associated with keeper-based executions.
     data_tests:
@@ -1316,16 +1317,16 @@ models:
         description: The amount of the execution fee, denominated in the native token of the blockchain (e.g., ETH, AVAX).
 
 
-  - name: gmx_v2_arbitrum_deposit_cancelled
+  - name: gmx_v2_avalanche_c_deposit_cancelled
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'deposit_cancelled']
+      tags: ['avalanche_c', 'gmx', 'event', 'deposit_cancelled']
     description: |
-      Processes decoded event data for `DepositCancelled` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `DepositCancelled` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, cancellation reason, and transaction details, enabling
       analysis of deposit cancellations on the platform.
     data_tests:
@@ -1358,16 +1359,16 @@ models:
         description: The decoded textual reason for the deposit cancellation.
 
 
-  - name: gmx_v2_arbitrum_deposit_created
+  - name: gmx_v2_avalanche_c_deposit_created
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'deposit_created']
+      tags: ['avalanche_c', 'gmx', 'event', 'deposit_created']
     description: |
-      Processes decoded event data for `DepositCreated` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `DepositCreated` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, deposit details, and transaction specifics, enabling
       analysis of deposits created on the platform.
     data_tests:
@@ -1426,16 +1427,16 @@ models:
         description: A unique identifier for the deposit.
 
 
-  - name: gmx_v2_arbitrum_deposit_executed
+  - name: gmx_v2_avalanche_c_deposit_executed
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'deposit_executed']
+      tags: ['avalanche_c', 'gmx', 'event', 'deposit_executed']
     description: |
-      Processes decoded event data for `DepositExecuted` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `DepositExecuted` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, execution details, and transaction specifics, enabling
       analysis of deposits executed on the platform.
     data_tests:
@@ -1472,16 +1473,16 @@ models:
         description: A unique identifier for the executed deposit.
 
 
-  - name: gmx_v2_arbitrum_glv_created
+  - name: gmx_v2_avalanche_c_glv_created
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'glv_created']
+      tags: ['avalanche_c', 'gmx', 'event', 'glv_created']
     description: |
-      Processes decoded event data for `GLVCreated` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `GLVCreated` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the GLV token, associated tokens, and transaction specifics, enabling
       analysis of GLV creation events on the platform.
     data_tests:
@@ -1520,16 +1521,16 @@ models:
         description: The decimal precision of the market token involved in the GLV creation.
 
 
-  - name: gmx_v2_arbitrum_glv_deposit_cancelled
+  - name: gmx_v2_avalanche_c_glv_deposit_cancelled
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'glv_deposit_cancelled']
+      tags: ['avalanche_c', 'gmx', 'event', 'glv_deposit_cancelled']
     description: |
-      Processes decoded event data for `GLVDepositCancelled` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `GLVDepositCancelled` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, cancellation reason, and transaction specifics, enabling
       analysis of cancelled GLV deposits.
     data_tests:
@@ -1562,16 +1563,16 @@ models:
         description: The decoded textual reason for the deposit cancellation.
 
 
-  - name: gmx_v2_arbitrum_glv_deposit_created
+  - name: gmx_v2_avalanche_c_glv_deposit_created
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'glv_deposit_created']
+      tags: ['avalanche_c', 'gmx', 'event', 'glv_deposit_created']
     description: |
-      Processes decoded event data for `GLVDepositCreated` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `GLVDepositCreated` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, deposit details, and transaction specifics, enabling
       analysis of created GLV deposits.
     data_tests:
@@ -1636,16 +1637,16 @@ models:
         description: A unique identifier for the deposit.
 
 
-  - name: gmx_v2_arbitrum_glv_deposit_executed
+  - name: gmx_v2_avalanche_c_glv_deposit_executed
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'glv_deposit_executed']
+      tags: ['avalanche_c', 'gmx', 'event', 'glv_deposit_executed']
     description: |
-      Processes decoded event data for `GLVDepositExecuted` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `GLVDepositExecuted` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, received GLV tokens, and transaction specifics, enabling
       analysis of executed GLV deposits.
     data_tests:
@@ -1678,16 +1679,16 @@ models:
         description: A unique identifier for the executed deposit.
 
 
-  - name: gmx_v2_arbitrum_glv_shift_cancelled
+  - name: gmx_v2_avalanche_c_glv_shift_cancelled
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'glv_shift_cancelled']
+      tags: ['avalanche_c', 'gmx', 'event', 'glv_shift_cancelled']
     description: |
-      Processes decoded event data for `GLVShiftCancelled` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `GLVShiftCancelled` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the cancellation reason and transaction specifics, enabling
       analysis of cancelled GLV shifts.
     data_tests:
@@ -1718,16 +1719,16 @@ models:
         description: The decoded textual reason for the shift cancellation.
 
 
-  - name: gmx_v2_arbitrum_glv_shift_created
+  - name: gmx_v2_avalanche_c_glv_shift_created
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'glv_shift_created']
+      tags: ['avalanche_c', 'gmx', 'event', 'glv_shift_created']
     description: |
-      Processes decoded event data for `GLVShiftCreated` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `GLVShiftCreated` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the source and destination markets, GLV details, and transaction specifics, enabling
       analysis of created GLV shifts.
     data_tests:
@@ -1766,16 +1767,16 @@ models:
         description: A unique identifier for the created shift.
 
 
-  - name: gmx_v2_arbitrum_glv_shift_executed
+  - name: gmx_v2_avalanche_c_glv_shift_executed
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'glv_shift_executed']
+      tags: ['avalanche_c', 'gmx', 'event', 'glv_shift_executed']
     description: |
-      Processes decoded event data for `GLVShiftExecuted` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `GLVShiftExecuted` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the received market tokens and transaction specifics, enabling
       analysis of executed GLV shifts.
     data_tests:
@@ -1804,16 +1805,16 @@ models:
         description: A unique identifier for the executed shift.
 
 
-  - name: gmx_v2_arbitrum_glv_withdrawal_cancelled
+  - name: gmx_v2_avalanche_c_glv_withdrawal_cancelled
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'glv_withdrawal_cancelled']
+      tags: ['avalanche_c', 'gmx', 'event', 'glv_withdrawal_cancelled']
     description: |
-      Processes decoded event data for `GLVWithdrawalCancelled` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `GLVWithdrawalCancelled` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, cancellation reason, and transaction specifics, enabling
       analysis of cancelled GLV withdrawals.
     data_tests:
@@ -1848,16 +1849,16 @@ models:
         description: The decoded textual reason for the withdrawal cancellation.
 
 
-  - name: gmx_v2_arbitrum_glv_withdrawal_created
+  - name: gmx_v2_avalanche_c_glv_withdrawal_created
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'glv_withdrawal_created']
+      tags: ['avalanche_c', 'gmx', 'event', 'glv_withdrawal_created']
     description: |
-      Processes decoded event data for `GLVWithdrawalCreated` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `GLVWithdrawalCreated` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, withdrawal details, and transaction specifics, enabling
       analysis of created GLV withdrawals.
     data_tests:
@@ -1916,16 +1917,16 @@ models:
         description: A unique identifier for the created withdrawal.
 
 
-  - name: gmx_v2_arbitrum_glv_withdrawal_executed
+  - name: gmx_v2_avalanche_c_glv_withdrawal_executed
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'glv_withdrawal_executed']
+      tags: ['avalanche_c', 'gmx', 'event', 'glv_withdrawal_executed']
     description: |
-      Processes decoded event data for `GLVWithdrawalExecuted` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `GLVWithdrawalExecuted` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address and transaction specifics, enabling
       analysis of executed GLV withdrawals.
     data_tests:
@@ -1956,16 +1957,16 @@ models:
         description: A unique identifier for the executed withdrawal.
 
 
-  - name: gmx_v2_arbitrum_shift_created
+  - name: gmx_v2_avalanche_c_shift_created
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'shift_created']
+      tags: ['avalanche_c', 'gmx', 'event', 'shift_created']
     description: |
-      Processes decoded event data for `ShiftCreated` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `ShiftCreated` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, market details, and transaction specifics, enabling
       analysis of created shifts.
     data_tests:
@@ -2012,16 +2013,16 @@ models:
         description: A unique identifier for the created shift.
 
 
-  - name: gmx_v2_arbitrum_shift_executed
+  - name: gmx_v2_avalanche_c_shift_executed
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'shift_executed']
+      tags: ['avalanche_c', 'gmx', 'event', 'shift_executed']
     description: |
-      Processes decoded event data for `ShiftExecuted` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `ShiftExecuted` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, received market tokens, and transaction specifics, enabling
       analysis of executed shifts.
     data_tests:
@@ -2052,16 +2053,16 @@ models:
         description: A unique identifier for the executed shift.
 
 
-  - name: gmx_v2_arbitrum_withdrawal_cancelled
+  - name: gmx_v2_avalanche_c_withdrawal_cancelled
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'withdrawal_cancelled']
+      tags: ['avalanche_c', 'gmx', 'event', 'withdrawal_cancelled']
     description: |
-      Processes decoded event data for `WithdrawalCancelled` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `WithdrawalCancelled` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, cancellation reason, and transaction specifics, enabling
       analysis of cancelled withdrawals.
     data_tests:
@@ -2094,16 +2095,16 @@ models:
         description: The decoded textual reason for the withdrawal cancellation.
 
 
-  - name: gmx_v2_arbitrum_withdrawal_created
+  - name: gmx_v2_avalanche_c_withdrawal_created
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'withdrawal_created']
+      tags: ['avalanche_c', 'gmx', 'event', 'withdrawal_created']
     description: |
-      Processes decoded event data for `WithdrawalCreated` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `WithdrawalCreated` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, withdrawal details, and transaction specifics, enabling
       analysis of created withdrawals.
     data_tests:
@@ -2152,16 +2153,16 @@ models:
         description: A unique identifier for the created withdrawal.
 
 
-  - name: gmx_v2_arbitrum_withdrawal_executed
+  - name: gmx_v2_avalanche_c_withdrawal_executed
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'withdrawal_executed']
+      tags: ['avalanche_c', 'gmx', 'event', 'withdrawal_executed']
     description: |
-      Processes decoded event data for `WithdrawalExecuted` events on the GMX platform in the Arbitrum blockchain.
+      Processes decoded event data for `WithdrawalExecuted` events on the GMX platform in the Avalanche blockchain.
       This model extracts key details such as the account address, pricing type, and transaction specifics, enabling
       analysis of executed withdrawals.
     data_tests:
@@ -2191,17 +2192,16 @@ models:
       - name: key
         description: A unique identifier for the executed withdrawal.
 
-
-  - name: gmx_v2_arbitrum_claimable_funding_amount_per_size_updated
+  - name: gmx_v2_avalanche_c_claimable_funding_amount_per_size_updated
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'claimable_funding']
+      tags: ['avalanche_c', 'gmx', 'event', 'claimable_funding']
     description: |
-      Processes decoded event data for `ClaimableFundingAmountPerSizeUpdated` events on the GMX platform across the Arbitrum blockchain.
+      Processes decoded event data for `ClaimableFundingAmountPerSizeUpdated` events on the GMX platform across the Avalanche blockchain.
       This model extracts key details such as funding updates, collateral information, and market direction to support funding analysis.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -2234,16 +2234,16 @@ models:
       - name: is_long
         description: A boolean indicating if the position is a long position (`true` for long, `false` for short).
 
-  - name: gmx_v2_arbitrum_funding_fee_amount_per_size_updated
+  - name: gmx_v2_avalanche_c_funding_fee_amount_per_size_updated
     meta:
-      blockchain: arbitrum
+      blockchain: avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'event', 'funding_fee']
+      tags: ['avalanche_c', 'gmx', 'event', 'funding_fee']
     description: |
-      Processes decoded event data for `FundingFeeAmountPerSizeUpdated` events on the GMX platform across the Arbitrum blockchain.
+      Processes decoded event data for `FundingFeeAmountPerSizeUpdated` events on the GMX platform across the Avalanche blockchain.
       This model extracts key details such as funding fees, collateral details, and market direction to enable funding fee analysis.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -2275,3 +2275,97 @@ models:
         description: The funding fee amount associated with the update.
       - name: is_long
         description: A boolean indicating if the position is a long position (`True` for long, `False` for short).
+
+  - name: gmx_v2_avalanche_c_swap_fees_collected
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['avalanche_c', 'gmx', 'event', 'swap_fee']
+    description: |
+      Processes decoded event data for `SwapFeesCollected` events on the GMX platform across the Avalanche blockchain.
+      This model extracts key details such as fee amounts, trade keys, and fee types for analyzing swap fee collection behavior.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: tx_from
+        description: The address initiating the transaction.
+      - name: tx_to
+        description: The recipient address of the transaction.
+      - name: event_name
+        description: The name of the event emitted, always `SwapFeesCollected`.
+      - *msg_sender
+      - name: ui_fee_receiver
+        description: The address receiving the UI fee.
+      - name: market
+        description: The specific GMX market where the swap occurred.
+      - name: token
+        description: The token involved in the swap transaction.
+      - name: token_price
+        description: The price of the token at the time of the swap.
+      - name: fee_receiver_amount
+        description: The amount received by the fee receiver.
+      - name: fee_amount_for_pool
+        description: The amount of fees sent to the pool.
+      - name: amount_after_fees
+        description: The amount remaining after fees were deducted.
+      - name: ui_fee_receiver_factor
+        description: The factor used to calculate the UI fee.
+      - name: ui_fee_amount
+        description: The total UI fee amount deducted from the transaction.
+      - name: trade_key
+        description: A unique identifier for the trade.
+      - name: swap_fee_type
+        description: The type of fee associated with the swap.
+      - name: action_type
+        description: The action performed in the swap event (e.g., deposit, withdrawal, or swap).
+
+  - name: gmx_v2_avalanche_c_position_impact_pool_distributed
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: gmx
+      contributors: ai_data_master, gmx-io
+    config:
+      tags: ['avalanche_c', 'gmx', 'event', 'position_impact']
+    description: |
+      Processes decoded event data for `PositionImpactPoolDistributed` events on the GMX platform across the Avalanche blockchain.
+      This model extracts key details such as distribution amounts and pool impact metrics to analyze the effect of position impact distribution.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *block_time
+      - *block_date
+      - *block_number
+      - *tx_hash
+      - *index
+      - *contract_address
+      - name: tx_from
+        description: The address initiating the transaction.
+      - name: tx_to
+        description: The recipient address of the transaction.
+      - name: event_name
+        description: The name of the event emitted, always `PositionImpactPoolDistributed`.
+      - *msg_sender
+      - name: market
+        description: The specific GMX market where the position impact occurred.
+      - name: distribution_amount
+        description: The amount distributed to the impact pool.
+      - name: next_position_impact_pool_amount
+        description: The updated position impact pool amount after the event.
