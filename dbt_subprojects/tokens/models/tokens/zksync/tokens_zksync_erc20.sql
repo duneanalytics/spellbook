@@ -337,6 +337,7 @@ FROM (VALUES
     (0x140d5bc5b62d6cb492b1a475127f50d531023803, 'DERI', 18),
     (0x0bf4cb727b3f8092534d793893b2cc3348963dbf, 'DERP', 18),
     (0x44e4a7f3de18c6e843bfe8754c23aa4e67e6a433, 'DEShare', 18),
+    (0xb21f16d1ea2e8d96ccfafa397cef855bf368aa83, 'deUSD', 18),
     (0x9929bcac4417a21d7e6fc86f6dae1cc7f27a2e41, 'DEXTF', 18),
     (0x8ab7ed6e7ee07c7bc4782f5de76d6f4a01790996, 'DH', 18),
     (0x66df663d5756fad6ef60d7ef2553d06ffd4ed178, 'DIX', 18),
