@@ -2,7 +2,7 @@
   config(
     schema = 'gmx_v2_arbitrum',
     alias = 'erc20',    
-    materialized = 'view'
+    materialized = 'table'
     )
 }}
 
