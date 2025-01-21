@@ -26,9 +26,9 @@ with op_addresses as (
 
 filtered_balances as (
   {{ balances_incremental_subset_daily(
-       blockchain='optimism',
-       start_date='2022-09-14',
-        address_token_list = 'op_addresses'         
+      blockchain='optimism',
+      start_date='2022-09-14',
+      address_token_list = 'op_addresses'         
   ) }}
 )
 
