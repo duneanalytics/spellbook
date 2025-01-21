@@ -71,5 +71,6 @@ FROM
     ('bnb-binance-coin', 'zksync', 'BNB', 0x7400793aad94c8ca801aa036357d10f5fd0ce08f, 18),
     ('xvs-venus', 'zksync', 'XVS', 0xd78abd81a3d57712a3af080dc4185b698fe9ac5a, 18),
     ('usd-overnightfi-usd-arbitrum', 'zksync', 'USD+', 0x8e86e46278518efc1c5ced245cba2c7e3ef11557, 6),
-    ('vno-veno-finance', 'zksync', 'VNO', 0xe75a17b4f5c4f844688d5670b684515d7c785e63, 18)
+    ('vno-veno-finance', 'zksync', 'VNO', 0xe75a17b4f5c4f844688d5670b684515d7c785e63, 18),
+    ('deusd-elixir-deusd', 'zksync', 'deUSD', 0xb21f16d1ea2e8d96ccfafa397cef855bf368aa83, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
