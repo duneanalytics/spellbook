@@ -137,7 +137,7 @@ with raw_transfers as (
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
     from
-        {{ source('tokens', 'transfers') }}
+        {{ ref('tokens_transfers') }}
     where
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
