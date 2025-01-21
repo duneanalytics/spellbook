@@ -305,7 +305,7 @@ models:
       - *tx_hash
       - *evt_index
 
-  - name: morpho_base_base_borrow
+  - name: moprho_base_base_borrow
     meta:
       blockchain: base
       sector: lending
