@@ -6,7 +6,8 @@
 }}
 
 {% set base_models = [
-    ref('katana_ronin_base_trades')
+    ref('katana_v2_ronin_base_trades')
+    , ref('katana_v3_ronin_base_trades')
 ] %}
 
 WITH base_union AS (
