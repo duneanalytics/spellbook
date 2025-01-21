@@ -68,7 +68,8 @@ SELECT
     decimals
 FROM (VALUES 
      (0x7204b7dbf9412567835633b6f00c3edc3a8d6330, 'CoinShift USDC', 'csUSDC', 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48, 'USDC', 18),
-     (0xbeefc011e94f43b8b7b455ebab290c7ab4e216f1, 'CoinShift USDL', 'csUSDL', 0xbdC7c08592Ee4aa51D06C27Ee23D5087D65aDbcD, 'wUSDL', 18)
+     (0xbeefc011e94f43b8b7b455ebab290c7ab4e216f1, 'CoinShift USDL', 'csUSDL', 0xbdC7c08592Ee4aa51D06C27Ee23D5087D65aDbcD, 'wUSDL', 18),
+     (0x1e6ffa4e9F63d10B8820A3ab52566Af881Dab53c, 'Gauntlet WETH Ecosystem', 'gtWETHe', 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2, 'WETH', 18)
     ) AS temp_table (erc4626_token, erc4626_token_name, erc4626_token_symbol, underlying_token, underlying_token_symbol, decimals)
 )
 

@@ -28,4 +28,5 @@ FROM
     , ('scusd-sonic-usd', 'scUSD', 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE, 6)
     , ('sceth-sonic-eth', 'scETH', 0x3bce5cb273f0f148010bbea2470e7b5df84c7812, 18)
     , ('sts-staked-sonic', 'stS', 0xe5da20f15420ad15de0fa650600afc998bbe3955, 18)
+    , ('ag-silver', 'AG', 0x005851f943ee2957b1748957f26319e4f9edebc1, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
