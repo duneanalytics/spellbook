@@ -153,7 +153,7 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'updatedAtTime' THEN value END) AS updated_at_time,
         MAX(CASE WHEN key_name = 'executionFee' THEN value END) AS execution_fee,
         MAX(CASE WHEN key_name = 'callbackGasLimit' THEN value END) AS callback_gas_limit,
-        
+
         MAX(CASE WHEN key_name = 'shouldUnwrapNativeToken' THEN value END) AS should_unwrap_native_token,
         
         MAX(CASE WHEN key_name = 'key' THEN value END) AS "key"
