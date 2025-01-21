@@ -23,6 +23,7 @@ WITH evt_swap AS (
         , contract_address
         , tx_hash
         , index
+        , tx_index
     FROM {{ Pair_evt_Swap }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
@@ -48,6 +49,7 @@ WITH evt_swap AS (
         , t.contract_address as project_contract_address
         , t.tx_hash
         , t.index as evt_index
+        , t.tx_index
         , f.contract_address as factory_address
     FROM
         evt_swap t
@@ -80,6 +82,7 @@ WITH evt_swap AS (
         , dexs.tx_hash
         , dexs.evt_index
         , dexs.factory_address
+        , dexs.tx_index
     FROM
         dexs
 )
@@ -103,19 +106,24 @@ SELECT  base_trades.blockchain
         , base_trades.project_contract_address
         , base_trades.tx_hash
         , base_trades.evt_index
+        , base_trades.tx_index
 FROM base_trades
 INNER JOIN (
     SELECT
         blockchain,
-        tx_hash,
+        block_date,
+        block_number,
+        tx_index,
         array_agg(DISTINCT contract_address) as contract_addresses
     FROM {{ source('tokens', 'transfers') }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
-    GROUP BY blockchain, tx_hash
+    GROUP BY blockchain, block_date, block_number, tx_index
 ) AS transfers
-ON transfers.tx_hash = base_trades.tx_hash
+ON transfers.block_date = base_trades.block_date
+    AND transfers.block_number = base_trades.block_number
+    AND transfers.tx_index = base_trades.tx_index
     AND transfers.blockchain = base_trades.blockchain
     AND contains(transfers.contract_addresses, base_trades.token_bought_address)
     AND contains(transfers.contract_addresses, base_trades.token_sold_address)
