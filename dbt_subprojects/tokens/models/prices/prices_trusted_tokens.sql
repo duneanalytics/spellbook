@@ -89,6 +89,8 @@ WITH trusted_tokens AS (
                 , ('gnosis', 0x8e5bbbb09ed1ebde8674cda39a0c169401db4252)
                 , ('gnosis', 0x44fa8e6f47987339850636f88629646662444217)
                 , ('gnosis', 0xdd96b45877d0e8361a4ddb732da741e97f3191ff)
+                , ('ink', 0x4200000000000000000000000000000000000006)
+                , ('ink', 0xf1815bd50389c46847f0bda824ec8da914045d14)
                 , ('kaia', 0x5c13e303a62fc5dedf5b52d66873f2e59fedadc2)
                 , ('kaia', 0x608792deb376cce1c9fa4d0e6b7b44f507cffa6a)
                 , ('kaia', 0x19aac5f612f524b754ca7e7c41cbfa2e981a4432)
