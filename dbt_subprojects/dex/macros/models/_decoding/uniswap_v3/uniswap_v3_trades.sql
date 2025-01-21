@@ -115,7 +115,7 @@ INNER JOIN (
         block_number,
         tx_index,
         array_agg(DISTINCT contract_address) as contract_addresses
-    FROM {{ source('tokens', 'transfers') }}
+    FROM {{ source('tokens', 'transfers') }} tt
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
@@ -130,5 +130,5 @@ ON transfers.block_date = base_trades.block_date
 LEFT JOIN {{ ref('dex_mapping') }} AS dex_map
 ON base_trades.factory_address = dex_map.factory_address
   AND base_trades.blockchain = dex_map.blockchain
-where block_date >= DATE ('2024-06-01')
+where base_trades.block_date >= DATE ('2024-06-01')
 {% endmacro %}
