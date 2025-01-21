@@ -1,5 +1,4 @@
 {{ config(
-    tags=['prod_exclude'],
     schema = 'saddle_finance_optimism',
     alias = 'base_trades',
     partition_by = ['block_month'],
@@ -9,10 +8,14 @@
     unique_key = ['tx_hash', 'evt_index']
 ) }}
 
--- Id mapping:
+-- contract 0x5847f8177221268d279cf377d0e01ab3fd993628 Id mapping:
 -- 0 DAI https://optimistic.etherscan.io/token/0xda10009cbd5d07dd0cecc66161fc93d7c9000da1
 -- 1 USDC.e https://optimistic.etherscan.io/token/0x7f5c764cbc14f9669b88837ca1490cca17c31607
 -- 2 USDT https://optimistic.etherscan.io/token/0x94b008aa00579c1307b0ef2c499ad98a8ce58e58
+
+-- contract 0xf6c2e0adc659007ba7c48446f5a4e4e94dfe08b5 Id mapping:
+-- 0 USDC.e https://optimistic.etherscan.io/token/0x7f5c764cbc14f9669b88837ca1490cca17c31607
+-- 1 FRAX https://optimistic.etherscan.io/token/0x2e3d870790dc77a83dd1d18184acc7439a53f475
 
 WITH token_swaps AS (
     SELECT
@@ -22,15 +25,31 @@ WITH token_swaps AS (
         evt_tx_to AS taker,
         tokensSold AS token_sold_amount_raw,
         tokensBought AS token_bought_amount_raw,
-        CASE soldId
-            WHEN 0 THEN 0xda10009cbd5d07dd0cecc66161fc93d7c9000da1
-            WHEN 1 THEN 0x7f5c764cbc14f9669b88837ca1490cca17c31607
-            WHEN 2 THEN 0x94b008aa00579c1307b0ef2c499ad98a8ce58e58
+        CASE 
+            WHEN contract_address = 0x5847f8177221268d279cf377d0e01ab3fd993628 THEN
+                CASE soldId
+                    WHEN 0 THEN 0xda10009cbd5d07dd0cecc66161fc93d7c9000da1
+                    WHEN 1 THEN 0x7f5c764cbc14f9669b88837ca1490cca17c31607
+                    WHEN 2 THEN 0x94b008aa00579c1307b0ef2c499ad98a8ce58e58
+                END
+            WHEN contract_address = 0xf6c2e0adc659007ba7c48446f5a4e4e94dfe08b5 THEN
+                CASE soldId
+                    WHEN 0 THEN 0x7f5c764cbc14f9669b88837ca1490cca17c31607
+                    WHEN 1 THEN 0x2e3d870790dc77a83dd1d18184acc7439a53f475
+                END
         END AS token_sold_address,
-        CASE boughtId
-            WHEN 0 THEN 0xda10009cbd5d07dd0cecc66161fc93d7c9000da1
-            WHEN 1 THEN 0x7f5c764cbc14f9669b88837ca1490cca17c31607
-            WHEN 2 THEN 0x94b008aa00579c1307b0ef2c499ad98a8ce58e58
+        CASE 
+            WHEN contract_address = 0x5847f8177221268d279cf377d0e01ab3fd993628 THEN
+                CASE boughtId
+                    WHEN 0 THEN 0xda10009cbd5d07dd0cecc66161fc93d7c9000da1
+                    WHEN 1 THEN 0x7f5c764cbc14f9669b88837ca1490cca17c31607
+                    WHEN 2 THEN 0x94b008aa00579c1307b0ef2c499ad98a8ce58e58
+                END
+            WHEN contract_address = 0xf6c2e0adc659007ba7c48446f5a4e4e94dfe08b5 THEN
+                CASE boughtId
+                    WHEN 0 THEN 0x7f5c764cbc14f9669b88837ca1490cca17c31607
+                    WHEN 1 THEN 0x2e3d870790dc77a83dd1d18184acc7439a53f475
+                END
         END AS token_bought_address,
         contract_address AS project_contract_address,
         evt_tx_hash AS tx_hash,
