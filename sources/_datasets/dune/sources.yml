@@ -3,6 +3,7 @@ version: 2
 sources:
   - name: dune
     tables:
+      - name: result_blockchains
       - name: result_gmx_v_2_erc_20_from_api
         columns:
           - name: blockchain
