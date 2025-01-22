@@ -13,7 +13,8 @@
     ref('seamlessprotocol_base_base_borrow'),
     ref('moonwell_base_base_borrow'),
     ref('sonne_finance_base_base_borrow'),
-    ref('granary_base_base_borrow')
+    ref('granary_base_base_borrow'),
+    ref('morpho_base_base_borrow')
   ]
 %}
 
