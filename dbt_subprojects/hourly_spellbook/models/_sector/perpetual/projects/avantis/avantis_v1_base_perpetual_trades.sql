@@ -158,4 +158,4 @@ SELECT
 FROM perps
 INNER JOIN transactions_filtered AS tx
     ON perps.tx_hash = tx.hash
-    AND perps.block_number = tx.block_number;
+    AND perps.block_number = tx.block_number
