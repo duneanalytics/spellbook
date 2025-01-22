@@ -817,6 +817,23 @@ models:
           combination_of_columns:
             - user
 
+  - name: fasol_solana_fee_payments
+    meta:
+      blockchain: solana
+      sector: dex
+      project: fasol
+      contributors: clizzard
+    config:
+      tags: ["solana", "dex", "fasol", "trades"]
+    description: >
+      Fasol fee payments on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_id
+            - fee_token_amount
+            - fee_token_mint_address
+
   - name: fasol_solana_bot_trades
     meta:
       blockchain: solana

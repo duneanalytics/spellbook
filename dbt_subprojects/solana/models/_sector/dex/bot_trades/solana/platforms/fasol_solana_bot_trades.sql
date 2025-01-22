@@ -16,24 +16,7 @@
 
 WITH
   allFeePayments AS (
-    SELECT
-      tx_id,
-      'SOL' AS feeTokenType,
-      balance_change / 1e9 AS fee_token_amount,
-      '{{wsol_token}}' AS fee_token_mint_address
-    FROM
-      {{ source('solana','account_activity') }}
-    WHERE
-      {% if is_incremental() %}
-      {{ incremental_predicate('block_time') }}
-      {% else %}
-      block_time >= TIMESTAMP '{{project_start_date}}'
-      {% endif %}
-      AND tx_success
-      AND balance_change > 0
-      AND (
-        address = '{{fee_receiver_1}}'
-      )
+    select * from {{ref('fasol_solana_fee_payments')}}
   ),
   prices_filtered AS (
     SELECT
