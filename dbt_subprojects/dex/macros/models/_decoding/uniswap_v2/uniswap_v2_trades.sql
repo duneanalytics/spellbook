@@ -96,24 +96,8 @@ SELECT  base_trades.blockchain
         , base_trades.tx_hash
         , base_trades.evt_index
 FROM base_trades
-INNER JOIN (
-    SELECT
-        blockchain,
-        tx_hash,
-        array_agg(DISTINCT contract_address) as contract_addresses
-    FROM {{ source('tokens', 'transfers') }}
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('block_time') }}
-    {% endif %}
-    GROUP BY blockchain, tx_hash
-) AS transfers
-ON transfers.tx_hash = base_trades.tx_hash
-    AND transfers.blockchain = base_trades.blockchain
-    AND contains(transfers.contract_addresses, base_trades.token_bought_address)
-    AND contains(transfers.contract_addresses, base_trades.token_sold_address)
 LEFT JOIN {{ ref('dex_mapping') }} AS dex_map
 ON base_trades.factory_address = dex_map.factory_address
   AND base_trades.blockchain = dex_map.blockchain
-where block_date >= DATE ('2024-06-01')
 
 {% endmacro %}
