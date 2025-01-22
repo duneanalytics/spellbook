@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: equalizer_exchange
+  - name: equalizer_exchange_sonic
     description: >
       Decoded tables related to Equalizer Exchange on Sonic.
     tables:
