@@ -14,7 +14,7 @@ WITH evt_swap AS (
         , to
         , contract_address
         , tx_hash
-        , index
+        , evt_index
         , amount0In
         , amount0Out
         , amount1In
@@ -42,7 +42,7 @@ WITH evt_swap AS (
         , CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         , t.contract_address AS project_contract_address
         , t.tx_hash
-        , t.index AS evt_index
+        , t.evt_index
         , f.contract_address as factory_address
         , t.tx_from
         , t.tx_to

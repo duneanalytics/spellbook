@@ -23,7 +23,7 @@ FROM TABLE (
                 topic3,
                 data,
                 tx_hash, 
-                index,
+                index as evt_index,
                 tx_index, 
                 tx_from,
                 tx_to

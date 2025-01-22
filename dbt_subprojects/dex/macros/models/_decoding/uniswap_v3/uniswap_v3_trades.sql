@@ -22,8 +22,7 @@ WITH evt_swap AS (
         , amount1
         , contract_address
         , tx_hash
-        , index
-        , tx_index
+        , evt_index
         , tx_from
         , tx_to
     FROM {{ Pair_evt_Swap }}
@@ -50,7 +49,7 @@ WITH evt_swap AS (
         , CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         , t.contract_address as project_contract_address
         , t.tx_hash
-        , t.index as evt_index
+        , t.evt_index
         , f.contract_address as factory_address
         , t.tx_from
         , t.tx_to

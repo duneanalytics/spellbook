@@ -1,11 +1,11 @@
 {{ config(
         schema = 'uniswap_v3_multichain',
         alias = 'decoded_pool_evt_swap',
-        partition_by = ['block_date'],
+        partition_by = ['block_month', 'blockchain'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'tx_hash', 'index'],
+        unique_key = ['blockchain', 'block_number', 'evt_index'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
         )
 }}
