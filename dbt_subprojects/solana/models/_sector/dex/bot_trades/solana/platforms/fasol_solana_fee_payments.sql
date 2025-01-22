@@ -17,6 +17,7 @@
 SELECT
   tx_id,
   block_time,
+  CAST(date_trunc('month', trades.block_time) AS date) AS block_month,
   'SOL' AS feeTokenType,
   balance_change / 1e9 AS fee_token_amount,
   '{{wsol_token}}' AS fee_token_mint_address
