@@ -1,7 +1,6 @@
 {{ config(
     schema = 'dex'
     , alias = 'automated_trades_mapped'
-    , partition_by = ['block_month', 'blockchain', 'project']
     , materialized = 'view'
     )
 }}
