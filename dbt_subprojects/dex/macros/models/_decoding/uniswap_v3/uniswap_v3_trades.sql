@@ -26,7 +26,6 @@ WITH evt_swap AS (
         , tx_index
         , tx_from
         , tx_to
-        , tx_index
     FROM {{ Pair_evt_Swap }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
@@ -52,7 +51,6 @@ WITH evt_swap AS (
         , t.contract_address as project_contract_address
         , t.tx_hash
         , t.index as evt_index
-        , t.tx_index
         , f.contract_address as factory_address
         , t.tx_from
         , t.tx_to
@@ -89,7 +87,6 @@ WITH evt_swap AS (
         , dexs.tx_hash
         , dexs.evt_index
         , dexs.factory_address
-        , dexs.tx_index
         , dexs.tx_from
         , dexs.tx_to
         , dexs.tx_index
