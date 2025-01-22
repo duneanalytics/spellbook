@@ -11,19 +11,7 @@
 }}
 
 {%
-    set blockchains = [
-        "ethereum"
-        , "arbitrum"
-        , "base"
-        , "bnb"
-        , "fantom"
-        , "gnosis"
-        , "optimism"
-        , "polygon"
-        , "zkevm"
-        , "zksync"
-        , "zora"
-    ]
+    set blockchains = uniswap_exposed_blockchains_list()
 %}
 
 with uniswap_pool_swap_logs as (

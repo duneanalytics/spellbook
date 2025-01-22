@@ -22,6 +22,7 @@ WITH evt_swap AS (
         , amount1
         , contract_address
         , tx_hash
+        , tx_index
         , evt_index
         , tx_from
         , tx_to

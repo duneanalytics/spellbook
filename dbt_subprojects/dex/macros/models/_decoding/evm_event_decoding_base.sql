@@ -15,6 +15,7 @@ FROM TABLE (
         SELECT  block_number,
                 block_time,
                 block_date,
+                date_trunc('month', block_date) as block_month,
                 block_hash,
                 contract_address, 
                 topic0,
