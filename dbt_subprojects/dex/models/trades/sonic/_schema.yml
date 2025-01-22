@@ -24,7 +24,7 @@ models:
 
   - name: equalizer_sonic_base_trades
     meta:
-      blockchain: fantom
+      blockchain: sonic
       sector: dex
       project: equalizer
       contributors: IrishLatte_19
