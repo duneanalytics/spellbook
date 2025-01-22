@@ -59,7 +59,7 @@ all_perpetual_trades AS (
     {% endif %}
     {% endfor %}
 )
-
+-- column 
 SELECT
     perps.blockchain,
     perps.block_date,
