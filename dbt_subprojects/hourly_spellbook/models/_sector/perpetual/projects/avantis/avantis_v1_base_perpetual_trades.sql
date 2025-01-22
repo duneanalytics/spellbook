@@ -57,7 +57,6 @@ WITH trading_events AS (
         'margin_update' as event_type
     FROM delta_prod.avantis_base.Trading_evt_MarginUpdated
 ),
-PatelPrinci marked this conversation as resolved.
 
 perps AS (
     SELECT
