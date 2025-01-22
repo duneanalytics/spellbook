@@ -13,7 +13,7 @@
 {{
     uniswap_compatible_v2_trades(
         blockchain = 'sonic',
-        project = 'equalizer_exchange',
+        project = 'equalizer',
         version = '1',
         Pair_evt_Swap = source('equalizer_exchange_sonic', 'Pair_evt_Swap'),
         Factory_evt_PairCreated = source('equalizer_exchange_sonic', 'PairFactory_evt_PairCreated')
