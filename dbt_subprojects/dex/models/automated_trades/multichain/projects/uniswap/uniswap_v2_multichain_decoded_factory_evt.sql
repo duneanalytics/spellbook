@@ -13,6 +13,16 @@
 {%
     set blockchains = [
         "ethereum"
+        , "arbitrum"
+        , "base"
+        , "bnb"
+        , "fantom"
+        , "gnosis"
+        , "optimism"
+        , "polygon"
+        , "zkevm"
+        , "zksync"
+        , "zora"
     ]
 %}
 

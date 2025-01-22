@@ -52,4 +52,3 @@ from base_union model
 inner join {{source('evms', 'transactions')}} tx
     on model.block_number = tx.block_number
     and model.tx_hash = tx.hash
-where model.block_date >= DATE ('2024-06-01')
