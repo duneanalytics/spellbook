@@ -24,6 +24,9 @@ WITH evt_swap AS (
         , tx_hash
         , index
         , tx_index
+        , tx_from
+        , tx_to
+        , tx_index
     FROM {{ Pair_evt_Swap }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
@@ -51,12 +54,16 @@ WITH evt_swap AS (
         , t.index as evt_index
         , t.tx_index
         , f.contract_address as factory_address
+        , t.tx_from
+        , t.tx_to
+        , t.tx_index
     FROM
         evt_swap t
     INNER JOIN
         {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
         AND f.blockchain = t.blockchain
+    -- making sure that the pool was actually created by the factory and not a fluke
     INNER JOIN {{ source('evms', 'creation_traces') }} ct 
         ON f.{{ pair_column_name }} = ct.address 
         AND f.contract_address = ct."from"
@@ -83,6 +90,9 @@ WITH evt_swap AS (
         , dexs.evt_index
         , dexs.factory_address
         , dexs.tx_index
+        , dexs.tx_from
+        , dexs.tx_to
+        , dexs.tx_index
     FROM
         dexs
 )
@@ -106,9 +116,11 @@ SELECT  base_trades.blockchain
         , base_trades.project_contract_address
         , base_trades.tx_hash
         , base_trades.evt_index
+        , base_trades.tx_from
+        , base_trades.tx_to
         , base_trades.tx_index
 FROM base_trades
 LEFT JOIN {{ ref('dex_mapping') }} AS dex_map
-ON base_trades.factory_address = dex_map.factory_address
-  AND base_trades.blockchain = dex_map.blockchain
+ON base_trades.factory_address = dex_map.factory_address AND base_trades.blockchain = dex_map.blockchain
+where block_date = DATE '2025-01-21'
 {% endmacro %}

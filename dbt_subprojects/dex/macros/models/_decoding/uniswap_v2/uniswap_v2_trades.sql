@@ -19,6 +19,9 @@ WITH evt_swap AS (
         , amount0Out
         , amount1In
         , amount1Out
+        , tx_from
+        , tx_to
+        , tx_index
     FROM {{ Pair_evt_Swap }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
@@ -41,6 +44,9 @@ WITH evt_swap AS (
         , t.tx_hash
         , t.index AS evt_index
         , f.contract_address as factory_address
+        , t.tx_from
+        , t.tx_to
+        , t.tx_index
     FROM
         evt_swap t
     INNER JOIN
@@ -72,6 +78,9 @@ WITH evt_swap AS (
         , dexs.tx_hash
         , dexs.evt_index
         , dexs.factory_address
+        , dexs.tx_from
+        , dexs.tx_to
+        , dexs.tx_index
     FROM
         dexs
 )
@@ -95,6 +104,9 @@ SELECT  base_trades.blockchain
         , base_trades.project_contract_address
         , base_trades.tx_hash
         , base_trades.evt_index
+        , base_trades.tx_from
+        , base_trades.tx_to
+        , base_trades.tx_index
 FROM base_trades
 LEFT JOIN {{ ref('dex_mapping') }} AS dex_map
 ON base_trades.factory_address = dex_map.factory_address
