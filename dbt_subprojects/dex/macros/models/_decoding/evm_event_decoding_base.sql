@@ -31,8 +31,6 @@ FROM TABLE (
         WHERE topic0 = {{topic0}}
             {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
-            {% else %}
-            AND block_date >= (SELECT MIN(block_date) FROM {{logs}} WHERE topic0 = {{topic0}})
             {% endif %}
       )
     )
