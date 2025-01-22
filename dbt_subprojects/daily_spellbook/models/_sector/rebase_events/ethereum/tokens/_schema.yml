@@ -1,0 +1,41 @@
+version: 2
+
+models:
+  - name: rebase_ethereum_steth_events
+    meta:
+      blockchain: ethereum
+      sector: rebase
+      contributors: hildobby
+    config:
+      tags: ['rebase', 'ethereum', 'lido']
+    description: >
+        Lido's stETH ERC20 rebase events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &block_number
+        name: block_number
+        description: "Block number in which the transaction was executed"
+      - &token_address
+        name: token_address
+        description: "Rebasing ERC20 token address"
+      - &token_symbol
+        name: token_symbol
+        description: "Rebasing ERC20 token symbol"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &rebase_rate
+        name: rebase_rate
+        description: "Rebase rate"

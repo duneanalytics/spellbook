@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: zora_optimism
+    description: "op mainnet decoded tables related to zora contracts"
+    tables:
+      - name: ZoraNFTCreatorProxy_call_createDrop
+      - name: ZoraNFTCreatorProxy_call_createEdition
+      - name: ZoraCreator1155Factory_call_createContract

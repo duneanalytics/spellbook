@@ -1,0 +1,105 @@
+version: 2
+
+models:
+  - name: omen_gnosis_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: omen
+      contributors: hdser
+    config:
+      tags: ['gnosis', 'trades', 'omen', 'dex']
+    description: >
+      A table containing all trades of Omen on Gnosis
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_day
+            - tx_hash
+            - evt_index
+            - outcomeslot
+    columns:
+      - &block_time
+        name: block_time
+        description: "Event UTC block time of each prediction market trade"
+      - &block_day
+        name: block_day
+        description: "Event UTC block day of each prediction market trade"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the transaction"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the prediction market"
+      - &evt_index
+        name: evt_index
+        description: "Index of the log event in the block"
+      - &fixedproductmarketmaker
+        name: fixedproductmarketmaker
+        description: "Address of the Fixed Product Market Maker"
+      - &address
+        name: address
+        description: "Address of buyer or seller"
+      - &outcomeslot
+        name: outcomeslot
+        description: "Outcome slot for the specific Fixed Product Market Maker"
+      - &outcomeindex
+        name: outcomeindex
+        description: "Index of the outcome chosen"
+      - &amount
+        name: amount
+        description: "Amount in native currency that was bought or sold"
+      - &feeamount
+        name: feeamount
+        description: "Fee amount in native currency that was charged"
+      - &outcometokens_amount
+        name: outcometokens_amount
+        description: "Amount of conditional tokens that were minted or burnt by the Fixed Product Market Maker"
+      - &action
+        name: action
+        description: "Action executed by the trader or market maker, 'Buy', 'Sell', 'Add' and 'Remove' "
+      - &reserves_delta
+        name: reserves_delta
+        description: "Change in output token reserves"
+
+  - name: omen_gnosis_liquidity
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: omen
+      contributors: hdser
+    config:
+      tags: ['gnosis', 'liquidity', 'omen', 'dex']
+    description: >
+      A table containing all Omen liquidity management on Gnosis
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+            - evt_index
+    columns:
+      - *block_time
+      - *block_day
+      - *tx_from
+      - *tx_to
+      - *tx_hash
+      - *evt_index
+      - *fixedproductmarketmaker
+      - &funder
+        name: funder
+        description: "Address of the wallet adding or removing liquidity"
+      - &shares
+        name: shares
+        description: "Amount of shares involved in liquidity transactions"
+      - &collateralremovedfromfeepool
+        name: collateralremovedfromfeepool
+        description: "Collateral removed from the fee pool"
+      - *outcomeindex
+      - *outcometokens_amount
+      - *amount
+      - *action
+      - *reserves_delta

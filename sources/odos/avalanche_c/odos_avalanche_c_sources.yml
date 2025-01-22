@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: odos_avalanche_c
+    description: >
+      Decoded event table for swaps on odos
+    tables:
+      - name: OdosRouter_evt_Swapped

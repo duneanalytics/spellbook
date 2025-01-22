@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: zerion_avalanche_c
+    description: "Zerion contracts on Avalanche"
+    tables:
+      - name: Router_evt_Executed

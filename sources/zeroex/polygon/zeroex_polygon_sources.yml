@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  # for native orders on v4 + PLP VIP
+  - name: zeroex_polygon
+    description: "Polygon decoded tables related to 0x Exchange Proxy (v4)"
+
+    tables:
+      - name: ExchangeProxy_evt_LimitOrderFilled
+      - name: ExchangeProxy_evt_OtcOrderFilled
+      - name: ExchangeProxy_evt_RfqOrderFilled
+      - name: ExchangeProxy_evt_LiquidityProviderSwap
+      - name: Exchange_evt_Fill
+      - name: ExchangeProxy_evt_ERC721OrderFilled
+      - name: ExchangeProxy_evt_ERC1155OrderFilled
+      - name: ExchangeProxy_call_buyERC721
+      - name: ExchangeProxy_call_batchBuyERC721s
+      - name: ExchangeProxy_call_buyERC1155
+      - name: ExchangeProxy_call_batchBuyERC1155s
+      - name: ExchangeProxy_call_sellERC721
+      - name: ExchangeProxy_call_sellERC1155
+
+
+    # for native orders on v3
+  - name: zeroex_v3_polygon
+    description: "Polygon decoded tables related to 0x v3 Exchange Contract"
+
+    tables:
+      - name: Exchange_evt_Fill

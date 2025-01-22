@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: ribbon_ethereum
+    description: >
+      $RBN airdrop claims
+    tables:
+      - name: MerkleDistributor_evt_Claimed

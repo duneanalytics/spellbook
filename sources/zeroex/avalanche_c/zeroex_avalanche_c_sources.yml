@@ -1,0 +1,18 @@
+version: 2
+
+sources: 
+  # for native orders on v4 + PLP VIP
+  - name: zeroex_avalanche_c
+    description: "avalanche decoded tables related to 0x Exchange Proxy (v4)"
+    
+    tables:
+      - name: ExchangeProxy_evt_LimitOrderFilled
+      - name: ExchangeProxy_evt_OtcOrderFilled
+      - name: ExchangeProxy_evt_RfqOrderFilled
+      - name: ExchangeProxy_evt_LiquidityProviderSwap
+
+    # for native orders on v3
+  - name: zeroex_v3_avalanche
+    description: "avalanche decoded tables related to 0x v3 Exchange Contract"
+    tables:
+      - name: Exchange_evt_Fill

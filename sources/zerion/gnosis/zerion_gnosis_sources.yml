@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: zerion_gnosis
+    description: "Zerion contracts on Gnosis"
+    tables:
+      - name: Router_evt_Executed

@@ -1,0 +1,325 @@
+version: 2
+
+models:
+  - name: zeroex_ethereum_api_fills 
+    meta:
+      blockchain: ethereum
+      project: zeroex
+      contributors: danning.sui, bakabhai993, hosuke
+    config:
+      tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
+    description: >
+        0x API erc20 swaps raw fills (including multihops) and also native swaps thru 0x exchange contracts (without using 0x API) on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('zeroex_ethereum_api_fills_sample')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - maker
+            - taker
+            - maker_token
+            - taker_token
+    columns:
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the fill"
+      - &block_number
+        name: block_number
+        description: "Block Number of the fill"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding fill/swap event"
+      - &contract_address
+        name: contract_address
+        description: "The address of the contract which fired the fill/swap event"
+      - &block_time
+        name: block_time
+        description: "Timestamp for block event time in UTC"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each trade"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each trade"
+      - &maker
+        name: maker
+        description: "For limit order, the wallet who posted order first; for AMM orders, the liquidity pools; for RFQ orders, the professional market makers."
+      - &taker
+        name: taker
+        description: "User who is taking the order"
+      - &taker_token
+        name: taker_token
+        description: "Contract address of the token taker sells"
+      - &taker_symbol
+        name: taker_symbol
+        description: "Symbol of the token taker sells"
+      - &maker_token
+        name: maker_token
+        description: "Contract address of the token taker buys"
+      - &maker_symbol
+        name: maker_symbol
+        description: "Symbol of the token taker buys"
+      - &token_pair
+        name: token_pair
+        description: "Token pair traded"
+      - &taker_token_amount
+        name: taker_token_amount
+        description: "The after-decimal amount of the token taker sells"
+      - &taker_token_amount_raw
+        name: taker_token_amount_raw
+        description: "The raw amount of the token taker sells"
+      - &maker_token_amount
+        name: maker_token_amount
+        description: "The after-decimal amount of the token taker buys"
+      - &maker_token_amount_raw
+        name: maker_token_amount_raw
+        description: "The raw amount of the token taker buys"
+      - &type
+        name: type
+        description: "The liquidity route the order went through"
+      - &affiliate_address
+        name: affiliate_address
+        description: "The recipient address of the affiliate, or the applications that are using 0x API, for receiving affiliate fee"
+      - &swap_flag
+        name: swap_flag
+        description: "If the swap was filled/consumed through 0x API"
+      - &matcha_limit_order_flag
+        name: matcha_limit_order_flag
+        description: "If the swap's order was initially created and submitted through Matcha. This is for Matcha related query needs."
+      - &volume_usd
+        name: volume_usd
+        description: "Trading volume measured in USD value"
+      - &tx_from
+        name: tx_from
+        description: "Address which initiated the trade"
+      - &tx_to
+        name: tx_to
+        description: "Address which received the trade"
+      - &blockchain
+        name: blockchain
+        
+
+  - name: zeroex_ethereum_api_fills_deduped
+    meta:
+      blockchain: ethereum
+      project: zeroex
+      contributors: bakabhai993
+    config:
+      tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
+    description: >
+        0x API erc20 swaps raw fills (deduped) on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_date
+      - *block_month
+      - *block_time
+      - *taker_symbol
+      - *maker_symbol
+      - *token_pair
+      - *taker_token_amount
+      - *maker_token_amount
+      - *taker_token_amount_raw
+      - *maker_token_amount_raw
+      - name: volume_usd
+        description: "Trading volume measured in USD value"
+      - *taker_token
+      - *maker_token
+      - *taker
+      - *maker
+      - *affiliate_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *type
+      - *swap_flag
+      - *contract_address
+      - &fills_within
+        name: fills_within
+        description: "fills in the multihop, if present"
+
+  - name: zeroex_ethereum_nft_fills
+    meta:
+      blockchain: ethereum
+      project: zeroex
+      contributors: bakabhai993, danning.sui
+    config:
+      tags: ['ethereum','0x','nft']
+    description: >
+        NFT Swaps enabled by 0x exchange contracts
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('zeroex_ethereum_nft_fills_sample')
+          match_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+          check_columns:
+            - maker
+            - taker
+            - nft_id
+            - nft_address
+    columns:
+      - *block_time
+      - *block_date
+      - *evt_index
+      - *tx_hash
+      - *maker
+      - *taker
+      - &matcher
+        name: matcher
+        description: "Address/bot that brings two public quotes (from buy as well as from the sell side) together"
+      - &nft_address
+        name: nft_address
+        description: "NFT project address"
+      - &nft_id
+        name: nft_id
+        description: "Token ID of the NFT project address"
+      - &label
+        name: label
+        description: "Type of NFT - ERC 721 OR ERC 1155"
+      - &price_label
+        name: price_label
+        description: "Token address used to generate the amount in USD - for ETH, we take the price of WETH"
+      - &token
+        name: token
+        description: "Token used to pay for the transaction"
+      - &token_amount_raw
+        name: token_amount_raw
+        description: "Raw token amount used to pay for the transaction"
+      - &symbol
+        name: symbol
+        description: "Symbol of the token used to pay for the transaction - use this column for all your descriptive needs + aggregations"
+      - &price_usd
+        name: price_usd
+        description: "Price of a transaction in USD"
+      - &token_amount
+        name: token_amount
+        description: "Token amount, after dividing by the correct decimal"
+      - &project_name
+        name: project_name
+        description: "Name of the NFT project"
+
+  - name: zeroex_ethereum_native_fills 
+    meta:
+      blockchain: ethereum
+      project: zeroex
+      contributors: rantum, danning.sui, bakabhai993
+    config:
+      tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
+    description: >
+        0x API erc20 swaps raw fills (including multihops) and also native swaps through 0x exchange contracts (without using 0x API) on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+            - evt_index
+            - volume_usd
+      - check_seed:
+          seed_file: ref('zeroex_ethereum_native_fills_sample')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - maker
+            - taker
+            - maker_token
+            - taker_token
+    columns:
+      - *tx_hash
+      - *contract_address
+      - *block_time
+      - *block_number
+      - *maker
+      - *taker
+      - *taker_token
+      - *taker_symbol
+      - *maker_token
+      - *maker_symbol
+      - *token_pair
+      - *taker_token_amount
+      - *taker_token_amount_raw
+      - *maker_token_amount
+      - *maker_token_amount_raw
+      - *volume_usd
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *blockchain
+      - &native_fill_type
+        name: native_fill_type
+        description: "Type of native fill - RFQ, limit order, OTC, fill"
+      - *matcha_limit_order_flag
+      - &protocol_fee_paid_eth
+        name: protocol_fee_paid_eth
+        description: "The protocol fee paid in ETH"
+
+  - name: zeroex_v2_ethereum_trades 
+    meta:
+      blockchain: ethereum
+      project: zeroex
+      contributors: rantum
+    config:
+      tags: ['ethereum','0x','dex_aggregator','dex','aggregator']
+    description: >
+        0x API erc20 trades through 0x v2 contracts. No fills, only deduped transactions.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_date
+            - tx_hash
+            - evt_index
+      - check_seed:
+          seed_file: ref('zeroex_ethereum_settler_trades_sample')
+          match_columns:
+            - tx_hash
+          check_columns:
+            - taker
+            - maker_token
+            - taker_token
+    columns:
+      - *blockchain
+      - *block_date
+      - *block_month
+      - *block_time
+      - *taker_symbol
+      - *maker_symbol
+      - *token_pair
+      - *taker_token_amount
+      - *maker_token_amount
+      - *taker_token_amount_raw
+      - *maker_token_amount_raw
+      - *volume_usd
+      - *taker_token
+      - *maker_token
+      - *taker
+      - *maker
+      - *affiliate_address
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *type
+      - *swap_flag
+      - *contract_address
+      - *fills_within

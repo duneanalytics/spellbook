@@ -1,0 +1,103 @@
+version: 2
+
+sources:
+  - name: oneinch_ethereum
+    tables:
+      - name: ExchangeV1_call_aggregate
+      - name: ExchangeV2_call_aggregate
+      - name: ExchangeV3_call_aggregate
+      - name: ExchangeV4_call_aggregate
+      - name: ExchangeV5_call_aggregate
+      - name: ExchangeV6_call_aggregate
+      - name: ExchangeV7_call_swap
+      - name: AggregationRouterV1_call_swap
+      - name: AggregationRouterV2_call_swap
+      - name: AggregationRouterV2_call_discountedSwap
+      - name: AggregationRouterV2_evt_Swapped
+      - name: AggregationRouterV3_evt_Swapped
+      - name: AggregationRouterV3_call_swap
+      - name: AggregationRouterV3_call_discountedSwap
+      - name: AggregationRouterV3_call_unoswap
+      - name: AggregationRouterV3_call_unoswapWithPermit
+      - name: AggregationRouterV4_call_unoswap
+      - name: AggregationRouterV4_call_unoswapWithPermit
+      - name: AggregationRouterV4_call_swap
+      - name: AggregationRouterV4_call_discountedSwap
+      - name: AggregationRouterV4_call_uniswapV3Swap
+      - name: AggregationRouterV4_call_uniswapV3SwapTo
+      - name: AggregationRouterV4_call_uniswapV3SwapToWithPermit
+      - name: AggregationRouterV4_call_clipperSwap
+      - name: AggregationRouterV4_call_clipperSwapTo
+      - name: AggregationRouterV4_call_clipperSwapToWithPermit
+      - name: AggregationRouterV4_call_fillOrderRFQ
+      - name: AggregationRouterV4_call_fillOrderRFQTo
+      - name: AggregationRouterV4_call_fillOrderRFQToWithPermit
+      - name: AggregationRouterV5_call_swap
+      - name: AggregationRouterV5_call_unoswap
+      - name: AggregationRouterV5_call_unoswapTo
+      - name: AggregationRouterV5_call_unoswapToWithPermit
+      - name: AggregationRouterV5_call_uniswapV3Swap
+      - name: AggregationRouterV5_call_uniswapV3SwapTo
+      - name: AggregationRouterV5_call_uniswapV3SwapToWithPermit
+      - name: AggregationRouterV5_call_clipperSwap
+      - name: AggregationRouterV5_call_clipperSwapTo
+      - name: AggregationRouterV5_call_clipperSwapToWithPermit
+      - name: AggregationRouterV5_call_fillOrder
+      - name: AggregationRouterV5_call_fillOrderTo
+      - name: AggregationRouterV5_call_fillOrderToWithPermit
+      - name: AggregationRouterV5_call_fillOrderRFQ
+      - name: AggregationRouterV5_call_fillOrderRFQTo
+      - name: AggregationRouterV5_call_fillOrderRFQToWithPermit
+      - name: AggregationRouterV5_call_fillOrderRFQCompact
+      - name: LimitOrderProtocolV1_call_fillOrder
+      - name: LimitOrderProtocolV1_call_fillOrderRFQ
+      - name: LimitOrderProtocolV2_call_fillOrder
+      - name: LimitOrderProtocolV2_call_fillOrderTo
+      - name: LimitOrderProtocolV2_call_fillOrderToWithPermit
+      - name: LimitOrderProtocolV2_call_fillOrderRFQ
+      - name: LimitOrderProtocolV2_call_fillOrderRFQTo
+      - name: LimitOrderProtocolV2_call_fillOrderRFQToWithPermit
+      - name: MerkleDistributor_evt_Claimed
+      - name: FusionWhitelistRegistryV1_evt_Registered
+      - name: FusionWhitelistRegistryV1_evt_Unregistered
+      - name: FusionWhitelistRegistryV1_evt_Promotion
+      - name: FusionWhitelistRegistryV2_evt_Registered
+      - name: FusionWhitelistRegistryV2_evt_Unregistered
+      - name: FusionWhitelistRegistryV2_evt_Promotion
+      - name: CrosschainWhitelistRegistryV1_evt_Promotion
+      - name: AggregationRouterV6_call_swap
+      - name: AggregationRouterV6_call_clipperSwap
+      - name: AggregationRouterV6_call_clipperSwapTo
+      - name: AggregationRouterV6_call_unoswap
+      - name: AggregationRouterV6_call_unoswap2
+      - name: AggregationRouterV6_call_unoswap3
+      - name: AggregationRouterV6_call_unoswapTo
+      - name: AggregationRouterV6_call_unoswapTo2
+      - name: AggregationRouterV6_call_unoswapTo3
+      - name: AggregationRouterV6_call_ethUnoswap
+      - name: AggregationRouterV6_call_ethUnoswap2
+      - name: AggregationRouterV6_call_ethUnoswap3
+      - name: AggregationRouterV6_call_ethUnoswapTo
+      - name: AggregationRouterV6_call_ethUnoswapTo2
+      - name: AggregationRouterV6_call_ethUnoswapTo3
+      - name: AggregationRouterV6_call_fillOrder
+      - name: AggregationRouterV6_call_fillOrderArgs
+      - name: AggregationRouterV6_call_fillContractOrder
+      - name: AggregationRouterV6_call_fillContractOrderArgs
+      - name: EscrowFactoryV1_call_createDstEscrow
+      - name: EscrowFactoryV1_evt_SrcEscrowCreated
+      - name: lop
+      - name: ar
+
+
+  - name: onesplit_ethereum
+    description: "decoded events and function calls for onesplit on ethereum"
+    tables:
+      - name: OneSplit_call_swap
+      - name: OneSplit_call_goodSwap
+
+
+  - name: oneproto_ethereum
+    description: "decoded events and function calls for oneproto on ethereum"
+    tables:
+      - name: OneSplitAudit_evt_Swapped

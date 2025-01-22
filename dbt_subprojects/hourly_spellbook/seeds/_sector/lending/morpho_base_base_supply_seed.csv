@@ -1,0 +1,4 @@
+﻿blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+base,morpho,1,25284700,2025-01-20 07:39:00.000 UTC,0x57b7ebfe9f8f973ffdeca6f3379e0bae76484f3060b7cca43d0410054e1df77e,266,withdraw,0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf,,-50000000
+base,morpho,1,25284644,2025-01-20 07:37:00.000 UTC,0x012fbe2365d53fdabe8e71aca45096bf40ce2e63a86b4ca735a54a7fec55796f,602,deposit,0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf,0x543257ef2161176d7c8cd90ba65c2d4caef5a796,3150889
+base,morpho,1,25276722,2025-01-20 03:13:00.000 UTC,0x9301be46a878f9206bee3f6f6c2ddca96471fcee5f586290a99b15b4053262d4,353,deposit_liquidation,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,0x0576dc91b3ae72ee2721b814dca3dedce631d734,-21423024020247

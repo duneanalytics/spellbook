@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: balancer_token_whitelist
+    meta:
+      blockchain: arbitrum, avalanche_c, base, ethereum, gnosis, optimism, polygon, 'zkevm'
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'avalanche_c', 'base', 'ethereum', 'gnosis', 'optimism', 'polygon',  'zkevm']
+    description: >
+      These tokens are whitelisted to be used as pricing assets on liquidity calculations for weighted pools, due to the trustability of their data.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - name 
+            - chain
+    columns:
+      - &address
+        name: address
+        description: "Token address"
+      - &name
+        name: name
+        description: "Token symbol"
+      - &chain
+        name: chain
+        description: "Token blockchain"
+
+  - name: balancer_single_recipient_gauges
+    meta:
+      blockchain: ethereum
+      contributors: viniabussafi
+    config:
+      tags: ['ethereum', 'gauges']
+    description: >
+      These gauges are deployed by the SingleRecipientGauge contract and this mapping manually links each gauge to it's correspondent pool and project
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - gauge_address
+            - pool_id 
+            - project
+            - blockchain
+    columns:
+      - &gauge_address
+        name: gauge_address
+        descripton: "Gauge address"
+      - &pool_id
+        name: pool_id
+        description: "Unique encoded identifier that refers to each pool to which each gauge directs incentives"
+      - &project
+        name: project
+        description: "ve8020 project for each gauge"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"

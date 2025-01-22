@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: zerion_bnb
+    description: "Zerion contracts on Ethereum"
+    tables:
+      - name: Router_evt_Executed

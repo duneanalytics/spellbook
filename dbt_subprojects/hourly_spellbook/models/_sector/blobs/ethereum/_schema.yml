@@ -1,0 +1,144 @@
+version: 2
+
+models:
+  - name: ethereum_blobs
+    meta:
+      blockchain: ethereum
+      sector: blobs
+      project: blobs
+      contributors: msilb7, 0xRob, lorenz234, hildobby
+    config:
+      tags: ['blob', 'ethereum',]
+    description: Blob table but enriched with size, blob version hash, blob submitter, base fee, ..
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - beacon_slot_number
+            - blob_index
+    columns:
+      - name: beacon_slot_time
+        description: "UTC slot time of the beacon slot"
+      - name: blob_versioned_hash
+        description: "hash of the blob"
+        data_tests:
+          - not_null
+      - &beacon_epoch
+        name: beacon_epoch
+        description: "A specific epoch during which this block was proposed. An epoch is a division of time in Ethereum's Proof of Stake mechanism."
+      - &beacon_slot_number
+        name: beacon_slot_number
+        description: "A slot in which a validator has the opportunity to propose a new block. Each slot represents a chance for a block to be added."
+      - name: blob_index
+        description: "Index of the blob in the block slot"
+      - name: beacon_proposer_index
+        description: "Identifier for the validator that proposed the specific block."
+      - name: blob_kzg_commitment
+        description: "A cryptographic commitment used to ensure data integrity within blob transactions. KZG commitments are a form of cryptographic proof used to represent blob data within blocks."
+      - name: blob_parent_root
+        description: "A hash of the parent block, linking the current block to the previous one in the blockchain."
+      - name: used_blob_byte_count
+        description: "total non-zero byte size of the blob"
+      - name: blob_byte_count
+        description: "total byte size of the blob"
+      - name: blob_gas_used
+        description: "gas units used by the blob"
+      - &blob_submitter
+        name: blob_submitter
+        description: "address that submitted the blob"
+      - &blob_submitter_label
+        name: blob_submitter_label
+        description: "the entity that submitted the blob"
+      - &blob_base_fee
+        name: blob_base_fee
+        description: "the base fee (wei) per blob gas"
+        data_tests:
+          - not_null
+      - &max_fee_per_blob_gas
+        name: max_fee_per_blob_gas
+        description: "the maximum fee (wei) per blob gas the tx is willing to pay"
+      - &is_blobscription
+        name: is_blobscription
+        description: "boolean wether the blob was used as a blobscription"
+
+  - name: ethereum_blob_submissions
+    meta:
+      blockchain: ethereum
+      sector: blobs
+      project: blobs
+      contributors: msilb7, 0xRob, lorenz234, hildobby
+    config:
+      tags: ['blob', 'blobs', 'BLOB_TX_TYPE', 'L1', 'transaction']
+    description: Blob submission transactions.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_index
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - beacon_slot_number
+            - blob_indexes
+    columns:
+      - name: block_number
+        description: "Block number of the transaction"
+      - name: tx_hash
+        description: "hash of the L1 transaction"
+      - *beacon_slot_number
+      - *beacon_epoch
+      - name: blob_receiver
+        description: "address of the receiver"
+      - name: blob_versioned_hashes
+        description: "array of blob hashes in the transaction"
+      - name: blob_indexes
+        description: "array of blob indexes in the transaction"
+      - name: blob_count
+        description: "amount of blobs submitted in the transaction"
+      - name: blob_gas_used
+        description: "total blob gas used in the transaction"
+      - *blob_base_fee
+      - *max_fee_per_blob_gas
+      - *is_blobscription
+      - *blob_submitter
+      - *blob_submitter_label
+
+  - name: blobs_submitters
+    meta:
+      blockchain: ethereum
+      sector: blobs
+      project: blobs
+      contributors: hildobby
+    config:
+      tags: ['blob', 'blobs', 'ethereum']
+    description: Blob submitting address tags
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - name: address
+        description: "Blob submitting address"
+      - name: entity
+        description: "Entity name the address has been tagged as"
+      - name: x_username
+        description: "X Username of the tagged entity"
+
+  - name: blobs_based_submitters
+    meta:
+      blockchain: ethereum
+      sector: blobs
+      project: blobs
+      contributors: hildobby
+    config:
+      tags: ['blob', 'blobs', 'ethereum']
+    description: Blob submitting address tags
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+    columns:
+      - name: tx_hash
+        description: "Blob submitting address"
+      - name: block_number
+        description: "Block number"
+      - name: entity
+        description: "Entity name the address has been tagged as"

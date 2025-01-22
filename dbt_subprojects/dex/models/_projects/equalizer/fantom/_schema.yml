@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: equalizer_fantom_pools
+    meta:
+      blockchain: fantom
+      sector: dex
+      contributors: Henrystats
+    config:
+      tags: ['fantom']
+    description: >
+      Equalizer Exchange DEX pools
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - name: pool
+        description: "DEX pool smart contract address"
+        data_tests:
+          - unique
+      - name: fee
+        description: "Defined fee"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
+        

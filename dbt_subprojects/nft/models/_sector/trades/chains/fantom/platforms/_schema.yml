@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: paintswap_fantom_base_trades
+    meta:
+      blockchain: fantom
+      sector: nft
+      project: blur
+      contributors: ['hildobby']
+    config:
+      tags: [ 'fantom', 'nft', 'trades', 'paintswap' ]
+    description: "PaintSwap base trades"
+    data_tests:
+      - check_columns_nft_base_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'block_number','tx_hash','sub_tx_trade_id' ]

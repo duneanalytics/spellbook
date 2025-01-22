@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: uniswap_flashloans
+    meta:
+      blockchain: ethereum, bnb, arbitrum, optimism, polygon, celo
+      sector: lending
+      contributors: hildobby, tomfutago
+    config:
+      tags: ['ethereum', 'bnb', 'arbitrum', 'optimism', 'polygon', 'celo', 'flashloans']
+    description: >
+      All Uniswap flashloans
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_month
+      - name: block_time
+      - name: block_number
+      - name: amount
+      - name: amount_usd
+      - name: tx_hash
+      - name: evt_index
+      - name: fee
+      - name: currency_contract
+      - name: currency_symbol
+      - name: recipient
+      - name: contract_address
+      - name: block_month

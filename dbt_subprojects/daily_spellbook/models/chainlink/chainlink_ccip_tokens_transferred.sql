@@ -1,0 +1,39 @@
+{{
+  config(
+    schema='chainlink',
+    alias='ccip_tokens_transferred',
+    post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "ethereum", "optimism", "polygon"]\',
+                            "project",
+                            "chainlink",
+                            \'["linkpool_jon"]\') }}'
+  )
+}}
+
+{% set models = [
+  'chainlink_arbitrum_ccip_tokens_transferred',
+  'chainlink_avalanche_c_ccip_tokens_transferred',
+  'chainlink_base_ccip_tokens_transferred',
+  'chainlink_bnb_ccip_tokens_transferred',
+  'chainlink_ethereum_ccip_tokens_transferred',
+  'chainlink_optimism_ccip_tokens_transferred',
+  'chainlink_polygon_ccip_tokens_transferred'
+] %}
+
+SELECT *
+FROM (
+    {% for model in models %}
+    SELECT
+      blockchain,
+      block_time,
+      tx_hash,
+      total_tokens,
+      destination_blockchain,
+      token,
+      token_symbol,
+      token_price
+    FROM {{ ref(model) }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
+)

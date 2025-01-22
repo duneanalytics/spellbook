@@ -1,0 +1,2 @@
+blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_sold_address,block_number,token_bought_amount_raw,token_sold_amount_raw
+linea,leetswap,1,2024-08-05,0x365e5c69a217192b67adc0bb6dabcf362681cba7f2f0ca9d6cbbfd53896343df,15,0xa219439258ca9da29e9cc4ce5596924745e12b93,0x3aab2285ddcddad8edf438c1bab47e1a9d05a9b4,7708108,1211024,2093

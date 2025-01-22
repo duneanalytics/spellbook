@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: vela_exchange_base
+    description: Base decoded tables related to Vela Exchange Protocol
+    tables:
+      - name: PositionVault_evt_IncreasePosition
+      - name: PositionVault_evt_DecreasePosition
+      - name: LiquidateVault_evt_LiquidatePosition
+        

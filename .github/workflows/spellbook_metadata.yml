@@ -1,0 +1,41 @@
+name: Upload Contribution Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 0 * * *'
+      
+jobs:
+  upload_status:
+    runs-on: [ self-hosted, linux, spellbook-trino-ci ]
+  
+    steps:
+      - uses: actions/setup-python@v3
+      - name: Checkout main branch
+        uses: actions/checkout@v2
+        with:
+          ref: main
+          fetch-depth: 0
+      
+      - name: Setup variables
+        run: |
+            echo "PROFILE=--profiles-dir $HOME/.dbt --profile dunesql" >> $GITHUB_ENV
+      
+      - name: dbt dependencies
+        run: "dbt deps"
+
+      - name: Run dbt debug on Trino if dunesql engine is used, and retry until cluster is available
+        run: "./scripts/ensure_cluster.sh"
+      
+      - name: Install Python dependencies
+        run: |
+          pip install requests
+          pip install pyyaml
+      
+      - name: Create Manifest
+        run: "dbt compile --profiles-dir $HOME/.dbt --profile dunesql"
+
+      - name: Upload translation status CSV to Dune
+        env:
+          DUNE_API_KEY_PROD: ${{ secrets.DUNE_API_KEY_PROD }}
+        run: "python scripts/spells_metadata.py"

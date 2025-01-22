@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: paladin_ethereum
+    description: >
+      $PAL airdrop claims
+    tables:
+      - name: MerkleDistributor_evt_Claimed

@@ -1,0 +1,34 @@
+version: 2
+
+sources:
+  - name: woofi_optimism
+    description: >
+      Decoded tables related to woofi dex trades for optimism.
+    tables:
+      - name: WooPPV2_evt_WooSwap
+        description: >
+          Main decoded table related to the swap events happening in woofi dex trades.
+        columns:
+          - name: contract_address
+            description: 'optimism address for the basic contract that handles the logic operation of the DEX'
+          - name: evt_tx_hash
+            description: 'Transaction hash of the  wooswap event'
+          - name: evt_index
+            description: 'Event index'
+          - name: evt_block_time
+            description: 'Timestamp for swap event time in UTC'
+
+      - name: WooRouterV2_evt_WooRouterSwap
+        description: >
+          'Decoded table related to swap events from  the router contract that routes to 3rd party DEXs incase there is less liquidity in liquidity reserves'
+        columns:
+          - name: contract_address
+            description: 'optimism address for the router contract'
+          - name: evt_tx_hash
+            description: 'Transaction hash of the woorouterswap event'
+          - name: evt_index
+            description: 'Event index'
+          - name: evt_block_time
+            description: 'Timestamp for swap event time in UTC'
+
+      

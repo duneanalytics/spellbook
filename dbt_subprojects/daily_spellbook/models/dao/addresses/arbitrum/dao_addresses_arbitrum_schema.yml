@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: dao_addresses_arbitrum
+    meta:
+      blockchain: arbitrum
+      sector: dao
+      contributors: Henrystats 
+    config:
+      tags: [ 'arbitrum', 'dao', 'aragon', 'dao creator tools', 'Henrystats' ]
+    description: >
+      wallet addresses of daos created on arbitrum across all dao creator tools
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "blockchain which the DAO is deployed"
+      - &dao_creator_tool
+        name: dao_creator_tool
+        description: "Name of creator tool used to create DAO"
+      - &dao
+        name: dao
+        description: "address of the dao deployed"
+      - &dao_wallet_address
+        name: dao_wallet_address
+        desciption: "wallet address used by DAO to receive & transfer funds"
+      - &created_date
+        name: created_date
+        description: "UTC event block date of DAO creation"
+      - &created_block_time
+        name: created_block_time
+        description: "UTC event block time of DAO creation"

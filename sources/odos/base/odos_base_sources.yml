@@ -1,0 +1,14 @@
+version: 2
+
+sources: 
+  - name: odos_base
+    description: >
+      Decoded event table for swaps on odos
+    tables:
+      - name: OdosRouter_evt_Swapped
+  
+  - name: odos_v2_base
+    description: >
+      Decoded event table for swaps on odos_v2
+    tables:
+      - name: OdosRouterV2_evt_Swap

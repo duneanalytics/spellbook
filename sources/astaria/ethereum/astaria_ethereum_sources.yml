@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: astaria_v1_ethereum
+    description: "astaria ethereum decoded events"
+    tables:
+      - name: LienToken_evt_NewLien
+      - name: LienToken_evt_Payment
+      - name: LienToken_call_makePayment
+      - name: AstariaRouter_evt_Liquidation
+      - name: CollateralToken_evt_Deposit721
+      - name: CollateralToken_evt_ReleaseTo
+      - name: LienToken_call_createLien

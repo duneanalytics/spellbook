@@ -1,0 +1,30 @@
+version: 2
+
+sources:
+  - name: erc4337_polygon
+    description: >
+      Decoded tables related to erc4337.
+    tables:
+      - name: EntryPoint_evt_UserOperationEvent
+        description: >
+          Decoded table related to the erc4337 user operation events version v0.5.
+
+      - name: EntryPoint_v0_6_evt_UserOperationEvent
+        description: >
+          Decoded table related to the erc4337 user operation events version v0.6.
+
+      - name: EntryPoint_call_handleOps
+        description: >
+          Decoded table related to the erc4337 handle operation calls, version v0.5.
+
+      - name: EntryPoint_v0_6_call_handleOps
+        description: >
+          Decoded table related to the erc4337 handle operation calls, version v0.6.
+
+      - name: EntryPoint_evt_AccountDeployed
+        description: >
+          Decoded table related to the erc4337 account deployed events, version v0.5.
+
+      - name: EntryPoint_v0_6_evt_AccountDeployed
+        description: >
+          Decoded table related to the erc4337 account deployed events, version v0.6.

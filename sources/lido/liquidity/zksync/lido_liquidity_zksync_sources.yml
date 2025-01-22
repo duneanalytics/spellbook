@@ -1,0 +1,27 @@
+version: 2
+
+sources:    
+  - name: syncswap_zksync
+    description: "Zksync decoded tables related to SyncSwap contract"
+    tables:
+      - name: SyncSwapClassicPool_evt_Mint
+      - name: SyncSwapClassicPool_evt_Burn
+
+  - name: syncswap_v2_zksync
+    description: "Zksync decoded tables related to SyncSwap V2 contract"
+    tables:
+      - name: SyncSwapAquaPool_evt_Mint
+      - name: SyncSwapAquaPool_evt_Burn
+      
+  - name: maverick_v1_zksync
+    description: "Zksync decoded tables related to Maverick DEX contracts"
+    tables:
+      - name: pool_call_addLiquidity
+      - name: pool_call_removeLiquidity
+
+  - name: pancakeswap_v3_zksync
+    description: "Zksync decoded tables related to Pancake V3 contracts"
+    tables:
+      - name: PancakeV3Pool_evt_Mint
+      - name: PancakeV3Pool_evt_Collect     
+      - name: PancakeV3Pool_evt_Burn

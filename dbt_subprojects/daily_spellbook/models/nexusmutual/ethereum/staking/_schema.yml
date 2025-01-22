@@ -1,0 +1,338 @@
+version: 2
+
+models:
+  - name: nexusmutual_ethereum_base_staking_pools
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking pools base data (helper view)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - product_id
+    columns:
+      - &block_time_created
+        name: block_time_created
+        data_tests:
+          - not_null
+      - &block_time_product_updated
+        name: block_time_product_updated
+      - &block_time_manager_updated
+        name: block_time_manager_updated
+      - &block_time_fee_updated
+        name: block_time_fee_updated
+      - &block_time_updated
+        name: block_time_updated
+        data_tests:
+          - not_null
+      - &pool_id
+        name: pool_id
+        description: "pool id"
+        data_tests:
+          - not_null
+      - &pool_address
+        name: pool_address
+        description: "pool contract deployment address"
+      - &manager_address
+        name: manager_address
+        description: "manager address"
+      - &manager_ens
+        name: manager_ens
+        description: "manager ENS name (if available)"
+      - &manager
+        name: manager
+        description: "manager ENS name or address if ENS unavailable"
+      - &is_private_pool
+        name: is_private_pool
+        description: "is private pool? true/false"
+      - &initial_pool_fee
+        name: initial_pool_fee
+        description: "initial pool management fee"
+      - &current_management_fee
+        name: current_management_fee
+        description: "current pool management fee"
+      - &max_management_fee
+        name: max_management_fee
+        description: "max pool management fee"
+      - &product_id
+        name: product_id
+        description: "product id"
+        data_tests:
+          - not_null
+      - &product_name
+        name: product_name
+      - &product_type
+        name: product_type
+      - &initial_price
+        name: initial_price
+        description: "product initial price"
+      - &target_price
+        name: target_price
+        description: "product target price"
+      - &initial_weight
+        name: initial_weight
+        description: "product initial weight"
+      - &target_weight
+        name: target_weight
+        description: "product target weight"
+      - &pool_created_time
+        name: pool_created_time
+        description: "pool created datetime in UTC"
+      - &product_added_time
+        name: product_added_time
+        description: "product added datetime in UTC"
+      - &tx_hash_created
+        name: tx_hash_created
+      - &tx_hash_product_updated
+        name: tx_hash_product_updated
+      - &tx_hash_manager_updated
+        name: tx_hash_manager_updated
+      - &tx_hash_fee_updated
+        name: tx_hash_fee_updated
+      - &tx_hash_updated
+        name: tx_hash_updated
+
+  - name: nexusmutual_ethereum_staking_pools
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking pools base data (materialised)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - product_id
+    columns:
+      - *block_time_created
+      - *block_time_updated
+      - *pool_id
+      - *pool_address
+      - *manager_address
+      - *manager_ens
+      - *manager
+      - *is_private_pool
+      - *initial_pool_fee
+      - *current_management_fee
+      - *max_management_fee
+      - *product_id
+      - *product_name
+      - *product_type
+      - *initial_price
+      - *target_price
+      - *initial_weight
+      - *target_weight
+      - *pool_created_time
+      - *product_added_time
+      - *tx_hash_created
+      - *tx_hash_updated
+
+  - name: nexusmutual_ethereum_staking_events
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking pools event history"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - block_time
+            - evt_index
+            - tx_hash
+    columns:
+      - &flow_type
+        name: flow_type
+        description: "flow event type: deposit, deposit extended, withdraw or stake burn"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &block_date
+        name: block_date
+        description: "event block date"
+      - *pool_address
+      - &token_id
+        name: token_id
+        description: "ERC721 token id representing staking position"
+      - &tranche_id
+        name: tranche_id
+        description: "staking tranche period"
+      - &init_tranche_id
+        name: init_tranche_id
+        description: "initial staking tranche period (applies to: deposit extended)"
+      - &new_tranche_id
+        name: new_tranche_id
+        description: "new staking tranche period (applies to: deposit extended)"
+      - &tranche_expiry_date
+        name: tranche_expiry_date
+        description: "staking period expiry date"
+      - &is_active
+        name: is_active
+        description: "is staking event still active or already expired"
+      - &amount
+        name: amount
+        description: "staking amount"
+      - &topup_amount
+        name: topup_amount
+        description: "staking top-up amount (applies to: deposit extended)"
+      - &user
+        name: user
+        description: "staking user"
+      - &evt_index
+        name: evt_index
+        description: "event index"
+      - &tx_hash
+        name: tx_hash
+        description: "unique transaction hash value"
+
+  - name: nexusmutual_ethereum_staking_deposit_ordered
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking pools deposit ordered"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - flow_type
+            - block_time
+            - evt_index
+            - tx_hash
+    columns:
+      - *block_time
+      - *flow_type
+      - &stake_start_date
+        name: stake_start_date
+      - &stake_end_date
+        name: stake_end_date
+      - *pool_address
+      - *token_id
+      - *tranche_id
+      - *init_tranche_id
+      - *new_tranche_id
+      - *tranche_expiry_date
+      - *is_active
+      - *amount
+      - *topup_amount
+      - *user
+      - *evt_index
+      - *tx_hash
+      - name: deposit_rn
+
+  - name: nexusmutual_ethereum_staking_deposit_extensions
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking pools deposit extensions"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_address
+            - token_id
+            - init_tranche_id
+            - current_tranche_id
+            - stake_start_date
+            - stake_end_date
+    columns:
+      - *block_time
+      - *block_date
+      - *pool_address
+      - *token_id
+      - *init_tranche_id
+      - name: current_tranche_id
+        description: "current staking tranche period (most recent one in the chain of extensions)"
+      - name: amount
+        description: "total staking amount (initial deposit + all top-up amounts)"
+      - *stake_start_date
+      - *stake_end_date
+      - *is_active
+      - name: chain_level
+        description: "chain (recursion) level"
+      - name: token_tranche_rn
+        description: "descending row number per pool, token & tranche"
+      - *evt_index
+      - *tx_hash
+
+  - name: nexusmutual_ethereum_staking_rewards
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking rewards minted at cover buy event - to be streamed over cover period"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - cover_id
+    columns:
+      - *block_time
+      - *block_date
+      - *pool_id
+      - *product_id
+      - name: cover_id
+      - name: cover_start_date
+      - name: cover_end_date
+      - name: cover_end_bucket_expiry_date
+      - name: reward_amount_expected_total
+      - name: reward_amount_per_second
+      - name: reward_amount_per_day
+      - *tx_hash
+
+  - name: nexusmutual_ethereum_staked_per_pool
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking rewards minted at cover buy event - to be streamed over cover period"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+    columns:
+      - *block_date
+      - *pool_id
+      - *pool_address
+      - &total_staked_nxm
+        name: total_staked_nxm
+      - name: pool_date_rn
+
+  - name: nexusmutual_ethereum_staked_per_token
+    meta:
+      blockchain: ethereum
+      project: nexusmutual
+      contributors: tomfutago
+    config:
+      tags: ["ethereum", "nexusmutual", "staking"]
+    description: "Staking rewards minted at cover buy event - to be streamed over cover period"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+            - token_id
+    columns:
+      - *block_date
+      - *pool_id
+      - *pool_address
+      - *token_id
+      - *total_staked_nxm
+      - name: stake_expiry_date
+      - name: token_date_rn

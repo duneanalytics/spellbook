@@ -1,0 +1,489 @@
+version: 2
+
+models:
+  - name: polymarket_polygon_markets
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Polymarket: markets"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - question_id
+    columns:
+      - &block_time
+        name: block_time
+      - &block_number
+        name: block_number
+      - &source
+        name: source
+      - &market_id
+        name: market_id
+      - &question_id
+        name: question_id
+      - &question
+        name: question
+      - &question_description
+        name: question_description
+      - &reward
+        name: reward
+      - &reward_token
+        name: reward_token
+      - &evt_index
+        name: evt_index
+      - &tx_hash
+        name: tx_hash
+
+  - name: polymarket_polygon_market_outcomes
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Polymarket: market outcomes"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - question_id
+    columns:
+      - *block_time
+      - *block_number
+      - *source
+      - *question_id
+      - &outcome
+        name: outcome
+      - *evt_index
+      - *tx_hash
+
+  - name: polymarket_polygon_base_market_conditions
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Polymarket: market conditions (helper table)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - condition_id
+    columns:
+      - *block_time
+      - *block_number
+      - *market_id
+      - *question_id
+      - *question
+      - &condition_id
+        name: condition_id
+      - &condition_token
+        name: condition_token
+      - &condition_status
+        name: condition_status
+      - &keyword
+        name: keyword
+      - &condition
+        name: condition
+      - &outcome_slot_count
+        name: outcome_slot_count
+      - &oracle
+        name: oracle
+      - *evt_index
+      - *tx_hash
+
+  - name: polymarket_polygon_base_ctf_tokens
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Polymarket: CTF tokens (helper table)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - condition_id
+            - token0
+            - token1
+    columns:
+      - *block_time
+      - *block_number
+      - *condition_id
+      - &token0
+        name: token0
+      - &token1
+        name: token1
+      - *evt_index
+      - *tx_hash
+
+  - name: polymarket_polygon_market_trades
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "All market activity including complementary matching (A buys shares from B), MINT matching (A wants to buy, but not enough sell orders in book, system mints shares if conditions are right), and MERGE matching (A wants to sell shares, but not enough buy orders in book, system matches yes and no shares to unlock collateral). Technically correct volume, but not directly comparable to dex volume or similar. The internal operations increase volume significantly."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - asset_id
+            - evt_index
+            - tx_hash
+    columns:
+      - name: block_number
+        description: "Block number in which the transaction was executed"
+      - name: block_time
+        description: "UTC event block time"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: evt_index
+        description: "Index of the event within the transaction"
+      - name: action
+        description: "Type of trade (clob or AMM trade)"
+      - name: contract_address
+        description: "Contract address (ctfexchange or negrisk module)"
+      - name: condition_id
+        description: "Unique identifier for the YES/NO pair"
+      - name: event_market_name
+        description: "Overarching question for negRisk markets (e.g., Presidential election 2024)"
+      - name: question
+        description: "Concrete outcome being bet on (e.g., Trump wins 2024 election?)"
+      - name: polymarket_link
+        description: "Link to the Polymarket site (may be broken for archived markets)"
+      - name: token_outcome
+        description: "YES or NO token outcome"
+      - name: neg_risk
+        description: "Boolean indicating whether this is a neg_risk market"
+      - name: asset_id
+        description: "Token ID of the ERC1155"
+      - name: price
+        description: "Price for the token being bought"
+      - name: amount
+        description: "Amount in USD"
+      - name: shares
+        description: "Amount of shares transferred"
+      - name: fee
+        description: "Fees to Polymarket (currently not enabled)"
+      - name: maker
+        description: "Trader whose order is being filled"
+      - name: taker
+        description: "Trader who is filling the order (often a contract from Polymarket)"
+      - name: unique_key
+        description: "Unique key of the event or market"
+      - name: token_outcome_name
+        description: "Combination of token outcome and question"
+
+  - name: polymarket_polygon_users_capital_actions
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Polymarket: user capital actions"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - evt_index
+            - tx_hash
+    columns:
+      - name: block_time
+      - name: block_number
+      - name: action
+      - name: from_address
+      - name: to_address
+      - name: symbol
+      - name: amount_raw
+      - name: amount
+      - name: amount_usd
+      - name: evt_index
+      - name: tx_hash
+
+  - name: polymarket_polygon_users_safe_proxies
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Safes deployed by the SafeProxyFactory on behalf of Polymarket users that use their own EOA to sign transactions"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - proxy
+    columns:
+      - *block_time
+      - *block_number
+      - name: owner
+      - name: proxy
+        description: "Safe wallet address deployed for the Polymarket user"
+      - *evt_index
+      - *tx_hash
+
+  - name: polymarket_polygon_users_magic_wallet_proxies
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: 0xboxer
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Magic wallets deployed by the MagicWalletFactory on behalf of Polymarket users that use magic.link to sign up to polymarket"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - proxy
+    columns:
+      - *block_time
+      - *block_number
+      - name: owner
+      - name: proxy
+      - *tx_hash
+
+  - name: polymarket_polygon_market_details 
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago, 0xboxer
+    config:
+      tags: ['polygon','prediction_markets','polymarket','markets']
+    description: "Polymarket: combined market data from on-chain and API sources"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - token_id
+    columns:
+      - name: unique_key
+        description: "Unique identifier for the market"
+      - name: condition_id
+        description: "Condition ID for the market"
+      - name: neg_risk_market_id
+        description: "Negative risk market ID"
+      - name: neg_risk_market_name_
+        description: "Negative risk market name"
+      - name: question_id
+        description: "Question ID for the market"
+      - name: question
+        description: "Market question"
+      - name: token_id
+        description: "Token ID"
+      - name: token_outcome
+        description: "Token outcome"
+      - name: active
+        description: "Whether the market is active"
+      - name: archived
+        description: "Whether the market is archived"
+      - name: closed
+        description: "Whether the market is closed"
+      - name: accepting_orders
+        description: "Whether the market is accepting orders"
+      - name: enable_order_book
+        description: "Whether the order book is enabled"
+      - name: neg_risk
+        description: "Whether it's a negative risk market"
+      - name: market_slug
+        description: "Market slug for URL"
+      - name: neg_risk_market_name
+        description: "Negative risk market name from on-chain data"
+      - name: polymarket_link
+        description: "Link to the Polymarket event page"
+      - name: market_start_time
+        description: "Start time of the market"
+      - name: market_end_time
+        description: "End time of the market"
+      - name: market_outcome
+        description: "Outcome of the market"
+      - name: resolved_on_timestamp
+        description: "Timestamp when the market was resolved"
+        
+  - name: polymarket_polygon_positions_raw
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Polymarket: raw user positions in markets"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - month
+            - day
+            - address
+            - token_address
+            - token_id
+            - blockchain
+    columns:
+      - name: blockchain
+        description: "The blockchain the position is on"
+      - name: month
+        description: "The month of the position"
+      - name: day
+        description: "The date of the position"
+      - name: address
+        description: "The address holding the position"
+      - name: token_address
+        description: "The address of the token"
+      - name: token_id
+        description: "Token ID of the position"
+      - name: balance
+        description: "Balance of the position"
+
+  - name: polymarket_polygon_positions
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: tomfutago
+    config:
+      tags: ['polygon','prediction_markets','polymarket','positions']
+    description: "Polymarket: user positions in markets with market details"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - token_id
+            - day
+    columns:
+      - name: day
+        description: "The date of the position"
+      - name: address
+        description: "The address holding the position"
+      - name: unique_key
+        description: "Unique identifier for the market"
+      - name: token_id
+        description: "Token ID of the position"
+      - name: token_outcome
+        description: "Outcome represented by the token"
+      - name: token_outcome_name
+        description: "Name of the outcome represented by the token"
+      - name: balance
+        description: "Balance of the position"
+      - name: question_id
+        description: "Question ID for the market"
+      - name: market_question
+        description: "Question of the market"
+      - name: market_description
+        description: "Description of the market"
+      - name: event_market_name
+        description: "Name of the event market"
+      - name: event_market_description
+        description: "Description of the event market"
+      - name: active
+        description: "Whether the market is active"
+      - name: closed
+        description: "Whether the market is closed"
+      - name: accepting_orders
+        description: "Whether the market is accepting orders"
+      - name: polymarket_link
+        description: "Link to the Polymarket event page"
+      - name: market_start_time
+        description: "Start time of the market"
+      - name: market_end_time
+        description: "End time of the market"
+      - name: market_outcome
+        description: "Outcome of the market"
+      - name: resolved_on_timestamp
+        description: "Timestamp when the market was resolved"
+
+  - name: polymarket_polygon_market_prices_daily
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: 0xboxer
+    config:
+      tags: ['polygon','prediction_markets','polymarket','prices']
+    description: "Daily market prices for Polymarket on Polygon"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - token_id
+    columns:
+      - name: day
+        description: "The day for which the price is valid"
+      - name: condition_id
+        description: "The unique identifier for the market condition"
+      - name: token_id
+        description: "The token ID associated with the outcome"
+      - name: price
+        description: "The price of the outcome token at the end of the day"
+
+  - name: polymarket_polygon_market_prices_hourly
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: 0xboxer
+    config:
+      tags: ['polygon','prediction_markets','polymarket','prices']
+    description: "Hourly market prices for Polymarket on Polygon"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hour
+            - token_id
+    columns:
+      - name: hour
+        description: "The hour for which the price is valid"
+      - name: condition_id
+        description: "The unique identifier for the market condition"
+      - name: token_id
+        description: "The token ID associated with the outcome"
+      - name: price
+        description: "The price of the outcome token at the end of the hour"
+
+  - name: polymarket_polygon_users
+    meta:
+      blockchain: polygon
+      sector: prediction_markets
+      project: polymarket
+      contributors: 0xRob
+    config:
+      tags: ['polygon','prediction_markets','polymarket','users']
+    description: "Comprehensive lookup table for Polymarket user addresses, including both Safe and Magic wallet proxies with funding information"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - polymarket_wallet
+    columns:
+      - name: created_time
+        description: "Timestamp when the Polymarket wallet was created"
+      - name: block_number
+        description: "Block number when the Polymarket wallet was created"
+      - name: wallet_type
+        description: "Type of wallet (safe or magic)"
+      - name: owner
+        description: "Owner address of the Polymarket wallet"
+      - name: polymarket_wallet
+        description: "Polymarket wallet address"
+      - name: first_funded_time
+        description: "Timestamp of first funding received by the Polymarket wallet"
+      - name: first_funded_by
+        description: "Address that first funded the Polymarket wallet"
+      - name: has_been_funded
+        description: "Boolean indicating if the wallet has ever received funds"
+      - name: minutes_to_first_funding
+        description: "Number of minutes between wallet creation and first funding (null if never funded)"
+      - name: evt_index
+        description: "Event index in the transaction"
+      - name: tx_hash
+        description: "Transaction hash of the wallet creation"
+
+

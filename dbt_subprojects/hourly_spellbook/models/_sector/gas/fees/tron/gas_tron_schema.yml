@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: gas_tron_fees
+    meta:
+      blockchain: tron
+      sector: gas
+      contributors: 0xRob
+    config:
+      tags: ['tron', 'gas', 'fees']
+    description: >
+        Gas Fees on Tron
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_number
+            - tx_hash

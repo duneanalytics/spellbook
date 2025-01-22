@@ -1,0 +1,35 @@
+version: 2 # Spells all have “version: 2” as that’s the version of our engine they use.
+
+sources:
+  - name: maker_ethereum
+    description: Decoded events for [MakerDAO](https://makerdao.com/en/).
+    tables:
+      - name: dai_call_burn
+      - name: dai_call_mint
+      - name: jug_call_file
+        identifier: JUG_call_file
+      - name: spot_call_file
+        identifier: SPOT_call_file
+      - name: vat_call_fold
+        identifier: VAT_call_fold
+      - name: vat_call_frob
+        identifier: VAT_call_frob
+      - name: vat_call_grab
+        identifier: VAT_call_grab
+      - name: vat_call_move
+        identifier: VAT_call_move
+      - name: vat_call_suck
+        identifier: VAT_call_suck
+      - name: vow_call_fess
+        identifier: VOW_call_fess
+      - name: vow_call_file
+        identifier: VOW_call_file
+      - name: dssvesttransferrable_call_create
+        identifier: DssVestTransferrable_call_create
+      - name: dssvesttransferrable_call_yank
+        identifier: DssVestTransferrable_call_yank
+      - name: dssvesttransferrable_evt_vest
+        identifier: DssVestTransferrable_evt_Vest
+      - name: mkr_evt_transfer
+        identifier: mkr_evt_Transfer
+      - name: dssflashlegacy_evt_FlashLoan

@@ -1,0 +1,99 @@
+version: 2
+
+models:
+
+  - name: alm_trades
+    meta:
+      blockchain: ethereum
+      sector: alm
+      contributors: 0xrusowsky
+    config:
+      tags: [ 'alm', 'trades' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - vault_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain where the ALM is deployed"
+      - &project
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the project"
+      - &dex
+        name: dex
+        description: "DEX name"
+      - &dex_version
+        name: dex_version
+        description: "Version of the liquidity pool contract"
+      - &block_month
+        name: block_month
+        description: "Month of the event block time"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each DEX trade"
+      - &block_number
+        name: block_number
+        description: "Block number of each DEX trade"
+      - &pool_address
+        name: pool_address
+        description: "Project contract address which executed the trade on the blockchain"
+      - &vault_address
+        name: vault_address
+        description: "Address of the vault (liquidity provider)"
+      - &token_pair
+        name: token_pair
+        description: "Token symbol pair for the pool tokens"
+      - &token0_address
+        name: token0_address
+        description: "Contract address of the token bought"
+      - &token1_address
+        name: token1_address
+        description: "Contract address of the token sold"
+      - &volume_usd
+        name: volume_usd
+        description: "USD volume provided by the ALM"
+      - &swap_volume_usd
+        name: swap_volume_usd
+        description: "Full USD volume traded in the DEX pool"
+      - &volume_share
+        name: volume_share
+        description: "Share of the traded volume provided by the ALM"
+      - &volume0
+        name: volume0
+        description: "Amount of token0 provided by the ALM (with parsed decimals)"
+      - &swap_volume0
+        name: swap_volume0
+        description: "Full amount of token0 traded in the DEX pool"
+      - &token0_symbol
+        name: token0_symbol
+        description: "Token symbol for token0 of the pool"
+      - &volume1
+        name: volume1
+        description: "Amount of token1 provided by the ALM (with parsed decimals)"
+      - &swap_volume1
+        name: swap_volume1
+        description: "Full amount of token1 traded in the DEX pool"
+      - &token1_symbol
+        name: token1_symbol
+        description: "Token symbol for token1 of the pool"
+      - &volume0_raw
+        name: volume0_raw
+        description: "Raw amount of token0 provided by the ALM"
+      - &volume1_raw
+        name: volume1_raw
+        description: "Raw amount of token1 provided by the ALM"
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &evt_index
+        name: evt_index
+        description: "Index of the corresponding trade event"

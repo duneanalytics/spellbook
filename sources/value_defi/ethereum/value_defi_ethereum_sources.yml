@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: value_defi_ethereum
+    description: >
+      Value DeFi ethereum contracts
+    tables:
+      - name: MerkleDistributor_evt_Claimed

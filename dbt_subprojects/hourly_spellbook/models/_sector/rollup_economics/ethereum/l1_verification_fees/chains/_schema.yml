@@ -1,0 +1,166 @@
+version: 2
+
+models:
+  - name: rollup_economics_linea_l1_verification_fees
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: niftytable, lgingerich
+    config:
+      tags: ['rollup', 'l2']
+    description: Fees spent by Linea for proof verification on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - name
+            - tx_hash
+    columns:
+      - &name
+        name: name
+        description: "Name of the rollup"
+      - &block_month
+        name: block_month
+        description: "UTC event block month of each transaction"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each transaction"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each transaction"
+      - &block_number
+        name: block_number
+        description: "Block number of each transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &gas_price
+        name: gas_price
+        description: "Gas price of transaction (in wei)"
+      - &gas_used
+        name: gas_used
+        description: "Amount of gas units consumed by the transaction"
+      - &verification_fee_native
+        name: verification_fee_native
+        description: "Fee spent on proof verification by the transaction (in ETH)"
+      - &calldata_gas_used
+        name: calldata_gas_used
+        description: "Gas units used by calldata (input data) by the transaction"
+      - &proof_size_mb
+        name: proof_size_mb
+        description: "Size of proofs posted to Ethereum (in MBs)"
+
+  - name: rollup_economics_scroll_l1_verification_fees
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: niftytable, lgingerich
+    config:
+      tags: ['rollup', 'l2']
+    description: Fees spent by Scroll for proof verification on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - name
+            - tx_hash
+    columns:
+      - *name
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *gas_price
+      - *gas_used
+      - *verification_fee_native
+      - *calldata_gas_used
+      - *proof_size_mb
+
+  - name: rollup_economics_starknet_l1_verification_fees
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: niftytable, lgingerich
+    config:
+      tags: ['rollup', 'l2']
+    description: Fees spent by Starknet for proof verification on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - name
+            - tx_hash
+    columns:
+      - *name
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *gas_price
+      - *gas_used
+      - *verification_fee_native
+      - *calldata_gas_used
+      - *proof_size_mb
+
+  - name: rollup_economics_zkevm_l1_verification_fees
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: niftytable, lgingerich
+    config:
+      tags: ['rollup', 'l2']
+    description: Fees spent by Polygon zkEVM for proof verification on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - name
+            - tx_hash
+    columns:
+      - *name
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *gas_price
+      - *gas_used
+      - *verification_fee_native
+      - *calldata_gas_used
+      - *proof_size_mb
+
+  - name: rollup_economics_zksync_l1_verification_fees
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: niftytable, lgingerich
+    config:
+      tags: ['rollup', 'l2']
+    description: Fees spent by ZKsync Era for proof verification on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - name
+            - tx_hash
+    columns:
+      - *name
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *gas_price
+      - *gas_used
+      - *verification_fee_native
+      - *calldata_gas_used
+      - *proof_size_mb

@@ -1,0 +1,69 @@
+version: 2
+
+sources:
+  - name: omen_gnosis
+    description: "Decoded contracts for Gnosis"
+    tables:
+    - name: ConditionalTokens_evt_PositionSplit
+      description: "Gnosis Conditional Tokens - Position Split Events."
+      columns:
+      - &contract_address
+          name: contract_address
+          description: "Contract address"  
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: "Transaction hash of the event" 
+      - &evt_tx_from
+        name: evt_tx_from
+        description: "Transaction 'from' address" 
+      - &evt_tx_to
+        name: evt_tx_to
+        description: "Transaction 'to' address" 
+      - &evt_index
+        name: evt_index
+        description: "Event index"  
+      - &evt_block_time
+        name: evt_block_time
+        description: "Timestamp for block event time in UTC"
+      - &evt_block_number
+        name: evt_block_number
+        description: "Event block number"  
+      - &evt_block_date
+        name: evt_block_date
+        description: "Date for block event time in UTC"
+      - &amount
+        name: amount
+        description: "Amount of collateral token"
+      - &collateralToken
+        name: collateralToken
+        description: "Address of collateral token"
+      - &conditionId
+        name: conditionId
+        description: "Condition ID"
+      - &parentCollectionId
+        name: parentCollectionId
+        description: "Parent collection ID"
+      - &partition
+        name: partition
+        description: "Partition"
+      - &stakeholder
+        name: stakeholder
+        description: "Stakeholder"
+
+    - name: ConditionalTokens_evt_PositionsMerge
+      description: "Gnosis Conditional Tokens - Position Merge Events."
+      columns:
+      - *contract_address
+      - *evt_tx_hash
+      - *evt_tx_from
+      - *evt_tx_to
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_block_date
+      - *amount
+      - *collateralToken
+      - *conditionId
+      - *parentCollectionId
+      - *partition
+      - *stakeholder

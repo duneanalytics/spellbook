@@ -1,0 +1,15 @@
+version: 2
+
+sources: 
+  - name: seaport_ethereum
+    tables:
+      - name: Seaport_call_fulfillAvailableAdvancedOrders
+      - name: Seaport_evt_OrderFulfilled
+      - name: Seaport_call_fulfillOrder
+      - name: Seaport_call_fulfillBasicOrder
+      - name: Seaport_call_matchAdvancedOrders
+      - name: Seaport_call_fulfillAdvancedOrder
+      - name: Seaport_call_fulfillAvailableOrders
+      - name: Seaport_call_matchOrders
+      - name: Seaport_evt_OrdersMatched
+        

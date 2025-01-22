@@ -1,0 +1,64 @@
+version: 2
+
+models:
+  - name: cow_protocol_batches
+    meta:
+      blockchain: gnosis
+      project: cow_protocol
+      contributors: bh2smith
+    config:
+      tags: ['gnosis','cow_protocol','batches', 'dex', 'aggregator', 'auction']
+    description: >
+      CoW Protocol enriched batches table cross-chain
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the project is deployed"
+      - &project 
+        name: project
+        description: "Project name"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the project"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each trade"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each trade"
+      - &num_trades
+        name: num_trades
+        description: Number of trades settled within the batch
+      - &dex_swaps
+        name: dex_swaps
+        description: Number of AMM interactions used to settle the batch (estimated)
+      - &batch_value
+        name: batch_value
+        description: Total USD value of trades settled within the batch
+      - &solver_address
+        name: solver_address
+        description: Ethereum address of solver settled batch (equivalent to tx.from)
+      - &tx_hash
+        name: tx_hash
+        description: "Unique transaction hash value tied to each transaction on the DEX"
+      - &gas_price
+        name: gas_price
+        description: Gas price (in WEI) of transaction
+      - &gas_used
+        name: gas_used
+        description: Total/cumulative gas consumed (in WEI) to settle the batch
+      - &tx_cost_usd
+        name: tx_cost_usd
+        description: USD cost of batch execution (gas_price * gas_used) / 1e18 * ETH price
+      - &fee_value
+        name: fee_value
+        description: Total USD valuation of fees collected from all trades within the batch
+      - &call_data_size
+        name: call_data_size
+        description: Size (in Kilobytes) of call data passed into the settle method.
+      - &unwraps
+        name: unwraps
+        description: Number of WETH unwraps performed within the settlement
+      - &token_approvals
+        name: token_approvals
+        description: Number of ERC20 token approvals made within the settlement

@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: op_optimism
+    description: >
+      Decoded event tables for Optimism token delegate transactions.
+    tables:
+      - name: GovernanceToken_evt_DelegateVotesChanged
+      - name: GovernanceToken_evt_DelegateChanged

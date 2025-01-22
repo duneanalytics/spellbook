@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: aztec_v2_ethereum
+    description: >
+      Aztec is a privacy-first zk-rollup on Ethereum bringing confidentiality and cost savings to the Ethereum ecosystem.
+    tables:
+      - name: RollupProcessor_evt_AssetAdded
+      - name: RollupProcessor_evt_BridgeAdded

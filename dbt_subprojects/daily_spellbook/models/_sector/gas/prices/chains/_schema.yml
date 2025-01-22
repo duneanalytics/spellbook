@@ -1,0 +1,402 @@
+version: 2
+
+models:
+  - name: gas_arbitrum_prices
+    meta: 
+      blockchain: arbitrum
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on arbitrum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &minute
+        name: minute
+        description: "UTC minute"
+      - &median_gas
+        name: median_gas
+        description: "Median gas price"
+      - &tenth_percentile_gas
+        name: tenth_percentile_gas
+        description: "10th percentile gas price"
+      - &ninetieth_percentile_gas
+        name: ninetieth_percentile_gas
+        description: "90th percentile gas price"
+      - &avg_gas
+        name: avg_gas
+        description: "Average gas price"
+      - &min_gas
+        name: min_gas
+        description: "Minimum gas price"
+      - &max_gas
+        name: max_gas
+        description: "Maximum gas price"
+        
+  - name: gas_avalanche_c_prices
+    meta: 
+      blockchain: avalanche_c
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on avalanche_c
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_base_prices
+    meta: 
+      blockchain: base
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on base
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_bnb_prices
+    meta: 
+      blockchain: bnb
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on bnb
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_celo_prices
+    meta: 
+      blockchain: celo
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on celo
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_ethereum_prices
+    meta: 
+      blockchain: ethereum
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_fantom_prices
+    meta: 
+      blockchain: fantom
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on fantom
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_gnosis_prices
+    meta: 
+      blockchain: gnosis
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on gnosis
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_linea_prices
+    meta: 
+      blockchain: linea
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on linea
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_optimism_prices
+    meta: 
+      blockchain: optimism
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on optimism
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_polygon_prices
+    meta: 
+      blockchain: polygon
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on polygon
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_scroll_prices
+    meta: 
+      blockchain: scroll
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on scroll
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_zkevm_prices
+    meta: 
+      blockchain: zkevm
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on zkevm
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_zksync_prices
+    meta: 
+      blockchain: zksync
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on zksync
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_zora_prices
+    meta: 
+      blockchain: zora
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on zora
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas
+        
+  - name: gas_goerli_prices
+    meta: 
+      blockchain: goerli
+      sector: gas
+      contributors: hildobby
+    config:
+      tags: ['gas', 'prices']
+    description: >
+      Gas prices per minute, on goerli
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - minute
+    columns: 
+      - *blockchain
+      - *minute
+      - *median_gas
+      - *tenth_percentile_gas
+      - *ninetieth_percentile_gas
+      - *avg_gas
+      - *min_gas
+      - *max_gas

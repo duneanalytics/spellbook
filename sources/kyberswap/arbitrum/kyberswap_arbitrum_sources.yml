@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: kyber_arbitrum
+    description: "Arbitrum decoded tables related to Kyberswap contract (classic+elastic)"
+    tables:
+      - name: MetaAggregationRouterV2_evt_Swapped

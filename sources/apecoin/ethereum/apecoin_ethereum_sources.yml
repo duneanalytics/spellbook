@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: apecoin_ethereum
+    description: >
+      ApeCoin ethereum contracts
+    tables:
+      - name: AirdropGrapesToken_evt_AirDrop

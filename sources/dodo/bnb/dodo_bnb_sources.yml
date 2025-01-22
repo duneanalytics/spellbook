@@ -1,0 +1,58 @@
+version: 2
+
+sources:
+  - name: dodoex_bnb
+    description: >
+      Decoded tables related to Dodo dex trades for Binance Smart Chain
+    tables:
+      - name: DODORouteProxy_evt_OrderHistory
+        description: >
+          V1 of Decoded table  that shows Order History happening through a self_built_router contract.
+        columns:
+          - name: contract_address
+            description: 'Binance Smart Chain address for the proxy contract used in transaction'
+          - name: evt_tx_hash
+            description: 'Transaction hash of the event'
+          - name: evt_index
+            description: 'Event index'
+          - name: evt_block_time
+            description: 'Timestamp for block event time in UTC'
+
+      - name: DODOV2Proxy01_evt_OrderHistory
+        description: >
+          V2 of Decoded table  that shows Order History happening through a router contract number 01.
+        columns:
+          - name: contract_address
+            description: 'Binance Smart Chain address for the proxy contract used in transaction'
+          - name: evt_tx_hash
+            description: 'Transaction hash of the event'
+          - name: evt_index
+            description: 'Event index'
+          - name: evt_block_time
+            description: 'Timestamp for block event time in UTC'
+
+      - name: DODOV2Proxy02_evt_OrderHistory
+        description: >
+          V2 of Decoded table  that shows Order History happening through a router contract number 2.
+        columns:
+          - name: contract_address
+            description: 'Binance Smart Chain address for the proxy contract used in transaction'
+          - name: evt_tx_hash
+            description: 'Transaction hash of the event'
+          - name: evt_index
+            description: 'Event index'
+          - name: evt_block_time
+            description: 'Timestamp for block event time in UTC'
+
+      - name: DODOFeeRouteProxy_evt_OrderHistory
+        description: >
+          Order History happening through a fee_router contract.
+        columns:
+          - name: contract_address
+            description: 'Binance Smart Chain address for the proxy contract used in transaction'
+          - name: evt_tx_hash
+            description: 'Transaction hash of the event'
+          - name: evt_index
+            description: 'Event index'
+          - name: evt_block_time
+            description: 'Timestamp for block event time in UTC'

@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: sudo_amm_ethereum
+    tables:
+      - name: LSSVMPairFactory_call_createPairETH
+        description: "As of 8/9/22, only ETH pairs have been created. Will need ERC20 logic in the future."
+      - name: LSSVMPair_general_call_swapNFTsForToken
+      - name: LSSVMPair_general_call_swapTokenForAnyNFTs
+      - name: LSSVMPair_general_call_swapTokenForSpecificNFTs
+      - name: LSSVMPair_general_evt_FeeUpdate
+      - name: LSSVMPair_general_evt_AssetRecipientChange
+      - name: LSSVMPairFactory_evt_ProtocolFeeMultiplierUpdate
+      - name: LSSVMPair_general_evt_DeltaUpdate
+      - name: LSSVMPair_general_evt_SpotPriceUpdate
+
+  - name: sudoswap_ethereum
+    description: >
+      $SUDO airdrop claims
+    tables:
+      - name: Astrodrop_evt_Claimed
+      - name: base_trades

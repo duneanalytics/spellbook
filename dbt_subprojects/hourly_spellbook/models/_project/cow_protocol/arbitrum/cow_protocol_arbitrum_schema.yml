@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: cow_protocol_arbitrum_solvers
+    meta:
+      blockchain: arbitrum
+      project: cow_protocol
+      contributors: olgafetisova
+    config:
+      tags: ['arbitrum_chain','cow_protocol','solver']
+    description: >
+      CoW Protocol solvers list on Arbitrum Chain
+
+  - name: cow_protocol_arbitrum_batches
+    meta:
+      blockchain: arbitrum
+      project: cow_protocol
+      contributors: olgafetisova
+    config:
+      tags: ['arbitrum','cow_protocol','trades', 'dex', 'aggregator', 'auction']
+    description: >
+      CoW Protocol enriched batches table on Arbitrum Chain
+    data_tests:
+      - unique:
+          column_name: tx_hash

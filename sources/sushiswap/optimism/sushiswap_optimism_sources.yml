@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: sushi_optimism
+    description: "optimism decoded tables related to Sushiswap Trident contracts"
+    tables:
+      - name: MiniChefV2_evt_LogPoolAddition
+      
+      - name: MiniChefV2_evt_LogSetPool
+      
+      - name: MiniChefV2_evt_LogSushiPerSecond
+
+      

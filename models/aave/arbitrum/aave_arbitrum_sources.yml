@@ -1,8 +1,0 @@
-version: 2
-
-sources:
-  - name: aave_v3_arbitrum
-    description: "Decoded contracts for Aave v3 on Arbitrum"
-    tables:
-      - name: L2Pool_evt_FlashLoan
-        loaded_at_field: evt_block_time

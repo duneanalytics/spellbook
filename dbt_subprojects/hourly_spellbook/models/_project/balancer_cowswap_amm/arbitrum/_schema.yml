@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: balancer_cowswap_amm_arbitrum_balances
+    meta:
+      blockchain: arbitrum
+      project: balancer_cowswap_amm
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'balancer', 'balances']
+    description: >
+      ERC20 token rolling sum balances on Balancer, an automated portfolio manager and trading platform.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_address
+            - token_address
+    columns:
+      - &day
+        name: day
+        description: "UTC event block time truncated to the day mark"
+        data_tests:
+          - not_null
+      - &blockchain
+        name: blockchain
+        description: ""
+      - &pool_address
+        name: pool_address
+        description: "Balancer CoWSwap AMM pool contract address"
+      - &token_address
+        name: token_address
+        description: "Token contract address"
+      - &token_balance_raw
+        name: token_balance_raw
+        description: "Balance of a token"
+
+  - name: balancer_cowswap_amm_arbitrum_liquidity
+    meta:
+      blockchain: arbitrum
+      project: balancer_cowswap_amm
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'balancer', 'pools', 'liquidity']
+    description: >
+      Balancer CoWSwap AMM pools liquidity by token in arbitrum.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - *day
+      - name: pool_id
+      - *pool_address
+      - name: pool_symbol
+      - name: version
+      - *blockchain
+      - name: pool_type
+      - *token_address
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - *token_balance_raw
+      - &token_balance
+        name: token_balance
+        description: "Balance of the token in the pool"
+      - &protocol_liquidity_usd
+        name: protocol_liquidity_usd
+        description: "Protocol liquidity in USD"
+      - &protocol_liquidity_eth
+        name: protocol_liquidity_eth
+        description: "Protocol liquidity in ETH"
+      - &pool_liquidity_usd
+        name: pool_liquidity_usd
+        description: "Pool liquidity in USD"
+      - &pool_liquidity_eth
+        name: pool_liquidity_eth
+        description: "Pool liquidity in ETH"          

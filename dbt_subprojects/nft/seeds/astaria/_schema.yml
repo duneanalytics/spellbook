@@ -1,0 +1,12 @@
+version: 2
+
+seeds:
+   - name: astaria_lending_seed
+     config:
+       column_types:
+         block_number: bigint
+         tx_hash: varbinary
+         evt_type: varchar
+         token_id: varchar
+         amount_original: double
+         borrower: varbinary

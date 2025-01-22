@@ -1,0 +1,179 @@
+version: 2
+
+models:
+
+  - name: nft_ethereum_top_sales
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft', 'ethereum', 'top sales']
+    description: >
+        Top 50 NFT sales
+    columns:
+      - name: nft_contract_address
+        description: "nft contract address"
+      - name: nft_token_id
+        description: "nft token id"
+      - name: seller
+        description: "seller address"
+      - name: price
+        description: "value of trade in eth"
+      - name: tx_hash
+        description: "Unique trade blockchain tx_hash"
+      - name: rn
+        description: "row number"
+
+  - name: nft_ethereum_top_minters
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft', 'ethereum', 'top minters']
+    description: >
+        Top 50 NFT minters
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - nft_contract_address
+            - minter
+    columns:
+      - name: nft_contract_address
+        description: "nft contract address"
+      - name: minter
+        description: "Address that minted the nft"
+      - name: eth_spent
+        description: "Total eth spent by minter"
+      - name: no_minted
+        description: "Number of nft's minted"
+      - name: last_updated
+        description: "Last time spell was updated"
+
+  - name: nft_ethereum_wallet_pnl
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft', 'ethereum', 'wallet pnl']
+    description: >
+        Top 50 nft traders based on profit from nft.trades
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - wallet
+            - nft_contract_address
+    columns:
+      - name: wallet
+        description: "Trader wallet address"
+      - name: nft_contract_address
+        description: "nft contract address"
+      - name: eth_spent
+        description: "eth spent to buy nfts"
+      - name: eth_received
+        description: "eth received from selling nfts"
+      - name: pnl
+        description: "pnl from selling/buying nfts, measured in eth"
+      - name: trades
+        description: "number of trades"
+      - name: last_updated
+        description: "Last time spell was updated"
+
+  - name: nft_ethereum_collection_stats
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['nft','ethereum', 'sales stats','volume']
+    description: >
+        This spell aggregates nft collections trading stats (volume, floor price) and pulls the data from nft.trades
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - nft_contract_address
+    columns:
+      - name: block_month
+        description: "Block month"
+      - name: block_date
+        description: "Block date"
+      - name: nft_contract_address
+        description: "NFT contract address"
+      - name: volume_eth
+        description: "daily nft collection volume Measured in ETH"
+      - name: trades
+        description: "daily nft collection number of trades"
+      - name: price_p5_eth
+        description: "5th percentile nft trade price Measured in ETH"
+      - name: price_min_eth
+        description: "Min NFT trade price Measured in ETH"
+      - name: price_max_eth
+        description: "Max NFT trade price Measured in ETH"
+
+  - name: nft_ethereum_wallet_metrics
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: NazihKalo
+    config:
+      tags: ['nft','ethereum', 'wallet stats','smart nft trader', 'roi', 'profit', 'loss', 'win', 'spend', 'gain']
+    description: >
+        This spell aggregates nft trading stats (profit, ROI, spend, gain, loss/win %, collections traded) per wallet and filters out wash trades.
+    columns:
+      - name: wallet
+        description: "NFT trader's wallet address"
+        data_tests:
+          - unique
+      - name: unique_collections_traded
+        description: "Count of unqiue collections/ERC721-contracts traded"
+      - name: buys_count
+        description: "Count of NFT buys or mints"
+      - name: sells_count
+        description: "Count of NFT sales"
+      - name: trades_count
+        description: "Count of Mints+Buys+Sells"
+      - name: profitable_trades_count
+        description: "Count of trades that were protitable (i.e. profit > 0)"
+      - name: unprofitable_trades_count
+        description: "Count of trades that were unprotitable (i.e. profit <= 0)"
+      - name: win_percentage
+        description: "Percent of sales that had positive profit"
+      - name: loss_percentage
+        description: "Percent of sales that had negative profit"
+      - name: breakeven_percentage
+        description: "Percent of sales that had breakeven profit"
+      - name: spent_eth
+        description: "Amount of ETH spent on NFTs (not including gas)"
+      - name: spent_eth_realized
+        description: "Amount of ETH spent on NFTs that were later sold"
+      - name: spent_eth_unrealized
+        description: "Amount of ETH spent on NFTs that have not been sold yet"
+      - name: gained_eth
+        description: "Amount of ETH gained from NFTs sold or appreication of currently held NFTs based on floor price"
+      - name: gained_eth_realized
+        description: "Amount of ETH gained from NFTs sold"
+      - name: gained_eth_unrealized
+        description: "Amount of ETH gained from appreication of currently held NFTs based on floor price"
+      - name: roi_eth
+        description: "Percent ETH ROI from appreciation+sales over buy amount (range 0-1)"
+      - name: roi_eth_realized
+        description: "Percent ETH ROI from sales over buy amount on those sales (range 0-1)"
+      - name: roi_eth_unrealized
+        description: "Percent ETH ROI from appreciation over buy amount on unsold NFTs (range 0-1)"
+      - name: eth_profit
+        description: "Total of realized + unrealized profit from NFTs (i.e. (sale_price-buy_price) for sold nfts + (current_floor_price - buy_price) for unsold NFTs)"
+      - name: eth_profit_realized
+        description: " Total of realized profit (in ETH) from sale of NFTs"
+      - name: eth_profit_unrealized
+        description: "Total of unrealized profit (in ETH) from sale of NFTs"
+      - name: avg_win_size
+        description: "Average size of profit from protitable NFT trades"
+      - name: avg_loss_size
+        description: "Average size of loss from protitable NFT trades"
+      - name: unique_weeks_buying
+        description: "Unique weeks the trader bought NFTs in"
+      - name: unique_weeks_selling
+        description: "Unique weeks the trader sold NFTs in"

@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: spaceid_bnb
+    description: "bnb decoded tables related to SpaceId contract"
+    tables:
+      - name: BNBRegistrarControllerV3_evt_NameRegistered
+      - name: BNBRegistrarControllerV4_evt_NameRegistered
+      - name: BNBRegistrarControllerV5_evt_NameRegistered
+      - name: BNBRegistrarControllerV6_evt_NameRegistered
+      - name: BNBRegistrarControllerV7_evt_NameRegistered
+      - name: BNBRegistrarControllerV8_evt_NameRegistered
+      - name: BNBRegistrarControllerV9_evt_NameRegistered

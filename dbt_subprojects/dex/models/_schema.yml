@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: dex_info
+    meta:
+      blockchain: ethereum, polygon, bnb, avalanche_c, gnosis, optimism, arbitrum, fantom, goerli, solana
+      sector: dex
+      contributors: hildobby
+    config:
+      tags: ['dex', 'ethereum', 'polygon', 'bnb', 'avalanche_c', 'gnosis', 'optimism', 'arbitrum', 'fantom', 'goerli', 'solana', 'info']
+    description: >
+        DEXs info
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - project
+    columns:
+      - name: project
+        description: "Marketplace codename"
+      - name: name
+        description: "Marketplace capitalised name"
+      - name: marketplace_type
+        description: "Type of marketplace"
+      - name: x_username
+        description: "Username on X"

@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: gitcoin_grant_round_dates
+    meta:
+      blockchain: ethereum, polygon
+      sector: donation
+      contributors: hildobby
+    config:
+        tags: ['ethereum', 'polygon', 'gitcoin', 'grant', 'round']
+    description: >
+        All Gitcoin grant round dates on Ethereum & Polygon
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - round_name
+    columns:
+      - name: round_name
+      - name: start_date
+      - name: end_date
+
+  - name: gitcoin_donations
+    meta:
+      blockchain: ethereum, polygon
+      sector: donation
+      contributors: hildobby
+    config:
+        tags: ['ethereum', 'polygon', 'gitcoin', 'donation']
+    description: >
+        All Gitcoin donations on Ethereum & Polygon
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: grant_round
+      - name: block_date
+      - name: block_time
+      - name: block_number
+      - name: amount_raw
+      - name: amount_original
+      - name: donor
+      - name: recipient
+      - name: currency_contract
+      - name: currency_symbol
+      - name: evt_index
+      - name: contract_address
+      - name: tx_hash

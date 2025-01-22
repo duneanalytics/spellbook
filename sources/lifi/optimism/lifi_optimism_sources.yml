@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  - name: lifi_optimism
+    description: >
+      Decoded event table for swaps on lifi
+    tables:
+      - name: LiFiDiamond_v2_evt_AssetSwapped
+      - name: LiFiDiamond_v2_evt_LiFiSwappedGeneric

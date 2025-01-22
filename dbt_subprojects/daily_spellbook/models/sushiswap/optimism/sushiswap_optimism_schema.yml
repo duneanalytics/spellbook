@@ -1,0 +1,119 @@
+version: 2
+
+models:
+  - name: sushiswap_optimism_pool_incentives_config
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: sushiswap
+      contributors: msilb7
+    config:
+      tags: ['optimism','sushiswap','sushi','trades','dex', 'incentives', 'masterchef']
+    description: >
+        Sushiswap contract deployment constuctor configurations for rewarder contracts
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &contract_address
+        name: contract_address
+        description: "Address of the contract observed"
+      - &reward_token
+        name: reward_token
+        description: "Address of the token used for rewards"
+      - &reward_per_second
+        name: reward_per_second
+        description: "Total rewards issues per second (not decimal adjusted)"
+      - &masterchef_v2_address
+        name: masterchef_v2_address
+        description: "Address of the corresponding Masterchef staking contract"
+  
+  - name: sushiswap_optimism_pool_incentives_mappings
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: sushiswap
+      contributors: msilb7
+    config:
+      tags: ['optimism','sushiswap','sushi','trades','dex', 'incentives', 'masterchef']
+    description: >
+        Sushiswap masterchef mapping of pool ids to lp token addresses
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - lp_address
+    columns:
+      - *blockchain
+      - *contract_address
+      - &pid
+        name: pid
+        description: "Masterchef ID of the Pool"
+      - &lp_address
+        name: lp_address
+        description: "Address of the corresponding LP token"
+  
+  - name: sushiswap_optimism_pool_incentives_rates
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: sushiswap
+      contributors: msilb7
+    config:
+      tags: ['optimism','sushiswap','sushi','trades','dex', 'incentives', 'masterchef']
+    description: >
+        Sushiswap mapping of allocation points and token emissions per second by pool and rewarder
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - reward_token
+            - pid
+            - evt_block_number
+    columns:
+      - &block_date
+        name: block_date
+        description: "UTC event block date of each DEX trade"
+      - *blockchain
+      - &evt_block_time
+        name: evt_block_time
+      - &evt_block_number
+        name: evt_block_number
+      - *contract_address
+      - &rewarder_address
+        name: rewarder_address
+        description: "Address distributing rewards"
+      - *reward_token
+      - *pid
+      - *lp_address
+      - &alloc_points
+        name: alloc_points
+        description: "Number of points allocated per pool - This is how masterchef allocates rewards"
+      - &total_alloc_points
+        name: total_alloc_points
+        description: "Total number of points allocated across pools - This is how masterchef allocates rewards"
+      - &alloc_point_share
+        name: alloc_point_share
+        description: "alloc_points / total_alloc_points"
+      - &tokens_per_second_raw
+        name: tokens_per_second_raw
+        description: "Total amount of token rewards allocated per second"
+      - &alloc_tokens_per_second_raw
+        name: alloc_tokens_per_second_raw
+        description: "tokens_per_second_raw * alloc_point_share"
+      - &alloc_tokens_per_second
+        name: alloc_tokens_per_second
+        description: "Tokens rewarded per second per pool (decimal adjusted)"
+      - &reward_token_symbol
+        name: reward_token_symbol
+        description: "Symbol of the reward token"
+      - &reward_token_decimals
+        name: reward_token_decimals
+        description: "Decimals of the reward token"

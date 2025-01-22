@@ -1,0 +1,3 @@
+{% macro incremental_days_forward_predicate(column, base_time, days_forward, incremental_time_unit=var("DBT_ENV_INCREMENTAL_TIME_UNIT")) -%}
+    {{column}} BETWEEN date_trunc('{{incremental_time_unit}}', base_time - interval '{{var('DBT_ENV_INCREMENTAL_TIME')}}' {{incremental_time_unit}}) AND date_trunc('{{incremental_time_unit}}', base_time + interval '{{days_forward}}' {{incremental_time_unit}})
+{%- endmacro -%}

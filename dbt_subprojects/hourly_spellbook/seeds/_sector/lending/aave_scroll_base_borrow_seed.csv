@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,borrower,amount
+scroll,aave,3,3497579,2024-02-20 13:59:18.000 UTC,0x980c2a196db087a6298c4e9a57745bc0f95f6bacaeb9b3cb19ed3fe910513602,8,borrow,0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4,0xafcfc7d2428fa45198818be48e99d87284f30e68,88836
+scroll,aave,3,3497736,2024-02-20 14:07:09.000 UTC,0xe15f326e7fbac2081938b044683c3e0e2e4bd005bffcf886c19c6cbf4fa58b6b,6,repay,0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4,0xafcfc7d2428fa45198818be48e99d87284f30e68,-88836

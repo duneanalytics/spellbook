@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: whirlpool_solana
+    description: "whirlpool decoded tables"
+    tables:
+      - name: whirlpool_call_initializePool
+      - name: whirlpool_call_swap
+      - name: whirlpool_call_twoHopSwap
+      - name: whirlpool_call_initializePoolV2
+      - name: whirlpool_call_swapV2
+      - name: whirlpool_call_twoHopSwapV2
+      - name: whirlpool_call_setFeeRate
+      - name: whirlpool_call_initializeFeeTier
+      - name: whirlpool_call_setDefaultFeeRate

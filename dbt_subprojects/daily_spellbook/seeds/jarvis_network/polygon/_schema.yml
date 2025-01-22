@@ -1,0 +1,18 @@
+version: 2
+
+seeds:
+  - name: jarvis_network_polygon_view_transactions_seed
+    config:
+      column_types:
+        action: varchar
+        user: varbinary
+        jfiat_token_symbol: varchar
+        jfiat_token_amount: double
+        collateral_symbol: varchar
+        collateral_token_amount: double
+        net_collateral_amount: double
+        net_collateral_amount_usd: double
+        fee_amount_usd: double
+        evt_tx_hash: varbinary
+        evt_index: int
+

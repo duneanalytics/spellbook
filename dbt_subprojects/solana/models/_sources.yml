@@ -1,0 +1,42 @@
+version: 2
+
+sources:
+  - name: spl_token_solana
+    description: "spl_token decoded tables"
+    tables:
+      - name: spl_token_call_initializeMint
+      - name: spl_token_call_initializeMint2
+      - name: spl_token_call_transfer
+      - name: spl_token_call_transferChecked
+      - name: spl_token_call_mintTo
+      - name: spl_token_call_mintToChecked
+      - name: spl_token_call_burn
+      - name: spl_token_call_burnChecked
+
+  - name: spl_token_2022_solana
+    description: "spl_token 2022 decoded tables"
+    tables:
+      - name: spl_token_2022_call_initializeMint
+      - name: spl_token_2022_call_initializeMint2
+      - name: spl_token_2022_call_transferFeeExtension
+      - name: spl_token_2022_call_transferChecked
+      - name: spl_token_2022_call_mintTo
+      - name: spl_token_2022_call_mintToChecked
+      - name: spl_token_2022_call_burn
+      - name: spl_token_2022_call_burnChecked
+
+  - name: mpl_token_metadata_solana
+    description: "mpl metadata decoded tables"
+    tables:
+      - name: mpl_token_metadata_call_Create
+      - name: mpl_token_metadata_call_CreateMetadataAccount
+      - name: mpl_token_metadata_call_CreateMetadataAccountV2
+      - name: mpl_token_metadata_call_CreateMetadataAccountV3
+      - name: mpl_token_metadata_call_CreateMasterEdition
+      - name: mpl_token_metadata_call_CreateMasterEditionV3
+      - name: mpl_token_metadata_call_Verify
+  - name: bubblegum_solana
+    description: "bubblegum cNFT minting decoded tables"
+    tables:
+      - name: bubblegum_call_mintV1
+      - name: bubblegum_call_mintToCollectionV1

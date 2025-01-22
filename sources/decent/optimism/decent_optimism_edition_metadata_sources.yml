@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: decent_optimism
+    description: "op mainnet decoded tables related to decent contracts"
+    tables:
+      - name: DCNTSDK_call_deployDCNT721A
+      - name: DCNTSDK_call_deployDCNT4907A
+      - name: DCNTSDK_call_deployDCNTCrescendo
+      - name: DCNTSDK_call_deployDCNTSeries

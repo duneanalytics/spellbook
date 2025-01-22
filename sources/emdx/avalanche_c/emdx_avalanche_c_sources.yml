@@ -1,0 +1,11 @@
+version: 2
+
+sources: 
+  - name: emdx_avalanche_c
+    description: >
+      Decoded event table for emdx margin trades 
+    tables:
+      - name: ClearingHouse_evt_PositionChanged
+      - name: ClearingHouse_call_closePosition
+      - name: ClearingHouse_call_openPosition
+      - name: ClearingHouse_evt_PositionLiquidated

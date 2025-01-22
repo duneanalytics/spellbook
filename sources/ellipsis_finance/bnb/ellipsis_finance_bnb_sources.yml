@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: ellipsis_finance_bnb
+    description: "decoded events for ellipsis finance on bnb"
+    tables:
+      - name: FactoryPool_call_add_base_pool
+      - name: FactoryPool_v2_call_add_base_pool
+      - name: FactoryPool_evt_PlainPoolDeployed
+      - name: FactoryPool_v2_evt_PlainPoolDeployed
+      - name: FactoryPool_evt_MetaPoolDeployed
+      - name: FactoryPool_v2_evt_MetaPoolDeployed
+      - name: FactoryPool_v3_evt_CryptoPoolDeployed
+      - name: FactoryPool_v4_evt_CryptoPoolDeployed
+      - name: AirdropClaim_evt_Claimed

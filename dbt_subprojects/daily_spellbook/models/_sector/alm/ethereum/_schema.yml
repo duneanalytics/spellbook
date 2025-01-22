@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: alm_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: alm
+      contributors: 0xrusowsky
+    config:
+      tags: [ 'ethereum', 'alm', 'trades' ]
+
+  - name: arrakis_finance_ethereum_trades
+    meta:
+      blockchain: ethereum
+      sector: alm
+      project: arrakis_finance
+      contributors: 0xrusowsky
+    config:
+      tags: [ 'ethereum', 'alm', 'arrakis', 'arrakis_finance', 'trades' ]
+    description: "arrakis finance ethereum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+            - vault_address

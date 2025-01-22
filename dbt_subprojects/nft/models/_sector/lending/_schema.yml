@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: nft_lending
+    meta:
+      blockchain: ethereum
+      sector: nft
+      contributors: Henrystats
+    config:
+      tags: ['ethereum','nft', 'lending']
+    description: >
+        nft lending events (repay & borrow)
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+            - lien_id

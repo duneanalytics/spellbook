@@ -1,0 +1,8 @@
+version: 2
+
+sources: 
+  - name: gearbox_ethereum
+    description: >
+      Gearbox ethereum contracts
+    tables:
+      - name: MerkleDistributor_evt_Claimed

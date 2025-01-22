@@ -1,0 +1,32 @@
+version: 2
+
+seeds:
+  - name: nexusmutual_ethereum_trades_seed
+    config:
+      column_types:
+        evt_tx_hash: varbinary
+        block_date: date
+        evt_block_number: bigint
+        nonce: bigint
+        curr: varbinary
+        premium: uint256
+        premium_nxm: uint256
+        sum_assured: uint256
+
+  - name: nexusmutual_ethereum_capital_pool_eth_daily_transaction_summary_seed
+    config:
+      column_types:
+        day: date
+        eth_ingress: double
+        eth_egress: double
+  
+  - name: nexusmutual_ethereum_product_information_seed
+    config:
+      column_types:
+        date_added: date
+        product_contract_address: varbinary
+        product_name: varchar
+        product_type: varchar
+        syndicate: varchar
+
+

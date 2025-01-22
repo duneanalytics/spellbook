@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: stakewise_v3_ethereum
+    tables:
+      - name: VaultsRegistry_evt_VaultAdded

@@ -1,0 +1,110 @@
+version: 2
+
+models:
+  - name: dex_sei_base_trades
+    data_tests:
+      - check_dex_info_relationship
+
+  - name: jelly_swap_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: jelly_swap
+      contributors: viniabussafi
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'jelly_swap' ]
+    description: "JellySwap Sei base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('jelly_swap_sei_base_trades_seed')
+          filter:
+            version: 2
+            
+  - name: oku_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: oku
+      contributors: hosuke
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'oku', 'v3' ]
+    description: "Oku sei base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('oku_sei_base_trades_seed')
+
+  - name: dragon_swap_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: dragon_swap
+      contributors: hosuke
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'dragon_swap', 'v2' ]
+    description: "DragonSwap sei base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dragon_swap_sei_base_trades_seed')
+
+  - name: xei_finance_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: xei_finance
+      contributors: hosuke
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'xei_finance', 'v3' ]
+    description: "XeiFinance sei base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('xei_finance_sei_base_trades_seed')
+
+  - name: carbon_defi_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: carbon_defi
+      contributors: hosuke
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'carbon_defi' ]
+    description: "Carbon DeFi sei base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('carbon_defi_sei_base_trades_seed')
+  
+  - name: yaka_sei_base_trades
+    meta:
+      blockchain: sei
+      sector: dex
+      project: yaka
+      contributors: john
+    config:
+      tags: [ 'sei', 'dex', 'trades', 'yaka_finance' ]
+    description: "Yaka Finance base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('yaka_sei_base_trades_seed')

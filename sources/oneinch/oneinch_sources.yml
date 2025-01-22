@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: oneinch
+    tables:
+      - name: blockchains
+      - name: lop
+      - name: ar
+      - name: parsed_transfers_from_calls
+        

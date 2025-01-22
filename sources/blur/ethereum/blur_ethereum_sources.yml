@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: blur_ethereum
+    tables:
+      - name: BlurAirdrop_evt_Claimed
+      - name: Blend_evt_LoanOfferTaken
+      - name: Blend_evt_Refinance
+      - name: Blend_evt_Seize
+      - name: Blend_evt_Repay
+      - name: Blend_evt_StartAuction
+      - name: Blend_evt_BuyLocked

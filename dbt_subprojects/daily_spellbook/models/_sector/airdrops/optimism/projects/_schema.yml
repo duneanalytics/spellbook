@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: velodrome_optimism_airdrop_claims
+    meta:
+      blockchain: optimism
+      sector: airdrop
+      project: velodrome
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'optimism', 'claim', 'velodrome']
+    description: "List of claim transactions for the $VELO airdrop"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index

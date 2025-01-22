@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: perp_v2_optimism
+    description: Optimism decoded tables related to Perpetual v2
+    tables:
+      - name: ClearingHouse_evt_PositionChanged
+        description: "Details the perpetuals trades/swaps"
+      - name: Vault_call_getFreeCollateralByRatio
+        description: "Stores information on the margins per trade"
+      - name: MarketRegistry_evt_PoolAdded
+        description: "Details the asset markets"

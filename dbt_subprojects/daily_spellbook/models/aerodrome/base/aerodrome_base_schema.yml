@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: aerodrome_base_bribe_mappings
+    meta:
+      blockchain: base
+      project: aerodrome
+      contributors: msilb7
+    config:
+      tags: ['base','aerodrome','velo','dex', 'incentives']
+    description: >
+      Bribe to Pool mappings for aerodrome on all chains
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - pool_contract
+              - incentives_contract
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project 
+        name: project
+        description: "Project name of the DEX"  
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &pool_contract
+        name: pool_contract
+        description: "Address of the liquidity pool contract"
+      - &pool_id
+        name: pool_id
+        description: 'Unique encoded identifier that refers to each pool'
+      - &incentives_contract
+        name: incentives_contract
+        description: "Address of the contract where incentives are stored and emitted."
+      - &incentives_type
+        name: incentives_type
+        description: "Description of the incentives address type."
+      - &evt_block_time
+        name: evt_block_time
+        description: 'Block time in UTC'
+      - &evt_block_number
+        name: evt_block_number
+        description: 'Block Number'
+      - &contract_address
+        name: contract_address
+        description: 'Gauge Creator Contract Address'
+      - &evt_tx_hash
+        name: evt_tx_hash
+        description: 'Tx Hash'
+      - &evt_index
+        name: evt_index
+        description: "event index"

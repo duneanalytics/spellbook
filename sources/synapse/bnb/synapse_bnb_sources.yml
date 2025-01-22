@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: synapse_bnb
+    description: BNB decoded tables related to Synapse
+    tables:
+      - name: SwapFlashLoan_evt_FlashLoan

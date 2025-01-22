@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  # Extra sources that are needed in the NFT models but come from other subprojects, we should aim to keep this to a minimum
+  - name: addresses_ethereum
+    tables:
+      - name: defi
+
+  - name: labels
+    tables:
+      - name: cex
+      - name: bridge
+
+  - name: dex
+    tables:
+      - name: flashloans
+
+  - name: tokens_base
+    tables:
+      - name: base_transfers
+
+  - name: tokens_optimism
+    tables:
+      - name: base_transfers
+
+  - name: tokens_zksync
+    tables:
+      - name: base_transfers
+
+  - name: tornado_cash
+    tables:
+      - name: withdrawals

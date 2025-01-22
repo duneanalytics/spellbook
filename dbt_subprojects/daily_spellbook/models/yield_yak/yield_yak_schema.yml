@@ -1,0 +1,324 @@
+version: 2
+
+models:
+  - name: yield_yak_deposits
+    meta:
+      blockchain: avalanche_c, arbitrum, mantle
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'deposits']
+    description: >
+        yield yak deposits
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_index
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain on which the YRT contract is deployed"
+      - &contract_address 
+        name: contract_address
+        description: "Address of the YRT smart contract / strategy"  
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash of the deposit/withdraw/reinvest/swap"
+      - &evt_index
+        name: evt_index
+        description: "The position of this event log within this transaction"
+      - &tx_index
+        name: tx_index
+        description: "Index of the transaction within the block"
+      - &block_time
+        name: block_time
+        description: "UTC time of the deposit/withdraw/reinvest/swap"
+      - &block_date
+        name: block_date
+        description: "UTC event block date of the deposit/withdraw/reinvest/swap"
+      - &block_number
+        name: block_number
+        description: "Block number of the deposit/withdraw/reinvest/swap"
+      - &user_address
+        name: user_address
+        description: "Address of the wallet which made the deposit/withdraw/reinvest"
+      - &deposit_amount
+        name: deposit_amount
+        description: "Amount of deposit tokens deposited into the strategy"
+
+  - name: yield_yak_withdraws
+    meta:
+      blockchain: avalanche_c, arbitrum, mantle
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'withdraws']
+    description: >
+        yield yak withdraws
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_index
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *tx_hash
+      - *evt_index
+      - *tx_index
+      - *block_time
+      - *block_date
+      - *block_number
+      - *user_address
+      - &withdraw_amount
+        name: withdraw_amount
+        description: "Amount of deposit tokens withdrawn from the strategy"
+
+  - name: yield_yak_reinvests
+    meta:
+      blockchain: avalanche_c, arbitrum, mantle
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound', 'reinvests']
+    description: >
+        yield yak reinvests
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_index
+            - evt_index
+    columns:
+      - *blockchain
+      - *contract_address
+      - *tx_hash
+      - *evt_index
+      - *tx_index
+      - *block_time
+      - *block_date
+      - *block_number
+      - &reinvest_by_address
+        name: reinvest_by_address
+        description: "Address which triggered the transaction containing this Reinvest event"
+      - &new_total_deposits
+        name: new_total_deposits
+        description: "The total amount of deposit token in the strategy following the Reinvest event"
+      - &new_total_supply
+        name: new_total_supply
+        description: "The total supply of YRT following the Reinvest event"
+      - &apy
+        name: apy
+        description: "Annual Percentage Yield. Calculated using a weighted combination of recent Reinvest events"
+      - &ratio
+        name: ratio
+        description: "new_total_deposits / new_total_supply"
+      - &recent_reinvest_info
+        name: recent_reinvest_info
+        description: "An array of the ratio growth and time between reinvests for the last 25 Reinvest events"
+
+  - name: yield_yak_balances
+    meta:
+      blockchain: avalanche_c, arbitrum, mantle
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
+    description: >
+        yield yak vault/farm/pool balances as a temporal table
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+            - from_time
+    columns:
+      - *blockchain
+      - *contract_address
+      - &from_time
+        name: from_time
+        description: "UTC time from which the contract held this balance in its respective deposit token"
+      - &to_time
+        name: to_time
+        description: "UTC time until which the contract held this balance in its respective deposit token"
+      - &deposit_token_balance
+        name: deposit_token_balance
+        description: "Balance of deposit tokens held in the contract in the time window specified"
+
+  - name: yield_yak_user_yrt_balances
+    meta:
+      blockchain: avalanche_c, arbitrum, mantle
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield', 'aggregator', 'yield_yak', 'auto-compound']
+    description: >
+        yield yak user-level YRT balances as a temporal table
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - user_address
+            - contract_address
+            - from_time
+    columns:
+      - *blockchain
+      - name: user_address
+        description: Address which holds the YRT
+      - *contract_address
+      - name: from_time
+        description: "UTC time from which the user held this balance of the contract_address YRT"
+      - name: to_time
+        description: "UTC time until which the user held this balance of the contract_address YRT"
+      - &yrt_balance
+        name: yrt_balance
+        description: "Balance of YRT tokens held by the user_address in the time window specified"
+
+  - name: yield_yak_yak_swaps
+    meta:
+      blockchain: avalanche_c, arbitrum, mantle
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex']
+    description: >
+        yield yak aggregator yak swaps
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_index
+            - evt_index
+    columns:
+      - *blockchain
+      - &yak_router_address
+        name: yak_router_address
+        description: "Address of the YakRouter contract which made the swap"
+      - *block_number
+      - *block_date
+      - *block_time
+      - *tx_index
+      - *tx_hash
+      - &tx_to_address
+        name: tx_to_address
+        description: "Address 'to' which this transaction was sent (i.e. which had a function called)"
+      - &tx_fee
+        name: tx_fee
+        description: "Transaction / gas cost in native token for the transaction calculated using (price * gas used)"
+      - *evt_index
+      - &number_of_swaps_in_tx
+        name: number_of_swaps_in_tx
+        description: "Count of the number of YakSwap events in this same transaction (used to divide the gas cost / tx fee)"
+      - &tx_fee_per_swap
+        name: tx_fee_per_swap
+        description: "Transaction fee divided per each Yak Swap event"
+      - &trader_address
+        name: trader_address
+        description: "Address which initiated the transaction"
+      - &swap_token_in_address
+        name: swap_token_in_address
+        description: "Address of the token being sold in the YakSwap event"
+      - &swap_token_out_address
+        name: swap_token_out_address
+        description: "Address of the token being bought in the YakSwap event"
+      - &swap_amount_in
+        name: swap_amount_in
+        description: "Amount of the sold token being swapped from / traded in the YakSwap event"
+      - &swap_amount_out
+        name: swap_amount_out
+        description: "Amount of the bought token being swapped to / bought in the YakSwap event"
+      - &number_of_hops
+        name: number_of_hops
+        description: "Number of steps/hops the YakSwap has gone through in order to get the desired token at the best rate"
+      - &yak_adapter_swaps
+        name: yak_adapter_swaps
+        description: "JSON array containing detailed information about the individual YakAdapterSwap events which make up this YakSwap"
+
+  - name: yield_yak_yak_adapter_swaps
+    meta:
+      blockchain: avalanche_c, arbitrum, mantle
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yakswap', 'swaps', 'aggregator', 'yield_yak', 'dex', 'yakadapter']
+    description: >
+        yield yak aggregator yak adapter swaps
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_number
+            - tx_index
+            - adapter_evt_index
+    columns:
+      - *blockchain
+      - *yak_router_address
+      - *block_number
+      - *block_date
+      - *block_time
+      - *tx_index
+      - *tx_hash
+      - *tx_to_address
+      - *tx_fee
+      - &swap_evt_index
+        name: swap_evt_index
+        description: "Index of the YakSwap event to which this YakAdapterSwap event is related"
+      - *number_of_swaps_in_tx
+      - *trader_address
+      - *swap_token_in_address
+      - *swap_token_out_address
+      - *swap_amount_in
+      - *swap_amount_out
+      - *number_of_hops
+      - &adapter_evt_index
+        name: adapter_evt_index
+        description: "Index of the YakAdapterSwap event in the transaction"
+      - &adapter_address
+        name: adapter_address
+        description: "Address of the adapter being used for this part of the YakSwap"
+      - &adapter_token_in_address
+        name: adapter_token_in_address
+        description: "Address of the token being sold in the YakAdapterSwap event"
+      - &adapter_token_out_address
+        name: adapter_token_out_address
+        description: "Address of the token being bought in the YakAdapterSwap event"
+      - &adapter_amount_in
+        name: adapter_amount_in
+        description: "Amount of the sold token being swapped from / traded in the YakAdapterSwap event"
+      - &adapter_amount_out
+        name: adapter_amount_out
+        description: "Amount of the bought token being swapped to / bought in the YakAdapterSwap event"
+
+  - name: yield_yak_yield_strategies
+    meta:
+      blockchain: avalanche_c, arbitrum, mantle
+      project: yield_yak
+      contributors: angus_1
+    config:
+      tags: ['avalanche_c', 'arbitrum', 'mantle', 'yield_yak', 'strategies', 'yield']
+    description: >
+        yield yak strategies on all chains
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - contract_address
+    columns:
+      - *blockchain
+      - *contract_address
+      - &contract_name
+        name: contract_name
+        description: "Name of the deployed contract"
+      - &created_block_time
+        name: created_block_time
+        description: "Timestamp at which the contract was deployed/created"
+      - &created_block_number
+        name: created_block_number
+        description: "Block number at which the contract was deployed/created"

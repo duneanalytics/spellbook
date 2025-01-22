@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: uniswap_v2_zora
+    description: "zora decoded tables related to Uniswap v2 contract"
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+        description: "" # to-do
+
+      - name: UniswapV2Factory_evt_PairCreated
+        description: "" # to-do

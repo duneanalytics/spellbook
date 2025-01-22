@@ -1,0 +1,17 @@
+version: 2
+
+seeds:
+  - name: uniswap_v3_proposals_seed
+    config:
+      column_types:
+        blockchain: varchar
+        proposal_id: uint256
+        status: varchar
+
+  - name: uniswap_v3_votes_seed
+    config:
+      column_types:
+        blockchain: varchar
+        proposal_id: uint256
+        voter_address: varbinary
+        votes: bigint

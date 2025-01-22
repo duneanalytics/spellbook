@@ -1,0 +1,33 @@
+version: 2
+
+sources:
+  - name: minereum_polygon
+    tables:
+      - name: UmaConditionalTokensBinaryAdapter_evt_QuestionInitialized
+      - name: UmaConditionalTokensBinaryAdapter_evt_QuestionSettled
+
+  - name: polymarketfactory_polygon
+    tables:
+      - name: FixedProductMarketMakerFactory_evt_FixedProductMarketMakerCreation
+  
+  - name: polymarket_polygon
+    tables:
+      - name: UmaCtfAdapter_evt_QuestionInitialized
+      - name: UmaCtfAdapter_evt_QuestionResolved
+      - name: UmaCtfAdapter_v3_evt_QuestionInitialized
+      - name: NegRiskAdapter_evt_MarketPrepared
+      - name: NegRiskAdapter_evt_QuestionPrepared
+      - name: NegRiskAdapter_evt_OutcomeReported
+      - name: ctf_evt_ConditionPreparation
+      - name: CTFExchange_evt_TokenRegistered
+      - name: NegRiskCtfExchange_evt_TokenRegistered
+      - name: FixedProductMarketMaker_evt_FPMMSell
+      - name: FixedProductMarketMaker_evt_FPMMBuy
+      - name: CTFExchange_evt_OrderFilled
+      - name: NegRiskCtfExchange_evt_OrderFilled
+      - name: SafeProxyFactory_evt_ProxyCreation
+      - name: fedinterestrate_evt_FPMMFundingAdded 
+
+  - name: dune
+    tables:
+      - name: dataset_polymarket_markets

@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: fantasy_blast
+    description: "Decoded contracts for Fantasy on Blast"
+
+    tables:
+      - name: Minter_evt_NewMintConfig
+      - name: Minter_evt_Mint
+      - name: Minter_evt_LevelUp
+      - name: Minter_evt_BurnToDraw

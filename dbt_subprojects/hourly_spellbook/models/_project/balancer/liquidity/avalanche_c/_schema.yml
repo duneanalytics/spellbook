@@ -1,0 +1,58 @@
+version: 2
+
+models:
+  - name: balancer_v2_avalanche_c_liquidity
+    meta:
+      blockchain: avalanche_c
+      project: balancer_v2
+      contributors: victorstefenon, viniabussafi, thetroyharris
+    config:
+      tags: ['avalanche_c', 'balancer', 'pools', 'liquidity']
+    description: >
+      Balancer v2 pools liquidity by token in Arbitrum.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - token_address
+    columns:
+      - &day
+        name: day
+        description: "Block date in UTC"
+      - &pool_id
+        name: pool_id
+        description: "Unique encoded identifier that refers to each pool"
+      - &pool_address
+        name: pool_address
+        description: "Pool address"
+      - &pool_symbol
+        name: pool_symbol
+        description: "Token symbols, followed by their respective weights, if applicable"
+      - &version
+        name: version
+        description: "Version of the project"
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &pool_type
+        name: pool_type
+        description: "Pool attributes, determined by the pool's factory"      
+      - &token_address
+        name: token_address
+        description: "Contract address of the token"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - name: token_balance_raw
+        description: 'Raw balance of the token in the pool in the original currency'
+      - name: token_balance
+        description: 'Scaled balance of the token in the pool in the original currency'
+      - name: protocol_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, except BPTs'
+      - name: protocol_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, except BPTs'
+      - name: pool_liquidity_usd
+        description: 'Liquidity of the token in the pool in USD, including BPTs'
+      - name: pool_liquidity_eth
+        description: 'Liquidity of the token in the pool in ETH, including BPTs'

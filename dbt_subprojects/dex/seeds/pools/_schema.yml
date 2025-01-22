@@ -1,0 +1,13 @@
+version: 2
+
+seeds:
+  - name: dex_pools_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        pool: varbinary
+        token_id: int
+        token_address: varbinary
+        token_type: varchar

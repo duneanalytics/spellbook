@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: optimism_quest_optimism
+    description: "decoded events and function calls for optimism quests on optimism"
+    tables:
+      - name: StarNFTV4_call_mint

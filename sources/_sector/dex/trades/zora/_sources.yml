@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: uniswap_v2_zora
+  - name: uniswap_v3_zora
+    tables:
+    - name: UniswapV3Pool_evt_Swap
+    - name: UniswapV3Factory_evt_PoolCreated

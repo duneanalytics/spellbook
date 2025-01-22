@@ -1,0 +1,14 @@
+version: 2
+
+sources: 
+  - name: odos_v1_arbitrum
+    description: >
+      Decoded event table for swaps on odos
+    tables:
+      - name: OdosRouter_evt_Swapped
+  
+  - name: odos_v2_arbitrum
+    description: >
+      Decoded event table for swaps on odos_v2
+    tables:
+      - name: OdosRouterV2_evt_Swap

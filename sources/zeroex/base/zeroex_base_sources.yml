@@ -1,0 +1,9 @@
+version: 2
+
+sources: 
+  # for native orders on v4 + PLP VIP
+  - name: zeroex_base
+    description: "base decoded tables related to 0x Exchange Proxy (v4)"
+    
+    tables:
+      - name: ExchangeProxy_evt_TransformedERC20

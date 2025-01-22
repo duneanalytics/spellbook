@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: nether_fi_base
+    description: Base decoded tables related to nether_fi protocol
+    tables:
+      - name: Vault_evt_IncreasePosition
+      - name: Vault_evt_DecreasePosition
+      - name: Vault_evt_LiquidatePosition

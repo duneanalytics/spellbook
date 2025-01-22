@@ -1,0 +1,76 @@
+version: 2
+
+models:
+  - name: rollup_economics_ethereum_l1_fees
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: niftytable
+    config:
+      tags: ['rollup', 'l2']
+    description: Gas fees paid by rollups for posting transaction data or state updates on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - name
+            - day
+    columns:
+      - &name
+        name: name
+        description: "Name of the rollup"
+      - &day
+        name: day
+        description: "The day when relevant transactions occurred by each rollup"
+      - &data_fee_native
+        name: data_fee_native
+        description: "Fee spent on calldata gas by the transaction (in ETH)"
+      - &data_fee_usd
+        name: data_fee_usd
+        description: "Fee spent on calldata gas by the transaction (in USD)"
+      - &calldata_gas_used
+        name: calldata_gas_used
+        description: "Calldata gas used by the transaction"
+      - &verification_fee_native
+        name: verification_fee_native
+        description: "Fee spent on calldata gas for proof verification by the transaction (in ETH)"
+      - &verification_fee_usd
+        name: verification_fee_usd
+        description: "Fee spent on calldata gas for proof verification by the transaction (in USD)"
+      - &blob_fee_native
+        name: blob_fee_native
+        description: "Fee spent on blob gas by the transaction (in ETH)"
+      - &blob_fee_usd
+        name: blob_fee_usd
+        description: "Fee spent on blob gas by the transaction (in USD)"
+      - &l1_fee_native
+        name: l1_fee_native
+        description: "Total amount paid in gas fees (in ETH)"
+      - &l1_fee_usd
+        name: l1_fee_usd
+        description: "Total amount paid in gas fees (in USD)"
+
+  - name: rollup_economics_ethereum_l2_revenue
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: niftytable
+    config:
+      tags: ['rollup', 'l2']
+    description: "Gas fees earned by rollup on L2"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - name
+            - day
+    columns:
+      - *day
+      - *name
+      - &l2_rev
+        name: l2_rev
+        description: "Total amount of revenue earned from gas fees (in ETH)"
+      - &l2_rev_usd
+        name: l2_rev_usd
+        description: "Total amount of revenue earned from gas fees (in USD)"
+  

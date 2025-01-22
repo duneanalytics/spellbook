@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: genesis_balances
+    meta:
+      blockchain: ethereum
+      sector: balances
+      project: genesis
+      contributors: bernat
+    config:
+      tags: ['balances', 'ethereum', 'genesis', 'bernat']
+    description: >
+        Ethereum balances at genesis. Sourced from https://github.com/ethereum/ethereumj/blob/develop/ethereumj-core/src/main/resources/genesis/frontier.json
+    columns:
+      - &address
+        name: address
+        description: "Ethereum wallet address"
+      - &balance_raw
+        name: balance_raw
+        description: "ETH balance of this address at genesis, in wei"
+      - &balance
+        name: balance
+        description: "ETH balance of this address at genesis, in ETH"

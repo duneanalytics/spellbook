@@ -1,0 +1,7 @@
+version: 2
+
+sources: 
+  - name: nomad_ethereum
+    tables:
+      - name: BridgeRouter_evt_Send
+      - name: BridgeRouter_evt_Receive

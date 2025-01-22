@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: layerzero_celo
+    tables:
+      - name: Endpoint_call_send

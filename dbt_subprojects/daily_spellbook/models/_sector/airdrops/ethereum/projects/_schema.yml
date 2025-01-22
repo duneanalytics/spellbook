@@ -1,0 +1,162 @@
+version: 2
+
+models:
+  - name: cow_protocol_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: cow_protocol
+      contributors: hildobby
+    config:
+      tags: ['table', 'airdrop', 'ethereum', 'claim', 'cow_protocol']
+    description: "List of claim transactions for the $COW airdrop"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+
+  - name: dydx_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: dydx
+      contributors: hildobby
+    config:
+      tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'dydx' ]
+    description: "List of claim transactions for the $DYDX airdrop"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+
+  - name: gitcoin_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: gitcoin
+      contributors: hildobby
+    config:
+      tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'gitcoin' ]
+    description: "List of claim transactions for the $GTC airdrop"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+
+  - name: paraswap_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: paraswap
+      contributors: hildobby
+    config:
+      tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'paraswap' ]
+    description: "List of claim transactions for the $PSP airdrop"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+
+  - name: pooltogether_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: pooltogether
+      contributors: hildobby
+    config:
+      tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'pooltogether' ]
+    description: "List of claim transactions for the $POOL airdrop"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+
+  - name: sudoswap_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: sudoswap
+      contributors: hildobby
+    config:
+      tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'sudoswap' ]
+    description: "List of claim transactions for the $SUDO airdrop"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+
+  - name: tornado_cash_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: tornado_cash
+      contributors: hildobby
+    config:
+      tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'tornado_cash' ]
+    description: "List of claim transactions for the $TORN airdrop"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+
+  - name: safe_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: safe
+      contributors: hildobby
+    config:
+      tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'safe' ]
+    description: "List of claim transactions for the $SAFE airdrop"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+
+  - name: uniswap_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: uniswap
+      contributors: hildobby
+    config:
+      tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'uniswap' ]
+    description: "List of claim transactions for the $UNI airdrop"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index
+
+  - name: oneinch_ethereum_airdrop_claims
+    meta:
+      blockchain: ethereum
+      sector: airdrop
+      project: oneinch
+      contributors: hildobby
+    config:
+      tags: [ 'table', 'airdrop', 'ethereum', 'claim', 'oneinch' ]
+    description: "List of claim transactions for the $1INCH airdrop"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - recipient
+            - evt_index

@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: alchemy_smart_account_addresses
+
+    meta:
+      blockchain: arbitrum, ethereum, bnb, avalanche_c, celo, gnosis, zora, polygon, base, optimism
+      sector: alchemy
+      project: alchemy
+      contributors: sofiat
+
+    config:
+      tags: ['alchemy', 'addresses', 'smart_accounts']
+    description: "addresses of alchemy smart accounts"
+    columns:
+    - &blockchain
+      name: blockchain
+      description: "Blockchain for which the address was created"
+    - &evt_block_time
+      name: day
+      description: "Date on which the address was created"
+    - &tx_hash
+      name: tx_hash
+      description: "The txhash for the created address"
+    - &address
+      name: address
+      description: "The address created"

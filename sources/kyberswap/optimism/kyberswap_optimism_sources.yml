@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: kyber_optimism
+    description: "Optimism decoded tables related to Kyberswap contract"
+    tables:
+      - name: MetaAggregationRouter_evt_Swapped
+      - name: MetaAggregationRouterV3_evt_Swapped
+      - name: AggregationRouterV3_evt_Swapped
+      - name: MetaAggregationRouterV2_evt_Swapped
+
+  - name: kyberswap_optimism
+    description: "Optimism decoded tables related to Kyberswap contract"
+    tables:
+      - name: MetaAggregationRouter_evt_Swapped
+      - name: MetaAggregationRouterV3_evt_Swapped

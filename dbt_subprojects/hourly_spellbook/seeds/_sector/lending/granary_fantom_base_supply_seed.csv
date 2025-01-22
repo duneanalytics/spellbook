@@ -1,0 +1,4 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+fantom,granary,1,65236085,2023-07-06 21:28:21.000 UTC,0x14cd9863c6f62e210fe5c8473ad2d83fdadcb48bbc09b8c10f4ca6c490ebe1bb,8,deposit,0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83,0x791f1e2ba36f99af085df47edd62ec9d9b8aad23,4.9e+22
+fantom,granary,1,76604866,2024-03-01 14:08:43.000 UTC,0x7b426a385a9d93c79fe347b2aef816b49b910c2af0ba13822be7a5ef6a5c4568,196,deposit_liquidation,0x04068da6c83afcfa0e13ba15a6696662335d5b75,0x5fea21c3fc60fe4de74ece48b57ee67477c72b27,-4.8442552e+07
+fantom,granary,1,76585142,2024-03-01 06:41:20.000 UTC,0x00bac540c2d6070977210babdd47420cc93cda656607afbb11b95a24756dafca,6,withdraw,0x321162cd933e2be498cd2267a90534a804051b11,0x39bbe14f5fbb3276d06760c95a071ebab6529192,-1.5e+06

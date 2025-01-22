@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: layerzero_gnosis
+    tables:
+      - name: gnosisendpoint_call_send

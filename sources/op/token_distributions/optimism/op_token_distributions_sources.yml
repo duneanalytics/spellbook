@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: aave_v3_optimism
+    description: "decoded events and function calls for aave on optimism"
+    tables:
+      - name: RewardsController_evt_RewardsClaimed

@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: the_granary_optimism_tokens
+
+    meta:
+      blockchain: optimism
+      sector: lending
+      project: the_granary
+      contributors: msilb7
+
+    config:
+      tags: ['the_granary', 'optimism', 'tokens', 'lending']
+    description: "Granary aToken list and mappings to underlying tokens"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - atoken_address
+    columns:
+    - &blockchain
+      name: blockchain
+      description: "Blockchain for the token"
+    - &atoken_address
+      name: atoken_address
+      description: "Address for the atoken"
+    - &underlying_address
+      name: underlying_address
+      description: "Underlying ERC20 token that that the aToken represents"
+    - &atoken_decimals
+      name: atoken_decimals
+      description: "Decimals for the atoken"
+    - &side
+      name: side
+      description: "Supply side or Borrow side for the atoken"
+    - &atoken_rate_type
+      name: arate_type
+      description: "Variable or Stable rate for the atoken"
+    - &atoken_symbol
+      name: atoken_symbol
+      description: "Symbol for the atoken"
+    - &atoken_name
+      name: atoken_name
+      description: "Name for the atoken"

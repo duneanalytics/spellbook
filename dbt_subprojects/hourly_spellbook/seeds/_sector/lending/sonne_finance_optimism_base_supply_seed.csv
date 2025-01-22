@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+optimism,sonne_finance,1,115681000,2024-02-03 11:46:17.000 UTC,0x7e8cbbd3dc75d4eb4bb2214716894b707d52ac56201eaff6963a4807c73c575a,15,deposit,0x7f5c764cbc14f9669b88837ca1490cca17c31607,0x88398dac284753fc651cd475b42aa507413f4fd2,5.735458798e+09
+optimism,sonne_finance,1,115680992,2024-02-03 11:46:01.000 UTC,0xbfaf02b758cb75b5dfd86187f449f33ad61b01263e9db30d9fcdb34e02b9d9c2,16,withdraw,0x7f5c764cbc14f9669b88837ca1490cca17c31607,0x88398dac284753fc651cd475b42aa507413f4fd2,-5.735458798e+09

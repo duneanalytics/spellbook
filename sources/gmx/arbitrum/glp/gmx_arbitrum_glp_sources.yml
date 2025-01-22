@@ -1,0 +1,16 @@
+version: 2
+
+sources: 
+  - name: gmx_arbitrum
+    description: >
+      Decoded tables related to GMX, a decentralized exchange.
+    tables:
+      - name: Vault_call_poolAmounts        
+      - name: Vault_call_reservedAmounts
+      - name: Vault_call_guaranteedUsd
+      - name: Vault_call_getMaxPrice
+      - name: Vault_call_getMinPrice
+      - name: Vault_call_globalShortAveragePrices
+      - name: Vault_call_globalShortSizes
+      - name: GlpManager_evt_AddLiquidity
+      - name: GlpManager_evt_RemoveLiquidity

@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: sound_xyz_optimism
+    description: "optimism decoded tables related to sound xyz contracts"
+    tables:
+      - name: SoundCreatorV1_evt_SoundEditionCreated
+      - name: SoundEditionV1_2_evt_SoundEditionInitialized

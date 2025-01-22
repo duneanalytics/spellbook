@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: mux_optimism
+    description: "mux protocol optimism decoded events"
+    tables:
+      - name: LiquidityPoolHop1_evt_AddAsset
+      - name: LiquidityPoolHop1_evt_OpenPosition
+      - name: LiquidityPoolHop1_evt_ClosePosition
+      - name: LiquidityPoolHop1_evt_Liquidate

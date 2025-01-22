@@ -1,0 +1,33 @@
+version: 2
+
+sources:
+  - name: zora_goerli
+    description: "Goerli decoded tables related to Zora"
+
+    tables:
+      - name: ERC721Drop_evt_Sale
+      - name: ZoraCreator1155Impl_evt_Purchased
+
+  - name: zora_base
+    description: "Base decoded tables related to Zora"
+    tables:
+      - name: ERC721Drop_evt_Sale
+      - name: ZoraCreator1155_evt_Purchased
+
+  - name: zora_ethereum
+    description: "Ethereum decoded tables related to Zora"
+    tables:
+      - name: ERC721Drop_evt_Sale
+      - name: Zora1155_evt_Purchased
+
+  - name: zora_optimism
+    description: "Optimism decoded tables related to Zora"
+    tables:
+      - name: ERC721Drop_evt_Sale
+      - name: ZoraCreator1155Impl_evt_Purchased
+
+  - name: zora_zora
+    description: "Zora network decoded tables related to Zora"
+    tables:
+      - name: ZoraNFTCreatorV1_evt_CreatedDrop
+      - name: ZoraCreator1155_evt_SetupNewContract

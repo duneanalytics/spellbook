@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: eas_linea
+    tables:
+      - name: SchemaRegistry_evt_Registered
+      - name: SchemaRegistry_call_register
+  - name: attestationstation_v1_linea
+    tables:
+      - name: EAS_evt_Attested
+      - name: EAS_call_attest
+      - name: EAS_evt_Revoked

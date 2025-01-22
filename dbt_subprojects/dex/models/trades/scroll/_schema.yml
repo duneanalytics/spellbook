@@ -1,0 +1,231 @@
+version: 2
+
+models:
+  - name: dex_scroll_base_trades
+    data_tests:
+      - check_dex_info_relationship
+
+  - name: uniswap_v3_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: uniswap
+      contributors: tomfutago
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'uniswap' ]
+    description: "Uniswap v3 scroll base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_scroll_base_trades_seed')
+
+  - name: sushiswap_v2_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: sushiswap
+      contributors: tomfutago
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'sushiswap' ]
+    description: "Sushiswap v2 scroll base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('sushiswap_scroll_base_trades_seed')
+
+  - name: zebra_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: zebra
+      contributors: tomfutago
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'zebra' ]
+    description: "Zebra scroll base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('zebra_scroll_base_trades_seed')
+
+  - name: scrollswap_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: scrollswap
+      contributors: tomfutago
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'scrollswap' ]
+    description: "Zebra scroll base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('scrollswap_scroll_base_trades_seed')
+
+  - name: syncswap_v1_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: syncswap
+      contributors: niftytable
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'syncswap' ]
+    description: "SyncSwap V1 scroll base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('syncswap_scroll_base_trades_seed')
+
+  - name: nuri_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: nuri
+      contributors: niftytable
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'nuri' ]
+    description: "Nuri scroll base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('nuri_scroll_base_trades_seed')
+
+  - name: iziswap_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: iziswap
+      contributors: niftytable
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'iziswap' ]
+    description: "Iziswap scroll base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('iziswap_scroll_base_trades_seed')
+
+  - name: icecreamswap_v2_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: icecreamswap
+      contributors: intensodefi
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'icecreamswap' ]
+    description: "icecreamswap v2 scroll base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('icecreamswap_v2_scroll_base_trades_seed')
+
+  - name: maverick_v2_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: maverick
+      contributors: get620v
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'maverick' ]
+    description: "Maverick scroll base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('maverick_scroll_base_trades_seed')
+          filter:
+            version: 2
+  
+  - name: swaap_v2_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: swaap
+      contributors: borelien
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'swaap', 'v2']
+    description: "swaap v2 scroll base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('swaap_scroll_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: leetswap_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: leetswap
+      contributors: sunshinejulia9 
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'leetswap' ]
+    description: "leetswap base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('leetswap_scroll_base_trades_seed')
+
+  - name: spacefi_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: spacefi
+      contributors: annieruth675 
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'spacefi' ]
+    description: "leetswap base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('spacefi_scroll_base_trades_seed')
+
+  - name: punkswap_scroll_base_trades
+    meta:
+      blockchain: scroll
+      sector: dex
+      project: punkswap
+      contributors: zionhaley 
+    config:
+      tags: [ 'scroll', 'dex', 'trades', 'punkswap' ]
+    description: "punkswap base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('punkswap_scroll_base_trades_seed')

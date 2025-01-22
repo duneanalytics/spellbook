@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: aave_v3_scroll
+    tables:
+      - name: L2Pool_evt_FlashLoan

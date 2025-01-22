@@ -1,0 +1,5 @@
+version: 2
+
+sources:
+  - name: arrakis_v2_ethereum
+  - name: uniswap_v3_ethereum

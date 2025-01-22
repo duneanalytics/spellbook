@@ -1,0 +1,6 @@
+version: 2
+
+sources:
+  - name: resident_wizards
+    tables:
+      - name: dataset_blob_base_fees_lookup

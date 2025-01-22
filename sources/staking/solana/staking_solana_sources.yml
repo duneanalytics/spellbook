@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: stake_program_solana
+    tables:
+      - name: stake_call_DelegateStake
+      - name: stake_call_Merge
+      - name: stake_call_Withdraw
+      - name: stake_call_Split
+      - name: stake_call_Initialize
+      - name: stake_call_InitializeChecked

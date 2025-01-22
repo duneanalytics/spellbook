@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  # Community Tables
+  - name: reservoir
+    description: "Reservoir raw data uploaded into the community datasets"
+    tables:
+      - name: collections
+      - name: collection_floor_ask_events
+        description: "todo: add reservoir table description!"
+        columns:
+          - name: created_at
+          - name: collection_id
+          - name: contract
+          - name: maker
+          - name: order_id
+          - name: tx_hash
+          - name: id
+          - name: kind
+          - name: previous_price
+          - name: price
+          - name: price_decimal
+          - name: previous_price_decimal
+          - name: source
+          - name: token_id
+          - name: tx_timestamp
+          - name: valid_until
+          - name: tx_timestamp_dt
+          - name: valid_until_dt

@@ -1,0 +1,60 @@
+version: 2
+
+sources: 
+  - name: paraswap_ethereum
+    description: >
+      Decoded event table for swaps on paraswap
+    tables:
+      - name: AugustusSwapper5_0_evt_Bought
+      - name: AugustusSwapper5_0_evt_Swapped
+      - name: AugustusSwapper5_0_call_buyOnUniswap
+      - name: AugustusSwapper5_0_call_buyOnUniswapFork
+      - name: AugustusSwapper5_0_call_swapOnUniswap
+      - name: AugustusSwapper5_0_call_swapOnUniswapFork
+      - name: AugustusSwapper6_0_evt_Bought
+      - name: AugustusSwapper6_0_evt_Bought2
+      - name: AugustusSwapper6_0_evt_BoughtV3
+      - name: AugustusSwapper6_0_evt_Swapped
+      - name: AugustusSwapper6_0_evt_Swapped2
+      - name: AugustusSwapper6_0_evt_SwappedV3
+      - name: ParaSwapLiquiditySwapAdapter_evt_Swapped
+      - name: AugustusSwapper6_0_call_buyOnUniswap
+      - name: AugustusSwapper6_0_call_buyOnUniswapFork
+      - name: AugustusSwapper6_0_call_buyOnUniswapV2Fork
+      - name: AugustusSwapper6_0_call_buyOnUniswapV2ForkWithPermit
+      - name: AugustusSwapper6_0_call_swapOnUniswap
+      - name: AugustusSwapper6_0_call_swapOnUniswapFork
+      - name: AugustusSwapper6_0_call_swapOnUniswapV2Fork
+      - name: AugustusSwapper6_0_call_swapOnUniswapV2ForkWithPermit
+      - name: AugustusSwapper6_0_call_swapOnZeroXv4
+      - name: AugustusSwapper6_0_call_swapOnZeroXv4WithPermit
+      - name: AugustusSwapper6_0_evt_SwappedDirect
+      # v6
+      # v6.1
+      - name: AugustusV6_1_call_swapExactAmountIn
+      - name: AugustusV6_1_call_swapExactAmountInOnUniswapV2
+      - name: AugustusV6_1_call_swapExactAmountInOnUniswapV3
+      - name: AugustusV6_1_call_swapExactAmountInOnCurveV1
+      - name: AugustusV6_1_call_swapExactAmountInOnCurveV2
+      - name: AugustusV6_1_call_swapExactAmountInOnBalancerV2
+      - name: AugustusV6_1_call_swapExactAmountOut
+      - name: AugustusV6_1_call_swapExactAmountOutOnUniswapV2
+      - name: AugustusV6_1_call_swapExactAmountOutOnUniswapV3
+      - name: AugustusV6_1_call_swapExactAmountOutOnBalancerV2
+
+      # v6.2
+      - name: AugustusV6_2_call_swapExactAmountIn
+      - name: AugustusV6_2_call_swapExactAmountInOnUniswapV2
+      - name: AugustusV6_2_call_swapExactAmountInOnUniswapV3
+      - name: AugustusV6_2_call_swapExactAmountInOnCurveV1
+      - name: AugustusV6_2_call_swapExactAmountInOnCurveV2
+      - name: AugustusV6_2_call_swapExactAmountInOnBalancerV2
+      - name: AugustusV6_2_call_swapExactAmountOut
+      - name: AugustusV6_2_call_swapExactAmountOutOnUniswapV2
+      - name: AugustusV6_2_call_swapExactAmountOutOnUniswapV3
+      - name: AugustusV6_2_call_swapExactAmountOutOnBalancerV2
+        loaded_at_field: call_block_time
+      - name: AugustusV6_2_call_swapOnAugustusRFQTryBatchFill
+        loaded_at_field: call_block_time  
+      - name: AugustusV6_2_call_swapExactAmountInOutOnMakerPSM
+        loaded_at_field: call_block_time  

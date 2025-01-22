@@ -1,0 +1,548 @@
+version: 2
+
+models:
+  - name: addresses_ethereum_info
+    meta:
+      blockchain: ethereum
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Ethereum"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &address
+        name: address
+        description: "Address"
+      - &executed_tx_count
+        name: executed_tx_count
+        description: "The number of transactions executed by the address"
+      - &max_nonce
+        name: max_nonce
+        description: "The highest nonce value"
+      - &is_smart_contract
+        name: is_smart_contract
+        description: "Is the address a smart contract"
+      - &namespace
+        name: namespace
+        description: "If the address is a smart contract that is decoded on Dune, here is the associated namespace on Dune"
+      - &name
+        name: name
+        description: "If the address is a smart contract that is decoded on Dune, here is the associated smart contract name on Dune"
+      - &first_funded_by
+        name: first_funded_by
+        description: "Address that first funded this address with this chains' native token"
+      - &first_funded_by_block_time
+        name: first_funded_by_block_time
+        description: "Block time at which the address was first funded with this chains' native token"
+      - &tokens_received_count
+        name: tokens_received_count
+        description: "The number of times this address received tokens"
+      - &tokens_received_tx_count
+        name: tokens_received_tx_count
+        description: "The distinct transactions where this address received tokens"
+      - &tokens_sent_count
+        name: tokens_sent_count
+        description: "The number of times this address sent tokens"
+      - &tokens_sent_tx_count
+        name: tokens_sent_tx_count
+        description: "The distinct transactions where this address sent tokens"
+      - &first_transfer_block_time
+        name: first_transfer_block_time
+        description: "The block time of the first time this address sent or received tokens"
+      - &last_transfer_block_time
+        name: last_transfer_block_time
+        description: "The block time of the last time this address sent or received tokens"
+      - &first_received_block_number
+        name: first_received_block_number
+        description: "The block number of the first time this address received tokens"
+      - &last_received_block_number
+        name: last_received_block_number
+        description: "The block number of the last time this address received tokens"
+      - &first_sent_block_number
+        name: first_sent_block_number
+        description: "The block number of the first time this address sent tokens"
+      - &last_sent_block_number
+        name: last_sent_block_number
+        description: "The block number of the last time this address sent tokens"
+      - &received_volume_usd
+        name: received_volume_usd
+        description: "The USD volume of tokens received by this address"
+      - &sent_volume_usd
+        name: sent_volume_usd
+        description: "The USD volume of tokens sent by this address"
+      - &first_tx_block_time
+        name: first_tx_block_time
+        description: "The block time of the first transaction executed by this address"
+      - &last_tx_block_time
+        name: last_tx_block_time
+        description: "The block time of the last transaction executed by this address"
+      - &first_tx_block_number
+        name: first_tx_block_number
+        description: "The block number of the first transaction executed by this address"
+      - &last_tx_block_number
+        name: last_tx_block_number
+        description: "The block number of the last transaction executed by this address"
+      - &last_seen
+        name: last_seen
+        description: "The time at which this address last appeared in any form on the blockchain"
+      - &last_seen_block
+        name: last_seen_block
+        description: "The last block number this address was seen on"
+
+  - name: addresses_arbitrum_info
+    meta:
+      blockchain: arbitrum
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Arbitrum"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_avalanche_c_info
+    meta:
+      blockchain: avalanche_c
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Avalanche"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_base_info
+    meta:
+      blockchain: base
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Base"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_blast_info
+    meta:
+      blockchain: blast
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Blast"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_bnb_info
+    meta:
+      blockchain: bnb
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on BNB"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_celo_info
+    meta:
+      blockchain: celo
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Celo"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+      
+  - name: addresses_gnosis_info
+    meta:
+      blockchain: gnosis
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Gnosis"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_optimism_info
+    meta:
+      blockchain: optimism
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Optimism"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_polygon_info
+    meta:
+      blockchain: polygon
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Polygon"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_scroll_info
+    meta:
+      blockchain: scroll
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Scroll"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block
+
+  - name: addresses_zora_info
+    meta:
+      blockchain: zora
+      sector: addresses
+      contributors: hildobby
+    config:
+      tags: ['table', 'address', 'info']
+    description: "High level information about every address on Zora"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+    columns:
+      - *blockchain
+      - *address
+      - *executed_tx_count
+      - *max_nonce
+      - *is_smart_contract
+      - *namespace
+      - *name
+      - *first_funded_by
+      - *first_funded_by_block_time
+      - *tokens_received_count
+      - *tokens_received_tx_count
+      - *tokens_sent_count
+      - *tokens_sent_tx_count
+      - *first_transfer_block_time
+      - *last_transfer_block_time
+      - *first_received_block_number
+      - *last_received_block_number
+      - *first_sent_block_number
+      - *last_sent_block_number
+      - *received_volume_usd
+      - *sent_volume_usd
+      - *first_tx_block_time
+      - *last_tx_block_time
+      - *first_tx_block_number
+      - *last_tx_block_number
+      - *last_seen
+      - *last_seen_block

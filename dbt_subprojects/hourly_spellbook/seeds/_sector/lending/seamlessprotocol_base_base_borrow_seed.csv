@@ -1,0 +1,4 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,borrower,amount
+base,seamlessprotocol,1,9695994,2024-01-25 11:15:35.000 UTC,0xb78da3fc6f6a721a719de8fc50c0dbb0161102b33cd1ab71fc3ab0f8f385edd7,12,borrow,0x833589fcd6edb6e08f4c7c32d4f71b54bda02913,0x5add3404a6d69419e21f72367695e3201717a9bf,50000
+base,seamlessprotocol,1,9670047,2024-01-24 20:50:41.000 UTC,0x0d2e8b207a8fc025ab2f1f70babb5aea6aef05344077949bac41f5a60ff24439,26,borrow_liquidation,0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22,0x423b13869d56ac0cde95b9b04f0320267abfa7f6,-3.381076581133e+13
+base,seamlessprotocol,1,9698598,2024-01-25 12:42:23.000 UTC,0xf830aeeadd7bd5ece3cd0de0b95ecc6350109bb0485e5422e052a04ef129104c,9,repay,0x50c5725949a6f0c72e6c4a641f24049a917db0cb,0x1ca000befdf544c46b2eca0fc62a42113fae6833,-1e+20

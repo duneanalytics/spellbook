@@ -1,0 +1,20 @@
+version: 2
+
+sources:
+  - name: tokenlon_v5_ethereum
+    description: 'decoded events and function calls for tokenlon v5 on ethereum'
+    tables:
+      - name: AMMWrapper_evt_Swapped
+        description: 'Tokenlon V5 AMM V1 Swapped Event'
+
+      - name: AMMWrapperWithPath_evt_Swapped
+        description: 'Tokenlon V5 AMM V2 swapped event'
+
+      - name: PMM_evt_FillOrder
+        description: 'Tokenlon V5 PMM V5 swapped Event'
+
+      - name: RFQv1_evt_FillOrder
+        description: 'Tokenlon V5 RFQv1 swapped Event'
+
+      - name: RFQv2_evt_FilledRFQ
+        description: 'Tokenlon V5 RFQv2 swapped Event'

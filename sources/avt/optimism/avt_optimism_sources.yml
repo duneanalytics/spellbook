@@ -1,0 +1,11 @@
+version: 2
+
+sources: 
+  - name: avt_optimism
+    description: >
+      Decoded event tables for Perpetual trades on fxdx
+    tables:
+
+      - name: PositionRouter_evt_ExecuteDecreasePosition
+
+      - name: PositionRouter_evt_ExecuteIncreasePosition

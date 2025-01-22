@@ -1,0 +1,81 @@
+version: 2
+
+models:
+  - name: cex_flows
+    meta:
+      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, linea, optimism, polygon, scroll, zkevm, zksync, zora
+      sector: cex
+      contributors: hildobby
+    config:
+      tags: ['cex','flows']
+    description: "All CEX-tied flows identified across EVM chains"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - flow_type
+            - unique_key
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &block_month
+        name: block_month
+        description: "Block month"
+      - &block_time
+        name: block_time
+        description: "Block time"
+      - &block_number
+        name: block_number
+        description: "Block number"
+      - &cex_name
+        name: cex_name
+        description: "Name of centralised exchange"
+      - &distinct_name
+        name: distinct_name
+        description: "Distinct name of centralised exchange address"
+      - &token_address
+        name: token_address
+        description: "Token address"
+      - &token_symbol
+        name: token_symbol
+        description: "Token symbol"
+      - &token_standard
+        name: token_standard
+        description: "Token standard"
+      - &flow_type
+        name: flow_type
+        description: "Flow type"
+      - &amount
+        name: amount
+        description: "Amount"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount"
+      - &amount_usd
+        name: amount_usd
+        description: "USD amount"
+      - &from
+        name: from
+        description: "from address"
+      - &to
+        name: to
+        description: "to address"
+      - &tx_from
+        name: tx_from
+        description: "Address that executed the transaction"
+      - &tx_to
+        name: tx_to
+        description: "Address that the transaction points towards"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &tx_hash
+        name: tx_hash
+        description: "Transaction hash"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+      - &unique_key
+        name: unique_key
+        description: "The transfer's unique key"

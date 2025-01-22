@@ -1,0 +1,54 @@
+version: 2
+
+sources:
+  - name: uniswap_v3_blast
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: uniswap_v2_blast
+    tables:
+      - name: Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: thruster_blast
+    tables:
+      - name: ThrusterPool_V3_Point_3_Fee_evt_Swap
+      - name: ThrusterPoolFactory_evt_PoolCreated
+      - name: ThrusterPair_V2_Point_3_Fee_evt_Swap
+      - name: ThrusterFactory_Point_3_Fee_evt_PairCreated
+      - name: ThrusterPair_V2_1_Fee_evt_Swap
+      - name: ThrusterFactory_1_Fee_evt_PairCreated
+  - name: blasterswap_blast
+    tables:
+      - name: BlasterswapV2Pair_ORBIT_USDB_evt_Swap
+      - name: BlasterswapV2Pair_PAC_USDB_evt_Swap
+      - name: BlasterswapV2Pair_PAC_WETH_evt_Swap
+      - name: BlasterswapV2Pair_USDB_WETH_evt_Swap
+      - name: BlasterswapV2Factory_evt_PairCreated
+  - name: fenix_blast
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactoryUpgradeable_evt_PairCreated
+  - name: dackieswap_v2_blast
+    tables:
+      - name: DackieFactory_evt_PairCreated
+      - name: DackiePair_evt_Swap
+  - name: sushiswap_v2_blast
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
+  - name: dackieswap_v3_blast
+    tables:
+      - name: DackieV3Factory_evt_PoolCreated
+      - name: DackieV3Pool_evt_Swap
+  - name: swapblast_blast
+    tables:
+      - name: UniswapV2Factory_evt_PairCreated
+      - name: UniswapV2Pair_evt_Swap
+  - name: dyorswap_blast
+    tables:
+      - name: DYORFactory_evt_PairCreated
+      - name: DYORPair_evt_Swap
+  - name: icecreamswap_v2_blast
+    tables:
+      - name: IceCreamSwapV2Factory_evt_PairCreated
+      - name: IceCreamSwapV2Pair_evt_Swap

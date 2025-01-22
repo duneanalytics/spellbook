@@ -1,0 +1,20 @@
+name: DBT NFT run
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - dbt_subprojects/nft/**
+      - .github/workflows/nft.yml
+      - .github/workflows/dbt_run.yml
+
+concurrency:
+  group:  ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dbt-run:
+    uses: ./.github/workflows/dbt_run.yml
+    with:
+      project: 'nft'
+

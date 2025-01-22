@@ -1,0 +1,87 @@
+version: 2
+
+
+
+models:
+  - name: tornado_cash_arbitrum_deposits
+    meta:
+      blockchain: arbitrum
+      project: tornado_cash
+      contributors: [hildobby, dot2dotseurat]
+    config:
+      tags: ['tornado_cash', 'deposits', 'arbitrum']
+    description: "Tornado Cash Deposits on Arbitrum"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+    columns:
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &currency_contract
+        name: currency_contract
+        description: "Currency contract address (on Ethereum mainnet) of currency deposited/withdrawn from Tornado Cash, with ETH contract address swapped for WETH"
+      - &currency_symbol
+        name: currency_symbol
+        description: "Symbol of currency deposited/withdrawn from Tornado Cash"
+      - &blockchain
+        name: blockchain
+        data_tests:
+          - accepted_values:
+              values: ['arbitrum']
+        description: "Blockchain"
+      - &tornado_version
+        name: tornado_version
+        data_tests:
+          - accepted_values:
+              values: ['classic', 'nova']
+        description: "Version of Tornado Cash used for this transaction"
+      - &depositor
+        name: depositor
+        description: "Address depositing into Tornado Cash"
+      - &contract_address
+        name: contract_address
+        description: "Contract Address of used Tornado Cash Pool"
+      - name: leaf_index
+        description: "Leaf index"
+      - &evt_index
+        name: evt_index
+        description: "Event index"
+
+  - name: tornado_cash_arbitrum_withdrawals
+    meta:
+      blockchain: arbitrum
+      project: tornado_cash
+      contributors:  [hildobby, dot2dotseurat]
+    config:
+      tags: ['tornado_cash', 'withdrawals', 'arbitrum']
+    description: "Tornado Cash Withdrawals on Arbitrum"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - evt_index
+    columns:
+      - *block_time
+      - *currency_contract
+      - *currency_symbol
+      - *blockchain
+      - *tornado_version
+      - name: tx_from
+        description: "Address executing the transaction"
+      - name: nullifier
+        description: "Nullifier hash"
+      - name: fee
+        description: "Fee paid to relayer"
+      - name: relayer
+        description: "Relayer used to execute the transaction"
+      - name: recipient
+        description: "Recipient of the withdrawn currency"
+      - *contract_address
+      - name: amount
+      - name: tx_hash
+      - *evt_index

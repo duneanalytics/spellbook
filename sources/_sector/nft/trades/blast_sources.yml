@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: blur_blast
+    tables:
+      - name: BlurExchangeV2_evt_Execution721Packed
+      - name: BlurExchangeV2_evt_Execution721MakerFeePacked
+      - name: BlurExchangeV2_evt_Execution721TakerFeePacked
+
+  - name: fantasy_blast
+    tables:
+      - name: Exchange_evt_Buy
+      - name: Exchange_evt_Sell

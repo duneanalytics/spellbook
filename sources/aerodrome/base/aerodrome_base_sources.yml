@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: aerodrome_base
+    description: "decoded events and function calls for aerodrome v2 on base"
+    tables:
+      - name: Voter_evt_GaugeCreated

@@ -1,0 +1,40 @@
+version: 2
+
+models:
+ - name: limitbreak_creator_tokens
+   meta:
+     blockchain: ethereum, base, optimism, arbitrum, avalanche_c, polygon, bnb
+     sector: limitbreak
+     contributors: limitbreak
+   config:
+     tags: [ 'nft', '721C', 'ERC721C', '1155C', 'ERC1155C', 'Limit Break', 'limitbreak', 'creator tokens', 'creatortokens' ]
+   description: >
+     Identifies smart contracts that implement Creator Token Standards so that collection, minting and trade data can be queried based on Creator Token Standard support.
+   data_tests:
+     - dbt_utils.unique_combination_of_columns:
+         combination_of_columns:
+           - blockchain
+           - address
+   columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain that the contract is deployed to."
+      - &is_creator_token
+        name: is_creator_token
+        description: "Boolean flag if contract is identified as implementing the Creator Token Standards."
+      - &token_type
+        name: token_type
+        description: "ERC number for the type of token the contract is identified as."
+      - &creation_time
+        name: creation_time
+        description: "Block timestamp for the creation of the contract."
+      - &address
+        name: address
+        description: "Address of the smart contract."
+      - &is_clone
+        name: is_clone
+        description: "Boolean flag if the contract is identified as a ERC1167 minimal proxy clone."
+      - name: block_date
+        description: "UTC event block date"
+      - name: block_month
+        description: "UTC event block month"

@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: yearn_optimism
+    description: "Decoded contracts for Yearn on Optimism"
+
+    tables:
+    - name: ReleaseRegistry_call_newVault
+      description: "Yearn New Vault Function Calls."
+      columns:     
+        - &call_block_number
+          name: call_block_number
+          description: "Call block number"  
+        - &call_block_time
+          name: call_block_time
+          description: "Timestamp for block time in UTC"
+        - &_token
+          name: _token
+          description: "Underlying Deposit Token Address"  
+        - &_symbol
+          name: _symbol
+          description: "Vault Symbol" 
+        - &_name
+          name: _name
+          description: "Vault Name" 
+        - &output_0
+          name: output_0
+          description: "Vault Token"

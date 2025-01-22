@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: zerion_fantom
+    description: "Zerion contracts on Fantom"
+    tables:
+      - name: Router_evt_Executed

@@ -1,0 +1,54 @@
+version: 2
+
+sources:
+  - name: aurem_polygon
+    tables:
+      - name: Exchange_evt_OrderFilled
+
+  - name: dew_polygon
+    tables:
+      - name: dew_market_evt_Fulfilled
+
+  - name: decentraland_polygon
+    tables:
+      - name: MarketplaceV2_evt_OrderSuccessful
+
+  - name: aavegotchi_polygon
+    tables:
+      - name: aavegotchi_diamond_evt_ERC721ExecutedListing
+      - name: aavegotchi_diamond_evt_ERC1155ExecutedListing
+      - name: aavegotchi_diamond_evt_Transfer
+      - name: aavegotchi_diamond_evt_TransferSingle
+      - name: aavegotchi_diamond_evt_TransferBatch
+
+  - name: element_ex_polygon
+    tables:
+      - name: OrdersFeature_evt_ERC721SellOrderFilled
+      - name: OrdersFeature_evt_ERC721BuyOrderFilled
+      - name: OrdersFeature_evt_ERC1155SellOrderFilled
+      - name: OrdersFeature_evt_ERC1155BuyOrderFilled
+
+  - name: fractal_polygon
+    tables:
+      - name: Marketplace_evt_NewSale
+      - name: Marketplace_evt_ListingAdded
+
+  - name: rarible_polygon
+    tables:
+      - name: Exchange_evt_Match
+      - name: ExchangeMetaV2_call_directPurchase
+      - name: ExchangeMetaV2_call_directAcceptBid
+
+  - name: tofu_nft_polygon
+    tables:
+      - name: MarketNG_call_run
+      - name: MarketNG_evt_EvInventoryUpdate
+
+  - name: limitbreak_polygon
+    tables:
+      - name: PaymentProcessor_evt_BuyListingERC721
+      - name: PaymentProcessor_evt_BuyListingERC1155
+      - name: PaymentProcessor_evt_AcceptOfferERC721
+      - name: PaymentProcessor_evt_AcceptOfferERC1155
+      - name: TrustedForwarder_call_forwardCall
+#  sources are already defined in the "older" directories and can't be defined twice. In the end we should migrate them to here.

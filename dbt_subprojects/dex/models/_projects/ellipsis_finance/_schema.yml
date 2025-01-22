@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: ellipsis_finance_bnb_pool_tokens
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: ellipsis_finance
+      contributors: Henrystats, 0xRob
+    config:
+      tags: ["bnb", "pool_tokens", "ellipsis", "dex"]
+    description: >
+      Ellipsis underlying tokens for token_exchange_underlying event
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool
+            - token_id
+            - token_type
+      - check_dex_pools_seed:
+          blockchain: bnb
+          project: ellipsis_finance
+          version: 1
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX"
+      - &version
+        name: version
+        description: "Version of the contract built and deployed by the DEX project"
+      - &pool
+        name: pool
+        description: "pool contract address"
+      - &token_id
+        name: token_id
+        description: "underlying token id"
+      - &token_address
+        name: token_address
+        description: "underlying token address"
+      - &token_type
+        name: token_type
+        description: "token data (Underlying token, pool token.......)"
+      - &pool_type
+        name: pool_type
+        description: "pool type (Meta Pool, Base Pool....)"

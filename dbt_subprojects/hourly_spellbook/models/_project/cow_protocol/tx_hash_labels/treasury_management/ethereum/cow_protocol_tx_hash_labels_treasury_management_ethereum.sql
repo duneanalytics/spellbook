@@ -1,0 +1,45 @@
+{{
+    config(
+        alias = 'tx_hash_labels_treasury_management_ethereum',
+
+    )
+}}
+
+with
+  daos as (
+    -- DAO list taken from dao multisig list from Dune
+    -- https://github.com/duneanalytics/spellbook/blob/main/models/labels/dao/identifier/multisigs/labels_dao_multisig_ethereum.sql
+    SELECT distinct address
+    FROM {{ source('labels','addresses') }}
+    WHERE category = 'dao' and blockchain = 'ethereum' and label_type = 'identifier'
+  ),
+
+ treasury_management_trades as (
+    select
+        *
+    from (
+        select tx_hash, evt_index, project, version
+        from {{ source('dex_aggregator', 'trades') }}
+        where blockchain = 'ethereum'
+        and taker in (select address from daos)
+        UNION ALL
+        select tx_hash, evt_index, project, version
+        from {{ source('dex', 'trades') }}
+        where blockchain = 'ethereum'
+        and taker in (select address from daos)
+    )
+ )
+
+select
+  'ethereum' as blockchain,
+  concat(CAST(tx_hash AS VARCHAR), CAST(evt_index AS VARCHAR), project, version) as tx_hash_key,
+  'Treasury management' AS name,
+  'tx_hash' AS category,
+  'gentrexha' AS contributor,
+  'query' AS source,
+  TIMESTAMP '2023-03-01' as created_at,
+  now() as updated_at,
+  'treasury_management' as model_name,
+  'usage' as label_type
+from
+  treasury_management_trades

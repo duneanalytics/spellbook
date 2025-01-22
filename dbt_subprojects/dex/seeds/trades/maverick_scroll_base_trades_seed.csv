@@ -1,0 +1,2 @@
+blockchain,project,version,block_date,tx_hash,evt_index,token_bought_address,token_sold_address,block_number,token_bought_amount_raw,token_sold_amount_raw
+scroll,maverick,2,2024-07-17,0xe3d1f979489acdca3e3e1e6f58eeec3d3a36b8d2186fb0726332ecc868b53b2d,37,0x5300000000000000000000000000000000000004,0x06efdbff2a14a7c8e15944d1f4a48f9f95f663a4,7530684,46388660,1

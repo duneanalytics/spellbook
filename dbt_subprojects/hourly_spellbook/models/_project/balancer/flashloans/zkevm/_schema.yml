@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: balancer_v2_zkevm_flashloans
+    meta:
+      blockchain: zkevm
+      sector: lending
+      contributors: hildobby, viniabussafi
+    config:
+      tags: ['zkevm', 'flashloans']
+    description: >
+      All Balancer v2 flashloans on zkevm
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - name: blockchain
+      - name: project
+      - name: version
+      - name: block_time
+      - name: block_number
+      - name: amount
+      - name: amount_usd
+      - &tx_hash
+        name: tx_hash
+        description: "Tx. Hash"
+      - name: evt_index
+      - name: fee
+      - name: currency_contract
+      - name: currency_symbol
+      - name: recipient
+      - name: contract_address
+      - name: block_month

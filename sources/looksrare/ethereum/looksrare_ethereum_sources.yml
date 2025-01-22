@@ -1,0 +1,6 @@
+version: 2
+
+sources: 
+  - name: looksrare_ethereum
+    tables:
+      - name: LooksRareAirdrop_evt_AirdropRewardsClaim

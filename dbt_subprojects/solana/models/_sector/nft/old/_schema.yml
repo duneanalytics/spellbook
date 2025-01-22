@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: magiceden_solana_events
+    meta:
+      blockchain: solana
+      project: magiceden
+      contributors: soispoke
+    config:
+      tags: ['magiceden','solana','events']
+    description: >
+        Magic Eden events on Solana
+    data_tests:
+      - check_columns_nft_old_events
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_trade_id
+
+  - name: opensea_solana_events
+    meta:
+      blockchain: solana
+      project: opensea
+      contributors: rchen8, soispoke
+    config:
+      tags: [ 'solana','opensea','events' ]
+    description: >
+      OpenSea events on Solana
+    data_tests:
+      - check_columns_nft_old_events

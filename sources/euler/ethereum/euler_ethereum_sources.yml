@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: euler_ethereum
+    description: "Decoded contracts for Euler on Ethereum"
+
+    tables:
+      - name: Euler_evt_Borrow
+      - name: Euler_evt_Repay

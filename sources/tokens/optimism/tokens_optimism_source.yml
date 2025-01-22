@@ -1,0 +1,49 @@
+version: 2
+
+sources:
+  - name: optimism_ethereum
+    description: "Optimism decoded tables related to bridges and sequencer"
+    tables:
+      - name: L1ERC721Bridge_evt_ERC721BridgeInitiated
+        description: "Optimism NFT bridge transactions initiated from L1 to L2"
+        columns:
+          - &contract_address
+            name: contract_address
+          - &evt_tx_hash
+            name: evt_tx_hash
+            description: "Primary key of the transaction"
+          - &evt_index
+            name: evt_index
+            description: "Index value of the transaction"
+          - &evt_block_time
+            name: evt_block_time
+            description: "Timestamp for block event time in UTC"
+          - &evt_block_number
+            name: evt_block_number
+            description: "Block number which processed the unique transaction hash"
+          - name: extraData
+          - &from
+            name: from
+            description: "Transaction initiated from address"
+          - name: localToken
+            description: "NFT token address on Ethereum"
+          - name: remoteToken
+            description: "NFT token address on Optimism"
+          - &to
+            name: to
+            description: "Transaction to address"
+          - &tokenId
+            name: tokenId
+            description: "NFT token id"
+
+      - name: L1StandardBridge_evt_ERC20DepositInitiated
+        description: "Optimism ERC20 bridge transactions initiated from L1 to L2"
+
+      - name: OVM_L1StandardBridge_evt_ERC20DepositInitiated
+        description: "Optimism ERC20 bridge transactions initiated from L1 to L2"
+
+  - name: ovm_optimism
+    description: "Optimism decoded tables related to bridges and sequencer on optimism"
+    tables:
+      - name: L2ERC721Bridge_evt_ERC721BridgeFinalized
+        description: "Optimism NFT bridge transactions finalized on L2"

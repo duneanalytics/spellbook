@@ -1,0 +1,9 @@
+version: 2
+
+seeds:
+  - name: nomad_ethereum_transactions_etherscan
+    config:
+      column_types:
+        tx_hash: varbinary
+        block_time: timestamp
+        original_amount_raw: uint256

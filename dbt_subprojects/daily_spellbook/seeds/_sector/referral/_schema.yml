@@ -1,0 +1,90 @@
+version: 2
+
+seeds:
+  - name: slugs_optimism_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        referrer_address: varbinary
+        referee_address: varbinary
+        reward_amount_raw: uint256
+
+  - name: mirror_optimism_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        referrer_address: varbinary
+        referee_address: varbinary
+        reward_amount_raw: uint256
+
+  - name: mirror_base_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        referrer_address: varbinary
+        referee_address: varbinary
+        reward_amount_raw: uint256
+
+  - name: paragraph_optimism_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        referrer_address: varbinary
+        referee_address: varbinary
+        reward_amount_raw: uint256
+
+  - name: paragraph_base_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        referrer_address: varbinary
+        referee_address: varbinary
+        reward_amount_raw: uint256
+
+  - name: paragraph_zora_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        referrer_address: varbinary
+        referee_address: varbinary
+        reward_amount_raw: uint256
+
+  - name: paragraph_polygon_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        referrer_address: varbinary
+        referee_address: varbinary
+        reward_amount_raw: uint256
+
+  - name: sound_xyz_v2_ethereum_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        referrer_address: varbinary
+        referee_address: varbinary
+        reward_amount_raw: uint256
+
+  - name: sound_xyz_v2_optimism_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        referrer_address: varbinary
+        referee_address: varbinary
+        reward_amount_raw: uint256
+
+  - name: sound_xyz_v2_base_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        referrer_address: varbinary
+        referee_address: varbinary
+        reward_amount_raw: uint256
+
+  - name: basepaint_base_rewards_seed
+    config:
+      column_types:
+        tx_hash: varbinary
+        referrer_address: varbinary
+        referee_address: varbinary
+        reward_amount_raw: uint256
