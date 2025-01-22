@@ -2,11 +2,10 @@
     schema = 'avantis_perpetual_trades',
     alias = 'perpetual_trades',
     post_hook='{{ expose_spells(blockchains = \'["base"]\',
-                                    spell_type = "project",
-                                    spell_name = "avantis",
-                                    contributors = \'["princi"]\') }}'
-        )
-}}
+                                spell_type = "project",
+                                spell_name = "avantis",
+                                contributors = \'["princi"]\') }}'
+) }}
 
 {% set avantis_base_perpetual_trade_models = [
     ref('avantis_v1_base_perpetual_trades')
@@ -14,19 +13,19 @@
 
 WITH transactions_filtered AS (
     SELECT
-      hash,
-      block_number,
-      "from",
-      "to",
-      block_time
+        hash,
+        block_number,
+        "from",
+        "to",
+        block_time
     FROM 
-      {{ source('base', 'transactions') }}
+        {{ source('base', 'transactions') }}
     WHERE
-      {% if is_incremental() %}
-        {{ incremental_predicate('block_time') }}
-      {% else %}
-        block_time >= TIMESTAMP '{{ project_start_date }}'
-      {% endif %}
+        {% if is_incremental() %}
+            {{ incremental_predicate('block_time') }}
+        {% else %}
+            block_time >= TIMESTAMP '{{ project_start_date | default("2023-01-01 00:00:00") }}'
+        {% endif %}
 ),
 
 all_perpetual_trades AS (
