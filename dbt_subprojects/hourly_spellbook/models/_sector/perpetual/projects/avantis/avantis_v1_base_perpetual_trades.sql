@@ -10,28 +10,12 @@
                                 spell_type = "project",
                                 spell_name = "avantis",
                                 contributors = \'["princi"]\') }}'
-)
+        )
 }}
 
 -- {% set project_start_date = '2024-01-01' %}
 
-WITH transactions_filtered AS (
-    SELECT
-        hash,
-        block_number,
-        "from",
-        "to"
-    FROM 
-        {{ source('base', 'transactions') }}
-    WHERE
-        {% if is_incremental() %}
-        {{ incremental_predicate('block_time') }}
-        {% else %}
-        block_time >= TIMESTAMP '{{ project_start_date }}'
-        {% endif %}
-),
-
-trading_events AS (
+WITH trading_events AS (
     -- OpenLimitPlaced events
     SELECT
         evt_block_time,
@@ -48,11 +32,7 @@ trading_events AS (
         executionFee / 1e18 as fee_usd,
         isBuy,
         'limit_order' as event_type
-    FROM {{ source('avantis_base', 'Trading_evt_OpenLimitPlaced') }}
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
-
+    FROM delta_prod.avantis_base.Trading_evt_OpenLimitPlaced                            
     UNION ALL
 
     -- MarginUpdated events
@@ -75,11 +55,9 @@ trading_events AS (
             ELSE NULL
         END as isBuy,
         'margin_update' as event_type
-    FROM {{ source('avantis_base', 'Trading_evt_MarginUpdated') }}
-    {% if is_incremental() %}
-    WHERE {{ incremental_predicate('evt_block_time') }}
-    {% endif %}
+    FROM delta_prod.avantis_base.Trading_evt_MarginUpdated
 ),
+PatelPrinci marked this conversation as resolved.
 
 perps AS (
     SELECT
@@ -110,8 +88,67 @@ perps AS (
             WHEN 31 THEN 'LUNA-USD'
             WHEN 32 THEN 'YFI-USD'
             WHEN 33 THEN 'SOL-USD'
-            ELSE CONCAT('pair_index_', CAST(pairIndex AS VARCHAR))
+            -- Add more trading pairs as needed
+            ELSE CONCAT('pair_index_', CAST(pairIndex as VARCHAR))
         END AS virtual_asset,
+
+        CASE pairIndex
+           WHEN 0 THEN 'BTC-USD'
+            WHEN 1 THEN 'ETH-USD'
+            WHEN 2 THEN 'LINK-USD'
+            WHEN 3 THEN 'DOGE-USD'
+            WHEN 4 THEN 'MATIC-USD'
+            WHEN 5 THEN 'ADA-USD'
+            WHEN 6 THEN 'SUSHI-USD'
+            WHEN 7 THEN 'AAVE-USD'
+            WHEN 8 THEN 'ALGO-USD'
+            WHEN 9 THEN 'BAT-USD'
+            WHEN 10 THEN 'COMP-USD'
+            WHEN 11 THEN 'DOT-USD'
+            WHEN 12 THEN 'EOS-USD'
+            WHEN 13 THEN 'LTC-USD'
+            WHEN 14 THEN 'MANA-USD'
+            WHEN 15 THEN 'OMG-USD'
+            WHEN 16 THEN 'SNX-USD'
+            WHEN 17 THEN 'UNI-USD'
+            WHEN 18 THEN 'XLM-USD'
+            WHEN 19 THEN 'XRP-USD'
+            WHEN 20 THEN 'ZEC-USD'
+            WHEN 31 THEN 'LUNA-USD'
+            WHEN 32 THEN 'YFI-USD'
+            WHEN 33 THEN 'SOL-USD'
+            -- Add more trading pairs as needed
+            ELSE CONCAT('pair_index_', CAST(pairIndex as VARCHAR))
+        END AS underlying_asset,
+
+        CASE pairIndex
+            WHEN 0 THEN 'BTC-USD'
+            WHEN 1 THEN 'ETH-USD'
+            WHEN 2 THEN 'LINK-USD'
+            WHEN 3 THEN 'DOGE-USD'
+            WHEN 4 THEN 'MATIC-USD'
+            WHEN 5 THEN 'ADA-USD'
+            WHEN 6 THEN 'SUSHI-USD'
+            WHEN 7 THEN 'AAVE-USD'
+            WHEN 8 THEN 'ALGO-USD'
+            WHEN 9 THEN 'BAT-USD'
+            WHEN 10 THEN 'COMP-USD'
+            WHEN 11 THEN 'DOT-USD'
+            WHEN 12 THEN 'EOS-USD'
+            WHEN 13 THEN 'LTC-USD'
+            WHEN 14 THEN 'MANA-USD'
+            WHEN 15 THEN 'OMG-USD'
+            WHEN 16 THEN 'SNX-USD'
+            WHEN 17 THEN 'UNI-USD'
+            WHEN 18 THEN 'XLM-USD'
+            WHEN 19 THEN 'XRP-USD'
+            WHEN 20 THEN 'ZEC-USD'
+            WHEN 31 THEN 'LUNA-USD'
+            WHEN 32 THEN 'YFI-USD'
+            WHEN 33 THEN 'SOL-USD'
+            -- Add more trading pairs as needed
+            ELSE CONCAT('pair_index_', CAST(pairIndex as VARCHAR))
+        END AS market,
 
         contract_address AS market_address,
         COALESCE(price_usd * position_size, position_size) AS volume_usd,
@@ -141,6 +178,8 @@ SELECT
     CAST(date_trunc('MONTH', perps.block_time) AS date) AS block_month,
     perps.block_time,
     perps.virtual_asset,
+    perps.underlying_asset,
+    perps.market,
     perps.market_address,
     perps.volume_usd,
     perps.fee_usd,
@@ -150,12 +189,13 @@ SELECT
     perps.version,
     perps.frontend,
     perps.trader,
-    CAST(perps.volume_raw AS UINT256) AS volume_raw,
+    CAST(perps.volume_raw as UINT256) as volume_raw,
     perps.tx_hash,
     tx."from" AS tx_from,
     tx."to" AS tx_to,
     perps.evt_index
 FROM perps
-INNER JOIN transactions_filtered AS tx
+INNER JOIN {{ source('base', 'transactions') }} AS tx
     ON perps.tx_hash = tx.hash
     AND perps.block_number = tx.block_number
+    AND tx.block_time >= DATE '2024-01-01'
