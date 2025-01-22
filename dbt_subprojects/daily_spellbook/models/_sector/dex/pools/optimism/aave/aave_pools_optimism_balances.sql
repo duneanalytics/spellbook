@@ -10,52 +10,28 @@
   )
 }}
 
-WITH raw_addresses AS (
+-- Aave address that holds OP tokens
+WITH aave_op_reserve AS (
   SELECT
-    depositor AS address,
-    0x4200000000000000000000000000000000000042 AS token_address
-  FROM {{ source('aave_v3_optimism', 'supply') }}
-  WHERE token_address = 0x4200000000000000000000000000000000000042
-
-  UNION ALL
-
-  SELECT
-    borrower AS address,
-    0x4200000000000000000000000000000000000042 AS token_address
-  FROM {{ source('aave_v3_optimism', 'borrow') }}
-  WHERE token_address = 0x4200000000000000000000000000000000000042
-),
-
--- Deduplicate pool addresses
-aave_addresses AS (
-  SELECT
-    address,
-    token_address,
-    ROW_NUMBER() OVER (PARTITION BY address ORDER BY token_address) AS rn
-  FROM raw_addresses
-),
-
-deduplicated_addresses AS (
-  SELECT
-    address,
-    token_address
-  FROM aave_addresses
-  WHERE rn = 1
+    0x513c7E3a9c69cA3e22550eF58AC1C0088e918FFf  AS address,
+    0x4200000000000000000000000000000000000042  AS token_address
 ),
 
 filtered_balances AS (
   {{ balances_incremental_subset_daily(
-       blockchain = 'optimism',
-       start_date = '2021-11-11',
-       address_token_list = 'deduplicated_addresses'
+       blockchain='optimism',
+       start_date='2021-11-11',
+       address_token_list = 'aave_op_reserve'
   ) }}
 )
 
 SELECT
-  b.address AS pool_address,
+  p.address AS pool_address,
   'aave' AS protocol_name,
   'v3' AS protocol_version,
   COALESCE(b.day, CURRENT_DATE) AS snapshot_day,
   COALESCE(b.balance, 0) AS op_balance
 FROM
   filtered_balances b
+left join
+  aave_op_reserve p on b.address = p.address
