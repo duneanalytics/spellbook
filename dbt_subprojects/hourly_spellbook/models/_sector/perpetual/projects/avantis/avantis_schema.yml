@@ -82,4 +82,3 @@ models:
       - &block_month
         name: block_month
         description: "Month of the transaction"
-        
