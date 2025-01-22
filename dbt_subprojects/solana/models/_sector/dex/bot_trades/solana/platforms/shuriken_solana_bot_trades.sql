@@ -32,8 +32,8 @@ WITH
       {% endif %}
       AND tx_success
       AND balance_change > 0
-      AND address = '{{fee_receiver_1}}'
-      OR address = '{{fee_receiver_2}}'
+      AND (address = '{{fee_receiver_1}}'
+      OR address = '{{fee_receiver_2}}')
   ),
   botTrades AS (
     SELECT
