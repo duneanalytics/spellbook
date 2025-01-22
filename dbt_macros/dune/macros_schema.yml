@@ -23,7 +23,7 @@ macros:
 
   - name: is_incremental
     description: >
-      Overrides the core is_incremental marco to allow the usage of a force-incremental command line variable.
+      Overrides the core is_incremental macro to allow the usage of a force-incremental command line variable.
       This enables us to easily get the compiled incremental models. 
       Example usage: dbt compile --vars '{force-incremental: True}'
 
