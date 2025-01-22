@@ -33,6 +33,9 @@ FROM (
         , project_contract_address
         , tx_hash
         , evt_index
+        , tx_from
+        , tx_to
+        , tx_index
     FROM
         {{ base_model }}
     {% if not loop.last %}
