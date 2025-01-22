@@ -85,7 +85,7 @@ WITH
       JOIN allFeePayments AS feePayments ON trades.tx_id = feePayments.tx_id
       LEFT JOIN prices_filtered AS feeTokenPrices ON (
         fee_token_mint_address = toBase58(feeTokenPrices.contract_address)
-        AND date_trunc('minute', block_time) = minute
+        AND date_trunc('minute', trades.block_time) = minute
       )
       JOIN transactions_filtered AS transactions ON (
         trades.tx_id = id
