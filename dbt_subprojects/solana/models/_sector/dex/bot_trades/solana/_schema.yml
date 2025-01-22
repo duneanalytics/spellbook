@@ -689,7 +689,6 @@ models:
           seed_file: ref('tradewiz_solana_trades_seed')
           blockchain: solana
 
-
   - name: cswap_solana_bot_trades
     meta:
       blockchain: solana
@@ -711,7 +710,7 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('cswap_solana_trades_seed')
           blockchain: solana
-      
+
   - name: prophetbots_solana_bot_trades
     meta:
       blockchain: solana
@@ -755,7 +754,7 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('nova_solana_trades_seed')
           blockchain: solana
-      
+
   - name: sanji_solana_bot_trades
     meta:
       blockchain: solana
@@ -778,12 +777,52 @@ models:
           seed_file: ref('sanji_solana_trades_seed')
           blockchain: solana
 
+  - name: padre_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: padre
+      contributors: clizzard
+    config:
+      tags: ["solana", "dex", "padre", "trades"]
+    description: >
+      Padre trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('padre_solana_trades_seed')
+          blockchain: solana
+
+  - name: padre_solana_bot_users
+    meta:
+      blockchain: solana
+      sector: dex
+      project: padre
+      contributors: whale_hunter
+    description: >
+      padre users on Solana
+    config:
+      tags: ["solana", "dex", "bot_trades"]
+      columns:
+        - name: user
+          data_tests: unique
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - user
+
   - name: fasol_solana_bot_trades
     meta:
       blockchain: solana
       sector: dex
       project: fasol
-      contributors: whale_hunter
+      contributors: clizzard
     config:
       tags: ["solana", "dex", "fasol", "trades"]
     description: >
