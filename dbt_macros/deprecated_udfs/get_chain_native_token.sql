@@ -7,6 +7,7 @@
             when 'symbol' = column_ then first(symbol)
             when 'price_symbol' = column_ then first(price_symbol)
             when 'price_address' = column_ then first(price_address)
+            else NULL
             end as result
       FROM tokens.native
       WHERE chain = chain_;
