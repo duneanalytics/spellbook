@@ -16,5 +16,5 @@ SELECT
     , decimals
     , synthetic
     , last_update_utc
-FROM {{ source("dune","result_gmx_v_2_erc_20_from_api", database="dune") }}
+FROM {{ source("gmx-io","result_gmx_v_2_erc_20_from_api", database="dune") }} 
 WHERE blockchain = '{{ blockchain_name }}'

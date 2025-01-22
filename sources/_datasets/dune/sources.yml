@@ -4,19 +4,6 @@ sources:
   - name: dune
     tables:
       - name: result_blockchains
+  - name: "gmx-io"
+    tables:
       - name: result_gmx_v_2_erc_20_from_api
-        columns:
-          - name: blockchain
-            description: "The blockchain name (e.g., arbitrum, avalanche_c)."
-          - name: project
-            description: "The project associated with the data (e.g., gmx_v2)."
-          - name: symbol
-            description: "The token symbol (e.g., ETH, BTC)."
-          - name: contract_address
-            description: "The hexadecimal address of the token contract."
-          - name: decimals
-            description: "The number of decimals used by the token."
-          - name: synthetic
-            description: "Boolean indicating whether the token is synthetic."
-          - name: last_update_utc
-            description: "The timestamp of the last update in UTC."
