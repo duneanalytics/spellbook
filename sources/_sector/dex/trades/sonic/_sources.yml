@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: wagmi_sonic
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
