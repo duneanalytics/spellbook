@@ -131,7 +131,8 @@ tbl_all_logs AS (
         tx_index,
         (try_cast(bytearray_to_uint256(bytearray_substring(logs.DATA, 21,12)) as int256)) as amount, 
         case when topic0 = signature or logs.contract_address = settler_address then 'swap' end as log_type,
-        data  
+        data,
+        row_number() over (partition by tx_hash order by index) rn  
     FROM
         {{ source(blockchain, 'logs') }} AS logs
     JOIN
@@ -168,7 +169,7 @@ swap_logs as (
         index,
         bytearray_substring(st.topic2,13,20) as taker_, 
         data,
-        row_number() over (partition by tx_hash order by index) rn
+        rn
     from tbl_all_logs st 
     WHERE   
        block_time > TIMESTAMP '2024-07-15'  
