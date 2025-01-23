@@ -1,6 +1,6 @@
 {{ config(
         schema='prices_v2',
-        alias = 'minute_raw',
+        alias = 'minute_sparse',
         file_format = 'delta',
         materialized = 'incremental',
         partition_by = ['date'],

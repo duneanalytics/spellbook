@@ -16,7 +16,7 @@ SELECT
     , max_by(price,timestamp) as price
     , max_by(volume,timestamp) as volume
     , max_by(source,timestamp) as source
-FROM {{ ref('prices_v2_minute_raw') }}
+FROM {{ ref('prices_v2_minute_sparse') }}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('timestamp') }}
 {% endif %}
