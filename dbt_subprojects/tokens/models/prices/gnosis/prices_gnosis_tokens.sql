@@ -41,5 +41,7 @@ FROM
     ('giv-giv', 'gnosis', 'GIV', 0x4f4F9b8D5B4d0Dc10506e5551B0513B61fD59e75, 18),
     ('usdc-usd-coin', 'gnosis', 'USDC.e', 0x2a22f9c3b484c3629090feed35f17ff8f88f76f0, 6),
     ('ageur-ageur', 'gnosis', 'agEUR', 0x4b1e2c2762667331bc91648052f646d1b0d35984, 18),
-    ('brla-brla-digital-brla', 'gnosis', 'BRLA', 0xFECB3F7c54E2CAAE9dC6Ac9060A822D47E053760, 18)
+    ('brla-brla-digital-brla', 'gnosis', 'BRLA', 0xFECB3F7c54E2CAAE9dC6Ac9060A822D47E053760, 18),
+    ('gyd-gyro-dollar','gnosis','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 18),
+    ('reth-rocket-pool-eth', 'gnosis', 'rETH', 0xc791240d1f2def5938e2031364ff4ed887133c3d, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

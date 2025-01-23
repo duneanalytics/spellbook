@@ -201,4 +201,7 @@ sources:
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UniswapV2Factory_evt_PairCreated
+  - name: jojo_base
+    tables:
+      - name: FundingRateArbitrage_evt_Swap
 
