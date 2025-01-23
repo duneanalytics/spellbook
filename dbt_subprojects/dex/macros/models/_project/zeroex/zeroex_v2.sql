@@ -176,7 +176,7 @@ swap_logs as (
 ),
 valid_logs as (
     select al.* 
-    from all_logs al
+    from tbl_all_logs al
     join swap_logs sl on al.tx_hash = sl.tx_hash 
             and al.block_time = sl.block_time 
             and al.index in (sl.index-1, sl.index-2)
