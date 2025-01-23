@@ -167,7 +167,7 @@ swap_logs as (
         index,
         bytearray_substring(st.topic2,13,20) as taker_, 
         data 
-    from all_logs st 
+    from tbl_all_logs st 
     WHERE   
        block_time > TIMESTAMP '2024-07-15'  
        and log_type = 'swap'
