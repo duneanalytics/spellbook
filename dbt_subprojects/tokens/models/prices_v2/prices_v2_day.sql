@@ -54,8 +54,8 @@ WITH sparse_prices as (
 , timeseries as (
     select timestamp
     from unnest(
-         sequence((select date_trunc('day', min(timestamp)) from sparse_prices)
-                , (select date_trunc('day', now()))
+         sequence(cast((select date_trunc('day', min(timestamp)) from sparse_prices) as timestamp)
+                , cast(select date_trunc('day', now()) as timestamp)
                 , interval '1' day
                 )
          ) as foo(timestamp)
