@@ -146,6 +146,8 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'receiver' THEN value END) AS receiver,
         MAX(CASE WHEN key_name = 'callbackContract' THEN value END) AS callback_contract,
         MAX(CASE WHEN key_name = 'market' THEN value END) AS market,
+        MAX(CASE WHEN key_name = 'longTokenSwapPath' THEN value END) AS long_token_swap_path,
+        MAX(CASE WHEN key_name = 'shortTokenSwapPath' THEN value END) AS short_token_swap_path,
         
         MAX(CASE WHEN key_name = 'marketTokenAmount' THEN value END) AS market_token_amount,
         MAX(CASE WHEN key_name = 'minLongTokenAmount' THEN value END) AS min_long_token_amount,
@@ -153,6 +155,7 @@ WITH evt_data_1 AS (
         MAX(CASE WHEN key_name = 'updatedAtTime' THEN value END) AS updated_at_time,
         MAX(CASE WHEN key_name = 'executionFee' THEN value END) AS execution_fee,
         MAX(CASE WHEN key_name = 'callbackGasLimit' THEN value END) AS callback_gas_limit,
+        MAX(CASE WHEN key_name = 'withdrawalType' THEN value END) AS withdrawal_type,
 
         MAX(CASE WHEN key_name = 'shouldUnwrapNativeToken' THEN value END) AS should_unwrap_native_token,
         
@@ -178,6 +181,8 @@ WITH evt_data_1 AS (
         from_hex(receiver) AS receiver,
         from_hex(callback_contract) AS callback_contract,
         from_hex(market) AS market,
+        long_token_swap_path, 
+        short_token_swap_path,
 
         TRY_CAST(market_token_amount AS DOUBLE) market_token_amount, -- index_token_decimals (market?)
         TRY_CAST(min_long_token_amount AS DOUBLE) min_long_token_amount, -- long_token_decimals 
@@ -185,6 +190,7 @@ WITH evt_data_1 AS (
         TRY_CAST(updated_at_time AS DOUBLE) AS updated_at_time,
         TRY_CAST(execution_fee AS DOUBLE) AS execution_fee, -- POWER(10, 18)
         TRY_CAST(callback_gas_limit AS DOUBLE) AS callback_gas_limit, -- no decimals, keep as raw values
+        TRY_CAST(withdrawal_type AS INTEGER) AS withdrawal_type,
 
         TRY_CAST(should_unwrap_native_token AS BOOLEAN) AS should_unwrap_native_token,
         
@@ -212,6 +218,8 @@ WITH evt_data_1 AS (
         receiver,
         callback_contract,
         ED.market,
+        long_token_swap_path,
+        short_token_swap_path,
 
         market_token_amount / POWER(10, 18) AS market_token_amount,
         min_long_token_amount / POWER(10, MD.long_token_decimals) AS min_long_token_amount,
@@ -222,6 +230,7 @@ WITH evt_data_1 AS (
         END AS updated_at_time,
         execution_fee / POWER(10, 18) AS execution_fee,
         callback_gas_limit,
+        withdrawal_type,
         
         should_unwrap_native_token,
         "key"
