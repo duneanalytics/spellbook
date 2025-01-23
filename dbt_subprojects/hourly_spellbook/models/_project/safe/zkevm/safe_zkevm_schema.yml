@@ -6,9 +6,6 @@ models:
       blockchain: zkevm
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'zkevm']
     description: "Safe addresses"
@@ -42,9 +39,6 @@ models:
       blockchain: zkevm
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'transfers', 'zkevm']
     description: "MATIC transfers for safes"
@@ -81,9 +75,6 @@ models:
       blockchain: zkevm
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'singletons', 'zkevm']
     description: "Singletons addresses used with Safes"
@@ -96,9 +87,6 @@ models:
       blockchain: zkevm
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'zkevm']
     description: "Safe transactions"
