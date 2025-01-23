@@ -7,7 +7,7 @@ sources:
     tables:
       - name: collections
       - name: collection_floor_ask_events
-        description: "todo: add reservoir table description!"
+        description: "Events tracking changes in NFT collection floor prices (lowest asking price). Each record represents a floor price update event, including the new price, previous price, maker address, and associated transaction details. This data is crucial for monitoring NFT market dynamics and collection value trends over time."
         columns:
           - name: created_at
           - name: collection_id
