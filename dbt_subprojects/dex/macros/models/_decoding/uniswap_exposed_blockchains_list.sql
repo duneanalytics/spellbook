@@ -5,26 +5,25 @@
        , "base"
        , "blast"
        , "bnb"
-       , "bob"
-       , "boba"
+
        , "celo"
        , "ethereum"
        , "fantom"
-       , "flare"
+
        , "gnosis"
-       , "kaia"
-       , "linea"
+
+
        , "mantle"
-       , "mode"
-       , "nova"
+       
+
        , "optimism"
        , "polygon"
-       , "ronin"
+
        , "scroll"
-       , "sepolia"
-       , "tron"
-       , "worldchain"
-       , "zkevm"
+
+
+
+
        , "zksync"
        , "zora"
     ]) }}

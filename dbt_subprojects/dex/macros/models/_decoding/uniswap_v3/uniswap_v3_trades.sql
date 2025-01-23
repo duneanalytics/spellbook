@@ -119,5 +119,5 @@ SELECT  base_trades.blockchain
 FROM base_trades
 LEFT JOIN {{ ref('dex_mapping') }} AS dex_map
 ON base_trades.factory_address = dex_map.factory_address AND base_trades.blockchain = dex_map.blockchain
-where block_date = DATE '2025-01-21'
+where block_date > DATE '2024-06-01'
 {% endmacro %}
