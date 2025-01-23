@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'wagmi_sonic',
+        schema = 'silverswap_sonic',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -13,9 +13,9 @@
 {{
     uniswap_compatible_v3_trades(
         blockchain = 'sonic',
-        project = 'wagmi',
+        project = 'silverswap',
         version = '3',
-        Pair_evt_Swap = source('silverswap_sonic', 'UniswapV3Pool_evt_Swap'),
-        Factory_evt_PoolCreated = source('silverswap_sonic', 'UniswapV3Factory_evt_PoolCreated')
+        Pair_evt_Swap = source('silverswap_sonic', 'AlgebraPool_evt_Swap'),
+        Factory_evt_PoolCreated = source('silverswap_sonic', 'AlgebraFactory_evt_Pool')
     )
 }}
