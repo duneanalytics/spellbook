@@ -26,7 +26,7 @@ WITH dex_trades_filter_and_unnest as (
         and anti_t.contract_address = d.token_bought_address -- the subjected token is already in trusted
     WHERE d.amount_usd > 0 and token_bought_amount > 0 and token_bought_address is not null
     and anti_t.contract_address is null
-    and d.block_time > now() - interval '30' day    -- temp limit for CI todo: remove
+    and d.block_time > now() - interval '100' day    -- temp limit for CI todo: remove
     {% if is_incremental() %}
     AND {{ incremental_predicate('d.block_time') }}
     {% endif %}
@@ -48,7 +48,7 @@ WITH dex_trades_filter_and_unnest as (
         and anti_t.contract_address = d.token_sold_address -- the subjected token is already in trusted
     WHERE d.amount_usd > 0 and token_sold_amount > 0 and token_sold_address is not null
     and anti_t.contract_address is null
-    and d.block_time > now() - interval '30' day    -- temp limit for CI todo: remove
+    and d.block_time > now() - interval '100' day    -- temp limit for CI todo: remove
     {% if is_incremental() %}
     AND {{ incremental_predicate('d.block_time') }}
     {% endif %}
