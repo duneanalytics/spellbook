@@ -68,6 +68,21 @@ WITH position_changes AS (
         {% endif %}
 ),
 
+transactions_filtered AS (
+    SELECT
+        hash,
+        block_number,
+        "from",
+        "to",
+        block_time
+    FROM {{ source('base', 'transactions') }}
+    WHERE {% if is_incremental() %}
+        {{ incremental_predicate('block_time') }}
+    {% else %}
+        block_time >= TIMESTAMP '{{project_start_date}}'
+    {% endif %}
+),
+
 perps AS (
     SELECT
         evt_block_time AS block_time,
@@ -201,7 +216,6 @@ SELECT
     tx."to" AS tx_to,
     perps.evt_index
 FROM perps
-INNER JOIN {{ source('base', 'transactions') }} AS tx
+INNER JOIN transactions_filtered tx
     ON perps.tx_hash = tx.hash
     AND perps.block_number = tx.block_number
-    AND tx.block_time >= DATE '2024-01-01'
