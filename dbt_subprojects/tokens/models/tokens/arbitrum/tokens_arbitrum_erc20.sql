@@ -126,4 +126,5 @@ FROM (VALUES
     , (0x521598765b0E5a4CD743f2769C06787b84617252, 'TLP', 18)
     , (0xf3527ef8dE265eAa3716FB312c12847bFBA66Cef, 'USDX', 18)    
     , (0x7788A3538C5fc7F9c7C8A74EAC4c898fC8d87d92, 'sUSDX', 18)        
+    , (0xd09ACb80C1E8f2291862c4978A008791c9167003, 'tETH', 18)        
 ) AS temp_table (contract_address, symbol, decimals)
