@@ -25,6 +25,23 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('beets_sonic_base_trades_seed')
 
+  - name: equalizer_sonic_base_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      project: equalizer
+      contributors: IrishLatte_19
+    config:
+      tags: ['sonic', 'dex', 'trades', 'equalizer']
+    description: "Equalizer sonic base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('equalizer_sonic_base_trades_seed')
+          
   - name: wagmi_sonic_base_trades
     meta:
       blockchain: sonic
