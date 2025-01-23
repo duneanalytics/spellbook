@@ -167,7 +167,8 @@ swap_logs as (
         tx_from as tx_from_, 
         index,
         bytearray_substring(st.topic2,13,20) as taker_, 
-        data 
+        data,
+        row_number() over (partition by tx_hash order by index) rn
     from tbl_all_logs st 
     WHERE   
        block_time > TIMESTAMP '2024-07-15'  
@@ -180,7 +181,7 @@ valid_logs as (
     from tbl_all_logs al
     join swap_logs sl on al.tx_hash = sl.tx_hash 
             and al.block_time = sl.block_time 
-            and al.index in (sl.index-1, sl.index-2)
+            and al.rn in (sl.rn-1, sl.rn-2)
 ), 
 taker_logs as (
     with tbl_base as (
