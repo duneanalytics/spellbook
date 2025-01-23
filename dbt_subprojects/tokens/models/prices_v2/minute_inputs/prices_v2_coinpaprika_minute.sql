@@ -25,7 +25,6 @@ inner join
     on p.token_id = ptt.token_id
 where
     1=1
-    and p.minute > now() - interval '100' day    -- temp limit for CI todo: remove
     {% if is_incremental() %}
     and {{ incremental_predicate('p.minute') }}
     {% endif %}
