@@ -9,7 +9,7 @@
     post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
                                spell_type = "project",
                                spell_name = "pika",
-                               contributors = \'["msilb7", "drethereum", "rplust","principatel"]\') }}'                  
+                               contributors = \'["principatel"]\') }}'                  
 )}}
 
 {% set project_start_date = '2021-11-22' %}
