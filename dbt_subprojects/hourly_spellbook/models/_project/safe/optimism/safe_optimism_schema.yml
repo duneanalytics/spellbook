@@ -6,9 +6,6 @@ models:
       blockchain: optimism
       project: safe
       contributors: frankmaseo
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'optimism']
     description: "Safe addresses on Optimism"
@@ -36,9 +33,6 @@ models:
       blockchain: optimism
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'singletons', 'optimism']
     description: "Singletons addresses used with Safes"
@@ -54,9 +48,6 @@ models:
       blockchain: optimism
       project: safe
       contributors: tschubotz, danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'optimism']
     description: "Safe transactions"
@@ -118,9 +109,6 @@ models:
       blockchain: optimism
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'transfers', 'optimism']
     description: "ETH transfers into or out of Safes"

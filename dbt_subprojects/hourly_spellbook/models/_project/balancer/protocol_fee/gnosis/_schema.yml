@@ -59,9 +59,12 @@ models:
       - &treasury_share
         name: treasury_share
         description: "Share of total fee that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
-      - &treasury_revenue_usd
+      - &treasury_fee_usd
         name: treasury_revenue_usd
         description: "USD value of fee directed to Balancer DAO's treasury"
+      - &lp_fee_collected_usd
+        name: lp_fee_collected_usd
+        description: "USD value of the fee returned to liquidity providers" 
 
   - name: balancer_v3_gnosis_protocol_fee
     meta:
@@ -94,4 +97,5 @@ models:
       - *token_amount
       - *protocol_fee_collected_usd
       - *treasury_share
-      - *treasury_revenue_usd    
+      - *treasury_fee_usd    
+      - *lp_fee_collected_usd
