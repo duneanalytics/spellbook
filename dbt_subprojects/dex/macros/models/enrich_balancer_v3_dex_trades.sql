@@ -70,11 +70,13 @@ WITH base_trades as (
             minute,
             blockchain,
             wrapped_token,
+            underlying_token,
+            underlying_token_symbol,
             decimals,
             APPROX_PERCENTILE(median_price, 0.5) AS price,
             LEAD(minute, 1, NOW()) OVER (PARTITION BY wrapped_token ORDER BY minute) AS time_of_next_change
         FROM {{ source('balancer_v3', 'erc4626_token_prices') }}
-        GROUP BY 1, 2, 3, 4
+        GROUP BY 1, 2, 3, 4, 5, 6
 )
 
 SELECT
@@ -85,9 +87,12 @@ SELECT
     , block_date
     , block_time
     , block_number
-    , token_bought_symbol
-    , token_sold_symbol
-    , token_pair
+    , COALESCE(erc4626a.underlying_token_symbol,
+        token_bought_symbol) AS token_bought_symbol
+    , COALESCE(erc4626b.underlying_token_symbol,
+        token_sold_symbol) AS token_sold_symbol
+    , CONCAT(COALESCE(erc4626a.underlying_token_symbol, token_bought_symbol), '-', 
+        COALESCE(erc4626b.underlying_token_symbol, token_sold_symbol)) AS token_pair
     , token_bought_amount
     , token_sold_amount
     , token_bought_amount_raw
@@ -97,8 +102,10 @@ SELECT
         dexs.token_bought_amount * erc4626a.price,
         dexs.token_sold_amount * erc4626a.price
     ) AS amount_usd
-    , token_bought_address
-    , token_sold_address
+    , COALESCE(erc4626a.underlying_token, 
+        token_bought_address) AS token_bought_address
+    , COALESCE(erc4626b.underlying_token, 
+        token_sold_address) AS token_sold_address
     , taker
     , maker
     , project_contract_address
