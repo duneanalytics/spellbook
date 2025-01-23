@@ -16,6 +16,7 @@
         project = 'silverswap',
         version = '3',
         Pair_evt_Swap = source('silverswap_sonic', 'AlgebraPool_evt_Swap'),
-        Factory_evt_PoolCreated = source('silverswap_sonic', 'AlgebraFactory_evt_Pool')
+        Factory_evt_PoolCreated = source('silverswap_sonic', 'AlgebraFactory_evt_Pool'),
+        optional_columns = null
     )
 }}
