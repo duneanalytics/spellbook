@@ -154,7 +154,8 @@ FROM
     ('naka-nakamoto-games', 'polygon', 'NAKA',0x311434160d7537be358930def317afb606c0d737, 18),
     ('sfl1-sunflower-land', 'polygon', 'SFL',0xd1f9c58e33933a993a3891f8acfe05a68e1afc05, 18),
     ('algb-algebra', 'polygon', 'ALGB',0x0169ec1f8f639b32eec6d923e24c2a2ff45b9dd6, 18),
-    ('rmv-reality-metaverse', 'polygon', 'RMV',0xf0949dd87d2531d665010d6274f06a357669457a, 18)
+    ('rmv-reality-metaverse', 'polygon', 'RMV',0xf0949dd87d2531d665010d6274f06a357669457a, 18),
+    ('gfi-gravity-finance', 'polygon', 'GFI', 0x874e178A2f3f3F9d34db862453Cd756E7eAb0381, 18)    
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
