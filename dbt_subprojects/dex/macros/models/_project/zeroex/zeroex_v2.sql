@@ -169,8 +169,7 @@ swap_logs as (
         data 
     from all_logs st 
     WHERE   
-       case when {{tx_hash}} = 0x then 1=1 else tx_hash = {{tx_hash}} end 
-       AND block_time > TIMESTAMP '2024-07-15'  
+       block_time > TIMESTAMP '2024-07-15'  
        and log_type = 'swap'
        and ( settler_address in (bytearray_substring(st.topic2,13,20), bytearray_substring(st.topic1,13,20) )
            or varbinary_position(data, settler_address) <> 0 ) 
