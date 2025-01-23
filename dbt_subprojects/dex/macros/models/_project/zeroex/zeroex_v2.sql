@@ -130,7 +130,8 @@ tbl_all_logs AS (
         taker,
         tx_index,
         (try_cast(bytearray_to_uint256(bytearray_substring(logs.DATA, 21,12)) as int256)) as amount, 
-        case when topic0 = signature or logs.contract_address = settler_address then 'swap' end as log_type  
+        case when topic0 = signature or logs.contract_address = settler_address then 'swap' end as log_type,
+        data  
     FROM
         {{ source(blockchain, 'logs') }} AS logs
     JOIN
