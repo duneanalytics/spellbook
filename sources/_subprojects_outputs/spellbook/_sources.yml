@@ -119,6 +119,7 @@ sources:
   - name: balancer_v3
     tables:
       - name: erc4626_token_prices
+      - name: erc4626_token_mapping      
 
   - name: addresses_ethereum
     tables:

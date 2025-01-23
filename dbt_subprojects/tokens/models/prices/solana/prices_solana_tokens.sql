@@ -716,5 +716,7 @@ FROM
         ('fxn-fxn', 'solana', 'FXN', '92cRC6kV5D7TiHX1j56AbkPbffo9jwcXxSDQZ8Mopump',6),
         ('griffain-test-griffaincom', 'solana', 'GRIFFAIN', 'KENJSUYLASHUMfHyy5o4Hp2FdNqZg1AsUPhfH2kYvEP', 6),
         ('tank-agenttank', 'solana', 'TANK', 'GAMwtMB6onAvBNBQJCJFuxoaqfPH8uCQ2dewNMVVpump', 6),
-        ('pengu-pudgy-penguins', 'solana', 'PENGU', '2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv', 6)
+        ('pengu-pudgy-penguins', 'solana', 'PENGU', '2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv', 6),
+        ('trump-official-trump', 'solana', 'TRUMP', '6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN', 6),
+        ('melania-melania-meme','solana', 'MELANIA', 'FUAfBo2jgks6gB4Z4LfZkqSZgzNucisEHqnNebaRxM1P', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
