@@ -18,7 +18,7 @@ WITH fantasy_configs AS (
     , requiresWhitelist AS whitelist
     , maxPacksPerAddress AS max_pack_per_address
     , fixedPrice/POWER(10, 18) AS token_amount
-    , NULL AS traded_with
+    , CAST(NULL AS varbinary) AS traded_with
     , paymentToken AS token_address
     , maxPacks AS max_packs
     , cardsPerPack AS cards_per_pack
@@ -30,7 +30,7 @@ WITH fantasy_configs AS (
     , evt_tx_hash AS tx_hash
     , evt_index
     , contract_address
-    , NULL AS is_wash_trade
+    , CAST(NULL AS boolean) AS is_wash_trade
     FROM {{ source('fantasy_blast', 'Minter_evt_NewMintConfig')}}
     )
 
@@ -56,15 +56,15 @@ SELECT m.evt_block_time AS block_time
 , m.firstTokenId+80, m.firstTokenId+81, m.firstTokenId+82, m.firstTokenId+83, m.firstTokenId+84, m.firstTokenId+85, m.firstTokenId+86, m.firstTokenId+87, m.firstTokenId+88, m.firstTokenId+89
 , m.firstTokenId+90, m.firstTokenId+91, m.firstTokenId+92, m.firstTokenId+93, m.firstTokenId+94, m.firstTokenId+95, m.firstTokenId+96, m.firstTokenId+97, m.firstTokenId+98, m.firstTokenId+99
     ], x -> x <= lastTokenId) AS minted_ids
-, NULL AS burned_ids
-, NULL AS traded_ids
-, NULL AS traded_with
+, CAST(NULL AS ARRAY<UINT256>) AS burned_ids
+, CAST(NULL AS DOUBLE) AS traded_ids
+, CAST(NULL AS varbinary) AS traded_with
 , m.evt_tx_from AS tx_from
 , m.evt_tx_to AS tx_to
 , m.evt_tx_hash AS tx_hash
 , m.evt_tx_index AS tx_index
 , m.contract_address
-, NULL AS is_wash_trade
+, CAST(NULL AS boolean) AS is_wash_trade
 , 'WETH' AS token_symbol
 , 0x4300000000000000000000000000000000000004 AS token_address
 , m.price/POWER(10, 18) AS token_amount
@@ -88,21 +88,21 @@ SELECT evt_block_time AS block_time
 , evt_block_date AS block_date
 , 'Level Up' AS evt_type
 , caller AS user_address
-, NULL AS whitelist
+, CAST(NULL AS boolean) AS whitelist
 , collection
 , CAST(1 AS double) AS cards_minted
 , CAST(cardinality(burntTokenIds) AS double) AS cards_burned
 , ARRAY[mintedTokenId] AS minted_ids
 , burntTokenIds AS burned_ids
-, NULL AS traded_ids
-, NULL AS traded_with
+, CAST(NULL AS DOUBLE) AS traded_ids
+, CAST(NULL AS varbinary) AS traded_with
 , evt_tx_from AS tx_from
 , evt_tx_to AS tx_to
 , evt_tx_hash AS tx_hash
 , evt_tx_index AS tx_index
 , contract_address
-, NULL AS is_wash_trade
-, NULL AS token_symbol
+, CAST(NULL AS boolean) AS is_wash_trade
+, CAST(NULL AS varchar) AS token_symbol
 , CAST(NULL AS varbinary) AS token_address
 , 0 AS token_amount
 , 0 AS price_usd
@@ -121,21 +121,21 @@ SELECT evt_block_time AS block_time
 , evt_block_date AS block_date
 , 'Burn to Draw' AS evt_type
 , caller AS user_address
-, NULL AS whitelist
+, CAST(NULL AS boolean) AS whitelist
 , collection
 , CAST(cardinality(mintedTokenIds) AS double) AS cards_minted
 , CAST(cardinality(burntTokenIds) AS double) AS cards_burned
 , mintedTokenIds AS minted_ids
 , burntTokenIds AS burned_ids
-, NULL AS traded_ids
-, NULL AS traded_with
+, CAST(NULL AS DOUBLE) AS traded_ids
+, CAST(NULL AS varbinary) AS traded_with
 , evt_tx_from AS tx_from
 , evt_tx_to AS tx_to
 , evt_tx_hash AS tx_hash
 , evt_tx_index AS tx_index
 , contract_address
-, NULL AS is_wash_trade
-, NULL AS token_symbol
+, CAST(NULL AS boolean) AS is_wash_trade
+, CAST(NULL AS varchar) AS token_symbol
 , CAST(NULL AS varbinary) AS token_address
 , 0 AS token_amount
 , 0 AS price_usd
@@ -158,8 +158,8 @@ SELECT nftt.block_time
 , nftt.nft_contract_address AS collection
 , CAST(0 AS double) AS cards_minted
 , CAST(0 AS double) AS cards_burned
-, NULL AS minted_ids
-, NULL AS burned_ids
+, CAST(NULL AS ARRAY<UINT256>) AS minted_ids
+, CAST(NULL AS ARRAY<UINT256>) AS burned_ids
 , nftt.token_id AS traded_ids
 , CASE WHEN nftt.trade_category='Buy' THEN nftt.seller ELSE nftt.buyer END AS traded_with
 , nftt.tx_from
@@ -195,19 +195,19 @@ SELECT block_time
 , 'Tactics Purchase' AS evt_type
 , tx_from AS user_address
 , false AS whitelist
-, NULL AS collection
+, CAST(NULL AS varbinary) AS collection
 , CAST(0 AS double) AS cards_minted
 , CAST(0 AS double) AS cards_burned
-, NULL AS minted_ids
-, NULL AS burned_ids
-, NULL AS traded_ids
-, NULL AS traded_with
+, CAST(NULL AS ARRAY<UINT256>) AS minted_ids
+, CAST(NULL AS ARRAY<UINT256>) AS burned_ids
+, CAST(NULL AS DOUBLE) AS traded_ids
+, CAST(NULL AS varbinary) AS traded_with
 , tx_from
 , tx_to
 , tx_hash
 , tx_index
-, NULL AS contract_address
-, NULL AS is_wash_trade
+, CAST(NULL AS varbinary) AS contract_address
+, CAST(NULL AS boolean) AS is_wash_trade
 , symbol AS token_symbol
 , contract_address AS token_address
 , amount AS token_amount

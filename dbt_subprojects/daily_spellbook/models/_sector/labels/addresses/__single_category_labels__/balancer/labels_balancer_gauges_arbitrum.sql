@@ -112,6 +112,24 @@ kill_unkill_1 AS(
         'unkill' AS action
     FROM {{ source('balancer_ethereum', 'CappedArbitrumRootGauge_call_initialize') }}
     WHERE call_success
+
+    UNION ALL
+
+        SELECT
+        target AS contract_address,
+        evt_block_time AS call_block_time,
+        'kill' AS action
+    FROM {{ source('balancer_ethereum', 'AuthorizerAdaptorEntrypoint_evt_ActionPerformed') }}
+    WHERE data = 0xab8f0945
+
+    UNION ALL
+
+        SELECT
+        target AS contract_address,
+        evt_block_time AS call_block_time,
+        'unkill' AS action
+    FROM {{ source('balancer_ethereum', 'AuthorizerAdaptorEntrypoint_evt_ActionPerformed') }}
+    WHERE data = 0xd34fb267        
 ),
 
 kill_unkill AS(

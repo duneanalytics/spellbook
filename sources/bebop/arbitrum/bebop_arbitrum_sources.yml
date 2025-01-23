@@ -18,6 +18,11 @@ sources:
       - name: JamSettlement_call_settle
       - name: JamSettlement_call_settleWithPermitsSignatures
       - name: JamSettlement_evt_Settlement
+  - name: jam_v2_arbitrum
+    description: "BebopJAM_V2 decoded tables related to Bebop"
+    tables:
+      - name: JamSettlement_call_settle
+      - name: JamSettlement_evt_BebopJamOrderFilled
   - name: bebop_pmms_arbitrum
     description: "Bebop decoded tables related to Bebop"
     tables:
