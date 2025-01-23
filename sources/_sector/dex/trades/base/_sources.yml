@@ -201,7 +201,10 @@ sources:
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UniswapV2Factory_evt_PairCreated
+  - name: otsea_base
+    tables:
+      - name: OTSeaV2_evt_SwappedTokensForETH
+      - name: OTSeaV2_evt_SwappedETHForTokens
   - name: jojo_base
     tables:
       - name: FundingRateArbitrage_evt_Swap
-

@@ -55,6 +55,7 @@
     , ref('flashliquidity_base_base_trades')
     , ref('akronswap_base_base_trades')
     , ref('jojo_base_base_trades')
+    , ref('otsea_base_base_trades')
 ] %}
 
 WITH base_union AS (
