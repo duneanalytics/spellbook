@@ -15,7 +15,7 @@
         blockchain = 'sonic',
         project = 'wagmi',
         version = '3',
-        Pair_evt_Swap = source('silverswap_sonic', 'UniswapV3Pool_evt_Swap'),
-        Factory_evt_PoolCreated = source('silverswap_sonic', 'UniswapV3Factory_evt_PoolCreated')
+        Pair_evt_Swap = source('wagmi_sonic', 'UniswapV3Pool_evt_Swap'),
+        Factory_evt_PoolCreated = source('wagmi_sonic', 'UniswapV3Factory_evt_PoolCreated')
     )
 }}
