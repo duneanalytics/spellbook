@@ -173,7 +173,7 @@ perps AS (
 
         contract_address AS market_address,
         (collateralDelta * collateralPriceUsd * leverageDelta) / 1e36 AS volume_usd,
-        CAST(JSON_EXTRACT(value_data, '$.vaultFeeCollateral') AS double) / 1e18 AS fee_usd,  -- Changed to JSON_EXTRACT
+        CAST(JSON_EXTRACT(value_data, '$.vaultFeeCollateral') AS double) / 1e18 AS fee_usd, 
         collateralDelta / 1e18 AS margin_usd,
 
         CASE 
