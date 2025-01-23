@@ -5,7 +5,7 @@ models:
     meta:
       sector: prices
       contributors: 0xRob
-    description: "sparse minute-level prices sourced from dex.trades"
+    description: "sparse minute-level prices sourced from dex.trades, not filtered"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -25,7 +25,7 @@ models:
             - contract_address
             - timestamp
 
-  - name: prices_v2_minute_raw
+  - name: prices_v2_minute_sparse
     meta:
       sector: prices
       contributors: 0xRob
@@ -37,7 +37,7 @@ models:
             - contract_address
             - timestamp
 
-  - name: prices_v2_day_raw
+  - name: prices_v2_day_sparse
     meta:
       sector: prices
       contributors: 0xRob
