@@ -23,7 +23,9 @@ from
 inner join
     {{ ref('prices_trusted_tokens') }} as ptt
     on p.token_id = ptt.token_id
-{% if is_incremental() %}
 where
-    {{ incremental_predicate('p.minute') }}
-{% endif %}
+    1=1
+    and p.minute > now() - interval '30' day    -- temp limit for CI todo: remove
+    {% if is_incremental() %}
+    and {{ incremental_predicate('p.minute') }}
+    {% endif %}
