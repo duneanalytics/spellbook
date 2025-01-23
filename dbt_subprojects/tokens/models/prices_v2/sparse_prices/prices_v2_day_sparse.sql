@@ -24,4 +24,4 @@ FROM {{ ref('prices_v2_minute_sparse') }}
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('date') }}   -- using date here makes sure we always process full days
 {% endif %}
-GROUP BY 1,2,3
+GROUP BY 1,2,3,7
