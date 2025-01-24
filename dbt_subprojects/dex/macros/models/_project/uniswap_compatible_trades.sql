@@ -145,6 +145,7 @@ WITH dexs AS
         , CASE WHEN t.amount0 < INT256 '0' THEN f.currency1 ELSE f.currency0 END AS token_bought_address
         , CASE WHEN t.amount0 < INT256 '0' THEN f.currency0 ELSE f.currency1 END AS token_sold_address
         , t.contract_address as project_contract_address
+        , t.sender 
         {%- if optional_columns %}
         {%- for optional_column in optional_columns %}
         , {{ optional_column }}
