@@ -14,8 +14,7 @@
         blockchain = 'base'
         , project = 'uniswap'
         , version = '4'
-        , Pair_evt_Swap = source('uniswap_v4_base', 'PoolManager_evt_Swap') 
-        , Factory_evt_PoolCreated = source('uniswap_v4_base', 'PoolManager_evt_Initialize')
-        , optional_columns = ['f.fee', 'f.hooks']
+        , PoolManager_evt_Swap = source('uniswap_v4_base', 'PoolManager_evt_Swap') 
+        , PoolManager_evt_Initialize = source('uniswap_v4_base', 'PoolManager_evt_Initialize')
     )
 }}

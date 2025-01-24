@@ -124,12 +124,13 @@ FROM
     blockchain = null
     , project = 'uniswap'
     , version = '4'
-    , Pair_evt_Swap = null
-    , Factory_evt_PoolCreated = null
+    , PoolManager_evt_Swap = null
+    , PoolManager_evt_Initialize = null
     , taker_column_name = 't.evt_tx_from'
     , maker_column_name = null
-    , optional_columns = ['f.fee', 't.hooks']
-    , pair_column_name = 'f.id'
+    , swap_optional_columns = ['fee']
+    , initialize_optional_columns = ['hooks']
+    , pair_column_name = 'id'
     )
 %}
 WITH dexs AS
@@ -146,18 +147,23 @@ WITH dexs AS
         , CASE WHEN t.amount0 < INT256 '0' THEN f.currency0 ELSE f.currency1 END AS token_sold_address
         , t.contract_address as project_contract_address
         , t.sender 
-        {%- if optional_columns %}
-        {%- for optional_column in optional_columns %}
-        , {{ optional_column }}
-        {%- endfor %}
-        {%- endif %}
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
+        {%- if swap_optional_columns %}
+        {%- for optional_column in swap_optional_columns %}
+        , t.{{ optional_column }}
+        {%- endfor %}
+        {%- endif %}
+        {%- if initialize_optional_columns %}
+        {%- for optional_column in initialize_optional_columns %}
+        , f.{{ optional_column }}
+        {%- endfor %}
+        {%- endif %}
     FROM
-        {{ Pair_evt_Swap }} t
+        {{ PoolManager_evt_Swap }} t
     INNER JOIN
-        {{ Factory_evt_PoolCreated }} f
-        ON {{ pair_column_name }} = t.id
+        {{ PoolManager_evt_Initialize }} f
+        ON f.{{ pair_column_name }} = t.id
     {%- if is_incremental() %}
     WHERE
         {{ incremental_predicate('t.evt_block_time') }}
@@ -177,16 +183,21 @@ SELECT
     , dexs.token_bought_address
     , dexs.token_sold_address
     , dexs.sender as router
-    {%- if optional_columns %}  
-    {%- for optional_column in optional_columns %}  
-    , dexs.{{ optional_column }}  
-    {%- endfor %}  
-    {%- endif %}  
     , dexs.taker
     , dexs.maker
     , dexs.project_contract_address
     , dexs.tx_hash
     , dexs.evt_index
+    {%- if swap_optional_columns %}  
+    {%- for optional_column in swap_optional_columns %}  
+    , dexs.{{ optional_column }}  
+    {%- endfor %}  
+    {%- endif %}  
+    {%- if initialize_optional_columns %}
+    {%- for optional_column in initialize_optional_columns %}
+    , dexs.{{ optional_column }}
+    {%- endfor %}
+    {%- endif %}
 FROM
     dexs
 {% endmacro %}
