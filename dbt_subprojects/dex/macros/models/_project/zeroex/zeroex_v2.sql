@@ -189,7 +189,9 @@ valid_logs as (
     from tbl_all_logs al
     join swap_logs sl on al.tx_hash = sl.tx_hash 
             and al.block_time = sl.block_time 
-            and al.rn in (sl.rn-1, sl.rn-2)
+            and (al.rn in (sl.rn-1, sl.rn-2)
+                OR settler_address in (bytearray_substring(al.topic1,13,20), bytearray_substring(al.topic2,13,20) )
+                ) 
 ), 
 taker_logs as (
     with tbl_base as (
@@ -251,7 +253,7 @@ maker_logs as (
         AND logs.block_time = st.block_time 
         AND st.block_number = logs.block_number
         and (varbinary_position(st.data,bytearray_substring(logs.topic2,13,20)) <> 0 
-            or bytearray_substring(logs.topic1,13,20) = st.contract_address) 
+            or bytearray_substring(logs.topic1,13,20) in (st.contract_address, settler_address)) 
     WHERE  topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
         and cow_rn is null 
     )
