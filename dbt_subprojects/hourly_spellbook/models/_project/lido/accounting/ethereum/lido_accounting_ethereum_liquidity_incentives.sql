@@ -101,7 +101,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'ethereum' as blockchain
     FROM  {{source('erc20_ethereum','evt_transfer')}}
     WHERE "from" IN (
         SELECT
@@ -125,7 +126,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'ethereum' as blockchain
     FROM  {{source('erc20_ethereum','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -150,7 +152,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'optimism' as blockchain
     FROM {{source('erc20_optimism','evt_transfer')}}
     WHERE  "from" IN (
         SELECT
@@ -166,7 +169,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'optimism' as blockchain
     FROM {{source('erc20_optimism','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -185,7 +189,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'arbitrum' as blockchain
     FROM {{source('erc20_arbitrum','evt_transfer')}}
     WHERE "from" IN (
         SELECT
@@ -201,7 +206,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'arbitrum' as blockchain
     FROM {{source('erc20_arbitrum','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -219,7 +225,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'base' as blockchain
     FROM {{source('erc20_base','evt_transfer')}}
     WHERE "from" IN (
         SELECT
@@ -235,7 +242,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'base' as blockchain
     FROM {{source('erc20_base','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -253,7 +261,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'zksync' as blockchain
     FROM {{source('erc20_zksync','evt_transfer')}}
     WHERE "from" IN (
         SELECT
@@ -269,7 +278,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'zksync' as blockchain
     FROM {{source('erc20_zksync','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -287,7 +297,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'bnb' as blockchain
     FROM {{source('erc20_bnb','evt_transfer')}}
     WHERE "from" IN (
         SELECT
@@ -303,7 +314,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'bnb' as blockchain
     FROM {{source('erc20_bnb','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -321,7 +333,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'linea' as blockchain
     FROM {{source('erc20_linea','evt_transfer')}}
     WHERE "from" IN (
         SELECT
@@ -337,7 +350,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'linea' as blockchain
     FROM {{source('erc20_linea','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -355,7 +369,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'mantle' as blockchain
     FROM {{source('erc20_mantle','evt_transfer')}}
     WHERE "from" IN (
         SELECT
@@ -371,7 +386,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'mantle' as blockchain
     FROM {{source('erc20_mantle','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -389,7 +405,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'scroll' as blockchain
     FROM {{source('erc20_scroll','evt_transfer')}}
     WHERE "from" IN (
         SELECT
@@ -405,7 +422,8 @@ multichain_liquidity_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'scroll' as blockchain
     FROM {{source('erc20_scroll','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -421,6 +439,7 @@ multichain_liquidity_incentives_txns AS (
     SELECT
         evt_block_time AS period,
         evt_tx_hash,
+        blockchain,
         value AS amount_token,
         CASE
             WHEN contract_address = 0x0914d4ccc4154ca864637b0b653bc5fd5e1d3ecf THEN 0x5a98fcbea516cf06857215779fd812ca3bef1b32 --anyLDO

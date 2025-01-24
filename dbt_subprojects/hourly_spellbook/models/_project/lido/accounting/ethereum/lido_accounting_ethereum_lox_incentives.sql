@@ -90,7 +90,8 @@ lox_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'polygon' as blockchain
     FROM {{source('erc20_polygon','evt_transfer')}}
     WHERE  "from" IN (
         SELECT
@@ -108,7 +109,8 @@ lox_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'polygon' as blockchain
     FROM {{source('erc20_polygon','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -126,7 +128,8 @@ lox_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'ethereum' as blockchain
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -144,7 +147,8 @@ lox_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'ethereum' as blockchain
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE "from" IN (
         SELECT
@@ -164,7 +168,8 @@ lox_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'ethereum' as blockchain
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE "from" IN (
         SELECT
@@ -185,7 +190,8 @@ lox_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'ethereum' as blockchain
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -207,7 +213,8 @@ lox_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'ethereum' as blockchain
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE "from" IN (
         SELECT
@@ -228,7 +235,8 @@ lox_incentives_txns AS (
         evt_tx_hash,
         to,
         "from",
-        contract_address
+        contract_address,
+        'ethereum' as blockchain
     FROM {{source('erc20_ethereum','evt_transfer')}}
     WHERE to IN (
         SELECT
@@ -248,6 +256,7 @@ lox_incentives_txns AS (
     SELECT
         evt_block_time AS period,
         evt_tx_hash,
+        blockchain,
         value AS amount_token,
         CASE
             WHEN contract_address = 0x0914d4ccc4154ca864637b0b653bc5fd5e1d3ecf THEN 0x5a98fcbea516cf06857215779fd812ca3bef1b32 --anyLDO

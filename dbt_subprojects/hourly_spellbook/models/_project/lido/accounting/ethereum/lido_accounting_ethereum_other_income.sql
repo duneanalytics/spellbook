@@ -141,7 +141,8 @@ other_income_txns AS (
         evt_block_time,
         CAST(value AS DOUBLE) AS value,
         evt_tx_hash,
-        contract_address
+        contract_address,
+        'ethereum' as blockchain
     FROM  {{source('erc20_ethereum','evt_transfer')}}
     WHERE contract_address IN (SELECT address FROM tokens)
     AND to IN (
@@ -171,7 +172,8 @@ other_income_txns AS (
         t.evt_block_time as period,
         CAST(t.value AS DOUBLE) AS token_amount,
         t.evt_tx_hash,
-        t.contract_address
+        t.contract_address,
+        'ethereum' as blockchain
     FROM  {{source('erc20_ethereum','evt_transfer')}} t
     join  {{source('lido_ethereum','steth_evt_Submitted')}} s on t.evt_tx_hash = s.evt_tx_hash
     WHERE t.contract_address = 0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84
@@ -203,7 +205,8 @@ stsol_income AS (
             i.period AS period,
             '7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj' AS token,
             COALESCE(delta,0) AS amount_token,
-            tx_id as evt_tx_hash
+            tx_id as evt_tx_hash,
+            'solana' as blockchain
     FROM  stsol_income_txs i
 
 )
@@ -213,7 +216,8 @@ SELECT * from (
         evt_block_time AS period,
         contract_address AS token,
         value AS amount_token,
-        evt_tx_hash
+        evt_tx_hash,
+        blockchain
     FROM other_income_txns
 
     UNION ALL
@@ -222,7 +226,8 @@ SELECT * from (
         block_time AS time,
         0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 AS token,
         CAST(tr.value AS DOUBLE),
-        tx_hash
+        tx_hash,
+        'ethereum' as blockchain
     FROM {{source('ethereum','traces')}} tr
     WHERE tr.success = True
     AND tr.to in (
@@ -244,7 +249,8 @@ SELECT * from (
         period,
         from_base64('7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj') AS token,
         amount_token,
-        from_base64(evt_tx_hash)
+        from_base64(evt_tx_hash),
+        blockchain
     FROM stsol_income
 ) WHERE amount_token != 0
 
