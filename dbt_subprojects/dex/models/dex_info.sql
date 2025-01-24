@@ -186,6 +186,7 @@ FROM (VALUES
     , ('kaia_swap', 'KaiaSwap', 'Direct', 'KaiaSwap')
     , ('defi_kingdoms', 'DeFi Kingdoms', 'Direct', 'DeFiKingdoms')
     , ('hyperjump', 'HyperJump', 'Direct', 'Hyperjump_fi')
+    , ('timeswap', 'Timeswap', 'Direct', 'TimeswapLabs')
     , ('infusion', 'Infusion', 'Direct', 'infusionfinance')
     , ('stablebase', 'StableBase', 'Direct', 'stablebasefi')
     , ('flashliquidity', 'Flashliquidity', 'Direct', 'flashliquidity')
