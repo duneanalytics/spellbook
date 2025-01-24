@@ -31,12 +31,15 @@ SELECT
     receiver,
     callback_contract,
     market,
+    long_token_swap_path,
+    short_token_swap_path,
     market_token_amount,
     min_long_token_amount,
     min_short_token_amount,
     updated_at_time,
     execution_fee,
     callback_gas_limit,
+    withdrawal_type,
     should_unwrap_native_token,
     "key"
 
