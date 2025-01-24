@@ -2012,6 +2012,10 @@ models:
         description: The address of the callback contract associated with the withdrawal.
       - name: market
         description: The market associated with the withdrawal.
+      - name: long_token_swap_path
+        description: The swap path for the long token.
+      - name: short_token_swap_path
+        description: The swap path for the short token.
       - name: market_token_amount
         description: The amount of market tokens involved in the withdrawal.
       - name: min_long_token_amount
@@ -2024,6 +2028,8 @@ models:
         description: The execution fee for processing the withdrawal.
       - name: callback_gas_limit
         description: The gas limit for the callback associated with the withdrawal.
+      - name: withdrawal_type
+        description: The type of withdrawal created.
       - name: should_unwrap_native_token
         description: Indicates whether the native token should be unwrapped.
       - name: key
