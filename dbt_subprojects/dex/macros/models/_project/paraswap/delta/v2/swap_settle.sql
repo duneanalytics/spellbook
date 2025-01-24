@@ -23,21 +23,26 @@ v2_swap_settle_parsedOrderWithSig AS (
 ),
 v2_swap_settle_unparsedOrders AS (
   SELECT
-    JSON_EXTRACT(JSON_PARSE(TRY_CAST(orderWithSig AS VARCHAR)), '$.order') AS "order",
+    JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST(orderWithSig AS VARCHAR)), '$.order') AS "order",
     JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST(orderWithSig AS VARCHAR)), '$.signature') AS signature,
     *
   FROM v2_swap_settle_parsedOrderWithSig
 ),
 v2_swap_settle_parsedOrders AS (
   SELECT
-    from_hex(JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.owner')) AS "order_owner",
-    FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.srcToken')) AS "src_token",
-    FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.destToken')) AS "dest_token",
-    JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.srcAmount')  AS "src_amount",
-    JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.destAmount')  AS "dest_amount",
-    JSON_EXTRACT_SCALAR(JSON_PARSE(TRY_CAST("order" AS VARCHAR)), '$.permit')  AS "permit",
--- NB: at the time of writting the only ExecutorData shape known is following. On adding new executors needs to be-reconsidered 
--- struct ExecutorData {
+    from_hex(JSON_EXTRACT_SCALAR("order", '$.owner')) as owner,
+    from_hex(JSON_EXTRACT_SCALAR("order", '$.beneficiary')) as beneficiary,
+    from_hex(JSON_EXTRACT_SCALAR("order", '$.srcToken')) as srcToken,
+    from_hex(JSON_EXTRACT_SCALAR("order", '$.destToken')) as destToken,
+    cast(JSON_EXTRACT_SCALAR("order", '$.srcAmount') as uint256) as srcAmount,
+    cast(JSON_EXTRACT_SCALAR("order", '$.destAmount') as uint256) as destAmount,
+    cast(JSON_EXTRACT_SCALAR("order", '$.expectedDestAmount') as uint256) as expectedDestAmount,
+    JSON_EXTRACT_SCALAR("order", '$.deadline') as deadline,
+    JSON_EXTRACT_SCALAR("order", '$.nonce') as nonce,
+    JSON_EXTRACT_SCALAR("order", '$.partnerAndFee') as partnerAndFee,
+    JSON_EXTRACT_SCALAR("order", '$.permit') as permit,    
+    -- NB: at the time of writting the only ExecutorData shape known is following. On adding new executors needs to be-reconsidered 
+    -- struct ExecutorData {
 --         // The address of the src token
 --         address srcToken;
 --         // The address of the dest token
@@ -51,34 +56,35 @@ v2_swap_settle_parsedOrders AS (
 --         // The address to receive the fee, if not set the tx.origin will receive the fee
 --         address feeRecipient;
 --     }
-    varbinary_to_uint256(varbinary_substring(executorData,  161, 32)) as "feeAmount",    
-    *
+    varbinary_to_uint256(varbinary_substring(executorData,  161, 32)) as "executorFeeAmount",
+    * 
   FROM v2_swap_settle_unparsedOrders
 ),
 v2_swap_settle_withUSDs AS (
   SELECT
-{{to_wrapped_native_token(blockchain, 'dest_token', 'dest_token_for_joining')}},
-{{to_wrapped_native_token(blockchain, 'src_token', 'src_token_for_joining')}},
+{{to_wrapped_native_token(blockchain, 'destToken', 'dest_token_for_joining')}},
+{{to_wrapped_native_token(blockchain, 'srcToken', 'src_token_for_joining')}},
     *
   FROM v2_swap_settle_parsedOrders
-), delta_v2_swap_settle_model as (
-    SELECT 
-        w.*, 
-        w.dest_token AS fee_token,
-        COALESCE(CAST(s.price AS DECIMAL(38,18)), 0) AS src_token_price_usd,
-        COALESCE(CAST(d.price AS DECIMAL(38,18)), 0) AS dest_token_price_usd, 
-        COALESCE( 
-            d.price *  CAST (w.feeAmount AS uint256) / POWER(10, d.decimals),
-            -- src cost 
-            
-            (s.price *  CAST (w.src_amount AS uint256) / POWER(10, s.decimals))
-            * CAST (w.feeAmount AS DECIMAL) / (CAST (w.dest_amount AS DECIMAL)+ CAST (w.feeAmount AS DECIMAL)),
-            0
-            
-        )  AS gas_fee_usd,
-        s.price *  CAST (w.src_amount AS uint256) / POWER(10, s.decimals)  AS src_token_order_usd,
-        d.price *  CAST (w.dest_amount AS uint256) / POWER(10, d.decimals)  AS dest_token_order_usd
+), delta_v2_swapSettle_master as (
+select 
+    'swapSettle' as method,
+    COALESCE(CAST(s.price AS DECIMAL(38,18)), 0) AS src_token_price_usd,
+    COALESCE(CAST(d.price AS DECIMAL(38,18)), 0) AS dest_token_price_usd, 
+    COALESCE( 
+        d.price * w.executorFeeAmount / POWER(10, d.decimals),
+        -- src cost 
         
+        -- TODO: not sure about this calc, needs verifying 
+        -- used to have this fallback but maybe it shouldn't be here, and it might have been wrong
+        -- (s.price *  CAST (w.src_amount AS uint256) / POWER(10, s.decimals))
+        -- * CAST (w.feeAmount AS DECIMAL) / (CAST (w.dest_amount AS DECIMAL)+ CAST (w.feeAmount AS DECIMAL)),
+        0
+    )  AS gas_fee_usd,
+    s.price *  w.srcAmount / POWER(10, s.decimals)  AS src_token_order_usd,
+    d.price *  w.destAmount / POWER(10, d.decimals)  AS dest_token_order_usd,
+    w.destToken AS fee_token,
+    w.*
     FROM v2_swap_settle_withUSDs w 
     LEFT JOIN {{ source('prices', 'usd') }} d
     ON d.blockchain = '{{blockchain}}'
@@ -96,5 +102,33 @@ v2_swap_settle_withUSDs AS (
     {% endif %}
     AND s.contract_address = w.src_token_for_joining
     AND s.minute = DATE_TRUNC('minute', w.call_block_time)
+), delta_v2_swapSettle as (  
+SELECT 
+    method,
+    0 as order_index,
+    call_trace_address,
+    call_block_number,
+    call_block_time,    
+    call_tx_hash,
+    executorFeeAmount as fee_amount,
+    -- orderWithSig as order_with_sig,
+    executorData as calldata_to_execute,
+    -- "order",
+    signature,
+    owner,
+    srcToken,
+    destToken,
+    srcAmount,
+    destAmount,
+    src_token_for_joining,
+    dest_token_for_joining,
+    fee_token,
+    src_token_price_usd,
+    dest_token_price_usd,
+    gas_fee_usd,
+    src_token_order_usd,
+    dest_token_order_usd,
+    contract_address
+  FROM delta_v2_swapSettle_master
 )
 {% endmacro %}

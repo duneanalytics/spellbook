@@ -19,9 +19,8 @@
 -- call_trace_address - should be explicitely sorted by this field, if there's a call that combines multiple calls 
 -- evt_index - matching events should be sorted by evt_index correspondingly
 
-
 -- useful utils & info
---- explode an array:                 SEQUENCE(0, CARDINALITY(output_successfulOrders) - 1)
+--- explode an array:                 SEQUENCE(1, CARDINALITY(output_successfulOrders))
 --- access data: JSON_EXTRACT / JSON_EXTRACT_SCALAR 
 
     delta_v2_swap_settle_batch_ExpandedOrders as (
@@ -52,6 +51,7 @@
                   CROSS JOIN UNNEST (
                       -- SQL array indices start at 1
                       -- also NB: if one order fails -- whole batch fails
+                      -- also NB: edge case: a multi-tx call, where some other method emits event with similar signature --> not valid as it won't end up in the table
                       SEQUENCE(1, CARDINALITY(ordersWithSigs) )
                   ) AS t (order_index)        
               WHERE 
@@ -63,6 +63,7 @@
     ),
     delta_v2_swap_settle_batch_OrderSettledEvents as (
       SELECT 
+        -- TODO: need a sample tx to make sure this ordering and then joining by the order down below is correct
         ROW_NUMBER() OVER (ORDER BY evt_block_time, evt_tx_hash, evt_index) AS rn,
         *
       FROM 
@@ -70,7 +71,7 @@
       (
         SELECT * FROM {{ source("paraswapdelta_"+ blockchain, "ParaswapDeltav2_evt_OrderSettled") }}
         -- important conditional - since OrderSettled is emitted by multilple methods
-        -- thist filtering still not 100% fix -- as theoretically multiple methods can be combined in on call
+        -- this filtering still not 100% fix -- as theoretically multiple methods can be combined in on call
         -- consider case when settleSwap and settleBatchSwap are combined in one call
         WHERE evt_tx_hash in (select call_tx_hash from delta_v2_swap_settle_batch_ExpandedOrders)
         {% if is_incremental() %}
@@ -137,15 +138,19 @@ from
   LEFT JOIN delta_v2_swap_settle_batch_OrderSettledEvents events 
     ON orders.rn = events.rn 
     AND orders.call_tx_hash = events.evt_tx_hash
+    -- TODO: compute hash and join by orderHash instead -- that would be sufficiently strict for fill-all-at-once methods (unlike partials, because with partials there's an edge case when you can mismatch still, although very unlikely to happen in real life)
+    -- but for "full-single-fulfillment" methods, -- this template will work
+    -- https://paraswap.slack.com/archives/C073CNPHUS2/p1736331626761619?thread_ts=1736325828.398779&cid=C073CNPHUS2
     AND orders.owner = events.owner
     AND orders.beneficiary = events.beneficiary    
     AND orders.srcToken = events.srcToken
     AND orders.destToken = events.destToken
     AND orders.srcAmount = events.srcAmount
     AND orders.destAmount = events.destAmount
-), delta_v2_swap_settle_batch_model as (
+), delta_v2_swapSettleBatch_master as (
 
 select 
+    'swapSettleBatch' as method,
     COALESCE(CAST(s.price AS DECIMAL(38,18)), 0) AS src_token_price_usd,
     COALESCE(CAST(d.price AS DECIMAL(38,18)), 0) AS dest_token_price_usd, 
     COALESCE( 
@@ -153,13 +158,14 @@ select
         -- src cost 
         
         -- TODO: not sure about this calc, needs verifying 
+        -- used to have this fallback but maybe it shouldn't be here, and it might have been wrong
         -- (s.price *  CAST (w.src_amount AS uint256) / POWER(10, s.decimals))
         -- * CAST (w.feeAmount AS DECIMAL) / (CAST (w.dest_amount AS DECIMAL)+ CAST (w.feeAmount AS DECIMAL)),
         0
-        
     )  AS gas_fee_usd,
     s.price *  w.srcAmount / POWER(10, s.decimals)  AS src_token_order_usd,
     d.price *  w.destAmount / POWER(10, d.decimals)  AS dest_token_order_usd,
+    w.destToken AS fee_token,
     w.*
 from delta_v2_swap_settle_batch_withWrapped w
 
@@ -199,7 +205,33 @@ from delta_v2_swap_settle_batch_withWrapped w
 -- returnAmount uint256
 -- protocolFee uint256
 -- partnerFee uint256   
+), delta_v2_swapSettleBatch as (  
+SELECT 
+    method,
+    order_index,
+    call_trace_address,
+    call_block_number,
+    call_block_time,    
+    call_tx_hash,
+    executorFeeAmount as fee_amount,
+    -- orderWithSig as order_with_sig,
+    executorData as calldata_to_execute,
+    -- "order",
+    signature,
+    owner,
+    srcToken,
+    destToken,
+    srcAmount,
+    destAmount,
+    src_token_for_joining,
+    dest_token_for_joining,
+    fee_token,
+    src_token_price_usd,
+    dest_token_price_usd,
+    gas_fee_usd,
+    src_token_order_usd,
+    dest_token_order_usd,
+    contract_address
+  FROM delta_v2_swapSettleBatch_master
 )
--- TODO: 2. then from USD prices
-
 {% endmacro %}
