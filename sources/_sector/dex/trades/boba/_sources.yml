@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: icecreamswap_boba
+    tables:
+      - name: IceCreamSwapV2Pair_evt_Swap
+      - name: IceCreamSwapV2Factory_evt_PairCreated

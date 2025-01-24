@@ -4,6 +4,9 @@ models:
   - name: dex_base_base_trades
     data_tests:
       - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
 
   - name: uniswap_v3_base_base_trades
     meta:
@@ -46,7 +49,7 @@ models:
       blockchain: base
       sector: dex
       project: stablebase
-      contributors: principatel
+      contributors: principatel, hosuke
     config:
       tags: ["base", "dex", "trades", "stablebase"]
     description: stablebase base trades
@@ -1041,3 +1044,37 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('akronswap_base_base_trades_seed')
+          
+  - name: otsea_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: otsea
+      contributors: princi
+    config:
+      tags: [ 'base', 'dex', 'trades', 'otsea' ]
+    description: "otsea base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('otsea_base_base_trades_seed')
+          
+  - name: jojo_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: jojo
+      contributors: princi
+    config:
+      tags: [ 'base', 'dex', 'trades', 'jojo' ]
+    description: "jojo base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('jojo_base_base_trades_seed')
