@@ -37,7 +37,6 @@ WITH sparse_prices as (
             , source_timestamp
         from {{ ref('prices_v2_hour_sparse') }}
         where 1=1
-            and timestamp > now() - interval '90' day   -- todo: remove temp filter
             and timestamp < timestamp '{{end_date}}' -- don't process any data from end_date on
         UNION ALL
         SELECT * FROM (
@@ -52,7 +51,9 @@ WITH sparse_prices as (
                 , max_by(source_timestamp,timestamp) as source_timestamp
             -- we need render() here to not autofilter the model based on the batch timestamps
             from {{ ref('prices_v2_day_sparse').render() }}  -- because incremental windows always start at start of day, we cheat a little and use day here
+            -- we do a bunch of magic with auto-filtered ref of days here becaus microbatch_start and microbatch_end aren't available to us as variables..
             where timestamp < (select min(timestamp) from {{ref('utils_days')}})
+            and (select max(timestamp) from {{ref('utils_days')}}) < timestamp '{{end_date}}' -- don't process any data from end_date on
             group by blockchain, contract_address
         )
     )
