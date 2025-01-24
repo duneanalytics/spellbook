@@ -384,19 +384,15 @@ WITH pool_labels AS (
     ),
 
     erc4626_prices AS (
-    SELECT * FROM (
         SELECT
-            date_trunc('day', minute) AS day,
+            DATE_TRUNC('day', minute) AS day,
             wrapped_token AS token,
             decimals,
             APPROX_PERCENTILE(median_price, 0.5) AS price,
-            DATE_TRUNC ('day', next_change) AS next_change,
-            ROW_NUMBER() OVER(PARTITION BY wrapped_token ORDER BY DATE_TRUNC ('day', next_change)) AS rn
+            LEAD(DATE_TRUNC('day', minute), 1, CURRENT_DATE + INTERVAL '1' day) OVER (PARTITION BY wrapped_token ORDER BY date_trunc('day', minute)) AS next_change
         FROM {{ source('balancer_v3' , 'erc4626_token_prices') }}
         WHERE blockchain = '{{blockchain}}'
-        AND DATE_TRUNC ('day', next_change) != date_trunc('day', minute)
-        GROUP BY 1, 2, 3, 5)
-    WHERE rn = 1
+        GROUP BY 1, 2, 3
     ),
 
     swaps_changes AS (
