@@ -261,7 +261,7 @@ cow_trades as (
                      topic2, tx_from, tx_to, index, taker, amount as taker_amount,
                      tx_index, evt_index, buy_token_address as maker_token, atoms_bought as maker_amount, logs.contract_address as taker_token,
                      row_number() over (partition by tx_hash, logs.contract_address, amount order by index) rn
-    FROM cow_protocol_ethereum.trades
+    FROM {{ source('cow_protocol_ethereum', 'trades') }}
     JOIN valid_logs as logs using (block_time, block_number, tx_hash)
     where 
         block_time > TIMESTAMP '2024-07-15'  
