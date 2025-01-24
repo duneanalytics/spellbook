@@ -80,7 +80,7 @@ SELECT
     , p.price
     , p.volume
     , p.source
-    , t.timestamp as date
+    , date_trunc('day', t.timestamp) as date
     , p.source_timestamp
 FROM timeseries t
 INNER JOIN sparse_prices p
