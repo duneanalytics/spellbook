@@ -8,6 +8,25 @@ models:
           column_name: amount_usd
           max_value: 1000000000
 
+  - name: uniswap_v4_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: uniswap
+      contributors: agaperste
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'uniswap', 'v4' ]
+    description: "uniswap optimism v4 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_optimism_base_trades_seed')
+          filter:
+            version: 4
+
   - name: uniswap_v3_optimism_base_trades
     meta:
       blockchain: optimism
