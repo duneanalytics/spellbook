@@ -1,10 +1,10 @@
 {{ config(
+        schema = 'cow_protocol_ethereum',
         alias='solvers',
-        
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "cow_protocol",
-                                    \'["bh2smith", "gentrexha"]\') }}'
+        post_hook='{{ expose_spells(blockchains = \'["ethereum"]\',
+                                    spell_type = "project",
+                                    spell_name = "cow_protocol",
+                                    contributors = \'["bh2smith", "gentrexha"]\') }}'
 )}}
 
 -- Find the PoC Query here: https://dune.com/queries/1276806

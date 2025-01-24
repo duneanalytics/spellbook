@@ -36,7 +36,8 @@ registered_solvers as (
 -- Manually inserting environment and name for each "known" solver
 known_solver_metadata (address, environment, name) as (
     SELECT *
-    FROM (VALUES
+    FROM (
+      VALUES
                 (0xA70892d1Af41aBD2F648FEC74Ea2c17e56Ac3B9A, 'prod', 'Naive'),
                 (0xba36CEfb45d1CdD2Ae30a899C432c5081E095Ff8, 'prod', 'Baseline'),
                 (0xF017C6F66D68d11AF00FD243494E3fa0EBf44C66, 'prod', 'Quasimodo'),
@@ -69,12 +70,13 @@ known_solver_metadata (address, environment, name) as (
                 (0xc8371B2898FBaEeAe658f9FaeE8ddeDA24e37012, 'barn', 'OpenOcean_Aggregator'),
                 (0x2aeC288B42C99D2e8e984c5C324FB069f7705186, 'barn', 'Rizzolver'),
                 (0x26B5e3bF135D3Dd05A220508dD61f25BF1A47cBD, 'barn', 'Rizzolver')
-         ) as _
+    ) as _
 )
 -- Combining the metadata with current activation status for final table
 select solver as address,
-      case when environment is not null then environment else 'new' end as environment,
-      case when name is not null then name else 'Uncatalogued' end      as name,
+       case when environment is not null then environment else 'new' end as environment,
+       case when name is not null then name else 'Uncatalogued'      end as name,
       active
 from registered_solvers
-    left outer join known_solver_metadata on solver = address;
+left outer join known_solver_metadata on solver = address
+

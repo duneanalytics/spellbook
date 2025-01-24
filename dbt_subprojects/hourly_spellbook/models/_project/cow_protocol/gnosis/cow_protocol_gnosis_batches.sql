@@ -38,7 +38,7 @@ batch_counts as (
             {% if is_incremental() %}
             AND {{ incremental_predicate('i.evt_block_time') }}
             {% endif %}
-        join cow_protocol_gnosis.solvers
+        join {{ ref('cow_protocol_gnosis_solvers') }}
             on solver = address
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('s.evt_block_time') }}

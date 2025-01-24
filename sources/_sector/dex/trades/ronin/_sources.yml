@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: katana_dex_ronin
+    tables:
+      - name: KatanaPair_evt_Swap
+      - name: KatanaFactory_evt_PairCreated

@@ -1,16 +1,12 @@
 {{ config(
-    schema = 'dex_gnosis'
+    schema = 'dex_ronin'
     , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('sushiswap_v1_gnosis_base_trades')
-    , ref('sushiswap_v2_gnosis_base_trades')
-    , ref('balancer_v2_gnosis_base_trades')
-    , ref('honeyswap_v2_gnosis_base_trades')
-    , ref('elk_finance_gnosis_base_trades')
+    ref('katana_ronin_base_trades')
 ] %}
 
 WITH base_union AS (
@@ -46,7 +42,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'gnosis'
+        , blockchain = 'ronin'
         , columns = ['from', 'to', 'index']
     )
 }}

@@ -75,3 +75,7 @@ sources:
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UniswapV2Factory_evt_PairCreated
+  - name: jetswap_polygon
+    tables:
+      - name: JetswapPair_evt_Swap
+      - name: JetswapFactory_evt_PairCreated
