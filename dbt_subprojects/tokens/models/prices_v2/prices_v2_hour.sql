@@ -13,6 +13,9 @@
 -- depends_on: {{ ref('prices_v2_day_sparse') }} (this is needed because it's only used in the conditional block)
 -- depends_on: {{ ref('prices_v2_hour_historical_microbatch') }}
 
+-- this should be the same as the end_date in prices_v2_hour_historical_microbatch (there's more comments there on the setup)
+{% set start_date = '2024-12-01' %}
+
 WITH sparse_prices as (
     select
         *
@@ -29,12 +32,11 @@ WITH sparse_prices as (
             , source_timestamp
         from {{ ref('prices_v2_hour_sparse') }}
         where 1=1
-            and timestamp > now() - interval '30' day
+            and timestamp >= timestamp '{{start_date}}'
             {% if is_incremental() %}
             and {{ incremental_predicate('timestamp') }}
             {% endif %}
-        -- If we're running incremental, we also need to add the last known prices from before the incremental window, to forward fill them
-        {% if is_incremental() %}
+        -- We also need to add the last known prices from before the current window, to forward fill them
         UNION ALL
         SELECT * FROM (
             select
@@ -46,11 +48,16 @@ WITH sparse_prices as (
                 , max_by(source,timestamp) as source
                 , max(date) as date
                 , max_by(source_timestamp,timestamp) as source_timestamp
-            from {{ ref('prices_v2_day_sparse') }}  -- because incremental windows always start at start of day, we cheat a little and use day here
-            where not {{ incremental_predicate('timestamp') }} -- not in the current incremental window (so before that)
+            -- this can probably be more optimized to use the filled day table and query for 1 specific date.
+            from {{ ref('prices_v2_day_sparse') }}  -- because incremental windows always start at start of day, we can use day here
+            where 1=1
+                {% if is_incremental() %}
+                and not {{ incremental_predicate('timestamp') }} -- not in the current incremental window (so before that)
+                {% else %}
+                and not timestamp >= timestamp '{{start_date}}'  -- on full-refresh, take the data from before the start_date
+                {% endif %}
             group by blockchain, contract_address
         )
-        {% endif %}
     )
 )
 
@@ -59,21 +66,23 @@ WITH sparse_prices as (
 , timeseries as (
     select * from (
        select date_add('hour',hour, day) as timestamp
-       from unnest(
-             sequence(cast((select date_trunc('day', min(timestamp)) from sparse_prices) as timestamp)
-                    , cast(date_trunc('day', now()) as timestamp)
-                    , interval '1' day
-                    )
-             ) as foo(day)
+       from (
+            select timestamp as day from {{ref('utils_days')}}
+            where 1=1
+                and timestamp >= (select min(greatest(timestamp, timestamp '{{start_date}}')) from sparse_prices)
+                and timestamp <= now()
+       )
        cross join unnest(sequence(0, 23)) as h(hour)
    )
    where 1=1
-       and timestamp <= now()
+       and timestamp <= now()   -- safety to not overshoot the hours
+       and timestamp >= timestamp '{{start_date}}'  -- not needed, but safety to never have any duplicates
        {% if is_incremental() %}
        and {{ incremental_predicate('timestamp') }}
        {% endif %}
 )
 
+, incremental_forward_fill as (
 SELECT
     p.blockchain
     , p.contract_address
@@ -87,3 +96,18 @@ FROM timeseries t
 INNER JOIN sparse_prices p
     on p.timestamp <= t.timestamp
     and (p.next_update is null or p.next_update > t.timestamp)
+)
+
+select
+    *
+from incremental_forward_fill
+-- on the first run (full-refresh), copy the historical microbatches here
+{% if not is_incremental() %}
+union all
+select
+    *
+from {{ ref('prices_v2_hour_historical_microbatch') }}
+{% endif %}
+
+
+

@@ -9,7 +9,11 @@
         )
 }}
 
---todo: move this model in a better place
+-- todo: move this model in a better place, put a view on top that always goes to now() and expose to public
+-- todo: replicate for hours and minutes
+-- todo: Use this instead of sequence stuff in other places
+
+
 {% set start_date = '2000-01-01' %}
 
 

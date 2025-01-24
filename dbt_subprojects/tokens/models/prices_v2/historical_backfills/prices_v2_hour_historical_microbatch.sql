@@ -13,11 +13,12 @@
 }}
 
 -- this is the max date of the historical batched backfill, after which the incremental model takes over
--- we currently need to setup to have both monthly historical batches, but smaller incremental batches with a daily lookback.
--- currently all data in historical is rematerialized in the incremental model to prevent any chance of duplicates.
+-- we currently need this setup to have both monthly historical batches, but smaller incremental batches with a daily lookback.
+-- all data in historical is rematerialized in the incremental model to prevent any chance of duplicates.
 -- after this end_date, this model will still run but is setup to produce no outputs.
--- you should set this date to maximum the start of the previous batch, to make sure the last 2 batches are always running empty once in prod.
-{% set end_date = '2024-12-01' %}   -- assume exclusive
+-- you should set this date to maximum the start of the previous batch (it,s now 23rd of Jan, so I set it to first of Dec), to make sure the last 2 batches are always running empty once in prod.
+{% set end_date = '2024-12-01' %}   -- assume exclusive here
+-- if you change the above date, change it in prices_v2_hour as well!
 
 -- depends_on: {{ ref('prices_v2_day_sparse').render() }} (this is needed because it's only used in the conditional block)
 
