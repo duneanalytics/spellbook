@@ -83,4 +83,7 @@ SELECT address
         , (0x68d5bbf3a01ecbb47ce38cf64a7d6c0ea618040f, 'Binary Network', 'thebinaryhldgs')
         , (0xf263a0aa8afeaa7d516b596d49d7ba6c0feb102c, 'R0AR Chain', 'th3r0ar')
         , (0x9391791f7cb74f8bfda65edc0749efd964311b55, 'HashKey', 'HashKeyHSK')
+        , (0x6776be80dbada6a02b5f2095cf13734ac303b8d1, 'Soneium', 'Soneium')
+        , (0x2b8733e8c60a928b19bb7db1d79b918e8e09ac8c, 'Arena-Z', 'OfficialArenaZ')
+        , (0x9fb23129982c993743eb9bb156af8cc8fa2ac761, 'Phala Network', 'PhalaNetwork')
         ) AS x(address, entity, x_username)

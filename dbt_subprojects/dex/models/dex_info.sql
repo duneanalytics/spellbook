@@ -182,6 +182,7 @@ FROM (VALUES
     , ('yaka', 'yaka', 'Direct', 'YakaFinance')
     , ('klay_swap', 'KLAYswap', 'Direct', 'KLAYswap')
     , ('neopin', 'neopin', 'Direct', 'NeopinOfficial')
+    , ('otsea', 'OTSea', 'Direct', 'otseaERC20')
     , ('kaia_swap', 'KaiaSwap', 'Direct', 'KaiaSwap')
     , ('defi_kingdoms', 'DeFi Kingdoms', 'Direct', 'DeFiKingdoms')
     , ('hyperjump', 'HyperJump', 'Direct', 'Hyperjump_fi')
