@@ -122,6 +122,10 @@ sources:
 
       - name: StaticATokenFactory_evt_StaticTokenCreated
 
+      - name: StataTokenV2_evt_Initialized
+
+      - name: StataTokenFactory_evt_StataTokenCreated      
+
   - name: aave_v3_ethereum
     description: "Decoded contracts for Aave v3 on Ethereum"
     tables:
