@@ -215,7 +215,7 @@ models:
       blockchain: arbitrum
       sector: dex
       project: pancakeswap
-      contributors: chef_seaweed, tomfutago
+      contributors: chef_butterbeer, chef_seaweed, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "pancakeswap", "uniswap", "v2"]
     description: "Pancakeswap Arbitrum v2 base trades"
@@ -230,6 +230,7 @@ models:
             version:
               - 2
               - stableswap
+              - pcsx
 
   - name: balancer_v2_arbitrum_base_trades
     meta:
