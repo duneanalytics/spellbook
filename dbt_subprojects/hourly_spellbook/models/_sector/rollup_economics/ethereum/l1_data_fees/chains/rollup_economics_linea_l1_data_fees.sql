@@ -29,6 +29,7 @@ AND bytearray_substring(t.data, 1, 4) IN (
     0x7a776315 -- submitData (Aplha v2 Release at block. 19222438)
     , 0x2d3c12e5 -- submitBlobData
     , 0x42fbe842 -- submitBlobs
+    , 0x99467a35 -- submitBlobs (updated)
 )
 AND t.block_time >= TIMESTAMP '2023-07-12'
 {% if is_incremental() %}
