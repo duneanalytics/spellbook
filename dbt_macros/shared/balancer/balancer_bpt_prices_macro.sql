@@ -403,7 +403,7 @@ WITH pool_labels AS (
             decimals,
             APPROX_PERCENTILE(median_price, 0.5) AS price,
             DATE_TRUNC ('day', next_change) AS next_change,
-            ROW_NUMBER() OVER(PARTITION BY wrapped_token ORDER BY next_change) AS rn
+            ROW_NUMBER() OVER(PARTITION BY wrapped_token ORDER BY DATE_TRUNC ('day', next_change)) AS rn
         FROM {{ source('balancer_v3' , 'erc4626_token_prices') }}
         WHERE blockchain = '{{blockchain}}'
         AND DATE_TRUNC ('day', next_change) != date_trunc('day', minute)
