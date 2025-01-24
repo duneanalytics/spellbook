@@ -24,7 +24,7 @@ FROM (VALUES
     ) AS temp_table (erc4626_token, erc4626_token_name, erc4626_token_symbol, underlying_token, underlying_token_symbol, decimals)
 )
 
-SELECT 
+SELECT DISTINCT
     'gnosis' AS blockchain, 
     * 
 FROM aave_tokens
