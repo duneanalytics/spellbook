@@ -5,7 +5,7 @@ models:
     data_tests:
       - check_dex_info_relationship
 
-  - name: uniswap_v4_sepolia_base_trades
+  - name: uniswap_v4_base_base_trades
     meta:
       blockchain: base
       sector: dex
