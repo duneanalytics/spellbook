@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: bsx_base
+    description: base decoded tables related to BSX
+    tables:
+      - name: BSX1000x_evt_OpenPosition
+        description: "Details the new positions opened"
+      - name: BSX1000x_evt_ClosePosition
+        description: "Details the swaps to close existing positions"
