@@ -287,7 +287,7 @@ cow_trades as (
         zid,
         tag   
     from base_logs_rn b
-    join settler_txs s on b.block_time = s.block_time 
+    join zeroex_tx s on b.block_time = s.block_time 
         and b.tx_hash = s.tx_hash 
         and b.block_number = s.block_number 
         and cow_rn = cow_trade_rn
