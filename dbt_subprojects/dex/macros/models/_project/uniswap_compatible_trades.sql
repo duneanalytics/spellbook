@@ -124,11 +124,11 @@ FROM
     blockchain = null
     , project = 'uniswap'
     , version = '4'
-    , Pair_evt_Swap = source('uniswap_v4_sepolia', 'PoolManager_evt_Swap') 
-    , Factory_evt_PoolCreated = source('uniswap_v4_sepolia', 'PoolManager_evt_Initialize')
+    , Pair_evt_Swap = null
+    , Factory_evt_PoolCreated = null
     , taker_column_name = 't.evt_tx_from'
     , maker_column_name = null
-    , optional_columns = []
+    , optional_columns = ['f.fee', 't.hooks']
     , pair_column_name = 'f.id'
     )
 %}
@@ -140,10 +140,10 @@ WITH dexs AS
         , {{ taker_column_name }} as taker
         , {% if maker_column_name -%} {{ maker_column_name }} {% else -%} cast(null as varbinary) {% endif -%} as maker      
         -- in v4, when amount is negative, then user are selling the token (so things are done from the perspective of the user instead of the pool)
-        , CASE WHEN amount0 < INT256 '0' THEN abs(amount1) ELSE abs(amount0) END AS token_bought_amount_raw 
-        , CASE WHEN amount0 < INT256 '0' THEN abs(amount0) ELSE abs(amount1) END AS token_sold_amount_raw
-        , CASE WHEN amount0 < INT256 '0' THEN f.currency1 ELSE f.currency0 END AS token_bought_address
-        , CASE WHEN amount0 < INT256 '0' THEN f.currency0 ELSE f.currency1 END AS token_sold_address
+        , CASE WHEN t.amount0 < INT256 '0' THEN abs(t.amount1) ELSE abs(t.amount0) END AS token_bought_amount_raw 
+        , CASE WHEN t.amount0 < INT256 '0' THEN abs(t.amount0) ELSE abs(t.amount1) END AS token_sold_amount_raw
+        , CASE WHEN t.amount0 < INT256 '0' THEN f.currency1 ELSE f.currency0 END AS token_bought_address
+        , CASE WHEN t.amount0 < INT256 '0' THEN f.currency0 ELSE f.currency1 END AS token_sold_address
         , t.contract_address as project_contract_address
         {%- if optional_columns %}
         {%- for optional_column in optional_columns %}
@@ -152,7 +152,6 @@ WITH dexs AS
         {%- endif %}
         , t.evt_tx_hash AS tx_hash
         , t.evt_index
-        , row_number() over (partition by t.evt_tx_hash, t.evt_index order by t.evt_block_time desc) as duplicates_rank -- TODO remove after testing
     FROM
         {{ Pair_evt_Swap }} t
     INNER JOIN
@@ -177,8 +176,11 @@ SELECT
     , dexs.token_bought_address
     , dexs.token_sold_address
     , dexs.sender as router
-    , dexs.fee 
-    , dexs.hooks -- if 0x00 null address then no hook, else yes hook
+    {%- if optional_columns %}  
+    {%- for optional_column in optional_columns %}  
+    , dexs.{{ optional_column }}  
+    {%- endfor %}  
+    {%- endif %}  
     , dexs.taker
     , dexs.maker
     , dexs.project_contract_address
