@@ -246,6 +246,80 @@ sources:
           - name: block_month
             description: "The UTC month of the block in which this contract creation occurred"
 
+      - name: traces_decoded
+        description: "Decoded traces of transactions on the Abstract blockchain, providing detailed information about internal contract calls and their decoded parameters."
+        columns:
+          - name: block_time
+            description: "Timestamp of the block containing the trace"
+          - name: block_number
+            description: "Block number containing the trace"
+          - name: tx_hash
+            description: "Transaction hash"
+          - name: tx_from
+            description: "Address initiating the transaction"
+          - name: tx_to
+            description: "Address receiving the transaction"
+          - name: trace_address
+            description: "Array path of trace location within the transaction"
+          - name: sub_traces
+            description: "Number of sub-traces within this trace"
+          - name: type
+            description: "Type of trace (e.g., call, create, suicide)"
+          - name: address
+            description: "Contract address involved in the trace"
+          - name: from
+            description: "Address initiating the internal call"
+          - name: to
+            description: "Address receiving the internal call"
+          - name: value
+            description: "Value transferred in the trace in wei"
+          - name: gas
+            description: "Gas used by the trace"
+          - name: gas_used
+            description: "Actual gas used by the trace"
+          - name: input
+            description: "Input data for the trace"
+          - name: output
+            description: "Output data from the trace"
+          - name: error
+            description: "Error message if the trace failed"
+          - name: block_date
+            description: "Date of the block containing the trace"
+          - name: namespace
+            description: "Project namespace for the decoded trace"
+          - name: signature
+            description: "Function signature for the decoded trace"
+          - name: decoded_input
+            description: "Decoded input parameters"
+          - name: decoded_output
+            description: "Decoded output parameters"
+          - name: call_success
+            description: "Boolean indicating if the call was successful"
+
+      - name: contracts
+        description: "Information about smart contracts deployed on the Abstract blockchain."
+        columns:
+          - name: address
+            description: "Contract address"
+          - name: namespace
+            description: "Project namespace for the contract"
+          - name: name
+            description: "Contract name"
+          - name: block_time
+            description: "Timestamp of contract deployment"
+          - name: block_number
+            description: "Block number of contract deployment"
+          - name: tx_hash
+            description: "Transaction hash of contract deployment"
+          - name: from
+            description: "Address that deployed the contract"
+          - name: code
+            description: "Contract bytecode"
+          - name: abi
+            description: "Contract ABI (Application Binary Interface)"
+          - name: block_date
+            description: "Date of contract deployment"
+
   - name: erc20_abstract
     description: "Transfer events for ERC20 tokens on Abstract blockchain"
     tables:
