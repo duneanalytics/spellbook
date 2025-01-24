@@ -202,4 +202,5 @@ FROM (VALUES
     , ('fluid', 'Fluid DEX', 'Direct', '0xfluid')
     , ('jojo', 'JOJO', 'Direct', 'jojo_exchange')
     , ('beets', 'Beets DEX', 'Direct', 'beets_fi')
+    , ('silverswap', 'SilverSwap', 'Direct', 'SilverSwapDex')
     ) AS temp_table (project, name, marketplace_type, x_username)
