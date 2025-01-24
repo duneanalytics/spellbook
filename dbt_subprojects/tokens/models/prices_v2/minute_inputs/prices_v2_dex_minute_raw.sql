@@ -18,10 +18,10 @@ WITH dex_trades_filter_and_unnest as (
         d.amount_usd/d.token_bought_amount as price,
         d.amount_usd as volume -- in USD
     FROM {{ source('dex','trades') }} d
-    INNER JOIN {{ref('prices_trusted_tokens')}} t
+    INNER JOIN {{source('prices','trusted_tokens')}} t
         on t.blockchain = d.blockchain
         and t.contract_address = d.token_sold_address -- the token traded against is trusted
-    LEFT JOIN {{ref('prices_trusted_tokens')}} anti_t
+    LEFT JOIN {{source('prices','trusted_tokens')}} anti_t
         on anti_t.blockchain = d.blockchain
         and anti_t.contract_address = d.token_bought_address -- the subjected token is already in trusted
     WHERE d.amount_usd > 0 and token_bought_amount > 0 and token_bought_address is not null
@@ -39,10 +39,10 @@ WITH dex_trades_filter_and_unnest as (
         d.amount_usd/d.token_sold_amount as price,
         d.amount_usd as volume -- in USD
     FROM {{ source('dex','trades') }} d
-    INNER JOIN {{ref('prices_trusted_tokens')}} t
+    INNER JOIN {{source('prices','trusted_tokens')}} t
         on t.blockchain = d.blockchain
         and t.contract_address = d.token_bought_address -- the token traded against is trusted
-    LEFT JOIN {{ref('prices_trusted_tokens')}} anti_t
+    LEFT JOIN {{source('prices','trusted_tokens')}} anti_t
         on anti_t.blockchain = d.blockchain
         and anti_t.contract_address = d.token_sold_address -- the subjected token is already in trusted
     WHERE d.amount_usd > 0 and token_sold_amount > 0 and token_sold_address is not null
