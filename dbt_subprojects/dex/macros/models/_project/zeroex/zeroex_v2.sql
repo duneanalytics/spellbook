@@ -263,8 +263,7 @@ cow_trades as (
     FROM cow_protocol_ethereum.trades
     JOIN valid_logs as logs using (block_time, block_number, tx_hash)
     where 
-        case when {{tx_hash}} = 0x then 1=1 else tx_hash = {{tx_hash}} end 
-        AND block_time > TIMESTAMP '2024-07-15'  
+        block_time > TIMESTAMP '2024-07-15'  
         ),
     base_logs_rn as (
     select  *, 
