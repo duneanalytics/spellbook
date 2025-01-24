@@ -411,4 +411,5 @@ FROM (VALUES
     , (0xCA5d8F8a8d49439357d3CF46Ca2e720702F132b8, 'GYD', 18)
     , (0xC0D3700000987C99b3C9009069E4f8413fD22330, 'cdxUSD', 18)
     , (0xc694a91e6b071bf030a18bd3053a7fe09b6dae69, 'COW', 18)
+    , (0xecAc9C5F704e954931349Da37F60E39f515c11c1, 'LBTC', 8)
 ) AS temp_table (contract_address, symbol, decimals)

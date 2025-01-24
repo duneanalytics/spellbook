@@ -6,7 +6,26 @@
 }}
 
 {% set chains = [
-     'arbitrum'
+      'arbitrum'
+    , 'avalanche_c'
+    , 'base'
+    , 'blast'
+    , 'bnb'
+    , 'celo'
+    , 'ethereum'
+    , 'fantom'
+    , 'gnosis'
+    , 'linea'
+    , 'mantle'
+    , 'optimism'
+    , 'polygon'
+    , 'ronin'
+    , 'scroll'
+    , 'sei'
+    , 'tron'
+    , 'zkevm'
+    , 'zksync'
+    , 'zora'
    
 ] %}
 
@@ -26,3 +45,4 @@ FROM (
         {% endif %}
         {% endfor %}
 )
+

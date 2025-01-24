@@ -124,3 +124,25 @@ models:
       - name: token_symbol
       - name: token_id
       - name: collection_name
+  - name: tokens_bnb_net_transfers_daily
+    meta:
+      blockchain: bnb
+      sector: tokens
+      contributors: 0xRob, krishhh
+    config:
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total transfer amount per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: tokens_bnb_net_transfers_daily_address
+    meta:
+      blockchain: bnb
+      sector: tokens
+      contributors: 0xRob, krishhh
+    config:
+      tags: ['tokens', 'net_transfers']
+    description: "Total transfer amount per day per address"
