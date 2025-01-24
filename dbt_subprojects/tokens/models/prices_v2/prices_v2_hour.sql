@@ -52,17 +52,19 @@ WITH sparse_prices as (
 )
 
 -- construct the time spline we want to fill
+-- we have to do days first because the sequence can have max 10000 entries
 , timeseries as (
-    select timestamp
-    from unnest(
-         sequence(cast((select date_trunc('hour', min(timestamp)) from sparse_prices) as timestamp)
-                , cast(date_trunc('hour', now()) as timestamp)
-                , interval '1' hour
+   select date_add('hour',hour, day) as timestamp
+   from unnest(
+         sequence(cast((select date_trunc('day', min(timestamp)) from sparse_prices) as timestamp)
+                , cast(date_trunc('day', now()) as timestamp)
+                , interval '1' day
                 )
-         ) as foo(timestamp)
-    {% if is_incremental() %}
-    where {{ incremental_predicate('timestamp') }}      -- reduce to the incremental window if running incrementally
-    {% endif %}
+         ) as foo(day)
+   cross join unnest(sequence(0, 23)) as h(hour)
+   {% if is_incremental() %}
+   where {{ incremental_predicate('timestamp') }}
+   {% endif %}
 )
 
 SELECT
