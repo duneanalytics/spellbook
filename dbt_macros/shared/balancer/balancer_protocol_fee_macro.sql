@@ -277,6 +277,7 @@ WITH pool_labels AS (
             DATE_TRUNC ('day', next_change) AS next_change
         FROM {{ source('balancer_v3' , 'erc4626_token_prices') }}
         WHERE blockchain = '{{blockchain}}'
+        AND DATE_TRUNC ('day', next_change) != date_trunc('day', minute)
         GROUP BY 1, 2, 3, 5
     ),    
 
