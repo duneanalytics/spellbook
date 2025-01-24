@@ -1,6 +1,10 @@
 version: 2
 
 sources:
+  - name: uniswap_v4_optimism
+    tables:
+      - name: PoolManager_evt_Swap
+      - name: PoolManager_evt_Initialize
   - name: uniswap_v3_optimism
     tables:
       - name: pools

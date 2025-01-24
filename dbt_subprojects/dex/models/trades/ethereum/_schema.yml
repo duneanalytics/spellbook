@@ -65,6 +65,25 @@ models:
           filter:
             version: 3
 
+  - name: uniswap_v4_ethereum_base_trades
+    meta:
+      blockchain: ethereum
+      sector: dex
+      project: uniswap
+      contributors: agaperste
+    config:
+      tags: [ 'ethereum', 'dex', 'trades', 'uniswap', 'v4' ]
+    description: "uniswap ethereum v4 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_ethereum_base_trades_seed')
+          filter:
+            version: 4
+
   - name: defiswap_ethereum_base_trades
     meta:
       blockchain: ethereum
