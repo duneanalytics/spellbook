@@ -42,7 +42,8 @@ settler_trace_data AS (
             else first_value(varbinary_substring(input,17,20)) over (partition by tr.tx_hash order by trace_address desc) 
             end as taker,
         a.settler_address,
-        trace_address
+        trace_address,
+        case when varbinary_position(input,0x9008d19f58aabd9ed0d60971565aa8510560ab41) <> 0 then 1 end as cow_trade
     FROM
         {{ source(blockchain, 'traces') }} AS tr
     JOIN
@@ -70,7 +71,9 @@ settler_txs AS (
             WHEN method_id = 0x1fff991f THEN (varbinary_substring(tracker,12,3))
             WHEN method_id = 0xfd3ad6d4 THEN (varbinary_substring(tracker,13,3))
         END AS tag,
-        taker
+        taker,
+        row_number() over (partition by tx_hash order by varbinary_substring(tracker,2,12)) zid_rn,
+        case when cow_trade = 1 then row_number() over (partition by tx_hash order by trace_address) end as cow_rn
     FROM
         settler_trace_data
     
@@ -140,7 +143,7 @@ tbl_all_logs AS (
             AND logs.block_time = st.block_time
             AND st.block_number = logs.block_number
     LEFT JOIN swap_signatures on topic0 = signature
-    WHERE 1=1
+    WHERE zid_rn = 1 
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
@@ -158,7 +161,7 @@ tbl_all_logs AS (
         
 ),
 swap_logs as (
-    select distinct 
+    select  
         block_time, 
         block_number, 
         tx_hash, 
@@ -200,7 +203,8 @@ taker_logs as (
         ON st.tx_hash = logs.tx_hash 
         AND logs.block_time = st.block_time 
         AND st.block_number = logs.block_number 
-    where logs.block_time > TIMESTAMP '2024-07-15'
+    where logs.block_time > TIMESTAMP '2024-07-15' 
+        and cow_rn is null 
         AND (
                 (
                 topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
@@ -245,12 +249,50 @@ maker_logs as (
         and (varbinary_position(st.data,bytearray_substring(logs.topic2,13,20)) <> 0 
             or bytearray_substring(logs.topic1,13,20) = st.contract_address) 
     WHERE  topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
+        and cow_rn is null 
     )
     select * from tbl_all 
     where rn = 1 
 ),
+cow_trades as (
+    with base_logs as (
+     select distinct block_time, block_number, tx_hash, settler_address, logs.contract_address, topic0, topic1, 
+                     topic2, tx_from, tx_to, index, taker, amount as taker_amount,
+                     tx_index, evt_index, buy_token_address as maker_token, atoms_bought as maker_amount, logs.contract_address as taker_token,
+                     row_number() over (partition by tx_hash, logs.contract_address, amount order by index) rn
+    FROM cow_protocol_ethereum.trades
+    JOIN valid_logs as logs using (block_time, block_number, tx_hash)
+    where 
+        case when {{tx_hash}} = 0x then 1=1 else tx_hash = {{tx_hash}} end 
+        AND block_time > TIMESTAMP '2024-07-15'  
+        ),
+    base_logs_rn as (
+    select  *, 
+            row_number() over (partition by tx_hash order by index) cow_trade_rn 
+        from base_logs
+        )
+    select 
+        b.block_time,
+        b.block_number,
+        b.tx_hash,
+        tx_from as taker,
+        maker_token,
+        maker_amount,
+        taker_token,
+        taker_amount,
+        tx_to,
+        tx_from,
+        evt_index,
+        b.settler_address,
+        zid,
+        tag   
+    from base_logs_rn b
+    join settler_txs s on b.block_time = s.block_time 
+        and b.tx_hash = s.tx_hash 
+        and b.block_number = s.block_number 
+        and cow_rn = cow_trade_rn
+),
 tbl_trades as (
-
 select  block_time,
         block_number,
         tx_hash,
@@ -273,7 +315,8 @@ select  block_time,
         settler_address as contract_address 
     from taker_logs
     join maker_logs using (block_time, block_number, tx_hash)
-
+    union 
+    select * from cow_trades 
 )
 select * from tbl_trades 
 
