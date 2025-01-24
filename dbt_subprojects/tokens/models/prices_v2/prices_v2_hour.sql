@@ -11,6 +11,7 @@
 }}
 
 -- depends_on: {{ ref('prices_v2_day_sparse') }} (this is needed because it's only used in the conditional block)
+-- depends_on: {{ ref('prices_v2_hour_historical_microbatch') }}
 
 WITH sparse_prices as (
     select
