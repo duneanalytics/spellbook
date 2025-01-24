@@ -10,6 +10,7 @@
         )
 }}
 
+-- depends_on: {{ ref('prices_v2_day_sparse') }} (this is needed because it's only used in the conditional block)
 
 WITH sparse_prices as (
     select
