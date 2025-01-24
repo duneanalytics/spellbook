@@ -174,4 +174,79 @@ The `erc1155_sophon.evt_transfersingle` table contains single transfer events fo
 - Analyzing NFT trading
 - Monitoring collection activity
 - Understanding NFT ownership
+{% enddocs %}
+
+{% docs erc1155_sophon_evt_transferbatch_doc %}
+The `erc1155_sophon.evt_transferbatch` table contains batch transfer events for ERC1155 tokens on the Sophon blockchain. Each row represents a batch token transfer.
+
+**Main components:**
+- Event identifiers: `evt_tx_hash`, `evt_block_number`, `evt_block_time`, `evt_index`
+- Transfer details: `operator`, `from`, `to`, `ids`, `values`
+- Token info: `contract_address`
+
+**Main use cases:**
+- Tracking batch NFT transfers
+- Analyzing NFT trading patterns
+- Monitoring collection activity
+- Understanding NFT ownership changes
+{% enddocs %}
+
+{% docs erc1155_sophon_evt_ApprovalForAll_doc %}
+The `erc1155_sophon.evt_ApprovalForAll` table contains approval events for all tokens of an ERC1155 contract on the Sophon blockchain.
+
+**Main components:**
+- Event identifiers: `evt_tx_hash`, `evt_block_number`, `evt_block_time`, `evt_index`
+- Approval details: `owner`, `operator`, `approved`
+- Token info: `contract_address`
+
+**Main use cases:**
+- Tracking NFT approvals
+- Monitoring marketplace permissions
+- Analyzing operator authorizations
+- Understanding NFT trading patterns
+{% enddocs %}
+
+{% docs erc721_sophon_evt_transfer_doc %}
+The `erc721_sophon.evt_transfer` table contains transfer events for ERC721 tokens on the Sophon blockchain. Each row represents a token transfer.
+
+**Main components:**
+- Event identifiers: `evt_tx_hash`, `evt_block_number`, `evt_block_time`, `evt_index`
+- Transfer details: `from`, `to`, `tokenId`
+- Token info: `contract_address`
+
+**Main use cases:**
+- Tracking NFT transfers
+- Analyzing NFT ownership changes
+- Monitoring collection activity
+- Understanding NFT trading patterns
+{% enddocs %}
+
+{% docs erc721_sophon_evt_Approval_doc %}
+The `erc721_sophon.evt_Approval` table contains approval events for ERC721 tokens on the Sophon blockchain. Each row represents a token approval.
+
+**Main components:**
+- Event identifiers: `evt_tx_hash`, `evt_block_number`, `evt_block_time`, `evt_index`
+- Approval details: `owner`, `approved`, `tokenId`
+- Token info: `contract_address`
+
+**Main use cases:**
+- Tracking NFT approvals
+- Monitoring marketplace permissions
+- Analyzing trading patterns
+- Understanding NFT permissions
+{% enddocs %}
+
+{% docs erc721_sophon_evt_ApprovalForAll_doc %}
+The `erc721_sophon.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the Sophon blockchain.
+
+**Main components:**
+- Event identifiers: `evt_tx_hash`, `evt_block_number`, `evt_block_time`, `evt_index`
+- Approval details: `owner`, `operator`, `approved`
+- Token info: `contract_address`
+
+**Main use cases:**
+- Tracking NFT collection approvals
+- Monitoring marketplace permissions
+- Analyzing operator authorizations
+- Understanding NFT trading patterns
 {% enddocs %} 
