@@ -64,13 +64,24 @@ WITH base_transfers as (
         , t."from"
         , t.to
         , t.contract_address
-        , {{case_when_token_standard('evms_info.native_token_symbol', 'tokens_erc20.symbol', 'NULL')}} AS symbol
+        , COALESCE(
+            {{case_when_token_standard('evms_info.native_token_symbol', 'tokens_erc20.symbol', 'NULL')}},
+            {{case_when_token_standard('evms_info.native_token_symbol', 'prices.symbol', 'NULL')}}
+            ) AS symbol
         , t.amount_raw
-        , {{case_when_token_standard('t.amount_raw / power(10, 18)', 't.amount_raw / power(10, tokens_erc20.decimals)', 'cast(t.amount_raw as double)')}} AS amount
+        , COALESCE(
+            {{case_when_token_standard('t.amount_raw / power(10, 18)', 't.amount_raw / power(10, tokens_erc20.decimals)',
+                'cast(t.amount_raw as double)')}},
+            {{case_when_token_standard('t.amount_raw / power(10, 18)', 't.amount_raw / power(10, prices.decimals)',
+                'cast(t.amount_raw as double)')}}
+            ) AS amount
         , prices.price AS price_usd
-        , {{case_when_token_standard('(t.amount_raw / power(10, 18)) * prices.price',
-            '(t.amount_raw / power(10, tokens_erc20.decimals)) * prices.price',
-            'NULL')}} AS amount_usd
+        , COALESCE(
+            {{case_when_token_standard('(t.amount_raw / power(10, 18)) * prices.price',
+                '(t.amount_raw / power(10, tokens_erc20.decimals)) * prices.price', 'NULL')}},
+            {{case_when_token_standard('(t.amount_raw / power(10, 18)) * prices.price',
+                '(t.amount_raw / power(10, prices.decimals)) * prices.price', 'NULL')}}
+            ) AS amount_usd
     FROM
         base_transfers as t
     INNER JOIN
