@@ -17,7 +17,7 @@ sources:
       - name: PikaPerpV2_evt_ClosePosition
         description: "Details the swaps to close existing positions"
         
-  - name: pika_perp_v3_optimism # since this is latest pika contract
+  - name: pika_perp_v3_optimism # since this is latest pika contracts
     description: Optimism decoded tables related to Pika Protocol v3
     tables:
       - name: PikaPerpV3_evt_NewPosition
