@@ -227,7 +227,7 @@ taker_logs as (
 ),
 maker_logs as (
     with tbl_all as (
-    select distinct
+    select 
         logs.block_time, 
         logs.block_number, 
         logs.tx_hash, 
@@ -257,7 +257,7 @@ maker_logs as (
 ),
 cow_trades as (
     with base_logs as (
-     select distinct block_time, block_number, tx_hash, settler_address, logs.contract_address, topic0, topic1, 
+        select      block_time, block_number, tx_hash, settler_address, logs.contract_address, topic0, topic1, 
                      topic2, tx_from, tx_to, index, taker, amount as taker_amount,
                      tx_index, evt_index, buy_token_address as maker_token, atoms_bought as maker_amount, logs.contract_address as taker_token,
                      row_number() over (partition by tx_hash, logs.contract_address, amount order by index) rn
