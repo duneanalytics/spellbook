@@ -65,4 +65,6 @@ sources:
     tables:
       - name: ParaswapDeltav1_call_settleSwap
       - name: ParaswapDeltav1_call_safeSettleBatchSwap
-      - name: ParaswapDeltav2_call_swapSettle      
+      - name: ParaswapDeltav2_call_swapSettle
+      - name: ParaswapDeltav2_call_swapSettleBatch
+      - name: ParaswapDeltav2_evt_OrderSettled
