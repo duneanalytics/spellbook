@@ -16,10 +16,10 @@
 -- we currently need to setup to have both monthly historical batches, but smaller incremental batches with a daily lookback.
 -- currently all data in historical is rematerialized in the incremental model to prevent any chance of duplicates.
 -- after this end_date, this model will still run but is setup to produce no outputs.
--- you should set this date to maximum the start of the current batch, to make sure the last batch is always running empty once in prod.
-{% set end_date = '2025-01-01' %}   -- assume exclusive
+-- you should set this date to maximum the start of the previous batch, to make sure the last 2 batches are always running empty once in prod.
+{% set end_date = '2024-12-01' %}   -- assume exclusive
 
--- depends_on: {{ ref('prices_v2_day_sparse') }} (this is needed because it's only used in the conditional block)
+-- depends_on: {{ ref('prices_v2_day_sparse').render() }} (this is needed because it's only used in the conditional block)
 
 WITH sparse_prices as (
     select
