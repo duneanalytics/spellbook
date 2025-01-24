@@ -9,6 +9,17 @@
 
 SELECT contract_address, name, symbol
 FROM (VALUES
+      (0xaaaea1fb9f3de3f70e89f37b69ab11b47eb9ce6f, 'Voting Escrow Pharaoh', 'vePHAR'),
+      (0x2b9328d83becd4f04de05f129ba56781fa191e67, 'Cattopya', 'CAT'),
+      (0x34b4da1a0b06cfb09cb0efb46f02e667330e17db, 'Humping Unicorns', 'HUMP'),
+      (0x47d42b18d54ee0b94b59c3e41dcac3260e995e48, 'Doggerinos Accessories', 'DOGACC'),
+      (0x824ca4209DebA44Da8d2d71A4c52Bc0E62265FfA, 'Dev and Draw Presale Pass', 'DND PP'),
+      (0x8d904c8b6bb673d88cdbcd5798cda439f33cb3a4, 'Doggerinos', 'DOGGERINOS'),
+      (0x9190ba4c3d0a30128509517fa8c0f080fc603f99, 'Fragments of the City', 'CITY'),
+      (0xb563420b7b8119114968C70093c4966630ad16d3, 'Bruskies', 'Bruskies'),
+      (0xC93e7eFE0E863a1E4ffC6D2dcF7AfC1d3CCCE0b4, 'Mamboners', 'BONER'),
+      (0xe6cc79cA731A5e406024015bB2dE5346B52eCA2F, 'Peons V2', 'Peons V2'),
+      (0xfE09E309726FcDb92B05Df5f682185a0B0590dD9, 'RIPPED DAO', 'RIPPED'),
       (0x7098b1918eb2aa13945b8a489975bbbf0d5dd79b, 'Long Long Legacy', 'LLL'),
       (0xc732518034c5df52cdddf17486b9409bc7721e2c, 'Sausagers', 'MEAT'),
       (0x00bf1594507ccf60b41ad64524d4aba23b059f4b, 'Ferdy Frends', 'FREN'),
@@ -12037,5 +12048,6 @@ FROM (VALUES
         (0xffd2a1cf6dbb896c4db0df992e68e99e329f7a52, 'Angels® Mike Trout 1987 35th Anniversary Chrome T87C-50 Super Rare', 'MLB-22S1-S-1987AC37-M-CHR'),
         (0xffddfe5194e693c8954ddd9fa9bfb54625bf434c, 'Arne Maier FCA Color Splash Facsimile Signature Team Color TK-67 Legendary', 'BUND-22TK-L-CSTK-67-S-TMC'),
         (0xffe416277c4a301d3525bacaba00bc4f2000c29e, 'Miami Marlins® Bryan De La Cruz Base Independence Day RWB 22 Rare', 'MLB-22S1-R-B22-M-RWB'),
-        (0xfff6fa52337d60dbbd222671c0397d5908e5e31d, 'Lil Walter Drip', 'LWD')
+        (0xfff6fa52337d60dbbd222671c0397d5908e5e31d, 'Lil Walter Drip', 'LWD'),
+        (0xd1b4367dd9f235f9ee61878019d66e31511e98ee, 'Voidcaller', 'VOIDCALLER')
   ) AS temp_table (contract_address, name, symbol)
