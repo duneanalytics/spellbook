@@ -5,6 +5,25 @@ models:
     data_tests:
       - check_dex_info_relationship
 
+  - name: uniswap_v4_sepolia_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: uniswap
+      contributors: agaperste
+    config:
+      tags: [ 'base', 'dex', 'trades', 'uniswap', 'v4' ]
+    description: "uniswap base v4 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_base_base_trades_seed')
+          filter:
+            version: 4
+
   - name: uniswap_v3_base_base_trades
     meta:
       blockchain: base
