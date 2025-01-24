@@ -28,7 +28,7 @@ WITH sparse_prices as (
             , source_timestamp
         from {{ ref('prices_v2_hour_sparse') }}
         where 1=1
-            and timestamp > now() - interval '30' day
+            and timestamp > now() - interval '90' day
             {% if is_incremental() %}
             and {{ incremental_predicate('timestamp') }}
             {% endif %}
