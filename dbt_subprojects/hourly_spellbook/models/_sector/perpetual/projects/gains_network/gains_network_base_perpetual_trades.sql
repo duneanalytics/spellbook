@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'gains_network_perpetual_trades',
+    schema = 'gains_network',
     alias = 'perpetual_trades',
     post_hook='{{ expose_spells(blockchains = \'["base"]\',
                                     spell_type = "project",
@@ -17,8 +17,8 @@ FROM
 (
     {% for gains_network_perpetual_trades in gains_network_base_perpetual_trade_models %}
     SELECT
-		blockchain
-		,block_date
+        blockchain
+        ,block_date
         ,block_month
         ,block_time
         ,virtual_asset

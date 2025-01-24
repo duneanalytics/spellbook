@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'gains_network_base',
+    schema = 'gains_network_v1_base',
     alias = 'perpetual_trades',
     partition_by = ['block_month'],
     materialized = 'incremental',
