@@ -8,6 +8,25 @@ models:
           column_name: amount_usd
           max_value: 1000000000
 
+  - name: uniswap_v4_bnb_base_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: uniswap
+      contributors: agaperste
+    config:
+      tags: [ 'bnb', 'dex', 'trades', 'uniswap', 'v4' ]
+    description: "uniswap bnb v4 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_bnb_base_trades_seed')
+          filter:
+            version: 4
+
   - name: uniswap_v3_bnb_base_trades
     meta:
       blockchain: bnb
