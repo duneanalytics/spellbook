@@ -27,7 +27,7 @@ sources:
         loaded_at_field: call_block_time
       - name: raydium_amm_call_swapBaseIn
         loaded_at_field: call_block_time
-  - name: raydium_cpmm_solana
+  - name: raydium_cp_solana
     description: "raydium_cpmm_solana v5 decoded tables"
     freshness: # default freshness
       warn_after: { count: 12, period: hour }
