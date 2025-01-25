@@ -54,3 +54,59 @@ models:
       - &evt_index
         name: evt_index
         description: "Event index"
+
+  - name: aave_v3_base_interest_rates
+    meta:
+      blockchain: base
+      sector: lending
+      project: aave_v3
+      contributors: mikeghen1, batwayne, chuxin
+    config:
+      tags: ['base', 'aave_v3', 'interest', 'aave', 'lending']
+    description: "Hourly aave interest rates on base"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - reserve
+            - symbol
+            - hour
+    columns:
+      - &reserve
+        name: reserve
+        description: "Aave reserve contract address"
+      - *symbol
+      - &hour
+        name: hour
+        description: "Block timestamp truncated to hours"
+      - &deposit_apy
+        name: deposit_apy
+        description: "Hourly deposit interest rate value of the reserve"
+      - &stable_borrow_apy
+        name: stable_borrow_apy
+        description: "Hourly stable borrow interest rate value of the reserve"
+      - &variable_borrow_apy
+        name: variable_borrow_apy
+        description: "Hourly variable borrow interest rate value of the reserve"
+
+  - name: aave_base_interest_rates
+    meta:
+      blockchain: base
+      sector: lending
+      project: aave
+      contributors: mikeghen1, batwayne, chuxin
+    config:
+      tags: ['base', 'aave_v3', 'interest', 'aave', 'lending']
+    description: "Hourly aave interest rates on base"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - reserve
+            - symbol
+            - hour
+    columns:
+      - *reserve
+      - *symbol
+      - *hour
+      - *deposit_apy
+      - *stable_borrow_apy
+      - *variable_borrow_apy

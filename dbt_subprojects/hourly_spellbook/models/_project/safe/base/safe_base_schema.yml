@@ -6,9 +6,6 @@ models:
       blockchain: base
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'base']
     description: "Safe addresses"
@@ -37,9 +34,6 @@ models:
       blockchain: base
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'transfers', 'base']
     description: "Eth transfers for safes"
@@ -69,9 +63,6 @@ models:
       blockchain: base
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'singletons', 'base']
     description: "Singletons addresses used with Safes"
@@ -87,9 +78,6 @@ models:
       blockchain: base
       project: safe
       contributors: danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'base']
     description: "Safe transactions"

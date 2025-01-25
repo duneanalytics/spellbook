@@ -39,7 +39,8 @@ FROM (
         token_amount,
         protocol_fee_collected_usd, 
         treasury_share,
-        treasury_revenue_usd
+        treasury_fee_usd,
+        lp_fee_collected_usd
     FROM {{ protocol_fee }}
     {% if not loop.last %}
     UNION ALL
