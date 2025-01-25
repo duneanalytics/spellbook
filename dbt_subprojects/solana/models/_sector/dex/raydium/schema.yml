@@ -163,7 +163,7 @@ models:
       - *inner_instruction_index
       - *tx_index
 
-- name: raydium_v5_base_trades
+  - name: raydium_v5_base_trades
     meta:
       blockchain: solana
       contributors: [ 0xsharples ]
