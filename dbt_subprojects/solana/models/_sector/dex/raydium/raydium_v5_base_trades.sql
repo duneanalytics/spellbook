@@ -1,6 +1,6 @@
  {{
   config(
-        schema = 'raydium_v5', -- Raydium CP-Swap (or CPMM). Similar logic to AMM (raydium_v4 table)
+        schema = 'raydium_v5',
         alias = 'base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
