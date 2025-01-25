@@ -252,10 +252,28 @@ maker_logs as (
         ON st.tx_hash = logs.tx_hash 
         AND logs.block_time = st.block_time 
         AND st.block_number = logs.block_number
-        and (varbinary_position(st.data,bytearray_substring(logs.topic2,13,20)) <> 0 
-            or bytearray_substring(logs.topic1,13,20) in (st.contract_address, settler_address)) 
+        
     WHERE  topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
         and cow_rn is null 
+        AND (
+                (
+                topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
+                AND ( 
+                        (
+                            bytearray_substring(logs.topic1,13,20) = st.contract_address 
+                         OR bytearray_substring(logs.topic2,13,20) = settler_address
+                         )
+                 OR ( 
+                            bytearray_substring(logs.topic1,13,20) = settler_address
+                        AND bytearray_substring(logs.topic2,13,20) = tx_from  
+                        )  
+                OR ( 
+                            bytearray_substring(logs.topic1,13,20) = tx_to
+                        AND bytearray_substring(logs.topic2,13,20) = 0x970aFf41E00833A322e1953aCe6E5Cb6A3D4ac3F  
+                        )   
+                 )
+             )
+          ) 
     )
     select * from tbl_all 
     where rn = 1 
