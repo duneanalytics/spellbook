@@ -12,7 +12,10 @@ SELECT
     , trim(symbol) as symbol
     , decimals
 FROM (VALUES
-    (0x01c0987e88f778df6640787226bc96354e1a9766, 'UAT', 18)
+    (0x6982508145454ce325ddbe47a25d4ec3d2311933, 'PEPE', 18)
+    , (0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce, 'SHIB', 18)
+    , (0x514910771af9ca656af840dff83e8264ecf986ca, 'LINK', 18)
+    , (0x01c0987e88f778df6640787226bc96354e1a9766, 'UAT', 18)
     , (0x080eb7238031f97ff011e273d6cad5ad0c2de532, 'KIT', 18)
     , (0x0efc2390c79c47452898a234a27f2b9c39a7a725, 'EST', 18)
     , (0x1014613e2b3cbc4d575054d4982e580d9b99d7b1, 'BCV', 8)
