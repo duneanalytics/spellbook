@@ -19,7 +19,7 @@ def create_ref_dict():
             ref_dict[line[0]] = (line[1], line[2])
     return ref_dict
 
-# parse all .sql in the spellbook directoryand its subdirectories then replace references with sources
+# parse all .sql in the spellbook directory and its subdirectories then replace references with sources
 def parse_spellbook(ref_dict):
     for root, dirs, files in os.walk('models'):
         for file in files:
