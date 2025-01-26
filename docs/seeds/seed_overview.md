@@ -18,6 +18,6 @@ Seeds will be required in these sector-level spell additions to ensure proper le
 
 ## How Do I Track Seed Tests Running During Development?
 
-The automated CI test which runs on each PR will execute the command to run & build seeds as needed, when present within a PR. After the seed builds, the models run to build spells in the CI test environment. After each is completed, the test(s) assigned in the model schema file will kick off the seed test, to compare data in the seed vs. the model output. If the PR CI test fails on testing phase for seed tests, that means either the seed needs fixed and/or the model logic is incorrect and needs updated.
+The automated CI test which runs on each PR will execute the command to run & build seeds as needed, when present within a PR. After the seed builds, the models run to build spells in the CI test environment. After each is completed, the test(s) assigned in the model schema file will kick off the seed test, to compare data in the seed vs. the model output. If the PR CI test fails on testing phase for seed tests, that means either the seed needs to be fixed and/or the model logic is incorrect and needs to be updated.
 
 For a deeper dive into how to read & use the attached CI tests to PRs, refer to [the CI docs](../ci_test/ci_test_overview.md).
