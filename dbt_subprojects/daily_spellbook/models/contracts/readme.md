@@ -1,5 +1,5 @@
 # Runbook to add a new chain
-
+https://github.com/loopy811/spellbook/tree/links
 1. Add new files for the chain (can copy from ethereum) in `contracts/<blockchain>/contract_creator_project_mapping/`
 2. Add this new chain alias to `contracts/<blockchain>/_schema.sql`
 3. Add refs to the models to `contracts/contracts_contract_mapping.sql` & `contracts/contracts_self_destruct_contracts.sql`
@@ -9,7 +9,7 @@
 
 # Contract Mapping
 
-Table models are defined in [`macros/models/_sector/contracts`](../macros/models/_sector/contracts)
+Table models are defined in [`macros/sector/contracts`](../../macros/sector/contracts)
 
 This repository contains all the source code for `contracts.contract_mapping` that you can use to join contract addresses on each chain to pull our mapped project names in the `contract_project` field.
 
