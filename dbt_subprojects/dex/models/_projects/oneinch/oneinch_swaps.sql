@@ -140,7 +140,7 @@ tokens as (
     from calls
     where
         protocol = 'LOP'
-        and cardinality(call_trace_address) = 0
+        and flags['direct']
 )
 
 , trusted_tokens as (
@@ -248,8 +248,7 @@ select
     , receiver
     , order_hash
     , map_concat(flags, map_from_entries(array[
-        ('direct', cardinality(call_trace_address) = 0)
-        , ('second_side', second_side)
+        ('second_side', second_side)
         , ('contracts_only', contracts_only)
         , ('cross_chain', hashlock is not null)
     ])) as flags

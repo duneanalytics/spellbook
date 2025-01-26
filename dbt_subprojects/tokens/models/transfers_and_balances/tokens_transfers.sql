@@ -14,6 +14,7 @@
                                             ,"linea"
                                             ,"mantle"
                                             ,"optimism"
+                                            ,"ronin"
                                             ,"polygon"
                                             ,"scroll"
                                             ,"sei"
@@ -42,6 +43,7 @@
     ,'mantle'
     ,'optimism'
     ,'polygon'
+    ,'ronin'
     ,'scroll'
     ,'sei'
     ,'tron'

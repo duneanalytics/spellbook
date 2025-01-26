@@ -1255,7 +1255,6 @@ FROM
     ('donk-donkey', 'ethereum', 'DONK', 0xe4f6d46c244bb7cf3e218cdfb5c35cf9a4d9c920, 18),
     ('evn-evolution-finance', 'ethereum', 'EVN', 0x9af15d7b8776fa296019979e70a5be53c714a7ec, 18),
     ('fair-fairgame', 'ethereum', 'FAIR', 0x9b20dabcec77f6289113e61893f7beefaeb1990a, 18),
-    ('gm-gm-token', 'ethereum', 'GM', 0xbc7250c8c3eca1dfc1728620af835fca489bfdf3, 9),
     ('gnft-gnft', 'ethereum', 'GNFT', 0xc502002aeb1b9309fccb016adf50507987fc6c2b, 18),
     ('happy-happyfans', 'ethereum', 'HAPPY', 0x3079f61704e9efa2bcf1db412f735d8d4cfa26f4, 18),
     ('hmt-human-protocol', 'ethereum', 'HMT', 0xd1ba9bac957322d6e8c07a160a3a8da11a0d2867, 18),
@@ -1860,8 +1859,24 @@ FROM
     ('ebull-ethereum-is-good4058', 'ethereum', 'EBULL',0x71297312753ea7a2570a5a3278ed70d9a75f4f44, 9),
     ('fight-fight-to-maga', 'ethereum', 'FIGHT',0x8802269d1283cdb2a5a329649e5cb4cdcee91ab6, 9),
     ('sato-atsuko-sato', 'ethereum', 'SATO',0x5de758bba013e58dae2693aea3f0b12b31a3023d, 18),
-    ('kekec-the-balkan-dwarf', 'ethereum', 'KEKEC', 0x8c7ac134ed985367eadc6f727d79e8295e11435c, 18)
-) as temp (token_id, blockchain, symbol, contract_address, decimals)
+    ('kekec-the-balkan-dwarf', 'ethereum', 'KEKEC', 0x8c7ac134ed985367eadc6f727d79e8295e11435c, 18),
+    ('oas-oases-chain', 'ethereum', 'OAS', 0x89885fc1f76c3f4cc719640e33c315227da7003a, 18),
+    ('sidus-sidus', 'ethereum', 'SIDUS', 0x549020a9Cb845220D66d3E9c6D9F9eF61C981102, 18),
+    ('mcg-metalcore', 'ethereum', 'MCG', 0xc9E503562d0Db0A2629288a5D3b1c94Ea7741869, 18),
+    ('mavia-heroes-of-mavia', 'ethereum', 'MAVIA', 0x24fcfc492c1393274b6bcd568ac9e225bec93584, 18),
+    ('shrub-shrub', 'ethereum', 'SHRUB', 0x3b991130eae3cca364406d718da22fa1c3e7c256, 18),
+    ('sbr-strategic-bitcoin-reserve', 'ethereum', 'SBR', 0xd6203889c22d9fe5e938a9200f50fdffe9dd8e02, 9),
+    ('sigma2-sigma', 'ethereum', 'SIGMA', 0x18a8D75F70eAEad79B5A55903D036ce337F623A5, 18),
+    ('mstr-mstr2100', 'ethereum', 'MSTR', 0x42069026EAC8Eee0Fd9b5f7aDFa4f6E6D69a2B39, 9), 
+    ('usdl-lift-dollar', 'ethereum', 'USDL', 0xbdC7c08592Ee4aa51D06C27Ee23D5087D65aDbcD, 18), 
+    ('usr-resolv-usr', 'ethereum', 'USR', 0x66a1e37c9b0eaddca17d3662d6c05f4decf3e110, 18),
+    ('sovrn-sovrun','ethereum', 'SOVRN', 0x031B8d752d73d7Fe9678ACEf26e818280D0646b4, 18),
+    ('apw-spectra','ethereum', 'APW', 0x4104b135dbc9609fc1a9490e61369036497660c8, 18),
+    ('wagmi5-wagmi', 'ethereum', 'WAGMI', 0x92CC36D66e9d739D50673d1f27929a371FB83a67, 18),
+    ('deusd-elixir-deusd','ethereum', 'DEUSD', 0x15700b564ca08d9439c58ca5053166e8317aa138, 18),
+    ('morpho-morpho','ethereum', 'MORPHO', 0x58d97b57bb95320f9a05dc918aef65434969c2b2, 18)
+
+   ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
     0x841fb148863454a3b3570f515414759be9091465    -- SHIH
@@ -1888,4 +1903,5 @@ where contract_address not in (
     ,0xee06a81a695750e71a662b51066f2c74cf4478a0   -- DG, bad price feed
     ,0x9e24415d1e549ebc626a13a482bb117a2b43e9cf   -- LOVELY, rugpull
     ,0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3   -- BUBBLE, bad price feed
+    ,0xbc7250c8c3eca1dfc1728620af835fca489bfdf3   -- GM, bad price feed
 )

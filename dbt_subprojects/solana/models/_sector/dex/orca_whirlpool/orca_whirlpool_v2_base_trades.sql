@@ -38,6 +38,26 @@ with
 
         --https://docs.orca.so/reference/trading-fees, should track protocol fees too. and rewards.
         , fee_updates as (
+             SELECT
+                whirlpool_id
+                , update_time
+                , fee_rate
+            FROM (
+                --get defaultFeeRate at time of pool init based on account_feeTier
+                SELECT
+                    fi.account_whirlpool as whirlpool_id
+                    , fi.call_block_time as update_time
+                    , fi.account_feeTier as fee_tier
+                    , ftd.fee_time
+                    , ftd.fee_rate
+                    , row_number() over (partition by fi.account_whirlpool order by ftd.fee_time desc) as recent_update
+                FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }} fi
+                LEFT JOIN fee_tiers_defaults ftd ON ftd.fee_tier = account_feeTier AND ftd.fee_time <= fi.call_block_time
+            )
+            WHERE recent_update = 1
+
+            UNION all
+
             SELECT
                 whirlpool_id
                 , update_time
@@ -76,7 +96,29 @@ with
         , fu.update_time
         , fu.fee_rate
         , ip.call_tx_id as init_tx
-    FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePoolV2') }} ip
+    FROM (
+        SELECT
+        account_tokenMintA
+        , account_tokenMintB
+        , account_tokenVaultA
+        , account_tokenVaultB
+        , account_whirlpool
+        , tickSpacing
+        , call_tx_id
+        FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }}
+        
+        UNION ALL 
+        
+        SELECT
+        account_tokenMintA
+        , account_tokenMintB
+        , account_tokenVaultA
+        , account_tokenVaultB
+        , account_whirlpool
+        , tickSpacing
+        , call_tx_id
+        FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePoolV2') }}
+        ) ip
     LEFT JOIN fee_updates fu ON fu.whirlpool_id = ip.account_whirlpool
     )
 

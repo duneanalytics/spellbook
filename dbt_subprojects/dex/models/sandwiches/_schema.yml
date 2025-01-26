@@ -667,6 +667,47 @@ models:
       - *amount_usd
       - *evt_index
 
+  - name: dex_sei_sandwiches
+    meta:
+      blockchain: sei
+      sector: dex
+      contributors: hildobby, silointern
+    config:
+      tags: ["dex", "mev", "sandwiches", "sei"]
+    description: >
+      DEX MEV Sandwich Trades on SEI Network
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *token_pair
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
   - name: dex_ethereum_sandwiched
     meta:
       blockchain: ethereum
@@ -1168,6 +1209,47 @@ models:
       tags: ["dex", "mev", "sandwiched", "zora"]
     description: >
       DEX MEV Sandwiched Trades on Zora Network
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_time
+      - *block_month
+      - *block_number
+      - *token_sold_address
+      - *token_bought_address
+      - *token_sold_symbol
+      - *token_bought_symbol
+      - *maker
+      - *taker
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *project_contract_address
+      - *token_pair
+      - *tx_index
+      - *token_sold_amount_raw
+      - *token_bought_amount_raw
+      - *token_sold_amount
+      - *token_bought_amount
+      - *amount_usd
+      - *evt_index
+
+  - name: dex_sei_sandwiched
+    meta:
+      blockchain: sei
+      sector: dex
+      contributors: hildobby, silointern
+    config:
+      tags: ["dex", "mev", "sandwiched", "sei"]
+    description: >
+      DEX MEV Sandwiched Trades on SEI Network
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

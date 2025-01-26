@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: wagmi_sonic
+    tables:
+      - name: UniswapV3Factory_evt_PoolCreated
+      - name: UniswapV3Pool_evt_Swap
+  - name: silverswap_sonic
+    tables:
+      - name: AlgebraFactory_evt_Pool
+      - name: AlgebraPool_evt_Swap
