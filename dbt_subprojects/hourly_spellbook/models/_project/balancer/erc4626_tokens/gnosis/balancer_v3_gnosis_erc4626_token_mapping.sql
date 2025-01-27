@@ -8,21 +8,22 @@
 }}
 
 WITH aave_tokens AS(
-
 SELECT 
-    erc4626_token,
-    erc4626_token_name,
-    erc4626_token_symbol,
-    underlying_token,
-    underlying_token_symbol,
-    decimals
-FROM (VALUES 
-     (0x7c16F0185A26Db0AE7a9377f23BC18ea7ce5d644, 'Static Aave Gnosis GNO', 'WaGnoGNO', 0x9C58BAcC331c9aa871AFD802DB6379a98e80CEdb, 'GNO', 18),
-     (0x773CDA0CADe2A3d86E6D4e30699d40bB95174ff2, 'Static Aave Gnosis wstETH', 'WaGnowstETH', 0x6c76971f98945ae98dd7d4dfca8711ebea946ea6, 'wstETH', 18),
-     (0x57f664882F762FA37903FC864e2B633D384B411A, 'Static Aave Gnosis WETH', 'WaGnoWETH', 0x6a023ccd1ff6f2045c3309768ead9e68f978f6e1, 'WETH', 18),
-     (0x51350d88c1bd32Cc6A79368c9Fb70373Fb71F375, 'Static Aave Gnosis USDC', 'waGnoUSDCe', 0x2a22f9c3b484c3629090FeED35F17Ff8F88f76F0, 'USDC', 6)
-    ) AS temp_table (erc4626_token, erc4626_token_name, erc4626_token_symbol, underlying_token, underlying_token_symbol, decimals)
-)
+    b.output_0 AS erc4626_token,
+    t2.symbol AS erc4626_token_name,
+    t2.symbol AS erc4626_token_symbol,
+    BYTEARRAY_SUBSTRING(b.salt, 13, 24) AS underlying_token,
+    t1.symbol AS underlying_token_symbol,
+    t2.decimals AS decimals
+FROM {{ source('aave_v3_gnosis', 'StataTokenV2_evt_Initialized') }} a
+JOIN {{ source('aave_v3_gnosis', 'StataTokenV2Factory_call_createDeterministic') }} b
+ON b.output_0 = a.contract_address
+JOIN {{ source('tokens', 'erc20') }} t1
+ON t1.blockchain = 'gnosis'
+AND BYTEARRAY_SUBSTRING(b.salt, 13, 36) = t1.contract_address
+JOIN {{ source('tokens', 'erc20') }} t2
+ON t2.blockchain = 'gnosis'
+AND b.output_0 = t2.contract_address)
 
 SELECT 
     'gnosis' AS blockchain, 

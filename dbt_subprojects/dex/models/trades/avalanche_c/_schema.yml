@@ -8,6 +8,25 @@ models:
           column_name: amount_usd
           max_value: 1000000000
 
+  - name: uniswap_v4_avalanche_c_base_trades
+    meta:
+      blockchain: avalanche_c
+      sector: dex
+      project: uniswap
+      contributors: agaperste
+    config:
+      tags: [ 'avalanche_c', 'dex', 'trades', 'uniswap', 'v4' ]
+    description: "uniswap avalanche_c v4 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_avalanche_c_base_trades_seed')
+          filter:
+            version: 4
+
   - name: uniswap_v3_avalanche_c_base_trades
     meta:
       blockchain: avalanche_c
