@@ -82,3 +82,36 @@ models:
       - &block_month
         name: block_month
         description: "Month of the transaction"
+
+  - name: gains_network_perpetual_trades
+    meta:
+      blockchain: base
+      sector: perpetual
+      contributors: princi
+    config:
+      tags: ['base', gains network, 'perpetuals', 'perps']
+    description: >
+      All gains network perpetual trades on Base
+    columns:
+      - *blockchain
+      - *block_date
+      - *block_month
+      - *block_time
+      - *virtual_asset
+      - *underlying_asset
+      - *market
+      - *market_address
+      - *volume_usd
+      - *fee_usd
+      - *margin_usd
+      - *trade
+      - *project
+      - *version
+      - *frontend
+      - *trader
+      - *volume_raw
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      
