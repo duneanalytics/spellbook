@@ -718,5 +718,19 @@ FROM
         ('tank-agenttank', 'solana', 'TANK', 'GAMwtMB6onAvBNBQJCJFuxoaqfPH8uCQ2dewNMVVpump', 6),
         ('pengu-pudgy-penguins', 'solana', 'PENGU', '2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv', 6),
         ('trump-official-trump', 'solana', 'TRUMP', '6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN', 6),
-        ('melania-melania-meme','solana', 'MELANIA', 'FUAfBo2jgks6gB4Z4LfZkqSZgzNucisEHqnNebaRxM1P', 6)
+        ('melania-melania-meme','solana', 'MELANIA', 'FUAfBo2jgks6gB4Z4LfZkqSZgzNucisEHqnNebaRxM1P', 6),
+        ('usds-usds', 'solana', 'USDS', 'USDSwr9ApdHk5bvJKMjzff41FfuX8bSxdKcR81vTwcA', 6),
+        ('fartcoin-fartcoin', 'solana', 'FARTCOIN', '9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump', 6),
+        ('smole-smolecoin', 'solana', 'SMOLE', '9Ttyez3xiruyj6cqaR495hbBkJU6SUWdV6AmQ9MvbyyS', 6),
+        ('grass-grass', 'solana', 'GRASS', 'Grass7B4RdKfBCjTKgSqnXkqjwiGvQyFbuSCUJr3XXjs', 9),
+        ('ai16z-ai16z', 'solana', 'AI16Z', 'HeLp6NuQkmYB4pYWo2zYs22mESHXPQYzXbB8n4V98jwC', 9),
+        ('zerebro-zerebro', 'solana', 'ZEREBRO', '8x5VqbHA8D7NkD52uNuS5nnt3PwA8pLD34ymskeSo2Wn', 6),
+        ('swarms-swarms', 'solana', 'SWARMS', '74SBV4zDXxTRgv1pEMoECskKBkZHc2yGPnc7GYVepump', 6),
+        ('arcsol-ai-rig-complex', 'solana', 'ARC', '61V8vBaqAGMpgDQi4JcAwo1dmBGHsyhzodcPqnEVpump', 6),
+        ('act3-act-i-the-ai-prophecy', 'solana', 'ACT', 'GJAFwWjJ3vnTsrQVabjBVK2TYB1YtRCQXRDfDgUnpump',6),
+        ('llm-large-language-model', 'solana', 'LLM', '98mb39tPFKQJ4Bif8iVg9mYb9wsfPZgpgN1sxoVTpump', 6),
+        ('nap-snap', 'solana', '$NAP', '4G86CMxGsMdLETrYnavMFKPhQzKTvDBYGMRAdVtr72nu', 6),
+        ('vine-vine-coin', 'solana', 'VINE', '6AJcP7wuLwmRYLBNbi825wgguaPsWzPBEHcHndpRpump', 6),
+        ('pippin-pippin', 'solana', 'PIPPIN','Dfh5DzRgSvvCFDoYc2ciTkMrbDfRKybA4SoFbPmApump', 6),
+        ('chillguy-just-a-chill-guy', 'solana', 'CHILLGUY', 'Df6yfrKC8kZE3KNkrHERKzAetSxbrWeniQfyJY4Jpump', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
