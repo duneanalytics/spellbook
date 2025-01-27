@@ -17,4 +17,5 @@ FROM (VALUES
     , (0x1d05e4e72cD994cdF976181CfB0707345763564d, 'WBTC', 8)
     , (0x722E8BdD2ce80A4422E880164f2079488e115365, 'WETH', 18)
     , (0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1, 'DAI', 18)
+    , (0xe3dbc4f88eaa632ddf9708732e2832eeaa6688ab, 'AIUS', 18)
 ) AS temp_table (contract_address, symbol, decimals)

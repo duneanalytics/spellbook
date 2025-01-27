@@ -45,3 +45,22 @@ models:
           seed_file: ref('uniswap_zora_base_trades_seed')
           filter:
             version: 3
+
+  - name: uniswap_v4_zora_base_trades
+    meta:
+      blockchain: zora
+      sector: dex
+      project: uniswap
+      contributors: agaperste
+    config:
+      tags: [ 'zora', 'dex', 'trades', 'uniswap', 'v4' ]
+    description: "uniswap zora v4 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_zora_base_trades_seed')
+          filter:
+            version: 4
