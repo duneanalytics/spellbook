@@ -8,4 +8,4 @@ sources:
 
       - name: StataTokenV2_evt_Initialized    
 
-      - name: StataTokenV2Factory_evt_StataTokenCreated    
+      - name: StataTokenV2Factory_call_createDeterministic          
