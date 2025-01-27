@@ -46,4 +46,7 @@ FROM (VALUES
     , (0x773CDA0CADe2A3d86E6D4e30699d40bB95174ff2, 'waSonicSOLVBTC', 18)    
     , (0x0e65f5a7cb56641e31bc5c9d53388db7ac7eacae, 'atS', 18)
     , (0xcf3fe6edfee9c7fdf7d53dc58f4efe66fe110981, 'BUNNY', 18)  
+    , (0x52Fc9E0a68b6a4C9b57b9D1d99fB71449A99DCd8, 'bSolvBTC.BBN-13', 18)    
+    , (0xD31E89Ffb929b38bA60D1c7dBeB68c7712EAAb0a, 'bSolvBTC-13', 18)
+    , (0x7870ddFd5ACA4E977B2287e9A212bcbe8FC4135a, 'BeefySiloV2USDC.e', 6)      
 ) as temp (contract_address, symbol, decimals)
