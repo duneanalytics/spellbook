@@ -35,6 +35,7 @@
                                         ,"zora"
                                         ,"bob"
                                         ,"sonic"
+                                        ,"sophon"
                                     ]\',
                                     "sector",
                                     "tokens",
@@ -81,6 +82,7 @@
     ,'tokens_sonic': {'blockchain': 'sonic', 'model': ref('tokens_sonic_erc20')}
     ,'tokens_corn': {'blockchain': 'corn', 'model': ref('tokens_corn_erc20')}
     ,'tokens_ink': {'blockchain': 'ink', 'model': ref('tokens_ink_erc20')}
+    ,'tokens_sophon': {'blockchain': 'sophon', 'model': ref('tokens_sophon_erc20')}
 } %}
 
 with automated_source as (
