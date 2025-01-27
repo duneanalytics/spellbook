@@ -8,7 +8,7 @@ with raw_transfers as (
         , 'sent' as transfer_direction
         , (sum(amount_usd) * -1) as transfer_amount_usd
     from
-        {{ source('tokens', 'transfers') }}
+        {{ ref('tokens_transfers') }}
     where
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
@@ -29,7 +29,7 @@ with raw_transfers as (
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
     from
-        {{ source('tokens', 'transfers') }}
+        {{ ref('tokens_transfers') }}
     where
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
@@ -116,10 +116,10 @@ with raw_transfers as (
         , 'sent' as transfer_direction
         , (sum(amount_usd) * -1) as transfer_amount_usd
     from
-        {{ source('tokens', 'transfers') }}
+        {{ ref('tokens_transfers') }}
     where
         blockchain = '{{blockchain}}'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
@@ -137,10 +137,10 @@ with raw_transfers as (
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
     from
-        {{ source('tokens', 'transfers') }}
+        {{ ref('tokens_transfers') }}
     where
         blockchain = '{{blockchain}}'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
