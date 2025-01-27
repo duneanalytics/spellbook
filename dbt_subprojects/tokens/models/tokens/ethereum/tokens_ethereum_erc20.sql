@@ -12,6 +12,9 @@ SELECT
     , trim(symbol) as symbol
     , decimals
 FROM (VALUES
+    (0x8e87e65ba24b708f1f458d208cc5537ac120bc17, 'PYTH', 6)
+    , (0x3717d9e9d0921c219674c2b0c0ff3b31519b1f62, 'ROCI', 18)
+    , (0x8544fe9d190fd7ec52860abbf45088e81ee24a8c, 'TOSHI', 18)
     (0x01c0987e88f778df6640787226bc96354e1a9766, 'UAT', 18)
     , (0x080eb7238031f97ff011e273d6cad5ad0c2de532, 'KIT', 18)
     , (0x0efc2390c79c47452898a234a27f2b9c39a7a725, 'EST', 18)
