@@ -246,7 +246,7 @@ maker_logs as (
         tag,
         amount as maker_amount,
         row_number() over (partition by logs.tx_hash order by logs.index desc ) rn,
-        bytearray_substring(logs.topic2,13,20) as taker 
+        logs.taker as taker 
     from valid_logs as logs 
     join swap_logs st
         ON st.tx_hash = logs.tx_hash 
