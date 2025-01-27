@@ -15,7 +15,8 @@ WITH trusted_tokens AS (
                 , contract_address
         FROM (
                 VALUES
-                ('arbitrum', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8)
+                ('abstract', 0x4200000000000000000000000000000000000006)
+                , ('arbitrum', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8)
                 , ('arbitrum', 0x82af49447d8a07e3bd95bd0d56f35241523fbab1)
                 , ('arbitrum', 0xaf88d065e77c8cc2239327c5edb3a432268e5831)
                 , ('arbitrum', 0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9)
