@@ -64,7 +64,7 @@ SELECT
     pe.block_time,
     CAST(NULL AS VARCHAR) as virtual_asset,
     CAST(NULL AS VARCHAR) as underlying_asset,
-    CAST(NULL AS VARCHAR) as as market,
+    CAST(NULL AS VARCHAR) as market,
     pe.market_address,
     pe.volume_usd,
     pe.fee_usd,
