@@ -29,4 +29,6 @@ FROM
     , ('sceth-sonic-eth', 'scETH', 0x3bce5cb273f0f148010bbea2470e7b5df84c7812, 18)
     , ('sts-staked-sonic', 'stS', 0xe5da20f15420ad15de0fa650600afc998bbe3955, 18)
     , ('ag-silver', 'AG', 0x005851f943ee2957b1748957f26319e4f9edebc1, 18)
+    , ('solvbtc-solv-protocol-solvbtc', 'SOLVBTC', 0x541FD749419CA806a8bc7da8ac23D346f2dF8B77, 18)
+    , ('solvbtcbbn-solv-protocol-solvbtcbbn', 'SOLVBTCBBN', 0xCC0966D8418d412c599A6421b760a847eB169A8c, 18)
 ) as temp (token_id, symbol, contract_address, decimals)

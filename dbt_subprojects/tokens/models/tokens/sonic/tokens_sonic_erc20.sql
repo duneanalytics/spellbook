@@ -42,4 +42,8 @@ FROM (VALUES
     , (0x455d5f11Fea33A8fa9D3e285930b478B6bF85265, 'stkscETH', 18)
     , (0x541FD749419CA806a8bc7da8ac23D346f2dF8B77, 'SolvBTC', 18)
     , (0xCC0966D8418d412c599A6421b760a847eB169A8c, 'solvBTC.bbn', 18)
+    , (0xA28d4dbcC90C849e3249D642f356D85296a12954, 'waSonicSOLVBTCBBN', 18)
+    , (0x773CDA0CADe2A3d86E6D4e30699d40bB95174ff2, 'waSonicSOLVBTC', 18)    
+    , (0x0e65f5a7cb56641e31bc5c9d53388db7ac7eacae, 'atS', 18)
+    , (0xcf3fe6edfee9c7fdf7d53dc58f4efe66fe110981, 'BUNNY', 18)  
 ) as temp (contract_address, symbol, decimals)
