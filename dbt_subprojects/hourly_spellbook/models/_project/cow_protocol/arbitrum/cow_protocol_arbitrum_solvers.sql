@@ -79,7 +79,11 @@ known_solver_metadata (address, environment, name) as (
                 (0x8C3f83f6A489cCbA2E3df304034F8C120cEb3527, 'barn', 'GlueX_Protocol'),
                 (0x49E1F55D4a695291533BB0A993aca5D58E90C613, 'prod', 'GlueX_Protocol'),
                 (0x3144a51a7699c629070d6aAEf68256c2d07a6334, 'barn', 'OKX'),
-                (0x7F636D152AB0Cfc68A899d4dF441F2322cd78C6B, 'prod', 'OKX')
+                (0x7F636D152AB0Cfc68A899d4dF441F2322cd78C6B, 'prod', 'OKX'),
+                (0x7199cF10CF16b85fb59170d5c83d114Ac11d3afA, 'barn', 'ApeOut_1inch'),
+                (0xDd8a1F39fFBFB77c488054CB18f53aa9A3c4bD9D, 'prod', 'ApeOut_1inch'),
+                (0x312B5D8AbC6b7C8355B86f5F7803E9cD97AE8D75, 'barn', 'Helixbox'),
+                (0x4CdbA844CEB949567eA18b9EF185515fA626c69D, 'prod', 'Helixbox')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

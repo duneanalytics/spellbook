@@ -71,7 +71,11 @@ with
                 ('1DEX', 'DEXYosS6oEGvk8uCDayvwEZz4qEyDJRf9nFgYCaqPMTm'),
                 ('Obric V2', 'obriQD1zbpyLz95G5n7nJe6a4DPjpFwa5XYPoNm113y'),
                 ('Mooshot', 'MoonCVVNZFSYkqNXP6bxHLPL6QQJiMagDL3qcqUQTrG'),
-                ('Fox', 'HyhpEq587ANShDdbx1mP4dTmDZC44CXWft29oYQXDb53')
+                ('Fox', 'HyhpEq587ANShDdbx1mP4dTmDZC44CXWft29oYQXDb53'),
+                ('Solayer', 'endoLNCKTqDn8gSVnN2hDdpgACUPWHZTwoYnnMybpAT'),
+                ('Token Mill', 'JoeaRXgtME3jAoz5WuFXGEndfv4NPH9nBxsLq44hk9J'),
+                ('Daos.fun', '5jnapfrAN47UYkLkEf7HnprPPBCQLvkYWGZDeKkaP5hv'),
+                ('ZeroFi', 'ZERor4xhbUycZ6gb9ntrhqscUcZmAbQDjEAtCf4hbZY')
             ) as v(amm_name, amm)
     )
 

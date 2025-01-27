@@ -33,7 +33,7 @@
                                         ]\',
                                         "sector",
                                         "evms",
-                                        \'["hildobby", "hosuke", "jeff-dude"]\') }}')
+                                        \'["hildobby", "hosuke", "jeff-dude", "agaperste"]\') }}')
 }}
 
 SELECT chain_id
@@ -90,7 +90,7 @@ FROM (
         , (11155111, 'sepolia', 'Sepolia', 'Testnet', 'Testnet', 'tETH', 0x7b79995e5f793a07bc00c21412e50ecae098e7f9, 'https://sepolia.etherscan.io/', timestamp '2015-07-30 15:26:13', NULL, NULL, NULL, true)
         , (167000, 'taiko', 'Taiko', 'Layer 2', 'Optimistic Rollup', 'ETH', 0xa51894664a773981c6c112c43ce576f315d5b1b6, 'https://taikoscan.network/', timestamp '2024-03-29 07:39:12', 'OP Stack', 'Ethereum Blobs', 'Ethereum', false)
         , (1329, 'sei', 'Sei Network', 'Layer 1', NULL, 'SEI', 0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7, 'https://seitrace.com/?chain=pacific-1', timestamp '2024-05-27 13:14', NULL, NULL, NULL, true)
-        , (480, 'worldchain', 'World Chain', 'Layer 2', 'Optimistic Rollup', 'WLD', 0x2cFc85d8E48F8EAB294be644d9E25C3030863003, 'https://worldchain-mainnet.explorer.alchemy.com/', timestamp '2024-06-25 17:14', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true)
+        , (480, 'worldchain', 'World Chain', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://worldchain-mainnet.explorer.alchemy.com/', timestamp '2024-06-25 17:14', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true)
         , (728126428, 'tron', 'TRON', 'Layer 1', null, 'TRX', from_tron_address('TNUC9Qb1rRpS5CbWLmNMxXBjyFoydXjWFR'), 'https://tronscan.org/', timestamp '2024-06-25 17:14', NULL, NULL, NULL, true)
         , (1101001, 'b3', 'B3', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.b3.fun/', timestamp '2024-03-14 12:00', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true)
         , (5000, 'mantle', 'Mantle', 'Layer 2', 'Optimistic Rollup', 'MNT', 0x78c1b0c915c4faa5fffa6cabf0219da63d7f4cb8, 'https://mantlescan.xyz/', timestamp '2023-07-02 18:21', 'Optimistic Virtual Machine', 'Ethereum', 'Ethereum', true)
