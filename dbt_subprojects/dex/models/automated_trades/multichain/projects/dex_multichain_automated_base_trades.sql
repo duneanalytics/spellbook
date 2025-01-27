@@ -6,8 +6,8 @@
 }}
 
 {% set base_models = [
-      ref('uniswap_v2_multichain_automated_base_trades')
-    , ref('uniswap_v3_multichain_automated_base_trades')
+      ref('uniswap_v2_all_chains_automated_base_trades')
+    , ref('uniswap_v3_all_chains_automated_base_trades')
 ] %}
 
 SELECT *

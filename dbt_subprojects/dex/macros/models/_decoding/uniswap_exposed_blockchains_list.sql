@@ -1,4 +1,4 @@
-{% macro uniswap_established_blockchains_list() %}
+{% macro uniswap_old_blockchains_list() %}
    {{ return([
        "arbitrum"
        , "avalanche_c"

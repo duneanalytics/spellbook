@@ -11,7 +11,7 @@
 }}
 
 {%
-    set blockchains = uniswap_established_blockchains_list()
+    set blockchains = uniswap_old_blockchains_list()
 %}
 
 with factory_events as (

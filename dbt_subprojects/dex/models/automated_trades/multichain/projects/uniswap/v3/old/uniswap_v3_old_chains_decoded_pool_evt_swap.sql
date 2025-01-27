@@ -1,6 +1,6 @@
 {{ config(
         schema = 'uniswap_v3_multichain',
-        alias = 'decoded_factory_evt',
+        alias = 'decoded_pool_evt_swap',
         partition_by = ['block_month', 'blockchain'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -11,16 +11,16 @@
 }}
 
 {%
-    set blockchains = uniswap_established_blockchains_list()
+    set blockchains = uniswap_old_blockchains_list()
 %}
 
-with factory_events as (
+with pool_events as (
     {% for blockchain in blockchains %}      
         select 
             '{{blockchain}}' as blockchain,
             * 
         from (
-            {{uniswap_v3_factory_event_decoding(
+            {{uniswap_v3_pool_event_decoding(
                 logs = source(blockchain, 'logs')
             )}}
         )   
@@ -30,4 +30,4 @@ with factory_events as (
     {% endfor %}
 )
 
-select * from factory_events
+select * from pool_events

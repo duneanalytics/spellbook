@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'uniswap_v2_multichain',
+        schema = 'uniswap_v3_all_chains',
         alias = 'automated_base_trades',
         partition_by = ['block_month', 'blockchain'],
         materialized = 'incremental',
@@ -11,9 +11,9 @@
 }}
 
 {{
-    uniswap_v2_forks_trades(
-        version = '2'
-        , Pair_evt_Swap = ref('uniswap_v2_multichain_decoded_pool_evt_swap')
-        , Factory_evt_PairCreated = ref('uniswap_v2_multichain_decoded_factory_evt')
+    uniswap_v3_forks_trades(
+        version = '3'
+        , Pair_evt_Swap = ref('uniswap_v3_all_chains_decoded_pool_evt_swap')
+        , Factory_evt_PoolCreated = ref('uniswap_v3_all_chains_decoded_factory_evt')
     )
 }}
