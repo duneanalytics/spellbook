@@ -1,0 +1,10 @@
+version: 2
+
+sources: 
+  - name: lyra_v1_optimism
+    description: >
+      Decoded event tables for Perpetual trades on Lyra protocol
+    tables:
+      - name: OptionMarket_evt_PositionOpened
+
+      - name: OptionMarket_evt_PositionClosed
