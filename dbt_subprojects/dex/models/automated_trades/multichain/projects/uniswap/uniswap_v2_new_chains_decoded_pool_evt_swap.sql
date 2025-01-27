@@ -1,6 +1,6 @@
 {{ config(
         schema = 'uniswap_v2_multichain',
-        alias = 'decoded_pool_evt_swap',
+        alias = 'new_chains_decoded_pool_evt_swap',
         partition_by = ['block_month', 'blockchain'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -11,7 +11,7 @@
 }}
 
 {%
-    set blockchains = uniswap_established_blockchains_list()
+    set blockchains = uniswap_new_blockchains_list()
 %}
 
 with pool_events as (
@@ -30,4 +30,4 @@ with pool_events as (
     {% endfor %}
 )
 
-select * from pool_events
+select * from pool_events 

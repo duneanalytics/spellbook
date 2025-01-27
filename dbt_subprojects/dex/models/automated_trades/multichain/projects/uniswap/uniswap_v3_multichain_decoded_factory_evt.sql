@@ -11,10 +11,10 @@
 }}
 
 {%
-    set blockchains = uniswap_exposed_blockchains_list()
+    set blockchains = uniswap_established_blockchains_list()
 %}
 
-with uniswap_pool_created_logs as (
+with factory_events as (
     {% for blockchain in blockchains %}      
         select 
             '{{blockchain}}' as blockchain,
@@ -30,5 +30,5 @@ with uniswap_pool_created_logs as (
     {% endfor %}
 )
 
-select * from uniswap_pool_created_logs
+select * from factory_events
 

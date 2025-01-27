@@ -1,29 +1,19 @@
-{% macro uniswap_exposed_blockchains_list() %}
+{% macro uniswap_established_blockchains_list() %}
    {{ return([
        "arbitrum"
        , "avalanche_c"
        , "base"
-       , "blast"
        , "bnb"
-
-       , "celo"
        , "ethereum"
-       , "fantom"
-
-       , "gnosis"
-
-
-       , "mantle"
-       
-
        , "optimism"
        , "polygon"
+    ]) }}
+{% endmacro %} 
 
+{% macro uniswap_new_blockchains_list() %}
+   {{ return([
+       "blast"
        , "scroll"
-
-
-
-
        , "zksync"
        , "zora"
     ]) }}
