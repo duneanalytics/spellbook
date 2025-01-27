@@ -4,6 +4,9 @@ models:
   - name: dex_sei_base_trades
     data_tests:
       - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
 
   - name: jelly_swap_sei_base_trades
     meta:
