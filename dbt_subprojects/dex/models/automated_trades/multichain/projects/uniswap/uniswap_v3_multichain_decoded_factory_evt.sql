@@ -31,4 +31,3 @@ with factory_events as (
 )
 
 select * from factory_events
-
