@@ -1,6 +1,6 @@
 {{ config(
-        schema = 'uniswap_v2_multichain',
-        alias = 'decoded_pool_evt_swap',
+        schema = 'uniswap_v2_decoded_events',
+        alias = 'old_chains_decoded_pool_evt_swap',
         partition_by = ['block_month', 'blockchain'],
         materialized = 'incremental',
         file_format = 'delta',

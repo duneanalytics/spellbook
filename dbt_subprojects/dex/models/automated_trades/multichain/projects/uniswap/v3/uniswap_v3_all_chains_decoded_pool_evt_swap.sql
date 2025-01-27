@@ -1,6 +1,6 @@
 {{ config(
-        schema = 'uniswap_v3_all_chains',
-        alias = 'decoded_pool_evt_swap',
+        schema = 'uniswap_v3_decoded_events',
+        alias = 'all_chains_decoded_pool_evt_swap',
         materialized = 'view'
         )
 }}

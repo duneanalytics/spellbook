@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'uniswap_v2_multichain',
+        schema = 'uniswap_v2_decoded_events',
         alias = 'new_chains_decoded_factory_evt',
         partition_by = ['block_month', 'blockchain'],
         materialized = 'incremental',

@@ -1,6 +1,6 @@
 {{ config(
-        schema = 'uniswap_v3_all_chains',
-        alias = 'automated_base_trades',
+        schema = 'uniswap_v3_decoded_events',
+        alias = 'all_chains_automated_base_trades',
         partition_by = ['block_month', 'blockchain'],
         materialized = 'incremental',
         file_format = 'delta',
