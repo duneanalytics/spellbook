@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: oku_corn
+    tables:
+      - name: v3CoreFactoryAddress_evt_PoolCreated
+      - name: OkuV3Pair_evt_Swap
+  - name: camelot_corn
+    tables:
+      - name: AlgebraFactory_evt_Pool
+      - name: AlgebraPool_evt_Swap
+      - name: CamelotFactory_evt_PairCreated
+      - name: CamelotPair_evt_Swap
+      - name: CamelotYakRouter_evt_YakSwap

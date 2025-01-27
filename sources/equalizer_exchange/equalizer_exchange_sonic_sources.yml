@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: equalizer_exchange_sonic
+    description: >
+      Decoded tables related to Equalizer Exchange on Sonic.
+    tables:
+      - name: Pair_evt_Swap
+      - name: PairFactory_evt_PairCreated
+     
