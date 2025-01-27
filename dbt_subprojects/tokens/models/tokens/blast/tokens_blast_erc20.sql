@@ -22,4 +22,5 @@ FROM (VALUES
     , (0x373318cccC1da7934929d8af23eA17641522206B, 'pUSDB-WETH LP', 18)
     , (0x1a49351bdB4BE48C0009b661765D01ed58E8C2d8, 'YES', 18)
     , (0x58538e6A46E07434d7E7375Bc268D3cb839C0133, 'ENA', 18)
+    , (0xb9dfcd4cf589bb8090569cb52fac1b88dbe4981f, 'BAG', 18)
 ) AS temp_table (contract_address, symbol, decimals)
