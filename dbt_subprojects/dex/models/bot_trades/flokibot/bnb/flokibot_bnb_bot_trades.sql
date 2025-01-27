@@ -1,5 +1,6 @@
 {{
     config(
+        tags = ['prod_exclude'],
         alias='bot_trades',
         schema='flokibot_bnb',
         partition_by=['block_month'],

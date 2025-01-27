@@ -6,3 +6,4 @@ sources:
 
     tables:
       - name: MetaMorphoFactory_evt_CreateMetaMorpho
+      - name: MetaMorphoV1_1Factory_evt_CreateMetaMorpho
