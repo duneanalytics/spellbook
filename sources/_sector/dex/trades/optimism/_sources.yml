@@ -1,7 +1,13 @@
 version: 2
 
 sources:
+  - name: uniswap_v4_optimism
+    tables:
+      - name: PoolManager_evt_Swap
+      - name: PoolManager_evt_Initialize
   - name: uniswap_v3_optimism
+    tables:
+      - name: pools
   - name: sushi_optimism
     tables:
       - name: ConstantProductPool_evt_Swap
@@ -95,6 +101,12 @@ sources:
   - name: swaap_v2_optimism
     tables:
       - name: Vault_evt_Swap
+  - name: timeswap_v2_optimism
+    tables:
+      - name: TimeswapV2Option_evt_Swap
   - name: saddle_finance_optimism
     tables:
       - name: SwapFlashLoan_evt_TokenSwap
+  - name: bridgers_optimism
+    tables:
+      - name: Bridgers_evt_Swap    

@@ -31,12 +31,13 @@ WITH pool_labels AS (
 
     dex_prices_1 AS (
         SELECT
-            date_trunc('day', hour) AS DAY,
+            date_trunc('day', HOUR) AS DAY,
             contract_address AS token,
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ source('dex', 'prices') }}
         WHERE blockchain = '{{blockchain}}'
+        AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -146,7 +147,7 @@ WITH pool_labels AS (
             WHEN day < DATE '2022-07-03' THEN 0.25 -- veBAL release
             WHEN day >= DATE '2022-07-03' AND day < DATE '2023-01-23' THEN 0.25 -- BIP 19
             WHEN day >= DATE '2023-01-23' AND day < DATE '2023-07-24' THEN 0.35 -- BIP 161
-            WHEN day >= DATE '2023-07-24' THEN 0.175 -- BIP 371
+            WHEN day >= DATE '2023-07-24' THEN 0.175 -- BIP 371 and BIP 734
         END AS treasury_share
     FROM UNNEST(SEQUENCE(DATE '2022-03-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
     )
@@ -155,19 +156,20 @@ WITH pool_labels AS (
     SELECT
         f.day,
         f.pool_id,
-        BYTEARRAY_SUBSTRING(f.pool_id,1,20) as pool_address,
+        BYTEARRAY_SUBSTRING(f.pool_id,1,20) AS pool_address,
         l.name AS pool_symbol,
-        '{{version}}' as version,
-        '{{blockchain}}' as blockchain,
+        '{{version}}' AS version,
+        '{{blockchain}}' AS blockchain,
         l.pool_type,
         'v2' AS fee_type,
         f.token_address,
         f.token_symbol,
-        SUM(f.token_amount_raw) as token_amount_raw,
-        SUM(f.token_amount) as token_amount,
-        SUM(f.protocol_fee_collected_usd) as protocol_fee_collected_usd, 
+        SUM(f.token_amount_raw) AS token_amount_raw,
+        SUM(f.token_amount) AS token_amount,
+        SUM(f.protocol_fee_collected_usd) AS protocol_fee_collected_usd, 
         r.treasury_share,
-        SUM(f.protocol_fee_collected_usd) * r.treasury_share as treasury_revenue_usd
+        SUM(f.protocol_fee_collected_usd) * r.treasury_share AS treasury_fee_usd,
+        SUM(f.protocol_fee_collected_usd) AS lp_fee_collected_usd
     FROM decorated_protocol_fee f
     INNER JOIN revenue_share r 
         ON r.day = f.day
@@ -212,12 +214,13 @@ WITH pool_labels AS (
 
     dex_prices_1 AS (
         SELECT
-            date_trunc('day', hour) AS DAY,
+            date_trunc('day', HOUR) AS DAY,
             contract_address AS token,
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ source('dex', 'prices') }}
         WHERE blockchain = '{{blockchain}}'
+        AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -265,16 +268,16 @@ WITH pool_labels AS (
         FROM bpt_prices_1
     ),
 
-    erc4626_prices AS(
+    erc4626_prices AS (
         SELECT
-            date_trunc('day', minute) AS day,
+            DATE_TRUNC('day', minute) AS day,
             wrapped_token AS token,
             decimals,
             APPROX_PERCENTILE(median_price, 0.5) AS price,
-            DATE_TRUNC ('day', next_change) AS next_change
-        FROM {{ ref('balancer_v3_erc4626_token_prices') }}
+            LEAD(DATE_TRUNC('day', minute), 1, CURRENT_DATE + INTERVAL '1' day) OVER (PARTITION BY wrapped_token ORDER BY date_trunc('day', minute)) AS next_change
+        FROM {{ source('balancer_v3' , 'erc4626_token_prices') }}
         WHERE blockchain = '{{blockchain}}'
-        GROUP BY 1, 2, 3, 5
+        GROUP BY 1, 2, 3
     ),    
 
     daily_protocol_fee_collected AS (
@@ -342,12 +345,9 @@ WITH pool_labels AS (
         SELECT
         day,
         CASE 
-            WHEN day < DATE '2022-07-03' THEN 0.25 -- veBAL release
-            WHEN day >= DATE '2022-07-03' AND day < DATE '2023-01-23' THEN 0.25 -- BIP 19
-            WHEN day >= DATE '2023-01-23' AND day < DATE '2023-07-24' THEN 0.35 -- BIP 161
-            WHEN day >= DATE '2023-07-24' THEN 0.175 -- BIP 371
+            WHEN day >= DATE '2024-12-01' THEN 0.175 -- BIP 734
         END AS treasury_share
-    FROM UNNEST(SEQUENCE(DATE '2022-03-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
+    FROM UNNEST(SEQUENCE(DATE '2024-12-01', CURRENT_DATE, INTERVAL '1' DAY)) AS date(day)
     )
 
 
@@ -366,7 +366,10 @@ WITH pool_labels AS (
         SUM(f.token_amount) as token_amount,
         SUM(f.protocol_fee_collected_usd) as protocol_fee_collected_usd, 
         r.treasury_share,
-        SUM(f.protocol_fee_collected_usd) * r.treasury_share as treasury_revenue_usd
+        SUM(f.protocol_fee_collected_usd) * r.treasury_share as treasury_fee_usd,
+        SUM(CASE WHEN f.fee_type = 'swap_fee' THEN f.protocol_fee_collected_usd
+        WHEN f.fee_type = 'yield_fee' THEN f.protocol_fee_collected_usd * 9 END) 
+            AS lp_fee_collected_usd
     FROM decorated_protocol_fee f
     INNER JOIN revenue_share r 
         ON r.day = f.day

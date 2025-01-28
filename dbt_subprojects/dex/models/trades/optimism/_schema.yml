@@ -4,6 +4,28 @@ models:
   - name: dex_optimism_base_trades
     data_tests:
       - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: uniswap_v4_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: uniswap
+      contributors: agaperste
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'uniswap', 'v4' ]
+    description: "uniswap optimism v4 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_optimism_base_trades_seed')
+          filter:
+            version: 4
 
   - name: uniswap_v3_optimism_base_trades
     meta:
@@ -569,12 +591,31 @@ models:
           filter:
             version: 2
 
+  - name: timeswap_v2_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: timeswap_v2
+      contributors: archie
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'timeswap', 'v2']
+    description: "timeswap v2 optimism base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('timeswap_v2_optimism_base_trades_seed') 
+          filter:
+            version: 2
+      
   - name: saddle_finance_optimism_base_trades
     meta:
       blockchain: optimism
       sector: dex
       project: saddle_finance
-      contributors: princi
+      contributors: princi, hosuke
     config:
       tags: [ 'optimism', 'dex', 'trades', 'saddle_finance']
     description: "saddle finance optimism base trades"
@@ -584,4 +625,21 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('saddle_finance_optimism_base_trades_seed') 
+          seed_file: ref('saddle_finance_optimism_base_trades_seed')
+   
+  - name: bridgers_optimism_base_trades
+    meta:
+      blockchain: optimism
+      sector: dex
+      project: bridgers
+      contributors: princi
+    config:
+      tags: [ 'optimism', 'dex', 'trades', 'bridgers']
+    description: "bridgers optimism base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('bridgers_optimism_base_trades_seed')

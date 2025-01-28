@@ -1,0 +1,79 @@
+version: 2
+
+models:
+  - name: dex_sonic_base_trades
+    data_tests:
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: beets_sonic_base_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      project: beets
+      contributors: viniabussafi
+    config:
+      tags: ['sonic', 'dex', 'trades', 'beets']
+    description: "beets sonic base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('beets_sonic_base_trades_seed')
+
+  - name: equalizer_sonic_base_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      project: equalizer
+      contributors: IrishLatte_19
+    config:
+      tags: ['sonic', 'dex', 'trades', 'equalizer']
+    description: "Equalizer sonic base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('equalizer_sonic_base_trades_seed')
+          
+  - name: wagmi_sonic_base_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      project: wagmi
+      contributors: hosuke
+    config:
+      tags: ['sonic', 'dex', 'trades', 'wagmi']
+    description: "wagmi sonic base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('wagmi_sonic_base_trades_seed')
+
+          
+  - name: silverswap_sonic_base_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      project: silverswap
+      contributors: PolEpie
+    config:
+      tags: ['sonic', 'dex', 'trades', 'silverswap']
+    description: "Silverswap sonic base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('silverswap_sonic_base_trades_seed')
+          
