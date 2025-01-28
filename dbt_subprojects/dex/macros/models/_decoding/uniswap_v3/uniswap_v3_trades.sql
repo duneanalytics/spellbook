@@ -61,63 +61,34 @@ WITH evt_swap AS (
         {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
         AND f.blockchain = t.blockchain
-    -- making sure that the pool was actually created by the factory and not a fluke
     INNER JOIN {{ source('evms', 'creation_traces') }} ct 
         ON f.{{ pair_column_name }} = ct.address 
         AND f.contract_address = ct."from"
         AND ct.blockchain = t.blockchain
 )
 
-, base_trades AS (
-    SELECT
-        blockchain
-        , '{{ version }}' AS version
-        , '{{dex_type}}' AS dex_type
-        , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
-        , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
-        , dexs.block_time
-        , dexs.block_number
-        , CAST(dexs.token_bought_amount_raw AS UINT256) AS token_bought_amount_raw
-        , CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw
-        , dexs.token_bought_address
-        , dexs.token_sold_address
-        , dexs.taker
-        , dexs.maker
-        , dexs.project_contract_address
-        , dexs.tx_hash
-        , dexs.evt_index
-        , dexs.factory_address
-        , dexs.tx_from
-        , dexs.tx_to
-        , dexs.tx_index
-    FROM
-        dexs
-)
+SELECT
+    blockchain
+    , '{{ version }}' AS version
+    , '{{dex_type}}' AS dex_type
+    , CAST(date_trunc('month', block_time) AS date) AS block_month
+    , CAST(date_trunc('day', block_time) AS date) AS block_date
+    , block_time
+    , block_number
+    , CAST(token_bought_amount_raw AS UINT256) AS token_bought_amount_raw
+    , CAST(token_sold_amount_raw AS UINT256) AS token_sold_amount_raw
+    , token_bought_address
+    , token_sold_address
+    , taker
+    , maker
+    , project_contract_address
+    , tx_hash
+    , evt_index
+    , factory_address
+    , tx_from
+    , tx_to
+    , tx_index
+FROM dexs
+where CAST(date_trunc('day', block_time) AS date) > DATE '2024-06-01'
 
-SELECT  base_trades.blockchain
-        , CASE when dex_map.project_name is not NULL then dex_map.project_name else concat('unknown-uni-v3-', cast(varbinary_substring(base_trades.factory_address, 1, 5) as varchar)) end as project
-        , CASE when dex_map.project_name is not NULL then true else false end as project_status
-        , base_trades.version
-        , base_trades.dex_type
-        , base_trades.factory_address
-        , base_trades.block_month
-        , base_trades.block_date
-        , base_trades.block_time
-        , base_trades.block_number
-        , base_trades.token_bought_amount_raw
-        , base_trades.token_sold_amount_raw
-        , base_trades.token_bought_address
-        , base_trades.token_sold_address
-        , base_trades.taker
-        , base_trades.maker
-        , base_trades.project_contract_address
-        , base_trades.tx_hash
-        , base_trades.evt_index
-        , base_trades.tx_from
-        , base_trades.tx_to
-        , base_trades.tx_index
-FROM base_trades
-LEFT JOIN {{ ref('dex_mapping') }} AS dex_map
-ON base_trades.factory_address = dex_map.factory_address AND base_trades.blockchain = dex_map.blockchain
-where block_date > DATE '2024-06-01'
 {% endmacro %}
