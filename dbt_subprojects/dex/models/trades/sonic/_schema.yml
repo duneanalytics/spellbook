@@ -59,7 +59,7 @@ models:
       - check_dex_base_trades_seed:
           seed_file: ref('wagmi_sonic_base_trades_seed')
           
- - name: shadow_sonic_base_trades
+  - name: shadow_sonic_base_trades
     meta:
       blockchain: sonic
       sector: dex
