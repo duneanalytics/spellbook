@@ -81,6 +81,5 @@ SELECT
     , tx_to
     , tx_index
 FROM dexs
-where CAST(date_trunc('day', block_time) AS date) > DATE '2024-06-01'
 
 {% endmacro %}

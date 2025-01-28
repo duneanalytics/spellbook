@@ -15,8 +15,6 @@ FROM (
     {% for base_model in base_models %}
     SELECT
         blockchain
-        , project
-        , project_status
         , version
         , dex_type
         , factory_address
