@@ -1,20 +1,18 @@
 {{ config(
-    schema = 'dex'
+    schema = 'dex_polygon'
     , alias = 'automated_base_trades'
-    , partition_by = ['block_month', 'blockchain', 'project']
+    , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    , unique_key = ['tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
 {% set models = [
-    ref('dex_ethereum_automated_base_trades')
-    , ref('dex_arbitrum_automated_base_trades')
-    , ref('dex_base_automated_base_trades')
-    , ref('dex_polygon_automated_base_trades')
+    ref('uniswap_v2_polygon_automated_base_trades')
+    , ref('uniswap_v3_polygon_automated_base_trades')
 ] %}
 
 with base_union as (
@@ -57,7 +55,11 @@ with base_union as (
         {% endfor %}
     )
 )
-select
-    *
-from
-    base_union
+
+{{
+    add_tx_columns(
+        model_cte = 'base_union'
+        , blockchain = 'polygon'
+        , columns = ['from', 'to', 'index']
+    )
+}} 
