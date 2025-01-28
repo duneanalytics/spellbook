@@ -1,7 +1,7 @@
 {{config(
   schema = 'labels',
-  alias = 'balancer_v3_pools_ethereum',
-  post_hook = '{{ expose_spells(\'["ethereum"]\',
+  alias = 'balancer_v3_pools_base',
+  post_hook = '{{ expose_spells(\'["base"]\',
                                "sector",
                                "labels",
                                \'["viniabussafi"]\') }}'
@@ -16,7 +16,7 @@ WITH token_data AS (
                 pool,
                 tokenConfig,
                 SEQUENCE(1, CARDINALITY(tokenConfig)) AS token_index_array
-            FROM {{ source('balancer_v3_ethereum', 'Vault_evt_PoolRegistered') }}
+            FROM {{ source('balancer_v3_base', 'Vault_evt_PoolRegistered') }}
         ) AS pool_data
         CROSS JOIN UNNEST(tokenConfig, token_index_array) AS t(token, token_index)
         GROUP BY 1
@@ -37,7 +37,7 @@ WITH token_data AS (
           cc.symbol,
           'weighted' AS pool_type
         FROM token_data c
-        INNER JOIN {{ source('balancer_v3_ethereum', 'WeightedPoolFactory_call_create') }} cc
+        INNER JOIN {{ source('balancer_v3_base', 'WeightedPoolFactory_call_create') }} cc
         ON c.pool = cc.output_pool
         CROSS JOIN UNNEST(c.tokens) WITH ORDINALITY t(tokens, pos)
         CROSS JOIN UNNEST(cc.normalizedWeights) WITH ORDINALITY w(weights, pos)
@@ -52,7 +52,7 @@ WITH token_data AS (
         cc.symbol,
         'stable' AS pool_type
       FROM token_data c
-      INNER JOIN {{ source('balancer_v3_ethereum', 'StablePoolFactory_call_create') }} cc
+      INNER JOIN {{ source('balancer_v3_base', 'StablePoolFactory_call_create') }} cc
         ON c.pool = cc.output_pool
       CROSS JOIN UNNEST(c.tokens) AS t(tokens)
     ) zip 
@@ -67,11 +67,11 @@ WITH token_data AS (
         p.pool_type
       FROM pools p
       LEFT JOIN {{ source('tokens', 'erc20') }} t ON p.token_address = t.contract_address
-      AND t.blockchain = 'ethereum'
+      AND t.blockchain = 'base'
     )
 
 SELECT 
-  'ethereum' AS blockchain,
+  'base' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
   CASE WHEN pool_type IN ('stable') 
   THEN lower(pool_symbol)
@@ -84,7 +84,7 @@ SELECT
   'query' AS source,
   TIMESTAMP'2024-12-01 00:00' AS created_at,
   now() AS updated_at,
-  'balancer_v3_pools_ethereum' AS model_name,
+  'balancer_v3_pools_base' AS model_name,
   'identifier' AS label_type
 FROM (
   SELECT
