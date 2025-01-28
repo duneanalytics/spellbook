@@ -1,27 +1,17 @@
 {{ config(
-    schema = 'dex'
+    schema = 'dex_mantle'
     , alias = 'automated_base_trades'
-    , partition_by = ['block_month', 'blockchain', 'project']
+    , partition_by = ['block_month']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    , unique_key = ['tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
 {% set models = [
-    ref('dex_ethereum_automated_base_trades')
-    , ref('dex_arbitrum_automated_base_trades')
-    , ref('dex_base_automated_base_trades')
-    , ref('dex_polygon_automated_base_trades')
-    , ref('dex_fantom_automated_base_trades')
-    , ref('dex_gnosis_automated_base_trades')
-    , ref('dex_ink_automated_base_trades')
-    , ref('dex_kava_automated_base_trades')
-    , ref('dex_linea_automated_base_trades')
-    , ref('dex_mantle_automated_base_trades')
-    , ref('dex_nova_automated_base_trades')
+    ref('uniswap_v2_mantle_automated_base_trades')
 ] %}
 
 with base_union as (
@@ -64,7 +54,11 @@ with base_union as (
         {% endfor %}
     )
 )
-select
-    *
-from
-    base_union
+
+{{
+    add_tx_columns(
+        model_cte = 'base_union'
+        , blockchain = 'mantle'
+        , columns = ['from', 'to', 'index']
+    )
+}} 
