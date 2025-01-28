@@ -21,7 +21,7 @@ select
 from
     {{ source('prices','usd_0003') }} as p  -- todo: fix this source
 inner join
-    {{ ref('prices_trusted_tokens') }} as ptt
+    {{ source('prices','trusted_tokens') }} as ptt
     on p.token_id = ptt.token_id
 where
     1=1
