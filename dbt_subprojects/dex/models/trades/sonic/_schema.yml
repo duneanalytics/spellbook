@@ -58,8 +58,8 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('wagmi_sonic_base_trades_seed')
-       
-  - name: shadow_sonic_base_trades
+          
+ - name: shadow_sonic_base_trades
     meta:
       blockchain: sonic
       sector: dex
@@ -75,3 +75,21 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('shadow_sonic_base_trades_seed')
+          
+  - name: silverswap_sonic_base_trades
+    meta:
+      blockchain: sonic
+      sector: dex
+      project: silverswap
+      contributors: PolEpie
+    config:
+      tags: ['sonic', 'dex', 'trades', 'silverswap']
+    description: "Silverswap sonic base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('silverswap_sonic_base_trades_seed')
+          

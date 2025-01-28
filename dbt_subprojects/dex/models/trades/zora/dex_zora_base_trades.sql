@@ -6,8 +6,9 @@
 }}
 
 {% set base_models = [
-    ref('uniswap_v2_zora_base_trades'),
-    ref('uniswap_v3_zora_base_trades')
+    ref('uniswap_v2_zora_base_trades')
+    , ref('uniswap_v3_zora_base_trades')
+    , ref('uniswap_v4_zora_base_trades')
 ] %}
 
 WITH base_union AS ( 

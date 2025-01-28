@@ -19,7 +19,6 @@ with
 transfer_combined as (
   select * from {{ ref('nexusmutual_ethereum_capital_pool_transfers') }}
   where block_time >= timestamp '2019-05-23'
-    and 1=1 -- dummy condition to trigger re-run
 ),
 
 lido_oracle as (
