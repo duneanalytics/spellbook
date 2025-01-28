@@ -18,7 +18,6 @@
     , ref('dex_fantom_automated_base_trades')
     , ref('dex_gnosis_automated_base_trades')
     , ref('dex_ink_automated_base_trades')
-    , ref('dex_kava_automated_base_trades')
     , ref('dex_linea_automated_base_trades')
     , ref('dex_mantle_automated_base_trades')
     , ref('dex_nova_automated_base_trades')

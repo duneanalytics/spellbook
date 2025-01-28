@@ -1,6 +1,6 @@
 {{ config(
-        schema = 'uniswap_v2_kava',
-        alias = 'decoded_factory_evt',
+        schema = 'uniswap_v3_nova',
+        alias = 'decoded_pool_evt_swap',
         partition_by = ['block_date'],
         materialized = 'incremental',
         file_format = 'delta',
@@ -10,6 +10,6 @@
         )
 }}
 
-{{uniswap_v2_factory_event_decoding(
-        logs = source('kava', 'logs')
+{{uniswap_v3_pool_event_decoding(
+        logs = source('nova', 'logs')
 )}} 

@@ -1,5 +1,5 @@
 {{ config(
-        schema = 'uniswap_v2_kava',
+        schema = 'uniswap_v3_ink',
         alias = 'automated_base_trades',
         partition_by = ['block_month'],
         materialized = 'incremental',
@@ -11,10 +11,10 @@
 }}
 
 {{
-    uniswap_v2_forks_trades(
-        blockchain = 'kava'
-        , version = '2'
-        , Pair_evt_Swap = ref('uniswap_v2_kava_decoded_pool_evt_swap')
-        , Factory_evt_PairCreated = ref('uniswap_v2_kava_decoded_factory_evt')
+    uniswap_v3_forks_trades(
+        blockchain = 'ink'
+        , version = '3'
+        , Pair_evt_Swap = ref('uniswap_v3_ink_decoded_pool_evt_swap')
+        , Factory_evt_PoolCreated = ref('uniswap_v3_ink_decoded_factory_evt')
     )
 }} 

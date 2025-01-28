@@ -12,6 +12,7 @@
 
 {% set models = [
     ref('uniswap_v2_ink_automated_base_trades')
+    , ref('uniswap_v3_ink_automated_base_trades')
 ] %}
 
 with base_union as (
