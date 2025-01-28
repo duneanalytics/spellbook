@@ -16,6 +16,7 @@ sources:
       - name: usd_latest
       - name: usd_daily
       - name: usd_forward_fill
+      - name: usd_with_native
 
   - name: lending
     tables:
