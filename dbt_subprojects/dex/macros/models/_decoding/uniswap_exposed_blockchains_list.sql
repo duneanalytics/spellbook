@@ -13,14 +13,11 @@
 
 {% macro uniswap_new_blockchains_list() %}
    {{ return([
-       "abstract"
-       , "b3"
-       , "blast"
+        "blast"
        , "bob"
        , "celo"
        , "degen"
        , "fantom"
-       , "ink"
        , "kaia"
        , "linea"
        , "mantle"
