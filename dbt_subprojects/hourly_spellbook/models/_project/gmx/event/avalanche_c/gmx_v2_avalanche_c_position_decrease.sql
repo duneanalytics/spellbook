@@ -267,7 +267,7 @@ WITH evt_data_1 AS (
         size_delta_usd / POWER(10, 30) AS size_delta_usd,
         size_delta_in_tokens / POWER(10, index_token_decimals) AS size_delta_in_tokens,
         collateral_delta_amount / POWER(10, collateral_token_decimals) AS collateral_delta_amount,
-        values_price_impact_diff_usd / POWER(10, 30 - index_token_decimals) AS impact_diff_usd,
+        values_price_impact_diff_usd / POWER(10, 30 - index_token_decimals) AS price_impact_diff_usd,
         CASE 
             WHEN order_type = 0 THEN 'MarketSwap'
             WHEN order_type = 1 THEN 'LimitSwap'
@@ -277,6 +277,7 @@ WITH evt_data_1 AS (
             WHEN order_type = 5 THEN 'LimitDecrease'
             WHEN order_type = 6 THEN 'StopLossDecrease'
             WHEN order_type = 7 THEN 'Liquidation'
+            WHEN order_type = 8 THEN 'StopIncrease'
             ELSE NULL
         END AS order_type,
         CASE 

@@ -90,6 +90,7 @@ models:
           - LimitDecrease: Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
           - StopLossDecrease: Decrease position if the triggerPrice is reached and the acceptablePrice can be fulfilled.
           - Liquidation: Allows liquidation of positions if the criteria for liquidation are met.
+          - StopIncrease: Increase position if the stop price is reached, providing an additional execution condition.
         data_tests:
           - not_null
           - accepted_values:
@@ -504,8 +505,8 @@ models:
       - *size_delta_usd
       - *size_delta_in_tokens
       - *collateral_delta_amount
-      - &impact_diff_usd
-        name: impact_diff_usd
+      - &price_impact_diff_usd
+        name: price_impact_diff_usd
         description: The difference in price impact in USD compared to a baseline or previous value, considering the maximum price impact limit
         data_tests:
           - not_null       
