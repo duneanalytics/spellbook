@@ -5,6 +5,7 @@
        , "base"
        , "bnb"
        , "ethereum"
+       , "gnosis"
        , "optimism"
        , "polygon"
     ]) }}
@@ -12,8 +13,24 @@
 
 {% macro uniswap_new_blockchains_list() %}
    {{ return([
-       "blast"
+       "abstract"
+       , "b3"
+       , "blast"
+       , "bob"
+       , "celo"
+       , "degen"
+       , "fantom"
+       , "ink"
+       , "kaia"
+       , "linea"
+       , "mantle"
+       , "mode"
+       , "nova"
+       , "ronin"
        , "scroll"
+       , "sei"
+       , "worldchain"
+       , "zkevm"
        , "zksync"
        , "zora"
     ]) }}
