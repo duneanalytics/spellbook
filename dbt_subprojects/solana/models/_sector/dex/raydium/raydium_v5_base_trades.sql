@@ -53,7 +53,7 @@
                 OR (sp.call_is_inner = true AND (trs_1.inner_instruction_index = sp.call_inner_instruction_index + 1 OR trs_1.inner_instruction_index = sp.call_inner_instruction_index + 2))
                 )
             AND trs_1.token_version = 'spl_token'
-            {% if is_incremental() or true %}
+            {% if is_incremental() %}
             AND {{incremental_predicate('trs_1.block_time')}}
             {% else %}
             AND trs_1.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -66,7 +66,7 @@
                 OR (sp.call_is_inner = true AND (trs_2.inner_instruction_index = sp.call_inner_instruction_index + 2 OR trs_2.inner_instruction_index = sp.call_inner_instruction_index + 3))
                 )
             AND trs_2.token_version = 'spl_token'
-            {% if is_incremental() or true %}
+            {% if is_incremental() %}
             AND {{incremental_predicate('trs_2.block_time')}}
             {% else %}
             AND trs_2.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -76,7 +76,7 @@
         WHERE 1=1
         and trs_1.token_mint_address != trs_2.token_mint_address --gets rid of dupes from the OR statement in transfer joins
         and tk_2.token_balance_owner = 'GpMZbSM2GgvTKHJirzeGfMFoaZ8UR2X7F4v8vHTvxFbL' --raydium pool v4 authority. makes sure we don't accidently catch some fee transfer or something after the swap. should add for lifinity too later.
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         AND {{incremental_predicate('sp.call_block_time')}}
         {% else %}
         AND sp.call_block_time >= TIMESTAMP '{{project_start_date}}'

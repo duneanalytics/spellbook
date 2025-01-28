@@ -53,7 +53,7 @@ SELECT
       , tx_index
 FROM
       {{ dex }}
-{% if is_incremental() or true %}
+{% if is_incremental() %}
 WHERE
       {{incremental_predicate('block_time')}}
 {% endif %}
