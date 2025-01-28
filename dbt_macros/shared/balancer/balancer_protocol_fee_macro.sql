@@ -36,10 +36,8 @@ WITH pool_labels AS (
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ source('dex', 'prices') }}
-       WHERE
-    (('{{blockchain}}' = 'sonic' AND contract_address != 0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38)
-        OR ('{{blockchain}}' = 'fantom' AND contract_address NOT IN (0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757)))
-    AND blockchain = '{{blockchain}}'
+        WHERE blockchain = '{{blockchain}}'
+        AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -221,10 +219,8 @@ WITH pool_labels AS (
             approx_percentile(median_price, 0.5) AS price,
             sum(sample_size) AS sample_size
         FROM {{ source('dex', 'prices') }}
-       WHERE
-    (('{{blockchain}}' = 'sonic' AND contract_address != 0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38)
-        OR ('{{blockchain}}' = 'fantom' AND contract_address NOT IN (0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757)))
-    AND blockchain = '{{blockchain}}'
+        WHERE blockchain = '{{blockchain}}'
+        AND contract_address NOT IN (0x039e2fb66102314ce7b64ce5ce3e5183bc94ad38, 0xde1e704dae0b4051e80dabb26ab6ad6c12262da0, 0x5ddb92a5340fd0ead3987d3661afcd6104c3b757) 
         GROUP BY 1, 2
         HAVING sum(sample_size) > 3
     ),
@@ -272,16 +268,16 @@ WITH pool_labels AS (
         FROM bpt_prices_1
     ),
 
-    erc4626_prices AS(
+    erc4626_prices AS (
         SELECT
-            date_trunc('day', minute) AS day,
+            DATE_TRUNC('day', minute) AS day,
             wrapped_token AS token,
             decimals,
             APPROX_PERCENTILE(median_price, 0.5) AS price,
-            DATE_TRUNC ('day', next_change) AS next_change
+            LEAD(DATE_TRUNC('day', minute), 1, CURRENT_DATE + INTERVAL '1' day) OVER (PARTITION BY wrapped_token ORDER BY date_trunc('day', minute)) AS next_change
         FROM {{ source('balancer_v3' , 'erc4626_token_prices') }}
         WHERE blockchain = '{{blockchain}}'
-        GROUP BY 1, 2, 3, 5
+        GROUP BY 1, 2, 3
     ),    
 
     daily_protocol_fee_collected AS (
