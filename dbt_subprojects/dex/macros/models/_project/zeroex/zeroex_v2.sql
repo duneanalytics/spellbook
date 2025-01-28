@@ -213,7 +213,7 @@ taker_logs as (
         and cow_rn is null 
         AND (
                 (
-                topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
+                topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef, 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c) 
                 AND ( 
                         (
                             bytearray_substring(logs.topic2,13,20) = st.contract_address 
