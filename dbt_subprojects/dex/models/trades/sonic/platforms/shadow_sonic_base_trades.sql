@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'equalizer_sonic',
+        schema = 'shadow_sonic',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
