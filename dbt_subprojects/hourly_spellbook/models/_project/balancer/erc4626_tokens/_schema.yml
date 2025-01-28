@@ -3,7 +3,7 @@ version: 2
 models:
   - name: balancer_v3_erc4626_token_mapping
     meta:
-      blockchain: ethereum, gnosis
+      blockchain: ethereum, gnosis, sonic
       project: balancer
       contributors: viniabussafi
     config:
@@ -32,7 +32,7 @@ models:
 
   - name: balancer_v3_erc4626_token_prices
     meta:
-      blockchain: ethereum, gnosis
+      blockchain: ethereum, gnosis, sonic
       project: balancer
       contributors: viniabussafi
     config:
