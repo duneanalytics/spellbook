@@ -30,9 +30,9 @@ staking_pools_created as (
     call_tx_hash as tx_hash_created
   from {{ source('nexusmutual_ethereum', 'Cover_call_createStakingPool') }}
   where call_success
-    and contract_address = 0xcafeac0fF5dA0A2777d915531bfA6B29d282Ee62
+    and contract_address = 0xcafeac0fF5dA0A2777d915531bfA6B29d282Ee62 -- proxy
   union all
-    select
+  select
     call_block_time as block_time_created,
     output_0 as pool_id,
     output_1 as pool_address,
@@ -94,7 +94,8 @@ staking_pool_products_updated as (
     from {{ source('nexusmutual_ethereum', 'StakingProducts_call_setProducts') }} as p
       cross join unnest(params) as t(json)
     where p.call_success
-      and p.contract_address = 0xcafea573fBd815B5f59e8049E71E554bde3477E4
+      --and p.contract_address = 0xcafea573fBd815B5f59e8049E71E554bde3477E4
+      and p.contract_address <> 0xcafea524e89514e131ee9f8462536793d49d8738
       and cast(json_query(t.json, 'lax $.setTargetWeight') as boolean) = true
   ) t
 ),
