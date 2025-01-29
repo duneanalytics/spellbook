@@ -89,7 +89,7 @@ SELECT
     , tx_to
     , tx_index
 FROM dexs
-{% if is_incremental() %}
+{% if is_incremental() or true %}
 WHERE {{ incremental_predicate('block_time') }}
 {% endif %}
 {% endmacro %}
