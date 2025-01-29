@@ -119,4 +119,4 @@ SELECT
 	,evt_tx_from AS tx_from
 	,evt_tx_to AS tx_to
 	,evt_index
-FROM complete_perp_tx;
+FROM complete_perp_tx
