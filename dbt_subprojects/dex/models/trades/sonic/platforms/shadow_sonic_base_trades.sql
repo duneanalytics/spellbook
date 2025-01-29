@@ -11,16 +11,6 @@
 }}
 
 {{
-    uniswap_compatible_v2_trades(
-        blockchain = 'sonic',
-        project = 'shadow',
-        version = '1',
-        Pair_evt_Swap = source('shadow_sonic', 'Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('shadow_sonic', 'Core_PairFactory_evt_PairCreated')
-    )
-}}
-
-{{
     uniswap_compatible_v3_trades(
         blockchain = 'sonic',
         project = 'shadow',
