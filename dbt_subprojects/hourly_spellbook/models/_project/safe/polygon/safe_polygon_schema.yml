@@ -6,9 +6,6 @@ models:
       blockchain: polygon
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'singletons', 'polygon']
     description: "Singletons addresses used with Safes"
@@ -25,9 +22,6 @@ models:
       blockchain: polygon
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'polygon']
     description: "Safe addresses"
@@ -54,9 +48,6 @@ models:
       blockchain: polygon
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'transfers', 'polygon']
     description: "MATIC transfers into or out of Safes"
@@ -93,9 +84,6 @@ models:
       blockchain: polygon
       project: safe
       contributors: tschubotz, danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'polygon']
     description: "Safe transactions"
