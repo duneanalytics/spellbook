@@ -20,6 +20,7 @@
     , ref('pancakeswap_v2_arbitrum_base_trades')
     , ref('pancakeswap_v3_arbitrum_base_trades')
     , ref('balancer_v2_arbitrum_base_trades')
+    , ref('balancer_v3_arbitrum_base_trades')
     , ref('dodo_arbitrum_base_trades')
     , ref('gmx_arbitrum_base_trades')
     , ref('integral_arbitrum_base_trades')
