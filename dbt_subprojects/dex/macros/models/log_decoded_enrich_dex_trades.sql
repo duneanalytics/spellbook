@@ -1,6 +1,5 @@
 {% macro log_decoded_enrich_dex_trades(
     base_trades = null
-    , filter = 1=1
     , tokens_erc20_model = null
     )
 %}
@@ -10,10 +9,8 @@ WITH base_trades as (
         *
     FROM
         {{ base_trades }}
-    WHERE
-        {{ filter }}
     {% if is_incremental() %}
-    AND
+    WHERE
         {{ incremental_predicate('block_time') }}
     {% endif %}
 )
