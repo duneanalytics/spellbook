@@ -17,7 +17,24 @@ WITH base_trades as (
         {{ incremental_predicate('block_time') }}
     {% endif %}
 )
-
+, tokens_metadata as (
+    --erc20 tokens
+    select
+        blockchain
+        , contract_address
+        , symbol
+        , decimals
+    from
+        {{ tokens_erc20_model }}
+    union all
+    --native tokens
+    select
+        blockchain
+        , {{var('ETH_ERC20_ADDRESS')}} as contract_address -- 0x00..00
+        , native_token_symbol as symbol
+        , 18 as decimals
+    from {{ source('evms','info') }}
+)
 , enrichments AS (
     SELECT
         base_trades.blockchain
@@ -50,11 +67,11 @@ WITH base_trades as (
     FROM
         base_trades
     LEFT JOIN
-        {{ tokens_erc20_model }} as erc20_bought
+        tokens_metadata as erc20_bought
         ON erc20_bought.contract_address = base_trades.token_bought_address
         AND erc20_bought.blockchain = base_trades.blockchain
     LEFT JOIN
-        {{ tokens_erc20_model }} as erc20_sold
+        tokens_metadata as erc20_sold
         ON erc20_sold.contract_address = base_trades.token_sold_address
         AND erc20_sold.blockchain = base_trades.blockchain
 )

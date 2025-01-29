@@ -96,7 +96,7 @@
             "gnosis":        "array[0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a]",
             "fantom":        "array[]",
             "base":          "array[0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a]",
-            "zksync":        "array[]",
+            "zksync":        "array[0x584aeab186d81dbb52a8a14820c573480c3d4773]",
             "aurora":        "array[]",
             "klaytn":        "array[]",
         },
