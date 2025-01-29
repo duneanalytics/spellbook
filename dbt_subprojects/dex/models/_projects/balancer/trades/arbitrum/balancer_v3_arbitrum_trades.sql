@@ -19,7 +19,7 @@ WITH
             swap_fee,
             pool_symbol,
             pool_type
-        FROM {{ ref('balancer_v3_arbitrum_arbitrum_trades') }}
+        FROM {{ ref('balancer_v3_arbitrum_base_trades') }}
     ),
 
     dexs AS (
