@@ -7,8 +7,10 @@
 
 {% set base_models = [
     ref('uniswap_v3_base_base_trades')
+    , ref('uniswap_v4_base_base_trades')
     , ref('sushiswap_v1_base_base_trades')
     , ref('sushiswap_v2_base_base_trades')
+    , ref('stablebase_base_base_trades')
     , ref('aerodrome_base_base_trades')
     , ref('pancakeswap_v2_base_base_trades')
     , ref('pancakeswap_v3_base_base_trades')
@@ -50,6 +52,11 @@
     , ref('solidly_v3_base_base_trades')
     , ref('swaap_v2_base_base_trades')
     , ref('xchange_base_base_trades')
+    , ref('infusion_base_base_trades')
+    , ref('flashliquidity_base_base_trades')
+    , ref('akronswap_base_base_trades')
+    , ref('jojo_base_base_trades')
+    , ref('otsea_base_base_trades')
 ] %}
 
 WITH base_union AS (

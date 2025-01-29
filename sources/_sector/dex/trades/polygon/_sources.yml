@@ -2,6 +2,10 @@ version: 2
 
 
 sources:
+  - name: uniswap_v4_polygon
+    tables:
+      - name: PoolManager_evt_Swap
+      - name: PoolManager_evt_Initialize
   - name: uniswap_v3_polygon
   - name: airswap_polygon
     tables:
@@ -72,6 +76,14 @@ sources:
     tables:
       - name: Vault_evt_Swap
   - name: dfyn_polygon
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
+  - name: jetswap_polygon
+    tables:
+      - name: JetswapPair_evt_Swap
+      - name: JetswapFactory_evt_PairCreated
+  - name: gravity_finance_polygon
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UniswapV2Factory_evt_PairCreated

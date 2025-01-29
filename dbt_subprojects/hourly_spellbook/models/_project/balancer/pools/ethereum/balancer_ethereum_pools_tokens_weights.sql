@@ -4,23 +4,26 @@
         
         )
 }}
- 
+
+{% set balancer_models = [
+    ref('balancer_v1_ethereum_pools_tokens_weights'),
+    ref('balancer_v2_ethereum_pools_tokens_weights'),
+    ref('balancer_v3_ethereum_pools_tokens_weights')
+] %}
+
 SELECT *
-FROM
-(
-        SELECT
-                blockchain,
-                version,
-                pool_id,
-                token_address,
-                CAST(normalized_weight as double) as normalized_weight
-        FROM {{ ref('balancer_v1_ethereum_pools_tokens_weights') }}
-        UNION
-        SELECT
-                blockchain,
-                version,
-                pool_id,
-                token_address,
-                CAST(normalized_weight as double) as normalized_weight
-        FROM {{ ref('balancer_v2_ethereum_pools_tokens_weights') }}
+FROM (
+    {% for model in balancer_models %}
+    SELECT
+        blockchain,
+        version,
+        pool_id,
+        token_address,
+        normalized_weight
+    FROM {{ model }}
+    {% if not loop.last %}
+    UNION ALL
+    {% endif %}
+    {% endfor %}
 )
+;

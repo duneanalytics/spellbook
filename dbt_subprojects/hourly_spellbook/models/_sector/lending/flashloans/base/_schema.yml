@@ -194,3 +194,35 @@ models:
       - *block_number
       - *tx_hash
       - *evt_index
+
+  - name: morpho_base_base_flashloans
+    meta:
+      blockchain: base
+      sector: lending
+      project: morpho
+      contributors: 0xDataWolf
+    config:
+      tags: ['lending', 'flashloans', 'morpho', 'base']
+    description: "Morpho flashloans transactions on Base"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('morpho_base_base_flashloans_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *project_contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+

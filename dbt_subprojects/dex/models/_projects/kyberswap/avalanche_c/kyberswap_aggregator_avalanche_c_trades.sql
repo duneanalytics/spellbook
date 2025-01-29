@@ -1,6 +1,6 @@
 {{ config
 (
-    
+
     schema = 'kyberswap_aggregator_avalanche_c',
     alias = 'trades',
     partition_by = ['block_month'],
@@ -36,8 +36,11 @@ WITH meta_router AS
             ,ARRAY[-1]              AS trace_address
         FROM
             {{ source('kyber_avalanche_c', 'MetaAggregationRouterV2_evt_Swapped') }}
+        WHERE 0x250f8f7750735e3ab5dc9db3a542f6b71999ed38 not in (dstToken, srcToken)
+        -- There are 2 weird transactions with this token where the return and spent amounts in the event are not correct
+        -- these result in inflated volume, so we'll ignore this token in any trades.
         {% if is_incremental() %}
-        WHERE evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
+        AND evt_block_time >= date_trunc('day', now() - INTERVAL '7' DAY)
         {% endif %}
 )
 SELECT

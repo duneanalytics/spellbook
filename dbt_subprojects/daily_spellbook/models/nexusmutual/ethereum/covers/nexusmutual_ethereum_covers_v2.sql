@@ -32,11 +32,13 @@ cover_sales as (
     from_hex(json_query(c.params, 'lax $.commissionDestination' omit quotes)) as commission_destination,
     cast(json_query(t.pool_allocation, 'lax $.coverAmountInAsset') as uint256) as cover_amount_in_asset,
     cast(json_query(t.pool_allocation, 'lax $.skip') as boolean) as pool_allocation_skip,
+    cast(json_query(c.params, 'lax $.ipfsData' omit quotes) as varchar) as cover_ipfs_data,
     c.call_trace_address as trace_address,
     c.call_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'Cover_call_buyCover') }} c
     cross join unnest(c.poolAllocationRequests) as t(pool_allocation)
   where c.call_success
+    and c.contract_address = 0xcafeac0fF5dA0A2777d915531bfA6B29d282Ee62 -- proxy
 ),
 
 staking_product_premiums as (
@@ -63,7 +65,8 @@ staking_product_premiums as (
     call_tx_hash as tx_hash
   from {{ source('nexusmutual_ethereum', 'StakingProducts_call_getPremium') }}
   where call_success
-    and contract_address = 0xcafea573fbd815b5f59e8049e71e554bde3477e4
+    --and contract_address = 0xcafea573fbd815b5f59e8049e71e554bde3477e4
+    and contract_address <> 0xcafea524e89514e131ee9f8462536793d49d8738
 ),
 
 cover_premiums as (
@@ -88,7 +91,7 @@ cover_premiums as (
       when 7 then 'cbBTC'
       else 'NA'
     end as cover_asset,
-    c.sum_assured / if(c.cover_asset = 6, 1e6, 1e18) as sum_assured,
+    c.sum_assured / case c.cover_asset when 6 then 1e6 when 7 then 1e8 else 1e18 end as sum_assured,
     case c.payment_asset
       when 0 then 'ETH'
       when 1 then 'DAI'
@@ -99,6 +102,7 @@ cover_premiums as (
     end as premium_asset,
     c.cover_owner,
     c.commission_destination,
+    c.cover_ipfs_data,
     c.trace_address,
     c.tx_hash
   from cover_sales c
@@ -138,6 +142,7 @@ covers_v2 as (
     cp.commission,
     cp.commission_ratio,
     cp.commission_destination,
+    cp.cover_ipfs_data,
     cp.trace_address,
     cp.tx_hash
   from cover_premiums cp
@@ -195,6 +200,7 @@ covers as (
     commission_ratio,
     commission_destination,
     false as is_migrated,
+    cover_ipfs_data,
     trace_address,
     tx_hash
   from covers_v2
@@ -223,6 +229,7 @@ covers as (
     commission_ratio,
     commission_destination,
     true as is_migrated,
+    null as cover_ipfs_data,
     null as trace_address,
     tx_hash
   from covers_v1_migrated
@@ -255,6 +262,7 @@ select
   commission_ratio,
   commission_destination,
   is_migrated,
+  cover_ipfs_data,
   trace_address,
   tx_hash
 from covers

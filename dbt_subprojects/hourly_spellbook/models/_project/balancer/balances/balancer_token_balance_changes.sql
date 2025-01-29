@@ -16,7 +16,9 @@
     ref('balancer_v2_gnosis_token_balance_changes'),
     ref('balancer_v2_optimism_token_balance_changes'),
     ref('balancer_v2_polygon_token_balance_changes'),
-    ref('balancer_v2_zkevm_token_balance_changes')
+    ref('balancer_v2_zkevm_token_balance_changes'),
+    ref('balancer_v3_ethereum_token_balance_changes'),
+    ref('balancer_v3_gnosis_token_balance_changes')    
 ] %}
 
 SELECT *

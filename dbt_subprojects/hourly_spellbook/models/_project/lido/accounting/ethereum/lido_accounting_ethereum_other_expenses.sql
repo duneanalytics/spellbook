@@ -7,24 +7,21 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "lido_accounting",
-                                \'["pipistrella", "adcv", "zergil1397", "lido"]\') }}'
+                                \'["pipistrella", "adcv", "zergil1397"]\') }}'
         )
 }}
---https://dune.com/queries/2012205
---ref{{'lido_accounting_other_expenses'}}
-
 
 
 with tokens AS (
-select * from (values
+    select * from (values
     (0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32), --LDO
-    (0x6B175474E89094C44Da98b954EedeAC495271d0F),   --DAI
-    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48),   --USDC
+    (0x6B175474E89094C44Da98b954EedeAC495271d0F), --DAI
+    (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48), --USDC
     (0xdAC17F958D2ee523a2206206994597C13D831ec7), -- USDT
-    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2),   --WETH
-    (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0),   --MATIC
-    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84),  --stETH
-    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0) --wstETH
+    (0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2), --WETH
+    (0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0), --MATIC
+    (0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84), --stETH
+    (0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0)  --wstETH
 ) as tokens(address)),
 
 
@@ -48,7 +45,8 @@ multisigs_list AS (
     (0x9B1cebF7616f2BC73b47D226f90b01a7c9F86956,  'Ethereum',  'ATCMsig'),
     (0x17F6b2C738a63a8D3A113a228cfd0b373244633D,  'Ethereum',  'PMLMsig'),
     (0xde06d17db9295fa8c4082d4f73ff81592a3ac437,  'Ethereum',  'RCCMsig'),
-    (0x834560f580764bc2e0b16925f8bf229bb00cb759,  'Ethereum',  'TRPMsig')
+    (0x834560f580764bc2e0b16925f8bf229bb00cb759,  'Ethereum',  'TRPMsig'),
+    (0x606f77BF3dd6Ed9790D9771C7003f269a385D942,  'Ethereum',  'AllianceMsig')
     ) as list(address, chain, name)
 
 ),
@@ -67,6 +65,12 @@ intermediate_addresses AS (
     (0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf, 'Polygon bridge'),
     (0xa3a7b6f88361f48403514059f1f16c8e78d60eec, 'Arbitrum bridge'),
     (0x99c9fc46f92e8a1c0dec1b1747d010903e884be1, 'Optimism bridge'),
+    (0x9de443adc5a411e83f1878ef24c3f52c61571e72, 'Base bridge'),
+    (0x41527B2d03844dB6b0945f25702cB958b6d55989, 'zkSync bridge'),
+    (0xb948a93827d68a82F6513Ad178964Da487fe2BD9, 'BnB bridge'),
+    (0x051F1D88f0aF5763fB888eC4378b4D8B29ea3319, 'Linea bridge'),
+    (0x2D001d79E5aF5F65a939781FE228B267a8Ed468B, 'Mantle bridge'),
+    (0x6625C6332c9F91F2D27c304E729B86db87A3f504, 'Scroll bridge'),
     (0x0914d4ccc4154ca864637b0b653bc5fd5e1d3ecf, 'AnySwap bridge (Polkadot, Kusama)'),
     (0x3ee18b2214aff97000d974cf647e7c347e8fa585, 'Wormhole bridge'), --Solana, Terra
     (0x9ee91F9f426fA633d227f7a9b000E28b9dfd8599, 'stMatic Contract')
@@ -99,7 +103,7 @@ dai_referral_payments_addr AS (
 steth_referral_payments_addr AS (
     SELECT _recipient AS address FROM {{source('lido_ethereum','AllowedRecipientsRegistry_RevShare_evt_RecipientAdded')}}
 ),
-/*
+
 stonks as (
     select * from (values
     ('STETH→DAI', 0x3e2D251275A92a8169A3B17A2C49016e2de492a7),
@@ -114,24 +118,7 @@ stonks as (
     ) as list(namespace, address)
 ),
 
-cow_settlement as (
-    select * from (values
-    (0x9008D19f58AAbD9eD0D60971565AA8510560ab41)
-    ) as list(address)
-),
 
-stonks_orders_txns as (
-    select evt_tx_hash
-    from {{source('lido_ethereum', 'steth_evt_Transfer')}}
-    where "from" in (
-            select cast(replace(topic1, 0x000000000000000000000000, 0x) as varbinary) as order_addr
-            from {{source('ethereum', 'logs')}} l
-            join stonks s on l.contract_address = s.address
-             and l.topic0 = 0x96a6d5477fba36522dca4102be8b3785435baf902ef6c4edebcb99850630c75f -- Stonks Deployed
-            )
-    and to in (select address from cow_settlement)
-),
-*/
 other_expenses_txns AS (
     SELECT
         evt_block_time,
@@ -160,8 +147,10 @@ other_expenses_txns AS (
             SELECT 0x0000000000000000000000000000000000000000
             UNION ALL
             SELECT address FROM diversifications_addresses
+            UNION ALL
+            SELECT address FROM stonks
         )
-  --      AND evt_tx_hash NOT IN (select evt_tx_hash from stonks_orders_txns)
+        
     UNION ALL
     --ETH outflow
     SELECT
@@ -199,4 +188,3 @@ other_expenses_txns AS (
     FROM other_expenses_txns
     WHERE contract_address IN (SELECT address FROM tokens)
       and value != 0
-

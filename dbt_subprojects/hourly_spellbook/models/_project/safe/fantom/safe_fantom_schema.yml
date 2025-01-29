@@ -6,9 +6,6 @@ models:
       blockchain: fantom
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'singletons', 'fantom']
     description: "Singletons addresses used with Safes"
@@ -25,9 +22,6 @@ models:
       blockchain: fantom
       project: safe
       contributors: tschubotz
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'fantom']
     description: "Safe addresses"
@@ -54,9 +48,6 @@ models:
       blockchain: fantom
       project: safe
       contributors: tschubotz, danielpartida
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
     config:
       tags: ['safe', 'fantom']
     description: "Safe transactions"

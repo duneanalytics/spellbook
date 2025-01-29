@@ -15,7 +15,10 @@ WITH trusted_tokens AS (
                 , contract_address
         FROM (
                 VALUES
-                ('arbitrum', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8)
+                ('abstract', 0x3439153EB7AF838Ad19d56E1571FBD09333C2809)
+                , ('abstract', 0x84a71ccd554cc1b02749b35d22f684cc8ec987e1)
+                , ('abstract', 0x000000000000000000000000000000000000800a)
+                , ('arbitrum', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8)
                 , ('arbitrum', 0x82af49447d8a07e3bd95bd0d56f35241523fbab1)
                 , ('arbitrum', 0xaf88d065e77c8cc2239327c5edb3a432268e5831)
                 , ('arbitrum', 0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9)
@@ -47,6 +50,13 @@ WITH trusted_tokens AS (
                 , ('bnb', 0x2170ed0880ac9a755fd29b2688956bd959f933f8)
                 , ('bnb', 0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c)
                 , ('bnb', 0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3)
+                , ('boba', 0x5DE1677344D3Cb0D7D465c10b72A8f60699C062d)
+                , ('boba', 0x66a2A913e447d6b4BF33EFbec43aAeF87890FBbc)
+                , ('boba', 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000)
+                , ('boba', 0xa18bF3994C0Cc6E3b63ac420308E5383f53120D7)
+                , ('boba', 0xf74195Bb8a5cf652411867c5C2C5b8C2a402be35)
+                , ('boba', 0x7562F525106F5d54E891e005867Bf489B5988CD9)
+                , ('boba', 0x68ac1623ACf9eB9F88b65B5F229fE3e2c0d5789E)
                 , ('celo', 0x765de816845861e75a25fca122bb6898b8b1282a)
                 , ('celo', 0x471ece3750da237f93b8e339c536989b8978a438)
                 , ('celo', 0xceba9300f2b948710d2653dd7b07f33a8b32118c)
@@ -54,13 +64,19 @@ WITH trusted_tokens AS (
                 , ('celo', 0xd629eb00deced2a080b7ec630ef6ac117e614f1b)
                 , ('celo', 0x639a647fbe20b6c8ac19e48e2de44ea792c62c5c)
                 , ('celo', 0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e)
+                , ('corn', 0xda5ddd7270381a7c2717ad10d1c0ecb19e3cdfb2) -- WBTCN
+                , ('corn', 0xecac9c5f704e954931349da37f60e39f515c11c1) -- LBTC
+                , ('corn', 0xdf0b24095e15044538866576754f3c964e902ee6) -- USDC.e
+                , ('corn', 0xf469fbd2abcd6b9de8e169d128226c0fc90a012e) -- pumpBTC
                 , ('ethereum', 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2)
                 , ('ethereum', 0xdac17f958d2ee523a2206206994597c13d831ec7)
                 , ('ethereum', 0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48)
                 , ('ethereum', 0x6b175474e89094c44da98b954eedeac495271d0f)
                 , ('ethereum', 0x2260fac5e5542a773aa44fbcfedf7c193bc2c599)
                 , ('ethereum', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e)
+                , ('ethereum', 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0) -- wstETH
                 , ('fantom', 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83)
+                , ('flare', 0x1D80c49BbBCd1C0911346656B529DF9E5c2F783d)
                 , ('fantom', 0x04068da6c83afcfa0e13ba15a6696662335d5b75)
                 , ('fantom', 0x74b23882a30290451a17c44f4f05243b6b58c76d)
                 , ('fantom', 0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e)
@@ -76,6 +92,8 @@ WITH trusted_tokens AS (
                 , ('gnosis', 0x8e5bbbb09ed1ebde8674cda39a0c169401db4252)
                 , ('gnosis', 0x44fa8e6f47987339850636f88629646662444217)
                 , ('gnosis', 0xdd96b45877d0e8361a4ddb732da741e97f3191ff)
+                , ('ink', 0x4200000000000000000000000000000000000006)
+                , ('ink', 0xf1815bd50389c46847f0bda824ec8da914045d14)
                 , ('kaia', 0x5c13e303a62fc5dedf5b52d66873f2e59fedadc2)
                 , ('kaia', 0x608792deb376cce1c9fa4d0e6b7b44f507cffa6a)
                 , ('kaia', 0x19aac5f612f524b754ca7e7c41cbfa2e981a4432)
@@ -134,6 +152,12 @@ WITH trusted_tokens AS (
                 , ('solana', from_base58('mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So'))
                 , ('solana', from_base58('Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB'))
                 , ('solana', from_base58('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'))
+                , ('sonic', 0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38)
+                , ('sonic', 0x29219dd400f2Bf60E5a23d13Be72B486D4038894)
+                , ('sonic', 0x50c42dEAcD8Fc9773493ED674b675bE577f2634b)
+                , ('sonic', 0xe715cba7b5ccb33790cebff1436809d36cb17e57)
+                , ('sonic', 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE)
+                , ('sonic', 0xe5da20f15420ad15de0fa650600afc998bbe3955)                
                 , ('worldchain', 0x2cFc85d8E48F8EAB294be644d9E25C3030863003)
                 , ('worldchain', 0x79A02482A880bCE3F13e09Da970dC34db4CD24d1)
                 , ('worldchain', 0x03C7054BCB39f7b2e5B2c7AcB37583e32D70Cfa3)
@@ -144,6 +168,9 @@ WITH trusted_tokens AS (
                 , ('zkevm', 0x37eaa0ef3549a5bb7d431be78a3d99bd360d19e5)
                 , ('zkevm', 0xa2036f0538221a77a3937f1379699f44945018d0)
                 , ('zkevm', 0xb23c20efce6e24acca0cef9b7b7aa196b84ec942)
+                , ('viction', 0xC054751BdBD24Ae713BA3Dc9Bd9434aBe2abc1ce)  -- WVIC
+                , ('viction', 0x381B31409e4D220919B2cFF012ED94d70135A59e)  -- USDT
+                , ('viction', 0x20cC4574f263C54eb7aD630c9AC6d4d9068Cf127)  -- USDC
                 , ('zksync', 0x3355df6d4c9c3035724fd0e3914de96a5a83aaf4)
                 , ('zksync', 0x2039bb4116b4efc145ec4f0e2ea75012d6c0f181)
                 , ('zksync', 0x5aea5775959fbc2557cc8789bc1bf90a239d9a91)
