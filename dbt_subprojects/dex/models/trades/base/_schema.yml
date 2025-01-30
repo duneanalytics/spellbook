@@ -1097,3 +1097,22 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('jojo_base_base_trades_seed')
+
+  - name: balancer_v3_base_base_trades
+    meta:
+      blockchain: base
+      sector: dex
+      project: balancer
+      contributors: viniabussafi
+    config:
+      tags: ["base", "dex", "trades", "balancer"]
+    description: "Balancer v3 base base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_base_base_trades_seed')
+          filter:
+            version: 3
