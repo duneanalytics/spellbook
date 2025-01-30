@@ -203,6 +203,6 @@ sources:
       - name: UniswapV2Factory_evt_PairCreated
   - name: swapline_base
     tables:
-      - name: LBPair_evt_Swap
+      - name: swaplinepair_evt_swap
       - name: LBFactory_evt_LBPairCreated
 

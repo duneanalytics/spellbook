@@ -15,7 +15,7 @@
         blockchain = 'base',
         project = 'swapline',
         version = '1',
-        Pair_evt_Swap = source('swapline_base', 'LBPair_evt_Swap'),
+        Pair_evt_Swap = source('swapline_base', 'swaplinepair_evt_swap'),
         Factory_evt_PairCreated = source('swapline_base', 'LBFactory_evt_LBPairCreated')
     )
 }}
