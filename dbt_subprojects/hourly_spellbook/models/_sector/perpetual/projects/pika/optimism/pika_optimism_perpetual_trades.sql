@@ -4,7 +4,7 @@
     post_hook='{{ expose_spells(\'["optimism"]\',
                                     "project",
                                     "pika",
-                                    \'["msilb7", "drethereum", "rplust"]\') }}'
+                                    \'["msilb7", "drethereum", "rplust", "princi"]\') }}'
         )
 }}
 
@@ -12,6 +12,7 @@
     ref('pika_v1_optimism_perpetual_trades')
     , ref('pika_v2_optimism_perpetual_trades')
     , ref('pika_v3_optimism_perpetual_trades')
+    , ref('pika_v4_optimism_perpetual_trades')
 ] %}
 
 SELECT *
