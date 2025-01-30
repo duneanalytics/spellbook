@@ -2,7 +2,7 @@
 
 ## Table Description
 
-The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs). This table captures all trade events that happen across different liqudity sources. 
+The `dex.trades` table captures detailed data on trades executed via decentralized exchanges (DEXs). This table captures all trade events that happen across different liquidity sources. 
 
 ## Functional Overview
 
