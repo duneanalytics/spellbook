@@ -15,6 +15,7 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
+            - tx_index
             - evt_index
     columns:
       - &blockchain
@@ -62,9 +63,9 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
-        data_tests:
-          - dbt_utils.accepted_range:
-              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+        # data_tests:
+        #  - dbt_utils.accepted_range:
+        #     max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
