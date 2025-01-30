@@ -22,8 +22,8 @@ AND action.receipt_id = log.receipt_id
 WHERE
   receipt_receiver_account_id = 'v1.signer'
   -- Deployment block of v1.signer: https://nearblocks.io/txns/79BBi3H3XgzktscGqKDZHAiNGRseuAJuYCmHkxKFLNif
-  AND action.block_height >= {{BlockHeight}}
-  AND log.block_height >= {{BlockHeight}}
+  AND action.block_height >= 124788114
+  AND log.block_height >= 124788114
   AND action_kind = 'FUNCTION_CALL'
   AND action_function_call_call_method_name = 'sign'
   -- $ echo "eyJyZXF1ZXN0Ijp" | base64 --decode is guaranteed slice of input call data.
