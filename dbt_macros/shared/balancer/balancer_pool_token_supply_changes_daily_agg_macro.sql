@@ -65,7 +65,7 @@ WITH
         FROM unnest(sequence(date('2024-12-01'), date(now()), interval '1' day)) as t(date_sequence)
     )
 
-        SELECT
+        SELECT DISTINCT
             c.day AS block_date,
             '{{blockchain}}' as blockchain,
             '{{version}}' AS version,

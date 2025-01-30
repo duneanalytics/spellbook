@@ -162,7 +162,7 @@ WITH
     GROUP BY 1,2
     )
 
-    SELECT
+    SELECT DISTINCT
         c.block_date,
         c.pool_id,
         BYTEARRAY_SUBSTRING(c.pool_id, 1, 20) AS pool_address,
@@ -357,7 +357,7 @@ WITH
     GROUP BY 1,2
     )
 
-    SELECT
+    SELECT DISTINCT
         c.block_date,
         c.pool_id,
         BYTEARRAY_SUBSTRING(c.pool_id, 1, 20) AS pool_address,
