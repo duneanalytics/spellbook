@@ -23,6 +23,7 @@
     , ref('dex_fantom_base_trades')
     , ref('dex_flare_base_trades')
     , ref('dex_gnosis_base_trades')
+    , ref('dex_ink_base_trades')
     , ref('dex_linea_base_trades')
     , ref('dex_kaia_base_trades')
     , ref('dex_mantle_base_trades')
