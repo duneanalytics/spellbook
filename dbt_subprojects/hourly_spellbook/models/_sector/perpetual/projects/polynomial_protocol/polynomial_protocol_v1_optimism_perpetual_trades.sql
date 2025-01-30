@@ -1,6 +1,6 @@
 {{ config(
     alias = 'perpetual_trades',
-    schema = 'polynomial_base',
+    schema = 'polynomial_protocol_v1_optimism',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',

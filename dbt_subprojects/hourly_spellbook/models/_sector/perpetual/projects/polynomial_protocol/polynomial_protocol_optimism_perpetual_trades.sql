@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'polynomial_protocol_perpetual_trades',
+    schema = 'polynomial_protocol_optimism',
     alias = 'perpetual_trades',
     post_hook='{{ expose_spells(blockchains = \'["optimism"]\',
                                     spell_type = "project",
