@@ -37,7 +37,10 @@ models:
         description: "Blockchain"
       - &pool_type
         name: pool_type
-        description: "Pool attributes, determined by the pool's factory"              
+        description: "Pool attributes, determined by the pool's factory"            
+      - &fee_type
+        name: fee_type
+        description: "Labels whether fee comes from swaps or yield for V3. V2 fees are labeled as 'v2'."           
       - &token_address
         name: token_address
         description: "Contract address of the token in which protocol fees were collected"
@@ -56,7 +59,7 @@ models:
       - &treasury_share
         name: treasury_share
         description: "Share of total fee that is directed to Balancer DAO's treasury, as per BIPs 19, 161 and 371"
-      - &treasury_revenue_usd
+      - &treasury_fee_usd
         name: treasury_revenue_usd
         description: "USD value of fee directed to Balancer DAO's treasury"
       - &lp_fee_collected_usd
@@ -95,4 +98,4 @@ models:
       - *protocol_fee_collected_usd
       - *treasury_share
       - *treasury_fee_usd
-      - *lp_fee_collected_usd        
+      - *lp_fee_collected_usd            
