@@ -61,7 +61,11 @@ WITH evt_swap AS (
         {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
         AND f.blockchain = t.blockchain
-    INNER JOIN {{ source('evms', 'creation_traces') }} ct 
+    INNER JOIN (
+        SELECT address, "from", blockchain, MAX(block_number) as latest_block
+        FROM {{ source('evms', 'creation_traces') }}
+        GROUP BY address, "from", blockchain
+    ) ct 
         ON f.{{ pair_column_name }} = ct.address 
         AND f.contract_address = ct."from"
         AND ct.blockchain = t.blockchain
