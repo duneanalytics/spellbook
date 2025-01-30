@@ -85,7 +85,7 @@ The `ronin.contracts` table tracks all contracts that have been submitted to Dun
 
 {% docs ronin_creation_traces_doc %}
 
-The `roninm.creation_traces` table contains data about contract creation events on the ronin blockchain. It includes:
+The `ronin.creation_traces` table contains data about contract creation events on the ronin blockchain. It includes:
 
 - Block number and timestamp
 - Transaction hash
