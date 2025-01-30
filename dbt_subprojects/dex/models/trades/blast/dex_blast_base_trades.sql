@@ -7,6 +7,7 @@
 
 {% set base_models = [
     ref('uniswap_v3_blast_base_trades')
+    , ref('uniswap_v4_blast_base_trades')
     , ref('uniswap_v2_blast_base_trades')
     , ref('thruster_blast_base_trades')
     , ref('blasterswap_blast_base_trades')
