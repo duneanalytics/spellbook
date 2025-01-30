@@ -12,11 +12,14 @@
                                         ,"bnb"
                                         ,"boba"
                                         ,"celo"
+                                        ,"corn"
                                         ,"ethereum"
                                         ,"fantom"
                                         ,"fuse"
                                         ,"gnosis"
                                         ,"goerli"
+                                        ,"ink"
+                                        ,"abstract"
                                         ,"kaia"
                                         ,"linea"
                                         ,"mantle"
@@ -32,10 +35,11 @@
                                         ,"zksync"
                                         ,"zora"
                                         ,"bob"
+                                        ,"sonic"
                                     ]\',
                                     "sector",
                                     "tokens",
-                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum"]\') }}'
+                                    \'["bh2smith","0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","0xRob","jeff-dude","viniabussafi","IrishLatte19","angus_1","Henrystats","rantum", "IrishLatte19"]\') }}'
     )
 }}
 
@@ -75,6 +79,10 @@
     ,'tokens_flare': {'blockchain': 'flare', 'model': ref('tokens_flare_erc20')}
     ,'tokens_boba': {'blockchain': 'boba', 'model': ref('tokens_boba_erc20')}
     ,'tokens_viction': {'blockchain': 'viction', 'model': ref('tokens_viction_erc20')}
+    ,'tokens_sonic': {'blockchain': 'sonic', 'model': ref('tokens_sonic_erc20')}
+    ,'tokens_corn': {'blockchain': 'corn', 'model': ref('tokens_corn_erc20')}
+    ,'tokens_ink': {'blockchain': 'ink', 'model': ref('tokens_ink_erc20')}
+    ,'tokens_abstract': {'blockchain': 'abstract', 'model': ref('tokens_abstract_erc20')}
 } %}
 
 with automated_source as (

@@ -7,11 +7,10 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                 "project",
                                 "lido_accounting",
-                                \'["gregshestakovlido", "ppclunghe", "xadcv"]\') }}'
+                                \'["pipistrella", "adcv", "zergil1397"]\') }}'
         )
 }}
 
---ref{{'lido_accounting_ethereum_withdrawals'}}
 
 with withdrawals as (
     select block_time          as time

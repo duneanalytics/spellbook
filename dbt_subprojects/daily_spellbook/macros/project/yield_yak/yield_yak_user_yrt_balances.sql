@@ -31,6 +31,13 @@ existing_contracts AS (
 {% endif -%}
 
 new_transfers AS (
+    SELECT
+        s.contract_address
+        , s.block_time
+        , s.block_number
+        , s.user_address
+        , s.net_transfer_amount
+    FROM (
     {%- for strategy in yield_yak_strategies(blockchain) %}
         SELECT
             s.contract_address
@@ -40,19 +47,8 @@ new_transfers AS (
             , SUM(u.net_transfer_amount) AS net_transfer_amount
         FROM {{ source(namespace_blockchain, strategy + '_evt_Transfer') }} s
         CROSS JOIN UNNEST(ARRAY[s."from", s.to], ARRAY[-1 * CAST(s.value AS INT256), CAST(s.value AS INT256)]) AS u(user_address, net_transfer_amount)
-        {%- if is_incremental() %}
-        LEFT JOIN existing_contracts c
-            ON c.contract_address = s.contract_address
-        WHERE
-            (({{ incremental_predicate('s.evt_block_time') }}
-            AND s.evt_block_time > c.max_from_time)
-            OR c.contract_address IS NULL) -- This line allows for new contract_addresses being appended that were not already included in previous runs but also allows their entire historical data to be loaded
-            AND s."from" != s."to"
-        {%- endif %}
-        {%- if not is_incremental() %}
         WHERE
             s."from" != s."to"
-        {%- endif %}
         GROUP BY
             s.contract_address
             , s.evt_block_time
@@ -63,6 +59,15 @@ new_transfers AS (
         UNION ALL
         {%- endif -%}
     {%- endfor %}
+    ) s
+    {%- if is_incremental() %}
+    LEFT JOIN existing_contracts c
+        ON c.contract_address = s.contract_address
+    WHERE
+        ({{ incremental_predicate('s.block_time') }}
+        AND s.block_time > c.max_from_time)
+        OR c.contract_address IS NULL -- This line allows for new contract_addresses being appended that were not already included in previous runs but also allows their entire historical data to be loaded
+    {%- endif %}
 ),
 
 combined_table AS (

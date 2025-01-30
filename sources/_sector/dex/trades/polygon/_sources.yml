@@ -2,6 +2,10 @@ version: 2
 
 
 sources:
+  - name: uniswap_v4_polygon
+    tables:
+      - name: PoolManager_evt_Swap
+      - name: PoolManager_evt_Initialize
   - name: uniswap_v3_polygon
   - name: airswap_polygon
     tables:

@@ -31,7 +31,10 @@ bebop_jam_raw_data AS (
         (SELECT
             evt_index, evt_tx_hash, evt_block_time, ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS row_num
          FROM {{ source('bebop_jam_optimism', 'JamSettlement_evt_Settlement') }}
-        ) evt
+         UNION ALL
+         SELECT
+            evt_index, evt_tx_hash, evt_block_time, ROW_NUMBER() OVER (PARTITION BY evt_tx_hash ORDER BY evt_index) AS row_num
+         FROM {{ source('jam_v2_optimism', 'JamSettlement_evt_BebopJamOrderFilled') }}) evt
     LEFT JOIN
         (SELECT
             call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
@@ -42,6 +45,11 @@ bebop_jam_raw_data AS (
             call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
             ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
         FROM {{ source('bebop_jam_optimism', 'JamSettlement_call_settleWithPermitsSignatures') }}
+        UNION ALL
+        SELECT
+            call_success, call_block_time, call_block_number, call_tx_hash, contract_address, "order",
+            ROW_NUMBER() OVER (PARTITION BY call_tx_hash ORDER BY call_block_number) AS row_num
+        FROM {{ source('jam_v2_optimism', 'JamSettlement_call_settle') }}
         ) ex
         ON ex.call_tx_hash = evt.evt_tx_hash and ex.row_num = evt.row_num
     WHERE ex.call_success = TRUE

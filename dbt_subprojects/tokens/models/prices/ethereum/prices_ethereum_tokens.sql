@@ -1255,7 +1255,6 @@ FROM
     ('donk-donkey', 'ethereum', 'DONK', 0xe4f6d46c244bb7cf3e218cdfb5c35cf9a4d9c920, 18),
     ('evn-evolution-finance', 'ethereum', 'EVN', 0x9af15d7b8776fa296019979e70a5be53c714a7ec, 18),
     ('fair-fairgame', 'ethereum', 'FAIR', 0x9b20dabcec77f6289113e61893f7beefaeb1990a, 18),
-    ('gm-gm-token', 'ethereum', 'GM', 0xbc7250c8c3eca1dfc1728620af835fca489bfdf3, 9),
     ('gnft-gnft', 'ethereum', 'GNFT', 0xc502002aeb1b9309fccb016adf50507987fc6c2b, 18),
     ('happy-happyfans', 'ethereum', 'HAPPY', 0x3079f61704e9efa2bcf1db412f735d8d4cfa26f4, 18),
     ('hmt-human-protocol', 'ethereum', 'HMT', 0xd1ba9bac957322d6e8c07a160a3a8da11a0d2867, 18),
@@ -1871,8 +1870,14 @@ FROM
     ('mstr-mstr2100', 'ethereum', 'MSTR', 0x42069026EAC8Eee0Fd9b5f7aDFa4f6E6D69a2B39, 9), 
     ('usdl-lift-dollar', 'ethereum', 'USDL', 0xbdC7c08592Ee4aa51D06C27Ee23D5087D65aDbcD, 18), 
     ('usr-resolv-usr', 'ethereum', 'USR', 0x66a1e37c9b0eaddca17d3662d6c05f4decf3e110, 18),
-    ('sovrn-sovrun','ethereum', 'SOVRN', 0x031B8d752d73d7Fe9678ACEf26e818280D0646b4, 18)
-) as temp (token_id, blockchain, symbol, contract_address, decimals)
+    ('sovrn-sovrun','ethereum', 'SOVRN', 0x031B8d752d73d7Fe9678ACEf26e818280D0646b4, 18),
+    ('apw-spectra','ethereum', 'APW', 0x4104b135dbc9609fc1a9490e61369036497660c8, 18),
+    ('wagmi5-wagmi', 'ethereum', 'WAGMI', 0x92CC36D66e9d739D50673d1f27929a371FB83a67, 18),
+    ('deusd-elixir-deusd','ethereum', 'DEUSD', 0x15700b564ca08d9439c58ca5053166e8317aa138, 18),
+    ('unibot-unibot','ethereum', 'UNIBOT', 0xf819d9cb1c2a819fd991781a822de3ca8607c3c9, 18),
+    ('morpho-morpho','ethereum', 'MORPHO', 0x58d97b57bb95320f9a05dc918aef65434969c2b2, 18)
+
+   ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
     0x841fb148863454a3b3570f515414759be9091465    -- SHIH
@@ -1899,4 +1904,5 @@ where contract_address not in (
     ,0xee06a81a695750e71a662b51066f2c74cf4478a0   -- DG, bad price feed
     ,0x9e24415d1e549ebc626a13a482bb117a2b43e9cf   -- LOVELY, rugpull
     ,0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3   -- BUBBLE, bad price feed
+    ,0xbc7250c8c3eca1dfc1728620af835fca489bfdf3   -- GM, bad price feed
 )
