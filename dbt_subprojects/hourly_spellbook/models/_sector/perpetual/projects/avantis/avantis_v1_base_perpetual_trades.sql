@@ -32,7 +32,7 @@ WITH trading_events AS (
         executionFee / 1e18 as fee_usd,
         isBuy,
         'limit_order' as event_type
-    FROM delta_prod.avantis_base.Trading_evt_OpenLimitPlaced        
+    FROM {{ source('avantis_base', 'Trading_evt_OpenLimitPlaced') }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}                    
@@ -58,7 +58,7 @@ WITH trading_events AS (
             ELSE NULL
         END as isBuy,
         'margin_update' as event_type
-    FROM delta_prod.avantis_base.Trading_evt_MarginUpdated
+    FROM {{ source('avantis_base', 'Trading_evt_MarginUpdated') }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
     {% endif %}
