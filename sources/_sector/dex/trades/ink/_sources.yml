@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: uniswap_v4_ink
+    tables:
+      - name: PoolManager_evt_Swap
+      - name: PoolManager_evt_Initialize
+  - name: uniswap_v3_ink
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+      - name: UniswapV3Factory_evt_PoolCreated
+  - name: uniswap_v2_ink
+    tables:
+      - name: UniswapV2Pair_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
