@@ -14,10 +14,6 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - block_date
-            - blockchain
-            - project
-            - version
             - tx_hash
             - evt_index
     columns:
@@ -140,6 +136,51 @@ models:
     description: >
       Pika_v3 perpetuals trades/swaps on Optimism
     data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *block_time
+      - *virtual_asset
+      - *underlying_asset
+      - *market
+      - *market_address
+      - *volume_usd
+      - *fee_usd
+      - *margin_usd
+      - *trade
+      - *project
+      - *version
+      - *frontend
+      - *trader
+      - *volume_raw
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *block_month
+    
+  - name: pika_v4_optimism_perpetual_trades
+    meta:
+      blockchain: optimism
+      sector: perpetual
+      project: pika_v4
+      contributors: princi
+    config:
+      tags: ['optimism', 'pika, pika_v4', 'perpetuals', 'perps']
+    description: >
+      Pika_v3 perpetuals trades/swaps on Optimism
+    data_tests:
+      - check_perpetuals_seed:
+            blockchain: optimism
+            project: Pika
+            version: 4
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_date

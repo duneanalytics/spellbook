@@ -1,4 +1,4 @@
-version: 2
+version: 3
 
 sources:
   - name: raydium_clmm_solana
@@ -26,4 +26,16 @@ sources:
       - name: raydium_amm_call_swapBaseOut
         loaded_at_field: call_block_time
       - name: raydium_amm_call_swapBaseIn
+        loaded_at_field: call_block_time
+  - name: raydium_cp_solana
+    description: "raydium_cpmm_solana v5 decoded tables"
+    freshness: # default freshness
+      warn_after: { count: 12, period: hour }
+      error_after: { count: 24, period: hour }
+    tables:
+      - name: raydium_cp_swap_call_initialize
+        loaded_at_field: call_block_time
+      - name: raydium_cp_swap_call_swapBaseOutput
+        loaded_at_field: call_block_time
+      - name: raydium_cp_swap_call_swapBaseInput
         loaded_at_field: call_block_time
