@@ -1,6 +1,6 @@
 {{ config(
     alias = 'perpetual_trades',
-    schema = 'pool_base',
+    schema = 'dip_exchange_v1_base',
     partition_by = ['block_month'],
     materialized = 'incremental',
     file_format = 'delta',
@@ -31,7 +31,7 @@ WITH perp_events AS (
         indexToken,
         side,
         CAST(NULL AS DOUBLE) AS pnl
-    FROM delta_prod.pool_base.Pool_evt_IncreasePosition
+    FROM {{ source('pool_base', 'Pool_evt_IncreasePosition') }}
     WHERE evt_block_time >= DATE '{{ project_start_date }}'
 
     UNION ALL
@@ -56,7 +56,7 @@ WITH perp_events AS (
         indexToken,
         side,
         TRY_CAST(JSON_EXTRACT_SCALAR(pnl, '$.abs') AS DOUBLE)/1e30 AS pnl
-    FROM delta_prod.pool_base.Pool_evt_DecreasePosition
+    FROM {{ source('pool_base', 'Pool_evt_DecreasePosition') }}
     WHERE evt_block_time >= DATE '{{ project_start_date }}'
 
     UNION ALL
@@ -81,15 +81,15 @@ WITH perp_events AS (
         indexToken,
         side,
         TRY_CAST(JSON_EXTRACT_SCALAR(pnl, '$.abs') AS DOUBLE)/1e30 AS pnl
-    FROM delta_prod.pool_base.Pool_evt_LiquidatePosition
+    FROM {{ source('pool_base', 'Pool_evt_LiquidatePosition') }}
     WHERE evt_block_time >= DATE '{{ project_start_date }}'
 )
 
 SELECT 
     'base' AS blockchain,
-    'dip-exchange' AS project,
+    'dip_exchange' AS project,
     '1' AS version,
-    'dip-exchange' AS frontend,
+    'dip_exchange' AS frontend,
     CAST(DATE_TRUNC('day', pe.block_time) AS DATE) AS block_date,
     CAST(DATE_TRUNC('month', pe.block_time) AS DATE) AS block_month,
     pe.block_time,

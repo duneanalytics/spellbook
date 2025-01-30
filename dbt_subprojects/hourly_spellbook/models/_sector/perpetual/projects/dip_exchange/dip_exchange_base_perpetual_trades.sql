@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'dip_exchange_perpetual_trades',
+    schema = 'dip_exchange_base',
     alias = 'perpetual_trades',
     post_hook='{{ expose_spells(blockchains = \'["base"]\',
                                     spell_type = "project",
