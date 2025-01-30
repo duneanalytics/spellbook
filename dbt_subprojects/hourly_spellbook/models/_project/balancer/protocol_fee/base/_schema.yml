@@ -62,3 +62,37 @@ models:
       - &lp_fee_collected_usd
         name: lp_fee_collected_usd
         description: "USD value of the fee returned to liquidity providers" 
+
+  - name: balancer_v3_base_protocol_fee
+    meta:
+      blockchain: base
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['base', 'revenue', 'fees']
+    description: >
+      Daily Protocol Fee collected and Revenue by pool on Balancer, an automated portfolio manager and trading platform.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - day
+            - pool_id
+            - fee_type
+            - token_address
+    columns:
+      - *day
+      - *pool_id
+      - *pool_address
+      - *pool_symbol
+      - *version
+      - *blockchain
+      - *pool_type        
+      - *fee_type
+      - *token_address
+      - *token_symbol
+      - *token_amount_raw
+      - *token_amount
+      - *protocol_fee_collected_usd
+      - *treasury_share
+      - *treasury_fee_usd
+      - *lp_fee_collected_usd        
