@@ -91,7 +91,7 @@ complete_perp_tx AS (
     )
 )
 
-SELECT
+SELECT DISTINCT 
 	'base' AS blockchain
 	,CAST(date_trunc('DAY', evt_block_time) AS date) AS block_date
 	,CAST(date_trunc('MONTH', evt_block_time) AS date) AS block_month
