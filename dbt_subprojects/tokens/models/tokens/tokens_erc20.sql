@@ -19,6 +19,7 @@
                                         ,"gnosis"
                                         ,"goerli"
                                         ,"ink"
+                                        ,"abstract"
                                         ,"kaia"
                                         ,"linea"
                                         ,"mantle"
@@ -83,6 +84,7 @@
     ,'tokens_corn': {'blockchain': 'corn', 'model': ref('tokens_corn_erc20')}
     ,'tokens_ink': {'blockchain': 'ink', 'model': ref('tokens_ink_erc20')}
     ,'tokens_sophon': {'blockchain': 'sophon', 'model': ref('tokens_sophon_erc20')}
+    ,'tokens_abstract': {'blockchain': 'abstract', 'model': ref('tokens_abstract_erc20')}
 } %}
 
 with automated_source as (
