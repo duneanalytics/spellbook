@@ -89,34 +89,34 @@ models:
         description: "Event index number"
 
 
-  - name: fxdx_base_perpetual_trades
-    meta:
-      blockchain: base
-      sector: perpetual
-      contributors: kaiblade
-    config:
-      tags: ['base', fxdx, 'perpetuals', 'perps']
-    description: >
-      All fxdx perpetual trades on base
-    columns:
-      - *blockchain
-      - *block_date
-      - *block_month
-      - *block_time
-      - *virtual_asset
-      - *underlying_asset
-      - *market
-      - *market_address
-      - *volume_usd
-      - *fee_usd
-      - *margin_usd
-      - *trade
-      - *project
-      - *version
-      - *frontend
-      - *trader
-      - *volume_raw
-      - *tx_hash
-      - *tx_from
-      - *tx_to
-      - *evt_index
+  # - name: fxdx_base_perpetual_trades
+  #   meta:
+  #     blockchain: base
+  #     sector: perpetual
+  #     contributors: kaiblade
+  #   config:
+  #     tags: ['base', fxdx, 'perpetuals', 'perps']
+  #   description: >
+  #     All fxdx perpetual trades on base
+  #   columns:
+  #     - *blockchain
+  #     - *block_date
+  #     - *block_month
+  #     - *block_time
+  #     - *virtual_asset
+  #     - *underlying_asset
+  #     - *market
+  #     - *market_address
+  #     - *volume_usd
+  #     - *fee_usd
+  #     - *margin_usd
+  #     - *trade
+  #     - *project
+  #     - *version
+  #     - *frontend
+  #     - *trader
+  #     - *volume_raw
+  #     - *tx_hash
+  #     - *tx_from
+  #     - *tx_to
+  #     - *evt_index
