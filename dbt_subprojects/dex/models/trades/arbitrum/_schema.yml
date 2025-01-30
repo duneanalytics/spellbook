@@ -4,6 +4,28 @@ models:
   - name: dex_arbitrum_base_trades
     data_tests:
       - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: uniswap_v4_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: uniswap
+      contributors: agaperste
+    config:
+      tags: [ 'arbitrum', 'dex', 'trades', 'uniswap', 'v4' ]
+    description: "uniswap arbitrum v4 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_arbitrum_base_trades_seed')
+          filter:
+            version: 4
 
   - name: uniswap_v3_arbitrum_base_trades
     meta:
@@ -215,7 +237,7 @@ models:
       blockchain: arbitrum
       sector: dex
       project: pancakeswap
-      contributors: chef_seaweed, tomfutago
+      contributors: chef_butterbeer, chef_seaweed, tomfutago
     config:
       tags: ["arbitrum", "dex", "trades", "pancakeswap", "uniswap", "v2"]
     description: "Pancakeswap Arbitrum v2 base trades"
@@ -230,6 +252,7 @@ models:
             version:
               - 2
               - stableswap
+              - pcsx
 
   - name: balancer_v2_arbitrum_base_trades
     meta:
@@ -789,3 +812,22 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('spartadex_arbitrum_base_trades_seed')
+
+  - name: balancer_v3_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: balancer
+      contributors: viniabussafi
+    config:
+      tags: ["arbitrum", "dex", "trades", "balancer"]
+    description: "Balancer v3 arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_arbitrum_base_trades_seed')
+          filter:
+            version: 3
