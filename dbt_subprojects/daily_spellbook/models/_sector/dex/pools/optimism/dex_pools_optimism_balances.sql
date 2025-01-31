@@ -25,7 +25,7 @@ WITH uniswap_v3_op_addresses AS (
     (token0 = 0x4200000000000000000000000000000000000042
     OR token1 = 0x4200000000000000000000000000000000000042)
     {% if is_incremental() %}
-    AND {{ incremental_predicate('creation_time') }}
+    AND {{ incremental_predicate('creation_block_time') }}
     {% endif %}
 ),
 
@@ -44,7 +44,7 @@ uniswap_v2_op_addresses AS (
     (token0 = 0x4200000000000000000000000000000000000042
     OR token1 = 0x4200000000000000000000000000000000000042)
     {% if is_incremental() %}
-    AND {{ incremental_predicate('creation_time') }}
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ),
 
@@ -63,7 +63,7 @@ velodrome_v2_op_addresses AS (
     (token0 = 0x4200000000000000000000000000000000000042
     OR token1 = 0x4200000000000000000000000000000000000042)
     {% if is_incremental() %}
-    AND {{ incremental_predicate('creation_time') }}
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ),
 
@@ -82,7 +82,7 @@ velodrome_v2_cl_op_addresses AS (
     (token0 = 0x4200000000000000000000000000000000000042
     OR token1 = 0x4200000000000000000000000000000000000042)
     {% if is_incremental() %}
-    AND {{ incremental_predicate('creation_time') }}
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ),
 
@@ -101,7 +101,7 @@ velodrome_v1_op_addresses AS (
     (token0 = 0x4200000000000000000000000000000000000042
     OR token1 = 0x4200000000000000000000000000000000000042)
     {% if is_incremental() %}
-    AND {{ incremental_predicate('creation_time') }}
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ),
 
@@ -120,7 +120,7 @@ solidly_v3_op_addresses AS (
     (token0 = 0x4200000000000000000000000000000000000042
     OR token1 = 0x4200000000000000000000000000000000000042)
     {% if is_incremental() %}
-    AND {{ incremental_predicate('creation_time') }}
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ),
 
@@ -139,7 +139,7 @@ openxswap_v1_op_addresses AS (
     (token0 = 0x4200000000000000000000000000000000000042
     OR token1 = 0x4200000000000000000000000000000000000042)
     {% if is_incremental() %}
-    AND {{ incremental_predicate('creation_time') }}
+    AND {{ incremental_predicate('evt_block_time') }}
     {% endif %}
 ),
 
