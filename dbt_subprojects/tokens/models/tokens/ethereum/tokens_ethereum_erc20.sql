@@ -4752,4 +4752,7 @@ FROM (VALUES
     , ( 0xC71Ea051a5F82c67ADcF634c36FFE6334793D24C, 'waEthLidoGHO', 18)
     , ( 0x1e6ffa4e9F63d10B8820A3ab52566Af881Dab53c, 'gtWETHe', 18) 
     , ( 0x7751e2f4b8ae93ef6b79d86419d42fe3295a4559, 'wUSDL', 18) 
+    , ( 0x09db87a538bd693e9d08544577d5ccfaa6373a48, 'ynETH', 18)
+    , ( 0x35Ec69A77B79c255e5d47D5A3BdbEFEfE342630c, 'ynLSDe', 18)
+    , ( 0x657d9aba1dbb59e53f9f3ecaa878447dcfc96dcb, 'ynETHx', 18)
 ) AS temp_table (contract_address, symbol, decimals)
