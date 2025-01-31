@@ -103,6 +103,10 @@ class TokenChecker:
 
     def validate_token(self, new_line):
         token = self.parse_token(new_line)
+        # Temporary override to force price flETH = WETH
+        if token == "flETH":  
+            return
+    
         try:
             api_token = self.tokens_by_id[token['id']]
             logging.info(f"INFO: verifying {token['id']}")
