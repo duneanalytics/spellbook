@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'pools_optimism',
+    schema = 'dex_pools_optimism',
     alias = 'balances',
     materialized = 'incremental',
     file_format = 'delta',
@@ -18,12 +18,15 @@ WITH uniswap_v3_op_addresses AS (
     0x4200000000000000000000000000000000000042 AS token_address,
     creation_block_time AS creation_time,
     'uniswap' AS protocol_name,
-    'v3' AS version
+    '3' AS version
   FROM 
     {{ source('uniswap_v3_optimism', 'pools') }}
   WHERE
-    token0 = 0x4200000000000000000000000000000000000042
-    OR token1 = 0x4200000000000000000000000000000000000042
+    (token0 = 0x4200000000000000000000000000000000000042
+    OR token1 = 0x4200000000000000000000000000000000000042)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('creation_block_time') }}
+    {% endif %}
 ),
 
 uniswap_v2_op_addresses AS (
@@ -34,12 +37,15 @@ uniswap_v2_op_addresses AS (
     0x4200000000000000000000000000000000000042 AS token_address,
     evt_block_time AS creation_time,
     'uniswap' AS protocol_name,
-    'v2' AS version
+    '2' AS version
   FROM 
     {{ source('uniswap_v2_optimism', 'UniswapV2Factory_evt_PairCreated') }}
   WHERE
-    token0 = 0x4200000000000000000000000000000000000042
-    OR token1 = 0x4200000000000000000000000000000000000042
+    (token0 = 0x4200000000000000000000000000000000000042
+    OR token1 = 0x4200000000000000000000000000000000000042)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('creation_block_time') }}
+    {% endif %}
 ),
 
 velodrome_v2_op_addresses AS (
@@ -50,12 +56,15 @@ velodrome_v2_op_addresses AS (
     0x4200000000000000000000000000000000000042 AS token_address,
     evt_block_time AS creation_time,
     'velodrome' AS protocol_name,
-    'v2' AS version
+    '2' AS version
   FROM 
     {{ source('velodrome_v2_optimism', 'PoolFactory_evt_PoolCreated') }}
   WHERE
-    token0 = 0x4200000000000000000000000000000000000042
-    OR token1 = 0x4200000000000000000000000000000000000042
+    (token0 = 0x4200000000000000000000000000000000000042
+    OR token1 = 0x4200000000000000000000000000000000000042)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('creation_block_time') }}
+    {% endif %}
 ),
 
 velodrome_v2_cl_op_addresses AS (
@@ -66,12 +75,15 @@ velodrome_v2_cl_op_addresses AS (
     0x4200000000000000000000000000000000000042 AS token_address,
     evt_block_time AS creation_time,
     'velodrome' AS protocol_name,
-    'v2' AS version
+    '2' AS version
   FROM 
     {{ source('velodrome_v2_optimism', 'CLFactory_evt_PoolCreated') }}
   WHERE
-    token0 = 0x4200000000000000000000000000000000000042
-    OR token1 = 0x4200000000000000000000000000000000000042
+    (token0 = 0x4200000000000000000000000000000000000042
+    OR token1 = 0x4200000000000000000000000000000000000042)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('creation_block_time') }}
+    {% endif %}
 ),
 
 velodrome_v1_op_addresses AS (
@@ -82,12 +94,15 @@ velodrome_v1_op_addresses AS (
     0x4200000000000000000000000000000000000042 AS token_address,
     evt_block_time AS creation_time,
     'velodrome' AS protocol_name,
-    'v1' AS version
+    '1' AS version
   FROM 
     {{ source('velodrome_optimism', 'PairFactory_evt_PairCreated') }}
   WHERE
-    token0 = 0x4200000000000000000000000000000000000042
-    OR token1 = 0x4200000000000000000000000000000000000042
+    (token0 = 0x4200000000000000000000000000000000000042
+    OR token1 = 0x4200000000000000000000000000000000000042)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('creation_block_time') }}
+    {% endif %}
 ),
 
 solidly_v3_op_addresses AS (
@@ -98,12 +113,15 @@ solidly_v3_op_addresses AS (
     0x4200000000000000000000000000000000000042 AS token_address,
     evt_block_time AS creation_time,
     'solidly' AS protocol_name,
-    'v3' AS version
+    '3' AS version
   FROM 
     {{ source('solidly_v3_optimism', 'SolidlyV3Factory_evt_PoolCreated') }}
   WHERE
-    token0 = 0x4200000000000000000000000000000000000042
-    OR token1 = 0x4200000000000000000000000000000000000042
+    (token0 = 0x4200000000000000000000000000000000000042
+    OR token1 = 0x4200000000000000000000000000000000000042)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('creation_block_time') }}
+    {% endif %}
 ),
 
 openxswap_v1_op_addresses AS (
@@ -114,12 +132,15 @@ openxswap_v1_op_addresses AS (
     0x4200000000000000000000000000000000000042 AS token_address,
     evt_block_time AS creation_time,
     'openxswap' AS protocol_name,
-    'v1' AS version
+    '1' AS version
   FROM 
     {{ source('openxswap_optimism', 'UniswapV2Factory_evt_PairCreated') }}
   WHERE
-    token0 = 0x4200000000000000000000000000000000000042
-    OR token1 = 0x4200000000000000000000000000000000000042
+    (token0 = 0x4200000000000000000000000000000000000042
+    OR token1 = 0x4200000000000000000000000000000000000042)
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('creation_block_time') }}
+    {% endif %}
 ),
 
 curve_op_addresses AS (
@@ -130,7 +151,7 @@ curve_op_addresses AS (
     0x4200000000000000000000000000000000000042 AS token_address,
     NULL AS creation_time, 
     'curve' AS protocol_name,
-    'v1' AS version
+    '1' AS version
   FROM 
     {{ source('curve_optimism', 'pools') }}
   WHERE
