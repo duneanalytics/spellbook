@@ -1,23 +1,44 @@
 {{ config(
     schema = 'dex'
     , alias = 'automated_trades_unmapped'
-    , materialized = 'view'
+    , partition_by = ['blockchain', 'block_date']
+    , materialized = 'incremental'
+    , file_format = 'delta'
+    , incremental_strategy = 'merge'
+    , unique_key = ['blockchain', 'block_number', 'tx_index', 'evt_index']
+    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
 WITH base_trades AS (
     SELECT *
     FROM {{ ref('dex_automated_trades_all') }}
+),
+
+invalid_factories AS (
+    SELECT DISTINCT factory_address, blockchain
+    FROM base_trades bt
+    WHERE NOT EXISTS (
+        SELECT 1
+        FROM {{ source('tokens', 'transfers') }} t1
+        WHERE bt.blockchain = t1.blockchain
+        AND bt.token_bought_address = t1.contract_address
+        AND bt.block_date = t1.block_date
+        AND bt.tx_hash = t1.tx_hash
+    )
+    AND NOT EXISTS (
+        SELECT 1
+        FROM {{ source('tokens', 'transfers') }} t2
+        WHERE bt.blockchain = t2.blockchain
+        AND bt.token_sold_address = t2.contract_address
+        AND bt.block_date = t2.block_date
+        AND bt.tx_hash = t2.tx_hash
+    )
 )
 
 SELECT 
     base_trades.blockchain,
-    CASE 
-        WHEN dex_map.project_name is not NULL then dex_map.project_name
-        WHEN base_trades.dex_type = 'uni-v2' THEN concat('unknown-uni-v2-', cast(varbinary_substring(base_trades.factory_address, 1, 5) as varchar))
-        WHEN base_trades.dex_type = 'uni-v3' THEN concat('unknown-uni-v3-', cast(varbinary_substring(base_trades.factory_address, 1, 5) as varchar))
-        ELSE concat('unknown-', cast(varbinary_substring(base_trades.factory_address, 1, 5) as varchar))
-    END as project,
+    concat('unknown-', base_trades.dex_type, '-', cast(varbinary_substring(base_trades.factory_address, 1, 5) as varchar)) as project,
     base_trades.version,
     base_trades.factory_address,
     base_trades.dex_type,
@@ -44,6 +65,16 @@ SELECT
     base_trades.evt_index,
     base_trades.tx_index
 FROM base_trades
-LEFT JOIN {{ ref('dex_mapping') }} AS dex_map
-    ON base_trades.factory_address = dex_map.factory_address 
-    AND base_trades.blockchain = dex_map.blockchain
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM {{ ref('dex_mapping') }} AS dex_map
+    WHERE base_trades.blockchain = dex_map.blockchain
+    AND base_trades.factory_address = dex_map.factory_address
+)
+AND NOT EXISTS (
+    SELECT 1
+    FROM invalid_factories
+    WHERE base_trades.blockchain = invalid_factories.blockchain
+    AND base_trades.factory_address = invalid_factories.factory_address
+)
+

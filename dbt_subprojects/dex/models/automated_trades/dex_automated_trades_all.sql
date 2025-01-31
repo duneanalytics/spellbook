@@ -1,7 +1,7 @@
 {{ config(
     schema = 'dex'
     , alias = 'automated_trades_all'
-    , partition_by = ['block_month', 'blockchain']
+    , partition_by = ['blockchain', 'block_date']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
