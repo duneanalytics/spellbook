@@ -2,6 +2,7 @@ import argparse
 import logging
 import re
 import sys
+import time
 from json import JSONDecodeError
 from token_checker import TokenChecker
 
@@ -12,23 +13,22 @@ parser.add_argument('--file_name')
 args = parser.parse_args()
 
 # the following pattern supports hexstring address and varchar address
-static_record_pattern = r"\('([\w-]+)',\s*'([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\),?"
-alternative_pattern = r"\('([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*(\d+)\),?"
+static_record_pattern = r"\('([\w-]+)',\s*'([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'\w+'),\s*(\d+)\),?"
+alternative_pattern = r"\('([\w-]+)',\s*'([\w-]+)',\s*(0x[a-fA-F0-9]+|'\w+'),\s*(\d+)\),?"
 
 def filter_non_row_lines(new_lines):
-    pattern1 = r"\(?'?[\w-]+'?,\s*'?[\w-]+'?,\s*'?[\w-]+'?,\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*\d+\)?"
-    pattern2 = r"\(?'?[\w-]+'?,\s*'?[\w-]+'?,\s*(0x[a-fA-F0-9]+|'[\w]+'),\s*\d+\)?"
+    pattern1 = r"\('[\w-]+',\s*'[\w-]+',\s*'[\w-]+',\s*(0x[a-fA-F0-9]+|'\w+'),\s*\d+\)?"
+    pattern2 = r"\('[\w-]+',\s*'[\w-]+',\s*(0x[a-fA-F0-9]+|'\w+'),\s*\d+\)?"
 
     filtered_lines = []
     for line in new_lines:
         line = line.strip()
         if line and not line.startswith('--'):
-            if bool(re.search(pattern1, line)) or bool(re.search(pattern2, line)):
+            if re.search(pattern1, line) or re.search(pattern2, line):
                 filtered_lines.append(line)
     return filtered_lines
 
-
-with open(f'{args.file_name}') as f:
+with open(args.file_name) as f:
     new_lines = f.read().strip().split('\n')
 
 cleaned_lines = []
