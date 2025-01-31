@@ -6,7 +6,6 @@
        , "bnb"
        , "ethereum"
        , "gnosis"
-       , "optimism"
        , "polygon"
     ]) }}
 {% endmacro %} 
@@ -32,3 +31,6 @@
        , "zora"
     ]) }}
 {% endmacro %} 
+
+
+-- "optimism" has some problems with traces, need to fix later
