@@ -812,3 +812,22 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('spartadex_arbitrum_base_trades_seed')
+
+  - name: balancer_v3_arbitrum_base_trades
+    meta:
+      blockchain: arbitrum
+      sector: dex
+      project: balancer
+      contributors: viniabussafi
+    config:
+      tags: ["arbitrum", "dex", "trades", "balancer"]
+    description: "Balancer v3 arbitrum base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('balancer_arbitrum_base_trades_seed')
+          filter:
+            version: 3
