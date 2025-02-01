@@ -6,7 +6,7 @@ sources:
       - name: blocks
         meta:
           docs_slug: /aptos/blocks
-          short_description: no description yet for aptos.blocks. TBD
+          short_description: "Core table containing all blocks in the Aptos blockchain with detailed metadata about consensus and execution"
 
         description: '{{ doc("aptos_blocks_doc") }}'
         columns:
@@ -461,84 +461,84 @@ sources:
       - name: user_transactions
         meta:
           docs_slug: /aptos/user_transactions
-          short_description: no description yet for aptos.user_transactions. TBD
+          short_description: "Table containing all user-initiated transactions on the Aptos blockchain with detailed execution information"
         description: '{{ doc("aptos_user_transactions_doc") }}'
         columns:
           - name: block_height
-            description: No description provided. TBD
+            description: "The height of the block containing this transaction"
           - name: block_date
-            description: No description provided. TBD
+            description: "The date of the block containing this transaction"
           - name: block_timestamp
-            description: No description provided. TBD
+            description: "The timestamp when the block was created"
           - name: block_hash
-            description: No description provided. TBD
+            description: "The unique hash identifier of the block"
           - name: block_first_version
-            description: No description provided. TBD
+            description: "The first version number in the block"
           - name: block_last_version
-            description: No description provided. TBD
+            description: "The last version number in the block"
           - name: block_proposer
-            description: No description provided. TBD
+            description: "The address of the validator that proposed this block"
           - name: block_round
-            description: No description provided. TBD
+            description: "The consensus round number for this block"
           - name: block_epoch
-            description: No description provided. TBD
+            description: "The epoch number when this block was created"
           - name: block_metadata_id
-            description: No description provided. TBD
+            description: "The unique identifier for block metadata"
           - name: block_failed_proposer_indices
-            description: No description provided. TBD
+            description: "List of indices of validators that failed to propose in this round"
           - name: block_previous_block_votes_bitvec
-            description: No description provided. TBD
+            description: "Bitvector representing validator votes from the previous block"
           - name: tx_index
-            description: No description provided. TBD
+            description: "The index of this transaction within the block"
           - name: tx_type
-            description: No description provided. TBD
+            description: "The type of transaction (e.g., user, system)"
           - name: hash
-            description: No description provided. TBD
+            description: "The unique hash identifier of the transaction"
           - name: version
-            description: No description provided. TBD
+            description: "The globally unique version number of this transaction"
           - name: gas_used
-            description: No description provided. TBD
+            description: "The amount of gas consumed by this transaction"
           - name: vm_status
-            description: No description provided. TBD
+            description: "The execution status from the Move VM"
           - name: success
-            description: No description provided. TBD
+            description: "Boolean indicating if the transaction executed successfully"
           - name: state_change_hash
-            description: No description provided. TBD
+            description: "Hash of all state changes caused by this transaction"
           - name: event_root_hash
-            description: No description provided. TBD
+            description: "Merkle root hash of all events emitted by this transaction"
           - name: state_checkpoint_hash
-            description: No description provided. TBD
+            description: "Hash of the state checkpoint after this transaction"
           - name: accumulator_root_hash
-            description: No description provided. TBD
+            description: "Root hash of the transaction accumulator"
           - name: timestamp
-            description: No description provided. TBD
+            description: "The timestamp when this transaction was executed"
           - name: sender
-            description: No description provided. TBD
+            description: "The address that sent this transaction"
           - name: max_gas_amount
-            description: No description provided. TBD
+            description: "Maximum amount of gas the sender is willing to pay"
           - name: gas_unit_price
-            description: No description provided. TBD
+            description: "Price per unit of gas for this transaction"
           - name: sequence_number
-            description: No description provided. TBD
+            description: "Sequence number for the sender's account"
           - name: expiration_timestamp_secs
-            description: No description provided. TBD
+            description: "Timestamp when this transaction expires"
           - name: events_count
-            description: No description provided. TBD
+            description: "Number of events emitted by this transaction"
           - name: changes_count
-            description: No description provided. TBD
+            description: "Number of state changes caused by this transaction"
           - name: payload_type
-            description: No description provided. TBD
+            description: "Type of the transaction payload (e.g., entry function, script)"
           - name: entry_function_name
-            description: No description provided. TBD
+            description: "Name of the entry function called, if applicable"
           - name: entry_function_module_name
-            description: No description provided. TBD
+            description: "Name of the module containing the entry function"
           - name: entry_function_module_address
-            description: No description provided. TBD
+            description: "Address where the module is published"
           - name: script_bytecode
-            description: No description provided. TBD
+            description: "Bytecode of the script, if this is a script transaction"
           - name: script_abi
-            description: No description provided. TBD
+            description: "ABI of the script, if this is a script transaction"
           - name: type_arguments
-            description: No description provided. TBD
+            description: "List of type arguments for the transaction"
           - name: arguments
-            description: No description provided. TBD
+            description: "List of arguments passed to the transaction"
