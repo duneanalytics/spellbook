@@ -16,6 +16,8 @@ FROM
 (
     VALUES
     ('weth-weth','base','WETH',0x4200000000000000000000000000000000000006,18),
+    --ingesting flETH with price for weth momentarily while we find a better fix, should be a <1% delta
+    ('weth-weth','base','flETH',0x000000000D564D5be76f7f0d28fE52605afC7Cf8,18),
     ('axl-axelar','base','AXL',0x23ee2343b892b1bb63503a4fabc840e0e2c6810f,6),
     ('bald-bald','base','BALD',0x27d2decb4bfc9c76f0309b8e88dec3a601fe25a8,18),
     ('usdbc-usd-base-coin','base','USDbC',0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,6),
