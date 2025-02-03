@@ -40,4 +40,6 @@ FROM
     , ('os-origin-sonic', 'OS', 0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794, 18)
     , ('wos-wrapped-origin-sonic', 'wOS', 0x9F0dF7799f6FDAd409300080cfF680f5A23df4b1, 18)
     , ('wstksceth-wrapped-staked-sonic-eth', 'wstkscETH', 0xE8a41c62BB4d5863C6eadC96792cFE90A1f37C47, 18)
+    , ('wagmi5-wagmi', 'WAGMI', 0x0e0Ce4D450c705F8a0B6Dd9d5123e3df2787D16B, 18)
+    , ('anon-heyanon', 'Anon', 0x79bbf4508b1391af3a0f4b30bb5fc4aa9ab0e07c, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
