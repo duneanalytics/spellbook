@@ -23,9 +23,31 @@ ON t1.blockchain = 'base'
 AND BYTEARRAY_SUBSTRING(b.salt, 13, 36) = t1.contract_address
 JOIN {{ source('tokens', 'erc20') }} t2
 ON t2.blockchain = 'base'
-AND b.output_0 = t2.contract_address)
+AND b.output_0 = t2.contract_address),
+
+morpho_tokens AS(
+SELECT DISTINCT
+    a.metaMorpho AS erc4626_token,
+    a.name AS erc4626_token_name,
+    a.symbol AS erc4626_token_symbol,
+    a.asset AS underlying_token,
+    t.symbol AS underlying_token_symbol,
+    18 AS decimals
+FROM {{ source('metamorpho_factory_base', 'MetaMorphoV1_1Factory_evt_CreateMetaMorpho') }} a
+JOIN {{ source('tokens', 'erc20') }} t
+ON t.blockchain = 'base'
+AND a.asset = t.contract_address
+
+)
 
 SELECT 
     'base' AS blockchain, 
     * 
 FROM aave_tokens
+
+UNION
+
+SELECT 
+    'base' AS blockchain, 
+    * 
+FROM morpho_tokens
