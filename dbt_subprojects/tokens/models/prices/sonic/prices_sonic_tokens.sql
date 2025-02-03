@@ -34,7 +34,7 @@ FROM
     , ('brush-brush', 'BRUSH', 0xe51ee9868c1f0d6cd968a8b8c8376dc2991bfe44, 18)
     , ('usdc-usd-coin', 'stkscUSD', 0x4D85bA8c3918359c78Ed09581E5bc7578ba932ba, 6)
     , ('scusd-sonic-usd', 'wstkscUSD', 0x9fb76f7ce5FCeAA2C42887ff441D46095E494206, 6)
-    , ('stksceth-staked-sonic-eth', 'stkscETH', 0x455d5f11Fea33A8fa9D3e285930b478B6bF85265, 18)
+    , ('sceth-sonic-eth', 'stkscETH', 0x455d5f11Fea33A8fa9D3e285930b478B6bF85265, 18)
     , ('ans-angles-staked-sonic', 'anS', 0x0C4E186Eae8aCAA7F7de1315D5AD174BE39Ec987, 18)
     , ('wans-wrapped-angles-sonic', 'wanS', 0xfA85Fe5A8F5560e9039C04f2b0a90dE1415aBD70, 18)
     , ('os-origin-sonic', 'OS', 0xb1e25689D55734FD3ffFc939c4C3Eb52DFf8A794, 18)
