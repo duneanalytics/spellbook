@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: worldchain
       sector: tokens
-      contributors: aalan3, jeff-dude, safeintern, hosuke
+      contributors: aalan3, jeff-dude, safe_intern, hosuke
     config:
       tags: ['tokens','transfers', 'worldchain']
     description: >
