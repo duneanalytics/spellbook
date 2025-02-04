@@ -18,6 +18,7 @@
                                             ,"polygon"
                                             ,"scroll"
                                             ,"sei"
+                                            ,"worldchain"
                                             ,"zkevm"
                                             ,"zksync"
                                             ,"zora"
@@ -46,6 +47,7 @@
     ,'scroll'
     ,'sei'
     ,'tron'
+    ,'worldchain'
     ,'zkevm'
     ,'zksync'
     ,'zora'
