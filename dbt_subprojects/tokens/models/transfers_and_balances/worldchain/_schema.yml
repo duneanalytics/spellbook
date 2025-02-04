@@ -49,13 +49,13 @@ models:
       - name: amount_raw
         description: "The raw amount of the transfer"
 
-  - name: tokens_ronin_transfers
+  - name: tokens_worldchain_transfers
     meta:
-      blockchain: ronin
+      blockchain: worldchain
       sector: tokens
-      contributors: aalan3, jeff-dude, peterrliem, hosuke
+      contributors: aalan3, jeff-dude, safe_intern, hosuke
     config:
-      tags: ['tokens','transfers', 'ronin']
+      tags: ['tokens','transfers', 'worldchain']
     description: >
       Token transfers
     data_tests:
