@@ -73,11 +73,11 @@ models:
       This query counts the received to show that $1 was effectively transfered."
 
 
-  - name: tokens_net_transfers_daily_address
+  - name: tokens_net_value_transfers_asset_daily
     meta:
       sector: tokens
       contributors: jeff-dude, krishhh
     config:
       tags: ['tokens', 'net_transfers']
-    description: "Total transfer amount per day per address across chains"
+    description: "Total transfer amount per day per asset across chains"
     

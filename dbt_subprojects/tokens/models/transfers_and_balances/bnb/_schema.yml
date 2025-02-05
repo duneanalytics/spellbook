@@ -138,17 +138,18 @@ models:
             - blockchain
             - block_date
 
-  - name: tokens_bnb_net_transfers_daily_address
+  - name: tokens_bnb_net_value_transfers_asset_daily
     meta:
       blockchain: bnb
       sector: tokens
       contributors: 0xRob, krishhh
     config:
       tags: ['tokens', 'net_transfers']
-    description: "Total transfer amount per day per address"
+    description: "Total transfer amount per day per asset"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - block_date
-            - address
+            - contract_address
+            - symbol

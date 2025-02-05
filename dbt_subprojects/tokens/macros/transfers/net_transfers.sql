@@ -106,15 +106,18 @@ group by
 
 {% ############################################################################################ %}
 
-{% macro evm_net_transfers_daily_address(blockchain) %}
+{% macro evm_net_value_transfers_asset_daily(blockchain) %}
 
 with raw_transfers as (
     select
         blockchain
         , block_date
+        , contract_address
+        , symbol
         , "from" as address
         , 'sent' as transfer_direction
         , (sum(amount_usd) * -1) as transfer_amount_usd
+        , count(*) transfer_count
     from
         {{ ref('tokens_transfers') }}
     where
@@ -125,6 +128,8 @@ with raw_transfers as (
     group by
         blockchain
         , block_date
+        , contract_address
+        , symbol
         , "from"
         , 'sent'
 
@@ -133,9 +138,12 @@ with raw_transfers as (
     select
         blockchain
         , block_date
+        , contract_address
+        , symbol
         , to as address
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
+        , count(*) transfer_count
     from
         {{ ref('tokens_transfers') }}
     where
@@ -146,80 +154,58 @@ with raw_transfers as (
     group by
         blockchain
         , block_date
+        , contract_address
+        , symbol
         , to
         , 'received'
-), labels as (
-    select
-        od.owner_key
-        , od.name
-        , od.primary_category
-        , od.country_name
-        , oa.blockchain
-        , oa.address
-    from
-        {{ source('labels', 'owner_addresses') }} as oa
-    inner join
-        {{ source('labels', 'owner_details') }} as od
-        on oa.owner_key = od.owner_key
-    where
-        oa.blockchain = '{{blockchain}}'
-), transfers_amount as (
+),  transfers_amount as (
     select
         t.blockchain
         , t.block_date
+        , t.contract_address
+        , t.symbol
         , t.address
-        , coalesce(l.name, 'Unknown') as name
-        , coalesce(l.primary_category, 'Uncategorized') as primary_category
-        , coalesce(l.country_name, 'Unknown') as hq_country
         , sum(case when t.transfer_direction = 'sent' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_sent
         , sum(case when t.transfer_direction = 'received' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_received
+        , sum(transfer_count) as transfer_count
     from
         raw_transfers as t
-    left join
-        labels as l
-        on t.blockchain = l.blockchain
-        and t.address = l.address
-    where
-        coalesce(l.primary_category, 'n/a') not in ('Hacks and exploits', 'Social Engineering Scams') -- filter out scam addresses
     group by
         t.blockchain
         , t.block_date
+        , t.contract_address
+        , t.symbol
         , t.address
-        , coalesce(l.name, 'Unknown')
-        , coalesce(l.primary_category, 'Uncategorized')
-        , coalesce(l.country_name, 'Unknown')
 ), net_transfers as (
     select
         blockchain
         , block_date
+        , contract_address
+        , symbol
         , address
-        , name
-        , primary_category
-        , hq_country
         , sum(coalesce(transfer_amount_usd_sent, 0)) as transfer_amount_usd_sent
         , sum(coalesce(transfer_amount_usd_received, 0)) as transfer_amount_usd_received
         , sum(coalesce(transfer_amount_usd_received, 0)) + sum(coalesce(transfer_amount_usd_sent, 0)) as net_transfer_amount_usd
+        , sum(transfer_count) transfer_count
     from
         transfers_amount
     group by
         blockchain
         , block_date
+        , contract_address
+        , symbol
         , address
-        , name
-        , primary_category
-        , hq_country
 )
 select
     blockchain
     , block_date
-    , address
-    , name
-    , primary_category
-    , hq_country
+    , contract_address
+    , symbol
     , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
     , sum(transfer_amount_usd_received) as transfer_amount_usd_received
-    , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received)) as transfer_amount_usd
+   -- , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received)) as transfer_amount_usd
     , sum(net_transfer_amount_usd) as net_transfer_amount_usd
+    , sum(transfer_count) transfer_count
 from
     net_transfers
 where
@@ -227,9 +213,136 @@ where
 group by
     blockchain
     , block_date
-    , address
-    , name
-    , primary_category
-    , hq_country
+    , contract_address
+    , symbol
 
 {% endmacro %}
+
+
+-- {% macro evm_net_transfers_daily_address(blockchain) %}
+
+-- with raw_transfers as (
+--     select
+--         blockchain
+--         , block_date
+--         , "from" as address
+--         , 'sent' as transfer_direction
+--         , (sum(amount_usd) * -1) as transfer_amount_usd
+--     from
+--         {{ ref('tokens_transfers') }}
+--     where
+--         blockchain = '{{blockchain}}'
+--         {% if is_incremental() or true %}
+--         and {{ incremental_predicate('block_date') }}
+--         {% endif %}
+--     group by
+--         blockchain
+--         , block_date
+--         , "from"
+--         , 'sent'
+
+--     union all
+
+--     select
+--         blockchain
+--         , block_date
+--         , to as address
+--         , 'received' as transfer_direction
+--         , sum(amount_usd) as transfer_amount_usd
+--     from
+--         {{ ref('tokens_transfers') }}
+--     where
+--         blockchain = '{{blockchain}}'
+--         {% if is_incremental() or true %}
+--         and {{ incremental_predicate('block_date') }}
+--         {% endif %}
+--     group by
+--         blockchain
+--         , block_date
+--         , to
+--         , 'received'
+-- ), labels as (
+--     select
+--         od.owner_key
+--         , od.name
+--         , od.primary_category
+--         , od.country_name
+--         , oa.blockchain
+--         , oa.address
+--     from
+--         {{ source('labels', 'owner_addresses') }} as oa
+--     inner join
+--         {{ source('labels', 'owner_details') }} as od
+--         on oa.owner_key = od.owner_key
+--     where
+--         oa.blockchain = '{{blockchain}}'
+-- ), transfers_amount as (
+--     select
+--         t.blockchain
+--         , t.block_date
+--         , t.address
+--         , coalesce(l.name, 'Unknown') as name
+--         , coalesce(l.primary_category, 'Uncategorized') as primary_category
+--         , coalesce(l.country_name, 'Unknown') as hq_country
+--         , sum(case when t.transfer_direction = 'sent' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_sent
+--         , sum(case when t.transfer_direction = 'received' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_received
+--     from
+--         raw_transfers as t
+--     left join
+--         labels as l
+--         on t.blockchain = l.blockchain
+--         and t.address = l.address
+--     where
+--         coalesce(l.primary_category, 'n/a') not in ('Hacks and exploits', 'Social Engineering Scams') -- filter out scam addresses
+--     group by
+--         t.blockchain
+--         , t.block_date
+--         , t.address
+--         , coalesce(l.name, 'Unknown')
+--         , coalesce(l.primary_category, 'Uncategorized')
+--         , coalesce(l.country_name, 'Unknown')
+-- ), net_transfers as (
+--     select
+--         blockchain
+--         , block_date
+--         , address
+--         , name
+--         , primary_category
+--         , hq_country
+--         , sum(coalesce(transfer_amount_usd_sent, 0)) as transfer_amount_usd_sent
+--         , sum(coalesce(transfer_amount_usd_received, 0)) as transfer_amount_usd_received
+--         , sum(coalesce(transfer_amount_usd_received, 0)) + sum(coalesce(transfer_amount_usd_sent, 0)) as net_transfer_amount_usd
+--     from
+--         transfers_amount
+--     group by
+--         blockchain
+--         , block_date
+--         , address
+--         , name
+--         , primary_category
+--         , hq_country
+-- )
+-- select
+--     blockchain
+--     , block_date
+--     , address
+--     , name
+--     , primary_category
+--     , hq_country
+--     , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
+--     , sum(transfer_amount_usd_received) as transfer_amount_usd_received
+--     , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received)) as transfer_amount_usd
+--     , sum(net_transfer_amount_usd) as net_transfer_amount_usd
+-- from
+--     net_transfers
+-- where
+--     net_transfer_amount_usd > 0
+-- group by
+--     blockchain
+--     , block_date
+--     , address
+--     , name
+--     , primary_category
+--     , hq_country
+
+-- {% endmacro %}

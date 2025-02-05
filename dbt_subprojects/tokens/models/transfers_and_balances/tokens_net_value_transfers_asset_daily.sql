@@ -1,6 +1,6 @@
 {{ config(
         schema = 'tokens'
-        , alias = 'net_transfers_daily_address'
+        , alias = 'net_value_transfers_asset_daily'
         , materialized = 'view'
         )
 }}
@@ -33,18 +33,17 @@ SELECT *
 FROM (
         {% for blockchain in chains %}
         SELECT
+                
+                /* since solana labels are not used at this time, coalesce again in final view */
                 blockchain
                 , block_date
-                , address
-                /* since solana labels are not used at this time, coalesce again in final view */
-                , coalesce(name, 'Unknown') as name
-                , coalesce(primary_category, 'Uncategorized') as primary_category
-                , coalesce(hq_country, 'Unknown') as hq_country
+                , contract_address
+                , symbol
                 , transfer_amount_usd_sent
                 , transfer_amount_usd_received
-                , transfer_amount_usd
                 , net_transfer_amount_usd
-        FROM {{ ref('tokens_' + blockchain + '_net_transfers_daily_address') }}
+                , transfer_count
+        FROM {{ ref('tokens_' + blockchain + '_net_value_transfers_asset_daily') }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}

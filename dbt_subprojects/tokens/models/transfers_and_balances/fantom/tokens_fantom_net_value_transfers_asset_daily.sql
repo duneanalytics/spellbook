@@ -1,8 +1,8 @@
-{% set blockchain = 'scroll' %}
+{% set blockchain = 'fantom' %}
 
 {{ config(
         schema = 'tokens_' + blockchain
-        , alias = 'net_transfers_daily_address'
+        , alias = 'net_value_transfers_asset_daily'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
@@ -12,4 +12,4 @@
 }}
 
 
-{{ evm_net_transfers_daily_address(blockchain) }}
+{{ evm_net_value_transfers_asset_daily(blockchain) }}
