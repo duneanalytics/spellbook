@@ -11,7 +11,7 @@ SELECT distinct
     call.output_0 AS address,
     COALESCE(v2pools.address, v3pools.address) AS pool_address,
     child.output_0 AS child_gauge_address,    
-    'base:' || pools.name AS name,
+    'base:' || COALESCE(v2pools.name, v3pools.name) AS name,
     'balancer_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,

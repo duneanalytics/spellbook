@@ -11,7 +11,7 @@ SELECT distinct
     gauge.gauge AS address,
     COALESCE(v2pools.address, v3pools.address) AS pool_address,
     streamer.gauge AS child_gauge_address,
-    'arb:' || pools.name AS name,
+    'arb:' || COALESCE(v2pools.name, v3pools.name) AS name,
     'balancer_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,
@@ -24,7 +24,7 @@ FROM
     LEFT JOIN {{ source('balancer_v2_arbitrum', 'ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated') }} streamer ON gauge.recipient = streamer.streamer
     LEFT JOIN {{ source('labels', 'balancer_v2_pools_arbitrum') }} v2pools ON v2pools.address = streamer.pool
     LEFT JOIN {{ source('labels', 'balancer_v3_pools_arbitrum') }} v3pools ON v3pools.address = streamer.pool
-WHERE pools.name IS NOT NULL
+WHERE COALESCE(v2pools.name, v3pools.name) IS NOT NULL
 
 UNION ALL
 
@@ -33,7 +33,7 @@ SELECT distinct
     gauge.gauge AS address,
     COALESCE(v2pools.address, v3pools.address) AS pool_address,
     streamer.gauge AS child_gauge_address,
-    'arb:' || pools.name AS name,
+    'arb:' || COALESCE(v2pools.name, v3pools.name) AS name,
     'balancer_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,
@@ -48,7 +48,7 @@ FROM
     LEFT JOIN {{ source('labels', 'balancer_v2_pools_arbitrum') }} pools ON pools.address = streamer.pool
     LEFT JOIN {{ source('labels', 'balancer_v2_pools_arbitrum') }} v2pools ON v2pools.address = streamer.pool
     LEFT JOIN {{ source('labels', 'balancer_v3_pools_arbitrum') }} v3pools ON v3pools.address = streamer.pool
-WHERE pools.name IS NOT NULL),
+WHERE COALESCE(v2pools.name, v3pools.name) IS NOT NULL),
 
 child_gauges AS(
 SELECT distinct
@@ -56,7 +56,7 @@ SELECT distinct
     call.output_0 AS address,
     COALESCE(v2pools.address, v3pools.address) AS pool_address,
     child.output_0 AS child_gauge_address,
-    'arb:' || pools.name AS name,
+    'arb:' || COALESCE(v2pools.name, v3pools.name) AS name,
     'balancer_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,
