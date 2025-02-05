@@ -86,4 +86,7 @@ SELECT address
         , (0x6776be80dbada6a02b5f2095cf13734ac303b8d1, 'Soneium', 'Soneium')
         , (0x2b8733e8c60a928b19bb7db1d79b918e8e09ac8c, 'Arena-Z', 'OfficialArenaZ')
         , (0x9fb23129982c993743eb9bb156af8cc8fa2ac761, 'Phala Network', 'PhalaNetwork')
+        , (0x11805594be0229ef08429d775af0c55f7c4535de, 'Abstract', 'AbstractChain')
+        , (0x479b7c95b9509e1a834c994fc94e3581aa8a73b9, 'ZERO Network', 'zerodotnetwork')
+        , (0xebac13ec21937c6eb2b65eb970dbdaca56c9c8b8, 'Infinaeon', 'Infinaeon')
         ) AS x(address, entity, x_username)
