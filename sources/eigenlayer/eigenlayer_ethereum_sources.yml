@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: eigenlayer_ethereum
+    description: "Decoded contracts for EigenLayer on Ethereum"
+
+    tables:
+      - name: DelegationManager_evt_WithdrawalQueued
