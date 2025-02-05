@@ -68,6 +68,7 @@ FROM {{ source('balancer_ethereum', 'CappedArbitrumRootGaugeFactory_call_create'
     LEFT JOIN {{ source('balancer_arbitrum', 'ChildChainGaugeFactory_call_create') }} child ON child.output_0 = call.recipient
     LEFT JOIN {{ source('labels', 'balancer_v2_pools_arbitrum') }} v2pools ON v2pools.address = streamer.pool
     LEFT JOIN {{ source('labels', 'balancer_v3_pools_arbitrum') }} v3pools ON v3pools.address = streamer.pool
+),
 
 gauges AS(
     SELECT 
