@@ -2,7 +2,7 @@
     schema = 'rollup_economics_ethereum',
     alias = 'l2_costs',
     materialized = 'view',
-    unique_key = ['name', 'day']
+    unique_key = ['name', 'day'],
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "rollup_economics",
