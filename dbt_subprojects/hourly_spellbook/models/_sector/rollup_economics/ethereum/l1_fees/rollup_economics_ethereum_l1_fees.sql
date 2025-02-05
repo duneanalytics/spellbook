@@ -64,7 +64,7 @@ SELECT
 FROM {{ source('ethereum', 'transactions') }} t
 JOIN (
     SELECT * 
-    FROM {{ source("growthepie", "l2economics_mapping", database="dune") }} -- update mapping here https://github.com/growthepie/gtp-dna/tree/main/economics_da
+    FROM {{ source("dune", "l2economics_mapping", database="dune") }} -- update mapping here https://github.com/growthepie/gtp-dna/tree/main/economics_da
     WHERE settlement_layer = 'l1'
 ) q
     ON (q.from_address IS NULL OR t."from" = q.from_address) 
