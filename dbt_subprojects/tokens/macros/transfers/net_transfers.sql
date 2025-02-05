@@ -114,6 +114,7 @@ with raw_transfers as (
         , block_date
         , contract_address
         , symbol
+        , tx_hash
         , "from" as address
         , 'sent' as transfer_direction
         , (sum(amount_usd) * -1) as transfer_amount_usd
@@ -132,6 +133,7 @@ with raw_transfers as (
         , symbol
         , "from"
         , 'sent'
+        , tx_hash
 
     union all
 
@@ -140,6 +142,7 @@ with raw_transfers as (
         , block_date
         , contract_address
         , symbol
+        , tx_hash
         , to as address
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
@@ -158,6 +161,7 @@ with raw_transfers as (
         , symbol
         , to
         , 'received'
+        , tx_hash
 ),  transfers_amount as (
     select
         t.blockchain
@@ -165,6 +169,7 @@ with raw_transfers as (
         , t.contract_address
         , t.symbol
         , t.address
+        , t.tx_hash
         , sum(case when t.transfer_direction = 'sent' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_sent
         , sum(case when t.transfer_direction = 'received' then t.transfer_amount_usd else 0 end) as transfer_amount_usd_received
         , sum(transfer_count) as transfer_count
@@ -176,6 +181,7 @@ with raw_transfers as (
         , t.contract_address
         , t.symbol
         , t.address
+        , t.tx_hash
 ), net_transfers as (
     select
         blockchain
@@ -183,6 +189,7 @@ with raw_transfers as (
         , contract_address
         , symbol
         , address
+        , tx_hash
         , sum(coalesce(transfer_amount_usd_sent, 0)) as transfer_amount_usd_sent
         , sum(coalesce(transfer_amount_usd_received, 0)) as transfer_amount_usd_received
         , sum(coalesce(transfer_amount_usd_received, 0)) + sum(coalesce(transfer_amount_usd_sent, 0)) as net_transfer_amount_usd
@@ -195,6 +202,7 @@ with raw_transfers as (
         , contract_address
         , symbol
         , address
+        , tx_hash
 )
 select
     blockchain
@@ -204,7 +212,7 @@ select
     , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
     , sum(transfer_amount_usd_received) as transfer_amount_usd_received
    -- , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received)) as transfer_amount_usd
-    , sum(net_transfer_amount_usd) as net_transfer_amount_usd
+    , sum(net_transfer_amount_usd) as filtered_net_transfer_amount_usd
     , sum(transfer_count) transfer_count
 from
     net_transfers
