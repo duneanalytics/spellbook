@@ -1,6 +1,6 @@
 version: 2
 
-models:
+seeds:
   - name: strategy_category
     description: categories of strategies for EigenLayer on Ethereum
     config:
