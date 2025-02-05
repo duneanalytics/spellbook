@@ -1,0 +1,24 @@
+version: 3
+
+models:
+  - name: mapping_hash
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: lorenz234
+    config:
+      tags: ['rollup', 'l2']
+    description: "Stores the latest hash of 'dune.growthepie.l2economics_mapping' table to track changes."
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - hash_value
+            - updated_at
+    columns:
+      - &hash_value
+        name: hash_value
+        description: "MD5 hash representing the current state of 'dune.growthepie.l2economics_mapping'."
+      - &updated_at
+        name: updated_at
+        description: "Timestamp of the last hash computation."

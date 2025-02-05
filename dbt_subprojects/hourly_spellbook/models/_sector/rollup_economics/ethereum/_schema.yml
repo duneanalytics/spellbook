@@ -13,42 +13,42 @@ models:
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - name
+            - origin_key
             - day
     columns:
-      - &name
-        name: name
-        description: "Name of the rollup"
       - &day
         name: day
         description: "The day when relevant transactions occurred by each rollup"
-      - &data_fee_native
-        name: data_fee_native
-        description: "Fee spent on calldata gas by the transaction (in ETH)"
-      - &data_fee_usd
-        name: data_fee_usd
-        description: "Fee spent on calldata gas by the transaction (in USD)"
-      - &calldata_gas_used
-        name: calldata_gas_used
-        description: "Calldata gas used by the transaction"
-      - &verification_fee_native
-        name: verification_fee_native
-        description: "Fee spent on calldata gas for proof verification by the transaction (in ETH)"
-      - &verification_fee_usd
-        name: verification_fee_usd
-        description: "Fee spent on calldata gas for proof verification by the transaction (in USD)"
-      - &blob_fee_native
-        name: blob_fee_native
-        description: "Fee spent on blob gas by the transaction (in ETH)"
-      - &blob_fee_usd
-        name: blob_fee_usd
-        description: "Fee spent on blob gas by the transaction (in USD)"
+      - &name
+        name: name
+        description: "Name of the rollup"
+      - &origin_key
+        name: origin_key
+        description: "Unique identifier for the rollup"
       - &l1_fee_native
         name: l1_fee_native
-        description: "Total amount paid in gas fees (in ETH)"
+        description: "Fees spent on L1 ethereum (in ETH)"
       - &l1_fee_usd
         name: l1_fee_usd
-        description: "Total amount paid in gas fees (in USD)"
+        description: "Fees spent on L1 ethereum (in USD)"
+      - &calldata_gas_used
+        name: calldata_gas_used
+        description: "Calldata gas used by the transaction on L1 ethereum"
+      - &beacon_fee_native
+        name: beacon_fee_native
+        description: "Fees spent on the beacon chain for posting blobs (in ETH)"
+      - &beacon_fee_usd
+        name: beacon_fee_usd
+        description: "Fees spent on the beacon chain for posting blobs (in USD)"
+      - &used_blob_byte_count
+        name: used_blob_byte_count
+        description: "Actual size of data posted to the beacon chain via blobs (in bytes)"
+      - &total_cost_eth
+        name: total_cost_eth
+        description: "Total onchain cost (in ETH)"
+      - &total_cost_usd
+        name: total_cost_usd
+        description: "Total onchain cost (in USD)"
 
   - name: rollup_economics_ethereum_l2_revenue
     meta:
