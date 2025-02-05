@@ -17,7 +17,7 @@ WITH l1_fees AS (
         SUM(fee_native) as l1_fee_native,
         SUM(fee_usd) as l1_fee_usd,
         SUM(calldata_gas_used) as calldata_gas_used 
-    FROM {{ ref('rollup_economics_ethereum_l1_fees.sql')}}
+    FROM {{ ref('rollup_economics_ethereum_l1_fees')}}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('block_time')}}
     {% endif %}
@@ -32,7 +32,7 @@ beacon_fees AS (
         SUM(fee_native) as beacon_fee_native,
         SUM(fee_usd) as beacon_fee_usd,
         SUM(used_blob_byte_count) as used_blob_byte_count
-    FROM {{ ref('rollup_economics_ethereum_beacon_fees.sql')}}
+    FROM {{ ref('rollup_economics_ethereum_beacon_fees')}}
     {% if is_incremental() %}
     WHERE {{incremental_predicate('beacon_slot_time')}}
     {% endif %}
