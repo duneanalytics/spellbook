@@ -41,7 +41,7 @@ WITH L1_methods AS (
         hash,
         bytearray_substring("data", 1, 4) AS method,
         "to" AS to_address
-    FROM {{ ref('ethereum_transactions')}}
+    FROM {{ source('ethereum', 'transactions')}}
     WHERE 
         TYPE = '3'
         AND block_time >= TIMESTAMP '2024-03-13' -- EIP-4844 launch date
@@ -70,7 +70,7 @@ SELECT
     ((CAST(b.blob_gas_used AS double) * CAST(b.blob_base_fee AS double) / 1e18) * p.price) / (b.used_blob_byte_count) AS fee_usd_per_byte,
     CAST(b.blob_gas_used AS double) * CAST(b.blob_base_fee AS double) / 1e18 AS fee_native,
     (CAST(b.blob_gas_used AS double) * CAST(b.blob_base_fee AS double) / 1e18) * p.price AS fee_usd
-FROM {{ ref('ethereum_blobs')}} b 
+FROM {{ source('ethereum', 'blobs')}} b 
 LEFT JOIN L1_methods m ON b.tx_hash = m.hash
 JOIN (
     SELECT * 
