@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: strategy_category
+    description: categories of strategies for EigenLayer on Ethereum
+    config:
+      column_types:
+        category: varchar
+        name: varchar
+        strategy: varbinary
