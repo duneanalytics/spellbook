@@ -63,4 +63,5 @@ FROM (VALUES
     , (0x01b03586b7d3a14ce9645967ce488fa44612fd00, 'JGT', 18)
     , (0x79bbf4508b1391af3a0f4b30bb5fc4aa9ab0e07c, 'Anon', 18)
     , (0x5e26be93509c161de8989af290375200081ca023, 'LOVE', 18)
+    , (0x6BA47940f738175d3F8C22Aa8EE8606eaAe45eb2, 'sS', 18)
 ) as temp (contract_address, symbol, decimals)
