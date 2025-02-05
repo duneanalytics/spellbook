@@ -1,0 +1,6 @@
+version: 1
+
+sources:
+  - name: growthepie
+    tables:
+      - name: l2economics_mapping
