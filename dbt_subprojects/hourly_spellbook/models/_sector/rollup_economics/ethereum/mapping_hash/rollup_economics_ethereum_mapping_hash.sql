@@ -1,7 +1,8 @@
 {{ config(
-    materialized = 'table',
     schema = 'rollup_economics_ethereum',
-    alias = 'mapping_hash'
+    alias = 'mapping_hash',
+    materialized = 'table',
+    unique_key = ['hash_value', 'updated_at']
 ) }}
 
 WITH latest_hash AS (
@@ -28,4 +29,4 @@ WITH latest_hash AS (
 SELECT 
     hash_value, 
     CURRENT_TIMESTAMP AS updated_at
-FROM latest_hash;
+FROM latest_hash
