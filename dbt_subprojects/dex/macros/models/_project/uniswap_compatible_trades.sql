@@ -127,7 +127,7 @@ FROM
     , PoolManager_evt_Swap = null
     , PoolManager_evt_Initialize = null
     , taker_column_name = null
-    , maker_column_name = null
+    , maker_column_name = 'id'
     , swap_optional_columns = ['fee']
     , initialize_optional_columns = ['hooks']
     , pair_column_name = 'id'
@@ -139,6 +139,7 @@ WITH dexs AS
         t.evt_block_number AS block_number
         , t.evt_block_time AS block_time
         , {% if taker_column_name -%} t.{{ taker_column_name }} {% else -%} cast(null as varbinary) {% endif -%} as taker
+        -- In v4, the maker (i.e. what sold the token) is the pool's virtual address. We also pass the pool ID, making it easier to join with Initialize() and retrieve hooked pool metrics.
         , {% if maker_column_name -%} t.{{ maker_column_name }} {% else -%} cast(null as varbinary) {% endif -%} as maker      
         -- in v4, when amount is negative, then user are selling the token (so things are done from the perspective of the user instead of the pool)
         , CASE WHEN t.amount0 < INT256 '0' THEN abs(t.amount1) ELSE abs(t.amount0) END AS token_bought_amount_raw 
