@@ -45,7 +45,6 @@ FROM
     {{ source('balancer_ethereum', 'CappedArbitrumRootGaugeFactory_evt_GaugeCreated') }} gauge
     INNER JOIN {{ source('balancer_ethereum', 'CappedArbitrumRootGaugeFactory_call_create') }} call ON call.call_tx_hash = gauge.evt_tx_hash
     LEFT JOIN {{ source('balancer_v2_arbitrum', 'ChildChainLiquidityGaugeFactory_evt_RewardsOnlyGaugeCreated') }} streamer ON streamer.streamer = call.recipient
-    LEFT JOIN {{ source('labels', 'balancer_v2_pools_arbitrum') }} pools ON pools.address = streamer.pool
     LEFT JOIN {{ source('labels', 'balancer_v2_pools_arbitrum') }} v2pools ON v2pools.address = streamer.pool
     LEFT JOIN {{ source('labels', 'balancer_v3_pools_arbitrum') }} v3pools ON v3pools.address = streamer.pool
 WHERE COALESCE(v2pools.name, v3pools.name) IS NOT NULL),
@@ -66,8 +65,8 @@ SELECT distinct
     'identifier' AS label_type
 FROM {{ source('balancer_ethereum', 'CappedArbitrumRootGaugeFactory_call_create') }} call
     LEFT JOIN {{ source('balancer_arbitrum', 'ChildChainGaugeFactory_call_create') }} child ON child.output_0 = call.recipient
-    LEFT JOIN {{ source('labels', 'balancer_v2_pools_arbitrum') }} v2pools ON v2pools.address = streamer.pool
-    LEFT JOIN {{ source('labels', 'balancer_v3_pools_arbitrum') }} v3pools ON v3pools.address = streamer.pool
+    LEFT JOIN {{ source('labels', 'balancer_v2_pools_arbitrum') }} v2pools ON v2pools.address = child.pool
+    LEFT JOIN {{ source('labels', 'balancer_v3_pools_arbitrum') }} v3pools ON v3pools.address = child.pool
 ),
 
 gauges AS(
