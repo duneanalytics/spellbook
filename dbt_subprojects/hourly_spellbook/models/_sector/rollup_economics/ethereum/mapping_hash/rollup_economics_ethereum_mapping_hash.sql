@@ -22,7 +22,7 @@ WITH latest_hash AS (
                 ','
             ) || ']'
         )) AS hash_value
-    FROM {{ source("dune", "l2economics_mapping", database="dune") }}
+    FROM {{ source("growthepie", "l2economics_mapping", database="dune") }}
 )
 
 SELECT 

@@ -31,7 +31,7 @@ current_mapping_hash AS (
                 ','
             ) || ']'
         )) AS hash_value
-    FROM {{ source("dune", "l2economics_mapping", database="growthepie") }}
+    FROM {{ source("growthepie", "l2economics_mapping", database="dune") }}
     WHERE settlement_layer = 'beacon'
 )
 
@@ -73,7 +73,8 @@ SELECT
 FROM {{ ref('ethereum_blobs')}} b 
 LEFT JOIN L1_methods m ON b.tx_hash = m.hash
 JOIN (
-    SELECT * FROM {{ source("dune", "l2economics_mapping", database="dune") }} -- update mapping here https://github.com/growthepie/gtp-dna/tree/main/economics_da
+    SELECT * 
+    FROM {{ source("growthepie", "l2economics_mapping", database="dune") }} -- update mapping here https://github.com/growthepie/gtp-dna/tree/main/economics_da
     WHERE settlement_layer = 'beacon'
 ) q
     ON (q.from_address IS NULL OR q.from_address = b.blob_submitter) 
