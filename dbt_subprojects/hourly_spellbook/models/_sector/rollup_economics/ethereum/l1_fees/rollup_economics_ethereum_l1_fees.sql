@@ -2,7 +2,9 @@
     schema = 'rollup_economics_ethereum',
     alias = 'l1_fees',
     materialized = 'incremental',
-    unique_key = ['origin_key', 'tx_hash']
+    unique_key = ['origin_key', 'tx_hash'],
+    incremental_strategy = 'delete+insert',
+    on_schema_change = 'sync_all_columns'
 ) }}
 -- incremental, unless mapping hash changes, then full refresh
 
@@ -33,6 +35,9 @@ current_mapping_hash AS (
         )) AS hash_value
     FROM {{ source("growthepie", "l2economics_mapping", database="dune") }}
     WHERE settlement_layer = 'beacon'
+),
+should_refresh AS (
+    SELECT (SELECT hash_value FROM latest_hash) IS DISTINCT FROM (SELECT hash_value FROM current_mapping_hash) as needs_refresh
 )
 
 -- main query
@@ -79,7 +84,12 @@ WHERE t.block_time >= TIMESTAMP '2020-01-01' -- L2s development started around t
 
 
 -- Only refresh query if mapping hash has changed, else be an incremental table
-WHERE (SELECT hash_value FROM latest_hash) IS DISTINCT FROM (SELECT hash_value FROM current_mapping_hash)
 {% if is_incremental() %}
-AND {{ incremental_predicate('t.block_time') }}
+    AND (
+        (SELECT needs_refresh FROM should_refresh)
+        OR (
+            NOT (SELECT needs_refresh FROM should_refresh)
+            AND {{ incremental_predicate('t.block_time') }}
+        )
+    )
 {% endif %}

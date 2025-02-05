@@ -5,7 +5,12 @@
     unique_key = ['hash_value', 'updated_at']
 ) }}
 
-WITH latest_hash AS (
+WITH mapping_data AS (
+    SELECT *
+    FROM {{ source("growthepie", "l2economics_mapping", database="dune") }}
+),
+
+latest_hash AS (
     SELECT 
         md5(to_utf8(
             '[' || array_join(
@@ -23,7 +28,7 @@ WITH latest_hash AS (
                 ','
             ) || ']'
         )) AS hash_value
-    FROM {{ source("growthepie", "l2economics_mapping", database="dune") }}
+    FROM mapping_data
 )
 
 SELECT 

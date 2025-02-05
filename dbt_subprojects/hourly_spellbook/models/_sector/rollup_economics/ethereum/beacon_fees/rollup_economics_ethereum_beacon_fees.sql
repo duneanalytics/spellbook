@@ -2,7 +2,9 @@
     schema = 'rollup_economics_ethereum',
     alias = 'beacon_fees',
     materialized = 'incremental',
-    unique_key = ['beacon_slot_number', 'blob_index']
+    unique_key = ['beacon_slot_number', 'blob_index'],
+    incremental_strategy = 'delete+insert',
+    on_schema_change = 'sync_all_columns'
 ) }}
 -- incremental, unless mapping hash changes, then full refresh
 
@@ -33,6 +35,9 @@ current_mapping_hash AS (
         )) AS hash_value
     FROM {{ source("growthepie", "l2economics_mapping", database="dune") }}
     WHERE settlement_layer = 'beacon'
+),
+should_refresh AS (
+    SELECT (SELECT hash_value FROM latest_hash) IS DISTINCT FROM (SELECT hash_value FROM current_mapping_hash) as needs_refresh
 )
 
 -- main query
@@ -87,7 +92,13 @@ INNER JOIN {{ source('prices', 'usd') }} p
     AND p.minute >= TIMESTAMP '2024-03-13' -- EIP-4844 launch date
 
 -- Only refresh query if mapping hash has changed, else be an incremental table
-WHERE (SELECT hash_value FROM latest_hash) IS DISTINCT FROM (SELECT hash_value FROM current_mapping_hash)
+WHERE 1=1
 {% if is_incremental() %}
-AND {{ incremental_predicate('b.beacon_slot_time') }}
+    AND (
+        (SELECT needs_refresh FROM should_refresh)  -- Full refresh if mapping changed
+        OR (
+            NOT (SELECT needs_refresh FROM should_refresh)  -- Otherwise incremental
+            AND {{ incremental_predicate('b.beacon_slot_time') }}
+        )
+    )
 {% endif %}
