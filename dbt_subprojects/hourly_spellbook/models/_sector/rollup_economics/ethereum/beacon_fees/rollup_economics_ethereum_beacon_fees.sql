@@ -38,7 +38,7 @@ current_mapping_hash AS (
 ),
 should_refresh AS (
     SELECT (SELECT hash_value FROM latest_hash) IS DISTINCT FROM (SELECT hash_value FROM current_mapping_hash) as needs_refresh
-)
+),
 
 -- main query
 WITH L1_methods AS (
