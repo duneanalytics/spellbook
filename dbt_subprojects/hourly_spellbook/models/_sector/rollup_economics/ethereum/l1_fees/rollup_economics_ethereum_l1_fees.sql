@@ -1,9 +1,10 @@
 {{ config(
     schema = 'rollup_economics_ethereum',
     alias = 'l1_fees',
-    materialized = 'incremental',  -- incremental, unless mapping hash changes, then full refresh
+    materialized = 'incremental',
     unique_key = ['origin_key', 'tx_hash']
 ) }}
+-- incremental, unless mapping hash changes, then full refresh
 
 -- mapping hash
 WITH latest_hash AS (

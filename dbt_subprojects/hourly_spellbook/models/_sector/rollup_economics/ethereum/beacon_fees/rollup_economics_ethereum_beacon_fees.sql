@@ -1,9 +1,10 @@
 {{ config(
     schema = 'rollup_economics_ethereum',
     alias = 'beacon_fees',
-    materialized = 'incremental',  -- incremental, unless mapping hash changes, then full refresh
+    materialized = 'incremental',
     unique_key = ['beacon_slot_number', 'blob_index']
 ) }}
+-- incremental, unless mapping hash changes, then full refresh
 
 -- mapping hash
 WITH latest_hash AS (
