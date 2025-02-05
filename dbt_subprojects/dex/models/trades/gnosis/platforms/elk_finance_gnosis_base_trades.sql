@@ -19,3 +19,5 @@
         Factory_evt_PairCreated = source('elk_finance_gnosis', 'ElkFactory_evt_PairCreated')
     )
 }}
+
+-- Test trigger build
