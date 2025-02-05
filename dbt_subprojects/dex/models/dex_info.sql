@@ -186,6 +186,7 @@ FROM (VALUES
     , ('kaia_swap', 'KaiaSwap', 'Direct', 'KaiaSwap')
     , ('defi_kingdoms', 'DeFi Kingdoms', 'Direct', 'DeFiKingdoms')
     , ('hyperjump', 'HyperJump', 'Direct', 'Hyperjump_fi')
+    , ('timeswap', 'Timeswap', 'Direct', 'TimeswapLabs')
     , ('infusion', 'Infusion', 'Direct', 'infusionfinance')
     , ('stablebase', 'StableBase', 'Direct', 'stablebasefi')
     , ('flashliquidity', 'Flashliquidity', 'Direct', 'flashliquidity')
@@ -202,4 +203,5 @@ FROM (VALUES
     , ('fluid', 'Fluid DEX', 'Direct', '0xfluid')
     , ('jojo', 'JOJO', 'Direct', 'jojo_exchange')
     , ('beets', 'Beets DEX', 'Direct', 'beets_fi')
+    , ('silverswap', 'SilverSwap', 'Direct', 'SilverSwapDex')
     ) AS temp_table (project, name, marketplace_type, x_username)

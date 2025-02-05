@@ -318,3 +318,55 @@ models:
       - *block_time
       - *block_number
       - *swap_fee_percentage            
+
+  - name: balancer_v3_arbitrum_pools_fees
+    meta:
+      blockchain: arbitrum
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'balancer', 'pools_fees']
+    description: >
+      Balancer v3 swap fees stored at the pool level.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *version
+      - *contract_address
+      - *tx_hash
+      - *index
+      - *tx_index
+      - *block_time
+      - *block_number
+      - *swap_fee_percentage            
+
+  - name: balancer_v3_base_pools_fees
+    meta:
+      blockchain: base
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['base', 'balancer', 'pools_fees']
+    description: >
+      Balancer v3 swap fees stored at the pool level.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - *blockchain
+      - *version
+      - *contract_address
+      - *tx_hash
+      - *index
+      - *tx_index
+      - *block_time
+      - *block_number
+      - *swap_fee_percentage       
