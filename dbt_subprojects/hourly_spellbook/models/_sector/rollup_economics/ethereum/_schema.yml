@@ -1,12 +1,12 @@
 version: 2
 
 models:
-  - name: rollup_economics_ethereum_l1_fees
+  - name: rollup_economics_ethereum_l2_costs
     meta:
       blockchain: ethereum
       sector: rollup_economics
       project: rollup_economics
-      contributors: niftytable
+      contributors: niftytable, lorenz234
     config:
       tags: ['rollup', 'l2']
     description: Gas fees paid by rollups for posting transaction data or state updates on Ethereum

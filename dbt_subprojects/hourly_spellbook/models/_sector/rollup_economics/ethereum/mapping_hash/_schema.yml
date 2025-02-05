@@ -1,7 +1,7 @@
 version: 3
 
 models:
-  - name: mapping_hash
+  - name: rollup_economics_ethereum_mapping_hash
     meta:
       blockchain: ethereum
       sector: rollup_economics
