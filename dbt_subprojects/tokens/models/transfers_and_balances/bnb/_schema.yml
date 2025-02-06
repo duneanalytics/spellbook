@@ -151,5 +151,5 @@ models:
           combination_of_columns:
             - blockchain
             - block_date
-            - contract_address
+            - symbol
           
