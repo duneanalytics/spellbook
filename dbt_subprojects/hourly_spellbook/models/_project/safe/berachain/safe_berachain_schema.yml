@@ -34,14 +34,14 @@ models:
       - &tx_hash
         name: tx_hash
 
-  - name: safe_berachain_eth_transfers
+  - name: safe_berachain_bera_transfers
     meta:
       blockchain: berachain
       project: safe
       contributors: petertherock
     config:
       tags: ['safe', 'transfers', 'berachain']
-    description: "ETH transfers for safes"
+    description: "BERA transfers for safes"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
