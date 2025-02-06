@@ -41,7 +41,7 @@ FROM (
                 , symbol
                 , transfer_amount_usd_sent
                 , transfer_amount_usd_received
-                , filtered_net_transfer_amount_usd
+                , net_value_transferred_amount_usd
                 , transfer_count
         FROM {{ ref('tokens_' + blockchain + '_net_transfers_daily_asset') }}
         {% if not loop.last %}
