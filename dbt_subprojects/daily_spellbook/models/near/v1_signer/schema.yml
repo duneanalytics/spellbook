@@ -14,7 +14,7 @@ models:
       This table contains user signing activity on the NEAR blockchain for the `v1.signer` (MPC) contract. 
       It extracts sign requests and associated metadata from function call arguments and logs.
     columns:
-      - name: sign_for
+      - name: account_id
         description: "Account ID that requested the signature"
         tests:
           - not_null

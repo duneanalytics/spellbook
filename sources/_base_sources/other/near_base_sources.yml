@@ -1,0 +1,18 @@
+version: 2
+sources:
+  - name: near
+    description: tables in the near schema
+    tables:
+      - name: v1_signer_users
+        meta:
+          docs_slug: /near/v1_signer_users
+          short_description: Near Chain Abstraction users with corresponding derivation paths
+
+        description: '{{ doc("near_docs") }}'
+        columns:
+          - name: user
+            description: Near AccountID of the caller requesting signature.
+          - name: derivation_path
+            description: Signature request argument used to derive signer address.
+          - name: key_version
+            description: Version number of the signing key.

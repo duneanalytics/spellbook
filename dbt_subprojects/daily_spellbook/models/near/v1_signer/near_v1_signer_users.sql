@@ -12,7 +12,7 @@
 
 -- PoC Query: https://dune.com/queries/4642523
 SELECT
-  receipt_predecessor_account_id as sign_for,
+  receipt_predecessor_account_id as account_id,
   json_extract_scalar(action_function_call_args_parsed, '$.request.path') AS derivation_path,
   CAST(json_extract_scalar(action_function_call_args_parsed, '$.request.key_version') AS INTEGER) AS key_version
 FROM {{ source('near', 'actions') }} action

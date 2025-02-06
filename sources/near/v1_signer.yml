@@ -1,7 +1,0 @@
-version: 2
-
-sources:
-  - name: near_v1_signer
-    description: Tables Related to Chain Signatures Contract - https://docs.near.org/concepts/abstraction/chain-signatures
-    tables:
-      - name: users
