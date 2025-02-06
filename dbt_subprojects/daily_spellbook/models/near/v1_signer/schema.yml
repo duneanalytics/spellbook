@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: v1_signer_users
+  - name: near_v1_signer_users
     meta:
       blockchain: near
       sector: authentication
