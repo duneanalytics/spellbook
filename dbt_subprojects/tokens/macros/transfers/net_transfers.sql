@@ -106,7 +106,7 @@ group by
 
 {% ############################################################################################ %}
 
-{% macro evm_net_value_transfers_asset_daily(blockchain) %}
+{% macro evm_net_transfers_daily_asset(blockchain) %}
 
 with raw_transfers as (
     select
@@ -212,16 +212,19 @@ select
     , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
     , sum(transfer_amount_usd_received) as transfer_amount_usd_received
    -- , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received)) as transfer_amount_usd
-    , sum(net_transfer_amount_usd) as filtered_net_transfer_amount_usd
+    , sum(net_transfer_amount_usd) as net_value_transferred_amount_usd
     , sum(transfer_count) transfer_count
 from
     net_transfers
-where
-    net_transfer_amount_usd > 0
+-- where
+--     net_value_transferred_amount_usd > 0
 group by
     blockchain
     , block_date
     , contract_address
     , symbol
+
+HAVING
+    sum(net_transfer_amount_usd) > 0
 
 {% endmacro %}

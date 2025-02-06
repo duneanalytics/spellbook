@@ -204,7 +204,7 @@ models:
             - blockchain
             - block_date
 
-  - name: tokens_base_net_value_transfers_asset_daily
+  - name: tokens_base_net_transfers_daily_asset
     meta:
       blockchain: base
       sector: tokens
@@ -218,4 +218,4 @@ models:
             - blockchain
             - block_date
             - contract_address
-            - symbol
+          

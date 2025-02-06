@@ -203,7 +203,7 @@ models:
             - blockchain
             - block_date
 
-  - name: tokens_linea_net_value_transfers_asset_daily
+  - name: tokens_linea_net_transfers_daily_asset
     meta:
       blockchain: linea
       sector: tokens
@@ -217,5 +217,5 @@ models:
             - blockchain
             - block_date
             - contract_address
-            - symbol
+        
 

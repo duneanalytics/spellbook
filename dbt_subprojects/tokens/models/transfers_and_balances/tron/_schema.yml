@@ -117,7 +117,7 @@ models:
             - blockchain
             - block_date
 
-  - name: tokens_tron_net_value_transfers_asset_daily
+  - name: tokens_tron_net_transfers_daily_asset
     meta:
       blockchain: tron
       sector: tokens
@@ -131,4 +131,4 @@ models:
             - blockchain
             - block_date
             - contract_address
-            - symbol
+  

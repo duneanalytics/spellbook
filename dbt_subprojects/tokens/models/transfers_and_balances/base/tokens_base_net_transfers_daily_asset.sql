@@ -1,8 +1,8 @@
-{% set blockchain = 'optimism' %}
+{% set blockchain = 'base' %}
 
 {{ config(
         schema = 'tokens_' + blockchain
-        , alias = 'net_value_transfers_asset_daily'
+        , alias = 'net_transfers_daily_asset'
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
@@ -12,4 +12,4 @@
 }}
 
 
-{{ evm_net_value_transfers_asset_daily(blockchain) }}
+{{ evm_net_transfers_daily_asset(blockchain) }}

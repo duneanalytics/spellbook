@@ -73,7 +73,7 @@ models:
       This query counts the received to show that $1 was effectively transfered."
 
 
-  - name: tokens_net_value_transfers_asset_daily
+  - name: tokens_net_transfers_daily_asset
     meta:
       sector: tokens
       contributors: jeff-dude, krishhh

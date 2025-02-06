@@ -205,7 +205,7 @@ models:
             - blockchain
             - block_date
 
-  - name: tokens_optimism_net_value_transfers_asset_daily
+  - name: tokens_optimism_net_transfers_daily_asset
     meta:
       blockchain: optimism
       sector: tokens
@@ -219,5 +219,5 @@ models:
             - blockchain
             - block_date
             - contract_address
-            - symbol
+     
 

@@ -1,6 +1,6 @@
 {{ config(
         schema = 'tokens'
-        , alias = 'net_value_transfers_asset_daily'
+        , alias = 'net_transfers_daily_asset'
         , materialized = 'view'
         )
 }}
@@ -43,7 +43,7 @@ FROM (
                 , transfer_amount_usd_received
                 , filtered_net_transfer_amount_usd
                 , transfer_count
-        FROM {{ ref('tokens_' + blockchain + '_net_value_transfers_asset_daily') }}
+        FROM {{ ref('tokens_' + blockchain + '_net_transfers_daily_asset') }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}

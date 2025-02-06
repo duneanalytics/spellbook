@@ -205,7 +205,7 @@ models:
             - blockchain
             - block_date
 
-  - name: tokens_avalanche_c_net_value_transfers_asset_daily
+  - name: tokens_avalanche_c_net_transfers_daily_asset
     meta:
       blockchain: avalanche_c
       sector: tokens
@@ -219,4 +219,4 @@ models:
             - blockchain
             - block_date
             - contract_address
-            - symbol
+         
