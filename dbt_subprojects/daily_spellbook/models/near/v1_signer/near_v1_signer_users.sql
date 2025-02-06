@@ -26,8 +26,7 @@ WHERE
   AND log.block_height >= 124788114
   AND action_kind = 'FUNCTION_CALL'
   AND action_function_call_call_method_name = 'sign'
-  -- $ echo "eyJyZXF1ZXN0Ijp" | base64 --decode
-  -- {"request":{%
+  -- $ echo "eyJyZXF1ZXN0Ijp" | base64 --decode ==> {"request":{
   AND SUBSTRING(
     action_function_call_call_args_base64,
     1,
