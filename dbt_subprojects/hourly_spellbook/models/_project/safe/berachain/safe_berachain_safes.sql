@@ -16,7 +16,7 @@
     )
 }}
 
-{% set project_start_date = '2021-01-01' %}
+{% set project_start_date = '2025-02-06' %}
 
 select
     'berachain' as blockchain,
