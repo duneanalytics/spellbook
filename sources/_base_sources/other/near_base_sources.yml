@@ -10,7 +10,7 @@ sources:
 
         description: '{{ doc("near_docs") }}'
         columns:
-          - name: user
+          - name: account_id
             description: Near AccountID of the caller requesting signature.
           - name: derivation_path
             description: Signature request argument used to derive signer address.
