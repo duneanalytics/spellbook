@@ -347,4 +347,203 @@ sources:
           - name: signature
             description: "Event signature hash"
           - name: event_name
-            description: "Human-readable name of the emitted event" 
+            description: "Human-readable name of the emitted event"
+
+  # ERC Transfer Tables
+  - name: erc20_berachain
+    description: "Transfer events for ERC20 tokens on berachain"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/berachain/decoded/interfaces/erc20/evt_transfer
+          short_description: This table contains individual transfer events for ERC20 tokens on the berachain blockchain. Each row represents a single token transfer event.
+        description: '{{ doc("erc20_berachain_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract that emitted this event"
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "The block number containing this event"
+          - name: from
+            description: "Address sending the tokens"
+          - name: to
+            description: "Address receiving the tokens"
+          - name: value
+            description: "Amount of ERC20 tokens transferred, in the token's smallest unit"
+
+      - name: evt_approval
+        meta:
+          docs_slug: /evm/berachain/decoded/interfaces/erc20/evt_approval
+          short_description: The `berachain.evt_approval` table contains approval events for ERC20 tokens on berachain, allowing an address to spend tokens on behalf of the owner.
+        description: '{{ doc("erc20_berachain_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "The block number containing this event"
+          - name: owner
+            description: "address of the token owner granting approval"
+          - name: spender
+            description: "address being granted permission to spend tokens"
+          - name: value
+            description: "Amount of ERC20 tokens approved for spending, in the token's smallest unit"
+
+  - name: erc1155_berachain
+    description: "events related to ERC1155 tokens"
+    tables:
+    - name: evt_transfersingle
+      meta:
+        docs_slug: /evm/berachain/decoded/interfaces/erc1155/evt_transfersingle
+        short_description: This table contains single transfer events for ERC1155 tokens on the network.
+      description: '{{ doc("erc1155_berachain_evt_transfersingle_doc") }}'
+      columns:
+        - name: contract_address
+          description: "address of the ERC1155 token contract"
+        - name: evt_tx_hash
+          description: "Hash of the transaction containing this event"
+        - name: evt_index
+          description: "Index position of this event within the transaction"
+        - name: evt_block_time
+          description: "Timestamp of the block containing this event"
+        - name: evt_block_number
+          description: "The block number containing this event"
+        - name: operator
+          description: "the address that is authorized to execute the transfer on behalf of the owner"
+        - name: from
+          description: "Address sending the tokens"
+        - name: to
+          description: "Address receiving the tokens"
+        - name: id
+          description: "Unique identifier of the ERC1155 token being transferred"
+        - name: value
+          description: "Quantity of the ERC1155 token transferred"
+
+    - name: evt_transferbatch
+      meta:
+        docs_slug: /evm/berachain/decoded/interfaces/erc1155/evt_transferbatch
+        short_description: This table contains all batch transfer events for ERC1155 tokens on the network.
+      description: '{{ doc("erc1155_berachain_evt_transferbatch_doc") }}'
+      columns:
+        - name: contract_address
+          description: "Contract address of the ERC1155 token contract"
+        - name: evt_tx_hash
+          description: "Hash of the transaction containing this event"
+        - name: evt_index
+          description: "Index position of this event within the transaction"
+        - name: evt_block_time
+          description: "Timestamp of the block containing this event"
+        - name: evt_block_number
+          description: "The block number containing this event"
+        - name: operator
+          description: "Contract address authorized to execute the batch transfer on behalf of the owner"
+        - name: from
+          description: "Address sending the tokens"
+        - name: to
+          description: "Address receiving the tokens"
+        - name: ids
+          description: "Array of unique identifiers of the ERC1155 tokens being transferred"
+        - name: values
+          description: "Array of quantities for each ERC1155 token transferred, corresponding to the ids array"
+
+    - name: evt_ApprovalForAll
+      meta:
+        docs_slug: /evm/berachain/decoded/interfaces/erc1155/evt_ApprovalForAll
+        short_description: This table contains approval events for all tokens of an ERC1155 contract on this network.
+      description: '{{ doc("erc1155_berachain_evt_ApprovalForAll_doc") }}'
+      columns:
+        - name: contract_address
+          description: "berachain address of the ERC1155 token contract"
+        - name: evt_tx_hash
+          description: "Hash of the transaction containing this event"
+        - name: evt_index
+          description: "Index position of this event within the transaction"
+        - name: evt_block_time
+          description: "Timestamp of the block containing this event"
+        - name: evt_block_number
+          description: "The block number containing this event"
+        - name: approved
+          description: "Boolean indicating whether approval is granted (true) or revoked (false)"
+        - name: owner
+          description: "berachain address of the token owner granting or revoking approval"
+        - name: operator
+          description: "berachain address being granted or revoked permission to operate all tokens"
+          
+  - name: erc721_berachain
+    description: '{{ doc("erc721_berachain_evt_transfer_doc") }}'
+    tables:
+    - name: evt_transfer
+      description: "Transfer events for ERC721 tokens on this network"
+      columns:
+        - name: contract_address
+          description: "Contract address of the ERC721 token contract"
+        - name: evt_tx_hash
+          description: "Hash of the transaction containing this event"
+        - name: evt_index
+          description: "Index position of this event within the transaction"
+        - name: evt_block_time
+          description: "Timestamp of the block containing this event"
+        - name: evt_block_number
+          description: "The block number containing this event"
+        - name: from
+          description: "Address sending the tokens"
+        - name: to
+          description: "Address receiving the tokens"
+        - name: tokenId
+          description: "Unique identifier of the ERC721 token (NFT) being transferred"
+
+    - name: evt_Approval
+      meta:
+        docs_slug: /evm/berachain/decoded/interfaces/erc721/evt_Approval
+        short_description: "Approval events for ERC721 tokens on this network"
+      description: '{{ doc("erc721_berachain_evt_Approval_doc") }}'
+      columns:
+        - name: contract_address
+          description: "Contract address of the ERC721 token contract"
+        - name: evt_tx_hash
+          description: "Hash of the transaction containing this event"
+        - name: evt_index
+          description: "Index position of this event within the transaction"
+        - name: evt_block_time
+          description: "Timestamp of the block containing this event"
+        - name: evt_block_number
+          description: "The block number containing this event"
+        - name: approved
+          description: "Boolean indicating whether approval is granted (true) or revoked (false)"
+        - name: owner
+          description: "Address of the token owner granting approval"
+        - name: tokenId
+          description: "Unique identifier of the ERC721 token (NFT) for which approval is granted or revoked"
+
+    - name: evt_ApprovalForAll
+      meta:
+        docs_slug: /evm/berachain/decoded/interfaces/erc721/evt_ApprovalForAll
+        short_description: The `berachain.evt_ApprovalForAll` table contains approval events for all tokens of an ERC721 contract on the berachain blockchain.
+      description: '{{ doc("erc721_berachain_evt_ApprovalForAll_doc") }}'
+      columns:
+        - name: contract_address
+          description: "Address of the ERC721 token contract"
+        - name: evt_tx_hash
+          description: "Hash of the transaction containing this event"
+        - name: evt_index
+          description: "Index position of this event within the transaction"
+        - name: evt_block_time
+          description: "Timestamp of the block containing this event"
+        - name: evt_block_number
+          description: "The block number containing this event"
+        - name: approved
+          description: "Boolean indicating whether approval is granted (true) or revoked (false)"
+        - name: owner
+          description: "Address of the token owner granting approval"
+        - name: operator
+          description: "The address being granted or revoked permission to operate all tokens" 

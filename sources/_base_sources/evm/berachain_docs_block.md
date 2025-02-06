@@ -172,4 +172,126 @@ This table is used for:
 - Understanding contract interactions
 - Protocol-specific event analysis
 
+{% enddocs %}
+
+{% docs erc20_berachain_evt_transfer_doc %}
+
+The `erc20_berachain.evt_transfer` table contains Transfer events for ERC20 tokens on the berachain blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- From and to addresses
+- Amount transferred
+
+This table is used for tracking ERC20 token movements on the berachain network.
+
+Please be aware that this table is the raw ERC20 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `tokens.transfers` for a more complete and curated view of token transfers.
+
+{% enddocs %}
+
+{% docs erc20_berachain_evt_approval_doc %}
+
+The `erc20_berachain.evt_approval` table contains Approval events for ERC20 tokens on the berachain blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and spender addresses
+- Approved amount
+
+This table is used for analyzing ERC20 token approvals and spending permissions on the berachain network.
+
+{% enddocs %}
+
+{% docs erc1155_berachain_evt_transfersingle_doc %}
+
+The `erc1155_berachain.evt_transfersingle` table contains TransferSingle events for ERC1155 tokens on the berachain blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Operator, from, and to addresses
+- Token ID
+- Amount transferred
+
+This table is used for tracking individual ERC1155 token transfers on the berachain network.
+
+Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
+
+{% enddocs %}
+
+{% docs erc1155_berachain_evt_transferbatch_doc %}
+
+The `erc1155_berachain.evt_transferbatch` table contains TransferBatch events for ERC1155 tokens on the berachain blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Operator, from, and to addresses
+- Array of token IDs
+- Array of amounts transferred
+
+This table is used for tracking batch transfers of multiple ERC1155 tokens on the berachain network.
+
+Please be aware that this table is the raw ERC1155 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use nft.transfers for a more complete and curated view of NFT transfers.
+
+{% enddocs %}
+
+{% docs erc1155_berachain_evt_ApprovalForAll_doc %}
+
+The `erc1155_berachain.evt_ApprovalForAll` table contains ApprovalForAll events for ERC1155 tokens on the berachain blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Account and operator addresses
+- Approved status (boolean)
+
+This table is used for analyzing blanket approvals for ERC1155 token collections on the berachain network.
+
+{% enddocs %}
+
+{% docs erc721_berachain_evt_transfer_doc %}
+
+The `erc721_berachain.evt_transfer` table contains Transfer events for ERC721 tokens on the berachain blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- From and to addresses
+- Token ID
+
+This table is used for tracking ERC721 token (NFT) transfers on the berachain network.
+
+Please be aware that this table is the raw ERC721 event data, and does not include any additional metadata, context or is in any way filtered or curated. Use `nft.transfers` for a more complete and curated view of NFT transfers.
+
+{% enddocs %}
+
+{% docs erc721_berachain_evt_Approval_doc %}
+
+The `erc721_berachain.evt_Approval` table contains Approval events for ERC721 tokens on the berachain blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and approved addresses
+- Token ID
+
+This table is used for analyzing approvals for individual ERC721 tokens (NFTs) on the berachain network.
+
+{% enddocs %}
+
+{% docs erc721_berachain_evt_ApprovalForAll_doc %}
+
+The `erc721_berachain.evt_ApprovalForAll` table contains ApprovalForAll events for ERC721 tokens on the berachain blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and operator addresses
+- Approved status (boolean)
+
+This table is used for analyzing blanket approvals for ERC721 token collections on the berachain network.
+
 {% enddocs %} 
