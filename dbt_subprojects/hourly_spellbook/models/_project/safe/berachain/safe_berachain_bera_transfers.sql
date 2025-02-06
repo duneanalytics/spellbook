@@ -20,7 +20,7 @@
 {{
     safe_native_transfers(
         blockchain = 'berachain',
-        native_token_symbol = 'RON',
+        native_token_symbol = 'BERA',
         project_start_date = project_start_date
     )
 }}
