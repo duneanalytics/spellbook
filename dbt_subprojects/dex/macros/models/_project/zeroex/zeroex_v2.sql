@@ -224,8 +224,7 @@ taker_logs as (
     )
     select *, 
         row_number() over (partition by tx_hash order by (index)) rn
-    from tbl_base 
-    where rn = 1 
+    from tbl_base  
 ),
 maker_logs as (
     with tbl_all as (
