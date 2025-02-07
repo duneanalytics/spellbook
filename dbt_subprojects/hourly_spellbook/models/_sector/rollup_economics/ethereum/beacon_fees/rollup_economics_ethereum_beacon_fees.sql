@@ -41,7 +41,7 @@ should_refresh AS (
 ),
 
 -- main query
-WITH L1_methods AS (
+L1_methods AS (
     SELECT 
         hash,
         bytearray_substring("data", 1, 4) AS method,
