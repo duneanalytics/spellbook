@@ -241,7 +241,9 @@ maker_logs as (
         settler_address,
         amount as maker_amount,
         row_number() over (partition by logs.tx_hash order by logs.index desc ) rn,
-        logs.taker as taker 
+        logs.taker as taker,
+        tl.taker_token as taker_token,
+        tl.taker_amount as taker_amount
     from tbl_all_logs as logs
     join taker_logs tl 
         ON tl.tx_hash = logs.tx_hash 
@@ -328,8 +330,7 @@ select  block_time,
         zid,
         tag,
         settler_address as contract_address 
-    from taker_logs
-    join maker_logs using (block_time, block_number, tx_hash, rn)
+    from maker_logs
     join zeroex_tx using (block_time, block_number, tx_hash, rn, taker, settler_address) 
     union 
     select * from cow_trades 
