@@ -239,8 +239,6 @@ maker_logs as (
         logs.tx_from,
         logs.tx_index,
         settler_address,
-        zid,
-        tag,
         amount as maker_amount,
         row_number() over (partition by logs.tx_hash order by logs.index desc ) rn,
         logs.taker as taker 
