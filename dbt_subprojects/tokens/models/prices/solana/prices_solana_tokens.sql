@@ -732,5 +732,8 @@ FROM
         ('nap-snap', 'solana', '$NAP', '4G86CMxGsMdLETrYnavMFKPhQzKTvDBYGMRAdVtr72nu', 6),
         ('vine-vine-coin', 'solana', 'VINE', '6AJcP7wuLwmRYLBNbi825wgguaPsWzPBEHcHndpRpump', 6),
         ('pippin-pippin', 'solana', 'PIPPIN','Dfh5DzRgSvvCFDoYc2ciTkMrbDfRKybA4SoFbPmApump', 6),
-        ('chillguy-just-a-chill-guy', 'solana', 'CHILLGUY', 'Df6yfrKC8kZE3KNkrHERKzAetSxbrWeniQfyJY4Jpump', 6)
+        ('chillguy-just-a-chill-guy', 'solana', 'CHILLGUY', 'Df6yfrKC8kZE3KNkrHERKzAetSxbrWeniQfyJY4Jpump', 6),
+        ('kmno-kamino-finance', 'solana', 'KMNO', 'KMNo3nJsBXfcpJTVhZcXLW7RmTwTt4GVFE7suUBo9sS', 6),
+        ('pyusd-paypal-usd', 'solana', 'PyUSD', '2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo', 6),
+        ('prcl-parcl', 'solana', 'PRCL', '4LLbsb5ReP3yEtYzmXewyGjcir5uXtKFURtaEUVC2AHs', 6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
