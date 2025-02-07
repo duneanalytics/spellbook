@@ -147,7 +147,6 @@ tbl_all_logs AS (
             AND logs.block_time = st.block_time
             AND st.block_number = logs.block_number
     LEFT JOIN swap_signatures on topic0 = signature
-    WHERE zid_rn = 1 
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
@@ -328,7 +327,7 @@ select  block_time,
         tag,
         settler_address as contract_address 
     from taker_logs
-    join maker_logs using (block_time, block_number, tx_hash)
+    join maker_logs using (block_time, block_number, tx_hash, rn)
     join settler_txs using (block_time, block_number, tx_hash, rn, taker, settler_address) 
     union 
     select * from cow_trades 
