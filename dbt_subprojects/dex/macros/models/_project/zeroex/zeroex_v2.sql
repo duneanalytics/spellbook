@@ -340,7 +340,26 @@ select * from tbl_trades
 
 {% macro zeroex_v2_trades_detail(blockchain, start_date) %}
 WITH 
-
+token_metadata AS (
+    SELECT 
+        blockchain, 
+        contract_address, 
+        symbol, 
+        decimals 
+    FROM {{ source('tokens', 'erc20') }}
+    WHERE blockchain = '{{blockchain}}'
+),
+token_prices AS (
+    SELECT
+        blockchain,
+        contract_address,
+        minute,
+        price,
+        symbol,
+        decimals 
+    FROM {{ source('prices', 'usd') }}
+    WHERE blockchain = '{{blockchain}}'
+), 
 results AS (
     SELECT
         '{{blockchain}}' AS blockchain,
@@ -373,13 +392,13 @@ results AS (
     FROM
         zeroex_v2_trades trades
     LEFT JOIN
-        {{ source('tokens', 'erc20') }} tt ON tt.blockchain = '{{blockchain}}' AND tt.contract_address = taker_token
+         token_metadata tt ON tt.contract_address = taker_token
     LEFT JOIN
-        {{ source('tokens', 'erc20') }} tm ON tm.blockchain = '{{blockchain}}' AND tm.contract_address = maker_token
+        token_metadata tm ON tm.contract_address = maker_token
     LEFT JOIN
-        {{ source('prices', 'usd') }} pt ON pt.blockchain = '{{blockchain}}' AND pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
+        token_prices pt ON pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
     LEFT JOIN
-        {{ source('prices', 'usd') }} pm ON pm.blockchain = '{{blockchain}}' AND pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
+        token_prices pm ON pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
 ),
 
 results_usd AS (
