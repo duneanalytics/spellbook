@@ -43,7 +43,8 @@ settler_trace_data AS (
             end as taker,
         a.settler_address,
         trace_address,
-        case when varbinary_position(input,0x9008d19f58aabd9ed0d60971565aa8510560ab41) <> 0 then 1 end as cow_trade
+        case when varbinary_position(input,0x9008d19f58aabd9ed0d60971565aa8510560ab41) <> 0 then 1 end as cow_trade,
+        input 
     FROM
         {{ source(blockchain, 'traces') }} AS tr
     JOIN
