@@ -72,13 +72,14 @@ settler_txs AS (
             WHEN method_id = 0x1fff991f THEN (varbinary_substring(tracker,12,3))
             WHEN method_id = 0xfd3ad6d4 THEN (varbinary_substring(tracker,13,3))
         END AS tag,
-        taker,
         row_number() over (partition by tx_hash order by varbinary_substring(tracker,2,12)) rn,
         case when cow_trade = 1 then row_number() over (partition by tx_hash order by trace_address) end as cow_rn,
-        case when varbinary_substring(input,17,20) = 0x0000000000000000000000000000000000000000 
-                then varbinary_substring(input, varbinary_length(input) - 19, 20)
-                else varbinary_substring(input,17,20)
-                end as taker_ 
+        case when taker in ( 0x0000000000001ff3684f28c67538d4d072c22734, 
+                                0x0000000000005E88410CcDFaDe4a5EfaE4b49562,
+                                0x000000000000175a8b9bC6d539B3708EEd92EA6c )
+                then varbinary_substring(input, varbinary_length(input) - 19, 20) 
+                else taker 
+            end as taker 
     FROM
         settler_trace_data
     
@@ -214,8 +215,8 @@ taker_logs as (
                         and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker_) 
                         )
                         or (
-                            bytearray_substring(logs.topic2,13,20) = taker_ 
-                        and taker_ = tx_to and bytearray_substring(logs.topic1,13,20) != st.contract_address ) 
+                            bytearray_substring(logs.topic2,13,20) = taker 
+                        and taker = tx_to and bytearray_substring(logs.topic1,13,20) != st.contract_address ) 
                     )
              )
              or topic0 = 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c 
@@ -255,9 +256,9 @@ maker_logs as (
         and (
                 (
                 bytearray_substring(logs.topic1,13,20) in (st.contract_address, settler_address)  
-            and bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker_ ) 
+            and bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker ) 
             )
-            or (bytearray_substring(logs.topic2,13,20) = taker_ and taker_ = tx_to ) 
+            or (bytearray_substring(logs.topic2,13,20) = taker and taker = tx_to ) 
             or (bytearray_substring(logs.topic2,13,20) = st.contract_address 
                 and bytearray_substring(logs.topic1,13,20) = tx_to and bytearray_substring(logs.topic1,13,20) != bytearray_substring(st.topic1,13,20)) 
             )
@@ -331,7 +332,7 @@ select  block_time,
         settler_address as contract_address 
     from taker_logs
     join maker_logs using (block_time, block_number, tx_hash, rn)
-    join settler_txs using (block_time, block_number, tx_hash, rn, taker, settler_address) 
+    join zeroex_tx using (block_time, block_number, tx_hash, rn, taker, settler_address) 
     union 
     select * from cow_trades 
 )
