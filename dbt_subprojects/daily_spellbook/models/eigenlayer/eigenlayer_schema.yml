@@ -32,3 +32,21 @@ models:
       - &share
         name: share
         description: "Share of the withdrawal"
+  - name: strategy_category
+      meta:
+        blockchain: ethereum
+        sector: restaking
+        contributors: bowenli
+      config:
+        tags: ['eigenlayer', 'restaking', 'strategy']
+      description: >
+        Strategy category in EigenLayer
+      columns:
+        - &category
+          name: category
+          description: "Category of the strategy"
+        - &name
+          name: name
+          description: "Name of the strategy"
+        - *strategy
+        
