@@ -10,3 +10,8 @@ spellbook-local:
       database: hive
       schema: wizard
       threads: 1
+      vars:
+        DBT_ENV_INCREMENTAL_TIME_UNIT: "{{ env_var('DBT_ENV_INCREMENTAL_TIME_UNIT', 'hour') }}"
+        DBT_ENV_INCREMENTAL_TIME: "{{ env_var('DBT_ENV_INCREMENTAL_TIME', '7') }}"
+        CI_LIMITED_RANGE: "{{ env_var('CI_LIMITED_RANGE', 'false') }}"
+        CI_DATE_RANGE: "{{ env_var('CI_DATE_RANGE', '30') }}"
