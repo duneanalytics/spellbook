@@ -1875,7 +1875,8 @@ FROM
     ('wagmi5-wagmi', 'ethereum', 'WAGMI', 0x92CC36D66e9d739D50673d1f27929a371FB83a67, 18),
     ('deusd-elixir-deusd','ethereum', 'DEUSD', 0x15700b564ca08d9439c58ca5053166e8317aa138, 18),
     ('unibot-unibot','ethereum', 'UNIBOT', 0xf819d9cb1c2a819fd991781a822de3ca8607c3c9, 18),
-    ('morpho-morpho','ethereum', 'MORPHO', 0x58d97b57bb95320f9a05dc918aef65434969c2b2, 18)
+    ('morpho-morpho','ethereum', 'MORPHO', 0x58d97b57bb95320f9a05dc918aef65434969c2b2, 18),
+    ('scrvusd-savings-crvusd', 'ethereum', 'SCRVUSD', 0x0655977FEb2f289A4aB78af67BAB0d17aAb84367, 18)
 
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
