@@ -276,7 +276,7 @@ maker_logs as (
         maker_amount,
         taker,
         tl.taker_token as taker_token,
-        tl.taker_amount as taker_amount
+        tl.taker_amount as taker_amount,
         rn
     from tbl_all 
     join taker_logs tl using (block_time, block_number, tx_hash, rn)
