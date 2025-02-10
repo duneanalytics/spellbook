@@ -45,7 +45,7 @@ models:
         description: "Amount of traded currency"
       - &share_amount
         name: share_amount
-        description: "Amout of shares"
+        description: "Amount of shares"
       - &subject_fee_amount
         name: subject_fee_amount
         description: "Subject fee amount"
