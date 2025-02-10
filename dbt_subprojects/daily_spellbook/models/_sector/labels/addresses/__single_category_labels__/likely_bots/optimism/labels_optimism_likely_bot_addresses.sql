@@ -67,7 +67,7 @@ SELECT *,
     cast(num_nft_tfer_txs as double) / cast( num_txs as double) AS pct_nft_tfer_txs,
     cast(num_token_tfer_txs as double) / cast( num_txs as double) AS pct_token_tfer_txs,
     cast(num_dex_trade_txs as double) / cast( num_txs as double) AS pct_dex_trade_txs,
-    cast(num_perp_trade_txs as double) / cast( num_txs as double) AS pct_perp_trade_txs, -- perpetual.trades has some dunesql incompatability
+    cast(num_perp_trade_txs as double) / cast( num_txs as double) AS pct_perp_trade_txs, -- perpetual.trades has some dunesql incompatibility
     cast(num_nft_trade_txs as double) / cast( num_txs as double) AS pct_nft_trade_txs
 
 FROM (
