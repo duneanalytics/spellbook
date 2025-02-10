@@ -258,7 +258,6 @@ maker_logs as (
                 and bytearray_substring(logs.topic1,13,20) = tx_to and bytearray_substring(logs.topic1,13,20) != bytearray_substring(st.topic1,13,20)) 
             )
     WHERE  topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
-        and taker_token != logs.contract_address
         and cow_rn is null 
         and amount != 0 
          
