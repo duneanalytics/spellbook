@@ -241,14 +241,9 @@ maker_logs as (
         settler_address,
         amount as maker_amount,
         row_number() over (partition by logs.tx_hash order by logs.index desc ) rn,
-        logs.taker as taker,
-        tl.taker_token as taker_token,
-        tl.taker_amount as taker_amount
-    from tbl_all_logs as logs
-    join taker_logs tl 
-        ON tl.tx_hash = logs.tx_hash 
-        AND logs.block_time = tl.block_time 
-        AND tl.block_number = logs.block_number 
+        logs.taker as taker
+        
+    from tbl_all_logs as logs 
     left join swap_logs st
         ON st.tx_hash = logs.tx_hash 
         AND logs.block_time = st.block_time 
@@ -268,8 +263,24 @@ maker_logs as (
         and amount != 0 
          
     )
-    select * from tbl_all 
-    where rn = 1 
+    select
+        block_time,
+        block_number,
+        tx_hash,
+        index,
+        maker_token,
+        tx_to, 
+        tx_from,
+        tx_index,
+        settler_address,
+        maker_amount,
+        taker,
+        tl.taker_token as taker_token,
+        tl.taker_amount as taker_amount
+        rn
+    from tbl_all 
+    join taker_logs tl using (block_time, block_number, tx_hash, rn)
+       where taker_token != maker_token  
 ),
 cow_trades as (
     with base_logs as (
