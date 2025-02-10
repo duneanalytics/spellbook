@@ -13,6 +13,9 @@
 WITH base_trades AS (
     SELECT *
     FROM {{ ref('dex_automated_trades_all') }}
+    {% if is_incremental() %}
+        WHERE {{ incremental_predicate('block_time') }}
+    {% endif %}
 ),
 
 invalid_factories AS (
@@ -34,6 +37,9 @@ invalid_factories AS (
         AND bt.block_date = t2.block_date
         AND bt.tx_hash = t2.tx_hash
     )
+    {% if is_incremental() %}
+        AND {{ incremental_predicate('bt.block_time') }}
+    {% endif %}
 )
 
 SELECT 
@@ -78,3 +84,6 @@ AND NOT EXISTS (
     AND base_trades.factory_address = invalid_factories.factory_address
 )
 
+{% if is_incremental() %}
+   AND {{ incremental_predicate('block_time') }}
+{% endif %}
