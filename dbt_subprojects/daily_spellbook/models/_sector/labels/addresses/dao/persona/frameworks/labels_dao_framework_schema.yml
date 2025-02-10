@@ -14,7 +14,7 @@ models:
       blockchain: ethereum, polygon, gnosis
       sector: labels
       project: dao
-      contibutors: henrystats, hosuke
+      contributors: henrystats, hosuke
     config:
       tags: ['labels', 'ethereum', 'gnosis', 'polygon', 'dao']
     description: "dao addresses and wallet addresses from dao addresses spell"
