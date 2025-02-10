@@ -122,7 +122,7 @@ from (select t1."from", date_trunc('month', t1.block_time) AS month, count(*) AS
                , (0xF27696C8BCa7D54D696189085Ae1283f59342fA6, 'Argent relayer')
                , (0x09344477fdc71748216a7b8bbe7f2013b893def8, 'ascendex deposit address')
                , (0xe4b3dd9839ed1780351dc5412925cf05f07a1939, 'Coinspot exchange')
-               , (0x9aa65464b4cfbe3dc2bdb3df412aee2b3de86687, 'blokchain.com')
+               , (0x9aa65464b4cfbe3dc2bdb3df412aee2b3de86687, 'blockchain.com')
                , (0xa305fab8bda7e1638235b054889b3217441dd645, 'changenow binance deposit address')
                , (0xc5a8859c44ac8aa2169afacf45b87c08593bec10, 'Paxos')
                , (0x95b564f3b3bae3f206aa418667ba000afafacc8a, 'Bitvavo')
