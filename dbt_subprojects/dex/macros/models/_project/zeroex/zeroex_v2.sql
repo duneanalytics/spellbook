@@ -266,7 +266,7 @@ maker_logs as (
         block_time,
         block_number,
         tx_hash,
-        index,
+        tl.index,
         maker_token,
         tx_to, 
         tx_from,
