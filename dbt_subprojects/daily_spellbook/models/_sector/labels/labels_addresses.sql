@@ -20,7 +20,7 @@
     , ref('labels_cex')
     , ref('labels_contracts')
     , ref('labels_hackers_ethereum')
-    , ref('labels_ofac_sanctionned_ethereum')
+    , ref('labels_ofac_sanctioned_ethereum')
     , ref('labels_project_wallets')
     , ref('labels_safe_ethereum')
     , ref('labels_tornado_cash')
