@@ -20,7 +20,7 @@
 **
 **   2. "Who are the top performing retail traders on our DEX?" - While there are dashboards
 **      that track portfolio performance eg. @defimochi's https://dune.com/defimochi/token-god-mode,
-**      most of the top traders are bots due to the challange of identifying real users.
+**      most of the top traders are bots due to the challenge of identifying real users.
 **
 **      For DEX projects, this is a strong indicator that power users are attacted to the platform.
 **
