@@ -50,7 +50,9 @@ settler_trace_data AS (
     JOIN
         result_0x_settler_addresses a ON a.settler_address = tr.to AND tr.block_time > a.begin_block_time
     WHERE
-        (a.settler_address IS NOT NULL OR tr.to in (0x0000000000001fF3684f28c67538d4D072C22734,0x0000000000005E88410CcDFaDe4a5EfaE4b49562,0x000000000000175a8b9bC6d539B3708EEd92EA6c))
+        (a.settler_address IS NOT NULL OR tr.to in (0x0000000000001fF3684f28c67538d4D072C22734,
+                                                    0x0000000000005E88410CcDFaDe4a5EfaE4b49562,
+                                                    0x000000000000175a8b9bC6d539B3708EEd92EA6c))
         AND (varbinary_position(input,0x1fff991f) <> 0 OR  varbinary_position(input,0xfd3ad6d4) <> 0 )
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
@@ -264,11 +266,13 @@ maker_logs as (
             )
             or (bytearray_substring(logs.topic2,13,20) = taker and taker = tx_to ) 
             or (bytearray_substring(logs.topic2,13,20) = st.contract_address 
-                and bytearray_substring(logs.topic1,13,20) = tx_to and bytearray_substring(logs.topic1,13,20) != bytearray_substring(st.topic1,13,20)) 
+                and bytearray_substring(logs.topic1,13,20) = tx_to 
+                and bytearray_substring(logs.topic1,13,20) not in (bytearray_substring(st.topic1,13,20), tx_to ) 
             )
         AND (
             varbinary_position(st.data, (logs.data)) <> 0 
             or varbinary_position(st.data, ( cast(-1*varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) as varbinary))) <> 0  
+        )
         )
     )
     select
@@ -331,13 +335,13 @@ tbl_trades as (
 select  block_time,
         block_number,
         tx_hash,
-        case when taker in (0x0000000000001ff3684f28c67538d4d072c22734,
+        case when st.taker in (0x0000000000001ff3684f28c67538d4d072c22734,
                             0x0000000000005E88410CcDFaDe4a5EfaE4b49562,
                             0x000000000000175a8b9bC6d539B3708EEd92EA6c,
                             0x9008d19f58aabd9ed0d60971565aa8510560ab41,
                             0x0000000000000000000000000000000000000000) 
                         then tx_from 
-                        else taker end as taker,
+                        else st.taker end as taker,
         maker_token,
         maker_amount,
         taker_token,
@@ -350,7 +354,7 @@ select  block_time,
         tag,
         settler_address as contract_address 
     from maker_logs
-    join zeroex_tx using (block_time, block_number, tx_hash, rn, taker, settler_address) 
+    join zeroex_tx using (block_time, block_number, tx_hash, rn, settler_address) 
     union 
     select * from cow_trades 
 )
