@@ -58,4 +58,5 @@ FROM (VALUES
     , (0x79bbf4508b1391af3a0f4b30bb5fc4aa9ab0e07c, 'Anon', 18)
     , (0x5e26be93509c161de8989af290375200081ca023, 'LOVE', 18)
     , (0x7002383d2305b8f3b2b7786f50c13d132a22076d, 'PT-sw-wstkscUSD-1751241607', 6)
+    , (0x9f0df7799f6fdad409300080cff680f5a23df4b1, 'wOS', 18)
 ) as temp (contract_address, symbol, decimals)
