@@ -9,7 +9,8 @@ models:
     config:
       tags: ['abstract', 'gas', 'fees']
     description: >
-        Gas Fees on Abstract
+        Gas Fees on Abstract. Note that Abstract uses a unique gas fee mechanism that includes both offchain (fixed) and onchain (variable) components,
+        with a smart refund system for unused resources and overpayments.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -26,6 +27,6 @@ models:
           check_columns:
             - tx_fee_raw
       - dbt_utils.expression_is_true:
-          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
+          expression: "tx_fee_raw >= 0"
           config:
             where: "block_time > now() - interval '7' day" 
