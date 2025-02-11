@@ -354,7 +354,7 @@ select  block_time,
         tag,
         settler_address as contract_address 
     from maker_logs
-    join zeroex_tx using (block_time, block_number, tx_hash, rn, settler_address) 
+    join zeroex_tx st using (block_time, block_number, tx_hash, rn, settler_address) 
     union 
     select * from cow_trades 
 )
