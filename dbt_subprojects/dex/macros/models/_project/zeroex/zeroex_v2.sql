@@ -203,6 +203,11 @@ taker_logs as (
         ON st.tx_hash = logs.tx_hash 
         AND logs.block_time = st.block_time 
         AND st.block_number = logs.block_number 
+        and (
+             varbinary_position(st.data, (logs.data)) <> 0 
+            or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
+          )
+          
     where logs.block_time > TIMESTAMP '2024-07-15' 
         and cow_rn is null 
         AND (
@@ -212,7 +217,7 @@ taker_logs as (
                 and ( 
                         (
                             bytearray_substring(logs.topic2,13,20) in (st.contract_address, settler_address) 
-                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker_) 
+                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker) 
                         )
                         or (
                             bytearray_substring(logs.topic2,13,20) = taker 
