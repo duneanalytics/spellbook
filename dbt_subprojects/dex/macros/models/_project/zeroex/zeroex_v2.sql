@@ -222,10 +222,6 @@ taker_logs as (
              or topic0 = 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c 
                  and bytearray_substring(logs.topic1,13,20) in (tx_to, settler_address)  
         ) 
-        AND (
-            varbinary_position(st.data, (logs.data)) <> 0 
-            or varbinary_position(st.data, ( cast(-1* varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) as varbinary))) <> 0  
-        )
     )
     select *, 
         row_number() over (partition by tx_hash order by (index)) rn
