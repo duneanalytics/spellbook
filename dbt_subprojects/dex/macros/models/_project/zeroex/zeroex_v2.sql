@@ -224,7 +224,7 @@ taker_logs as (
         ) 
         AND (
             varbinary_position(st.data, (logs.data)) <> 0 
-            or varbinary_position(st.data, ( cast(-1*varbinary_to_int256(logs.data) as varbinary))) <> 0  
+            or varbinary_position(st.data, ( cast(-1* varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) as varbinary))) <> 0  
         )
     )
     select *, 
@@ -267,7 +267,7 @@ maker_logs as (
             )
         AND (
             varbinary_position(st.data, (logs.data)) <> 0 
-            or varbinary_position(st.data, ( cast(-1*varbinary_to_int256(logs.data) as varbinary))) <> 0  
+            or varbinary_position(st.data, ( cast(-1*varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) as varbinary))) <> 0  
         )
     )
     select
