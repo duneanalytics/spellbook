@@ -135,9 +135,9 @@ swap_signatures as (
 ),
 tbl_all_logs AS (
     SELECT
-        logs.tx_hash,
-        logs.block_time,
-        logs.block_number,
+        tx_hash,
+        block_time,
+        block_number,
         index,
         logs.contract_address,
         topic0,
@@ -154,21 +154,19 @@ tbl_all_logs AS (
         (try_cast(bytearray_to_uint256(bytearray_substring(logs.DATA, 21,12)) as int256)) as amount, 
         case when topic0 = signature or logs.contract_address = settler_address then 'swap' end as log_type,
         data,
-        row_number() over (partition by logs.tx_hash order by index) rn,
+        row_number() over (partition by tx_hash order by index) rn,
         cow_rn,
         case when tx_cnt > 1 then 1 else 0 end as bundled_tx
     FROM
         {{ source(blockchain, 'logs') }} AS logs
     JOIN
-        zeroex_tx st ON st.tx_hash = logs.tx_hash
-            AND logs.block_time = st.block_time
-            AND st.block_number = logs.block_number
+        zeroex_tx st using (block_time, block_number, tx_hash)
     JOIN bundled_tx_check btx using (block_time, block_number, tx_hash)
     LEFT JOIN swap_signatures on topic0 = signature
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
-            AND logs.block_time >= DATE '{{start_date}}'
+            AND block_time >= DATE '{{start_date}}'
         {% endif %}
         AND ( 
                 topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
