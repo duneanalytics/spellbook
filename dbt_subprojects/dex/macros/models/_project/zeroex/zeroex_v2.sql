@@ -196,8 +196,7 @@ swap_logs as (
     WHERE   
        block_time > TIMESTAMP '2024-07-15'  
        and log_type = 'swap'
-       and ( settler_address in (bytearray_substring(st.topic1,13,20), bytearray_substring(st.topic2,13,20) )
-           or varbinary_position(data, settler_address) <> 0 ) 
+       
 ),
 taker_logs as (
     with tbl_base as (
