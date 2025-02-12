@@ -55,7 +55,7 @@ models:
         name: token0
         description: "Address of token0"
       - &token1
-        name: project_contract_address
+        name: token1
         description: "Address of token1"
       - &amount0_raw
         name: amount0_raw
