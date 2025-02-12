@@ -165,7 +165,7 @@ tbl_all_logs AS (
     LEFT JOIN swap_signatures on topic0 = signature
     WHERE 1=1
         {% if is_incremental() %}
-            AND {{ incremental_predicate('logs.block_time') }}
+            AND {{ incremental_predicate('block_time') }}
         {% else %}
             AND block_time >= DATE '{{start_date}}'
         {% endif %}
