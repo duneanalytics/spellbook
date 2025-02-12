@@ -38,7 +38,7 @@ with base_union as (
         FROM
             {{ model }}
         {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
+        WHERE {{ incremental_predicate('block_time') }}
         {% endif %}
         {% if not loop.last %}
            UNION ALL
