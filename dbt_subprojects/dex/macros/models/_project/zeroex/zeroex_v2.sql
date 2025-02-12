@@ -219,7 +219,7 @@ taker_logs as (
                 and ( 
                         (
                             bytearray_substring(logs.topic2,13,20) in (st.contract_address, settler_address) 
-                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker) 
+                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker, tx_to) 
                         )
                         or (
                             bytearray_substring(logs.topic2,13,20) = taker 
@@ -247,7 +247,7 @@ maker_logs as (
         logs.tx_index,
         settler_address,
         amount as maker_amount,
-        row_number() over (partition by logs.tx_hash order by logs.index desc ) rn,
+        row_number() over (partition by logs.tx_hash order by logs.index ) rn,
         logs.taker as taker
         
     from tbl_all_logs as logs 
@@ -262,7 +262,7 @@ maker_logs as (
         and (
                 (
                 bytearray_substring(logs.topic1,13,20) in (st.contract_address, settler_address)  
-            and bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker ) 
+            and bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker, settler_address ) 
             )
             or (bytearray_substring(logs.topic2,13,20) = taker and taker = tx_to ) 
             or (bytearray_substring(logs.topic2,13,20) = st.contract_address 
