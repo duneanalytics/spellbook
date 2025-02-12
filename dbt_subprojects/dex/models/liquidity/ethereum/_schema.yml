@@ -1,7 +1,9 @@
 version: 2
 
 models:
-
+  - name: dex_ethereum_base_liquidity
+    description: "dex ethereum base liquidity"
+  
   - name: uniswap_v4_ethereum_base_liquidity
     meta:
       blockchain: ethereum
