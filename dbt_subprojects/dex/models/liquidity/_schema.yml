@@ -58,6 +58,12 @@ models:
       - &token1
         name: project_contract_address
         description: "Address of token1"
+      - &amount0_raw
+        name: amount0_raw
+        description: "Liquidity amount of token0 in units"
+      - &amount1_raw
+        name: amount1_raw
+        description: "Liquidity amount of token1 in units"
       - &amount0
         name: amount0
         description: "Liquidity amount of token0 in units (decimal normalized)"
@@ -100,5 +106,5 @@ models:
       - *salt
       - *token0
       - *token1
-      - &amount0_raw
-      - &amount1_raw
+      - *amount0_raw
+      - *amount1_raw
