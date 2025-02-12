@@ -89,8 +89,8 @@ SELECT
         , salt
         , token0
         , token1
-        , CAST(amount0 AS BIGINT) as amount0_raw
-        , CAST(amount1 AS BIGINT) as amount1_raw
+        , CAST(amount0 AS DOUBLE) as amount0_raw
+        , CAST(amount1 AS DOUBLE) as amount1_raw
   FROM  base_amounts base
 
 {% endmacro %}
