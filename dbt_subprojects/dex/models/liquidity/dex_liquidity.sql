@@ -23,9 +23,6 @@ WITH dexes AS (
         )
     }}
 )
-{% set cte_dexes = [ 'dexes' ] %}
-    
-    {% for dex in dexes %}
           SELECT
                  blockchain
                 , project
@@ -47,12 +44,8 @@ WITH dexes AS (
                 , amount0_usd
                 , amount1_usd
            FROM
-                {{ dex }}
+                dexes
           {% if is_incremental() %}
            WHERE
                {{ incremental_predicate('block_time') }}
           {% endif %}
-          {% if not loop.last %}
-           UNION ALL
-          {% endif %}
-    {% endfor %}
