@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: zeroex_mode_settler_trades 
+  - name: zeroex_v2_mode_trades 
     meta:
       blockchain: mode
       project: zeroex

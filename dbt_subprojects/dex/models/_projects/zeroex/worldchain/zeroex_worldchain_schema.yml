@@ -1,7 +1,7 @@
 version: 2
 
 worldchainls:
-  - name: zeroex_worldchain_settler_trades 
+  - name: zeroex_v2_worldchain_trades 
     meta:
       blockchain: worldchain
       project: zeroex

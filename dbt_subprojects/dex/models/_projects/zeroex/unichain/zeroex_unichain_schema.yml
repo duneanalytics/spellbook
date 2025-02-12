@@ -1,7 +1,7 @@
 version: 2
 
 unichainls:
-  - name: zeroex_unichain_settler_trades 
+  - name: zeroex_v2_unichain_trades 
     meta:
       blockchain: unichain
       project: zeroex
