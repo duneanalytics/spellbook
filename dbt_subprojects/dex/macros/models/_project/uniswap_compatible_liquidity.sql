@@ -76,9 +76,9 @@ base_amounts AS (
     FROM prep_for_calculations pc
 )
 SELECT 
-          {{blockchain}} AS blockchain
-        , {{project}}  AS project
-        , {{version}} AS version
+          '{{blockchain}}' AS blockchain
+        , '{{project}}'  AS project
+        , '{{version}}' AS version
         , CAST(date_trunc('month', base.block_time) AS date) AS block_month
         , CAST(date_trunc('day', base.block_time) AS date) AS block_date
         , block_time
