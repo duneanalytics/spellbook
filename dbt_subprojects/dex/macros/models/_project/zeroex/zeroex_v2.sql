@@ -306,7 +306,8 @@ maker_logs as (
     select
         block_time, 
         block_number,
-        tx_hash, 
+        tx_hash,
+        rn, 
         tbl_logs_rn.*,
         tl.taker_token as taker_token,
         tl.taker_amount as taker_amount 
