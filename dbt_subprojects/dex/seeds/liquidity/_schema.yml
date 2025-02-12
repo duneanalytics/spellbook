@@ -13,7 +13,7 @@ seeds:
         salt: varbinary
         token0: varbinary
         token1: varbinary
-        amount0_raw: uint256
-        amount1_raw: uint256
+        amount0_raw: bigint
+        amount1_raw: bigint
         block_date: timestamp
 
