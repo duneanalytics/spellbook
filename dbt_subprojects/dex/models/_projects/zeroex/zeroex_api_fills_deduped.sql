@@ -1,7 +1,7 @@
 {{ config(
      schema = 'zeroex'
         , alias = 'api_fills_deduped'
-        , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "optimism", "polygon","scroll", "linea","blast","mantle"]\',
+        , post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c", "base", "bnb", "celo", "ethereum", "fantom", "optimism", "polygon","scroll", "linea","blast","mantle", "mode", "worldchain", "unichain"]\',
                                 "project",
                                 "zeroex",
                                 \'["rantum","bakabhai993"]\') }}'
@@ -33,6 +33,9 @@
   ,ref('zeroex_linea_settler_trades')
   ,ref('zeroex_blast_settler_trades')
   ,ref('zeroex_mantle_settler_trades')
+  ,ref('zeroex_v2_mode_trades')
+  ,ref('zeroex_v2_worldchain_trades')
+  ,ref('zeroex_v2_unichain_trades')
 ] %}
 
 
