@@ -89,8 +89,8 @@ SELECT
         , salt
         , token0
         , token1
-        , amount0 as amount0_raw
-        , amount1 as amount1_raw
+        , CAST(amount0 AS UINT256) as amount0_raw
+        , CAST(amount1 AS UINT256) as amount1_raw
   FROM  base_amounts base
 
 {% endmacro %}
