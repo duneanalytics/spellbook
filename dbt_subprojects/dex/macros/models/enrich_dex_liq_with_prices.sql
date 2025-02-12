@@ -47,6 +47,8 @@ WITH base as (
         , base.salt
         , base.token0
         , base.token1
+        , base.amount0_raw
+        , base.amount1_raw
         , base.amount0_raw/pow(10,tk0.decimals) as amount0
         , base.amount1_raw/pow(10,tk1.decimals) as amount1
     FROM
@@ -74,6 +76,8 @@ WITH base as (
             , en.salt
             , en.token0
             , en.token1
+            , en.amount0_raw
+            , en.amount1_raw
             , en.amount0
             , en.amount1
             , en.amount0 * p0.price AS amount0_usd
@@ -104,6 +108,8 @@ SELECT
     , salt
     , token0
     , token1
+    , amount0_raw
+    , amount1_raw  
     , amount0
     , amount1
     , amount0_usd
