@@ -4,7 +4,7 @@
     )
 %}
 
-WITH base as (
+WITH base_liquidity as (
     SELECT
         *
     FROM
