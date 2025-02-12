@@ -67,7 +67,7 @@ models:
       - &amount0_usd
         name: amount0_usd
         description: "Liquidity amount of token0 in USD"
-       - &amount1_usd
+      - &amount1_usd
         name: amount1_usd
         description: "Liquidity amount of token1 in USD"       
 
