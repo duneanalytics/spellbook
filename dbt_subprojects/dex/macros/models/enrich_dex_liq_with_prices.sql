@@ -9,8 +9,8 @@ WITH base as (
         *
     FROM
         {{ base_liquidity }}
-    WHERE
     {% if is_incremental() %}
+    WHERE
         {{ incremental_predicate('block_time') }}
     {% endif %}
 )
