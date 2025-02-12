@@ -303,7 +303,11 @@ maker_logs as (
             end as rn
     from tbl_all 
     )
-    select tbl_logs_rn.*,
+    select
+        block_time, 
+        block_number,
+        tx_hash, 
+        tbl_logs_rn.*,
         tl.taker_token as taker_token,
         tl.taker_amount as taker_amount 
     from tbl_logs_rn
