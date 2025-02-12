@@ -111,7 +111,7 @@ with raw_transfers as (
     select
         blockchain
         , block_date
-        ,{% if native_contract_address %}
+        {% if native_contract_address %}
         , {{ native_contract_address }} AS contract_address
         {% else %}
         , contract_address
@@ -134,14 +134,14 @@ with raw_transfers as (
         blockchain
         , block_date
         {% if native_contract_address %}
-        {{ native_contract_address }}
+        , {{ native_contract_address }}
         {% else %}
         , contract_address
         {% endif %}
         , symbol
         , "from"
         , 'sent'
-       , tx_hash
+        , tx_hash
 
     union all
 
@@ -154,7 +154,7 @@ with raw_transfers as (
         , contract_address
         {% endif %}
         , symbol
-       , tx_hash
+        , tx_hash
         , to as address
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
@@ -170,7 +170,7 @@ with raw_transfers as (
         blockchain
         , block_date
         {% if native_contract_address %}
-        {{ native_contract_address }}
+        , {{ native_contract_address }}
         {% else %}
         , contract_address
         {% endif %}
