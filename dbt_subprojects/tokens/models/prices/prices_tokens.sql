@@ -30,6 +30,7 @@
                                         , "sei"
                                         , "solana"
                                         , "sonic"
+                                        , "unichain"
                                         , "viction"
                                         , "worldchain"
                                         , "zksync"
@@ -77,6 +78,7 @@ ref('prices_native_tokens')
 ,ref('prices_corn_tokens')
 ,ref('prices_sonic_tokens')
 ,ref('prices_ink_tokens')
+,ref('prices_unichain_tokens')
 ,ref('prices_abstract_tokens')
 ,ref('prices_berachain_tokens')
 ] %}
