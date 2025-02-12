@@ -92,6 +92,14 @@ SELECT * FROM settler_txs
 
 {% macro zeroex_v2_trades(blockchain, start_date) %}
 WITH 
+bundled_tx_check as (
+    select tx_hash, 
+        block_time,
+        block_number, 
+        count(*) tx_cnt
+        from settler_txs
+        group by 1,2,3
+), 
 swap_signatures as (
     SELECT signature FROM (
         VALUES 
@@ -147,13 +155,15 @@ tbl_all_logs AS (
         case when topic0 = signature or logs.contract_address = settler_address then 'swap' end as log_type,
         data,
         row_number() over (partition by logs.tx_hash order by index) rn,
-        cow_rn 
+        cow_rn,
+        case when tx_cnt > 1 then 1 else 0 end as bundled_tx
     FROM
         {{ source(blockchain, 'logs') }} AS logs
     JOIN
         zeroex_tx st ON st.tx_hash = logs.tx_hash
             AND logs.block_time = st.block_time
             AND st.block_number = logs.block_number
+    JOIN bundled_tx_check btx using (block_time, block_number, tx_hash)
     LEFT JOIN swap_signatures on topic0 = signature
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
@@ -247,7 +257,9 @@ maker_logs as (
         logs.tx_index,
         settler_address,
         amount as maker_amount,
-        row_number() over (partition by logs.tx_hash order by logs.index ) rn,
+        case when bundled_tx = 1 then row_number() over (partition by logs.tx_hash order by logs.index) 
+            else row_number() over (partition by logs.tx_hash order by logs.index desc) 
+            end as rn,
         logs.taker as taker
         
     from tbl_all_logs as logs 
