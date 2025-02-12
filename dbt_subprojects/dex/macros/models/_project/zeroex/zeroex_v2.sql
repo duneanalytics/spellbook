@@ -278,11 +278,12 @@ maker_logs as (
                 and bytearray_substring(logs.topic1,13,20) = tx_to 
                 and bytearray_substring(logs.topic1,13,20) not in (bytearray_substring(st.topic1,13,20), tx_to ) 
             )
+        )
         AND (
             varbinary_position(st.data, (logs.data)) <> 0 
             or varbinary_position(st.data, ( cast(-1*varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) as varbinary))) <> 0  
         )
-        )
+        
     )
     select
         block_time,
