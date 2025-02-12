@@ -84,7 +84,7 @@ settler_txs AS (
             end as taker 
     FROM
         settler_trace_data
-    
+    where (varbinary_substring(tracker,2,12)) != 0x000000000000000000000000
 )
 
 SELECT * FROM settler_txs
