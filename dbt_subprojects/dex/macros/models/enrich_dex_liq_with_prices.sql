@@ -1,4 +1,4 @@
-{% macro enrich_dex_liq(
+{% macro enrich_dex_liq_with_prices(
       base_liquidity = null
     , tokens_erc20_model = null
     )
