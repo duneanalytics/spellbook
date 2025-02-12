@@ -27,8 +27,8 @@ WITH base_union AS (
                 , salt
                 , token0
                 , token1
-                , CAST(amount0_raw AS UINT256) as amount0_raw
-                , CAST(amount1_raw AS UINT256) as amount1_raw
+                , amount0_raw
+                , amount1_raw
             FROM
                 {{ base_model }}
             {% if not loop.last %}
