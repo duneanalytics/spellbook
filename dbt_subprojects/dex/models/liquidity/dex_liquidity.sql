@@ -38,6 +38,8 @@ WITH dexes AS (
                 , salt
                 , token0
                 , token1
+                , amount0_raw
+                , amount1_raw
                 , amount0
                 , amount1
                 , amount0_usd
