@@ -290,7 +290,7 @@ maker_logs as (
         block_time,
         block_number,
         tx_hash,
-        tl.index,
+        tbl_all.index,
         maker_token,
         tx_to, 
         tx_from,
