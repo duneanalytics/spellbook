@@ -115,6 +115,6 @@ SELECT
     , amount0_usd
     , amount1_usd
 FROM
-    enrichments_with_prices
+    enrichment_with_prices
 
 {% endmacro %}
