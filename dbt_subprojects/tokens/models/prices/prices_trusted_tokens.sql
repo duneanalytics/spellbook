@@ -15,7 +15,10 @@ WITH trusted_tokens AS (
                 , contract_address
         FROM (
                 VALUES
-                ('arbitrum', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8)
+                ('abstract', 0x3439153EB7AF838Ad19d56E1571FBD09333C2809)
+                , ('abstract', 0x84a71ccd554cc1b02749b35d22f684cc8ec987e1)
+                , ('abstract', 0x000000000000000000000000000000000000800a)
+                , ('arbitrum', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8)
                 , ('arbitrum', 0x82af49447d8a07e3bd95bd0d56f35241523fbab1)
                 , ('arbitrum', 0xaf88d065e77c8cc2239327c5edb3a432268e5831)
                 , ('arbitrum', 0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9)
@@ -72,6 +75,7 @@ WITH trusted_tokens AS (
                 , ('ethereum', 0x2260fac5e5542a773aa44fbcfedf7c193bc2c599)
                 , ('ethereum', 0xf939e0a03fb07f59a73314e73794be0e57ac1b4e)
                 , ('ethereum', 0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0) -- wstETH
+                , ('ethereum', 0x4c42E827E96C6826C4F1c727Dc83Ff1f10479345) -- SCRVUSD
                 , ('fantom', 0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83)
                 , ('flare', 0x1D80c49BbBCd1C0911346656B529DF9E5c2F783d)
                 , ('fantom', 0x04068da6c83afcfa0e13ba15a6696662335d5b75)
@@ -175,6 +179,13 @@ WITH trusted_tokens AS (
                 , ('zksync', 0x000000000000000000000000000000000000800a)
                 , ('zksync', 0xbbeb516fb02a01611cbbe0453fe3c580d7281011)
                 , ('zora', 0x4200000000000000000000000000000000000006)
+                , ('berachain', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34)  -- USDe
+                , ('berachain', 0x7dcc39b4d1c53cb31e1abc0e358b43987fef80f7)  -- weETH
+                , ('berachain', 0xecac9c5f704e954931349da37f60e39f515c11c1)  -- LBTC
+                , ('unichain', 0x4200000000000000000000000000000000000006)  -- WETH
+                , ('unichain', 0x078d782b760474a361dda0af3839290b0ef57ad6)  -- USDC
+                , ('unichain', 0x8f187aa05619a017077f5308904739877ce9ea21)  -- UNI
+                , ('unichain', 0x20cab320a855b39f724131c69424240519573f81)  -- DAI
         ) AS t (blockchain, contract_address)
 ), erc20 as (
         SELECT
