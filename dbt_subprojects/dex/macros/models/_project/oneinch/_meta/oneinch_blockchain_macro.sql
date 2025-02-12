@@ -75,7 +75,7 @@
             "zksync":        "timestamp '2023-04-12 10:16'",
             "aurora":        "timestamp '2022-05-25 16:14'",
             "klaytn":        "timestamp '2022-08-02 09:39'",
-            "linea":         "timestamp '2025-02-18 00:00'",
+            "linea":         "timestamp '2025-02-12 00:00'",
         },
         "fusion_settlement_addresses": {
             "ethereum":      "array[0xa88800cd213da5ae406ce248380802bd53b47647, 0xfb2809a5314473e1165f6b58018e20ed8f07b840]",
