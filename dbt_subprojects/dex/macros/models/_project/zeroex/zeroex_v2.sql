@@ -163,6 +163,7 @@ tbl_all_logs AS (
         zeroex_tx st using (block_time, block_number, tx_hash)
     JOIN bundled_tx_check btx using (block_time, block_number, tx_hash)
     LEFT JOIN swap_signatures on topic0 = signature
+    WHERE 1=1
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
@@ -175,7 +176,7 @@ tbl_all_logs AS (
                 OR logs.contract_address = settler_address
                 OR swap_signatures.signature is not null
         )
-        
+    
         AND zid != 0xa00000000000000000000000
         and rn = 1 
 ),
