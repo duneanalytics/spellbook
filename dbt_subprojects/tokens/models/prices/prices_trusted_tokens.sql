@@ -181,6 +181,10 @@ WITH trusted_tokens AS (
                 , ('berachain', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34)  -- USDe
                 , ('berachain', 0x7dcc39b4d1c53cb31e1abc0e358b43987fef80f7)  -- weETH
                 , ('berachain', 0xecac9c5f704e954931349da37f60e39f515c11c1)  -- LBTC
+                , ('unichain', 0x4200000000000000000000000000000000000006)  -- WETH
+                , ('unichain', 0x078d782b760474a361dda0af3839290b0ef57ad6)  -- USDC
+                , ('unichain', 0x8f187aa05619a017077f5308904739877ce9ea21)  -- UNI
+                , ('unichain', 0x20cab320a855b39f724131c69424240519573f81)  -- DAI
         ) AS t (blockchain, contract_address)
 ), erc20 as (
         SELECT
