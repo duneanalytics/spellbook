@@ -244,7 +244,7 @@ taker_logs as (
 ),
 maker_logs as (
     with tbl_all as (
-    select 
+    select distinct 
         logs.block_time, 
         logs.block_number, 
         logs.tx_hash, 
@@ -255,9 +255,7 @@ maker_logs as (
         logs.tx_index,
         settler_address,
         amount as maker_amount,
-        case when bundled_tx = 1 then row_number() over (partition by logs.tx_hash order by logs.index) 
-            else row_number() over (partition by logs.tx_hash order by logs.index desc) 
-            end as rn,
+        bundled_tx, 
         logs.taker as taker
         
     from tbl_all_logs as logs 
@@ -285,7 +283,8 @@ maker_logs as (
             or varbinary_position(st.data, ( cast(-1*varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) as varbinary))) <> 0  
         )
         
-    )
+    ),
+    tbl_logs_rn as (
     select
         block_time,
         block_number,
@@ -300,10 +299,17 @@ maker_logs as (
         taker,
         tl.taker_token as taker_token,
         tl.taker_amount as taker_amount,
-        rn
+        case when bundled_tx = 1 then row_number() over (partition by tx_hash order by index) 
+            else row_number() over (partition by tx_hash order by index desc) 
+            end as rn
     from tbl_all 
+    )
+    select * 
+    from tbl_logs_rn
     join taker_logs tl using (block_time, block_number, tx_hash, rn)
        where taker_token != maker_token  
+
+    
 ),
 cow_trades as (
     with base_logs as (
