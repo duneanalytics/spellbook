@@ -117,7 +117,6 @@ with raw_transfers as (
         , contract_address
         {% endif %}
         , symbol
-        , symbol
         , tx_hash
         , "from" as address
         , 'sent' as transfer_direction
@@ -134,7 +133,7 @@ with raw_transfers as (
         blockchain
         , block_date
         {% if native_contract_address %}
-        , {{ native_contract_address }}
+        , {{ native_contract_address }} 
         {% else %}
         , contract_address
         {% endif %}
@@ -170,7 +169,7 @@ with raw_transfers as (
         blockchain
         , block_date
         {% if native_contract_address %}
-        , {{ native_contract_address }}
+        , {{ native_contract_address }} 
         {% else %}
         , contract_address
         {% endif %}
