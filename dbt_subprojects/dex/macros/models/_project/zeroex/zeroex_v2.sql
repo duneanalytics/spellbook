@@ -297,14 +297,15 @@ maker_logs as (
         settler_address,
         maker_amount,
         taker,
-        tl.taker_token as taker_token,
-        tl.taker_amount as taker_amount,
+        
         case when bundled_tx = 1 then row_number() over (partition by tx_hash order by index) 
             else row_number() over (partition by tx_hash order by index desc) 
             end as rn
     from tbl_all 
     )
-    select * 
+    select tbl_logs_rn.*,
+        tl.taker_token as taker_token,
+        tl.taker_amount as taker_amount 
     from tbl_logs_rn
     join taker_logs tl using (block_time, block_number, tx_hash, rn)
        where taker_token != maker_token  
