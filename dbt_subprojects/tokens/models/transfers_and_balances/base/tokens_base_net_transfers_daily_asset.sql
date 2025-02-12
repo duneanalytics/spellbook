@@ -13,7 +13,7 @@
 
 
 {{ evm_net_transfers_daily_asset(
-        blockchain, 
-        native_contract_address  =null
+        blockchain
+        ,native_contract_address  = null
 ) 
 }} 
