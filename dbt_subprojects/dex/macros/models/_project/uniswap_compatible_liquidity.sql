@@ -46,7 +46,7 @@ get_recent_sqrtPriceX96 AS
                     {%- endif %}
             )tbl
         WHERE rn = 1
-)
+),
 prep_for_calculations AS (
     SELECT  evt_block_time as block_time
           , evt_block_number as block_number
