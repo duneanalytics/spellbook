@@ -64,3 +64,33 @@ models:
           seed_file: ref('uniswap_unichain_base_trades_seed')
           filter:
             version: 4
+
+  - name: dyorswap_unichain_base_trades
+    meta:
+      blockchain: unichain
+      sector: dex
+      project: dyorswap
+      contributors: floryan
+    config:
+      tags: [ 'unichain', 'dex', 'trades', 'dyorswap', 'v2' ]
+    description: "dyorswap unichain v2 base trades (uniswap v2 compatible)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+
+  - name: unichainswap_unichain_base_trades
+    meta:
+      blockchain: unichain
+      sector: dex
+      project: unichainswap
+      contributors: floryan
+    config:
+      tags: [ 'unichain', 'dex', 'trades', 'unichainswap', 'v2' ]
+    description: "unichainswap unichain v2 base trades (uniswap v2 compatible)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
