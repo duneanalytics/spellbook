@@ -818,14 +818,17 @@ models:
           combination_of_columns:
             - user
 
-  - name: floki_bot_solana_bot_trades    # Make sure this matches your SQL filename
+  - name: floki_solana_bot_trades
     meta:
       blockchain: solana
       sector: dex
-      contributors: # optional: add your GitHub username if you want
-        - your_github_username
-    description: "Trades executed by FLOKI_BOT on Solana DEXes"
-    tests:
+      project: floki
+      contributors: davidc
+    config:
+      tags: ["solana", "dex", "floki", "trades"]
+    description: >
+      floki trades on Solana
+    data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -833,8 +836,6 @@ models:
             - tx_index
             - outer_instruction_index
             - inner_instruction_index
-    columns:
-      - name: block_time
-        description: "UTC event block time"
-        tests:
-          - not_null
+      - check_bot_trades_seed:
+          seed_file: ref('floki_solana_trades_seed')
+          blockchain: solana
