@@ -1,0 +1,29 @@
+version: 2
+
+sources:
+  - name: uniswap_v2_unichain
+    description: "unichain decoded tables related to Uniswap v2 contract"
+    tables:
+      - name: UniswapV2Pool_evt_Swap
+        description: "" # to-do
+
+      - name: UniswapV2Factory_evt_PairCreated
+        description: "" # to-do
+        
+  - name: uniswap_v3_unichain
+    description: "unichain decoded tables related to Uniswap v3 contract"
+    tables:
+      - name: UniswapV3Pool_evt_Swap
+        description: "" # to-do
+
+      - name: UniswapV3Factory_evt_PoolCreated
+        description: "" # to-do
+
+  - name: uniswap_v4_unichain
+    description: "unichain decoded tables related to Uniswap v4 contract"
+    tables:
+      - name: PoolManager_evt_Swap
+        description: "" # to-do
+        
+      - name: PoolManager_evt_Initialize
+        description: "" # to-do

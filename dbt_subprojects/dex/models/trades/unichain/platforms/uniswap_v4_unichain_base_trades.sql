@@ -14,7 +14,8 @@
         blockchain = 'unichain'
         , project = 'uniswap'
         , version = '4'
-        , Pair_evt_Swap = source('uniswap_v4_unichain', 'UniswapV4Pool_evt_Swap')
-        , Factory_evt_PoolCreated = source('uniswap_v4_unichain', 'UniswapV4Factory_evt_PoolCreated')
+        , PoolManager_evt_Swap = source('uniswap_v4_unichain', 'PoolManager_evt_Swap') 
+        , PoolManager_evt_Initialize = source('uniswap_v4_unichain', 'PoolManager_evt_Initialize')
+        , taker_column_name = 'evt_tx_from'
     )
 }}
