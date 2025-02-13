@@ -8,7 +8,18 @@
     , pair_column_name = 'id'
     )
 %}
-WITH get_recent_sqrtPriceX96 AS
+WITH filtered_swaps AS (
+    SELECT 
+        evt_block_time,
+        id,
+        sqrtPriceX96
+    FROM {{ PoolManager_evt_Swap }}
+    {%- if is_incremental() %}
+    WHERE {{ incremental_predicate('evt_block_time') }}
+    {%- endif %}
+),
+
+get_recent_sqrtPriceX96 AS
 (
     SELECT *
       FROM (
@@ -26,7 +37,7 @@ WITH get_recent_sqrtPriceX96 AS
                     FROM 
                         {{ PoolManager_evt_ModifyLiquidity }} ml
                     LEFT JOIN 
-                        {{ PoolManager_evt_Swap }} s ON ml.evt_block_time > s.evt_block_time AND ml.id = s.id
+                        filtered_swaps s ON ml.evt_block_time > s.evt_block_time AND ml.id = s.id
                     LEFT JOIN 
                         {{ PoolManager_evt_Initialize }} i ON ml.evt_block_time >= i.evt_block_time AND i.{{pair_column_name}} = ml.id
                     {%- if is_incremental() %}
@@ -35,7 +46,7 @@ WITH get_recent_sqrtPriceX96 AS
                     {%- endif %}
             )tbl
         WHERE rn = 1
-),
+)
 prep_for_calculations AS (
     SELECT  evt_block_time as block_time
           , evt_block_number as block_number
