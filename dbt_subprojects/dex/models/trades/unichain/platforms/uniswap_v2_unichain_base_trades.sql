@@ -15,7 +15,7 @@
         blockchain = 'unichain',
         project = 'uniswap',
         version = '2',
-        Pair_evt_Swap = source('uniswap_v2_unichain', 'UniswapV2Pool_evt_Swap'),
+        Pair_evt_Swap = source('uniswap_v2_unichain', 'UniswapV2Pair_evt_Swap'),
         Factory_evt_PairCreated = source('uniswap_v2_unichain', 'UniswapV2Factory_evt_PairCreated')
     )
 }}

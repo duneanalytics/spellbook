@@ -4,7 +4,7 @@ sources:
   - name: uniswap_v2_unichain
     description: "unichain decoded tables related to Uniswap v2 contract"
     tables:
-      - name: UniswapV2Pool_evt_Swap
+      - name: UniswapV2Pair_evt_Swap
         description: "" # to-do
 
       - name: UniswapV2Factory_evt_PairCreated
