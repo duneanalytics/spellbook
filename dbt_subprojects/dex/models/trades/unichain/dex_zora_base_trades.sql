@@ -1,14 +1,14 @@
 {{ config(
-    schema = 'dex_zora'
+    schema = 'dex_unichain'
     , alias = 'base_trades'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('uniswap_v2_zora_base_trades')
-    , ref('uniswap_v3_zora_base_trades')
-    , ref('uniswap_v4_zora_base_trades')
+    ref('uniswap_v2_unichain_base_trades')
+    , ref('uniswap_v3_unichain_base_trades')
+    , ref('uniswap_v4_unichain_base_trades')
 ] %}
 
 WITH base_union AS ( 
@@ -44,7 +44,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'zora'
+        , blockchain = 'unichain'
         , columns = ['from', 'to', 'index']
     )
 }}

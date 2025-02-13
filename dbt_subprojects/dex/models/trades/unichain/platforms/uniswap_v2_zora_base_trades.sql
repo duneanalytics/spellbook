@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'uniswap_v2_zora',
+        schema = 'uniswap_v2_unichain',
         alias = 'base_trades',
         materialized = 'incremental',
         file_format = 'delta',
@@ -12,10 +12,10 @@
 
 {{
     uniswap_compatible_v2_trades(
-        blockchain = 'zora',
+        blockchain = 'unichain',
         project = 'uniswap',
         version = '2',
-        Pair_evt_Swap = source('uniswap_v2_zora', 'UniswapV2Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('uniswap_v2_zora', 'UniswapV2Factory_evt_PairCreated')
+        Pair_evt_Swap = source('uniswap_v2_unichain', 'UniswapV2Pool_evt_Swap'),
+        Factory_evt_PairCreated = source('uniswap_v2_unichain', 'UniswapV2Factory_evt_PairCreated')
     )
 }}
