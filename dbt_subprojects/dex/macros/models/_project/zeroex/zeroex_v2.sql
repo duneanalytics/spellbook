@@ -1,15 +1,16 @@
 {% macro zeroex_settler_txs_cte(blockchain, start_date) %}
 WITH tbl_addresses AS (
-    SELECT 
-        token_id, 
-        "to" AS settler_address,
-        block_time AS begin_block_time, 
-        block_number AS begin_block_number
+     SELECT 
+            tx_hash, 
+            bytearray_substring(topic3,13,20) as settler_address, 
+            varbinary_to_integer(varbinary_ltrim(topic1)) as token_id, 
+            block_time as begin_block_time,
+            block_number as begin_block_number
     FROM 
-        {{ source('nft', 'transfers') }}
+        {{ source(blockchain, 'logs') }} 
     WHERE 
-        contract_address = 0x00000000000004533fe15556b1e086bb1a72ceae 
-        AND blockchain = '{{ blockchain }}'
+        contract_address = 0x00000000000004533Fe15556B1E086BB1A72cEae 
+        AND topic0 = 0xaa94c583a45742b26ac5274d230aea34ab334ed5722264aa5673010e612bc0b2
 ),
 
 tbl_end_times AS (
