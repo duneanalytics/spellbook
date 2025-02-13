@@ -6,7 +6,7 @@ sources:
     freshness:
       warn_after: { count: 12, period: hour }
     tables:
-      - name: DyorswapV2Factory_evt_PairCreated
+      - name: dyorfactory_evt_paircreated
         loaded_at_field: evt_block_time
         description: "Pair created events from the Dyorswap v2 factory contract"
         columns:
@@ -27,7 +27,7 @@ sources:
           - name: token1
             description: "Token1 address"
 
-      - name: DyorswapV2Pair_evt_Swap
+      - name: dyorpair_evt_swap
         loaded_at_field: evt_block_time
         description: "Swap events from Dyorswap v2 pair contracts"
         columns:

@@ -15,7 +15,8 @@
         blockchain = 'unichain',
         project = 'dyorswap',
         version = '2',
-        Pair_evt_Swap = source('dyorswap_unichain', 'DyorswapV2Pair_evt_Swap'),
-        Factory_evt_PairCreated = source('dyorswap_unichain', 'DyorswapV2Factory_evt_PairCreated')
+        Pair_evt_Swap = source('dyorswap_unichain', 'dyorpair_evt_swap'),
+        Factory_evt_PairCreated = source('dyorswap_unichain', 'dyorfactory_evt_paircreated')
     )
 }} 
+
