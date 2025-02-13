@@ -33,6 +33,9 @@
   ,ref('zeroex_linea_settler_trades')
   ,ref('zeroex_blast_settler_trades')
   ,ref('zeroex_mantle_settler_trades')
+  ,ref('zeroex_v2_mode_trades')
+  ,ref('zeroex_v2_unichain_trades')
+  ,ref('zeroex_v2_worldchain_trades')
 ] %}
 
 
