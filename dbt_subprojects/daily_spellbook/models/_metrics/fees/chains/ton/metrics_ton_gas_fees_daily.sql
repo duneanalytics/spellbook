@@ -15,7 +15,7 @@ with ton_prices as ( -- get price of TON for each day to estimate USD value
         , avg(price) as price
     from {{ source('prices', 'usd') }}
     where true
-        and symbol = 'TON'
+        and symbol = 'TON' and blockchain is null
         group by 1
 ), fees as (
     -- Low-level fees overview - https://docs.ton.org/v3/documentation/smart-contracts/transaction-fees/fees-low-level
