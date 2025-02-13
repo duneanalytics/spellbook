@@ -205,5 +205,4 @@ FROM (VALUES
     , ('beets', 'Beets DEX', 'Direct', 'beets_fi')
     , ('silverswap', 'SilverSwap', 'Direct', 'SilverSwapDex')
     , ('unichainswap', 'UnichainSwap', 'Direct', 'unichainswap')
-    , ('dyorswap', 'dyorswap', 'Direct', 'dyorswap')
     ) AS temp_table (project, name, marketplace_type, x_username)
