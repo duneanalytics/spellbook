@@ -1,15 +1,14 @@
 version: 2
 
 models:
-  - name:  uniswap_pools_optimism_balances
-    description: "Tracks OP token balances in Uniswap pools on Optimism."
+  - name:  dex_pools_optimism_balances
+    description: "Tracks OP token balances in DEX pools on Optimism."
     meta:
       blockchain: optimism
       sector: DEX
-      project: uniswap
       contributors: jason
     config:
-      tags: ['optimism', 'op_token', 'balances', 'uniswap','pools']
+      tags: ['optimism', 'op_token', 'balances','pools']
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

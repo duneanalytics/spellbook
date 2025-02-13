@@ -16,6 +16,8 @@ FROM
 (
     VALUES
     ('weth-weth','base','WETH',0x4200000000000000000000000000000000000006,18),
+    --ingesting flETH with price for weth momentarily while we find a better fix, should be a <1% delta
+    ('weth-weth','base','flETH',0x000000000D564D5be76f7f0d28fE52605afC7Cf8,18),
     ('axl-axelar','base','AXL',0x23ee2343b892b1bb63503a4fabc840e0e2c6810f,6),
     ('bald-bald','base','BALD',0x27d2decb4bfc9c76f0309b8e88dec3a601fe25a8,18),
     ('usdbc-usd-base-coin','base','USDbC',0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca,6),
@@ -203,6 +205,8 @@ FROM
     ('usdt-tether', 'base', 'USDT', 0xfde4c96c8593536e31f229ea8f37b2ada2699bb2, 6),
     ('klima-klimadao', 'base', 'KLIMA', 0xdcefd8c8fcc492630b943abcab3429f12ea9fea2, 9),
     ('yfi-yearnfinance', 'base', 'YFI', 0x9eaf8c1e34f05a589eda6bafdf391cf6ad3cb239, 18),
-    ('lbtc-lombard-staked-btc', 'base', 'LBTC', 0xecAc9C5F704e954931349Da37F60E39f515c11c1, 8)
+    ('lbtc-lombard-staked-btc', 'base', 'LBTC', 0xecAc9C5F704e954931349Da37F60E39f515c11c1, 8),
+    ('veil2-veil-token', 'base', 'VEIL', 0x767A739D1A152639e9Ea1D8c1BD55FDC5B217D7f, 18),
+    ('vvv-venice-token','base','VVV',0xacfE6019Ed1A7Dc6f7B508C02d1b04ec88cC21bf,18)
     --('well-moonwell' ,'base', 'WELL', 0xa88594d404727625a9437c3f886c7643872296ae, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

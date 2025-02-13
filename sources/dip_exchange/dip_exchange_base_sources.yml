@@ -1,0 +1,10 @@
+version: 2
+
+sources: 
+  - name: pool_base
+    description: >
+      Decoded event tables for Perpetual trades on dip exchange protocol
+    tables:
+      - name: Pool_evt_IncreasePosition
+      - name: Pool_evt_DecreasePosition
+      - name: Pool_evt_LiquidatePosition

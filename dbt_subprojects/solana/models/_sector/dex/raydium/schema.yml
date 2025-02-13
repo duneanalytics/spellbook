@@ -1,4 +1,4 @@
-version: 2
+version: 3
 
 models:
   - name: raydium_v3_base_trades
@@ -162,3 +162,55 @@ models:
       - *outer_instruction_index
       - *inner_instruction_index
       - *tx_index
+
+  - name: raydium_v5_base_trades
+    meta:
+      blockchain: solana
+      contributors: [ 0xsharples ]
+    config:
+      tags: [ 'solana','dex' ]
+    description: >
+      all raw raydium_v5 constant product amm dex trades on Solana
+    data_tests:
+      - check_columns_solana_dex_trades
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [ 'tx_id', 'outer_instruction_index', 'inner_instruction_index', 'tx_index', 'block_month' ]
+
+  - name: raydium_v5_trades
+    meta:
+      blockchain: solana
+      contributors: [ 0xsharples ]
+    config:
+      tags: ['solana','dex']
+    description: >
+        all raydium_v5 constant product amm dex trades on Solana
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_time
+      - *block_slot
+      - *trade_source
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *fee_tier
+      - *fee_usd
+      - *token_bought_mint_address
+      - *token_sold_mint_address
+      - *token_bought_vault
+      - *token_sold_vault
+      - *project_program_id
+      - *project_main_id
+      - *trader_id
+      - *tx_id
+      - *outer_instruction_index
+      - *inner_instruction_index
+      - *tx_index
+

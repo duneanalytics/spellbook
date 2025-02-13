@@ -44,7 +44,7 @@ SELECT
     size_delta_usd,
     size_delta_in_tokens,
     collateral_delta_amount,
-    impact_diff_usd,
+    price_impact_diff_usd,
     order_type,
     decreased_at_time,
     price_impact_usd,
