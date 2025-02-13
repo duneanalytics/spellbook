@@ -16,5 +16,6 @@
         , version = '3'
         , Pair_evt_Swap = source('kodiak_berachain', 'v3pair_evt_swap')
         , Factory_evt_PoolCreated = source('kodiak_berachain', 'factoryv3_evt_poolcreated')
+        , optional_columns = ['f.fee', 'f.tickSpacing', 't.sqrtPriceX96', 't.liquidity', 't.tick']
     )
 }}

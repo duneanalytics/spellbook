@@ -21,14 +21,8 @@ WITH base_union AS (
             , block_date
             , block_time
             , block_number
-            , token_bought_symbol
-            , token_sold_symbol
-            , token_pair
-            , token_bought_amount
-            , token_sold_amount
             , token_bought_amount_raw
             , token_sold_amount_raw
-            , amount_usd
             , token_bought_address
             , token_sold_address
             , taker
@@ -36,7 +30,8 @@ WITH base_union AS (
             , project_contract_address
             , tx_hash
             , evt_index
-        FROM {{ base_model }}
+        FROM
+            {{ base_model }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
@@ -44,5 +39,10 @@ WITH base_union AS (
     )
 )
 
-SELECT *
-FROM base_union
+{{
+    add_tx_columns(
+        model_cte = 'base_union'
+        , blockchain = 'base'
+        , columns = ['from', 'to', 'index']
+    )
+}}
