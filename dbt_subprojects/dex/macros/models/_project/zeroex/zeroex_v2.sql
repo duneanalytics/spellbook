@@ -280,7 +280,7 @@ maker_logs as (
             )
         )
         AND (
-            varbinary_position(st.data, (logs.data)) <> 0 
+            varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
             or varbinary_position(st.data, ( cast(-1*varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) as varbinary))) <> 0  
         )
         
@@ -363,6 +363,7 @@ select  block_time,
                             0x0000000000005E88410CcDFaDe4a5EfaE4b49562,
                             0x000000000000175a8b9bC6d539B3708EEd92EA6c,
                             0x9008d19f58aabd9ed0d60971565aa8510560ab41,
+                            0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae,
                             0x0000000000000000000000000000000000000000) 
                         then tx_from 
                         else st.taker end as taker,
