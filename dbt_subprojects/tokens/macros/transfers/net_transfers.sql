@@ -111,11 +111,7 @@ with raw_transfers as (
     select
         blockchain
         , block_date
-        {% if native_contract_address %}
-        , {{ native_contract_address }} AS contract_address
-        {% else %}
-        , contract_address
-        {% endif %}
+        , COALESCE(contract_address, '{{ native_contract_address }}') as contract_address
         , symbol
         , tx_hash
         , "from" as address
@@ -132,11 +128,7 @@ with raw_transfers as (
     group by
         blockchain
         , block_date
-        {% if native_contract_address %}
-        , {{ native_contract_address }} 
-        {% else %}
-        , contract_address
-        {% endif %}
+        , COALESCE(contract_address, '{{ native_contract_address }}')
         , symbol
         , "from"
         , 'sent'
@@ -147,11 +139,7 @@ with raw_transfers as (
     select
         blockchain
         , block_date
-        {% if native_contract_address %}
-        , {{ native_contract_address }} AS contract_address
-        {% else %}
-        , contract_address
-        {% endif %}
+        , COALESCE(contract_address, '{{ native_contract_address }}') as contract_address
         , symbol
         , tx_hash
         , to as address
@@ -168,11 +156,7 @@ with raw_transfers as (
     group by
         blockchain
         , block_date
-        {% if native_contract_address %}
-        , {{ native_contract_address }} 
-        {% else %}
-        , contract_address
-        {% endif %}
+        , COALESCE(contract_address, '{{ native_contract_address }}')
         , symbol
         , to
         , 'received'
