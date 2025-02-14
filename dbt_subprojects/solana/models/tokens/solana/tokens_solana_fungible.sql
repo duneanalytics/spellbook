@@ -3,10 +3,11 @@
   alias = 'fungible',
   schema = 'tokens_solana',
   materialized = 'table',
+  partition_by = 'prefix',
   post_hook='{{ expose_spells(\'["solana"]\',
                                   "sector",
                                   "tokens_solana",
-                                  \'["ilemi"]\') }}'
+                                  \'["ilemi, 0xBoxer"]\') }}'
 )
 }}
 
@@ -149,6 +150,7 @@ with
 
 SELECT
     tk.account_mint as token_mint_address
+    , substr(tk.account_mint, 1, 2) as prefix
     , tk.decimals
     , coalesce(m22.name,mo.name,trim(json_value(args, 'strict $.name'))) as name
     , coalesce(m22.symbol,mo.symbol,trim(json_value(args, 'strict $.symbol'))) as symbol
@@ -169,6 +171,7 @@ UNION ALL
 --token2022 wrapped sol https://solscan.io/tx/2L1o7sDMCMJ6PYqfNrnY6ozJC1DEx61pRYiLdfCCggxw81naQXsmHKDLn6EhJXmDmDSQ2eCKjUMjZAQuUsyNnYUv
 SELECT
   trim(token_mint_address) as token_mint_address
+  , substr(trim(token_mint_address), 1, 2) as prefix
   , decimals
   , trim(name) as name
   , trim(symbol) as symbol
@@ -209,6 +212,7 @@ UNION ALL
 --old wrapped sol is special and doesn't have a init tx (that I can find)
 SELECT
   trim(token_mint_address) as token_mint_address
+  , substr(trim(token_mint_address), 1, 2) as prefix
   , decimals
   , trim(name) as name
   , trim(symbol) as symbol
