@@ -39,6 +39,7 @@
     , ref('dex_zksync_base_trades')
     , ref('dex_unichain_base_trades')
     , ref('dex_zora_base_trades')
+    , ref('dex_berachain_base_trades')
 ] %}
 
 with base_union as (
