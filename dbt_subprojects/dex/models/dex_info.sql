@@ -177,7 +177,7 @@ FROM (VALUES
     , ('dfyn', 'DFYN Network', 'Direct', '_DFyn')
     , ('swapblast', 'SwapBlast', 'Direct', 'SwapBlast')
     , ('yoshiexchange', 'Yoshi Exchange', 'Direct', 'YoshiExchange')
-    , ('dyorswap', 'DyorSwap', 'Direct', 'DYORSWAP')
+    , ('dyorswap', 'DyorSwap', 'Direct', 'DYORSWAPDEX')
     , ('punkswap', 'PunkSwap', 'Direct', 'PunkSwapDEX')
     , ('yaka', 'yaka', 'Direct', 'YakaFinance')
     , ('klay_swap', 'KLAYswap', 'Direct', 'KLAYswap')
