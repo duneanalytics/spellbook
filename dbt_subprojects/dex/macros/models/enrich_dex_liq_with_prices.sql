@@ -32,6 +32,19 @@ WITH base_liquidity as (
         , 18 as decimals
     from {{ source('evms','info') }}
 )
+, prices AS (
+    SELECT
+          blockchain
+        , contract_address
+        , minute
+        , price
+    FROM
+        {{ source('prices','usd') }}
+    {% if is_incremental() %}
+    WHERE
+        {{ incremental_predicate('minute') }}
+    {% endif %}
+)      
 , enrichments AS (
     SELECT
           base.blockchain
@@ -83,11 +96,11 @@ WITH base_liquidity as (
             , en.amount0 * p0.price AS amount0_usd
             , en.amount1 * p1.price AS amount1_usd
     FROM enrichments en    
-    LEFT JOIN {{ source('prices','usd') }} p0
+    LEFT JOIN prices p0
            ON en.token0 = p0.contract_address
           AND en.blockchain = p0.blockchain
           AND p0.minute = date_trunc('minute', en.block_time)
-    LEFT JOIN {{ source('prices','usd') }} p1
+    LEFT JOIN prices p1
            ON en.token1 = p1.contract_address
           AND en.blockchain = p1.blockchain
           AND p1.minute = date_trunc('minute', en.block_time)
