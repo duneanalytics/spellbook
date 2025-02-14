@@ -369,3 +369,113 @@ sources:
             description: "Excess blob gas in this block (EIP-4844)"
           - name: parent_beacon_block_root
             description: "Root hash of the parent beacon block" 
+
+  # ERC Transfer Tables
+  - name: erc20_unichain
+    description: "Transfer events for ERC20 tokens on Unichain"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/unichain/decoded/erc20_evt_transfer
+          short_description: The evt_transfer table contains ERC20 token transfer events on the Unichain network.
+        description: '{{ doc("erc20_unichain_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this transfer event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: from
+            description: "Address sending the tokens"
+          - name: to
+            description: "Address receiving the tokens"
+          - name: value
+            description: "Amount of tokens transferred"
+
+  - name: erc721_unichain
+    description: "Transfer events for ERC721 tokens on Unichain"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/unichain/decoded/erc721_evt_transfer
+          short_description: The evt_transfer table contains ERC721 (NFT) token transfer events on the Unichain network.
+        description: '{{ doc("erc721_unichain_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this transfer event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: from
+            description: "Address sending the NFT"
+          - name: to
+            description: "Address receiving the NFT"
+          - name: tokenId
+            description: "Unique identifier of the transferred NFT"
+
+  - name: erc1155_unichain
+    description: "Transfer events for ERC1155 tokens on Unichain"
+    tables:
+      - name: evt_transfersingle
+        meta:
+          docs_slug: /evm/unichain/decoded/erc1155_evt_transfersingle
+          short_description: The evt_transfersingle table contains single ERC1155 token transfer events on the Unichain network.
+        description: '{{ doc("erc1155_unichain_evt_transfersingle_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this transfer event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: operator
+            description: "Address approved to make the transfer"
+          - name: from
+            description: "Address sending the tokens"
+          - name: to
+            description: "Address receiving the tokens"
+          - name: id
+            description: "Token type identifier"
+          - name: value
+            description: "Amount of tokens transferred"
+
+      - name: evt_transferbatch
+        meta:
+          docs_slug: /evm/unichain/decoded/erc1155_evt_transferbatch
+          short_description: The evt_transferbatch table contains batch ERC1155 token transfer events on the Unichain network.
+        description: '{{ doc("erc1155_unichain_evt_transferbatch_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this transfer event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: operator
+            description: "Address approved to make the transfer"
+          - name: from
+            description: "Address sending the tokens"
+          - name: to
+            description: "Address receiving the tokens"
+          - name: ids
+            description: "Array of token type identifiers"
+          - name: values
+            description: "Array of amounts transferred for each token type"
