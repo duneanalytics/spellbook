@@ -6,7 +6,7 @@
   incremental_strategy = 'merge',
   incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.created_at')],
   unique_key = ['token_mint_address'],
-  partition_by = 'prefix',
+  partition_by = ['prefix'],
   post_hook='{{ expose_spells(\'["solana"]\',
                                   "sector",
                                   "tokens_solana",
