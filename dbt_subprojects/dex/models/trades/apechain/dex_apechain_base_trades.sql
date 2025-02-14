@@ -40,4 +40,10 @@ WITH base_union AS (
     )
 )
 
-select * from base_union
+{{
+    add_tx_columns(
+        model_cte = 'base_union'
+        , blockchain = 'apechain'
+        , columns = ['from', 'to', 'index']
+    )
+}}
