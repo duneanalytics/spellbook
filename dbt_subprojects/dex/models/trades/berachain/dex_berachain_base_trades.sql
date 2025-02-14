@@ -42,7 +42,7 @@ WITH base_union AS (
 {{
     add_tx_columns(
         model_cte = 'base_union'
-        , blockchain = 'base'
+        , blockchain = 'berachain'
         , columns = ['from', 'to', 'index']
     )
 }}
