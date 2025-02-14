@@ -228,6 +228,7 @@ WITH base as (
         AND minute < {{end_date}}
         {% endif %}
 )
+
 SELECT
     cast(date_trunc('month', tr.call_block_time) as date) as block_month
     , cast(date_trunc('day', tr.call_block_time) as date) as block_date
@@ -236,9 +237,9 @@ SELECT
     , tr.action
     , tr.amount
     , CASE 
-        WHEN p.decimals is null THEN null
-        WHEN p.decimals = 0 THEN tr.amount
-        ELSE tr.amount / power(10, p.decimals)
+        WHEN tk_f.decimals is null THEN null
+        WHEN tk_f.decimals = 0 THEN tr.amount
+        ELSE tr.amount / power(10, tk_f.decimals)
       END as amount_display
     /*
     , tr.fee
@@ -256,11 +257,11 @@ SELECT
     , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
     , p.price as price_usd
     , CASE 
-        WHEN p.decimals is null THEN null
-        WHEN p.decimals = 0 THEN p.price * tr.amount
-        ELSE p.price * tr.amount / power(10, p.decimals)
+        WHEN tk_f.decimals is null THEN null
+        WHEN tk_f.decimals = 0 THEN tk_f.price_usd * tr.amount
+        ELSE tk_f.price_usd * tr.amount / power(10, tk_f.decimals)
       END as amount_usd
-    , p.symbol
+    , tk_f.symbol
 FROM base tr
 LEFT JOIN 
       {{ ref('solana_utils_token_accounts') }} tk_s 
@@ -270,9 +271,12 @@ LEFT JOIN
       ON tk_d.address = tr.account_destination
 LEFT JOIN 
       {{ ref('solana_utils_token_address_mapping') }} tk_m
-    ON tk_m.base58_address = COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
+      ON tk_m.base58_address = COALESCE(tk_s.token_mint_address, tk_d.token_mint_address)
 LEFT JOIN prices p
-    ON p.contract_address = tk_m.binary_address
-    AND p.minute = date_trunc('minute', tr.call_block_time)
+      ON p.contract_address = tk_m.binary_address
+      AND p.minute = date_trunc('minute', tr.call_block_time)
+LEFT JOIN 
+      {{ ref('tokens_solana_fungible') }} tk_f
+      ON COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) = tk_f.token_mint_address
 
 {% endmacro %} 
