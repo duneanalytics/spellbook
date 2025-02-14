@@ -131,7 +131,8 @@ swap_signatures as (
         (0xb3e2773606abfd36b5bd91394b3a54d1398336c65005baf7bf7a05efeffaf75b),
         (0xad7d6f97abf51ce18e17a38f4d70e975be9c0708474987bb3e26ad21bd93ca70),
         (0x54787c404bb33c88e86f4baf88183a3b0141d0a848e6a9f7a13b66ae3a9b73d1),
-        (0x6ac6c02c73a1841cb185dff1fe5282ff4499ce709efd387f7fc6de10a5124320)
+        (0x6ac6c02c73a1841cb185dff1fe5282ff4499ce709efd387f7fc6de10a5124320),
+        (0x1f5359759208315a45fc3fa86af1948560d8b87afdcaf1702a110ce0fbc305f3)
     ) AS t(signature)
 ),
 tbl_all_logs AS (
