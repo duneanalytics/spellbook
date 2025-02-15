@@ -1,8 +1,9 @@
 {{ config(
         schema='prices_v2',
         alias = 'minute_sparse',
-        file_format = 'delta',
         materialized = 'incremental',
+        file_format = 'delta',
+        event_time = 'timestamp',
         partition_by = ['date'],
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'contract_address', 'timestamp'],
