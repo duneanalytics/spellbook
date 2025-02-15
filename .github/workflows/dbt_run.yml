@@ -12,6 +12,12 @@ jobs:
   dbt-test:
     runs-on: [ self-hosted, linux, spellbook-trino-ci ]
     timeout-minutes: 90
+    env:
+      CI: "true"
+      CI_LIMITED_RANGE: "true"
+      CI_DATE_RANGE: "30"
+      DBT_ENV_INCREMENTAL_TIME_UNIT: "day"
+      DBT_ENV_INCREMENTAL_TIME: "30"
 
     steps:
       - name: Check out repository code
@@ -24,12 +30,13 @@ jobs:
           echo "S3_LOCATION=s3://manifest-spellbook-dunesql/${{inputs.project}}" >> $GITHUB_ENV
           PROJECT_DIR=dbt_subprojects/${{ inputs.project }}
           echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
+
       - name: Add git_sha to schema
         run: "/runner/change_schema.sh git_dunesql_$GIT_SHA"
 
       - name: Get latest manifest
         run: "aws s3 cp $S3_LOCATION/manifest.json $PROJECT_DIR/manifest.json"
-        continue-on-error: true # Temprorary until all projects have manifest
+        continue-on-error: true # Temporary until all projects have manifest
 
       - name: dbt dependencies
         working-directory: ${{env.PROJECT_DIR}}
