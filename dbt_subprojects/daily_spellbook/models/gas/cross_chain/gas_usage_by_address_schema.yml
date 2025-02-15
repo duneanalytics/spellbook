@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: gas_usage_by_address
+    meta:
+      blockchain: ['ethereum', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'blast', 'bnb', 'celo', 'fantom', 'gnosis', 'linea', 'mantle', 'polygon', 'scroll', 'zkevm', 'zksync', 'zora']
+      sector: gas
+      contributors: ['gashawk']
+    config:
+      tags: ['gas', 'cross_chain', 'addresses']
+    description: "Cross-chain gas usage metrics aggregated by address"
+    columns:
+      - name: address
+        description: "The wallet address"
+        tests:
+          - not_null
+      - name: chain
+        description: "The blockchain name"
+        tests:
+          - not_null
+      - name: native_currency
+        description: "Native currency symbol of the chain"
+        tests:
+          - not_null
+      - name: number_of_txs
+        description: "Total number of transactions by this address"
+        tests:
+          - not_null
+          - positive_value
+      - name: gas_spent_usd_all_time
+        description: "Total USD value of gas spent"
+      - name: gas_spent_usd_24_hours
+        description: "USD value of gas spent in last 24 hours"
+      - name: gas_spent_usd_7_days
+        description: "USD value of gas spent in last 7 days"
+      - name: gas_spent_usd_30_days
+        description: "USD value of gas spent in last 30 days"
+      - name: gas_spent_usd_1_year
+        description: "USD value of gas spent in last year"
+      - name: gas_spent_native_curr_all_time
+        description: "Total amount of gas spent in native currency"
+      - name: gas_spent_native_curr_24_hours
+        description: "Amount of gas spent in native currency in last 24 hours"
+      - name: gas_spent_native_curr_7_days
+        description: "Amount of gas spent in native currency in last 7 days"
+      - name: gas_spent_native_curr_30_days
+        description: "Amount of gas spent in native currency in last 30 days"
+      - name: gas_spent_native_curr_1_year
+        description: "Amount of gas spent in native currency in last year"
