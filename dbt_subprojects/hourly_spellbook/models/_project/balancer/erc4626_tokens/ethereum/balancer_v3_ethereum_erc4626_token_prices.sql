@@ -41,7 +41,7 @@ WITH wrap_unwrap AS(
         m.erc4626_token_symbol,
         m.underlying_token_symbol,
         m.decimals,
-        ratio * price AS adjusted_price
+        ratio * price * POWER(10, (m.decimals - p.decimals)) AS adjusted_price
     FROM wrap_unwrap w
     JOIN {{ref('balancer_v3_ethereum_erc4626_token_mapping')}} m ON m.erc4626_token = w.wrappedToken
     JOIN {{ source('prices', 'usd') }} p ON m.underlying_token = p.contract_address

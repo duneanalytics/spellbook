@@ -36,6 +36,8 @@
                                         ,"zora"
                                         ,"bob"
                                         ,"sonic"
+                                        ,"berachain"
+                                        ,"unichain"
                                     ]\',
                                     "sector",
                                     "tokens",
@@ -83,6 +85,8 @@
     ,'tokens_corn': {'blockchain': 'corn', 'model': ref('tokens_corn_erc20')}
     ,'tokens_ink': {'blockchain': 'ink', 'model': ref('tokens_ink_erc20')}
     ,'tokens_abstract': {'blockchain': 'abstract', 'model': ref('tokens_abstract_erc20')}
+    ,'tokens_berachain': {'blockchain': 'berachain', 'model': ref('tokens_berachain_erc20')}
+    ,'tokens_unichain': {'blockchain': 'unichain', 'model': ref('tokens_unichain_erc20')}
 } %}
 
 with automated_source as (
