@@ -10,14 +10,18 @@ select
     token_id,
     collection_name,
     max(block_number) as block_number_latest,
+    max(date_trunc('day', block_time)) as block_date_latest,
     max(block_time) as block_time_latest,
     max_by(balance_raw, block_number) as balance_raw_latest,
     max_by(balance, block_number) as balance_latest
 from {{balances}}
 where
-    {{ incremental_predicate('block_time') }}
--- for testing
-    and block_time > timestamp '2025-01-27 00:00:00.000 +0000'
+    1 = 1
+    {% if is_incremental() %}
+    and {{ incremental_predicate('block_time') }}
+    {% else %}
+    and block_time >= date '2025-01-01' -- for testing
+    {% endif %}
 group by
     blockchain,
     address,
