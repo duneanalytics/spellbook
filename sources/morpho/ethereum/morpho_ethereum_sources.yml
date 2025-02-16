@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: metamorpho_factory_ethereum
-    description: "Decoded contracts for Morpho on Base"
+    description: "Decoded contracts for Morpho on Ethereum"
 
     tables:
       - name: MetaMorphoFactory_evt_CreateMetaMorpho
