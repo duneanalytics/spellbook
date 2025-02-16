@@ -1,0 +1,109 @@
+version: 2
+
+models:
+  - name: dex_liquidity
+    meta:
+      blockchain: ethereum
+      sector: dex
+      short_description: The `dex.liquidity` table captures liquidity data on DEXs. This table contains a detailed breakdown of liquidity pmodified per transaction. 
+      contributors: irishLatte19
+    config:
+      tags: [ 'dex', 'liquidity']
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain on which the liquidity has been provided/ removed"
+      - &project
+        name: project
+        description: "Name of the dex"
+      - &version
+        name: version
+        description: "Version of the DEX protocol/contract"
+      - &block_month
+        name: block_month
+        description: "UTC event block month"
+      - &block_date
+        name: block_date
+        description: "UTC event block date"
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+      - &block_number
+        name: block_number
+        description: "Block number of the block in which the trade occurred"
+      - &id
+        name: id
+        description: "Pool Address"
+      - &tx_hash
+        name: tx_hash
+        description: "The hash of the transaction"
+      - &evt_index
+        name: evt_index
+        description: "Index of the event in the transaction. Can be used to uniquely identify the order of events within a transaction"        
+      - &salt
+        name: salt
+        description: "Salt is used to distinguish positions of the same range on the same pool/ id"
+      - &token0
+        name: token0
+        description: "Address of token0"
+      - &token1
+        name: token1
+        description: "Address of token1"
+      - &amount0_raw
+        name: amount0_raw
+        description: "Liquidity amount of token0 in units"
+      - &amount1_raw
+        name: amount1_raw
+        description: "Liquidity amount of token1 in units"
+      - &amount0
+        name: amount0
+        description: "Liquidity amount of token0 in units (decimal normalized)"
+      - &amount1
+        name: amount1
+        description: "Liquidity amount of token1 in units(decimal normalized)"
+      - &amount0_usd
+        name: amount0_usd
+        description: "Liquidity amount of token0 in USD"
+      - &amount1_usd
+        name: amount1_usd
+        description: "Liquidity amount of token1 in USD"       
+
+  - name: dex_base_liquidity
+    meta:
+      blockchain: ethereum
+      sector: dex
+      contributors: irishLatte19
+    config:
+      tags: [ 'dex' ]
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - project
+            - version
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *id
+      - *tx_hash
+      - *evt_index
+      - *salt
+      - *token0
+      - *token1
+      - *amount0_raw
+      - *amount1_raw
