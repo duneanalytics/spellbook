@@ -41,4 +41,5 @@ FROM
     , ('wagmi5-wagmi', 'WAGMI', 0x0e0Ce4D450c705F8a0B6Dd9d5123e3df2787D16B, 18)
     , ('anon-heyanon', 'Anon', 0x79bbf4508b1391af3a0f4b30bb5fc4aa9ab0e07c, 18)
     , ('s-sonic', 'sS', 0x6ba47940f738175d3f8c22aa8ee8606eaae45eb2, 18)
+    , ('shadow-shadow', 'SHADOW', 0x3333b97138d4b086720b5ae8a7844b1345a33333, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
