@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: gains_network_base
+    description: base decoded tables related to Gains Network
+    tables:
+      - name: GNSMultiCollatDiamond_evt_PositionSizeIncreaseExecuted
+        description: "Details the new positions opened"
+      - name: GNSMultiCollatDiamond_evt_PositionSizeDecreaseExecuted
+        description: "Details the swaps to close existing positions"

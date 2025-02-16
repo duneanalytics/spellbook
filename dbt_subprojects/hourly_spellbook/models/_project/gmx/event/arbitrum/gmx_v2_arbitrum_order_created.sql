@@ -262,6 +262,7 @@ WITH evt_data_1 AS (
             WHEN order_type = 5 THEN 'LimitDecrease'
             WHEN order_type = 6 THEN 'StopLossDecrease'
             WHEN order_type = 7 THEN 'Liquidation'
+            WHEN order_type = 8 THEN 'StopIncrease'
             ELSE NULL
         END AS order_type,
         CASE 

@@ -23,6 +23,7 @@
     , ref('dex_fantom_base_trades')
     , ref('dex_flare_base_trades')
     , ref('dex_gnosis_base_trades')
+    , ref('dex_ink_base_trades')
     , ref('dex_linea_base_trades')
     , ref('dex_kaia_base_trades')
     , ref('dex_mantle_base_trades')
@@ -36,7 +37,9 @@
     , ref('dex_worldchain_base_trades')
     , ref('dex_zkevm_base_trades')
     , ref('dex_zksync_base_trades')
+    , ref('dex_unichain_base_trades')
     , ref('dex_zora_base_trades')
+    , ref('dex_berachain_base_trades')
 ] %}
 
 with base_union as (
