@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: tokens_unichain_erc20
+    meta:
+      blockchain: unichain
+      sector: tokens
+      contributors: hosuke
+    config:
+      tags: ['tokens', 'unichain']
+    description: "Known tokens on Unichain"
+    columns:
+      - name: contract_address
+        description: "Token contract address"
+        tests:
+          - unique
+      - name: symbol
+        description: "Token symbol"
+      - name: decimals
+        description: "Number of decimals the token has"
+      - name: token_name
+        description: "Name of the token" 
