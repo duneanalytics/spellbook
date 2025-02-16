@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: kodiak_berachain
+    tables:
+      - name: v3pair_evt_swap
+      - name: factoryv3_evt_poolcreated
