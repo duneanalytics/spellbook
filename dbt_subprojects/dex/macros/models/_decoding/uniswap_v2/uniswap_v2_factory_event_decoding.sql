@@ -164,6 +164,7 @@ WHERE {{ incremental_predicate('block_time') }}
 } 
 %}
 
+with t as (
 {% for topic0, abi in abi_config.items() %}
     {{ evm_event_decoding_base(logs, abi, topic0) }} 
     {% if is_incremental() %}
@@ -173,5 +174,21 @@ WHERE {{ incremental_predicate('block_time') }}
         union all 
     {% endif %}
 {% endfor %}
+)
+
+select 
+    pair
+    , token0
+    , token1
+    , contract_address
+    , block_time
+    , block_date
+    , block_number
+    , tx_hash
+    , tx_from
+    , tx_to
+    , tx_index
+    , index
+ from t
 
 {% endmacro %}
