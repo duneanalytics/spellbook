@@ -7,13 +7,16 @@
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     unique_key = ['block_date','unique_key'],
-) }}
+) 
+}}
 
+-- SOPH token on ZK Stack chain
 {{ transfers_base(
     blockchain='sophon',
     traces = source('sophon','traces'),
     transactions = source('sophon','transactions'),
     erc20_transfers = source('erc20_sophon','evt_transfer'),
-    native_contract_address = '0x000000000000000000000000000000000000800a',  -- SOPH
-    include_traces = false  -- Set to false for ZK Stack chains
-) }}
+    native_contract_address = '0x000000000000000000000000000000000000800a',
+    include_traces = false
+  ) 
+}}
