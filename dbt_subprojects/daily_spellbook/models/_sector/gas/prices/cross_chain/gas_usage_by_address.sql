@@ -21,6 +21,7 @@ transactions AS (
     SELECT 
         t.blockchain as chain,
         t.block_time,
+        date_trunc('month', t.block_time) as block_month,
         date_trunc('day', t.block_time) as block_day,
         t."from" as address,
         t.gas_used,
