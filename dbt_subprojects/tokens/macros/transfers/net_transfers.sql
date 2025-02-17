@@ -11,7 +11,7 @@ with raw_transfers as (
         {{ ref('tokens_transfers') }}
     where
         blockchain = '{{blockchain}}'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
@@ -32,7 +32,7 @@ with raw_transfers as (
         {{ ref('tokens_transfers') }}
     where
         blockchain = '{{blockchain}}'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
@@ -122,7 +122,7 @@ with raw_transfers as (
         {{ ref('tokens_transfers') }}
     where
         blockchain = '{{blockchain}}'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
@@ -150,7 +150,7 @@ with raw_transfers as (
         {{ ref('tokens_transfers') }}
     where
         blockchain = '{{blockchain}}'
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
     group by
