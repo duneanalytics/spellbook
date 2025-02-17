@@ -223,7 +223,4 @@ group by
     , contract_address
     , symbol
 
-HAVING
-    sum(net_transfer_amount_usd) > 0
-
 {% endmacro %}
