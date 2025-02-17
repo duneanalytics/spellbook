@@ -1,0 +1,10 @@
+version: 2
+
+sources: 
+  - name: polynomial_protocol_optimism
+    description: >
+      Decoded event tables for Perpetual trades on polynomial protocol
+    tables:
+      - name: CallSellingVault_evt_OpenPosition
+
+      - name: CallSellingVault_evt_ClosePosition
