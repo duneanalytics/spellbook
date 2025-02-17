@@ -58,4 +58,8 @@ sources:
             
           - name: variableBorrowIndex
             description: "Variable borrow index value of the reserve"
-            type: uint256     
+            type: uint256   
+
+      - name: StataToken_evt_Initialized    
+
+      - name: StataTokenFactory_call_createDeterministic  
