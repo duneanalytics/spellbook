@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: balancer_v3_erc4626_token_mapping
+  - name: balancer_v3_base_erc4626_token_mapping
     meta:
-      blockchain: ethereum, gnosis, sonic, arbitrum, base
+      blockchain: base
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'gnosis', 'sonic', 'arbitrum', 'base', 'token', 'mapping']
+      tags: ['base', 'token', 'mapping']
     description: >
-      Mapping of ERC4626 tokens, including aTokens and MetaMorpho tokens, and their corresponding underlying tokens.
+      Mapping of ERC4626 tokens on base, including aTokens and MetaMorpho tokens, and their corresponding underlying tokens.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -27,18 +27,18 @@ models:
         description: "Contract address of the underlying token."
       - name: underlying_token_symbol
         description: "Symbol of the underlying token."
-      - name: token_decimals
-        description: "Decimal precision of the underlying token."
+      - name: decimals
+        description: "Decimal precision of the ERC4626 token."
 
-  - name: balancer_v3_erc4626_token_prices
+  - name: balancer_v3_base_erc4626_token_prices
     meta:
-      blockchain: ethereum, gnosis, sonic, arbitrum, base
+      blockchain: base
       project: balancer
       contributors: viniabussafi
     config:
-      tags: ['ethereum', 'gnosis', 'sonic', 'arbitrum', 'base', 'token', 'pricing']
+      tags: ['base', 'token', 'prices']
     description: >
-      Pricing information for ERC4626 tokens. Prices are derived from the ratio of underlying tokens deposited or withdrawn to shares issued or burned, multiplied by the underlying token price.
+      Pricing information for ERC4626 tokens on base. Prices are derived from the ratio of underlying tokens deposited or withdrawn to shares issued or burned, multiplied by the underlying token price.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
