@@ -37,8 +37,7 @@
 }}
 
 {% set chains = [
-     'abstract'
-    ,'arbitrum'
+     'arbitrum'
     ,'avalanche_c'
     ,'base'
     ,'blast'
