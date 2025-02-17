@@ -215,8 +215,8 @@ select
     , sum(transfer_count) transfer_count
 from
     net_transfers
--- where
---     net_value_transferred_amount_usd > 0
+    where
+         net_transfer_amount_usd > 0
 group by
     blockchain
     , block_date
