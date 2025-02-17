@@ -4759,4 +4759,5 @@ FROM (VALUES
     , ( 0xa1b60d96e5c50da627095b9381dc5a46af1a9a42, 'steakUSDQ', 18) 
     , ( 0x30881baa943777f92dc934d53d3bfdf33382cab3, 'steakUSDR', 18) 
     , ( 0x3976d71e7DdFBaB9bD120Ec281B7d35fa0F28528, 'slpETH', 18) 
+    , ( 0x22d76e6e1d9ab4072522c1bc60c85a0d5626ca2d, 'baoBTC', 18) 
 ) AS temp_table (contract_address, symbol, decimals)
