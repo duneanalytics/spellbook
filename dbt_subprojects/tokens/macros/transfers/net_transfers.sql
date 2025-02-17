@@ -210,7 +210,6 @@ select
     , symbol
     , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
     , sum(transfer_amount_usd_received) as transfer_amount_usd_received
-   -- , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received)) as transfer_amount_usd
     , sum(net_transfer_amount_usd) as net_value_transferred_amount_usd
     , sum(transfer_count) transfer_count
 from
