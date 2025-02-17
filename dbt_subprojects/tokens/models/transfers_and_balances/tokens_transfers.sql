@@ -38,7 +38,8 @@
 }}
 
 {% set chains = [
-     'arbitrum'
+     'abstract'
+    ,'arbitrum'
     ,'avalanche_c'
     ,'base'
     ,'blast'
@@ -53,13 +54,15 @@
     ,'ink'
     ,'kaia'
     ,'linea'
-    ,'mantle'
+    ,'nova'
     ,'optimism'
     ,'polygon'
     ,'ronin'
     ,'scroll'
     ,'sei'
-    ,'tron'
+    ,'sonic'
+    ,'viction'
+    ,'worldchain'
     ,'zkevm'
     ,'zksync'
     ,'zora'
