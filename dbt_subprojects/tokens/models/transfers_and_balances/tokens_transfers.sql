@@ -17,6 +17,7 @@
                                             ,"ink"
                                             ,"kaia"
                                             ,"linea"
+                                            ,"mantle"
                                             ,"nova"
                                             ,"optimism"
                                             ,"polygon"
@@ -52,6 +53,7 @@
     ,'ink'
     ,'kaia'
     ,'linea'
+    ,'mantle'
     ,'nova'
     ,'optimism'
     ,'polygon'
@@ -59,6 +61,7 @@
     ,'scroll'
     ,'sei'
     ,'sonic'
+    ,'tron'
     ,'viction'
     ,'worldchain'
     ,'zkevm'
