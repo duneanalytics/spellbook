@@ -1,7 +1,7 @@
 {{ config(
         alias='native',
         tags=['static'],
-        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","solana", "celo", "zksync", "mantle","blast","scroll","linea"]\',
+        post_hook='{{ expose_spells(\'["arbitrum","avalanche_c","bnb","ethereum","optimism", "gnosis", "fantom", "polygon","solana", "celo", "zksync", "mantle","blast","scroll","linea","mode"]\',
                                     "sector",
                                     "tokens",
                                     \'["0xManny","hildobby","soispoke","dot2dotseurat","mtitus6","wuligy","lgingerich","angus_1","Henrystats","rantum"]\') }}')}}
