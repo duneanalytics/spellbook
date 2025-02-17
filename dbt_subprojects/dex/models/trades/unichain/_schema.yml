@@ -1,0 +1,100 @@
+version: 2
+
+models:
+  - name: dex_unichain_base_trades
+    data_tests:
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: uniswap_v2_unichain_base_trades
+    meta:
+      blockchain: unichain
+      sector: dex
+      project: uniswap
+      contributors: ilemi
+    config:
+      tags: [ 'unichain', 'dex', 'trades', 'uniswap', 'v2' ]
+    description: "uniswap unichain v2 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_unichain_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: uniswap_v3_unichain_base_trades
+    meta:
+      blockchain: unichain
+      sector: dex
+      project: uniswap
+      contributors: ilemi
+    config:
+      tags: [ 'unichain', 'dex', 'trades', 'uniswap', 'v3' ]
+    description: "uniswap unichain v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_unichain_base_trades_seed')
+          filter:
+            version: 3
+
+  - name: uniswap_v4_unichain_base_trades
+    meta:
+      blockchain: unichain
+      sector: dex
+      project: uniswap
+      contributors: agaperste
+    config:
+      tags: [ 'unichain', 'dex', 'trades', 'uniswap', 'v4' ]
+    description: "uniswap unichain v4 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('uniswap_unichain_base_trades_seed')
+          filter:
+            version: 4
+
+  - name: dyorswap_unichain_base_trades
+    meta:
+      blockchain: unichain
+      sector: dex
+      project: dyorswap
+      contributors: floryan
+    config:
+      tags: [ 'unichain', 'dex', 'trades', 'dyorswap', 'v2' ]
+    description: "dyorswap unichain v2 base trades (uniswap v2 compatible)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dyorswap_unichain_base_trades_seed')
+          filter:
+            version: 2
+
+  - name: unichainswap_unichain_base_trades
+    meta:
+      blockchain: unichain
+      sector: dex
+      project: unichainswap
+      contributors: floryan
+    config:
+      tags: [ 'unichain', 'dex', 'trades', 'unichainswap', 'v2' ]
+    description: "unichainswap unichain v2 base trades (uniswap v2 compatible)"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
