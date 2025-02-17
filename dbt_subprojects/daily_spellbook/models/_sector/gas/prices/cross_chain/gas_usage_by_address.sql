@@ -82,15 +82,15 @@ SELECT
     chain,
     native_currency,
     number_of_txs,
-    COALESCE(ROUND(gas_spent_usd_total, 2), 0) as gas_spent_usd_total,
-    COALESCE(ROUND(gas_spent_usd_24_hours, 2), 0) as gas_spent_usd_24_hours,
-    COALESCE(ROUND(gas_spent_usd_7_days, 2), 0) as gas_spent_usd_7_days,
-    COALESCE(ROUND(gas_spent_usd_30_days, 2), 0) as gas_spent_usd_30_days,
-    COALESCE(ROUND(gas_spent_usd_1_year, 2), 0) as gas_spent_usd_1_year,
-    COALESCE(ROUND(gas_spent_native_curr_total, 2), 0) as gas_spent_native_curr_total,
-    COALESCE(ROUND(gas_spent_native_curr_24_hours, 2), 0) as gas_spent_native_curr_24_hours,
-    COALESCE(ROUND(gas_spent_native_curr_7_days, 2), 0) as gas_spent_native_curr_7_days,
-    COALESCE(ROUND(gas_spent_native_curr_30_days, 2), 0) as gas_spent_native_curr_30_days,
-    COALESCE(ROUND(gas_spent_native_curr_1_year, 2), 0) as gas_spent_native_curr_1_year
+    COALESCE(gas_spent_usd_total, 0) as gas_spent_usd_total,
+    COALESCE(gas_spent_usd_24_hours, 0) as gas_spent_usd_24_hours,
+    COALESCE(gas_spent_usd_7_days, 0) as gas_spent_usd_7_days,
+    COALESCE(gas_spent_usd_30_days, 0) as gas_spent_usd_30_days,
+    COALESCE(gas_spent_usd_1_year, 0) as gas_spent_usd_1_year,
+    COALESCE(gas_spent_native_curr_total, 0) as gas_spent_native_curr_total,
+    COALESCE(gas_spent_native_curr_24_hours, 0) as gas_spent_native_curr_24_hours,
+    COALESCE(gas_spent_native_curr_7_days, 0) as gas_spent_native_curr_7_days,
+    COALESCE(gas_spent_native_curr_30_days, 0) as gas_spent_native_curr_30_days,
+    COALESCE(gas_spent_native_curr_1_year, 0) as gas_spent_native_curr_1_year
 FROM final_metrics
 ORDER BY gas_spent_usd_total DESC
