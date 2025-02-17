@@ -30,6 +30,7 @@
                                         , "sonic"
                                         , "zkevm"
                                         , "zksync"
+                                        , "unichain"
                                         , "zora"
                                     ]\',
                                     "sector",
