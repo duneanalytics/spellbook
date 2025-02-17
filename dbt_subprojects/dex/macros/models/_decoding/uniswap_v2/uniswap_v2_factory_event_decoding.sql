@@ -175,6 +175,7 @@ WHERE {{ incremental_predicate('block_time') }}
         , contract_address
         , block_time
         , block_date
+        , block_month
         , block_number
         , tx_hash
         , tx_from
