@@ -5,7 +5,8 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['address', 'chain']
+    unique_key=['address', 'chain'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_day')]
 ) }}
 
 WITH chain_info AS (
@@ -20,7 +21,7 @@ transactions AS (
     SELECT 
         t.blockchain as chain,
         t.block_time,
-        date_trunc('month', t.block_time) as block_month,
+        date_trunc('day', t.block_time) as block_day,
         t."from" as address,
         t.gas_used,
         t.gas_price,
@@ -30,7 +31,7 @@ transactions AS (
     FROM {{ source('evms', 'transactions') }} t
     INNER JOIN chain_info i ON i.blockchain = t.blockchain
     {% if is_incremental() %}
-        WHERE {{ incremental_predicate('t.block_time') }}
+        WHERE {{ incremental_predicate('block_day') }}
     {% endif %}
 ),
 
