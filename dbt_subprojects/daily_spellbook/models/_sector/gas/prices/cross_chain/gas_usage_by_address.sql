@@ -1,7 +1,7 @@
 {{ config(
     schema='gas',
     alias='usage_by_address',
-    partition_by=['address_prefix'],
+    partition_by=['block_month'],
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
@@ -20,15 +20,18 @@ transactions AS (
     SELECT 
         t.blockchain as chain,
         t.block_time,
+        date_trunc('month', t.block_time) as block_month,
         t."from" as address,
         t.gas_used,
         t.gas_price,
         COALESCE(t.l1_fee, CAST(0 as decimal(38,0))) as l1_fee,
-        bytearray_substring(t."from", 1, 4) as address_prefix,
         i.wrapped_native_token_address,
         i.native_currency
     FROM {{ source('evms', 'transactions') }} t
     INNER JOIN chain_info i ON i.blockchain = t.blockchain
+    {% if is_incremental() %}
+        WHERE {{ incremental_predicate('t.block_time') }}
+    {% endif %}
 ),
 
 gas_costs AS (
@@ -58,12 +61,12 @@ final_metrics AS (
         chain,
         native_currency,
         COUNT(*) as number_of_txs,
-        SUM(base_gas_cost_usd + l1_fee_usd) as gas_spent_usd_all_time,
+        SUM(base_gas_cost_usd + l1_fee_usd) as gas_spent_usd_total,
         SUM(CASE WHEN block_time >= now() - INTERVAL '1' DAY THEN base_gas_cost_usd + l1_fee_usd END) as gas_spent_usd_24_hours,
         SUM(CASE WHEN block_time >= now() - INTERVAL '7' DAY THEN base_gas_cost_usd + l1_fee_usd END) as gas_spent_usd_7_days,
         SUM(CASE WHEN block_time >= now() - INTERVAL '30' DAY THEN base_gas_cost_usd + l1_fee_usd END) as gas_spent_usd_30_days,
         SUM(CASE WHEN block_time >= now() - INTERVAL '1' YEAR THEN base_gas_cost_usd + l1_fee_usd END) as gas_spent_usd_1_year,
-        SUM(gas_cost_native + l1_fee_native) as gas_spent_native_curr_all_time,
+        SUM(gas_cost_native + l1_fee_native) as gas_spent_native_curr_total,
         SUM(CASE WHEN block_time >= now() - INTERVAL '1' DAY THEN gas_cost_native + l1_fee_native END) as gas_spent_native_curr_24_hours,
         SUM(CASE WHEN block_time >= now() - INTERVAL '7' DAY THEN gas_cost_native + l1_fee_native END) as gas_spent_native_curr_7_days,
         SUM(CASE WHEN block_time >= now() - INTERVAL '30' DAY THEN gas_cost_native + l1_fee_native END) as gas_spent_native_curr_30_days,
@@ -77,15 +80,15 @@ SELECT
     chain,
     native_currency,
     number_of_txs,
-    ROUND(gas_spent_usd_all_time, 2) as gas_spent_usd_all_time,
-    ROUND(gas_spent_usd_24_hours, 2) as gas_spent_usd_24_hours,
-    ROUND(gas_spent_usd_7_days, 2) as gas_spent_usd_7_days,
-    ROUND(gas_spent_usd_30_days, 2) as gas_spent_usd_30_days,
-    ROUND(gas_spent_usd_1_year, 2) as gas_spent_usd_1_year,
-    ROUND(gas_spent_native_curr_all_time, 2) as gas_spent_native_curr_all_time,
-    ROUND(gas_spent_native_curr_24_hours, 2) as gas_spent_native_curr_24_hours,
-    ROUND(gas_spent_native_curr_7_days, 2) as gas_spent_native_curr_7_days,
-    ROUND(gas_spent_native_curr_30_days, 2) as gas_spent_native_curr_30_days,
-    ROUND(gas_spent_native_curr_1_year, 2) as gas_spent_native_curr_1_year
+    COALESCE(ROUND(gas_spent_usd_total, 2), 0) as gas_spent_usd_total,
+    COALESCE(ROUND(gas_spent_usd_24_hours, 2), 0) as gas_spent_usd_24_hours,
+    COALESCE(ROUND(gas_spent_usd_7_days, 2), 0) as gas_spent_usd_7_days,
+    COALESCE(ROUND(gas_spent_usd_30_days, 2), 0) as gas_spent_usd_30_days,
+    COALESCE(ROUND(gas_spent_usd_1_year, 2), 0) as gas_spent_usd_1_year,
+    COALESCE(ROUND(gas_spent_native_curr_total, 2), 0) as gas_spent_native_curr_total,
+    COALESCE(ROUND(gas_spent_native_curr_24_hours, 2), 0) as gas_spent_native_curr_24_hours,
+    COALESCE(ROUND(gas_spent_native_curr_7_days, 2), 0) as gas_spent_native_curr_7_days,
+    COALESCE(ROUND(gas_spent_native_curr_30_days, 2), 0) as gas_spent_native_curr_30_days,
+    COALESCE(ROUND(gas_spent_native_curr_1_year, 2), 0) as gas_spent_native_curr_1_year
 FROM final_metrics
-ORDER BY gas_spent_usd_all_time DESC
+ORDER BY gas_spent_usd_total DESC

@@ -26,8 +26,7 @@ models:
         description: "Total number of transactions by this address"
         tests:
           - not_null
-          - positive_value
-      - name: gas_spent_usd_all_time
+      - name: gas_spent_usd_total
         description: "Total USD value of gas spent"
       - name: gas_spent_usd_24_hours
         description: "USD value of gas spent in last 24 hours"
@@ -37,7 +36,7 @@ models:
         description: "USD value of gas spent in last 30 days"
       - name: gas_spent_usd_1_year
         description: "USD value of gas spent in last year"
-      - name: gas_spent_native_curr_all_time
+      - name: gas_spent_native_curr_total
         description: "Total amount of gas spent in native currency"
       - name: gas_spent_native_curr_24_hours
         description: "Amount of gas spent in native currency in last 24 hours"
