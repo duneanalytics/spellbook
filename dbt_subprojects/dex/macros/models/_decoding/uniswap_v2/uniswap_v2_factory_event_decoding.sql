@@ -166,14 +166,8 @@ WHERE {{ incremental_predicate('block_time') }}
 
 {% for topic0, abi in abi_config.items() %}
     {% if not loop.first %}
-        union all 
+    union all 
     {% endif %}
-    with decoded as (
-        {{ evm_event_decoding_base(logs, abi, topic0) }}
-        {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_time') }}
-        {% endif %}
-    )
     select 
         pair
         , token0
@@ -187,7 +181,12 @@ WHERE {{ incremental_predicate('block_time') }}
         , tx_to
         , tx_index
         , index
-    from decoded
+    from (
+        {{ evm_event_decoding_base(logs, abi, topic0) }}
+        {% if is_incremental() %}
+        WHERE {{ incremental_predicate('block_time') }}
+        {% endif %}
+    )
 {% endfor %}
 
 {% endmacro %}
