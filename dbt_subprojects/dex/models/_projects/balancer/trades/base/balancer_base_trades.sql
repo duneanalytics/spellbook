@@ -6,7 +6,8 @@
 
 
 {% set balancer_models = [
-    ref('balancer_v2_base_trades')
+    ref('balancer_v2_base_trades'),
+    ref('balancer_v3_base_trades')
 ] %}
 
 SELECT *
