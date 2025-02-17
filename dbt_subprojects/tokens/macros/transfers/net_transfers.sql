@@ -128,7 +128,7 @@ with raw_transfers as (
     group by
         blockchain
         , block_date
-        , COALESCE(contract_address, {{ native_contract_address }}) as contract_address
+        , COALESCE(contract_address, {{ native_contract_address }}) 
         , symbol
         , "from"
         , 'sent'
@@ -156,7 +156,7 @@ with raw_transfers as (
     group by
         blockchain
         , block_date
-        , COALESCE(contract_address, {{ native_contract_address }}) as contract_address
+        , COALESCE(contract_address, {{ native_contract_address }})
         , symbol
         , to
         , 'received'
