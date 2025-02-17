@@ -6,7 +6,6 @@
     file_format='delta',
     incremental_strategy='merge',
     unique_key=['address', 'chain'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_day')]
 ) }}
 
 WITH chain_info AS (
