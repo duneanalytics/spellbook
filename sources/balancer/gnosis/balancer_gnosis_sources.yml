@@ -263,6 +263,8 @@ sources:
 
       - name: StablePoolFactory_call_create  
 
+      - name: StableSurgePoolFactory_call_create    
+
       - name: Vault_evt_Swap
 
       - name: ProtocolFeeController_evt_ProtocolSwapFeeCollected
