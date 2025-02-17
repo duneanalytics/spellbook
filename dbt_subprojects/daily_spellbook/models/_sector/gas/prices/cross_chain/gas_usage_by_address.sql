@@ -29,7 +29,7 @@ transactions AS (
     FROM {{ source('evms', 'transactions') }} t
     INNER JOIN chain_info i ON i.blockchain = t.blockchain
     {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_day') }}
+        WHERE {{ incremental_predicate('t.block_day') }}
     {% endif %}
 ),
 
