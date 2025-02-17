@@ -9,9 +9,9 @@ WITH gauges AS(
 SELECT distinct
     'base' AS blockchain,
     call.output_0 AS address,
-    pools.address AS pool_address,
+    COALESCE(v2pools.address, v3pools.address) AS pool_address,
     child.output_0 AS child_gauge_address,    
-    'base:' || pools.name AS name,
+    'base:' || COALESCE(v2pools.name, v3pools.name) AS name,
     'balancer_gauges' AS category,
     'balancerlabs' AS contributor,
     'query' AS source,
@@ -21,7 +21,8 @@ SELECT distinct
     'identifier' AS label_type
 FROM {{ source('balancer_ethereum', 'BaseRootGaugeFactory_call_create') }} call
     LEFT JOIN {{ source('balancer_base', 'ChildChainGaugeFactory_call_create') }} child ON child.output_0 = call.recipient
-    LEFT JOIN {{ source('labels', 'balancer_v2_pools_base') }} pools ON pools.address = child.pool),
+    LEFT JOIN {{ source('labels', 'balancer_v2_pools_base') }} v2pools ON v2pools.address = child.pool
+    LEFT JOIN {{ source('labels', 'balancer_v3_pools_base') }} v3pools ON v3pools.address = child.pool),
 
 kill_unkill_1 AS(
     SELECT
