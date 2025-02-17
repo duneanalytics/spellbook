@@ -2,7 +2,7 @@
   config(
     schema = 'near_v1_signer',
     alias = 'users',
-    materialized = 'view',
+    materialized = 'table',
     post_hook = '{{ expose_spells(\'["near"]\',
                                     "project",
                                     "v1_signer",
