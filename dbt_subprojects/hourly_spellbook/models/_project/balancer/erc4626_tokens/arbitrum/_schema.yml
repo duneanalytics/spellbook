@@ -1,0 +1,65 @@
+version: 2
+
+models:
+  - name: balancer_v3_arbitrum_erc4626_token_mapping
+    meta:
+      blockchain: arbitrum
+      project: balancer
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'token', 'mapping']
+    description: >
+      Mapping of ERC4626 tokens on arbitrum, including aTokens and MetaMorpho tokens, and their corresponding underlying tokens.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - erc4626_token
+    columns:
+      - name: blockchain
+        description: "Blockchain."    
+      - name: erc4626_token
+        description: "Contract address of the erc4626 token."
+      - name: erc4626_token_name
+        description: "Name of the erc4626 token."
+      - name: erc4626_token_symbol
+        description: "Symbol of the erc4626 token."
+      - name: underlying_token
+        description: "Contract address of the underlying token."
+      - name: underlying_token_symbol
+        description: "Symbol of the underlying token."
+      - name: decimals
+        description: "Decimal precision of the ERC4626 token."
+
+  - name: balancer_v3_arbitrum_erc4626_token_prices
+    meta:
+      blockchain: arbitrum
+      project: balancer
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'token', 'prices']
+    description: >
+      Pricing information for ERC4626 tokens on arbitrum. Prices are derived from the ratio of underlying tokens deposited or withdrawn to shares issued or burned, multiplied by the underlying token price.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - minute
+            - wrapped_token
+    columns:
+      - name: minute
+        description: "Timestamp of the event, truncated to the nearest minute."
+      - name: blockchain
+        description: "Blockchain."
+      - name: wrapped_token
+        description: "Contract address of the wrapped token."
+      - name: underlying_token
+        description: "Contract address of the underlying token."
+      - name: erc4626_token_symbol
+        description: "Symbol of the erc4626 token."
+      - name: underlying_token_symbol
+        description: "Symbol of the underlying token."
+      - name: decimals
+        description: "Decimal precision for the token."
+      - name: median_price
+        description: "Median price of the static token, computed over the dataset."
+      - name: next_change
+        description: "Timestamp of the next expected pricing change or event affecting the price."

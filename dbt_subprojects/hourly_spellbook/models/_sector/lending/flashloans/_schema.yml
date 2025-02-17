@@ -3,12 +3,12 @@ version: 2
 models:
   - name: lending_flashloans
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, zksync, zksync
+      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, zksync, zksync, linea
       sector: lending
       project: aave
       contributors: tomfutago, hildobby
     config:
-      tags: ['lending', 'flashloans', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'zksync', 'zksync']
+      tags: ['lending', 'flashloans', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'zksync', 'zksync', 'linea']
     description: "All lending transactions involving flashloans transactions"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -86,34 +86,3 @@ models:
         description: "Event index"
         data_tests:
           - not_null
-
-  - name: aave_v3_zksync_base_flashloans
-    meta:
-      blockchain: zksync
-      sector: lending
-      project: aave
-      contributors: tomfutago
-    config:
-      tags: ['lending', 'flashloans', 'aave', 'zksync']
-    description: "Aave v3 flashloans transactions on zkSync"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-      - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_zksync_base_flashloans_seed')
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *recipient
-      - *amount
-      - *fee
-      - *token_address
-      - *project_contract_address
-      - *block_month
-      - *block_time
-      - *block_number
-      - *tx_hash
-      - *evt_index

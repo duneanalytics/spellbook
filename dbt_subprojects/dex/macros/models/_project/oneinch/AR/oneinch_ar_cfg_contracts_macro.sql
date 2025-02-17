@@ -187,7 +187,7 @@
         },
         "AggregationRouterV6": {
             "version": "6",
-            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync"],
+            "blockchains": ["ethereum", "bnb", "polygon", "arbitrum", "optimism", "avalanche_c", "gnosis", "fantom", "base", "zksync", "linea"],
             "start": "2024-02-12",
             "methods": {
                 "swap":          dict(samples["swap"], src_token_amount="output_spentAmount"),
