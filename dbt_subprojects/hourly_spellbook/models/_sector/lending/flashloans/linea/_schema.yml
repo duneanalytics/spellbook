@@ -1,15 +1,14 @@
 version: 2
 
 models:
-  - name: lending_zksync_base_flashloans
+  - name: lending_linea_base_flashloans
     meta:
-      blockchain: zksync
+      blockchain: linea
       sector: lending
-      project: zerolend
       contributors: tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'zksync']
-    description: "All lending flashloans transactions on zkSync"
+      tags: ['lending', 'flashloans', 'aave', 'linea']
+    description: "All lending flashloans transactions on Linea"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -73,53 +72,22 @@ models:
         data_tests:
           - not_null
 
-  - name: zerolend_zksync_base_flashloans
+  - name: aave_v3_linea_base_flashloans
     meta:
-      blockchain: zksync
-      sector: lending
-      project: zerolend
-      contributors: tomfutago
-    config:
-      tags: ['lending', 'flashloans', 'aave', 'zerolend', 'zksync']
-    description: "Zerolend flashloans transactions on zkSync"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-      - check_lending_base_flashloans_seed:
-          seed_file: ref('zerolend_zksync_base_flashloans_seed')
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *recipient
-      - *amount
-      - *fee
-      - *token_address
-      - *project_contract_address
-      - *block_month
-      - *block_time
-      - *block_number
-      - *tx_hash
-      - *evt_index
-
-  - name: aave_v3_zksync_base_flashloans
-    meta:
-      blockchain: zksync
+      blockchain: linea
       sector: lending
       project: aave
-      contributors: tomfutago
+      contributors: hildobby, tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'zksync']
-    description: "Aave v3 flashloans transactions on zkSync"
+      tags: ['lending', 'flashloans', 'aave', 'linea']
+    description: "Aave v3 flashloans transactions on Linea"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
             - evt_index
       - check_lending_base_flashloans_seed:
-          seed_file: ref('aave_zksync_base_flashloans_seed')
+          seed_file: ref('aave_linea_base_flashloans_seed')
     columns:
       - *blockchain
       - *project

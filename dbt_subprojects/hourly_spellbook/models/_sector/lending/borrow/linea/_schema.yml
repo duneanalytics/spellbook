@@ -1,21 +1,17 @@
 version: 2
 
 models:
-  - name: lending_borrow
+  - name: lending_linea_base_borrow
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea
+      blockchain: linea
       sector: lending
-      project: aave, compound
-      contributors: tomfutago, hildobby
+      contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea']
-    description: "All lending transactions involving borrow transactions"
+      tags: ['lending', 'borrow', 'aave', 'linea']
+    description: "All lending borrow transactions on Linea"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - project
-            - version
             - transaction_type
             - token_address
             - tx_hash
@@ -41,9 +37,6 @@ models:
         description: "Transaction type"
         data_tests:
           - not_null
-      - &symbol
-        name: symbol
-        description: "Token symbol"
       - &token_address
         name: token_address
         description: "Token contract address"
@@ -64,12 +57,9 @@ models:
       - &amount
         name: amount
         description: "Token amount present in the transaction"
-      - &usd_amount
-        name: usd_amount
-        description: "Token amount in USD"
       - &block_month
         name: block_month
-        description: "Block Month column used to partition data in this table"
+        description: "Block month column used to partition data in this table"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
@@ -82,6 +72,7 @@ models:
           - not_null
       - &project_contract_address
         name: project_contract_address
+        description: "Project contract address"
         data_tests:
           - not_null
       - &tx_hash
@@ -94,3 +85,39 @@ models:
         description: "Event index"
         data_tests:
           - not_null
+
+  - name: aave_v3_linea_base_borrow
+    meta:
+      blockchain: linea
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'aave', 'linea']
+    description: "Aave v3 borrow transactions on Linea"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('aave_linea_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *on_behalf_of
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
