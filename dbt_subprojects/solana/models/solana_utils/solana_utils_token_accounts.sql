@@ -31,4 +31,4 @@ da.*
       else 'fungible'
       end as account_type
 FROM distinct_accounts da
-LEFT JOIN {{ ref('tokens_solana_nft')}} nft ON da.token_mint_address = nft.account_mint
+LEFT JOIN (select * from {{ ref('tokens_solana_nft')}} where account_mint is not null) nft ON da.token_mint_address = nft.account_mint
