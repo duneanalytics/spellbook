@@ -180,7 +180,7 @@ WHERE {{ incremental_predicate('block_time') }}
         , tx_from
         , tx_to
         , tx_index
-        , index
+        , evt_index
     from (
         {{ evm_event_decoding_base(logs, abi, topic0) }}
         {% if is_incremental() %}
