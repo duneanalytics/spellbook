@@ -1,0 +1,16 @@
+version: 2
+
+seeds:
+  - name: dex_mapping_seed
+    config:
+      column_types:
+        src: varchar
+        dex_type: varchar
+        blockchain: varchar
+        factory: varbinary
+        project: varchar
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - factory
