@@ -38,5 +38,5 @@
     {% endset %}
 
     {%- set needs_refresh = dbt_utils.get_single_value(mapping_hash_check_query, 'needs_refresh') %}
-    {{ return(needs_refresh) }}
+    {{ needs_refresh }}
 {% endmacro %}
