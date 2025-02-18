@@ -178,6 +178,7 @@ WITH trusted_tokens AS (
                 , ('zksync', 0x000000000000000000000000000000000000800a)
                 , ('zksync', 0xbbeb516fb02a01611cbbe0453fe3c580d7281011)
                 , ('zora', 0x4200000000000000000000000000000000000006)
+                , ('zora', 0xCccCCccc7021b32EBb4e8C08314bD62F7c653EC4)
                 , ('berachain', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34)  -- USDe
                 , ('berachain', 0x7dcc39b4d1c53cb31e1abc0e358b43987fef80f7)  -- weETH
                 , ('berachain', 0xecac9c5f704e954931349da37f60e39f515c11c1)  -- LBTC
