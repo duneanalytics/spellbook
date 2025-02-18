@@ -1,6 +1,6 @@
 {{ config(
     schema = 'bsx_base',
-    alias = 'perpetual_trades',
+    alias = 'perpetual_trades'
     -- post_hook='{{ expose_spells(blockchains = \'["base"]\',
     --                                 spell_type = "project",
     --                                 spell_name = "bsx",
