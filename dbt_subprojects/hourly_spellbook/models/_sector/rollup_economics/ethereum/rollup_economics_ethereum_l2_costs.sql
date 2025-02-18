@@ -1,11 +1,8 @@
 {{ config(
     schema = 'rollup_economics_ethereum',
     alias = 'l2_costs',
-    materialized = 'incremental',
+    materialized = 'view',
     unique_key = ['name', 'day'],
-    incremental_strategy = 'delete+insert',
-    on_schema_change = 'sync_all_columns',
-    full_refresh = check_mapping_hash('l1') or check_mapping_hash('beacon'),
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "rollup_economics",
@@ -22,7 +19,7 @@ WITH l1_fees AS (
         SUM(calldata_gas_used) as calldata_gas_used 
     FROM {{ ref('rollup_economics_ethereum_l1_fees')}}
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('block_time') }}
+    WHERE {{incremental_predicate('block_time')}}
     {% endif %}
     GROUP BY 1, 2, 3
 ),
@@ -37,7 +34,7 @@ beacon_fees AS (
         SUM(used_blob_byte_count) as used_blob_byte_count
     FROM {{ ref('rollup_economics_ethereum_beacon_fees')}}
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('beacon_slot_time') }}
+    WHERE {{incremental_predicate('beacon_slot_time')}}
     {% endif %}
     GROUP BY 1, 2, 3
 )
@@ -52,16 +49,18 @@ SELECT
     COALESCE(l1_fee_usd, 0) AS l1_fee_usd,
     COALESCE(calldata_gas_used, 0) AS calldata_gas_used,
     
-    -- beacon chain blobs
+    -- beacon chain ethereum
     COALESCE(beacon_fee_native, 0) AS beacon_fee_native,
     COALESCE(beacon_fee_usd, 0) AS beacon_fee_usd,
     COALESCE(used_blob_byte_count, 0) AS used_blob_byte_count,
     
-    -- total costs
+    -- celestia/ altDA
+    -- ...
+
+    -- totals
     COALESCE(l1_fee_native, 0) + COALESCE(beacon_fee_native, 0) AS total_cost_eth,
     COALESCE(l1_fee_usd, 0) + COALESCE(beacon_fee_usd, 0) AS total_cost_usd
 FROM l1_fees l
 FULL OUTER JOIN beacon_fees b
     ON l."day" = b."day"
-    AND l.name = b.name
     AND l.origin_key = b.origin_key
