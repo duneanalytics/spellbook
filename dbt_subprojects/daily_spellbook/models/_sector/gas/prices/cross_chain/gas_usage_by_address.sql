@@ -4,7 +4,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['address', 'chain'],
+    unique_key=['address', 'blockchain'],
 ) }}
 
 WITH chain_info AS (
@@ -17,7 +17,7 @@ WITH chain_info AS (
 
 transactions AS (
     SELECT 
-        t.blockchain as chain,
+        t.blockchain,
         t.block_time,
         t."from" as address,
         t.gas_used,
@@ -35,7 +35,7 @@ transactions AS (
 gas_costs AS (
     SELECT
         t.address,
-        t.chain,
+        t.blockchain,
         t.native_currency,
         t.block_time,
         t.gas_used,
@@ -48,18 +48,18 @@ gas_costs AS (
         CASE WHEN t.l1_fee > 0 THEN t.l1_fee / 1e18 * p.price ELSE 0 END as l1_fee_usd
     FROM transactions t
     LEFT JOIN {{ source('prices', 'usd') }} p 
-        ON p.blockchain = t.chain
+        ON p.blockchain = t.blockchain
         AND p.contract_address = t.wrapped_native_token_address
         AND date_trunc('minute', t.block_time) = p.minute
         {% if is_incremental() %}
-            AND {{ incremental_predicate('t.block_time') }}
+        AND {{ incremental_predicate('p.minute') }}
         {% endif %}
 ),
 
 final_metrics AS (
     SELECT
         address,
-        chain,
+        blockchain,
         native_currency,
         COUNT(*) as number_of_txs,
         SUM(base_gas_cost_usd + l1_fee_usd) as gas_spent_usd_total,
@@ -78,7 +78,7 @@ final_metrics AS (
 
 SELECT 
     address,
-    chain,
+    blockchain,
     native_currency,
     number_of_txs,
     COALESCE(gas_spent_usd_total, 0) as gas_spent_usd_total,

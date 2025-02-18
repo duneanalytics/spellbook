@@ -9,12 +9,17 @@ models:
     config:
       tags: ['gas', 'cross_chain', 'addresses']
     description: "Cross-chain gas usage metrics aggregated by address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - blockchain
     columns:
       - name: address
         description: "The wallet address"
         tests:
           - not_null
-      - name: chain
+      - name: blockchain
         description: "The blockchain name"
         tests:
           - not_null
