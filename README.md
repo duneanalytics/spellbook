@@ -184,7 +184,6 @@ If you have done this installation on your machine once, to get back into dbt, s
 
 You now have the ability to compile your dbt model statements and test statements into plain SQL. This allows you to test those queries on the usual dune.com environment and should therefore lead to a better experience while developing spells. Running the queries will immediately give you feedback on typos, logical errors, or mismatches.
 This in turn will help us deploy these spells faster and avoid any potential mistakes.
-
 ## How to use dbt to create spells
 
 There are a couple of new concepts to consider when making spells in dbt. The most common ones wizards will encounter are refs, sources, freshness, and tests.
