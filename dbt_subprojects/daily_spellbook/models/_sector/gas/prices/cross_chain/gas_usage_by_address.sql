@@ -15,11 +15,11 @@ WITH chain_info AS (
     FROM {{ source('evms', 'info') }}
 ),
 
-transactions AS (
+base_transactions AS (
     SELECT 
         t.blockchain as chain,
         t.block_time,
-        date_trunc('day', t.block_time) as block_day,
+        CAST(date_trunc('day', t.block_time) AS date) as block_day,
         t."from" as address,
         t.gas_used,
         t.gas_price,
@@ -28,8 +28,13 @@ transactions AS (
         i.native_currency
     FROM {{ source('evms', 'transactions') }} t
     INNER JOIN chain_info i ON i.blockchain = t.blockchain
+),
+
+transactions AS (
+    SELECT *
+    FROM base_transactions
     {% if is_incremental() %}
-        WHERE {{ incremental_predicate('t.block_day') }}
+    WHERE {{ incremental_predicate('block_day') }}
     {% endif %}
 ),
 
