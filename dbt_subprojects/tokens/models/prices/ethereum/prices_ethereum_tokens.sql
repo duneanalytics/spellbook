@@ -1655,6 +1655,7 @@ FROM
     ('ethx-stader-ethx','ethereum','ETHx',0xA35b1B31Ce002FBF2058D22F30f95D405200A15b, 18),
     ('rseth-rseth','ethereum','rsETH',0xa1290d69c65a6fe4df752f95823fae25cb99e5a7, 18),
     ('pufeth-pufeth','ethereum','pufETH',0xD9A442856C234a39a81a089C06451EBAa4306a72, 18),
+    ('puffer-puffer','ethereum','PUFFER',0x4d1c297d39c5c1277964d0e3f8aa901493664530, 18),
     ('yup-yup','ethereum','YUP',0x69bBC3F8787d573F1BBDd0a5f40C7bA0Aee9BCC9, 18),
     ('jesus-jesus-coin','ethereum','JESUS',0xba386a4ca26b85fd057ab1ef86e3dc7bdeb5ce70, 18),
     ('bonk-bonk','ethereum','BONK',0x1151cb3d861920e07a38e03eead12c32178567f6, 5),
