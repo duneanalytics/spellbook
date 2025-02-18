@@ -14,6 +14,7 @@
                                             ,"linea"
                                             ,"mantle"
                                             ,"optimism"
+                                            ,"ronin"
                                             ,"polygon"
                                             ,"scroll"
                                             ,"sei"
@@ -28,7 +29,8 @@
 }}
 
 {% set chains = [
-     'arbitrum'
+    'abstract'
+    ,'arbitrum'
     ,'avalanche_c'
     ,'base'
     ,'blast'

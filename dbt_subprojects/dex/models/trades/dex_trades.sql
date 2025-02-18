@@ -13,6 +13,7 @@
                                         , "base"
                                         , "blast"
                                         , "bnb"
+                                        , "boba"
                                         , "celo"
                                         , "ethereum"
                                         , "fantom"
@@ -26,8 +27,10 @@
                                         , "ronin"
                                         , "scroll"
                                         , "sei"
+                                        , "sonic"
                                         , "zkevm"
                                         , "zksync"
+                                        , "unichain"
                                         , "zora"
                                     ]\',
                                     "sector",

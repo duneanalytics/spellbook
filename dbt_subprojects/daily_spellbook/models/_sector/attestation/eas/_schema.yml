@@ -3,7 +3,7 @@ version: 2
 models:
   - name: eas_schemas
     meta:
-      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo, linea, nova
+      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo, linea, nova, zksync
       sector: attestation
       contributors: tomfutago
     config:
@@ -70,7 +70,7 @@ models:
 
   - name: eas_schema_details
     meta:
-      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo, linea, nova
+      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo, linea, nova, zksync
       sector: attestation
       contributors: tomfutago
     config:
@@ -107,7 +107,7 @@ models:
 
   - name: eas_attestations
     meta:
-      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo, linea, nova
+      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo, linea, nova, zksync
       sector: attestation
       contributors: tomfutago
     config:
@@ -170,7 +170,7 @@ models:
 
   - name: eas_attestation_details
     meta:
-      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo, linea, nova
+      blockchain: arbitrum, base, ethereum, optimism, polygon, scroll, celo, linea, nova, zksync
       sector: attestation
       contributors: tomfutago
     config:
