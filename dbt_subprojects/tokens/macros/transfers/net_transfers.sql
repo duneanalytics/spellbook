@@ -13,8 +13,6 @@ with raw_transfers as (
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
-        {% else %}
-        and block_date >= date '2025-01-01'
         {% endif %}
     group by
         blockchain
@@ -36,8 +34,6 @@ with raw_transfers as (
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
-        {% else %}
-        and block_date >= date '2025-01-01'
         {% endif %}
     group by
         blockchain
@@ -127,8 +123,6 @@ with raw_transfers as (
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
-        {% else %}
-        and block_date >= date '2025-01-01'
         {% endif %}
     group by
         blockchain
@@ -155,8 +149,6 @@ with raw_transfers as (
         blockchain = '{{blockchain}}'
        {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
-        {% else %}
-        and block_date >= date '2025-01-01'
         {% endif %}
     group by
         blockchain
