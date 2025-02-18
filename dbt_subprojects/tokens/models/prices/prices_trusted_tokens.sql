@@ -39,6 +39,9 @@ WITH trusted_tokens AS (
                 , ('base', 0xeb466342c4d449bc9f53a865d5cb90586f405215)
                 , ('base', 0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22)
                 , ('base', 0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452)
+                , ('berachain', 0x6969696969696969696969696969696969696969)
+                , ('berachain', 0x549943e04f40284185054145c6E4e9568C1D3241)
+                , ('berachain', 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590)
                 , ('blast', 0x4300000000000000000000000000000000000004)
                 , ('blast', 0x4300000000000000000000000000000000000003)
                 , ('blast', 0xb1a5700fa2358173fe465e6ea4ff52e36e88e2ad)
@@ -157,7 +160,11 @@ WITH trusted_tokens AS (
                 , ('sonic', 0x50c42dEAcD8Fc9773493ED674b675bE577f2634b)
                 , ('sonic', 0xe715cba7b5ccb33790cebff1436809d36cb17e57)
                 , ('sonic', 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE)
-                , ('sonic', 0xe5da20f15420ad15de0fa650600afc998bbe3955)                
+                , ('sonic', 0xe5da20f15420ad15de0fa650600afc998bbe3955)  
+                , ('unichain', 0x4200000000000000000000000000000000000006)  -- WETH
+                , ('unichain', 0x078d782b760474a361dda0af3839290b0ef57ad6)  -- USDC
+                , ('unichain', 0x8f187aa05619a017077f5308904739877ce9ea21)  -- UNI
+                , ('unichain', 0x20cab320a855b39f724131c69424240519573f81)  -- DAI              
                 , ('worldchain', 0x2cFc85d8E48F8EAB294be644d9E25C3030863003)
                 , ('worldchain', 0x79A02482A880bCE3F13e09Da970dC34db4CD24d1)
                 , ('worldchain', 0x03C7054BCB39f7b2e5B2c7AcB37583e32D70Cfa3)
@@ -179,13 +186,6 @@ WITH trusted_tokens AS (
                 , ('zksync', 0xbbeb516fb02a01611cbbe0453fe3c580d7281011)
                 , ('zora', 0x4200000000000000000000000000000000000006)
                 , ('zora', 0xCccCCccc7021b32EBb4e8C08314bD62F7c653EC4)
-                , ('berachain', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34)  -- USDe
-                , ('berachain', 0x7dcc39b4d1c53cb31e1abc0e358b43987fef80f7)  -- weETH
-                , ('berachain', 0xecac9c5f704e954931349da37f60e39f515c11c1)  -- LBTC
-                , ('unichain', 0x4200000000000000000000000000000000000006)  -- WETH
-                , ('unichain', 0x078d782b760474a361dda0af3839290b0ef57ad6)  -- USDC
-                , ('unichain', 0x8f187aa05619a017077f5308904739877ce9ea21)  -- UNI
-                , ('unichain', 0x20cab320a855b39f724131c69424240519573f81)  -- DAI
         ) AS t (blockchain, contract_address)
 ), erc20 as (
         SELECT

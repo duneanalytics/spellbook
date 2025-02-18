@@ -89,5 +89,6 @@ FROM
     ('strk-starknet', null, 'STRK', null,null),
     ('kda-kadena', null, 'KDA', null, null),
     ('ron-ronin-token', null, 'RON', null, null),
-    ('hype-hyperliquid', null, 'HYPE', null, null)
+    ('hype-hyperliquid', null, 'HYPE', null, null),
+    ('bera-berachain', null, 'BERA', null, null)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
