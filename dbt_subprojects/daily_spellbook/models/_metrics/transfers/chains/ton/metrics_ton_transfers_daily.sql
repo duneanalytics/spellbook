@@ -16,7 +16,7 @@ with ton_prices as ( -- get price of TON for each day to estimate USD value
         , avg(price) as price
     from {{ source('prices', 'usd') }}
     where true
-        and symbol = 'TON'
+        and symbol = 'TON' and blockchain is null
         group by 1
 ), jetton_prices as (
     -- jetton prices based on onchain data, see https://github.com/ton-studio/dune-queries?tab=readme-ov-file#duneton_foundationresult_jetton_price_daily
