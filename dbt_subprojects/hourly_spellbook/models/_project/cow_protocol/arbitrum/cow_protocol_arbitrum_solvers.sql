@@ -52,14 +52,14 @@ known_solver_metadata (address, environment, name) as (
                 (0x0648548f891E1356f197070D009704e574182bfB, 'prod', 'Rizzolver'),
                 (0x23e868881dfe0531358B8FE0cbec43FD860cbF33, 'prod', 'Rizzolver'),
                 (0x2692F7bFCB2e1a8575434b9511804266D9aeb628, 'prod', 'Velvet'),
-                (0x0148538e6cA813D41eA5988008Cdc9B72d4e65A7, 'prod', 'Laita'),
                 (0x1FA2FF499b327f53cD9a82BcAFE36093563E32e4, 'prod', 'Apollo'),
                 (0x0148538e6cA813D41eA5988008Cdc9B72d4e65A7, 'prod', 'Laita'),
+                (0x9C75aae1Bd2f96D7B4E67e8C5344f3304382276E, 'prod', 'Enso'),
+                (0x5156808c3f9440191ef600587a73c87bb23c92b2, 'barn', 'Enso'),
                 (0x034F6Aca83F1900b0157b0123F514A29456eeA59, 'barn', 'Laita'),
                 (0x6bf97aFe2D2C790999cDEd2a8523009eB8a0823f, 'prod', 'Portus'),
                 (0xBB765c920f86e2A2654c4B82deB5BC2E092fF93b, 'barn', 'Portus'),
                 (0x5E06F88D28603f5bB106bD5C8AD93ce2E902d24b, 'barn', 'Apollo'),
-                (0x034F6Aca83F1900b0157b0123F514A29456eeA59, 'barn', 'Laita'),
                 (0x669Be18D403Be353C1B9EBC87225313Ec2560BF5, 'barn', 'Velvet'),
                 (0x20dC1014E946Cf511Ee535D908eC9a1d75Dd66ce, 'barn', 'Naive'),
                 (0x2e6822f4Ab355E386d1A4fd34947ACE0F6f344a7, 'barn', 'Baseline'),
@@ -73,7 +73,15 @@ known_solver_metadata (address, environment, name) as (
                 (0x7B0211286d8Dfdb717f4A2E5Fa5131eD911097e1, 'barn', 'Barter'),
                 (0xc8371B2898FBaEeAe658f9FaeE8ddeDA24e37012, 'barn', 'OpenOcean_Aggregator'),
                 (0x2aeC288B42C99D2e8e984c5C324FB069f7705186, 'barn', 'Rizzolver'),
-                (0x26B5e3bF135D3Dd05A220508dD61f25BF1A47cBD, 'barn', 'Rizzolver')
+                (0x26B5e3bF135D3Dd05A220508dD61f25BF1A47cBD, 'barn', 'Rizzolver'),
+                (0x8C3f83f6A489cCbA2E3df304034F8C120cEb3527, 'barn', 'GlueX_Protocol'),
+                (0x49E1F55D4a695291533BB0A993aca5D58E90C613, 'prod', 'GlueX_Protocol'),
+                (0x3144a51a7699c629070d6aAEf68256c2d07a6334, 'barn', 'OKX'),
+                (0x7F636D152AB0Cfc68A899d4dF441F2322cd78C6B, 'prod', 'OKX'),
+                (0x7199cF10CF16b85fb59170d5c83d114Ac11d3afA, 'barn', 'ApeOut_1inch'),
+                (0xDd8a1F39fFBFB77c488054CB18f53aa9A3c4bD9D, 'prod', 'ApeOut_1inch'),
+                (0x312B5D8AbC6b7C8355B86f5F7803E9cD97AE8D75, 'barn', 'Helixbox'),
+                (0x4CdbA844CEB949567eA18b9EF185515fA626c69D, 'prod', 'Helixbox')
     ) as _
 )
 -- Combining the metadata with current activation status for final table

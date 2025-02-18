@@ -18,7 +18,9 @@
     ref('balancer_v2_polygon_pools_fees'),
     ref('balancer_v2_zkevm_pools_fees'),
     ref('balancer_v3_ethereum_pools_fees'),
-    ref('balancer_v3_gnosis_pools_fees')    
+    ref('balancer_v3_gnosis_pools_fees'),
+    ref('balancer_v3_arbitrum_pools_fees'),
+    ref('balancer_v3_base_pools_fees')        
 ] %}
 
 

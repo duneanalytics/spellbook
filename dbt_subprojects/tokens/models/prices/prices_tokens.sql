@@ -14,10 +14,12 @@
                                         , "boba"
                                         , "cardano"
                                         , "celo"
+                                        , "corn"
                                         , "ethereum"
                                         , "fantom"
                                         , "flare"
                                         , "gnosis"
+                                        , "ink"
                                         , "kaia"
                                         , "linea"
                                         , "nova"
@@ -27,11 +29,14 @@
                                         , "scroll"
                                         , "sei"
                                         , "solana"
+                                        , "sonic"
+                                        , "unichain"
                                         , "viction"
                                         , "worldchain"
                                         , "zksync"
                                         , "zkevm"
                                         , "zora"
+                                        , "abstract"
                                     ]\',
                                     "sector",
                                     "prices",
@@ -70,6 +75,12 @@ ref('prices_native_tokens')
 ,ref('prices_ronin_tokens')
 ,ref('prices_boba_tokens')
 ,ref('prices_viction_tokens')
+,ref('prices_corn_tokens')
+,ref('prices_sonic_tokens')
+,ref('prices_ink_tokens')
+,ref('prices_unichain_tokens')
+,ref('prices_abstract_tokens')
+,ref('prices_berachain_tokens')
 ] %}
 
 

@@ -18,7 +18,9 @@
     ref('balancer_v2_polygon_protocol_fee'),
     ref('balancer_v2_zkevm_protocol_fee'),
     ref('balancer_v3_ethereum_protocol_fee'),
-    ref('balancer_v3_gnosis_protocol_fee') 
+    ref('balancer_v3_gnosis_protocol_fee'),
+    ref('balancer_v3_arbitrum_protocol_fee'),
+    ref('balancer_v3_base_protocol_fee')  
 ] %}
 
 SELECT *
@@ -39,7 +41,8 @@ FROM (
         token_amount,
         protocol_fee_collected_usd, 
         treasury_share,
-        treasury_revenue_usd
+        treasury_fee_usd,
+        lp_fee_collected_usd
     FROM {{ protocol_fee }}
     {% if not loop.last %}
     UNION ALL
