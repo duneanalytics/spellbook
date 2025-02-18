@@ -15,6 +15,6 @@
     , traces = source('kaia','traces')
     , transactions = source('kaia','transactions')
     , erc20_transfers = source('erc20_kaia','evt_transfer')
-    , native_contract_address = '0x4200000000000000000000000000000000000006'
+    , native_contract_address = var('ETH_ERC20_ADDRESS')
 )
 }} 

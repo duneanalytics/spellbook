@@ -15,6 +15,6 @@
      , traces = source('corn','traces')
      , transactions = source('corn','transactions')
      , erc20_transfers = source('erc20_corn','evt_transfer')
-     , native_contract_address = null
+     , native_contract_address = var('ETH_ERC20_ADDRESS')
 )
 }} 
