@@ -9,7 +9,7 @@ models:
       contributors: princi
     config:
       tags: ['base', 'fxdx', 'perpetuals', 'perps']
-    description: >
+    description: 
       fxdx v2 perpetual trades on base
     data_tests:
       - dbt_utils.unique_combination_of_columns:
