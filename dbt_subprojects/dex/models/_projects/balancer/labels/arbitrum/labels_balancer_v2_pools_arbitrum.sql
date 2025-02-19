@@ -237,7 +237,7 @@ WITH pools AS (
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
   CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-/*
+
   UNION ALL
 
   SELECT
@@ -250,8 +250,9 @@ WITH pools AS (
   INNER JOIN {{ source('gyroscope_arbitrum', 'Gyro2CLPPoolFactory_call_create') }} cc
     ON c.evt_tx_hash = cc.call_tx_hash
     AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
-  CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
-*/
+  CROSS JOIN UNNEST(cc.tokens_array_binary) AS t(tokens)
+  WHERE cc.tokens_array_binary IS NOT NULL
+
   UNION ALL
   
   SELECT
