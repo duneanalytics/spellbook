@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: aave_v3_linea
+    tables:
+      - name: L2Pool_evt_Supply
+      - name: L2Pool_evt_Withdraw
+      - name: L2Pool_evt_RedeemUnderlying
+      - name: WrappedTokenGatewayV3_call_withdrawETH

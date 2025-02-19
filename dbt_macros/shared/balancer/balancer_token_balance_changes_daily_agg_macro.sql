@@ -100,6 +100,7 @@ WITH
             SUM(delta_amount) AS daily_amount
         FROM {{ ref(base_spells_namespace + '_token_balance_changes') }}
         WHERE blockchain = '{{blockchain}}'
+        AND version = '{{version}}'
         GROUP BY 1, 2, 3, 4, 5, 6
     ),
 
@@ -162,7 +163,7 @@ WITH
     GROUP BY 1,2
     )
 
-    SELECT
+    SELECT DISTINCT
         c.block_date,
         c.pool_id,
         BYTEARRAY_SUBSTRING(c.pool_id, 1, 20) AS pool_address,
@@ -357,7 +358,7 @@ WITH
     GROUP BY 1,2
     )
 
-    SELECT
+    SELECT DISTINCT
         c.block_date,
         c.pool_id,
         BYTEARRAY_SUBSTRING(c.pool_id, 1, 20) AS pool_address,

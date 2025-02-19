@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: dex_berachain_base_trades
+    data_tests:
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: kodiak_v3_berachain_base_trades
+    meta:
+      blockchain: berachain
+      sector: dex
+      project: kodiak
+      contributors: hosuke
+    config:
+      tags: ["berachain", "dex", "trades", "kodiak", "v3"]
+    description: "kodiak berachain v3 base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('kodiak_berachain_base_trades_seed')
+          filter:
+            version: 3

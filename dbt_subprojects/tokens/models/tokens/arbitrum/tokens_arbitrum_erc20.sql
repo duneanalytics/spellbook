@@ -133,4 +133,6 @@ FROM (VALUES
     , (0x7F6501d3B98eE91f9b9535E4b0ac710Fb0f9e0bc, 'waArbUSDC', 6)
     , (0xD9E3Ef2c12de90E3b03F7b7E3964956a71920d40, 'waArbweETH', 18)
     , (0xe98fc055c99DECD8Da0c111B090885d5d15C774E, 'waArbwstETH', 18)    
+    , (0xd089b4cb88dacf4e27be869a00e9f7e2e3c18193, 'waArbGHO', 18)
+    , (0xa6d12574efb239fc1d2099732bd8b5dc6306897f, 'waArbUSDT', 6)    
 ) AS temp_table (contract_address, symbol, decimals)

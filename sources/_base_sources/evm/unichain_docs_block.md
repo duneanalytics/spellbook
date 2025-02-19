@@ -221,4 +221,88 @@ This table is fundamental for analyzing:
 - Gas price dynamics
 - Data availability layer metrics
 
-{% enddocs %} 
+{% enddocs %}
+
+{% docs erc20_unichain_evt_transfer_doc %}
+
+The `erc20_unichain.evt_transfer` table contains Transfer events emitted by ERC20 token contracts on the Unichain blockchain. Each record represents a token transfer between addresses. The table includes:
+
+- Contract information: contract_address
+- Event context: evt_tx_hash, evt_index, evt_block_time, evt_block_number
+- Transfer details:
+  - from: Sender address
+  - to: Recipient address
+  - value: Amount of tokens transferred
+
+This table is essential for:
+- Tracking token transfers and flows
+- Analyzing token holder behavior
+- Monitoring trading activity
+- Calculating token balances
+- Studying token distribution patterns
+
+{% enddocs %}
+
+{% docs erc721_unichain_evt_transfer_doc %}
+
+The `erc721_unichain.evt_transfer` table contains Transfer events emitted by ERC721 (NFT) contracts on the Unichain blockchain. Each record represents a unique token transfer between addresses. The table includes:
+
+- Contract information: contract_address
+- Event context: evt_tx_hash, evt_index, evt_block_time, evt_block_number
+- Transfer details:
+  - from: Previous owner's address
+  - to: New owner's address
+  - tokenId: Unique identifier of the NFT
+
+This table is used for:
+- Tracking NFT ownership changes
+- Analyzing NFT trading patterns
+- Monitoring collection activity
+- Studying NFT market dynamics
+- Building NFT provenance histories
+
+{% enddocs %}
+
+{% docs erc1155_unichain_evt_transfersingle_doc %}
+
+The `erc1155_unichain.evt_transfersingle` table contains TransferSingle events emitted by ERC1155 contracts on the Unichain blockchain. Each record represents a single token type transfer between addresses. The table includes:
+
+- Contract information: contract_address
+- Event context: evt_tx_hash, evt_index, evt_block_time, evt_block_number
+- Transfer details:
+  - operator: Address approved to make the transfer
+  - from: Sender address
+  - to: Recipient address
+  - id: Token type identifier
+  - value: Amount of tokens transferred
+
+This table is useful for:
+- Tracking multi-token transfers
+- Analyzing gaming asset movements
+- Monitoring fungible token flows
+- Studying semi-fungible token usage
+- Building token inventory systems
+
+{% enddocs %}
+
+{% docs erc1155_unichain_evt_transferbatch_doc %}
+
+The `erc1155_unichain.evt_transferbatch` table contains TransferBatch events emitted by ERC1155 contracts on the Unichain blockchain. Each record represents multiple token types being transferred between addresses in a single transaction. The table includes:
+
+- Contract information: contract_address
+- Event context: evt_tx_hash, evt_index, evt_block_time, evt_block_number
+- Transfer details:
+  - operator: Address approved to make the transfer
+  - from: Sender address
+  - to: Recipient address
+  - ids: Array of token type identifiers
+  - values: Array of amounts transferred for each token type
+
+This table is crucial for:
+- Tracking bulk token transfers
+- Analyzing batch operations
+- Monitoring complex token movements
+- Studying multi-token transactions
+- Building efficient token tracking systems
+
+{% enddocs %}
