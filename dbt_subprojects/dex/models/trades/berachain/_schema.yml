@@ -41,3 +41,26 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('burrbear_berachain_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: beraswap_berachain_base_trades
+    meta:
+      blockchain: berachain
+      sector: dex
+      project: beraswap
+      contributors: hosuke
+    config:
+      tags: ["berachain", "dex", "trades", "beraswap"]
+    description: "BeraSwap berachain base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('beraswap_berachain_base_trades_seed')
+          filter:
+            version: 1
