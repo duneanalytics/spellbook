@@ -12,6 +12,8 @@
 
 {% set models = [
     ref('dex_ethereum_base_liquidity')
+   ,ref('dex_arbitrum_base_liquidity') 
+   ,ref('dex_base_base_liquidity') 
 ] %}
 
 with base_union as (
