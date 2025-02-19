@@ -325,8 +325,13 @@ cow_trades as (
                      tx_index, evt_index, buy_token_address as maker_token, atoms_bought as maker_amount, logs.contract_address as taker_token
     FROM {{ source('cow_protocol_ethereum', 'trades') }}
     JOIN tbl_all_logs as logs using (block_time, block_number, tx_hash)
-    where 
-        block_time > TIMESTAMP '2024-07-15'  
+    where
+        1 = 1
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('block_time') }}
+        {% else %}
+        AND block_time >= DATE '{{start_date}}'
+        {% endif %}
         and trades.sell_token_address = logs.contract_address and trades.atoms_sold = logs.amount
         ),
     base_logs_rn as (
@@ -408,7 +413,13 @@ token_prices AS (
         symbol,
         decimals 
     FROM {{ source('prices', 'usd') }}
-    WHERE blockchain = '{{blockchain}}'
+    WHERE 
+        blockchain = '{{blockchain}}'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('minute') }}
+        {% else %}
+        AND minute >= DATE '{{start_date}}'
+        {% endif %}
 ), 
 results AS (
     SELECT
