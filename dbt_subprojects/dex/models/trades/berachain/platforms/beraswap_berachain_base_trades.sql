@@ -20,7 +20,7 @@
         project = 'beraswap',
         version = '1',
         project_decoded_as = 'beraswap',
-        Vault_evt_Swap = source('beraswap_berachain', 'vault_evt_swap'),
+        Vault_evt_Swap = 'vault_evt_swap',
         pools_fees = ref('beraswap_berachain_pools_fees')
     )
 }}
