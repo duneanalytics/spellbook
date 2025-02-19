@@ -135,3 +135,47 @@ Each row represents a batch token transfer and includes:
 - Array of token IDs and amounts
 - Event index and other metadata
 {% enddocs %}
+
+{% docs erc20_evt_transfer_doc %}
+This table contains ERC20 token transfer events on the Apechain network.
+
+Each row represents a token transfer and includes:
+- Basic event information (block number, transaction hash)
+- Token contract address
+- From and to addresses
+- Transfer amount
+- Event index and other metadata
+{% enddocs %}
+
+{% docs erc721_evt_transfer_doc %}
+This table contains ERC721 token transfer events on the Apechain network.
+
+Each row represents an NFT transfer and includes:
+- Basic event information (block number, transaction hash)
+- Token contract address
+- From and to addresses
+- Token ID
+- Event index and other metadata
+{% enddocs %}
+
+{% docs erc1155_evt_transfersingle_doc %}
+This table contains single transfer events for ERC1155 tokens on the Apechain network.
+
+Each row represents a token transfer and includes:
+- Basic event information (block number, transaction hash)
+- Token contract address
+- Operator, from, and to addresses
+- Token ID and amount
+- Event index and other metadata
+{% enddocs %}
+
+{% docs erc1155_evt_transferbatch_doc %}
+This table contains batch transfer events for ERC1155 tokens on the Apechain network.
+
+Each row represents a batch token transfer and includes:
+- Basic event information (block number, transaction hash)
+- Token contract address
+- Operator, from, and to addresses
+- Array of token IDs and amounts
+- Event index and other metadata
+{% enddocs %}
