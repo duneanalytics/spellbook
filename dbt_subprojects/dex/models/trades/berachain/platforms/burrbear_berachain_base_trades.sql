@@ -10,11 +10,15 @@
 }}
 
 {{
-    balancer_compatible_v1_trades(
+    balancer_compatible_v2_trades(
         blockchain = 'berachain'
         , project = 'burrbear'
         , version = '1'
+        , project_decoded_as = 'burrbear'
         , Vault_evt_Swap = source('burrbear_berachain', 'vault_evt_swap')
         , Factory_evt_PoolCreated = source('burrbear_berachain', 'factory_evt_poolcreated')
+        , Vault_evt_PoolRegistered = source('burrbear_berachain', 'vault_evt_poolregistered')
+        , Vault_evt_PoolBalanceChanged = source('burrbear_berachain', 'vault_evt_poolbalancechanged')
+        , pools_fees = 'pools_fees'
     )
 }}
