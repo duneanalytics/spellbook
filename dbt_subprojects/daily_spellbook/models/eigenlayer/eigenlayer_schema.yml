@@ -31,7 +31,7 @@ models:
         description: "Strategy to withdraw from"
       - &share
         name: share
-        description: "Share of the withdrawal"
+        description: "Share of strategy of the withdrawal"
   - name: eigenlayer_withdrawal_completed_v2_enriched
     meta:
       blockchain: ethereum
@@ -66,6 +66,19 @@ models:
         name: name
         description: "Name of the strategy"
       - *strategy
+  - name: eigenlayer_date_series
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'dates']
+    description: >
+        Date series
+    columns:
+      - &date
+        name: date
+        description: "Date in UTC"
   - name: eigenlayer_avs_operator_registration_status_latest
     meta:
       blockchain: ethereum
@@ -140,9 +153,7 @@ models:
     columns:
       - *token
       - *amount
-      - &date
-        name: date
-        description: "Date in UTC"
+      - *date
   - name: eigenlayer_programmatic_incentive_flattened
     meta:
       blockchain: ethereum
@@ -168,3 +179,33 @@ models:
       - *token
       - *amount
       - *date
+  - name: eigenlayer_operator_shares_change_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'delegated shares']
+    description: >
+        Operator shares change aggregated by day
+    columns:
+      - *operator
+      - *strategy
+      - *share
+      - *date
+  - name: eigenlayer_operator_shares_cumulative_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'delegated shares']
+    description: >
+        Operator shares cumulative aggregated by day
+    columns:
+      - *operator
+      - *strategy
+      - *date
+      - &cumulative_daily_shares
+        name: cumulative_daily_shares
+        description: "Cumulative daily shares"
