@@ -9,6 +9,7 @@
     ref('beets_sonic_base_trades')
     , ref('wagmi_sonic_base_trades')
     , ref('equalizer_sonic_base_trades')
+    , ref('shadow_sonic_base_trades')
     , ref('silverswap_sonic_base_trades')
 ] %}
 
