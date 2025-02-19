@@ -9,7 +9,7 @@ models:
     config:
       tags:   ['eigenlayer', 'restaking', 'withdrawal']
     description: >
-      FlattenedV2 withdrawal queued events from EigenLayer
+      Flattened V2 withdrawal queued events from EigenLayer
     columns:
       - &evt_block_time
         name: evt_block_time
@@ -32,6 +32,23 @@ models:
       - &share
         name: share
         description: "Share of the withdrawal"
+  - name: v2_withdrawal_completed_enriched
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: [ 'eigenlayer', 'restaking', 'withdrawal' ]
+    description: >
+      V2 withdrawal completed events from EigenLayer, enriched with withdrawal queued strategy and share breakdowns
+    columns:
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_tx_hash
+      - *evt_index
+      - *withdrawalRoot
+      - *strategy
+      - *share
   - name: strategy_category
     meta:
       blockchain: ethereum
