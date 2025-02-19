@@ -18,6 +18,10 @@ WITH trusted_tokens AS (
                 ('abstract', 0x3439153EB7AF838Ad19d56E1571FBD09333C2809)
                 , ('abstract', 0x84a71ccd554cc1b02749b35d22f684cc8ec987e1)
                 , ('abstract', 0x000000000000000000000000000000000000800a)
+                , ('apechain', 0x48b62137edfa95a428d35c09e44256a739f6b557)  -- WAPE
+                , ('apechain', 0xe31c676d8235437597581b44c1c4f8a30e90b38a)  -- GNS
+                , ('apechain', 0xfc7b0badb1404412a747bc9bb6232e25098be303)  -- APE
+                , ('apechain', 0xcf800f4948d16f23333508191b1b1591daf70438)  -- ApeETH
                 , ('arbitrum', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8)
                 , ('arbitrum', 0x82af49447d8a07e3bd95bd0d56f35241523fbab1)
                 , ('arbitrum', 0xaf88d065e77c8cc2239327c5edb3a432268e5831)
@@ -185,17 +189,6 @@ WITH trusted_tokens AS (
                 , ('zksync', 0x000000000000000000000000000000000000800a)
                 , ('zksync', 0xbbeb516fb02a01611cbbe0453fe3c580d7281011)
                 , ('zora', 0x4200000000000000000000000000000000000006)
-                , ('berachain', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34)  -- USDe
-                , ('berachain', 0x7dcc39b4d1c53cb31e1abc0e358b43987fef80f7)  -- weETH
-                , ('berachain', 0xecac9c5f704e954931349da37f60e39f515c11c1)  -- LBTC
-                , ('apechain', 0x48b62137edfa95a428d35c09e44256a739f6b557)  -- WAPE
-                , ('apechain', 0xe31c676d8235437597581b44c1c4f8a30e90b38a)  -- GNS
-                , ('apechain', 0xfc7b0badb1404412a747bc9bb6232e25098be303)  -- APE
-                , ('apechain', 0xcf800f4948d16f23333508191b1b1591daf70438)  -- ApeETH
-                , ('unichain', 0x4200000000000000000000000000000000000006)  -- WETH
-                , ('unichain', 0x078d782b760474a361dda0af3839290b0ef57ad6)  -- USDC
-                , ('unichain', 0x8f187aa05619a017077f5308904739877ce9ea21)  -- UNI
-                , ('unichain', 0x20cab320a855b39f724131c69424240519573f81)  -- DAI
                 , ('zora', 0xCccCCccc7021b32EBb4e8C08314bD62F7c653EC4)
         ) AS t (blockchain, contract_address)
 ), erc20 as (
