@@ -204,7 +204,7 @@ FROM (VALUES
     , ('jojo', 'JOJO', 'Direct', 'jojo_exchange')
     , ('beets', 'Beets DEX', 'Direct', 'beets_fi')
     , ('silverswap', 'SilverSwap', 'Direct', 'SilverSwapDex')
+    , ('shadow', 'Shadow', 'Direct', 'ShadowOnSonic')
     , ('kodiak', 'Kodiak', 'Direct', 'KodiakFi')
     , ('unichainswap', 'UnichainSwap', 'Direct', 'unichainswap')
-
-    ) AS temp_table (project, name, marketplace_type, x_username)
+) AS temp_table (project, name, marketplace_type, x_username)

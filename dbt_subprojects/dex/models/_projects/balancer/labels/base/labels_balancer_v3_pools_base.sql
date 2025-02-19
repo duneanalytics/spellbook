@@ -55,6 +55,19 @@ WITH token_data AS (
       INNER JOIN {{ source('balancer_v3_base', 'StablePoolFactory_call_create') }} cc
         ON c.pool = cc.output_pool
       CROSS JOIN UNNEST(c.tokens) AS t(tokens)
+
+      UNION ALL
+
+      SELECT
+        c.pool AS pool_id,
+        t.tokens,
+        0 AS weights,
+        cc.symbol,
+        'stable' AS pool_type
+      FROM token_data c
+      INNER JOIN {{ source('balancer_v3_base', 'StableSurgePoolFactory_call_create') }} cc
+        ON c.pool = cc.output_pool
+      CROSS JOIN UNNEST(c.tokens) AS t(tokens)
     ) zip 
           ),
 
