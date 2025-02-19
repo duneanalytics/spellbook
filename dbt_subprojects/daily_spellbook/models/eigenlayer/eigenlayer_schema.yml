@@ -128,6 +128,21 @@ models:
       - &amount
         name: amount
         description: "Amount of ERC20 token, in respective decimals"
+  - name: eigenlayer_rewards_v1_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'rewards']
+    description: >
+        Rewards V1 aggregated by day
+    columns:
+      - *token
+      - *amount
+      - &date
+        name: date
+        description: "Date in UTC"
   - name: eigenlayer_programmatic_incentive_flattened
     meta:
       blockchain: ethereum
@@ -140,3 +155,16 @@ models:
     columns:
       - *token
       - *amount
+  - name: eigenlayer_programmatic_incentive_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'programmatic incentive']
+    description: >
+        Programmatic incentive aggregated by day
+    columns:
+      - *token
+      - *amount
+      - *date
