@@ -5,3 +5,7 @@ sources:
     tables:
       - name: v3pair_evt_swap
       - name: factoryv3_evt_poolcreated
+  - name: burrbear_berachain
+    tables:
+      - name: vault_evt_swap
+      - name: factory_evt_poolcreated
