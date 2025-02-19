@@ -6,3 +6,4 @@ sources:
 
     tables:
       - name: DelegationManager_evt_WithdrawalQueued
+      - name: DelegationManager_evt_WithdrawalCompleted
