@@ -9,3 +9,9 @@ sources:
     tables:
       - name: AlgebraFactory_evt_Pool
       - name: AlgebraPool_evt_Swap
+  - name: shadow_sonic
+    tables:
+      - name: Pair_evt_Swap
+      - name: Core_PairFactory_evt_PairCreated
+      - name: RamsesV3Pool_evt_Swap
+      - name: RamsesV3Factory_evt_PoolCreated

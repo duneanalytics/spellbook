@@ -207,4 +207,7 @@ FROM (VALUES
     , ('saru', 'Saru', 'Direct', 'saru_ex')
     , ('kodiak', 'Kodiak', 'Direct', 'KodiakFi')
     , ('unichainswap', 'UnichainSwap', 'Direct', 'unichainswap')
-    ) AS temp_table (project, name, marketplace_type, x_username)
+    , ('shadow', 'Shadow', 'Direct', 'ShadowOnSonic')
+    , ('kodiak', 'Kodiak', 'Direct', 'KodiakFi')
+    , ('unichainswap', 'UnichainSwap', 'Direct', 'unichainswap')
+) AS temp_table (project, name, marketplace_type, x_username)
