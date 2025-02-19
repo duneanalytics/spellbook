@@ -21,14 +21,14 @@ daily_aggregated_shares AS (
         a.operator,
         a.strategy,
         b.date,
-        COALESCE(SUM(c.shares), 0) AS daily_shares
+        COALESCE(SUM(c.daily_shares), 0) AS daily_shares
     FROM
         all_operator_strategy AS a
     CROSS JOIN
         {{ ref('eigenlayer_date_series') }} AS b
     LEFT JOIN
         {{ ref('eigenlayer_operator_shares_change_by_day') }} AS c
-        ON a.operator = c.operator
+    ON a.operator = c.operator
         AND a.strategy = c.strategy
         AND b.date = c.date
     GROUP BY
