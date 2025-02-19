@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: eigenlayer_v2_withdrawal_queued_flattened
+  - name: eigenlayer_withdrawal_queued_v2_flattened
     meta:
       blockchain: ethereum
       sector: restaking
@@ -9,7 +9,7 @@ models:
     config:
       tags:   ['eigenlayer', 'restaking', 'withdrawal']
     description: >
-      Flattened V2 withdrawal queued events from EigenLayer
+      Flattened withdrawal queued V2 events
     columns:
       - &evt_block_time
         name: evt_block_time
@@ -32,7 +32,7 @@ models:
       - &share
         name: share
         description: "Share of the withdrawal"
-  - name: eigenlayer_v2_withdrawal_completed_enriched
+  - name: eigenlayer_withdrawal_completed_v2_enriched
     meta:
       blockchain: ethereum
       sector: restaking
@@ -40,7 +40,7 @@ models:
     config:
       tags: [ 'eigenlayer', 'restaking', 'withdrawal']
     description: >
-      V2 withdrawal completed events from EigenLayer, enriched with withdrawal queued strategy and share breakdowns
+      Withdrawal completed V2 events, enriched with withdrawal queued strategy and share breakdowns
     columns:
       - *evt_block_time
       - *evt_block_number
@@ -57,7 +57,7 @@ models:
     config:
       tags: ['eigenlayer', 'restaking', 'strategy']
     description: >
-      Strategy category in EigenLayer
+      Strategy category
     columns:
       - &category
         name: category
@@ -74,7 +74,7 @@ models:
     config:
       tags: ['eigenlayer', 'restaking', 'avs', 'operator']
     description: >
-      Latest AVS and Operator Mappings of EigenLayer
+      Latest AVS and Operator Mappings
     columns:
       - &avs
         name: avs
@@ -93,7 +93,7 @@ models:
     config:
       tags: ['eigenlayer', 'restaking', 'avs', 'metadata']
     description: >
-      Latest metadata URI of AVSs in EigenLayer
+      Latest metadata URI of AVSs
     columns:
       - *avs
       - &metadataURI
@@ -111,3 +111,32 @@ models:
     columns:
       - *operator
       - *metadataURI
+  - name: eigenlayer_rewards_v1_flattened
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'rewards']
+    description: >
+      Flattened rewards V1 events
+    columns:
+      - *avs
+      - &token
+        name: token
+        description: "ERC20 Token"
+      - &amount
+        name: amount
+        description: "Amount of ERC20 token, in respective decimals"
+  - name: eigenlayer_programmatic_incentive_flattened
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'programmatic incentive']
+    description: >
+      Flattened programmatic incentive events
+    columns:
+      - *token
+      - *amount
