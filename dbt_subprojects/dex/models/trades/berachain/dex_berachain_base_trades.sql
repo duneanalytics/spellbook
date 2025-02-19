@@ -2,12 +2,17 @@
     schema = 'dex_berachain'
     , alias = 'base_trades'
     , materialized = 'view'
+    , post_hook='{{ expose_spells(blockchains = \'["berachain"]\',
+                                spell_type = "sector",
+                                spell_name = "dex",
+                                contributors = \'["hosuke"]\') }}'
     )
 }}
 
 {% set base_models = [
     ref('kodiak_v3_berachain_base_trades')
     , ref('burrbear_berachain_base_trades')
+    , ref('beraswap_berachain_base_trades')
 ] %}
 
 WITH base_union AS (

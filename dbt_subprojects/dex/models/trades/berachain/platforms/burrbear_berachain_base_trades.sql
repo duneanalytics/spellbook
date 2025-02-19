@@ -6,6 +6,10 @@
     , incremental_strategy = 'merge'
     , unique_key = ['tx_hash', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , post_hook='{{ expose_spells(blockchains = \'["berachain"]\',
+                                spell_type = "project",
+                                spell_name = "burrbear",
+                                contributors = \'["hosuke"]\') }}'
     )
 }}
 
@@ -16,9 +20,6 @@
         , version = '1'
         , project_decoded_as = 'burrbear'
         , Vault_evt_Swap = source('burrbear_berachain', 'vault_evt_swap')
-        , Factory_evt_PoolCreated = source('burrbear_berachain', 'factory_evt_poolcreated')
-        , Vault_evt_PoolRegistered = source('burrbear_berachain', 'vault_evt_poolregistered')
-        , Vault_evt_PoolBalanceChanged = source('burrbear_berachain', 'vault_evt_poolbalancechanged')
-        , pools_fees = 'pools_fees'
+        , pools_fees = ref('burrbear_berachain_pools_fees')
     )
 }}
