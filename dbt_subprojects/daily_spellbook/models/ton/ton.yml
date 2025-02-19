@@ -4,7 +4,7 @@ models:
   - name: ton_jetton_price_daily
     meta:
       blockchain: ton
-      contributors: shuva10v, ohld
+      contributors: pshuvalov, okhlopkov
     config:
       tags: ['ton','prices',' dex']
     description: >

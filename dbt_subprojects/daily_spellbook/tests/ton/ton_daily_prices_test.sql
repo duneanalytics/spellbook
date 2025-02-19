@@ -17,7 +17,7 @@ WITH test_data AS (
     (ABS(P.price_ton * T.decimals - T.expected_price_ton) / T.expected_price_ton) as delta_ton,
     (ABS(P.price_usd * T.decimals - T.expected_price_usd) / T.expected_price_usd) as delta_usd
     FROM 
-    {{ ref ('ton_daily_prices') }} P
+    {{ ref ('ton_jetton_price_daily') }} P
     RIGHT JOIN test_data T ON P.timestamp = T.timestamp AND P.token_address = T.token_address
 )
 SELECT name || ': delta_ton = ' || cast(coalesce(delta_ton, 0) as varchar) || ', delta_usd = ' || cast(coalesce(delta_usd, 0) as varchar) as name FROM test_results

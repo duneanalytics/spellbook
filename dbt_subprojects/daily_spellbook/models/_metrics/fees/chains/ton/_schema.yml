@@ -4,7 +4,7 @@ models:
   - name: metrics_ton_gas_fees_daily
     meta:
       sector: metrics
-      contributors: shuva10v
+      contributors: pshuvalov
     config:
       tags: ['metrics', 'fees', 'gas', 'daily', 'ton']
     description: "Sum of total fees spent per day"
