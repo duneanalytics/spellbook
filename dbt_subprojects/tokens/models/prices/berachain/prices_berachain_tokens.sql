@@ -18,7 +18,7 @@ SELECT
 FROM
 (
     VALUES
-    ('usde-ethena-usde', 'USDe', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 18)
-    , ('weeth-wrapped-eeth', 'weETH', 0x7dcc39b4d1c53cb31e1abc0e358b43987fef80f7, 18)
-    , ('lbtc-lombard-staked-btc', 'LBTC', 0xecac9c5f704e954931349da37f60e39f515c11c1, 8)
+    ('bera-berachain', 'WBERA', 0x6969696969696969696969696969696969696969, 18)
+    , ('usdce-usd-coine', 'USDC.e', 0x549943e04f40284185054145c6E4e9568C1D3241, 6)
+    , ('weth-weth', 'WETH', 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590, 18)
 ) as temp (token_id, symbol, contract_address, decimals) 
