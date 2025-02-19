@@ -213,7 +213,6 @@ sources:
       - name: creation_traces
         meta:
           docs_slug: /evm/apechain/raw/creation_traces
-          short_description: The creation_traces table contains information about contract creation traces on the network.
         description: '{{ doc("apechain_creation_traces_doc") }}'
         columns:
           - name: block_time
@@ -287,136 +286,111 @@ sources:
           - name: created_at
             description: "Timestamp when the contract was created"
 
-      - name: traces_decoded
-        description: '{{ doc("apechain_traces_decoded_doc") }}'
-        columns:
-          - name: block_number
-            description: "Block number containing the trace"
-          - name: transaction_hash
-            description: "Transaction hash containing the trace"
-          - name: trace_address
-            description: "Array path of trace in the tree of traces"
-          - name: function_name
-            description: "Decoded function name from the trace input data"
-          - name: input_decoded
-            description: "Decoded input parameters based on the contract ABI"
-          - name: output_decoded
-            description: "Decoded output data based on the contract ABI"
-          - name: error
-            description: "Error message if trace execution failed"
-
-      - name: logs_decoded
-        description: '{{ doc("apechain_logs_decoded_doc") }}'
-        columns:
-          - name: block_number
-            description: "Block number containing the log"
-          - name: transaction_hash
-            description: "Transaction hash containing the log"
-          - name: log_index
-            description: "Index position of the log in the transaction"
-          - name: contract_address
-            description: "Address of the contract that generated the event"
-          - name: event_name
-            description: "Decoded event name from the log topics"
-          - name: event_decoded
-            description: "Decoded event parameters based on the contract ABI"
-
+  - name: erc20_apechain
+    description: "Transfer events for ERC20 tokens on Apechain blockchain"
+    tables:
       - name: evt_transfer
         meta:
-          docs_slug: /evm/apechain/decoded/interfaces/erc20/evt_transfer
-          short_description: This table contains individual transfer events for ERC20 tokens on the apechain blockchain. Each row represents a single token transfer event.
-        description: '{{ doc("apechain_erc20_evt_transfer_doc") }}'
+          docs_slug: /evm/apechain/raw/erc20_transfers
+          short_description: The evt_transfer table contains all ERC20 token transfer events on the Apechain blockchain.
+        description: '{{ doc("erc20_apechain_evt_transfer_doc") }}'
         columns:
           - name: contract_address
-            description: "Address of the ERC20 token contract"
+            description: "The address of the ERC20 token contract"
           - name: from
-            description: "Address sending the tokens"
+            description: "The address sending the tokens"
           - name: to
-            description: "Address receiving the tokens"
-          - name: amount
-            description: "Amount of ERC20 tokens transferred, in the token's native unit"
-          - name: block_number
-            description: "Block number containing the transfer"
-          - name: block_timestamp
-            description: "Timestamp of the block containing the transfer"
-          - name: transaction_hash
-            description: "Transaction hash containing the transfer"
-          - name: log_index
-            description: "Index position of the event in the block"
+            description: "The address receiving the tokens"
+          - name: value
+            description: "The amount of tokens transferred"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
 
+  - name: erc721_apechain
+    description: "Transfer events for ERC721 tokens on Apechain blockchain"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/apechain/raw/erc721_transfers
+          short_description: The evt_transfer table contains all ERC721 token transfer events on the Apechain blockchain.
+        description: '{{ doc("erc721_apechain_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC721 token contract"
+          - name: from
+            description: "The address sending the NFT"
+          - name: to
+            description: "The address receiving the NFT"
+          - name: tokenId
+            description: "The unique identifier of the NFT being transferred"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
+
+  - name: erc1155_apechain
+    description: "Transfer events for ERC1155 tokens on Apechain blockchain"
+    tables:
       - name: evt_transfersingle
         meta:
-          docs_slug: /evm/apechain/decoded/interfaces/erc1155/evt_transfersingle
-          short_description: This table contains single transfer events for ERC1155 tokens on the network.
-        description: '{{ doc("apechain_erc1155_evt_transfersingle_doc") }}'
+          docs_slug: /evm/apechain/raw/erc1155_transfers
+          short_description: The evt_transfersingle table contains single token transfer events for ERC1155 tokens.
+        description: '{{ doc("erc1155_apechain_evt_transfersingle_doc") }}'
         columns:
           - name: contract_address
-            description: "Address of the ERC1155 token contract"
+            description: "The address of the ERC1155 token contract"
           - name: operator
-            description: "The address that is authorized to execute the transfer on behalf of the owner"
+            description: "The address that initiated the transfer"
           - name: from
-            description: "Address sending the tokens"
+            description: "The address sending the tokens"
           - name: to
-            description: "Address receiving the tokens"
+            description: "The address receiving the tokens"
           - name: id
-            description: "Unique identifier of the ERC1155 token being transferred"
-          - name: amount
-            description: "Quantity of the ERC1155 token transferred"
-          - name: block_number
-            description: "Block number containing the transfer"
-          - name: block_timestamp
-            description: "Timestamp of the block containing the transfer"
-          - name: transaction_hash
-            description: "Transaction hash containing the transfer"
-          - name: log_index
-            description: "Index position of the event in the block"
+            description: "The token type identifier"
+          - name: value
+            description: "The number of tokens transferred"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
 
       - name: evt_transferbatch
         meta:
-          docs_slug: /evm/apechain/decoded/interfaces/erc1155/evt_transferbatch
-          short_description: This table contains all batch transfer events for ERC1155 tokens on the network.
-        description: '{{ doc("apechain_erc1155_evt_transferbatch_doc") }}'
+          docs_slug: /evm/apechain/raw/erc1155_batch_transfers
+          short_description: The evt_transferbatch table contains batch transfer events for ERC1155 tokens.
+        description: '{{ doc("erc1155_apechain_evt_transferbatch_doc") }}'
         columns:
           - name: contract_address
-            description: "Address of the ERC1155 token contract"
+            description: "The address of the ERC1155 token contract"
           - name: operator
-            description: "Contract address authorized to execute the batch transfer on behalf of the owner"
+            description: "The address that initiated the transfer"
           - name: from
-            description: "Address sending the tokens"
+            description: "The address sending the tokens"
           - name: to
-            description: "Address receiving the tokens"
+            description: "The address receiving the tokens"
           - name: ids
-            description: "Array of unique identifiers of the ERC1155 tokens being transferred"
-          - name: amounts
-            description: "Array of quantities for each ERC1155 token transferred, corresponding to the ids array"
-          - name: block_number
-            description: "Block number containing the transfer"
-          - name: block_timestamp
-            description: "Timestamp of the block containing the transfer"
-          - name: transaction_hash
-            description: "Transaction hash containing the transfer"
-          - name: log_index
-            description: "Index position of the event in the block"
-
-      - name: evt_transfer
-        meta:
-          docs_slug: /evm/apechain/decoded/interfaces/erc721/evt_transfer
-          short_description: This table contains transfer events for ERC721 tokens (NFTs) on the network.
-        description: '{{ doc("apechain_erc721_evt_transfer_doc") }}'
-        columns:
-          - name: contract_address
-            description: "Address of the ERC721 token contract"
-          - name: from
-            description: "Address sending the NFT"
-          - name: to
-            description: "Address receiving the NFT"
-          - name: token_id
-            description: "Unique identifier of the ERC721 token (NFT) being transferred"
-          - name: block_number
-            description: "Block number containing the transfer"
-          - name: block_timestamp
-            description: "Timestamp of the block containing the transfer"
-          - name: transaction_hash
-            description: "Transaction hash containing the transfer"
-          - name: log_index
-            description: "Index position of the event in the block"
+            description: "Array of token type identifiers"
+          - name: values
+            description: "Array of amounts of tokens transferred for each id"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
