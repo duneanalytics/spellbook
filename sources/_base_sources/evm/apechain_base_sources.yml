@@ -293,7 +293,7 @@ sources:
         meta:
           docs_slug: /evm/apechain/raw/erc20_transfers
           short_description: The evt_transfer table contains all ERC20 token transfer events on the Apechain blockchain.
-        description: '{{ doc("erc20_apechain_evt_transfer_doc") }}'
+        description: '{{ doc("apechain_erc20_evt_transfer_doc") }}'
         columns:
           - name: contract_address
             description: "The address of the ERC20 token contract"
