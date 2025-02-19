@@ -2,10 +2,6 @@
     schema = 'dex_berachain'
     , alias = 'base_trades'
     , materialized = 'view'
-    , post_hook='{{ expose_spells(blockchains = \'["berachain"]\',
-                                spell_type = "sector",
-                                spell_name = "dex",
-                                contributors = \'["hosuke"]\') }}'
     )
 }}
 
