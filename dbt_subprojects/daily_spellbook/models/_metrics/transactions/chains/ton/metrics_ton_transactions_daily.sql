@@ -18,9 +18,8 @@ with ton_prices as ( -- get price of TON for each day to estimate USD value
         and symbol = 'TON' and blockchain is null
         group by 1
 ), jetton_prices as (
-    -- jetton prices based on onchain data, see https://github.com/ton-studio/dune-queries?tab=readme-ov-file#duneton_foundationresult_jetton_price_daily
-    select jp.token_address as jetton_master, ts as block_date, avg(price_usd) as price_usd
-    from dune.ton_foundation.result_jetton_price_daily jp
+    select jp.token_address as jetton_master, jp.timestamp as block_date, avg(price_usd) as price_usd
+    from {{ ref('ton_daily_prices') }} jp
     group by 1, 2
 ),
 significant_transactions as (
