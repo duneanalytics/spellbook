@@ -181,6 +181,10 @@ WITH trusted_tokens AS (
                 , ('berachain', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34)  -- USDe
                 , ('berachain', 0x7dcc39b4d1c53cb31e1abc0e358b43987fef80f7)  -- weETH
                 , ('berachain', 0xecac9c5f704e954931349da37f60e39f515c11c1)  -- LBTC
+                , ('apechain', 0x48b62137edfa95a428d35c09e44256a739f6b557)  -- WAPE
+                , ('apechain', 0xe31c676d8235437597581b44c1c4f8a30e90b38a)  -- GNS
+                , ('apechain', 0xfc7b0badb1404412a747bc9bb6232e25098be303)  -- APE
+                , ('apechain', 0xcf800f4948d16f23333508191b1b1591daf70438)  -- ApeETH
                 , ('unichain', 0x4200000000000000000000000000000000000006)  -- WETH
                 , ('unichain', 0x078d782b760474a361dda0af3839290b0ef57ad6)  -- USDC
                 , ('unichain', 0x8f187aa05619a017077f5308904739877ce9ea21)  -- UNI
