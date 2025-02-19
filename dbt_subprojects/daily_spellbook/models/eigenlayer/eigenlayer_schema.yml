@@ -38,7 +38,7 @@ models:
       sector: restaking
       contributors: bowenli
     config:
-      tags: [ 'eigenlayer', 'restaking', 'withdrawal' ]
+      tags: [ 'eigenlayer', 'restaking', 'withdrawal']
     description: >
       V2 withdrawal completed events from EigenLayer, enriched with withdrawal queued strategy and share breakdowns
     columns:
@@ -66,3 +66,48 @@ models:
         name: name
         description: "Name of the strategy"
       - *strategy
+  - name: eigenlayer_avs_operator_registration_status_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'avs', 'operator']
+    description: >
+      Latest AVS and Operator Mappings of EigenLayer
+    columns:
+      - &avs
+        name: avs
+        description: "AVS"
+      - &operator
+        name: operator
+        description: "Operator"
+      - &status
+        name: status
+        description: "Registration status between AVS and Operator, 1 for registered, 0 for unregistered"
+  - name: eigenlayer_avs_metadata_uri_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'avs', 'metadata']
+    description: >
+      Latest metadata URI of AVSs in EigenLayer
+    columns:
+      - *avs
+      - &metadataURI
+        name: metadataURI
+        description: "Metadata URI"
+  - name: eigenlayer_operator_metadata_uri_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'operator', 'metadata']
+    description: >
+      Latest metadata URI of Operators in EigenLayer
+    columns:
+      - *operator
+      - *metadataURI
