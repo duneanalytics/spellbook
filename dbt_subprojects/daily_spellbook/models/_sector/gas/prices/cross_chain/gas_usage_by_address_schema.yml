@@ -8,7 +8,7 @@ models:
       contributors: ['gashawk']
     config:
       tags: ['gas', 'cross_chain', 'addresses']
-    description: "Cross-chain gas usage metrics aggregated by address"
+    description: "Cross-chain gas usage metrics aggregated by address (optimized version)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -33,21 +33,41 @@ models:
           - not_null
       - name: gas_spent_usd_total
         description: "Total USD value of gas spent"
+        tests:
+          - not_null
       - name: gas_spent_usd_24_hours
         description: "USD value of gas spent in last 24 hours"
+        tests:
+          - not_null
       - name: gas_spent_usd_7_days
         description: "USD value of gas spent in last 7 days"
+        tests:
+          - not_null
       - name: gas_spent_usd_30_days
         description: "USD value of gas spent in last 30 days"
+        tests:
+          - not_null
       - name: gas_spent_usd_1_year
         description: "USD value of gas spent in last year"
-      - name: gas_spent_native_curr_total
+        tests:
+          - not_null
+      - name: gas_spent_native_total
         description: "Total amount of gas spent in native currency"
-      - name: gas_spent_native_curr_24_hours
+        tests:
+          - not_null
+      - name: gas_spent_native_24_hours
         description: "Amount of gas spent in native currency in last 24 hours"
-      - name: gas_spent_native_curr_7_days
+        tests:
+          - not_null
+      - name: gas_spent_native_7_days
         description: "Amount of gas spent in native currency in last 7 days"
-      - name: gas_spent_native_curr_30_days
+        tests:
+          - not_null
+      - name: gas_spent_native_30_days
         description: "Amount of gas spent in native currency in last 30 days"
-      - name: gas_spent_native_curr_1_year
+        tests:
+          - not_null
+      - name: gas_spent_native_1_year
         description: "Amount of gas spent in native currency in last year"
+        tests:
+          - not_null
