@@ -12,6 +12,7 @@
  ref('safe_arbitrum_safes')
 ,ref('safe_avalanche_c_safes')
 ,ref('safe_base_safes')
+,ref('safe_berachain_safes')
 ,ref('safe_blast_safes')
 ,ref('safe_bnb_safes')
 ,ref('safe_celo_safes')
