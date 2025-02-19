@@ -4,7 +4,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
-    unique_key=['address', 'blockchain'],
+    unique_key=['address', 'blockchain', 'currency_symbol'],
 ) }}
 
 WITH gas_costs AS (
