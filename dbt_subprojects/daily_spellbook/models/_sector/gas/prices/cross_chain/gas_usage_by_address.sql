@@ -11,7 +11,7 @@ WITH gas_costs AS (
     SELECT 
         blockchain,
         tx_from as address,
-        currency_symbol as native_currency,
+        currency_symbol,
         block_time,
         tx_fee as gas_cost_native,
         tx_fee_usd as gas_cost_usd
@@ -26,7 +26,7 @@ final_metrics AS (
     SELECT
         address,
         blockchain,
-        native_currency,
+        currency_symbol,
         COUNT(*) as number_of_txs,
         SUM(gas_cost_usd) as gas_spent_usd_total,
         SUM(CASE WHEN block_time >= now() - INTERVAL '1' DAY THEN gas_cost_usd END) as gas_spent_usd_24_hours,
@@ -45,7 +45,7 @@ final_metrics AS (
 SELECT 
     address,
     blockchain,
-    native_currency,
+    currency_symbol,
     number_of_txs,
     COALESCE(gas_spent_usd_total, 0) as gas_spent_usd_total,
     COALESCE(gas_spent_usd_24_hours, 0) as gas_spent_usd_24_hours,

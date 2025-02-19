@@ -14,6 +14,7 @@ models:
           combination_of_columns:
             - address
             - blockchain
+            - currency_symbol
     columns:
       - name: address
         description: "The wallet address"
@@ -23,7 +24,7 @@ models:
         description: "The blockchain name"
         tests:
           - not_null
-      - name: native_currency
+      - name: currency_symbol
         description: "Native currency symbol of the chain"
         tests:
           - not_null
