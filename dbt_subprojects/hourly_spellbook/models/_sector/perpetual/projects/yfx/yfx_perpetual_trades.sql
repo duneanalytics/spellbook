@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'yfx_base',
+    schema = 'yfx',
     alias = 'perpetual_trades',
     post_hook='{{ expose_spells(\'["base"]\',
                                     "project",
