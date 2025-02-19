@@ -9,7 +9,7 @@ models:
       contributors: hosuke
     config:
       tags: ['labels', 'berachain', 'balancer', 'pools']
-    description: 'BurrBear liquidity pools created on Berachain.'
+    description: 'Burrbear liquidity pools created on Berachain.'
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -30,7 +30,7 @@ models:
         description: 'Label name of pool containing the token symbols'
       - &pool_type
         name: pool_type
-        description: 'Type of pool (General Pool, Minimal Swap Info, Two Token)'
+        description: 'Type of the pool (General Pool, Minimal Swap Info, Two Token)'
       - &version
         name: version
         description: 'Version of the protocol'
@@ -54,4 +54,4 @@ models:
         description: "Name of the label model sourced from"
       - &label_type
         name: label_type
-        description: "Type of label (see labels overall readme)"
+        description: "Type of the label"
