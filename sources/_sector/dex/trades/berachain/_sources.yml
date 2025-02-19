@@ -16,6 +16,3 @@ sources:
       - name: vault_evt_swap
       - name: vault_evt_poolregistered
       - name: weightedpoolfactory_evt_poolcreated
-  - name: berachain
-    tables:
-      - name: transactions
