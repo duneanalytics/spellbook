@@ -20,7 +20,7 @@ with ton_prices as ( -- get price of TON for each day to estimate USD value
         group by 1
 ), jetton_prices as (
    select jp.token_address as jetton_master, jp.timestamp as block_date, avg(price_usd) as price_usd
-   from {{ ref('ton_daily_prices') }} jp
+   from {{ ref('ton_jetton_price_daily') }} jp
    group by 1, 2
 ),
 ton_flow as (

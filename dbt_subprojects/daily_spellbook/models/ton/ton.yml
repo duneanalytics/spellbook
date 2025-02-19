@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: ton_daily_prices
+  - name: ton_jetton_price_daily
     meta:
       blockchain: ton
       contributors: shuva10v, ohld
