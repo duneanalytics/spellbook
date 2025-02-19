@@ -14,8 +14,8 @@
 
 -- Fetch all known singleton/mastercopy addresses used via factories.
 select distinct singleton as address
-from {{ source('safe_berachain', 'GnosisSafeProxyFactory_v1_3_0_evt_ProxyCreation') }}
+from {{ source('safe_berachain', 'safe_berachain.safeproxyfactory_v1_3_0_evt_proxycreation') }}
 
 union
 select distinct singleton as address
-from {{ source('safe_berachain', 'SafeProxyFactory_v_1_4_1_evt_ProxyCreation') }}
+from {{ source('safe_berachain', 'safeproxyfactory_v1_4_1_evt_proxycreation') }}
