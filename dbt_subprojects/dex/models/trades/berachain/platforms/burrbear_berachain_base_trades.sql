@@ -20,6 +20,6 @@
         , version = '1'
         , project_decoded_as = 'burrbear'
         , Vault_evt_Swap = 'vault_evt_swap'
-        , pools_fees = ref('burrbear_berachain_pools_fees')
+        , pools_fees = 'pools_fees'
     )
 }}
