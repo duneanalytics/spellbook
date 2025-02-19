@@ -293,7 +293,7 @@ sources:
         meta:
           docs_slug: /evm/apechain/raw/erc20_transfers
           short_description: The evt_transfer table contains all ERC20 token transfer events on the Apechain blockchain.
-        description: '{{ doc("apechain_erc20_evt_transfer_doc") }}'
+        description: '{{ doc("erc20_evt_transfer_doc") }}'
         columns:
           - name: contract_address
             description: "The address of the ERC20 token contract"
@@ -319,7 +319,7 @@ sources:
         meta:
           docs_slug: /evm/apechain/raw/erc721_transfers
           short_description: The evt_transfer table contains all ERC721 token transfer events on the Apechain blockchain.
-        description: '{{ doc("erc721_apechain_evt_transfer_doc") }}'
+        description: '{{ doc("erc721_evt_transfer_doc") }}'
         columns:
           - name: contract_address
             description: "The address of the ERC721 token contract"
@@ -345,7 +345,7 @@ sources:
         meta:
           docs_slug: /evm/apechain/raw/erc1155_transfers
           short_description: The evt_transfersingle table contains single token transfer events for ERC1155 tokens.
-        description: '{{ doc("erc1155_apechain_evt_transfersingle_doc") }}'
+        description: '{{ doc("erc1155_evt_transfersingle_doc") }}'
         columns:
           - name: contract_address
             description: "The address of the ERC1155 token contract"
@@ -372,7 +372,7 @@ sources:
         meta:
           docs_slug: /evm/apechain/raw/erc1155_batch_transfers
           short_description: The evt_transferbatch table contains batch transfer events for ERC1155 tokens.
-        description: '{{ doc("erc1155_apechain_evt_transferbatch_doc") }}'
+        description: '{{ doc("erc1155_evt_transferbatch_doc") }}'
         columns:
           - name: contract_address
             description: "The address of the ERC1155 token contract"

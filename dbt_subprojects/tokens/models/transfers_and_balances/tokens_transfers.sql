@@ -2,7 +2,9 @@
         schema = 'tokens'
         , alias = 'transfers'
         , post_hook='{{ expose_spells(\'[
-                                            "arbitrum"
+                                            "abstract"
+                                            ,"apechain"
+                                            ,"arbitrum"
                                             ,"avalanche_c"
                                             ,"base"
                                             ,"blast"
@@ -30,6 +32,7 @@
 
 {% set chains = [
     'abstract'
+    ,'apechain'
     ,'arbitrum'
     ,'avalanche_c'
     ,'base'
