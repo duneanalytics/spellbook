@@ -2,10 +2,6 @@
     config(
         schema = 'eigenlayer',
         alias = 'programmatic_incentive_flattened',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}'
     )
 }}
 

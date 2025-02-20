@@ -2,10 +2,6 @@
     config(
         schema = 'eigenlayer',
         alias = 'withdrawal_queued_v2_flattened',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}'
     )
 }}
 

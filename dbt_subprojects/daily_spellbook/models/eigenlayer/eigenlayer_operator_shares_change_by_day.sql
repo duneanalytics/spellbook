@@ -2,10 +2,6 @@
     config(
         schema = 'eigenlayer',
         alias = 'operator_shares_change_by_day',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}'
     )
 }}
 

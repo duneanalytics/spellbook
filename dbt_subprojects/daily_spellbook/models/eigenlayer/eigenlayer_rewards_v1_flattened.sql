@@ -2,10 +2,6 @@
     config(
         schema = 'eigenlayer',
         alias = 'rewards_v1_flattened',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}'
     )
 }}
 

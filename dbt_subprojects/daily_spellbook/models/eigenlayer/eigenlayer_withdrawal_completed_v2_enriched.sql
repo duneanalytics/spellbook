@@ -2,10 +2,6 @@
     config(
         schema = 'eigenlayer',
         alias = 'withdrawal_completed_v2_enriched',
-        post_hook='{{ expose_spells(\'["ethereum"]\',
-                                    "project",
-                                    "eigenlayer",
-                                    \'["bowenli"]\') }}'
     )
 }}
 
