@@ -15,7 +15,7 @@ WITH union AS (
     -- thus use withdrawal queued as replacement
     SELECT
         strategy,
-        share,
+        shares,
         date_trunc('day', evt_block_time) AS date
     FROM {{ source('eigenlayer_ethereum', 'StrategyManager_evt_ShareWithdrawalQueued') }}
 
@@ -23,7 +23,7 @@ WITH union AS (
 
     SELECT
         strategy,
-        share,
+        shares,
         date_trunc('day', evt_block_time) AS date
     FROM {{ ref('eigenlayer_withdrawal_completed_v2_enriched') }}
 ),

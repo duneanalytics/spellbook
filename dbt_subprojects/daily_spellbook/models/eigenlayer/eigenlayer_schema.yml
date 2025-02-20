@@ -29,9 +29,9 @@ models:
       - &strategy
         name: strategy
         description: "Strategy to withdraw from"
-      - &share
-        name: share
-        description: "Share of strategy of the withdrawal"
+      - &shares
+        name: shares
+        description: "Shares of strategy of the withdrawal"
   - name: eigenlayer_withdrawal_completed_v2_enriched
     meta:
       blockchain: ethereum
@@ -48,7 +48,7 @@ models:
       - *evt_index
       - *withdrawalRoot
       - *strategy
-      - *share
+      - *shares
   - name: eigenlayer_strategy_shares_inflow_by_day
     meta:
       blockchain: ethereum
@@ -60,7 +60,7 @@ models:
         Inflow completed aggregated by day
     columns:
       - *strategy
-      - *share
+      - *shares
       - &date
         name: date
         description: "Date in UTC"
@@ -75,7 +75,7 @@ models:
         Outflow completed aggregated by day
     columns:
       - *strategy
-      - *share
+      - *shares
       - *date
   - name: eigenlayer_strategy_shares_netflow_by_day
     meta:
@@ -88,7 +88,7 @@ models:
         Netflow aggregated by day
     columns:
       - *strategy
-      - *share
+      - *shares
       - *date
   - name: eigenlayer_strategy_category
     meta:
@@ -230,7 +230,7 @@ models:
     columns:
       - *operator
       - *strategy
-      - *share
+      - *shares
       - *date
   - name: eigenlayer_operator_shares_cumulative_by_day
     meta:
@@ -245,6 +245,5 @@ models:
       - *operator
       - *strategy
       - *date
-      - &cumulative_daily_shares
-        name: cumulative_daily_shares
+      - name: cumulative_daily_shares
         description: "Cumulative daily shares"

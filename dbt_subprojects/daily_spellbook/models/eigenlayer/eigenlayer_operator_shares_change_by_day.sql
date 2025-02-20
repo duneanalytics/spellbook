@@ -31,7 +31,7 @@ WITH items AS (
 SELECT
     operator,
     strategy,
-    SUM(shares) as daily_shares,
+    SUM(shares) as shares,
     date
 FROM
     items

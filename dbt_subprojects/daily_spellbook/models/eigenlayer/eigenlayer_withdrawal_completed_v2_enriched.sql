@@ -17,7 +17,7 @@ SELECT
     a.evt_block_number,
     a.withdrawalRoot,
     b.strategy,
-    b.share
+    b.shares
 FROM {{ source('eigenlayer_ethereum', 'DelegationManager_evt_WithdrawalCompleted') }} AS a
 JOIN {{ ref('eigenlayer_withdrawal_queued_v2_flattened') }} AS b
     ON a.withdrawalRoot = b.withdrawalRoot

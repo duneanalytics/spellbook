@@ -21,7 +21,7 @@ daily_aggregated_shares AS (
         a.operator,
         a.strategy,
         b.date,
-        COALESCE(SUM(c.daily_shares), 0) AS daily_shares
+        COALESCE(SUM(c.shares), 0) AS shares
     FROM
         all_operator_strategy AS a
     CROSS JOIN
@@ -41,7 +41,7 @@ cumulative_shares AS (
         operator,
         strategy,
         date,
-        SUM(daily_shares) OVER (PARTITION BY operator, strategy ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumulative_daily_shares
+        SUM(shares) OVER (PARTITION BY operator, strategy ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumulative_daily_shares
     FROM
         daily_aggregated_shares
 )

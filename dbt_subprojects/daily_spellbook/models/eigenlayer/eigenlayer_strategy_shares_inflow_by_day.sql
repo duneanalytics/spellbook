@@ -13,7 +13,7 @@
 WITH daily_share AS (
     SELECT
         strategy,
-        SUM(share) as share,
+        SUM(shares) as shares,
         date_trunc('day', evt_block_time) AS date
     FROM {{ source('eigenlayer_ethereum', 'StrategyManager_evt_Deposit') }}
     GROUP BY strategy, date
@@ -21,7 +21,7 @@ WITH daily_share AS (
 SELECT
     a.date,
     b.strategy,
-    COALESCE(b.share, 0) as share
+    COALESCE(b.shares, 0) as shares
 FROM {{ ref('eigenlayer_date_series') }} AS a
 LEFT JOIN daily_share AS b
     ON a.date = b.date

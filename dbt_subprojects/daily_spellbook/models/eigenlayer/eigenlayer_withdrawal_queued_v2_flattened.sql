@@ -29,7 +29,7 @@ SELECT
     t.evt_block_number,
     t.withdrawalRoot,
     u.strategy,
-    v.share
+    v.shares
 FROM
     parsed_data AS t
     CROSS JOIN UNNEST (
@@ -45,7 +45,7 @@ WITH
         )
     )
 WITH
-    ORDINALITY AS v (share, ordinality)
+    ORDINALITY AS v (shares, ordinality)
 WHERE
     u.ordinality = v.ordinality
     AND evt_block_number >= 19613848

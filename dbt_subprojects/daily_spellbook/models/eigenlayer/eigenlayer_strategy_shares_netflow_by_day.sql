@@ -13,7 +13,7 @@
 WITH union AS (
     SELECT
         strategy,
-        share,
+        shares,
         date
     FROM {{ ref('eigenlayer_strategy_shares_inflow_by_day') }}
 
@@ -21,13 +21,13 @@ WITH union AS (
 
     SELECT
         strategy,
-        share,
+        shares,
         date
     FROM {{ ref('eigenlayer_strategy_shares_outflow_by_day') }}
 )
 SELECT
     strategy,
-    SUM(share) as share,
+    SUM(shares) as shares,
     date
 FROM union
 GROUP BY strategy, date
