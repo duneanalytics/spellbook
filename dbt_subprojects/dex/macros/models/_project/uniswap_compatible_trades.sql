@@ -126,7 +126,7 @@ FROM
     , version = '4'
     , PoolManager_call_Swap = null
     , taker_column_name = null
-    , maker_column_name = 'id'
+    , maker_column_name = null
     , swap_optional_columns = ['swapFee']
     , initialize_optional_columns = ['hooks']
     )
@@ -142,7 +142,7 @@ WITH dexs AS
             , contract_address
             , call_trace_address
             
-            -- Applying keccak256(abi.encode(poolKey)) in SQL
+            -- Applying keccak256(abi.encode(poolKey)) in SQL to create the virtual pool ID
             , keccak (
                 CONCAT(
                     LPAD(
@@ -279,7 +279,7 @@ WITH dexs AS
         call_block_number AS block_number
     , call_block_time AS block_time
     , {% if taker_column_name -%} t.{{ taker_column_name }} {% else -%} cast(null as varbinary) {% endif -%} as taker
-    , {% if maker_column_name -%} t.{{ maker_column_name }} {% else -%} cast(null as varbinary) {% endif -%} as maker -- In v4, the maker (i.e. what sold the token) is the pool's virtual address. We also pass the pool ID, making it easier to join with Initialize() and retrieve hooked pool metrics.
+    , id as maker -- In v4, the maker (i.e. what sold the token) is the pool's virtual address. We also pass the pool ID, making it easier to join with Initialize() and retrieve hooked pool metrics.
     , CASE WHEN amount0 < INT256 '0' THEN ABS(amount1) ELSE ABS(amount0) END AS token_bought_amount_raw 
     , CASE WHEN amount0 < INT256 '0' THEN ABS(amount0) ELSE ABS(amount1) END AS token_sold_amount_raw
     , CASE WHEN amount0 < INT256 '0' THEN currency1 ELSE currency0 END AS token_bought_address
