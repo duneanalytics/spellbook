@@ -4,6 +4,7 @@
     materialized='incremental',
     file_format='delta',
     incremental_strategy='merge',
+    partition_by = ['blockchain'],
     unique_key=['address', 'blockchain', 'currency_symbol'],
 ) }}
 
