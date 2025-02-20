@@ -32,6 +32,23 @@ models:
       - &share
         name: share
         description: "Share of strategy of the withdrawal"
+  - name: eigenlayer_withdrawal_completed_v1_enriched
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: [ 'eigenlayer', 'restaking', 'withdrawal' ]
+    description: >
+      Withdrawal completed V1 events, enriched with withdrawal queued strategy and share breakdowns
+    columns:
+      - *evt_block_time
+      - *evt_block_number
+      - *evt_tx_hash
+      - *evt_index
+      - *withdrawalRoot
+      - *strategy
+      - *share
   - name: eigenlayer_withdrawal_completed_v2_enriched
     meta:
       blockchain: ethereum
@@ -49,6 +66,47 @@ models:
       - *withdrawalRoot
       - *strategy
       - *share
+  - name: eigenlayer_tvl_inflow_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: [ 'eigenlayer', 'restaking', 'deposit' ]
+    description: >
+        Inflow completed aggregated by day
+    columns:
+      - *strategy
+      - *share
+      - &date
+        name: date
+        description: "Date in UTC"
+  - name: eigenlayer_tvl_outflow_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: [ 'eigenlayer', 'restaking', 'withdrawal' ]
+    description: >
+        Outflow completed aggregated by day
+    columns:
+      - *strategy
+      - *share
+      - *date
+  - name: eigenlayer_tvl_netflow_by_day
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: [ 'eigenlayer', 'restaking', 'netflow' ]
+    description: >
+        Netflow aggregated by day
+    columns:
+      - *strategy
+      - *share
+      - *date
   - name: eigenlayer_strategy_category
     meta:
       blockchain: ethereum
@@ -76,9 +134,7 @@ models:
     description: >
         Date series
     columns:
-      - &date
-        name: date
-        description: "Date in UTC"
+      - *date
   - name: eigenlayer_avs_operator_registration_status_latest
     meta:
       blockchain: ethereum
