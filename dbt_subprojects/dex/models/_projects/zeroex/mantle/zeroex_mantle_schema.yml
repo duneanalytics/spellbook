@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: zeroex_mantle_settler_trades 
+  - name: zeroex_v2_mantle_trades 
     meta:
       blockchain: mantle
       project: zeroex

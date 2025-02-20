@@ -416,4 +416,7 @@ FROM (VALUES
     , (0x616a4E1db48e22028f6bbf20444Cd3b8e3273738, 'smUSDC', 18)
     , (0xF8F10f39116716e89498c1c5E94137ADa11b2BC7, 'waBasezETH', 18)
     , (0xe298b938631f750DD409fB18227C4a23dCdaab9b, 'waBasWETH', 18)
+    , (0xC768c589647798a6EE01A91FdE98EF2ed046DBD6, 'waBasUSDC', 6)
+    , (0x88b1cd4b430d95b406e382c3cdbae54697a0286e, 'waBasGHO', 18)
+    , (0x3a1a33cf4553db61f0db2c1e1721cd480b02789f, 'TABOSHI', 18)
 ) AS temp_table (contract_address, symbol, decimals)
