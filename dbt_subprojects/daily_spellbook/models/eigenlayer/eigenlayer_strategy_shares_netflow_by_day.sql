@@ -15,7 +15,7 @@ WITH union AS (
         strategy,
         share,
         date
-    FROM {{ ref('eigenlayer_tvl_inflow_by_day') }}
+    FROM {{ ref('eigenlayer_strategy_shares_inflow_by_day') }}
 
     UNION ALL
 
@@ -23,7 +23,7 @@ WITH union AS (
         strategy,
         share,
         date
-    FROM {{ ref('eigenlayer_tvl_outflow_by_day') }}
+    FROM {{ ref('eigenlayer_strategy_shares_outflow_by_day') }}
 )
 SELECT
     strategy,
