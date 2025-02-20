@@ -314,5 +314,4 @@ SELECT
     , dexs.hooks
 FROM
     dexs
-where dexs.block_time >= now() - INTERVAL '1' day -- TODO remove after testing
 {% endmacro %}
