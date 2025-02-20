@@ -24,7 +24,8 @@
     ref('lending_fantom_base_borrow'),
     ref('lending_gnosis_base_borrow'),
     ref('lending_zksync_base_borrow'),
-    ref('lending_scroll_base_borrow')
+    ref('lending_scroll_base_borrow'),
+    ref('lending_linea_base_borrow')
   ]
 %}
 

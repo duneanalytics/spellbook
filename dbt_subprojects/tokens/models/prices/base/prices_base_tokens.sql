@@ -207,6 +207,9 @@ FROM
     ('yfi-yearnfinance', 'base', 'YFI', 0x9eaf8c1e34f05a589eda6bafdf391cf6ad3cb239, 18),
     ('lbtc-lombard-staked-btc', 'base', 'LBTC', 0xecAc9C5F704e954931349Da37F60E39f515c11c1, 8),
     ('veil2-veil-token', 'base', 'VEIL', 0x767A739D1A152639e9Ea1D8c1BD55FDC5B217D7f, 18),
-    ('vvv-venice-token','base','VVV',0xacfE6019Ed1A7Dc6f7B508C02d1b04ec88cC21bf,18)
+    ('vvv-venice-token','base','VVV',0xacfE6019Ed1A7Dc6f7B508C02d1b04ec88cC21bf,18),
+    ('b3-b3', 'base', 'B3', 0xb3b32f9f8827d4634fe7d973fa1034ec9fddb3b3, 18),
+    ('morpho-morpho', 'base', 'MORPHO', 0xBAa5CC21fd487B8Fcc2F632f3F4E8D37262a0842, 18),
+    ('talent-talent-protocol', 'base', 'TALENT', 0x9a33406165f562E16C3abD82fd1185482E01b49a, 18)
     --('well-moonwell' ,'base', 'WELL', 0xa88594d404727625a9437c3f886c7643872296ae, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

@@ -1655,6 +1655,7 @@ FROM
     ('ethx-stader-ethx','ethereum','ETHx',0xA35b1B31Ce002FBF2058D22F30f95D405200A15b, 18),
     ('rseth-rseth','ethereum','rsETH',0xa1290d69c65a6fe4df752f95823fae25cb99e5a7, 18),
     ('pufeth-pufeth','ethereum','pufETH',0xD9A442856C234a39a81a089C06451EBAa4306a72, 18),
+    ('puffer-puffer','ethereum','PUFFER',0x4d1c297d39c5c1277964d0e3f8aa901493664530, 18),
     ('yup-yup','ethereum','YUP',0x69bBC3F8787d573F1BBDd0a5f40C7bA0Aee9BCC9, 18),
     ('jesus-jesus-coin','ethereum','JESUS',0xba386a4ca26b85fd057ab1ef86e3dc7bdeb5ce70, 18),
     ('bonk-bonk','ethereum','BONK',0x1151cb3d861920e07a38e03eead12c32178567f6, 5),
@@ -1875,7 +1876,8 @@ FROM
     ('wagmi5-wagmi', 'ethereum', 'WAGMI', 0x92CC36D66e9d739D50673d1f27929a371FB83a67, 18),
     ('deusd-elixir-deusd','ethereum', 'DEUSD', 0x15700b564ca08d9439c58ca5053166e8317aa138, 18),
     ('unibot-unibot','ethereum', 'UNIBOT', 0xf819d9cb1c2a819fd991781a822de3ca8607c3c9, 18),
-    ('morpho-morpho','ethereum', 'MORPHO', 0x58d97b57bb95320f9a05dc918aef65434969c2b2, 18)
+    ('morpho-morpho','ethereum', 'MORPHO', 0x58d97b57bb95320f9a05dc918aef65434969c2b2, 18),
+    ('scrvusd-savings-crvusd', 'ethereum', 'SCRVUSD', 0x0655977FEb2f289A4aB78af67BAB0d17aAb84367, 18)
 
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
