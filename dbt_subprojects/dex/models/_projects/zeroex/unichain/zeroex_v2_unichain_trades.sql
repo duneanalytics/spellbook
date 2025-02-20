@@ -1,5 +1,5 @@
 {{  config(
-    schema = 'zeroex_v2_base',
+    schema = 'zeroex_v2_unichain',
     alias = 'trades',
     materialized='incremental',
     partition_by = ['block_month'],
@@ -11,7 +11,7 @@
 )}}
 
 {% set zeroex_settler_start_date = '2024-07-15' %}
-{% set blockchain = 'base' %}
+{% set blockchain = 'unichain' %}
 
 WITH zeroex_tx AS (
     {{
