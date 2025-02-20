@@ -10,7 +10,7 @@
 }}
 
 
-WITH union AS (
+WITH combined_withdrawals AS (
     -- V1 withdrawal completed does not have shares data, nor can it be linked to withdrawal queued
     -- thus use withdrawal queued as replacement
     SELECT
@@ -30,15 +30,15 @@ WITH union AS (
 daily_share AS (
     SELECT
         strategy,
-        SUM(share) * -1 as share,
+        SUM(shares) * -1 as shares,
         date
-    FROM union
+    FROM combined_withdrawals
     GROUP BY strategy, date
 )
 SELECT
     a.date,
     b.strategy,
-    COALESCE(b.share, 0) as share
+    COALESCE(b.shares, 0) as shares
 FROM {{ ref('eigenlayer_date_series') }} AS a
 LEFT JOIN daily_share AS b
     ON a.date = b.date
