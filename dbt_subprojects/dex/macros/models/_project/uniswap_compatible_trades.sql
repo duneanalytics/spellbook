@@ -127,8 +127,6 @@ FROM
     , PoolManager_call_Swap = null
     , taker_column_name = null
     , maker_column_name = null
-    , swap_optional_columns = ['swapFee']
-    , initialize_optional_columns = ['hooks']
     )
 %}
 WITH dexs AS
@@ -288,16 +286,8 @@ WITH dexs AS
     , call_tx_hash AS tx_hash
     , CAST(ARRAY_JOIN(call_trace_address, '') AS BIGINT) AS evt_index -- Using swap call here, so artificially creating evt_index from call_trace_address
 
-    {%- if swap_optional_columns %}
-    {%- for optional_column in swap_optional_columns %}
-    , t.{{ optional_column }}
-    {%- endfor %}
-    {%- endif %}
-    {%- if initialize_optional_columns %}
-    {%- for optional_column in initialize_optional_columns %}
-    , f.{{ optional_column }}
-    {%- endfor %}
-    {%- endif %}
+    , swapFee
+    , hooks
 
     FROM clean_swaps 
 
