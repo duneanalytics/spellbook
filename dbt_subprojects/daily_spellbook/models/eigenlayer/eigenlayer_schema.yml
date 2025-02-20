@@ -66,7 +66,7 @@ models:
       - *withdrawalRoot
       - *strategy
       - *share
-  - name: eigenlayer_tvl_inflow_by_day
+  - name: eigenlayer_strategy_shares_inflow_by_day
     meta:
       blockchain: ethereum
       sector: restaking
@@ -81,7 +81,7 @@ models:
       - &date
         name: date
         description: "Date in UTC"
-  - name: eigenlayer_tvl_outflow_by_day
+  - name: eigenlayer_strategy_shares_outflow_by_day
     meta:
       blockchain: ethereum
       sector: restaking
@@ -94,7 +94,7 @@ models:
       - *strategy
       - *share
       - *date
-  - name: eigenlayer_tvl_netflow_by_day
+  - name: eigenlayer_strategy_shares_netflow_by_day
     meta:
       blockchain: ethereum
       sector: restaking

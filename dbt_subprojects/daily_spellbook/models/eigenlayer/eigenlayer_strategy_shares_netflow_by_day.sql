@@ -1,7 +1,7 @@
 {{ 
     config(
         schema = 'eigenlayer',
-        alias = 'tvl_outflow_by_day',
+        alias = 'strategy_shares_netflow_by_day',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "eigenlayer",
@@ -14,20 +14,20 @@ WITH union AS (
     SELECT
         strategy,
         share,
-        date_trunc('day', evt_block_time) AS date
-    FROM {{ ref('eigenlayer_withdrawal_completed_v1_enriched') }}
+        date
+    FROM {{ ref('eigenlayer_tvl_inflow_by_day') }}
 
     UNION ALL
 
     SELECT
         strategy,
         share,
-        date_trunc('day', evt_block_time) AS date
-    FROM {{ ref('eigenlayer_withdrawal_completed_v2_enriched') }}
+        date
+    FROM {{ ref('eigenlayer_tvl_outflow_by_day') }}
 )
 SELECT
     strategy,
-    SUM(share) * -1 as share,
+    SUM(share) as share,
     date
 FROM union
 GROUP BY strategy, date

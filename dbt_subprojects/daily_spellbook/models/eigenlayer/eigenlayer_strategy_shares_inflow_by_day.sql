@@ -1,7 +1,7 @@
 {{ 
     config(
         schema = 'eigenlayer',
-        alias = 'tvl_inflow_by_day',
+        alias = 'strategy_shares_inflow_by_day',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "eigenlayer",
