@@ -29,7 +29,7 @@ SELECT
     t.evt_block_number,
     t.withdrawalRoot,
     CAST(u.strategy AS VARBINARY) AS strategy,
-    v.shares
+    CAST(v.shares AS DECIMAL(38,0)) AS shares
 FROM
     parsed_data AS t
     CROSS JOIN UNNEST (
