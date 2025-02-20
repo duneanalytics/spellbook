@@ -1,6 +1,6 @@
 {{ config(
         schema='prices_v2',
-        alias = 'day',
+        alias = 'day_expiring',
         materialized = 'incremental',
         file_format = 'delta',
         partition_by = ['date'],
@@ -9,6 +9,8 @@
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.timestamp')]
         )
 }}
+
+{% set expiration_days = '30' %}
 
 
 WITH sparse_prices as (
@@ -45,6 +47,7 @@ WITH sparse_prices as (
                 , max_by(source_timestamp,timestamp) as source_timestamp
             from {{ ref('prices_v2_day_sparse') }}
             where not {{ incremental_predicate('timestamp') }} -- not in the current incremental window (so before that)
+            and timestamp > now() - interval '{{expiration_days}}' day
             group by blockchain, contract_address
         )
         {% endif %}
@@ -77,5 +80,6 @@ SELECT
 FROM timeseries t
 INNER JOIN sparse_prices p
     on p.timestamp <= t.timestamp
+    and p.timestamp + interval '{{expiration_days}}' day > t.timestamp
     and (p.next_update is null or p.next_update > t.timestamp)
 
