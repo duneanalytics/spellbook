@@ -28,7 +28,7 @@ SELECT
     t.evt_block_time,
     t.evt_block_number,
     t.withdrawalRoot,
-    u.strategy,
+    CAST(u.strategy AS VARBINARY) AS strategy,
     v.shares
 FROM
     parsed_data AS t
