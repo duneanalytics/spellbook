@@ -1,4 +1,5 @@
 {{ config(
+        tags = ['prod_exclude'],
         schema='prices_v2',
         alias = 'minute_sparse',
         file_format = 'delta',

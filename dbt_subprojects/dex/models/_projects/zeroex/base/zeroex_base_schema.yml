@@ -138,7 +138,7 @@ models:
     meta:
       blockchain: base
       project: zeroex
-      contributors: rantum, bakabhai993
+      contributors: rantum
     config:
       tags: ['base','0x','dex_aggregator','dex','aggregator']
     description: >

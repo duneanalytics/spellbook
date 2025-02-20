@@ -53,3 +53,31 @@ models:
         description: "The USD price used to calculate the amount_usd"
       - name: amount_usd
         description: "The USD amount of the transfer"
+
+  - name: tokens_net_transfers_daily
+    meta:
+      sector: tokens
+      contributors: jeff-dude, krishhh
+    config:
+      tags: ['tokens', 'net_transfers']
+    description: &net_transfers_description |
+      "The amount returned is the net received amount in a transaction. This gets to the heart of what was really transfered
+      in a transaction, as the amounts that go from and back to a single address don't actually count as real transfers.
+      For example, if I give you a dollar and then you give it back to me in a single transaction that should count as $0 
+      because nothing was effectively transferred. If I give you two dollars and you give one back to me that should count as $1
+      because one dollar was effectively transfered.
+
+      The reason we filter where net_received is greater than 0 is because if you sum the negative net received (aka sent)
+      with the positive net received (aka received) it adds up to 0 since the net sent should equal the net received. 
+      For example, if I give you $1 that's -1 sent (from me) and +1 received (by you) which adds to 0. 
+      This query counts the received to show that $1 was effectively transfered."
+
+
+  - name: tokens_net_transfers_daily_asset
+    meta:
+      sector: tokens
+      contributors: jeff-dude, krishhh
+    config:
+      tags: ['tokens', 'net_transfers']
+    description: "Total transfer amount per day per asset across chains"
+    
