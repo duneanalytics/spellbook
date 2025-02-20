@@ -311,16 +311,8 @@ SELECT
     , dexs.project_contract_address
     , dexs.tx_hash
     , dexs.evt_index
-    {%- if swap_optional_columns %}  
-    {%- for optional_column in swap_optional_columns %}  
-    , dexs.{{ optional_column }}  
-    {%- endfor %}  
-    {%- endif %}  
-    {%- if initialize_optional_columns %}
-    {%- for optional_column in initialize_optional_columns %}
-    , dexs.{{ optional_column }}
-    {%- endfor %}
-    {%- endif %}
+    , dexs.swapFee
+    , dexs.hooks
 FROM
     dexs
 where dexs.block_time >= now() - INTERVAL '1' day -- TODO remove after testing
