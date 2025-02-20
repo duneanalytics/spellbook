@@ -735,5 +735,6 @@ FROM
         ('chillguy-just-a-chill-guy', 'solana', 'CHILLGUY', 'Df6yfrKC8kZE3KNkrHERKzAetSxbrWeniQfyJY4Jpump', 6),
         ('kmno-kamino-finance', 'solana', 'KMNO', 'KMNo3nJsBXfcpJTVhZcXLW7RmTwTt4GVFE7suUBo9sS', 6),
         ('pyusd-paypal-usd', 'solana', 'PyUSD', '2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo', 6),
-        ('prcl-parcl', 'solana', 'PRCL', '4LLbsb5ReP3yEtYzmXewyGjcir5uXtKFURtaEUVC2AHs', 6)
+        ('prcl-parcl', 'solana', 'PRCL', '4LLbsb5ReP3yEtYzmXewyGjcir5uXtKFURtaEUVC2AHs', 6),
+        ('layer-solayer', 'solana', 'LAYER', 'LAYER4xPpTCb3QL8S9u41EAhAX7mhBn8Q6xMTwY2Yzc', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
