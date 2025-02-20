@@ -32,23 +32,6 @@ models:
       - &share
         name: share
         description: "Share of strategy of the withdrawal"
-  - name: eigenlayer_withdrawal_completed_v1_enriched
-    meta:
-      blockchain: ethereum
-      sector: restaking
-      contributors: bowenli
-    config:
-      tags: [ 'eigenlayer', 'restaking', 'withdrawal' ]
-    description: >
-      Withdrawal completed V1 events, enriched with withdrawal queued strategy and share breakdowns
-    columns:
-      - *evt_block_time
-      - *evt_block_number
-      - *evt_tx_hash
-      - *evt_index
-      - *withdrawalRoot
-      - *strategy
-      - *share
   - name: eigenlayer_withdrawal_completed_v2_enriched
     meta:
       blockchain: ethereum

@@ -11,11 +11,13 @@
 
 
 WITH union AS (
+    -- V1 withdrawal completed does not have shares data, nor can it be linked to withdrawal queued
+    -- thus use withdrawal queued as replacement
     SELECT
         strategy,
         share,
         date_trunc('day', evt_block_time) AS date
-    FROM {{ ref('eigenlayer_withdrawal_completed_v1_enriched') }}
+    FROM {{ source('eigenlayer_ethereum', 'StrategyManager_evt_ShareWithdrawalQueued') }}
 
     UNION ALL
 
