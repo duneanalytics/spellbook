@@ -284,7 +284,7 @@ WITH dexs AS
     , CASE WHEN amount0 < INT256 '0' THEN currency0 ELSE currency1 END AS token_sold_address
     , contract_address AS project_contract_address
     , call_tx_hash AS tx_hash
-    , varbinary_to_bigint(xxhash64(to_utf8(array_join(call_trace_address, '')))) as evt_index -- we are using swap call here, so artificially creating evt_index | can't directly cast as bigint because concatenated call_trace_address can be more than 24 digits long
+    , varbinary_to_uint256(xxhash64(to_utf8(array_join(call_trace_address, '')))) as evt_index -- we are using swap call here, so artificially creating evt_index | can't directly cast as bigint because concatenated call_trace_address can be more than 24 digits long
 
     , swapFee
     , hooks
