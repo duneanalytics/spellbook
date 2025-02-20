@@ -15,6 +15,6 @@
         , project = 'uniswap'
         , version = '4'
         , PoolManager_call_Swap = source('uniswap_v4_base', 'PoolManager_call_Swap') 
-        , taker_column_name = 'call_tx_from'
+        
     )
 }}
