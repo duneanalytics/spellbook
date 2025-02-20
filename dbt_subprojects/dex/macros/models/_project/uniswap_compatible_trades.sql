@@ -305,7 +305,6 @@ SELECT
     , CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw
     , dexs.token_bought_address
     , dexs.token_sold_address
-    , dexs.sender as router
     , dexs.taker
     , dexs.maker
     , dexs.project_contract_address
