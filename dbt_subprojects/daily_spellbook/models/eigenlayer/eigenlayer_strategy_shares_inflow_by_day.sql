@@ -16,7 +16,7 @@ WITH daily_share AS (
         SUM(shares) as shares,
         date_trunc('day', evt_block_time) AS date
     FROM {{ source('eigenlayer_ethereum', 'StrategyManager_evt_Deposit') }}
-    GROUP BY strategy, date
+    GROUP BY strategy, date_trunc('day', evt_block_time)
 )
 SELECT
     a.date,
