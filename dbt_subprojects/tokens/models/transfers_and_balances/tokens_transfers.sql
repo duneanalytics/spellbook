@@ -1,30 +1,39 @@
 {{ config(
         schema = 'tokens'
         , alias = 'transfers'
-        , post_hook='{{ expose_spells(\'[
+        , post_hook='{{ expose_spells(blockchains = \'[
                                             "arbitrum"
                                             ,"avalanche_c"
                                             ,"base"
                                             ,"blast"
                                             ,"bnb"
+                                            ,"boba"
                                             ,"celo"
+                                            ,"corn"
                                             ,"ethereum"
                                             ,"fantom"
+                                            ,"flare"
                                             ,"gnosis"
+                                            ,"ink"
+                                            ,"kaia"
                                             ,"linea"
                                             ,"mantle"
+                                            ,"nova"
                                             ,"optimism"
-                                            ,"ronin"
                                             ,"polygon"
+                                            ,"ronin"
                                             ,"scroll"
                                             ,"sei"
+                                            ,"sonic"
+                                            ,"viction"
+                                            ,"worldchain"
                                             ,"zkevm"
                                             ,"zksync"
                                             ,"zora"
                                         ]\',
-                                        "sector",
-                                        "tokens",
-                                        \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob"]\') }}'
+                                        spell_type = "sector",
+                                        spell_name = "tokens",
+                                        contributors = \'["aalan3", "jeff-dude", "0xBoxer", "hildobby", "0xRob", "hosuke"]\') }}'
         )
 }}
 
@@ -35,18 +44,27 @@
     ,'base'
     ,'blast'
     ,'bnb'
+    ,'boba'
     ,'celo'
+    ,'corn'
     ,'ethereum'
     ,'fantom'
+    ,'flare'
     ,'gnosis'
+    ,'ink'
+    ,'kaia'
     ,'linea'
     ,'mantle'
+    ,'nova'
     ,'optimism'
     ,'polygon'
     ,'ronin'
     ,'scroll'
     ,'sei'
+    ,'sonic'
     ,'tron'
+    ,'viction'
+    ,'worldchain'
     ,'zkevm'
     ,'zksync'
     ,'zora'
