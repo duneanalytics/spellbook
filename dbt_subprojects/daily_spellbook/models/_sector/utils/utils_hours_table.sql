@@ -1,19 +1,14 @@
 {{ config(
     schema = 'utils',
     alias = 'hours_table',
-    materialized = 'incremental',
-    file_format = 'delta',
-    unique_key = 'timestamp',
-    incremental_strategy = 'merge'
+    materialized = 'table',
+    file_format = 'delta'
     )
 }}
 
 
 with days as (
     select * from {{ref('utils_days_table')}}
-    {%if is_incremental() %}
-    where {{incremental_predicate('timestamp')}}
-    {%endif%}
 )
 
 SELECT * FROM (

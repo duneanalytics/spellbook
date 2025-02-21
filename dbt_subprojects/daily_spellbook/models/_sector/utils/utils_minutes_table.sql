@@ -1,19 +1,14 @@
 {{ config(
     schema = 'utils',
     alias = 'minutes_table',
-    materialized = 'incremental',
-    file_format = 'delta',
-    unique_key = 'timestamp',
-    incremental_strategy = 'merge'
+    materialized = 'table',
+    file_format = 'delta'
     )
 }}
 
 
 with hours as (
     select * from {{ref('utils_hours_table')}}
-    {%if is_incremental() %}
-    where {{incremental_predicate('timestamp')}}
-    {%endif%}
 )
 
 SELECT * FROM (
