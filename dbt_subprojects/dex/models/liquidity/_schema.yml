@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_liquidity
     meta:
-      blockchain: ethereum
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb
       sector: dex
       short_description: The `dex.liquidity` table captures liquidity data on DEXs. This table contains a detailed breakdown of liquidity pmodified per transaction. 
       contributors: irishLatte19
