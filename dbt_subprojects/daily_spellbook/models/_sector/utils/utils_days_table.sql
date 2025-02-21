@@ -17,7 +17,7 @@ FROM unnest(
         {% else %}
         timestamp '2009-01-03'
         {% endif %}
-        , cast(date_trunc('day', now()) as timestamp)+ interval '2' day  -- add some padding to account for materialization lag
+        , cast(date_trunc('day', now()) as timestamp)+ interval '3' day  -- add some padding to account for materialization lag
         , interval '1' day
         )
     ) as foo(timestamp)
