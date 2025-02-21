@@ -5,7 +5,7 @@
     file_format = 'delta'
     )
 }}
-
+-- these are set up as tables instead of incremental models because this guarantees the ordering and compute is negligable.
 
 SELECT timestamp
 FROM unnest(
