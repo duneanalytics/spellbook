@@ -13,11 +13,14 @@
 
 {% macro uniswap_new_blockchains_list() %}
    {{ return([
-        "blast"
+        "berachain"
+       , "blast"
        , "bob"
+       , "boba"
        , "celo"
        , "degen"
        , "fantom"
+       , "flare"
        , "kaia"
        , "linea"
        , "mantle"
@@ -26,6 +29,10 @@
        , "ronin"
        , "scroll"
        , "sei"
+       , "sonic"
+       , "sophon"
+       , "unichain"
+       , "viction"
        , "worldchain"
        , "zkevm"
        , "zksync"
