@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: ton_jetton_price_daily
+    meta:
+      blockchain: ton
+      contributors: pshuvalov, okhlopkov
+    config:
+      tags: ['ton','prices',' dex']
+    description: >
+      TON tokens (jettons) daily prices derived from on-chain events. Includes prices for all jettons present on DEXs, DEX LPs and StormTrade SLPs.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - blockchain
+              - token_address
+              - timestamp
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain for the token"
+      - &token_address
+        name: token_address
+        description: "Token (Jetton) address in raw format"
+      - &timestamp
+        name: timestamp
+        description: "Start of the day in UTC"
+      - &price_ton
+        name: price_ton
+        description: 'Jetton price in TON (ignoring decimals)'
+      - &price_usd
+        name: price_usd
+        description: 'Jetton price in USD (ignoring decimals)'
+      - &asset_type
+        name: asset_type
+        description: 'Asset type: Jetton (price is based on DEX trades), DEX LP or SLP (StormTrade LP token)'

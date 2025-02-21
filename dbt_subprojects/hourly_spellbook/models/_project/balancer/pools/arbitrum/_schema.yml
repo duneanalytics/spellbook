@@ -49,3 +49,24 @@ models:
       - *pool_id
       - *token_address
       - *normalized_weight
+
+  - name: balancer_v3_arbitrum_pools_tokens_weights
+    meta:
+      blockchain: arbitrum
+      project: balancer
+      contributors: jacektrocinski, viniabussafi
+    config:
+      tags: ['arbitrum', 'balancer', 'pools', 'tokens', 'weights']
+    description: >
+      Token weights in Balancer v3 pools.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - pool_id
+            - token_address
+    columns:
+      - *blockchain
+      - *version
+      - *pool_id
+      - *token_address
+      - *normalized_weight     

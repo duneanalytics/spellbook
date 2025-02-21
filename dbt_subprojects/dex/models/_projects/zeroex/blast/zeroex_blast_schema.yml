@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: zeroex_blast_settler_trades 
+  - name: zeroex_v2_blast_trades 
     meta:
       blockchain: blast
       project: zeroex
