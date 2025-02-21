@@ -18,6 +18,7 @@ SELECT
 FROM
 (
     VALUES
-    -- ('soph-sophon', 'SOPH', 0x000000000000000000000000000000000000800A, 18)  -- Temporarily removed as no price data available yet
     ('eth-ethereum', 'ETH', 0x72af9F169B619D85A47Dfa8fefbCD39dE55c567D, 18)
+    , ('usdt-tether', 'USDT', 0x6386da73545ae4e2b2e0393688fa8b65bb9a7169, 6)
+    , ('usdc-usd-coin', 'USDC', 0x9Aa0F72392B5784Ad86c6f3E899bCc053D00Db4F, 6)
 ) as temp (token_id, symbol, contract_address, decimals) 
