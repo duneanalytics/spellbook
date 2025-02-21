@@ -24,3 +24,4 @@ SELECT * FROM (
         )
         CROSS JOIN unnest(sequence(0, 59)) AS m(minute)
 )
+order by timestamp asc

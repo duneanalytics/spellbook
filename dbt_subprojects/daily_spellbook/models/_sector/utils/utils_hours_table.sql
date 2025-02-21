@@ -24,3 +24,4 @@ SELECT * FROM (
         )
         CROSS JOIN unnest(sequence(0, 23)) AS h(hour)
 )
+order by timestamp asc

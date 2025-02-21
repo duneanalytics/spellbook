@@ -21,3 +21,4 @@ FROM unnest(
         , interval '1' day
         )
     ) as foo(timestamp)
+order by timestamp asc
