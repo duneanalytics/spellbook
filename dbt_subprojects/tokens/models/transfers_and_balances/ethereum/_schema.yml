@@ -247,4 +247,3 @@ models:
       - name: block_time_latest
       - name: balance_raw_latest
       - name: balance_latest
-
