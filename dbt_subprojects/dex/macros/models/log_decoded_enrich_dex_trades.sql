@@ -1,6 +1,5 @@
 {% macro log_decoded_enrich_dex_trades(
     base_trades = null
-    , filter = null
     , tokens_erc20_model = null
     )
 %}
@@ -10,10 +9,8 @@ WITH base_trades as (
         *
     FROM
         {{ base_trades }}
-    WHERE
-        {{ filter }}
     {% if is_incremental() %}
-    AND
+    WHERE
         {{ incremental_predicate('block_time') }}
     {% endif %}
 )
@@ -21,7 +18,6 @@ WITH base_trades as (
 , enrichments AS (
     SELECT
         base_trades.blockchain
-        , base_trades.project
         , base_trades.version
         , base_trades.factory_address
         , base_trades.dex_type
@@ -48,6 +44,7 @@ WITH base_trades as (
         , base_trades.tx_from
         , base_trades.tx_to
         , base_trades.evt_index
+        , base_trades.tx_index
     FROM
         base_trades
     LEFT JOIN
@@ -70,7 +67,6 @@ WITH base_trades as (
 
 SELECT
     blockchain
-    , project
     , version
     , factory_address
     , dex_type
@@ -95,6 +91,7 @@ SELECT
     , tx_from
     , tx_to
     , evt_index
+    , tx_index
 FROM
     enrichments_with_prices
 

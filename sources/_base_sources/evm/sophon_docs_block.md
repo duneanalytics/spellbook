@@ -1,6 +1,53 @@
-{% docs unichain_transactions_doc %}
+{% docs sophon_blocks %}
+Block data from the Sophon blockchain containing block timestamps, numbers, and hashes.
 
-The `unichain.transactions` table contains detailed information about transactions on the Unichain blockchain. It includes:
+Tables in this model contain decoded data from the Sophon blockchain.
+{% enddocs %}
+
+{% docs sophon_transactions %}
+Transaction data from the Sophon blockchain containing details of each transaction.
+
+Tables in this model contain decoded data from the Sophon blockchain.
+{% enddocs %}
+
+{% docs sophon_traces %}
+Traces data from the Sophon blockchain containing internal transactions and contract creations.
+
+Tables in this model contain decoded data from the Sophon blockchain.
+{% enddocs %}
+
+{% docs sophon_logs %}
+Event logs from the Sophon blockchain emitted by contracts.
+
+Tables in this model contain decoded data from the Sophon blockchain.
+{% enddocs %}
+
+{% docs sophon_blocks_doc %}
+
+The `sophon.blocks` table contains information about blocks on the Sophon blockchain. It includes:
+
+- Block identifiers: number, hash, time, date
+- Gas metrics: gas_limit, gas_used, blob_gas_used, excess_blob_gas
+- Block characteristics: size, base_fee_per_gas
+- Block roots: state_root, transactions_root, receipts_root, parent_beacon_block_root
+- Consensus data: difficulty, total_difficulty, nonce
+- Block producer: miner
+- Parent block: parent_hash
+
+This table is fundamental for analyzing:
+- Block production and timing
+- Network capacity and usage
+- Chain structure and growth
+- Network performance metrics
+- Validator/miner behavior
+- Gas price dynamics
+- Data availability layer metrics
+
+{% enddocs %}
+
+{% docs sophon_transactions_doc %}
+
+The `sophon.transactions` table contains detailed information about transactions on the Sophon blockchain. It includes:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction details: hash, from, to, value
@@ -28,9 +75,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs unichain_traces_doc %}
+{% docs sophon_traces_doc %}
 
-The `unichain.traces` table contains records of execution steps for transactions on the Unichain blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
+The `sophon.traces` table contains records of execution steps for transactions on the Sophon blockchain. Each trace represents an atomic operation that modifies the blockchain state. Key components include:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction context: tx_hash, tx_index, tx_from, tx_to
@@ -51,9 +98,9 @@ This table is essential for:
 
 {% enddocs %}
 
-{% docs unichain_traces_decoded_doc %}
+{% docs sophon_traces_decoded_doc %}
 
-The `unichain.traces_decoded` table contains decoded traces from verified smart contracts on the Unichain blockchain. It includes:
+The `sophon.traces_decoded` table contains decoded traces from verified smart contracts on the Sophon blockchain. It includes:
 
 - Block information: block_date, block_time, block_number
 - Contract context: namespace, contract_name
@@ -70,9 +117,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs unichain_logs_doc %}
+{% docs sophon_logs_doc %}
 
-The `unichain.logs` table contains event logs emitted by smart contracts on the Unichain blockchain. It includes:
+The `sophon.logs` table contains event logs emitted by smart contracts on the Sophon blockchain. It includes:
 
 - Block information: block_time, block_number, block_hash, block_date
 - Transaction details: tx_hash, tx_index, tx_from, tx_to
@@ -102,9 +149,9 @@ Key use cases:
 
 {% enddocs %}
 
-{% docs unichain_contracts_doc %}
+{% docs sophon_contracts_doc %}
 
-The `unichain.contracts` table tracks verified smart contracts on the Unichain blockchain, including:
+The `sophon.contracts` table tracks verified smart contracts on the Sophon blockchain, including:
 
 - Contract identification: address, name, namespace
 - Contract code and interface: abi, code
@@ -124,9 +171,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs unichain_contracts_submitted_doc %}
+{% docs sophon_contracts_submitted_doc %}
 
-The `unichain.contracts_submitted` table tracks contracts submitted for verification on the Unichain blockchain. It includes:
+The `sophon.contracts_submitted` table tracks contracts submitted for verification on the Sophon blockchain. It includes:
 
 - Contract address and identification
 - Submission metadata (timestamp, submitter)
@@ -143,9 +190,9 @@ This table helps track:
 
 {% enddocs %}
 
-{% docs unichain_logs_decoded_doc %}
+{% docs sophon_logs_decoded_doc %}
 
-The `unichain.logs_decoded` table contains decoded event logs from verified smart contracts on the Unichain blockchain. It includes:
+The `sophon.logs_decoded` table contains decoded event logs from verified smart contracts on the Sophon blockchain. It includes:
 
 - Block information: block_date, block_time, block_number
 - Contract details: namespace, contract_name, contract_address
@@ -162,9 +209,9 @@ This table is essential for:
 
 {% enddocs %}
 
-{% docs unichain_signatures_doc %}
+{% docs sophon_signatures_doc %}
 
-The `unichain.signatures` table contains function and event signatures used for decoding contract interactions on the Unichain blockchain. It includes:
+The `sophon.signatures` table contains function and event signatures used for decoding contract interactions on the Sophon blockchain. It includes:
 
 - Signature identification: id, signature
 - Function/Event details: name, type
@@ -181,9 +228,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs unichain_creation_traces_doc %}
+{% docs sophon_creation_traces_doc %}
 
-The `unichain.creation_traces` table contains data about contract creation events on the Unichain blockchain. It includes:
+The `sophon.creation_traces` table contains data about contract creation events on the Sophon blockchain. It includes:
 
 - Block information: block_time, block_number, block_month
 - Transaction details: tx_hash
@@ -198,34 +245,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs unichain_blocks_doc %}
+{% docs erc20_sophon_evt_transfer_doc %}
 
-The `unichain.blocks` table contains information about blocks on the Unichain blockchain. It includes:
-
-- Block identifiers: number, hash, time, date
-- Gas metrics: gas_limit, gas_used
-- Block characteristics: size, base_fee_per_gas
-- Block roots: state_root, transactions_root, receipts_root
-- Consensus data: difficulty, total_difficulty, nonce
-- Block producer: miner
-- Parent block: parent_hash
-- Data availability: blob_gas_used, excess_blob_gas
-- Beacon chain: parent_beacon_block_root
-
-This table is fundamental for analyzing:
-- Block production and timing
-- Network capacity and usage
-- Chain structure and growth
-- Network performance metrics
-- Validator/miner behavior
-- Gas price dynamics
-- Data availability layer metrics
-
-{% enddocs %}
-
-{% docs erc20_unichain_evt_transfer_doc %}
-
-The `erc20_unichain.evt_transfer` table contains Transfer events emitted by ERC20 token contracts on the Unichain blockchain. Each record represents a token transfer between addresses. The table includes:
+The `erc20_sophon.evt_transfer` table contains Transfer events emitted by ERC20 token contracts on the Sophon blockchain. Each record represents a token transfer between addresses. The table includes:
 
 - Contract information: contract_address
 - Event context: evt_tx_hash, evt_index, evt_block_time, evt_block_number
@@ -243,9 +265,9 @@ This table is essential for:
 
 {% enddocs %}
 
-{% docs erc721_unichain_evt_transfer_doc %}
+{% docs erc721_sophon_evt_transfer_doc %}
 
-The `erc721_unichain.evt_transfer` table contains Transfer events emitted by ERC721 (NFT) contracts on the Unichain blockchain. Each record represents a unique token transfer between addresses. The table includes:
+The `erc721_sophon.evt_transfer` table contains Transfer events emitted by ERC721 (NFT) contracts on the Sophon blockchain. Each record represents a unique token transfer between addresses. The table includes:
 
 - Contract information: contract_address
 - Event context: evt_tx_hash, evt_index, evt_block_time, evt_block_number
@@ -263,9 +285,9 @@ This table is used for:
 
 {% enddocs %}
 
-{% docs erc1155_unichain_evt_transfersingle_doc %}
+{% docs erc1155_sophon_evt_transfersingle_doc %}
 
-The `erc1155_unichain.evt_transfersingle` table contains TransferSingle events emitted by ERC1155 contracts on the Unichain blockchain. Each record represents a single token type transfer between addresses. The table includes:
+The `erc1155_sophon.evt_transfersingle` table contains TransferSingle events emitted by ERC1155 contracts on the Sophon blockchain. Each record represents a single token type transfer between addresses. The table includes:
 
 - Contract information: contract_address
 - Event context: evt_tx_hash, evt_index, evt_block_time, evt_block_number
@@ -285,9 +307,9 @@ This table is useful for:
 
 {% enddocs %}
 
-{% docs erc1155_unichain_evt_transferbatch_doc %}
+{% docs erc1155_sophon_evt_transferbatch_doc %}
 
-The `erc1155_unichain.evt_transferbatch` table contains TransferBatch events emitted by ERC1155 contracts on the Unichain blockchain. Each record represents multiple token types being transferred between addresses in a single transaction. The table includes:
+The `erc1155_sophon.evt_transferbatch` table contains TransferBatch events emitted by ERC1155 contracts on the Sophon blockchain. Each record represents multiple token types being transferred between addresses in a single transaction. The table includes:
 
 - Contract information: contract_address
 - Event context: evt_tx_hash, evt_index, evt_block_time, evt_block_number
@@ -306,3 +328,59 @@ This table is crucial for:
 - Building efficient token tracking systems
 
 {% enddocs %}
+
+{% docs erc20_sophon_evt_approval_doc %}
+
+The `erc20_sophon.evt_approval` table contains Approval events for ERC20 tokens on the Sophon blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and spender addresses
+- Approved amount
+
+This table is used for analyzing ERC20 token approvals and spending permissions on the Sophon network.
+
+{% enddocs %}
+
+{% docs erc721_sophon_evt_approval_doc %}
+
+The `erc721_sophon.evt_approval` table contains Approval events for ERC721 tokens on the Sophon blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and approved addresses
+- Token ID
+
+This table is used for analyzing approvals for individual ERC721 tokens (NFTs) on the Sophon network.
+
+{% enddocs %}
+
+{% docs erc721_sophon_evt_approvalforall_doc %}
+
+The `erc721_sophon.evt_approvalforall` table contains ApprovalForAll events for ERC721 tokens on the Sophon blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and operator addresses
+- Approved status (boolean)
+
+This table is used for analyzing blanket approvals for ERC721 token collections on the Sophon network.
+
+{% enddocs %}
+
+{% docs erc1155_sophon_evt_approvalforall_doc %}
+
+The `erc1155_sophon.evt_approvalforall` table contains ApprovalForAll events for ERC1155 tokens on the Sophon blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Account and operator addresses
+- Approved status (boolean)
+
+This table is used for analyzing blanket approvals for ERC1155 token collections on the Sophon network.
+
+{% enddocs %} 

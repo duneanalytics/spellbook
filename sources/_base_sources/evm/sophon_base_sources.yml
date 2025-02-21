@@ -1,16 +1,61 @@
 version: 2
 
 sources:
-  # Unichain Tables
-  - name: unichain
-    description: "Unichain is a Layer 2 (L2) blockchain built on Optimism's technology stack, providing scalable and efficient blockchain solutions."
+  # Sophon Tables
+  - name: sophon
+    description: "Sophon is a blockchain network focused on providing scalable and efficient infrastructure for decentralized applications."
 
     tables:
+      - name: blocks
+        meta:
+          docs_slug: /evm/sophon/raw/blocks
+          short_description: The blocks table contains detailed information about blocks on the Sophon network.
+        description: '{{ doc("sophon_blocks_doc") }}'
+        columns:
+          - name: time
+            description: "The exact UTC timestamp when this block was added to the chain"
+          - name: number
+            description: "The sequential block number"
+          - name: gas_limit
+            description: "Maximum amount of gas that could be used in this block"
+          - name: gas_used
+            description: "Actual amount of gas used in this block"
+          - name: difficulty
+            description: "Mining difficulty for this block"
+          - name: total_difficulty
+            description: "Total chain difficulty up to this block"
+          - name: size
+            description: "Size of the block in bytes"
+          - name: base_fee_per_gas
+            description: "Base fee per gas in this block (EIP-1559)"
+          - name: hash
+            description: "Unique 256-bit identifier (hash) of this block"
+          - name: parent_hash
+            description: "Hash of the parent block"
+          - name: miner
+            description: "Address of the miner/validator who produced this block"
+          - name: nonce
+            description: "Nonce value used in block mining"
+          - name: state_root
+            description: "Root hash of the state trie after this block"
+          - name: transactions_root
+            description: "Root hash of the transaction trie of this block"
+          - name: receipts_root
+            description: "Root hash of the receipts trie of this block"
+          - name: date
+            description: "The UTC date of this block"
+          - name: blob_gas_used
+            description: "Amount of blob gas used in this block"
+          - name: excess_blob_gas
+            description: "Excess blob gas in this block"
+          - name: parent_beacon_block_root
+            description: "Root hash of the parent beacon block"
+
       - name: transactions
         meta:
-          docs_slug: /evm/unichain/raw/transactions
-          short_description: The transactions table contains detailed information about transactions on the Unichain network, including L1 data.
-        description: '{{ doc("unichain_transactions_doc") }}'
+          docs_slug: /evm/sophon/raw/transactions
+          short_description: The transactions table contains detailed information about transactions on the Sophon network.
+        description: '{{ doc("sophon_transactions_doc") }}'
         columns:
           - name: block_time
             description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
@@ -55,25 +100,25 @@ sources:
           - name: block_date
             description: "The UTC date of the block containing this transaction"
           - name: l1_gas_used
-            description: "Amount of gas used on L1 for this L2 transaction"
+            description: "Amount of L1 gas used by this transaction"
           - name: l1_gas_price
-            description: "Gas price on L1 at the time of this L2 transaction"
+            description: "L1 gas price for this transaction"
           - name: l1_fee
-            description: "Total L1 fee paid for this L2 transaction"
+            description: "Total L1 fee for this transaction"
           - name: l1_fee_scalar
-            description: "Scalar value used to calculate L1 fee"
+            description: "L1 fee scalar value"
           - name: l1_block_number
-            description: "The L1 block number associated with this L2 transaction"
+            description: "L1 block number associated with this transaction"
           - name: l1_timestamp
-            description: "The L1 block timestamp associated with this L2 transaction"
+            description: "L1 block timestamp"
           - name: l1_tx_origin
-            description: "The original L1 transaction sender address"
+            description: "Original L1 transaction sender address"
 
       - name: traces
         meta:
-          docs_slug: /evm/unichain/raw/traces
+          docs_slug: /evm/sophon/raw/traces
           short_description: The traces table contains detailed execution traces of transactions.
-        description: '{{ doc("unichain_traces_doc") }}'
+        description: '{{ doc("sophon_traces_doc") }}'
         columns:
           - name: block_time
             description: "The exact UTC timestamp when the block containing this trace was added to the chain"
@@ -128,42 +173,11 @@ sources:
           - name: block_date
             description: "The UTC date of the block containing this trace"
 
-      - name: traces_decoded
-        meta:
-          docs_slug: /evm/unichain/decoded/traces_decoded
-          short_description: The traces_decoded table contains decoded traces with additional information based on contract ABIs.
-        description: '{{ doc("unichain_traces_decoded_doc") }}'
-        columns:
-          - name: block_date
-            description: "The UTC date of the block containing this trace"
-          - name: block_time
-            description: "The exact UTC timestamp when the block containing this trace was added to the chain"
-          - name: block_number
-            description: "The sequential number of the block containing this trace"
-          - name: namespace
-            description: "Categorical grouping or project name associated with the contract"
-          - name: contract_name
-            description: "Human-readable name of the smart contract involved in this trace"
-          - name: to
-            description: "Address of the contract receiving this trace"
-          - name: trace_address
-            description: "Array indicating the position of this trace in the trace tree"
-          - name: tx_hash
-            description: "Hash of the parent transaction"
-          - name: tx_from
-            description: "Address that initiated the parent transaction"
-          - name: tx_to
-            description: "Recipient address of the parent transaction"
-          - name: signature
-            description: "Function signature hash"
-          - name: function_name
-            description: "Human-readable name of the called function"
-
       - name: logs
         meta:
-          docs_slug: /evm/unichain/raw/logs
-          short_description: The logs table contains event logs emitted by smart contracts on the unichain blockchain.
-        description: '{{ doc("unichain_logs_doc") }}'
+          docs_slug: /evm/sophon/raw/logs
+          short_description: The logs table contains event logs emitted by smart contracts on the Sophon network.
+        description: '{{ doc("sophon_logs_doc") }}'
         columns:
           - name: block_time
             description: "The exact UTC timestamp when the block containing this log was added to the chain"
@@ -198,9 +212,9 @@ sources:
 
       - name: contracts
         meta:
-          docs_slug: /evm/unichain/raw/contracts
-          short_description: The contracts table tracks decoded contracts on unichain, including associated metadata such as namespace, name, address, ABI.
-        description: '{{ doc("unichain_contracts_doc") }}'
+          docs_slug: /evm/sophon/raw/contracts
+          short_description: The contracts table tracks decoded contracts on Sophon, including associated metadata.
+        description: '{{ doc("sophon_contracts_doc") }}'
         columns:
           - name: abi_id
             description: "Unique identifier for the contract ABI"
@@ -229,9 +243,9 @@ sources:
 
       - name: contracts_submitted
         meta:
-          docs_slug: /evm/unichain/decoded/contracts_submitted
+          docs_slug: /evm/sophon/decoded/contracts_submitted
           short_description: The contracts_submitted table contains information about contracts submitted for decoding.
-        description: '{{ doc("unichain_contracts_submitted_doc") }}'
+        description: '{{ doc("sophon_contracts_submitted_doc") }}'
         columns:
           - name: address
             description: "Address of the submitted contract"
@@ -254,9 +268,9 @@ sources:
 
       - name: logs_decoded
         meta:
-          docs_slug: /evm/unichain/decoded/logs_decoded
+          docs_slug: /evm/sophon/decoded/logs_decoded
           short_description: The logs_decoded table contains decoded logs with additional information based on contract ABIs.
-        description: '{{ doc("unichain_logs_decoded_doc") }}'
+        description: '{{ doc("sophon_logs_decoded_doc") }}'
         columns:
           - name: block_date
             description: "The UTC date of the block containing this log"
@@ -283,32 +297,42 @@ sources:
           - name: event_name
             description: "Human-readable name of the emitted event"
 
-      - name: signatures
+      - name: traces_decoded
         meta:
-          docs_slug: /evm/unichain/decoded/signatures
-          short_description: The signatures table contains function and event signatures for contract decoding.
-        description: '{{ doc("unichain_signatures_doc") }}'
+          docs_slug: /evm/sophon/decoded/traces_decoded
+          short_description: The traces_decoded table contains decoded traces with additional information based on contract ABIs.
+        description: '{{ doc("sophon_traces_decoded_doc") }}'
         columns:
-          - name: id
-            description: "Unique identifier for the signature"
-          - name: signature
-            description: "The function or event signature string"
-          - name: abi
-            description: "The ABI fragment for this signature"
-          - name: type
-            description: "Type of signature (function or event)"
+          - name: block_date
+            description: "The UTC date of the block containing this trace"
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this trace was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this trace"
           - name: namespace
-            description: "Project or protocol name associated with the signature"
-          - name: name
-            description: "Human-readable name of the function or event"
-          - name: created_at
-            description: "Timestamp when this signature was added"
+            description: "Project or protocol name associated with the contract"
+          - name: contract_name
+            description: "Human-readable name of the smart contract involved in this trace"
+          - name: to
+            description: "Address of the contract receiving this trace"
+          - name: trace_address
+            description: "Array indicating the position of this trace in the trace tree"
+          - name: tx_hash
+            description: "Hash of the parent transaction"
+          - name: tx_from
+            description: "Address that initiated the parent transaction"
+          - name: tx_to
+            description: "Recipient address of the parent transaction"
+          - name: signature
+            description: "Function signature hash"
+          - name: function_name
+            description: "Human-readable name of the called function"
 
       - name: creation_traces
         meta:
-          docs_slug: /evm/unichain/raw/creation_traces
+          docs_slug: /evm/sophon/raw/creation_traces
           short_description: The creation_traces table contains information about contract creation traces on the network.
-        description: '{{ doc("unichain_creation_traces_doc") }}'
+        description: '{{ doc("sophon_creation_traces_doc") }}'
         columns:
           - name: block_time
             description: "The exact UTC timestamp when the block containing this contract creation was added to the chain"
@@ -325,60 +349,15 @@ sources:
           - name: block_month
             description: "The UTC month of the block in which this contract creation occurred"
 
-      - name: blocks
-        meta:
-          docs_slug: /evm/unichain/raw/blocks
-          short_description: The blocks table contains detailed information about blocks on the network.
-        description: '{{ doc("unichain_blocks_doc") }}'
-        columns:
-          - name: time
-            description: "The exact UTC timestamp when this block was added to the chain"
-          - name: number
-            description: "The sequential block number"
-          - name: gas_limit
-            description: "Maximum amount of gas that could be used in this block"
-          - name: gas_used
-            description: "Actual amount of gas used in this block"
-          - name: difficulty
-            description: "Mining difficulty for this block"
-          - name: total_difficulty
-            description: "Total chain difficulty up to this block"
-          - name: size
-            description: "Size of the block in bytes"
-          - name: base_fee_per_gas
-            description: "Base fee per gas in this block (EIP-1559)"
-          - name: hash
-            description: "Unique 256-bit identifier (hash) of this block"
-          - name: parent_hash
-            description: "Hash of the parent block"
-          - name: miner
-            description: "Address of the miner/validator who produced this block"
-          - name: nonce
-            description: "Nonce value used in block mining"
-          - name: state_root
-            description: "Root hash of the state trie after this block"
-          - name: transactions_root
-            description: "Root hash of the transaction trie of this block"
-          - name: receipts_root
-            description: "Root hash of the receipts trie of this block"
-          - name: date
-            description: "The UTC date of this block"
-          - name: blob_gas_used
-            description: "Amount of blob gas used in this block (EIP-4844)"
-          - name: excess_blob_gas
-            description: "Excess blob gas in this block (EIP-4844)"
-          - name: parent_beacon_block_root
-            description: "Root hash of the parent beacon block" 
-
   # ERC Transfer Tables
-  - name: erc20_unichain
-    description: "Transfer events for ERC20 tokens on Unichain"
+  - name: erc20_sophon
+    description: "Transfer events for ERC20 tokens on Sophon"
     tables:
       - name: evt_transfer
         meta:
-          docs_slug: /evm/unichain/decoded/erc20_evt_transfer
-          short_description: The evt_transfer table contains ERC20 token transfer events on the Unichain network.
-        description: '{{ doc("erc20_unichain_evt_transfer_doc") }}'
+          docs_slug: /evm/sophon/decoded/erc20_evt_transfer
+          short_description: The evt_transfer table contains ERC20 token transfer events on the Sophon network.
+        description: '{{ doc("erc20_sophon_evt_transfer_doc") }}'
         columns:
           - name: contract_address
             description: "Address of the ERC20 token contract"
@@ -397,14 +376,37 @@ sources:
           - name: value
             description: "Amount of tokens transferred"
 
-  - name: erc721_unichain
-    description: "Transfer events for ERC721 tokens on Unichain"
+      - name: evt_approval
+        meta:
+          docs_slug: /evm/sophon/decoded/erc20_evt_approval
+          short_description: The evt_approval table contains approval events for ERC20 tokens on the Sophon network.
+        description: '{{ doc("erc20_sophon_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this approval event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: owner
+            description: "Address of the token owner granting approval"
+          - name: spender
+            description: "Address being granted permission to spend tokens"
+          - name: value
+            description: "Amount of tokens approved for spending"
+
+  - name: erc721_sophon
+    description: "Transfer events for ERC721 tokens on Sophon"
     tables:
       - name: evt_transfer
         meta:
-          docs_slug: /evm/unichain/decoded/erc721_evt_transfer
-          short_description: The evt_transfer table contains ERC721 (NFT) token transfer events on the Unichain network.
-        description: '{{ doc("erc721_unichain_evt_transfer_doc") }}'
+          docs_slug: /evm/sophon/decoded/erc721_evt_transfer
+          short_description: The evt_transfer table contains ERC721 (NFT) token transfer events on the Sophon network.
+        description: '{{ doc("erc721_sophon_evt_transfer_doc") }}'
         columns:
           - name: contract_address
             description: "Address of the ERC721 token contract"
@@ -423,14 +425,60 @@ sources:
           - name: tokenId
             description: "Unique identifier of the transferred NFT"
 
-  - name: erc1155_unichain
-    description: "Transfer events for ERC1155 tokens on Unichain"
+      - name: evt_approval
+        meta:
+          docs_slug: /evm/sophon/decoded/erc721_evt_approval
+          short_description: The evt_approval table contains approval events for ERC721 tokens on the Sophon network.
+        description: '{{ doc("erc721_sophon_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this approval event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: owner
+            description: "Address of the token owner granting approval"
+          - name: approved
+            description: "Address being granted permission to transfer the token"
+          - name: tokenId
+            description: "Unique identifier of the NFT being approved"
+
+      - name: evt_approvalforall
+        meta:
+          docs_slug: /evm/sophon/decoded/erc721_evt_approvalforall
+          short_description: The evt_approvalforall table contains approval events for all tokens of an ERC721 contract.
+        description: '{{ doc("erc721_sophon_evt_approvalforall_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this approval event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: owner
+            description: "Address of the token owner granting approval"
+          - name: operator
+            description: "Address being granted permission to transfer all tokens"
+          - name: approved
+            description: "Boolean indicating whether approval is granted or revoked"
+
+  - name: erc1155_sophon
+    description: "Transfer events for ERC1155 tokens on Sophon"
     tables:
       - name: evt_transfersingle
         meta:
-          docs_slug: /evm/unichain/decoded/erc1155_evt_transfersingle
-          short_description: The evt_transfersingle table contains single ERC1155 token transfer events on the Unichain network.
-        description: '{{ doc("erc1155_unichain_evt_transfersingle_doc") }}'
+          docs_slug: /evm/sophon/decoded/erc1155_evt_transfersingle
+          short_description: The evt_transfersingle table contains single ERC1155 token transfer events.
+        description: '{{ doc("erc1155_sophon_evt_transfersingle_doc") }}'
         columns:
           - name: contract_address
             description: "Address of the ERC1155 token contract"
@@ -455,9 +503,9 @@ sources:
 
       - name: evt_transferbatch
         meta:
-          docs_slug: /evm/unichain/decoded/erc1155_evt_transferbatch
-          short_description: The evt_transferbatch table contains batch ERC1155 token transfer events on the Unichain network.
-        description: '{{ doc("erc1155_unichain_evt_transferbatch_doc") }}'
+          docs_slug: /evm/sophon/decoded/erc1155_evt_transferbatch
+          short_description: The evt_transferbatch table contains batch ERC1155 token transfer events.
+        description: '{{ doc("erc1155_sophon_evt_transferbatch_doc") }}'
         columns:
           - name: contract_address
             description: "Address of the ERC1155 token contract"
@@ -479,3 +527,26 @@ sources:
             description: "Array of token type identifiers"
           - name: values
             description: "Array of amounts transferred for each token type"
+
+      - name: evt_approvalforall
+        meta:
+          docs_slug: /evm/sophon/decoded/erc1155_evt_approvalforall
+          short_description: The evt_approvalforall table contains approval events for all tokens of an ERC1155 contract.
+        description: '{{ doc("erc1155_sophon_evt_approvalforall_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this approval event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: owner
+            description: "Address of the token owner granting approval"
+          - name: operator
+            description: "Address being granted permission to transfer all tokens"
+          - name: approved
+            description: "Boolean indicating whether approval is granted or revoked" 
