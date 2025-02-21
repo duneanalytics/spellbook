@@ -11,7 +11,7 @@ assignees: ''
 <!-- Give a succinct summary of the issue you found, as well as any other details you think will help a fellow wizard investigate and solve this issue. -->
 
 ### Current behavior
-<!-- Describe the behaviour you encountered to be incorrect. Please include links to dune.com queries as well as a screenshot, or direct links to the concerned lines in a spell.-->
+<!-- Describe the behavior you encountered to be incorrect. Please include links to dune.com queries as well as a screenshot, or direct links to the concerned lines in a spell.-->
 
 ### Expected behavior
 <!--Describe the expected results the query should be producing. 
