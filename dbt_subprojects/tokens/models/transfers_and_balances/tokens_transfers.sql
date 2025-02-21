@@ -18,7 +18,6 @@
                                             ,"polygon"
                                             ,"scroll"
                                             ,"sei"
-                                            ,"sophon"
                                             ,"zkevm"
                                             ,"zksync"
                                             ,"zora"
@@ -47,7 +46,6 @@
     ,'ronin'
     ,'scroll'
     ,'sei'
-    ,'sophon'
     ,'tron'
     ,'zkevm'
     ,'zksync'
