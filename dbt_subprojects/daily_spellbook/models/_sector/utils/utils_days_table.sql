@@ -13,7 +13,7 @@ SELECT timestamp
 FROM unnest(
     sequence(
         {%if is_incremental() %}
-        cast(date_trunc('day', now()) as timestamp)- interval '{{env_var('DBT_ENV_INCREMENTAL_TIME')}}' {{env_var('DBT_ENV_INCREMENTAL_TIME_UNIT')}}
+        cast(date_trunc('day', now()) as timestamp)- interval '{{var("DBT_ENV_INCREMENTAL_TIME")}}' {{var("DBT_ENV_INCREMENTAL_TIME_UNIT")}}
         {% else %}
         timestamp '2009-01-03'
         {% endif %}
