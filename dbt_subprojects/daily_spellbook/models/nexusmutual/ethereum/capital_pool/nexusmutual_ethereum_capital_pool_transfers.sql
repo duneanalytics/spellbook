@@ -28,7 +28,8 @@ nexusmutual_contracts (contract_address) as (
   (0x7cbe5682be6b648cc1100c76d4f6c96997f753d6), --Pool2, deployed: May-23-2019
   (0xcafea8321b5109d22c53ac019d7a449c947701fb), --MCR, deployed: May-25-2021
   (0xcafea92739e411a4D95bbc2275CA61dE6993C9a7), --MCR, deployed: Nov-21-2023
-  (0x51ad1265C8702c9e96Ea61Fe4088C2e22eD4418e)  --Advisory Board multisig
+  (0x51ad1265C8702c9e96Ea61Fe4088C2e22eD4418e), --Advisory Board multisig
+  (0xcafeaed98d7Fce8F355C03c9F3507B90a974f37e)  --SwapOperator
 ),
 
 transfer_in as (
