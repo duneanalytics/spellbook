@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: zeroex_linea_settler_trades 
+  - name: zeroex_v2_linea_trades 
     meta:
       blockchain: linea
       project: zeroex
