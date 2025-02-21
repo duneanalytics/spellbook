@@ -181,6 +181,9 @@ WITH dexs AS
             
             FROM {{ PoolManager_call_Swap }}
             WHERE call_success
+                {%- if is_incremental() %}
+                AND {{ incremental_predicate('call_block_time') }}
+                {%- endif %}
         )
 
         , wrangled AS (
