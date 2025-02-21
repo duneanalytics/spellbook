@@ -15,8 +15,8 @@ models:
       project: kodiak
       contributors: hosuke
     config:
-      tags: ["berachain", "dex", "trades", "kodiak", "v3"]
-    description: "kodiak berachain v3 base trades"
+      tags: ["berachain", "dex", "trades", "kodiak"]
+    description: "Kodiak berachain base trades"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -26,3 +26,41 @@ models:
           seed_file: ref('kodiak_berachain_base_trades_seed')
           filter:
             version: 3
+
+  - name: burrbear_berachain_base_trades
+    meta:
+      blockchain: berachain
+      sector: dex
+      project: burrbear
+      contributors: hosuke
+    config:
+      tags: ["berachain", "dex", "trades", "burrbear"]
+    description: "BurrBear berachain base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('burrbear_berachain_base_trades_seed')
+          filter:
+            version: 1
+
+  - name: beraswap_berachain_base_trades
+    meta:
+      blockchain: berachain
+      sector: dex
+      project: beraswap
+      contributors: hosuke
+    config:
+      tags: ["berachain", "dex", "trades", "beraswap"]
+    description: "BeraSwap berachain base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('beraswap_berachain_base_trades_seed')
+          filter:
+            version: 1

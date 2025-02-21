@@ -7,6 +7,8 @@
 
 {% set base_models = [
     ref('kodiak_v3_berachain_base_trades')
+    , ref('burrbear_berachain_base_trades')
+    , ref('beraswap_berachain_base_trades')
 ] %}
 
 WITH base_union AS (
