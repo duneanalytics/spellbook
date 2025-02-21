@@ -104,6 +104,6 @@ FROM (
         , (57073, 'ink', 'Ink', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.inkonchain.com/', timestamp '2024-12-06 15:20', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true)
         , (2741, 'abstract', 'Abstract', 'Layer 2', 'ZK Rollup', 'ETH', 0x3439153EB7AF838Ad19d56E1571FBD09333C2809, 'https://abscan.org/', timestamp '2024-10-25 18:31', 'ZK Stack', 'Ethereum Blobs', 'Ethereum', true)
         , (80094, 'berachain', 'Berachain', 'Layer 1', NULL, 'BERA', NULL, 'https://berascan.com/', timestamp '2024-01-20 14:14:11', NULL, NULL, NULL, true)
+        , (33139, 'apechain', 'ApeChain', 'Layer 3', 'Optimistic Rollup', 'APE', 0x48b62137edfa95a428d35c09e44256a739f6b557, 'https://apescan.io/', timestamp '2024-08-28 16:45:22', 'Arbitrum Orbit', 'AnyTrust', 'Arbitrum One', true)
         , (130, 'unichain', 'Unichain', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://uniscan.xyz/', timestamp '2024-11-04 19:26', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true)
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune)
-

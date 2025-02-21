@@ -37,6 +37,7 @@
                                         ,"bob"
                                         ,"sonic"
                                         ,"berachain"
+                                        ,"apechain"
                                         ,"unichain"
                                     ]\',
                                     "sector",
@@ -86,6 +87,7 @@
     ,'tokens_ink': {'blockchain': 'ink', 'model': ref('tokens_ink_erc20')}
     ,'tokens_abstract': {'blockchain': 'abstract', 'model': ref('tokens_abstract_erc20')}
     ,'tokens_berachain': {'blockchain': 'berachain', 'model': ref('tokens_berachain_erc20')}
+    ,'tokens_apechain': {'blockchain': 'apechain', 'model': ref('tokens_apechain_erc20')}
     ,'tokens_unichain': {'blockchain': 'unichain', 'model': ref('tokens_unichain_erc20')}
 } %}
 

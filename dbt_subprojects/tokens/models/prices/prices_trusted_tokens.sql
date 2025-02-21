@@ -18,6 +18,8 @@ WITH trusted_tokens AS (
                 ('abstract', 0x3439153EB7AF838Ad19d56E1571FBD09333C2809)
                 , ('abstract', 0x84a71ccd554cc1b02749b35d22f684cc8ec987e1)
                 , ('abstract', 0x000000000000000000000000000000000000800a)
+                , ('apechain', 0x48b62137edfa95a428d35c09e44256a739f6b557)  -- WAPE
+                , ('apechain', 0xa2235d059f80e176d931ef76b6c51953eb3fbef4)  -- ApeUSD
                 , ('arbitrum', 0xff970a61a04b1ca14834a43f5de4533ebddb5cc8)
                 , ('arbitrum', 0x82af49447d8a07e3bd95bd0d56f35241523fbab1)
                 , ('arbitrum', 0xaf88d065e77c8cc2239327c5edb3a432268e5831)
