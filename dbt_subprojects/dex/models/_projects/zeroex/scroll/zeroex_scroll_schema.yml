@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: zeroex_scroll_settler_trades 
+  - name: zeroex_v2_scroll_trades 
     meta:
       blockchain: scroll
       project: zeroex
