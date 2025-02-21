@@ -1,7 +1,11 @@
 {{ config(
     schema = 'utils',
     alias = 'minutes',
-    materialized = 'view'
+    materialized = 'view',
+    post_hook='{{ expose_spells(\'[]',
+                                    "sector",
+                                    "utils",
+                                    \'["0xRob"]\') }}'
     )
 }}
 
