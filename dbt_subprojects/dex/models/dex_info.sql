@@ -207,4 +207,6 @@ FROM (VALUES
     , ('shadow', 'Shadow', 'Direct', 'ShadowOnSonic')
     , ('kodiak', 'Kodiak', 'Direct', 'KodiakFi')
     , ('unichainswap', 'UnichainSwap', 'Direct', 'unichainswap')
+    , ('beraswap', 'BeraSwap', 'Direct', 'BeraSwap')
+    , ('burrbear', 'BurrBear', 'Direct', 'moneygoesburr')
 ) AS temp_table (project, name, marketplace_type, x_username)
