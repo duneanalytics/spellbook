@@ -289,6 +289,11 @@ WITH dexs AS
     , swapFee
     , hooks
 
+    , ROW_NUMBER() OVER (
+            PARTITION BY call_tx_hash, call_trace_address 
+            ORDER BY call_trace_address DESC 
+    ) AS row_num
+
     FROM clean_swaps 
 
 )
@@ -314,4 +319,5 @@ SELECT
     , dexs.hooks
 FROM
     dexs
+WHERE row_num = 1
 {% endmacro %}
