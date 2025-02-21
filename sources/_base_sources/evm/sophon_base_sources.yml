@@ -1,106 +1,552 @@
 version: 2
 
 sources:
+  # Sophon Tables
   - name: sophon
-    description: "Decoded tables from the sophon blockchain"
-    freshness:
-      warn_after: { count: 12, period: hour }
-      error_after: { count: 24, period: hour }
+    description: "Sophon is a blockchain network focused on providing scalable and efficient infrastructure for decentralized applications."
+
     tables:
       - name: blocks
-        loaded_at_field: block_time
-        description: "Block data containing timestamps, numbers, and hashes"
+        meta:
+          docs_slug: /evm/sophon/raw/blocks
+          short_description: The blocks table contains detailed information about blocks on the Sophon network.
+        description: '{{ doc("sophon_blocks_doc") }}'
         columns:
-          - *blockchain
-          - *block_time
-          - *block_number
-          - *block_hash
-          - *tx_count
-          - *difficulty
-          - *gas_limit
-          - *gas_used
-          - *base_fee_per_gas
-          - *total_difficulty
-          - *nonce
-          - *miner
-          - *size
-          - *extra_data
-          - *parent_hash
-          - *sha3_uncles
-          - *state_root
-          - *transactions_root
-          - *receipts_root
-          - *withdrawals_root
+          - name: time
+            description: "The exact UTC timestamp when this block was added to the chain"
+          - name: number
+            description: "The sequential block number"
+          - name: gas_limit
+            description: "Maximum amount of gas that could be used in this block"
+          - name: gas_used
+            description: "Actual amount of gas used in this block"
+          - name: difficulty
+            description: "Mining difficulty for this block"
+          - name: total_difficulty
+            description: "Total chain difficulty up to this block"
+          - name: size
+            description: "Size of the block in bytes"
+          - name: base_fee_per_gas
+            description: "Base fee per gas in this block (EIP-1559)"
+          - name: hash
+            description: "Unique 256-bit identifier (hash) of this block"
+          - name: parent_hash
+            description: "Hash of the parent block"
+          - name: miner
+            description: "Address of the miner/validator who produced this block"
+          - name: nonce
+            description: "Nonce value used in block mining"
+          - name: state_root
+            description: "Root hash of the state trie after this block"
+          - name: transactions_root
+            description: "Root hash of the transaction trie of this block"
+          - name: receipts_root
+            description: "Root hash of the receipts trie of this block"
+          - name: date
+            description: "The UTC date of this block"
+          - name: blob_gas_used
+            description: "Amount of blob gas used in this block"
+          - name: excess_blob_gas
+            description: "Excess blob gas in this block"
+          - name: parent_beacon_block_root
+            description: "Root hash of the parent beacon block"
 
       - name: transactions
-        loaded_at_field: block_time
-        description: "Transaction data containing details of each transaction"
+        meta:
+          docs_slug: /evm/sophon/raw/transactions
+          short_description: The transactions table contains detailed information about transactions on the Sophon network.
+        description: '{{ doc("sophon_transactions_doc") }}'
         columns:
-          - *blockchain
-          - *block_time
-          - *block_number
-          - *block_hash
-          - *tx_hash
-          - *tx_index
-          - *tx_nonce
-          - *tx_success
-          - *tx_from
-          - *tx_to
-          - *tx_value
-          - *tx_gas_limit
-          - *tx_gas_used
-          - *tx_gas_price
-          - *tx_max_fee_per_gas
-          - *tx_max_priority_fee_per_gas
-          - *tx_priority_fee_per_gas
-          - *tx_type
-          - *tx_input
-          - *tx_method_id
-          - *tx_method_name
-          - *tx_access_list
-          - *tx_status
-          - *tx_contract_address
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this transaction"
+          - name: value
+            description: "Amount of native tokens transferred in this transaction"
+          - name: gas_limit
+            description: "Maximum amount of gas units that this transaction can consume"
+          - name: gas_price
+            description: "Price per unit of gas for this transaction"
+          - name: gas_used
+            description: "Actual amount of gas units consumed by this transaction's execution"
+          - name: max_fee_per_gas
+            description: "Maximum total fee per gas the sender is willing to pay (base fee + priority fee)"
+          - name: max_priority_fee_per_gas
+            description: "Maximum additional fee per gas the sender is willing to pay to validators"
+          - name: priority_fee_per_gas
+            description: "Actual priority fee per gas paid to validators"
+          - name: nonce
+            description: "Sequential number representing the count of transactions sent from the sender's address"
+          - name: index
+            description: "Position of this transaction within its containing block"
+          - name: success
+            description: "Boolean indicating whether the transaction executed successfully"
+          - name: from
+            description: "Address that initiated and signed this transaction"
+          - name: to
+            description: "Recipient address of this transaction"
+          - name: block_hash
+            description: "Hash of the block containing this transaction"
+          - name: data
+            description: "Input data of the transaction, containing function calls or contract interaction data"
+          - name: hash
+            description: "Unique hash identifier of this transaction"
+          - name: type
+            description: "Transaction type (e.g., legacy, EIP-1559, EIP-2930)"
+          - name: access_list
+            description: "List of addresses and storage keys the transaction plans to access (EIP-2930)"
+          - name: chain_id
+            description: "Identifier of the blockchain network"
+          - name: block_date
+            description: "The UTC date of the block containing this transaction"
+          - name: l1_gas_used
+            description: "Amount of L1 gas used by this transaction"
+          - name: l1_gas_price
+            description: "L1 gas price for this transaction"
+          - name: l1_fee
+            description: "Total L1 fee for this transaction"
+          - name: l1_fee_scalar
+            description: "L1 fee scalar value"
+          - name: l1_block_number
+            description: "L1 block number associated with this transaction"
+          - name: l1_timestamp
+            description: "L1 block timestamp"
+          - name: l1_tx_origin
+            description: "Original L1 transaction sender address"
 
       - name: traces
-        loaded_at_field: block_time
-        description: "Traces data containing internal transactions and contract creations"
+        meta:
+          docs_slug: /evm/sophon/raw/traces
+          short_description: The traces table contains detailed execution traces of transactions.
+        description: '{{ doc("sophon_traces_doc") }}'
         columns:
-          - *blockchain
-          - *block_time
-          - *block_number
-          - *block_hash
-          - *tx_hash
-          - *tx_index
-          - *tx_success
-          - *trace_index
-          - *trace_address
-          - *trace_type
-          - *trace_status
-          - *trace_from
-          - *trace_to
-          - *trace_value
-          - *trace_gas_limit
-          - *trace_gas_used
-          - *trace_input
-          - *trace_output
-          - *trace_error
-          - *trace_contract_address
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this trace was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this trace"
+          - name: value
+            description: "Amount of native tokens transferred in this trace"
+          - name: gas
+            description: "Amount of gas allocated for this trace's execution"
+          - name: gas_used
+            description: "Actual amount of gas consumed by this trace"
+          - name: block_hash
+            description: "Hash of the block containing this trace"
+          - name: success
+            description: "Boolean indicating whether this trace executed successfully"
+          - name: tx_index
+            description: "Index position of the parent transaction in the block"
+          - name: tx_from
+            description: "Address that initiated the parent transaction"
+          - name: tx_to
+            description: "Recipient address of the parent transaction"
+          - name: sub_traces
+            description: "Number of child traces spawned by this trace"
+          - name: error
+            description: "Error message if the trace execution failed"
+          - name: tx_success
+            description: "Boolean indicating whether the parent transaction was successful"
+          - name: tx_hash
+            description: "Hash of the parent transaction"
+          - name: from
+            description: "Address that initiated this trace"
+          - name: to
+            description: "Recipient address of this trace"
+          - name: trace_address
+            description: "Array indicating the position of this trace in the trace tree"
+          - name: type
+            description: "Type of trace (call, create, suicide, etc.)"
+          - name: address
+            description: "Address of the contract if this is a contract creation trace"
+          - name: code
+            description: "Contract bytecode if this is a contract creation trace"
+          - name: call_type
+            description: "Type of call (call, delegatecall, staticcall)"
+          - name: input
+            description: "Input data provided to this trace"
+          - name: output
+            description: "Output data returned by this trace"
+          - name: refund_address
+            description: "Address to receive any gas refund"
+          - name: revert_reason
+            description: "Reason for reversion if the trace was reverted"
+          - name: block_date
+            description: "The UTC date of the block containing this trace"
 
       - name: logs
-        loaded_at_field: block_time
-        description: "Event logs emitted by contracts"
+        meta:
+          docs_slug: /evm/sophon/raw/logs
+          short_description: The logs table contains event logs emitted by smart contracts on the Sophon network.
+        description: '{{ doc("sophon_logs_doc") }}'
         columns:
-          - *blockchain
-          - *block_time
-          - *block_number
-          - *block_hash
-          - *tx_hash
-          - *tx_index
-          - *log_index
-          - *contract_address
-          - *topic0
-          - *topic1
-          - *topic2
-          - *topic3
-          - *topic4
-          - *data 
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this log was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this log"
+          - name: block_hash
+            description: "Hash of the block containing this log"
+          - name: contract_address
+            description: "Address of the contract that emitted this log"
+          - name: topic0
+            description: "First topic (typically the event signature)"
+          - name: topic1
+            description: "Second topic (typically first indexed parameter)"
+          - name: topic2
+            description: "Third topic (typically second indexed parameter)"
+          - name: topic3
+            description: "Fourth topic (typically third indexed parameter)"
+          - name: data
+            description: "Non-indexed data contained in the log"
+          - name: tx_hash
+            description: "Hash of the transaction that generated this log"
+          - name: index
+            description: "Index position of this log within the block"
+          - name: tx_index
+            description: "Index position of the transaction within the block"
+          - name: block_date
+            description: "The UTC date of the block containing this log"
+          - name: tx_from
+            description: "Address that initiated the transaction"
+          - name: tx_to
+            description: "Recipient address of the transaction"
+
+      - name: contracts
+        meta:
+          docs_slug: /evm/sophon/raw/contracts
+          short_description: The contracts table tracks decoded contracts on Sophon, including associated metadata.
+        description: '{{ doc("sophon_contracts_doc") }}'
+        columns:
+          - name: abi_id
+            description: "Unique identifier for the contract ABI"
+          - name: abi
+            description: "Array containing the contract's Application Binary Interface (ABI)"
+          - name: address
+            description: "The contract's address on the blockchain"
+          - name: from
+            description: "Address that deployed the contract"
+          - name: code
+            description: "The contract's bytecode"
+          - name: name
+            description: "Human-readable name of the contract"
+          - name: namespace
+            description: "Project or protocol name associated with the contract"
+          - name: dynamic
+            description: "Boolean indicating if the contract is dynamically created"
+          - name: base
+            description: "Boolean indicating if this is a base contract"
+          - name: factory
+            description: "Boolean indicating if this is a factory contract"
+          - name: detection_source
+            description: "Source of contract detection and verification"
+          - name: created_at
+            description: "Timestamp when this contract entry was created"
+
+      - name: contracts_submitted
+        meta:
+          docs_slug: /evm/sophon/decoded/contracts_submitted
+          short_description: The contracts_submitted table contains information about contracts submitted for decoding.
+        description: '{{ doc("sophon_contracts_submitted_doc") }}'
+        columns:
+          - name: address
+            description: "Address of the submitted contract"
+          - name: namespace
+            description: "Project or protocol name associated with the contract"
+          - name: name
+            description: "Name of the submitted contract"
+          - name: dynamic
+            description: "Boolean indicating if the contract is dynamically created"
+          - name: factory
+            description: "Boolean indicating if this is a factory contract"
+          - name: abi
+            description: "Array containing the contract's Application Binary Interface (ABI)"
+          - name: code
+            description: "The contract's bytecode"
+          - name: from
+            description: "Address that submitted the contract"
+          - name: created_at
+            description: "Timestamp when the contract was submitted"
+
+      - name: logs_decoded
+        meta:
+          docs_slug: /evm/sophon/decoded/logs_decoded
+          short_description: The logs_decoded table contains decoded logs with additional information based on contract ABIs.
+        description: '{{ doc("sophon_logs_decoded_doc") }}'
+        columns:
+          - name: block_date
+            description: "The UTC date of the block containing this log"
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this log was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this log"
+          - name: namespace
+            description: "Project or protocol name associated with the contract"
+          - name: contract_name
+            description: "Human-readable name of the contract that emitted this log"
+          - name: contract_address
+            description: "Address of the contract that emitted this log"
+          - name: tx_hash
+            description: "Hash of the transaction that generated this log"
+          - name: tx_from
+            description: "Address that initiated the transaction"
+          - name: tx_to
+            description: "Recipient address of the transaction"
+          - name: index
+            description: "Index position of this log within the block"
+          - name: signature
+            description: "Event signature hash"
+          - name: event_name
+            description: "Human-readable name of the emitted event"
+
+      - name: traces_decoded
+        meta:
+          docs_slug: /evm/sophon/decoded/traces_decoded
+          short_description: The traces_decoded table contains decoded traces with additional information based on contract ABIs.
+        description: '{{ doc("sophon_traces_decoded_doc") }}'
+        columns:
+          - name: block_date
+            description: "The UTC date of the block containing this trace"
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this trace was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this trace"
+          - name: namespace
+            description: "Project or protocol name associated with the contract"
+          - name: contract_name
+            description: "Human-readable name of the smart contract involved in this trace"
+          - name: to
+            description: "Address of the contract receiving this trace"
+          - name: trace_address
+            description: "Array indicating the position of this trace in the trace tree"
+          - name: tx_hash
+            description: "Hash of the parent transaction"
+          - name: tx_from
+            description: "Address that initiated the parent transaction"
+          - name: tx_to
+            description: "Recipient address of the parent transaction"
+          - name: signature
+            description: "Function signature hash"
+          - name: function_name
+            description: "Human-readable name of the called function"
+
+      - name: creation_traces
+        meta:
+          docs_slug: /evm/sophon/raw/creation_traces
+          short_description: The creation_traces table contains information about contract creation traces on the network.
+        description: '{{ doc("sophon_creation_traces_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this contract creation was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this contract creation"
+          - name: tx_hash
+            description: "Hash of the transaction that created this contract"
+          - name: address
+            description: "The address of the newly created contract"
+          - name: from
+            description: "The address that initiated the contract creation"
+          - name: code
+            description: "The deployment bytecode of the contract"
+          - name: block_month
+            description: "The UTC month of the block in which this contract creation occurred"
+
+  # ERC Transfer Tables
+  - name: erc20_sophon
+    description: "Transfer events for ERC20 tokens on Sophon"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/sophon/decoded/erc20_evt_transfer
+          short_description: The evt_transfer table contains ERC20 token transfer events on the Sophon network.
+        description: '{{ doc("erc20_sophon_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this transfer event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: from
+            description: "Address sending the tokens"
+          - name: to
+            description: "Address receiving the tokens"
+          - name: value
+            description: "Amount of tokens transferred"
+
+      - name: evt_approval
+        meta:
+          docs_slug: /evm/sophon/decoded/erc20_evt_approval
+          short_description: The evt_approval table contains approval events for ERC20 tokens on the Sophon network.
+        description: '{{ doc("erc20_sophon_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this approval event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: owner
+            description: "Address of the token owner granting approval"
+          - name: spender
+            description: "Address being granted permission to spend tokens"
+          - name: value
+            description: "Amount of tokens approved for spending"
+
+  - name: erc721_sophon
+    description: "Transfer events for ERC721 tokens on Sophon"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/sophon/decoded/erc721_evt_transfer
+          short_description: The evt_transfer table contains ERC721 (NFT) token transfer events on the Sophon network.
+        description: '{{ doc("erc721_sophon_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this transfer event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: from
+            description: "Address sending the NFT"
+          - name: to
+            description: "Address receiving the NFT"
+          - name: tokenId
+            description: "Unique identifier of the transferred NFT"
+
+      - name: evt_approval
+        meta:
+          docs_slug: /evm/sophon/decoded/erc721_evt_approval
+          short_description: The evt_approval table contains approval events for ERC721 tokens on the Sophon network.
+        description: '{{ doc("erc721_sophon_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this approval event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: owner
+            description: "Address of the token owner granting approval"
+          - name: approved
+            description: "Address being granted permission to transfer the token"
+          - name: tokenId
+            description: "Unique identifier of the NFT being approved"
+
+      - name: evt_approvalforall
+        meta:
+          docs_slug: /evm/sophon/decoded/erc721_evt_approvalforall
+          short_description: The evt_approvalforall table contains approval events for all tokens of an ERC721 contract.
+        description: '{{ doc("erc721_sophon_evt_approvalforall_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC721 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this approval event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: owner
+            description: "Address of the token owner granting approval"
+          - name: operator
+            description: "Address being granted permission to transfer all tokens"
+          - name: approved
+            description: "Boolean indicating whether approval is granted or revoked"
+
+  - name: erc1155_sophon
+    description: "Transfer events for ERC1155 tokens on Sophon"
+    tables:
+      - name: evt_transfersingle
+        meta:
+          docs_slug: /evm/sophon/decoded/erc1155_evt_transfersingle
+          short_description: The evt_transfersingle table contains single ERC1155 token transfer events.
+        description: '{{ doc("erc1155_sophon_evt_transfersingle_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this transfer event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: operator
+            description: "Address approved to make the transfer"
+          - name: from
+            description: "Address sending the tokens"
+          - name: to
+            description: "Address receiving the tokens"
+          - name: id
+            description: "Token type identifier"
+          - name: value
+            description: "Amount of tokens transferred"
+
+      - name: evt_transferbatch
+        meta:
+          docs_slug: /evm/sophon/decoded/erc1155_evt_transferbatch
+          short_description: The evt_transferbatch table contains batch ERC1155 token transfer events.
+        description: '{{ doc("erc1155_sophon_evt_transferbatch_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this transfer event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: operator
+            description: "Address approved to make the transfer"
+          - name: from
+            description: "Address sending the tokens"
+          - name: to
+            description: "Address receiving the tokens"
+          - name: ids
+            description: "Array of token type identifiers"
+          - name: values
+            description: "Array of amounts transferred for each token type"
+
+      - name: evt_approvalforall
+        meta:
+          docs_slug: /evm/sophon/decoded/erc1155_evt_approvalforall
+          short_description: The evt_approvalforall table contains approval events for all tokens of an ERC1155 contract.
+        description: '{{ doc("erc1155_sophon_evt_approvalforall_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC1155 token contract"
+          - name: evt_tx_hash
+            description: "Transaction hash containing this approval event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "Block number containing this event"
+          - name: owner
+            description: "Address of the token owner granting approval"
+          - name: operator
+            description: "Address being granted permission to transfer all tokens"
+          - name: approved
+            description: "Boolean indicating whether approval is granted or revoked" 
