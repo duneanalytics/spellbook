@@ -4,7 +4,8 @@
     materialized = 'incremental',
     file_format = 'delta',
     unique_key = 'timestamp',
-    incremental_strategy = 'merge',
+    incremental_strategy = 'merge'
+    )
 }}
 
 

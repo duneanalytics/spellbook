@@ -2,6 +2,7 @@
     schema = 'utils',
     alias = 'hours',
     materialized = 'view'
+    )
 }}
 
 
