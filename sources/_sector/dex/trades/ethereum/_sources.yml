@@ -5,6 +5,7 @@ sources:
     tables:
       - name: PoolManager_evt_Swap
       - name: PoolManager_evt_Initialize
+      - name: PoolManager_call_Swap
   - name: defiswap_ethereum
   - name: uniswap_ethereum
   - name: uniswap_v2_ethereum
