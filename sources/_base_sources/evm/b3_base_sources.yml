@@ -70,7 +70,6 @@ sources:
           short_description: The `b3.traces_decoded` table contains decoded traces, including additional information based on submitted smart contracts and their ABIs.
         description: '{{ doc("b3.traces_decoded_doc") }}'
         columns:
-          - *block_date
           - name: block_date
             description: "Date of the block containing the trace"
           - name: block_time
