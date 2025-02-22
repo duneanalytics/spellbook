@@ -103,6 +103,18 @@ Each row includes:
 - Event index and other metadata
 {% enddocs %}
 
+{% docs apechain_erc20_evt_approval_doc %}
+The `erc20_apechain.evt_approval` table contains Approval events for ERC20 tokens on the apechain blockchain. It includes:
+
+- Block number and timestamp
+- Transaction hash
+- Contract address
+- Owner and spender addresses
+- Approved amount
+
+This table is used for analyzing ERC20 token approvals and spending permissions on the apechain network.
+{% enddocs %}
+
 {% docs apechain_erc721_evt_transfer_doc %}
 This table contains transfer events for ERC721 tokens (NFTs) on the Apechain blockchain.
 
