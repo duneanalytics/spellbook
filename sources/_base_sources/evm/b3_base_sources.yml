@@ -259,7 +259,7 @@ sources:
         meta:
           docs_slug: /evm/b3/decoded/interfaces/erc20/evt_transfer
           short_description: This table contains individual transfer events for ERC20 tokens on the b3 blockchain. Each row represents a single token transfer event.
-        description: '{{ doc("erc20_b3.evt_transfer_doc") }}'
+        description: '{{ doc("erc20_b3_evt_transfer_doc") }}'
         columns:
           - name: contract_address
             description: "Address of the ERC20 token contract that emitted this event"
@@ -282,7 +282,7 @@ sources:
         meta:
           docs_slug: /evm/b3/decoded/interfaces/erc20/evt_approval
           short_description: The `b3.evt_approval` table contains approval events for ERC20 tokens on b3, allowing an address to spend tokens on behalf of the owner.
-        description: '{{ doc("erc20_b3.evt_approval_doc") }}'
+        description: '{{ doc("erc20_b3_evt_approval_doc") }}'
         columns:
           - name: contract_address
             description: "Address of the ERC20 token contract"
