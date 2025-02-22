@@ -319,14 +319,10 @@ sources:
         columns:
           - name: contract_address
             description: "Address of the ERC20 token contract"
-          - name: evt_tx_hash
-            description: "The transaction hash of the approval event"
-          - name: evt_index
-            description: "The index of this event within the transaction"
-          - name: evt_block_time
-            description: "The timestamp of the block containing this approval"
-          - name: evt_block_number
-            description: "The block number containing this approval"
+          - *evt_tx_hash
+          - *evt_index
+          - *evt_block_time
+          - *evt_block_number
           - name: owner
             description: "address of the token owner granting approval"
           - name: spender
