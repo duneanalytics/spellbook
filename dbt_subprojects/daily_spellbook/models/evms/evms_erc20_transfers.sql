@@ -26,8 +26,7 @@
                                         , "sonic"
                                         , "kaia"
                                         , "apechain"
-                                        , "berachain"
-                                        , "b3"]\',
+                                        , "berachain"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby", "shogun"]\') }}'
@@ -60,7 +59,6 @@
      , ('kaia', source('erc20_kaia', 'evt_transfer'))
      , ('apechain', source('erc20_apechain', 'evt_transfer'))
      , ('berachain', source('erc20_berachain', 'evt_transfer'))
-     , ('b3', source('erc20_b3', 'evt_transfer'))
 ] %}
 
 SELECT *
