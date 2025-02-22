@@ -18,44 +18,51 @@ sources:
           - name: value
             description: "Amount of native tokens transferred in this trace"
           - name: gas
-            description: "Amount of gas allocated for this trace's execution (including gas used by child traces)"
+            description: "Amount of gas allocated for this trace's execution"
           - name: gas_used
-            description: "Actual amount of gas consumed by this trace's execution"
-          - *block_hash
+            description: "Actual amount of gas consumed by this trace"
+          - name: block_hash
+            description: "Hash of the block containing this trace"
           - name: success
-            description: "Boolean flag indicating whether this specific trace was executed successfully (true) or reverted (false)"
-          - &tx_index
-            name: tx_index
-            description: "Position of the parent transaction within its containing block"
-          - name: subtraces
-            description: "Number of child traces spawned by this trace during execution"
+            description: "Boolean indicating whether this trace executed successfully"
+          - name: tx_index
+            description: "Index position of the parent transaction in the block"
+          - name: tx_from
+            description: "Address that initiated the parent transaction"
+          - name: tx_to
+            description: "Recipient address of the parent transaction"
+          - name: sub_traces
+            description: "Number of child traces spawned by this trace"
           - name: error
-            description: "Error message or code if the trace execution failed"
+            description: "Error message if the trace execution failed"
           - name: tx_success
-            description: "Boolean flag indicating whether the parent transaction of this trace was successful"
-          - &tx_hash
-            name: tx_hash
-            description: "Unique 256-bit identifier (hash) of the parent transaction"
+            description: "Boolean indicating whether the parent transaction was successful"
+          - name: tx_hash
+            description: "Hash of the parent transaction"
           - name: from
-            description: "address that sent this trace"
+            description: "Address that initiated this trace"
           - name: to
-            description: "address that received this trace"
+            description: "Recipient address of this trace"
           - name: trace_address
-            description: "Array indicating the exact position of this trace within the trace tree of the transaction"
+            description: "Array indicating the position of this trace in the trace tree"
           - name: type
-            description: "Type of trace (e.g., call, create, suicide) indicating the nature of the operation"
+            description: "Type of trace (call, create, suicide, etc.)"
           - name: address
-            description: "If this trace is a contract creation, this is the address of the deployed contract"
+            description: "Address of the contract if this is a contract creation trace"
           - name: code
-            description: "If this trace is a contract creation, this is the deployed bytecode of contract"
+            description: "Contract bytecode if this is a contract creation trace"
           - name: call_type
-            description: "Type of call made in this trace (e.g., call, delegatecall, staticcall)"
+            description: "Type of call (call, delegatecall, staticcall)"
           - name: input
-            description: "call data provided to this trace, often containing function signatures and parameters"
+            description: "Input data provided to this trace"
           - name: output
-            description: "Data returned by this trace after execution"
+            description: "Output data returned by this trace"
           - name: refund_address
-            description: "address designated to receive any gas refund from this trace"
+            description: "Address to receive any gas refund"
+          - name: revert_reason
+            description: "Reason for reversion if the trace was reverted"
+          - name: block_date
+            description: "The UTC date of the block containing this trace"
 
       - name: traces_decoded
         meta:
@@ -83,15 +90,15 @@ sources:
       - name: logs
         meta:
           docs_slug: /evm/b3/raw/logs
-          short_description: The `b3.logs` table contains information about event logs emitted by smart contracts on the b3 blockchain.
-        description: '{{ doc("b3.logs_doc") }}'
+          short_description: The logs table contains event logs emitted by smart contracts on the B3 network.
+        description: '{{ doc("b3_logs_doc") }}'
         columns:
-          - *block_date
-          - *block_time
-          - *block_number
-          - *block_hash
-          - *tx_index
-          - *tx_hash
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this log was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this log"
+          - name: block_hash
+            description: "Hash of the block containing this log"
           - name: contract_address
             description: "Address of the smart contract that emitted this log"
           - name: topic0
@@ -104,8 +111,18 @@ sources:
             description: "Fourth 32-byte topic, often containing indexed event parameters"
           - name: data
             description: "ABI-encoded data of the log, containing non-indexed event parameters"
+          - name: tx_hash
+            description: "Hash of the transaction that generated this log"
           - name: index
             description: "Position of this log within the block"
+          - name: tx_index
+            description: "Position of the parent transaction within the block"
+          - name: block_date
+            description: "The UTC date of the block containing this log"
+          - name: tx_from
+            description: "Address that initiated the transaction which created this log"
+          - name: tx_to
+            description: "Recipient address of the transaction which created this log"
 
       - name: logs_decoded
         meta:
@@ -113,22 +130,30 @@ sources:
           short_description: The `b3.logs_decoded` table contains a subset of all logs for which Dune has the ABI.
         description: '{{ doc("b3.logs_decoded_doc") }}'
         columns:
-          - *block_date
-          - *block_time
-          - *block_number
-          - *tx_hash
-          - name: index
-            description: "Position of this log within the block"
-          - name: contract_address
-            description: "Address of the smart contract that emitted this log"
+          - name: block_date
+            description: "The UTC date of the block containing this log"
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this log was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this log"
           - name: namespace
             description: "Categorical grouping or project name associated with the contract"
           - name: contract_name
-            description: "name of the smart contract that emitted this log"
-          - name: event_name
-            description: "Name of the event emitted in this log"
+            description: "Human-readable name of the smart contract that emitted this event"
+          - name: contract_address
+            description: "Address of the contract that emitted this event"
+          - name: tx_hash
+            description: "Hash of the transaction that generated this event"
+          - name: tx_from
+            description: "Address that initiated the transaction"
+          - name: tx_to
+            description: "Recipient address of the transaction"
+          - name: index
+            description: "Position of this log within the block"
           - name: signature
-            description: "Topic0 hash of the event signature"
+            description: "Event signature hash"
+          - name: event_name
+            description: "Human-readable name of the emitted event"
 
       - name: blocks
         meta:
@@ -203,15 +228,20 @@ sources:
           short_description: The `b3.creation_traces` table contains information about contract creation traces on the b3 blockchain. It includes details about newly created contracts, their creators, and the contract code.
         description: '{{ doc("b3.creation_traces_doc") }}'
         columns:
-          - *block_time
-          - *block_number
-          - *tx_hash
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this contract creation was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this contract creation"
+          - name: tx_hash
+            description: "Unique 256-bit identifier (hash) of the transaction that created this contract"
           - name: address
-            description: "Address of the contract created"
+            description: "The address of the newly created contract"
           - name: from
-            description: "Address that created this contract. Can be a contract or EOA."
+            description: "The address that initiated the contract creation"
           - name: code
-            description: "Deployed bytecode of the contract"
+            description: "The deployment bytecode of the contract"
+          - name: block_month
+            description: "The UTC month of the block in which this contract creation occurred"
 
   # ERC Transfer Tables
   - name: erc20_b3
@@ -225,22 +255,21 @@ sources:
         columns:
           - name: contract_address
             description: "Address of the ERC20 token contract that emitted this event"
-          - &evt_tx_hash
-            name: evt_tx_hash
+          - name: evt_tx_hash
             description: "Hash of the transaction containing this event"
-          - &evt_index
-            name: evt_index
+          - name: evt_index
             description: "Index position of this event within the transaction"
-          - &evt_block_time
-            name: evt_block_time
+          - name: evt_block_time
             description: "Timestamp of the block containing this event"
-          - &evt_block_number
-            name: evt_block_number
+          - name: evt_block_number
             description: "The block number containing this event"
-          - *from
-          - *to
+          - name: from
+            description: "Address sending the tokens"
+          - name: to
+            description: "Address receiving the tokens"
           - name: value
-            description: "Amount of ERC20 tokens transferred, in the token's base unit"
+            description: "Amount of ERC20 tokens transferred, in the token's smallest unit"
+
       - name: evt_approval
         meta:
           docs_slug: /evm/b3/decoded/interfaces/erc20/evt_approval
