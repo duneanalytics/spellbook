@@ -55,7 +55,7 @@ with
         from {{ ref("dex_solana_trades") }} as trades
         join users on trader_id = user
         where
-            {% if is_incremental() or true %} {{ incremental_predicate("trades.block_time") }}
+            {% if is_incremental() %} {{ incremental_predicate("trades.block_time") }}
             {% else %} trades.block_time >= timestamp '{{project_start_date}}'
             {% endif %}
     ),

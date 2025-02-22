@@ -59,7 +59,7 @@ with
             on (
                 trades.block_time = transactions.block_time
                 and trades.tx_id = id
-                {% if is_incremental() or true %}
+                {% if is_incremental() %}
                     and {{ incremental_predicate('transactions.block_time') }}
                     and {{ incremental_predicate('trades.block_time') }}
                 {% else %}

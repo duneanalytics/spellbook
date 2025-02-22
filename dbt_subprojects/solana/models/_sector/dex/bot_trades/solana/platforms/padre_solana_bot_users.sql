@@ -19,7 +19,7 @@ from {{ source('solana', 'account_activity') }} as activity
 inner join {{ source("solana", "transactions") }} as transactions
     on tx_id = id
     and transactions.block_time = activity.block_time
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     and {{ incremental_predicate('activity.block_time') }}
     and {{ incremental_predicate('transactions.block_time') }}
     {% else %}
