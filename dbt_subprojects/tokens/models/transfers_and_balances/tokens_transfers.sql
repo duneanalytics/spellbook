@@ -2,9 +2,12 @@
         schema = 'tokens'
         , alias = 'transfers'
         , post_hook='{{ expose_spells(blockchains = \'[
-                                            "arbitrum"
+                                            "abstract"
+                                            ,"apechain"
+                                            ,"arbitrum"
                                             ,"avalanche_c"
                                             ,"base"
+                                            ,"berachain"
                                             ,"blast"
                                             ,"bnb"
                                             ,"boba"
@@ -25,6 +28,8 @@
                                             ,"scroll"
                                             ,"sei"
                                             ,"sonic"
+                                            ,"sophon"
+                                            ,"tron"
                                             ,"viction"
                                             ,"worldchain"
                                             ,"zkevm"
@@ -39,9 +44,11 @@
 
 {% set chains = [
     'abstract'
+    ,'apechain'
     ,'arbitrum'
     ,'avalanche_c'
     ,'base'
+    ,'berachain'
     ,'blast'
     ,'bnb'
     ,'boba'
@@ -62,6 +69,7 @@
     ,'scroll'
     ,'sei'
     ,'sonic'
+    ,'sophon'
     ,'tron'
     ,'viction'
     ,'worldchain'
