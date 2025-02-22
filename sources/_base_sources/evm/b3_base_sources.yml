@@ -4,7 +4,6 @@ sources:
   # b3 Tables
   - name: b3
     description: "raw tables for the chain"
-    
     tables:
       - name: traces
         meta:
@@ -12,10 +11,12 @@ sources:
           short_description: The traces table contains information about traces on the network.
         description: '{{ doc("b3.traces_doc") }}'
         columns:
-          - *block_date
-          - *block_time
-          - *block_number
-          - *value
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this trace was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this trace"
+          - name: value
+            description: "Amount of native tokens transferred in this trace"
           - name: gas
             description: "Amount of gas allocated for this trace's execution (including gas used by child traces)"
           - name: gas_used
