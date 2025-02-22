@@ -25,7 +25,7 @@ WITH
     FROM
       {{ source('solana','account_activity') }}
     WHERE
-      {% if is_incremental() %}
+      {% if is_incremental() or true %}
       {{ incremental_predicate('block_time') }}
       {% else %}
       block_time >= TIMESTAMP '{{project_start_date}}'
@@ -75,7 +75,7 @@ WITH
         feeTokenPrices.blockchain = 'solana'
         AND fee_token_mint_address = toBase58 (feeTokenPrices.contract_address)
         AND date_trunc('minute', block_time) = minute
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         AND {{ incremental_predicate('minute') }}
         {% else %}
         AND minute >= TIMESTAMP '{{project_start_date}}'
@@ -83,7 +83,7 @@ WITH
       )
       JOIN {{ source('solana','transactions') }} AS transactions ON (
         trades.tx_id = id
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         AND {{ incremental_predicate('transactions.block_time') }}
         {% else %}
         AND transactions.block_time >= TIMESTAMP '{{project_start_date}}'
@@ -94,7 +94,7 @@ WITH
       AND trades.trader_id != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
       AND transactions.signer != '{{fee_receiver_1}}' -- Exclude trades signed by FeeWallet
       AND transactions.signer != '{{fee_receiver_2}}' -- Exclude trades signed by FeeWallet
-      {% if is_incremental() %}
+      {% if is_incremental() or true %}
       AND {{ incremental_predicate('trades.block_time') }}
       {% else %}
       AND trades.block_time >= TIMESTAMP '{{project_start_date}}'
