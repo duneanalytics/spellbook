@@ -58,7 +58,6 @@
      , ('boba', source('erc20_boba', 'evt_approval'))
      , ('sonic', source('erc20_sonic', 'evt_approval'))
      , ('kaia', source('erc20_kaia', 'evt_approval'))
-     , ('apechain', source('erc20_apechain', 'evt_approval'))
      , ('berachain', source('erc20_berachain', 'evt_approval'))
      , ('b3', source('erc20_b3', 'evt_approval'))
 ] %}
