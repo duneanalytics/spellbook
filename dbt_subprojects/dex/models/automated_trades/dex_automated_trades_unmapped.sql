@@ -49,7 +49,7 @@ SELECT
 FROM base_trades
 WHERE NOT EXISTS (
     SELECT 1 
-    FROM {{ ref('dex_mapping_seed') }} AS dex_map
+    FROM {{ ref('dex_mapping') }} AS dex_map
     WHERE base_trades.blockchain = dex_map.blockchain
     AND base_trades.factory_address = dex_map.factory
 )

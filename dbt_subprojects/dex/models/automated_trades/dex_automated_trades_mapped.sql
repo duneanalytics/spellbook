@@ -40,5 +40,5 @@ SELECT
     base_trades.tx_index
 FROM base_trades
 INNER JOIN {{ ref('dex_mapping') }} AS dex_map
-    ON base_trades.factory_address = dex_map.factory_address 
+    ON base_trades.factory_address = dex_map.factory
     AND base_trades.blockchain = dex_map.blockchain 

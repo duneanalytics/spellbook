@@ -120,3 +120,29 @@ models:
       - *evt_index
       - *tx_from
       - *tx_to
+
+  - name: dex_mapping
+    description: "Mapping of DEX factory addresses to their respective projects and blockchains"
+    config:
+      tags: ['dex', 'mapping']
+    columns:
+      - name: src
+        description: "Source of the mapping data"
+        data_type: varchar
+      - name: dex_type
+        description: "Type of DEX (e.g. uni-v2, uni-v3)"
+        data_type: varchar
+      - name: blockchain
+        description: "Blockchain where the DEX is deployed"
+        data_type: varchar
+      - name: factory
+        description: "Factory contract address of the DEX"
+        data_type: varbinary
+      - name: project
+        description: "Name of the DEX project"
+        data_type: varchar
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - factory
