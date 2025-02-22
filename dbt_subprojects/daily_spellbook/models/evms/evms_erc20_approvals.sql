@@ -54,13 +54,13 @@
      , ('mantle', source('erc20_mantle', 'evt_approval'))
      , ('sei', source('erc20_sei', 'evt_Approval'))
      , ('ronin', source('erc20_ronin', 'evt_approval'))
-     , ('abstract', source('erc20_abstract', 'evt_Approval'))
-     , ('boba', source('erc20_boba', 'evt_Approval'))
-     , ('sonic', source('erc20_sonic', 'evt_Approval'))
-     , ('kaia', source('erc20_kaia', 'evt_Approval'))
-     , ('apechain', source('erc20_apechain', 'evt_Approval'))
-     , ('berachain', source('erc20_berachain', 'evt_Approval'))
-     , ('b3', source('erc20_b3', 'evt_Approval'))
+     , ('abstract', source('erc20_abstract', 'evt_approval'))
+     , ('boba', source('erc20_boba', 'evt_approval'))
+     , ('sonic', source('erc20_sonic', 'evt_approval'))
+     , ('kaia', source('erc20_kaia', 'evt_approval'))
+     , ('apechain', source('erc20_apechain', 'evt_approval'))
+     , ('berachain', source('erc20_berachain', 'evt_approval'))
+     , ('b3', source('erc20_b3', 'evt_approval'))
 ] %}
 
 SELECT *
