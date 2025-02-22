@@ -26,6 +26,7 @@
         'BenqiStrategyV1',
         'BenqiStrategyV2',
         'BenqiStrategyV3',
+        'BenqiStrategyV4',
         'BirdyStrategyForLP',
         'BlizzStrategyAvaxV1',
         'BlizzStrategyV1',
