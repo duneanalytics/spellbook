@@ -9,7 +9,7 @@ sources:
         meta:
           docs_slug: /evm/b3/raw/traces
           short_description: The traces table contains information about traces on the network.
-        description: '{{ doc("b3.traces_doc") }}'
+        description: '{{ doc("b3_traces_doc") }}'
         columns:
           - name: block_time
             description: "The exact UTC timestamp when the block containing this trace was added to the chain"
@@ -68,7 +68,7 @@ sources:
         meta:
           docs_slug: /evm/b3/decoded/traces_decoded
           short_description: The `b3.traces_decoded` table contains decoded traces, including additional information based on submitted smart contracts and their ABIs.
-        description: '{{ doc("b3.traces_decoded_doc") }}'
+        description: '{{ doc("b3_traces_decoded_doc") }}'
         columns:
           - name: block_date
             description: "Date of the block containing the trace"
@@ -136,7 +136,7 @@ sources:
         meta:
           docs_slug: /evm/b3/decoded/logs_decoded
           short_description: The `b3.logs_decoded` table contains a subset of all logs for which Dune has the ABI.
-        description: '{{ doc("b3.logs_decoded_doc") }}'
+        description: '{{ doc("b3_logs_decoded_doc") }}'
         columns:
           - name: block_date
             description: "The UTC date of the block containing this log"
@@ -167,7 +167,7 @@ sources:
         meta:
           docs_slug: /evm/b3/raw/blocks
           short_description: The `b3.blocks` table contains information about b3 blocks. Each row represents a single block.
-        description: '{{ doc("b3.blocks_doc") }}'
+        description: '{{ doc("b3_blocks_doc") }}'
         columns:
           - name: b3.fee_per_gas
             description: "Minimum fee per gas unit required for transaction inclusion in this block in the base unit wei"
@@ -203,7 +203,7 @@ sources:
         meta:
           docs_slug: /evm/b3/raw/contracts
           short_description: The `b3.contracts` table tracks decoded contracts on b3, including associated metadata such as namespace, name, address, ABI. It is populated manually by the Dune Community via [contract decoding submissions](https://dune.com/contracts/new).
-        description: '{{ doc("b3.contracts_doc") }}'
+        description: '{{ doc("b3_contracts_doc") }}'
         columns:
           - name: abi_id
             description: "Unique identifier for the contract's ABI. This is used to identify the contract across all chains."
@@ -234,7 +234,7 @@ sources:
         meta:
           docs_slug: /evm/b3/raw/creation_traces
           short_description: The `b3.creation_traces` table contains information about contract creation traces on the b3 blockchain. It includes details about newly created contracts, their creators, and the contract code.
-        description: '{{ doc("b3.creation_traces_doc") }}'
+        description: '{{ doc("b3_creation_traces_doc") }}'
         columns:
           - name: block_time
             description: "The exact UTC timestamp when the block containing this contract creation was added to the chain"
