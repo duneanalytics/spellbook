@@ -23,7 +23,6 @@
                                         , "ronin"
                                         , "abstract"
                                         , "boba"
-                                        , "sonic"
                                         , "kaia"
                                         , "apechain"
                                         , "berachain"
@@ -56,7 +55,6 @@
      , ('ronin', source('ronin', 'contracts'))
      , ('abstract', source('abstract', 'contracts'))
      , ('boba', source('boba', 'contracts'))
-     , ('sonic', source('sonic', 'contracts'))
      , ('kaia', source('kaia', 'contracts'))
      , ('apechain', source('apechain', 'contracts'))
      , ('berachain', source('berachain', 'contracts'))
