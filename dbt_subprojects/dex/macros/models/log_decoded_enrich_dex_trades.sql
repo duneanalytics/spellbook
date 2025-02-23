@@ -72,7 +72,6 @@ WITH base_trades as (
 SELECT
     blockchain
     , version
-    , factory_address
     , dex_type
     , block_month
     , block_date
