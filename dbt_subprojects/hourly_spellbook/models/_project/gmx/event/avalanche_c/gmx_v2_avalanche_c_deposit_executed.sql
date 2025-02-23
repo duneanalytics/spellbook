@@ -69,7 +69,7 @@ WITH evt_data_1 AS (
     {% endif %}
 )
 
--- unite 2 tables
+-- unite 3 tables
 , evt_data AS (
     SELECT * 
     FROM evt_data_1
