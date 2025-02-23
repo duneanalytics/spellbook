@@ -40,6 +40,10 @@ WITH base_trades as (
         , coalesce(base_trades.taker, base_trades.tx_from) AS taker
         , base_trades.maker
         , base_trades.project_contract_address
+        , base_trades.pool_topic0
+        , base_trades.factory_address
+        , base_trades.factory_topic0
+        , base_trades.factory_info
         , base_trades.tx_hash
         , base_trades.tx_from
         , base_trades.tx_to
@@ -87,6 +91,10 @@ SELECT
     , taker
     , maker
     , project_contract_address
+    , pool_topic0
+    , factory_address
+    , factory_topic0
+    , factory_info
     , tx_hash
     , tx_from
     , tx_to
