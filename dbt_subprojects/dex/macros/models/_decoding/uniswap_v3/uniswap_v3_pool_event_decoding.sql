@@ -67,6 +67,7 @@
         , liquidity
         , tick
         , contract_address
+        , topic0 as pool_topic0
         , block_time
         , block_date
         , block_month

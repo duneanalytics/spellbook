@@ -18,6 +18,8 @@ FROM (
         , version
         , dex_type
         , factory_address
+        , factory_topic0
+        , factory_info
         , block_month
         , block_date
         , block_time
@@ -29,6 +31,7 @@ FROM (
         , taker
         , maker
         , project_contract_address
+        , pool_topic0
         , tx_hash
         , evt_index
         , tx_from

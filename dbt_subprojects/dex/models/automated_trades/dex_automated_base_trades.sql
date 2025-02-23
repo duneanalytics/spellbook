@@ -22,7 +22,6 @@ with base_union as (
         SELECT
             blockchain
             , version
-            , factory_address
             , dex_type
             , block_month
             , block_date
@@ -35,6 +34,10 @@ with base_union as (
             , taker
             , maker
             , project_contract_address
+            , pool_topic0
+            , factory_address
+            , factory_topic0
+            , factory_info
             , tx_hash
             , evt_index
             , tx_from

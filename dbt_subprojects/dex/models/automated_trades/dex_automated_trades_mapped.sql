@@ -12,9 +12,8 @@ WITH base_trades AS (
 
 SELECT 
     base_trades.blockchain,
-    dex_map.project_name as project,
+    dex_map.project as project,
     base_trades.version,
-    base_trades.factory_address,
     base_trades.dex_type,
     base_trades.block_month,
     base_trades.block_date,
@@ -33,6 +32,10 @@ SELECT
     base_trades.taker,
     base_trades.maker,
     base_trades.project_contract_address,
+    base_trades.pool_topic0,
+    base_trades.factory_address,
+    base_trades.factory_topic0,
+    base_trades.factory_info,
     base_trades.tx_hash,
     base_trades.tx_from,
     base_trades.tx_to,

@@ -19,6 +19,7 @@ WITH evt_swap AS (
         , amount0Out
         , amount1In
         , amount1Out
+        , topic0 as pool_topic0
         , tx_from
         , tx_to
         , tx_index
@@ -41,9 +42,12 @@ WITH evt_swap AS (
         , CASE WHEN amount0Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_bought_address
         , CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         , t.contract_address AS project_contract_address
+        , t.pool_topic0
         , t.tx_hash
         , t.evt_index
         , f.contract_address as factory_address
+        , f.factory_topic0
+        , f.factory_info
         , t.tx_from
         , t.tx_to
         , t.tx_index
@@ -78,9 +82,12 @@ SELECT
     , taker
     , maker
     , project_contract_address
+    , pool_topic0
     , tx_hash
     , evt_index
     , factory_address
+    , factory_topic0
+    , factory_info
     , tx_from
     , tx_to
     , tx_index
