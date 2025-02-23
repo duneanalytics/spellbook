@@ -138,14 +138,14 @@ models:
           - not_null         
 
 
-  - name: gmx_v2_glv_markets_data
+  - name: gmx_v2_glvs_data
     meta:
       blockchain: arbitrum, avalanche_c
       sector: dex
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'avalanche_c', 'gmx', 'markets', 'glv_markets_data']
+      tags: ['arbitrum', 'avalanche_c', 'gmx', 'markets', 'glvs_data']
     description: |
       Processes decoded market data for GLV markets on the GMX platform in the Arbitrum and Avalanche blockchains.
       This model extracts key details such as market names, token symbols, and decimals, enabling

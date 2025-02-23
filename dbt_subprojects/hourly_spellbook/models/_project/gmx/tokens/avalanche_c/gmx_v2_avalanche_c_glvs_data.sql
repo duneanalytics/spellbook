@@ -1,7 +1,7 @@
 {{
   config(
     schema = 'gmx_v2_avalanche_c',
-    alias = 'glv_markets_data',    
+    alias = 'glvs_data',    
     materialized = 'view'
     )
 }}
