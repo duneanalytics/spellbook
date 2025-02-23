@@ -20,4 +20,6 @@ FROM (VALUES
     , (0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34, 'USDe', 18)
     , (0xecAc9C5F704e954931349Da37F60E39f515c11c1, 'LBTC', 8)
     , (0x4186BFC76E2E237523CBC30FD220FE055156b41F, 'rsETH', 18)
+    , (0xfcbd14dc51f0a4d49d5e53c2e0950e0bc26d0dce, 'HONEY', 18)
+    , (0x656b95E550C07a9ffe548bd4085c72418Ceb1dba, 'BGT', 18)
 ) AS temp_table (contract_address, symbol, decimals) 
