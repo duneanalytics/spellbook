@@ -17,9 +17,9 @@
 SELECT
     '{{ chain }}' AS "blockchain",
     glv,
-    glv_market_name,
-    market_token_symbol,
-    market_token_decimals,
+    glv_name,
+    glv_token_symbol,
+    glv_token_decimals,
     long_token,
     long_token_symbol,
     long_token_decimals,

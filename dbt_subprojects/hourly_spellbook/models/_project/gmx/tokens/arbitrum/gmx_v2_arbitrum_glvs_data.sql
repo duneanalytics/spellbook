@@ -8,9 +8,9 @@
 
 SELECT
     GCE.glv_token AS glv,
-    CONCAT(ERC20_LT.symbol, '-', ERC20_ST.symbol) AS glv_market_name,
-    'GM' AS market_token_symbol,
-    18 AS market_token_decimals,
+    CONCAT(ERC20_LT.symbol, '-', ERC20_ST.symbol) AS glv_name,
+    'GLV' AS glv_token_symbol,
+    18 AS glv_token_decimals,
     GCE.long_token,
     ERC20_LT.symbol AS long_token_symbol,
     ERC20_LT.decimals AS long_token_decimals,
