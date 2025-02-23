@@ -19,7 +19,6 @@ WITH base_trades as (
     SELECT
         base_trades.blockchain
         , base_trades.version
-        , base_trades.factory_address
         , base_trades.dex_type
         , base_trades.block_month
         , base_trades.block_date
