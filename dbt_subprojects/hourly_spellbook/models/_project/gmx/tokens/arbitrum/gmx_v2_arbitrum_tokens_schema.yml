@@ -145,11 +145,11 @@ models:
       project: gmx
       contributors: ai_data_master, gmx-io
     config:
-      tags: ['arbitrum', 'gmx', 'pool', 'glvs_data']
+      tags: ['arbitrum', 'gmx', 'pools', 'glvs_data']
     description: |
       Processes decoded data for GLV pools on the GMX platform in the Arbitrum blockchain.
       This model extracts key details such as pool names, token symbols, and decimals, enabling
-      comprehensive analysis of GLV pool.
+      comprehensive analysis of GLV pools.
 
     columns:
       - name: glv
