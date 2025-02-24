@@ -107,7 +107,10 @@ models:
       - &name
         name: name
         description: "Name of the strategy"
-      - *strategy
+      - &strategy_address
+        name: strategy_address
+        description: "Strategy address to withdraw from"
+        type: varbinary
   - name: eigenlayer_date_series
     meta:
       blockchain: ethereum

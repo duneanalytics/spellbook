@@ -12,7 +12,7 @@
 select
   category,
   name,
-  cast(strategy as varbinary) as strategy
+  strategy_address
 from (
 values
   ('eth lst','stETH',0x93c4b944d05dfe6df7645a86cd2206016c51564d),
@@ -29,4 +29,4 @@ values
   ('eth lst','mETH',0x298afb19a105d59e74658c4c334ff360bade6dd2),
   ('eth native','ETH',0xbeac0eeeeeeeeeeeeeeeeeeeeeeeeeeeeeebeac0),
   ('eigen','EIGEN',0xacb55c530acdb2849e6d4f36992cd8c9d50ed8f7)
-) t (category, name, strategy)
+) t (category, name, strategy_address)
