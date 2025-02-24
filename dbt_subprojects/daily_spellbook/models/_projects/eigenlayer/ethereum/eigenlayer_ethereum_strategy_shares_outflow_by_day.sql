@@ -23,7 +23,7 @@ combined_withdrawals AS (
     -- thus use withdrawal queued as replacement
     SELECT
         strategy,
-        shares,
+        CAST(shares AS DECIMAL(38,0)) AS shares,
         date_trunc('day', evt_block_time) AS date
     FROM {{ source('eigenlayer_ethereum', 'StrategyManager_evt_ShareWithdrawalQueued') }}
 

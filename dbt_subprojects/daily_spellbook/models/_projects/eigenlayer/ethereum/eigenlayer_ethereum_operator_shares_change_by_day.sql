@@ -11,7 +11,7 @@ WITH items AS (
     SELECT
         operator,
         strategy,
-        shares,
+        CAST(shares AS DECIMAL(38,0)) AS shares,
         date_trunc('day', evt_block_time) AS date
     FROM {{ source('eigenlayer_ethereum', 'DelegationManager_evt_OperatorSharesIncreased') }}
 
@@ -20,7 +20,7 @@ WITH items AS (
     SELECT
         operator,
         strategy,
-        shares * -1 AS shares,
+        CAST(shares AS DECIMAL(38,0)) * -1 AS shares,
         date_trunc('day', evt_block_time) AS date
     FROM {{ source('eigenlayer_ethereum', 'DelegationManager_evt_OperatorSharesDecreased') }}
 )
