@@ -16,7 +16,7 @@ WITH eigenlayer_ethereum_date_series AS (
     FROM
         {{ source('utils', 'days') }}
     WHERE
-        timestamp >= '2024-02-01'
+        timestamp >= date '2024-02-01'
 ),
 combined_withdrawals AS (
     -- V1 withdrawal completed does not have shares data, nor can it be linked to withdrawal queued
