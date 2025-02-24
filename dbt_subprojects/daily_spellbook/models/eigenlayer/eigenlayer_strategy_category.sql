@@ -12,7 +12,7 @@
 select
   category,
   name,
-  strategy
+  cast(strategy as varbinary) as strategy
 from (
 values
   ('eth lst','stETH',0x93c4b944d05dfe6df7645a86cd2206016c51564d),
