@@ -88,6 +88,10 @@ sources:
       - name: BenqiStrategyV3_evt_Withdraw
       - name: BenqiStrategyV3_evt_Reinvest
       - name: BenqiStrategyV3_evt_Transfer
+      - name: BenqiStrategyV4_evt_Deposit
+      - name: BenqiStrategyV4_evt_Withdraw
+      - name: BenqiStrategyV4_evt_Reinvest
+      - name: BenqiStrategyV4_evt_Transfer
       - name: BirdyStrategyForLP_evt_Deposit
       - name: BirdyStrategyForLP_evt_Withdraw
       - name: BirdyStrategyForLP_evt_Reinvest
