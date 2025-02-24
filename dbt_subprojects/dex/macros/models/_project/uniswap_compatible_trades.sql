@@ -229,7 +229,7 @@ WITH dexs AS
                 )
             END AS amount1
             
-            FROM wrangled
+            FROM raw
         )
 
         SELECT 
@@ -246,7 +246,7 @@ WITH dexs AS
         , hooks
         , call_trace_address
 
-        FROM base_data
+        FROM wrangled
     )
 
     SELECT 
