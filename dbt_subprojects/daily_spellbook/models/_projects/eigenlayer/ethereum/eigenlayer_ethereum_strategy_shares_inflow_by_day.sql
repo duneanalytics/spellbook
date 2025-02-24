@@ -16,7 +16,7 @@ WITH eigenlayer_ethereum_date_series AS (
     FROM
         {{ source('utils', 'days') }}
     WHERE
-        date >= '2024-02-01'
+        timestamp >= '2024-02-01'
 ),
 daily_share AS (
     SELECT
