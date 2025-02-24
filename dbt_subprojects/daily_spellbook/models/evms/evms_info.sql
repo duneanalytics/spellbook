@@ -84,7 +84,7 @@ FROM (
         , (255, 'kroma', 'Kroma', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://blockscout.kroma.network/', timestamp '2023-09-04 22:19:49', 'OP Stack', 'Ethereum Blobs', 'Ethereum', false, NULL)
         , (116, 'debank', 'DeBank', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.debank.com/', cast(NULL AS timestamp), 'OP Stack', 'Ethereum Blobs', 'Ethereum', false, NULL)
         , (570, 'rollux', 'Rollux', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.rollux.com/', timestamp '2023-06-21 07:34:01', 'OP Stack', 'Bitcoin', 'Bitcoin', false, NULL)
-        , (666666666, 'degen', 'DEGEN', 'Layer 3', 'Optimistic Rollup', 'DEGEN', 0xeb54dacb4c2ccb64f8074eceea33b5ebb38e5387, 'https://explorer.degen.tips/', timestamp '2024-03-10 17:18:59', 'Arbitrum Orbit', 'AnyTrust', 'Base', true, NULL)
+        , (666666666, 'degen', 'DEGEN', 'Layer 3', 'Optimistic Rollup', 'DEGEN', 0xeb54dacb4c2ccb64f8074eceea33b5ebb38e5387, 'https://explorer.degen.tips/', timestamp '2024-03-10 17:18:59', 'Arbitrum Orbit', 'AnyTrust', 'Base', true, 'Arbitrum Orbit')
         , (1750, 'metal', 'Metal', 'Layer 2', 'Optimistic Rollup', 'ETH', NULL, 'https://explorer.metall2.com/', timestamp '2024-03-27 19:18:35', 'OP Stack', 'Ethereum Blobs', 'Ethereum', false, 'Superchain')
         , (81457, 'blast', 'Blast', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4300000000000000000000000000000000000004, 'https://blastscan.io/', timestamp '2024-02-24 09:23:35', NULL, 'Ethereum Blobs', 'Ethereum', true, NULL)
         , (168587773, 'blast_sepolia', 'Blast Sepolia', 'Testnet Layer 2', 'Optimistic Rollup', 'ETH', NULL, 'https://testnet.blastscan.io/', timestamp '2024-01-08 04:04:48', NULL, 'Sepolia', 'Sepolia', false, NULL)
@@ -105,7 +105,7 @@ FROM (
         , (57073, 'ink', 'Ink', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.inkonchain.com/', timestamp '2024-12-06 15:20', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (2741, 'abstract', 'Abstract', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x3439153EB7AF838Ad19d56E1571FBD09333C2809, 'https://explorer.testnet.abs.xyz/', timestamp '2024-06-17 22:39', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
         , (80094, 'berachain', 'Berachain', 'Layer 1', NULL, 'BERA', NULL, 'https://berascan.com/', timestamp '2024-01-20 14:14:11', NULL, NULL, NULL, true, NULL)
-        , (33139, 'apechain', 'ApeChain', 'Layer 3', 'Optimistic Rollup', 'APE', 0x48b62137edfa95a428d35c09e44256a739f6b557, 'https://apescan.io/', timestamp '2024-08-28 16:45:22', 'Arbitrum Orbit', 'AnyTrust', 'Arbitrum One', true, NULL)
+        , (33139, 'apechain', 'ApeChain', 'Layer 3', 'Optimistic Rollup', 'APE', 0x48b62137edfa95a428d35c09e44256a739f6b557, 'https://apescan.io/', timestamp '2024-08-28 16:45:22', 'Arbitrum Orbit', 'AnyTrust', 'Arbitrum One', true, 'Arbitrum Orbit')
         , (130, 'unichain', 'Unichain', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://uniscan.xyz/', timestamp '2024-11-04 19:26', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)
 
