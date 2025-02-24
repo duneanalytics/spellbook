@@ -51,8 +51,7 @@ FROM (VALUES
      (0xe9F2a5F9f3c846f29066d7fB3564F8E6B6b2D65b, 'SuperUSDC', 'ysUSDC', 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913, 'USDC', 6),
      (0xffe8b2295cef70290819a8193834cc7900bcef5f, 'SuperUSDC SuperPosition', 'sp-ysUSDC', 0x833589fcd6edb6e08f4c7c32d4f71b54bda02913, 'USDC', 6)
     ) AS temp_table (erc4626_token, erc4626_token_name, erc4626_token_symbol, underlying_token, underlying_token_symbol, decimals)
-),
-
+)
 
 SELECT 
     'base' AS blockchain, 
