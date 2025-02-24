@@ -1,6 +1,6 @@
 {{ config(
         schema='gmx_v2',
-        alias = 'glv_markets_data',
+        alias = 'glvs_data',
         post_hook='{{ expose_spells(\'["arbitrum", "avalanche_c"]\',
                                     "project",
                                     "gmx",
@@ -17,16 +17,16 @@
 SELECT
     '{{ chain }}' AS "blockchain",
     glv,
-    glv_market_name,
-    market_token_symbol,
-    market_token_decimals,
+    glv_name,
+    glv_token_symbol,
+    glv_token_decimals,
     long_token,
     long_token_symbol,
     long_token_decimals,
     short_token,
     short_token_symbol,
     short_token_decimals  
-FROM {{ ref('gmx_v2_' ~ chain ~ '_glv_markets_data') }}
+FROM {{ ref('gmx_v2_' ~ chain ~ '_glvs_data') }}
 {% if not loop.last %}
 UNION ALL
 {% endif %}
