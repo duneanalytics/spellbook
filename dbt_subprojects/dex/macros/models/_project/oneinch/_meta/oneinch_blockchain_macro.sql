@@ -15,6 +15,7 @@
             "zksync":        "324",
             "aurora":        "1313161554",
             "klaytn":        "8217",
+            "linea":         "59144",
         },
         "native_token_symbol": {
             "ethereum":      "'ETH'",
@@ -29,6 +30,7 @@
             "zksync":        "'ETH'",
             "aurora":        "'ETH'",
             "klaytn":        "'ETH'",
+            "linea":        "'ETH'",
         },
         "wrapped_native_token_address": {
             "ethereum":      "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
@@ -43,6 +45,7 @@
             "zksync":        "0x5aea5775959fbc2557cc8789bc1bf90a239d9a91",
             "aurora":        "0xc9bdeed33cd01541e1eed10f90519d2c06fe3feb",
             "klaytn":        "0x",
+            "linea":         "0xe5d7c2a44ffddf6b295a15c148167daaaf5cf34f",
         },
         "explorer_link": {
             "ethereum":      "'https://etherscan.io'",
@@ -57,6 +60,7 @@
             "zksync":        "'https://explorer.zksync.io'",
             "aurora":        "'https://explorer.aurora.dev'",
             "klaytn":        "'https://klaytnscope.com'",
+            "linea":         "'https://lineascan.build/'",
         },
         "first_deploy_at": {
             "ethereum":      "timestamp '2019-06-03 20:11'",
@@ -71,6 +75,7 @@
             "zksync":        "timestamp '2023-04-12 10:16'",
             "aurora":        "timestamp '2022-05-25 16:14'",
             "klaytn":        "timestamp '2022-08-02 09:39'",
+            "linea":         "timestamp '2025-02-12 00:00'",
         },
         "fusion_settlement_addresses": {
             "ethereum":      "array[0xa88800cd213da5ae406ce248380802bd53b47647, 0xfb2809a5314473e1165f6b58018e20ed8f07b840]",
@@ -85,6 +90,7 @@
             "zksync":        "array[0x11de482747d1b39e599f120d526af512dd1a9326, 0x0302b42c86540e636e438395c6344ed88c55b70e]",
             "aurora":        "array[0xd41b24bba51fac0e4827b6f94c0d6ddeb183cd64, 0xfb2809a5314473e1165f6b58018e20ed8f07b840]",
             "klaytn":        "array[0xa218543cc21ee9388fa1e509f950fd127ca82155, 0xfb2809a5314473e1165f6b58018e20ed8f07b840]",
+            "linea":         "array[0xfb2809a5314473e1165f6b58018e20ed8f07b840]",
         },
         "escrow_factory_addresses": {
             "ethereum":      "array[0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a]",
@@ -99,6 +105,7 @@
             "zksync":        "array[0x584aeab186d81dbb52a8a14820c573480c3d4773]",
             "aurora":        "array[]",
             "klaytn":        "array[]",
+            "linea":         "array[0xa7bcb4eac8964306f9e3764f67db6a7af6ddf99a]",
         },
     }
 %}

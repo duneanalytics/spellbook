@@ -24,6 +24,7 @@
     , 'scroll'
     , 'sei'
     , 'solana'
+    , 'ton'
     , 'tron'
     , 'zkevm'
     , 'zksync'
