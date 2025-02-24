@@ -10,7 +10,15 @@
 }}
 
 
-WITH all_operator_strategy AS (
+WITH eigenlayer_ethereum_date_series AS (
+    SELECT
+        date
+    FROM
+        {{ source('utils', 'days') }}
+    WHERE
+        date >= '2024-02-01'
+),
+all_operator_strategy AS (
     SELECT
         DISTINCT operator, strategy
     FROM
@@ -25,7 +33,7 @@ daily_aggregated_shares AS (
     FROM
         all_operator_strategy AS a
     CROSS JOIN
-        {{ ref('eigenlayer_ethereum_date_series') }} AS b
+        eigenlayer_ethereum_date_series AS b
     LEFT JOIN
         {{ ref('eigenlayer_ethereum_operator_shares_change_by_day') }} AS c
     ON a.operator = c.operator

@@ -10,7 +10,15 @@
 }}
 
 
-WITH daily_share AS (
+WITH eigenlayer_ethereum_date_series AS (
+    SELECT
+        date
+    FROM
+        {{ source('utils', 'days') }}
+    WHERE
+        date >= '2024-02-01'
+),
+daily_share AS (
     SELECT
         strategy,
         SUM(shares) as shares,
@@ -22,7 +30,7 @@ SELECT
     a.date,
     b.strategy,
     COALESCE(b.shares, 0) as shares
-FROM {{ ref('eigenlayer_ethereum_date_series') }} AS a
+FROM eigenlayer_ethereum_date_series AS a
 LEFT JOIN daily_share AS b
     ON a.date = b.date
 ORDER BY a.date DESC

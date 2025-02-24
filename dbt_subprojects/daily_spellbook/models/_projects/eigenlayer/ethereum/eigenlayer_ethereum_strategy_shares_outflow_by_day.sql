@@ -10,7 +10,15 @@
 }}
 
 
-WITH combined_withdrawals AS (
+WITH eigenlayer_ethereum_date_series AS (
+    SELECT
+        date
+    FROM
+        {{ source('utils', 'days') }}
+    WHERE
+        date >= '2024-02-01'
+),
+combined_withdrawals AS (
     -- V1 withdrawal completed does not have shares data, nor can it be linked to withdrawal queued
     -- thus use withdrawal queued as replacement
     SELECT
@@ -39,7 +47,7 @@ SELECT
     a.date,
     b.strategy,
     COALESCE(b.shares, 0) as shares
-FROM {{ ref('eigenlayer_ethereum_date_series') }} AS a
+FROM eigenlayer_ethereum_date_series AS a
 LEFT JOIN daily_share AS b
     ON a.date = b.date
 ORDER BY a.date DESC
