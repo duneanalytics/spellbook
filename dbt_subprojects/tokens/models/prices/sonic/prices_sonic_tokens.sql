@@ -44,5 +44,5 @@ FROM
     , ('shadow-shadow', 'SHADOW', 0x3333b97138d4b086720b5ae8a7844b1345a33333, 18)
     , ('usdt-tether', 'USDT', 0x6047828dc181963ba44974801ff68e538da5eaf9, 6)
     , ('usda-usda', 'USDA', 0xff12470a969dd362eb6595ffb44c82c959fe9acc, 18)
-    , ('fbtc-ignition-fbtc', 'FBTC', 0xc96de26018a54d51c097160568752c4e3bd6c364, 18)
+    , ('fbtc-ignition-fbtc', 'FBTC', 0xc96de26018a54d51c097160568752c4e3bd6c364, 8)
 ) as temp (token_id, symbol, contract_address, decimals)
