@@ -57,7 +57,7 @@ get_recent_sqrtPriceX96 AS (
             ,COALESCE(s.evt_block_time, i.evt_block_time) as most_recent_time
             ,COALESCE(s.sqrtPriceX96, i.sqrtPriceX96) AS sqrtPriceX96
             ,ROW_NUMBER() OVER (
-                PARTITION BY ml.id, ml.evt_block_time
+                PARTITION BY ml.id, ml.evt_block_time, ml.evt_index
                 ORDER BY 
                     CASE WHEN s.sqrtPriceX96 IS NOT NULL THEN s.evt_block_time ELSE i.evt_block_time END DESC
             ) AS rn

@@ -101,4 +101,7 @@ select 'ton' as blockchain
     , sum(transfer_amount_usd_received) as transfer_amount_usd_received
     , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received)) as transfer_amount_usd
     , sum(net_transfer_amount_usd) as net_transfer_amount_usd
-from net_transfers group by 1, 2
+from net_transfers
+where
+    net_transfer_amount_usd > 0
+group by 1, 2
