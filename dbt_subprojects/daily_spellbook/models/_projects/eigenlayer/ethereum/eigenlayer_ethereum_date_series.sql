@@ -1,6 +1,6 @@
 {{ 
     config(
-        schema = 'eigenlayer',
+        schema = 'eigenlayer_ethereum',
         alias = 'date_series',
     )
 }}

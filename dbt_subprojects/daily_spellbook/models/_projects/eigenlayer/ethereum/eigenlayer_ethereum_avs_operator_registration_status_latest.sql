@@ -1,6 +1,6 @@
 {{ 
     config(
-        schema = 'eigenlayer',
+        schema = 'eigenlayer_ethereum',
         alias = 'avs_operator_registration_status_latest',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

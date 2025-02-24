@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: eigenlayer_withdrawal_queued_v2_flattened
+  - name: eigenlayer_ethereum_withdrawal_queued_v2_flattened
     meta:
       blockchain: ethereum
       sector: restaking
@@ -33,7 +33,7 @@ models:
       - &shares
         name: shares
         description: "Shares of strategy of the withdrawal"
-  - name: eigenlayer_withdrawal_completed_v2_enriched
+  - name: eigenlayer_ethereum_withdrawal_completed_v2_enriched
     meta:
       blockchain: ethereum
       sector: restaking
@@ -50,7 +50,7 @@ models:
       - *withdrawalRoot
       - *strategy
       - *shares
-  - name: eigenlayer_strategy_shares_inflow_by_day
+  - name: eigenlayer_ethereum_strategy_shares_inflow_by_day
     meta:
       blockchain: ethereum
       sector: restaking
@@ -65,7 +65,7 @@ models:
       - &date
         name: date
         description: "Date in UTC"
-  - name: eigenlayer_strategy_shares_outflow_by_day
+  - name: eigenlayer_ethereum_strategy_shares_outflow_by_day
     meta:
       blockchain: ethereum
       sector: restaking
@@ -78,7 +78,7 @@ models:
       - *strategy
       - *shares
       - *date
-  - name: eigenlayer_strategy_shares_netflow_by_day
+  - name: eigenlayer_ethereum_strategy_shares_netflow_by_day
     meta:
       blockchain: ethereum
       sector: restaking
@@ -91,7 +91,7 @@ models:
       - *strategy
       - *shares
       - *date
-  - name: eigenlayer_strategy_category
+  - name: eigenlayer_ethereum_strategy_category
     meta:
       blockchain: ethereum
       sector: restaking
@@ -108,7 +108,7 @@ models:
       - &name
         name: name
         description: "Name of the strategy"
-  - name: eigenlayer_date_series
+  - name: eigenlayer_ethereum_date_series
     meta:
       blockchain: ethereum
       sector: restaking
@@ -119,7 +119,7 @@ models:
         Date series
     columns:
       - *date
-  - name: eigenlayer_avs_operator_registration_status_latest
+  - name: eigenlayer_ethereum_avs_operator_registration_status_latest
     meta:
       blockchain: ethereum
       sector: restaking
@@ -138,7 +138,7 @@ models:
       - &status
         name: status
         description: "Registration status between AVS and Operator, 1 for registered, 0 for unregistered"
-  - name: eigenlayer_avs_metadata_uri_latest
+  - name: eigenlayer_ethereum_avs_metadata_uri_latest
     meta:
       blockchain: ethereum
       sector: restaking
@@ -152,7 +152,7 @@ models:
       - &metadataURI
         name: metadataURI
         description: "Metadata URI"
-  - name: eigenlayer_operator_metadata_uri_latest
+  - name: eigenlayer_ethereum_operator_metadata_uri_latest
     meta:
       blockchain: ethereum
       sector: restaking
@@ -164,7 +164,7 @@ models:
     columns:
       - *operator
       - *metadataURI
-  - name: eigenlayer_rewards_v1_flattened
+  - name: eigenlayer_ethereum_rewards_v1_flattened
     meta:
       blockchain: ethereum
       sector: restaking
@@ -181,7 +181,7 @@ models:
       - &amount
         name: amount
         description: "Amount of ERC20 token, in respective decimals"
-  - name: eigenlayer_rewards_v1_by_day
+  - name: eigenlayer_ethereum_rewards_v1_by_day
     meta:
       blockchain: ethereum
       sector: restaking
@@ -194,7 +194,7 @@ models:
       - *token
       - *amount
       - *date
-  - name: eigenlayer_programmatic_incentive_flattened
+  - name: eigenlayer_ethereum_programmatic_incentive_flattened
     meta:
       blockchain: ethereum
       sector: restaking
@@ -206,7 +206,7 @@ models:
     columns:
       - *token
       - *amount
-  - name: eigenlayer_programmatic_incentive_by_day
+  - name: eigenlayer_ethereum_programmatic_incentive_by_day
     meta:
       blockchain: ethereum
       sector: restaking
@@ -219,7 +219,7 @@ models:
       - *token
       - *amount
       - *date
-  - name: eigenlayer_operator_shares_change_by_day
+  - name: eigenlayer_ethereum_operator_shares_change_by_day
     meta:
       blockchain: ethereum
       sector: restaking
@@ -233,7 +233,7 @@ models:
       - *strategy
       - *shares
       - *date
-  - name: eigenlayer_operator_shares_cumulative_by_day
+  - name: eigenlayer_ethereum_operator_shares_cumulative_by_day
     meta:
       blockchain: ethereum
       sector: restaking

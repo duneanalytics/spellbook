@@ -1,6 +1,6 @@
 {{ 
     config(
-        schema = 'eigenlayer',
+        schema = 'eigenlayer_ethereum',
         alias = 'avs_metadata_uri_latest',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

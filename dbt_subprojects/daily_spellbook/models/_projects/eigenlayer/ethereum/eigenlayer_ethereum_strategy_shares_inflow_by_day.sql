@@ -1,6 +1,6 @@
 {{ 
     config(
-        schema = 'eigenlayer',
+        schema = 'eigenlayer_ethereum',
         alias = 'strategy_shares_inflow_by_day',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
@@ -22,7 +22,7 @@ SELECT
     a.date,
     b.strategy,
     COALESCE(b.shares, 0) as shares
-FROM {{ ref('eigenlayer_date_series') }} AS a
+FROM {{ ref('eigenlayer_ethereum_date_series') }} AS a
 LEFT JOIN daily_share AS b
     ON a.date = b.date
 ORDER BY a.date DESC

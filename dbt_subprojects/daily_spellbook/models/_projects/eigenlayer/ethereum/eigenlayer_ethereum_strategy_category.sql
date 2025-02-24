@@ -1,6 +1,6 @@
 {{
     config(
-        schema = 'eigenlayer',
+        schema = 'eigenlayer_ethereum',
         alias = 'strategy_category',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",

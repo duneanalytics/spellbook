@@ -1,6 +1,6 @@
 {{ 
     config(
-        schema = 'eigenlayer',
+        schema = 'eigenlayer_ethereum',
         alias = 'programmatic_incentive_by_day',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
@@ -16,7 +16,7 @@ WITH rewards AS (
         amount,
         date_trunc('day', evt_block_time) AS date
     FROM
-        {{ ref('eigenlayer_programmatic_incentive_flattened') }}
+        {{ ref('eigenlayer_ethereum_programmatic_incentive_flattened') }}
 )
 SELECT
     token,

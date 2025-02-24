@@ -1,6 +1,6 @@
 {{ 
     config(
-        schema = 'eigenlayer',
+        schema = 'eigenlayer_ethereum',
         alias = 'withdrawal_completed_v2_enriched',
     )
 }}
@@ -15,5 +15,5 @@ SELECT
     b.strategy,
     b.shares
 FROM {{ source('eigenlayer_ethereum', 'DelegationManager_evt_WithdrawalCompleted') }} AS a
-JOIN {{ ref('eigenlayer_withdrawal_queued_v2_flattened') }} AS b
+JOIN {{ ref('eigenlayer_ethereum_withdrawal_queued_v2_flattened') }} AS b
     ON a.withdrawalRoot = b.withdrawalRoot

@@ -1,6 +1,6 @@
 {{ 
     config(
-        schema = 'eigenlayer',
+        schema = 'eigenlayer_ethereum',
         alias = 'operator_shares_cumulative_by_day',
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
@@ -14,7 +14,7 @@ WITH all_operator_strategy AS (
     SELECT
         DISTINCT operator, strategy
     FROM
-        {{ ref('eigenlayer_operator_shares_change_by_day') }}
+        {{ ref('eigenlayer_ethereum_operator_shares_change_by_day') }}
 ),
 daily_aggregated_shares AS (
     SELECT
@@ -25,9 +25,9 @@ daily_aggregated_shares AS (
     FROM
         all_operator_strategy AS a
     CROSS JOIN
-        {{ ref('eigenlayer_date_series') }} AS b
+        {{ ref('eigenlayer_ethereum_date_series') }} AS b
     LEFT JOIN
-        {{ ref('eigenlayer_operator_shares_change_by_day') }} AS c
+        {{ ref('eigenlayer_ethereum_operator_shares_change_by_day') }} AS c
     ON a.operator = c.operator
         AND a.strategy = c.strategy
         AND b.date = c.date
