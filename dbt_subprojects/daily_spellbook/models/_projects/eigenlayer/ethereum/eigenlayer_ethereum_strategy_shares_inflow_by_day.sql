@@ -12,7 +12,7 @@
 
 WITH eigenlayer_ethereum_date_series AS (
     SELECT
-        date
+        timestamp as date
     FROM
         {{ source('utils', 'days') }}
     WHERE
