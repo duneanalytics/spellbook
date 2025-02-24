@@ -462,7 +462,10 @@ VALUES
 	('mapping','uni-v2','aurora','0xc66F594268041dB60507F00703b152492fb176E7','trisolaris'),
 	('mapping','uni-v2','okex','0xE7Fb3e833eFE5F9c441105EB65Ef8b261266423B','dfyn'),
 	('mapping','uni-v2','optimism','0x8BCeDD62DD46F1A76F8A1633d4f5B76e0CDa521E','zipswap'),
-	('mapping','uni-v2','gnosis','0xc35DADB65012eC5796536bD9864eD8773aBc74C4','sushiswap')
+	('mapping','uni-v2','gnosis','0xc35DADB65012eC5796536bD9864eD8773aBc74C4','sushiswap'),
+	('mapping','uni-v3','blast','0x1a8027625c830aac43ad82a3f7cd6d5fdce89d78','blasterswap'),
+	('mapping','uni-v3','monoswap','0x48d0f09710794313f33619c95147f34458bf7c3b','monoswap'),
+	('mapping','uni-v2','base','0xba06043a777652baf540ccc785edafd94ee05b37','archly')
 ) as x (src, dex_type, blockchain, factory, project)
 
 -- for easier handling, you can download the csv file from dune and import it into a spreadsheet

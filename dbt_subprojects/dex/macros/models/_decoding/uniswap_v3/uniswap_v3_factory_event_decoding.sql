@@ -44,7 +44,7 @@
         },
 
         '0xab0d57f0df537bb25e80245ef7748fa62353808c54d6e528a9dd20887aed9ac2': {
-            'info': 'solidly v2 factory event',
+            'info': 'solidly_v2, aerodrome, velodrome factory event',
             'abi': '{
                 "name": "PoolCreated",
                 "type": "event",

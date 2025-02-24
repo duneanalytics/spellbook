@@ -1,45 +1,24 @@
 {% macro uniswap_old_blockchains_list() %}
    {{ return([
-       "base"
-    ]) }}
-{% endmacro %} 
-
-
-{% macro uniswap_new_blockchains_list() %}
-   {{ return([
-       "blast"
-    ]) }}
-{% endmacro %} 
-
-
--- "optimism" has some problems with traces, need to fix later
-/*
-      "arbitrum"
+       "arbitrum"
        , "avalanche_c"
        , "base"
-       , "bnb"
-       , "ethereum"
-       , "gnosis"
-       , "polygon"
-       , "berachain"
-       , "sonic"
-*/
-
-
-/*
-      "berachain"
        , "blast"
+       , "bnb"
        , "bob"
        , "boba"
        , "celo"
        , "degen"
+       , "ethereum"
        , "fantom"
        , "flare"
+       , "gnosis"
        , "kaia"
        , "linea"
        , "mantle"
        , "mode"
        , "nova"
+       , "polygon"
        , "ronin"
        , "scroll"
        , "sei"
@@ -51,5 +30,20 @@
        , "zkevm"
        , "zksync"
        , "zora"
-*/
+       
+    ]) }}
+{% endmacro %} 
+
+
+{% macro uniswap_new_blockchains_list() %}
+   {{ return([
+      "berachain"
+       , "sonic"
+       , "unichain"
+    ]) }}
+{% endmacro %} 
+
+
+-- "optimism" has some problems with traces, need to fix later
+
 

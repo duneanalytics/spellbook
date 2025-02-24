@@ -131,7 +131,7 @@ WHERE {{ incremental_predicate('block_time') }}
         },
 
         '0x3541d8fea55be35f686281f975bf8b7ab8fbb500c1c7ddd6c4e714655e9cd4e2': {
-            'info': 'fee configurable pool factory event',
+            'info': 'sushiswap trident, trader joe factory event',
             'abi': '{
                 "anonymous": false,
                 "inputs": [
@@ -172,7 +172,7 @@ WHERE {{ incremental_predicate('block_time') }}
         },
 
         '0xc4805696c66d7cf352fc1d6bb633ad5ee82f6cb577c453024b6e0eb8306c6fc9': {
-            'info': 'stable/volatile pool factory event',
+            'info': 'solidly_v1 factory event',
             'abi': '{
                 "anonymous": false,
                 "inputs": [
@@ -213,7 +213,7 @@ WHERE {{ incremental_predicate('block_time') }}
         },
 
         '0x25bc54a32c894b07fd47ed3cc4296ec7d97a974e5ebd17c9f5163afddaf107fa': {
-            'info': 'stable/volatile pool with fee factory event',
+            'info': 'velodrome_v2, aerodrome_v2 factory event',
             'abi': '{
                 "anonymous": false,
                 "inputs": [
@@ -270,7 +270,7 @@ WHERE {{ incremental_predicate('block_time') }}
         , token0
         , token1
         , contract_address
-        , topic0 as factory_topic0
+        , topic0 as pool_topic0
         , '{{ config['info'] }}' as factory_info
         , block_time
         , block_date
