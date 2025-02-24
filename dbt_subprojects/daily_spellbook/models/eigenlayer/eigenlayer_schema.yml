@@ -29,6 +29,7 @@ models:
       - &strategy
         name: strategy
         description: "Strategy to withdraw from"
+        type: varbinary
       - &shares
         name: shares
         description: "Shares of strategy of the withdrawal"
