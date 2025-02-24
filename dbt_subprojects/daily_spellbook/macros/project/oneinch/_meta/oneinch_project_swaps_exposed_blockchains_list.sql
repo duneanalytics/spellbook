@@ -10,5 +10,6 @@
         'fantom', 
         'base',
         'zksync',
+        'linea',
     ]) }}
 {% endmacro %}

@@ -1,0 +1,396 @@
+version: 2
+
+sources:
+  # Apechain Tables
+  - name: apechain
+    description: "Apechain is a blockchain network."
+
+    tables:
+      - name: blocks
+        meta:
+          docs_slug: /evm/apechain/raw/blocks
+          short_description: The blocks table contains detailed information about blocks on the Apechain network.
+        description: '{{ doc("apechain_blocks_doc") }}'
+        columns:
+          - name: time
+            description: "The exact UTC timestamp when this block was added to the chain"
+          - name: number
+            description: "The sequential block number"
+          - name: gas_limit
+            description: "Maximum amount of gas that could be used in this block"
+          - name: gas_used
+            description: "Actual amount of gas used in this block"
+          - name: difficulty
+            description: "Mining difficulty for this block"
+          - name: total_difficulty
+            description: "Total chain difficulty up to this block"
+          - name: size
+            description: "Size of the block in bytes"
+          - name: base_fee_per_gas
+            description: "Base fee per gas in this block (EIP-1559)"
+          - name: hash
+            description: "Unique 256-bit identifier (hash) of this block"
+          - name: parent_hash
+            description: "Hash of the parent block"
+          - name: miner
+            description: "Address of the miner/validator who produced this block"
+          - name: nonce
+            description: "Nonce value used in block mining"
+          - name: state_root
+            description: "Root hash of the state trie after this block"
+          - name: transactions_root
+            description: "Root hash of the transaction trie of this block"
+          - name: receipts_root
+            description: "Root hash of the receipts trie of this block"
+          - name: date
+            description: "The UTC date of this block"
+          - name: blob_gas_used
+            description: "Amount of blob gas used in this block"
+          - name: excess_blob_gas
+            description: "Excess blob gas in this block"
+          - name: parent_beacon_block_root
+            description: "Root hash of the parent beacon block"
+
+      - name: transactions
+        meta:
+          docs_slug: /evm/apechain/raw/transactions
+          short_description: The transactions table contains detailed information about transactions on the Apechain network.
+        description: '{{ doc("apechain_transactions_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this transaction was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this transaction"
+          - name: value
+            description: "Amount of native tokens transferred in this transaction"
+          - name: gas_limit
+            description: "Maximum amount of gas units that this transaction can consume"
+          - name: gas_price
+            description: "Price per unit of gas for this transaction"
+          - name: gas_used
+            description: "Actual amount of gas units consumed by this transaction's execution"
+          - name: max_fee_per_gas
+            description: "Maximum total fee per gas the sender is willing to pay (base fee + priority fee)"
+          - name: max_priority_fee_per_gas
+            description: "Maximum additional fee per gas the sender is willing to pay to validators"
+          - name: priority_fee_per_gas
+            description: "Actual priority fee per gas paid to validators"
+          - name: nonce
+            description: "Sequential number representing the count of transactions sent from the sender's address"
+          - name: index
+            description: "Position of this transaction within its containing block"
+          - name: success
+            description: "Boolean indicating whether the transaction executed successfully"
+          - name: from
+            description: "Address that initiated and signed this transaction"
+          - name: to
+            description: "Recipient address of this transaction"
+          - name: block_hash
+            description: "Hash of the block containing this transaction"
+          - name: data
+            description: "Input data of the transaction, containing function calls or contract interaction data"
+          - name: hash
+            description: "Unique hash identifier of this transaction"
+          - name: type
+            description: "Transaction type (e.g., legacy, EIP-1559, EIP-2930)"
+          - name: access_list
+            description: "List of addresses and storage keys the transaction plans to access (EIP-2930)"
+          - name: chain_id
+            description: "Identifier of the blockchain network"
+          - name: block_date
+            description: "The UTC date of the block containing this transaction"
+          - name: l1_gas_used
+            description: "Amount of L1 gas used by this transaction"
+          - name: l1_gas_price
+            description: "L1 gas price for this transaction"
+          - name: l1_fee
+            description: "Total L1 fee for this transaction"
+          - name: l1_fee_scalar
+            description: "L1 fee scalar value"
+          - name: l1_block_number
+            description: "L1 block number associated with this transaction"
+          - name: l1_timestamp
+            description: "L1 block timestamp"
+          - name: l1_tx_origin
+            description: "Original L1 transaction sender address"
+
+      - name: logs
+        meta:
+          docs_slug: /evm/apechain/raw/logs
+          short_description: The logs table contains event logs emitted by smart contracts on the Apechain network.
+        description: '{{ doc("apechain_logs_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this log was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this log"
+          - name: block_hash
+            description: "Hash of the block containing this log"
+          - name: contract_address
+            description: "Address of the smart contract that emitted this log"
+          - name: topic0
+            description: "First 32-byte topic, typically containing the event signature hash"
+          - name: topic1
+            description: "Second 32-byte topic, often containing indexed event parameters"
+          - name: topic2
+            description: "Third 32-byte topic, often containing indexed event parameters"
+          - name: topic3
+            description: "Fourth 32-byte topic, often containing indexed event parameters"
+          - name: data
+            description: "ABI-encoded data of the log, containing non-indexed event parameters"
+          - name: tx_hash
+            description: "Hash of the transaction that generated this log"
+          - name: index
+            description: "Position of this log within the block"
+          - name: tx_index
+            description: "Position of the parent transaction within the block"
+          - name: block_date
+            description: "The UTC date of the block containing this log"
+          - name: tx_from
+            description: "Address that initiated the transaction which created this log"
+          - name: tx_to
+            description: "Recipient address of the transaction which created this log"
+
+      - name: traces
+        meta:
+          docs_slug: /evm/apechain/raw/traces
+          short_description: The traces table contains detailed execution traces of transactions.
+        description: '{{ doc("apechain_traces_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this trace was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this trace"
+          - name: value
+            description: "Amount of native tokens transferred in this trace"
+          - name: gas
+            description: "Amount of gas allocated for this trace's execution"
+          - name: gas_used
+            description: "Actual amount of gas consumed by this trace"
+          - name: block_hash
+            description: "Hash of the block containing this trace"
+          - name: success
+            description: "Boolean indicating whether this trace executed successfully"
+          - name: tx_index
+            description: "Index position of the parent transaction in the block"
+          - name: tx_from
+            description: "Address that initiated the parent transaction"
+          - name: tx_to
+            description: "Recipient address of the parent transaction"
+          - name: sub_traces
+            description: "Number of child traces spawned by this trace"
+          - name: error
+            description: "Error message if the trace execution failed"
+          - name: tx_success
+            description: "Boolean indicating whether the parent transaction was successful"
+          - name: tx_hash
+            description: "Hash of the parent transaction"
+          - name: from
+            description: "Address that initiated this trace"
+          - name: to
+            description: "Recipient address of this trace"
+          - name: trace_address
+            description: "Array indicating the position of this trace in the trace tree"
+          - name: type
+            description: "Type of trace (call, create, suicide, etc.)"
+          - name: address
+            description: "Address of the contract if this is a contract creation trace"
+          - name: code
+            description: "Contract bytecode if this is a contract creation trace"
+          - name: call_type
+            description: "Type of call (call, delegatecall, staticcall)"
+          - name: input
+            description: "Input data provided to this trace"
+          - name: output
+            description: "Output data returned by this trace"
+          - name: refund_address
+            description: "Address to receive any gas refund"
+          - name: revert_reason
+            description: "Reason for reversion if the trace was reverted"
+          - name: block_date
+            description: "The UTC date of the block containing this trace"
+
+      - name: creation_traces
+        meta:
+          docs_slug: /evm/apechain/raw/creation_traces
+        description: '{{ doc("apechain_creation_traces_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this contract creation was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this contract creation"
+          - name: tx_hash
+            description: "Unique 256-bit identifier (hash) of the transaction that created this contract"
+          - name: address
+            description: "The address of the newly created contract"
+          - name: from
+            description: "The address that initiated the contract creation"
+          - name: code
+            description: "The deployment bytecode of the contract"
+          - name: block_month
+            description: "The UTC month of the block in which this contract creation occurred"
+
+      - name: contracts
+        meta:
+          docs_slug: /evm/apechain/decoded/contracts
+          short_description: The contracts table contains information about verified smart contracts.
+        description: '{{ doc("apechain_contracts_doc") }}'
+        columns:
+          - name: abi_id
+            description: "Unique identifier for the contract ABI"
+          - name: abi
+            description: "Array of contract ABI entries"
+          - name: address
+            description: "Contract address"
+          - name: from
+            description: "Address that deployed the contract"
+          - name: code
+            description: "Contract bytecode"
+          - name: name
+            description: "Contract name"
+          - name: namespace
+            description: "Project namespace"
+          - name: dynamic
+            description: "Whether the contract is dynamically verified"
+          - name: base
+            description: "Whether the contract is a base contract"
+          - name: factory
+            description: "Whether the contract is a factory contract"
+          - name: detection_source
+            description: "Source of contract detection (factory, base, or dynamic)"
+          - name: created_at
+            description: "Timestamp when the contract was created"
+
+      - name: contracts_submitted
+        meta:
+          docs_slug: /evm/apechain/decoded/contracts_submitted
+          short_description: The contracts_submitted table contains information about manually submitted contract verifications.
+        description: '{{ doc("apechain_contracts_submitted_doc") }}'
+        columns:
+          - name: address
+            description: "Contract address"
+          - name: namespace
+            description: "Project namespace"
+          - name: name
+            description: "Contract name"
+          - name: dynamic
+            description: "Whether the contract is dynamically verified"
+          - name: factory
+            description: "Whether the contract is a factory contract"
+          - name: abi
+            description: "Array of contract ABI entries"
+          - name: code
+            description: "Contract bytecode"
+          - name: from
+            description: "Address that deployed the contract"
+          - name: created_at
+            description: "Timestamp when the contract was created"
+
+  - name: erc20_apechain
+    description: "Transfer events for ERC20 tokens on Apechain blockchain"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/apechain/raw/erc20_transfers
+          short_description: The evt_transfer table contains all ERC20 token transfer events on the Apechain blockchain.
+        description: '{{ doc("erc20_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC20 token contract"
+          - name: from
+            description: "The address sending the tokens"
+          - name: to
+            description: "The address receiving the tokens"
+          - name: value
+            description: "The amount of tokens transferred"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
+
+  - name: erc721_apechain
+    description: "Transfer events for ERC721 tokens on Apechain blockchain"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/apechain/raw/erc721_transfers
+          short_description: The evt_transfer table contains all ERC721 token transfer events on the Apechain blockchain.
+        description: '{{ doc("erc721_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC721 token contract"
+          - name: from
+            description: "The address sending the NFT"
+          - name: to
+            description: "The address receiving the NFT"
+          - name: tokenId
+            description: "The unique identifier of the NFT being transferred"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
+
+  - name: erc1155_apechain
+    description: "Transfer events for ERC1155 tokens on Apechain blockchain"
+    tables:
+      - name: evt_transfersingle
+        meta:
+          docs_slug: /evm/apechain/raw/erc1155_transfers
+          short_description: The evt_transfersingle table contains single token transfer events for ERC1155 tokens.
+        description: '{{ doc("erc1155_evt_transfersingle_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC1155 token contract"
+          - name: operator
+            description: "The address that initiated the transfer"
+          - name: from
+            description: "The address sending the tokens"
+          - name: to
+            description: "The address receiving the tokens"
+          - name: id
+            description: "The token type identifier"
+          - name: value
+            description: "The number of tokens transferred"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"
+
+      - name: evt_transferbatch
+        meta:
+          docs_slug: /evm/apechain/raw/erc1155_batch_transfers
+          short_description: The evt_transferbatch table contains batch transfer events for ERC1155 tokens.
+        description: '{{ doc("erc1155_evt_transferbatch_doc") }}'
+        columns:
+          - name: contract_address
+            description: "The address of the ERC1155 token contract"
+          - name: operator
+            description: "The address that initiated the transfer"
+          - name: from
+            description: "The address sending the tokens"
+          - name: to
+            description: "The address receiving the tokens"
+          - name: ids
+            description: "Array of token type identifiers"
+          - name: values
+            description: "Array of amounts of tokens transferred for each id"
+          - name: evt_tx_hash
+            description: "The transaction hash of the transfer event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this transfer"
+          - name: evt_block_number
+            description: "The block number containing this transfer"

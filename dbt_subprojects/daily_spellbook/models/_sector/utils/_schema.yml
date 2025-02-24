@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: utils_days
+    meta:
+      contributors: 0xRob
+    config:
+      tags: [ 'utils', 'days' ]
+    description: >
+      Utility model to have a table of days from bitcoin genesis to current date
+  
+  - name: utils_hours
+    meta:
+      contributors: 0xRob
+    config:
+      tags: [ 'utils', 'hours' ]
+    description: >
+      Utility model to have a table of hours from bitcoin genesis to current timestamp
+
+  - name: utils_minutes
+    meta:
+      contributors: 0xRob
+    config:
+      tags: [ 'utils', 'minutes' ]
+    description: >
+      Utility model to have a table of minutes from bitcoin genesis to current timestamp
+
+  - name: utils_days_table
+    description: >
+      materialized model of days, including some days in the future
+    columns:
+      - name: timestamp
+        data_tests:
+          - unique
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: 'day'
+
+  - name: utils_hours_table
+    description: >
+      materialized model of hours, including some hours in the future
+    columns:
+      - name: timestamp
+        data_tests:
+          - unique
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: 'hour'
+
+  - name: utils_minutes_table
+    description: >
+      materialized model of minutes, including some minutes in the future
+    columns:
+      - name: timestamp
+        data_tests:
+          - unique
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: 'minute'
