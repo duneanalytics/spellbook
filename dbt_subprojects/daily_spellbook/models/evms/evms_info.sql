@@ -25,6 +25,7 @@
                                         , "scroll"
                                         , "sei"
                                         , "sonic"
+                                        , "unichain"
                                         , "viction"
                                         , "worldchain"
                                         , "zksync"
@@ -103,5 +104,8 @@ FROM (
         , (146, 'sonic', 'Sonic', 'Layer 1', NULL, 'SONIC', NULL, 'https://sonicscan.org/', timestamp '2024-12-01 00:00', NULL, NULL, NULL, true, NULL)
         , (57073, 'ink', 'Ink', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://explorer.inkonchain.com/', timestamp '2024-12-06 15:20', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
         , (2741, 'abstract', 'Abstract', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x3439153EB7AF838Ad19d56E1571FBD09333C2809, 'https://explorer.testnet.abs.xyz/', timestamp '2024-06-17 22:39', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, NULL)
+        , (80094, 'berachain', 'Berachain', 'Layer 1', NULL, 'BERA', NULL, 'https://berascan.com/', timestamp '2024-01-20 14:14:11', NULL, NULL, NULL, true, NULL)
+        , (33139, 'apechain', 'ApeChain', 'Layer 3', 'Optimistic Rollup', 'APE', 0x48b62137edfa95a428d35c09e44256a739f6b557, 'https://apescan.io/', timestamp '2024-08-28 16:45:22', 'Arbitrum Orbit', 'AnyTrust', 'Arbitrum One', true, NULL)
+        , (130, 'unichain', 'Unichain', 'Layer 2', 'Optimistic Rollup', 'ETH', 0x4200000000000000000000000000000000000006, 'https://uniscan.xyz/', timestamp '2024-11-04 19:26', 'OP Stack', 'Ethereum Blobs', 'Ethereum', true, 'Superchain')
 ) AS temp_table (chain_id, blockchain, name, chain_type, rollup_type, native_token_symbol, wrapped_native_token_address, explorer_link, first_block_time, codebase, data_availability, settlement, is_on_dune, ecosystem)
 

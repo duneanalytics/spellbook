@@ -419,7 +419,7 @@ WITH pool_labels AS (
                     date_trunc('day', evt_block_time) AS day,
                     pool AS pool_id,
                     tokenIn AS token,
-                    CAST(amountIn AS INT256) AS delta
+                    CAST(amountIn AS INT256) - (CAST(swapFeeAmount AS INT256) * 0.5) AS delta
                 FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
 
                 UNION ALL

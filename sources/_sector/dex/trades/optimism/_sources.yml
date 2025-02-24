@@ -5,6 +5,7 @@ sources:
     tables:
       - name: PoolManager_evt_Swap
       - name: PoolManager_evt_Initialize
+      - name: PoolManager_call_Swap
   - name: uniswap_v3_optimism
     tables:
       - name: pools
@@ -59,6 +60,7 @@ sources:
   - name: openxswap_optimism
     tables:
       - name: Aggregator_evt_Swap
+      - name: UniswapV2Factory_evt_PairCreated
   - name: openocean_v2_optimism
     tables:
       - name: OpenOceanExchangeProxy_evt_Swapped
@@ -101,6 +103,9 @@ sources:
   - name: swaap_v2_optimism
     tables:
       - name: Vault_evt_Swap
+  - name: curve_optimism            
+    tables:
+      - name: pools
   - name: timeswap_v2_optimism
     tables:
       - name: TimeswapV2Option_evt_Swap
