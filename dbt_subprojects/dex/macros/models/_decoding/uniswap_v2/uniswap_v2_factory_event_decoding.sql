@@ -272,6 +272,7 @@ WHERE {{ incremental_predicate('block_time') }}
         , contract_address
         , topic0 as pool_topic0
         , '{{ config['info'] }}' as factory_info
+        , topic0 as factory_topic0
         , block_time
         , block_date
         , block_month
