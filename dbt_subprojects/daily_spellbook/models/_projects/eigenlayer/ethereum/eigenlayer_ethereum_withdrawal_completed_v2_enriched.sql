@@ -2,6 +2,7 @@
     config(
         schema = 'eigenlayer_ethereum',
         alias = 'withdrawal_completed_v2_enriched',
+        materialized = 'table'
     )
 }}
 
