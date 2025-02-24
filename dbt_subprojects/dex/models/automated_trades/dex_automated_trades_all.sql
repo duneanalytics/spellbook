@@ -42,4 +42,4 @@ with dexs AS (
     }}
 )
 
-Select * from dexs  
+Select * from dexs

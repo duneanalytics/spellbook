@@ -1,13 +1,13 @@
 {% macro uniswap_old_blockchains_list() %}
    {{ return([
-       "sonic"
+       "base"
     ]) }}
 {% endmacro %} 
 
 
 {% macro uniswap_new_blockchains_list() %}
    {{ return([
-       "berachain"
+       "blast"
     ]) }}
 {% endmacro %} 
 
@@ -21,6 +21,8 @@
        , "ethereum"
        , "gnosis"
        , "polygon"
+       , "berachain"
+       , "sonic"
 */
 
 
