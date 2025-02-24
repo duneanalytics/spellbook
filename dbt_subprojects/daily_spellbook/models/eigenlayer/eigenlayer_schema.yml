@@ -101,16 +101,13 @@ models:
     description: >
       Strategy category
     columns:
+      - *strategy
       - &category
         name: category
         description: "Category of the strategy"
       - &name
         name: name
         description: "Name of the strategy"
-      - &strategy_address
-        name: strategy_address
-        description: "Strategy address to withdraw from"
-        type: varbinary
   - name: eigenlayer_date_series
     meta:
       blockchain: ethereum
