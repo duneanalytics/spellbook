@@ -21,6 +21,3 @@ sources:
       - name: RewardsCoordinator_evt_AVSRewardsSubmissionCreated
       - name: RewardsCoordinator_evt_RewardsSubmissionForAllEarnersCreated
       - name: EigenPodManager_evt_PodSharesUpdated
-  - name: ethereum
-    tables:
-      - name: logs
