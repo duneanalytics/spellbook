@@ -2,7 +2,11 @@
     config(
         schema = 'eigenlayer_ethereum',
         alias = 'underlying_token_exchange_rate_latest',
-        materialized = 'table'
+        materialized = 'table',
+        post_hook='{{ expose_spells(\'["ethereum"]\',
+                                    "project",
+                                    "eigenlayer",
+                                    \'["bowenli"]\') }}'
     )
 }}
 
