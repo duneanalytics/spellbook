@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: saru_apechain
+    tables:
+      - name: sarupair_evt_swap
+      - name: sarufactory_evt_paircreated
+  - name: camelot_apechain
+    tables:
+      - name: camelotpair_evt_swap
+      - name: camelotfactory_evt_paircreated
