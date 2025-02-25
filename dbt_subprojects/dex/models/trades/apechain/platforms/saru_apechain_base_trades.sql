@@ -10,11 +10,10 @@
 }}
 
 {{
-    uniswap_compatible_v2_trades(
+    uniswap_compatible_v2_trades_no_factory(
         blockchain = 'apechain'
         , project = 'saru'
         , version = '1'
         , Pair_evt_Swap = source('saru_apechain', 'sarupair_evt_swap')
-        , Factory_evt_PairCreated = source('saru_apechain', 'sarufactory_evt_paircreated')
     )
 }}
