@@ -205,8 +205,6 @@ FROM (VALUES
     , ('beets', 'Beets DEX', 'Direct', 'beets_fi')
     , ('silverswap', 'SilverSwap', 'Direct', 'SilverSwapDex')
     , ('saru', 'Saru', 'Direct', 'saru_ex')
-    , ('kodiak', 'Kodiak', 'Direct', 'KodiakFi')
-    , ('unichainswap', 'UnichainSwap', 'Direct', 'unichainswap')
     , ('shadow', 'Shadow', 'Direct', 'ShadowOnSonic')
     , ('kodiak', 'Kodiak', 'Direct', 'KodiakFi')
     , ('unichainswap', 'UnichainSwap', 'Direct', 'unichainswap')
