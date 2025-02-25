@@ -22,4 +22,6 @@ FROM
     , ('joule-kinetic', 'JOULE', 0xE6505f92583103AF7ed9974DEC451A7Af4e3A3bE, 18)
     , ('usdc.e-usd-coin.e', 'USDC.e', 0xFbDa5F676cB37624f28265A144A48B0d6e87d3b6, 6)
     , ('usdt-tether', 'USDT', 0x0B38e83B86d491735fEaa0a791F65c2B99535396, 6)
+    , ('hln-nosys', 'HLN', 0x140d8d3649ec605cf69018c627fb44ccc76ec89f, 18)
+    , ('flx-reflexer-ungovernance-token', 'FLX', 0x22757fb83836e3f9f0f353126cacd3b1dc82a387, 18)
 ) as temp (token_id, symbol, contract_address, decimals)

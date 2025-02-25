@@ -25,4 +25,5 @@ FROM
     , ('dai-dai', 'DAI', 0xf74195Bb8a5cf652411867c5C2C5b8C2a402be35, 18)
     , ('frax-frax', 'FRAX', 0x7562F525106F5d54E891e005867Bf489B5988CD9, 18)
     , ('bnb-binance-coin', 'BNB', 0x68ac1623ACf9eB9F88b65B5F229fE3e2c0d5789E, 18)
+    , ('waifu1-waifu', 'WAIFU', 0xb5cb0975716a4aa6438d3fa02364886e13fd678c, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
