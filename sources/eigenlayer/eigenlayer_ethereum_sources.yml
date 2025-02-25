@@ -3,7 +3,6 @@ version: 2
 sources:
   - name: eigenlayer_ethereum
     description: "Decoded contracts for EigenLayer on Ethereum"
-
     tables:
       - name: DelegationManager_evt_WithdrawalQueued
       - name: DelegationManager_evt_WithdrawalCompleted
@@ -22,3 +21,6 @@ sources:
       - name: RewardsCoordinator_evt_AVSRewardsSubmissionCreated
       - name: RewardsCoordinator_evt_RewardsSubmissionForAllEarnersCreated
       - name: EigenPodManager_evt_PodSharesUpdated
+  - name: ethereum
+    tables:
+      - name: logs

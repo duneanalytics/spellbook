@@ -11,7 +11,7 @@ SELECT
   contract_address AS strategy,
   from_big_endian_64(substr(data, -8)) AS exchange_rate,
   block_number
-FROM ethereum.logs
+FROM {{ source('ethereum', 'logs') }}
 WHERE
     contract_address IN (
         SELECT
