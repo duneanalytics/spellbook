@@ -3,31 +3,32 @@
         alias = 'blocks',
         unique_key=['blockchain', 'number'],
         post_hook='{{ expose_spells(\'[
-                                        "ethereum"
-                                        , "polygon"
-                                        , "bnb"
-                                        , "avalanche_c"
-                                        , "gnosis"
-                                        , "fantom"
-                                        , "optimism"
-                                        , "arbitrum"
-                                        , "celo"
-                                        , "base"
-                                        , "zksync"
-                                        , "zora"
-                                        , "scroll"
-                                        , "linea"
-                                        , "zkevm"
-                                        , "blast"
-                                        , "mantle"
-                                        , "ronin"
-                                        , "abstract"
-                                        , "boba"
-                                        , "sonic"
-                                        , "kaia"
-                                        , "apechain"
-                                        , "berachain"
-                                        , "b3"]\',
+                                        "abstract",
+                                        "apechain",
+                                        "arbitrum",
+                                        "avalanche_c",
+                                        "b3",
+                                        "base",
+                                        "berachain",
+                                        "blast",
+                                        "bnb",
+                                        "boba",
+                                        "celo",
+                                        "ethereum",
+                                        "fantom",
+                                        "gnosis",
+                                        "kaia",
+                                        "linea",
+                                        "mantle",
+                                        "optimism",
+                                        "polygon",
+                                        "ronin",
+                                        "scroll",
+                                        "sonic",
+                                        "zkevm",
+                                        "zksync",
+                                        "zora"
+                                        ]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby", "shogun"]\') }}'
