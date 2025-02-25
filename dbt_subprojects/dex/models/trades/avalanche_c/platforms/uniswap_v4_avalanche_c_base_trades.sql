@@ -14,7 +14,6 @@
         blockchain = 'avalanche_c'
         , project = 'uniswap'
         , version = '4'
-        , PoolManager_evt_Swap = source('uniswap_v4_avalanche_c', 'PoolManager_evt_Swap') 
-        , PoolManager_evt_Initialize = source('uniswap_v4_avalanche_c', 'PoolManager_evt_Initialize')
+        , PoolManager_call_Swap = source('uniswap_v4_avalanche_c', 'PoolManager_call_Swap') 
     )
 }}

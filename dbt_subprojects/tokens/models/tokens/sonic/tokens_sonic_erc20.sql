@@ -66,4 +66,7 @@ FROM (VALUES
     , (0x6BA47940f738175d3F8C22Aa8EE8606eaAe45eb2, 'sS', 18)
     , (0x7002383d2305b8f3b2b7786f50c13d132a22076d, 'PT-sw-wstkscUSD-1751241607', 6)
     , (0x016C306e103FbF48EC24810D078C65aD13c5f11B, 'bwS-25', 18)
+    , (0x6047828dc181963ba44974801ff68e538da5eaf9, 'USDT', 6)
+    , (0xff12470a969dd362eb6595ffb44c82c959fe9acc, 'USDA', 18)
+    , (0xc96de26018a54d51c097160568752c4e3bd6c364, 'FBTC', 8)
 ) as temp (contract_address, symbol, decimals)
