@@ -1,7 +1,7 @@
 {{ 
     config(
         schema = 'eigenlayer_ethereum',
-        alias = 'withdrawal_queued_v2_flattened',
+        alias = 'pod_shares_updated_enriched',
         materialized = 'view'
     )
 }}
