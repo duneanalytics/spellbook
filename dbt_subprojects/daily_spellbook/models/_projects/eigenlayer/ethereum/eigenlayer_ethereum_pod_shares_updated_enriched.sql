@@ -14,4 +14,4 @@ SELECT
     evt_block_number,
     0xbeac0eeeeeeeeeeeeeeeeeeeeeeeeeeeeeebeac0 AS strategy,
     CAST(sharesDelta AS DECIMAL(38,0)) AS shares
-FROM source('eigenlayer_ethereum', 'EigenPodManager_evt_PodSharesUpdated')
+FROM {{ source('eigenlayer_ethereum', 'EigenPodManager_evt_PodSharesUpdated') }}
