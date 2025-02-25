@@ -98,3 +98,65 @@ models:
       - &daily_delta_eth
         name: daily_delta_eth
         description: "Daily total impact on token balance, in eth"
+
+  - name: balancer_v3_base_token_balance_changes
+    meta:
+      blockchain: base
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['base', 'bpt', 'supply', 'changes']
+    description: >
+      Token Balance Changes on Balancer Pools.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - evt_tx_hash
+            - evt_index
+            - token_address
+    columns:
+      - *block_date
+      - *evt_block_time
+      - *evt_block_number
+      - *blockchain
+      - *evt_tx_hash
+      - *evt_index
+      - *pool_id
+      - *pool_address
+      - *pool_symbol
+      - *pool_type
+      - *version
+      - *token_address
+      - *token_symbol
+      - *delta_amount_raw
+      - *delta_amount
+
+  - name: balancer_v3_base_token_balance_changes_daily
+    meta:
+      blockchain: base
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['base', 'bpt', 'supply', 'changes']
+    description: >
+      Token Balance Changes on Balancer Pools, grouped by day.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - pool_id
+            - token_address
+    columns:
+      - *block_date
+      - *pool_id
+      - *pool_address
+      - *pool_symbol   
+      - *version
+      - *blockchain
+      - *pool_type
+      - *token_address
+      - *token_symbol
+      - *daily_delta   
+      - *daily_delta_usd   
+      - *daily_delta_eth        

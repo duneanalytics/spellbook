@@ -1,7 +1,7 @@
 {{ config(
     schema = 'balancer_v3',
     alias = 'erc4626_token_mapping',
-    post_hook='{{ expose_spells(blockchains = \'["ethereum", "gnosis"]\',
+    post_hook='{{ expose_spells(blockchains = \'["ethereum", "gnosis", "sonic", "arbitrum", "base"]\',
                                 spell_type = "project",
                                 spell_name = "balancer",
                                 contributors = \'["viniabussafi"]\') }}'
@@ -11,7 +11,9 @@
 {% set balancer_models = [
     ref('balancer_v3_ethereum_erc4626_token_mapping'),
     ref('balancer_v3_gnosis_erc4626_token_mapping'),
-    ref('balancer_v3_sonic_erc4626_token_mapping')
+    ref('balancer_v3_sonic_erc4626_token_mapping'),
+    ref('balancer_v3_arbitrum_erc4626_token_mapping'),
+    ref('balancer_v3_base_erc4626_token_mapping')
 ] %}
 
 SELECT *
