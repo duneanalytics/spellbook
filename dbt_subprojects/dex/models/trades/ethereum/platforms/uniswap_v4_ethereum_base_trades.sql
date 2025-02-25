@@ -14,7 +14,6 @@
         blockchain = 'ethereum'
         , project = 'uniswap'
         , version = '4'
-        , PoolManager_evt_Swap = source('uniswap_v4_ethereum', 'PoolManager_evt_Swap') 
-        , PoolManager_evt_Initialize = source('uniswap_v4_ethereum', 'PoolManager_evt_Initialize')
+        , PoolManager_call_Swap = source('uniswap_v4_ethereum', 'PoolManager_call_Swap') 
     )
 }}
