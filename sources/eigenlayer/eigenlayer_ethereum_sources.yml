@@ -21,3 +21,4 @@ sources:
       - name: AVSDirectory_evt_AVSMetadataURIUpdated
       - name: RewardsCoordinator_evt_AVSRewardsSubmissionCreated
       - name: RewardsCoordinator_evt_RewardsSubmissionForAllEarnersCreated
+      - name: EigenPodManager_evt_PodSharesUpdated
