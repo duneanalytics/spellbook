@@ -19,9 +19,9 @@ with ton_prices as ( -- get price of TON for each day to estimate USD value
         and symbol = 'TON' and blockchain is null
         group by 1
 ), jetton_prices as (
-   select jp.token_address as jetton_master, jp.timestamp as block_date, avg(price_usd) as price_usd
+   select jp.token_address as jetton_master, asset_type, jp.timestamp as block_date, avg(price_usd) as price_usd
    from {{ ref('ton_jetton_price_daily') }} jp
-   group by 1, 2
+   group by 1, 2, 3
 ),
 ton_flow as (
     select block_date, source as address, -1 * value as ton_flow
@@ -77,12 +77,30 @@ jettons_flow as (
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
-), transfers_amount_jetton as (
+), daily_liquidity as (
+ -- since we are using dex derived prices we can encounter a situation where the amount of tokens being transferred
+ -- is much higher than the amount of liquidity in the pools. To mitigate this we will use the daily liquidity of the tokens
+ -- and use it as the upper bound for the amount of tokens being transferred.
+ is not the same as the amount of tokens in the pool
+  select block_date, jetton_master, sum(tvl_usd) as total_token_tvl_usd from (
+    select block_date, pool, jetton_left, jetton_right, avg(tvl_usd) as tvl_usd from ton.dex_pools 
+    where tvl_usd > 0
+    group by 1, 2, 3, 4) j
+  cross join unnest(array[jetton_left, jetton_right]) as t(jetton_master)
+  -- exclude some liquid tokens
+  where jetton_master != '0:B113A994B5024A16719F69139328EB759596C38A25F59028B146FECDC3621DFE' -- USDT
+  or jetton_master != '0:BDF3FA8098D129B54B4F73B5BAC5D1E1FD91EB054169C3916DFC8CCD536D1000' -- tsTON
+  or jetton_master != '0:CD872FA7C5816052ACDF5332260443FAEC9AACC8C21CCA4D92E7F47034D11892' -- stTON
+  or jetton_master != '0:CF76AF318C0872B58A9F1925FC29C156211782B9FB01F56760D292E56123BF87' -- hTON
+  group by 1, 2
+),
+transfers_amount_jetton as (
  select block_date, address,
   sum(case when jetton_flow > 0 then jetton_flow * price_usd else 0 end) as transfer_amount_usd_received,
   sum(case when jetton_flow < 0 then jetton_flow * price_usd else 0 end) as transfer_amount_usd_sent
   from jettons_flow
   join jetton_prices using(jetton_master, block_date)
+  left join daily_liquidity using(block_date, jetton_master)
 group by 1, 2
 ), transfers_amount as (
   select * from transfers_amount_jetton
