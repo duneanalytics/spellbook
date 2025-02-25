@@ -28,6 +28,4 @@ FROM
     , ('usde-ethena-usde', 'USDe', 0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34, 18)
     , ('usdt-tether', 'USD₮0', 0x779Ded0c9e1022225f8E0630b35a9b54bE713736, 6)
     , ('usdc-usd-coin', 'BYUSD', 0x688e72142674041f8f6Af4c808a4045cA1D6aC82, 6)
-    , ('honey-honeycomb', 'HONEY', 0xfcbd14dc51f0a4d49d5e53c2e0950e0bc26d0dce, 18)
-    , ('moola-degen-forest', 'MOOLA', 0x331865bf2ea19e94bbf438cf4ee590cb6392e5a9, 18)
 ) as temp (token_id, symbol, contract_address, decimals) 
