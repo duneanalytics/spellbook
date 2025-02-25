@@ -239,6 +239,12 @@ models:
         description: "Cumulative daily shares"
   - name: eigenlayer_ethereum_whitelisted_strategy_latest
     tags: ['eigenlayer', 'restaking', 'strategy']
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'strategy']
     description: >
         Latest whitelisted strategies
     columns:
