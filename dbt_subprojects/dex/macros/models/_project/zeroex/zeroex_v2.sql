@@ -269,23 +269,28 @@ maker_logs as (
     WHERE  topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
         and cow_rn is null 
         and amount != 0 
-        AND (
+        and (
+              (
                 (
-                topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef, 
-                            0xe59fdd36d0d223c0c7d996db7ad796880f45e1936cb0bb7ac102e7082e031487) 
-                and ( 
-                        (
-                            bytearray_substring(logs.topic2,13,20) in (st.contract_address, settler_address) 
-                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker, tx_to, settler_address) 
-                        )
-                        or (
-                            bytearray_substring(logs.topic2,13,20) = taker 
-                        and taker = tx_to and bytearray_substring(logs.topic1,13,20) != st.contract_address ) 
-                    )
-             )
-             or topic0 = 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c 
-                 and bytearray_substring(logs.topic1,13,20) in (tx_to, settler_address)  
-          )
+                (bytearray_substring(logs.topic1,13,20) in (st.contract_address, settler_address)  
+            and (bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker, settler_address))
+            )
+            or (bytearray_substring(logs.topic2,13,20) = taker and taker = tx_to ) 
+            or (bytearray_substring(logs.topic2,13,20) = st.contract_address 
+                and bytearray_substring(logs.topic1,13,20) = tx_to 
+                and bytearray_substring(logs.topic1,13,20) not in (bytearray_substring(st.topic1,13,20), tx_to ) 
+            )
+            
+           )
+           and (varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
+        or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
+           ) 
+    
+            )
+            or (bytearray_substring(logs.topic1,13,20) in (settler_address)  
+            and (bytearray_substring(logs.topic2,13,20) in (taker))
+            )
+        )
         
     ),
     tbl_logs_rn as (
