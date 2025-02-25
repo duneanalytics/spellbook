@@ -27,7 +27,7 @@ WITH daily_share AS (
         date_trunc('day', evt_block_time) AS date
     FROM {{ ref('eigenlayer_ethereum_pod_shares_updated_enriched') }}
     WHERE shares > 0
-    GROUP BY date_trunc('day', evt_block_time)
+    GROUP BY strategy, date_trunc('day', evt_block_time)
 )
 SELECT
     strategy,
