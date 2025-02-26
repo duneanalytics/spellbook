@@ -2,10 +2,36 @@
         schema='evms',
         alias = 'logs',
         unique_key=['blockchain', 'tx_hash'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin"]\',
+        post_hook='{{ expose_spells(\'[
+                                        "abstract",
+                                        "apechain",
+                                        "arbitrum",
+                                        "avalanche_c",
+                                        "b3",
+                                        "base",
+                                        "berachain",
+                                        "blast",
+                                        "bnb",
+                                        "boba",
+                                        "celo",
+                                        "ethereum",
+                                        "fantom",
+                                        "gnosis",
+                                        "kaia",
+                                        "linea",
+                                        "mantle",
+                                        "optimism",
+                                        "polygon",
+                                        "ronin",
+                                        "scroll",
+                                        "sonic",
+                                        "zkevm",
+                                        "zksync",
+                                        "zora"
+                                        ]\',
                                     "sector",
                                     "evms",
-                                    \'["hildobby","rantum"]\') }}'
+                                    \'["hildobby","rantum","shogun"]\') }}'
         )
 }}
 
@@ -30,6 +56,13 @@
      , ('mode', source('mode', 'logs'))
      , ('sei', source('sei', 'logs'))
      , ('ronin', source('ronin', 'logs'))
+     , ('abstract', source('abstract', 'logs'))
+     , ('boba', source('boba', 'logs'))
+     , ('sonic', source('sonic', 'logs'))
+     , ('kaia', source('kaia', 'logs'))
+     , ('apechain', source('apechain', 'logs'))
+     , ('berachain', source('berachain', 'logs'))
+     , ('b3', source('b3', 'logs'))
 ] %}
 
 SELECT *
