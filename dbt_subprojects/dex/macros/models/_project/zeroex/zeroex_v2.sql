@@ -420,23 +420,6 @@ token_metadata AS (
     FROM {{ source('tokens', 'erc20') }}
     WHERE blockchain = '{{blockchain}}'
 ),
-token_prices AS (
-    SELECT
-        blockchain,
-        contract_address,
-        minute,
-        price,
-        symbol,
-        decimals 
-    FROM {{ source('prices', 'usd') }}
-    WHERE 
-        blockchain = '{{blockchain}}'
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('minute') }}
-        {% else %}
-        AND minute >= DATE '{{start_date}}'
-        {% endif %}
-), 
 results AS (
     SELECT
         '{{blockchain}}' AS blockchain,
@@ -473,9 +456,9 @@ results AS (
     LEFT JOIN
         token_metadata tm ON tm.contract_address = maker_token
     LEFT JOIN
-        token_prices pt ON pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
+        {{ source('prices', 'usd') }} pt ON pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
     LEFT JOIN
-        token_prices pm ON pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
+        {{ source('prices', 'usd') }} pm ON pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
 ),
 
 results_usd AS (
