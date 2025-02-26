@@ -7826,4 +7826,6 @@ FROM (VALUES
     , ( 0x57f664882f762fa37903fc864e2b633d384b411a, 'waGnoWETH', 18)
     , ( 0x51350d88c1bd32Cc6A79368c9Fb70373Fb71F375, 'waGNOUSDCe', 6)    
     , ( 0xa4d8bae4430cb084dcd9d82e938bce270b76bae5, 'CHT', 18)    
+    , ( 0xbb7e99abccce01589ad464ff698ad139b0705d90, 'przWXDAI', 18)    
+    , ( 0xb75af20ecadabed9049cc2f50e38bad2768b35cf, 'przPOOL', 18)    
 ) AS temp_table (contract_address, symbol, decimals)
