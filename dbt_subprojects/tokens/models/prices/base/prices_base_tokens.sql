@@ -214,6 +214,6 @@ FROM
     --('well-moonwell' ,'base', 'WELL', 0xa88594d404727625a9437c3f886c7643872296ae, 18)
     ('idrx-idrx', 'base', 'IDRX',0x18Bc5bcC660cf2B9cE3cd51a404aFe1a0cBD3C22, 2),
     ('nars-nars', 'base', 'nARS',0x5e40f26E89213660514c51Fb61b2d357DBf63C85, 18),
-    ('cadc-cad-coin', 'base', 'CADC',0x043eB4B75d0805c43D7C834902E335621983Cf03, 18),
+    -- ('cadc-cad-coin', 'base', 'CADC',0x043eB4B75d0805c43D7C834902E335621983Cf03, 18),
     ('brz-brazilian-digital-token', 'base', 'BRZ',0xE9185Ee218cae427aF7B9764A011bb89FeA761B4, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
