@@ -473,9 +473,9 @@ results AS (
     LEFT JOIN
         token_metadata tm ON tm.contract_address = maker_token
     LEFT JOIN
-        {{ source('prices', 'usd') }} pt ON pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
+        token_prices pt ON pt.contract_address = taker_token AND pt.minute = DATE_TRUNC('minute', trades.block_time)
     LEFT JOIN
-        {{ source('prices', 'usd') }} pm ON pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
+        token_prices pm ON pm.contract_address = maker_token AND pm.minute = DATE_TRUNC('minute', trades.block_time)
 ),
 
 results_usd AS (
