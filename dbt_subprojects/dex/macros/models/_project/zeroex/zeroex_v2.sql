@@ -423,15 +423,16 @@ token_metadata AS (
 token_prices AS (
     SELECT
         blockchain,
-        contract_address,
+        prices.contract_address,
         minute,
         price,
         symbol,
         decimals 
-    FROM {{ source('prices', 'usd') }}
+    FROM {{ source('prices', 'usd') }} as prices 
     JOIN zeroex_v2_trades 
         ON zeroex_v2_trades.block_time = minute 
-        AND contract_address in (zeroex_v2_trades.taker_token, zeroex_v2_trades.maker_token)   
+        AND prices.contract_address in (zeroex_v2_trades.taker_token, zeroex_v2_trades.maker_token)
+        AND prices.blockchain = '{{blockchain}}'   
     WHERE 
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
