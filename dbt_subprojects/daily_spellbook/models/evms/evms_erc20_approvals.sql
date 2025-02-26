@@ -2,7 +2,33 @@
         schema='evms',
         alias = 'erc20_approvals',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin"]\',
+        post_hook='{{ expose_spells(\'[
+                                        "abstract",
+                                        "apechain",
+                                        "arbitrum",
+                                        "avalanche_c",
+                                        "b3",
+                                        "base",
+                                        "berachain",
+                                        "blast",
+                                        "bnb",
+                                        "boba",
+                                        "celo",
+                                        "ethereum",
+                                        "fantom",
+                                        "gnosis",
+                                        "kaia",
+                                        "linea",
+                                        "mantle",
+                                        "optimism",
+                                        "polygon",
+                                        "ronin",
+                                        "scroll",
+                                        "sonic",
+                                        "zkevm",
+                                        "zksync",
+                                        "zora"
+                                        ]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -29,6 +55,12 @@
      , ('mantle', source('erc20_mantle', 'evt_approval'))
      , ('sei', source('erc20_sei', 'evt_Approval'))
      , ('ronin', source('erc20_ronin', 'evt_approval'))
+     , ('abstract', source('erc20_abstract', 'evt_approval'))
+     , ('boba', source('erc20_boba', 'evt_approval'))
+     , ('sonic', source('erc20_sonic', 'evt_approval'))
+     , ('kaia', source('erc20_kaia', 'evt_approval'))
+     , ('berachain', source('erc20_berachain', 'evt_approval'))
+     , ('b3', source('erc20_b3', 'evt_approval'))
 ] %}
 
 SELECT *

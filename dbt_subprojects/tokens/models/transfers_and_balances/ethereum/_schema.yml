@@ -190,3 +190,61 @@ models:
       - name: symbol
       - name: decimals
       - name: collection_name
+
+  - name: tokens_ethereum_net_transfers_daily
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: 0xRob, krishhh
+    config:
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total transfer amount per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+
+  - name: tokens_ethereum_net_transfers_daily_asset
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: 0xRob, krishhh
+    config:
+      tags: ['tokens', 'net_transfers']
+    description: "Total transfer amount per day per asset"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - contract_address
+            
+  - name: tokens_ethereum_balances_latest
+    meta:
+      blockchain: ethereum
+      sector: tokens
+      contributors: et-dynamic
+    config:
+      tags: ['tokens','balances', 'ethereum']
+    description: "Most recent token balances enriched"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - unique_key
+            - block_date_latest
+    columns:
+      - name: unique_key
+      - name: blockchain
+      - name: address
+      - name: token_address
+      - name: token_standard
+      - name: token_symbol
+      - name: token_id
+      - name: collection_name
+      - name: block_number_latest
+      - name: block_date_latest
+      - name: block_time_latest
+      - name: balance_raw_latest
+      - name: balance_latest
+
