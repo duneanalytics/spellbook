@@ -25,17 +25,6 @@ daily_share AS (
         date_trunc('day', evt_block_time) AS date
     FROM {{ source('eigenlayer_ethereum', 'StrategyManager_evt_Deposit') }}
     GROUP BY strategy, date_trunc('day', evt_block_time)
-
-    UNION ALL
-
-    -- native ETH strategy
-    SELECT
-        strategy,
-        SUM(shares) as shares,
-        date_trunc('day', evt_block_time) AS date
-    FROM {{ ref('eigenlayer_ethereum_pod_shares_updated_enriched') }}
-    WHERE shares > 0
-    GROUP BY strategy, date_trunc('day', evt_block_time)
 )
 SELECT
     a.date,
