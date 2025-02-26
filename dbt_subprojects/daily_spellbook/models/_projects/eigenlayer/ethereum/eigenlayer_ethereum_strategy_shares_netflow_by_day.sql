@@ -10,7 +10,7 @@
 }}
 
 
-WITH combined AS (
+WITH combined_withdrawals AS (
     SELECT
         strategy,
         shares,
@@ -29,6 +29,6 @@ SELECT
     strategy,
     SUM(shares) as shares,
     date
-FROM combined
+FROM combined_withdrawals
 GROUP BY strategy, date
 ORDER BY date DESC
