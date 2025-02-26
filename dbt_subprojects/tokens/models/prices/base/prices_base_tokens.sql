@@ -189,6 +189,11 @@ FROM
     ('meta-based-meta', 'base', 'META',0x3efd97aeb3d2451bbec0e4dfebc8b66ebb33f552, 18),
     ('alf-alf', 'base', 'ALF',0x26f1bb40ea88b46ceb21557dc0ffac7b7c0ad40f, 18), 
     ('tad1-tadpole', 'base', 'TAD',0x55027a5b06f4340cc4c82dcc74c90ca93dcb173e, 18),
-    ('blue-blue-guy', 'base', 'BLUE',0x891502ba08132653151f822a3a430198f1844115, 18)
+    ('blue-blue-guy', 'base', 'BLUE',0x891502ba08132653151f822a3a430198f1844115, 18),
+    ('idrx-idrx', 'base', 'IDRX',0x18Bc5bcC660cf2B9cE3cd51a404aFe1a0cBD3C22, 2),
+    ('nars-nars', 'base', 'nARS',0x5e40f26E89213660514c51Fb61b2d357DBf63C85, 18),
+    ('eurc-eurc', 'base', 'EURC',0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42, 6),
+    ('cadc-cad-coin', 'base', 'CADC',0x043eB4B75d0805c43D7C834902E335621983Cf03, 18),
+    ('brz-brazilian-digital-token', 'base', 'BRZ',0xE9185Ee218cae427aF7B9764A011bb89FeA761B4, 18)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
