@@ -8,37 +8,42 @@
 
 WITH pools AS (
     SELECT
-        poolId AS pool_id,
-        poolAddress AS pool_address,
-        specialization,
-        evt_block_time,
-        CASE 
-            WHEN specialization = 0 THEN 'General Pool'
-            WHEN specialization = 1 THEN 'Minimal Swap Info'
-            WHEN specialization = 2 THEN 'Two Token'
-            ELSE 'Unknown'
-        END AS pool_type
-    FROM {{ source('burrbear_berachain', 'vault_evt_poolregistered') }}
+        pool_id,
+        zip.tokens AS token_address,
+        symbol,
+        pool_type
+    FROM (
+        SELECT
+            c.poolId AS pool_id,
+            t.tokens,
+            cc.symbol,
+            CASE 
+                WHEN specialization = 0 THEN 'General Pool'
+                WHEN specialization = 1 THEN 'Minimal Swap Info'
+                WHEN specialization = 2 THEN 'Two Token'
+                ELSE 'Unknown'
+            END AS pool_type
+        FROM {{ source('burrbear_berachain', 'vault_evt_poolregistered') }} c
+        INNER JOIN {{ source('burrbear_berachain', 'factory_call_create') }} cc
+            ON c.evt_tx_hash = cc.call_tx_hash
+            AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
+        CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
+    ) zip
 ),
 
-pool_tokens AS (
+tokens_with_symbols AS (
     SELECT 
-        p.pool_id,
-        p.pool_address,
-        p.pool_type,
-        p.evt_block_time,
-        t.tokens AS token_address,
+        p.*,
         COALESCE(e.symbol, '?') AS token_symbol
     FROM pools p
-    CROSS JOIN UNNEST(tokens) AS t(tokens)
     LEFT JOIN {{ source('tokens', 'erc20') }} e
-        ON t.tokens = e.contract_address 
+        ON p.token_address = e.contract_address 
         AND e.blockchain = 'berachain'
 )
 
 SELECT
     'berachain' AS blockchain,
-    pool_address AS address,
+    pool_id AS address,
     lower(array_join(array_agg(token_symbol ORDER BY token_symbol), '/')) AS name,
     pool_type,
     '1' AS version,
@@ -49,6 +54,5 @@ SELECT
     now() AS updated_at,
     'burrbear_pools_berachain' AS model_name,
     'identifier' AS label_type
-FROM pool_tokens
-GROUP BY pool_id, pool_address, pool_type, evt_block_time
-ORDER BY evt_block_time
+FROM tokens_with_symbols
+GROUP BY 1,2,4,5,6,7,8,9,10,11,12
