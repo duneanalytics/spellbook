@@ -420,6 +420,26 @@ token_metadata AS (
     FROM {{ source('tokens', 'erc20') }}
     WHERE blockchain = '{{blockchain}}'
 ),
+token_prices AS (
+    SELECT
+        blockchain,
+        contract_address,
+        minute,
+        price,
+        symbol,
+        decimals 
+    FROM {{ source('prices', 'usd') }}
+    JOIN tbl_trades 
+        ON tbl_trades.block_time = minute 
+        AND contract_address in (tbl_trades.taker_token, tbl_trades.maker_token)   
+    WHERE 
+        blockchain = '{{blockchain}}'
+        {% if is_incremental() %}
+        AND {{ incremental_predicate('minute') }}
+        {% else %}
+        AND minute >= DATE '{{start_date}}'
+        {% endif %}
+), 
 results AS (
     SELECT
         '{{blockchain}}' AS blockchain,
