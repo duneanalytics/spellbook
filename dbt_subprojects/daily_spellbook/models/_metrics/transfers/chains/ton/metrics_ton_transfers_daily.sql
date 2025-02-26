@@ -21,6 +21,9 @@ with ton_prices as ( -- get price of TON for each day to estimate USD value
 ), jetton_prices as (
    select jp.token_address as jetton_master, jp.timestamp as block_date, avg(price_usd) as price_usd
    from {{ ref('ton_jetton_price_daily') }} jp
+   -- Hotfix: exclude outliers to avoid spikes in the data
+   where jp.token_address  != '0:A6000ED48DAFED59CCD50441C76A098C3C912D48E414DDC12B4F30E38601B1C6'
+   and jp.token_address  != '0:C64926DA4E45846A985BE3696E8B013B628330CEEFDE0D57CDCF84628FBC6719'
    group by 1, 2
 ),
 ton_flow as (
