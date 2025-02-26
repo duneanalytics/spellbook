@@ -106,7 +106,7 @@ group by
 
 {% ############################################################################################ %}
 
-{% macro evm_net_transfers_daily_asset(blockchain, native_contract_address, include_traces=true) %}
+{% macro evm_net_transfers_daily_asset(blockchain, native_contract_address) %}
 with raw_transfers as (
     select
         blockchain
