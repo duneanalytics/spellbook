@@ -429,9 +429,9 @@ token_prices AS (
         symbol,
         decimals 
     FROM {{ source('prices', 'usd') }}
-    JOIN tbl_trades 
-        ON tbl_trades.block_time = minute 
-        AND contract_address in (tbl_trades.taker_token, tbl_trades.maker_token)   
+    JOIN zeroex_v2_trades 
+        ON zeroex_v2_trades.block_time = minute 
+        AND contract_address in (zeroex_v2_trades.taker_token, zeroex_v2_trades.maker_token)   
     WHERE 
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
