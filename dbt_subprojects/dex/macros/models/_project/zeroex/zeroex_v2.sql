@@ -72,7 +72,7 @@ settler_txs AS (
         settler_address,
         (varbinary_substring(tracker,2,12)) AS zid,
         CASE
-            WHEN method_id = 0x1fff991f THEN (varbinary_substring(tracker,12,3))
+            WHEN method_id = 0x1fff991f THEN (varbinary_substring(tracker,14,3))
             WHEN method_id = 0xfd3ad6d4 THEN (varbinary_substring(tracker,13,3))
         END AS tag,
         row_number() over (partition by tx_hash order by varbinary_substring(tracker,2,12)) rn,
