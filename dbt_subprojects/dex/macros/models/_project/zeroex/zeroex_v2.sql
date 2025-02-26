@@ -267,7 +267,7 @@ maker_logs as (
         AND st.block_number = logs.block_number
         
     WHERE  
-        and cow_rn is null 
+        cow_rn is null 
         and amount != 0 
         and ( 
                 ( topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
