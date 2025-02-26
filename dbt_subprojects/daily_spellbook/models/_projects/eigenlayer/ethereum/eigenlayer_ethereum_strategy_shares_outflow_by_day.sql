@@ -34,6 +34,16 @@ combined_withdrawals AS (
         shares,
         date_trunc('day', evt_block_time) AS date
     FROM {{ ref('eigenlayer_ethereum_withdrawal_completed_v2_enriched') }}
+
+    UNION ALL
+
+    -- native ETH strategy
+    SELECT
+        strategy,
+        shares,
+        date_trunc('day', evt_block_time) AS date
+    FROM {{ ref('eigenlayer_ethereum_pod_shares_updated_enriched') }}
+    WHERE shares < 0
 ),
 daily_share AS (
     SELECT
