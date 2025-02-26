@@ -2,7 +2,33 @@
         schema='evms',
         alias = 'contracts',
         unique_key=['blockchain', 'address'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin"]\',
+        post_hook='{{ expose_spells(\'[
+                                        "abstract",
+                                        "apechain",
+                                        "arbitrum",
+                                        "avalanche_c",
+                                        "b3",
+                                        "base",
+                                        "berachain",
+                                        "blast",
+                                        "bnb",
+                                        "boba",
+                                        "celo",
+                                        "ethereum",
+                                        "fantom",
+                                        "gnosis",
+                                        "kaia",
+                                        "linea",
+                                        "mantle",
+                                        "optimism",
+                                        "polygon",
+                                        "ronin",
+                                        "scroll",
+                                        "sonic",
+                                        "zkevm",
+                                        "zksync",
+                                        "zora"
+                                        ]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -29,6 +55,12 @@
      , ('mantle', source('mantle', 'contracts'))
      , ('sei', source('sei', 'contracts'))
      , ('ronin', source('ronin', 'contracts'))
+     , ('abstract', source('abstract', 'contracts'))
+     , ('boba', source('boba', 'contracts'))
+     , ('kaia', source('kaia', 'contracts'))
+     , ('apechain', source('apechain', 'contracts'))
+     , ('berachain', source('berachain', 'contracts'))
+     , ('b3', source('b3', 'contracts'))
 ] %}
 
 SELECT *
