@@ -45,4 +45,6 @@ FROM
     , ('usdt-tether', 'USDT', 0x6047828dc181963ba44974801ff68e538da5eaf9, 6)
     , ('usda-usda', 'USDA', 0xff12470a969dd362eb6595ffb44c82c959fe9acc, 18)
     , ('fbtc-ignition-fbtc', 'FBTC', 0xc96de26018a54d51c097160568752c4e3bd6c364, 8)
+    , ('metro-metropolis', 'METRO', 0x71e99522ead5e21cf57f1f542dc4ad2e841f7321, 18)
+    , ('derp-derp-eth', 'DERP', 0xe920d1da9a4d59126dc35996ea242d60efca1304, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
