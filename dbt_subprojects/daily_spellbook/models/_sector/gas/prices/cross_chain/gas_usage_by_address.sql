@@ -99,7 +99,7 @@ current_metrics AS (
         COALESCE(c.gas_spent_usd_1_year, 0) as gas_spent_usd_1_year,
         COALESCE(c.gas_spent_native_total, 0) + COALESCE(h.gas_spent_native_total, 0) as gas_spent_native_total,
         COALESCE(c.gas_spent_native_24_hours, 0) as gas_spent_native_24_hours,
-        COALESCE(c.gas_spent_native_7_days, a0) as gas_spent_native_7_days,
+        COALESCE(c.gas_spent_native_7_days, 0) as gas_spent_native_7_days,
         COALESCE(c.gas_spent_native_30_days, 0) as gas_spent_native_30_days,
         COALESCE(c.gas_spent_native_1_year, 0) as gas_spent_native_1_year
     FROM current_metrics c
