@@ -237,3 +237,56 @@ models:
       - *date
       - name: cumulative_daily_shares
         description: "Cumulative daily shares"
+  - name: eigenlayer_ethereum_whitelisted_strategy_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'strategy']
+    description: >
+        Latest whitelisted strategies
+    columns:
+      - *strategy
+  - name: eigenlayer_ethereum_pod_shares_updated_enriched
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'beacon strategy']
+    description: >
+        Enriched eigenpod shares changed
+    columns:
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *strategy
+      - *shares
+  - name: eigenlayer_ethereum_underlying_token_exchange_rate
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: [ 'eigenlayer', 'restaking', 'exchange rate' ]
+    description: >
+      Exchange rate of underlying tokens
+    columns:
+      - *strategy
+      - &exchange_rate
+        name: exchange_rate
+        description: "Exchange rate of the strategy shares to underlying tokens"
+  - name: eigenlayer_ethereum_underlying_token_exchange_rate_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'exchange rate']
+    description: >
+        Latest exchange rate of underlying tokens
+    columns:
+      - *strategy
+      - *exchange_rate
