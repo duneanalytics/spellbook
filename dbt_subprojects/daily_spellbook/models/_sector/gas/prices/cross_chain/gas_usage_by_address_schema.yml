@@ -75,7 +75,7 @@ models:
         description: "Amount of gas spent in native currency in last year"
         tests:
           - not_null
-      - name: last_block_time_for_total_metrics
-        description: "Last block time for total metrics"
+      - name: last_block_time_of_incremental_update
+        description: "Block time of last incremental update"
         tests:
           - not_null
