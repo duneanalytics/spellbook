@@ -117,7 +117,7 @@ gas_costs AS (
 
 updated_metrics AS (
     SELECT
-        tx_from as address,
+        address,
         blockchain,
         currency_symbol,
         COUNT(*) as number_of_txs,
