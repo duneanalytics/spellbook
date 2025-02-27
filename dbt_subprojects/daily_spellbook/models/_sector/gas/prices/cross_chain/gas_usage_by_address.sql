@@ -69,12 +69,12 @@ fresh_metrics AS (
         SUM(CASE WHEN block_time >= now() - INTERVAL '1' DAY THEN lw.gas_cost_usd END) as fresh_gas_spent_usd_24_hours,
         SUM(CASE WHEN block_time >= now() - INTERVAL '7' DAY THEN lw.gas_cost_usd END) as fresh_gas_spent_usd_7_days,
         SUM(CASE WHEN block_time >= now() - INTERVAL '30' DAY THEN lw.gas_cost_usd END) as fresh_gas_spent_usd_30_days,
-        SUM(CASE WHEN incremental_predicate('block_time') THEN lw.gas_cost_usd END)as added_gas_spent_usd_1_year,
+        SUM(CASE WHEN {{ incremental_predicate('block_time') }} THEN lw.gas_cost_usd END)as added_gas_spent_usd_1_year,
         SUM(CASE WHEN block_time > cm.last_block_time_of_incremental_update THEN lw.gas_cost_native END) as added_gas_spent_native_total,
         SUM(CASE WHEN block_time >= now() - INTERVAL '1' DAY THEN lw.gas_cost_native END) as fresh_gas_spent_native_24_hours,
         SUM(CASE WHEN block_time >= now() - INTERVAL '7' DAY THEN lw.gas_cost_native END) as fresh_gas_spent_native_7_days,
         SUM(CASE WHEN block_time >= now() - INTERVAL '30' DAY THEN lw.gas_cost_native END) as fresh_gas_spent_native_30_days,
-        SUM(CASE WHEN incremental_predicate('block_time') THEN lw.gas_cost_native END)as added_gas_spent_native_1_year,
+        SUM(CASE WHEN {{ incremental_predicate('block_time') }} THEN lw.gas_cost_native END)as added_gas_spent_native_1_year,
         MAX(lw.block_time) as last_block_time_of_incremental_update
     FROM last_30d_window lw
     FULL OUTER JOIN current_metrics cm
