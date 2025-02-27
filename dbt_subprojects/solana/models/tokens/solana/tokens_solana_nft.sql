@@ -51,7 +51,6 @@ with
                 , call_tx_signer
                 , 'Token Metadata' as version 
             FROM {{ source('mpl_token_metadata_solana','mpl_token_metadata_call_Create') }}
-            WHERE json_value(createArgs, 'lax $.CreateArgs.V1.asset_data.AssetData.tokenStandard.TokenStandard') IN ('NonFungible', 'NonFungibleEdition', 'ProgrammableNonFungible')
             UNION ALL 
             SELECT 
                 m.call_tx_id
@@ -205,6 +204,7 @@ SELECT
     , call_tx_signer
 FROM token_metadata tk 
 WHERE recent_update = 1
+AND token_standard IN ('NonFungible', 'NonFungibleEdition', 'ProgrammableNonFungible')
 
 UNION ALL 
 
@@ -230,3 +230,4 @@ SELECT
     , call_block_slot
     , call_tx_signer
 FROM cnfts 
+WHERE token_standard IN ('NonFungible', 'NonFungibleEdition', 'ProgrammableNonFungible')
