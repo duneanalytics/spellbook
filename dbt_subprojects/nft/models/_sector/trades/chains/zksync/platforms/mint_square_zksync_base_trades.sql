@@ -1,6 +1,7 @@
 {{ config(
+    tags = ['static'],
     schema = 'mint_square_zksync',
-    aliAS = 'base_trades',
+    alias = 'base_trades',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -8,6 +9,7 @@
     )
 }}
 
+--this model is static because the mint_square_zksync.Marketplace_evt_TakerAsk and mint_square_zksync.Marketplace_evt_TakerBid events last produce in 2023
 WITH mintsquare_trades AS (
     SELECT *
     , ROW_NUMBER() OVER (PARTITION BY tx_hash, nft_contract_address, nft_token_id ORDER BY evt_index ASC) AS id
