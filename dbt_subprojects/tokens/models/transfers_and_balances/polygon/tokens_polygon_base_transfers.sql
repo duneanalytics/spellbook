@@ -15,7 +15,8 @@
     traces = source('polygon','traces'),
     transactions = source('polygon','transactions'),
     erc20_transfers = source('erc20_polygon','evt_transfer'),
-    native_contract_address = null
+    native_contract_address = '0x0000000000000000000000000000000000001010',
+    include_traces = false
 )
 }}
 

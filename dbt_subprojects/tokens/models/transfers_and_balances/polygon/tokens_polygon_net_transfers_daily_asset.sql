@@ -11,9 +11,8 @@
         )
 }}
 
-
 {{ evm_net_transfers_daily_asset(
         blockchain=blockchain,
-        native_contract_address=var('ETH_ERC20_ADDRESS')
-) 
+        native_contract_address='0x0000000000000000000000000000000000001010'
+        ) 
 }}
