@@ -226,7 +226,7 @@ WITH dexs AS
         , fee
         , id
         , liquidity
-        , sender -- router
+        , sender -- router 
         , sqrtPriceX96
         , tick
     FROM {{ PoolManager_evt_Swap }}
