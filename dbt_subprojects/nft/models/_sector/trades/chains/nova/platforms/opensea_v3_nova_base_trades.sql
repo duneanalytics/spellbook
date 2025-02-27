@@ -1,4 +1,5 @@
 {{ config(
+    tags = ['prod_exclude'],
     schema = 'opensea_v3_nova',
     alias = 'base_trades',
     materialized = 'incremental',
