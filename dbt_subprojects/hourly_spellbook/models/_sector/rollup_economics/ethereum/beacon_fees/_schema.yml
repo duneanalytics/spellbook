@@ -1,0 +1,84 @@
+version: 3
+
+models:
+  - name: rollup_economics_ethereum_beacon_fees
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: niftytable, lgingerich, lorenz234
+    config:
+      tags: ['rollup', 'l2']
+    description: Fees spent by rollups for Ethereum beacon chain blob gas
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - beacon_slot_number
+            - blob_index
+    columns:
+      - &name
+        name: name
+        description: "Name of the rollup"
+      - &origin_key
+        name: origin_key
+        description: "Unique identifier for the rollup"
+      - &beacon_slot_month
+        name: beacon_slot_month
+        description: "UTC event beacon slot month of each transaction"
+      - &beacon_slot_day
+        name: beacon_slot_day
+        description: "UTC event beacon slot day of each transaction"
+      - &beacon_slot_time
+        name: beacon_slot_time
+        description: "UTC event beacon slot time of each transaction"
+      - &beacon_slot_number
+        name: beacon_slot_number
+        description: "Beacon slot number of the blob"
+      - &block_number
+        name: block_number
+        description: "Ethereum block number of the blob"
+      - &beacon_epoch
+        name: beacon_epoch
+        description: "Beacon epoch of the blob"
+      - &blob_index
+        name: blob_index
+        description: "Index of the blob within the beacon slot"
+      - &blob_kzg_commitment
+        name: blob_kzg_commitment
+        description: "KZG commitment of the blob"
+      - &blob_versioned_hash
+        name: blob_versioned_hash
+        description: "Versioned hash of the blob"
+      - &tx_hash
+        name: tx_hash
+        description: "Ethereum transaction hash"
+      - &from_address
+        name: from_address
+        description: "Address that submitted the Ethereum blob transaction"
+      - &to_address
+        name: to_address
+        description: "Recipient address of the Ethereum blob transaction"
+      - &method
+        name: method
+        description: "Transaction method/function used by the Ethereum transaction"
+      - &used_blob_byte_count
+        name: used_blob_byte_count
+        description: "Actual used space within a fixed-size blob"
+      - &blob_gas_used
+        name: blob_gas_used
+        description: "Total blob gas used in the transaction"
+      - &blob_base_fee
+        name: blob_base_fee
+        description: "Base fee per blob gas (in wei)"        
+      - &fee_native_per_byte
+        name: fee_native_per_byte
+        description: "Fee per byte in native ETH"
+      - &fee_usd_per_byte
+        name: fee_usd_per_byte
+        description: "Fee per byte in USD"
+      - &fee_native
+        name: fee_native
+        description: "Total fee spent on blob (in ETH)"
+      - &fee_usd
+        name: fee_usd
+        description: "Total fee spent on blob (in USD)"
