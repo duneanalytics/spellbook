@@ -1,26 +1,28 @@
 {% macro uniswap_v2_forks_trades(
-    blockchain = null
-    , dex_type = 'uni-v2'
-    , project = null
+    dex_type = 'uni-v2'
     , version = null
     , Pair_evt_Swap = null
     , Factory_evt_PairCreated = null
-    , pair_column_name = 'pair'
     )
 %}
 
 WITH evt_swap AS (
     SELECT
-        block_number
+        blockchain
+        , block_number
         , block_time
         , to
         , contract_address
         , tx_hash
-        , index
+        , evt_index
         , amount0In
         , amount0Out
         , amount1In
         , amount1Out
+        , topic0 as pool_topic0
+        , tx_from
+        , tx_to
+        , tx_index
     FROM {{ Pair_evt_Swap }}
     {% if is_incremental() %}
     WHERE {{ incremental_predicate('block_time') }}
@@ -30,7 +32,8 @@ WITH evt_swap AS (
 , dexs AS
 (
     SELECT
-        t.block_number
+        t.blockchain
+        , t.block_number
         , t.block_time
         , t.to AS taker
         , t.contract_address AS maker
@@ -39,86 +42,58 @@ WITH evt_swap AS (
         , CASE WHEN amount0Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_bought_address
         , CASE WHEN amount0In = UINT256 '0' OR amount1Out = UINT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
         , t.contract_address AS project_contract_address
+        , t.pool_topic0
         , t.tx_hash
-        , t.index AS evt_index
+        , t.evt_index
         , f.contract_address as factory_address
+        , f.factory_topic0
+        , f.factory_info
+        , t.tx_from
+        , t.tx_to
+        , t.tx_index
     FROM
         evt_swap t
     INNER JOIN
         {{ Factory_evt_PairCreated }} f
-        ON f.{{ pair_column_name }} = t.contract_address
-    INNER JOIN {{ source(blockchain, 'creation_traces') }} ct
-        ON f.{{ pair_column_name }} = ct.address
+        ON f.pair = t.contract_address 
+        AND f.blockchain = t.blockchain
+    INNER JOIN (
+        SELECT address, "from", blockchain, MAX(block_number) as latest_block
+        FROM {{ source('evms', 'creation_traces') }}
+        GROUP BY address, "from", blockchain
+    ) ct
+        ON f.pair = ct.address
         AND f.contract_address = ct."from"
+        AND ct.blockchain = t.blockchain
 )
 
-, base_trades AS (
-    SELECT
-        '{{ blockchain }}' AS blockchain
-        , '{{project}}' AS project
-        , '{{ version }}' AS version
-        , '{{dex_type}}' AS dex_type
-        , CAST(date_trunc('month', dexs.block_time) AS date) AS block_month
-        , CAST(date_trunc('day', dexs.block_time) AS date) AS block_date
-        , dexs.block_time
-        , dexs.block_number
-        , dexs.token_bought_amount_raw
-        , dexs.token_sold_amount_raw
-        , dexs.token_bought_address
-        , dexs.token_sold_address
-        , dexs.taker
-        , dexs.maker
-        , dexs.project_contract_address
-        , dexs.tx_hash
-        , dexs.evt_index
-        , dexs.factory_address
-    FROM
-        dexs
-)
-
-SELECT  base_trades.blockchain
-        , COALESCE(contracts.namespace, base_trades.project) AS project
-        , base_trades.version
-        , base_trades.dex_type
-        , base_trades.factory_address
-        , base_trades.block_month
-        , base_trades.block_date
-        , base_trades.block_time
-        , base_trades.block_number
-        , base_trades.token_bought_amount_raw
-        , base_trades.token_sold_amount_raw
-        , base_trades.token_bought_address
-        , base_trades.token_sold_address
-        , base_trades.taker
-        , base_trades.maker
-        , base_trades.project_contract_address
-        , base_trades.tx_hash
-        , base_trades.evt_index
-FROM base_trades
-INNER JOIN (
-    SELECT
-        tx_hash,
-        array_agg(DISTINCT contract_address) as contract_addresses
-    FROM {{ source('tokens', 'transfers') }}
-    WHERE blockchain = '{{ blockchain }}'
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
-        {% endif %}
-    GROUP BY tx_hash
-) AS transfers
-ON transfers.tx_hash = base_trades.tx_hash
-    AND contains(transfers.contract_addresses, base_trades.token_bought_address)
-    AND contains(transfers.contract_addresses, base_trades.token_sold_address)
-LEFT JOIN (
-    SELECT
-        address,
-        blockchain,
-        namespace
-    FROM {{ source('evms', 'contracts') }}
-    WHERE blockchain = '{{ blockchain }}'
-        AND namespace IS NOT NULL
-) AS contracts
-ON base_trades.project_contract_address = contracts.address
-  AND base_trades.blockchain = contracts.blockchain
+SELECT
+    blockchain
+    , '{{ version }}' AS version
+    , '{{dex_type}}' AS dex_type
+    , CAST(date_trunc('month', block_time) AS date) AS block_month
+    , CAST(date_trunc('day', block_time) AS date) AS block_date
+    , block_time
+    , block_number
+    , token_bought_amount_raw
+    , token_sold_amount_raw
+    , token_bought_address
+    , token_sold_address
+    , taker
+    , maker
+    , project_contract_address
+    , pool_topic0
+    , tx_hash
+    , evt_index
+    , factory_address
+    , factory_topic0
+    , factory_info
+    , tx_from
+    , tx_to
+    , tx_index
+FROM dexs
+{% if is_incremental() %}
+WHERE {{ incremental_predicate('block_time') }}
+{% endif %}
 
 {% endmacro %}
