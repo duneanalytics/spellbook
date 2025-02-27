@@ -229,7 +229,7 @@ taker_logs as (
                 and ( 
                         (
                             bytearray_substring(logs.topic2,13,20) in (st.contract_address, settler_address) 
-                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker, tx_to) 
+                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker, tx_to, settler_address) 
                         )
                         or (
                             bytearray_substring(logs.topic2,13,20) = taker 
@@ -266,23 +266,39 @@ maker_logs as (
         AND logs.block_time = st.block_time 
         AND st.block_number = logs.block_number
         
-    WHERE  topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
-        and cow_rn is null 
+    WHERE  
+        cow_rn is null 
         and amount != 0 
-        and (
-                (
-                bytearray_substring(logs.topic1,13,20) in (st.contract_address, settler_address)  
-            and bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker, settler_address ) 
+        and ( 
+                ( topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
+                    and 
+                        ( 
+                        (
+                            (
+                            (bytearray_substring(logs.topic1,13,20) in (st.contract_address, settler_address)  
+                        and (bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker, settler_address))
+                        )
+                        or (bytearray_substring(logs.topic2,13,20) = taker and taker = tx_to ) 
+                        or (bytearray_substring(logs.topic2,13,20) = st.contract_address 
+                            and bytearray_substring(logs.topic1,13,20) = tx_to 
+                            and bytearray_substring(logs.topic1,13,20) not in (bytearray_substring(st.topic1,13,20), tx_to ) 
+                        )
+                        
+                    )
+                    and (varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
+                    or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
+                    ) 
+                
+                        )
+                        or (bytearray_substring(logs.topic1,13,20) in (settler_address)  
+                        and (bytearray_substring(logs.topic2,13,20) in (taker))
+                        )
+                    )
             )
-            or (bytearray_substring(logs.topic2,13,20) = taker and taker = tx_to ) 
-            or (bytearray_substring(logs.topic2,13,20) = st.contract_address 
-                and bytearray_substring(logs.topic1,13,20) = tx_to 
-                and bytearray_substring(logs.topic1,13,20) not in (bytearray_substring(st.topic1,13,20), tx_to ) 
+            or (
+                topic0 in (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65)
+                and bytearray_substring(logs.topic1,13,20) in (tx_from, settler_address) 
             )
-        )
-        AND (
-            varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
-            or varbinary_position(st.data, ( cast(-1*varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) as varbinary))) <> 0  
         )
         
     ),

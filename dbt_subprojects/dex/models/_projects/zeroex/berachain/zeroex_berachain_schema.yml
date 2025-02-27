@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: zeroex_v2_mode_trades 
+  - name: zeroex_v2_berachain_trades 
     meta:
-      blockchain: mode
+      blockchain: berachain
       project: zeroex
       contributors: rantum
     config:
-      tags: ['mode','0x','dex_aggregator','dex','aggregator']
+      tags: ['berachain','0x','dex_aggregator','dex','aggregator']
     description: >
         0x API erc20 trades through 0x Settler contracts. No fills, only deduped transactions.
     data_tests:
@@ -17,15 +17,6 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('zeroex_mode_settler_trades_sample')
-          match_columns:
-            - tx_hash
-            - evt_index
-          check_columns:
-            - taker
-            - maker_token
-            - taker_token
     columns:
       - &blockchain
         name: blockchain
