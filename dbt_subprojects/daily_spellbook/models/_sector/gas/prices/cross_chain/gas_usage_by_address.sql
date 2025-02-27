@@ -45,7 +45,7 @@ current_metrics AS (
 last_30d_window AS (
     SELECT 
         blockchain,
-        tx_from as "address",
+        tx_from as address,
         currency_symbol,
         block_time,
         tx_fee as gas_cost_native,
@@ -57,7 +57,7 @@ last_30d_window AS (
 
 window_to_forget AS (
     SELECT
-        tx_from as "address",
+        tx_from as address,
         blockchain,
         currency_symbol,
         SUM(gas_cost_usd) as gas_spent_usd,
