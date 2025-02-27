@@ -516,6 +516,8 @@ models:
         description: "Chain where proofs are submitted to"
       - name: settlement
         description: "Chain that is being settled on"
+      - name: ecosystem
+        description: "Which ecosystem layer 2 ecosystem is the blockchain in"
       - name: is_on_dune
         description: "Is the chain on Dune"
 
