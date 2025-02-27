@@ -15,7 +15,7 @@ WITH combined_withdrawals AS (
     -- thus use withdrawal queued as replacement
     SELECT
         strategy,
-        CAST(shares AS DECIMAL(38,0)) AS shares,
+        SUM(CAST(shares AS DECIMAL(38,0))) AS shares,
         date_trunc('day', evt_block_time) AS date
     FROM {{ source('eigenlayer_ethereum', 'StrategyManager_evt_ShareWithdrawalQueued') }}
     GROUP BY strategy, date_trunc('day', evt_block_time)
@@ -24,7 +24,7 @@ WITH combined_withdrawals AS (
 
     SELECT
         strategy,
-        shares,
+        SUM(shares) AS shares,
         date_trunc('day', evt_block_time) AS date
     FROM {{ ref('eigenlayer_ethereum_withdrawal_completed_v2_enriched') }}
     GROUP BY strategy, date_trunc('day', evt_block_time)
