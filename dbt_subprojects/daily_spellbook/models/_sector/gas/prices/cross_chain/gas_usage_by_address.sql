@@ -107,9 +107,9 @@ updated_metrics AS (
         AND cm.blockchain = fm.blockchain 
         AND cm.currency_symbol = fm.currency_symbol
     LEFT JOIN window_to_forget wtf
-        ON wtf.address = lw.address 
-        AND wtf.blockchain = lw.blockchain 
-        AND wtf.currency_symbol = lw.currency_symbol
+        ON wtf.address = cm.address 
+        AND wtf.blockchain = cm.blockchain 
+        AND wtf.currency_symbol = cm.currency_symbol
 )
 
 {% else %}
