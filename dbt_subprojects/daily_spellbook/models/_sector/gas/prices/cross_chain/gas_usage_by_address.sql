@@ -60,8 +60,8 @@ window_to_forget AS (
         tx_from as address,
         blockchain,
         currency_symbol,
-        SUM(gas_cost_usd) as gas_spent_usd,
-        SUM(gas_cost_native) as gas_spent_native
+        SUM(tx_fee_usd) as gas_spent_usd,
+        SUM(tx_fee) as gas_spent_native
     FROM {{ source('gas', 'fees') }} gf
     LEFT JOIN current_metrics cm
         ON cm.address = gf.tx_from 
@@ -109,16 +109,16 @@ updated_metrics AS (
         blockchain,
         currency_symbol,
         COUNT(*) as number_of_txs,
-        SUM(gas_cost_usd) as gas_spent_usd_total,
-        SUM(CASE WHEN block_time >= now() - INTERVAL '1' DAY THEN gas_cost_usd END) as gas_spent_usd_24_hours,
-        SUM(CASE WHEN block_time >= now() - INTERVAL '7' DAY THEN gas_cost_usd END) as gas_spent_usd_7_days,
-        SUM(CASE WHEN block_time >= now() - INTERVAL '30' DAY THEN gas_cost_usd END) as gas_spent_usd_30_days,
-        SUM(CASE WHEN block_time >= now() - INTERVAL '1' YEAR THEN gas_cost_usd END) as gas_spent_usd_1_year,
-        SUM(gas_cost_native) as gas_spent_native_total,
-        SUM(CASE WHEN block_time >= now() - INTERVAL '1' DAY THEN gas_cost_native END) as gas_spent_native_24_hours,
-        SUM(CASE WHEN block_time >= now() - INTERVAL '7' DAY THEN gas_cost_native END) as gas_spent_native_7_days,
-        SUM(CASE WHEN block_time >= now() - INTERVAL '30' DAY THEN gas_cost_native END) as gas_spent_native_30_days,
-        SUM(CASE WHEN block_time >= now() - INTERVAL '1' YEAR THEN gas_cost_native END) as gas_spent_native_1_year,
+        SUM(tx_fee_usd) as gas_spent_usd_total,
+        SUM(CASE WHEN block_time >= now() - INTERVAL '1' DAY THEN tx_fee_usd END) as gas_spent_usd_24_hours,
+        SUM(CASE WHEN block_time >= now() - INTERVAL '7' DAY THEN tx_fee_usd END) as gas_spent_usd_7_days,
+        SUM(CASE WHEN block_time >= now() - INTERVAL '30' DAY THEN tx_fee_usd END) as gas_spent_usd_30_days,
+        SUM(CASE WHEN block_time >= now() - INTERVAL '1' YEAR THEN tx_fee_usd END) as gas_spent_usd_1_year,
+        SUM(tx_fee) as gas_spent_native_total,
+        SUM(CASE WHEN block_time >= now() - INTERVAL '1' DAY THEN tx_fee END) as gas_spent_native_24_hours,
+        SUM(CASE WHEN block_time >= now() - INTERVAL '7' DAY THEN tx_fee END) as gas_spent_native_7_days,
+        SUM(CASE WHEN block_time >= now() - INTERVAL '30' DAY THEN tx_fee END) as gas_spent_native_30_days,
+        SUM(CASE WHEN block_time >= now() - INTERVAL '1' YEAR THEN tx_fee END) as gas_spent_native_1_year,
         MAX(block_time) as last_block_time_of_incremental_update
     FROM {{ source('gas', 'fees') }}
     GROUP BY 1, 2, 3
