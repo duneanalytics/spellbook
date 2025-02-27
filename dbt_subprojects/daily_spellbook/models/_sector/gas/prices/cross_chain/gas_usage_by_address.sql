@@ -12,22 +12,9 @@
                         \'["gashawk, zohjag"]\') }}'
 ) }}
 
-{% macro column_exists(schema, table, column) %}
-   {% set query %}
-   SELECT COUNT(*) as column_count
-   FROM information_schema.columns 
-   WHERE table_schema = '{{ schema }}'
-     AND table_name = '{{ table }}'
-     AND column_name = '{{ column }}'
-   {% endset %}
-   
-   {% set results = run_query(query) %}
-   {% set column_exists = results[0][0] > 0 %}
-   {{ return(column_exists) }}
-{% endmacro %}
 
 WITH
-{% if is_incremental() and column_exists(this.schema, this.identifier, 'last_block_time_of_incremental_update') %}
+{% if is_incremental()  %}
 current_metrics AS (
     -- Get the oldest block_time in the current materialized table
     SELECT address, 
