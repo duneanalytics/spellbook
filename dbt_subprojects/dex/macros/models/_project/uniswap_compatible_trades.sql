@@ -289,6 +289,7 @@ SELECT
     , dexs.liquidity
     , dexs.sqrtPriceX96
     , dexs.tick
+    , dexs.call_trace_address
 FROM
     dexs
 {% endmacro %}
