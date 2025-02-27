@@ -82,7 +82,7 @@ fresh_metrics AS (
         AND cm.blockchain = lw.blockchain 
         AND cm.currency_symbol = lw.currency_symbol
     GROUP BY 1, 2, 3
-)
+),
 
 updated_metrics AS (
     SELECT
