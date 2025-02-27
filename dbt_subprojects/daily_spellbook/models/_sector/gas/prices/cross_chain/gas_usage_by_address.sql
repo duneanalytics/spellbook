@@ -55,7 +55,7 @@ window_to_forget AS (
         AND cm.blockchain = gf.blockchain 
         AND cm.currency_symbol = gf.currency_symbol
     WHERE block_time > cm.last_block_time_of_incremental_update - INTERVAL '1' YEAR 
-        AND block_time < cm.last_block_time_of_incremental_update - INTERVAL '1' YEAR + INTERVAL {{var('DBT_ENV_INCREMENTAL_TIME')}}
+        AND block_time < cm.last_block_time_of_incremental_update - INTERVAL '1' YEAR + INTERVAL '{{var("DBT_ENV_INCREMENTAL_TIME_UNIT")}}'
     GROUP BY 1, 2, 3
 ),
 
