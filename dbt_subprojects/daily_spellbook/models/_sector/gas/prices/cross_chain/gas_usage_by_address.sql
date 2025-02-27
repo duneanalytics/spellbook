@@ -103,7 +103,7 @@ updated_metrics AS (
 
 {% else %}
 
-WITH gas_costs AS (
+gas_costs AS (
     SELECT 
         blockchain,
         tx_from as address,
