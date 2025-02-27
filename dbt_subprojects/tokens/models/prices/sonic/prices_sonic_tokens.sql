@@ -47,4 +47,6 @@ FROM
     , ('fbtc-ignition-fbtc', 'FBTC', 0xc96de26018a54d51c097160568752c4e3bd6c364, 8)
     , ('metro-metropolis', 'METRO', 0x71e99522ead5e21cf57f1f542dc4ad2e841f7321, 18)
     , ('derp-derp-eth', 'DERP', 0xe920d1da9a4d59126dc35996ea242d60efca1304, 18)
+    , ('x33-shadow-liquid-staking-token', 'X33', 0x3333111a391cc08fa51353e9195526a70b333333, 18)
+    , ('wos-wrapped-origin-sonic', 'wOS', 0x9f0df7799f6fdad409300080cff680f5a23df4b1, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
