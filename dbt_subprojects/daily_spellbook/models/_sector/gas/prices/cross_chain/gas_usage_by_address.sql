@@ -45,8 +45,8 @@ last_30d_window AS (
 window_to_forget AS (
     SELECT
         tx_from as address,
-        blockchain,
-        currency_symbol,
+        gf.blockchain,
+        gf.currency_symbol,
         SUM(tx_fee_usd) as gas_spent_usd,
         SUM(tx_fee) as gas_spent_native
     FROM {{ source('gas', 'fees') }} gf
