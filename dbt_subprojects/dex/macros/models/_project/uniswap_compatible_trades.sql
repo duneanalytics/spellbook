@@ -256,6 +256,7 @@ WITH dexs AS
     , e.liquidity
     , e.sqrtPriceX96
     , e.tick
+    , c.call_trace_address
 
     FROM clean_swaps c 
     JOIN swap_evt e on c.call_block_number = e.evt_block_number 
