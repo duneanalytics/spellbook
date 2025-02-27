@@ -105,7 +105,7 @@ updated_metrics AS (
 
 updated_metrics AS (
     SELECT
-        address,
+        tx_from as address,
         blockchain,
         currency_symbol,
         COUNT(*) as number_of_txs,
