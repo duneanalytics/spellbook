@@ -16,5 +16,4 @@
         blockchain=blockchain,
         native_contract_address='0x0000000000000000000000000000000000001010'
         ) 
-) 
 }}
