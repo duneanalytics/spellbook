@@ -26,6 +26,8 @@ WITH base_transfers as (
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('block_date') }}
+        {% else %}
+        AND block_time >= timestamp '2025-01-01'
     {% endif %}
 )
 , prices AS (

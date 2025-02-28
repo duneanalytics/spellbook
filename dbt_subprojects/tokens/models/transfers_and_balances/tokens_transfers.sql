@@ -82,7 +82,7 @@ SELECT *
 FROM (
     {% for chain in chains %}
     SELECT
-          unique_key
+          unique_key --refresh for CI
         , blockchain
         , block_month
         , block_date
