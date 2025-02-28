@@ -392,6 +392,9 @@ select  block_time,
                             0xa1bea5fe917450041748dbbbe7e9ac57a4bbebab,
                             0x663DC15D3C1aC63ff12E45Ab68FeA3F0a883C251,
                             0x3a23f943181408eac424116af7b7790c94cb97a5,
+                            0xa9048585166f4f7c4589ade19567bb538035ed36,
+                            0x00000000009726632680fb29d3f7a9734e3010e2,
+                            0xe74a8079ca6f8d11e8acb55edfe398647272a0dc,
                             0x0000000000000000000000000000000000000000) 
                         then tx_from 
                         else st.taker end as taker,
