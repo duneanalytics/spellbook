@@ -20,14 +20,23 @@
 {% set fee_receiver_7 = 'EMbqD9Y9jLXEa3RbCR8AsEW1kVa3EiJgDLVgvKh4qNFP' %}
 {% set fee_receiver_8 = 'Lk693UiTzQC4vobasRS1QGcYA9D6RGYLjHp1bWreQtM' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
+{% set usdc_token = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v' %}
 
 WITH
   allFeePayments AS (
     SELECT
       tx_id,
-      'SOL' AS feeTokenType,
-      balance_change / 1e9 AS fee_token_amount,
-      '{{wsol_token}}' AS fee_token_mint_address
+      IF(balance_change > 0, 'SOL', 'SPL') AS feeTokenType,
+      IF(
+        balance_change > 0,
+        balance_change / 1e9,
+        token_balance_change
+      ) AS fee_token_amount,
+      IF(
+        balance_change > 0,
+        '{{wsol_token}}',
+        token_mint_address
+      ) AS fee_token_mint_address
     FROM
       {{ source('solana','account_activity') }}
     WHERE
@@ -37,16 +46,30 @@ WITH
       block_time >= TIMESTAMP '{{project_start_date}}'
       {% endif %}
       AND tx_success
-      AND balance_change > 0
       AND (
-        address = '{{fee_receiver_1}}'
-        OR address = '{{fee_receiver_2}}'
-        OR address = '{{fee_receiver_3}}'
-        OR address = '{{fee_receiver_4}}'
-        OR address = '{{fee_receiver_5}}'
-        OR address = '{{fee_receiver_6}}'
-        OR address = '{{fee_receiver_7}}'
-        OR address = '{{fee_receiver_8}}'
+        (
+          address = '{{fee_receiver_1}}'
+          OR address = '{{fee_receiver_2}}'
+          OR address = '{{fee_receiver_3}}'
+          OR address = '{{fee_receiver_4}}'
+          OR address = '{{fee_receiver_5}}'
+          OR address = '{{fee_receiver_6}}'
+          OR address = '{{fee_receiver_7}}'
+          OR address = '{{fee_receiver_8}}'
+          AND balance_change > 0 -- SOL fee payments
+        )
+        OR (
+          token_balance_owner = '{{fee_receiver_1}}'
+          OR token_balance_owner = '{{fee_receiver_2}}'
+          OR token_balance_owner = '{{fee_receiver_3}}'
+          OR token_balance_owner = '{{fee_receiver_4}}'
+          OR token_balance_owner = '{{fee_receiver_5}}'
+          OR token_balance_owner = '{{fee_receiver_6}}'
+          OR token_balance_owner = '{{fee_receiver_7}}'
+          OR token_balance_owner = '{{fee_receiver_8}}'
+          AND token_balance_change > 0 -- SPL fee payments
+          AND token_mint_address = '{{usdc_token}}' -- USDC
+        )
       )
       AND tx_id != 'AT915GhHaLdGsdFkywx2uE6jqSXeyTauveYH2BQqWMyptGhUtjE6dcdr74ErELg79VY9apZ9Egiyc1VtA6Ddykb' -- Edge case that sent fees to multiple fee wallets
   ),
