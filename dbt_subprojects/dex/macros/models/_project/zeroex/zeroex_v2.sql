@@ -524,4 +524,3 @@ SELECT
 FROM results_usd
 order by block_time desc
 {% endmacro %}
-
