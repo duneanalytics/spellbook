@@ -5,7 +5,8 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "eigenlayer",
-                                    \'["bowenli"]\') }}'
+                                    \'["bowenli"]\') }}',
+        materialized = 'table'
     )
 }}
 
