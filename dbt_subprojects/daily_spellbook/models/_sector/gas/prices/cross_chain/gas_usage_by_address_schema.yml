@@ -51,6 +51,10 @@ models:
         description: "USD value of gas spent in last 30 days"
         tests:
           - not_null
+      - name: gas_spent_usd_6_months
+        description: "USD value of gas spent in last 6 months"
+        tests:
+          - not_null
       - name: gas_spent_usd_1_year
         description: "USD value of gas spent in last year"
         tests:
@@ -69,6 +73,10 @@ models:
           - not_null
       - name: gas_spent_native_30_days
         description: "Amount of gas spent in native currency in last 30 days"
+        tests:
+          - not_null
+      - name: gas_spent_native_6_months
+        description: "Amount of gas spent in native currency in last 6 months"
         tests:
           - not_null
       - name: gas_spent_native_1_year
