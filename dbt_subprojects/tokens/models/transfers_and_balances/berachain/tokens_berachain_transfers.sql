@@ -24,4 +24,3 @@
     blockchain = 'berachain'
   ) 
 }}
--- trigger run for dbt compile
