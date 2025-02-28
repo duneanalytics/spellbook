@@ -1,6 +1,6 @@
 {{ config(
-    schema = 'dex_automated_trades'
-    , alias = 'all_dexes_all_chains'
+    schema = 'dex_all_chains'
+    , alias = 'automated_base_trades'
     , materialized = 'view'
     )
 }}

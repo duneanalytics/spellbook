@@ -15,6 +15,7 @@ models:
           combination_of_columns:
             - blockchain
             - tx_hash
+            - block_date
             - tx_index
             - evt_index
     columns:

@@ -1,11 +1,11 @@
 {{ config(
-        schema = 'uniswap_v2_decoded_events',
-        alias = 'all_chains_automated_base_trades',
+        schema = 'uniswap_v2_all_chains',
+        alias = 'automated_base_trades',
         partition_by = ['block_month', 'blockchain'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'block_number', 'tx_index', 'evt_index'],
+        unique_key = ['blockchain', 'block_month', 'block_number', 'tx_index', 'evt_index'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
         )
 }}
