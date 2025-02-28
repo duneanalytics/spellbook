@@ -33,4 +33,7 @@ FROM (VALUES
     , (0xd29687c813d741e2f938f4ac377128810e217b1b, 'SCR', 18)
     , (0xeb466342c4d449bc9f53a865d5cb90586f405215, 'axlUSDC', 6)
     , (0x17a60bb4649a7bb885d05c008d7118a5e513d895, 'BAGGOR', 18)
+    , (0x58538e6a46e07434d7e7375bc268d3cb839c0133, 'ENA', 18)
+    , (0x1b896893dfc86bb67cf57767298b9073d2c1ba2c, 'CAKE', 18)
+    , (0xb755039edc7910c1f1bd985d48322e55a31ac0bf, 'CRV', 18)
 ) AS temp_table (contract_address, symbol, decimals)
