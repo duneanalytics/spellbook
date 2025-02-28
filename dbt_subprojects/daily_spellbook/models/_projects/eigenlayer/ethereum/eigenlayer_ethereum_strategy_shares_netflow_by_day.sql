@@ -17,7 +17,9 @@ WITH combined AS (
         date
     FROM {{ ref('eigenlayer_ethereum_strategy_shares_inflow_by_day') }}
 
+
     UNION ALL
+
 
     SELECT
         strategy,
