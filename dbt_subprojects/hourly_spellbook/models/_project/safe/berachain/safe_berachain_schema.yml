@@ -1,0 +1,149 @@
+version: 2
+
+models:
+  - name: safe_berachain_safes
+    meta:
+      blockchain: berachain
+      project: safe
+      contributors: petertherock
+    config:
+      tags: ['safe', 'berachain']
+    description: "Safe addresses"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "The blockchain on which the Safe is deployed"
+      - &address
+        name: address
+        description: "Safe contract address"
+      - &creation_version
+        name: creation_version
+        description: "Version of initially created safe"
+      - &block_date
+        name: block_date
+      - &block_month
+        name: block_month
+      - &creation_time
+        name: creation_time
+        description: "Date/time of safe creation"
+      - &tx_hash
+        name: tx_hash
+
+  - name: safe_berachain_bera_transfers
+    meta:
+      blockchain: berachain
+      project: safe
+      contributors: petertherock
+    config:
+      tags: ['safe', 'transfers', 'berachain']
+    description: "BERA transfers for safes"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - address
+            - tx_hash
+            - trace_address
+    columns:
+      - *blockchain
+      - &symbol
+        name: symbol
+        description: "Symbol of native gas token: ETH"
+      - *address
+      - *block_date
+      - *block_month
+      - &block_time
+        name: block_time
+        description: "Date of ETH transfer"
+      - &amount_raw
+        name: amount_raw
+        description: "Raw amount of transferred ETH"
+      - *tx_hash
+      - &trace_address
+        name: trace_address
+      - &amount_usd
+        name: amount_usd
+        description: "USD amount of transferred ETH"
+
+  - name: safe_berachain_singletons
+    meta:
+      blockchain: berachain
+      project: safe
+      contributors: petertherock
+    config:
+      tags: ['safe', 'singletons', 'berachain']
+    description: "Singletons addresses used with Safes"
+    columns:
+      - name: address
+        description: "Safe contract address"
+
+  - name: safe_berachain_transactions
+    meta:
+      blockchain: berachain
+      project: safe
+      contributors: petertherock
+    config:
+      tags: ['safe', 'berachain']
+    description: "Safe transactions"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+            - tx_hash
+            - trace_address
+    columns:
+      - *blockchain
+      - *block_date
+      - *block_month
+      - *block_time
+      - &block_number
+        name: block_number
+        description: "Number of block"
+      - *tx_hash
+      - name: address
+        description: "Safe contract address"
+      - &to
+        name: to
+        description: "Destination address"
+      - &value
+        name: value
+        description: "Value of transaction"
+      - &gas
+        name: gas
+        description: "Gas limit set for transaction"
+      - &execution_gas_used
+        name: execution_gas_used
+        description: "Execution gas used during transaction, for more details see https://dune.com/docs/data-tables/raw/evm/traces/?h=traces#gas-used-in-traces"
+      - &total_gas_used
+        name: total_gas_used
+        description: "Total gas used during transaction"
+      - &tx_index
+        name: tx_index
+        description: "Transaction index"
+      - &sub_traces
+        name: sub_traces
+        description: "Number of sub traces"
+      - *trace_address
+      - &success
+        name: success
+        description: "Success state of transaction"
+      - &error
+        name: error
+        description: "Error of transaction if any"
+      - &code
+        name: code
+        description: "Code"
+      - &input
+        name: input
+        description: "Input data"
+      - &output
+        name: output
+        description: "Output data"
+      - &method
+        name: method
+        description: "Function method"
