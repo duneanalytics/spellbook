@@ -194,7 +194,8 @@ swap_logs as (
         index,
         bytearray_substring(st.topic2,13,20) as taker_, 
         data,
-        rn
+        rn,
+        varbinary_to_uint256(varbinary_substring(data,85,12)) amount_out_
     from tbl_all_logs st 
     WHERE   
        block_time > TIMESTAMP '2024-07-15'  
@@ -276,7 +277,7 @@ maker_logs as (
                         (
                             (
                             (bytearray_substring(logs.topic1,13,20) in (st.contract_address, settler_address)  
-                        and (bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker, settler_address))
+                        and (bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker, settler_address, logs.contract_address))
                         )
                         or (bytearray_substring(logs.topic2,13,20) = taker and taker = tx_to ) 
                         or (bytearray_substring(logs.topic2,13,20) = st.contract_address 
@@ -287,6 +288,8 @@ maker_logs as (
                     )
                     and (varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
                     or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
+                    or varbinary_to_uint256(logs.data) in (amount_out_) 
+                    or POSITION(CAST(varbinary_to_uint256(logs.data) AS VARCHAR) IN CAST(amount_out_ AS VARCHAR)) > 0
                     ) 
                 
                         )
@@ -386,6 +389,7 @@ select  block_time,
                             0x000000000000175a8b9bC6d539B3708EEd92EA6c,
                             0x9008d19f58aabd9ed0d60971565aa8510560ab41,
                             0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae,
+                            0xa1bea5fe917450041748dbbbe7e9ac57a4bbebab,
                             0x0000000000000000000000000000000000000000) 
                         then tx_from 
                         else st.taker end as taker,
