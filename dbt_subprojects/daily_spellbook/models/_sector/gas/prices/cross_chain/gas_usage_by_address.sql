@@ -1,9 +1,8 @@
 {{ config(
     schema='gas',
     alias='usage_by_address',
-    materialized='incremental',
+    materialized='table',
     file_format='delta',
-    incremental_strategy='merge',
     partition_by = ['blockchain'],
     unique_key=['address', 'blockchain', 'currency_symbol'],
     post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zora", "zksync", "scroll", "linea", "zkevm"]\',
