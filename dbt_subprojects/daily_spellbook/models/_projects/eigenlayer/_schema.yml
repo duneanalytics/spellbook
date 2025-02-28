@@ -249,6 +249,32 @@ models:
     columns:
       - *avs
       - *metadataURI
+  - name: eigenlayer_ethereum_underlying_token_exchange_rate
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: [ 'eigenlayer', 'restaking', 'exchange rate' ]
+    description: >
+      Exchange rate of underlying tokens
+    columns:
+      - *strategy
+      - &exchange_rate
+        name: exchange_rate
+        description: "Exchange rate of the strategy shares to underlying tokens"
+  - name: eigenlayer_ethereum_underlying_token_exchange_rate_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'exchange rate']
+    description: >
+        Latest exchange rate of underlying tokens
+    columns:
+      - *strategy
+      - *exchange_rate
   - name: eigenlayer_ethereum_whitelisted_strategy_latest
     meta:
       blockchain: ethereum
