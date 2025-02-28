@@ -30,7 +30,6 @@ WITH combined_withdrawals AS (
     FROM {{ ref('eigenlayer_ethereum_withdrawal_completed_v2_enriched') }}
     GROUP BY strategy, date_trunc('day', evt_block_time)
 
-
     UNION ALL
 
     -- native ETH strategy
