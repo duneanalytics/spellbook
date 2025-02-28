@@ -275,3 +275,14 @@ models:
     columns:
       - *strategy
       - *exchange_rate
+  - name: eigenlayer_ethereum_whitelisted_strategy_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'strategy']
+    description: >
+        Latest whitelisted strategies
+    columns:
+      - *strategy
