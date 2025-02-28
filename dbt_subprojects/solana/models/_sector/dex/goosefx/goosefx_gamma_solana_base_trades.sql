@@ -12,7 +12,7 @@
         )
 }}
 
-{% set project_start_date = '2025-09-30' %} --grabbed program deployed at time (account created at).
+{% set project_start_date = '2025-02-06' %} --date of deterministic token-transfer feature: https://github.com/GooseFX1/gamma-swap/pull/54
 
   WITH
     all_swaps as (
