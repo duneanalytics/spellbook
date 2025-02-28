@@ -1,6 +1,5 @@
 {{
     config(
-        tags = ['prod_exclude'],
         schema = 'balancer_v3_arbitrum',
         alias = 'erc4626_token_mapping', 
         materialized = 'table',
