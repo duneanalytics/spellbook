@@ -1,7 +1,7 @@
 {{
     config(
         schema = 'ton',
-        alias='ton_jetton_price_daily',
+        alias='prices_daily',
         
         materialized = 'table',
         unique_key = ['blockchain', 'token_address', 'timestamp'],

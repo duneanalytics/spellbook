@@ -39,7 +39,7 @@ WITH base_liquidity as (
         , minute
         , price
     FROM
-        {{ source('prices','usd') }}
+        {{ source('prices','usd_with_native') }}
     {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('minute') }}
