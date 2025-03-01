@@ -137,7 +137,7 @@ WITH filtered_modify_liquidity AS (
         )
         , swap_evt as (
             select 
-                  evt_tx_hash
+                , evt_tx_hash
                 , evt_block_time
                 , evt_index
                 , evt_block_number
@@ -145,7 +145,7 @@ WITH filtered_modify_liquidity AS (
                 , sqrtPriceX96
                 , row_number() over(partition by evt_tx_hash order by evt_index) as evt_rn
             FROM filtered_swaps_evt
-)
+        )
 
     SELECT 
         e.evt_block_number
@@ -238,9 +238,9 @@ base_liquidity_amounts AS (
 , liquidity_change_base as (
 
     SELECT b.id
-        , date_trunc('minute', b.evt_block_time) as block_time
-        , evt_block_number as block_number
-        , b.evt_tx_hash as tx_hash
+        , date_trunc('minute', b.block_time) as block_time
+        , b.block_number
+        , b.tx_hash
         , b.evt_index
         , b.token0
         , b.token1
