@@ -37,7 +37,6 @@ with base_union as (
                 , id
                 , tx_hash
                 , evt_index
-                , salt
                 , token0
                 , token1
                 , amount0_raw
