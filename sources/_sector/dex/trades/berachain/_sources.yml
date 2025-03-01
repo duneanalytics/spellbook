@@ -5,3 +5,16 @@ sources:
     tables:
       - name: v3pair_evt_swap
       - name: factoryv3_evt_poolcreated
+  - name: burrbear_berachain
+    tables:
+      - name: vault_evt_swap
+      - name: vault_evt_poolregistered
+      - name: vault_evt_poolbalancechanged
+      - name: factory_evt_poolcreated
+      - name: factory_call_create
+  - name: beraswap_berachain
+    tables:
+      - name: vault_evt_swap
+      - name: vault_evt_poolregistered
+      - name: weightedpoolfactory_evt_poolcreated
+      - name: weightedpoolfactory_call_create

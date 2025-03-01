@@ -1,0 +1,302 @@
+version: 1
+
+sources:
+  # b3 Tables
+  - name: b3
+    description: "raw tables for the chain"
+    tables:
+      - name: traces
+        meta:
+          docs_slug: /evm/b3/raw/traces
+          short_description: The traces table contains information about traces on the network.
+        description: '{{ doc("b3_traces_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this trace was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this trace"
+          - name: value
+            description: "Amount of native tokens transferred in this trace"
+          - name: gas
+            description: "Amount of gas allocated for this trace's execution"
+          - name: gas_used
+            description: "Actual amount of gas consumed by this trace"
+          - name: block_hash
+            description: "Hash of the block containing this trace"
+          - name: success
+            description: "Boolean indicating whether this trace executed successfully"
+          - name: tx_index
+            description: "Index position of the parent transaction in the block"
+          - name: tx_from
+            description: "Address that initiated the parent transaction"
+          - name: tx_to
+            description: "Recipient address of the parent transaction"
+          - name: sub_traces
+            description: "Number of child traces spawned by this trace"
+          - name: error
+            description: "Error message if the trace execution failed"
+          - name: tx_success
+            description: "Boolean indicating whether the parent transaction was successful"
+          - name: tx_hash
+            description: "Hash of the parent transaction"
+          - name: from
+            description: "Address that initiated this trace"
+          - name: to
+            description: "Recipient address of this trace"
+          - name: trace_address
+            description: "Array indicating the position of this trace in the trace tree"
+          - name: type
+            description: "Type of trace (call, create, suicide, etc.)"
+          - name: address
+            description: "Address of the contract if this is a contract creation trace"
+          - name: code
+            description: "Contract bytecode if this is a contract creation trace"
+          - name: call_type
+            description: "Type of call (call, delegatecall, staticcall)"
+          - name: input
+            description: "Input data provided to this trace"
+          - name: output
+            description: "Output data returned by this trace"
+          - name: refund_address
+            description: "Address to receive any gas refund"
+          - name: revert_reason
+            description: "Reason for reversion if the trace was reverted"
+          - name: block_date
+            description: "The UTC date of the block containing this trace"
+
+      - name: traces_decoded
+        meta:
+          docs_slug: /evm/b3/decoded/traces_decoded
+          short_description: The `b3.traces_decoded` table contains decoded traces, including additional information based on submitted smart contracts and their ABIs.
+        description: '{{ doc("b3_traces_decoded_doc") }}'
+        columns:
+          - name: block_date
+            description: "Date of the block containing the trace"
+          - name: block_time
+            description: "Timestamp of the block containing the trace"
+          - name: block_number
+            description: "Block number containing the trace"
+          - name: namespace
+            description: "Project namespace for the decoded trace"
+          - name: contract_name
+            description: "Name of the smart contract involved in this trace"
+          - name: to
+            description: "Address receiving the internal call"
+          - name: trace_address
+            description: "Array path of trace location within the transaction"
+          - name: tx_hash
+            description: "Transaction hash"
+          - name: tx_from
+            description: "Address initiating the transaction"
+          - name: tx_to
+            description: "Address receiving the transaction"
+          - name: signature
+            description: "Function signature for the decoded trace"
+          - name: function_name
+            description: "Name of the function called in this trace"
+
+      - name: logs
+        meta:
+          docs_slug: /evm/b3/raw/logs
+          short_description: The logs table contains event logs emitted by smart contracts on the B3 network.
+        description: '{{ doc("b3_logs_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this log was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this log"
+          - name: block_hash
+            description: "Hash of the block containing this log"
+          - name: contract_address
+            description: "Address of the smart contract that emitted this log"
+          - name: topic0
+            description: "First 32-byte topic, typically containing the event signature hash"
+          - name: topic1
+            description: "Second 32-byte topic, often containing indexed event parameters"
+          - name: topic2
+            description: "Third 32-byte topic, often containing indexed event parameters"
+          - name: topic3
+            description: "Fourth 32-byte topic, often containing indexed event parameters"
+          - name: data
+            description: "ABI-encoded data of the log, containing non-indexed event parameters"
+          - name: tx_hash
+            description: "Hash of the transaction that generated this log"
+          - name: index
+            description: "Position of this log within the block"
+          - name: tx_index
+            description: "Position of the parent transaction within the block"
+          - name: block_date
+            description: "The UTC date of the block containing this log"
+          - name: tx_from
+            description: "Address that initiated the transaction which created this log"
+          - name: tx_to
+            description: "Recipient address of the transaction which created this log"
+
+      - name: logs_decoded
+        meta:
+          docs_slug: /evm/b3/decoded/logs_decoded
+          short_description: The `b3.logs_decoded` table contains a subset of all logs for which Dune has the ABI.
+        description: '{{ doc("b3_logs_decoded_doc") }}'
+        columns:
+          - name: block_date
+            description: "The UTC date of the block containing this log"
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this log was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this log"
+          - name: namespace
+            description: "Categorical grouping or project name associated with the contract"
+          - name: contract_name
+            description: "Human-readable name of the smart contract that emitted this event"
+          - name: contract_address
+            description: "Address of the contract that emitted this event"
+          - name: tx_hash
+            description: "Hash of the transaction that generated this event"
+          - name: tx_from
+            description: "Address that initiated the transaction"
+          - name: tx_to
+            description: "Recipient address of the transaction"
+          - name: index
+            description: "Position of this log within the block"
+          - name: signature
+            description: "Event signature hash"
+          - name: event_name
+            description: "Human-readable name of the emitted event"
+
+      - name: blocks
+        meta:
+          docs_slug: /evm/b3/raw/blocks
+          short_description: The `b3.blocks` table contains information about b3 blocks. Each row represents a single block.
+        description: '{{ doc("b3_blocks_doc") }}'
+        columns:
+          - name: b3.fee_per_gas
+            description: "Minimum fee per gas unit required for transaction inclusion in this block in the base unit wei"
+          - name: difficulty
+            description: "Measure of how difficult it was to produce this block (deprecated in b3)"
+          - name: total_difficulty
+            description: "Total chain difficulty up to this block (deprecated in b3)"
+          - name: gas_limit
+            description: "Maximum amount of gas that can be used by all transactions in this block"
+          - name: gas_used
+            description: "Total amount of gas actually consumed by all transactions in this block"
+          - name: hash
+            description: "Unique 256-bit identifier (hash) of this block"
+          - name: miner
+            description: "Address of the sequencer who produced this block (currently just one sequencer)"
+          - name: nonce
+            description: "A block's nonce value, used in the consensus mechanism (may be deprecated in b3)"
+          - name: number
+            description: "Sequential position of this block in the blockchain"
+          - name: parent_hash
+            description: "Hash of the previous block in the blockchain"
+          - name: size
+            description: "Size of this block in bytes"
+          - name: time
+            description: "Timestamp when this block was added to the chain"
+          - name: blob_gas_used
+            description: "The total amount of blob gas consumed by transactions in the block (not in use for b3)"
+          - name: excess_blob_gas
+            description: "A running total of blob gas consumed in excess of the target, prior to the block. This is used to set blob gas pricing(not in use for b3)." 
+          
+
+      - name: contracts
+        meta:
+          docs_slug: /evm/b3/raw/contracts
+          short_description: The `b3.contracts` table tracks decoded contracts on b3, including associated metadata such as namespace, name, address, ABI. It is populated manually by the Dune Community via [contract decoding submissions](https://dune.com/contracts/new).
+        description: '{{ doc("b3_contracts_doc") }}'
+        columns:
+          - name: abi_id
+            description: "Unique identifier for the contract's ABI. This is used to identify the contract across all chains."
+          - name: abi
+            description: "JSON representation of the contract's Application Binary Interface (ABI)"
+          - name: address
+            description: "Address of the deployed contract"
+          - name: from
+            description: "Address that deployed this contract. Can be a contract or EOA."
+          - name: code
+            description: "Bytecode of the contract at the time of creation"
+          - name: name
+            description: "Name assigned to the contract"
+          - name: namespace
+            description: "Categorical grouping or project name associated with the contract"
+          - name: dynamic
+            description: "Boolean indicating if this contract was submitted to Dune with the 'dynamic' flag enabled. If yes, our decoder will search for exact matches of the contract's bytecode and decode them into the same namespace as the initial contract."
+          - name: base
+            description: "Boolean indicating if this is a manual individual submission of a contract."
+          - name: factory
+            description: "Boolean indicating if this submission was submitted to Dune with the 'factory' flag enabled. If yes, our decoder will search for contract's deployed by the same factory and decode them into the same namespace as the initial contract." 
+          - name: detection_source
+            description: "Method used to detect and decode this contract: 'factory', 'base', or 'dynamic'. "
+          - name: created_at
+            description: "Timestamp of when this contract was first decoded on Dune. This is not the contract creation timestamp." 
+          
+      - name: creation_traces
+        meta:
+          docs_slug: /evm/b3/raw/creation_traces
+          short_description: The `b3.creation_traces` table contains information about contract creation traces on the b3 blockchain. It includes details about newly created contracts, their creators, and the contract code.
+        description: '{{ doc("b3_creation_traces_doc") }}'
+        columns:
+          - name: block_time
+            description: "The exact UTC timestamp when the block containing this contract creation was added to the chain"
+          - name: block_number
+            description: "The sequential number of the block containing this contract creation"
+          - name: tx_hash
+            description: "Unique 256-bit identifier (hash) of the transaction that created this contract"
+          - name: address
+            description: "The address of the newly created contract"
+          - name: from
+            description: "The address that initiated the contract creation"
+          - name: code
+            description: "The deployment bytecode of the contract"
+          - name: block_month
+            description: "The UTC month of the block in which this contract creation occurred"
+
+  # ERC Transfer Tables
+  - name: erc20_b3
+    description: "Transfer events for ERC20 tokens on b3"
+    tables:
+      - name: evt_transfer
+        meta:
+          docs_slug: /evm/b3/decoded/interfaces/erc20/evt_transfer
+          short_description: This table contains individual transfer events for ERC20 tokens on the b3 blockchain. Each row represents a single token transfer event.
+        description: '{{ doc("erc20_b3_evt_transfer_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract that emitted this event"
+          - name: evt_tx_hash
+            description: "Hash of the transaction containing this event"
+          - name: evt_index
+            description: "Index position of this event within the transaction"
+          - name: evt_block_time
+            description: "Timestamp of the block containing this event"
+          - name: evt_block_number
+            description: "The block number containing this event"
+          - name: from
+            description: "Address sending the tokens"
+          - name: to
+            description: "Address receiving the tokens"
+          - name: value
+            description: "Amount of ERC20 tokens transferred, in the token's smallest unit"
+
+      - name: evt_approval
+        meta:
+          docs_slug: /evm/b3/decoded/interfaces/erc20/evt_approval
+          short_description: The `b3.evt_approval` table contains approval events for ERC20 tokens on b3, allowing an address to spend tokens on behalf of the owner.
+        description: '{{ doc("erc20_b3_evt_approval_doc") }}'
+        columns:
+          - name: contract_address
+            description: "Address of the ERC20 token contract"
+          - name: evt_tx_hash
+            description: "The transaction hash of the approval event"
+          - name: evt_index
+            description: "The index of this event within the transaction"
+          - name: evt_block_time
+            description: "The timestamp of the block containing this approval"
+          - name: evt_block_number
+            description: "The block number containing this approval"
+          - name: owner
+            description: "address of the token owner granting approval"
+          - name: spender
+            description: "address being granted permission to spend tokens"
+          - name: value
+            description: "Amount of ERC20 tokens approved for spending, in the token's smallest unit"
