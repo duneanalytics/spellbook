@@ -10,7 +10,6 @@ seeds:
         evt_index: uint256
         block_number: uint256
         id: varbinary
-        salt: varbinary
         token0: varbinary
         token1: varbinary
         amount0_raw: double
@@ -27,7 +26,6 @@ seeds:
         evt_index: uint256
         block_number: uint256
         id: varbinary
-        salt: varbinary
         token0: varbinary
         token1: varbinary
         amount0_raw: double
@@ -44,7 +42,6 @@ seeds:
         evt_index: uint256
         block_number: uint256
         id: varbinary
-        salt: varbinary
         token0: varbinary
         token1: varbinary
         amount0_raw: double
@@ -61,7 +58,6 @@ seeds:
         evt_index: uint256
         block_number: uint256
         id: varbinary
-        salt: varbinary
         token0: varbinary
         token1: varbinary
         amount0_raw: double
@@ -78,7 +74,6 @@ seeds:
         evt_index: uint256
         block_number: uint256
         id: varbinary
-        salt: varbinary
         token0: varbinary
         token1: varbinary
         amount0_raw: double
@@ -95,7 +90,6 @@ seeds:
         evt_index: uint256
         block_number: uint256
         id: varbinary
-        salt: varbinary
         token0: varbinary
         token1: varbinary
         amount0_raw: double
@@ -112,7 +106,6 @@ seeds:
         evt_index: uint256
         block_number: uint256
         id: varbinary
-        salt: varbinary
         token0: varbinary
         token1: varbinary
         amount0_raw: double
@@ -129,7 +122,6 @@ seeds:
         evt_index: uint256
         block_number: uint256
         id: varbinary
-        salt: varbinary
         token0: varbinary
         token1: varbinary
         amount0_raw: double
