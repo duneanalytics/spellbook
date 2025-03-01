@@ -136,8 +136,8 @@ WITH filtered_modify_liquidity AS (
                 FROM wrangled
         )
         , swap_evt as (
-            select contract_address
-                , evt_tx_hash
+            select 
+                  evt_tx_hash
                 , evt_block_time
                 , evt_index
                 , evt_block_number
