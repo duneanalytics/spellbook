@@ -51,7 +51,7 @@ WITH filtered_modify_liquidity AS (
         , output_swapDelta
     FROM {{ PoolManager_call_Swap }}
     {%- if is_incremental() %}
-    WHERE {{ incremental_predicate('evt_block_time') }}
+    WHERE {{ incremental_predicate('call_block_time') }}
     {%- endif %}
 
 )
@@ -137,7 +137,7 @@ WITH filtered_modify_liquidity AS (
         )
         , swap_evt as (
             select 
-                , evt_tx_hash
+                  evt_tx_hash
                 , evt_block_time
                 , evt_index
                 , evt_block_number
