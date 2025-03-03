@@ -1,7 +1,7 @@
 {{ config(
     schema = 'gas_solana',
     alias = 'tx_fees_current',
-    partition_by = ['block_date', 'block_hour'],
+    partition_by = ['block_date'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'delete+insert',
