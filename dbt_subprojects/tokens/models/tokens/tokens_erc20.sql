@@ -109,7 +109,13 @@ with automated_source as (
         select
             i.blockchain
             , t.address as contract_address
-            , t.symbol
+            , case
+                when (
+                    t.address = 0x0000000000000000000000000000000000001010
+                    and i.blockchain = 'polygon'
+                ) then 'POL' -- source has incorrect symbol for POL on polygon post-migration
+                else t.symbol
+            end as symbol
             , t.decimals
             , row_number() over (
                 partition by
