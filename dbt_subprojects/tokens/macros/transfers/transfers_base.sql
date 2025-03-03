@@ -26,6 +26,15 @@ WITH transfers AS (
         {% if is_incremental() %}
         AND {{incremental_predicate('block_time')}}
         {% endif %}
+        {% if blockchain == 'polygon' %}
+        -- ✅ Optimized CASE statement for filtering out POL ERC-20 contract transfers
+        AND CASE 
+            WHEN to = {{native_contract_address}} 
+                OR "from" = {{native_contract_address}} 
+            THEN FALSE  -- Exclude these
+            ELSE TRUE   -- Keep everything else
+        END
+        {% endif %}
 
     UNION ALL
     {% endif %}
