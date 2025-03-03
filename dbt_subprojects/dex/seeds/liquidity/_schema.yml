@@ -127,3 +127,67 @@ seeds:
         amount0_raw: double
         amount1_raw: double
         block_date: timestamp
+
+  - name: uniswap_avalanche_c_base_liquidity_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        id: varbinary
+        token0: varbinary
+        token1: varbinary
+        amount0_raw: double
+        amount1_raw: double
+        block_date: timestamp        
+
+  - name: uniswap_ink_base_liquidity_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        id: varbinary
+        token0: varbinary
+        token1: varbinary
+        amount0_raw: double
+        amount1_raw: double
+        block_date: timestamp     
+
+  - name: uniswap_unichain_base_liquidity_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        id: varbinary
+        token0: varbinary
+        token1: varbinary
+        amount0_raw: double
+        amount1_raw: double
+        block_date: timestamp           
+
+  - name: uniswap_worldchain_base_liquidity_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        tx_hash: varbinary
+        evt_index: uint256
+        block_number: uint256
+        id: varbinary
+        token0: varbinary
+        token1: varbinary
+        amount0_raw: double
+        amount1_raw: double
+        block_date: timestamp      
