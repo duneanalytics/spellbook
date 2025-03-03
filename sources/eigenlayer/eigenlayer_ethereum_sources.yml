@@ -21,3 +21,4 @@ sources:
       - name: RewardsCoordinator_evt_AVSRewardsSubmissionCreated
       - name: RewardsCoordinator_evt_RewardsSubmissionForAllEarnersCreated
       - name: StrategyFactory_evt_StrategySetForToken
+      - name: EigenPodManager_evt_PodSharesUpdated
