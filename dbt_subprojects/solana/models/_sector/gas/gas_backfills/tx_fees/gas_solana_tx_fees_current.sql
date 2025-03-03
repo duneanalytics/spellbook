@@ -9,6 +9,6 @@
 ) }}
 
 {{ solana_tx_fees_macro(
-    "cast('2024-10-01' as timestamp)",
+    "cast('2025-01-01' as timestamp)",
     "now()"
 ) }}
