@@ -15,7 +15,7 @@ with transfers AS (
         , t.dst as "to"
         , t.wad AS amount_raw -- is this safe cross chain?
     FROM {{ wrapped_token_deposit }} t
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     WHERE {{incremental_predicate('t.evt_block_time')}}
     {% endif %}
 
@@ -33,7 +33,7 @@ with transfers AS (
         , {{default_address}} AS "to"
         , t.wad AS amount_raw -- is this safe cross chain?
     FROM {{ wrapped_token_withdrawal }} t
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     WHERE {{incremental_predicate('evt_block_time')}}
     {% endif %}
     )
@@ -61,7 +61,7 @@ FROM transfers t
 INNER JOIN {{ transactions }} tx ON
     tx.block_number = t.block_number
     AND tx.hash = t.tx_hash
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     AND {{incremental_predicate('tx.block_time')}}
     {% endif %}
 {% endmacro %}

@@ -23,7 +23,7 @@ WITH base_transfers as (
         *
     FROM
         {{ base_transfers }}
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('block_date') }}
     {% endif %}
@@ -38,7 +38,7 @@ WITH base_transfers as (
         , price
     FROM
         {{ prices_model }}
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     WHERE
         {{ incremental_predicate('minute') }}
     {% else %}
