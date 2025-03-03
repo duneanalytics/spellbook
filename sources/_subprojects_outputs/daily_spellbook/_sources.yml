@@ -46,3 +46,12 @@ sources:
     tables:
       - name: pools_metrics_daily
       - name: trades      
+
+  - name: utils
+    tables:
+      - name: days_table
+      - name: hours_table
+      - name: minutes_table
+      - name: days
+      - name: hours
+      - name: minutes

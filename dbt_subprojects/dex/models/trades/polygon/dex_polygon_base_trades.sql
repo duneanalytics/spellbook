@@ -6,8 +6,9 @@
 }}
 
 {% set base_models = [
-    ref('uniswap_v3_polygon_base_trades')
-    , ref('uniswap_v4_polygon_base_trades')
+    ref('uniswap_v4_polygon_base_trades')
+    , ref('uniswap_v3_polygon_base_trades')
+    , ref('uniswap_v2_polygon_base_trades')
     , ref('apeswap_polygon_base_trades')
     , ref('airswap_polygon_base_trades')
     , ref('sushiswap_v1_polygon_base_trades')
@@ -22,7 +23,6 @@
     , ref('clipper_polygon_base_trades')
     , ref('xchange_polygon_base_trades')
     , ref('dooar_polygon_base_trades')
-    , ref('uniswap_v2_polygon_base_trades')
     , ref('smardex_polygon_base_trades')
     , ref('gridex_polygon_base_trades')
     , ref('swaap_v2_polygon_base_trades')
