@@ -2,7 +2,7 @@
     schema = 'gas_solana',
     alias = 'tx_fees_2024_q3',
     tags = ['static'],
-    partition_by = ['block_date', 'block_hour'],
+    partition_by = ['block_date'],
     materialized = 'table',
     file_format = 'delta'
 ) }}
