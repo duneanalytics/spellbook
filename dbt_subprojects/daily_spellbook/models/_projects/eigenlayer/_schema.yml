@@ -249,6 +249,17 @@ models:
     columns:
       - *avs
       - *metadataURI
+  - name: eigenlayer_ethereum_whitelisted_strategy_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'strategy']
+    description: >
+        Latest whitelisted strategies
+    columns:
+      - *strategy
   - name: eigenlayer_ethereum_underlying_token_exchange_rate
     meta:
       blockchain: ethereum

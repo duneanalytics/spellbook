@@ -154,6 +154,8 @@ WITH trusted_tokens AS (
                 , ('scroll', 0xf55bec9cafdbe8730f096aa55dad6d22d44099df)
                 , ('scroll', 0x3c1bca5a656e69edcd0d4e36bebb3fcdaca60cf1)
                 , ('scroll', 0xf610a9dfb7c89644979b4a0f27063e9e7d7cda32)
+                , ('shape', 0x4200000000000000000000000000000000000006)  -- WETH
+                , ('shape', 0xdb7DD8B00EdC5778Fe00B2408bf35C7c054f8BBe)  -- USDC.e
                 , ('sei', 0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7)
                 , ('sei', 0x3894085Ef7Ff0f0aeDf52E2A2704928d1Ec074F1)
                 , ('sei', 0xB75D0B03c06A926e488e2659DF1A861F860bD3d1)
