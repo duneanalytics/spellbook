@@ -28,3 +28,12 @@ AND strategy IN (
 )
 
 
+UNION
+
+SELECT
+    strategy,
+    token,
+    name AS symbol,
+    18 AS decimals
+FROM {{ ref('eigenlayer_ethereum_strategy_category') }}
+
