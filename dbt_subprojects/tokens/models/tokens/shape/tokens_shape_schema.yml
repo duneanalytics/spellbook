@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: tokens_shape_erc20
+    meta:
+      blockchain: shape
+      sector: tokens
+      contributors: hosuke
+    config:
+      tags: ['tokens', 'erc20', 'shape']
+    description: >
+        Shape network ERC20 tokens
+    columns:
+      - name: contract_address
+        description: "ERC20 Token's contract address"
+      - name: symbol
+        description: "ERC20 Token's symbol"
+      - name: decimals
+        description: "ERC20 Token's number of decimals"
+
