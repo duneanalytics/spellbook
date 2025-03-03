@@ -302,3 +302,21 @@ models:
       - *evt_block_number
       - *strategy
       - *shares
+  - name: eigenlayer_ethereum_strategy_and_token_metadata_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'strategy', 'metadata']
+    description: >
+        Latest strategy and token metadata
+    columns:
+      - *strategy
+      - *token
+      - &symbol
+        name: symbol
+        description: "Symbol of the token"
+      - &decimals
+        name: decimals
+        description: "Decimals of the token"
