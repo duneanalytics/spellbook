@@ -1882,7 +1882,7 @@ FROM
     ('usdc-usd-coin', 'ethereum', 'aEthUSDC', 0x98c23e9d8f34fefb1b7bd6a91b7ff122f4e16f5c, 6),
     ('move-movement', 'ethereum', 'MOVE', 0x3073f7aaa4db83f95e9fff17424f71d4751a3073, 8),
     ('sei-sei', 'ethereum', 'SEI', 0xbdf43ecadc5cef51b7d1772f722e40596bc1788b, 18),
-    ('usdm-mountain-protocol-usd', 'ethereum', 'USDM', 0x57f5e098cad7a3d1eed53991d4d66c45c9af7812, 18)
+    ('usdm-mountain-protocol-usd', 'ethereum', 'USDM', 0x59D9356E565Ab3A36dD77763Fc0d87fEaf85508C, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
