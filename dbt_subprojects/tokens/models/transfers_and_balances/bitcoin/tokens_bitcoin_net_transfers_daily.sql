@@ -100,9 +100,6 @@ with raw_transfers as (
 select
     blockchain
     , block_date
-    , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
-    , sum(transfer_amount_usd_received) as transfer_amount_usd_received
-    , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received)) as transfer_amount_usd
     , sum(net_transfer_amount_usd) as net_transfer_amount_usd
 from
     net_transfers
