@@ -319,7 +319,8 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - block_time
-            - order_id
+            - fill_type
+            - tx_hash
     columns:
       - *block_time
       - *block_date
