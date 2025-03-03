@@ -286,3 +286,19 @@ models:
     columns:
       - *strategy
       - *exchange_rate
+  - name: eigenlayer_ethereum_pod_shares_updated_enriched
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'beacon strategy', 'native eth']
+    description: >
+        Enriched eigenpod shares changed
+    columns:
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *strategy
+      - *shares
