@@ -5,13 +5,10 @@
     file_format='delta',
     partition_by = ['blockchain'],
     unique_key=['address', 'blockchain', 'currency_symbol'],
-    post_hook=[
-        '{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zora", "zksync", "scroll", "linea", "zkevm"]\',
+    post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zora", "zksync", "scroll", "linea", "zkevm"]\',
                         "sector",
                         "gas",
-                        \'["gashawk, zohjag"]\') }}',
-                        'OPTIMIZE {{ this }} ZORDER BY (address);'
-                ]
+                        \'["gashawk, zohjag"]\') }}'
 ) }}
 
 WITH 
