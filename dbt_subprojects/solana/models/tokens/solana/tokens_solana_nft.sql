@@ -204,6 +204,7 @@ SELECT
     , call_tx_signer
 FROM token_metadata tk 
 WHERE recent_update = 1
+AND token_standard IN ('NonFungible', 'NonFungibleEdition', 'ProgrammableNonFungible')
 
 UNION ALL 
 
@@ -229,3 +230,4 @@ SELECT
     , call_block_slot
     , call_tx_signer
 FROM cnfts 
+WHERE token_standard IN ('NonFungible', 'NonFungibleEdition', 'ProgrammableNonFungible')
