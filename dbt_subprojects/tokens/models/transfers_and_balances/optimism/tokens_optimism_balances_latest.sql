@@ -5,7 +5,7 @@
     file_format = 'delta',
     incremental_strategy = 'merge',
     unique_key = ['unique_key'],
-    partition_by = ['block_date_latest'],
+    partition_by = ['block_date'],
     post_hook='{{ expose_spells(\'["optimism"]\',
                                 "sector",
                                 "balances_latest",
