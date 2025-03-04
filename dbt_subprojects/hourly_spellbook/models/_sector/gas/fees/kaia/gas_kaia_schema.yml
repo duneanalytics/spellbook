@@ -9,7 +9,35 @@ models:
     config:
       tags: ['kaia', 'gas', 'fees']
     description: >
-        Gas Fees on Kaia
+      Gas Fees on Kaia
+      
+      Kaia is an EVM-compatible Layer-1 blockchain designed to bring Web3 to users across Asia,
+      evolved from the Klaytn blockchain with enhanced features and performance.
+      
+      The gas fee mechanism on Kaia has evolved through several hardforks:
+      
+      1. Before Magma Hardfork:
+         - Fixed Unit Price: All transactions required the same gas price
+         - Simple Fee Structure: Predictable fees for users and service providers
+      
+      2. After Magma Hardfork (KIP-71):
+         - Dynamic Base Fee: Adjusted each block based on network congestion
+         - FCFS Transaction Processing: First-come-first-serve model without tips
+         - Partial Fee Burning: Half of the block gas fee is burned
+      
+      3. After Kaia Hardfork (KIP-162):
+         - Priority Fee: Optional tip to increase block inclusion possibility
+         - EIP-1559 Style: Similar to Ethereum's fee model with base fee + tip
+         - Support for Multiple Transaction Types: Including type-2 transactions
+         - Enhanced Fee Burning: Most of the block gas fee is burned since Kore Hardfork
+      
+      4. Key Parameters:
+         - Gas Target: Determines increase/decrease of base fee
+         - Base Fee Bounds: Upper and lower limits for the base fee
+         - Base Fee Denominator: Controls maximum base fee change per block
+      
+      The gas fee mechanism on Kaia implements a balance between predictability, efficiency, and
+      economic sustainability through its dynamic fee model and burn mechanism.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -28,4 +56,4 @@ models:
       - dbt_utils.expression_is_true:
           expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
           config:
-            where: "block_time > now() - interval '7' day" 
+            where: "block_time > now() - interval '7' day"

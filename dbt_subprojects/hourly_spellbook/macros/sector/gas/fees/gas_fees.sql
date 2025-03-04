@@ -18,6 +18,18 @@
     gas_price  -- Linea uses a standard gas price model with L1/L2 component costs (ZK rollup)
     {%- elif blockchain in ['sei']-%}
     gas_price  -- Sei uses a dual gas price system optimized for trading applications
+    {%- elif blockchain in ['kaia']-%}
+    gas_price  -- Kaia uses an EIP-1559 style dynamic fee model with base fee and priority fee
+    {%- elif blockchain in ['sonic']-%}
+    gas_price  -- Sonic uses a standard gas price model with a specialized fee distribution system
+    {%- elif blockchain in ['viction']-%}
+    gas_price  -- Viction uses an innovative Zero-Gas mechanism with VRC25 token standard
+    {%- elif blockchain in ['sophon']-%}
+    gas_price  -- Sophon is a Validium-based L2 with ZK rollup characteristics
+    {%- elif blockchain in ['apechain']-%}
+    gas_price  -- Apechain is a Layer-3 blockchain using APE token for gas
+    {%- elif blockchain in ['berachain']-%}
+    gas_price  -- Berachain uses a standard EVM-compatible gas price model
     {%- else -%}
     gas_price
     {%- endif -%}
@@ -87,6 +99,43 @@
     -- Sei's parallel execution architecture enables higher throughput and generally lower gas costs
     -- compared to sequential execution blockchains
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('kaia',) -%}
+    -- For Kaia, the transaction fee consists of two main components:
+    -- 1. Base Fee: Dynamically adjusted based on network congestion (KIP-71)
+    -- 2. Priority Fee: Optional fee for transaction prioritization (KIP-162)
+    -- Half of the gas fee is burned since Magma hardfork, and most is burned since Kore hardfork
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('sonic',) -%}
+    -- For Sonic, the transaction fee uses a standard gas price model but with a unique distribution:
+    -- - 50% is burned (for non-FeeM transactions)
+    -- - 45% goes to validators (10% for FeeM transactions)
+    -- - 5% goes to Ecosystem Vault (0% for FeeM transactions)
+    -- - 0-90% can go to app developers (FeeM program)
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('viction',) -%}
+    -- For Viction, the transaction fee can be zero for users through the innovative Zero-Gas mechanism:
+    -- - VRC25 token standard enables developers to cover gas fees for their users
+    -- - Gas fees are paid by token owners who deposit VIC to the VRC25Issuer contract
+    -- - Internal calls to VRC25 tokens are not gas-sponsored
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('sophon',) -%}
+    -- For Sophon, as a Validium-based L2 using ZKsync's Elastic Chain:
+    -- - Gas fees are paid in SOPH token
+    -- - Fees may include costs for computation and data availability
+    -- - Uses ZK proofs for security and efficiency
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('apechain',) -%}
+    -- For Apechain, a Layer-3 blockchain:
+    -- - Gas fees are paid in APE token
+    -- - Part of transaction fees are burned through Timeboost mechanism
+    -- - Designed for entertainment use cases with optimized performance
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('berachain',) -%}
+    -- For Berachain:
+    -- - Gas fees follow standard EVM calculations
+    -- - Based on Cosmos SDK with potential for unique consensus mechanisms
+    -- - May include validator incentives in fee structure
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- else -%}
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- endif -%}
@@ -147,6 +196,63 @@
     {%- elif blockchain in ('sei',) %}
         -- For Sei, the fee breakdown includes base gas price and optional priority gas price
         -- The parallel execution model optimizes for trading operations
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
+    {%- elif blockchain in ('kaia',) %}
+        -- For Kaia, the fee breakdown includes base fee and optional priority fee
+        -- The network follows EIP-1559 style pricing with partial fee burning
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
+    {%- elif blockchain in ('sonic',) %}
+        -- For Sonic, the fee breakdown includes standard components with a specialized distribution system
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
+    {%- elif blockchain in ('viction',) %}
+        -- For Viction, the Zero-Gas mechanism may result in no fees for end users
+        -- but the gas is still paid by token owners
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
+    {%- elif blockchain in ('sophon',) %}
+        -- For Sophon, the fee structure is based on the ZK rollup model
+        -- with potential components for L1 data and L2 computation
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
+    {%- elif blockchain in ('apechain',) %}
+        -- For Apechain, the standard gas fee model with possible Timeboost burn mechanism
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
+    {%- elif blockchain in ('berachain',) %}
+        -- For Berachain, standard fee breakdown with potential Cosmos SDK influences
         ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
                 then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
                 else map(array['base_fee','priority_fee'],

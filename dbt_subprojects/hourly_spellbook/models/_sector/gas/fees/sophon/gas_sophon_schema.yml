@@ -1,0 +1,61 @@
+version: 2
+
+models:
+  - name: gas_sophon_fees
+    meta:
+      blockchain: sophon
+      sector: gas
+      contributors: hosuke
+    config:
+      tags: ['sophon', 'gas', 'fees']
+    description: >
+      Gas Fees on Sophon
+      
+      Sophon is a Validium-based Layer 2 blockchain that leverages zero-knowledge proofs for scaling
+      while maintaining security and reducing data availability costs.
+      
+      The gas fee mechanism on Sophon includes several unique components:
+      
+      1. Dual Fee Structure:
+         - L1 Data Cost: Fees for posting transaction data or validity proofs to Ethereum
+         - L2 Execution Cost: Fees for computational resources used on the Sophon network
+      
+      2. Fee Optimization Through Validium Architecture:
+         - Data Availability Committee (DAC): Stores transaction data off-chain
+         - Minimized On-Chain Footprint: Only validity proofs posted to Ethereum
+         - ZK-Rollup Hybrid Option: Flexibility between Validium and ZK-Rollup modes
+      
+      3. Dynamic Fee Calculation:
+         - Gas Price Oracle: Monitors L1 costs and network congestion
+         - Predictive Batching: Optimizes transaction inclusion in proof batches
+         - Priority Levels: Different fee tiers based on transaction urgency
+      
+      4. Gas Token: SOC token used for all transaction fees on the network
+      
+      5. Fee Distribution:
+         - Protocol Treasury: Portion allocated for ecosystem development
+         - DAC Members: Compensation for providing data availability services
+         - Prover Rewards: Incentives for generating zero-knowledge proofs
+      
+      Sophon's gas fee mechanism is designed to provide significant cost savings compared to Ethereum
+      while maintaining security guarantees through its innovative Validium architecture and 
+      zero-knowledge proof system.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_number
+            - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: sophon
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_raw
+      - dbt_utils.expression_is_true:
+          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
+          config:
+            where: "block_time > now() - interval '7' day"

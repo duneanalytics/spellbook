@@ -9,7 +9,32 @@ models:
     config:
       tags: ['viction', 'gas', 'fees']
     description: >
-        Gas Fees on Viction
+      Gas Fees on Viction
+      
+      Viction, previously known as TomoChain, is a people-centric Layer-1 blockchain that focuses on providing 
+      zero-gas transactions and heightened security for a more accessible Web3 experience.
+      
+      The gas fee mechanism on Viction includes several innovative features:
+      
+      1. Zero-Gas Transactions: Viction's signature feature that allows users to interact with dApps without 
+         directly paying gas fees, removing a significant barrier to Web3 adoption.
+      
+      2. VRC25 Token Standard: An extension of the ERC20 standard that enables the Zero-Gas mechanism by allowing
+         token contract owners to cover gas fees for users, significantly improving user experience.
+      
+      3. Gas Sponsorship System:
+         - Token owners deposit VIC to the VRC25Issuer contract
+         - When users interact with VRC25 tokens, gas fees are paid from this deposit
+         - Internal calls to VRC25 tokens are not gas-sponsored and require standard fee payment
+      
+      4. Native Token (VIC): Used for gas payments, staking, and governance on the network.
+      
+      5. Transaction Types: Supports both standard and zero-gas transactions, providing flexibility for
+         different use cases and applications.
+      
+      The Zero-Gas mechanism on Viction fundamentally transforms the user experience by hiding the complexity
+      of blockchain gas fees, while still maintaining the economic incentives necessary for network security
+      and validator compensation.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -28,4 +53,4 @@ models:
       - dbt_utils.expression_is_true:
           expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
           config:
-            where: "block_time > now() - interval '7' day" 
+            where: "block_time > now() - interval '7' day"

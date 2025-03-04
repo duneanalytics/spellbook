@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: gas_berachain_fees
+    meta:
+      blockchain: berachain
+      sector: gas
+      contributors: hosuke
+    config:
+      tags: ['berachain', 'gas', 'fees']
+    description: >
+      Gas Fees on Berachain
+      
+      Berachain is an EVM-compatible, PoS Layer-1 blockchain built on the Cosmos SDK, designed to optimize 
+      for DeFi applications with high throughput and low fees.
+      
+      The gas fee mechanism on Berachain includes several unique features:
+      
+      1. Dual Token System:
+         - BERA: The primary utility token used for staking, governance, and transaction fees 
+         - HONEY: Minted as rewards for participating in the PoS consensus mechanism
+      
+      2. EIP-1559 Style Fee Model:
+         - Base Fee: Adjusted by the protocol based on block space demand
+         - Priority Fee: Optional tip to validators for transaction inclusion
+         - Fee Burning: A portion of the base fee is burned, creating deflationary pressure
+      
+      3. Cosmos SDK Integration:
+         - Efficient Cross-Chain Communication: Through Inter-Blockchain Communication (IBC) protocol
+         - Delegated Proof-of-Stake: Validators are selected based on stake and performance
+         - Tendency-Based Consensus: Fast finality through the Tendermint consensus algorithm
+      
+      4. Gas Cost Optimizations:
+         - Efficient EVM Implementation: Precompiles and specialized opcodes for common operations
+         - State Management: Optimized for repeated contract interactions
+         - Storage Rent: Economic incentives for efficient storage usage
+      
+      5. Fee Market Design:
+         - Block Gas Target: Target gas usage per block
+         - Adaptive Fee Adjustment: Base fee adjusts by up to 12.5% per block
+         - Fee Stability: Mechanisms to prevent extreme fee volatility
+      
+      Berachain's gas fee model aims to provide predictable and efficient transaction pricing while
+      maintaining network security through validator incentives and token burning mechanisms.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_number
+            - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: berachain
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_raw
+      - dbt_utils.expression_is_true:
+          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
+          config:
+            where: "block_time > now() - interval '7' day"
