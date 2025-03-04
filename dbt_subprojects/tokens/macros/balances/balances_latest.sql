@@ -19,6 +19,8 @@ where
     1 = 1
     {% if is_incremental() %}
     and {{ incremental_predicate('block_time') }}
+    {% else %}
+    and block_time >= date '2025-02-01'
     {% endif %}
 group by
     blockchain,
