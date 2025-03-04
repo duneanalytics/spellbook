@@ -10,6 +10,10 @@
     gas_price  -- Standard gas price for OP Stack L2s
     {%- elif blockchain in ['flare']-%}
     gas_price  -- Standard Ethereum-compatible gas price model
+    {%- elif blockchain in ['zksync']-%}
+    gas_price  -- zkSync uses a standard gas price model, but with unique L1/L2 component costs
+    {%- elif blockchain in ['polygon_zkevm']-%}
+    gas_price  -- Polygon zkEVM uses a standard gas price model with L1/L2 component costs
     {%- else -%}
     gas_price
     {%- endif -%}
@@ -52,6 +56,19 @@
     -- For Flare, we use the standard Ethereum-compatible gas fee calculation
     -- Flare uses a similar gas model to Ethereum but with lower base costs
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('zksync',) -%}
+    -- For zkSync, the transaction fee consists of two main components:
+    -- 1. L1 Data Availability Costs: Fees for posting data to Ethereum
+    -- 2. L2 Computation Costs: Fees for execution on zkSync itself
+    -- The total gas cost combines these components, but we might not have direct access
+    -- to the separate L1/L2 components in raw transaction data
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('polygon_zkevm',) -%}
+    -- For Polygon zkEVM, the transaction fee consists of two main components similar to other ZK rollups:
+    -- 1. L1 Data Availability Costs: Fees for publishing validity proofs on Ethereum
+    -- 2. L2 Computation Costs: Fees for transaction execution on Polygon zkEVM
+    -- The gas price model follows EIP-1559 with base fee and optional priority fee
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- else -%}
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- endif -%}
@@ -82,7 +99,22 @@
         , array[cast(coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)
                 ,cast((txns.gas_used - coalesce(gas_used_for_l1,0)) * {{gas_price(blockchain)}} as uint256)])
     {%- elif blockchain in ('zksync',) %}
+      -- For zkSync, ideally we would break down the fee into L1 data costs and L2 execution costs
+      -- Since we don't have direct access to these components in the transaction data,
+      -- we'll use a simple base_fee component for the total fee
+      -- This is a limitation of the current implementation
       ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+    {%- elif blockchain in ('polygon_zkevm',) %}
+      -- For Polygon zkEVM, the fee breakdown ideally includes L1 proof costs and L2 execution costs
+      -- Since these components aren't directly accessible in the transaction data, we use the EIP-1559 style breakdown
+      -- for the total fee, which includes both component costs combined
+      ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+              then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+              else map(array['base_fee','priority_fee'],
+                       array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                              ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                       )
+              end
     {%- elif blockchain in ('celo',) %}
         ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
                 then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])

@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: gas_polygon_zkevm_fees
+    meta:
+      blockchain: polygon_zkevm
+      sector: gas
+      contributors: 0xRob, soispoke, hosuke
+    config:
+      tags: ['polygon_zkevm', 'gas', 'fees']
+    description: >
+        Gas Fees on Polygon zkEVM
+        
+        Polygon zkEVM is a ZK rollup solution that leverages zero-knowledge proofs to scale Ethereum,
+        providing Ethereum-equivalent security while significantly reducing transaction costs.
+        
+        The gas fee mechanism on Polygon zkEVM has several important characteristics:
+        
+        1. Two-Tiered Fee Structure:
+           - L1 Data Availability Costs: Fees paid to publish validity proofs on Ethereum
+           - L2 Computation Costs: Fees for transaction execution on the Polygon zkEVM network
+        
+        2. Gas Price Dynamics:
+           - Base Fee: Adjusts based on network congestion following EIP-1559 principles
+           - Priority Fee: Optional tips to incentivize faster inclusion
+        
+        3. Deterministic Fee Calculation:
+           Unlike Optimistic rollups where L1 costs can vary based on calldata size, Polygon zkEVM 
+           has a more deterministic fee estimation process due to the fixed-size nature of validity proofs.
+        
+        4. EVM Equivalence Impact:
+           - Gas costs for operations are carefully calibrated to match Ethereum's EVM
+           - This ensures compatibility for smart contracts migrating from Ethereum
+           - However, the actual gas costs are much lower due to the Layer 2 efficiencies
+        
+        5. Batch Processing Effect:
+           - Transactions are processed in batches and then proven together
+           - This amortizes the fixed costs of generating validity proofs across multiple transactions
+           - Results in lower per-transaction costs compared to individual transaction verification
+        
+        Gas fees on Polygon zkEVM are typically 90-95% lower than Ethereum mainnet while maintaining
+        strong security guarantees through validity proofs. The fee model is designed to be sustainable
+        even as the network scales, with fees covering both the operational costs of the network and
+        the Ethereum mainnet data availability costs.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_number
+            - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: polygon_zkevm
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_raw
