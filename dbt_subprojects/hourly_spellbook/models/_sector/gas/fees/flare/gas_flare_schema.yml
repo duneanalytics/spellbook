@@ -9,7 +9,36 @@ models:
     config:
       tags: ['flare', 'gas', 'fees']
     description: >
-        Gas Fees on Flare
+        Gas Fees on Flare Network
+        
+        Flare Network is a Layer 1 blockchain designed to extend smart contract functionality to blockchains 
+        that don't natively support it, using the Ethereum Virtual Machine (EVM) and Avalanche consensus protocol.
+        
+        Flare's gas fee mechanism follows an Ethereum-compatible model with some important distinctions:
+        
+        1. Gas Price: Users set this fee for each unit of gas used, affecting transaction speed. Like Ethereum,
+           this represents the amount of FLR (Flare's native token) the user is willing to pay per unit of gas.
+        
+        2. Gas Limit: This is a cap on gas expenditure that protects users against excessive costs when executing
+           smart contracts. It prevents transactions from consuming unlimited computational resources.
+        
+        3. Network Congestion: Fees fluctuate with network demand - higher during congestion periods and lower
+           during quieter times, similar to Ethereum's dynamic fee mechanism.
+        
+        4. Lower Base Costs: Flare's network is designed to operate with significantly lower base gas costs
+           compared to Ethereum, due to its consensus mechanism and network architecture.
+        
+        5. Transaction Types: Different operations require varying amounts of gas:
+           - Simple token transfers require minimal gas
+           - Smart contract interactions require more gas depending on computational complexity
+           - Delegating FLR tokens involves gas fees that affect overall staking rewards
+        
+        The overall gas fee calculation for a transaction on Flare follows the standard formula:
+        Gas Fee = Gas Price × Gas Used
+        
+        Where Gas Used is the actual amount of computational resources consumed, capped by the Gas Limit.
+        
+        Gas fees on Flare are paid in FLR tokens, which serve as the native utility token for the network.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -28,4 +57,4 @@ models:
       - dbt_utils.expression_is_true:
           expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
           config:
-            where: "block_time > now() - interval '7' day" 
+            where: "block_time > now() - interval '7' day"

@@ -1,6 +1,6 @@
 -- any modifications needed for getting the correct gas price
 {% macro gas_price(blockchain) %}
-    {%- if blockchain in ['arbitrum']-%}
+    {%- if blockchain in ['arbitrum', 'nova', 'corn']-%}
     effective_gas_price
     {%- elif blockchain in ['abstract']-%}
     gas_price  -- L2 gas price for abstract
@@ -8,6 +8,8 @@
     gas_price  -- Uses standard gas_price but updates every 10 minutes based on L1 prices
     {%- elif blockchain in ['ink', 'worldchain']-%}
     gas_price  -- Standard gas price for OP Stack L2s
+    {%- elif blockchain in ['flare']-%}
+    gas_price  -- Standard Ethereum-compatible gas price model
     {%- else -%}
     gas_price
     {%- endif -%}
@@ -36,6 +38,20 @@
     -- For Ink and Worldchain, as OP Stack chains, they follow the standard Optimistic Rollup fee structure
     -- with L1 data fees and L2 execution fees. The l1_fee is already included above.
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('nova',) -%}
+    -- For Arbitrum Nova (AnyTrust), gas fees are significantly lower than Arbitrum One
+    -- due to the Data Availability Committee (DAC) which reduces L1 data costs
+    -- Nova fees still include both L1 and L2 components, but L1 costs are much lower
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('corn',) -%}
+    -- For Arbitrum Corn (Orbit), fees follow the Arbitrum Orbit model with four components:
+    -- l2BaseFee, l2SurplusFee, l1BaseFee, and l1SurplusFee
+    -- Since these components may not be directly accessible in the data, we use the effective gas price
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('flare',) -%}
+    -- For Flare, we use the standard Ethereum-compatible gas fee calculation
+    -- Flare uses a similar gas model to Ethereum but with lower base costs
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- else -%}
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- endif -%}
@@ -49,6 +65,19 @@
     map_concat(
     map()
     {%- if blockchain in ('arbitrum',) %}
+      ,map(array['l1_fee','base_fee']
+        , array[cast(coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)
+                ,cast((txns.gas_used - coalesce(gas_used_for_l1,0)) * {{gas_price(blockchain)}} as uint256)])
+    {%- elif blockchain in ('nova',) %}
+      -- For Arbitrum Nova (AnyTrust), the fee breakdown is similar to Arbitrum One
+      -- but with reduced L1 costs due to the Data Availability Committee
+      ,map(array['l1_fee','base_fee']
+        , array[cast(coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)
+                ,cast((txns.gas_used - coalesce(gas_used_for_l1,0)) * {{gas_price(blockchain)}} as uint256)])
+    {%- elif blockchain in ('corn',) %}
+      -- For Arbitrum Corn (Orbit), the fee breakdown ideally would include the four components:
+      -- l2BaseFee, l2SurplusFee, l1BaseFee, and l1SurplusFee
+      -- Since these components may not be directly accessible, we use a simplified breakdown similar to Arbitrum
       ,map(array['l1_fee','base_fee']
         , array[cast(coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)
                 ,cast((txns.gas_used - coalesce(gas_used_for_l1,0)) * {{gas_price(blockchain)}} as uint256)])
@@ -80,6 +109,16 @@
     {%- elif blockchain in ('ink', 'worldchain') %}
       -- For Ink and Worldchain as OP Stack chains
       -- We include l1_fee from above, and handle base_fee/priority_fee breakdown similar to other EIP-1559 chains
+      ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+              then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+              else map(array['base_fee','priority_fee'],
+                       array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                              ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                       )
+              end
+    {%- elif blockchain in ('flare',) %}
+      -- For Flare, use standard Ethereum-compatible fee breakdown
+      -- Supporting both legacy transactions and EIP-1559 style transactions
       ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
               then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
               else map(array['base_fee','priority_fee'],
