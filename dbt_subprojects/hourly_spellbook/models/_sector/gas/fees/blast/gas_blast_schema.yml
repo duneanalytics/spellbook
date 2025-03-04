@@ -5,11 +5,46 @@ models:
     meta:
       blockchain: blast
       sector: gas
-      contributors: 0xRob, soispoke
+      contributors: 0xRob, soispoke, hosuke
     config:
       tags: ['blast', 'gas', 'fees']
     description: >
-        Gas Fees on Ethereum
+        Gas Fees on Blast
+        
+        Blast is an Ethereum Layer 2 solution built on OP Stack technology, featuring native yield generation
+        and a gas fee mechanism optimized for both performance and yield distribution.
+        
+        The gas fee mechanism on Blast has several unique characteristics:
+        
+        1. OP Stack Foundation:
+           - Built on Optimism's OP Stack architecture, using optimistic rollups for scalability
+           - Features a two-tier fee structure typical of optimistic rollups:
+             * L1 Data Availability Costs: Fees for publishing data to Ethereum
+             * L2 Execution Costs: Fees for computation on the Blast network
+        
+        2. Yield-Generating Gas Model:
+           - A portion of gas fees collected contributes to the native yield system
+           - This creates an economic flywheel where network usage enhances yield for ETH and stablecoin holders
+           - Blast's contracts automatically convert ETH to staked ETH (via Lido) to generate yield
+        
+        3. Fee Optimization:
+           - Lower base costs for operations compared to Ethereum mainnet
+           - Efficient data compression techniques to minimize L1 data costs
+           - Batch processing of transactions to amortize fixed costs
+        
+        4. EIP-1559 Implementation:
+           - Implements a version of EIP-1559 similar to Ethereum
+           - Base fee adjusts based on network congestion
+           - Priority fees allow users to incentivize faster inclusion
+        
+        5. Gas Refund Mechanism:
+           - Features a gas refund program that returns a portion of gas fees to developers
+           - This creates a unique incentive structure for dApp builders on the network
+        
+        Gas fees on Blast are significantly lower than Ethereum mainnet, typically 10-50x cheaper,
+        while still providing strong security through the optimistic rollup model. The combination
+        of lower fees and native yield makes Blast particularly attractive for applications requiring
+        frequent user interactions or protocol rebalancing operations.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:

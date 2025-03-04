@@ -14,6 +14,10 @@
     gas_price  -- zkSync uses a standard gas price model, but with unique L1/L2 component costs
     {%- elif blockchain in ['polygon_zkevm']-%}
     gas_price  -- Polygon zkEVM uses a standard gas price model with L1/L2 component costs
+    {%- elif blockchain in ['linea']-%}
+    gas_price  -- Linea uses a standard gas price model with L1/L2 component costs (ZK rollup)
+    {%- elif blockchain in ['sei']-%}
+    gas_price  -- Sei uses a dual gas price system optimized for trading applications
     {%- else -%}
     gas_price
     {%- endif -%}
@@ -69,6 +73,20 @@
     -- 2. L2 Computation Costs: Fees for transaction execution on Polygon zkEVM
     -- The gas price model follows EIP-1559 with base fee and optional priority fee
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('linea',) -%}
+    -- For Linea, as a Type 2 ZK rollup, the transaction fee consists of two main components:
+    -- 1. L1 Data Availability Costs: Fees for posting transaction data and proofs to Ethereum
+    -- 2. L2 Execution Costs: Fees for computation on the Linea network
+    -- The gas price model follows EIP-1559 with base fee and optional priority fee
+    -- L1 costs are amortized across batches through efficient ZK proving systems
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('sei',) -%}
+    -- For Sei, the transaction fee uses a dual gas price system:
+    -- 1. Base Gas Price: Set by the protocol and adjusted based on network demand
+    -- 2. Priority Gas Price: Optional additional fee for transaction prioritization
+    -- Sei's parallel execution architecture enables higher throughput and generally lower gas costs
+    -- compared to sequential execution blockchains
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- else -%}
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- endif -%}
@@ -115,6 +133,27 @@
                               ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
                        )
               end
+    {%- elif blockchain in ('linea',) %}
+      -- For Linea, the fee breakdown ideally includes L1 data costs and L2 execution costs
+      -- Since we don't have direct access to the separate components in the transaction data, 
+      -- we use the EIP-1559 style breakdown for the total fee
+      ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+              then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+              else map(array['base_fee','priority_fee'],
+                       array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                              ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                       )
+              end
+    {%- elif blockchain in ('sei',) %}
+        -- For Sei, the fee breakdown includes base gas price and optional priority gas price
+        -- The parallel execution model optimizes for trading operations
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
     {%- elif blockchain in ('celo',) %}
         ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
                 then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
