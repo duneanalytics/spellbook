@@ -219,6 +219,9 @@ taker_logs as (
         and (
              varbinary_position(st.data, (logs.data)) <> 0 
             or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
+            or (topic0 = 0xad7d6f97abf51ce18e17a38f4d70e975be9c0708474987bb3e26ad21bd93ca70 and 
+                (varbinary_to_uint256(varbinary_ltrim(logs.data)) - varbinary_to_uint256(varbinary_substring(st.data, 57, 8)) ) / varbinary_to_uint256(varbinary_ltrim(logs.data)) < 0.0001
+                )
           )
           
     where logs.block_time > TIMESTAMP '2024-07-15' 
@@ -384,7 +387,8 @@ tbl_trades as (
 select  block_time,
         block_number,
         tx_hash,
-        case when st.taker in (0x0000000000001ff3684f28c67538d4d072c22734,
+        case when c.address is not null then tx_from
+             when st.taker in (0x0000000000001ff3684f28c67538d4d072c22734,
                             0x0000000000005E88410CcDFaDe4a5EfaE4b49562,
                             0x000000000000175a8b9bC6d539B3708EEd92EA6c,
                             0x9008d19f58aabd9ed0d60971565aa8510560ab41,
@@ -411,6 +415,7 @@ select  block_time,
         settler_address as contract_address 
     from maker_logs
     join zeroex_tx st using (block_time, block_number, tx_hash, rn, settler_address) 
+    left join {{ source( {{blockchain}}, 'contracts') }} c on c.address = st.taker 
     union 
     select * from cow_trades 
 )
