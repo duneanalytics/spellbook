@@ -45,7 +45,7 @@ models:
           seed_file: ref('katana_ronin_base_trades_seed')
           filter:
             version: 3
-              - name: katana_v3_ronin_base_trades
+           
 
     meta:
       blockchain: ronin
