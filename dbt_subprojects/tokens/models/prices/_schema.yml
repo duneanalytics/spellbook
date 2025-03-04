@@ -144,7 +144,7 @@ models:
     
   - name: prices_tokens
     meta:
-      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm, blast, sei, nova, worldchain, kaia, ronin, ink
+      blockchain: arbitrum, avalanche_c, gnosis, polygon, optimism, ethereum, bnb, solana, fantom, celo, base, zksync, zora, linea, zkevm, blast, sei, nova, worldchain, kaia, ronin, ink, shape
       sector: prices
       contributors: aalan3, hildobby, pipistrella, viniabussafi, jeff-dude, hosuke
     config:
