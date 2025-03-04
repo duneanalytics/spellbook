@@ -1,0 +1,24 @@
+version: 2
+
+sources:
+  - name: eigenlayer_ethereum
+    description: "Decoded contracts for EigenLayer on Ethereum"
+
+    tables:
+      - name: DelegationManager_evt_WithdrawalQueued
+      - name: DelegationManager_evt_WithdrawalCompleted
+      - name: DelegationManager_evt_WithdrawalMigrated
+      - name: DelegationManager_evt_OperatorSharesIncreased
+      - name: DelegationManager_evt_OperatorSharesDecreased
+      - name: DelegationManager_evt_OperatorMetadataURIUpdated
+      - name: StrategyManager_evt_Deposit
+      - name: StrategyManager_evt_ShareWithdrawalQueued
+      - name: StrategyManager_evt_WithdrawalCompleted
+      - name: StrategyManager_evt_StrategyAddedToDepositWhitelist
+      - name: StrategyManager_evt_StrategyRemovedFromDepositWhitelist
+      - name: AVSDirectory_evt_OperatorAVSRegistrationStatusUpdated
+      - name: AVSDirectory_evt_AVSMetadataURIUpdated
+      - name: RewardsCoordinator_evt_AVSRewardsSubmissionCreated
+      - name: RewardsCoordinator_evt_RewardsSubmissionForAllEarnersCreated
+      - name: StrategyFactory_evt_StrategySetForToken
+      - name: EigenPodManager_evt_PodSharesUpdated
