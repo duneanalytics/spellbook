@@ -2,6 +2,8 @@
 {% macro gas_price(blockchain) %}
     {%- if blockchain in ['arbitrum']-%}
     effective_gas_price
+    {%- elif blockchain in ['abstract']-%}
+    gas_price  -- L2 gas price for abstract
     {%- else -%}
     gas_price
     {%- endif -%}
@@ -15,7 +17,15 @@
     {%- if blockchain in ('ethereum',) -%}
     cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256) +
     {%- endif -%}
+    {%- if blockchain in ('abstract',) -%}
+    -- For Abstract, the raw transaction fee consists of both L2 execution gas and batch overhead
+    -- Since we might not have direct access to batch overhead data from the chain
+    -- we'll use the gas_price (L2 gas price) and gas_used similar to other chains,
+    -- but recognize that this might underestimate the actual fee that includes the batch overhead component
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- else -%}
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- endif -%}
 {% endmacro %}
 
 -- include chain specific logic here
@@ -39,6 +49,10 @@
                                 ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
                          )
                 end
+    {%- elif blockchain in ('abstract',) %}
+      -- For Abstract, we ideally would break down into L2 execution gas and batch overhead
+      -- Since we don't have direct access to these components, we'll approximate with base_fee (L2 execution)
+      ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
     {%- else -%}
         {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') %}
           ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])

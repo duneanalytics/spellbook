@@ -9,8 +9,15 @@ models:
     config:
       tags: ['abstract', 'gas', 'fees']
     description: >
-        Gas Fees on Abstract. Note that Abstract uses a unique gas fee mechanism that includes both offchain (fixed) and onchain (variable) components,
-        with a smart refund system for unused resources and overpayments.
+        Gas Fees on Abstract. Note that Abstract uses a unique gas fee mechanism that includes both L2 execution gas (similar to other L2s) 
+        and batch overhead gas (which covers costs for posting data to Layer 1). The current implementation approximates the total fee
+        using available on-chain data but may not capture the full overhead component accurately.
+        
+        Abstract's fee formula is:
+        txn_fee = L2_execution + overhead_gas
+        where:
+        - L2_execution = L2_gas_units * L2_gas_price (similar to standard EVM gas)
+        - overhead_gas ~= L1_base_fee * txn_size (bytes) + K (where K is a constant for proving costs)
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
