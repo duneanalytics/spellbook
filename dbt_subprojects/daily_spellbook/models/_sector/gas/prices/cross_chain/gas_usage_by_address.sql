@@ -17,7 +17,6 @@ gas_costs AS (
     SELECT 
         blockchain,
         tx_from as address,
-        SUBSTRING(CAST(tx_from AS VARCHAR), 3, 2) as address_prefix,
         currency_symbol,
         block_time,
         tx_fee as gas_cost_native,
@@ -28,7 +27,6 @@ gas_costs AS (
 final_metrics AS (
     SELECT
         address,
-        address_prefix,
         blockchain,
         currency_symbol,
         COUNT(*) as number_of_txs,
@@ -45,12 +43,12 @@ final_metrics AS (
         SUM(CASE WHEN block_time >= now() - INTERVAL '6' MONTH THEN gas_cost_native END) as gas_spent_native_6_months,
         SUM(CASE WHEN block_time >= now() - INTERVAL '1' YEAR THEN gas_cost_native END) as gas_spent_native_1_year
     FROM gas_costs
-    GROUP BY 1, 2, 3, 4
+    GROUP BY 1, 2, 3
 )
 
 SELECT 
     address,
-    address_prefix,
+    SUBSTRING(CAST(address AS VARCHAR), 3, 2) as address_prefix,
     blockchain,
     currency_symbol,
     number_of_txs,
