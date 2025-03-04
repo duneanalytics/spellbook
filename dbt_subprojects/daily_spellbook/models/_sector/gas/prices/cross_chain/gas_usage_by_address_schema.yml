@@ -22,10 +22,6 @@ models:
         description: "The wallet address"
         tests:
           - not_null
-      - name: address_prefix
-        description: "The prefix of the address"
-        tests:
-          - not_null
       - name: blockchain
         description: "The blockchain name"
         tests:
