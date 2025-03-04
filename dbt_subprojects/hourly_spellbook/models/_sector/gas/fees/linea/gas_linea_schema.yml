@@ -5,11 +5,42 @@ models:
     meta:
       blockchain: linea
       sector: gas
-      contributors: 0xRob, soispoke
+      contributors: 0xRob, soispoke, hosuke
     config:
       tags: ['linea', 'gas', 'fees']
     description: >
-        Gas Fees on Ethereum
+        Gas Fees on Linea
+        
+        Linea is a Type 2 zero-knowledge rollup (ZK rollup) developed by ConsenSys, focused on EVM equivalence.
+        It leverages ZK proofs to offer security and scalability without compromising Ethereum compatibility.
+        
+        The gas fee mechanism on Linea has several important characteristics:
+        
+        1. Two-Tier Fee Structure:
+           - L2 Execution Fee: Covers the computational cost of executing transactions on Linea
+           - L1 Data Availability Fee: Covers the cost of posting transaction data and proofs to Ethereum
+        
+        2. EVM Compatibility:
+           - Gas calculations closely mirror Ethereum's model for developer familiarity
+           - Contract deployment and interaction costs follow similar patterns to Ethereum
+           - Supports both legacy and EIP-1559 transaction types
+        
+        3. Fee Optimization Mechanisms:
+           - Batching of transactions into proofs amortizes the L1 costs across multiple transactions
+           - ZK proving system efficiency reduces the cost of security compared to optimistic rollups
+           - L1 data costs are minimized through data compression techniques
+        
+        4. Deterministic Fee Estimation:
+           - More predictable fee structure compared to some L2s due to the deterministic nature of ZK proofs
+           - The fixed overhead of generating proofs is distributed across transaction batches
+        
+        5. Fee Market Dynamics:
+           - Base fee adjusts based on network congestion following EIP-1559 principles
+           - Priority fee component allows users to incentivize faster inclusion
+        
+        Gas fees on Linea are approximately 10-20x lower than Ethereum mainnet while maintaining
+        strong security guarantees through validity proofs. The fee model is designed to support
+        high throughput applications while keeping costs predictable and affordable for users.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
