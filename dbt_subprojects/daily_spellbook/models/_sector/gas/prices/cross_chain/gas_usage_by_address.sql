@@ -45,7 +45,7 @@ final_metrics AS (
         SUM(CASE WHEN block_time >= now() - INTERVAL '6' MONTH THEN gas_cost_native END) as gas_spent_native_6_months,
         SUM(CASE WHEN block_time >= now() - INTERVAL '1' YEAR THEN gas_cost_native END) as gas_spent_native_1_year
     FROM gas_costs
-    GROUP BY 1, 2, 3
+    GROUP BY 1, 2, 3, 4
 )
 
 SELECT 
