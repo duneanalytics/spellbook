@@ -415,7 +415,7 @@ select  block_time,
         settler_address as contract_address 
     from maker_logs
     join zeroex_tx st using (block_time, block_number, tx_hash, rn, settler_address) 
-    left join {{ source( {{blockchain}}, 'contracts') }} c on c.address = st.taker 
+    left join {{ source( '{{blockchain}}', 'contracts') }} c on c.address = st.taker 
     union 
     select * from cow_trades 
 )
