@@ -5,9 +5,11 @@ models:
     meta:
       blockchain: ['ethereum', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'blast', 'bnb', 'celo', 'fantom', 'gnosis', 'linea', 'mantle', 'polygon', 'scroll', 'zkevm', 'zksync', 'zora']
       sector: gas
-      contributors: ['gashawk']
+      contributors: ['gashawk', 'zohjag']
     config:
       tags: ['gas', 'cross_chain', 'addresses']
+    indexes:
+      - columns: ["address"]
     description: "Cross-chain gas usage metrics aggregated by address (optimized version)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -48,6 +50,10 @@ models:
         description: "USD value of gas spent in last 30 days"
         tests:
           - not_null
+      - name: gas_spent_usd_6_months
+        description: "USD value of gas spent in last 6 months"
+        tests:
+          - not_null
       - name: gas_spent_usd_1_year
         description: "USD value of gas spent in last year"
         tests:
@@ -66,6 +72,10 @@ models:
           - not_null
       - name: gas_spent_native_30_days
         description: "Amount of gas spent in native currency in last 30 days"
+        tests:
+          - not_null
+      - name: gas_spent_native_6_months
+        description: "Amount of gas spent in native currency in last 6 months"
         tests:
           - not_null
       - name: gas_spent_native_1_year
