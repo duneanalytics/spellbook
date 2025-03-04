@@ -9,11 +9,11 @@ select
     token_symbol,
     token_id,
     collection_name,
-    max(block_number) as block_number_latest,
-    max(date_trunc('day', block_time)) as block_date_latest,
-    max(block_time) as block_time_latest,
-    max_by(balance_raw, block_number) as balance_raw_latest,
-    max_by(balance, block_number) as balance_latest
+    max(block_number) as block_number,
+    max(date_trunc('day', block_time)) as block_date,
+    max(block_time) as block_time,
+    max_by(balance_raw, block_number) as balance_raw,
+    max_by(balance, block_number) as balance
 from {{balances}}
 where
     1 = 1
