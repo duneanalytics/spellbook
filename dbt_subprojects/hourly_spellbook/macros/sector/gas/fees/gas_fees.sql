@@ -4,6 +4,8 @@
     effective_gas_price
     {%- elif blockchain in ['abstract']-%}
     gas_price  -- L2 gas price for abstract
+    {%- elif blockchain in ['boba']-%}
+    gas_price  -- Uses standard gas_price but updates every 10 minutes based on L1 prices
     {%- else -%}
     gas_price
     {%- endif -%}
@@ -22,6 +24,11 @@
     -- Since we might not have direct access to batch overhead data from the chain
     -- we'll use the gas_price (L2 gas price) and gas_used similar to other chains,
     -- but recognize that this might underestimate the actual fee that includes the batch overhead component
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('boba',) -%}
+    -- For Boba, we use the standard gas price calculation similar to other Optimistic Rollups
+    -- Gas price updates every 10 minutes based on L1 with maximium 5% change per update
+    -- Boba may also have L1 data costs which would ideally be included, but the l1_fee data might not be directly accessible
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- else -%}
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
@@ -53,6 +60,17 @@
       -- For Abstract, we ideally would break down into L2 execution gas and batch overhead
       -- Since we don't have direct access to these components, we'll approximate with base_fee (L2 execution)
       ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+    {%- elif blockchain in ('boba',) %}
+      -- For Boba, we ideally would break down into L2 execution and L1 data costs
+      -- Based on Optimism design which Boba is built on
+      -- We simplify the breakdown to a base_fee component
+      ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+              then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+              else map(array['base_fee','priority_fee'],
+                       array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                              ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                       )
+              end
     {%- else -%}
         {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') %}
           ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])
