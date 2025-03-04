@@ -3,10 +3,10 @@
         tags = [ 'static'],
         schema = 'non_app_method_ids',
         alias = 'non_app_method_ids',
-        post_hook='{{ expose_spells(\'["ethereum","optimism","arbitrum","polygon","gnosis","avalanche_c","fantom","goerli","bnb","base","celo", "zora", "ronin"]\',
+        post_hook='{{ expose_spells(["ethereum","optimism","arbitrum","polygon","gnosis","avalanche_c","fantom","goerli","bnb","base","celo", "zora", "ronin"],
                                 "sector",
                                 "method_ids",
-                                \'["msilb7"]\') }}'
+                                ["msilb7"]) }}'
         )
 }}
 
@@ -26,7 +26,7 @@
     , 'ronin'
     ] %}
 
-WITH aggrregate_methods AS (
+WITH aggregate_methods AS (
 -- Generic EVM methods, we read null array as "all"
 SELECT NULL as blockchains, method_id, method_descriptor
     FROM (values
@@ -69,7 +69,7 @@ SELECT *
 FROM (
     {% for chain in all_chains_array %}
     SELECT '{{chain}}' AS blockchain, method_id, method_descriptor
-    FROM aggrregate_methods
+    FROM aggregate_methods
     WHERE
         blockchains IS NULL --If Null, make an entry for all chains
         OR blockchains = '{{chain}}'
