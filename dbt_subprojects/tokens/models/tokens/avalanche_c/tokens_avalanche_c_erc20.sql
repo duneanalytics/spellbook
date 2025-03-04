@@ -387,4 +387,5 @@ FROM (VALUES
     , (0xBaCD77aC0c456798e05de15999CB212129d90b70, 'WOOFY', 18)
     , (0xfE09E309726FcDb92B05Df5f682185a0B0590dD9, 'RIPPED', 18)
     , (0x3db3aa87121d16407cfbbadf3f1c5b519182a399, 'AURA', 18)
+    , (0x4e9b4fc58ed4a7f7bb25704b67458167b2e2dc94, 'FFJOE', 18)
 ) AS temp_table (contract_address, symbol, decimals)
