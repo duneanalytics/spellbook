@@ -6,6 +6,8 @@
     gas_price  -- L2 gas price for abstract
     {%- elif blockchain in ['boba']-%}
     gas_price  -- Uses standard gas_price but updates every 10 minutes based on L1 prices
+    {%- elif blockchain in ['ink', 'worldchain']-%}
+    gas_price  -- Standard gas price for OP Stack L2s
     {%- else -%}
     gas_price
     {%- endif -%}
@@ -29,6 +31,10 @@
     -- For Boba, we use the standard gas price calculation similar to other Optimistic Rollups
     -- Gas price updates every 10 minutes based on L1 with maximium 5% change per update
     -- Boba may also have L1 data costs which would ideally be included, but the l1_fee data might not be directly accessible
+    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- elif blockchain in ('ink', 'worldchain') -%}
+    -- For Ink and Worldchain, as OP Stack chains, they follow the standard Optimistic Rollup fee structure
+    -- with L1 data fees and L2 execution fees. The l1_fee is already included above.
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- else -%}
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
@@ -64,6 +70,16 @@
       -- For Boba, we ideally would break down into L2 execution and L1 data costs
       -- Based on Optimism design which Boba is built on
       -- We simplify the breakdown to a base_fee component
+      ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+              then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+              else map(array['base_fee','priority_fee'],
+                       array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                              ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                       )
+              end
+    {%- elif blockchain in ('ink', 'worldchain') %}
+      -- For Ink and Worldchain as OP Stack chains
+      -- We include l1_fee from above, and handle base_fee/priority_fee breakdown similar to other EIP-1559 chains
       ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
               then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
               else map(array['base_fee','priority_fee'],

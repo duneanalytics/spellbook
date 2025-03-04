@@ -9,7 +9,25 @@ models:
     config:
       tags: ['worldchain', 'gas', 'fees']
     description: >
-        Gas Fees on Worldchain
+        Gas Fees on World Chain (OP Stack)
+        
+        World Chain is an Ethereum Layer 2 blockchain built on the Optimism OP Stack (Superchain) designed to be a "blockchain for humans".
+        It offers several unique features, including:
+        - Free gas fees for all verified humans
+        - Native mobile distribution through mini-apps
+        - Sybil resistance via World ID
+        
+        Every World Chain transaction consists of two costs:
+        1. An L2 (execution) fee for executing transactions on the chain itself
+        2. An L1 (security) fee that covers the estimated cost of publishing the transaction data on Ethereum
+        
+        Typically, the L1 security fee is higher than the L2 execution fee. The L1 fee fluctuates depending on the 
+        volume of transactions on Ethereum, while the L2 fee varies based on the number of transactions submitted to World Chain.
+        
+        As an OP Stack chain, World Chain inherits the gas fee mechanism from Optimism, including:
+        - EIP-1559 style fee market for L2 execution fees
+        - L1 data fees that vary based on Ethereum gas prices
+        - Dynamic fee adjustment based on network demand
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -28,4 +46,4 @@ models:
       - dbt_utils.expression_is_true:
           expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
           config:
-            where: "block_time > now() - interval '7' day" 
+            where: "block_time > now() - interval '7' day"
