@@ -3,7 +3,7 @@
     alias='usage_by_address',
     materialized='table',
     file_format='delta',
-    partition_by = ['blockchain'],
+    partition_by = ['blockchain', 'address_prefix'],
     unique_key=['address', 'blockchain', 'currency_symbol'],
     cluster_by=['address'],
     post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zora", "zksync", "scroll", "linea", "zkevm"]\',
@@ -17,6 +17,7 @@ gas_costs AS (
     SELECT 
         blockchain,
         tx_from as address,
+        SUBSTRING(CAST(tx_from AS VARCHAR), 3, 2) as address_prefix,
         currency_symbol,
         block_time,
         tx_fee as gas_cost_native,
@@ -27,6 +28,7 @@ gas_costs AS (
 final_metrics AS (
     SELECT
         address,
+        address_prefix,
         blockchain,
         currency_symbol,
         COUNT(*) as number_of_txs,
@@ -48,6 +50,7 @@ final_metrics AS (
 
 SELECT 
     address,
+    address_prefix,
     blockchain,
     currency_symbol,
     number_of_txs,
