@@ -7,8 +7,8 @@
 
 {% set base_models = [
     ref('uniswap_v2_unichain_base_trades')
-    , ref('uniswap_v4_unichain_base_trades')
     , ref('uniswap_v3_unichain_base_trades')
+    , ref('uniswap_v4_unichain_base_trades')
     , ref('dyorswap_unichain_base_trades')
     , ref('unichainswap_unichain_base_trades')
 ] %}
