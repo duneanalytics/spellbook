@@ -36,7 +36,7 @@ buy AS (
     concat(tc.symbol, '-', 'WRON') AS token_pair,
     cast(bet.output_amountOut as double) / POWER(10, 18) AS token_bough_amount,
     cast(bet.amountIn as double) / POWER(10, 18) AS token_sold_amount,
-    cast(bet.output_amountOut as double) AS token_bough_amount_raw,
+    cast(bet.output_amountOut as double) AS token_bought_amount_raw,
     cast(bet.amountIn as double) AS token_sold_amount_raw,
     cast(bet.amountIn as double) / POWER(10, 18) * rp.ron_price AS amount_usd,  -- USD value
     bet.token AS token_bought_address,
@@ -73,7 +73,7 @@ sell AS (
     concat(tc.symbol, '-', 'WRON') AS token_pair,
     cast(ste.output_amountOut as double) / POWER(10, 18) AS token_bough_amount,
     cast(ste.amountIn as double) / POWER(10, 18) AS token_sold_amount,
-    cast(ste.output_amountOut as double) AS token_bough_amount_raw,
+    cast(ste.output_amountOut as double) AS token_bought_amount_raw,
     cast(ste.amountIn as double) AS token_sold_amount_raw,
     cast(ste.output_amountOut as double) / POWER(10, 18) * rp.ron_price AS amount_usd,
     0xe514d9deb7966c8be0ca922de8a064264ea6bcd4 AS token_bought_address,  -- All tokens on tamadot meme are sold for RONIN
