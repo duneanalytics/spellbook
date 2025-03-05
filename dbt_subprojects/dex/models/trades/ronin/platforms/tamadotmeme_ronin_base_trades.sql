@@ -33,6 +33,7 @@ buy AS (
     bet.call_block_number AS block_number,
     tc.symbol AS token_bought_symbol, -- Readable token symbol from creation event.
     'WRON' AS token_sold_symbol,       -- WRON represents the wrapped RONIN token.
+    concat(tc.symbol, '-', 'WRON') AS token_pair,
     cast(bet.output_amountOut as double) / POWER(10, 18) AS token_bough_amount,
     cast(bet.amountIn as double) / POWER(10, 18) AS token_sold_amount,
     cast(bet.output_amountOut as double) AS token_bough_amount_raw,
