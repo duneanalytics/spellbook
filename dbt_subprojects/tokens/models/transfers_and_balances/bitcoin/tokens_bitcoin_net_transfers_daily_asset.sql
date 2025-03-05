@@ -8,7 +8,7 @@
 select
     blockchain
     , block_date
-    , cast('0x0000000000000000000000000000000000' as varchar(42)) as contract_address
+    , '0000000000000000000000000000000000' as contract_address
     , 'BTC' as symbol
     , net_transfer_amount_usd
 from
