@@ -1,12 +1,12 @@
 {{ config(
-    schema = 'dex_optimism'
+    schema = 'dex_worldchain'
     , alias = 'base_liquidity'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('uniswap_v4_optimism_base_liquidity')
+    ref('uniswap_v4_worldchain_base_liquidity')
 ] %}
 
 WITH base_union AS (

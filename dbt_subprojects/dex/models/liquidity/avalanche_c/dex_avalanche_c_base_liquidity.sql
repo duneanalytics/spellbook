@@ -1,12 +1,12 @@
 {{ config(
-    schema = 'dex_optimism'
+    schema = 'dex_avalanche_c'
     , alias = 'base_liquidity'
     , materialized = 'view'
     )
 }}
 
 {% set base_models = [
-    ref('uniswap_v4_optimism_base_liquidity')
+    ref('uniswap_v4_avalanche_c_base_liquidity')
 ] %}
 
 WITH base_union AS (
