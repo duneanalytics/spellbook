@@ -54,6 +54,7 @@ buy AS (
   LEFT JOIN ronin_price AS rp
     ON DATE_TRUNC('hour', bet.call_block_time) = rp.hour
   WHERE call_block_time >= TRY_CAST('2025-02-06 12:23' AS TIMESTAMP)
+  and call_success
 ),
 
 -- Process "sell" transactions:
@@ -91,6 +92,7 @@ sell AS (
   LEFT JOIN ronin_price AS rp
     ON DATE_TRUNC('hour', ste.call_block_time) = rp.hour
   WHERE call_block_time >= TRY_CAST('2025-02-06 12:23' AS TIMESTAMP)
+  and call_success
 )
 
 -- Combine buy and sell transactions into one result set.
