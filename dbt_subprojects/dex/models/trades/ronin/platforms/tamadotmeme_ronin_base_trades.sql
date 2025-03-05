@@ -26,7 +26,7 @@ buy AS (
   SELECT
     'ronin' AS blockchain,
     'tamadotmeme' AS project,
-    1 AS version,
+    '1' AS version,
     DATE_TRUNC('month', bet.call_block_time) AS block_month,
     DATE_TRUNC('day', bet.call_block_time) AS block_date,
     bet.call_block_time AS block_time,
@@ -63,7 +63,7 @@ sell AS (
   SELECT
     'ronin' AS blockchain,
     'tamadotmeme' AS project,
-    1 AS version,
+    '1' AS version,
     DATE_TRUNC('month', ste.call_block_time) AS block_month,
     DATE_TRUNC('day', ste.call_block_time) AS block_date,
     ste.call_block_time AS block_time,
