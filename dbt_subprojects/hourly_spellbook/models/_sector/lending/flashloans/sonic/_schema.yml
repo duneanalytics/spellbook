@@ -1,21 +1,17 @@
 version: 2
 
 models:
-  - name: lending_flashloans
+  - name: lending_sonic_base_flashloans
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, zksync, zksync, linea, sonic
+      blockchain: sonic
       sector: lending
-      project: aave
-      contributors: tomfutago, hildobby
+      contributors: tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'zksync', 'zksync', 'linea', 'sonic']
-    description: "All lending transactions involving flashloans transactions"
+      tags: ['lending', 'flashloans', 'aave', 'sonic']
+    description: "All lending flashloans transactions on Sonic"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - project
-            - version
             - tx_hash
             - evt_index
     columns:
@@ -44,26 +40,15 @@ models:
         description: "Token amount present in the transaction"
         data_tests:
           - not_null
-      - &usd_amount
-        name: usd_amount
-        description: "Token amount in USD"
       - &fee
         name: fee
-      - &symbol
-        name: symbol
-        description: "Token symbol"
-      - &token_address
-        name: token_address
-        description: "Token contract address"
-        data_tests:
-          - not_null
-      - &project_contract_address
-        name: project_contract_address
-        data_tests:
-          - not_null
       - &block_month
         name: block_month
         description: "Block month column used to partition data in this table"
+      - &token_address
+        name: token_address
+      - &project_contract_address
+        name: project_contract_address
         data_tests:
           - not_null
       - &block_time
@@ -86,3 +71,34 @@ models:
         description: "Event index"
         data_tests:
           - not_null
+
+  - name: aave_v3_sonic_base_flashloans
+    meta:
+      blockchain: sonic
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'sonic']
+    description: "Aave v3 flashloans transactions on Sonic"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('aave_sonic_base_flashloans_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *project_contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
