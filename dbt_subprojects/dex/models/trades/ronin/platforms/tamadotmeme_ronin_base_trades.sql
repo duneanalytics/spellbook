@@ -33,12 +33,11 @@ buy AS (
     bet.call_block_number AS block_number,
     tc.symbol AS token_bought_symbol, -- Readable token symbol from creation event.
     'WRON' AS token_sold_symbol,       -- WRON represents the wrapped RONIN token.
-    concat(tc.symbol, '-', 'WRON') AS token_pair,
-    bet.output_amountOut / POWER(10, 18) AS token_bough_amount,
-    bet.amountIn / POWER(10, 18) AS token_sold_amount,
-    bet.output_amountOut AS token_bough_amount_raw,
-    bet.amountIn AS token_sold_amount_raw,
-    bet.amountIn / POWER(10, 18) * rp.ron_price AS amount_usd,  -- USD value.
+    cast(bet.output_amountOut as double) / POWER(10, 18) AS token_bough_amount,
+    cast(bet.amountIn as double) / POWER(10, 18) AS token_sold_amount,
+    cast(bet.output_amountOut as double) AS token_bough_amount_raw,
+    cast(bet.amountIn as double) AS token_sold_amount_raw,
+    cast(bet.amountIn as double) / POWER(10, 18) * rp.ron_price AS amount_usd,  -- USD value
     bet.token AS token_bought_address,
     0xe514d9deb7966c8be0ca922de8a064264ea6bcd4 AS token_sold_address, -- All tokens on tamadot meme are bought using RONIN
     bet.call_tx_from AS taker,
@@ -71,11 +70,11 @@ sell AS (
     'WRON' AS token_bought_symbol,
     tc.symbol AS token_sold_symbol,   -- Readable token symbol from creation event.
     concat(tc.symbol, '-', 'WRON') AS token_pair,
-    ste.output_amountOut / POWER(10, 18) AS token_bough_amount,
-    ste.amountIn / POWER(10, 18) AS token_sold_amount,
-    ste.output_amountOut AS token_bough_amount_raw,
-    ste.amountIn AS token_sold_amount_raw,
-    ste.output_amountOut / POWER(10, 18) * rp.ron_price AS amount_usd,
+    cast(ste.output_amountOut as double) / POWER(10, 18) AS token_bough_amount,
+    cast(ste.amountIn as double) / POWER(10, 18) AS token_sold_amount,
+    cast(ste.output_amountOut as double) AS token_bough_amount_raw,
+    cast(ste.amountIn as double) AS token_sold_amount_raw,
+    cast(ste.output_amountOut as double) / POWER(10, 18) * rp.ron_price AS amount_usd,
     0xe514d9deb7966c8be0ca922de8a064264ea6bcd4 AS token_bought_address,  -- All tokens on tamadot meme are sold for RONIN
     ste.token AS token_sold_address,
     ste.call_tx_from AS taker,
