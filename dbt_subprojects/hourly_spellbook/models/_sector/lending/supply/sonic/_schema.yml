@@ -1,21 +1,17 @@
 version: 2
 
 models:
-  - name: lending_borrow
+  - name: lending_sonic_base_supply
     meta:
-      blockchain: ethereum, celo, polygon, optimism, base, arbitrum, avalanche_c, fantom, gnosis, scroll, zksync, linea, sonic
+      blockchain: sonic
       sector: lending
-      project: aave, compound
-      contributors: tomfutago, hildobby
+      contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'compound', 'ethereum', 'celo', 'polygon', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'fantom', 'gnosis', 'scroll', 'zksync', 'linea', 'sonic']
-    description: "All lending transactions involving borrow transactions"
+      tags: ['lending', 'supply', 'aave', 'sonic']
+    description: "All lending supply transactions on Sonic"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - blockchain
-            - project
-            - version
             - transaction_type
             - token_address
             - tx_hash
@@ -41,35 +37,29 @@ models:
         description: "Transaction type"
         data_tests:
           - not_null
-      - &symbol
-        name: symbol
-        description: "Token symbol"
       - &token_address
         name: token_address
         description: "Token contract address"
         data_tests:
           - not_null
-      - &borrower
-        name: borrower
-        description: "Borrower wallet address"
+      - &depositor
+        name: depositor
+        description: "Depositor wallet address"
       - &on_behalf_of
         name: on_behalf_of
         description: "Wallet address tx was executed on behalf of"
-      - &repayer
-        name: repayer
-        description: "Repayer wallet address"
+      - &withdrawn_to
+        name: withdrawn_to
+        description: "Withdrawn to wallet address"
       - &liquidator
         name: liquidator
         description: "Liquidator wallet address"
       - &amount
         name: amount
         description: "Token amount present in the transaction"
-      - &usd_amount
-        name: usd_amount
-        description: "Token amount in USD"
       - &block_month
         name: block_month
-        description: "Block Month column used to partition data in this table"
+        description: "Block month column used to partition data in this table"
       - &block_time
         name: block_time
         description: "Timestamp for block event time in UTC"
@@ -82,6 +72,7 @@ models:
           - not_null
       - &project_contract_address
         name: project_contract_address
+        description: "Project contract address"
         data_tests:
           - not_null
       - &tx_hash
@@ -94,3 +85,39 @@ models:
         description: "Event index"
         data_tests:
           - not_null
+
+  - name: aave_v3_sonic_base_supply
+    meta:
+      blockchain: sonic
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'supply', 'aave', 'sonic']
+    description: "Aave v3 supply transactions on Sonic"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_supply_seed:
+          seed_file: ref('aave_sonic_base_supply_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *depositor
+      - *on_behalf_of
+      - *withdrawn_to
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
