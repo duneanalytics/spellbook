@@ -6,7 +6,8 @@
                                     "project",
                                     "eigenlayer",
                                     \'["bowenli"]\') }}',
-        materialized = 'table'
+        materialized = 'table',
+        unique_key = ['avs']
     )
 }}
 

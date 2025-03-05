@@ -6,7 +6,8 @@
                                     "project",
                                     "eigenlayer",
                                     \'["bowenli"]\') }}'
-    )
+    ),
+    unique_key = ['operator', 'strategy', 'date']
 }}
 
 
