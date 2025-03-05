@@ -1,7 +1,9 @@
 -- any modifications needed for getting the correct gas price
 {% macro gas_price(blockchain) %}
-    {%- if blockchain in ['arbitrum', 'nova', 'corn']-%}
+    {%- if blockchain in ['arbitrum']-%}
     effective_gas_price
+    {%- elif blockchain in ['nova', 'corn']-%}
+    gas_price
     {%- elif blockchain in ['abstract']-%}
     gas_price  -- L2 gas price for abstract
     {%- elif blockchain in ['boba']-%}
@@ -57,15 +59,21 @@
     -- with L1 data fees and L2 execution fees. The l1_fee is already included above.
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- elif blockchain in ('nova',) -%}
-    -- For Arbitrum Nova (AnyTrust), gas fees are significantly lower than Arbitrum One
-    -- due to the Data Availability Committee (DAC) which reduces L1 data costs
-    -- Nova fees still include both L1 and L2 components, but L1 costs are much lower
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+      -- For Arbitrum Nova (AnyTrust), the fee breakdown is simplified since we don't have access to specific components
+      -- Nova's actual fee structure includes:
+      -- 1. L1 Data Costs: Lower fees due to the DAC model that only posts small proofs to L1
+      -- 2. L2 Execution Costs: Fees for computation on Nova chain itself
+      -- 3. Fallback Mechanism: For when DAC fails to make data available
+      -- Since we don't have direct access to these components, we use a simplified approach
+      ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
     {%- elif blockchain in ('corn',) -%}
-    -- For Arbitrum Corn (Orbit), fees follow the Arbitrum Orbit model with four components:
-    -- l2BaseFee, l2SurplusFee, l1BaseFee, and l1SurplusFee
-    -- Since these components may not be directly accessible in the data, we use the effective gas price
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+      -- For Arbitrum Corn (Orbit), the fee breakdown should ideally include four components:
+      -- 1. l2BaseFee: Fees for execution on the Orbit chain itself
+      -- 2. l2SurplusFee: Additional fees during network congestion
+      -- 3. l1BaseFee: Fees for posting transactions to the parent chain
+      -- 4. l1SurplusFee: Extra fees for batch posters
+      -- Since we don't have direct access to these components, we use a simplified approach
+      ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
     {%- elif blockchain in ('flare',) -%}
     -- For Flare, we use the standard Ethereum-compatible gas fee calculation
     -- Flare uses a similar gas model to Ethereum but with lower base costs
@@ -145,18 +153,21 @@
         , array[cast(coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)
                 ,cast((txns.gas_used - coalesce(gas_used_for_l1,0)) * {{gas_price(blockchain)}} as uint256)])
     {%- elif blockchain in ('nova',) %}
-      -- For Arbitrum Nova (AnyTrust), the fee breakdown is similar to Arbitrum One
-      -- but with reduced L1 costs due to the Data Availability Committee
-      ,map(array['l1_fee','base_fee']
-        , array[cast(coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)
-                ,cast((txns.gas_used - coalesce(gas_used_for_l1,0)) * {{gas_price(blockchain)}} as uint256)])
+      -- For Arbitrum Nova (AnyTrust), the fee breakdown is simplified since we don't have access to specific components
+      -- Nova's actual fee structure includes:
+      -- 1. L1 Data Costs: Lower fees due to the DAC model that only posts small proofs to L1
+      -- 2. L2 Execution Costs: Fees for computation on Nova chain itself
+      -- 3. Fallback Mechanism: For when DAC fails to make data available
+      -- Since we don't have direct access to these components, we use a simplified approach
+      ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
     {%- elif blockchain in ('corn',) %}
-      -- For Arbitrum Corn (Orbit), the fee breakdown ideally would include the four components:
-      -- l2BaseFee, l2SurplusFee, l1BaseFee, and l1SurplusFee
-      -- Since these components may not be directly accessible, we use a simplified breakdown similar to Arbitrum
-      ,map(array['l1_fee','base_fee']
-        , array[cast(coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)
-                ,cast((txns.gas_used - coalesce(gas_used_for_l1,0)) * {{gas_price(blockchain)}} as uint256)])
+      -- For Arbitrum Corn (Orbit), the fee breakdown should ideally include four components:
+      -- 1. l2BaseFee: Fees for execution on the Orbit chain itself
+      -- 2. l2SurplusFee: Additional fees during network congestion
+      -- 3. l1BaseFee: Fees for posting transactions to the parent chain
+      -- 4. l1SurplusFee: Extra fees for batch posters
+      -- Since we don't have direct access to these components, we use a simplified approach
+      ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
     {%- elif blockchain in ('zksync',) %}
       -- For zkSync, ideally we would break down the fee into L1 data costs and L2 execution costs
       -- Since we don't have direct access to these components in the transaction data,
@@ -313,7 +324,7 @@
       ,l1_gas_price
       ,l1_fee_scalar
     {%- endif %}
-    {%- if blockchain in ('arbitrum',) %}
+    {%- if blockchain in ('arbitrum') %}
       ,effective_gas_price
       ,gas_used_for_l1
     {%- endif %}
@@ -378,6 +389,8 @@ WITH base_model as (
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
+    {% else %}
+    WHERE txns.block_time > now() - interval '30' day
     {% endif %}
     )
 
