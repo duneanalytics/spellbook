@@ -388,3 +388,7 @@ sources:
       - name: Vault_evt_LiquidityRemovedFromBuffer       
 
       - name: Vault_evt_SwapFeePercentageChanged
+
+      - name: ProtocolFeeController_evt_GlobalProtocolSwapFeePercentageChanged
+
+      - name: ProtocolFeeController_evt_PoolCreatorSwapFeePercentageChanged
