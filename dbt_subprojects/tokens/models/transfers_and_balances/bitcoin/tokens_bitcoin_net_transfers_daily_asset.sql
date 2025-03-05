@@ -13,7 +13,3 @@ select
     , net_transfer_amount_usd
 from
     {{ ref('tokens_bitcoin_net_transfers_daily') }}
-{% if is_incremental() %}
-where
-    {{ incremental_predicate('block_date') }}
-{% endif %}
