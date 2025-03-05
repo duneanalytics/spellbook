@@ -284,3 +284,5 @@ sources:
       - name: ProtocolFeeController_evt_GlobalProtocolSwapFeePercentageChanged
 
       - name: ProtocolFeeController_evt_PoolCreatorSwapFeePercentageChanged
+      
+      - name: LBPoolFactory_call_create  
