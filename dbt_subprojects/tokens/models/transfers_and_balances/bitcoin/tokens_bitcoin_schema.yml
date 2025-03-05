@@ -43,5 +43,6 @@ models:
       - *block_date
       - name: contract_address
         description: "The contract address of the asset"
+      - name: symbol
       - name: net_transfer_amount_usd
         description: "The total net transfer amount for the day and asset"
