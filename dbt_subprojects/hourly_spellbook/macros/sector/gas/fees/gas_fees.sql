@@ -2,34 +2,6 @@
 {% macro gas_price(blockchain) %}
     {%- if blockchain in ['arbitrum']-%}
     effective_gas_price
-    {%- elif blockchain in ['nova', 'corn']-%}
-    gas_price
-    {%- elif blockchain in ['abstract']-%}
-    gas_price  -- L2 gas price for abstract
-    {%- elif blockchain in ['boba']-%}
-    gas_price  -- Uses standard gas_price but updates every 10 minutes based on L1 prices
-    {%- elif blockchain in ['ink', 'worldchain']-%}
-    gas_price  -- Standard gas price for OP Stack L2s
-    {%- elif blockchain in ['flare']-%}
-    gas_price  -- Standard Ethereum-compatible gas price model
-    {%- elif blockchain in ['zksync']-%}
-    gas_price  -- zkSync uses a standard gas price model, but with unique L1/L2 component costs
-    {%- elif blockchain in ['linea']-%}
-    gas_price  -- Linea uses a standard gas price model with L1/L2 component costs (ZK rollup)
-    {%- elif blockchain in ['sei']-%}
-    gas_price  -- Sei uses a dual gas price system optimized for trading applications
-    {%- elif blockchain in ['kaia']-%}
-    gas_price  -- Kaia uses an EIP-1559 style dynamic fee model with base fee and priority fee
-    {%- elif blockchain in ['sonic']-%}
-    gas_price  -- Sonic uses a standard gas price model with a specialized fee distribution system
-    {%- elif blockchain in ['viction']-%}
-    gas_price  -- Viction uses an innovative Zero-Gas mechanism with VRC25 token standard
-    {%- elif blockchain in ['sophon']-%}
-    gas_price  -- Sophon is a Validium-based L2 with ZK rollup characteristics
-    {%- elif blockchain in ['apechain']-%}
-    gas_price  -- Apechain is a Layer-3 blockchain using APE token for gas
-    {%- elif blockchain in ['berachain']-%}
-    gas_price  -- Berachain uses a standard EVM-compatible gas price model
     {%- else -%}
     gas_price
     {%- endif -%}
@@ -43,36 +15,8 @@
     {%- if blockchain in ('ethereum',) -%}
     cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256) +
     {%- endif -%}
-    {%- if blockchain in ('abstract',) -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-    {%- elif blockchain in ('boba',) -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-    {%- elif blockchain in ('ink', 'worldchain') -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-    {%- elif blockchain in ('nova',) -%}
+    {%- if blockchain in ('nova', 'corn') -%}
     map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
-    {%- elif blockchain in ('corn',) -%}
-    map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
-    {%- elif blockchain in ('flare',) -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-    {%- elif blockchain in ('zksync',) -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-    {%- elif blockchain in ('linea',) -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-    {%- elif blockchain in ('sei',) -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-    {%- elif blockchain in ('kaia',) -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-    {%- elif blockchain in ('sonic',) -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-    {%- elif blockchain in ('viction',) -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-    {%- elif blockchain in ('sophon',) -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-    {%- elif blockchain in ('apechain',) -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
-    {%- elif blockchain in ('berachain',) -%}
-    cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- else -%}
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
     {%- endif -%}
