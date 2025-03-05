@@ -3,6 +3,7 @@
     alias = 'fees',
     post_hook='{{ expose_spells(\'[
                                     "arbitrum"
+                                    , "apechain"
                                     , "avalanche_c"
                                     , "base"
                                     , "blast"
@@ -25,14 +26,15 @@
                                 ]\',
                                 "sector",
                                 "gas",
-                                \'["soispoke", "ilemi", "0xRob", "jeff-dude"]\'
+                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "hosuke"]\'
                             )
                         }}'
         )
 }}
 
 {% set chains = [
-    "arbitrum"
+    "apechain"
+    , "arbitrum"
     , "avalanche_c"
     , "base"
     , "blast"
