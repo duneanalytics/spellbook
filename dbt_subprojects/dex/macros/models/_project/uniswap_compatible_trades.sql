@@ -125,6 +125,7 @@ FROM
     , project = 'uniswap'
     , version = '4'
     , PoolManager_call_Swap = null
+    , PoolManager_evt_Swap = null
     , taker_column_name = null
     , maker_column_name = null
     )
@@ -139,44 +140,9 @@ WITH dexs AS
             , call_tx_hash 
             , contract_address
             , call_trace_address
-            
-            -- Applying keccak256(abi.encode(poolKey)) in SQL to create the virtual pool ID
-            , keccak (
-                CONCAT(
-                    LPAD(
-                        FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.currency0'))
-                        , 32
-                        , 0x00
-                    )
-                    , LPAD(
-                        FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.currency1'))
-                        , 32
-                        , 0x00
-                    )
-                    , LPAD(
-                        CAST(CAST(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.fee') AS UINT256) AS VARBINARY)
-                        , 32
-                        , 0x00
-                    )
-                    , LPAD(
-                        CAST(CAST(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.tickSpacing') AS INT256) AS VARBINARY)
-                        , 32
-                        , 0x00
-                    )
-                    , LPAD(
-                        FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.hooks'))
-                        , 32
-                        , 0x00
-                    )
-                )
-            ) AS id
-            
             , FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.currency0')) AS currency0
             , FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.currency1')) AS currency1
-            , CAST(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.fee') AS UINT256) AS swapFee 
             , FROM_HEX(JSON_EXTRACT_SCALAR(JSON_PARSE("key"), '$.hooks')) AS hooks
-            , CAST(JSON_EXTRACT(params, '$.zeroForOne') AS BOOLEAN) AS zeroForOne
-            , JSON_EXTRACT(params, '$.amountSpecified') AS amountSpecified
             , CAST(output_swapDelta AS VARBINARY) AS swapDelta_varbinary
             
             FROM {{ PoolManager_call_Swap }}
@@ -235,37 +201,67 @@ WITH dexs AS
         SELECT 
             call_block_number
         , call_block_time
-        , id
         , contract_address
         , call_tx_hash
         , amount0
         , amount1
         , currency0
         , currency1
-        , swapFee
         , hooks
         , call_trace_address
+        , row_number() over(partition by call_tx_hash order by call_trace_address) as call_rn
 
         FROM wrangled
     )
 
+    , swap_evt as (
+    select contract_address
+        , evt_tx_hash
+        , evt_block_time
+        , evt_index
+        , row_number() over(partition by evt_tx_hash order by evt_index) as evt_rn
+        , evt_block_number
+        , amount0
+        , amount1
+        , fee
+        , id
+        , liquidity
+        , sender -- router 
+        , sqrtPriceX96
+        , tick
+    FROM {{ PoolManager_evt_Swap }}
+    WHERE 1=1
+        {%- if is_incremental() %}
+        AND {{ incremental_predicate('evt_block_time') }}
+        {%- endif %}
+
+)
+
     SELECT 
-        call_block_number AS block_number
-    , call_block_time AS block_time
+        e.evt_block_number AS block_number
+    , e.evt_block_time AS block_time
     , {% if taker_column_name -%} t.{{ taker_column_name }} {% else -%} cast(null as varbinary) {% endif -%} as taker
-    , id as maker -- In v4, the maker (i.e. what sold the token) is the pool's virtual address. We also pass the pool ID, making it easier to join with Initialize() and retrieve hooked pool metrics.
-    , CASE WHEN amount0 < INT256 '0' THEN ABS(amount1) ELSE ABS(amount0) END AS token_bought_amount_raw 
-    , CASE WHEN amount0 < INT256 '0' THEN ABS(amount0) ELSE ABS(amount1) END AS token_sold_amount_raw
-    , CASE WHEN amount0 < INT256 '0' THEN currency1 ELSE currency0 END AS token_bought_address
-    , CASE WHEN amount0 < INT256 '0' THEN currency0 ELSE currency1 END AS token_sold_address
-    , contract_address AS project_contract_address
-    , call_tx_hash AS tx_hash
-    , varbinary_to_uint256(xxhash64(to_utf8(array_join(call_trace_address, '')))) as evt_index -- we are using swap call here, so artificially creating evt_index | can't directly cast as bigint because concatenated call_trace_address can be more than 24 digits long
+    , e.id as maker -- In v4, the maker (i.e. what sold the token) is the pool's virtual address. We also pass the pool ID, making it easier to join with Initialize() and retrieve hooked pool metrics.
+    , CASE WHEN c.amount0 < INT256 '0' THEN ABS(c.amount1) ELSE ABS(c.amount0) END AS token_bought_amount_raw 
+    , CASE WHEN c.amount0 < INT256 '0' THEN ABS(c.amount0) ELSE ABS(c.amount1) END AS token_sold_amount_raw
+    , CASE WHEN c.amount0 < INT256 '0' THEN c.currency1 ELSE currency0 END AS token_bought_address
+    , CASE WHEN c.amount0 < INT256 '0' THEN c.currency0 ELSE currency1 END AS token_sold_address
+    , e.contract_address AS project_contract_address
+    , e.evt_tx_hash AS tx_hash
+    , e.evt_index
 
-    , swapFee
-    , hooks
+    , e.sender -- router
+    , c.hooks
+    , e.fee
+    , e.liquidity
+    , e.sqrtPriceX96
+    , e.tick
+    , c.call_trace_address
 
-    FROM clean_swaps 
+    FROM clean_swaps c 
+    JOIN swap_evt e on c.call_block_number = e.evt_block_number 
+        and c.call_tx_hash = e.evt_tx_hash
+        and c.call_rn = e.evt_rn 
 
 )
 
@@ -286,8 +282,14 @@ SELECT
     , dexs.project_contract_address
     , dexs.tx_hash
     , dexs.evt_index
-    , dexs.swapFee
+
+    , dexs.sender
     , dexs.hooks
+    , dexs.fee
+    , dexs.liquidity
+    , dexs.sqrtPriceX96
+    , dexs.tick
+    , dexs.call_trace_address
 FROM
     dexs
 {% endmacro %}
