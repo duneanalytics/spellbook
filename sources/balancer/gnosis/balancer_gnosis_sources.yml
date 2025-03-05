@@ -280,3 +280,5 @@ sources:
       - name: Vault_evt_LiquidityRemovedFromBuffer       
 
       - name: Vault_evt_SwapFeePercentageChanged
+
+      - name: LBPoolFactory_call_create  
