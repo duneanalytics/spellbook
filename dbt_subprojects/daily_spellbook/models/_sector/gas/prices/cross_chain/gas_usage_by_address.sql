@@ -3,7 +3,7 @@
     alias='usage_by_address',
     materialized='table',
     file_format='delta',
-    partition_by = ['blockchain'],
+    partition_by = ['blockchain', 'address_prefix'],
     unique_key=['address', 'blockchain', 'currency_symbol'],
     cluster_by=['address'],
     post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zora", "zksync", "scroll", "linea", "zkevm"]\',
@@ -48,6 +48,7 @@ final_metrics AS (
 
 SELECT 
     address,
+    CAST(SUBSTRING(LOWER(CAST(address AS VARCHAR)), 3, 2) AS VARCHAR) as address_prefix,
     blockchain,
     currency_symbol,
     number_of_txs,
