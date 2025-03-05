@@ -1,7 +1,7 @@
 {{ config(
         schema = 'tokens_bitcoin'
         , alias = 'net_transfers_daily_asset'
-        , materialized = 'incremental'
+        , materialized = 'view'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
         , unique_key = ['blockchain', 'block_date', 'contract_address']
