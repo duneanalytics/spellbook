@@ -3,9 +3,13 @@
     alias='usage_by_address',
     materialized='table',
     file_format='delta',
-    partition_by = ['blockchain', 'address_prefix'],
+    partition_by = ['address_prefix'],
     unique_key=['address', 'blockchain', 'currency_symbol'],
-    cluster_by=['address'],
+    options={
+        'delta': {
+            'Z-ORDER BY': ['address']
+        },
+    },
     post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "fantom", "polygon", "base", "celo", "zora", "zksync", "scroll", "linea", "zkevm"]\',
                         "sector",
                         "gas",
