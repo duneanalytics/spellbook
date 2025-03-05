@@ -5,9 +5,9 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "eigenlayer",
-                                    \'["bowenli"]\') }}'
-    ),
-    unique_key = ['operator']
+                                    \'["bowenli"]\') }}',
+        unique_key = ['operator']
+    )
 }}
 
 

@@ -6,9 +6,9 @@
                                     "project",
                                     "eigenlayer",
                                     \'["bowenli"]\') }}',
-        materialized = 'table'
-    ),
-    unique_key = ['strategy', 'date']
+        materialized = 'table',
+        unique_key = ['strategy', 'date']
+    )
 }}
 
 
