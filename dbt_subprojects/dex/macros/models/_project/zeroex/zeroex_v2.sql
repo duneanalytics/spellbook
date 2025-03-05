@@ -222,6 +222,8 @@ taker_logs as (
             or (
                 varbinary_to_uint256(varbinary_ltrim(logs.data)) >= varbinary_to_uint256(varbinary_substring(st.data, 57, 8))
                 AND 
+                varbinary_to_uint256(varbinary_ltrim(logs.data)) > 0 
+                AND 
                 (varbinary_to_uint256(varbinary_ltrim(logs.data)) - varbinary_to_uint256(varbinary_substring(st.data, 57, 8))) / varbinary_to_uint256(varbinary_ltrim(logs.data)) < 0.001
             )
           )
