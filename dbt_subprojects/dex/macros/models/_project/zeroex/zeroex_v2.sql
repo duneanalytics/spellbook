@@ -219,9 +219,11 @@ taker_logs as (
         and (
              varbinary_position(st.data, (logs.data)) <> 0 
             or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
-            or (topic0 = 0xad7d6f97abf51ce18e17a38f4d70e975be9c0708474987bb3e26ad21bd93ca70 and 
-                (varbinary_to_uint256(varbinary_ltrim(logs.data)) - varbinary_to_uint256(varbinary_substring(st.data, 57, 8)) ) / varbinary_to_uint256(varbinary_ltrim(logs.data)) < 0.0001
-                )
+            or (
+                varbinary_to_uint256(varbinary_ltrim(logs.data)) >= varbinary_to_uint256(varbinary_substring(st.data, 57, 8))
+                AND 
+                (varbinary_to_uint256(varbinary_ltrim(logs.data)) - varbinary_to_uint256(varbinary_substring(st.data, 57, 8))) / varbinary_to_uint256(varbinary_ltrim(logs.data)) < 0.001
+            )
           )
           
     where logs.block_time > TIMESTAMP '2024-07-15' 
