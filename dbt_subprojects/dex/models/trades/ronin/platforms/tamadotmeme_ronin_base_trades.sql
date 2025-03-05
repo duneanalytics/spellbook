@@ -28,7 +28,7 @@ buy AS (
     'tamadotmeme' AS project,
     1 AS version,
     DATE_TRUNC('month', bet.call_block_time) AS block_month,
-    DATE_TRUNC('day', bet.call_block_time) AS block_day,
+    DATE_TRUNC('day', bet.call_block_time) AS block_date,
     bet.call_block_time AS block_time,
     bet.call_block_number AS block_number,
     tc.symbol AS token_bought_symbol, -- Readable token symbol from creation event.
@@ -65,7 +65,7 @@ sell AS (
     'tamadotmeme' AS project,
     1 AS version,
     DATE_TRUNC('month', ste.call_block_time) AS block_month,
-    DATE_TRUNC('day', ste.call_block_time) AS block_day,
+    DATE_TRUNC('day', ste.call_block_time) AS block_date,
     ste.call_block_time AS block_time,
     ste.call_block_number AS block_number,
     'WRON' AS token_bought_symbol,
