@@ -434,7 +434,7 @@ WITH pool_labels AS (
                     date_trunc('day', swap.evt_block_time) AS day,
                     swap.pool AS pool_id,
                     swap.tokenIn AS token,
-                    CAST(swap.amountIn AS INT256) - (CAST(swap.swapFeeAmount AS INT256) * (g.global_swap_fee + pc.pool_creator_swap_fee)) AS delta
+                    CAST(swap.amountIn AS INT256) - (CAST(swap.swapFeeAmount AS INT256) * (g.global_swap_fee + COALESCE(pc.pool_creator_swap_fee, 0))) AS delta
                 FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} swap
                 CROSS JOIN global_fees g
                 LEFT JOIN pool_creator_fees pc ON swap.pool = pc.pool
