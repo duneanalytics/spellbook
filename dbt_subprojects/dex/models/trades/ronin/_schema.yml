@@ -46,7 +46,7 @@ models:
           filter:
             version: 3
            
-
+  - name: tamadotmeme_ronin_base_trades
     meta:
       blockchain: ronin
       sector: dex
