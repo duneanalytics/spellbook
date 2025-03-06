@@ -75,4 +75,7 @@ FROM (VALUES
     , (0xecAc9C5F704e954931349Da37F60E39f515c11c1, 'LBTC', 8)
     , (0x5954ce6671d97d24b782920ddcdbb4b1e63ab2de, 'bUSDC.e-23', 6)
     , (0x6c49b18333a1135e9a376560c07e6d1fd0350eaf, 'bwS-28', 18)
+    , (0x6646248971427B80ce531bdD793e2Eb859347E55, 'waSonUSDC', 6)
+    , (0x18B7B8695165290f2767BC63c36D3dFEa4C0F9bB, 'waSonwS', 18)
+    , (0xeB5e9B0ae5bb60274786C747A1A2A798c11271E0, 'waSonWETH', 18)
 ) as temp (contract_address, symbol, decimals)
