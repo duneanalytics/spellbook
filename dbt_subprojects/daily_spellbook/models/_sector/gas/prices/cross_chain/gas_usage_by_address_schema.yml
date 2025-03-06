@@ -8,8 +8,6 @@ models:
       contributors: ['gashawk', 'zohjag']
     config:
       tags: ['gas', 'cross_chain', 'addresses']
-    indexes:
-      - columns: ["address"]
     description: "Cross-chain gas usage metrics aggregated by address (optimized version)"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
