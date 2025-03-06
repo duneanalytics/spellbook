@@ -70,3 +70,15 @@ SELECT
     COALESCE(gas_spent_native_1_year, 0) as gas_spent_native_1_year
 FROM final_metrics
 ORDER BY gas_spent_usd_total DESC
+
+{% test column_has_records(model, specimen_address) %}
+
+with address_records as (
+    select * from {{model}}
+    where address = {{specimen_address}}
+    and address_prefix = CAST(SUBSTRING(LOWER(CAST({{specimen_address}} AS VARCHAR)), 3, 2) AS VARCHAR)
+)
+select count(*) from address_records
+where count(*) = 0
+
+{% endtest %}
