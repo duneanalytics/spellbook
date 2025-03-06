@@ -34,7 +34,6 @@ WITH dexes AS (
                 , id
                 , tx_hash
                 , evt_index
-                , salt
                 , token0
                 , token1
                 , amount0_raw
