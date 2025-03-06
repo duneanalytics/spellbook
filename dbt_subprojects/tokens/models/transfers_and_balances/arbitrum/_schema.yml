@@ -233,7 +233,6 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - unique_key
-            - block_date_latest
     columns:
       - name: unique_key
       - name: blockchain
@@ -243,8 +242,8 @@ models:
       - name: token_symbol
       - name: token_id
       - name: collection_name
-      - name: block_number_latest
-      - name: block_date_latest
-      - name: block_time_latest
-      - name: balance_raw_latest
-      - name: balance_latest
+      - name: block_number
+      - name: block_date
+      - name: block_time
+      - name: balance_raw
+      - name: balance

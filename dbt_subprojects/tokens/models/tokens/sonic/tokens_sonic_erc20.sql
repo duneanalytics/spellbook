@@ -69,4 +69,8 @@ FROM (VALUES
     , (0x6047828dc181963ba44974801ff68e538da5eaf9, 'USDT', 6)
     , (0xff12470a969dd362eb6595ffb44c82c959fe9acc, 'USDA', 18)
     , (0xc96de26018a54d51c097160568752c4e3bd6c364, 'FBTC', 8)
+    , (0xBb30e76d9Bb2CC9631F7fC5Eb8e87B5Aff32bFbd, 'scBTC', 8)
+    , (0xD0851030C94433C261B405fEcbf1DEC5E15948d0, 'stkscBTC', 8)
+    , (0xDb58c4DB1a0f45DDA3d2F8e44C3300BB6510c866, 'wstkscBTC', 8)
+    , (0xecAc9C5F704e954931349Da37F60E39f515c11c1, 'LBTC', 8)
 ) as temp (contract_address, symbol, decimals)
