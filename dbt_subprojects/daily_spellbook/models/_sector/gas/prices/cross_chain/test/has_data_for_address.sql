@@ -1,10 +1,9 @@
--- This macro returns no rows if it finds records in the given column using the where clause.
-{% test has_entries(model, column_name, where) %}
+{% test has_data_for_address(model, column_name, address) %}
 with model_sample as (
     select
         {{ column_name }}
     from {{ model }}
-    where {{ where }}
+    where address = {{ address }} and address_prefix = CAST(SUBSTRING(LOWER(CAST(address AS VARCHAR)), 3, 2) AS VARCHAR)
 )
 select
     case when count(*) = 0 then 1 else 0 end as failed
