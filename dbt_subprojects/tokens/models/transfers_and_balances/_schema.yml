@@ -80,4 +80,19 @@ models:
     config:
       tags: ['tokens', 'net_transfers']
     description: "Total transfer amount per day per asset across chains"
-    
+
+  - name: tokens_net_transfers_daily_address
+    meta:
+      sector: tokens
+      contributors: jeff-dude, krishhh
+    config:
+      tags: ['tokens', 'net_transfers', 'daily', 'address']
+    description: "Total transfer amount per day per address across chains"
+
+  - name: tokens_net_transfers_daily_asset_address
+    meta:
+      sector: tokens
+      contributors: jeff-dude, krishhh
+    config:
+      tags: ['tokens', 'net_transfers', 'daily', 'asset', 'address']
+    description: "Total transfer amount per day per asset per address across chains"
