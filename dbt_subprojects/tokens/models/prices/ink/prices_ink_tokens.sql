@@ -23,4 +23,5 @@ FROM
     , ('krill-krill', 'KRILL', 0xcb95a3840c8ea5f0d4e78b67ec897df84d17c5e6, 18)
     , ('purple-purple-coin', 'PURPLE', 0xd642b49d10cc6e1bc1c6945725667c35e0875f22, 18)
     , ('usdt-tether', 'USDT0', 0x0200C29006150606B650577BBE7B6248F58470c1, 6)
+    , ('ieth-ieth', 'iETH', 0x11476323D8DFCBAFac942588E2f38823d2Dd308e, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
