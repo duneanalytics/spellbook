@@ -101,6 +101,7 @@ WITH trusted_tokens AS (
                 , ('ink', 0x4200000000000000000000000000000000000006)
                 , ('ink', 0xf1815bd50389c46847f0bda824ec8da914045d14)
                 , ('ink', 0x0200C29006150606B650577BBE7B6248F58470c1) -- USDT0
+                , ('ink', 0x11476323D8DFCBAFac942588E2f38823d2Dd308e) -- iETH
                 , ('sophon', 0x72af9F169B619D85A47Dfa8fefbCD39dE55c567D)
                 , ('sophon', 0x6386da73545ae4e2b2e0393688fa8b65bb9a7169)
                 , ('sophon', 0x9Aa0F72392B5784Ad86c6f3E899bCc053D00Db4F)
