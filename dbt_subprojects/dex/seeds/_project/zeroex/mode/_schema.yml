@@ -9,3 +9,4 @@ seeds:
         taker_token: varbinary
         maker_token: varbinary
         taker_token_amount: double
+        evt_index: int
