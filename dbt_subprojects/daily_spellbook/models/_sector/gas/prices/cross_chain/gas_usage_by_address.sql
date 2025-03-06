@@ -26,7 +26,7 @@ gas_costs AS (
         tx_fee as gas_cost_native,
         tx_fee_usd as gas_cost_usd
     FROM {{ source('gas', 'fees') }}
-    WHERE currency_symbol is not null
+    WHERE tx_fee > 0 OR tx_fee_usd > 0
 ),
 final_metrics AS (
     SELECT
