@@ -71,7 +71,7 @@ SELECT
 FROM final_metrics
 ORDER BY gas_spent_usd_total DESC
 
-{% test column_has_records(model, specimen_address) %}
+{% test address_has_records(model, specimen_address) %}
 
 with address_records as (
     select * from {{model}}
