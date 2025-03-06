@@ -82,3 +82,8 @@ models:
         description: "Amount of gas spent in native currency in last year"
         tests:
           - not_null
+
+data_tests:
+  - name: performance_of_single_address_query
+    description: > 
+      Check if a known sample address has records
