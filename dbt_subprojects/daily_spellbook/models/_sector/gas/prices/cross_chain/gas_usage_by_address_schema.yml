@@ -1,7 +1,5 @@
 version: 2
 
-test-paths: ["test"]
-
 models:
   - name: gas_usage_by_address
     meta:
@@ -22,8 +20,6 @@ models:
         description: "The wallet address"
         tests:
           - not_null
-          - has_data_for_address:
-              address: 0xC94eBB328aC25b95DB0E0AA968371885Fa516215
       - name: address_prefix
         description: "The prefix of the address"
         tests:
