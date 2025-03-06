@@ -20,6 +20,8 @@ models:
         description: "The wallet address"
         tests:
           - not_null
+          - has_entries:
+              where: "address = 0xC94eBB328aC25b95DB0E0AA968371885Fa516215 and address_prefix = 'c9'"
       - name: address_prefix
         description: "The prefix of the address"
         tests:
