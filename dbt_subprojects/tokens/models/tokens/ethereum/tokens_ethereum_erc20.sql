@@ -4772,4 +4772,5 @@ FROM (VALUES
     , ( 0xb1a757a68d4a04a6b5a0f06d0cb4fd739048f614, 'apWETH', 18)
     , ( 0x7b43e3875440b44613dc3bc08e7763e6da63c8f8, 'USDR', 6)
     , ( 0xdd629e5241cbc5919847783e6c96b2de4754e438, 'mTBILL', 18)
+    , ( 0x136471a34f6ef19fe571effc1ca711fdb8e49f2b, 'USYC', 6)
 ) AS temp_table (contract_address, symbol, decimals)
