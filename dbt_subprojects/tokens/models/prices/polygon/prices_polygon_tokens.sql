@@ -22,7 +22,7 @@ FROM
     ('bal-balancer','polygon','BAL',0x9a71012b13ca4d3d0cdc72a177df3ef03b0e76a3,18),
     ('dpi-defi-pulse-index', 'polygon', 'DPI', 0x85955046df4668e1dd369d2de9f3aeb98dd2a369, 18),
     ('eurs-stasis-eurs','polygon','EURS',0xe111178a87a3bff0c8d18decba5798827539ae99,2),
-    ('matic-polygon', 'polygon', 'MATIC', 0x0000000000000000000000000000000000001010, 18),
+    ('matic-polygon', 'polygon', 'POL', 0x0000000000000000000000000000000000001010, 18),
     ('dai-dai', 'polygon', 'DAI', 0x8f3cf7ad23cd3cadbd9735aff958023239c6a063, 18),
     ('dquick-dragon-quick', 'polygon', 'dQUICK', 0x958d208Cdf087843e9AD98d23823d32E17d723A1, 18),
     ('usdc-usd-coin', 'polygon', 'USDC.e', 0x2791bca1f2de4661ed88a30c99a7a9449aa84174, 6),

@@ -21,6 +21,7 @@ models:
           seed_file: ref('zeroex_mode_settler_trades_sample')
           match_columns:
             - tx_hash
+            - evt_index
           check_columns:
             - taker
             - maker_token

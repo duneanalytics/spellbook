@@ -15,5 +15,6 @@
         , project = 'uniswap'
         , version = '4'
         , PoolManager_call_Swap = source('uniswap_v4_avalanche_c', 'PoolManager_call_Swap') 
+        , PoolManager_evt_Swap = source('uniswap_v4_avalanche_c', 'PoolManager_evt_Swap') 
     )
 }}
