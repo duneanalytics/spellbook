@@ -41,6 +41,7 @@ WITH trusted_tokens AS (
                 , ('base', 0xeb466342c4d449bc9f53a865d5cb90586f405215)
                 , ('base', 0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22)
                 , ('base', 0xc1cba3fcea344f92d9239c08c0568f6f2f0ee452)
+                , ('base', 0x000000000d564d5be76f7f0d28fe52605afc7cf8)
                 , ('berachain', 0x6969696969696969696969696969696969696969)
                 , ('berachain', 0x549943e04f40284185054145c6E4e9568C1D3241)
                 , ('berachain', 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590)
@@ -99,6 +100,7 @@ WITH trusted_tokens AS (
                 , ('gnosis', 0xdd96b45877d0e8361a4ddb732da741e97f3191ff)
                 , ('ink', 0x4200000000000000000000000000000000000006)
                 , ('ink', 0xf1815bd50389c46847f0bda824ec8da914045d14)
+                , ('ink', 0x0200C29006150606B650577BBE7B6248F58470c1) -- USDT0
                 , ('sophon', 0x72af9F169B619D85A47Dfa8fefbCD39dE55c567D)
                 , ('sophon', 0x6386da73545ae4e2b2e0393688fa8b65bb9a7169)
                 , ('sophon', 0x9Aa0F72392B5784Ad86c6f3E899bCc053D00Db4F)
@@ -152,6 +154,8 @@ WITH trusted_tokens AS (
                 , ('scroll', 0xf55bec9cafdbe8730f096aa55dad6d22d44099df)
                 , ('scroll', 0x3c1bca5a656e69edcd0d4e36bebb3fcdaca60cf1)
                 , ('scroll', 0xf610a9dfb7c89644979b4a0f27063e9e7d7cda32)
+                , ('shape', 0x4200000000000000000000000000000000000006)  -- WETH
+                , ('shape', 0xdb7DD8B00EdC5778Fe00B2408bf35C7c054f8BBe)  -- USDC.e
                 , ('sei', 0xE30feDd158A2e3b13e9badaeABaFc5516e95e8C7)
                 , ('sei', 0x3894085Ef7Ff0f0aeDf52E2A2704928d1Ec074F1)
                 , ('sei', 0xB75D0B03c06A926e488e2659DF1A861F860bD3d1)

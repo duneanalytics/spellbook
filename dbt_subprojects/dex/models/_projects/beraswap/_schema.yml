@@ -1,0 +1,60 @@
+version: 2
+
+models:
+  - name: beraswap_berachain_pools_fees
+    meta:
+      blockchain: berachain
+      project: beraswap
+      contributors: hosuke
+    config:
+      tags: ['berachain', 'beraswap', 'pools_fees']
+    description: >
+      BeraSwap swap fees stored at the pool level.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_number
+            - tx_hash
+            - index
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain"
+      - &version
+        name: version
+        description: "Version of Balancer where the liquidity pool used in transaction is deployed"
+      - &contract_address
+        name: contract_address
+        description: 'Berachain address for the liquidity pool used in transaction'
+        data_tests:
+          - not_null
+      - &tx_hash
+        name: tx_hash
+        description: 'Transaction hash'
+        data_tests:
+          - not_null
+      - &index
+        name: index
+        description: 'Event Index'
+        data_tests:
+          - not_null
+      - &tx_index
+        name: tx_index
+        description: 'Transaction Index'
+        data_tests:
+          - not_null
+      - &block_time
+        name: block_time
+        description: 'Block time in UTC'
+        data_tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: 'Event Block Number'
+        data_tests:
+          - not_null
+      - &swap_fee_percentage
+        name: swap_fee_percentage
+        description: 'Swap fees for the pool'
+        data_tests:
+          - not_null
