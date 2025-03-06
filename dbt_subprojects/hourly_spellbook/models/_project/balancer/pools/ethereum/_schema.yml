@@ -130,8 +130,10 @@ models:
         description: "Name of the LBP"
       - name: pool_address
         description: "ID of the LBP"
-      - *start_time
-      - *end_time
+      - name: start_time
+        description: "LBP start time"
+      - name: end_time
+        description: "LBP end time"
       - name: project_token
         description: "Contract address of the token sold by the LBP"
       - name: reserve_token
