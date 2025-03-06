@@ -105,7 +105,7 @@ models:
       - name: amount_usd
         description: "The USD amount of the transfer" 
   
-   - name: tokens_worldchain_net_transfers_daily_address
+  - name: tokens_worldchain_net_transfers_daily_address
     meta:
       blockchain: worldchain
       sector: tokens

@@ -104,8 +104,8 @@ models:
         description: "The USD price used to calculate the amount_usd"
       - name: amount_usd
         description: "The USD amount of the transfer" 
-  
-   - name: tokens_corn_net_transfers_daily_address
+
+  - name: tokens_corn_net_transfers_daily_address
     meta:
       blockchain: corn
       sector: tokens
