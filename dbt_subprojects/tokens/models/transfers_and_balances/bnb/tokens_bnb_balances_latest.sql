@@ -1,6 +1,7 @@
 {{config(
     schema = 'tokens_bnb',
     alias = 'balances_latest',
+    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
