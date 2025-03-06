@@ -1,6 +1,6 @@
 version: 2
 
-test-paths: ["tests"]
+test-paths: ["test"]
 
 models:
   - name: gas_usage_by_address
