@@ -12,7 +12,7 @@
 
 
 {{ 
-    balancer_lbps_macro(
+    balancer_v3_compatible_lbps_macro(
         blockchain = blockchain,
         project_decoded_as = 'balancer_v3'
     )

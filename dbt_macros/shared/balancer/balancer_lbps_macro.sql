@@ -1,5 +1,5 @@
 {% macro 
-    balancer_v2_compatible_bpt_supply_macro(
+    balancer_v3_compatible_lbps_macro(
         blockchain, project_decoded_as
     ) 
 %}
@@ -45,6 +45,7 @@ WITH lbps_list AS (
     )
     
         SELECT 
+            '{{blockchain}}' AS blockchain,
             l.pool_symbol,
             l.pool_address,
             w.start_time,
