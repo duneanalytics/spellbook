@@ -1,4 +1,3 @@
-
 -- This macro returns no rows if it finds records in the given column using the where clause.
 {% test has_entries(model, column_name, where) %}
 with model_sample as (
@@ -8,7 +7,7 @@ with model_sample as (
     where {{ where }}
 )
 select
-    count(*) as count
+    case when count(*) = 0 then 1 else 0 end as failed
 from model_sample
-where count = 0
+having failed = 1
 {% endtest %}
