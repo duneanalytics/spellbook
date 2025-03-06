@@ -47,7 +47,14 @@ from (
             and block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
         {% endif %}
 ) qf
-left join {{ ref('tokens_solana_transfers') }} using(tx_id, token_mint_address, block_time, block_slot)
+left join (
+        select * from {{ ref('tokens_solana_transfers') }}
+        {% if is_incremental() %}
+            where {{ incremental_predicate('block_time') }}
+        {% else %}
+            where block_time >= date('{{ oneinch_cfg_macro("project_start_date") }}')
+        {% endif %}
+) using(tx_id, token_mint_address, block_time, block_slot)
 where 
     action = 'transfer' -- There are also mint/burn, maybe we need it? So guess no.
     -- TODO: evaluate if we need this condition or not? 
