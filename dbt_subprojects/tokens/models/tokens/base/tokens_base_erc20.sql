@@ -421,4 +421,5 @@ FROM (VALUES
     , (0x3a1a33cf4553db61f0db2c1e1721cd480b02789f, 'TABOSHI', 18)
     , (0xe9F2a5F9f3c846f29066d7fB3564F8E6B6b2D65b, 'SuperUSDC', 6)
     , (0xffe8b2295cef70290819a8193834cc7900bcef5f, 'SuperUSDC SuperPosition', 6)
+    , (0xe31eE12bDFDD0573D634124611e85338e2cBF0cF, 'sUSDz', 18)
 ) AS temp_table (contract_address, symbol, decimals)
