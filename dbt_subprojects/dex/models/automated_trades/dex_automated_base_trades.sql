@@ -1,18 +1,18 @@
 {{ config(
     schema = 'dex'
     , alias = 'automated_base_trades'
-    , partition_by = ['block_month', 'blockchain', 'project']
+    , partition_by = ['block_date', 'blockchain']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'project', 'version', 'tx_hash', 'evt_index']
+    , unique_key = ['blockchain', 'block_date', 'block_number', 'tx_index', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
 {% set models = [
-    ref('dex_ethereum_automated_base_trades')
-    , ref('dex_arbitrum_automated_base_trades')
+    ref('uniswap_v2_all_chains_automated_base_trades'),
+    ref('uniswap_v3_all_chains_automated_base_trades')
 ] %}
 
 with base_union as (
@@ -22,9 +22,7 @@ with base_union as (
         {% for model in models %}
         SELECT
             blockchain
-            , project
             , version
-            , factory_address
             , dex_type
             , block_month
             , block_date
@@ -37,11 +35,15 @@ with base_union as (
             , taker
             , maker
             , project_contract_address
+            , pool_topic0
+            , factory_address
+            , factory_topic0
+            , factory_info
             , tx_hash
             , evt_index
             , tx_from
             , tx_to
-            , row_number() over (partition by tx_hash, evt_index order by tx_hash) as duplicates_rank
+            , tx_index
         FROM
             {{ model }}
         WHERE
@@ -54,8 +56,6 @@ with base_union as (
         {% endif %}
         {% endfor %}
     )
-    WHERE
-        duplicates_rank = 1
 )
 select
     *
