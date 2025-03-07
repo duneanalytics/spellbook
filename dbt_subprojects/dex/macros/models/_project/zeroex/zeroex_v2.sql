@@ -175,7 +175,8 @@ tbl_all_logs AS (
         AND ( 
                 topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
-                   0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
+                   0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c,
+                   0xe59fdd36d0d223c0c7d996db7ad796880f45e1936cb0bb7ac102e7082e031487)
                 OR logs.contract_address = settler_address
                 OR swap_signatures.signature is not null
         )
