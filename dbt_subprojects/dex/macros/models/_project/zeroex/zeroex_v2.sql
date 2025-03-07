@@ -297,8 +297,20 @@ maker_logs as (
                     )
                     and (varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
                     or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
-                    or varbinary_to_uint256(logs.data) in (amount_out_) 
-                    or POSITION(CAST(varbinary_to_uint256(logs.data) AS VARCHAR) IN CAST(amount_out_ AS VARCHAR)) > 0
+                    OR 
+                        CASE 
+                            WHEN varbinary_length(varbinary_ltrim(logs.data)) <= 32 
+                            THEN varbinary_to_uint256(varbinary_substring(varbinary_ltrim(logs.data), 1, 32))
+                            ELSE NULL 
+                        END IN (amount_out_) 
+
+                        OR 
+                        CASE 
+                            WHEN varbinary_length(varbinary_ltrim(logs.data)) <= 32 
+                            THEN CAST(varbinary_to_uint256(varbinary_substring(varbinary_ltrim(logs.data), 1, 32)) AS VARCHAR) 
+                            ELSE NULL 
+                        END IN (CAST(amount_out_ AS VARCHAR))
+
                     ) 
                 
                         )     
