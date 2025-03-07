@@ -56,7 +56,3 @@ WHERE NOT EXISTS (
     WHERE base_trades.blockchain = dex_map.blockchain
     AND base_trades.factory_address = dex_map.factory
 )
-
-{% if is_incremental() %}
-   AND {{ incremental_predicate('block_time') }}
-{% endif %}

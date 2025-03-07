@@ -4,13 +4,13 @@ models:
   - name: dex_automated_trades_all
     meta:
       docs_slug: /curated/trading/DEX/dex-trades
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei
-      sector: dex
-      contributors: 0xBoxer, hosuke
+      blockchain: &supported_chains arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei
+      sector: &sector dex
+      contributors: &contributors 0xBoxer, hosuke
     config:
-      tags: [ 'dex', 'trades']
-    description: This table generates all trades from all dex protocols.
-    data_tests:
+      tags: &tags [ 'dex', 'trades']
+    description: &trades_description This table generates all trades from all dex protocols.
+    data_tests: &unique_trade_test
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
@@ -27,6 +27,9 @@ models:
       - &version
         name: version
         description: "Version of the DEX protocol/contract"
+      - &dex_type
+        name: dex_type
+        description: "Type of DEX (e.g. uni-v2, uni-v3)"
       - &block_month
         name: block_month
         description: "UTC event block month"
@@ -63,9 +66,6 @@ models:
       - &amount_usd
         name: amount_usd
         description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
-        # data_tests:
-        #  - dbt_utils.accepted_range:
-        #     max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
@@ -81,6 +81,18 @@ models:
       - &project_contract_address
         name: project_contract_address
         description: "Smart contract address which emitted the event associated with this trade. Can be the a Pool Contract, Router Contract, or other contract associated with the DEX."
+      - &pool_topic0
+        name: pool_topic0
+        description: "Topic0 hash of the pool event"
+      - &factory_address
+        name: factory_address
+        description: "Factory contract address of the DEX"
+      - &factory_topic0
+        name: factory_topic0
+        description: "Topic0 hash of the factory event"
+      - &factory_info
+        name: factory_info
+        description: "Additional information about the factory"
       - &tx_hash
         name: tx_hash
         description: "The hash of the transaction that this trade was included in"
@@ -93,12 +105,15 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the event in the transaction. Can be used to uniquely identify the order of trades within in a transaction"
+      - &tx_index
+        name: tx_index
+        description: "Index of the transaction in the block"
 
   - name: dex_automated_base_trades
     meta:
-      blockchain: arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei
-      sector: dex
-      contributors: 0xBoxer, hosuke
+      blockchain: *supported_chains
+      sector: *sector
+      contributors: *contributors
     config:
       tags: [ 'dex' ]
     columns:
@@ -129,20 +144,104 @@ models:
       - name: src
         description: "Source of the mapping data"
         data_type: varchar
-      - name: dex_type
-        description: "Type of DEX (e.g. uni-v2, uni-v3)"
-        data_type: varchar
-      - name: blockchain
-        description: "Blockchain where the DEX is deployed"
-        data_type: varchar
+      - *dex_type
+      - *blockchain
       - name: factory
         description: "Factory contract address of the DEX"
         data_type: varbinary
-      - name: project
-        description: "Name of the DEX project"
-        data_type: varchar
+      - *project
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - factory
+
+  - name: dex_automated_trades_mapped
+    meta:
+      blockchain: *supported_chains
+      sector: *sector
+      contributors: *contributors
+    config:
+      tags: *tags
+    description: "This table contains all DEX trades that have been successfully mapped to known DEX projects"
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *dex_type
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+        data_tests:
+          - dbt_utils.accepted_range:
+              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *pool_topic0
+      - *factory_address
+      - *factory_topic0
+      - *factory_info
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *tx_index
+    tests: 
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - tx_index
+            - evt_index
+
+  - name: dex_automated_trades_unmapped
+    meta:
+      blockchain: *supported_chains
+      sector: *sector
+      contributors: *contributors
+    config:
+      tags: *tags
+    description: "This table contains all DEX trades that could not be mapped to known DEX projects, we use this table to identify new projects and add them to the mapping table"
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *dex_type
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *token_bought_symbol
+      - *token_sold_symbol
+      - *token_pair
+      - *token_bought_amount
+      - *token_sold_amount
+      - *token_bought_amount_raw
+      - *token_sold_amount_raw
+      - *amount_usd
+      - *token_bought_address
+      - *token_sold_address
+      - *taker
+      - *maker
+      - *project_contract_address
+      - *pool_topic0
+      - *factory_address
+      - *factory_topic0
+      - *factory_info
+      - *tx_hash
+      - *tx_from
+      - *tx_to
+      - *evt_index
+      - *tx_index

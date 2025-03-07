@@ -3,11 +3,7 @@
         alias = 'mapping',
         materialized = 'table',
         file_format = 'delta',
-        unique_key = ['blockchain', 'factory'],
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon"]\',
-                                "sector",
-                                "dex",
-                                \'["0xBoxer"]\') }}'
+        unique_key = ['blockchain', 'factory']
         )
 }}
 

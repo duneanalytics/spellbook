@@ -1,17 +1,18 @@
 {{ config(
     schema = 'dex'
     , alias = 'automated_base_trades'
-    , partition_by = ['block_month', 'blockchain']
+    , partition_by = ['block_date', 'blockchain']
     , materialized = 'incremental'
     , file_format = 'delta'
     , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'block_number', 'tx_index', 'evt_index']
+    , unique_key = ['blockchain', 'block_date', 'tx_index', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
 
 {% set models = [
-    ref('dex_multichain_automated_base_trades')
+    ref('uniswap_v2_all_chains_automated_base_trades'),
+    ref('uniswap_v3_all_chains_automated_base_trades')
 ] %}
 
 with base_union as (
