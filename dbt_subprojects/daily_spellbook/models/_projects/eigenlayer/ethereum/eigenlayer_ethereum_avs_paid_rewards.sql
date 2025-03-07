@@ -15,5 +15,5 @@ SELECT DISTINCT
   a.avs,
   b.metadataURI
 FROM {{ ref('eigenlayer_ethereum_rewards_v1_flattened') }} AS a
-JOIN {{ ref('eigenlayer_ethereum_avs_metadata_uri_latest') }} AS b
+LEFT JOIN {{ ref('eigenlayer_ethereum_avs_metadata_uri_latest') }} AS b
   ON a.avs = b.avs
