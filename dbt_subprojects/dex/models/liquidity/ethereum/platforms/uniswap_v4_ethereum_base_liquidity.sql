@@ -16,6 +16,7 @@
         , version = '4'
         , PoolManager_evt_ModifyLiquidity = source ('uniswap_v4_ethereum', 'PoolManager_evt_ModifyLiquidity')
         , PoolManager_evt_Swap = source('uniswap_v4_ethereum', 'PoolManager_evt_Swap') 
+        , PoolManager_call_Swap = source('uniswap_v4_ethereum', 'PoolManager_call_Swap') 
         , PoolManager_evt_Initialize = source('uniswap_v4_ethereum', 'PoolManager_evt_Initialize')
     )
 }}

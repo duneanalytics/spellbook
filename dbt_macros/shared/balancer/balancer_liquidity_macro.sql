@@ -82,7 +82,7 @@ WITH pool_labels AS (
             token_address,
             decimals,
             price
-        FROM {{ source('gyroscope','gyro_tokens') }}
+        FROM {{ source('gyroscope', 'gyro_tokens') }}
         WHERE blockchain = '{{blockchain}}'
     ),
 
@@ -241,7 +241,7 @@ WITH pool_labels AS (
         LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
         AND b.token = w.token_address
         AND b.pool_liquidity_usd > 0
-        LEFT JOIN {{ source('balancer','token_whitelist') }} q ON b.token = q.address
+        LEFT JOIN {{ source('balancer', 'token_whitelist') }} q ON b.token = q.address
         AND b.blockchain = q.chain
         LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
         WHERE q.name IS NOT NULL
@@ -390,9 +390,24 @@ WITH pool_labels AS (
             decimals,
             APPROX_PERCENTILE(median_price, 0.5) AS price,
             LEAD(DATE_TRUNC('day', minute), 1, CURRENT_DATE + INTERVAL '1' day) OVER (PARTITION BY wrapped_token ORDER BY date_trunc('day', minute)) AS next_change
-        FROM {{ source('balancer_v3' , 'erc4626_token_prices') }}
+        FROM {{ source('balancer_v3', 'erc4626_token_prices') }}
         WHERE blockchain = '{{blockchain}}'
         GROUP BY 1, 2, 3
+    ),
+
+    global_fees AS (
+        SELECT
+            evt_block_time,
+            swapFeePercentage / 1e18 AS global_swap_fee
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'ProtocolFeeController_evt_GlobalProtocolSwapFeePercentageChanged') }}
+    ),
+
+    pool_creator_fees AS (
+        SELECT
+            evt_block_time,
+            pool,
+            poolCreatorSwapFeePercentage / 1e18 AS pool_creator_swap_fee
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'ProtocolFeeController_evt_PoolCreatorSwapFeePercentageChanged') }}
     ),
 
     swaps_changes AS (
@@ -404,11 +419,13 @@ WITH pool_labels AS (
         FROM
             (
                 SELECT
-                    date_trunc('day', evt_block_time) AS day,
-                    pool AS pool_id,
-                    tokenIn AS token,
-                    CAST(amountIn AS INT256) - (CAST(swapFeeAmount AS INT256) * 0.5) AS delta
-                FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
+                    date_trunc('day', swap.evt_block_time) AS day,
+                    swap.pool AS pool_id,
+                    swap.tokenIn AS token,
+                    CAST(swap.amountIn AS INT256) - (CAST(swap.swapFeeAmount AS INT256) * (g.global_swap_fee + COALESCE(pc.pool_creator_swap_fee, 0))) AS delta
+                FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} swap
+                CROSS JOIN global_fees g
+                LEFT JOIN pool_creator_fees pc ON swap.pool = pc.pool
 
                 UNION ALL
 
@@ -568,7 +585,7 @@ WITH pool_labels AS (
         LEFT JOIN {{ ref(base_spells_namespace + '_pools_tokens_weights') }} w ON b.pool_id = w.pool_id
         AND b.token = w.token_address
         AND b.pool_liquidity_usd > 0
-        LEFT JOIN {{ source('balancer','token_whitelist') }} q ON b.token = q.address
+        LEFT JOIN {{ source('balancer', 'token_whitelist') }} q ON b.token = q.address
         AND b.blockchain = q.chain
         LEFT JOIN pool_labels p ON p.pool_id = BYTEARRAY_SUBSTRING(b.pool_id, 1, 20)
         WHERE q.name IS NOT NULL

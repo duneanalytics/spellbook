@@ -50,4 +50,8 @@ FROM
     , ('x33-shadow-liquid-staking-token', 'X33', 0x3333111a391cc08fa51353e9195526a70b333333, 18)
     , ('wos-wrapped-origin-sonic', 'wOS', 0x9f0df7799f6fdad409300080cff680f5a23df4b1, 18)
     , ('swpx-swapx', 'SWPX', 0xa04bc7140c26fc9bb1f36b1a604c7a5a88fb0e70, 18)
+    , ('lbtc-lombard-staked-btc', 'LBTC', 0xecAc9C5F704e954931349Da37F60E39f515c11c1, 8)
+    , ('wbtc-wrapped-bitcoin', 'scBTC', 0xBb30e76d9Bb2CC9631F7fC5Eb8e87B5Aff32bFbd, 8)
+    , ('wbtc-wrapped-bitcoin', 'stkscBTC', 0xD0851030C94433C261B405fEcbf1DEC5E15948d0, 8)
+    , ('wbtc-wrapped-bitcoin', 'wstkscBTC', 0xDb58c4DB1a0f45DDA3d2F8e44C3300BB6510c866, 8)
 ) as temp (token_id, symbol, contract_address, decimals)
