@@ -2,6 +2,7 @@
     config(
         schema = 'eigenlayer_ethereum',
         alias = 'operator_shares_change_by_day',
+        unique_key = ['operator', 'strategy', 'date']
     )
 }}
 
