@@ -20,8 +20,9 @@ with
         SELECT
         *
         FROM (
-            --use this api https://station.jup.ag/api-v6/get-program-id-to-label
+            --use this api https://api.jup.ag/swap/v1/program-id-to-label
             values
+                ('Perena', 'NUMERUNsFCP3kuNmWZuXtm1AaQCPj9uw6Guv2Ekoi5P'),
                 ('stabble Stable Swap', 'swapNyd8XiQwJ6ianp9snpu4brUqFxadzvHebnAXjJZ'),
                 ('stabble Weighted Swap', 'swapFpHZwjELNnjvThjajtiVmkz3yPQEHjLtka2fwHW'),
                 ('Invariant', 'HyaB3W9q6XdA5xwpU4XnSZV94htfmbmqJXZcEbRaJutt'),
