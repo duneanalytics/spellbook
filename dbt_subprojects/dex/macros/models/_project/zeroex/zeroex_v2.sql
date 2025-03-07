@@ -301,10 +301,7 @@ maker_logs as (
                     or POSITION(CAST(varbinary_to_uint256(logs.data) AS VARCHAR) IN CAST(amount_out_ AS VARCHAR)) > 0
                     ) 
                 
-                        )
-                        or (bytearray_substring(logs.topic1,13,20) in (settler_address)  
-                        and (bytearray_substring(logs.topic2,13,20) in (taker))
-                        )
+                        )     
                     )
             )
             or (
