@@ -311,6 +311,23 @@ uniswap_pool_created_logs as (
         , contract_address
         , tx_hash
     from curve_base_pool_created_calls
+
+    union all
+
+    select 
+        blockchain
+        , type
+        , version
+        , pool
+        , coin as token0
+        , base_pool as token1
+        , array[coin, base_pool] as tokens
+        , cast(null as uint256) as fee
+        , block_time
+        , block_number
+        , contract_address
+        , tx_hash
+    from curve_meta_pool_created_calls
 )
 
 
