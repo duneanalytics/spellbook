@@ -3,14 +3,17 @@
     alias = 'fees',
     post_hook='{{ expose_spells(\'[
                                     "arbitrum"
+                                    , "apechain"
                                     , "avalanche_c"
                                     , "base"
+                                    , "berachain"
                                     , "blast"
                                     , "bnb"
                                     , "celo"
                                     , "ethereum"
                                     , "fantom"
                                     , "gnosis"
+                                    , "kaia"
                                     , "linea"
                                     , "mantle"
                                     , "optimism"
@@ -18,6 +21,8 @@
                                     , "scroll"
                                     , "sei"
                                     , "solana"
+                                    , "sonic"
+                                    , "sophon"
                                     , "tron"
                                     , "zkevm"
                                     , "zksync"
@@ -25,22 +30,25 @@
                                 ]\',
                                 "sector",
                                 "gas",
-                                \'["soispoke", "ilemi", "0xRob", "jeff-dude"]\'
+                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "hosuke"]\'
                             )
                         }}'
         )
 }}
 
 {% set chains = [
-    "arbitrum"
+    "apechain"
+    , "arbitrum"
     , "avalanche_c"
     , "base"
+    , "berachain"
     , "blast"
     , "bnb"
     , "celo"
     , "ethereum"
     , "fantom"
     , "gnosis"
+    , "kaia"
     , "linea"
     , "mantle"
     , "optimism"
@@ -48,6 +56,8 @@
     , "ronin"
     , "scroll"
     , "sei"
+    , "sonic"
+    , "sophon"
     , "tron"
     , "zkevm"
     , "zksync"

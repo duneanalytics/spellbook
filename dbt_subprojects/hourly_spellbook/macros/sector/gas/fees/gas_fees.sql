@@ -15,7 +15,11 @@
     {%- if blockchain in ('ethereum',) -%}
     cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256) +
     {%- endif -%}
+    {%- if blockchain in ('nova', 'corn') -%}
+    map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+    {%- else -%}
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- endif -%}
 {% endmacro %}
 
 -- include chain specific logic here
@@ -29,8 +33,76 @@
       ,map(array['l1_fee','base_fee']
         , array[cast(coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)
                 ,cast((txns.gas_used - coalesce(gas_used_for_l1,0)) * {{gas_price(blockchain)}} as uint256)])
+    {%- elif blockchain in ('nova',) %}
+      ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+    {%- elif blockchain in ('corn',) %}
+      ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
     {%- elif blockchain in ('zksync',) %}
       ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+    {%- elif blockchain in ('linea',) %}
+      ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+              then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+              else map(array['base_fee','priority_fee'],
+                       array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                              ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                       )
+              end
+    {%- elif blockchain in ('sei',) %}
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
+    {%- elif blockchain in ('kaia',) %}
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
+    {%- elif blockchain in ('sonic',) %}
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
+    {%- elif blockchain in ('viction',) %}
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
+    {%- elif blockchain in ('sophon',) %}
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
+    {%- elif blockchain in ('apechain',) %}
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
+    {%- elif blockchain in ('berachain',) %}
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                else map(array['base_fee','priority_fee'],
+                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                         )
+                end
     {%- elif blockchain in ('celo',) %}
         ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
                 then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
@@ -39,6 +111,32 @@
                                 ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
                          )
                 end
+    {%- elif blockchain in ('abstract',) %}
+        ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+    {%- elif blockchain in ('boba',) %}
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+              then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+              else map(array['base_fee','priority_fee'],
+                       array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                              ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                       )
+              end
+    {%- elif blockchain in ('ink', 'worldchain') %}
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+              then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+              else map(array['base_fee','priority_fee'],
+                       array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                              ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                       )
+              end
+    {%- elif blockchain in ('flare',) %}
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+              then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+              else map(array['base_fee','priority_fee'],
+                       array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                              ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                       )
+              end
     {%- else -%}
         {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') %}
           ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])
@@ -68,7 +166,7 @@
       ,l1_gas_price
       ,l1_fee_scalar
     {%- endif %}
-    {%- if blockchain in ('arbitrum',) %}
+    {%- if blockchain in ('arbitrum') %}
       ,effective_gas_price
       ,gas_used_for_l1
     {%- endif %}
@@ -133,6 +231,8 @@ WITH base_model as (
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
+    {% else %}
+    WHERE txns.block_time > now() - interval '30' day
     {% endif %}
     )
 
