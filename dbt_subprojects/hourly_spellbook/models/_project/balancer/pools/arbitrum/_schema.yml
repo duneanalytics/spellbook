@@ -70,3 +70,39 @@ models:
       - *pool_id
       - *token_address
       - *normalized_weight     
+
+  - name: balancer_v3_arbitrum_lbps
+    meta:
+      blockchain: arbitrum
+      project: balancer_v3
+      contributors: viniabussafi
+    config:
+      tags: ['arbitrum', 'balancer', 'lbp']
+    description: >
+      Record of the Liquidity Boostrapping Pools (LBP) of Balancer, an automated portfolio manager and trading platform, on arbitrum.
+    columns:
+      - *blockchain
+      - name: pool_symbol
+        description: "Name of the LBP"
+      - name: pool_address
+        description: "ID of the LBP"
+      - name: start_time
+        description: "LBP start time"
+      - name: end_time
+        description: "LBP end time"
+      - name: project_token
+        description: "Contract address of the token sold by the LBP"
+      - name: reserve_token
+        description: "Contract address of the token bought by the LBP"        
+      - name: project_token_symbol
+        description: "Symbol of the token sold by the LBP"
+      - name: reserve_token_symbol
+        description: "Symbol of the token bought by the LBP"
+      - name: project_token_start_weight
+        description: "Start Weight of the token sold by the LBP"
+      - name: reserve_token_start_weight
+        description: "Start Weight of the token bought by the LBP"
+      - name: project_token_end_weight
+        description: "Start Weight of the token sold by the LBP"
+      - name: reserve_token_end_weight
+        description: "End Weight of the token bought by the LBP"
