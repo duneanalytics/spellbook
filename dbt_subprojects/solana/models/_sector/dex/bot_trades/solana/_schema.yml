@@ -689,7 +689,6 @@ models:
           seed_file: ref('tradewiz_solana_trades_seed')
           blockchain: solana
 
-
   - name: cswap_solana_bot_trades
     meta:
       blockchain: solana
@@ -711,7 +710,7 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('cswap_solana_trades_seed')
           blockchain: solana
-      
+
   - name: prophetbots_solana_bot_trades
     meta:
       blockchain: solana
@@ -755,7 +754,7 @@ models:
       - check_bot_trades_seed:
           seed_file: ref('nova_solana_trades_seed')
           blockchain: solana
-      
+
   - name: sanji_solana_bot_trades
     meta:
       blockchain: solana
@@ -817,3 +816,42 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - user
+
+  - name: fasol_solana_fee_payments
+    meta:
+      blockchain: solana
+      sector: dex
+      project: fasol
+      contributors: clizzard
+    config:
+      tags: ["solana", "dex", "fasol", "trades"]
+    description: >
+      Fasol fee payments on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_id
+            - fee_token_amount
+            - fee_token_mint_address
+
+  - name: fasol_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: fasol
+      contributors: clizzard
+    config:
+      tags: ["solana", "dex", "fasol", "trades"]
+    description: >
+      Fasol trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('fasol_solana_trades_seed')
+          blockchain: solana
