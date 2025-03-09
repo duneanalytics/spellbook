@@ -252,11 +252,11 @@ SELECT
     ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) as tx_fee
     ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) * p.price as tx_fee_usd
     ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v,0)) as tx_fee_breakdown_raw
+            (k,v) -> coalesce(v, cast(0 as uint256))) as tx_fee_breakdown_raw
     ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v, 0) / pow(10,p.decimals) ) as tx_fee_breakdown
+            (k,v) -> coalesce(v, cast(0 as uint256)) / pow(10,p.decimals) ) as tx_fee_breakdown
     ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v, 0) / pow(10,p.decimals) * p.price) as tx_fee_breakdown_usd
+            (k,v) -> coalesce(v, cast(0 as uint256)) / pow(10,p.decimals) * p.price) as tx_fee_breakdown_usd
     ,tx_fee_currency
     ,block_proposer
     ,max_fee_per_gas
