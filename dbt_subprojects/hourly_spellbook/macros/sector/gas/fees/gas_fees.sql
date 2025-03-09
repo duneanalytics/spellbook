@@ -248,9 +248,9 @@ SELECT
     ,gas_price
     ,gas_used
     ,p.symbol as currency_symbol
-    ,coalesce(tx_fee_raw, 0) as tx_fee_raw
-    ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) as tx_fee
-    ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) * p.price as tx_fee_usd
+    ,coalesce(tx_fee_raw, cast(0 as uint256)) as tx_fee_raw
+    ,coalesce(tx_fee_raw, cast(0 as uint256)) / pow(10,p.decimals) as tx_fee
+    ,coalesce(tx_fee_raw, cast(0 as uint256)) / pow(10,p.decimals) * p.price as tx_fee_usd
     ,transform_values(tx_fee_breakdown_raw,
             (k,v) -> coalesce(v, cast(0 as uint256))) as tx_fee_breakdown_raw
     ,transform_values(tx_fee_breakdown_raw,
