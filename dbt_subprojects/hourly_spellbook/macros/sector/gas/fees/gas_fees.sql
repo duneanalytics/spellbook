@@ -232,7 +232,7 @@ WITH base_model as (
     {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     {% else %}
-    WHERE txns.block_time > now() - interval '30' day
+    WHERE txns.block_time > now() - interval '3' day
     {% endif %}
     )
 
@@ -248,9 +248,15 @@ SELECT
     ,gas_price
     ,gas_used
     ,p.symbol as currency_symbol
+    {%- if blockchain in ('nova', 'corn') %}
+    ,tx_fee_raw as tx_fee_raw
+    ,element_at(tx_fee_raw, 'base_fee') / pow(10,p.decimals) as tx_fee
+    ,element_at(tx_fee_raw, 'base_fee') / pow(10,p.decimals) * p.price as tx_fee_usd
+    {%- else %}
     ,coalesce(tx_fee_raw, cast(0 as uint256)) as tx_fee_raw
     ,coalesce(tx_fee_raw, cast(0 as uint256)) / pow(10,p.decimals) as tx_fee
     ,coalesce(tx_fee_raw, cast(0 as uint256)) / pow(10,p.decimals) * p.price as tx_fee_usd
+    {%- endif %}
     ,transform_values(tx_fee_breakdown_raw,
             (k,v) -> coalesce(v, cast(0 as uint256))) as tx_fee_breakdown_raw
     ,transform_values(tx_fee_breakdown_raw,
