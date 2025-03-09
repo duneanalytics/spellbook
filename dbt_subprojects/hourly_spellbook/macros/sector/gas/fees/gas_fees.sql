@@ -232,7 +232,7 @@ WITH base_model as (
     {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     {% else %}
-    WHERE txns.block_time > now() - interval '3' day
+    WHERE txns.block_time > now() - interval '30' day
     {% endif %}
     )
 
