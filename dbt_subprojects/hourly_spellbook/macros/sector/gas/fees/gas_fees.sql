@@ -103,7 +103,11 @@
 {% endmacro %}
 
 {% macro is_map_type_chain(blockchain) %}
-    {{ return blockchain in ('nova', 'corn') }}
+    {% if blockchain in ('nova', 'corn') %}
+        {{ return(true) }}
+    {% else %}
+        {{ return(false) }}
+    {% endif %}
 {% endmacro %}
 
 {% macro gas_fees(blockchain) %}
