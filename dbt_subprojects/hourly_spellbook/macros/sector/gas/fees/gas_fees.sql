@@ -157,8 +157,8 @@ WITH base_model as (
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
-    {% else %}
-    WHERE txns.block_time > now() - interval '30' day
+--     {% else %}
+--     WHERE txns.block_time > now() - interval '30' day
     {% endif %}
     )
 
