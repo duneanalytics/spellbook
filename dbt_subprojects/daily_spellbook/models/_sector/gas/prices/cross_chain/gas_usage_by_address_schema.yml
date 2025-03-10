@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: ['ethereum', 'optimism', 'base', 'arbitrum', 'avalanche_c', 'blast', 'bnb', 'celo', 'fantom', 'gnosis', 'linea', 'mantle', 'polygon', 'scroll', 'zkevm', 'zksync', 'zora']
       sector: gas
-      contributors: ['gashawk']
+      contributors: ['gashawk', 'zohjag']
     config:
       tags: ['gas', 'cross_chain', 'addresses']
     description: "Cross-chain gas usage metrics aggregated by address (optimized version)"
@@ -20,14 +20,16 @@ models:
         description: "The wallet address"
         tests:
           - not_null
+      - name: address_prefix
+        description: "The prefix of the address"
+        tests:
+          - not_null
       - name: blockchain
         description: "The blockchain name"
         tests:
           - not_null
       - name: currency_symbol
         description: "Native currency symbol of the chain"
-        tests:
-          - not_null
       - name: number_of_txs
         description: "Total number of transactions by this address"
         tests:
@@ -46,6 +48,10 @@ models:
           - not_null
       - name: gas_spent_usd_30_days
         description: "USD value of gas spent in last 30 days"
+        tests:
+          - not_null
+      - name: gas_spent_usd_6_months
+        description: "USD value of gas spent in last 6 months"
         tests:
           - not_null
       - name: gas_spent_usd_1_year
@@ -68,7 +74,12 @@ models:
         description: "Amount of gas spent in native currency in last 30 days"
         tests:
           - not_null
+      - name: gas_spent_native_6_months
+        description: "Amount of gas spent in native currency in last 6 months"
+        tests:
+          - not_null
       - name: gas_spent_native_1_year
         description: "Amount of gas spent in native currency in last year"
         tests:
           - not_null
+
