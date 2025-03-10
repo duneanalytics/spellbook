@@ -1,9 +1,0 @@
-version: 2
-
-seeds:
-  - name: ton_interfaces_by_code_hash_seed
-    config:
-      column_types:
-        code_hash: varchar
-        interface: varchar
-        link: varchar
