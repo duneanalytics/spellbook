@@ -45,8 +45,8 @@ WITH evt_swap AS (
     HAVING COUNT(*) = 1 -- Only keep pools with exactly one factory event
 )
 
-, dexs AS
-(
+-- Regular trades with normal filtering
+, regular_trades AS (
     SELECT
         t.blockchain
         , t.block_number
@@ -90,9 +90,58 @@ WITH evt_swap AS (
         ON f.{{ pair_column_name }} = ct.address 
         AND f.contract_address = ct."from"
         AND ct.blockchain = t.blockchain
-    LEFT JOIN {{ ref('uniswap_optimism_ovm1_pool_mapping') }} ov
-        ON f.{{ pair_column_name }} = ov.newaddress
-        AND f.blockchain = 'optimism'
+)
+
+-- Special handling for Optimism trades with mappings (bypassing some filters)
+, optimism_mapped_trades AS (
+    SELECT
+        t.blockchain
+        , t.block_number
+        , t.block_time
+        , t.{{ taker_column_name }} AS taker
+        , {% if maker_column_name %}
+                t.{{ maker_column_name }}
+            {% else %}
+                cast(null as varbinary)
+            {% endif %} as maker
+        , CASE WHEN amount0 < INT256 '0' THEN abs(amount0) ELSE abs(amount1) END AS token_bought_amount_raw
+        , CASE WHEN amount0 < INT256 '0' THEN abs(amount1) ELSE abs(amount0) END AS token_sold_amount_raw
+        , CASE WHEN amount0 < INT256 '0' THEN f.token0 ELSE f.token1 END AS token_bought_address
+        , CASE WHEN amount0 < INT256 '0' THEN f.token1 ELSE f.token0 END AS token_sold_address
+        , t.contract_address as project_contract_address
+        , t.pool_topic0
+        , t.tx_hash
+        , t.evt_index
+        , f.contract_address as factory_address
+        , f.factory_info
+        , f.factory_topic0
+        , t.tx_from
+        , t.tx_to
+        , t.tx_index
+    FROM
+        evt_swap t
+    INNER JOIN
+        {{ Factory_evt_PoolCreated }} f
+        ON f.{{ pair_column_name }} = t.contract_address
+        AND f.blockchain = t.blockchain
+    INNER JOIN {{ ref('uniswap_optimism_ovm1_pool_mapping') }} ov
+        ON t.contract_address = ov.newaddress
+        and f.contract_address = 0x1F98431c8aD98523631AE4a59f267346ea31F984
+        and t.blockchain = 'optimism'
+)
+
+-- Combine regular trades and special Optimism trades
+, combined_trades AS (
+    SELECT * FROM regular_trades
+    UNION ALL
+    -- Only include Optimism mapped trades that aren't already in regular_trades
+    SELECT o.* 
+    FROM optimism_mapped_trades o
+    LEFT JOIN regular_trades r
+        ON o.blockchain = r.blockchain
+        AND o.tx_hash = r.tx_hash
+        AND o.evt_index = r.evt_index
+    WHERE r.tx_hash IS NULL
 )
 
 SELECT
@@ -119,7 +168,7 @@ SELECT
     , tx_from
     , tx_to
     , tx_index
-FROM dexs
+FROM combined_trades
 {% if is_incremental() %}
 WHERE {{ incremental_predicate('block_time') }}
 {% endif %}
