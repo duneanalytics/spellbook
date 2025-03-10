@@ -90,7 +90,7 @@ WITH evt_swap AS (
         ON f.{{ pair_column_name }} = ct.address 
         AND f.contract_address = ct."from"
         AND ct.blockchain = t.blockchain
-    INNER JOIN {{ ref('uniswap_optimism_ovm1_pool_mapping') }} ov
+    LEFT JOIN {{ ref('uniswap_optimism_ovm1_pool_mapping') }} ov
         ON f.{{ pair_column_name }} = ov.newaddress
         AND f.blockchain = 'optimism'
 )
