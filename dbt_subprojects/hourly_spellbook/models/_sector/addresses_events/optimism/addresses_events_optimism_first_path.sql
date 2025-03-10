@@ -6,6 +6,7 @@
     , file_format = 'delta'
     , incremental_strategy = 'append'
     , unique_key = ['address']
+    , tags = ['prod_exclude']
     )
 }}
 
