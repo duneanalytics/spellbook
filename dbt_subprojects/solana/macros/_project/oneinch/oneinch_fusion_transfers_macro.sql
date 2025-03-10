@@ -37,7 +37,7 @@ from (
         , order_hash
         , {{ direction }}_mint as token_mint_address
         , tx_success
-        , array[outer_instruction_index, inner_instruction_index] as call_trace_address
+        , call_trace_address
     from {{ ref('oneinch_solana_fusion_calls') }}
     where 
         instruction_type = 'fill'

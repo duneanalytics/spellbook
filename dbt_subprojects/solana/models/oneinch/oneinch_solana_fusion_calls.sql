@@ -7,7 +7,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
-        unique_key = ['tx_id', 'order_hash', 'inner_instruction_index', 'outer_instruction_index']
+        unique_key = ['tx_id', 'order_hash', 'call_trace_address']
     )
 }}
 
@@ -121,6 +121,7 @@ select
     -- , try(account_arguments[15]) as dst_token_program
     -- , try(account_arguments[16]) as system_program
     -- , try(account_arguments[17]) as associated_token_program
+    , array[coalesce(outer_instruction_index, -1), coalesce(inner_instruction_index, -1)] as call_trace_address
     , cast(date_trunc('month', block_time) as date) as block_month
 from {{ source('solana', 'instruction_calls') }} 
 where 
