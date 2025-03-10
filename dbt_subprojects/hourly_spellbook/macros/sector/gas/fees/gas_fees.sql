@@ -15,7 +15,11 @@
     {%- if blockchain in ('ethereum',) -%}
     cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256) +
     {%- endif -%}
+    {%- if blockchain in ('nova', 'corn') -%}
+    map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+    {%- else -%}
     cast({{ gas_price(blockchain) }} as uint256) * cast(txns.gas_used as uint256)
+    {%- endif -%}
 {% endmacro %}
 
 -- include chain specific logic here
@@ -23,22 +27,32 @@
 -- https://docs.arbitrum.io/how-arbitrum-works/gas-fees#tips-in-l2
 -- zksync doesn't provide an easy way to track which part of the fee is L1 fee and which is the L2 base fee
 {% macro tx_fee_breakdown_raw(blockchain) %}
+    {% set base_fee_calc = '(cast(' ~ gas_price(blockchain) ~ ' as uint256) * cast(txns.gas_used as uint256))' %}
+    
     map_concat(
     map()
     {%- if blockchain in ('arbitrum',) %}
       ,map(array['l1_fee','base_fee']
         , array[cast(coalesce(gas_used_for_l1,0) * {{gas_price(blockchain)}} as uint256)
                 ,cast((txns.gas_used - coalesce(gas_used_for_l1,0)) * {{gas_price(blockchain)}} as uint256)])
-    {%- elif blockchain in ('zksync',) %}
-      ,map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+    {%- elif blockchain in ('nova', 'corn', 'zksync', 'abstract') %}
+      ,map(array['base_fee'], array[{{base_fee_calc}}])
+    {%- elif blockchain in ('linea', 'sei', 'kaia', 'sonic', 'viction', 'sophon', 'apechain', 'berachain', 'boba', 'ink', 'worldchain', 'flare') %}
+      ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+              then map(array['base_fee'], array[{{base_fee_calc}}])
+              else map(array['base_fee','priority_fee'],
+                       array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                              ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                       )
+              end
     {%- elif blockchain in ('celo',) %}
-        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
-                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
-                else map(array['base_fee','priority_fee'],
-                         array[(cast(gas_price - priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
-                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
-                         )
-                end
+      ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+              then map(array['base_fee'], array[{{base_fee_calc}}])
+              else map(array['base_fee','priority_fee'],
+                       array[(cast(gas_price - priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
+                              ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
+                       )
+              end
     {%- else -%}
         {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') %}
           ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])
@@ -47,7 +61,7 @@
           ,map(array['blob_fee'],array[cast(coalesce(blob.blob_base_fee,0) as uint256) * cast(coalesce(blob.blob_gas_used,0) as uint256)])
         {%- endif %}
           ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
-                then map(array['base_fee'], array[(cast({{gas_price(blockchain)}} as uint256) * cast(txns.gas_used as uint256))])
+                then map(array['base_fee'], array[{{base_fee_calc}}])
                 else map(array['base_fee','priority_fee'],
                          array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
                                 ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
@@ -68,7 +82,7 @@
       ,l1_gas_price
       ,l1_fee_scalar
     {%- endif %}
-    {%- if blockchain in ('arbitrum',) %}
+    {%- if blockchain in ('arbitrum') %}
       ,effective_gas_price
       ,gas_used_for_l1
     {%- endif %}
@@ -88,9 +102,19 @@
     {%- endif %}
 {% endmacro %}
 
+{% macro is_map_type_chain(blockchain) %}
+    {% if blockchain in ('nova', 'corn') %}
+        {{ return(true) }}
+    {% else %}
+        {{ return(false) }}
+    {% endif %}
+{% endmacro %}
+
 {% macro gas_fees(blockchain) %}
 -- Used to run the models only on incremental timeframe + seed transactions (for tests)
 {% set test_short_ci = false %}
+{% set is_map_chain = is_map_type_chain(blockchain) %}
+
 WITH base_model as (
     SELECT
         txns.block_time
@@ -133,6 +157,8 @@ WITH base_model as (
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
+--     {% else %}
+--     WHERE txns.block_time > now() - interval '30' day
     {% endif %}
     )
 
@@ -148,15 +174,21 @@ SELECT
     ,gas_price
     ,gas_used
     ,p.symbol as currency_symbol
-    ,coalesce(tx_fee_raw, 0) as tx_fee_raw
-    ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) as tx_fee
-    ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) * p.price as tx_fee_usd
+    {%- if is_map_chain %}
+    ,tx_fee_raw as tx_fee_raw
+    ,element_at(tx_fee_raw, 'base_fee') / pow(10,p.decimals) as tx_fee
+    ,element_at(tx_fee_raw, 'base_fee') / pow(10,p.decimals) * p.price as tx_fee_usd
+    {%- else %}
+    ,coalesce(tx_fee_raw, cast(0 as uint256)) as tx_fee_raw
+    ,coalesce(tx_fee_raw, cast(0 as uint256)) / pow(10,p.decimals) as tx_fee
+    ,coalesce(tx_fee_raw, cast(0 as uint256)) / pow(10,p.decimals) * p.price as tx_fee_usd
+    {%- endif %}
     ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v,0)) as tx_fee_breakdown_raw
+            (k,v) -> coalesce(v, cast(0 as uint256))) as tx_fee_breakdown_raw
     ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v, 0) / pow(10,p.decimals) ) as tx_fee_breakdown
+            (k,v) -> coalesce(v, cast(0 as uint256)) / pow(10,p.decimals) ) as tx_fee_breakdown
     ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v, 0) / pow(10,p.decimals) * p.price) as tx_fee_breakdown_usd
+            (k,v) -> coalesce(v, cast(0 as uint256)) / pow(10,p.decimals) * p.price) as tx_fee_breakdown_usd
     ,tx_fee_currency
     ,block_proposer
     ,max_fee_per_gas
