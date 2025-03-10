@@ -29,6 +29,23 @@ WITH evt_swap AS (
     {% endif %}
 )
 
+-- filtering out bogus factory deployments
+
+, factory_events AS (
+    SELECT *
+    FROM {{ Factory_evt_PairCreated }}
+)
+
+, factory_event_counts AS (
+    SELECT 
+        pair,
+        blockchain,
+        COUNT(*) as event_count
+    FROM factory_events
+    GROUP BY pair, blockchain
+    HAVING COUNT(*) = 1 -- Only keep pairs with exactly one factory event
+)
+
 , dexs AS
 (
     SELECT
@@ -54,9 +71,13 @@ WITH evt_swap AS (
     FROM
         evt_swap t
     INNER JOIN
-        {{ Factory_evt_PairCreated }} f
+        factory_events f
         ON f.pair = t.contract_address 
         AND f.blockchain = t.blockchain
+    INNER JOIN
+        factory_event_counts fec
+        ON fec.pair = f.pair
+        AND fec.blockchain = f.blockchain
     INNER JOIN (
         SELECT address, "from", blockchain, MAX(block_number) as latest_block
         FROM {{ source('evms', 'creation_traces') }}
