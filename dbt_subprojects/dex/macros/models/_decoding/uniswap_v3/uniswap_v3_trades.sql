@@ -33,6 +33,18 @@ WITH evt_swap AS (
     {% endif %}
 )
 
+-- filtering out bogus factory deployments
+, factory_event_counts AS (
+    SELECT 
+        contract_address,
+        {{ pair_column_name }},
+        blockchain,
+        COUNT(*) as event_count
+    FROM {{ Factory_evt_PoolCreated }}
+    GROUP BY {{ pair_column_name }}, blockchain, contract_address
+    HAVING COUNT(*) = 1 -- Only keep pools with exactly one factory event
+)
+
 , dexs AS
 (
     SELECT
@@ -65,6 +77,11 @@ WITH evt_swap AS (
         {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
         AND f.blockchain = t.blockchain
+    INNER JOIN
+        factory_event_counts fec
+        ON fec.{{ pair_column_name }} = f.{{ pair_column_name }}
+        AND fec.blockchain = f.blockchain
+        AND fec.contract_address = f.contract_address
     INNER JOIN (
         SELECT address, "from", blockchain, MAX(block_number) as latest_block
         FROM {{ source('evms', 'creation_traces') }}
@@ -73,6 +90,9 @@ WITH evt_swap AS (
         ON f.{{ pair_column_name }} = ct.address 
         AND f.contract_address = ct."from"
         AND ct.blockchain = t.blockchain
+    INNER JOIN {{ ref('uniswap_optimism_ovm1_pool_mapping') }} ov
+        ON f.{{ pair_column_name }} = ov.newaddress
+        AND f.blockchain = 'optimism'
 )
 
 SELECT
