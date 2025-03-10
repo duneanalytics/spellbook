@@ -32,4 +32,4 @@ values
   -- use WETH for native restaked ETH
   (0xbeac0eeeeeeeeeeeeeeeeeeeeeeeeeeeeeebeac0, 0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2, 'eth native','ETH'),
   (0xacb55c530acdb2849e6d4f36992cd8c9d50ed8f7, 0x83e9115d334d248ce39a6f36144aeab5b3456e75, 'eigen','EIGEN')
-) t (strategy, category, name, token)
+) t (strategy, token, category, name)
