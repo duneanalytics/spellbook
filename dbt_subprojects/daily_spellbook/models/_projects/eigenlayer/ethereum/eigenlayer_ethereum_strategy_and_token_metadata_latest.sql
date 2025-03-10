@@ -27,14 +27,3 @@ AND strategy IN (
         strategy
     FROM {{ ref('eigenlayer_ethereum_whitelisted_strategy_latest') }}
 )
-
-
-UNION ALL
-
-
-SELECT
-    strategy,
-    token,
-    name AS symbol,
-    18 AS decimals
-FROM {{ ref('eigenlayer_ethereum_strategy_category') }}
