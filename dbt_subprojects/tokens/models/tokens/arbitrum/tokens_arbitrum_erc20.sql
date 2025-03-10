@@ -136,4 +136,5 @@ FROM (VALUES
     , (0xd089b4cb88dacf4e27be869a00e9f7e2e3c18193, 'waArbGHO', 18)
     , (0xa6d12574efb239fc1d2099732bd8b5dc6306897f, 'waArbUSDT', 6)    
     , (0x35E5dB674D8e93a03d814FA0ADa70731efe8a4b9, 'RLP', 18)   
+    , (0xcF6C2bb97a8978321C9e207afE8A2037fa9be45C, 'orbETH', 18)   
 ) AS temp_table (contract_address, symbol, decimals)
