@@ -1,11 +1,11 @@
 {{config(
     schema = 'tokens_avalanche_c',
     alias = 'balances_latest',
+    tags = ['prod_exclude'],
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['unique_key', 'block_date_latest'],
-    partition_by = ['block_date_latest'],
+    unique_key = ['unique_key'],
     post_hook='{{ expose_spells(\'["avalanche_c"]\',
                                 "sector",
                                 "balances_latest",
