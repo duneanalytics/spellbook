@@ -20,7 +20,7 @@ with raw_transfers as (
         , (sum(amount_usd) * -1) as transfer_amount_usd
         , count(*) transfer_count
     from
-        {{ source('tokens_solana', 'transfers') }}
+        {{ ref('tokens_solana_transfers') }}
     where
         1 = 1
         and action != 'wrap'
