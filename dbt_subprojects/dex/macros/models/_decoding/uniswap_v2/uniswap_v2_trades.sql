@@ -38,11 +38,12 @@ WITH evt_swap AS (
 
 , factory_event_counts AS (
     SELECT 
+        contract_address,
         pair,
         blockchain,
         COUNT(*) as event_count
     FROM factory_events
-    GROUP BY pair, blockchain
+    GROUP BY pair, blockchain, contract_address
     HAVING COUNT(*) = 1 -- Only keep pairs with exactly one factory event
 )
 
@@ -76,8 +77,9 @@ WITH evt_swap AS (
         AND f.blockchain = t.blockchain
     INNER JOIN
         factory_event_counts fec
-        ON fec.pair = f.pair
+        ON  fec.pair = f.pair
         AND fec.blockchain = f.blockchain
+        AND fec.contract_address = f.contract_address
     INNER JOIN (
         SELECT address, "from", blockchain, MAX(block_number) as latest_block
         FROM {{ source('evms', 'creation_traces') }}
