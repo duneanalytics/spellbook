@@ -6,8 +6,7 @@
 }}
 
 {% set base_models = [
-    ref('saru_apechain_base_trades')
-    , ref('camelot_apechain_base_trades')
+    ref('camelot_apechain_base_trades')
 ] %}
 
 WITH base_union AS (

@@ -8,25 +8,6 @@ models:
           column_name: amount_usd
           max_value: 1000000000
 
-  - name: saru_apechain_base_trades
-    meta:
-      blockchain: apechain
-      sector: dex
-      project: saru
-      contributors: hosuke
-    config:
-      tags: ["apechain", "dex", "trades", "saru"]
-    description: "Saru apechain base trades"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - tx_hash
-            - evt_index
-#      - check_dex_base_trades_seed:
-#          seed_file: ref('saru_apechain_base_trades_seed')
-#          filter:
-#            version: 1
-
   - name: camelot_apechain_base_trades
     meta:
       blockchain: apechain
