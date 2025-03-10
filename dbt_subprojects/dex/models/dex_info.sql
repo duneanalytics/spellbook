@@ -204,7 +204,6 @@ FROM (VALUES
     , ('jojo', 'JOJO', 'Direct', 'jojo_exchange')
     , ('beets', 'Beets DEX', 'Direct', 'beets_fi')
     , ('silverswap', 'SilverSwap', 'Direct', 'SilverSwapDex')
-    , ('saru', 'Saru', 'Direct', 'saru_ex')
     , ('shadow', 'Shadow', 'Direct', 'ShadowOnSonic')
     , ('kodiak', 'Kodiak', 'Direct', 'KodiakFi')
     , ('unichainswap', 'UnichainSwap', 'Direct', 'unichainswap')
