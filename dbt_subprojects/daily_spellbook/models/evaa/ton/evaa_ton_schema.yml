@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: evaa_ton_supply
+    meta:
+      blockchain: ton
+      sector: lending
+      contributors: pshuvalov
+    config:
+      tags: ['ton', 'evaa', 'lending']
+    description: >
+      EVAA protocol supply events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+    columns:
+      - name: block_date
+        description: "block_date partition field"
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: trace_id
+        description: "Trace ID"
+      - name: tx_now
+        description: "Transaction timestamp"
+      - name: tx_lt
+        description: "Transaction lt"
+      - name: pool_address
+        description: "EVAA Pool address"
+      - name: query_id
+        description: "Query id"
+      - name: owner_address
+        description: "User address who made the supply"
+      - name: asset_id
+        description: "Asset id encoded as UINT256"
+      - name: amount
+        description: "Amount of the asset supplied"
+      - name: user_new_principal
+        description: "New principal value for the user"
+      - name: repay_amount_principal
+        description: "Amount of principal that was used to repay the debt"
+      - name: supply_amount_principal
+        description: "Amount of principal that was used to supply the asset"
+  
