@@ -2,11 +2,8 @@ version: 2
 
 sources:
   - name: safe_berachain
-    freshness:
-      warn_after: { count: 12, period: hour }
     tables:
       - name: safeproxyfactory_v1_3_0_evt_proxycreation
-        loaded_at_field: evt_block_time
         description: "Safe v1.3.0 factory ProxyCreation events"
         columns:
           - &contract_address
@@ -32,7 +29,6 @@ sources:
             description: "Singleton"
 
       - name: safeproxyfactory_v1_4_1_evt_proxycreation
-        loaded_at_field: evt_block_time
         description: "Safe v1.4.1 factory ProxyCreation events"
         columns:
           - *contract_address
