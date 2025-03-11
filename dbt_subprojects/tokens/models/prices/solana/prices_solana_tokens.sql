@@ -509,7 +509,6 @@ FROM
         ('akt-akita-inu','solana','AKT','hUoehiMy279k95UeSijKkjx7RUsb676KSDgJ2i3xYbW',8),
         ('btc-bitcoin','solana','BTC','9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E',6),
         ('mer-mercurial','solana','MER','MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K',6),
-        ('floof-floof','solana','FLOOF','3jzdrXXKxwkBk82u2eCWASZLCKoZs1LQTg87HBEAmBJw',1),
         ('bomes-book-of-memes','solana','BOMES','7xSaeSepSuUUEExEQsPirgAbxZJXePEV3rsvPhLoyxuh',1),
         ('cope-cope','solana','COPE','8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh',6),
         ('birds-birdies','solana','BIRDS','9m9fmqJ2s7iUXZhFMsrdes1UcAtu3JyZXK3ZXfW3KPEw',5),
