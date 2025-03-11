@@ -311,6 +311,7 @@ maker_logs as (
                             THEN CAST(varbinary_to_uint256(varbinary_substring(varbinary_ltrim(logs.data), 1, 32)) AS VARCHAR) 
                             ELSE NULL 
                         END IN (CAST(amount_out_ AS VARCHAR))
+
                     ) 
                 
                         )     
