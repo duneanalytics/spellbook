@@ -30,7 +30,9 @@ with factory_events as (
 
         {% if blockchain == 'optimism' %}
             {% if not is_incremental() %}
-                union all
+                {% if loop.last %}
+                    union all
+                {% endif %}
                 select 
                     'optimism' as blockchain,
                     token0
@@ -70,6 +72,9 @@ with factory_events as (
                 , null as tx_index
                 , null as evt_index
             from {{ ref('uniswap_optimism_ovm1_pool_mapping') }}
+            {% endif %}
+            {% if not loop.last %}
+                union all
             {% endif %}
         {% endif %}
     {% endfor %}
