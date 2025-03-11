@@ -24,7 +24,6 @@ with raw_transfers as (
     where
         1 = 1
         and action != 'wrap'
-        and block_date >= date_trunc('day', now() - interval '2' day)
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
@@ -52,7 +51,6 @@ with raw_transfers as (
     where
         1 = 1
         and action != 'wrap'
-        and block_date >= date_trunc('day', now() - interval '2' day)
         {% if is_incremental() %}
         and {{ incremental_predicate('block_date') }}
         {% endif %}
