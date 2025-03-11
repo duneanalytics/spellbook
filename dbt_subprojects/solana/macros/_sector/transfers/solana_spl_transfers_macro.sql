@@ -158,6 +158,7 @@ WITH base AS (
         AND minute < {{end_date}}
         {% endif %}
 )
+
 SELECT
     b.block_time
     , b.block_date
@@ -166,9 +167,9 @@ SELECT
     , b.action
     , b.amount
     , CASE  
-        WHEN p.decimals is null THEN null
-        WHEN p.decimals = 0 THEN b.amount
-        ELSE b.amount / power(10, p.decimals)
+        WHEN tk_f.decimals is null THEN null
+        WHEN tk_f.decimals = 0 THEN b.amount
+        ELSE b.amount / power(10, tk_f.decimals)
       END as amount_display
     , b.from_token_account
     , b.to_token_account
@@ -183,11 +184,11 @@ SELECT
     , COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) as token_mint_address
     , p.price as price_usd
     , CASE 
-        WHEN p.decimals is null THEN null
-        WHEN p.decimals = 0 THEN p.price * b.amount
-        ELSE p.price * b.amount / power(10, p.decimals)
+        WHEN tk_f.decimals is null THEN null
+        WHEN tk_f.decimals = 0 THEN p.price * b.amount
+        ELSE p.price * b.amount / power(10, tk_f.decimals)
       END as amount_usd
-    , p.symbol as symbol
+    , tk_f.symbol as symbol
 FROM base b
 LEFT JOIN 
     {{ ref('solana_utils_token_accounts') }} tk_s 
@@ -201,5 +202,8 @@ LEFT JOIN
 LEFT JOIN prices p
     ON p.contract_address = tk_m.binary_address
     AND p.minute = date_trunc('minute', b.block_time)
+LEFT JOIN 
+    {{ ref('tokens_solana_fungible') }} tk_f
+    ON COALESCE(tk_s.token_mint_address, tk_d.token_mint_address) = tk_f.token_mint_address
 
 {% endmacro %}
