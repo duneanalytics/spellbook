@@ -18,5 +18,4 @@ FROM (VALUES
     , (0x000000000000000000000000000000000000800a, 'ETH', 18)
     , (0xc325b7e2736a5202bd860f5974d0aa375e57ede5, 'ABSTER', 18)
     , (0x85ca16fd0e81659e0b8be337294149e722528731, 'NOOT', 18)
-    , (0xd045e0686a784e272e651fc2c08324edabe7403a, 'CHENGU', 18)
 ) AS temp_table (contract_address, symbol, decimals) 
