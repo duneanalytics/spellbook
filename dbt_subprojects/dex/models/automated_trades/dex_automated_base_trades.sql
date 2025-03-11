@@ -1,12 +1,7 @@
 {{ config(
     schema = 'dex'
     , alias = 'automated_base_trades'
-    , partition_by = ['block_date', 'blockchain']
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'block_date', 'block_number', 'tx_index', 'evt_index']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , materialized = 'view'
     )
 }}
 
@@ -48,9 +43,6 @@ with base_union as (
             {{ model }}
         WHERE
            token_sold_amount_raw >= 0 and token_bought_amount_raw >= 0
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
-        {% endif %}
         {% if not loop.last %}
         UNION ALL
         {% endif %}

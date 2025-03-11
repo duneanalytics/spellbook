@@ -1,21 +1,13 @@
 {{ config(
     schema = 'dex'
-    , alias = 'automated_trades_unmapped'
-    , partition_by = ['blockchain', 'block_date']
-    , materialized = 'incremental'
-    , file_format = 'delta'
-    , incremental_strategy = 'merge'
-    , unique_key = ['blockchain', 'block_date', 'block_number', 'tx_index', 'evt_index']
-    , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , alias = 'automated_base_trades_unmapped'
+    , materialized = 'view'
     )
 }}
 
 WITH base_trades AS (
     SELECT *
-    FROM {{ ref('dex_automated_trades_all') }}
-    {% if is_incremental() %}
-        WHERE {{ incremental_predicate('block_time') }}
-    {% endif %}
+    FROM {{ ref('dex_automated_base_trades') }}
 )
 
 SELECT 
@@ -27,14 +19,8 @@ SELECT
     base_trades.block_date,
     base_trades.block_time,
     base_trades.block_number,
-    base_trades.token_bought_symbol,
-    base_trades.token_sold_symbol,
-    base_trades.token_pair,
-    base_trades.token_bought_amount,
-    base_trades.token_sold_amount,
     base_trades.token_bought_amount_raw,
     base_trades.token_sold_amount_raw,
-    base_trades.amount_usd,
     base_trades.token_bought_address,
     base_trades.token_sold_address,
     base_trades.taker,
@@ -45,9 +31,9 @@ SELECT
     base_trades.factory_topic0,
     base_trades.factory_info,
     base_trades.tx_hash,
+    base_trades.evt_index,
     base_trades.tx_from,
     base_trades.tx_to,
-    base_trades.evt_index,
     base_trades.tx_index
 FROM base_trades
 WHERE NOT EXISTS (

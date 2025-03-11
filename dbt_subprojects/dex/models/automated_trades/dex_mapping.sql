@@ -7,9 +7,6 @@
         )
 }}
 
-
-
-
 SELECT
     src
     , dex_type
@@ -463,9 +460,3 @@ VALUES
 	('mapping','uni-v3','monoswap','0x48d0f09710794313f33619c95147f34458bf7c3b','monoswap'),
 	('mapping','uni-v2','base','0xba06043a777652baf540ccc785edafd94ee05b37','archly')
 ) as x (src, dex_type, blockchain, factory, project)
-
--- for easier handling, you can download the csv file from dune and import it into a spreadsheet
--- after having wokred with the spreadsheet and added the missing projects, you can export the spreadsheet again as csv
--- and import it here again.
--- sqlizer works great for converting the csv file into a sql table.
-
