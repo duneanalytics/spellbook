@@ -1,16 +1,45 @@
 {% macro zeroex_settler_txs_cte(blockchain, start_date) %}
-WITH tbl_addresses AS (
-     SELECT 
-            tx_hash, 
-            bytearray_substring(topic3,13,20) as settler_address, 
-            varbinary_to_integer(varbinary_ltrim(topic1)) as token_id, 
-            block_time as begin_block_time,
-            block_number as begin_block_number
+
+-- Create a CTE to read the traces table and apply incremental filtering
+WITH base_traces AS (
+    SELECT
+        tx_hash,
+        block_number,
+        block_time,
+        "from",
+        "to",
+        varbinary_substring(input,1,4) AS method_id,
+        trace_address,
+        input
+    FROM
+        {{ source(blockchain, 'traces') }} AS tr
+    WHERE
+        (varbinary_position(input,0x1fff991f) <> 0 OR varbinary_position(input,0xfd3ad6d4) <> 0)
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('block_time') }}
+        {% else %}
+            AND block_time >= DATE '{{start_date}}'
+        {% endif %}
+),
+
+-- Create a CTE to read the logs table and apply incremental filtering
+base_logs AS (
+    SELECT 
+        tx_hash, 
+        bytearray_substring(topic3,13,20) as settler_address, 
+        varbinary_to_integer(varbinary_ltrim(topic1)) as token_id, 
+        block_time as begin_block_time,
+        block_number as begin_block_number
     FROM 
         {{ source(blockchain, 'logs') }} 
     WHERE 
         contract_address = 0x00000000000004533Fe15556B1E086BB1A72cEae 
         AND topic0 = 0xaa94c583a45742b26ac5274d230aea34ab334ed5722264aa5673010e612bc0b2
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('block_time') }}
+        {% else %}
+            AND block_time >= DATE '{{start_date}}'
+        {% endif %}
 ),
 
 tbl_end_times AS (
@@ -19,7 +48,7 @@ tbl_end_times AS (
         LEAD(begin_block_time) OVER (PARTITION BY token_id ORDER BY begin_block_time) AS end_block_time,
         LEAD(begin_block_number) OVER (PARTITION BY token_id ORDER BY begin_block_time) AS end_block_number
     FROM
-        tbl_addresses
+        base_logs
 ),
 
 result_0x_settler_addresses AS (
@@ -37,7 +66,7 @@ settler_trace_data AS (
         block_number,
         block_time,
         "to" AS contract_address,
-        varbinary_substring(input,1,4) AS method_id,
+        method_id,
         varbinary_substring(input,varbinary_position(input,0xfd3ad6d4)+132,32) tracker,
         case when varbinary_substring(input,17,6) in (0x,0x000000000000) then "from"
             else first_value(varbinary_substring(input,17,20)) over (partition by tr.tx_hash order by trace_address desc) 
@@ -47,19 +76,13 @@ settler_trace_data AS (
         case when varbinary_position(input,0x9008d19f58aabd9ed0d60971565aa8510560ab41) <> 0 then 1 end as cow_trade,
         input 
     FROM
-        {{ source(blockchain, 'traces') }} AS tr
+        base_traces AS tr
     JOIN
         result_0x_settler_addresses a ON a.settler_address = tr.to AND tr.block_time > a.begin_block_time
     WHERE
         (a.settler_address IS NOT NULL OR tr.to in (0x0000000000001fF3684f28c67538d4D072C22734,
                                                     0x0000000000005E88410CcDFaDe4a5EfaE4b49562,
                                                     0x000000000000175a8b9bC6d539B3708EEd92EA6c))
-        AND (varbinary_position(input,0x1fff991f) <> 0 OR  varbinary_position(input,0xfd3ad6d4) <> 0 )
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
-        {% else %}
-            AND block_time >= DATE '{{start_date}}'
-        {% endif %}
 ),
 
 settler_txs AS (
@@ -92,7 +115,28 @@ SELECT * FROM settler_txs
 {% endmacro %}
 
 {% macro zeroex_v2_trades(blockchain, start_date) %}
-WITH 
+-- Create a CTE to read the logs table and apply incremental filtering
+WITH base_logs AS (
+    SELECT
+        tx_hash,
+        block_time,
+        block_number,
+        index,
+        contract_address,
+        topic0,
+        topic1,
+        topic2,
+        data
+    FROM
+        {{ source(blockchain, 'logs') }} AS logs
+    WHERE 1=1
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('block_time') }}
+        {% else %}
+            AND block_time >= DATE '{{start_date}}'
+        {% endif %}
+), 
+
 bundled_tx_check as (
     select tx_hash, 
         block_time,
@@ -101,6 +145,7 @@ bundled_tx_check as (
         from zeroex_tx
         group by 1,2,3
 ), 
+
 swap_signatures as (
     SELECT signature FROM (
         VALUES 
@@ -135,6 +180,7 @@ swap_signatures as (
         (0x1f5359759208315a45fc3fa86af1948560d8b87afdcaf1702a110ce0fbc305f3)
     ) AS t(signature)
 ),
+
 tbl_all_logs AS (
     SELECT
         tx_hash,
@@ -160,17 +206,12 @@ tbl_all_logs AS (
         cow_rn,
         case when tx_cnt > 1 then 1 else 0 end as bundled_tx
     FROM
-        {{ source(blockchain, 'logs') }} AS logs
+        base_logs AS logs
     JOIN
         zeroex_tx st using (block_time, block_number, tx_hash)
     JOIN bundled_tx_check btx using (block_time, block_number, tx_hash)
     LEFT JOIN swap_signatures on topic0 = signature
     WHERE 1=1
-        {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
-        {% else %}
-            AND block_time >= DATE '{{start_date}}'
-        {% endif %}
         AND ( 
                 topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
@@ -182,6 +223,7 @@ tbl_all_logs AS (
         AND zid != 0xa00000000000000000000000
         and rn = 1 
 ),
+
 swap_logs as (
     select  
         block_time, 
@@ -202,6 +244,7 @@ swap_logs as (
        and log_type = 'swap'
        
 ),
+
 taker_logs as (
     with tbl_base as (
     select 
@@ -245,6 +288,7 @@ taker_logs as (
         row_number() over (partition by tx_hash order by (index)) rn
     from tbl_base  
 ),
+
 maker_logs as (
     with tbl_all as (
     select distinct 
@@ -338,20 +382,29 @@ maker_logs as (
 
     
 ),
-cow_trades as (
-    with base_logs as (
-        select      distinct block_time, block_number, tx_hash, settler_address, logs.contract_address, tx_from, tx_to, taker, amount as taker_amount,
-                     tx_index, evt_index, buy_token_address as maker_token, atoms_bought as maker_amount, logs.contract_address as taker_token
-    FROM {{ source('cow_protocol_ethereum', 'trades') }}
-    JOIN tbl_all_logs as logs using (block_time, block_number, tx_hash)
-    where
+
+-- Create a common table expression to read the cow_protocol_ethereum.trades table and apply incremental filtering
+base_cow_trades AS (
+    SELECT
+        *
+    FROM 
+        {{ source('cow_protocol_ethereum', 'trades') }}
+    WHERE
         1 = 1
         {% if is_incremental() %}
         AND {{ incremental_predicate('block_time') }}
         {% else %}
         AND block_time >= DATE '{{start_date}}'
         {% endif %}
-        and trades.sell_token_address = logs.contract_address and trades.atoms_sold = logs.amount
+),
+
+cow_trades as (
+    with base_logs as (
+        select      distinct block_time, block_number, tx_hash, settler_address, logs.contract_address, tx_from, tx_to, taker, amount as taker_amount,
+                     tx_index, evt_index, buy_token_address as maker_token, atoms_bought as maker_amount, logs.contract_address as taker_token
+    FROM base_cow_trades as trades
+    JOIN tbl_all_logs as logs using (block_time, block_number, tx_hash)
+    where trades.sell_token_address = logs.contract_address and trades.atoms_sold = logs.amount
         ),
     base_logs_rn as (
     select  *, 
@@ -380,6 +433,7 @@ cow_trades as (
         and b.block_number = s.block_number 
         and cow_rn = cow_trade_rn
 ),
+
 tbl_trades as (
 select  block_time,
         block_number,
@@ -419,8 +473,7 @@ select * from tbl_trades
 {% endmacro %}
 
 {% macro zeroex_v2_trades_detail(blockchain, start_date) %}
-WITH 
-token_metadata AS (
+WITH token_metadata AS (
     SELECT 
         blockchain, 
         contract_address, 
@@ -429,6 +482,7 @@ token_metadata AS (
     FROM {{ source('tokens', 'erc20') }}
     WHERE blockchain = '{{blockchain}}'
 ),
+
 token_prices AS (
     SELECT
         blockchain,
@@ -446,6 +500,7 @@ token_prices AS (
         AND minute >= DATE '{{start_date}}'
         {% endif %}
 ), 
+
 results AS (
     SELECT
         '{{blockchain}}' AS blockchain,
