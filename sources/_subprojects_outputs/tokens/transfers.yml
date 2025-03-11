@@ -39,6 +39,14 @@ sources:
     tables:
       - name: transfers
 
+  - name: tokens_nova
+    tables:
+      - name: transfers
+
+  - name: tokens_ronin
+    tables:
+      - name: transfers
+
   - name: tokens_optimism
     tables:
       - name: transfers
