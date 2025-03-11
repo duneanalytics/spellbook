@@ -246,3 +246,34 @@ models:
       - name: block_time
       - name: balance_raw
       - name: balance
+      
+  - name: tokens_scroll_net_transfers_daily_address
+    meta:
+      blockchain: scroll
+      sector: tokens
+      contributors: 0xRob, krishhh
+    config:
+      tags: ['tokens', 'net_transfers', 'daily', 'address']
+    description: "Total transfer amount per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
+
+  - name: tokens_scroll_net_transfers_daily_asset_address
+    meta:
+      blockchain: scroll
+      sector: tokens
+      contributors: 0xRob, krishhh
+    config:
+      tags: ['tokens', 'net_transfers', 'daily', 'asset', 'address']
+    description: "Total transfer amount per day per asset per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - contract_address
+            - address
