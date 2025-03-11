@@ -116,17 +116,9 @@ SELECT * FROM settler_txs
 
 {% macro zeroex_v2_trades(blockchain, start_date) %}
 -- Create a CTE to read the logs table and apply incremental filtering
-WITH base_logs AS (
+WITH base_filtered_logs AS (
     SELECT
-        tx_hash,
-        block_time,
-        block_number,
-        index,
-        contract_address,
-        topic0,
-        topic1,
-        topic2,
-        data
+        *
     FROM
         {{ source(blockchain, 'logs') }} AS logs
     WHERE 1=1
@@ -206,7 +198,7 @@ tbl_all_logs AS (
         cow_rn,
         case when tx_cnt > 1 then 1 else 0 end as bundled_tx
     FROM
-        base_logs AS logs
+        base_filtered_logs AS logs
     JOIN
         zeroex_tx st using (block_time, block_number, tx_hash)
     JOIN bundled_tx_check btx using (block_time, block_number, tx_hash)
