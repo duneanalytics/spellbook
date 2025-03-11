@@ -45,6 +45,7 @@ WITH trusted_tokens AS (
                 , ('berachain', 0x6969696969696969696969696969696969696969)
                 , ('berachain', 0x549943e04f40284185054145c6E4e9568C1D3241)
                 , ('berachain', 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590)
+                , ('berachain', 0xfcbd14dc51f0a4d49d5e53c2e0950e0bc26d0dce)
                 , ('blast', 0x4300000000000000000000000000000000000004)
                 , ('blast', 0x4300000000000000000000000000000000000003)
                 , ('blast', 0xb1a5700fa2358173fe465e6ea4ff52e36e88e2ad)
