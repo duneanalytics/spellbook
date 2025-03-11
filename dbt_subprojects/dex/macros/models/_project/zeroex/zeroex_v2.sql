@@ -8,8 +8,8 @@ WITH base_traces AS (
         block_time,
         "from",
         "to",
-        varbinary_substring(input,1,4) AS method_id,
         trace_address,
+        varbinary_substring(input,1,4) AS method_id,
         input
     FROM
         {{ source(blockchain, 'traces') }} AS tr
@@ -26,10 +26,12 @@ WITH base_traces AS (
 base_logs AS (
     SELECT 
         tx_hash, 
-        bytearray_substring(topic3,13,20) as settler_address, 
-        varbinary_to_integer(varbinary_ltrim(topic1)) as token_id, 
-        block_time as begin_block_time,
-        block_number as begin_block_number
+        block_time,
+        block_number,
+        topic0,
+        topic1,
+        topic3,
+        contract_address
     FROM 
         {{ source(blockchain, 'logs') }} 
     WHERE 
@@ -44,9 +46,13 @@ base_logs AS (
 
 tbl_end_times AS (
     SELECT 
-        *, 
-        LEAD(begin_block_time) OVER (PARTITION BY token_id ORDER BY begin_block_time) AS end_block_time,
-        LEAD(begin_block_number) OVER (PARTITION BY token_id ORDER BY begin_block_time) AS end_block_number
+        tx_hash,
+        bytearray_substring(topic3,13,20) as settler_address, 
+        varbinary_to_integer(varbinary_ltrim(topic1)) as token_id, 
+        block_time as begin_block_time,
+        block_number as begin_block_number,
+        LEAD(block_time) OVER (PARTITION BY varbinary_to_integer(varbinary_ltrim(topic1)) ORDER BY block_time) AS end_block_time,
+        LEAD(block_number) OVER (PARTITION BY varbinary_to_integer(varbinary_ltrim(topic1)) ORDER BY block_time) AS end_block_number
     FROM
         base_logs
 ),
