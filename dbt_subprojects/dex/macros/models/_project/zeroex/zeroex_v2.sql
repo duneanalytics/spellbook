@@ -279,7 +279,8 @@ maker_logs as (
     WHERE  
         cow_rn is null 
         and amount != 0 
-        and ( 
+        and (
+            ( 
                 ( topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
                     and 
                         ( 
@@ -316,11 +317,13 @@ maker_logs as (
                         )     
                     )
             )
+        )
             or (
                 topic0 in (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65)
                 and bytearray_substring(logs.topic1,13,20) in (tx_from, settler_address) 
             )
         )
+        
         
     ),
     tbl_logs_rn as (
