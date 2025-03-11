@@ -126,8 +126,8 @@ WITH evt_swap AS (
         AND f.blockchain = t.blockchain
     INNER JOIN {{ ref('uniswap_optimism_ovm1_pool_mapping') }} ov
         ON t.contract_address = ov.newaddress
-        and f.contract_address = 0x1F98431c8aD98523631AE4a59f267346ea31F984
-        and t.blockchain = 'optimism'
+        AND f.contract_address = 0x1F98431c8aD98523631AE4a59f267346ea31F984
+        AND t.blockchain = 'optimism'
 )
 
 -- Combine regular trades and special Optimism trades
@@ -140,7 +140,10 @@ WITH evt_swap AS (
     LEFT JOIN regular_trades r
         ON o.blockchain = r.blockchain
         AND o.tx_hash = r.tx_hash
+        AND o.block_number = r.block_number
+        AND o.tx_index = r.tx_index
         AND o.evt_index = r.evt_index
+        AND o.project_contract_address = r.project_contract_address
     WHERE r.tx_hash IS NULL
 )
 
