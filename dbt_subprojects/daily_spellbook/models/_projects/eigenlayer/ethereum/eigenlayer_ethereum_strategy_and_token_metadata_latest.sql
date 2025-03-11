@@ -6,7 +6,8 @@
                                     "project",
                                     "eigenlayer",
                                     \'["bowenli"]\') }}',
-        materialized = 'table'
+        materialized = 'table',
+        unique_key = ['strategy']
     )
 }}
 
@@ -26,5 +27,3 @@ AND strategy IN (
         strategy
     FROM {{ ref('eigenlayer_ethereum_whitelisted_strategy_latest') }}
 )
-
-
