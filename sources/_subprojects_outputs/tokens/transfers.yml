@@ -6,6 +6,8 @@ sources:
   - name: tokens_arbitrum
     tables:
       - name: transfers
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset
 
   - name: tokens_avalanche_c
     tables:
