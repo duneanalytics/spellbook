@@ -1,6 +1,6 @@
 {{ config(
         schema='prices_test',
-        alias = 'sqlmesh_copy',
+        alias = 'sqlmesh_copy_ordered',
         materialized='table',
         file_format = 'delta',
         partition_by = ['year','month','blockchain'],
