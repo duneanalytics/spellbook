@@ -1,11 +1,11 @@
 {{ config(
-        schema = 'uniswap_v3_decoded_events',
-        alias = 'old_chains_decoded_pool_evt_swap',
-        partition_by = ['block_month', 'blockchain'],
+        schema = 'uniswap_v2_forks_old_chains',
+        alias = 'decoded_swap_events',
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'block_number', 'tx_index', 'evt_index'],
+        unique_key = ['blockchain', 'block_month', 'block_number', 'tx_index', 'evt_index'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
         )
 }}
@@ -20,7 +20,7 @@ with pool_events as (
             '{{blockchain}}' as blockchain,
             * 
         from (
-            {{uniswap_v3_pool_event_decoding(
+            {{uniswap_v2_pool_event_decoding(
                 logs = source(blockchain, 'logs')
             )}}
         )   

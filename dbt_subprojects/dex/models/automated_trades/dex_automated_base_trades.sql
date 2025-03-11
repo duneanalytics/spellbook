@@ -6,8 +6,8 @@
 }}
 
 {% set models = [
-    ref('uniswap_v2_all_chains_automated_base_trades'),
-    ref('uniswap_v3_all_chains_automated_base_trades')
+    ref('uniswap_v2_forks_automated_base_trades'),
+    ref('uniswap_v3_forks_automated_base_trades')
 ] %}
 
 with base_union as (

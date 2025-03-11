@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'uniswap_v2_new_chains',
+        schema = 'uniswap_v3_forks_new_chains',
         alias = 'decoded_factory_events',
-        partition_by = ['block_month', 'blockchain'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -20,7 +20,7 @@ with factory_events as (
             '{{blockchain}}' as blockchain,
             * 
         from (
-            {{uniswap_v2_factory_event_decoding(
+            {{uniswap_v3_factory_event_decoding(
                 logs = source(blockchain, 'logs')
             )}}
         )   

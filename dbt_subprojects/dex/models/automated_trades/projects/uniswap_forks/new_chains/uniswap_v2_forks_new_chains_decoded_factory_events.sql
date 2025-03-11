@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'uniswap_v2_old_chains',
+        schema = 'uniswap_v2_forks_new_chains',
         alias = 'decoded_factory_events',
-        partition_by = ['block_month', 'blockchain'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -11,7 +11,7 @@
 }}
 
 {%
-    set blockchains = uniswap_old_blockchains_list()
+    set blockchains = uniswap_new_blockchains_list()
 %}
 
 with factory_events as (
@@ -30,4 +30,4 @@ with factory_events as (
     {% endfor %}
 )
 
-select * from factory_events
+select * from factory_events 

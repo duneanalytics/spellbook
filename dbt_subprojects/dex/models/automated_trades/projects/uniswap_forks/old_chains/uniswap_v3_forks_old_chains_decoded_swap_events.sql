@@ -1,17 +1,17 @@
 {{ config(
-        schema = 'uniswap_v3_decoded_events',
-        alias = 'new_chains_decoded_pool_evt_swap',
-        partition_by = ['block_month', 'blockchain'],
+        schema = 'uniswap_v3_forks_old_chains',
+        alias = 'decoded_swap_events',
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['blockchain', 'block_number', 'tx_index', 'evt_index'],
+        unique_key = ['blockchain', 'block_month', 'block_number', 'tx_index', 'evt_index'],
         incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
         )
 }}
 
 {%
-    set blockchains = uniswap_new_blockchains_list()
+    set blockchains = uniswap_old_blockchains_list()
 %}
 
 with pool_events as (
@@ -30,4 +30,4 @@ with pool_events as (
     {% endfor %}
 )
 
-select * from pool_events 
+select * from pool_events

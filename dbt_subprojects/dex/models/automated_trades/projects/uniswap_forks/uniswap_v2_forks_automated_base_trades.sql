@@ -1,7 +1,7 @@
 {{ config(
-        schema = 'uniswap_v2_all_chains',
+        schema = 'uniswap_v2_forks',
         alias = 'automated_base_trades',
-        partition_by = ['block_month', 'blockchain'],
+        partition_by = ['block_month'],
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
@@ -12,17 +12,17 @@
 
 {%- set Pair_evt_Swap -%}
 (
-    select * from {{ ref('uniswap_v2_old_chains_decoded_pool_evt_swap') }}
+    select * from {{ ref('uniswap_v2_forks_old_chains_decoded_swap_events') }}
     union all 
-    select * from {{ ref('uniswap_v2_new_chains_decoded_pool_evt_swap') }}
+    select * from {{ ref('uniswap_v2_forks_new_chains_decoded_swap_events') }}
 )
 {%- endset -%}
 
 {%- set Factory_evt_PairCreated -%}
 (
-    select * from {{ ref('uniswap_v2_old_chains_decoded_factory_evt') }}
+    select * from {{ ref('uniswap_v2_forks_old_chains_decoded_factory_events') }}
     union all 
-    select * from {{ ref('uniswap_v2_new_chains_decoded_factory_evt') }}
+    select * from {{ ref('uniswap_v2_forks_new_chains_decoded_factory_events') }}
 )
 {%- endset -%}
 
