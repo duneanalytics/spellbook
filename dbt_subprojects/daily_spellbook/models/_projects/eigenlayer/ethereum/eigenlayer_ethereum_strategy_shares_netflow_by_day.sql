@@ -5,7 +5,9 @@
         post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "eigenlayer",
-                                    \'["bowenli"]\') }}'
+                                    \'["bowenli"]\') }}',
+        materialized = 'table',
+        unique_key = ['strategy', 'date']
     )
 }}
 
@@ -17,7 +19,9 @@ WITH combined AS (
         date
     FROM {{ ref('eigenlayer_ethereum_strategy_shares_inflow_by_day') }}
 
+
     UNION ALL
+
 
     SELECT
         strategy,

@@ -8,7 +8,7 @@ with raw_transfers as (
         , 'sent' as transfer_direction
         , (sum(amount_usd) * -1) as transfer_amount_usd
     from
-        {{ ref('tokens_transfers') }}
+        {{ ref('tokens_'~blockchain~'_transfers') }}
     where
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
@@ -29,7 +29,7 @@ with raw_transfers as (
         , 'received' as transfer_direction
         , sum(amount_usd) as transfer_amount_usd
     from
-        {{ ref('tokens_transfers') }}
+        {{ ref('tokens_'~blockchain~'_transfers') }}
     where
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
@@ -89,9 +89,6 @@ with raw_transfers as (
 select
     blockchain
     , block_date
-    , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
-    , sum(transfer_amount_usd_received) as transfer_amount_usd_received
-    , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received)) as transfer_amount_usd
     , sum(net_transfer_amount_usd) as net_transfer_amount_usd
 from
     net_transfers
@@ -118,7 +115,7 @@ with raw_transfers as (
         , (sum(amount_usd) * -1) as transfer_amount_usd
         , count(*) transfer_count
     from
-        {{ ref('tokens_transfers') }}
+        {{ ref('tokens_'~blockchain~'_transfers') }}
     where
         blockchain = '{{blockchain}}'
         {% if is_incremental() %}
@@ -144,7 +141,7 @@ with raw_transfers as (
         , sum(amount_usd) as transfer_amount_usd
         , count(*) transfer_count
     from
-        {{ ref('tokens_transfers') }}
+        {{ ref('tokens_'~blockchain~'_transfers') }}
     where
         blockchain = '{{blockchain}}'
        {% if is_incremental() %}
@@ -200,11 +197,7 @@ select
     , block_date
     , contract_address
     , symbol
-    , sum(transfer_amount_usd_sent) as transfer_amount_usd_sent
-    , sum(transfer_amount_usd_received) as transfer_amount_usd_received
-    , sum(abs(transfer_amount_usd_sent)) + sum(abs(transfer_amount_usd_received)) as transfer_amount_usd
     , sum(net_transfer_amount_usd) as net_transfer_amount_usd
-    , sum(transfer_count) transfer_count
 from
     net_transfers
 where

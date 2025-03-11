@@ -102,6 +102,10 @@ models:
       Strategy category
     columns:
       - *strategy
+      - &token
+        name: token
+        description: "ERC20 Token"
+        type: varbinary
       - &category
         name: category
         description: "Category of the strategy"
@@ -164,9 +168,7 @@ models:
       Flattened rewards V1 events
     columns:
       - *avs
-      - &token
-        name: token
-        description: "ERC20 Token"
+      - *token
       - &amount
         name: amount
         description: "Amount of ERC20 token, in respective decimals"
@@ -249,6 +251,17 @@ models:
     columns:
       - *avs
       - *metadataURI
+  - name: eigenlayer_ethereum_whitelisted_strategy_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'strategy']
+    description: >
+        Latest whitelisted strategies
+    columns:
+      - *strategy
   - name: eigenlayer_ethereum_underlying_token_exchange_rate
     meta:
       blockchain: ethereum
@@ -275,14 +288,37 @@ models:
     columns:
       - *strategy
       - *exchange_rate
-  - name: eigenlayer_ethereum_whitelisted_strategy_latest
+  - name: eigenlayer_ethereum_pod_shares_updated_enriched
     meta:
       blockchain: ethereum
       sector: restaking
       contributors: bowenli
     config:
-      tags: ['eigenlayer', 'restaking', 'strategy']
+      tags: ['eigenlayer', 'restaking', 'beacon strategy', 'native eth']
     description: >
-        Latest whitelisted strategies
+        Enriched eigenpod shares changed
+    columns:
+      - *evt_tx_hash
+      - *evt_index
+      - *evt_block_time
+      - *evt_block_number
+      - *strategy
+      - *shares
+  - name: eigenlayer_ethereum_strategy_and_token_metadata_latest
+    meta:
+      blockchain: ethereum
+      sector: restaking
+      contributors: bowenli
+    config:
+      tags: ['eigenlayer', 'restaking', 'strategy', 'metadata']
+    description: >
+        Latest strategy and token metadata
     columns:
       - *strategy
+      - *token
+      - &symbol
+        name: symbol
+        description: "Symbol of the token"
+      - &decimals
+        name: decimals
+        description: "Decimals of the token"

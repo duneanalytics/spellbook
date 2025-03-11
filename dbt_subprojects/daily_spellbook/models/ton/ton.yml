@@ -34,3 +34,55 @@ models:
       - &asset_type
         name: asset_type
         description: 'Asset type: Jetton (price is based on DEX trades), DEX LP or SLP (StormTrade LP token)'
+  - name: ton_accounts
+    meta:
+      blockchain: ton
+      contributors: pshuvalov
+    config:
+      tags: ['ton','balances', 'interfaces', 'deployments']
+    description: >
+      Contains information about all accounts on TON blockchain including latest balance, interfaces and first/deployment tx information.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+              - address
+    columns:
+      - &address
+        name: address
+        description: "Account address"
+      - &status
+        name: status
+        description: "Account status - active, nonexist, uninit, frozen"
+      - &last_tx_hash
+        name: last_tx_hash
+        description: "Last transaction hash"
+      - &last_tx_at
+        name: last_tx_at
+        description: "Last transaction time"
+      - &balance
+        name: balance
+        description: "Account balance in nano TON"
+      - &code_hash
+        name: code_hash
+        description: "Account code hash"
+      - &deployment_tx_hash
+        name: deployment_tx_hash
+        description: "Hash of transaction that deployed the smart contract"
+      - &deployment_at
+        name: deployment_at
+        description: "Deployment transaction time"
+      - &deployment_by_external
+        name: deployment_by_external
+        description: "True if deployment was made by external message"
+      - &initial_funding_tx_hash
+        name: initial_funding_tx_hash
+        description: "First transaction hash"
+      - &initial_funding_at
+        name: initial_funding_at
+        description: "First transaction time"
+      - &initial_funding_sender
+        name: initial_funding_sender
+        description: "Senders of funds resulted in first transaction"
+      - &interfaces
+        name: interfaces
+        description: "Array of interfaces"
