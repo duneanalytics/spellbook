@@ -509,7 +509,6 @@ FROM
         ('akt-akita-inu','solana','AKT','hUoehiMy279k95UeSijKkjx7RUsb676KSDgJ2i3xYbW',8),
         ('btc-bitcoin','solana','BTC','9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E',6),
         ('mer-mercurial','solana','MER','MERt85fc5boKw3BW1eYdxonEuJNvXbiMbs6hvheau5K',6),
-        ('floof-floof','solana','FLOOF','3jzdrXXKxwkBk82u2eCWASZLCKoZs1LQTg87HBEAmBJw',1),
         ('bomes-book-of-memes','solana','BOMES','7xSaeSepSuUUEExEQsPirgAbxZJXePEV3rsvPhLoyxuh',1),
         ('cope-cope','solana','COPE','8HGyAAB1yoM1ttS7pXjHMa3dukTFGQggnFFH3hJZgzQh',6),
         ('birds-birdies','solana','BIRDS','9m9fmqJ2s7iUXZhFMsrdes1UcAtu3JyZXK3ZXfW3KPEw',5),
@@ -735,5 +734,6 @@ FROM
         ('chillguy-just-a-chill-guy', 'solana', 'CHILLGUY', 'Df6yfrKC8kZE3KNkrHERKzAetSxbrWeniQfyJY4Jpump', 6),
         ('kmno-kamino-finance', 'solana', 'KMNO', 'KMNo3nJsBXfcpJTVhZcXLW7RmTwTt4GVFE7suUBo9sS', 6),
         ('pyusd-paypal-usd', 'solana', 'PyUSD', '2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo', 6),
-        ('prcl-parcl', 'solana', 'PRCL', '4LLbsb5ReP3yEtYzmXewyGjcir5uXtKFURtaEUVC2AHs', 6)
+        ('prcl-parcl', 'solana', 'PRCL', '4LLbsb5ReP3yEtYzmXewyGjcir5uXtKFURtaEUVC2AHs', 6),
+        ('layer-solayer', 'solana', 'LAYER', 'LAYER4xPpTCb3QL8S9u41EAhAX7mhBn8Q6xMTwY2Yzc', 9)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

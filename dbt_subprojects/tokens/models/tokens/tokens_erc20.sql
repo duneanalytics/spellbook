@@ -30,13 +30,16 @@
                                         ,"scroll"
                                         ,"sei"
                                         ,"sepolia"
+                                        ,"shape"
                                         ,"worldchain"
                                         ,"zkevm"
                                         ,"zksync"
                                         ,"zora"
                                         ,"bob"
                                         ,"sonic"
+                                        ,"sophon"
                                         ,"berachain"
+                                        ,"apechain"
                                         ,"unichain"
                                     ]\',
                                     "sector",
@@ -65,6 +68,7 @@
     ,'tokens_optimism': {'blockchain': 'optimism', 'model': ref('tokens_optimism_erc20')}
     ,'tokens_polygon': {'blockchain': 'polygon', 'model': ref('tokens_polygon_erc20')}
     ,'tokens_scroll': {'blockchain': 'scroll', 'model': ref('tokens_scroll_erc20')}
+    ,'tokens_shape': {'blockchain': 'shape', 'model': ref('tokens_shape_erc20')}
     ,'tokens_zkevm': {'blockchain': 'zkevm', 'model': ref('tokens_zkevm_erc20')}
     ,'tokens_zksync': {'blockchain': 'zksync', 'model': ref('tokens_zksync_erc20')}
     ,'tokens_zora': {'blockchain': 'zora', 'model': ref('tokens_zora_erc20')}
@@ -84,8 +88,10 @@
     ,'tokens_sonic': {'blockchain': 'sonic', 'model': ref('tokens_sonic_erc20')}
     ,'tokens_corn': {'blockchain': 'corn', 'model': ref('tokens_corn_erc20')}
     ,'tokens_ink': {'blockchain': 'ink', 'model': ref('tokens_ink_erc20')}
+    ,'tokens_sophon': {'blockchain': 'sophon', 'model': ref('tokens_sophon_erc20')}
     ,'tokens_abstract': {'blockchain': 'abstract', 'model': ref('tokens_abstract_erc20')}
     ,'tokens_berachain': {'blockchain': 'berachain', 'model': ref('tokens_berachain_erc20')}
+    ,'tokens_apechain': {'blockchain': 'apechain', 'model': ref('tokens_apechain_erc20')}
     ,'tokens_unichain': {'blockchain': 'unichain', 'model': ref('tokens_unichain_erc20')}
 } %}
 
@@ -103,7 +109,13 @@ with automated_source as (
         select
             i.blockchain
             , t.address as contract_address
-            , t.symbol
+            , case
+                when (
+                    t.address = 0x0000000000000000000000000000000000001010
+                    and i.blockchain = 'polygon'
+                ) then 'POL' -- source has incorrect symbol for POL on polygon post-migration
+                else t.symbol
+            end as symbol
             , t.decimals
             , row_number() over (
                 partition by
