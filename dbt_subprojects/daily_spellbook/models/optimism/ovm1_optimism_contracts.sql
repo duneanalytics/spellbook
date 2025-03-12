@@ -10,7 +10,7 @@ SELECT
     , contract_project
     , contract_name
     , erc20_address
-    , created_time
+    , cast(created_time as timestamp)
     , creator_address
 FROM (
     VALUES
@@ -166,7 +166,7 @@ FROM (
     ,(0x7571cc9895d8e997853b1e0a1521ebd8481aa186, 'Rubicon', 'BathToken', 'bathWBTC', '2021-08-16 20:38:05', 0x3204ac6f848e05557c6c7876e09059882e07962f)
     ,(0x76b22b8c1079a44f1211d867d68b1eda76a635a7, 'Hop Protocol', NULL, NULL, '2021-08-21 20:22:40', 0x924ac9910c09a0215b06458653b30471a152022f)
     ,(0x76d2de36936005a0182a1bb61da501a8a044d477, 'Synthetix', NULL, NULL, NULL, NULL)
-    ,(0x788843de0be1598155bffaab7cfa2ecbd542e7f1, 'Lyra V1', 'LiquidityPool', NULL, '2021-10:35:32', 0x932607335869cff6349ef450e74c83a3b871a9ff)
+    ,(0x788843de0be1598155bffaab7cfa2ecbd542e7f1, 'Lyra V1', 'LiquidityPool', NULL, '2021-10-01 10:35:32', 0x932607335869cff6349ef450e74c83a3b871a9ff)
     ,(0x78aaa3fb165decaa729dfe3cf0e97ab6fcf484da, 'Synthetix', NULL, NULL, '2021-10-28 22:31:31', 0x3c05b1239b223c969540fefc0270227a2b00e047)
     ,(0x7957ac0b737c40227ae6e98bf746aae84a26053c, 'Lyra V1', 'LyraMarketsRegistry', NULL, '2021-08-21 07:17:56', 0x932607335869cff6349ef450e74c83a3b871a9ff)
     ,(0x7a2cf54897345b5f6a9006e2da19b3739c4f5dce, 'Rubicon', NULL, NULL, '2021-08-16 20:38:05', 0x3204ac6f848e05557c6c7876e09059882e07962f)
