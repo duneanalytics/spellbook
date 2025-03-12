@@ -72,6 +72,8 @@ SELECT
     blockchain
     , version
     , dex_type
+    , project
+    
     , block_month
     , block_date
     , block_time

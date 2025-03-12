@@ -1,18 +1,18 @@
 {{ config(
     schema = 'dex'
-    , alias = 'automated_base_trades_mapped'
+    , alias = 'automated_base_trades_unmapped'
     , materialized = 'view'
     )
 }}
 
 WITH base_trades AS (
     SELECT *
-    FROM {{ ref('dex_automated_base_trades') }}
+    FROM {{ ref('dex_automated_trades') }}
 )
 
 SELECT 
     base_trades.blockchain,
-    dex_map.project as project,
+    concat('unknown-', base_trades.dex_type, '-', cast(varbinary_substring(base_trades.factory_address, 1, 5) as varchar)) as project,
     base_trades.version,
     base_trades.dex_type,
     base_trades.block_month,
@@ -36,6 +36,9 @@ SELECT
     base_trades.tx_to,
     base_trades.tx_index
 FROM base_trades
-INNER JOIN {{ ref('dex_mapping') }} AS dex_map
-    ON base_trades.factory_address = dex_map.factory
-    AND base_trades.blockchain = dex_map.blockchain 
+WHERE NOT EXISTS (
+    SELECT 1 
+    FROM {{ ref('dex_mapping') }} AS dex_map
+    WHERE base_trades.blockchain = dex_map.blockchain
+    AND base_trades.factory_address = dex_map.factory
+)

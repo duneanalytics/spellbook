@@ -13,11 +13,14 @@
 with dexs AS (
     {{
         enrich_dex_automated_trades(
-            base_trades = ref('dex_automated_base_trades_mapped')
+            base_trades = ref('dex_automated_base_trades')
             , tokens_erc20_model = source('tokens', 'erc20')
         )
     }}
 )
 
 select *
-from dexs
+from dexs 
+INNER JOIN {{ ref('dex_mapping') }} AS dex_map
+    ON dexs.factory_address = dex_map.factory
+    AND dexs.blockchain = dex_map.blockchain 
