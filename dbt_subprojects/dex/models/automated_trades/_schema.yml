@@ -66,6 +66,9 @@ models:
         description: "Amount of the token sold in the base unit"
       - name: amount_usd
         description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
+        data_tests:
+          - dbt_utils.accepted_range:
+              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
       - &token_bought_address
         name: token_bought_address
         description: "Contract address of the token bought"
@@ -168,37 +171,21 @@ models:
       - *blockchain
       - *project
       - *version
-      - *dex_type
       - *block_month
       - *block_date
       - *block_time
       - *block_number
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
       - *token_bought_amount_raw
       - *token_sold_amount_raw
-      - name: amount_usd
-        description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
-        data_tests:
-          - dbt_utils.accepted_range:
-              max_value: 1000000000 # $1b is an arbitrary number, intended to flag outlier amounts early
       - *token_bought_address
       - *token_sold_address
       - *taker
       - *maker
       - *project_contract_address
-      - *pool_topic0
-      - *factory_address
-      - *factory_topic0
-      - *factory_info
       - *tx_hash
+      - *evt_index
       - *tx_from
       - *tx_to
-      - *evt_index
-      - *tx_index
 
   - name: dex_automated_base_trades_unmapped
     meta:
@@ -212,31 +199,18 @@ models:
       - *blockchain
       - *project
       - *version
-      - *dex_type
       - *block_month
       - *block_date
       - *block_time
       - *block_number
-      - *token_bought_symbol
-      - *token_sold_symbol
-      - *token_pair
-      - *token_bought_amount
-      - *token_sold_amount
       - *token_bought_amount_raw
       - *token_sold_amount_raw
-      - name: amount_usd
-        description: "USD value of the trade at time of execution. Can be null if we don't have enough data to calculate the value."
       - *token_bought_address
       - *token_sold_address
       - *taker
       - *maker
       - *project_contract_address
-      - *pool_topic0
-      - *factory_address
-      - *factory_topic0
-      - *factory_info
       - *tx_hash
-      - *tx_from
-      - *tx_to
       - *evt_index
-      - *tx_index
+      - *tx_from
+      - *tx_tos
