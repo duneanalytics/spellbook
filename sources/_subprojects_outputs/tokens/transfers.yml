@@ -57,6 +57,14 @@ sources:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
 
+  - name: tokens_nova
+    tables:
+      - name: transfers
+
+  - name: tokens_ronin
+    tables:
+      - name: transfers
+
   - name: tokens_optimism
     tables:
       - name: transfers
