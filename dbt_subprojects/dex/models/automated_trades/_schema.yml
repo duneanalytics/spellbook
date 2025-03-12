@@ -159,35 +159,7 @@ models:
         data_type: varbinary
       - *project
 
-  - name: dex_automated_base_trades_mapped
-    meta:
-      blockchain: *supported_chains
-      sector: *sector
-      contributors: *contributors
-    config:
-      tags: *tags
-    description: "This table contains all DEX trades that have been successfully mapped to known DEX projects"
-    columns:
-      - *blockchain
-      - *project
-      - *version
-      - *block_month
-      - *block_date
-      - *block_time
-      - *block_number
-      - *token_bought_amount_raw
-      - *token_sold_amount_raw
-      - *token_bought_address
-      - *token_sold_address
-      - *taker
-      - *maker
-      - *project_contract_address
-      - *tx_hash
-      - *evt_index
-      - *tx_from
-      - *tx_to
-
-  - name: dex_automated_base_trades_unmapped
+  - name: dex_automated_trades_unmapped
     meta:
       blockchain: *supported_chains
       sector: *sector
