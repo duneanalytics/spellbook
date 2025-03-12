@@ -230,13 +230,12 @@ SELECT evt_block_time AS block_time
 , evt_block_number AS block_number
 , evt_block_date AS block_date
 , 'Batch Burn' AS evt_type
-, evt_tx_from AS user_address
+, caller AS user_address
 , false AS whitelist
 , NULL AS collection
 , CAST(0 AS double) AS cards_minted
 , CARDINALITY(burntTokenIds) AS cards_burned
-, CAST(0 AS double) AS minted_packs
-, NULL AS minted_ids
+, CAST(NULL AS ARRAY<UINT256>) AS minted_ids
 , burntTokenIds AS burned_ids
 , NULL AS traded_with
 , evt_tx_from AS tx_from
@@ -249,5 +248,9 @@ SELECT evt_block_time AS block_time
 , NULL AS token_address
 , 0 AS token_amount
 , 0 AS price_usd
-, 0 AS tickets_bought
+, 0 AS heroes_revenue
+, 0 AS heroes_revenue_usd
+, 0 AS to_fantasy_treasury
+, 0 AS to_fantasy_treasury_usd
+, 0 AS tactics_bought
 FROM {{ source('fantasy_blast', 'minter_evt_batchburn')}}
