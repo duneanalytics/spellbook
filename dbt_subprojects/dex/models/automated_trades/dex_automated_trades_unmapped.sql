@@ -19,7 +19,37 @@ with dexs AS (
     }}
 )
 
-select *
+select 
+    blockchain,
+    version,
+    dex_type,
+    concat('unmapped_', blockchain, '_', dex_type, '_', substring( cast(factory_address as varchar), 1, 4)) as project,
+    block_month,
+    block_date,
+    block_time,
+    block_number,
+    token_bought_symbol,
+    token_sold_symbol,
+    token_pair,
+    token_bought_amount,
+    token_sold_amount,
+    token_bought_amount_raw,
+    token_sold_amount_raw,
+    amount_usd,
+    token_bought_address,
+    token_sold_address,
+    taker,
+    maker,
+    project_contract_address,
+    pool_topic0,
+    factory_address,
+    factory_topic0,
+    factory_info,
+    tx_hash,
+    tx_from,
+    tx_to,
+    evt_index,
+    tx_index
 from dexs 
 WHERE NOT EXISTS (
     SELECT 1 
