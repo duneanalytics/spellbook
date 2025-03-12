@@ -30,7 +30,7 @@ FROM TABLE (
                 tx_to
         FROM {{logs}} l
         WHERE topic0 = {{topic0}}
-            {% if is_incremental() or true %}
+            {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
             {% endif %}
       )
