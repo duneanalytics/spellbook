@@ -222,3 +222,32 @@ WHERE block_number >= 4917909
 AND to = 0x4af1f00f50efbfcdf7a8f2ac02e9bc24825438ac
 AND contract_address = 0x4300000000000000000000000000000000000004
 AND amount > 0
+
+UNION ALL
+
+-- Batch Burn
+SELECT evt_block_time AS block_time
+, evt_block_number AS block_number
+, evt_block_date AS block_date
+, 'Batch Burn' AS evt_type
+, evt_tx_from AS user_address
+, false AS whitelist
+, NULL AS collection
+, CAST(0 AS double) AS cards_minted
+, CARDINALITY(burntTokenIds) AS cards_burned
+, CAST(0 AS double) AS minted_packs
+, NULL AS minted_ids
+, burntTokenIds AS burned_ids
+, NULL AS traded_with
+, evt_tx_from AS tx_from
+, evt_tx_to AS tx_to
+, evt_tx_hash AS tx_hash
+, evt_tx_index AS tx_index
+, contract_address
+, NULL AS is_wash_trade
+, NULL AS token_symbol
+, NULL AS token_address
+, 0 AS token_amount
+, 0 AS price_usd
+, 0 AS tickets_bought
+FROM {{ source('fantasy_blast', 'minter_evt_batchburn')}}
