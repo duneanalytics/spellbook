@@ -102,6 +102,10 @@ models:
       Strategy category
     columns:
       - *strategy
+      - &token
+        name: token
+        description: "ERC20 Token"
+        type: varbinary
       - &category
         name: category
         description: "Category of the strategy"
@@ -164,9 +168,7 @@ models:
       Flattened rewards V1 events
     columns:
       - *avs
-      - &token
-        name: token
-        description: "ERC20 Token"
+      - *token
       - &amount
         name: amount
         description: "Amount of ERC20 token, in respective decimals"
