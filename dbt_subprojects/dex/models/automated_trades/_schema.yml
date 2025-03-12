@@ -213,4 +213,4 @@ models:
       - *tx_hash
       - *evt_index
       - *tx_from
-      - *tx_tos
+      - *tx_to
