@@ -1291,6 +1291,7 @@ FROM (VALUES
     , (0xc3b7336d5a5158215599572012cedd4403a81629, 'Bitstamp', 'Bitstamp 45', 'hildobby', date '2024-05-04')
     , (0x3d9256ad37128e9f47b34a82e06e981719477c18, 'Bitstamp', 'Bitstamp 46', 'hildobby', date '2024-10-06')
     , (0x1f69d824c3b4f906ac3fc8826e2391bcb9330e02, 'Bitstamp', 'Bitstamp 47', 'hildobby', date '2024-12-12')
+    , (0x273a4db9f7cb388ec216df8c347f0529b22f4bd8, 'Bitstamp', 'Bitstamp 48', 'hildobby', date '2025-03-06')
     , (0xfca70e67b3f93f679992cd36323eeb5a5370c8e4, 'Bitstamp', 'Bitstamp Old Address 1', 'hildobby', date '2022-08-28')
     , (0x964771f6df31eea2d927fa71d7bd78e81bcdce05, 'Bitstamp', 'Bitstamp Contract 1', 'hildobby', date '2023-08-31')
     , (0x538d72ded42a76a30f730292da939e0577f22f57, 'Bitstamp', 'Bitstamp Deployer', 'hildobby', date '2023-08-31')
