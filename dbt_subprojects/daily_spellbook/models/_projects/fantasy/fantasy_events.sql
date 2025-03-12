@@ -237,6 +237,7 @@ SELECT evt_block_time AS block_time
 , CARDINALITY(burntTokenIds) AS cards_burned
 , CAST(NULL AS ARRAY<UINT256>) AS minted_ids
 , burntTokenIds AS burned_ids
+, CAST(NULL AS DOUBLE) AS traded_ids
 , NULL AS traded_with
 , evt_tx_from AS tx_from
 , evt_tx_to AS tx_to
