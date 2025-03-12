@@ -72,7 +72,7 @@ settler_txs AS (
         settler_address,
         (varbinary_substring(tracker,2,12)) AS zid,
         CASE
-            WHEN method_id = 0x1fff991f THEN (varbinary_substring(tracker,12,3))
+            WHEN method_id = 0x1fff991f THEN (varbinary_substring(tracker,14,3))
             WHEN method_id = 0xfd3ad6d4 THEN (varbinary_substring(tracker,13,3))
         END AS tag,
         row_number() over (partition by tx_hash order by varbinary_substring(tracker,2,12)) rn,
@@ -194,7 +194,8 @@ swap_logs as (
         index,
         bytearray_substring(st.topic2,13,20) as taker_, 
         data,
-        rn
+        rn,
+        varbinary_to_uint256(varbinary_substring(data,85,12)) amount_out_
     from tbl_all_logs st 
     WHERE   
        block_time > TIMESTAMP '2024-07-15'  
@@ -229,7 +230,7 @@ taker_logs as (
                 and ( 
                         (
                             bytearray_substring(logs.topic2,13,20) in (st.contract_address, settler_address) 
-                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker, tx_to) 
+                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker, tx_to, settler_address) 
                         )
                         or (
                             bytearray_substring(logs.topic2,13,20) = taker 
@@ -266,23 +267,41 @@ maker_logs as (
         AND logs.block_time = st.block_time 
         AND st.block_number = logs.block_number
         
-    WHERE  topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
-        and cow_rn is null 
+    WHERE  
+        cow_rn is null 
         and amount != 0 
-        and (
-                (
-                bytearray_substring(logs.topic1,13,20) in (st.contract_address, settler_address)  
-            and bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker, settler_address ) 
+        and ( 
+                ( topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
+                    and 
+                        ( 
+                        (
+                            (
+                            (bytearray_substring(logs.topic1,13,20) in (st.contract_address, settler_address)  
+                        and (bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker, settler_address, logs.contract_address))
+                        )
+                        or (bytearray_substring(logs.topic2,13,20) = taker and taker = tx_to ) 
+                        or (bytearray_substring(logs.topic2,13,20) = st.contract_address 
+                            and bytearray_substring(logs.topic1,13,20) = tx_to 
+                            and bytearray_substring(logs.topic1,13,20) not in (bytearray_substring(st.topic1,13,20), tx_to ) 
+                        )
+                        
+                    )
+                    and (varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
+                    or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
+                    or varbinary_to_uint256(logs.data) in (amount_out_) 
+                    or POSITION(CAST(varbinary_to_uint256(logs.data) AS VARCHAR) IN CAST(amount_out_ AS VARCHAR)) > 0
+                    ) 
+                
+                        )
+                        or (bytearray_substring(logs.topic1,13,20) in (settler_address)  
+                        and (bytearray_substring(logs.topic2,13,20) in (taker))
+                        )
+                    )
             )
-            or (bytearray_substring(logs.topic2,13,20) = taker and taker = tx_to ) 
-            or (bytearray_substring(logs.topic2,13,20) = st.contract_address 
-                and bytearray_substring(logs.topic1,13,20) = tx_to 
-                and bytearray_substring(logs.topic1,13,20) not in (bytearray_substring(st.topic1,13,20), tx_to ) 
+            or (
+                topic0 in (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65)
+                and bytearray_substring(logs.topic1,13,20) in (tx_from, settler_address) 
             )
-        )
-        AND (
-            varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
-            or varbinary_position(st.data, ( cast(-1*varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) as varbinary))) <> 0  
         )
         
     ),
@@ -370,6 +389,12 @@ select  block_time,
                             0x000000000000175a8b9bC6d539B3708EEd92EA6c,
                             0x9008d19f58aabd9ed0d60971565aa8510560ab41,
                             0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae,
+                            0xa1bea5fe917450041748dbbbe7e9ac57a4bbebab,
+                            0x663DC15D3C1aC63ff12E45Ab68FeA3F0a883C251,
+                            0x3a23f943181408eac424116af7b7790c94cb97a5,
+                            0xa9048585166f4f7c4589ade19567bb538035ed36,
+                            0x00000000009726632680fb29d3f7a9734e3010e2,
+                            0xe74a8079ca6f8d11e8acb55edfe398647272a0dc,
                             0x0000000000000000000000000000000000000000) 
                         then tx_from 
                         else st.taker end as taker,
@@ -504,4 +529,3 @@ SELECT
 FROM results_usd
 order by block_time desc
 {% endmacro %}
-

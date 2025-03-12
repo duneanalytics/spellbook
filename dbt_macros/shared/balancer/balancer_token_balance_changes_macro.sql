@@ -199,6 +199,21 @@ WITH pool_labels AS (
         GROUP BY 1
     ),
 
+    global_fees AS (
+        SELECT
+            evt_block_time,
+            swapFeePercentage / 1e18 AS global_swap_fee
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'ProtocolFeeController_evt_GlobalProtocolSwapFeePercentageChanged') }}
+    ),
+
+    pool_creator_fees AS (
+        SELECT
+            evt_block_time,
+            pool,
+            poolCreatorSwapFeePercentage / 1e18 AS pool_creator_swap_fee
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'ProtocolFeeController_evt_PoolCreatorSwapFeePercentageChanged') }}
+    ),
+
     swaps_changes AS (
         SELECT
             evt_block_time,
@@ -211,14 +226,16 @@ WITH pool_labels AS (
         FROM
             (
                 SELECT
-                    evt_block_time,
-                    evt_block_number,
-                    evt_tx_hash,
-                    evt_index,
-                    pool AS pool_id,
-                    tokenIn AS token,
-                    CAST(amountIn as int256) - (CAST(swapFeeAmount AS INT256) * 0.5) AS delta
-                FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }}
+                    swap.evt_block_time,
+                    swap.evt_block_number,
+                    swap.evt_tx_hash,
+                    swap.evt_index,
+                    swap.pool AS pool_id,
+                    swap.tokenIn AS token,
+                    CAST(swap.amountIn AS INT256) - (CAST(swap.swapFeeAmount AS INT256) * (g.global_swap_fee + COALESCE(pc.pool_creator_swap_fee, 0))) AS delta
+                FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Swap') }} swap
+                CROSS JOIN global_fees g
+                LEFT JOIN pool_creator_fees pc ON swap.pool = pc.pool
 
                 UNION ALL
 

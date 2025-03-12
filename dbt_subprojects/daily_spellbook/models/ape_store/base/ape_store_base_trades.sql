@@ -39,7 +39,7 @@ with
             ) as token_sold_address,
             sender as user,
             evt_tx_hash as tx_hash,
-            evt_index as tx_index
+            CAST(evt_index AS INT256) as tx_index
         from {{ source('ape_store_base', 'Router_evt_swap') }} as swaps
         left join
             {{ source('tokens', 'erc20') }} as token
@@ -86,7 +86,7 @@ with
             token_sold_address,
             tx_from as user,
             trades.tx_hash,
-            evt_index as tx_index
+            CAST(evt_index AS INT256) as tx_index
         from {{ source('dex', 'trades') }} as trades
         join
             deployments
@@ -121,7 +121,7 @@ with
             token_sold_address,
             tx_from as user,
             trades.tx_hash,
-            evt_index as tx_index
+            CAST(evt_index AS INT256) as tx_index
         from {{ source('dex', 'trades') }} as trades
         join
             deployments
