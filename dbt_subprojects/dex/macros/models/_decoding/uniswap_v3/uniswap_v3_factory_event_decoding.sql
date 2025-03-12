@@ -102,7 +102,7 @@
         , evt_index
     from (
         {{ evm_event_decoding_base(logs, config.abi, topic0) }}
-        {% if is_incremental() or true %}
+        {% if is_incremental() %}
         WHERE {{ incremental_predicate('block_time') }}
         {% endif %}
     )
