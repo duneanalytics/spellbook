@@ -10,7 +10,7 @@ SELECT
     , contract_project
     , contract_name
     , erc20_address
-    , cast(created_time as timestamp)
+    , cast(created_time as timestamp) as created_time
     , creator_address
 FROM (
     VALUES
