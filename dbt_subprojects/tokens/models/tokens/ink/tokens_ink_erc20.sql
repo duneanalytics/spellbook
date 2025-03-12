@@ -17,4 +17,5 @@ FROM (VALUES
     , (0xca5f2ccbd9c40b32657df57c716de44237f80f05, 'KRAKEN', 18)
     , (0x2e1ac42aef8dc9fb4c661d017273e93ba82d3d0e, 'IAGENT', 18)
     , (0xbf0cafcbaaf0be8221ae8d630500984edc908861, 'SQUIDS', 18)
+    , (0x0c5e2d1c98cd265c751e02f8f3293bc5764f9111, 'SHROOMY', 18)
 ) AS temp_table (contract_address, symbol, decimals)
