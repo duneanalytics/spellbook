@@ -81,9 +81,17 @@ WITH evt_swap AS (
         AND fec.blockchain = f.blockchain
         AND fec.contract_address = f.contract_address
     INNER JOIN (
-        SELECT address, "from", blockchain, MAX(block_number) as latest_block
-        FROM {{ source('evms', 'creation_traces') }}
-        GROUP BY address, "from", blockchain
+        SELECT 
+            address
+            , "from"
+            , blockchain
+            , MAX(block_number) as latest_block
+        FROM 
+            {{ source('evms', 'creation_traces') }}
+        GROUP BY 
+            address
+            , "from"
+            , blockchain
     ) ct
         ON f.pair = ct.address
         AND f.contract_address = ct."from"
@@ -115,8 +123,5 @@ SELECT
     , tx_to
     , tx_index
 FROM dexs
-{% if is_incremental() %}
-WHERE {{ incremental_predicate('block_time') }}
-{% endif %}
 
 {% endmacro %}

@@ -12,7 +12,7 @@
 
 with dexs AS (
     {{
-        log_decoded_enrich_dex_trades(
+        enrich_dex_automated_trades(
             base_trades = ref('dex_automated_base_trades_mapped')
             , tokens_erc20_model = source('tokens', 'erc20')
         )
