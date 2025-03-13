@@ -12,6 +12,17 @@
 
 {% set models = [
     ref('dex_ethereum_base_liquidity')
+   ,ref('dex_arbitrum_base_liquidity') 
+   ,ref('dex_base_base_liquidity') 
+   ,ref('dex_optimism_base_liquidity') 
+   ,ref('dex_polygon_base_liquidity') 
+   ,ref('dex_blast_base_liquidity') 
+   ,ref('dex_bnb_base_liquidity') 
+   ,ref('dex_zora_base_liquidity') 
+   ,ref('dex_avalanche_c_base_liquidity') 
+   ,ref('dex_ink_base_liquidity') 
+   ,ref('dex_unichain_base_liquidity') 
+   ,ref('dex_worldchain_base_liquidity') 
 ] %}
 
 with base_union as (
@@ -30,7 +41,6 @@ with base_union as (
                 , id
                 , tx_hash
                 , evt_index
-                , salt
                 , token0
                 , token1
                 , amount0_raw

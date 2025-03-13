@@ -1655,6 +1655,7 @@ FROM
     ('ethx-stader-ethx','ethereum','ETHx',0xA35b1B31Ce002FBF2058D22F30f95D405200A15b, 18),
     ('rseth-rseth','ethereum','rsETH',0xa1290d69c65a6fe4df752f95823fae25cb99e5a7, 18),
     ('pufeth-pufeth','ethereum','pufETH',0xD9A442856C234a39a81a089C06451EBAa4306a72, 18),
+    ('puffer-puffer','ethereum','PUFFER',0x4d1c297d39c5c1277964d0e3f8aa901493664530, 18),
     ('yup-yup','ethereum','YUP',0x69bBC3F8787d573F1BBDd0a5f40C7bA0Aee9BCC9, 18),
     ('jesus-jesus-coin','ethereum','JESUS',0xba386a4ca26b85fd057ab1ef86e3dc7bdeb5ce70, 18),
     ('bonk-bonk','ethereum','BONK',0x1151cb3d861920e07a38e03eead12c32178567f6, 5),
@@ -1876,8 +1877,13 @@ FROM
     ('deusd-elixir-deusd','ethereum', 'DEUSD', 0x15700b564ca08d9439c58ca5053166e8317aa138, 18),
     ('unibot-unibot','ethereum', 'UNIBOT', 0xf819d9cb1c2a819fd991781a822de3ca8607c3c9, 18),
     ('morpho-morpho','ethereum', 'MORPHO', 0x58d97b57bb95320f9a05dc918aef65434969c2b2, 18),
-    ('scrvusd-savings-crvusd', 'ethereum', 'SCRVUSD', 0x0655977FEb2f289A4aB78af67BAB0d17aAb84367, 18)
-
+    ('scrvusd-savings-crvusd', 'ethereum', 'SCRVUSD', 0x0655977FEb2f289A4aB78af67BAB0d17aAb84367, 18),
+    ('trx-tron', 'ethereum', 'TRX', 0x50327c6c5a14dcade707abad2e27eb517df87ab5, 6),
+    ('usdc-usd-coin', 'ethereum', 'aEthUSDC', 0x98c23e9d8f34fefb1b7bd6a91b7ff122f4e16f5c, 6),
+    ('move-movement', 'ethereum', 'MOVE', 0x3073f7aaa4db83f95e9fff17424f71d4751a3073, 8),
+    ('sei-sei', 'ethereum', 'SEI', 0xbdf43ecadc5cef51b7d1772f722e40596bc1788b, 18),
+    ('usdm-mountain-protocol-usd', 'ethereum', 'USDM', 0x59D9356E565Ab3A36dD77763Fc0d87fEaf85508C, 18),
+    ('plume-plume', 'ethereum', 'PLUME', 0x4c1746a800d224393fe2470c70a35717ed4ea5f1, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

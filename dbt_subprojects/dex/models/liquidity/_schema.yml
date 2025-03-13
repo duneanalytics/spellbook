@@ -3,7 +3,7 @@ version: 2
 models:
   - name: dex_liquidity
     meta:
-      blockchain: ethereum
+      blockchain: ethereum,arbitrum,base,optimism,polygon,zora,blast,bnb,avalanche_c,worldchain,ink,unichain
       sector: dex
       short_description: The `dex.liquidity` table captures liquidity data on DEXs. This table contains a detailed breakdown of liquidity pmodified per transaction. 
       contributors: irishLatte19
@@ -48,9 +48,6 @@ models:
       - &evt_index
         name: evt_index
         description: "Index of the event in the transaction. Can be used to uniquely identify the order of events within a transaction"        
-      - &salt
-        name: salt
-        description: "Salt is used to distinguish positions of the same range on the same pool/ id"
       - &token0
         name: token0
         description: "Address of token0"
@@ -102,7 +99,6 @@ models:
       - *id
       - *tx_hash
       - *evt_index
-      - *salt
       - *token0
       - *token1
       - *amount0_raw

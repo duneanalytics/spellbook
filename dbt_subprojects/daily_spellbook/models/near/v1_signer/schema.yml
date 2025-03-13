@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: near_v1_signer_users
+    meta:
+      blockchain: near
+      sector: authentication
+      project: v1_signer
+      contributors: bh2smith
+    config:
+      tags:
+        ["near", "v1_signer", "mpc", "chain_sigs"]
+    description: >
+      This table contains user signing activity on the NEAR blockchain for the `v1.signer` (MPC) contract. 
+      It extracts sign requests and associated metadata from function call arguments and logs.
+    columns:
+      - name: account_id
+        description: "Account ID that requested the signature"
+        tests:
+          - not_null
+      - name: derivation_path
+        description: "Derivation path for the key used in the signing request"
+        tests:
+          - not_null
+      - name: key_version
+        description: "Version number of the signing key"
+        tests:
+          - not_null

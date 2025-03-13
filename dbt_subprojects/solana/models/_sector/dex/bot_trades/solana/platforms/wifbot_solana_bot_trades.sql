@@ -57,7 +57,7 @@ with
             if(feetokentype = 'SOL', 'SOL', symbol) as fee_token_symbol,
             fee_token_mint_address as fee_token_address,
             project,
-            version,
+            trades.version,
             token_pair,
             project_program_id as project_contract_address,
             trader_id as user,
