@@ -28,7 +28,7 @@ WITH evt_swap AS (
         , tx_from
         , tx_to
     FROM {{ Pair_evt_Swap }}
-    {% if is_incremental() or true %}
+    {% if is_incremental()  %}
     WHERE {{ incremental_predicate('block_time') }}
     {% endif %}
 )
