@@ -1,8 +1,8 @@
 {{ config(
     schema = 'magiceden_solana',
     alias = 'events',
-
-    materialized = 'incremental',
+    tags = ['static'],
+    materialized = 'table',
     file_format = 'delta',
     incremental_strategy = 'merge',
     incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
@@ -60,10 +60,10 @@ SELECT
   CAST(abs(element_at(post_balances,1) - element_at(pre_balances,1)) AS uint256) AS amount_raw,
   p.symbol as currency_symbol,
   from_base58(p.contract_address) as currency_contract,
-  'metaplex' as token_standard,
-  CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')) THEN from_base58('M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')
-       WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN from_base58('CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')
-       END as project_contract_address,
+--   'metaplex' as token_standard,
+--   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')) THEN from_base58('M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K')
+--        WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN from_base58('CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')
+--        END as project_contract_address,
   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
        AND (
                contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
@@ -82,18 +82,18 @@ SELECT
   WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
        AND contains(log_messages, 'Program log: Instruction: SetAuthority') THEN 'Mint'
   ELSE 'Other' END as evt_type,
-  Coalesce(TRY_CAST(CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
-         AND (
-               contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
-               OR contains(log_messages, 'Program log: Instruction: ExecuteSale')
-               OR contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
-          )
-         AND contains(log_messages, 'Program log: Instruction: Buy') THEN element_at(element_at(me_instructions,2).account_arguments,3)
-       WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
-         AND contains(log_messages, 'Program log: Instruction: SetAuthority') THEN COALESCE(element_at(me_instructions,7).account_arguments[10], element_at(me_instructions,6).account_arguments[10],
-         element_at(me_instructions,5).account_arguments[10], element_at(element_at(me_instructions,3).account_arguments,8), element_at(element_at(me_instructions,2).account_arguments,11), element_at(element_at(me_instructions,1).account_arguments,11))
-       END as uint256), UINT256 '0') AS token_id,
-  cast(NULL as varchar) as collection,
+--   Coalesce(TRY_CAST(CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
+--          AND (
+--                contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
+--                OR contains(log_messages, 'Program log: Instruction: ExecuteSale')
+--                OR contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
+--           )
+--          AND contains(log_messages, 'Program log: Instruction: Buy') THEN element_at(element_at(me_instructions,2).account_arguments,3)
+--        WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb'))
+--          AND contains(log_messages, 'Program log: Instruction: SetAuthority') THEN COALESCE(element_at(me_instructions,7).account_arguments[10], element_at(me_instructions,6).account_arguments[10],
+--          element_at(me_instructions,5).account_arguments[10], element_at(element_at(me_instructions,3).account_arguments,8), element_at(element_at(me_instructions,2).account_arguments,11), element_at(element_at(me_instructions,1).account_arguments,11))
+--        END as uint256), UINT256 '0') AS token_id,
+--   cast(NULL as varchar) as collection,
   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
          AND (
                contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
@@ -113,15 +113,15 @@ SELECT
           )
          AND contains(log_messages, 'Program log: Instruction: Buy') THEN from_base58(element_at(element_at(me_instructions,3).account_arguments,2))
        WHEN (contains(account_keys, 'CMZYPASGWeTz7RNGHaRJfCq2XQ5pYK6nDvVQxzkH51zb')) THEN cast(null as varbinary) END as seller,
-  cast(NULL as varbinary) as nft_contract_address,
+--   cast(NULL as varbinary) as nft_contract_address,
   cast(NULL as varchar) as aggregator_name,
   cast(NULL as varbinary) as aggregator_address,
-  cast(NULL as varbinary) as tx_from,
-  cast(NULL as varbinary) as tx_to,
-  cast(2*(abs(element_at(post_balances,1) - element_at(pre_balances,1)))/100 as uint256) as platform_fee_amount_raw,
-  2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9))/100 as platform_fee_amount,
-  2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9) * p.price)/100 as platform_fee_amount_usd,
-  DOUBLE '2' as platform_fee_percentage,
+--   cast(NULL as varbinary) as tx_from,
+--   cast(NULL as varbinary) as tx_to,
+--   cast(2*(abs(element_at(post_balances,1) - element_at(pre_balances,1)))/100 as uint256) as platform_fee_amount_raw,
+--   2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9))/100 as platform_fee_amount,
+--   2*(abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9) * p.price)/100 as platform_fee_amount_usd,
+--   DOUBLE '2' as platform_fee_percentage,
   CAST (abs(element_at(post_balances,12) - element_at(pre_balances,12)) + abs(element_at(post_balances,13) - element_at(pre_balances,13))
     + abs(element_at(post_balances,14) - element_at(pre_balances,14)) + abs(element_at(post_balances,15) - element_at(pre_balances,15))  + abs(element_at(post_balances,16) - element_at(pre_balances,16)) AS uint256) as royalty_fee_amount_raw,
   abs(element_at(post_balances,12) / 1e9 - element_at(pre_balances,12) / 1e9) + abs(element_at(post_balances,13) / 1e9 - element_at(pre_balances,13) / 1e9)
@@ -136,19 +136,19 @@ SELECT
   +abs(element_at(post_balances,14) / 1e9 - element_at(pre_balances,14) / 1e9)
   +abs(element_at(post_balances,15) / 1e9 - element_at(pre_balances,15) / 1e9)
   +abs(element_at(post_balances,16) / 1e9 - element_at(pre_balances,16) / 1e9)) / ((abs(element_at(post_balances,1) / 1e9 - element_at(pre_balances,1) / 1e9)-0.00204928)) * 100),2) as royalty_fee_percentage,
-  cast(NULL as varbinary) as royalty_fee_receive_address,
-  CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
-         AND (
-               contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
-               OR contains(log_messages, 'Program log: Instruction: ExecuteSale')
-               OR contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
-          )
-          AND contains(log_messages, 'Program log: Instruction: Buy') THEN 'SOL'
-         ELSE cast(NULL as varchar) END as royalty_fee_currency_symbol,
+--   cast(NULL as varbinary) as royalty_fee_receive_address,
+--   CASE WHEN (contains(account_keys, 'M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K'))
+--          AND (
+--                contains(log_messages, 'Program log: Instruction: ExecuteSaleV2')
+--                OR contains(log_messages, 'Program log: Instruction: ExecuteSale')
+--                OR contains(log_messages, 'Program log: Instruction: Mip1ExecuteSaleV2')
+--           )
+--           AND contains(log_messages, 'Program log: Instruction: Buy') THEN 'SOL'
+--          ELSE cast(NULL as varchar) END as royalty_fee_currency_symbol,
   id  as unique_trade_id,
-  instructions,
-  signatures,
-  log_messages,
+--   instructions,
+--   signatures,
+--   log_messages,
   BIGINT '0' as evt_index
 FROM me_txs
 LEFT JOIN {{ source('prices', 'usd') }} AS p
