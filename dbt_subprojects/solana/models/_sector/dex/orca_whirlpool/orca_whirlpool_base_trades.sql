@@ -105,7 +105,8 @@ with
         , tickSpacing
         , call_tx_id
         FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePool') }}
-        
+        where account_whirlpoolsConfig = '2LecshUwdy9xi7meFgHtFJQNSKk4KdTrcpvaB56dP2NQ'
+        --this is the only legit config for whirlpools, everything else is spam and can be ignored
         UNION ALL 
         
         SELECT
@@ -117,6 +118,7 @@ with
         , tickSpacing
         , call_tx_id
         FROM {{ source('whirlpool_solana', 'whirlpool_call_initializePoolV2') }}
+        where account_whirlpoolsConfig = '2LecshUwdy9xi7meFgHtFJQNSKk4KdTrcpvaB56dP2NQ'
         ) ip
     LEFT JOIN fee_updates fu ON fu.whirlpool_id = ip.account_whirlpool
     )
