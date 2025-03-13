@@ -63,7 +63,7 @@ with
             token0,
             fee_updates.feezto / {{ v3_fee_precision }} as token0_fee_rate,
             token1,
-            fee_updates.feezto / {{ v3_fee_precision }} as token1_fee_rate
+            fee_updates.feeotz / {{ v3_fee_precision }} as token1_fee_rate
         from {{ source("camelot_v3_arbitrum", "AlgebraPool_evt_Fee") }} as fee_updates
         join
             v3_pairs_with_initial_fee_rates as pairs
