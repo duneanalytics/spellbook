@@ -107,6 +107,11 @@ sources:
     tables:
       - name: satoshi
   
+  - name: tokens_bitcoin
+    tables:
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset
+      
   - name: tokens_solana
     tables:
       - name: net_transfers_daily
