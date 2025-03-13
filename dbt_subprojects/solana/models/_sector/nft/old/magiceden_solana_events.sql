@@ -9,6 +9,7 @@
     unique_key = ['unique_trade_id']
     )
 }}
+-- stamp 1
 
 WITH me_txs AS (
     SELECT
