@@ -200,11 +200,11 @@ models:
         name: protocol_fee_paid_eth
         description: "The protocol fee paid in ETH"
 
-  - name: zeroex_optimism_settler_trades 
+  - name: zeroex_v2_optimism_trades 
     meta:
       blockchain: optimism
       project: zeroex
-      contributors: rantum, bakabhai993
+      contributors: rantum
     config:
       tags: ['optimism','0x','dex_aggregator','dex','aggregator']
     description: >

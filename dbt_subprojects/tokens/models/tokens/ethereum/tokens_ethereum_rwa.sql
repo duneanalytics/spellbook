@@ -15,6 +15,7 @@ FROM (VALUES
 
     ('ethereum', 0x68749665FF8D2d112Fa859AA293F07A622782F38, 'Gold-backed', 'XAUT', 6, 'Tether'),
     ('ethereum', 0x45804880de22913dafe09f4980848ece6ecbaf78, 'Gold-backed', 'PAXG', 18, 'Paxos'),
+    ('ethereum', 0x2103e845c5e135493bb6c2a4f0b8651956ea8682, 'Gold-backed', 'XAUM', 18, 'Matrixdock'),
     ('ethereum', 0x136471a34f6ef19fe571effc1ca711fdb8e49f2b, 'Treasury-backed', 'USYC', 6, 'Hashnote'),
     ('ethereum', 0x1b19c19393e2d034d8ff31ff34c81252fcbbee92, 'Treasury-backed', 'OUSG', 18, 'Ondo'),
     ('ethereum', 0x7712c34205737192402172409a8F7ccef8aA2AEc, 'Treasury-backed', 'BUIDL', 6, 'Blackrock'),

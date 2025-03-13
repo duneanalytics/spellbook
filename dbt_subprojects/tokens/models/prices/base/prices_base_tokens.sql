@@ -16,7 +16,7 @@ FROM
 (
     VALUES
     ('weth-weth','base','WETH',0x4200000000000000000000000000000000000006,18),
-    --ingesting flETH with price for weth momentarily while we find a better fix, should be a <1% delta
+    --ingesting flETH with price for weth until flETH is available with correct date from Coinpaprika. flETH is 1:1 with ETH so price diff. is small
     ('weth-weth','base','flETH',0x000000000D564D5be76f7f0d28fE52605afC7Cf8,18),
     ('axl-axelar','base','AXL',0x23ee2343b892b1bb63503a4fabc840e0e2c6810f,6),
     ('bald-bald','base','BALD',0x27d2decb4bfc9c76f0309b8e88dec3a601fe25a8,18),
@@ -207,6 +207,13 @@ FROM
     ('yfi-yearnfinance', 'base', 'YFI', 0x9eaf8c1e34f05a589eda6bafdf391cf6ad3cb239, 18),
     ('lbtc-lombard-staked-btc', 'base', 'LBTC', 0xecAc9C5F704e954931349Da37F60E39f515c11c1, 8),
     ('veil2-veil-token', 'base', 'VEIL', 0x767A739D1A152639e9Ea1D8c1BD55FDC5B217D7f, 18),
-    ('vvv-venice-token','base','VVV',0xacfE6019Ed1A7Dc6f7B508C02d1b04ec88cC21bf,18)
+    ('vvv-venice-token','base','VVV',0xacfE6019Ed1A7Dc6f7B508C02d1b04ec88cC21bf,18),
+    ('b3-b3', 'base', 'B3', 0xb3b32f9f8827d4634fe7d973fa1034ec9fddb3b3, 18),
+    ('morpho-morpho', 'base', 'MORPHO', 0xBAa5CC21fd487B8Fcc2F632f3F4E8D37262a0842, 18),
+    ('talent-talent-protocol', 'base', 'TALENT', 0x9a33406165f562E16C3abD82fd1185482E01b49a, 18),
     --('well-moonwell' ,'base', 'WELL', 0xa88594d404727625a9437c3f886c7643872296ae, 18)
+    ('idrx-idrx', 'base', 'IDRX',0x18Bc5bcC660cf2B9cE3cd51a404aFe1a0cBD3C22, 2),
+    ('nars-nars', 'base', 'nARS',0x5e40f26E89213660514c51Fb61b2d357DBf63C85, 18),
+    -- ('cadc-cad-coin', 'base', 'CADC',0x043eB4B75d0805c43D7C834902E335621983Cf03, 18),
+    ('brz-brazilian-digital-token', 'base', 'BRZ',0xE9185Ee218cae427aF7B9764A011bb89FeA761B4, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
