@@ -1,7 +1,9 @@
 {{ config(
     schema = 'rollup_economics_ethereum',
     alias = 'l2_costs',
-    materialized = 'view',
+    materialized = 'table',
+    file_format = 'delta',
+    full_refresh = true,
     post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "rollup_economics",
