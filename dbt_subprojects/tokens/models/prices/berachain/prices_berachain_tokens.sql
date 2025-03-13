@@ -29,4 +29,6 @@ FROM
     , ('usdt-tether', 'USD₮0', 0x779Ded0c9e1022225f8E0630b35a9b54bE713736, 6)
     , ('usdc-usd-coin', 'BYUSD', 0x688e72142674041f8f6Af4c808a4045cA1D6aC82, 6)
     , ('honey-honey1', 'HONEY', 0xfcbd14dc51f0a4d49d5e53c2e0950e0bc26d0dce, 18)
+    , ('rusd-reservoir-rusd', 'rUSD', 0x09d4214c03d01f49544c0448dbe3a27f768f2b34, 18)
+    , ('mim-magic-internet-money', 'MIM', 0x5b82028cfc477c4e7dda7ff33d59a23fa7be002a, 18)
 ) as temp (token_id, symbol, contract_address, decimals) 
