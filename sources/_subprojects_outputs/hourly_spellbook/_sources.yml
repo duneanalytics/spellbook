@@ -35,6 +35,7 @@ sources:
   - name: staking_ethereum
     tables:
       - name: entities
+      - name: deposits
 
   - name: safe_ethereum
     tables:
