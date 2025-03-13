@@ -23,4 +23,6 @@ FROM
     ('bag-bagwin','blast','BAG',0xb9dfcd4cf589bb8090569cb52fac1b88dbe4981f,18),
     ('usdz-anzen-usdz','blast','USDz',0x52056ed29fe015f4ba2e3b079d10c0b87f46e8c6,18),
     ('bpepe-blastin-pepes','blast','bPEPE',0xb6e0d8a730c6e5c85c637b1cf7ad6fd07927b965,18)
+    ('ena-ethena','blast','ENA',0x58538e6A46E07434d7E7375Bc268D3cb839C0133,18)
+    ('ezeth-renzo-restaked-eth','blast','ezETH',0x2416092f143378750bb29b79ed961ab195cceea5,18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
