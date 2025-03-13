@@ -30,4 +30,6 @@ FROM
     ,('usdplus-usdplus', 'linea', 'USD+', 0xb79dd08ea68a908a97220c76d19a6aa9cbde4376, 6)
     ,('ezeth-renzo-restaked-eth', 'linea', 'ezETH', 0x2416092f143378750bb29b79ed961ab195cceea5, 18)
     ,('usde-ethena-usde', 'linea', 'USDe', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 18)
+    ,('ena-ethena', 'linea', 'ENA', 0x58538e6a46e07434d7e7375bc268d3cb839c0133, 18)
+    ,('pepe-pepe', 'linea', 'PEPE', 0x7da14988e4f390c2e34ed41df1814467d3ade0c3, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
