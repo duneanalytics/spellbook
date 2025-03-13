@@ -111,3 +111,8 @@ sources:
     tables:
       - name: net_transfers_daily
       - name: net_transfers_daily_asset
+      
+  - name: tokens_solana
+    tables:
+      - name: net_transfers_daily
+      - name: net_transfers_daily_asset

@@ -40,6 +40,20 @@ models:
             - blockchain
             - block_date
 
+  - name: metrics_solana_transfers_daily_asset
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob, krishhh
+    config:
+      tags: ['metrics', 'transfers', 'daily', 'asset', 'solana']
+    description: "Total transfer amount per day per asset"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - contract_address
+
   - name: metrics_ton_transfers_daily
     meta:
       sector: metrics
