@@ -99,7 +99,7 @@ WITH token_data AS (
 SELECT 
   'gnosis' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
-  CASE WHEN pool_type IN ('stable') 
+  CASE WHEN pool_type IN ('stable', 'LBP') 
   THEN lower(pool_symbol)
     ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
     array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))
