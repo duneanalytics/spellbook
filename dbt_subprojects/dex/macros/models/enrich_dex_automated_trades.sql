@@ -9,7 +9,7 @@ WITH base_trades as (
         *
     FROM
         {{ base_trades }}
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     WHERE
         {{ incremental_predicate('block_time') }}
     {% endif %}
