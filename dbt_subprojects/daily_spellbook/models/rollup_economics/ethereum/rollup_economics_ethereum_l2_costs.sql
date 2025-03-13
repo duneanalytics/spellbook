@@ -54,7 +54,13 @@ SELECT
     COALESCE(beacon_fee_usd, 0) AS beacon_fee_usd,
     COALESCE(used_blob_byte_count, 0) AS used_blob_byte_count,
     
-    -- celestia/ altDA
+    -- celestia, altDA
+    -- ...
+
+    -- avail, altDA
+    -- ...
+
+    -- eigenDA, altDA
     -- ...
 
     -- totals

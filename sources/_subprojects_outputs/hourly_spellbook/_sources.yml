@@ -32,6 +32,11 @@ sources:
       - name: token_whitelist
       - name: single_recipient_gauges
 
+  - name: ethereum
+    tables:
+      - name: blobs_submissions
+      - name: blobs
+
   - name: staking_ethereum
     tables:
       - name: entities

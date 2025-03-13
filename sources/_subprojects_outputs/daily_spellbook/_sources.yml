@@ -38,11 +38,6 @@ sources:
       - name: transactions
       - name: logs
 
-  - name: ethereum
-    tables:
-      - name: blobs_submissions
-      - name: blobs
-
   - name: beets
     tables:
       - name: pools_metrics_daily

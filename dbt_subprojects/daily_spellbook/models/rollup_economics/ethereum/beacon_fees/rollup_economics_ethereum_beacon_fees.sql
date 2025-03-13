@@ -1,47 +1,12 @@
 {{ config(
     schema = 'rollup_economics_ethereum',
     alias = 'beacon_fees',
-    materialized = 'incremental',
-    unique_key = ['beacon_slot_number', 'blob_index'],
-    incremental_strategy = 'delete+insert',
-    on_schema_change = 'sync_all_columns'
+    materialized = 'table',
+    full_refresh = true,
+    unique_key = ['beacon_slot_number', 'blob_index']
 ) }}
--- incremental, unless mapping hash changes, then full refresh
 
--- mapping hash
-WITH latest_hash AS (
-    SELECT hash_value 
-    FROM {{ ref('rollup_economics_ethereum_mapping_hash') }} 
-    ORDER BY updated_at DESC 
-    LIMIT 1
-),
-current_mapping_hash AS (
-    SELECT 
-        md5(to_utf8(
-            '[' || array_join(
-                array_agg(distinct json_format(
-                    json_parse(json_array(
-                        coalesce(l2, ''), 
-                        coalesce(name, ''), 
-                        coalesce(settlement_layer, ''), 
-                        coalesce(to_hex(from_address), '0x'), 
-                        coalesce(to_hex(to_address), '0x'), 
-                        coalesce(to_hex(method), '0x'), 
-                        coalesce(namespace, '')
-                    )))
-                ), 
-                ','
-            ) || ']'
-        )) AS hash_value
-    FROM {{ source("growthepie", "l2economics_mapping", database="dune") }}
-    WHERE settlement_layer = 'beacon'
-),
-should_refresh AS (
-    SELECT (SELECT hash_value FROM latest_hash) IS DISTINCT FROM (SELECT hash_value FROM current_mapping_hash) as needs_refresh
-),
-
--- main query
-L1_methods AS (
+WITH L1_methods AS (
     SELECT 
         hash,
         bytearray_substring("data", 1, 4) AS method,
@@ -90,15 +55,3 @@ INNER JOIN {{ source('prices', 'usd') }} p
     AND p.blockchain IS NULL
     AND p.symbol = 'ETH'
     AND p.minute >= TIMESTAMP '2024-03-13' -- EIP-4844 launch date
-
--- Only refresh query if mapping hash has changed, else be an incremental table
-WHERE 1=1
-{% if is_incremental() %}
-    AND (
-        (SELECT needs_refresh FROM should_refresh)  -- Full refresh if mapping changed
-        OR (
-            NOT (SELECT needs_refresh FROM should_refresh)  -- Otherwise incremental
-            AND {{ incremental_predicate('b.beacon_slot_time') }}
-        )
-    )
-{% endif %}
