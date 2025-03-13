@@ -103,11 +103,10 @@ FROM (
     , 0.9*m.price/POWER(10, 18) AS to_fantasy_treasury
     , 0.9*m.price/POWER(10, 18)*pu.price AS to_fantasy_treasury_usd
     , 0 AS tactics_bought
-    , RANK() OVER (PARTITION BY m.mintConfigId ORDER BY c.block_number DESC) AS rank
+    , RANK() OVER (PARTITION BY m.mintConfigId ORDER BY c.block_number, c.evt_index DESC) AS rank
     FROM {{ source('fantasy_blast', 'Minter_evt_Mint')}} m
     INNER JOIN fantasy_configs c ON m.mintConfigId=c.config_id
-        AND (c.block_number < m.evt_block_number
-        OR (c.block_number = m.evt_block_number AND c.evt_index < m.evt_index))
+        AND c.block_number < m.evt_block_number
     LEFT JOIN {{ source('prices', 'usd') }} pu ON pu.blockchain='blast'
         AND pu.contract_address=0x4300000000000000000000000000000000000004
         AND pu.minute=date_trunc('minute', m.evt_block_time)
