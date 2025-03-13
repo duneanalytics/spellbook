@@ -6,7 +6,8 @@
                                     "project",
                                     "eigenlayer",
                                     \'["bowenli"]\') }}',
-        materialized = 'table'
+        materialized = 'table',
+        unique_key = ['strategy']
     )
 }}
 
@@ -28,3 +29,12 @@ AND strategy IN (
 )
 
 
+UNION ALL
+
+
+SELECT
+    strategy,
+    token,
+    name AS symbol,
+    18 AS decimals
+FROM {{ ref('eigenlayer_ethereum_strategy_category') }}
