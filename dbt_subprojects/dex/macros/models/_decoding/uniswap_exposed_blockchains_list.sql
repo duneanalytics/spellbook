@@ -1,24 +1,6 @@
 {% macro uniswap_old_blockchains_list() %}
    {{ return([
-       "base",
-       "optimism",
-       "arbitrum"
-    ]) }}
-{% endmacro %} 
-
-
-{% macro uniswap_new_blockchains_list() %}
-   {{ return([
-      "berachain"
-       , "sonic"
-       , "unichain"
-       
-    ]) }}
-{% endmacro %} 
-
-
-/*
-      "avalanche_c"
+       "avalanche_c"
        ,"arbitrum"
        , "base"
        , "blast"
@@ -49,4 +31,15 @@
        , "zkevm"
        , "zksync"
        , "zora"
-*/
+    ]) }}
+{% endmacro %} 
+
+
+{% macro uniswap_new_blockchains_list() %}
+   {{ return([
+      "berachain"
+       , "sonic"
+       , "unichain"
+       
+    ]) }}
+{% endmacro %} 
