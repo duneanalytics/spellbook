@@ -593,8 +593,12 @@ sources:
 
   - name: prices
     tables:
-      - name: trusted_tokens
       - name: tokens
+  
+  - name: prices
+    schema: prices_v2
+    tables:
+      - name: trusted_tokens
 
   - name: prices_native
     tables:
