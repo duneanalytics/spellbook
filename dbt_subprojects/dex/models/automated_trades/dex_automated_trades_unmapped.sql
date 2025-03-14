@@ -10,11 +10,24 @@
 )
 }}
 
-with dexs AS (
+with unmapped_trades as (
+    select 
+        dexs.*
+    from
+        {{ ref('dex_automated_base_trades') }} as dexs
+    where not exists (
+        select 1 
+        from {{ ref('dex_mapping') }} as dex_map
+        where dexs.factory_address = dex_map.factory
+        and dexs.blockchain = dex_map.blockchain
+    )
+    {% if is_incremental() %}
+    and {{ incremental_predicate('dexs.block_time') }}
+    {% endif %}
+), dexs AS (
     {{
         enrich_dex_automated_trades(
-            base_trades = ref('dex_automated_base_trades')
-            , tokens_erc20_model = source('tokens', 'erc20')
+            base_trades = 'unmapped_trades'
         )
     }}
 )
@@ -50,10 +63,4 @@ select
     tx_to,
     evt_index,
     tx_index
-from dexs 
-WHERE NOT EXISTS (
-    SELECT 1 
-    FROM {{ ref('dex_mapping') }} AS dex_map
-    WHERE dexs.factory_address = dex_map.factory
-    AND dexs.blockchain = dex_map.blockchain
-)
+from dexs

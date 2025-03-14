@@ -1,25 +1,18 @@
 {% macro enrich_dex_automated_trades(
     base_trades = null
-    , tokens_erc20_model = null
-    )
+    , tokens_erc20_model = source('tokens', 'erc20')
+    , project = False
+)
 %}
 
-WITH base_trades as (
-    SELECT
-        *
-    FROM
-        {{ base_trades }}
-    {% if is_incremental() %}
-    WHERE
-        {{ incremental_predicate('block_time') }}
-    {% endif %}
-)
-
-, enrichments AS (
-    SELECT
+with enrichments AS (
+    select
         base_trades.blockchain
         , base_trades.version
         , base_trades.dex_type
+        {%- if project %}
+        , project
+        {%- endif %}
         , base_trades.block_month
         , base_trades.block_date
         , base_trades.block_time
@@ -48,16 +41,17 @@ WITH base_trades as (
         , base_trades.tx_to
         , base_trades.evt_index
         , base_trades.tx_index
-    FROM
-        base_trades
-    LEFT JOIN
-        {{ tokens_erc20_model }} as erc20_bought
-        ON erc20_bought.contract_address = base_trades.token_bought_address
-        AND erc20_bought.blockchain = base_trades.blockchain
-    LEFT JOIN
-        {{ tokens_erc20_model }} as erc20_sold
-        ON erc20_sold.contract_address = base_trades.token_sold_address
-        AND erc20_sold.blockchain = base_trades.blockchain
+    from {{ base_trades }} as base_trades
+    left join {{ tokens_erc20_model }} as erc20_bought
+        on erc20_bought.contract_address = base_trades.token_bought_address
+        and erc20_bought.blockchain = base_trades.blockchain
+    left join {{ tokens_erc20_model }} as erc20_sold
+        on erc20_sold.contract_address = base_trades.token_sold_address
+        and erc20_sold.blockchain = base_trades.blockchain
+    {% if is_incremental() %}
+    where 
+        {{ incremental_predicate('base_trades.block_time') }}
+    {% endif %}
 )
 
 , enrichments_with_prices AS (
@@ -68,10 +62,13 @@ WITH base_trades as (
     }}
 )
 
-SELECT
+select
     blockchain
     , version
     , dex_type
+    {%- if project %}
+    , project
+    {%- endif %}
     , block_month
     , block_date
     , block_time
@@ -98,7 +95,6 @@ SELECT
     , tx_to
     , evt_index
     , tx_index
-FROM
-    enrichments_with_prices
+from enrichments_with_prices
 
 {% endmacro %}
