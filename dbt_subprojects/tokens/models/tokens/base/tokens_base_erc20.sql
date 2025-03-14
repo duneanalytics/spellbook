@@ -434,4 +434,6 @@ FROM (VALUES
     , (0xe9F2a5F9f3c846f29066d7fB3564F8E6B6b2D65b, 'SuperUSDC', 6)
     , (0xffe8b2295cef70290819a8193834cc7900bcef5f, 'SuperUSDC SuperPosition', 6)
     , (0xe31eE12bDFDD0573D634124611e85338e2cBF0cF, 'sUSDz', 18)
+    , (0x0c1dc73159e30c4b06170f2593d3118968a0dca5, 'GPS', 18)
+    , (0xFb4C2E6E6e27B5b4a07a36360C89EDE29bB3c9B6, 'cbETHWETH', 18)
 ) AS temp_table (contract_address, symbol, decimals)
