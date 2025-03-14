@@ -36,4 +36,5 @@ FROM (VALUES
     , (0x58538e6a46e07434d7e7375bc268d3cb839c0133, 'ENA', 18)
     , (0x1b896893dfc86bb67cf57767298b9073d2c1ba2c, 'CAKE', 18)
     , (0xb755039edc7910c1f1bd985d48322e55a31ac0bf, 'CRV', 18)
+    , (0x087C440F251Ff6Cfe62B86DdE1bE558B95b4bb9b, 'BOLD', 18)    
 ) AS temp_table (contract_address, symbol, decimals)
