@@ -20,7 +20,7 @@ with mapped_trades as (
         {{ ref('dex_mapping') }} as dex_map
         on dexs.factory_address = dex_map.factory
         and dexs.blockchain = dex_map.blockchain 
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     where 
         {{ incremental_predicate('dexs.block_time') }}
     {% endif %}
