@@ -21,7 +21,7 @@ with unmapped_trades as (
         where dexs.factory_address = dex_map.factory
         and dexs.blockchain = dex_map.blockchain
     )
-    {% if is_incremental() %}
+    {% if is_incremental() or true %}
     and {{ incremental_predicate('dexs.block_time') }}
     {% endif %}
 ), dexs AS (
