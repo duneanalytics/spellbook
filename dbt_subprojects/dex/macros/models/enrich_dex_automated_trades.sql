@@ -41,7 +41,7 @@ with enrichments AS (
         , base_trades.tx_to
         , base_trades.evt_index
         , base_trades.tx_index
-    from base_trades
+    from {{ base_trades }} as base_trades
     left join {{ tokens_erc20_model }} as erc20_bought
         on erc20_bought.contract_address = base_trades.token_bought_address
         and erc20_bought.blockchain = base_trades.blockchain

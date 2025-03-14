@@ -27,7 +27,7 @@ with mapped_trades as (
 ), dexs AS (
     {{
         enrich_dex_automated_trades(
-            base_trades = mapped_trades
+            base_trades = 'mapped_trades'
             , project = True
         )
     }}

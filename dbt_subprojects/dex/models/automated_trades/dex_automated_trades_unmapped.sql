@@ -27,7 +27,7 @@ with unmapped_trades as (
 ), dexs AS (
     {{
         enrich_dex_automated_trades(
-            base_trades = unmapped_trades
+            base_trades = 'unmapped_trades'
         )
     }}
 )
