@@ -1,6 +1,5 @@
-{% macro log_decoded_enrich_dex_trades(
+{% macro enrich_dex_automated_trades(
     base_trades = null
-    , filter = null
     , tokens_erc20_model = null
     )
 %}
@@ -10,10 +9,8 @@ WITH base_trades as (
         *
     FROM
         {{ base_trades }}
-    WHERE
-        {{ filter }}
     {% if is_incremental() %}
-    AND
+    WHERE
         {{ incremental_predicate('block_time') }}
     {% endif %}
 )
@@ -21,9 +18,7 @@ WITH base_trades as (
 , enrichments AS (
     SELECT
         base_trades.blockchain
-        , base_trades.project
         , base_trades.version
-        , base_trades.factory_address
         , base_trades.dex_type
         , base_trades.block_month
         , base_trades.block_date
@@ -44,10 +39,15 @@ WITH base_trades as (
         , coalesce(base_trades.taker, base_trades.tx_from) AS taker
         , base_trades.maker
         , base_trades.project_contract_address
+        , base_trades.pool_topic0
+        , base_trades.factory_address
+        , base_trades.factory_topic0
+        , base_trades.factory_info
         , base_trades.tx_hash
         , base_trades.tx_from
         , base_trades.tx_to
         , base_trades.evt_index
+        , base_trades.tx_index
     FROM
         base_trades
     LEFT JOIN
@@ -70,9 +70,7 @@ WITH base_trades as (
 
 SELECT
     blockchain
-    , project
     , version
-    , factory_address
     , dex_type
     , block_month
     , block_date
@@ -91,10 +89,15 @@ SELECT
     , taker
     , maker
     , project_contract_address
+    , pool_topic0
+    , factory_address
+    , factory_topic0
+    , factory_info
     , tx_hash
     , tx_from
     , tx_to
     , evt_index
+    , tx_index
 FROM
     enrichments_with_prices
 
