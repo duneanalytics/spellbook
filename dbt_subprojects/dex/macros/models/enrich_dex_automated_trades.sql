@@ -1,30 +1,18 @@
-{% macro log_decoded_enrich_dex_trades(
+{% macro enrich_dex_automated_trades(
     base_trades = null
-    , filter = null
-    , tokens_erc20_model = null
-    )
+    , tokens_erc20_model = source('tokens', 'erc20')
+    , project = False
+)
 %}
 
-WITH base_trades as (
-    SELECT
-        *
-    FROM
-        {{ base_trades }}
-    WHERE
-        {{ filter }}
-    {% if is_incremental() %}
-    AND
-        {{ incremental_predicate('block_time') }}
-    {% endif %}
-)
-
-, enrichments AS (
-    SELECT
+with enrichments AS (
+    select
         base_trades.blockchain
-        , base_trades.project
         , base_trades.version
-        , base_trades.factory_address
         , base_trades.dex_type
+        {%- if project %}
+        , project
+        {%- endif %}
         , base_trades.block_month
         , base_trades.block_date
         , base_trades.block_time
@@ -44,20 +32,26 @@ WITH base_trades as (
         , coalesce(base_trades.taker, base_trades.tx_from) AS taker
         , base_trades.maker
         , base_trades.project_contract_address
+        , base_trades.pool_topic0
+        , base_trades.factory_address
+        , base_trades.factory_topic0
+        , base_trades.factory_info
         , base_trades.tx_hash
         , base_trades.tx_from
         , base_trades.tx_to
         , base_trades.evt_index
-    FROM
-        base_trades
-    LEFT JOIN
-        {{ tokens_erc20_model }} as erc20_bought
-        ON erc20_bought.contract_address = base_trades.token_bought_address
-        AND erc20_bought.blockchain = base_trades.blockchain
-    LEFT JOIN
-        {{ tokens_erc20_model }} as erc20_sold
-        ON erc20_sold.contract_address = base_trades.token_sold_address
-        AND erc20_sold.blockchain = base_trades.blockchain
+        , base_trades.tx_index
+    from {{ base_trades }} as base_trades
+    left join {{ tokens_erc20_model }} as erc20_bought
+        on erc20_bought.contract_address = base_trades.token_bought_address
+        and erc20_bought.blockchain = base_trades.blockchain
+    left join {{ tokens_erc20_model }} as erc20_sold
+        on erc20_sold.contract_address = base_trades.token_sold_address
+        and erc20_sold.blockchain = base_trades.blockchain
+    {% if is_incremental() %}
+    where 
+        {{ incremental_predicate('base_trades.block_time') }}
+    {% endif %}
 )
 
 , enrichments_with_prices AS (
@@ -68,12 +62,13 @@ WITH base_trades as (
     }}
 )
 
-SELECT
+select
     blockchain
-    , project
     , version
-    , factory_address
     , dex_type
+    {%- if project %}
+    , project
+    {%- endif %}
     , block_month
     , block_date
     , block_time
@@ -91,11 +86,15 @@ SELECT
     , taker
     , maker
     , project_contract_address
+    , pool_topic0
+    , factory_address
+    , factory_topic0
+    , factory_info
     , tx_hash
     , tx_from
     , tx_to
     , evt_index
-FROM
-    enrichments_with_prices
+    , tx_index
+from enrichments_with_prices
 
 {% endmacro %}
