@@ -73,7 +73,6 @@
           )
         )
       ) as uint256) AS tokenA_filled,
-      l.call_outer_instruction_index AS index,
       cast(BYTEARRAY_TO_BIGINT (
         BYTEARRAY_REVERSE (
           BYTEARRAY_SUBSTRING (
@@ -121,7 +120,8 @@
     SELECT
       market,
       seq,
-      MAX(index) AS index
+      MAX(call_inner_instruction_index) as call_inner_instruction_index,
+      MAX(call_outer_instruction_index) as call_outer_instruction_index
     FROM
       logs
     GROUP BY
@@ -135,7 +135,8 @@
       logs AS l
       JOIN max_log_index AS m ON l.market = m.market
       AND l.seq = m.seq
-      AND l.index = m.index
+      AND l.call_inner_instruction_index = m.call_inner_instruction_index
+      AND l.call_outer_instruction_index = m.call_outer_instruction_index
   ),
   trades as (
     SELECT
@@ -172,7 +173,7 @@
             else p.tokenBVault
             end as token_sold_vault
         , p.fee_tier
-        , row_number() over (partition by seq order by COALESCE(s.call_inner_instruction_index, 0) desc) as recent_swap -- this ties the log to only the most recent swap call
+        , row_number() over (partition by seq order by COALESCE(s.call_inner_instruction_index, 0) desc) as recent_swap -- this ties the log to only the most recent swap call, even though we're already filtering for the max instruction indices
     FROM filtered_logs l
     LEFT JOIN (
         SELECT
