@@ -39,6 +39,8 @@ SELECT
       , trade_source
       , token_bought_amount_raw
       , token_sold_amount_raw
+      , COALESCE(token_bought_decimal_project_specific, NULL) as token_bought_decimal_project_specific
+      , COALESCE(token_sold_decimal_project_specific, NULL) as token_sold_decimal_project_specific
       , fee_tier
       , token_bought_mint_address
       , token_sold_mint_address

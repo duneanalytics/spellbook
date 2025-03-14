@@ -173,6 +173,12 @@
             else p.tokenBVault
             end as token_sold_vault
         , p.fee_tier
+        , case when s.side = 1 then p.tokenB_decimals
+            else p.tokenA_decimals
+            end as token_bought_decimal_project_specific
+        , case when s.side = 1 then p.tokenA_decimals
+            else p.tokenB_decimals
+            end as token_sold_decimal_project_specific
         , row_number() over (partition by seq order by COALESCE(s.call_inner_instruction_index, 0) desc) as recent_swap -- this ties the log to only the most recent swap call, even though we're already filtering for the max instruction indices
     FROM filtered_logs l
     LEFT JOIN (
@@ -204,6 +210,10 @@ SELECT
     , tb.trade_source
     , tb.token_bought_amount_raw
     , tb.token_sold_amount_raw
+    , tb.token_bought_amount_raw / POWER(10, tb.token_bought_decimal_project_specific) as token_bought_amount
+    , tb.token_sold_amount_raw / POWER(10, tb.token_sold_decimal_project_specific) as token_sold_amount
+    , tb.token_bought_decimal_project_specific
+    , tb.token_sold_decimal_project_specific
     , tb.fee_tier as fee_tier
     , tb.token_sold_mint_address
     , tb.token_bought_mint_address
