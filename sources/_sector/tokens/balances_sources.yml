@@ -135,3 +135,5 @@ sources:
           - name: token_id
           - name: amount
           - name: type
+
+  - name: tokens
