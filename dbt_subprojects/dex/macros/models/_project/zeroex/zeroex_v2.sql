@@ -132,7 +132,8 @@ swap_signatures as (
         (0xad7d6f97abf51ce18e17a38f4d70e975be9c0708474987bb3e26ad21bd93ca70),
         (0x54787c404bb33c88e86f4baf88183a3b0141d0a848e6a9f7a13b66ae3a9b73d1),
         (0x6ac6c02c73a1841cb185dff1fe5282ff4499ce709efd387f7fc6de10a5124320),
-        (0x1f5359759208315a45fc3fa86af1948560d8b87afdcaf1702a110ce0fbc305f3)
+        (0x1f5359759208315a45fc3fa86af1948560d8b87afdcaf1702a110ce0fbc305f3),
+        (0x40e9cecb9f5f1f1c5b9c97dec2917b7ee92e57ba5563708daca94dd84ad7112f)
     ) AS t(signature)
 ),
 tbl_all_logs AS (
@@ -174,7 +175,8 @@ tbl_all_logs AS (
         AND ( 
                 topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
-                   0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
+                   0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c,
+                   0xe59fdd36d0d223c0c7d996db7ad796880f45e1936cb0bb7ac102e7082e031487)
                 OR logs.contract_address = settler_address
                 OR swap_signatures.signature is not null
         )
@@ -219,6 +221,13 @@ taker_logs as (
         and (
              varbinary_position(st.data, (logs.data)) <> 0 
             or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
+            or (
+                varbinary_to_uint256(varbinary_ltrim(logs.data)) >= varbinary_to_uint256(varbinary_substring(st.data, 57, 8))
+                AND 
+                varbinary_to_uint256(varbinary_ltrim(logs.data)) > 0 
+                AND 
+                (varbinary_to_uint256(varbinary_ltrim(logs.data)) - varbinary_to_uint256(varbinary_substring(st.data, 57, 8))) / varbinary_to_uint256(varbinary_ltrim(logs.data)) < 0.001
+            )
           )
           
     where logs.block_time > TIMESTAMP '2024-07-15' 
@@ -270,7 +279,8 @@ maker_logs as (
     WHERE  
         cow_rn is null 
         and amount != 0 
-        and ( 
+        and (
+            ( 
                 ( topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
                     and 
                         ( 
@@ -288,21 +298,32 @@ maker_logs as (
                     )
                     and (varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
                     or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
-                    or varbinary_to_uint256(logs.data) in (amount_out_) 
-                    or POSITION(CAST(varbinary_to_uint256(logs.data) AS VARCHAR) IN CAST(amount_out_ AS VARCHAR)) > 0
+                    OR 
+                        CASE 
+                            WHEN varbinary_length(varbinary_ltrim(logs.data)) <= 32 
+                            THEN varbinary_to_uint256(varbinary_substring(varbinary_ltrim(logs.data), 1, 32))
+                            ELSE NULL 
+                        END IN (amount_out_) 
+
+                        OR 
+                        CASE 
+                            WHEN varbinary_length(varbinary_ltrim(logs.data)) <= 32 
+                            THEN CAST(varbinary_to_uint256(varbinary_substring(varbinary_ltrim(logs.data), 1, 32)) AS VARCHAR) 
+                            ELSE NULL 
+                        END IN (CAST(amount_out_ AS VARCHAR))
+
                     ) 
                 
-                        )
-                        or (bytearray_substring(logs.topic1,13,20) in (settler_address)  
-                        and (bytearray_substring(logs.topic2,13,20) in (taker))
-                        )
+                        )     
                     )
             )
+        )
             or (
                 topic0 in (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65)
                 and bytearray_substring(logs.topic1,13,20) in (tx_from, settler_address) 
             )
         )
+        
         
     ),
     tbl_logs_rn as (
@@ -384,7 +405,8 @@ tbl_trades as (
 select  block_time,
         block_number,
         tx_hash,
-        case when st.taker in (0x0000000000001ff3684f28c67538d4d072c22734,
+        case when c.address is not null then tx_from
+             when st.taker in (0x0000000000001ff3684f28c67538d4d072c22734,
                             0x0000000000005E88410CcDFaDe4a5EfaE4b49562,
                             0x000000000000175a8b9bC6d539B3708EEd92EA6c,
                             0x9008d19f58aabd9ed0d60971565aa8510560ab41,
@@ -411,6 +433,7 @@ select  block_time,
         settler_address as contract_address 
     from maker_logs
     join zeroex_tx st using (block_time, block_number, tx_hash, rn, settler_address) 
+    left join {{ source( 'evms', 'contracts') }} c on c.address = st.taker and c.blockchain = blockchain
     union 
     select * from cow_trades 
 )
