@@ -60,18 +60,18 @@ select
     beacon_wth.beacon_amount_withdrawn,
     beacon_wth.beacon_amount_skim_withdrawn,
     coalesce(dist.is_distributed, false) as is_distributed
-from ref('rocketpool_minipool_created_destroyed') as minipool
+from {{ ref('rocketpool_minipool_created_destroyed') }} as minipool
 left join minipool_deposits  as deposits
     on minipool.minipool = deposits.minipool
-left join ref('rocketpool_minipool_bond_reduction')  as reductions
+left join {{ ref('rocketpool_minipool_bond_reduction') }} as reductions
     on minipool.minipool = reductions.minipool
-left join ref('rocketpool_minipool_pubkey_index') as pubkey
+left join {{ ref('rocketpool_minipool_pubkey_index') }} as pubkey
     on minipool.minipool = pubkey.minipool
-left join ref('rocketpool_minipool_beacon_deposit') as beacon_dep
+left join {{ ref('rocketpool_minipool_beacon_deposit') }} as beacon_dep
     on pubkey.pubkey = beacon_dep.pubkey
-left join ref('rocketpool_minipool_beacon_withdrawal') as beacon_wth
+left join {{ ref('rocketpool_minipool_beacon_withdrawal') }} as beacon_wth
     on deposits.minipool = beacon_wth.minipool
-left join ref('rocketpool_minipool_balance_distribution') as dist
+left join {{ ref('rocketpool_minipool_balance_distribution') }} as dist
     on minipool.minipool = dist.minipool
-left join ref('rocketpool_minipool_queue') as queue
+left join {{ ref('rocketpool_minipool_queue') }} as queue
     on minipool.minipool = queue.minipool
