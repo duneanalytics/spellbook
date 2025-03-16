@@ -17,7 +17,8 @@ with minipool_deposits as (
         pubkey,
         minipool,
         bond_amount,
-        node_fee
+        node_fee,
+        'standard' as deposit_type
     from {{ ref('rocketpool_minipool_deposit_standard') }}
 
     union
@@ -26,7 +27,8 @@ with minipool_deposits as (
         pubkey,
         minipool,
         bond_amount,
-        node_fee
+        node_fee,
+        'credit' as deposit_type
     from {{ ref('rocketpool_minipool_deposit_credit') }}
 
     union
@@ -35,7 +37,8 @@ with minipool_deposits as (
         pubkey,
         minipool,
         bond_amount,
-        node_fee
+        node_fee,
+        'vacant' as deposit_type
     from {{ ref('rocketpool_minipool_deposit_vacant') }}
 )
 select
