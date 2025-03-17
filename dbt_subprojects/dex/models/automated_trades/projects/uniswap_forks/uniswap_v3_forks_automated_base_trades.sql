@@ -14,13 +14,13 @@
 (
         select *
         from {{ ref('uniswap_v3_forks_old_chains_decoded_swap_events') }}
-        {% if is_incremental() or true -%}
+        {% if is_incremental()  -%}
         WHERE {{ incremental_predicate('block_time') }}
         {%- endif %}
         union all 
         select *
         from {{ ref('uniswap_v3_forks_new_chains_decoded_swap_events') }}
-        {% if is_incremental() or true -%}
+        {% if is_incremental()  -%}
         WHERE {{ incremental_predicate('block_time') }}
         {%- endif %}
 )
