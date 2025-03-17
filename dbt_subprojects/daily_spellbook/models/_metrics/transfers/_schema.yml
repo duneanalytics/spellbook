@@ -19,6 +19,14 @@ models:
       For example, if I give you $1 that's -1 sent (from me) and +1 received (by you) which adds to 0. 
       This query counts the received to show that $1 was effectively transfered."
 
+  - name: metrics_transfers_daily_asset
+    meta:
+      sector: metrics
+      contributors: jeff-dude, krishhh
+    config:
+      tags: ['metrics', 'net_transfers', 'asset']
+    description: "Total transfer amount per day per asset across chains"
+
   - name: metrics_transfers_stats
     meta:
       sector: metrics
