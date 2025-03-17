@@ -7,6 +7,7 @@
     , incremental_strategy = 'merge'
     , unique_key = ['blockchain', 'block_month', 'block_number', 'tx_index', 'evt_index']
     , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+    , tags = ['prod_exclude']
 )
 }}
 
