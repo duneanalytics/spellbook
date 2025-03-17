@@ -2,7 +2,6 @@
     schema = 'dex'
     , alias = 'automated_base_trades'
     , materialized = 'view'
-    , tags = ['prod_exclude']
     )
 }}
 
