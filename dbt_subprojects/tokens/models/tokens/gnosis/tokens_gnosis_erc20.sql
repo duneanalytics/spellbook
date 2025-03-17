@@ -7827,5 +7827,6 @@ FROM (VALUES
     , ( 0x51350d88c1bd32Cc6A79368c9Fb70373Fb71F375, 'waGNOUSDCe', 6)    
     , ( 0xa4d8bae4430cb084dcd9d82e938bce270b76bae5, 'CHT', 18)    
     , ( 0x0a42465b7df193ab5302336a87e34d5dbc2e64ba, 'CO2', 18)    
-    , ( 0x795ff02893fb01d84044b567312cca3b82d9ac2a, 'EUR', 18)   
+    , ( 0x795ff02893fb01d84044b567312cca3b82d9ac2a, 'EUR', 18) 
+    , ( 0x417bc5b940475203A18C2f320a5ba470D6c5E463, 'waGnoEURe', 18)   
 ) AS temp_table (contract_address, symbol, decimals)
