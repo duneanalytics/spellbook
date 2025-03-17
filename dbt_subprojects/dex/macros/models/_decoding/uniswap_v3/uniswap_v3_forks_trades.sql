@@ -28,11 +28,7 @@ WITH evt_swap AS (
         , tx_from
         , tx_to
     FROM {{ Pair_evt_Swap }}
-    {% if is_incremental()  %}
-    WHERE {{ incremental_predicate('block_time') }}
-    {% endif %}
 )
-
 -- filtering out bogus factory deployments
 , factory_event_counts AS (
     SELECT 
@@ -44,7 +40,6 @@ WITH evt_swap AS (
     GROUP BY {{ pair_column_name }}, blockchain, contract_address
     HAVING COUNT(*) = 1 -- Only keep pools with exactly one factory event
 )
-
 -- Regular trades with normal filtering
 , regular_trades AS (
     SELECT
@@ -94,14 +89,14 @@ WITH evt_swap AS (
             address
             , "from"
             , blockchain
-    ) ct 
-        ON f.{{ pair_column_name }} = ct.address 
-        AND f.contract_address = ct."from"
-        AND ct.blockchain = t.blockchain
+    ) ct
+        ON ct.address = f.{{ pair_column_name }}
+        AND ct."from" = f.contract_address
+        AND ct.blockchain = f.blockchain
+        AND ct.latest_block = f.block_number
 )
-
--- Special handling for Optimism trades with mappings (bypassing some filters)
 , optimism_mapped_trades AS (
+     -- Special handling for Optimism trades in with mappings (bypassing some filters)
     SELECT
         t.blockchain
         , t.block_number
@@ -134,10 +129,9 @@ WITH evt_swap AS (
         AND f.blockchain = t.blockchain
     INNER JOIN {{ ref('uniswap_optimism_ovm1_pool_mapping') }} ov
         ON t.contract_address = ov.newaddress
+    WHERE t.blockchain = 'optimism'
         AND f.contract_address = 0x1F98431c8aD98523631AE4a59f267346ea31F984
-        AND t.blockchain = 'optimism'
 )
-
 -- Combine regular trades and special Optimism trades
 , combined_trades AS (
     SELECT * 
