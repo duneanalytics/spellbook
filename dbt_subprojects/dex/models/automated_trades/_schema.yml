@@ -4,7 +4,7 @@ models:
   - name: dex_automated_trades
     meta:
       docs_slug: /curated/trading/DEX/dex-trades
-      blockchain: &supported_chains arbitrum, avalanche_c, base, bnb, celo, ethereum, fantom, gnosis, optimism, polygon, scroll, zksync, linea, blast, sei
+      blockchain: &supported_chains  avalanche_c, arbitrum, base, blast, bnb, bob, boba, celo, ethereum, fantom, flare, gnosis, kaia, linea, mantle, nova, optimism, polygon, ronin, scroll, sei, sonic, sophon, unichain, viction, worldchain, zkevm, zksync, zora
       sector: &sector dex
       contributors: &contributors 0xBoxer, hosuke, jeff-dude
     config:
@@ -167,4 +167,22 @@ models:
     config:
       tags: *tags
     description: "This table contains all DEX trades that could not be mapped to known DEX projects, we use this table to identify new projects and add them to the mapping table"
+    data_tests: *unique_trade_test
+
+  - name: uniswap_v2_forks_automated_base_trades
+    meta:
+      blockchain: *supported_chains
+      sector: *sector
+      contributors: *contributors
+    config:
+      tags: *tags
+    data_tests: *unique_trade_test
+
+  - name: uniswap_v3_forks_automated_base_trades
+    meta:
+      blockchain: *supported_chains
+      sector: *sector
+      contributors: *contributors
+    config:
+      tags: *tags
     data_tests: *unique_trade_test
