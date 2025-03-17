@@ -103,6 +103,36 @@ models:
         name: fills_within
         description: "fills in then multihop, if present"   
 
+  - name: zeroex_mode_settler_addresses
+    meta:
+      blockchain: mode
+      project: zeroex
+      contributors: hosuke
+    config:
+      tags: ['mode', '0x', 'settler']
+    description: >
+      0x settler addresses on Mode. This table contains the addresses that are authorized to settle 0x trades on Mode.
+      The table tracks when each address was authorized and when it was deauthorized (if applicable).
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - settler_address
+            - token_id
+    columns:
+      - name: tx_hash
+        description: "Transaction hash"
+      - name: settler_address
+        description: "Address authorized to settle 0x trades"
+      - name: token_id
+        description: "Token ID associated with the settler address authorization"
+      - name: begin_block_time
+        description: "Timestamp when the address was authorized to settle trades"
+      - name: begin_block_number
+        description: "Block number when the address was authorized to settle trades"
+      - name: end_block_time
+        description: "Timestamp when the address was deauthorized (null if still authorized)"
+      - name: end_block_number
+        description: "Block number when the address was deauthorized (null if still authorized)"
 
       
       
