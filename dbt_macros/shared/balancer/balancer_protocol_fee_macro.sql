@@ -92,7 +92,7 @@ WITH pool_labels AS (
             '0xba12222222228d8ba445958a75a0704d566bf2c8' AS pool_id,
             token AS token_address,
             SUM(feeAmount) AS protocol_fee_amount_raw
-        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Flashloan') }} b
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_FlashLoan') }} b
         GROUP BY 1, 2, 3 
 
         UNION ALL      
