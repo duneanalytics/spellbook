@@ -10,11 +10,25 @@
 )
 }}
 
-with dexs AS (
+with mapped_trades as (
+    select
+        dexs.*
+        , dex_map.project
+    from 
+        {{ ref('dex_automated_base_trades') }} as dexs
+    inner join 
+        {{ ref('dex_mapping') }} as dex_map
+        on dexs.factory_address = dex_map.factory
+        and dexs.blockchain = dex_map.blockchain 
+    {% if is_incremental() %}
+    where 
+        {{ incremental_predicate('dexs.block_time') }}
+    {% endif %}
+), dexs AS (
     {{
         enrich_dex_automated_trades(
-            base_trades = ref('dex_automated_base_trades')
-            , tokens_erc20_model = source('tokens', 'erc20')
+            base_trades = 'mapped_trades'
+            , project = True
         )
     }}
 )
@@ -23,7 +37,7 @@ select
     dexs.blockchain,
     dexs.version,
     dexs.dex_type,
-    dex_map.project,
+    dexs.project,
     dexs.block_month,
     dexs.block_date,
     dexs.block_time,
@@ -50,7 +64,4 @@ select
     dexs.tx_to,
     dexs.evt_index,
     dexs.tx_index
-from dexs 
-INNER JOIN {{ ref('dex_mapping') }} AS dex_map
-    ON dexs.factory_address = dex_map.factory
-    AND dexs.blockchain = dex_map.blockchain 
+from dexs
