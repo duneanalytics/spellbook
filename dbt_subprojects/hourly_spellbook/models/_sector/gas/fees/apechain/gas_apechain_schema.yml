@@ -1,0 +1,59 @@
+version: 2
+
+models:
+  - name: gas_apechain_fees
+    meta:
+      blockchain: apechain
+      sector: gas
+      contributors: hosuke
+    config:
+      tags: ['apechain', 'gas', 'fees']
+    description: >
+      Gas Fees on ApeChain
+      
+      ApeChain is a Layer-3 blockchain built specifically for entertainment and gaming applications,
+      designed to provide low transaction costs and high performance while maintaining security.
+      
+      The gas fee mechanism on ApeChain includes several unique features:
+      
+      1. Native Token (APE): The primary utility token used for transaction fee payments,
+         governance, staking, and validator rewards on the network.
+      
+      2. Timeboost Burn Mechanism:
+         - Base Transaction Fee: Standard gas fee based on computation and storage requirements
+         - Timeboost Component: Optional additional fee that increases transaction priority
+         - Progressive Burn: Higher percentage burn rates for higher Timeboost values
+         - Deflationary Model: Creates scarcity through systematic token burning
+      
+      3. Gas Calculation Factors:
+         - Computation Complexity: Higher complexity operations cost more gas
+         - Storage Requirements: Data storage operations have additional gas costs
+         - Network Congestion: Dynamic adjustment based on current network load
+         - Timeboost Value: User-defined priority multiplier
+      
+      4. Fee Distribution:
+         - Validator Rewards: Portion distributed to network validators for block production
+         - Treasury Allocation: Small percentage directed to ecosystem development
+         - Burn Component: Variable percentage burned based on Timeboost value
+      
+      ApeChain's gas fee model is designed to maintain economic sustainability while optimizing for the
+      entertainment and gaming sectors, where transaction costs significantly impact user experience.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - block_number
+            - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: apechain
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_raw
+      - dbt_utils.expression_is_true:
+          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
+          config:
+            where: "block_time > now() - interval '7' day"

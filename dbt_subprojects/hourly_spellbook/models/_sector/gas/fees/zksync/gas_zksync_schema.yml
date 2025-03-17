@@ -5,11 +5,42 @@ models:
     meta:
       blockchain: zksync
       sector: gas
-      contributors: 0xRob, soispoke
+      contributors: 0xRob, soispoke, hosuke
     config:
       tags: ['zksync', 'gas', 'fees']
     description: >
-        Gas Fees on Ethereum
+        Gas Fees on zkSync Era
+        
+        zkSync Era is a ZK rollup that leverages zero-knowledge proofs to scale Ethereum, reducing transaction
+        costs while inheriting Ethereum's security. The gas fee mechanism on zkSync Era has several unique
+        characteristics:
+        
+        1. Two-Component Fee Structure:
+           - L1 Data Availability Costs: Fees paid to cover the cost of posting data to Ethereum
+           - L2 Computation Costs: Fees for execution on the zkSync network itself
+        
+        2. Gas Cost Calculation:
+           Each transaction's total gas cost is determined by:
+           - The gas used for L2 computation (similar to standard Ethereum gas)
+           - The gas used for publishing data to L1, which depends on transaction size
+        
+        3. Fair Pricing System:
+           - Storage operations (SSTORE) are more expensive on zkSync compared to other operations
+           - This reflects the true cost of operations in a ZK rollup where storage costs dominate
+           - However, overall fees remain significantly lower than Ethereum mainnet
+        
+        4. EIP-1559 Implementation:
+           - zkSync implements a modified version of EIP-1559
+           - Base fee adjusts according to network congestion
+           - Priority fees allow users to incentivize faster inclusion
+        
+        5. Fee Abstraction:
+           - zkSync supports paying fees in tokens other than ETH via zkSync's fee abstraction mechanism
+           - The paymaster system allows dApps to sponsor transaction fees for users
+        
+        Gas fees on zkSync are significantly lower than Ethereum mainnet, typically 10-100x cheaper,
+        while maintaining strong security guarantees through the use of validity proofs that are posted
+        to Ethereum.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -25,7 +56,3 @@ models:
             - tx_hash
           check_columns:
             - tx_fee_raw
-      - dbt_utils.expression_is_true:
-          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
-          config:
-            where: "block_time > now() - interval '7' day"

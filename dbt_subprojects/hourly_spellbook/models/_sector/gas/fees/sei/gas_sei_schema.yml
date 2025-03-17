@@ -5,11 +5,48 @@ models:
     meta:
       blockchain: sei
       sector: gas
-      contributors: 0xRob, soispoke
+      contributors: 0xRob, soispoke, hosuke
     config:
       tags: ['sei', 'gas', 'fees']
     description: >
-        Gas Fees on Ethereum
+        Gas Fees on Sei Network
+        
+        Sei is a high-performance blockchain specifically designed for trading applications, featuring 
+        parallel execution and an optimized consensus mechanism. With the addition of Sei V2's EVM, 
+        it brings this performance to Ethereum-compatible applications.
+        
+        The gas fee mechanism on Sei has several unique characteristics:
+        
+        1. Dual Gas Price System:
+           - Base Gas Price: Set by the protocol and adjusted based on network demand
+           - Priority Gas Price: Optional additional fee to prioritize transactions during high congestion
+        
+        2. Parallelized Transaction Processing Impact:
+           - Sei's architecture allows for parallelized transaction execution
+           - This results in higher throughput and generally lower gas costs compared to 
+             sequential execution blockchains
+        
+        3. Specialized Optimization for Trading:
+           - Gas costs are optimized for trading operations
+           - Frequency-based fee tiers to accommodate high-frequency traders
+           - Lower gas costs for order placement, cancellation, and settlement
+        
+        4. Time-Based Finality Guarantees:
+           - Unlike block-based finality on many chains, Sei offers time-based finality (400ms)
+           - This affects gas pricing strategies for time-sensitive applications
+        
+        5. Frontrunning Prevention:
+           - Sei implements order matching at the consensus level
+           - This eliminates the need for users to pay high gas fees to avoid frontrunning in DeFi
+        
+        6. EVM Compatibility in V2:
+           - Implements Ethereum-compatible gas metering while maintaining Sei's performance advantages
+           - Optimized gas schedule for common operations to improve cost efficiency
+        
+        Gas fees on Sei are typically much lower than Ethereum mainnet due to the architectural 
+        efficiencies, while still maintaining strong security guarantees. The fee model is specifically 
+        designed to support high-frequency trading applications while providing affordability for 
+        general purpose smart contract interactions.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
