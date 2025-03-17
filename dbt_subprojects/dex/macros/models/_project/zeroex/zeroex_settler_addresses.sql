@@ -22,7 +22,7 @@ tbl_addresses AS (
         AND topic0 = 0xaa94c583a45742b26ac5274d230aea34ab334ed5722264aa5673010e612bc0b2
         -- Apply time-based filtering for incremental loads
         {% if is_incremental() %}
-        AND {{ incremental_predicate('begin_block_time') }}
+        AND {{ incremental_predicate('block_time') }}
         {% endif %}
 ),
 

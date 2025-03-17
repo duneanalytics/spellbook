@@ -5,8 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['settler_address', 'token_id'],
-        incremental_predicates = [incremental_predicate('block_time')]
+        unique_key = ['settler_address', 'token_id']
     )
 }}
 
