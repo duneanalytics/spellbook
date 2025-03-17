@@ -89,7 +89,7 @@ WITH pool_labels AS (
         -- flashloans are taken from the vault contract, there is no pool involved. 
         SELECT
             date_trunc('day', evt_block_time) AS day,
-            '0x0000000000000000000000000000000000000000' AS pool_id,
+            '0xba12222222228d8ba445958a75a0704d566bf2c8' AS pool_id,
             token AS token_address,
             SUM(feeAmount) AS protocol_fee_amount_raw
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_Flashloan') }} b
