@@ -105,7 +105,12 @@ WITH pool_labels AS (
         FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_PoolRegistered') }} b
         INNER JOIN {{ source('erc20_' + blockchain, 'evt_transfer') }} t
             ON t.contract_address = b.poolAddress
-            AND t."from" = 0x0000000000000000000000000000000000000000
+            AND (t."from" = 0x0000000000000000000000000000000000000000 OR t."from" =  
+                CASE
+                    WHEN '{{blockchain}}' = 'fantom' THEN 0x20dd72ed959b6147912c2e529f0a0c651c33c9ce
+                    ELSE 0xba12222222228d8ba445958a75a0704d566bf2c8
+                    END --Balancer vault address, which is the same across all chains except for fantom   
+            )
             AND t."to" =
                 CASE
                     WHEN '{{blockchain}}' = 'fantom' THEN 0xc6920d3a369e7c8bd1a22dbe385e11d1f7af948f
