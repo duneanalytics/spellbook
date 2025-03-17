@@ -40,6 +40,18 @@ WITH evt_swap AS (
     GROUP BY {{ pair_column_name }}, blockchain, contract_address
     HAVING COUNT(*) = 1 -- Only keep pools with exactly one factory event
 )
+, latest_creation_traces AS (
+    SELECT 
+        address,
+        "from",
+        blockchain,
+        block_number,
+        ROW_NUMBER() OVER (
+            PARTITION BY address, "from", blockchain 
+            ORDER BY block_number DESC
+        ) AS row_num
+    FROM {{ source('evms', 'creation_traces') }}
+)
 -- Regular trades with normal filtering
 , regular_trades AS (
     SELECT
@@ -77,23 +89,12 @@ WITH evt_swap AS (
         ON fec.{{ pair_column_name }} = f.{{ pair_column_name }}
         AND fec.blockchain = f.blockchain
         AND fec.contract_address = f.contract_address
-    INNER JOIN (
-        SELECT 
-            address
-            , "from"
-            , blockchain
-            , MAX(block_number) as latest_block
-        FROM 
-            {{ source('evms', 'creation_traces') }}
-        GROUP BY 
-            address
-            , "from"
-            , blockchain
-    ) ct
+    INNER JOIN latest_creation_traces ct
         ON ct.address = f.{{ pair_column_name }}
         AND ct."from" = f.contract_address
         AND ct.blockchain = f.blockchain
-        AND ct.latest_block = f.block_number
+        AND ct.block_number = f.block_number
+        AND ct.row_num = 1
 )
 , optimism_mapped_trades AS (
      -- Special handling for Optimism trades in with mappings (bypassing some filters)
