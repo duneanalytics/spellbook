@@ -38,15 +38,9 @@ WITH evt_swap AS (
 )
 , latest_creation_traces AS (
     SELECT 
-        address,
-        "from",
-        blockchain,
-        block_number,
-        ROW_NUMBER() OVER (
-            PARTITION BY address, "from", blockchain 
-            ORDER BY block_number DESC
-        ) AS row_num
-    FROM {{ source('evms', 'creation_traces') }}
+        *
+    FROM
+        {{ ref('evms_latest_creation_trace') }}
 )
 , dexs AS
 (
@@ -85,8 +79,7 @@ WITH evt_swap AS (
         ON ct.address = f.pair
         AND ct."from" = f.contract_address
         AND ct.blockchain = f.blockchain
-        AND ct.block_number = f.block_number
-        AND ct.row_num = 1
+        AND ct.block_month = f.block_month
 )
 
 SELECT
