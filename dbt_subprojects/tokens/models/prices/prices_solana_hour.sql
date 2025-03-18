@@ -1,14 +1,7 @@
 {{ config(
         schema = 'prices_solana',
         alias = 'hour',
-        materialized = 'view',
-        post_hook =
-            '{{ expose_spells(\'[
-                "solana"
-            ]\',
-            "sector",
-            "prices",
-            \'["jeff-dude", "couralex"]\') }}'
+        materialized = 'view'
     )
 }}
 
