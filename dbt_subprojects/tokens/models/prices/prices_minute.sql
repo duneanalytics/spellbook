@@ -1,32 +1,7 @@
 {{ config(
         schema = 'prices',
         alias = 'minute',
-        materialized = 'view',
-        post_hook =
-            '{{ expose_spells(\'[
-                "arbitrum"
-                , "avalanche_c"
-                , "base"
-                , "blast"
-                , "bnb"
-                , "celo"
-                , "ethereum"
-                , "fantom"
-                , "gnosis"
-                , "linea"
-                , "mantle"
-                , "nova"
-                , "optimism"
-                , "polygon"
-                , "scroll"
-                , "sei"
-                , "zkevm"
-                , "zksync"
-                , "zora"
-            ]\',
-            "sector",
-            "prices",
-            \'["jeff-dude", "couralex"]\') }}'
+        materialized = 'view'
     )
 }}
 
