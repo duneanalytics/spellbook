@@ -35,3 +35,6 @@ sources:
       - name: Vault_evt_SwapFeePercentageChanged            
       - name: ProtocolFeeController_evt_GlobalProtocolSwapFeePercentageChanged
       - name: ProtocolFeeController_evt_PoolCreatorSwapFeePercentageChanged
+      - name: childchaingaugefactory_evt_gaugecreated       
+      - name: childliquiditygauge_call_initialize            
+      - name: childliquiditygauge_call_killGauge
