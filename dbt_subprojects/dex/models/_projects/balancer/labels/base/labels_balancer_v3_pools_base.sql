@@ -85,13 +85,15 @@ WITH token_data AS (
       UNION ALL
 
       SELECT
-        cc.output_pool AS pool_id,
+        c.pool AS pool_id,
         t.tokens AS token_address,
         0 AS normalized_weight,
         cc.symbol,
         'ECLP' AS pool_type
-      FROM {{ source('balancer_v3_base', 'GyroECLPPoolFactory_call_create') }} cc
-      CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
+      FROM token_data c
+      INNER JOIN {{ source('balancer_v3_base', 'GyroECLPPoolFactory_call_create') }} cc
+          ON c.pool = cc.output_pool
+      CROSS JOIN UNNEST(c.tokens) AS t(tokens)
     ) zip 
           ),
 
