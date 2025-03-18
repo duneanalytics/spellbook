@@ -221,15 +221,8 @@ taker_logs as (
         and (
              varbinary_position(st.data, (logs.data)) <> 0 
             or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
-            or (
-                varbinary_to_uint256(varbinary_ltrim(logs.data)) >= varbinary_to_uint256(varbinary_substring(st.data, 57, 8))
-                AND 
-                varbinary_to_uint256(varbinary_ltrim(logs.data)) > 0 
-                AND 
-                (varbinary_to_uint256(varbinary_ltrim(logs.data)) - varbinary_to_uint256(varbinary_substring(st.data, 57, 8))) / varbinary_to_uint256(varbinary_ltrim(logs.data)) < 0.001
-            )
           )
-          
+      
     where logs.block_time > TIMESTAMP '2024-07-15' 
         and cow_rn is null 
         AND (
@@ -239,7 +232,7 @@ taker_logs as (
                 and ( 
                         (
                             bytearray_substring(logs.topic2,13,20) in (st.contract_address, settler_address) 
-                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker, tx_to, settler_address) 
+                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker, tx_to, settler_address, 0x0000000000000000000000000000000000000000) 
                         )
                         or (
                             bytearray_substring(logs.topic2,13,20) = taker 
@@ -280,7 +273,7 @@ maker_logs as (
         cow_rn is null 
         and amount != 0 
         and (
-            ( 
+             
                 ( topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
                     and 
                         ( 
@@ -298,26 +291,16 @@ maker_logs as (
                     )
                     and (varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
                     or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
-                    OR 
-                        CASE 
-                            WHEN varbinary_length(varbinary_ltrim(logs.data)) <= 32 
-                            THEN varbinary_to_uint256(varbinary_substring(varbinary_ltrim(logs.data), 1, 32))
-                            ELSE NULL 
-                        END IN (amount_out_) 
-
-                        OR 
-                        CASE 
-                            WHEN varbinary_length(varbinary_ltrim(logs.data)) <= 32 
-                            THEN CAST(varbinary_to_uint256(varbinary_substring(varbinary_ltrim(logs.data), 1, 32)) AS VARCHAR) 
-                            ELSE NULL 
-                        END IN (CAST(amount_out_ AS VARCHAR))
+                    or POSITION(CAST(varbinary_to_uint256(varbinary_ltrim(logs.data)) AS VARCHAR) IN CAST(amount_out_ AS VARCHAR)) > 0
 
                     ) 
                 
-                        )     
+                        )  
+                        or (bytearray_substring(logs.topic1,13,20) in (settler_address)  
+                        and (bytearray_substring(logs.topic2,13,20) in (taker))
+                        )   
                     )
             )
-        )
             or (
                 topic0 in (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65)
                 and bytearray_substring(logs.topic1,13,20) in (tx_from, settler_address) 
