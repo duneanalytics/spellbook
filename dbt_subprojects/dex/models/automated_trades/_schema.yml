@@ -186,3 +186,16 @@ models:
     config:
       tags: *tags
     data_tests: *unique_trade_test
+
+  - name: evms_latest_creation_trace
+    meta:
+      blockchain: *supported_chains
+      sector: *sector
+      contributors: *contributors
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_month
+            - address
+            - '"from"'
