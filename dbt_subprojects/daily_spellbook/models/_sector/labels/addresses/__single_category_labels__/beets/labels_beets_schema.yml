@@ -53,7 +53,7 @@ models:
         name: label_type
         description: "Type of label (see labels overall readme)"
 
-  - name: labels_beets_gauges
+  - name: labels_beets_gauges_sonic
     meta:
       blockchain: sonic
       sector: labels
