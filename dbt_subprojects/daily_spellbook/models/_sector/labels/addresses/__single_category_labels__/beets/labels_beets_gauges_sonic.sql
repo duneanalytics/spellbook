@@ -14,7 +14,7 @@ SELECT distinct
     'beets_gauges' AS category,
     'beets' AS contributor,
     'query' AS source,
-    TIMESTAMP '2024-12-01'  AS created_at,
+    TIMESTAMP '2024-12-01'  AS created_at, 0xb23c0ec0e61f52da8b717f3ead7dba1ba8814a6c
     NOW() AS updated_at,
     'beets_gauges_sonic' AS model_name,
     'identifier' AS label_type
@@ -22,7 +22,8 @@ FROM
     {{ source('beethoven_x_v2_sonic', 'ChildChainGaugeFactory_evt_GaugeCreated') }} gauge
     INNER JOIN {{ source('beethoven_x_v2_sonic', 'ChildLiquidityGauge_call_initialize') }} call ON gauge.gauge = call.contract_address
     LEFT JOIN {{ ref('labels_beets_pools_sonic') }} pools ON pools.address = call._lp_token
-WHERE pools.name IS NOT NULL),
+WHERE pools.name IS NOT NULL
+AND call.call_success),
 
 kill_unkill_1 AS(
     SELECT
