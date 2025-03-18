@@ -81,6 +81,20 @@ WITH token_data AS (
       INNER JOIN {{ source('balancer_v3_arbitrum', 'LBPoolFactory_call_create') }} cc
         ON c.pool = cc.output_pool
       CROSS JOIN UNNEST(c.tokens) AS t(tokens)
+
+      UNION ALL
+
+      SELECT
+        c.output_pool AS pool_id,
+        t.tokens AS token_address,
+        0 AS normalized_weight,
+        cc.symbol,
+        'ECLP' AS pool_type
+      FROM {{ source('balancer_v2_arbitrum', 'Vault_evt_PoolRegistered') }} c
+      INNER JOIN {{ source('gyroscope_arbitrum', 'GyroECLPPoolFactory_call_create') }} cc
+        ON c.evt_tx_hash = cc.call_tx_hash
+        AND bytearray_substring(c.poolId, 1, 20) = cc.output_0
+      CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     ) zip 
           ),
 

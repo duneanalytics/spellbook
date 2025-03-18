@@ -81,6 +81,17 @@ WITH token_data AS (
       INNER JOIN {{ source('balancer_v3_gnosis', 'LBPoolFactory_call_create') }} cc
         ON c.pool = cc.output_pool
       CROSS JOIN UNNEST(c.tokens) AS t(tokens)
+
+      UNION ALL
+
+      SELECT
+        cc.output_pool AS pool_id,
+        t.tokens AS token_address,
+        0 AS normalized_weight,
+        cc.symbol,
+        'ECLP' AS pool_type
+      FROM {{ source('balancer_v3_gnosis', 'GyroECLPPoolFactory_call_create') }} cc
+      CROSS JOIN UNNEST(cc.tokens) AS t(tokens)
     ) zip 
           ),
 
@@ -99,7 +110,7 @@ WITH token_data AS (
 SELECT 
   'gnosis' AS blockchain,
   bytearray_substring(pool_id, 1, 20) AS address,
-  CASE WHEN pool_type IN ('stable', 'LBP') 
+  CASE WHEN pool_type IN ('stable', 'LBP', 'ECLP') 
   THEN lower(pool_symbol)
     ELSE lower(concat(array_join(array_agg(token_symbol ORDER BY token_symbol), '/'), ' ', 
     array_join(array_agg(cast(norm_weight AS varchar) ORDER BY token_symbol), '/')))
