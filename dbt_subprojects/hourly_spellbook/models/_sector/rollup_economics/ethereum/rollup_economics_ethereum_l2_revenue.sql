@@ -8,7 +8,7 @@
     , post_hook='{{ expose_spells(\'["ethereum"]\',
                                     "project",
                                     "rollup_economics",
-                                    \'["niftytable", "maybeYonas", "lgingerich"]\') }}'
+                                    \'["niftytable", "maybeYonas", "lgingerich", "irishlatte19"]\') }}'
 )}}
 
 SELECT
@@ -22,7 +22,7 @@ SELECT
     , SUM(tx_fee) AS l2_rev
     , SUM(tx_fee_usd) AS l2_rev_usd
 FROM {{ ref('gas_fees') }}
-WHERE blockchain IN ('arbitrum', 'base', 'blast', 'linea', 'mantle', 'optimism', 'scroll', 'zksync', 'zkevm', 'zora')
+WHERE blockchain IN ('arbitrum', 'base', 'blast', 'linea', 'mantle', 'optimism', 'scroll', 'zksync', 'zkevm', 'zora', 'shape')
 {% if is_incremental() %}
 AND {{ incremental_predicate('block_time') }}
 {% endif %}

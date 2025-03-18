@@ -22,10 +22,11 @@
                                     , "zkevm"
                                     , "zksync"
                                     , "zora"
+                                    , "shape"
                                 ]\',
                                 "sector",
                                 "gas",
-                                \'["soispoke", "ilemi", "0xRob", "jeff-dude"]\'
+                                \'["soispoke", "ilemi", "0xRob", "jeff-dude", "irishlatte19"]\'
                             )
                         }}'
         )
@@ -52,6 +53,7 @@
     , "zkevm"
     , "zksync"
     , "zora"
+    , "shape"
 ] %}
 
 

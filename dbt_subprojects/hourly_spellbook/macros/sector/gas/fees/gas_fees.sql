@@ -9,7 +9,7 @@
 
 -- include chain specific logic here
 {% macro tx_fee_raw(blockchain) %}
-    {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') -%}
+    {%- if blockchain in all_op_chains() + ('scroll','blast','mantle','shape') -%}
     cast(coalesce(l1_fee,0) as uint256) +
     {%- endif -%}
     {%- if blockchain in ('ethereum',) -%}
@@ -40,7 +40,7 @@
                          )
                 end
     {%- else -%}
-        {%- if blockchain in all_op_chains() + ('scroll','blast','mantle') %}
+        {%- if blockchain in all_op_chains() + ('scroll','blast','mantle','shape') %}
           ,map(array['l1_fee'], array[cast(coalesce(l1_fee,0) as uint256)])
         {%- endif -%}
         {%- if blockchain in ('ethereum',) %}
@@ -62,7 +62,7 @@
     {%- if blockchain in ('scroll') %}
       ,l1_fee
     {%- endif %}
-    {%- if blockchain in all_op_chains() + ('blast','mantle') %}
+    {%- if blockchain in all_op_chains() + ('blast','mantle','shape') %}
       ,l1_fee
       ,l1_gas_used
       ,l1_gas_price

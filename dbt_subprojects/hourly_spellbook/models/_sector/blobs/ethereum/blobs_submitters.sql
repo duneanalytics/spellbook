@@ -93,4 +93,5 @@ SELECT address
         , (0x705623d3985cf88e5a69fc99ca7d089063449902, 'pegglecoin', '')
         , (0x85e967470c0dcf953438c72f79f9ea2b1b6db079, 'pegglecoin', '')
         , (0x4cfaa5f421714eae1645dd3276a89b15c9bcf70c, 'pegglecoin', '')
+        , (0xF7ca543d652E38692fD12f989eb55b5327eC9A20, 'shape', 'Shape_L2')
         ) AS x(address, entity, x_username)
