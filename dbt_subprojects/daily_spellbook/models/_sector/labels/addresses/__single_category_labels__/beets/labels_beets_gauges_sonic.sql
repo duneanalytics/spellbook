@@ -10,7 +10,6 @@ SELECT distinct
     'sonic' AS blockchain,
     gauge.gauge AS address,
     pools.address AS pool_address,
-    NULL AS child_gauge_address,
     'S:' || pools.name AS name,
     'beets_gauges' AS category,
     'beets' AS contributor,
@@ -55,7 +54,6 @@ kill_unkill AS(
           g.blockchain
          , g.address
          , g.pool_address
-         , g.child_gauge_address
          , g.name
          , CASE WHEN k.action = 'kill'
             THEN 'inactive'
