@@ -129,7 +129,7 @@ from (VALUES
         , ('BLOOD RUN', 'Unique', 'SuperRare', 1, 'Ethereum', 'erc721', 0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0, 7009, 7009, '', 'https://superrare.com/artwork/eth/0xb932a70a57673d89f4acffbe830e8ed7f75fb9e0/7009','2020-01-11')
         , ('THE RABBLE 1/1', 'Unique', 'Async Art', 1, 'Ethereum', 'erc721', 0xb6dAe651468E9593E4581705a09c10A76AC1e0c8, 432, 432, '', 'https://xcopy.art/works/the-rabble','2020-01-01')
         , ('BANKSTA 1/1', 'Unique', 'Async Art', 1, 'Ethereum', 'erc721', 0x6c424C25e9F1ffF9642cB5B7750b0Db7312c29ad, 28, 28, '', 'https://xcopy.art/works/banksta','2020-01-01')
-        , ('DOOM PARTY 1/1', 'Unique', `'Async Art', 1, 'Ethereum', 'erc721', 0xb6dAe651468E9593E4581705a09c10A76AC1e0c8, 199, 199, '', 'https://xcopy.art/works/doom-party','2020-01-01')
+        , ('DOOM PARTY 1/1', 'Unique', 'Async Art', 1, 'Ethereum', 'erc721', 0xb6dAe651468E9593E4581705a09c10A76AC1e0c8, 199, 199, '', 'https://xcopy.art/works/doom-party','2020-01-01')
         , ('THE RABBLE', 'Layer', 'Async Art', 43, 'Ethereum', 'erc721', 0xb6dAe651468E9593E4581705a09c10A76AC1e0c8, 433, 475, '', 'https://xcopy.art/works/the-rabble','2020-01-01')
         , ('BANKSTA', 'Layer', 'Async Art', 8, 'Ethereum', 'erc721', 0x6c424C25e9F1ffF9642cB5B7750b0Db7312c29ad, 29, 36, '', 'https://xcopy.art/works/banksta','2020-01-01')
         , ('DOOM PARTY', 'Layer', 'Async Art', 11, 'Ethereum', 'erc721', 0xb6dAe651468E9593E4581705a09c10A76AC1e0c8, 200, 210, '', 'https://xcopy.art/works/doom-party','2020-01-01')
