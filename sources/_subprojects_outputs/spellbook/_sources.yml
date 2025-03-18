@@ -141,3 +141,8 @@ sources:
   - name: gyroscope
     tables:
       - name: gyro_tokens
+
+  - name: addresses_ethereum
+    tables:
+      - name: shape_batchinbox_combinations
+      - name: shape_outputoracle_combinations

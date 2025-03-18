@@ -29,7 +29,7 @@ FROM (
     INNER JOIN {{ source('addresses_ethereum','shape_batchinbox_combinations') }} as op
         ON t."from" = op.l1_batch_inbox_from_address
         AND t.to = op.l1_batch_inbox_to_address
-    WHERE t.block_time >= timestamp '2020-01-01'
+    WHERE t.block_time >= timestamp '2024-01-01'
     
     UNION ALL
     
@@ -39,7 +39,7 @@ FROM (
     INNER JOIN {{ source('addresses_ethereum','shape_outputoracle_combinations') }} as op
         ON t."from" = op.l2_output_oracle_from_address
         AND t.to = op.l2_output_oracle_to_address
-    WHERE t.block_time >= timestamp '2020-01-01'
+    WHERE t.block_time >= timestamp '2024-01-01'
 ) t
 {% if is_incremental() %}
 WHERE {{incremental_predicate('t.block_time')}}
