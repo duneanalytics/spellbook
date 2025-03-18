@@ -2,10 +2,7 @@
     config(
         schema = 'zeroex',
         alias = 'mantle_settler_addresses',
-        materialized = 'incremental',
-        file_format = 'delta',
-        incremental_strategy = 'merge',
-        unique_key = ['settler_address', 'token_id']
+        materialized = 'table'
     )
 }}
 
