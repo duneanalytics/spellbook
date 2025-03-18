@@ -14,7 +14,7 @@ SELECT distinct
     'beets_gauges' AS category,
     'beets' AS contributor,
     'query' AS source,
-    TIMESTAMP '2024-12-01'  AS created_at, 0xb23c0ec0e61f52da8b717f3ead7dba1ba8814a6c
+    TIMESTAMP '2024-12-01'  AS created_at,
     NOW() AS updated_at,
     'beets_gauges_sonic' AS model_name,
     'identifier' AS label_type
@@ -51,6 +51,7 @@ kill_unkill AS(
         ROW_NUMBER() OVER(PARTITION BY contract_address ORDER BY call_block_time DESC) AS rn
     FROM kill_unkill_1
 )
+
     SELECT DISTINCT
           g.blockchain
          , g.address
