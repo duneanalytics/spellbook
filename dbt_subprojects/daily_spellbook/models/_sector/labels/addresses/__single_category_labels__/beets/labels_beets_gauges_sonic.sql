@@ -22,7 +22,7 @@ SELECT distinct
 FROM
     {{ source('beethoven_x_v2_sonic', 'ChildChainGaugeFactory_evt_GaugeCreated') }} gauge
     INNER JOIN {{ source('beethoven_x_v2_sonic', 'ChildLiquidityGauge_call_initialize') }} call ON gauge.gauge = call.contract_address
-    LEFT JOIN {{ ref('labels_beets_pools_sonic') }} pools ON pools.address = v2pools.address = call._lp_token
+    LEFT JOIN {{ ref('labels_beets_pools_sonic') }} pools ON pools.address = call._lp_token
 WHERE COALESCE(v2pools.name, v3pools.name) IS NOT NULL),
 
 kill_unkill_1 AS(
