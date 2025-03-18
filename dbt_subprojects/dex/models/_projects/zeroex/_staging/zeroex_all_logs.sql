@@ -21,18 +21,7 @@ WITH base_filtered_logs AS (
     {% for blockchain in blockchain_sources %}
     SELECT
         '{{ blockchain }}' as blockchain,
-        block_time,
-        block_number,
-        tx_hash,
-        index,
-        contract_address,
-        topic0,
-        topic1,
-        topic2,
-        data,
-        tx_index,
-        tx_from,
-        tx_to
+        *
     FROM
         {{ source(blockchain, 'logs') }} AS logs
     WHERE 1=1
@@ -44,20 +33,6 @@ WITH base_filtered_logs AS (
     {% endif %}
     {% endfor %}
 ), 
-
--- Generate zeroex_tx data for each blockchain
-{% set start_date = "2020-01-01" %}
-zeroex_tx AS (
-    {% for blockchain in blockchain_sources %}
-    SELECT * FROM 
-    (
-        {{ zeroex_settler_txs_cte(blockchain = blockchain, start_date = start_date) }}
-    )
-    {% if not loop.last %}
-    UNION ALL
-    {% endif %}
-    {% endfor %}
-),
 
 -- Create the bundled_tx_check CTE
 bundled_tx_check as (
@@ -121,19 +96,19 @@ SELECT
     topic0,
     topic1,
     topic2,
-    st.method_id,
-    st.tag,
+    method_id,
+    tag,
     st.settler_address,
-    st.zid,
+    zid,
     tx_to,
     tx_from,
-    st.taker,
+    taker,
     tx_index,
     (try_cast(bytearray_to_uint256(bytearray_substring(logs.DATA, 21,12)) as int256)) as amount, 
-    case when topic0 = signature or logs.contract_address = st.settler_address then 'swap' end as log_type,
+    case when topic0 = signature or logs.contract_address = settler_address then 'swap' end as log_type,
     data,
     row_number() over (partition by tx_hash, logs.blockchain order by index) rn,
-    st.cow_rn,
+    cow_rn,
     case when tx_cnt > 1 then 1 else 0 end as bundled_tx
 FROM
     base_filtered_logs AS logs
@@ -152,7 +127,7 @@ WHERE 1=1
             topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
                 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
-            OR logs.contract_address = st.settler_address
+            OR logs.contract_address = settler_address
             OR swap_signatures.signature is not null
     )
-    AND st.zid != 0xa00000000000000000000000 
+    AND zid != 0xa00000000000000000000000 
