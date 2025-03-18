@@ -13,8 +13,8 @@ WITH pike_supply_events AS (
         deposit.evt_parameters[0]::NUMERIC AS amount, 
         deposit.evt_parameters[1]::NUMERIC AS shares, 
 
-        (deploy.underlying::JSON->>'address') AS token_address,
-        (deploy.underlying::JSON->>'symbol') AS symbol,
+        json_extract_scalar(deploy.underlying, '$.address') AS token_address,
+        json_extract_scalar(deploy.underlying, '$.symbol') AS symbol,
 
         '{{ blockchain }}' AS blockchain,
         '{{ protocol }}' AS project,
