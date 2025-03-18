@@ -24,3 +24,7 @@ sources:
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UniswapV2Factory_evt_PairCreated
+  - name: swapr_gnosis
+    tables:
+      - name: DXswapPair_evt_Swap
+      - name: DXswapFactory_evt_PairCreated
