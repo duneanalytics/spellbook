@@ -20,8 +20,8 @@ SELECT distinct
     'beets_gauges_sonic' AS model_name,
     'identifier' AS label_type
 FROM
-    {{ source('beethoven_x_v2_sonic', 'childchaingaugefactory_evt_gaugecreated') }} gauge
-    INNER JOIN {{ source('beethoven_x_v2_sonic', 'childliquiditygauge_call_initialize') }} call ON gauge.gauge = call.contract_address
+    {{ source('beethoven_x_v2_sonic', 'ChildChainGaugeFactory_evt_GaugeCreated') }} gauge
+    INNER JOIN {{ source('beethoven_x_v2_sonic', 'ChildLiquidityGauge_call_initialize') }} call ON gauge.gauge = call.contract_address
     LEFT JOIN {{ ref('labels_beets_pools_sonic') }} pools ON pools.address = v2pools.address = call._lp_token
 WHERE COALESCE(v2pools.name, v3pools.name) IS NOT NULL),
 
@@ -30,7 +30,7 @@ kill_unkill_1 AS(
         contract_address,
         call_block_time,
         'kill' AS action
-    FROM {{ source('beethoven_x_v2_sonic', 'childliquiditygauge_call_killGauge') }}
+    FROM {{ source('beethoven_x_v2_sonic', 'ChildLiquidityGauge_call_killGauge') }}
     WHERE call_success
 
     UNION ALL
@@ -39,7 +39,7 @@ kill_unkill_1 AS(
         contract_address,
         call_block_time,
         'unkill' AS action
-    FROM {{ source('beethoven_x_v2_sonic', 'childliquiditygauge_call_initialize') }}
+    FROM {{ source('beethoven_x_v2_sonic', 'ChildLiquidityGauge_call_initialize') }}
     WHERE call_success
 ),
 
