@@ -198,4 +198,4 @@ models:
             - blockchain
             - block_month
             - address
-            - "from"
+            - '"from"'
