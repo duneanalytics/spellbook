@@ -146,3 +146,7 @@ sources:
     tables:
       - name: shape_batchinbox_combinations
       - name: shape_outputoracle_combinations
+
+  - name: addresses_events_shape
+    tables:
+      - name: first_funded_by
