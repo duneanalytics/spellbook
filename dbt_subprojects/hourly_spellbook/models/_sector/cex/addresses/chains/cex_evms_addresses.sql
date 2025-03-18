@@ -1484,6 +1484,9 @@ FROM (VALUES
     , (0x8e1701cfd85258ddb8dfe89bc4c7350822b9601d, 'MEXC', 'MEXC 12', 'Henrystats', date '2023-01-27')
     , (0x0162cd2ba40e23378bf0fd41f919e1be075f025f, 'MEXC', 'MEXC 13', 'hildobby', date '2024-04-20')
     , (0x4e3ae00e8323558fa5cac04b152238924aa31b60, 'MEXC', 'MEXC 14', 'hildobby', date '2024-05-04')
+    , (0x9642b23ed1e01df1092b92641051881a322f5d4e, 'MEXC', 'MEXC Hot Wallet 1', '0xFillin', date '2025-03-18')
+    , (0xb86f1061E0D79E8319339d5FDbb187D4E7Ad3300, 'MEXC', 'MEXC Hot Wallet 2', '0xFillin', date '2025-03-18')
+    , (0xe110A9aBfF8D6fBf9F0a119345722a78972Cc43d, 'MEXC', 'MEXC Deposit', '0xFillin', date '2025-03-18')
     -- YoBit
     , (0xf5bec430576ff1b82e44ddb5a1c93f6f9d0884f3, 'YoBit', 'YoBit 1', 'hildobby', date '2022-08-28')
     , (0x8c240d98e179a9e283a2394e5969a2eea95ca810, 'YoBit', 'YoBit 2', 'hildobby', date '2023-11-20')
