@@ -113,28 +113,28 @@ swap_signatures as (
 -- Now generate the final materialized output
 SELECT
     logs.blockchain,
-    tx_hash,
-    block_time,
-    block_number,
-    index,
+    logs.tx_hash,
+    logs.block_time,
+    logs.block_number,
+    logs.index,
     logs.contract_address,
-    topic0,
-    topic1,
-    topic2,
+    logs.topic0,
+    logs.topic1,
+    logs.topic2,
     st.method_id,
     st.tag,
     st.settler_address,
     st.zid,
-    tx_to,
-    tx_from,
+    logs.tx_to,
+    logs.tx_from,
     st.taker,
-    tx_index,
+    logs.tx_index,
     (try_cast(bytearray_to_uint256(bytearray_substring(logs.DATA, 21,12)) as int256)) as amount, 
-    case when topic0 = signature or logs.contract_address = st.settler_address then 'swap' end as log_type,
-    data,
-    row_number() over (partition by tx_hash, logs.blockchain order by index) rn,
+    case when logs.topic0 = signature or logs.contract_address = st.settler_address then 'swap' end as log_type,
+    logs.data,
+    row_number() over (partition by logs.tx_hash, logs.blockchain order by logs.index) rn,
     st.cow_rn,
-    case when tx_cnt > 1 then 1 else 0 end as bundled_tx
+    case when btx.tx_cnt > 1 then 1 else 0 end as bundled_tx
 FROM
     base_filtered_logs AS logs
 JOIN
@@ -146,13 +146,13 @@ JOIN bundled_tx_check btx ON logs.tx_hash = btx.tx_hash
                          AND logs.block_time = btx.block_time 
                          AND logs.block_number = btx.block_number
                          AND logs.blockchain = btx.blockchain
-LEFT JOIN swap_signatures on topic0 = signature
+LEFT JOIN swap_signatures on logs.topic0 = signature
 WHERE 1=1
     AND ( 
-            topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
+            logs.topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                 0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
                 0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
             OR logs.contract_address = st.settler_address
-            OR swap_signatures.signature is not null
+            OR logs.topic0 = signature
     )
     AND st.zid != 0xa00000000000000000000000 
