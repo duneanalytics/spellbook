@@ -9,6 +9,7 @@
 {%
   set models = [
     ref('aave_v3_optimism_base_borrow'),
+    ref('pike_v1_optimism_base_borrow'),
     ref('sonne_finance_optimism_base_borrow'),
     ref('granary_optimism_base_borrow')
   ]

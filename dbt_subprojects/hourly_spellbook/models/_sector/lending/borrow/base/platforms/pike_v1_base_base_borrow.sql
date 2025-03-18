@@ -1,0 +1,19 @@
+{{
+  config(
+    schema = 'pike_v1_base',
+    alias = 'base_borrow',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['transaction_type', 'token_address', 'tx_hash', 'evt_index'],
+    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+  )
+}}
+
+{{
+  lending_pike_v1_compatible_borrow(
+    blockchain = 'base',
+    project = 'pike',
+    version = '1',
+  )
+}}
