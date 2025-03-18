@@ -76,7 +76,6 @@ settler_trace_data AS (
 -- This CTE contains the final dataset with all necessary trade information
 settler_txs AS (
     SELECT
-        '{{ blockchain }}' as blockchain, -- Add blockchain field
         tx_hash,
         block_time,
         block_number,
