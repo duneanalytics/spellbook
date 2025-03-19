@@ -216,7 +216,7 @@ maker_logs as (
                     ) 
                 
                         )  
-                        or (bytearray_substring(logs.topic1,13,20) in (settler_address)  
+                        or (bytearray_substring(logs.topic1,13,20) in (settler_address, st.contract_address)  
                         and (bytearray_substring(logs.topic2,13,20) in (taker))
                         )   
                     )
