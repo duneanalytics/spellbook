@@ -1,5 +1,5 @@
 {{ config(
-    schema = 'uniswap_v3_shape'
+    schema = 'reservoir_swap_shape'
     , alias = 'base_trades'
     , materialized = 'incremental'
     , file_format = 'delta'
@@ -12,7 +12,7 @@
 {{
     uniswap_compatible_v3_trades(
         blockchain = 'shape'
-        , project = 'uniswap'
+        , project = 'reservoir_swap'
         , version = '3'
         , Pair_evt_Swap = source('reservoir_swap_shape', 'uniswapv3pool_evt_swap')
         , Factory_evt_PoolCreated = source('reservoir_swap_shape', 'uniswapv3factory_evt_poolcreated')

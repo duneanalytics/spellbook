@@ -6,7 +6,7 @@
 }}
 
 {% set base_models = [
-    ref('uniswap_v3_shape_base_trades')
+    ref('reservoir_swap_shape_base_trades')
 ] %}
 
 WITH base_union AS (
