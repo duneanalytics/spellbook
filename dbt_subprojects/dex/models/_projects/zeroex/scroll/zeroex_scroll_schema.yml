@@ -102,6 +102,37 @@ models:
         name: fills_within
         description: "fills in then multihop, if present"   
 
+  - name: zeroex_scroll_settler_addresses
+    meta:
+      blockchain: scroll
+      project: zeroex
+      contributors: hosuke
+    config:
+      tags: ['scroll', '0x', 'settler']
+    description: >
+      0x Protocol settler addresses for Scroll blockchain.
+      This table contains the settler addresses used by the 0x Protocol on Scroll,
+      along with their activation timestamps and token IDs.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - settler_address
+            - token_id
+    columns:
+      - name: tx_hash
+        description: "Transaction hash where the settler address was registered"
+      - name: settler_address
+        description: "Address of the 0x Protocol settler contract"
+      - name: token_id
+        description: "Token ID associated with the settler address"
+      - name: begin_block_time
+        description: "Block time when the settler address was activated"
+      - name: begin_block_number
+        description: "Block number when the settler address was activated"
+      - name: end_block_time
+        description: "Block time when the settler address was deactivated (null if still active)"
+      - name: end_block_number
+        description: "Block number when the settler address was deactivated (null if still active)"
 
       
       
