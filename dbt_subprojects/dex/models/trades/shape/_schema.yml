@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: dex_shape_base_trades
+    data_tests:
+      - check_dex_info_relationship
+      - test_acceptable_usd_amount:
+          column_name: amount_usd
+          max_value: 1000000000
+
+  - name: uniswap_v3_shape_base_trades
+    meta:
+      blockchain: shape
+      sector: dex
+      project: uniswap
+      contributors: hosuke
+    config:
+      tags: ['shape', 'dex', 'trades', 'uniswap', 'v3']
+    description: "Uniswap V3 shape base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index 
