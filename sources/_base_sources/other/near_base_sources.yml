@@ -1,0 +1,433 @@
+version: 2
+sources:
+  - name: near
+    description: tables in the near schema
+    tables:
+      - name: v1_signer_users
+        meta:
+          docs_slug: /near/v1_signer_users
+          short_description: Near Chain Abstraction users with corresponding derivation paths
+
+        description: '{{ doc("near_docs") }}'
+        columns:
+          - name: account_id
+            description: Near AccountID of the caller requesting signature.
+          - name: derivation_path
+            description: Signature request argument used to derive signer address.
+          - name: key_version
+            description: Version number of the signing key.
+
+      - name: actions
+        description: Contains all actions executed on the NEAR blockchain
+        columns:
+          - name: block_date
+            description: Date of the block
+            type: date
+          - name: block_height
+            description: Height of the block
+            type: bigint
+          - name: block_time
+            description: Timestamp of the block
+            type: timestamp
+          - name: block_hash
+            description: Hash of the block
+            type: varchar
+          - name: chunk_hash
+            description: Hash of the chunk
+            type: varchar
+          - name: shard_id
+            description: ID of the shard
+            type: bigint
+          - name: index_in_action_receipt
+            description: Index of the action in the receipt
+            type: integer
+          - name: receipt_id
+            description: ID of the receipt
+            type: varchar
+          - name: gas_price
+            description: Gas price for the action
+            type: bigint
+          - name: receipt_predecessor_account_id
+            description: Account ID of the receipt predecessor
+            type: varchar
+          - name: receipt_receiver_account_id
+            description: Account ID of the receipt receiver
+            type: varchar
+          - name: receipt_conversion_gas_burnt
+            description: Amount of gas burnt in receipt conversion
+            type: bigint
+          - name: receipt_conversion_tokens_burnt
+            description: Amount of tokens burnt in receipt conversion
+            type: varbinary
+          - name: tx_hash
+            description: Hash of the transaction
+            type: varchar
+          - name: tx_from
+            description: Sender of the transaction
+            type: varchar
+          - name: tx_to
+            description: Receiver of the transaction
+            type: varchar
+          - name: tx_signer_public_key
+            description: Public key of the transaction signer
+            type: varchar
+          - name: tx_nonce
+            description: Nonce of the transaction
+            type: bigint
+          - name: tx_signature
+            description: Signature of the transaction
+            type: varchar
+          - name: tx_status
+            description: Status of the transaction
+            type: varchar
+          - name: is_delegate_action
+            description: Whether the action is a delegate action
+            type: boolean
+          - name: execution_gas_burnt
+            description: Amount of gas burnt in execution
+            type: bigint
+          - name: execution_tokens_burnt
+            description: Amount of tokens burnt in execution
+            type: varbinary
+          - name: execution_status
+            description: Status of the execution
+            type: varchar
+          - name: execution_outcome_receipt_ids
+            description: Receipt IDs of the execution outcome
+            type: array(varchar)
+          - name: action_kind
+            description: Kind of action
+            type: varchar
+          - name: _processed_time
+            description: Time when the record was processed
+            type: timestamp
+          - name: action_function_call_args_parsed
+            description: Parsed arguments of function call
+            type: varchar
+          - name: action_function_call_call_gas
+            description: Gas limit for function call
+            type: bigint
+          - name: action_function_call_call_deposit
+            description: Deposit amount for function call
+            type: varchar
+          - name: action_function_call_call_args_base64
+            description: Base64 encoded arguments of function call
+            type: varchar
+          - name: action_function_call_call_method_name
+            description: Method name of function call
+            type: varchar
+          - name: updated_at
+            description: Last update timestamp
+            type: timestamp
+          - name: ingested_at
+            description: Ingestion timestamp
+            type: timestamp
+
+      - name: logs
+        description: Contains all logs generated on the NEAR blockchain
+        columns:
+          - name: block_date
+            description: Date of the block
+            type: date
+          - name: block_height
+            description: Height of the block
+            type: bigint
+          - name: block_time
+            description: Timestamp of the block
+            type: timestamp
+          - name: execution_status
+            description: Status of the execution
+            type: varchar
+          - name: executor_account_id
+            description: Account ID of the executor
+            type: varchar
+          - name: receipt_id
+            description: ID of the receipt
+            type: varchar
+          - name: index_in_execution_outcome_logs
+            description: Index of the log in execution outcome
+            type: integer
+          - name: log
+            description: Log content
+            type: varchar
+          - name: event
+            description: Event details
+            type: varchar
+          - name: _processed_time
+            description: Time when the record was processed
+            type: timestamp
+          - name: updated_at
+            description: Last update timestamp
+            type: timestamp
+          - name: ingested_at
+            description: Ingestion timestamp
+            type: timestamp
+
+      - name: ft_transfers
+        description: Contains all fungible token transfers on the NEAR blockchain
+        columns:
+          - name: block_date
+            description: Date of the block
+            type: date
+          - name: block_height
+            description: Height of the block
+            type: bigint
+          - name: block_time
+            description: Timestamp of the block
+            type: timestamp
+          - name: block_hash
+            description: Hash of the block
+            type: varchar
+          - name: chunk_hash
+            description: Hash of the chunk
+            type: varchar
+          - name: shard_id
+            description: ID of the shard
+            type: bigint
+          - name: standard
+            description: Token standard
+            type: varchar
+          - name: token_id
+            description: ID of the token
+            type: varchar
+          - name: receipt_id
+            description: ID of the receipt
+            type: varchar
+          - name: contract_account_id
+            description: Account ID of the contract
+            type: varchar
+          - name: cause
+            description: Cause of the transfer
+            type: varchar
+          - name: status
+            description: Status of the transfer
+            type: varchar
+          - name: event_memo
+            description: Memo attached to the event
+            type: varchar
+          - name: event_index
+            description: Index of the event
+            type: varbinary
+          - name: affected_account_id
+            description: Account ID affected by the transfer
+            type: varchar
+          - name: involved_account_id
+            description: Account ID involved in the transfer
+            type: varchar
+          - name: delta_amount
+            description: Amount of tokens transferred
+            type: decimal(38,0)
+          - name: _processed_time
+            description: Time when the record was processed
+            type: timestamp
+          - name: updated_at
+            description: Last update timestamp
+            type: timestamp
+          - name: ingested_at
+            description: Ingestion timestamp
+            type: timestamp
+
+      - name: block_chunks
+        description: Contains block and chunk information from the NEAR blockchain
+        columns:
+          - name: date
+            description: Date of the block
+            type: date
+          - name: height
+            description: Height of the block
+            type: bigint
+          - name: time
+            description: Timestamp of the block
+            type: timestamp
+          - name: hash
+            description: Hash of the block
+            type: varchar
+          - name: prev_hash
+            description: Hash of the previous block
+            type: varchar
+          - name: total_supply
+            description: Total token supply
+            type: varbinary
+          - name: gas_price
+            description: Gas price
+            type: bigint
+          - name: author_account_id
+            description: Account ID of the block author
+            type: varchar
+          - name: epoch_id
+            description: ID of the epoch
+            type: varchar
+          - name: shard_id
+            description: ID of the shard
+            type: bigint
+          - name: chunk_hash
+            description: Hash of the chunk
+            type: varchar
+          - name: chunk_signature
+            description: Signature of the chunk
+            type: varchar
+          - name: chunk_gas_limit
+            description: Gas limit of the chunk
+            type: bigint
+          - name: chunk_gas_used
+            description: Gas used by the chunk
+            type: bigint
+          - name: chunk_author_account_id
+            description: Account ID of the chunk author
+            type: varchar
+          - name: _processed_time
+            description: Time when the record was processed
+            type: timestamp
+          - name: updated_at
+            description: Last update timestamp
+            type: timestamp
+          - name: ingested_at
+            description: Ingestion timestamp
+            type: timestamp
+
+      - name: circulating_supply
+        description: Contains information about NEAR token supply and circulation
+        columns:
+          - name: block_date
+            description: Date of the block
+            type: date
+          - name: computed_at_block_timestamp
+            description: Timestamp when the supply was computed
+            type: timestamp
+          - name: computed_at_block_hash
+            description: Block hash when the supply was computed
+            type: varchar
+          - name: computed_at_block_height
+            description: Block height when the supply was computed
+            type: bigint
+          - name: circulating_tokens_supply
+            description: Amount of NEAR tokens in circulation
+            type: double
+          - name: total_tokens_supply
+            description: Total supply of NEAR tokens
+            type: double
+          - name: _processed_time
+            description: Time when the record was processed
+            type: timestamp
+          - name: updated_at
+            description: Last update timestamp
+            type: timestamp
+          - name: ingested_at
+            description: Ingestion timestamp
+            type: timestamp
+
+      - name: nft_transfers
+        description: Contains all non-fungible token transfers on the NEAR blockchain
+        columns:
+          - name: block_date
+            description: Date of the block
+            type: date
+          - name: block_height
+            description: Height of the block
+            type: bigint
+          - name: block_time
+            description: Timestamp of the block
+            type: timestamp
+          - name: block_hash
+            description: Hash of the block
+            type: varchar
+          - name: chunk_hash
+            description: Hash of the chunk
+            type: varchar
+          - name: shard_id
+            description: ID of the shard
+            type: bigint
+          - name: standard
+            description: NFT standard used
+            type: varchar
+          - name: token_id
+            description: ID of the NFT token
+            type: varchar
+          - name: receipt_id
+            description: ID of the receipt
+            type: varchar
+          - name: contract_account_id
+            description: Account ID of the NFT contract
+            type: varchar
+          - name: cause
+            description: Cause of the transfer
+            type: varchar
+          - name: status
+            description: Status of the transfer
+            type: varchar
+          - name: event_memo
+            description: Memo attached to the event
+            type: varchar
+          - name: event_index
+            description: Index of the event
+            type: varbinary
+          - name: old_owner_account_id
+            description: Account ID of the previous owner
+            type: varchar
+          - name: new_owner_account_id
+            description: Account ID of the new owner
+            type: varchar
+          - name: authorized_account_id
+            description: Account ID authorized for the transfer
+            type: varchar
+          - name: _processed_time
+            description: Time when the record was processed
+            type: timestamp
+          - name: updated_at
+            description: Last update timestamp
+            type: timestamp
+          - name: ingested_at
+            description: Ingestion timestamp
+            type: timestamp
+
+      - name: balances
+        description: Contains account balance information on the NEAR blockchain
+        columns:
+          - name: epoch_date
+            description: Date of the epoch
+            type: date
+          - name: epoch_block_height
+            description: Block height of the epoch
+            type: bigint
+          - name: account_id
+            description: Account ID
+            type: varchar
+          - name: liquid
+            description: Liquid balance of the account
+            type: double
+          - name: storage_usage
+            description: Storage usage of the account
+            type: bigint
+          - name: unstaked_not_liquid
+            description: Unstaked tokens that are not liquid
+            type: double
+          - name: staked
+            description: Amount of staked tokens
+            type: double
+          - name: reward
+            description: Amount of rewards
+            type: double
+          - name: lockup_account_id
+            description: Account ID for lockup
+            type: varchar
+          - name: lockup_liquid
+            description: Liquid balance in lockup
+            type: double
+          - name: lockup_unstaked_not_liquid
+            description: Unstaked tokens that are not liquid in lockup
+            type: double
+          - name: lockup_staked
+            description: Amount of staked tokens in lockup
+            type: double
+          - name: lockup_reward
+            description: Amount of rewards in lockup
+            type: double
+          - name: _processed_time
+            description: Time when the record was processed
+            type: timestamp
+          - name: updated_at
+            description: Last update timestamp
+            type: timestamp
+          - name: ingested_at
+            description: Ingestion timestamp
+            type: timestamp

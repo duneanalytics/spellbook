@@ -44,4 +44,6 @@ FROM
     , ('gram-norma-in-metaland', 'GRAM', 0x02518a2a6af8133b59f69a8c162f112f76bb0d96, 18)
     , ('box-box', 'BOX', 0x656f86dd0f3bc25af2d15855f2a2f142f9eaed87, 18)
     , ('mdus-medieus', 'MDUS', 0xab9cb20a28f97e189ca0b666b8087803ad636b3c, 18)
+    , ('wemix-wemix-token', 'WEMIX', 0x5096db80b21ef45230c9e423c373f1fc9c0198dd, 18)
+    , ('jade-jade-currency', 'JADE', 0xb3f5867e277798b50ba7a71c0b24fdca03045edf, 18)
 ) as temp (token_id, symbol, contract_address, decimals)

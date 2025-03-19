@@ -118,7 +118,7 @@ product_types as (
   select
     block_time,
     block_number,
-    product_type_id,
+    cast(product_type_id as int) as product_type_id,
     if(
       product_type_name <> '',
       product_type_name,

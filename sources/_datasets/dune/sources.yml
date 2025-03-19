@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: dune
     tables:
-      - name: result_blockchains
+      - name: dataset_core_blockchains
   - name: "gmx-io"
     tables:
       - name: result_gmx_v_2_erc_20_from_api

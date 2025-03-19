@@ -52,6 +52,8 @@ known_solver_metadata (address, environment, name) as (
                 (0xe0b25FA3EA727Dc34708D026ba122625B98A94FB, 'barn', 'GlueX_Protocol'),
                 (0x707Dfa95835542A6528fD077c351446f497276CF, 'barn', 'Rizzolver'),
                 (0x4eAD087d78C21Fd95D30411928A2Ade7456f56F4, 'barn', 'OKX'),
+                (0x07caD32e40A92a86E7F2E7b373BAaf4704d92c5b, 'barn', 'Elfomo'),
+                (0x2C975c34D54AD06607f8ea14519c36f91275349d, 'prod', 'Elfomo'),
                 (0xd875cd50B179a046512C80edF6CB2C1Fc3F3072D, 'prod', 'OKX'),
                 (0x914db7338ACAe3f3866B79DcEfFcFBCC554F18ed, 'prod', 'Rizzolver'),
                 (0xc1b0bB599c578a846b51EE5dcE3d9FAD69528613, 'prod', 'GlueX_Protocol'),
