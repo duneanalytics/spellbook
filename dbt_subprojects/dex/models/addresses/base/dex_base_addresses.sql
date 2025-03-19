@@ -25,6 +25,5 @@ FROM (VALUES
       ('base', 0x19ceead7105607cd444f5ad10dd51356436095a1, 'Odos', 'Router'),
       ('base', 0x3a23f943181408eac424116af7b7790c94cb97a5, 'Socket', 'Aggregator of Aggregators'),
       ('base', 0x00000000009726632680fb29d3f7a9734e3010e2, 'Rainbow', 'Aggregator of Aggregators'),
-      ('base', 0xba12222222228d8ba445958a75a0704d566bf2c8, 'Balancer', 'Vault'),
-      ('base', 0x8d80e1728c7bf0f8b9d56a823e026afb444ec2c8, 'Sushi', 'Router')
+      ('base', 0xba12222222228d8ba445958a75a0704d566bf2c8, 'Balancer', 'Vault')
     ) AS x (blockchain, address, dex_name, distinct_name)
