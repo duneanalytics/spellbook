@@ -19,7 +19,11 @@ This macro is used to init parsing state for the cell. It must be called first i
 ## ton_load_uint
 
 Accepts ``size`` parameter and ``field_name`` parameter and parses a uint value from the current cell. The maximum possible ``size`` is 256.
-If ``size`` is less than 64, the result is returned as a ``bigint``, otherwise as a ``varchar``. The result is added to the output array with the key ``field_name``.
+If ``size`` is less than 32, the result is returned as a ``bigint``, otherwise as a ``varchar``. The result is added to the output array with the key ``field_name``.
+
+## ton_load_int
+
+The same as ``ton_load_uint`` but for int values. The maximum possible ``size`` is 128.
 
 ## ton_load_address
 

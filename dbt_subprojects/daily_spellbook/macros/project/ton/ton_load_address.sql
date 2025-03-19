@@ -22,7 +22,7 @@ CASE
       state.refs_indexes,
       state.cursor_bit_offset + {{ 3 + 8 + 256 }}, state.cursor_ref_offset,
       map_concat(state.output,
-      map_from_entries(ARRAY[('{{ field_name }}', CAST(format('%d', CAST({{ ton_preload_uint(ton_skip_bits(3), 8) }} AS bigint) ) || ':' 
+      map_from_entries(ARRAY[('{{ field_name }}', CAST(format('%d', CAST({{ ton_preload_int(ton_skip_bits(3), 8) }} AS bigint) ) || ':'
          || to_hex( CAST({{ ton_preload_uint(ton_skip_bits(3 + 8), 256) }} as varbinary) ) AS JSON))]))
     )
     ELSE ROW(

@@ -39,7 +39,7 @@ bitwise_and(
         varbinary_to_uint256 (
             varbinary_substring (
                 {{ state }}.current_cell_data,
-                1 + cast(floor({{ state }}.cursor_bit_offset / 8e0) as bigint), {# TODO: support for exotic cells : CASE WHEN {{ cell }}.exotic > 0 THEN ({{ cell }}.level_ + 1) * 34 ELSE 0 END,#}
+                1 + cast(floor({{ state }}.cursor_bit_offset / 8e0) as bigint),
                 cast(ceil({{ size }} / 8e0) as bigint) +
                 IF(cast(floor({{ state }}.cursor_bit_offset / 8e0) as bigint) = cast(floor(({{ state }}.cursor_bit_offset + {{ size }} - 1) / 8e0) as bigint), 0, 1) {# check that end of the slice in the next octet#}
             )

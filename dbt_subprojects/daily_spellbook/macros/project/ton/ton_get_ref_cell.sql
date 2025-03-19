@@ -10,7 +10,7 @@ reduce(
                 )
             ) AS bigint)),
     state.original_cell_data,
-    (l, x) -> varbinary_substring(l, 2 + bitwise_right_shift(varbinary_to_integer (varbinary_substring (l, 2, 1)), 1) + 
+    (l, x) -> varbinary_substring(l, 1 + 2 + bitwise_right_shift(varbinary_to_integer (varbinary_substring (l, 2, 1)), 1) + 
     bitwise_and(varbinary_to_integer (varbinary_substring (l, 2, 1)), 1) + 
     bitwise_and(varbinary_to_integer (varbinary_substring (l, 1, 1)), 7) * state.size ),
     s->s
