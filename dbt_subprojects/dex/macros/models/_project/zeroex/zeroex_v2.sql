@@ -337,7 +337,7 @@ select  block_time,
                         else st.taker end as taker,
         maker_token,
         maker_amount,
-        taker_token,d
+        taker_token,
         taker_amount,
         tx_to,
         tx_from,
