@@ -47,7 +47,9 @@ buy AS (
     bet.call_tx_hash AS tx_hash,
     bet.call_tx_from AS tx_from,
     bet.call_tx_to AS tx_to,
-    bet.call_tx_index AS evt_index
+    bet.call_tx_index AS evt_index,
+    row_number() over(partition by ste.call_tx_hash order by ste.call_trace_address asc) as rn
+
   FROM  {{ source('tamadotmeme_ronin', 'maincontract_call_buytokenswitheth') }} AS bet
   LEFT JOIN  {{ source('tamadotmeme_ronin', 'maincontract_evt_tokencreated') }} AS tc
     ON bet.token = tc.token
@@ -85,7 +87,9 @@ sell AS (
     ste.call_tx_hash AS tx_hash,
     ste.call_tx_from AS tx_from,
     ste.call_tx_to AS tx_to,
-    ste.call_tx_index AS evt_index
+    ste.call_tx_index AS evt_index,
+    row_number() over(partition by ste.call_tx_hash order by ste.call_trace_address asc) as rn
+
   FROM  {{ source('tamadotmeme_ronin', 'maincontract_call_selltokensforeth') }} AS ste
   LEFT JOIN  {{ source('tamadotmeme_ronin', 'maincontract_evt_tokencreated') }} AS tc
     ON ste.token = tc.token
@@ -96,6 +100,6 @@ sell AS (
 )
 
 -- Combine buy and sell transactions into one result set.
-SELECT * FROM buy
+(SELECT * FROM buy where rn=1)
 UNION ALL
-SELECT * FROM sell
+(SELECT * FROM sell where rn=1)
