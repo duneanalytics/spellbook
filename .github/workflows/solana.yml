@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - dbt_subprojects/solana/**
+      - dbt_macros/shared/**
       - .github/workflows/solana.yml
       - .github/workflows/dbt_run.yml
 

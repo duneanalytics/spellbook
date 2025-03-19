@@ -189,4 +189,6 @@ sources:
 
       - name: LBPoolFactory_evt_LBPoolCreated
 
-      - name: LBPool_evt_GradualWeightUpdateScheduled 
+      - name: LBPool_evt_GradualWeightUpdateScheduled  
+
+      - name: GyroECLPPoolFactory_call_create  
