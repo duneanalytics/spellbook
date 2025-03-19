@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: evaa_ton_withdraw
+    meta:
+      blockchain: ton
+      sector: lending
+      contributors: pshuvalov
+    config:
+      tags: ['ton', 'evaa', 'lending']
+    description: >
+      EVAA protocol supply events
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+    columns:
+      - name: block_date
+        description: "block_date partition field"
+  

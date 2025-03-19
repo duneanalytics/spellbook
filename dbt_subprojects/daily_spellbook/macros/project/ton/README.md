@@ -44,7 +44,11 @@ The same as ``ton_skip_bits`` but for reference cells.
 
 Loads a reference cell from the current cursor position. Doesn't accept any parameters. Note that after loading a reference cell, one need to call ``ton_begin_parse`` again to start parsing the new cell.
 
-# Useful examples
+# Usage examples
+
+Typical usage should be like this:
+
+
 
 Some parsing examples can be found in the project tables:
 * [evaa_ton_supply](../../../models/evaa/ton/evaa_ton_supply.sql) - parsing of a single cell with uint/int/address data types
