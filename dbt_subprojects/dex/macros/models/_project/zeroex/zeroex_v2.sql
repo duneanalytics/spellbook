@@ -318,7 +318,7 @@ tbl_trades as (
 select  block_time,
         block_number,
         tx_hash,
-        case {%- if blockchain not in ('mode',) %} 
+        case {%- if blockchain not in ('mode') %} 
             when c.address is not null then tx_from 
             {%- endif -%}
              when st.taker in (0x0000000000001ff3684f28c67538d4d072c22734,
@@ -337,7 +337,7 @@ select  block_time,
                         else st.taker end as taker,
         maker_token,
         maker_amount,
-        taker_token,
+        taker_token,d
         taker_amount,
         tx_to,
         tx_from,
