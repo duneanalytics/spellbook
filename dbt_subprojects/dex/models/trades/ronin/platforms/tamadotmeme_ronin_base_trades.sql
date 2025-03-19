@@ -48,7 +48,7 @@ buy AS (
     bet.call_tx_from AS tx_from,
     bet.call_tx_to AS tx_to,
     bet.call_tx_index AS evt_index,
-    row_number() over(partition by ste.call_tx_hash order by ste.call_trace_address asc) as rn
+    row_number() over(partition by bet.call_tx_hash order by ste.call_trace_address asc) as rn
 
   FROM  {{ source('tamadotmeme_ronin', 'maincontract_call_buytokenswitheth') }} AS bet
   LEFT JOIN  {{ source('tamadotmeme_ronin', 'maincontract_evt_tokencreated') }} AS tc
