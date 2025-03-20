@@ -75,12 +75,12 @@ models:
 
   - name: moola_celo_base_flashloans
     meta:
-      blockchain: moola
+      blockchain: celo
       sector: lending
-      project: aave
+      project: moola
       contributors: hildobby, tomfutago
     config:
-      tags: ['lending', 'flashloans', 'aave', 'moola']
+      tags: ['lending', 'flashloans', 'moola', 'celo']
     description: "Moola flashloans transactions on Celo"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -89,6 +89,37 @@ models:
             - evt_index
       - check_lending_base_flashloans_seed:
           seed_file: ref('moola_celo_base_flashloans_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *project_contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
+
+  - name: aave_v3_celo_base_flashloans
+    meta:
+      blockchain: celo
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'celo']
+    description: "Aave v3 flashloans transactions on Celo"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_lending_base_flashloans_seed:
+          seed_file: ref('aave_celo_base_flashloans_seed')
     columns:
       - *blockchain
       - *project
