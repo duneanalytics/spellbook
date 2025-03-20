@@ -221,7 +221,15 @@ This table is used for analyzing blanket approvals for ERC721 token collections 
 {% enddocs %}
 
 {% docs ethereum_withdrawals_doc %}
-The `ethereum.withdrawals` table is not yet documented. TBD
+The `ethereum.withdrawals` table contains information about validator withdrawals on the Ethereum network after the transition to Proof of Stake. It includes:
+
+- Block information: number, timestamp, hash
+- Validator index
+- Withdrawal address
+- Amount withdrawn
+- Withdrawal index
+
+This table is used for analyzing validator behavior, tracking staking rewards withdrawals, and monitoring the overall health of Ethereum's PoS system.
 {% enddocs %}
 
 
