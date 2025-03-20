@@ -332,3 +332,31 @@ models:
       - *data_fee_native
       - *calldata_gas_used
       - *data_length
+
+  - name: rollup_economics_shape_l1_data_fees
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: irishlatte19
+    config:
+      tags: ['rollup', 'l2']
+    description: Fees spent by Shape for calldata gas on Ethereum
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - name
+            - tx_hash
+    columns:
+      - *name
+      - *block_month
+      - *block_date
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *tx_index
+      - *gas_price
+      - *gas_used
+      - *data_fee_native
+      - *calldata_gas_used
+      - *data_length

@@ -5,10 +5,10 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['address'],
-        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora", "blast", "fantom", "linea", "zkevm", "zksync"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "bnb", "avalanche_c", "gnosis", "optimism", "arbitrum", "polygon", "base", "celo", "scroll", "zora", "blast", "fantom", "linea", "zkevm", "zksync", "shape"]\',
                                     "sector",
                                     "addresses",
-                                    \'["hildobby"]\') }}'
+                                    \'["hildobby", "irishlatte19"]\') }}'
 )
 }}
 
@@ -29,6 +29,7 @@
     , ('linea', ref('addresses_linea_info'))
     , ('zkevm', ref('addresses_zkevm_info'))
     , ('zksync', ref('addresses_zksync_info'))
+    , ('shape', ref('addresses_shape_info'))
 ] %}
 
 {% if not is_incremental() %}

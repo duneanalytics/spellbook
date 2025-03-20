@@ -130,5 +130,12 @@ FROM (VALUES
         ,(0x75acb7ae6c76b3f5ca049431fe2c0797dd002b90, 'Aevo','Optimism', 'L2OutputOracle','from_address','OP Stack','Aevo (Ribbon Finance): L1OutputOracle')
 
 
+        ---
+        ,(0xfF00000000000000000000000000000000000360, 'Shape', 'Optimism', 'L1BatchInbox','to_address','Modern','Shape: L1BatchInbox')
+        ,(0xF7ca543d652E38692fD12f989eb55b5327eC9A20, 'Shape', 'Optimism', 'L1BatchInbox','from_address','Modern','Shape: L1BatchInbox')
+
+        ,(0x12d95BEcF815d4A137a97F9c1D55b073EE80e506, 'Shape', 'Optimism', 'L2OutputOracle','to_address','Modern','Shape: L2OutputOracle')
+        ,(0x6Ef8c69CfE4635d866e3E02732068022c06e724D, 'Shape', 'Optimism', 'L2OutputOracleProxy','to_address','Modern','Shape: L2OutputOracleProxy')
+        ,(0x0D8a607F3d2de86adD04Df00f06794cB339A40de, 'Shape', 'Optimism', 'L2OutputOracle','from_address','Modern','Shape: L2OutputOracle')
 
         ) AS x (address, protocol_name, codebase, submitter_type, role_type, version, description)

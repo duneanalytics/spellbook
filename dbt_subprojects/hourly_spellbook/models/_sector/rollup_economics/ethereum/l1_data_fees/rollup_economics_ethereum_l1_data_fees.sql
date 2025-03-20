@@ -17,6 +17,7 @@
     , ref('rollup_economics_zkevm_l1_data_fees')
     , ref('rollup_economics_zksync_l1_data_fees')
     , ref('rollup_economics_zksync_lite_l1_data_fees')
+    , ref('rollup_economics_shape_l1_data_fees')
 ] %}
 
 WITH base_union AS (
