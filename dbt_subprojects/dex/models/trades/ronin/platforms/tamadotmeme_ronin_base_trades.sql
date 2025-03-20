@@ -118,8 +118,8 @@ select
 , cast (token_pair as varchar) as token_pair
 , cast (token_bought_amount as uint256) as token_bought_amount
 , cast (token_sold_amount as uint256) as token_sold_amount
-, cast (token_bought_amount_raw as uint256) as token_bought_amount_raw
-, cast (token_sold_amount_raw as uint256) as token_sold_amount_raw
+, cast (token_bought_amount_raw as double) as token_bought_amount_raw
+, cast (token_sold_amount_raw as double) as token_sold_amount_raw
 , cast (amount_usd as uint256) as amount_usd
 , cast (token_bought_address as varbinary) as token_bought_address
 , cast (token_sold_address as varbinary) as token_sold_address
