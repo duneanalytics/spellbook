@@ -16,5 +16,6 @@ FROM (VALUES
   ,('base', 0x00000000000007736e2f9aa5630b8c812e1f3fc9, 'ChainEye', 'MiniBridge')
   ,('base', 0x09aea4b2242abc8bb4bb78d537a67a245a7bec64, 'Across', 'SpokePoolVerifier')
   ,('base', 0x8d2de8d2f73F1F4cAB472AC9A881C9b123C79627, 'Wormhole', 'Token Bridge')
+  ,('base', 0xc1656B63D9EEBa6d114f6bE19565177893e5bCBF, 'DeBridge', 'DeBridgeGate')
 
   ) AS x (blockchain, address, bridge_name, description)
