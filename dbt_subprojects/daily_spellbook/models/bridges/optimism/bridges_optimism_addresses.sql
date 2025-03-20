@@ -12,6 +12,7 @@ FROM (VALUES
       ('optimism', 0x99c9fc46f92e8a1c0dec1b1747d010903e884be1, 'Optimism', 'Gateway'),
       ('optimism', 0x9d39fc627a6d9d9f8c831c16995b209548cc3401, 'Celer Network', 'Bridge'),
       ('optimism', 0xe7351fd770a37282b91d153ee690b63579d6dd7f, 'Din', 'Destination'),
+      ('optimism', 0x43dE2d77BF8027e25dBD179B491e8d64f38398aA, 'deBridge', 'DeBridgeGate'),
       ('optimism', 0x3c2269811836af69497e5f486a85d7316753cf62, 'Layer Zero', 'Optimism'),
       ('optimism', 0xc10ef9f491c9b59f936957026020c321651ac078, 'Multichain', 'anyCall v6'),
       ('optimism', 0xdc42728b0ea910349ed3c6e1c9dc06b5fb591f98, 'Multichain', 'Router v6'),
@@ -22,7 +23,5 @@ FROM (VALUES
       ('optimism', 0xa81d244a1814468c734e5b4101f7b9c0c577a8fc, 'Hop', 'bridge' ),
       ('optimism', 0x46ae9bab8cea96610807a275ebd36f8e916b5c61, 'Hop', 'bridge' ),
       ('optimism', 0x1D68124e65faFC907325e3EDbF8c4d84499DAa8b, 'Wormhole', 'Token Bridge' )
-
-
 
       ) AS x (blockchain, address, bridge_name, description)
