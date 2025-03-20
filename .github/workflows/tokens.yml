@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - dbt_subprojects/tokens/**
+      - dbt_macros/shared/**
       - .github/workflows/tokens.yml
       - .github/workflows/dbt_run.yml
 
