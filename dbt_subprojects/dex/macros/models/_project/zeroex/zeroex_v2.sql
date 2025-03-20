@@ -80,7 +80,6 @@ tbl_all_logs AS (
         case when topic0 = signature or logs.contract_address = settler_address then 'swap' end as log_type,
         data,
         row_number() over (partition by tx_hash order by index) rn,
-        cow_rn,
         case when tx_cnt > 1 then 1 else 0 end as bundled_tx
     FROM
         base_filtered_logs AS logs
@@ -143,7 +142,6 @@ taker_logs as (
           )
       
     where logs.block_time > TIMESTAMP '2024-07-15' 
-        and cow_rn is null 
         AND (
                 (
                 topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef, 
@@ -190,8 +188,7 @@ maker_logs as (
         AND st.block_number = logs.block_number
         
     WHERE  
-        cow_rn is null 
-        and amount != 0 
+        amount != 0 
         and (
              
                 ( topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
@@ -263,57 +260,6 @@ maker_logs as (
     
 ),
 
--- Create a common table expression to read the cow_protocol_ethereum.trades table and apply incremental filtering
-base_cow_trades AS (
-    SELECT
-        *
-    FROM 
-        {{ source('cow_protocol_ethereum', 'trades') }}
-    WHERE
-        1 = 1
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
-        {% else %}
-        AND block_time >= DATE '{{start_date}}'
-        {% endif %}
-),
-
-cow_trades as (
-    with base_logs as (
-        select      distinct block_time, block_number, tx_hash, settler_address, logs.contract_address, tx_from, tx_to, taker, amount as taker_amount,
-                     tx_index, evt_index, buy_token_address as maker_token, atoms_bought as maker_amount, logs.contract_address as taker_token
-    FROM base_cow_trades as trades
-    JOIN tbl_all_logs as logs using (block_time, block_number, tx_hash)
-    where trades.sell_token_address = logs.contract_address and trades.atoms_sold = logs.amount
-        ),
-    base_logs_rn as (
-    select  *, 
-            row_number() over (partition by tx_hash order by evt_index) cow_trade_rn 
-        from base_logs
-        )
-    select 
-        b.block_time,
-        b.block_number,
-        b.tx_hash,
-        tx_from as taker,
-        maker_token,
-        maker_amount,
-        taker_token,
-        taker_amount,
-        tx_to,
-        tx_from,
-        evt_index,
-        b.settler_address,
-        zid,
-        tag,
-        b.settler_address as contract_address   
-    from base_logs_rn b
-    join zeroex_tx s on b.block_time = s.block_time 
-        and b.tx_hash = s.tx_hash 
-        and b.block_number = s.block_number 
-        and cow_rn = cow_trade_rn
-),
-
 tbl_trades as (
 select  block_time,
         block_number,
@@ -353,8 +299,6 @@ select  block_time,
     left join {{ source( blockchain, 'contracts') }} c on c.address = st.taker
     {% endif %}
     where maker_token != taker_token
-    union 
-    select * from cow_trades 
 )
 select * from tbl_trades 
 
