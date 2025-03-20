@@ -12,7 +12,7 @@
     )
 }}
 
-{% set test_short_ci = false %}
+{% set test_short_ci = true %}
 
 WITH base_model as (
     SELECT
