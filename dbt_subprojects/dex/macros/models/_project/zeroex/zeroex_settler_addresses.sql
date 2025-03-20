@@ -23,7 +23,7 @@ tbl_addresses AS (
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% else %}
-            AND block_time >= DATE '2024-07-15'
+            AND block_time >= DATE '2024-03-10'
         {% endif %}
 ),
 
