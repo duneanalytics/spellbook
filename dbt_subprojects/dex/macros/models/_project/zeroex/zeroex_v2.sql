@@ -318,7 +318,7 @@ tbl_trades as (
 select  block_time,
         block_number,
         tx_hash,
-        case {%- if blockchain not in ('mode') %}
+        case {%- if blockchain not in ('mode') -%}
             when c.address is not null then tx_from 
             {%- endif -%}
              when st.taker in (0x0000000000001ff3684f28c67538d4d072c22734,
@@ -348,7 +348,7 @@ select  block_time,
         settler_address as contract_address 
     from maker_logs
     join zeroex_tx st using (block_time, block_number, tx_hash, rn, settler_address) 
-    {%- if blockchain not in ('mode') %}
+    {%- if blockchain not in ('mode') -%}
     left join {{ source( blockchain, 'contracts') }} c on c.address = st.taker
     {%- endif -%}
     where maker_token != taker_token
