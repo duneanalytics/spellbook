@@ -119,7 +119,8 @@ from base_supply
     blockchain,
     project,
     version,
-    project_decoded_as = 'aave_v2'
+    project_decoded_as = 'aave_v2',
+    wrapped_token_gateway_available = true
   )
 %}
 
