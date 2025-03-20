@@ -210,4 +210,5 @@ FROM (VALUES
     , ('beraswap', 'BeraSwap', 'Direct', 'BeraSwap')
     , ('burrbear', 'BurrBear', 'Direct', 'moneygoesburr')
     , ('reservoir_swap', 'Reservoir Swap', 'Direct', 'reservoir0x')
+    , ('tamadotmeme', 'tamadotmeme', 'Direct', 'tamadotmeme')
 ) AS temp_table (project, name, marketplace_type, x_username)
