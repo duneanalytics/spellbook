@@ -150,3 +150,6 @@ logs/
 !target/sources.json
 
 dbt_subprojects/dex/spellbook-env/
+
+# dbt creds
+spellbook/dbt_subprojects/dex/dbt_project.yml
