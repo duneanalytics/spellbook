@@ -30,7 +30,7 @@ WITH base_model as (
                 , array[cast(coalesce(gas_used_for_l1,0) * effective_gas_price as uint256)
                         ,cast((txns.gas_used - coalesce(gas_used_for_l1,0)) * effective_gas_price as uint256)])
         ) as tx_fee_breakdown_raw
-        ,0x0000000000000000000000000000000000000000 as tx_fee_currency
+        ,{{var('ETH_ERC20_ADDRESS')}} as tx_fee_currency
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
         ,txns.priority_fee_per_gas
