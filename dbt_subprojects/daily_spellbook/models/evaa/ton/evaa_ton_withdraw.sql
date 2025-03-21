@@ -21,12 +21,11 @@ WITH evaa_ton_pools AS (
     {{ evaa_ton_pools() }}
 ),
 parsed_boc AS (
-    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, pool_address, body_boc
+    SELECT M.block_date, M.tx_hash, M.trace_id, M.tx_now, M.tx_lt, pool_address, pool_name, body_boc
     FROM {{ source('ton', 'messages') }} M
     JOIN evaa_ton_pools ON M.source = pool_address
     WHERE M.direction = 'out' AND M.destination IS NULL -- ext out message
-    -- AND T.block_date >= TIMESTAMP '2023-10-09' -- protocol launch
-    AND M.block_date = TIMESTAMP '2025-03-11' -- protocol launch
+    AND M.block_date >= TIMESTAMP '2023-10-09' -- protocol launch
     {% if is_incremental() %}
         AND {{ incremental_predicate('M.block_date') }}
     {% endif %}
@@ -38,7 +37,7 @@ select {{ ton_from_boc('body_boc', [
     ton_load_address('owner_address'),
     ton_load_address('sender_address'),
     ton_load_address('recipient_address'),
-    ton_load_uint(32, 'current_time'),
+    ton_load_uint(32, '_current_time'),
     ton_skip_refs(1),
     ton_load_ref(),
     ton_begin_parse(),
@@ -51,4 +50,9 @@ select {{ ton_from_boc('body_boc', [
     ton_load_uint(64, 'b_rate')
     ]) }} as result, * from parsed_boc
 )
-select CAST(result['s_rate'] AS bigint) as s_rate from parse_output
+select block_date, tx_hash, trace_id, tx_now, tx_lt, pool_address, pool_name,
+result.owner_address, result.sender_address, result.recipient_address, result.asset_id,
+result.withdraw_amount_current, result.user_new_principal, result.new_total_supply,
+result.new_total_borrow,
+CAST(result.s_rate AS bigint) AS s_rate, CAST(result.b_rate AS bigint) AS b_rate -- should be less than 2^64
+from parse_output

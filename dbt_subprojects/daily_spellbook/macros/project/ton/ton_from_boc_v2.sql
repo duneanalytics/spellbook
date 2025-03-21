@@ -1,13 +1,13 @@
 {%- macro ton_from_boc(payload, actions) -%}
 REDUCE(
-sequence(1, {{ actions | length }}),
-{#
-state layout:
- boc
- current cell
- cell_cursor
- output
-#}
+ARRAY[
+    {#
+    Action layout: [action op code, output value name, arguments]
+    #}
+    {% for action in actions %}
+        {{ action }}{% if not loop.last %},{% endif %}
+    {% endfor %}
+],
 CAST(
     CASE WHEN varbinary_substring ( {{ payload }} , 1, 4) = 0xb5ee9c72 THEN
         CAST(ROW(
@@ -84,12 +84,55 @@ CAST(
     END
 AS {{ ton_boc_state_type() }})
 ,
-(state, step) -> CASE 
-    {% set index = 0 %}
-    {% for action in actions %}
-        WHEN step = {{ loop.index }} THEN {{ action }}
-        {% set index = index + 1 %}
-    {% endfor %}
+(state, step) -> CASE
+    {# layout:
+         [1]                  [2]               [3]           [4][5]...
+    [action op code, output value name, output value type, arguments...]
+    #}
+    WHEN step[1] = {{ ton_action_begin_parse() }} THEN {{ ton_begin_parse_impl() }}
+
+    WHEN step[1] = {{ ton_action_skip_bits() }} THEN {{ ton_skip_bits_impl('CAST(step[4] AS bigint)') }}
+    WHEN step[1] = {{ ton_action_load_uint() }} THEN {{ ton_load_uint_impl('CAST(step[4] AS bigint)', 'step[2]') }}
+    WHEN step[1] = {{ ton_action_load_uint_large() }} THEN {{ ton_load_uint_large_impl('CAST(step[4] AS bigint)', 'step[2]') }}
+    WHEN step[1] = {{ ton_action_load_int() }} THEN {{ ton_load_int_impl('CAST(step[4] AS bigint)', 'step[2]') }}
+    WHEN step[1] = {{ ton_action_load_address() }} THEN {{ ton_load_address_impl('step[2]') }}
+    WHEN step[1] = {{ ton_action_load_ref() }} THEN {{ ton_load_ref_impl() }}
+    WHEN step[1] = {{ ton_action_skip_ref() }} THEN {{ ton_skip_refs_impl('CAST(step[4] AS bigint)') }}
 END,
-s -> s.output)
+s -> CAST(ROW(
+    {#- prepare list of fields to be returned -#}
+    {%- set fields = [] -%}
+    {%- for action in actions -%}
+        {%- set output_field_name = action.strip()[6:-1].split(',')[1].strip() -%}
+        {%- if output_field_name != 'null' -%}
+            {%- if output_field_name in fields -%}
+                {{ exceptions.raise_compiler_error("Field " + output_field_name + " is duplicated") }}
+            {%- endif %}
+            {%- set fields = fields.append(output_field_name) -%}
+        {%- endif -%}
+    {%- endfor %}
+    {%- set counter = namespace(value=0) -%}
+    {%- for action in actions -%}
+        {% set output_field_name = action.strip()[6:-1].split(',')[1].strip() %}
+        {% if output_field_name in fields -%}
+            {%- set output_field_type = action.strip()[6:-1].split(',')[2].strip() -%}
+            {%- set counter.value = counter.value + 1 -%}
+            {% if output_field_type | replace("'", "") == 'UINT256' or output_field_type | replace("'", "") == 'INT256' %}
+                CAST(CAST(s.output[{{ output_field_name }}] AS varchar) AS {{ output_field_type | replace("'", "") }}) {% if counter.value < fields | length %},{% endif %}
+            {% else %}
+                CAST(s.output[{{ output_field_name }}] AS {{ output_field_type | replace("'", "") }}) {% if counter.value < fields | length %},{% endif %}
+            {% endif %}
+        {%- endif %}
+    {%- endfor %}
+) AS ROW(
+    {%- set counter = namespace(value=0) -%}
+    {% for action in actions -%}
+        {%- set output_field_name = action.strip()[6:-1].split(',')[1].strip()  -%}
+        {%- if output_field_name in fields -%}
+            {%- set output_field_type = action.strip()[6:-1].split(',')[2].strip() -%}
+            {%- set counter.value = counter.value + 1 -%}
+            {{ output_field_name | replace("'", "")}} {{ output_field_type | replace("'", "") }} {% if counter.value < fields | length %},{% endif %}
+        {%- endif %}
+    {%- endfor %}))
+)
 {%- endmacro -%}

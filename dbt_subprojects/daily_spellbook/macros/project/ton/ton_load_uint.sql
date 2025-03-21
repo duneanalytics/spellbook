@@ -1,16 +1,8 @@
-{%- macro ton_load_uint(size, field_name)
+{%- macro ton_load_uint(size, as=false)
 -%}
 {% if size > 256 %}
   {{ exceptions.raise_compiler_error("size for ton_load_uint must be less than 256") }}
 {% endif %}
-CAST(ROW(
-    state.has_idx, state.size, state.original_cell_data, state.cell_pointer,
-    state.refs, state.exotic, state.level_,
-    state.current_cell_data, 
-    state.refs_indexes,
-    state.cursor_bit_offset + {{ size }}, state.cursor_ref_offset,
-    map_concat(state.output,
-    map_from_entries(ARRAY[('{{ field_name }}', CAST(CAST({{ ton_preload_uint('state', size) }} AS {% if size <= 32 %}bigint{% else %}varchar{% endif %}) AS JSON))]))
-) AS {{ ton_boc_state_type() }})
+ARRAY[{% if size == 256 %}{{ ton_action_load_uint_large() }}{% else %}{{ ton_action_load_uint() }}{% endif %}, '{{ as }}', {% if size > 63 %} 'UINT256' {% else %} 'bigint' {% endif %}, '{{ size }}']
 
 {%- endmacro -%}
