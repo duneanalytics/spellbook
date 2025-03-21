@@ -629,5 +629,6 @@ FROM ( values
 ,('Haradev Testnet'	,'Ntity'	,'NTTH'	,'197710212031'	,'197710212031'	,'https://ntity.io'	,'https://blockscout.haradev.com')
 ,('Molereum Network'	,'ETH'	,'MOLE'	,'6022140761023'	,'6022140761023'	,'https://github.com/Jdubedition/molereum'	,'')
 ,('Godwoken Testnet (V1)'	,'GWT'	,'CKB'	,'868455272153094'	,'868455272153094'	,'https://www.nervos.org'	,'https://v1.aggron.gwscan.com')
+,('ZERO Network'	,'ZERONetwork'	,'ETH'	,'543210'	,'543210'	,'https://docs.zero.network'	,'https://explorer.zero.network')
 
 ) a ("name", "chain", "nativeCurrency", "chainId", "networkId", "infoURL", "explorer")
