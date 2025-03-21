@@ -163,7 +163,7 @@ taker_logs as (
     )
     select * 
     from tbl_base
-    join settler_txs using (block_time, block_number, tx_hash, rn)
+    join zeroex_tx using (block_time, block_number, tx_hash, rn)
 ),
 
 maker_logs as (
