@@ -16,5 +16,36 @@ models:
             - tx_hash
     columns:
       - name: block_date
-        description: "block_date partition field"
-  
+        description: "block_date of the transaction"
+      - name: tx_hash
+        description: "transaction hash"
+      - name: trace_id
+        description: "trace id"
+      - name: tx_now
+        description: "transaction timestamp"
+      - name: tx_lt
+        description: "transaction logical time"
+      - name: pool_address
+        description: "EVAA pool address"
+      - name: pool_name
+        description: "EVAA pool name"
+      - name: owner_address
+        description: "owner address"
+      - name: sender_address
+        description: "user smart contract address"
+      - name: recipient_address
+        description: "recipient address (only for after v4 protcool upgrade, otherwise null)"
+      - name: asset_id
+        description: "asset id"
+      - name: withdraw_amount_current
+        description: "withdraw amount"
+      - name: user_new_principal
+        description: "user new principal value"
+      - name: new_total_supply
+        description: "new total supply value"
+      - name: new_total_borrow
+        description: "new total borrow value"
+      - name: s_rate
+        description: "s rate value"
+      - name: b_rate
+        description: "b rate value"

@@ -1,23 +1,23 @@
 WITH test_data AS (
-    SELECT boc, CAST(expected AS ROW(int8 bigint, int2 bigint, int32 bigint, int64 varchar, int128 varchar)) AS expected, offset
+    SELECT boc, CAST(expected AS ROW(int8 bigint, int2 bigint, int32 bigint, int64 INT256, int128 INT256)) AS expected, offset
     FROM (
         VALUES
         -- all zeroes
         (
             0xb5ee9c7201010101004000007b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000040,
-            ROW(0, 0, 0, '0', '0'),
+            ROW(0, 0, 0, CAST(0 AS INT256), CAST(0 AS INT256)),
             0
         ),
         -- max values
         (
             0xb5ee9c7201010101004000007b7f5fffffffdfffffffffffffffdfffffffffffffffffffffffffffffffdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc0,
-            ROW(127, 1, 2147483647, '9223372036854775807', '170141183460469231731687303715884105727'),
+            ROW(127, 1, 2147483647, CAST('9223372036854775807' AS INT256), CAST('170141183460469231731687303715884105727' AS INT256)),
             0
         ),
         -- min values
         (
             0xb5ee9c7201010101004000007b81e0000000600000000000000060000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000060,
-            ROW(-127, -1, -2147483647, '-9223372036854775807', '-170141183460469231731687303715884105727'),
+            ROW(-127, -1, -2147483647, CAST('-9223372036854775807' AS INT256), CAST('-170141183460469231731687303715884105727' AS INT256)),
             0
         )
     )
@@ -34,5 +34,5 @@ WITH test_data AS (
     ]) }} as result, expected 
     FROM test_data
 )
-SELECT json_format(CAST(result AS json)) AS result, json_format(CAST(expected AS json)) AS expected FROM test_results
+SELECT result, expected FROM test_results
 WHERE result != expected
