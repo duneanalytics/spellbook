@@ -163,7 +163,6 @@ taker_logs as (
     select *, 
         row_number() over (partition by tx_hash order by (index)) rn
     from tbl_base
-    join zeroex_tx using (block_time, block_number, tx_hash, rn)
 ),
 
 maker_logs as (
