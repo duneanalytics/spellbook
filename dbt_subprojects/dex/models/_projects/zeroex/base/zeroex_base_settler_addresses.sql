@@ -1,14 +1,14 @@
 {{
     config(
-        schema = 'zeroex',
-        alias = 'base_settler_addresses',
+        schema = 'zeroex_base',
+        alias = 'settler_addresses',
         materialized='incremental',
         partition_by = ['begin_block_time'],
         unique_key = ['token_id', 'settler_address', 'begin_block_number', 'begin_block_time'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
-        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
+        incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.begin_block_time')]
     )
 }}
 
