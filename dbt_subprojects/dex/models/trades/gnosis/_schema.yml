@@ -151,3 +151,17 @@ models:
           combination_of_columns:
             - tx_hash
             - evt_index
+  - name: uniswap_v3_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: uniswap_v3
+      contributors: hdser
+    config:
+      tags: ["gnosis", "dex", "trades", "uniswap", "v3"]
+    description: "Uniswap v3 Gnosis base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
