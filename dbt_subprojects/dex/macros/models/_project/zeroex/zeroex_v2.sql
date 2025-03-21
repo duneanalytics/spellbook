@@ -161,10 +161,9 @@ taker_logs as (
                  and bytearray_substring(logs.topic1,13,20) in (tx_to, settler_address)  
         ) 
     )
-    select *, 
-        
+    select * 
     from tbl_base
-    join zeroex_tx using (block_time, block_number, tx_hash, rn)
+    join settler_txs using (block_time, block_number, tx_hash, rn)
 ),
 
 maker_logs as (
