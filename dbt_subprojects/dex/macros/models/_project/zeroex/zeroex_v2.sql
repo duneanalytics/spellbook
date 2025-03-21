@@ -2,9 +2,11 @@
 -- Create a CTE to read the logs table and apply incremental filtering
 WITH base_filtered_logs AS (
     SELECT
-        *
+        block_time, block_number, tx_hash, logs.*
     FROM
         {{ source(blockchain, 'logs') }} AS logs
+    JOIN
+        zeroex_tx st using (block_time, block_number, tx_hash)
     WHERE 1=1
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
@@ -18,8 +20,8 @@ bundled_tx_check as (
         block_time,
         block_number, 
         count(*) tx_cnt
-        from zeroex_tx
-        group by 1,2,3
+    from zeroex_tx
+    group by 1,2,3
 ), 
 
 swap_signatures as (
@@ -262,7 +264,7 @@ maker_logs as (
 ),
 
 tbl_trades as (
-select  block_time,
+select  distinct block_time,
         block_number,
         tx_hash,
         case 
