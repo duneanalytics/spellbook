@@ -130,7 +130,8 @@ taker_logs as (
         logs.tx_hash, 
         logs.index,
         logs.contract_address as taker_token,
-        amount as taker_amount
+        amount as taker_amount,
+        row_number() over (partition by tx_hash order by (index)) rn
     from tbl_all_logs logs
     left join swap_logs st 
         ON st.tx_hash = logs.tx_hash 
@@ -161,8 +162,9 @@ taker_logs as (
         ) 
     )
     select *, 
-        row_number() over (partition by tx_hash order by (index)) rn
+        
     from tbl_base
+    join zeroex_tx using (block_time, block_number, tx_hash, rn)
 ),
 
 maker_logs as (
