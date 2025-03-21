@@ -131,7 +131,7 @@ taker_logs as (
         logs.index,
         logs.contract_address as taker_token,
         amount as taker_amount,
-        row_number() over (partition by tx_hash order by (index)) rn
+        row_number() over (partition by logs.tx_hash order by (index)) rn
     from tbl_all_logs logs
     left join swap_logs st 
         ON st.tx_hash = logs.tx_hash 
