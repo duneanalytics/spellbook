@@ -2,7 +2,8 @@
     schema = 'gas',
     alias = 'fees',
     post_hook='{{ expose_spells(\'[
-                                    "arbitrum"
+                                    "abstract"
+                                    , "arbitrum"
                                     , "avalanche_c"
                                     , "base"
                                     , "blast"
@@ -33,7 +34,8 @@
 }}
 
 {% set chains = [
-    "arbitrum"
+    "abstract"
+    , "arbitrum"
     , "avalanche_c"
     , "base"
     , "blast"
