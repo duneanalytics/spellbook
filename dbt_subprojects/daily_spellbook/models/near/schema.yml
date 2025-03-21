@@ -1,0 +1,89 @@
+version: 2
+
+models:
+  - name: near_ft_transfer_calls
+    meta:
+      blockchain: near
+      sector: transfers
+      project: ft_transfer_calls
+      contributors: danzipie
+    config:
+      tags:
+        ["near", "nep141"]
+    description: >
+      This table contains token transfers on the NEAR blockchain for the `ft_transfer_call` function.
+    columns:
+      - name: block_date
+        description: "Date of the block of the ft_transfer_call"
+        tests:
+          - not_null
+      - name: block_height
+        description: "Height of the block of the ft_transfer_call"
+        tests:
+          - not_null
+      - name: block_time
+        description: "Timestamp of the block of the ft_transfer_call"
+        tests:
+          - not_null
+      - name: block_hash
+        description: "Hash of the block of the ft_transfer_call"
+        tests:
+          - not_null
+      - name: chunk_hash
+        description: "Hash of the chunk of the ft_transfer_call"
+        tests:
+          - not_null
+      - name: shard_id
+        description: "ID of the shard of the ft_transfer_call"
+        tests:
+          - not_null
+      - name: standard
+        description: "Token standard"
+        tests:
+          - not_null
+      - name: contract_account_id
+        description: "ID of the token contract account"
+        tests:
+          - not_null
+      - name: receipt_id
+        description: "ID of the receipt of the ft_transfer_call"
+        tests:
+          - not_null
+      - name: resolve_receipt_id
+        description: "ID of the receipt of the ft_resolve_call"
+        tests:
+          - not_null
+      - name: resolve_status
+        description: "Status of the ft_resolve_call"
+        tests:
+          - not_null
+      - name: tx_hash
+        description: "Hash of the transaction"
+        tests:
+          - not_null
+      - name: cause
+        description: "Cause of the transfer"
+        tests:
+          - not_null
+      - name: memo
+        description: "Memo field of the transaction"
+      - name: affected_account_id
+        description: "Account ID affected by the transfer"
+        tests:
+          - not_null
+      - name: involved_account_id
+        description: "Account ID involved in the transfer"
+        tests:
+          - not_null
+      - name: delta_amount
+        description: "Amount of tokens transferred"
+        tests:
+          - not_null
+      - name: _updated_at
+        description: "Last update timestamp"
+        tests:
+          - not_null
+      - name: _ingested_at
+        description: "Ingestion timestamp"
+        tests:
+          - not_null
