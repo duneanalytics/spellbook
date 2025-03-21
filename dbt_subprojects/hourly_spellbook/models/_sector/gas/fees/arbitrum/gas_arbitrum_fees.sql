@@ -50,7 +50,7 @@ WITH base_model as (
         AND {{ incremental_predicate('blocks.time') }}
         {% endif %}   
     {% if test_short_ci %}
-    WHERE txns.block_time >= timestamp '2025-03-14'
+    WHERE {{ incremental_predicate('txns.block_time') }}
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
     {% elif is_incremental() %}
     WHERE {{ incremental_predicate('txns.block_time') }}
