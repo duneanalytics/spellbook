@@ -108,9 +108,9 @@ UNION ALL
 select
   cast (blockchain as varchar) as blockchain
 , cast (project as varchar) as project
-, cast(version as varchar) as version
-, cast (block_month as timestamp) as block_month
-, cast (block_date as timestamp) as block_date
+, cast (version as varchar) as version
+, cast (block_month as date) as block_month
+, cast (block_date as date) as block_date
 , cast (block_time as timestamp) as block_time
 , cast (block_number as uint256) as block_number
 , cast (token_bought_symbol as varchar) as token_bought_symbol
@@ -129,5 +129,5 @@ select
 , cast (tx_hash as varbinary) as tx_hash
 , cast (tx_from as varbinary) as tx_from
 , cast (tx_to as varbinary) as tx_to
-, cast(evt_index as uint256) as evt_index
+, cast (evt_index as uint256) as evt_index
 from combined 
