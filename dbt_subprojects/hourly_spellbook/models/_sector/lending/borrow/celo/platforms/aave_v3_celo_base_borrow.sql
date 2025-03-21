@@ -1,7 +1,7 @@
 {{
   config(
-    schema = 'granary_ethereum',
-    alias = 'base_supply',
+    schema = 'aave_v3_celo',
+    alias = 'base_borrow',
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
@@ -11,11 +11,9 @@
 }}
 
 {{
-  lending_aave_v2_compatible_supply(
-    blockchain = 'ethereum',
-    project = 'granary',
-    version = '1',
-    project_decoded_as = 'the_granary',
-    wrapped_token_gateway_available = false
+  lending_aave_v3_compatible_borrow(
+    blockchain = 'celo',
+    project = 'aave',
+    version = '3'
   )
 }}

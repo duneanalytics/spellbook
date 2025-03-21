@@ -1,6 +1,6 @@
 {{
   config(
-    schema = 'seamlessprotocol_base',
+    schema = 'aave_v3_celo',
     alias = 'base_supply',
     materialized = 'incremental',
     file_format = 'delta',
@@ -12,11 +12,9 @@
 
 {{
   lending_aave_v3_compatible_supply(
-    blockchain = 'base',
-    project = 'seamlessprotocol',
-    version = '1',
-    project_decoded_as = 'seamlessprotocol',
-    decoded_contract_name = 'L2Pool',
+    blockchain = 'celo',
+    project = 'aave',
+    version = '3',
     wrapped_token_gateway_available = false
   )
 }}
