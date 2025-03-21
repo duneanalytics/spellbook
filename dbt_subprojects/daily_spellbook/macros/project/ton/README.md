@@ -43,6 +43,12 @@ The same as ``ton_skip_bits`` but for reference cells.
 
 Loads a reference cell from the current cursor position. Doesn't accept any parameters. Note that after loading a reference cell, one need to call ``ton_begin_parse`` again to start parsing the new cell.
 
+## ton_restart_parse
+
+This macro is used to restart parsing from the beginning of the bag of cells. It doesn't accept any parameters. It is useful when 
+you are working with multiple reference cells and after parsing the first cell you need to switch to the next one - in this case you need to call ``ton_restart_parse``,
+skip the first ref with ``ton_skip_refs`` and then call ``ton_load_ref`` again to start parsing the next cell.
+
 # Usage examples
 
 Typical usage should be like this:
