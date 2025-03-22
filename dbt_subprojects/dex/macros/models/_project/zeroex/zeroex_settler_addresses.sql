@@ -20,6 +20,11 @@ tbl_addresses AS (
         contract_address = 0x00000000000004533Fe15556B1E086BB1A72cEae
         -- Filter for the specific event signature (ProtocolFeeCollectorAddress event)
         AND topic0 = 0xaa94c583a45742b26ac5274d230aea34ab334ed5722264aa5673010e612bc0b2
+        {% if is_incremental() %}
+            AND {{ incremental_predicate('block_time') }}
+        {% else %}
+            AND block_time >= DATE '2024-03-10'
+        {% endif %}
 ),
 
 -- Step 2: Calculate the active time periods for each settler address
