@@ -185,3 +185,54 @@ models:
         description: "UTC timestamp when table was last updated"
       - name: recency_index
         description: "Index of most recent balance ascending. recency_index=1 is the wallet/contract pair's most recent balance"
+  
+  - name: tokens_bitcoin_net_transfers_daily_address
+    meta:
+      blockchain: bitcoin
+      sector: tokens
+      contributors: krishhh
+    config:
+      tags: ['tokens', 'net_transfers', 'daily', 'address']
+    description: "Total transfer amount per day per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - address
+    columns:
+      - name: blockchain
+        description: "The blockchain network"
+      - name: block_date
+        description: "The date of the block"
+      - name: net_transfer_amount_usd
+        description: "The total net transfer amount for the day per address"
+
+  - name: tokens_bitcoin_net_transfers_daily_asset_address
+    meta:
+      blockchain: bitcoin
+      sector: tokens
+      contributors: [0xRob, krishhh]
+    config:
+      tags: ['tokens', 'net_transfers', 'daily', 'asset', 'address']
+    description: "Total transfer amount per day per asset per address"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - contract_address
+            - address
+    columns:
+      - name: blockchain
+        description: "The blockchain network"
+      - name: block_date
+        description: "The date of the block"
+      - name: contract_address
+        description: "The contract address of the asset"
+      - name: address
+        description: "The address of the wallet"
+      - name: symbol
+      - name: net_transfer_amount_usd
+        description: "The total net transfer amount for the day and asset per address"
+
