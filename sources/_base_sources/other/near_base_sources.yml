@@ -227,6 +227,67 @@ sources:
             description: Ingestion timestamp
             type: timestamp
 
+      - name: ft_transfer_calls
+        description: Contains all fungible token transfers attached to a function call on the NEAR blockchain
+        columns:
+          - name: block_date
+            description: Date of the block of the ft_transfer_call
+            type: date
+          - name: block_height
+            description: Height of the block of the ft_transfer_call
+            type: bigint
+          - name: block_time
+            description: Timestamp of the block of the ft_transfer_call
+            type: timestamp
+          - name: block_hash
+            description: Hash of the block of the ft_transfer_call
+            type: varchar
+          - name: chunk_hash
+            description: Hash of the chunk of the ft_transfer_call
+            type: varchar
+          - name: shard_id
+            description: ID of the shard of the ft_transfer_call
+            type: bigint
+          - name: standard
+            description: Token standard
+            type: varchar
+          - name: token_id
+            description: ID of the token
+            type: varchar
+          - name: receipt_id
+            description: ID of the receipt of the ft_transfer_call
+            type: varchar
+          - name: resolve_receipt_id
+            description: ID of the receipt of the ft_resolve_call
+            type: varchar
+          - name: resolve_status
+            description: Status of the ft_resolve_call
+            type: varchar
+          - name: tx_hash
+            description: Hash of the transfer
+            type: varchar
+          - name: cause
+            description: Cause of the transfer
+            type: varchar
+          - name: memo
+            description: Memo attached to the transfer
+            type: varchar
+          - name: affected_account_id
+            description: Account ID affected by the transfer
+            type: varchar
+          - name: involved_account_id
+            description: Account ID involved in the transfer
+            type: varchar
+          - name: delta_amount
+            description: Amount of tokens transferred
+            type: decimal(38,0)
+          - name: _updated_at
+            description: Last update timestamp
+            type: timestamp
+          - name: _ingested_at
+            description: Ingestion timestamp
+            type: timestamp
+
       - name: block_chunks
         description: Contains block and chunk information from the NEAR blockchain
         columns:
