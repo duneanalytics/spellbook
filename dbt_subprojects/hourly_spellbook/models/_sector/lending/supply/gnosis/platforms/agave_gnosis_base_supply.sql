@@ -15,6 +15,7 @@
     blockchain = 'gnosis',
     project = 'agave',
     version = '1',
-    project_decoded_as = 'agave'
+    project_decoded_as = 'agave',
+    wrapped_token_gateway_available = false
   )
 }}

@@ -15,6 +15,7 @@
     blockchain = 'gnosis',
     project = 'realt_rmm',
     version = '2',
-    project_decoded_as = 'real_rmm_v2'
+    project_decoded_as = 'real_rmm_v2',
+    wrapped_token_gateway_available = false
   )
 }}

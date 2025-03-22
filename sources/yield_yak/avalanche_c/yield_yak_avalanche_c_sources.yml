@@ -410,6 +410,10 @@ sources:
       - name: PenguinStrategyForLPb_evt_Withdraw
       - name: PenguinStrategyForLPb_evt_Reinvest
       - name: PenguinStrategyForLPb_evt_Transfer
+      - name: PharaohStrategy_evt_Deposit
+      - name: PharaohStrategy_evt_Withdraw
+      - name: PharaohStrategy_evt_Reinvest
+      - name: PharaohStrategy_evt_Transfer
       - name: PlatypusStrategy_evt_Deposit
       - name: PlatypusStrategy_evt_Withdraw
       - name: PlatypusStrategy_evt_Reinvest

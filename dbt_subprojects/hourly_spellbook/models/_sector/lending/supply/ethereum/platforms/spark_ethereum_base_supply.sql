@@ -15,6 +15,7 @@
     blockchain = 'ethereum',
     project = 'spark',
     version = '1',
-    project_decoded_as = 'spark_protocol'
+    project_decoded_as = 'spark_protocol',
+    wrapped_token_gateway_available = false
   )
 }}

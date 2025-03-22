@@ -1,0 +1,3 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,depositor,amount
+celo,aave,3,30928196,2025-03-18 16:32:40.000 UTC,0x398e27b7128c02b83b8ac21090b1203f4ea5598ae596fb35e1fbb07c62dd4ead,46,deposit,0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e,0xd502f6090dec64bf753ed6993334c672ae41b7fa,17
+celo,aave,3,30928187,2025-03-18 16:31:55.000 UTC,0x92ddf89750877822910df11aab52cd1d7ce8612aaac99cde1d5374ba8635de43,7,withdraw,0x48065fbbe25f71c9282ddf5e1cd6d6a887483d5e,0xea2fc2ed571daf216cd30fdd71f310109d6bb318,-691471

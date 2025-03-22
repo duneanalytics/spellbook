@@ -15,6 +15,7 @@
     blockchain = 'celo',
     project = 'moola',
     version = '1',
-    project_decoded_as = 'moolainterestbearingmoo'
+    project_decoded_as = 'moolainterestbearingmoo',
+    wrapped_token_gateway_available = false
   )
 }}

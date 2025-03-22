@@ -167,6 +167,8 @@ sources:
           - name: cashDelta
             description: 'Change in the amount of token cashed the vault'
 
+      - name: Vault_evt_FlashLoan
+
       - name: ComposableStablePoolFactory_call_create
         description: >
           Decoded table of Composable Stable Pools created by the Composable Stable Pool Factory contract.

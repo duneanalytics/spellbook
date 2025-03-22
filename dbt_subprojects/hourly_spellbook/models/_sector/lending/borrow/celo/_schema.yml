@@ -89,12 +89,12 @@ models:
 
   - name: moola_celo_base_borrow
     meta:
-      blockchain: moola
+      blockchain: celo
       sector: lending
-      project: aave
+      project: moola
       contributors: tomfutago
     config:
-      tags: ['lending', 'borrow', 'aave', 'moola']
+      tags: ['lending', 'borrow', 'moola', 'celo']
     description: "Moola borrow transactions on Celo"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
@@ -105,6 +105,42 @@ models:
             - evt_index
       - check_lending_base_borrow_seed:
           seed_file: ref('moola_celo_base_borrow_seed')
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *transaction_type
+      - *token_address
+      - *borrower
+      - *on_behalf_of
+      - *repayer
+      - *liquidator
+      - *amount
+      - *block_month
+      - *block_time
+      - *block_number
+      - *project_contract_address
+      - *tx_hash
+      - *evt_index
+
+  - name: aave_v3_celo_base_borrow
+    meta:
+      blockchain: celo
+      sector: lending
+      project: aave
+      contributors: tomfutago
+    config:
+      tags: ['lending', 'borrow', 'aave', 'celo']
+    description: "Aave v3 borrow transactions on Celo"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - transaction_type
+            - token_address
+            - tx_hash
+            - evt_index
+      - check_lending_base_borrow_seed:
+          seed_file: ref('aave_celo_base_borrow_seed')
     columns:
       - *blockchain
       - *project

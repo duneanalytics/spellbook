@@ -106,6 +106,7 @@
         'PangolinV2VariableRewardsStrategyForLP',
         'PenguinStrategyForLP',
         'PenguinStrategyForLPb',
+        'PharaohStrategy',
         'PlatypusStrategy',
         'SonicStrategyForSA',
         'StableJackStrategy',

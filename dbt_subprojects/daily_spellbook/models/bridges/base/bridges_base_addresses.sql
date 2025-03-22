@@ -15,5 +15,6 @@ FROM (VALUES
   ,('base', 0x45a318273749d6eb00f5f6ca3bc7cd3de26d642a, 'Owlto Finance', 'Bridge')
   ,('base', 0x00000000000007736e2f9aa5630b8c812e1f3fc9, 'ChainEye', 'MiniBridge')
   ,('base', 0x09aea4b2242abc8bb4bb78d537a67a245a7bec64, 'Across', 'SpokePoolVerifier')
+  ,('base', 0x8d2de8d2f73F1F4cAB472AC9A881C9b123C79627, 'Wormhole', 'Token Bridge')
 
   ) AS x (blockchain, address, bridge_name, description)

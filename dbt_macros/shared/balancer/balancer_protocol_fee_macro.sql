@@ -86,6 +86,17 @@ WITH pool_labels AS (
     ),
 
     daily_protocol_fee_collected AS (
+        -- flashloans are taken from the vault contract, there is no pool involved. 
+        SELECT
+            date_trunc('day', evt_block_time) AS day,
+            0xba12222222228d8ba445958a75a0704d566bf2c8 AS pool_id,
+            token AS token_address,
+            SUM(feeAmount) AS protocol_fee_amount_raw
+        FROM {{ source(project_decoded_as + '_' + blockchain, 'Vault_evt_FlashLoan') }} b
+        GROUP BY 1, 2, 3 
+
+        UNION ALL      
+
         SELECT
             date_trunc('day', evt_block_time) AS day,
             poolId AS pool_id,
@@ -157,11 +168,11 @@ WITH pool_labels AS (
         f.day,
         f.pool_id,
         BYTEARRAY_SUBSTRING(f.pool_id,1,20) AS pool_address,
-        l.name AS pool_symbol,
+        CASE WHEN f.pool_id = 0xba12222222228d8ba445958a75a0704d566bf2c8 THEN 'flashloan' ELSE l.name END AS pool_symbol,
         '{{version}}' AS version,
         '{{blockchain}}' AS blockchain,
         l.pool_type,
-        'v2' AS fee_type,
+        CASE WHEN f.pool_id = 0xba12222222228d8ba445958a75a0704d566bf2c8 THEN 'flashloan' ELSE 'v2' END AS fee_type,
         f.token_address,
         f.token_symbol,
         SUM(f.token_amount_raw) AS token_amount_raw,

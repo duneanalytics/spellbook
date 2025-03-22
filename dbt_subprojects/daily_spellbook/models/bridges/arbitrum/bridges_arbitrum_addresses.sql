@@ -35,7 +35,8 @@ FROM (VALUES
 ('arbitrum', 0xaf8ae6955d07776ab690e565ba6fbc79b8de3a5d, 'Rhino.fi', ''),
 ('arbitrum', 0xce16f69375520ab01377ce7b88f5ba8c48f8d666, 'Squid', ''),
 ('arbitrum', 0xca506793A420E901BbCa8066be5661E3C52c84c2, 'Symbiosis', ''),
-('arbitrum', 0x000039ddcf1f63cf3555e62a8d32a11bd1e7e1e1, 'Meson', '')
+('arbitrum', 0x000039ddcf1f63cf3555e62a8d32a11bd1e7e1e1, 'Meson', ''),
+('arbitrum', 0x0b2402144Bb366A632D14B83F244D2e0e21bD39c, 'Wormhole', 'Token Bridge')
 
 
 

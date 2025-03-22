@@ -15,6 +15,7 @@
     blockchain = 'optimism',
     project = 'granary',
     version = '1',
-    project_decoded_as = 'the_granary'
+    project_decoded_as = 'the_granary',
+    wrapped_token_gateway_available = false
   )
 }}
