@@ -104,6 +104,7 @@ models:
         description: "The USD price used to calculate the amount_usd"
       - name: amount_usd
         description: "The USD amount of the transfer"
+  
   - name: tokens_celo_net_transfers_daily
     meta:
       blockchain: celo
@@ -132,4 +133,3 @@ models:
             - blockchain
             - block_date
             - contract_address
-    
