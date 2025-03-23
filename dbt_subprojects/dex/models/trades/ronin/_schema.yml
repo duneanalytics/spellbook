@@ -62,5 +62,4 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('tamadotmeme_ronin_base_trades_seed')
-          filter:
-            version: 1
+
