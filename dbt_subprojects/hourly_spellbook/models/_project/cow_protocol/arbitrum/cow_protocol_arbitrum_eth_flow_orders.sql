@@ -1,6 +1,6 @@
 {{  config(
         alias='eth_flow_orders',
-
+        schema='cow_protocol_arbitrum',
         materialized='incremental',
         partition_by = ['block_date'],
         unique_key = ['tx_hash', 'order_uid'],
