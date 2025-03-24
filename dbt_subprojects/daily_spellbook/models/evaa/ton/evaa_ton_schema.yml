@@ -157,3 +157,25 @@ models:
         description: "New collateral s rate value"
       - name: collateral_b_rate
         description: "New collateral b rate value"
+  - name: evaa_ton_assets
+    meta:
+      blockchain: ton
+      sector: lending
+      contributors: pshuvalov
+    config:
+      tags: ['ton', 'evaa', 'lending']
+    description: >
+      EVAA protocol assets mapping
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - asset_id
+    columns:
+      - name: asset_id
+        description: "asset id (uint256)"
+      - name: asset_name
+        description: "asset name"
+      - name: jetton_master
+        description: "jetton master address"
+      - name: decimals
+        description: "decimals"
