@@ -3,7 +3,7 @@
         schema='cow_protocol_arbitrum',
         materialized='incremental',
         partition_by = ['block_month'],
-        unique_key = ['tx_hash', 'order_uid'],
+        unique_key = ['block_month', 'tx_hash', 'order_uid'],
         on_schema_change='sync_all_columns',
         file_format ='delta',
         incremental_strategy='merge',
