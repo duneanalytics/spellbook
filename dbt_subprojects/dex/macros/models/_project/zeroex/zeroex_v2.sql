@@ -2,11 +2,9 @@
 -- Create a CTE to read the logs table and apply incremental filtering
 WITH base_filtered_logs AS (
     SELECT
-        block_time, block_number, tx_hash, logs.*
+        *
     FROM
         {{ source(blockchain, 'logs') }} AS logs
-    JOIN
-        zeroex_tx st using (block_time, block_number, tx_hash)
     WHERE 1=1
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
