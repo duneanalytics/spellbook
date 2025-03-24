@@ -47,6 +47,24 @@ ubi_claimed as (
   {% endif %}
 ),
 
+ubi_daily_deduped as (
+/*
+applies only to 2023-12-19 when 2 recrods were added:
+- at 2023-12-19 11:31, tx: 0xf75eef6f74f0b8efe8befafa974b75b773ae7305024893a050542f61b78d6527
+- at 2023-12-19 12:00, tx: 0xcabfb71f8b95b185fb2f39deddd6772d1bbf5958750ebe37b62b1417d1943483
+*/
+  select
+    block_time,
+    block_date,
+    block_number,
+    day_oridinal,
+    daily_ubi,
+    daily_ubi_raw,
+    tx_hash,
+    row_number() over (partition by block_date order by block_time desc) as rn
+  from ubi_daily
+),
+
 ubi_claimed_agg as (
   select
     block_date,
@@ -72,4 +90,4 @@ select
   d.daily_ubi_raw,
   ca.tx_fee_usd / nullif(ca.amount_usd, 0) as fee_to_claim_ratio
 from ubi_claimed_agg ca
-  left join ubi_daily d on ca.block_date = d.block_date
+  left join ubi_daily_deduped d on ca.block_date = d.block_date and d.rn = 1

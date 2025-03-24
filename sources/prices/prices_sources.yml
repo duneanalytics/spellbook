@@ -22,3 +22,4 @@ sources:
             description: "Token symbol"
           - name: price
             description: "USD price of a token"
+      - name: tokens

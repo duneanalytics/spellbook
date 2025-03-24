@@ -15,7 +15,7 @@
 with
 
 ubi_claimed as (
-  select
+  select distinct
     block_date,
     claimer
   from {{ ref('gooddollar_celo_ubi_claims') }}
