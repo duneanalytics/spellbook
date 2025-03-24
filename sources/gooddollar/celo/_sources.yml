@@ -1,0 +1,11 @@
+version: 2
+
+sources:
+  - name: gas_celo
+    tables:
+      - name: fees
+
+  - name: gooddollar_celo
+    tables:
+      - name: ubischemev2_evt_ubicalculated
+      - name: ubischemev2_evt_ubiclaimed

@@ -1,0 +1,104 @@
+version: 2
+
+models:
+  - name: gooddollar_celo_ubi_claims
+    meta:
+      blockchain: celo
+      project: gooddollar
+      contributors: tomfutago
+    config:
+      tags: ["celo", "gooddollar", "ubi"]
+    description: "GoodDollar daily UBI claims"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_time
+            - tx_hash
+    columns:
+      - &block_time
+        name: block_time
+        description: "UTC event block time"
+        data_tests:
+          - not_null
+      - &block_date
+        name: block_date
+        description: "event block date"
+        data_tests:
+          - not_null
+      - &block_number
+        name: block_number
+        description: "block number"
+        data_tests:
+          - not_null
+      - &claimer
+        name: claimer
+        description: "claimer address"
+        data_tests:
+          - not_null
+      - &amount
+        name: amount
+        description: "claimed amount"
+      - &amount_usd
+        name: amount_usd
+        description: "claimed amount in USD"
+      - &amount_raw
+        name: amount_raw
+        description: "claimed amount raw"
+        data_tests:
+          - not_null
+      - &gas_price
+        name: gas_price
+        description: "gas price at the time of claim"
+      - &gas_used
+        name: gas_used
+        description: "gas used"
+      - &tx_fee
+        name: tx_fee
+        description: "tx fee amount"
+      - &tx_fee_usd
+        name: tx_fee_usd
+        description: "tx fee amount in USD"
+      - &tx_fee_currency_symbol
+        name: tx_fee_currency_symbol
+        description: "tx fee currency symbol"
+      - &tx_fee_currency
+        name: tx_fee_currency
+        description: "tx fee currency contract address"
+      - &tx_hash
+        name: tx_hash
+        description: "unique transaction hash value"
+        data_tests:
+          - not_null
+
+  - name: gooddollar_celo_ubi_claims_daily_agg
+    meta:
+      blockchain: celo
+      project: gooddollar
+      contributors: tomfutago
+    config:
+      tags: ["celo", "gooddollar", "ubi"]
+    description: "GoodDollar daily UBI claims aggregates"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_date
+    columns:
+      - *block_date
+      - name: unique_claimers
+        description: "unique claimers"
+      - name: claim_count
+        description: "daily claim count"
+      - *amount
+      - name: avg_amount
+        description: "avg daily UBI amount"
+      - *amount_usd
+      - name: avg_amount_usd
+        description: "avg daily UBI amount in USD"
+      - name: day_oridinal
+        description: "incremental day ordinal"
+      - name: daily_ubi
+        description: "daily UBI amount (changes at approx 12:00)"
+      - name: daily_ubi_raw
+        description: "daily UBI amount raw (changes at approx 12:00)"
+      - name: fee_to_claim_ratio
+        description: "fee to claim ratio (based on USD amounts)"
