@@ -64,6 +64,11 @@ models:
       - &tx_fee_currency
         name: tx_fee_currency
         description: "tx fee currency contract address"
+      - &project_contract_address
+        name: project_contract_address
+        description: "deployed project contract address"
+        data_tests:
+          - not_null
       - &tx_hash
         name: tx_hash
         description: "unique transaction hash value"

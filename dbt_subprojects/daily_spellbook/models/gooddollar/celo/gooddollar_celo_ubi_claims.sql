@@ -24,6 +24,7 @@ ubi_claimed as (
     evt_block_number as block_number,
     claimer,
     amount,
+    contract_address as project_contract_address,
     evt_tx_hash as tx_hash
   from {{ source('gooddollar_celo', 'ubischemev2_evt_ubiclaimed') }}
   {% if is_incremental() %}
@@ -45,6 +46,7 @@ select
   gf.tx_fee_usd,
   gf.currency_symbol as tx_fee_currency_symbol,
   gf.tx_fee_currency,
+  uc.project_contract_address,
   uc.tx_hash
 from ubi_claimed uc
   left join {{ source('gas_celo', 'fees') }} gf on uc.block_time = gf.block_time
