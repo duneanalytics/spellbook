@@ -91,7 +91,8 @@ models:
       - *block_date
       - name: unique_claimers
         description: "unique claimers"
-      - name: claim_count
+      - &claim_count
+        name: claim_count
         description: "daily claim count"
       - *amount
       - name: avg_amount
@@ -107,3 +108,26 @@ models:
         description: "daily UBI amount raw (changes at approx 12:00)"
       - name: fee_to_claim_ratio
         description: "fee to claim ratio (based on USD amounts)"
+
+  - name: gooddollar_celo_ubi_claimers_agg
+    meta:
+      blockchain: celo
+      project: gooddollar
+      contributors: tomfutago
+    config:
+      tags: ["celo", "gooddollar", "ubi"]
+    description: "GoodDollar claimer aggregates"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - claimer
+    columns:
+      - *claimer
+      - *claim_count
+      - *amount
+      - *amount_usd
+      - *tx_fee_usd
+      - name: fee_currency_symbols
+        description: "list (array) of fee currency symbols (if claimer used ERC-20 as gas currency)"
+      - name: fee_amounts_by_currency
+        description: "list (array) of fee amounts by corresponding currency (same order as per fee_currency_symbols)"
