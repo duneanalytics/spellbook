@@ -11,7 +11,7 @@
         post_hook='{{ expose_spells(\'["arbitrum"]\',
                                     "project",
                                     "cow_protocol",
-                                    \'["bh2smith"]\') }}'
+                                    \'["cowprotocol"]\') }}'
     )
 }}
 

@@ -28,7 +28,7 @@ models:
     meta:
       blockchain: arbitrum
       project: cow_protocol
-      contributors: bh2smith
+      contributors: cowprotocol
     config:
       tags: [ 'arbitrum','cow_protocol','eth-flow', "orders" ]
     description: >
