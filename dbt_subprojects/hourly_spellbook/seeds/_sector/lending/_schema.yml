@@ -210,6 +210,20 @@ seeds:
         token_address: varbinary
         borrower: varbinary
         amount: double
+  - name: aave_celo_base_borrow_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        borrower: varbinary
+        amount: double
 
   - name: aave_arbitrum_base_supply_seed
     config:
@@ -421,6 +435,20 @@ seeds:
         token_address: varbinary
         depositor: varbinary
         amount: double
+  - name: aave_celo_base_supply_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        transaction_type: varchar
+        token_address: varbinary
+        depositor: varbinary
+        amount: double
 
   - name: aave_arbitrum_base_flashloans_seed
     config:
@@ -605,6 +633,19 @@ seeds:
         recipient: varbinary
         amount: double
   - name: aave_sonic_base_flashloans_seed
+    config:
+      column_types:
+        blockchain: varchar
+        project: varchar
+        version: varchar
+        block_number: bigint
+        block_time: timestamp
+        tx_hash: varbinary
+        evt_index: bigint
+        token_address: varbinary
+        recipient: varbinary
+        amount: double
+  - name: aave_celo_base_flashloans_seed
     config:
       column_types:
         blockchain: varchar

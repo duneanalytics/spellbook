@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: reservoir_swap_shape
+    tables:
+      - name: uniswapv3pool_evt_swap
+      - name: uniswapv3factory_evt_poolcreated
