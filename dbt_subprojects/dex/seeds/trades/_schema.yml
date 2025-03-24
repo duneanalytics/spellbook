@@ -4974,7 +4974,7 @@ seeds:
       column_types:
         blockchain: varchar
         project: varchar
-        version: uint256
+        version: varchar
         tx_hash: varbinary
         evt_index: uint256
         block_number: uint256
