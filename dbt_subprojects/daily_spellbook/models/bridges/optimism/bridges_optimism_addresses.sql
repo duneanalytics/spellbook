@@ -20,7 +20,8 @@ FROM (VALUES
       ('optimism', 0x83f6244bd87662118d96d9a6d44f09dfff14b30e, 'Hop', 'bridge' ),
       ('optimism', 0x7191061d5d4c60f598214cc6913502184baddf18, 'Hop', 'bridge' ),
       ('optimism', 0xa81d244a1814468c734e5b4101f7b9c0c577a8fc, 'Hop', 'bridge' ),
-      ('optimism', 0x46ae9bab8cea96610807a275ebd36f8e916b5c61, 'Hop', 'bridge' )
+      ('optimism', 0x46ae9bab8cea96610807a275ebd36f8e916b5c61, 'Hop', 'bridge' ),
+      ('optimism', 0x1D68124e65faFC907325e3EDbF8c4d84499DAa8b, 'Wormhole', 'Token Bridge' )
 
 
 
