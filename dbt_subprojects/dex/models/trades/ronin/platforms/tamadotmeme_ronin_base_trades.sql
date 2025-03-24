@@ -108,7 +108,7 @@ UNION ALL
 select
   cast (blockchain as varchar) as blockchain
 , cast (project as varchar) as project
-, cast (version as varchar) as version
+, cast (version as uint256) as version
 , cast (block_month as date) as block_month
 , cast (block_date as date) as block_date
 , cast (block_time as timestamp) as block_time

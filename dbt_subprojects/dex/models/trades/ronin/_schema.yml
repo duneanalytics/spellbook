@@ -59,7 +59,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
-            - evt_index
+            # - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('tamadotmeme_ronin_base_trades_seed')
 
