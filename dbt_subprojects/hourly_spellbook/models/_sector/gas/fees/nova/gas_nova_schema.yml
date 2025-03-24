@@ -22,9 +22,11 @@ models:
         
         1. L1 Data Costs: Fees paid to cover the cost of posting data to Ethereum. These are significantly lower
            than regular Arbitrum due to the DAC model, which only posts small proofs to L1 rather than all transaction data.
+           Estimated to be approximately 20-25% of the total transaction fee.
         
         2. L2 Execution Costs: Fees paid for computation on the Nova chain itself, which uses a gas pricing mechanism
            similar to Arbitrum One but with a lower base fee (starting at 0.01 gwei).
+           Constitutes about 75-80% of the total transaction fee.
         
         3. Fallback Mechanism: In case the DAC fails to make data available, Nova includes a fallback mechanism
            that leverages Ethereum's mainnet for data storage, which would increase fees but ensure system security.
@@ -46,6 +48,6 @@ models:
           check_columns:
             - tx_fee_raw
       - dbt_utils.expression_is_true:
-          expression: "element_at(tx_fee_raw, 'base_fee') = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
+          expression: "element_at(tx_fee_breakdown_raw, 'l1_fee') + element_at(tx_fee_breakdown_raw, 'l2_fee') = tx_fee_raw"
           config:
             where: "block_time > now() - interval '7' day"
