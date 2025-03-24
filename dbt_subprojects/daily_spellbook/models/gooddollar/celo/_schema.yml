@@ -147,9 +147,9 @@ models:
     columns:
       - *claimer
       - name: longest_daily_streak
-        description: "list"
+        description: "longest consecutive claim days"
       - name: current_streak
-        description: "list"
+        description: "current consecutive claim days"
       - name: total_claim_days
         description: "total number of days a user has claimed UBI"
       - name: total_days_span
