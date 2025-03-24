@@ -46,7 +46,7 @@ models:
           filter:
             version: 3
            
-  - name: tamadotmeme_ronin_base_trades
+  - name: tamadotmeme_v1_ronin_base_trades
     meta:
       blockchain: ronin
       sector: dex
@@ -61,5 +61,5 @@ models:
             - tx_hash
             - evt_index
       - check_dex_base_trades_seed:
-          seed_file: ref('tamadotmeme_ronin_base_trades_seed')
+          seed_file: ref('tamadotmeme_v1_ronin_base_trades_seed')
 
