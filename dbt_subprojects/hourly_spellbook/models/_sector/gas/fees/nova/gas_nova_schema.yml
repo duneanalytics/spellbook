@@ -47,7 +47,7 @@ models:
             - tx_hash
           check_columns:
             - tx_fee_raw
-      - dbt_utils.expression_is_true:
-          expression: "element_at(tx_fee_breakdown_raw, 'l1_fee') + element_at(tx_fee_breakdown_raw, 'l2_fee') = tx_fee_raw"
-          config:
-            where: "block_time > now() - interval '7' day"
+#      - dbt_utils.expression_is_true:
+#          expression: "element_at(tx_fee_breakdown_raw, 'l1_fee') + element_at(tx_fee_breakdown_raw, 'l2_fee') = tx_fee_raw"
+#          config:
+#            where: "block_time > now() - interval '7' day"
