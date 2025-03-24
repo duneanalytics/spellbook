@@ -8,7 +8,8 @@
 
 {%
   set models = [
-    ref('moola_celo_base_flashloans')
+    ref('moola_celo_base_flashloans'),
+    ref('aave_v3_celo_base_flashloans')
   ]
 %}
 

@@ -249,6 +249,7 @@ v1_stableswap_ng as (
         ) }} dp
         ON dp.call_block_time = p.evt_block_time
         AND dp.call_tx_hash = p.evt_tx_hash
+        AND dp._coins = p.coins
 ),
 
 

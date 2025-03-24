@@ -184,3 +184,35 @@ models:
       - *swap_flag
       - *contract_address
       - *fills_within
+
+  - name: zeroex_base_settler_addresses
+    meta:
+      blockchain: base
+      project: zeroex
+      contributors: hosuke
+    config:
+      tags: ['base', '0x', 'settler']
+    description: >
+      0x Protocol settler addresses for Base blockchain.
+      This table contains the settler addresses used by the 0x Protocol on Base,
+      along with their activation timestamps and token IDs.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - settler_address
+            - token_id
+    columns:
+      - name: tx_hash
+        description: "Transaction hash where the settler address was registered"
+      - name: settler_address
+        description: "Address of the 0x Protocol settler contract"
+      - name: token_id
+        description: "Token ID associated with the settler address"
+      - name: begin_block_time
+        description: "Block time when the settler address was activated"
+      - name: begin_block_number
+        description: "Block number when the settler address was activated"
+      - name: end_block_time
+        description: "Block time when the settler address was deactivated (null if still active)"
+      - name: end_block_number
+        description: "Block number when the settler address was deactivated (null if still active)"

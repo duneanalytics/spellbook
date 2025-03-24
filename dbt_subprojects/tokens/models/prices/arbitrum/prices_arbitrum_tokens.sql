@@ -231,5 +231,6 @@ FROM
     ('trb-tellor', 'arbitrum', 'TRB', 0xd58d345fd9c82262e087d2d0607624b410d88242, 18),
     ('mor-morpheusai', 'arbitrum', 'MOR', 0x092baadb7def4c3981454dd9c0a0d7ff07bcfc86, 18),
     ('cow-cow-protocol-token', 'arbitrum', 'COW', 0xcb8b5CD20BdCaea9a010aC1F8d835824F5C87A04, 18),
-    ('usdx-usdxmoney-usdx', 'arbitrum', 'USDX', 0xf3527ef8dE265eAa3716FB312c12847bFBA66Cef, 18)
+    ('usdx-usdxmoney-usdx', 'arbitrum', 'USDX', 0xf3527ef8dE265eAa3716FB312c12847bFBA66Cef, 18),
+    ('ebtc-etherfi-staked-btc', 'arbitrum', 'EBTC', 0x657e8c867d8b37dcc18fa4caead9c45eb088c642, 8)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)

@@ -9,44 +9,61 @@
         )
 }}
 
-{% set creation_traces_models = [
-     ('ethereum', source('ethereum', 'creation_traces'))
-     , ('polygon', source('polygon', 'creation_traces'))
-     , ('bnb', source('bnb', 'creation_traces'))
-     , ('avalanche_c', source('avalanche_c', 'creation_traces'))
-     , ('gnosis', source('gnosis', 'creation_traces'))
-     , ('fantom', source('fantom', 'creation_traces'))
-     , ('optimism', source('optimism', 'creation_traces'))
-     , ('arbitrum', source('arbitrum', 'creation_traces'))
-     , ('celo', source('celo', 'creation_traces'))
-     , ('base', source('base', 'creation_traces'))
-     , ('zksync', source('zksync', 'creation_traces'))
-     , ('zora', source('zora', 'creation_traces'))
-     , ('scroll', source('scroll', 'creation_traces'))
-     , ('linea', source('linea', 'creation_traces'))
-     , ('zkevm', source('zkevm', 'creation_traces'))
-     , ('blast', source('blast', 'creation_traces'))
-     , ('mantle', source('mantle', 'creation_traces'))
-     , ('sei', source('sei', 'creation_traces'))
-     , ('ronin', source('ronin', 'creation_traces'))
+{% set blockchains = [
+       "avalanche_c"
+       ,"arbitrum"
+       , "base"
+       , "blast"
+       , "bnb"
+       , "bob"
+       , "boba"
+       , "celo"
+       , "ethereum"
+       , "fantom"
+       , "flare"
+       , "gnosis"
+       , "kaia"
+       , "linea"
+       , "mantle"
+       , "nova"
+       , "optimism"
+       , "polygon"
+       , "ronin"
+       , "scroll"
+       , "sei"
+       , "sonic"
+       , "sophon"
+       , "unichain"
+       , "viction"
+       , "worldchain"
+       , "zkevm"
+       , "zksync"
+       , "zora"
 ] %}
 
-SELECT *
-FROM (
+{% set creation_traces_models = [] %}
+{% for blockchain in blockchains %}
+    {% do creation_traces_models.append((blockchain, source(blockchain, 'creation_traces'))) %}
+{% endfor %}
+
+SELECT
+        *
+FROM 
+(
         {% for creation_traces_model in creation_traces_models %}
         SELECT
-        '{{ creation_traces_model[0] }}' AS blockchain
-        , block_time
-        , block_number
-        , tx_hash
-        , address
-        , "from"
-        , code
-        --, tx_from
-        --, tx_to
+                '{{ creation_traces_model[0] }}' AS blockchain
+                , block_time
+                , block_number
+                , tx_hash
+                , address
+                , "from"
+                , code
+                --, tx_from
+                --, tx_to
         FROM {{ creation_traces_model[1] }}
         {% if not loop.last %}
         UNION ALL
         {% endif %}
         {% endfor %}
-        );
+)
