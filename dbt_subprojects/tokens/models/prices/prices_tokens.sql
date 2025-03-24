@@ -28,8 +28,10 @@
                                         , "ronin"
                                         , "scroll"
                                         , "sei"
+                                        , "shape"
                                         , "solana"
                                         , "sonic"
+                                        , "sophon"
                                         , "unichain"
                                         , "viction"
                                         , "worldchain"
@@ -78,9 +80,12 @@ ref('prices_native_tokens')
 ,ref('prices_corn_tokens')
 ,ref('prices_sonic_tokens')
 ,ref('prices_ink_tokens')
+,ref('prices_sophon_tokens')
 ,ref('prices_unichain_tokens')
 ,ref('prices_abstract_tokens')
 ,ref('prices_berachain_tokens')
+,ref('prices_apechain_tokens')
+,ref('prices_shape_tokens')
 ] %}
 
 

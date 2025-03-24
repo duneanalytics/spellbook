@@ -15,6 +15,7 @@
     blockchain = 'ethereum',
     project = 'uwulend',
     version = '1',
-    project_decoded_as = 'uwulend'
+    project_decoded_as = 'uwulend',
+    wrapped_token_gateway_available = false
   )
 }}

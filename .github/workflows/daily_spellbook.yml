@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - dbt_subprojects/daily_spellbook/**
+      - dbt_macros/shared/**
       - .github/workflows/daily_spellbook.yml
       - .github/workflows/dbt_run.yml
 

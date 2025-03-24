@@ -221,3 +221,15 @@ sources:
       - name: Vault_evt_LiquidityRemovedFromBuffer       
 
       - name: Vault_evt_SwapFeePercentageChanged
+
+      - name: ProtocolFeeController_evt_GlobalProtocolSwapFeePercentageChanged
+
+      - name: ProtocolFeeController_evt_PoolCreatorSwapFeePercentageChanged
+
+      - name: LBPoolFactory_call_create  
+
+      - name: LBPoolFactory_evt_LBPoolCreated
+
+      - name: LBPool_evt_GradualWeightUpdateScheduled 
+
+      - name: GyroECLPPoolFactory_call_create  
