@@ -129,5 +129,5 @@ select
 , cast (tx_hash as varbinary) as tx_hash
 , cast (tx_from as varbinary) as tx_from
 , cast (tx_to as varbinary) as tx_to
-, cast (evt_index as uint256) as evt_index
+, cast (evt_index as varchar) as evt_index
 from combined 
