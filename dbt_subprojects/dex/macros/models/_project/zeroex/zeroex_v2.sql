@@ -23,7 +23,7 @@ bundled_tx_check as (
         block_time,
         block_number, 
         count(*) tx_cnt
-    from 
+    from zeroex_tx
     group by 1,2,3
 ), 
 
