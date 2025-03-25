@@ -3,7 +3,9 @@
 WITH base_filtered_logs AS (
     SELECT
         logs.*,
-        settler_address
+        settler_address,
+        zid, 
+        taker 
     FROM
         zeroex_tx
     JOIN
