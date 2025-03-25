@@ -1,6 +1,6 @@
 {{  config(
         alias='eth_flow_orders',
-        schema='cow_protocol_arbitrum',
+        schema='cow_protocol_ethereum',
         materialized='incremental',
         partition_by = ['block_month'],
         unique_key = ['block_month', 'tx_hash', 'order_uid'],
