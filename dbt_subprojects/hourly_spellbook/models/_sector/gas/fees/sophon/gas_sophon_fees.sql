@@ -73,7 +73,6 @@ SELECT
     ,coalesce(tx_fee_raw, 0) as tx_fee_raw
     ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) as tx_fee
     ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) * p.price as tx_fee_usd
-    ,tx_fee_breakdown_raw as tx_fee_breakdown_raw
     ,transform_values(tx_fee_breakdown_raw,
             (k,v) -> coalesce(v,0)) as tx_fee_breakdown_raw
     ,transform_values(tx_fee_breakdown_raw,
