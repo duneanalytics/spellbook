@@ -14,6 +14,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
+            - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -62,6 +63,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
+            - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
@@ -108,6 +110,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - tx_hash
+            - block_date
     columns:
       - name: block_date
         description: "block_date of the transaction"
