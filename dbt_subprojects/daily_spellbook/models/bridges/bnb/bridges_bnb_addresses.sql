@@ -19,6 +19,7 @@ FROM (VALUES
     ,('bnb', 0xfD53b1B4AF84D59B20bF2C20CA89a6BeeAa2c628, 'Harmony', 'Bridge')
     ,('bnb', 0xa90a8e34cea28bF9a234d4eac240fB32358b51AB, 'iSwap', 'Binance Bridge')
     ,('bnb', 0x3c2269811836af69497E5F486A85D7316753cf62, 'LayerZero', 'Binance Smart Chain Endpoint')
+    ,('bnb', 0x1a44076050125825900e736c501f859c50fE728c, 'LayerZero', 'EndpointV2')
     ,('bnb', 0x4948ff01cF150e7867D9eEef6272DB13fD37C537, 'Less Network', 'Bridge')
     ,('bnb', 0x05B70Fb5477A93bE33822bfB31fDAF2c171970dF, 'Mayan', 'Swap Bridge')
     ,('bnb', 0xC10Ef9F491C9B59f936957026020C321651ac078, 'Multichain', 'anyCall V6')
