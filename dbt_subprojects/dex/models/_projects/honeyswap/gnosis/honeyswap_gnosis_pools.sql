@@ -1,0 +1,28 @@
+{{ config(
+    schema = 'honeyswap_gnosis',
+    alias = 'pools',
+    materialized = 'incremental',
+    file_format = 'delta',
+    incremental_strategy = 'merge',
+    unique_key = ['pool'],
+    post_hook='{{ expose_spells(\'["gnosis"]\',
+                                "project",
+                                "honeyswap",
+                                \'["mlaegn"]\') }}'
+) }}
+
+SELECT 
+    'gnosis' AS blockchain,
+    'honeyswap' AS project,
+    'v2' AS version,
+    pair AS pool,
+    3000 AS fee,
+    token0,
+    token1,
+    evt_block_time AS creation_block_time,
+    evt_block_number AS creation_block_number,
+    contract_address
+FROM {{ source('honeyswap_v2_gnosis', 'uniswapv2factory_evt_paircreated') }}
+{% if is_incremental() %}
+WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+{% endif %}
