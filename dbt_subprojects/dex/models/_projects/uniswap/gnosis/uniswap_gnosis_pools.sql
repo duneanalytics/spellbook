@@ -14,7 +14,7 @@
 SELECT 
     'gnosis' AS blockchain,
     'uniswap' AS project,
-    'v3' AS version, -- assuming gnosis only has v3 with dynamic fees
+    'v3' AS version, 
     pool AS pool,
     fee,
     token0,
