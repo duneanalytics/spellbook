@@ -22,4 +22,4 @@ select
 from 
     {{ source('prices', 'minute_updates') }}
 where
-    source = 'dex'  -- Only include DEX-sourced prices for consistency
+    source = 'dex.trades'  -- Only include DEX-sourced prices for consistency
