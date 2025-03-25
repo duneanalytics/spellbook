@@ -22,9 +22,6 @@ FROM (
         COUNT(*) as sample_size -- Count of minute-level observations per hour
     FROM {{ source('prices', 'minute_updates') }}
     WHERE source = 'dex.trades'
-        {% if is_incremental() %}
-        AND timestamp >= date_trunc('day', now() - interval '7' Day)
-        {% endif %}
     GROUP BY 1, 2, 3
     HAVING COUNT(*) >= 5 -- Ensure we have at least 5 minute-level observations per hour
 ) tmp
