@@ -12,9 +12,9 @@ WITH base_filtered_logs AS (
         and zeroex_tx.tx_hash = logs.tx_hash
     WHERE 1=1
         {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
+            AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
-            AND block_time >= DATE '{{start_date}}'
+            AND logs.block_time >= DATE '{{start_date}}'
         {% endif %}
 ), 
 
