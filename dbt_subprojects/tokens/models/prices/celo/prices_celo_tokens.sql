@@ -37,5 +37,9 @@ FROM
     ('btcbr-bitcoinbr', 'celo', 'BTCBR', 0xe9dc987b939a7b33270e56532297cf82716c79a3, 18),
     ('usdglo-glo-dollar', 'celo', 'USDGLO', 0x4f604735c1cf31399c6e711d5962b2b3e0225ad3, 18),
     ('abr-allbridge', 'celo', 'ABR', 0x6e512bfc33be36f2666754e996ff103ad1680cc9, 18),
-    ('weth-wormhole-weth-celo', 'celo', 'WETH', 0x66803FB87aBd4aaC3cbB3fAd7C3aa01f6F3FB207, 18)
+    ('weth-wormhole-weth-celo', 'celo', 'WETH', 0x66803FB87aBd4aaC3cbB3fAd7C3aa01f6F3FB207, 18),
+    ('g-gooddollar', 'celo', 'G$', 0x62b8b11039fcfe5ab0c56e502b1c372a3d2a9c7a, 18),
+    --('ckes-celo-kenyan-shilling', 'celo', 'cKES', 0x456a3d042c0dbd3db53d5489e98dfb038553b0d0, 18),
+    ('char-biochar', 'celo', 'CHAR', 0x50e85c754929840b58614f48e29c64bc78c58345, 18),
+    ('brla-brla-digital-brla', 'celo', 'BRLA', 0xfecb3f7c54e2caae9dc6ac9060a822d47e053760, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
