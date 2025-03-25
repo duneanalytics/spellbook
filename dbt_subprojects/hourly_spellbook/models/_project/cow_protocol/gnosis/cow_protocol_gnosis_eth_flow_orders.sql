@@ -25,9 +25,9 @@ eth_flow_orders as (
         evt_block_number as block_number,
         evt_tx_hash as tx_hash,
         case
-            when event.contract_address = 0x552FcecC218158fff20e505C8f3ad24f8e1DD33C
+            when event.contract_address = 0x40A50cf069e992AA4536211B23F286eF88752187
                 then 'prod'
-            when event.contract_address = 0x6DFE75B5ddce1ADE279D4fa6BD6AeF3cBb6f49dB
+            when event.contract_address = 0xD02De8Da0B71E1B59489794F423FaBBa2AdC4d93
                 then 'barn'
         end as environment,
         date_format(
