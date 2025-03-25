@@ -24,16 +24,17 @@ WITH base_model as (
         ,cast(gas_price as uint256) as gas_price
         ,txns.gas_used as gas_used
         ,cast(gas_price as uint256) * cast(txns.gas_used as uint256) as tx_fee_raw
-        ,map_concat(
-            map()
-            -- Nova is an Arbitrum AnyTrust Layer 2 solution
-            -- The AnyTrust protocol reduces L1 data costs significantly compared to Arbitrum One
-            -- L1 fee component: Estimated to be ~20-25% of total fees in AnyTrust models
-            ,map(array['l1_fee'], array[cast((cast(gas_price as uint256) * cast(txns.gas_used as uint256)) * 0.22 as uint256)])
-            -- L2 computation fee: Majority of the gas fee in Nova
-            ,map(array['l2_fee'], array[cast((cast(gas_price as uint256) * cast(txns.gas_used as uint256)) * 0.78 as uint256)])
-        ) as tx_fee_breakdown_raw
-        ,0x0000000000000000000000000000000000000000 as tx_fee_currency
+        ,case when txns.priority_fee_per_gas is null or base_fee_per_gas = gas_price or txns.priority_fee_per_gas < 0
+            then map(array['base_fee'], array[cast(gas_price as uint256) * cast(txns.gas_used as uint256)])
+            else map(
+                array['base_fee', 'priority_fee'],
+                array[
+                    cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256),
+                    cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256)
+                ]
+            )
+        end as tx_fee_breakdown_raw
+        ,{{var('ETH_ERC20_ADDRESS')}} as tx_fee_currency
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
         ,txns.priority_fee_per_gas

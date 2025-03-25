@@ -24,26 +24,17 @@ WITH base_model as (
         ,cast(gas_price as uint256) as gas_price
         ,txns.gas_used as gas_used
         ,cast(gas_price as uint256) * cast(txns.gas_used as uint256) as tx_fee_raw
-        ,map_concat(
-            map()
-            -- Arbitrum Corn (Orbit) has a four-component fee structure:
-            -- 1. l2BaseFee: Fees for transaction execution on the Orbit chain (based on minimum base price)
-            -- Typically accounts for ~40% of the total fee
-            ,map(array['l2_base_fee'], array[cast((cast(gas_price as uint256) * cast(txns.gas_used as uint256)) * 0.40 as uint256)])
-            
-            -- 2. l2SurplusFee: Additional fees during network congestion
-            -- Typically accounts for ~10% of the total fee (varies based on congestion)
-            ,map(array['l2_surplus_fee'], array[cast((cast(gas_price as uint256) * cast(txns.gas_used as uint256)) * 0.10 as uint256)])
-            
-            -- 3. l1BaseFee: Fees for posting data to the parent chain
-            -- Typically accounts for ~45% of the total fee
-            ,map(array['l1_base_fee'], array[cast((cast(gas_price as uint256) * cast(txns.gas_used as uint256)) * 0.45 as uint256)])
-            
-            -- 4. l1SurplusFee: Additional fees for the batch poster
-            -- Typically accounts for ~5% of the total fee
-            ,map(array['l1_surplus_fee'], array[cast((cast(gas_price as uint256) * cast(txns.gas_used as uint256)) * 0.05 as uint256)])
-        ) as tx_fee_breakdown_raw
-        ,0x0000000000000000000000000000000000000000 as tx_fee_currency
+        ,case when txns.priority_fee_per_gas is null or base_fee_per_gas = gas_price or txns.priority_fee_per_gas < 0
+            then map(array['base_fee'], array[cast(gas_price as uint256) * cast(txns.gas_used as uint256)])
+            else map(
+                array['base_fee', 'priority_fee'],
+                array[
+                    cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256),
+                    cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256)
+                ]
+            )
+        end as tx_fee_breakdown_raw
+        ,{{var('ETH_ERC20_ADDRESS')}} as tx_fee_currency
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
         ,txns.priority_fee_per_gas
