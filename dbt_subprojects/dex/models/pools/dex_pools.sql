@@ -18,6 +18,7 @@
  ,ref('honeyswap_pools')
  ,ref('sushiswap_pools')
  ,ref('levinswap_pools')
+ ,ref('elk_finance_pools')
  ,ref('spiritswap_fantom_pools')
  ,ref('spookyswap_fantom_pools')
  ,ref('equalizer_fantom_pools')
