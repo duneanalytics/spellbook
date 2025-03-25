@@ -1882,7 +1882,8 @@ FROM
     ('move-movement', 'ethereum', 'MOVE', 0x3073f7aaa4db83f95e9fff17424f71d4751a3073, 8),
     ('sei-sei', 'ethereum', 'SEI', 0xbdf43ecadc5cef51b7d1772f722e40596bc1788b, 18),
     ('usdm-mountain-protocol-usd', 'ethereum', 'USDM', 0x59D9356E565Ab3A36dD77763Fc0d87fEaf85508C, 18),
-    ('plume-plume', 'ethereum', 'PLUME', 0x4c1746a800d224393fe2470c70a35717ed4ea5f1, 18)
+    ('plume-plume', 'ethereum', 'PLUME', 0x4c1746a800d224393fe2470c70a35717ed4ea5f1, 18),
+    ('lock-houdini-swap', 'ethereum', 'LOCK', 0x922D8563631B03C2c4cf817f4d18f6883AbA0109, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds
