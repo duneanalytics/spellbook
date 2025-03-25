@@ -17,6 +17,7 @@ FROM (VALUES
 ('arbitrum', 0x43de2d77bf8027e25dbd179b491e8d64f38398aa, 'deBridgeGate', ''),
 ('arbitrum', 0xe7351fd770a37282b91d153ee690b63579d6dd7f, 'Dln', 'Destination'),
 ('arbitrum', 0x3c2269811836af69497e5f486a85d7316753cf62, 'LayerZero', 'Arbitrum Endpoint'),
+('arbitrum', 0x1a44076050125825900e736c501f859c50fE728c, 'LayerZero', 'EndpointV2'),
 ('arbitrum', 0x82e0b8cdd80af5930c4452c684e71c861148ec8a, 'Metamask', 'Bridge 1'),
 ('arbitrum', 0xc10ef9f491c9b59f936957026020c321651ac078, 'Multichain', 'anyCall V6'),
 ('arbitrum', 0xc931f61b1534eb21d8c11b24f3f5ab2471d4ab50, 'Multichain', 'Router V4'),
