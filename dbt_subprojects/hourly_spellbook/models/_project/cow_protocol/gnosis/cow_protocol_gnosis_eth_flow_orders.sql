@@ -25,10 +25,14 @@ eth_flow_orders as (
         evt_block_number as block_number,
         evt_tx_hash as tx_hash,
         case
-            when event.contract_address = 0x40A50cf069e992AA4536211B23F286eF88752187
-                then 'prod'
-            when event.contract_address = 0xD02De8Da0B71E1B59489794F423FaBBa2AdC4d93
-                then 'barn'
+            when event.contract_address in (
+                0x40A50cf069e992AA4536211B23F286eF88752187,
+                0xba3cb449bd2b4adddbc894d8697f5170800eadec
+            ) then 'prod'
+            when event.contract_address in (
+                0xD02De8Da0B71E1B59489794F423FaBBa2AdC4d93,
+                0x04501b9b1d52e67f6862d157e00d13419d2d6e95
+            ) then 'barn'
         end as environment,
         date_format(
             from_unixtime(bytearray_to_decimal(from_hex(substring(cast(data as varchar), 19, 8)))),
