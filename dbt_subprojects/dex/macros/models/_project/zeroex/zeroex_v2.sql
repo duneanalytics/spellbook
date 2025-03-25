@@ -4,7 +4,12 @@ WITH base_filtered_logs AS (
     SELECT
         *
     FROM
+        zeroex_tx
+    JOIN
         {{ source(blockchain, 'logs') }} AS logs
+        on zeroex_tx.block_time = logs.block_time
+        and zeroex_tx.block_number = logs.block_number
+        and zeroex_tx.tx_hash = logs.tx_hash
     WHERE 1=1
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
@@ -18,7 +23,7 @@ bundled_tx_check as (
         block_time,
         block_number, 
         count(*) tx_cnt
-    from zeroex_tx
+    from 
     group by 1,2,3
 ), 
 
