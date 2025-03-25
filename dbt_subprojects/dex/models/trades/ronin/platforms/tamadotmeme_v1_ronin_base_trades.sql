@@ -131,4 +131,3 @@ select
 , cast (tx_to as varbinary) as tx_to
 , cast (evt_index as uint256) as evt_index
 from combined 
--- adding comment to test if it is reflected in the compiled sql
