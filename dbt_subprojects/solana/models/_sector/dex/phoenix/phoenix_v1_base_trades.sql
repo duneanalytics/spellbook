@@ -111,7 +111,7 @@
           )
         )
       ) = 6
-      {% if is_incremental() %}
+      {% if is_incremental() or true%}
       AND {{incremental_predicate('l.call_block_time')}}
       {% endif %}
       -- AND call_block_time >= now() - interval '7' day --qa
@@ -187,7 +187,7 @@
             , 2 * bytearray_to_integer (bytearray_substring (call_data, 3, 1)) - 1 as side --if side = 1 then tokenB was bought, else tokenA was bought
         FROM {{ source('phoenix_v1_solana','phoenix_v1_call_Swap') }}
         WHERE 1=1
-        {% if is_incremental() %}
+        {% if is_incremental() or true%}
         AND {{incremental_predicate('call_block_time')}}
         {% endif %}
         -- AND call_block_time >= now() - interval '7' day --qa
