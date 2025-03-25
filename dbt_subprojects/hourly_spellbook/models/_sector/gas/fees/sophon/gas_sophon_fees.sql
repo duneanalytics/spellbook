@@ -24,16 +24,16 @@ WITH base_model as (
         ,cast(gas_price as uint256) as gas_price
         ,txns.gas_used as gas_used
         ,cast(gas_price as uint256) * cast(txns.gas_used as uint256) as tx_fee_raw
-        ,map_concat(
-            map()
-            ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
-                then map(array['base_fee'], array[(cast(gas_price as uint256) * cast(txns.gas_used as uint256))])
-                else map(array['base_fee','priority_fee'],
-                         array[(cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256))
-                                ,(cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256))]
-                         )
-            end
-        ) as tx_fee_breakdown_raw
+        ,case when txns.priority_fee_per_gas is null or txns.priority_fee_per_gas < 0
+            then map(array['base_fee'], array[cast(gas_price as uint256) * cast(txns.gas_used as uint256)])
+            else map(
+                array['base_fee', 'priority_fee'],
+                array[
+                    cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256),
+                    cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256)
+                ]
+            )
+        end as tx_fee_breakdown_raw
         ,{{var('ETH_ERC20_ADDRESS')}} as tx_fee_currency
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
@@ -73,12 +73,15 @@ SELECT
     ,coalesce(tx_fee_raw, 0) as tx_fee_raw
     ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) as tx_fee
     ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) * p.price as tx_fee_usd
-    ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v,0)) as tx_fee_breakdown_raw
-    ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v, 0) / pow(10,p.decimals) ) as tx_fee_breakdown
-    ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v, 0) / pow(10,p.decimals) * p.price) as tx_fee_breakdown_usd
+    ,tx_fee_breakdown_raw as tx_fee_breakdown_raw
+    ,CAST(transform_values(
+        tx_fee_breakdown_raw,
+        (k,v) -> CAST(v AS double) / pow(10,p.decimals)
+    ) AS MAP<VARCHAR, double>) as tx_fee_breakdown
+    ,CAST(transform_values(
+        tx_fee_breakdown_raw,
+        (k,v) -> CAST(v AS double) / pow(10,p.decimals) * p.price
+    ) AS MAP<VARCHAR, double>) as tx_fee_breakdown_usd
     ,tx_fee_currency
     ,block_proposer
     ,max_fee_per_gas
