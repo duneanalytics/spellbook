@@ -8,7 +8,7 @@
     post_hook='{{ expose_spells(\'["gnosis"]\',
                                 "project",
                                 "uniswap",
-                                \'["hildobby"]\') }}'
+                                \'["mlaegn"]\') }}'
 ) }}
 
 SELECT 
