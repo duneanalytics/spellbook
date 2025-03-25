@@ -2,7 +2,7 @@
 -- Create a CTE to read the logs table and apply incremental filtering
 WITH base_filtered_logs AS (
     SELECT
-        *
+        logs.*
     FROM
         zeroex_tx
     JOIN
