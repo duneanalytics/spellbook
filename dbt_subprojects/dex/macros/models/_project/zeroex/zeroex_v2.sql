@@ -2,7 +2,8 @@
 -- Create a CTE to read the logs table and apply incremental filtering
 WITH base_filtered_logs AS (
     SELECT
-        logs.*
+        logs.*,
+        st.settler_address
     FROM
         zeroex_tx
     JOIN
@@ -75,7 +76,7 @@ tbl_all_logs AS (
         topic2,
         method_id,
         tag,
-        st.settler_address,
+        settler_address,
         zid,
         tx_to,
         tx_from,
@@ -88,8 +89,6 @@ tbl_all_logs AS (
         case when tx_cnt > 1 then 1 else 0 end as bundled_tx
     FROM
         base_filtered_logs AS logs
-    JOIN
-        zeroex_tx st using (block_time, block_number, tx_hash)
     JOIN bundled_tx_check btx using (block_time, block_number, tx_hash)
     LEFT JOIN swap_signatures on topic0 = signature
     WHERE 1=1
@@ -122,8 +121,7 @@ swap_logs as (
         varbinary_to_uint256(varbinary_substring(data,85,12)) amount_out_
     from tbl_all_logs st 
     WHERE   
-       block_time > TIMESTAMP '2024-07-15'  
-       and log_type = 'swap'
+       log_type = 'swap'
        
 ),
 
