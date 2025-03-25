@@ -281,7 +281,7 @@ models:
     meta:
       blockchain: gnosis
       sector: dex
-      contributors: your_name_here
+      contributors: mlaegn
     config:
       tags: ['gnosis', 'pools']
     description: >
