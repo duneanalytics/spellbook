@@ -22,7 +22,7 @@ SELECT
     evt_block_time AS creation_block_time,
     evt_block_number AS creation_block_number,
     contract_address
-FROM {{ source('honeyswap_v2_gnosis', 'uniswapv2factory_evt_paircreated') }}
+FROM {{ source('honeyswap_v2_gnosis', 'UniswapV2Factory_evt_PairCreated') }}
 {% if is_incremental() %}
 WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
 {% endif %}
