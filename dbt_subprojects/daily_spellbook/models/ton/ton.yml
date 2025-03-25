@@ -86,3 +86,24 @@ models:
       - &interfaces
         name: interfaces
         description: "Array of interfaces"
+        
+  - name: tokens_ton_net_transfers_daily
+    meta:
+      blockchain: ton
+      sector: tokens
+      contributors: krishhh
+    config:
+      tags: ['tokens', 'net_transfers', 'daily']
+    description: "Total transfer amount per day"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+    columns:
+      - name: blockchain
+        description: "The blockchain network"
+      - name: block_date
+        description: "The date of the block"
+      - name: net_transfer_amount_usd
+        description: "The total net transfer amount for the day"
