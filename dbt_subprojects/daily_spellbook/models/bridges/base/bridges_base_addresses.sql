@@ -8,6 +8,8 @@ FROM (VALUES
   ('base', 0x4200000000000000000000000000000000000010, 'Base', 'L2StandardBridge')
   ,('base', 0x4200000000000000000000000000000000000014, 'Base', 'L2ERC721Bridge')
   ,('base', 0xaf54be5b6eec24d6bfacf1cce4eaf680a8239398, 'Stargate', 'Bridge')
+  ,('base', 0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7, 'LayerZero', 'Endpoint')
+  ,('base', 0x1a44076050125825900e736c501f859c50fE728c, 'LayerZero', 'EndpointV2')
   ,('base', 0xe4edb277e41dc89ab076a1f049f4a3efa700bce8, 'Orbiter Finance', 'Bridge 2')
   ,('base', 0x80c67432656d59144ceff962e8faf8926599bcf8, 'Orbiter Finance', 'Bridge 1')
   ,('base', 0xd9d74a29307cc6fc8bf424ee4217f1a587fbc8dc, 'Orbiter Finance', 'Bridge 3')
