@@ -80,6 +80,7 @@ FROM (VALUES ('ethereum', 0x8ed95d1746bf1e4dab58d8ed4724f1ef95b20db0, '0x', 'Erc
   ,('ethereum', 0x5a1d63d3e1303e89503f2a1ecb553328f148909d, 'Jointer', 'JNTR/e <> JNTR Bridge')
   ,('ethereum', 0xf86fd6735f88d5b6aa709b357ad5be22cedf1a05, 'Layer2Finance', 'Rollup Chain')
   ,('ethereum', 0x66a71dcef29a0ffbdbe3c6a460a3b5bc225cd675, 'LayerZero', 'Ethereum Endpoint')
+  ,('ethereum', 0x1a44076050125825900e736c501f859c50fE728c, 'LayerZero', 'EndpointV2')
   ,('ethereum', 0x014f808b7d4b6f58be5fef88002d5028cd0ed14b, 'Lition', 'Token Bridge')
   ,('ethereum', 0x0baba1ad5be3a5c0a66e7ac838a129bf948f1ea4, 'Loopring', 'Exchange v2')
   ,('ethereum', 0x674bdf20a0f284d710bc40872100128e2d66bd3f, 'Loopring', 'Exchange v2 Deposit')
