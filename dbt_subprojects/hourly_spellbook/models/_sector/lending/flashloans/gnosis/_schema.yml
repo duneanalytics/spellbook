@@ -230,3 +230,31 @@ models:
       - *tx_hash
       - *evt_index
 
+  - name: spark_gnosis_base_flashloans
+    meta:
+      blockchain: gnosis
+      sector: lending
+      project: spark
+      contributors: hdser
+    config:
+      tags: ['lending', 'flashloans', 'aave', 'spark', 'gnosis']
+    description: "Spark Protocol flashloans transactions on Gnosis Chain"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - *recipient
+      - *amount
+      - *fee
+      - *token_address
+      - *project_contract_address
+      - *block_month
+      - *block_time
+      - *block_number
+      - *tx_hash
+      - *evt_index
