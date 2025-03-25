@@ -22,6 +22,7 @@ FROM (VALUES
     ('polygon', 0x25D8039bB044dC227f741a9e381CA4cEAE2E6aE8, 'Hop Protocol', 'USDC Bridge'),
     ('polygon', 0x82a079DE7D2a8b59Bc932Df079eF5aA31B01AEB6, 'iSwap', 'Polygon Bridge'),
     ('polygon', 0x3c2269811836af69497E5F486A85D7316753cf62, 'LayerZero', 'Polygon Endpoint'),
+    ('polygon', 0x1a44076050125825900e736c501f859c50fE728c, 'LayerZero', 'EndpointV2'),
     ('polygon', 0x99783B38eC79ff29234748b42c82Dc27A434a096, 'Less Network', 'Bridge'),
     ('polygon', 0xac0cb30cfb91dd2cbb7c12fbfc069b3f2332ad16, 'MacaronSwap', 'Bridge'),
     ('polygon', 0x05b70fb5477a93be33822bfb31fdaf2c171970df, 'Mayan', 'Swap Bridge'),
