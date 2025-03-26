@@ -19,7 +19,7 @@ with base_trades as (
         *
     FROM
         {{ ref('dex_solana_base_trades')}}
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     WHERE
         {{incremental_predicate('block_time')}}
     {% endif %}
@@ -83,7 +83,7 @@ LEFT JOIN
     ON p_bought.blockchain = 'solana'
     AND date_trunc('minute', bt.block_time) = p_bought.minute
     AND bt.token_bought_mint_address = toBase58(p_bought.contract_address)
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     AND {{incremental_predicate('p_bought.minute')}}
     {% endif %}
 LEFT JOIN 
@@ -91,7 +91,7 @@ LEFT JOIN
     ON p_sold.blockchain = 'solana'
     AND date_trunc('minute', bt.block_time) = p_sold.minute
     AND bt.token_sold_mint_address = toBase58(p_sold.contract_address)
-    {% if is_incremental() or true %}
+    {% if is_incremental() %}
     AND {{incremental_predicate('p_sold.minute')}}
     {% endif %}
 -- if bought token is trusted, prefer that price, else default to sold token then bought token.
