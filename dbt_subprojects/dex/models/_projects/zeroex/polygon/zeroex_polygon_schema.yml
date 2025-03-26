@@ -227,6 +227,16 @@ models:
             - block_time
             - tx_hash
             - evt_index
+      - check_seed:
+          seed_file: ref('zeroex_polygon_native_fills_sample')
+          match_columns:
+            - tx_hash
+            - evt_index
+          check_columns:
+            - maker
+            - taker
+            - maker_token
+            - taker_token
     columns:
       - *tx_hash
       - *contract_address
@@ -274,14 +284,6 @@ models:
             - block_date
             - tx_hash
             - evt_index
-      - check_seed:
-          seed_file: ref('zeroex_polygon_settler_trades_sample')
-          match_columns:
-            - tx_hash
-          check_columns:
-            - taker
-            - maker_token
-            - taker_token
     columns:
       - *blockchain
       - *block_date
