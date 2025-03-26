@@ -1,4 +1,4 @@
-{% set blockchain = 'blast' %}
+{% set blockchain = 'worldchain' %}
 
 {{ config(
     schema = 'gas_' + blockchain
