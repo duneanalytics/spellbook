@@ -117,7 +117,6 @@ FROM
     ('drgn-dragonchain', 'ethereum', 'DRGN', 0x419c4db4b9e25d6db2ad9691ccb832c8d9fda05e, 18),
     ('dsla-dsla-protocol', 'ethereum', 'DSLA', 0x3affcca64c2a6f4e3b6bd9c64cd2c969efd1ecbe, 18),
     ('dusk-dusk-network', 'ethereum', 'DUSK', 0x940a2db1b7008b6c776d4faaca729d6d4a4aa551, 18),
-    ('dx-dxchain-token', 'ethereum', 'DX', 0x973e52691176d36453868d9d86572788d27041a9, 18),
     ('dxd-dxdao', 'ethereum', 'DXD', 0xa1d65e8fb6e87b60feccbc582f7f97804b725521, 18),
     ('dydx-dydx', 'ethereum', 'DYDX', 0x92d6c1e31e14520e676a687f0a93788b716beff5, 18),
     ('dzar-digital-rand', 'ethereum', 'DZAR', 0x9cb2f26a23b8d89973f08c957c4d7cdf75cd341c, 6),
@@ -1883,7 +1882,9 @@ FROM
     ('move-movement', 'ethereum', 'MOVE', 0x3073f7aaa4db83f95e9fff17424f71d4751a3073, 8),
     ('sei-sei', 'ethereum', 'SEI', 0xbdf43ecadc5cef51b7d1772f722e40596bc1788b, 18),
     ('usdm-mountain-protocol-usd', 'ethereum', 'USDM', 0x59D9356E565Ab3A36dD77763Fc0d87fEaf85508C, 18),
-    ('plume-plume', 'ethereum', 'PLUME', 0x4c1746a800d224393fe2470c70a35717ed4ea5f1, 18)
+    ('plume-plume', 'ethereum', 'PLUME', 0x4c1746a800d224393fe2470c70a35717ed4ea5f1, 18),
+    ('zrc-zircuit', 'ethereum', 'ZRC', 0xfd418e42783382e86ae91e445406600ba144d162, 18),
+    ('lock-houdini-swap', 'ethereum', 'LOCK', 0x922D8563631B03C2c4cf817f4d18f6883AbA0109, 18)
    ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
     -- bad price feeds

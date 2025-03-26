@@ -14,7 +14,15 @@
 
 {% set test_short_ci = false %}
 
-WITH base_model as (
+WITH
+
+fee_currency_wrapper_map (fee_currency_wrapper_contract, wrapped_token_contract, symbol) AS (
+    values
+    (0x0e2a3e05bc9a16f5292a6170456a710cb89c6f72, 0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e, 'USDT'),
+    (0x2f25deb3848c207fc8e0c34035b3ba7fc157602b, 0xcebA9300f2b948710d2653dD7B07f33A8B32118C, 'USDC')
+),
+
+base_model AS (
     SELECT
         txns.block_time
         ,txns.block_number
@@ -34,7 +42,7 @@ WITH base_model as (
                          )
                 end
         ) as tx_fee_breakdown_raw
-        ,coalesce(txns.fee_currency, {{var('ETH_ERC20_ADDRESS')}}) as tx_fee_currency
+        ,coalesce(fcwp.wrapped_token_contract, txns.fee_currency, {{var('ETH_ERC20_ADDRESS')}}) as tx_fee_currency
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
         ,txns.priority_fee_per_gas
@@ -51,6 +59,7 @@ WITH base_model as (
         {% if is_incremental() %}
         AND {{ incremental_predicate('blocks.time') }}
         {% endif %}
+    LEFT JOIN fee_currency_wrapper_map fcwp on txns.fee_currency = fcwp.fee_currency_wrapper_contract
     {% if test_short_ci %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})

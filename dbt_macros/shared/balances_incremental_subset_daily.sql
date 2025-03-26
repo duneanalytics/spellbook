@@ -142,8 +142,7 @@ select
     b.token_id,
     b.balance,
     b.balance * p.price as balance_usd,
-    b.last_updated,
-    b.next_update
+    b.last_updated
 from(
     select * from forward_fill
     where balance > 0

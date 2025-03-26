@@ -13,6 +13,8 @@
     , ref('honeyswap_v2_gnosis_base_trades')
     , ref('elk_finance_gnosis_base_trades')
     , ref('levinswap_gnosis_base_trades')
+    , ref('swapr_gnosis_base_trades')
+    , ref('uniswap_v3_gnosis_base_trades')
 ] %}
 
 WITH base_union AS (
