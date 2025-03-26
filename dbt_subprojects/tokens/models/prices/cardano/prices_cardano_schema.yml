@@ -17,7 +17,7 @@ models:
             - symbol
     columns:
       - name: token_id
-        description: "Id of the token at coinpaprika. This id is required to pull the price feed data."
+        description: "Id of the token at coinpaprika. This id is required to pull the price feed data. NOTE: Not all tokens are listed at coinpaprika - consider using price data from DEX sources in this case or submit a listing request at coinpaprika."
       - name: blockchain
         description: "Native blockchain of the token, if any"
       - name: contract_address
