@@ -29,7 +29,7 @@ latest_fee as (
     _pair AS pool,
     _swapFee,
     ROW_NUMBER() OVER (PARTITION BY _pair ORDER BY call_block_number DESC) AS rn
-  FROM {{ source('swapr_gnosis', 'DXswapFactory_call_setSwapFee') }}
+  FROM {{ source('swapr_gnosis', 'dxswapfactory_call_setswapfee') }}
   WHERE call_success = true
 )
 
