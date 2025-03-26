@@ -240,7 +240,7 @@ models:
       blockchain: gnosis
       sector: lending
       project: spark
-      contributors: tomfutago
+      contributors: hdser
     config:
       tags: ['lending', 'supply', 'spark', 'gnosis']
     description: "Spark Protocol supply transactions on Gnosis Chain"

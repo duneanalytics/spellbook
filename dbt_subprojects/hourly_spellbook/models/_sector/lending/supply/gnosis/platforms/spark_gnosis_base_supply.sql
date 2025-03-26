@@ -14,6 +14,8 @@
   lending_aave_v3_compatible_supply(
     blockchain = 'gnosis',
     project = 'spark',
-    version = '1'
+    version = '1',
+    project_decoded_as = 'spark_protocol',
+    wrapped_token_gateway_available = false
   )
 }}
