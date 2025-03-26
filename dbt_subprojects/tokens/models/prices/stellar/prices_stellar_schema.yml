@@ -1,14 +1,13 @@
 version: 2
 
 models:
-  - name: prices_cardano_tokens
+  - name: prices_stellar_tokens
     meta:
-      blockchain: cardano
+      blockchain: stellar
       sector: prices
-      contributors: cryptokoryo
     config:
-      tags: ['prices', 'tokens', 'usd', 'cardano' ]
-    description: "Price tokens on cardano chain"
+      tags: ['prices', 'tokens', 'usd', 'stellar']
+    description: "Price tokens on stellar chain"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -17,7 +16,7 @@ models:
             - symbol
     columns:
       - name: token_id
-        description: "Id of the token at coinpaprika. This id is required to pull the price feed data."
+        description: "Id of the token at coinpaprika. This id is required to pull the price feed data. NOTE: Not all tokens are listed at coinpaprika - consider using price data from DEX sources in this case or submit a listing request at coinpaprika."
       - name: blockchain
         description: "Native blockchain of the token, if any"
       - name: contract_address
