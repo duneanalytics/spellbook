@@ -45,7 +45,7 @@
         , length(json_extract_scalar(initializeParams, '$.InitializeParams.numQuoteLotsPerQuoteUnit')) - 1 as tokenB_decimals
         , ip.account_quoteMint as tokenB
         , ip.account_quoteVault as tokenBVault
-        , cast(json_extract_scalar(initializeParams, '$.InitializeParams.takerFeeBps') as double)/100 as fee_tier
+        , cast(json_extract_scalar(initializeParams, '$.InitializeParams.takerFeeBps') as double)/10000 as fee_tier
         , ip.account_market as pool_id
         , ip.call_tx_id as init_tx
     FROM {{ source('phoenix_v1_solana','phoenix_v1_call_InitializeMarket') }} ip
