@@ -5,7 +5,8 @@ WITH base_filtered_logs AS (
         logs.*,
         settler_address,
         zid, 
-        taker 
+        taker, 
+        method_id
     FROM
         zeroex_tx
     JOIN
