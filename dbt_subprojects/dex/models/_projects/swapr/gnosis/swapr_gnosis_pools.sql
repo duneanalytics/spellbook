@@ -47,4 +47,3 @@ SELECT
 FROM pair_creation pc
 LEFT JOIN latest_fee lf
   ON pc.pool = lf.pool AND lf.rn = 1
-;
