@@ -19,7 +19,7 @@ WITH base_filtered_logs AS (
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
-            AND logs.block_time >= DATE '{{start_date}}'
+            AND logs.block_time >= DATE '2025-03-01'
         {% endif %}
 ), 
 
@@ -336,7 +336,7 @@ token_prices AS (
         {% if is_incremental() %}
         AND {{ incremental_predicate('minute') }}
         {% else %}
-        AND minute >= DATE '{{start_date}}'
+        AND minute >= DATE '2025-03-01'
         {% endif %}
 ), 
 

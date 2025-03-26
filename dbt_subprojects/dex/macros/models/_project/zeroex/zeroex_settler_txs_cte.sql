@@ -28,10 +28,10 @@ filtered_traces AS (
         -- Filter for specific method signatures used by 0x Protocol
         (varbinary_position(input,0x1fff991f) <> 0 OR varbinary_position(input,0xfd3ad6d4) <> 0)
         -- Apply time-based filtering for incremental loads
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             AND {{ incremental_predicate('block_time') }}
         {% else %}
-            AND block_time >= DATE '{{start_date}}'
+            AND logs.block_time >= DATE '2025-03-01'
         {% endif %}
 ),
 
