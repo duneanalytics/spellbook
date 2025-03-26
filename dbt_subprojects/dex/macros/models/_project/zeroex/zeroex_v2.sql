@@ -13,7 +13,7 @@ WITH base_filtered_logs AS (
         on zeroex_tx.block_time = logs.block_time
         and zeroex_tx.block_number = logs.block_number
         and zeroex_tx.tx_hash = logs.tx_hash
-    WHERE 1=1
+    WHERE 1=1 and rn = 1 
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
@@ -104,7 +104,6 @@ tbl_all_logs AS (
         )
     
         AND zid != 0xa00000000000000000000000
-        and rn = 1 
 ),
 
 swap_logs as (
