@@ -167,10 +167,10 @@ tokens as (
 
         -- what the user actually gave and received, judging by the transfers
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = user) as _src_token_address_from_user
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = call_from) as _src_token_address_from_caller
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ src_condition }} and transfer_from = call_from) as _src_token_address_from_caller -- when there were no transfers inside the AR indirect call from the user (tx_from <> caller), but there were from the caller
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_address_to_user
         , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = receiver) as _dst_token_address_to_receiver
-        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = call_from) as _dst_token_address_to_caller
+        , any_value(if(transfer_native, {{ true_native_address }}, contract_address)) filter(where {{ dst_condition }} and transfer_to = call_from) as _dst_token_address_to_caller  -- when there were no transfers inside the AR indirect call to the user (tx_from <> caller), but there were to the caller
         , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from = user) as _src_token_symbol_from_user
         , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ src_condition }} and transfer_from = call_from) as _src_token_symbol_from_caller
         , any_value(if(transfer_native, native_token_symbol, {{ symbol }})) filter(where {{ dst_condition }} and transfer_to = user) as _dst_token_symbol_to_user
