@@ -23,7 +23,7 @@ WITH base_model as (
         ,txns.to AS tx_to
         ,cast(gas_price as uint256) as gas_price
         ,txns.gas_used as gas_used
-        ,cast(gas_price as uint256) * cast(txns.gas_used as uint256) as tx_fee_raw
+        ,cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256) as tx_fee_raw
         ,case when txns.priority_fee_per_gas is null or base_fee_per_gas = gas_price or txns.priority_fee_per_gas < 0
             then map(array['base_fee'], array[cast(gas_price as uint256) * cast(txns.gas_used as uint256)])
             else map(
