@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: celo
       sector: gas
-      contributors: 0xRob, soispoke, tomfutago
+      contributors: 0xRob, soispoke
     config:
       tags: ['celo', 'gas', 'fees']
     description: >
