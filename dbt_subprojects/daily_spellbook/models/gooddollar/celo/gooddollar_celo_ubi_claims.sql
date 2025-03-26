@@ -55,9 +55,9 @@ from ubi_claimed uc
     {% if is_incremental() %}
     and {{ incremental_predicate('gf.block_time') }}
     {% endif %}
-  left join {{ source('prices', 'usd') }} p on uc.block_minute = p.minute
+  left join {{ source('prices', 'minute') }} p on uc.block_minute = p.timestamp
     and p.contract_address = 0x62B8B11039FcfE5aB0C56E502b1C372A3d2a9c7A -- G$
     and p.blockchain = 'celo'
     {% if is_incremental() %}
-    and {{ incremental_predicate('p.minute') }}
+    and {{ incremental_predicate('p.timestamp') }}
     {% endif %}
