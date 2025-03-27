@@ -14,7 +14,15 @@
 
 {% set test_short_ci = false %}
 
-WITH base_model as (
+WITH
+
+fee_currency_wrapper_map (fee_currency_wrapper_contract, wrapped_token_contract, symbol, decimals) AS (
+    values
+    (0x0e2a3e05bc9a16f5292a6170456a710cb89c6f72, 0x48065fbBE25f71C9282ddf5e1cD6D6A887483D5e, 'USDT', 18),
+    (0x2f25deb3848c207fc8e0c34035b3ba7fc157602b, 0xcebA9300f2b948710d2653dD7B07f33A8B32118C, 'USDC', 18)
+),
+
+base_model AS (
     SELECT
         txns.block_time
         ,txns.block_number
@@ -34,7 +42,8 @@ WITH base_model as (
                          )
                 end
         ) as tx_fee_breakdown_raw
-        ,coalesce(txns.fee_currency, {{var('ETH_ERC20_ADDRESS')}}) as tx_fee_currency
+        ,coalesce(fcwp.wrapped_token_contract, txns.fee_currency, {{var('ETH_ERC20_ADDRESS')}}) as tx_fee_currency
+        ,fcwp.decimals as tx_fee_currency_decimals
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
         ,txns.priority_fee_per_gas
@@ -51,6 +60,7 @@ WITH base_model as (
         {% if is_incremental() %}
         AND {{ incremental_predicate('blocks.time') }}
         {% endif %}
+    LEFT JOIN fee_currency_wrapper_map fcwp on txns.fee_currency = fcwp.fee_currency_wrapper_contract
     {% if test_short_ci %}
     WHERE {{ incremental_predicate('txns.block_time') }}
     OR txns.hash in (select tx_hash from {{ref('evm_gas_fees')}})
@@ -71,14 +81,14 @@ SELECT
     ,gas_used
     ,p.symbol as currency_symbol
     ,coalesce(tx_fee_raw, 0) as tx_fee_raw
-    ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) as tx_fee
-    ,coalesce(tx_fee_raw, 0) / pow(10,p.decimals) * p.price as tx_fee_usd
+    ,coalesce(tx_fee_raw, 0) / pow(10, coalesce(tx_fee_currency_decimals, p.decimals)) as tx_fee
+    ,coalesce(tx_fee_raw, 0) / pow(10, coalesce(tx_fee_currency_decimals, p.decimals)) * p.price as tx_fee_usd
     ,transform_values(tx_fee_breakdown_raw,
             (k,v) -> coalesce(v,0)) as tx_fee_breakdown_raw
     ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v, 0) / pow(10,p.decimals) ) as tx_fee_breakdown
+            (k,v) -> coalesce(v, 0) / pow(10, coalesce(tx_fee_currency_decimals, p.decimals)) ) as tx_fee_breakdown
     ,transform_values(tx_fee_breakdown_raw,
-            (k,v) -> coalesce(v, 0) / pow(10,p.decimals) * p.price) as tx_fee_breakdown_usd
+            (k,v) -> coalesce(v, 0) / pow(10, coalesce(tx_fee_currency_decimals, p.decimals)) * p.price) as tx_fee_breakdown_usd
     ,tx_fee_currency
     ,block_proposer
     ,max_fee_per_gas
