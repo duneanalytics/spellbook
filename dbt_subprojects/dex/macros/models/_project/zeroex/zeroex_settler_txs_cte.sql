@@ -31,7 +31,7 @@ filtered_traces AS (
         {% if is_incremental() %}
             AND {{ incremental_predicate('block_time') }}
         {% else %}
-            AND logs.block_time >= DATE '2025-03-01'
+            AND block_time >= DATE '2025-03-01'
         {% endif %}
 ),
 
