@@ -4,7 +4,7 @@
         , materialized = 'incremental'
         , file_format = 'delta'
         , incremental_strategy = 'merge'
-        , unique_key = ['blockchain', 'block_date', 'token_address']
+        , unique_key = ['blockchain', 'block_date', 'contract_address']
         , incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_date')]
         )
 }}
@@ -16,7 +16,7 @@ with
             date_trunc('day', minute) as block_date,
             avg(price) as price
         from
-            from {{ source('prices', 'usd') }}
+            {{ source('prices', 'usd') }}
         where
             true
             and symbol = 'TON'
