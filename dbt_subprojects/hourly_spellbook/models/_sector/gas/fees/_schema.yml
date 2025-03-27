@@ -4,7 +4,7 @@ models:
   - name: gas_fees
     meta:
       sector: gas
-      contributors: soispoke, ilemi, 0xRob, jeff-dude
+      contributors: soispoke, ilemi, 0xRob, jeff-dude, hosuke
     description: >
         Gas Fees across chains
     columns:
