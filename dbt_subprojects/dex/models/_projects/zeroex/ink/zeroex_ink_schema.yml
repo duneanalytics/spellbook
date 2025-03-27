@@ -1,13 +1,13 @@
 version: 2
 
 models:
-  - name: zeroex_v2_worldchain_trades 
+  - name: zeroex_v2_ink_trades 
     meta:
-      blockchain: worldchain
+      blockchain: ink
       project: zeroex
       contributors: rantum
     config:
-      tags: ['worldchain','0x','dex_aggregator','dex','aggregator']
+      tags: ['ink','0x','dex_aggregator','dex','aggregator']
     description: >
         0x API erc20 trades through 0x Settler contracts. No fills, only deduped transactions.
     data_tests:
@@ -94,16 +94,16 @@ models:
         name: fills_within
         description: "fills in then multihop, if present"   
 
-  - name: zeroex_worldchain_settler_addresses
+  - name: zeroex_ink_settler_addresses
     meta:
-      blockchain: worldchain
+      blockchain: ink
       project: zeroex
       contributors: hosuke
     config:
-      tags: ['worldchain', '0x', 'settler']
+      tags: ['ink', '0x', 'settler']
     description: >
-      0x Protocol settler addresses for Worldchain blockchain.
-      This table contains the settler addresses used by the 0x Protocol on Worldchain,
+      0x Protocol settler addresses for Ink blockchain.
+      This table contains the settler addresses used by the 0x Protocol on ink,
       along with their activation timestamps and token IDs.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
