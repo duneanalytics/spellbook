@@ -14,6 +14,6 @@
 
 {{ evm_net_transfers_daily_asset(
         blockchain=blockchain,
-        native_contract_address=var('0x7f9FBf9bDd3F4105C478b996B648FE6e828a1e98')
+        native_contract_address='0x7f9FBf9bDd3F4105C478b996B648FE6e828a1e98'
 ) 
 }}
