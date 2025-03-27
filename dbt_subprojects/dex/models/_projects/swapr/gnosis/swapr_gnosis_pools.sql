@@ -4,10 +4,12 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['pool'],
-    post_hook='{{ expose_spells(\'["gnosis"]\', "project", "swapr", \'["mlaegn"]\') }}'
+    unique_key = ['pool','creation_block_number','creation_block_time'],
+    post_hook='{{ expose_spells(\'["gnosis"]\',
+                                "project",
+                                "swapr",
+                                \'["mlaegn"]\') }}'
 ) }}
-
 
 with pair_creation as (
   SELECT 
@@ -23,27 +25,46 @@ with pair_creation as (
   {% endif %}
 ),
 
-
-latest_fee as (
+fee_updates as (
   SELECT 
     _pair AS pool,
-    _swapFee,
-    ROW_NUMBER() OVER (PARTITION BY _pair ORDER BY call_block_number DESC) AS rn
+    _swapFee AS fee,
+    call_block_time AS creation_block_time,
+    call_block_number AS creation_block_number
   FROM {{ source('swapr_gnosis', 'DXswapFactory_call_setSwapFee') }}
   WHERE call_success = true
+  {% if is_incremental() %}
+  AND call_block_time >= date_trunc('day', now() - interval '7' day)
+  {% endif %}
 )
 
-SELECT 
+select 
   'gnosis' AS blockchain,
   'swapr' AS project,
   'v2' AS version,
   pc.pool,
-  COALESCE(lf._swapFee, 2500) AS fee, 
+  2500 AS fee,  
   pc.token0,
   pc.token1,
   pc.creation_block_time,
   pc.creation_block_number,
   pc.contract_address
-FROM pair_creation pc
-LEFT JOIN latest_fee lf
-  ON pc.pool = lf.pool AND lf.rn = 1
+from pair_creation pc
+
+union all
+
+select 
+  'gnosis' AS blockchain,
+  'swapr' AS project,
+  'v2' AS version,
+  pc.pool,
+  fu.fee,
+  pc.token0,
+  pc.token1,
+  fu.creation_block_time,  
+  fu.creation_block_number, 
+  pc.contract_address
+from fee_updates fu
+join pair_creation pc
+  on fu.pool = pc.pool
+;
