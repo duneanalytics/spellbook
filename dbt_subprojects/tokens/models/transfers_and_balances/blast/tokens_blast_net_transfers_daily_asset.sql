@@ -16,5 +16,4 @@
         blockchain=blockchain,
         native_contract_address=var('ETH_ERC20_ADDRESS')
 ) 
-) 
 }}
