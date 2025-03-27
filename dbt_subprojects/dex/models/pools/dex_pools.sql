@@ -5,7 +5,7 @@
         file_format = 'delta',
         incremental_strategy = 'merge',
         unique_key = ['blockchain', 'pool'],
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon", "gnosis"]\',
                                 "sector",
                                 "dex",
                                 \'["hildobby"]\') }}'
@@ -19,7 +19,6 @@
  ,ref('sushiswap_pools')
  ,ref('levinswap_pools')
  ,ref('elk_finance_pools')
- ,ref('swapr_pools')
  ,ref('spiritswap_fantom_pools')
  ,ref('spookyswap_fantom_pools')
  ,ref('equalizer_fantom_pools')
