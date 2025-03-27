@@ -111,8 +111,6 @@
           )
         )
       ) = 6
-      AND l.call_block_time >= TIMESTAMP '2024-04-01 00:00:00' 
-      AND l.call_block_time < TIMESTAMP '2024-05-01 00:00:00'
       {% if is_incremental() %}
       AND {{incremental_predicate('l.call_block_time')}}
       {% endif %}
@@ -189,8 +187,6 @@
             , 2 * bytearray_to_integer (bytearray_substring (call_data, 3, 1)) - 1 as side --if side = 1 then tokenB was bought, else tokenA was bought
         FROM {{ source('phoenix_v1_solana','phoenix_v1_call_Swap') }}
         WHERE 1=1
-        AND call_block_time >= TIMESTAMP '2024-04-01 00:00:00' 
-        AND call_block_time < TIMESTAMP '2024-05-01 00:00:00'
         {% if is_incremental() %}
         AND {{incremental_predicate('call_block_time')}}
         {% endif %}

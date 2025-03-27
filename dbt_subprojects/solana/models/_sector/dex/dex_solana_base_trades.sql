@@ -61,10 +61,8 @@ SELECT
 FROM
       {{ dex }}
 WHERE
-      block_time >= TIMESTAMP '2024-04-01 00:00:00' 
-      AND block_time < TIMESTAMP '2024-05-01 00:00:00'
       {% if is_incremental() %}
-      AND {{incremental_predicate('block_time')}}
+      {{incremental_predicate('block_time')}}
       {% endif %}
 {% if not loop.last %}
 UNION ALL

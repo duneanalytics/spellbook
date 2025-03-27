@@ -20,11 +20,9 @@ with base_trades as (
     FROM
         {{ ref('dex_solana_base_trades')}}
     WHERE
-        block_time >= TIMESTAMP '2024-04-01 00:00:00' 
-        AND block_time < TIMESTAMP '2024-05-01 00:00:00'
-    {% if is_incremental() %}
-    AND {{incremental_predicate('block_time')}}
-    {% endif %}
+        {% if is_incremental() %}
+        {{incremental_predicate('block_time')}}
+        {% endif %}
 )
 
 SELECT bt.blockchain
