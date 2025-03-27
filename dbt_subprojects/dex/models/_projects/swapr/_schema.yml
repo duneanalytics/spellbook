@@ -17,6 +17,7 @@ models:
           combination_of_columns:
             - blockchain
             - pool
+            - creation_block_number
     columns:
       - name: blockchain
         description: "Blockchain on which the DEX is deployed"
