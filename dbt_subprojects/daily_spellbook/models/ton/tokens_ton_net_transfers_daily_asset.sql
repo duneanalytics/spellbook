@@ -251,7 +251,4 @@ from
 where
     net_transfer_amount_usd > 0
 group by
-    blockchain,
-    block_date,
-    token_address,
-    symbol;
+    1,2,3,4
