@@ -1,0 +1,2 @@
+blockchain,project,version,block_number,block_time,tx_hash,evt_index,transaction_type,token_address,borrower,amount
+celo,aave,3,30927600,2025-03-18 15:43:00.000 UTC,0x80b62781b306fd5f49db6046169bce69a9e1b2f22e3b296e1211cd3a2fd6be4e,10,borrow,0xceba9300f2b948710d2653dd7b07f33a8b32118c,0x0e7a7e5be7ace74a46186df158ba1ddbfc4966d2,255898381

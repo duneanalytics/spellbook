@@ -19,6 +19,14 @@ models:
       For example, if I give you $1 that's -1 sent (from me) and +1 received (by you) which adds to 0. 
       This query counts the received to show that $1 was effectively transfered."
 
+  - name: metrics_transfers_daily_asset
+    meta:
+      sector: metrics
+      contributors: jeff-dude, krishhh
+    config:
+      tags: ['metrics', 'net_transfers', 'asset']
+    description: "Total transfer amount per day per asset across chains"
+
   - name: metrics_transfers_stats
     meta:
       sector: metrics
@@ -40,6 +48,20 @@ models:
             - blockchain
             - block_date
 
+  - name: metrics_solana_transfers_daily_asset
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob, krishhh
+    config:
+      tags: ['metrics', 'transfers', 'daily', 'asset', 'solana']
+    description: "Total transfer amount per day per asset"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - contract_address
+
   - name: metrics_ton_transfers_daily
     meta:
       sector: metrics
@@ -56,12 +78,26 @@ models:
   - name: metrics_bitcoin_transfers_daily
     meta:
       sector: metrics
-      contributors: jeff-dude
+      contributors: jeff-dude, krishhh
     config:
-      tags: ['metrics', 'net_transfers', 'bitcoin']
-    description: *net_transfers_description
+      tags: ['metrics', 'net_transfers', 'daily', 'bitcoin']
+    description: "Total transfer amount per day"
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
             - block_date
+  
+  - name: metrics_bitcoin_transfers_daily_asset
+    meta:
+      sector: metrics
+      contributors: jeff-dude, 0xRob, krishhh
+    config:
+      tags: ['metrics', 'transfers', 'daily', 'asset', 'bitcoin']
+    description: "Total transfer amount per day per asset"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - contract_address

@@ -44,7 +44,7 @@ SELECT bt.blockchain
       , bt.token_sold_amount_raw
       , COALESCE(
             -- if bought token is trusted, prefer that price, else default to sold token then bought token.
-            case when tt_bought.symbol is not null then
+            case when tt_bought.contract_address is not null then
                 bt.token_bought_amount_raw / pow(10,coalesce(token_bought.decimals, 9)) * p_bought.price
                 else null end
                , bt.token_sold_amount_raw / pow(10,coalesce(token_sold.decimals, 9)) * p_sold.price
@@ -54,7 +54,7 @@ SELECT bt.blockchain
       , bt.fee_tier *
         COALESCE(
             -- if bought token is trusted, prefer that price, else default to sold token then bought token.
-            case when tt_bought.symbol is not null then
+            case when tt_bought.contract_address is not null then
                 bt.token_bought_amount_raw / pow(10,coalesce(token_bought.decimals, 9)) * p_bought.price
                 else null end
                , bt.token_sold_amount_raw / pow(10,coalesce(token_sold.decimals, 9)) * p_sold.price

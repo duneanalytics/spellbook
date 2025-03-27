@@ -136,3 +136,32 @@ models:
             - evt_index
       - check_dex_base_trades_seed:
           seed_file: ref('levinswap_gnosis_base_trades_seed')
+
+  - name: swapr_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: swapr
+      contributors: hdser
+    config:
+      tags: ["gnosis", "dex", "trades", "swapr", "uniswap", "v2"]
+    description: "Swapr Gnosis base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+  - name: uniswap_v3_gnosis_base_trades
+    meta:
+      blockchain: gnosis
+      sector: dex
+      project: uniswap_v3
+      contributors: hdser
+    config:
+      tags: ["gnosis", "dex", "trades", "uniswap", "v3"]
+    description: "Uniswap v3 Gnosis base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
