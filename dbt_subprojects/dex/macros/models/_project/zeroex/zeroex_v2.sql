@@ -16,10 +16,10 @@ WITH base_filtered_logs AS (
         and zeroex_tx.block_number = logs.block_number
         and zeroex_tx.tx_hash = logs.tx_hash
     WHERE 1=1 and rn = 1 
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
-            AND logs.block_time >= DATE '2025-03-01'
+            AND logs.block_time >= DATE '{{start_date}}'
         {% endif %}
 ), 
 
@@ -333,10 +333,10 @@ token_prices AS (
     FROM {{ source('prices', 'usd') }}
     WHERE 
         blockchain = '{{blockchain}}'
-        {% if is_incremental() %}
+        {% if is_incremental() or true %}
         AND {{ incremental_predicate('minute') }}
         {% else %}
-        AND minute >= DATE '2025-03-01'
+        AND minute >= DATE '{{start_date}}'
         {% endif %}
 ), 
 
