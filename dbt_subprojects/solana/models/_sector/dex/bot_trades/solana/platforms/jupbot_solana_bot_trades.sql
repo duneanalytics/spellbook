@@ -12,6 +12,11 @@
 
 {% set project_start_date = '2024-09-12' %}
 {% set buy_fee_receiver_1 = 'H2mM9cXi42efgwkSzTRKMVaWHrqJJx1nzNdV1NxWaHjC' %}
+{% set buy_fee_receiver_2 = '56siJroYrRTsiTqHoEsXsCqU1xS2R2gV7EfdFbGCpERC' %}
+{% set buy_fee_receiver_3 = '7oxyaPx5DgMVsRi2ABj5rMji2U2Qr8ALebk5E6EGJixX' %}
+{% set buy_fee_receiver_4 = '7AufqUCHdB73C6WLZHNkjhZdnyHoTnziVoA87PTDh7Vj' %}
+{% set buy_fee_receiver_5 = '4sAgxS2LMVfbwoVeUWvoc4emYFkSYSMgxPqLASyRfG4Q' %}
+{% set buy_fee_receiver_6 = '5wCeJaCapoaG2WrphQwYdv3d1D1BV7hqyG7cvSsE7f95' %}
 {% set wsol_token = 'So11111111111111111111111111111111111111112' %}
 
 WITH
@@ -31,7 +36,14 @@ WITH
       {% endif %}
       AND tx_success
       AND balance_change > 0
-      AND address = '{{buy_fee_receiver_1}}'
+      AND (
+         address = '{{buy_fee_receiver_1}}'
+         OR address = '{{buy_fee_receiver_2}}'
+         OR address = '{{buy_fee_receiver_3}}'
+         OR address = '{{buy_fee_receiver_4}}'
+         OR address = '{{buy_fee_receiver_5}}'
+         OR address = '{{buy_fee_receiver_6}}'
+      )
 
   ),
   botTrades AS (
@@ -87,8 +99,18 @@ WITH
         {% endif %}
       )
     WHERE
-      trades.trader_id != '{{buy_fee_receiver_1}}' -- Exclude trades signed by FeeWallet
-      AND transactions.signer != '{{buy_fee_receiver_1}}' -- Exclude trades signed by FeeWallet
+      trades.trader_id != '{{buy_fee_receiver_1}}'
+      AND trades.trader_id != '{{buy_fee_receiver_2}}'
+      AND trades.trader_id != '{{buy_fee_receiver_3}}'
+      AND trades.trader_id != '{{buy_fee_receiver_4}}'
+      AND trades.trader_id != '{{buy_fee_receiver_5}}'
+      AND trades.trader_id != '{{buy_fee_receiver_6}}' -- Exclude trades signed by FeeWallet
+      AND transactions.signer != '{{buy_fee_receiver_1}}'
+      AND transactions.signer != '{{buy_fee_receiver_2}}'
+      AND transactions.signer != '{{buy_fee_receiver_3}}'
+      AND transactions.signer != '{{buy_fee_receiver_4}}'
+      AND transactions.signer != '{{buy_fee_receiver_5}}'
+      AND transactions.signer != '{{buy_fee_receiver_6}}' -- Exclude trades signed by FeeWallet
       {% if is_incremental() %}
       AND {{ incremental_predicate('trades.block_time') }}
       {% else %}
