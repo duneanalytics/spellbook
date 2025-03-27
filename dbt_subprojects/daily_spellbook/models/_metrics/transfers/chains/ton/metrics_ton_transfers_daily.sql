@@ -6,4 +6,4 @@
 }}
 
 SELECT *
-FROM {{ source('tokens_ton', 'net_transfers_daily') }}
+FROM {{ ref('tokens_ton_net_transfers_daily') }}
