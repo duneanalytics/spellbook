@@ -67,4 +67,3 @@ select
 from fee_updates fu
 join pair_creation pc
   on fu.pool = pc.pool
-;
