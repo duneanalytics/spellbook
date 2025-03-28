@@ -276,3 +276,33 @@ models:
         description: "Block number of pool creation"
       - name: contract_address
         description: "Contract address used to create the pool"
+
+  - name: uniswap_gnosis_pools
+    meta:
+      blockchain: gnosis
+      sector: dex
+      contributors: mlaegn
+    config:
+      tags: ['gnosis', 'pools']
+    description: >
+      Uniswap DEX pools on the gnosis chain, capturing dynamic fee details from the V3 factory events.
+    columns:
+      - *blockchain
+      - *project
+      - *version
+      - name: pool
+        description: "DEX pool smart contract address"
+        data_tests:
+          - unique
+      - name: fee
+        description: "Defined fee as reported dynamically in the pool creation event"
+      - name: token0
+        description: "First token in pool"
+      - name: token1
+        description: "Second token in pool"
+      - name: creation_block_time
+        description: "Block time of pool creation"
+      - name: creation_block_number
+        description: "Block number of pool creation"
+      - name: contract_address
+        description: "Contract address used to create the pool"
