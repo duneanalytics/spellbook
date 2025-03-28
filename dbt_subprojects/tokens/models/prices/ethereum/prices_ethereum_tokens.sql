@@ -1885,7 +1885,7 @@ FROM
     ('plume-plume', 'ethereum', 'PLUME', 0x4c1746a800d224393fe2470c70a35717ed4ea5f1, 18),
     ('zrc-zircuit', 'ethereum', 'ZRC', 0xfd418e42783382e86ae91e445406600ba144d162, 18),
     ('lock-houdini-swap', 'ethereum', 'LOCK', 0x922D8563631B03C2c4cf817f4d18f6883AbA0109, 18),
-    ('andy-andy-eth', 'ethereum', 'ANDY', 0x68bbed6a47194eff1cf514b50ea91895597fc91e, 18),
+    --('andy-andy-eth', 'ethereum', 'ANDY', 0x68bbed6a47194eff1cf514b50ea91895597fc91e, 18),
     ('kekius-kekius-maximus', 'ethereum', 'KEKIUS', 0x26e550ac11b26f78a04489d5f20f24e3559f7dd9, 9),
     ('rai-reploy', 'ethereum', 'RAI', 0xc575bd129848ce06a460a19466c30e1d0328f52c, 18),
     ('mystery-mystery', 'ethereum', 'MYSTERY', 0x64c5cba9a1bfbd2a5faf601d91beff2dcac2c974, 18),
