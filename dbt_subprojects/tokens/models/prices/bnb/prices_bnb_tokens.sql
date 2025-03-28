@@ -291,7 +291,15 @@ FROM
     ('jmpt-jumptoken', 'bnb', 'JMPT', 0x88d7e9b65dc24cf54f5edef929225fc3e1580c25, 18),
     ('usdfi-usdfi', 'bnb', 'USDFI', 0x7df1938170869afe410098540c051a8a50308988, 18),
     ('wncg-wrapped-ncg', 'bnb', 'WNCG', 0x52242cbAb41e290E9E17CCC50Cc437bB60020a9d, 18),
-    ('atlas-star-atlas-wormhole', 'bnb', 'ATLAS', 0x83850d97018f665eb746fbb8f18351e977d1b0d6, 8)    
+    ('atlas-star-atlas-wormhole', 'bnb', 'ATLAS', 0x83850d97018f665eb746fbb8f18351e977d1b0d6, 8),
+    ('pvu-plant-vs-undead-token', 'bnb', 'PVU', 0x31471e0791fcdbe82fbf4c44943255e923f1b794, 18),
+    ('bmon-binamon', 'bnb', 'BMON', 0x08ba0619b1e7a582e0bce5bbe9843322c954c340, 18),
+    ('bnbtiger-bnbtiger', 'bnb', 'BNBTIGER', 0xac68931b666e086e9de380cfdb0fb5704a35dc2d, 9),
+    ('thg-thetan-arena', 'bnb', 'THG', 0x9fd87aefe02441b123c3c32466cd9db4c578618f, 18),
+    ('maga-trump', 'bnb', 'MAGA', 0x8479b19c5a3c43e024b2543582af0fc2fef2e6a8, 9),
+    ('thc-thetan-coin', 'bnb', 'THC', 0x24802247bd157d771b7effa205237d8e9269ba8a, 18),
+    ('hare-hare-token', 'bnb', 'HARE', 0x4afc8c2be6a0783ea16e16066fde140d15979296, 9),
+    ('vinu-vita-inu', 'bnb', 'VINU', 0xfebe8c1ed424dbf688551d4e2267e7a53698f0aa, 18)   
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (

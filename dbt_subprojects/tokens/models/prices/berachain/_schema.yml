@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: berachain
       sector: prices
-      contributors: hosuke
+      contributors: hosuke, rantum
     config:
       tags: ['prices', 'tokens', 'usd', 'berachain']
     description: "Price tokens on Berachain EVM chain"
