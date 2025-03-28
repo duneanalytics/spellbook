@@ -18,11 +18,10 @@ with base_trades as (
     SELECT
         *
     FROM
-        {{ ref('dex_solana_base_trades')}}
-    WHERE
-        {% if is_incremental() %}
-        {{incremental_predicate('block_time')}}
-        {% endif %}
+        {{ ref('dex_solana_base_trades')}}    
+    {% if is_incremental() %}
+        WHERE {{incremental_predicate('block_time')}}
+    {% endif %}
 )
 
 SELECT bt.blockchain
