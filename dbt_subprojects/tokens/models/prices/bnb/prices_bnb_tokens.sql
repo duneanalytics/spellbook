@@ -293,7 +293,6 @@ FROM
     ('wncg-wrapped-ncg', 'bnb', 'WNCG', 0x52242cbAb41e290E9E17CCC50Cc437bB60020a9d, 18),
     ('atlas-star-atlas-wormhole', 'bnb', 'ATLAS', 0x83850d97018f665eb746fbb8f18351e977d1b0d6, 8),
     ('pvu-plant-vs-undead-token', 'bnb', 'PVU', 0x31471e0791fcdbe82fbf4c44943255e923f1b794, 18),
-    ('pvc-pvc-meta', 'bnb', 'PVC', 0x75ca521892de7f2ecfb070cab545c250d0ceb7e3, 9),
     ('bmon-binamon', 'bnb', 'BMON', 0x08ba0619b1e7a582e0bce5bbe9843322c954c340, 18),
     ('bnbtiger-bnbtiger', 'bnb', 'BNBTIGER', 0xac68931b666e086e9de380cfdb0fb5704a35dc2d, 9),
     ('thg-thetan-arena', 'bnb', 'THG', 0x9fd87aefe02441b123c3c32466cd9db4c578618f, 18),
