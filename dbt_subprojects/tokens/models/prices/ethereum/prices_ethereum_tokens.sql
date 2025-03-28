@@ -1890,7 +1890,6 @@ FROM
     ('rai-reploy', 'ethereum', 'RAI', 0xc575bd129848ce06a460a19466c30e1d0328f52c, 18),
     ('mystery-mystery', 'ethereum', 'MYSTERY', 0x64c5cba9a1bfbd2a5faf601d91beff2dcac2c974, 18),
     ('pin-pinlink', 'ethereum', 'PIN', 0x2e44f3f609ff5aa4819b323fd74690f07c3607c4, 18),
-    ('hoppy2-hoppy', 'ethereum', 'HOPPY', 0x6e79b51959cf968d87826592f46f819f92466615, 9),
     ('nitro3-nitro', 'ethereum', 'NITRO', 0x76887cb94cf29ec539b3219ba62104be04f26a5c, 18),
     ('vertai-vertical-ai', 'ethereum', 'VERTAI', 0xcdbddbdefb0ee3ef03a89afcd714aa4ef310d567, 18),
     ('white-whiterock', 'ethereum', 'WHITE', 0x9cdf242ef7975d8c68d5c1f5b6905801699b1940, 18)

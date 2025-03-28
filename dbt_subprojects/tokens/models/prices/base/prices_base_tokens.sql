@@ -225,7 +225,6 @@ FROM
     ('dora-dora-ai-by-virtuals', 'base', 'DORA',0x1e2093ab84768948c6176db5ad98c909ce97f368, 18),
     ('clanker-tokenbot', 'base', 'CLANKER',0x1bc0c42215582d5a085795f4badbac3ff36d1bcb, 18),
     ('sekoia-sekoia-by-virtuals', 'base', 'SEKOIA',0x1185cb5122edad199bdbc0cbd7a0457e448f23c7, 18),
-    ('boomer-boomer', 'base', 'BOOMER',0xcde172dc5ffc46d228838446c57c1227e0b82049, 18),
     ('luna-luna-by-virtuals', 'base', 'LUNA',0x55cd6469f597452b5a7536e2cd98fde4c1247ee4, 18),
     ('chido-chinese-doge-wow', 'base', '$CHIDO',0xf31e6d62bfc485857af2186eb3d8ee94b4379fed, 18),
     ('poly-polytrader-by-virtuals', 'base', 'POLY',0x2676e4e0e2eb58d9bdb5078358ff8a3a964cedf5, 18),
