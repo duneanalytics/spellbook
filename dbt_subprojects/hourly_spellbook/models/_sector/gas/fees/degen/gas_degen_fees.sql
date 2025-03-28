@@ -1,4 +1,4 @@
-{% set blockchain = 'corn' %}
+{% set blockchain = 'degen' %}
 
 {{ config(
     schema = 'gas_' + blockchain
@@ -12,6 +12,6 @@
     )
 }}
 
-{% set test_short_ci = true %}
+{% set test_short_ci = false %}
 
 {{ arbitrum_orbit_stack_gas_fees(blockchain) }}
