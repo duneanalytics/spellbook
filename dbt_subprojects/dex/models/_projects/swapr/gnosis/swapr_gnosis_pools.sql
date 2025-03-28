@@ -17,7 +17,7 @@ with pair_creation as (
     contract_address
   FROM {{ source('swapr_gnosis', 'DXswapFactory_evt_PairCreated') }}
   {% if is_incremental() %}
-  WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+  WHERE {{ incremental_predicate('evt_block_time') }}
   {% endif %}
 ),
 
@@ -30,7 +30,7 @@ fee_updates as (
   FROM {{ source('swapr_gnosis', 'DXswapFactory_call_setSwapFee') }}
   WHERE call_success = true
   {% if is_incremental() %}
-  AND call_block_time >= date_trunc('day', now() - interval '7' day)
+  AND {{ incremental_predicate('call_block_time') }}
   {% endif %}
 )
 

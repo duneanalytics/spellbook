@@ -20,5 +20,5 @@ SELECT
     contract_address
 FROM {{ source('honeyswap_v2_gnosis', 'UniswapV2Factory_evt_PairCreated') }}
 {% if is_incremental() %}
-WHERE evt_block_time >= date_trunc('day', now() - interval '7' day)
+WHERE {{incremental_predicate('evt_block_time')}}
 {% endif %}
