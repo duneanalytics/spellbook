@@ -1,10 +1,6 @@
 {{ config(
     schema = 'sushiswap',
-    alias = 'pools',
-    post_hook='{{ expose_spells(\'["gnosis"]\',
-                                "project",
-                                "sushiswap",
-                                \'["mlaegn"]\') }}'
+    alias = 'pools'
 ) }}
 
 {% set sushiswap_models = [

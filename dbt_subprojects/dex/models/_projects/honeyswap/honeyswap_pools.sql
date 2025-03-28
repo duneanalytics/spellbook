@@ -1,10 +1,6 @@
 {{ config(
     schema = 'honeyswap',
-    alias = 'pools',
-    post_hook='{{ expose_spells(\'["gnosis"]\',
-                                "project",
-                                "honeyswap",
-                                \'["mlaegn"]\') }}'
+    alias = 'pools'
 ) }}
 
 {% set honeyswap_models = [

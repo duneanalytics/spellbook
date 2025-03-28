@@ -1,10 +1,6 @@
 {{ config(
         schema = 'uniswap',
-        alias = 'pools',
-        post_hook='{{ expose_spells(\'["ethereum", "arbitrum", "polygon"]\',
-                                "project",
-                                "uniswap",
-                                \'["hildobby"]\') }}'
+        alias = 'pools'
         )
 }}
 

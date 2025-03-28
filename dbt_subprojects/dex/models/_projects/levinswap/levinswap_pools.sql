@@ -1,10 +1,6 @@
 {{ config(
     schema = 'levinswap',
-    alias = 'pools',
-    post_hook='{{ expose_spells(\'["gnosis"]\',
-                                "project",
-                                "levinswap",
-                                \'["mlaegn"]\') }}'
+    alias = 'pools'
 ) }}
 
 {% set levinswap_models = [

@@ -4,11 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['pool','creation_block_number','creation_block_time'],
-    post_hook='{{ expose_spells(\'["gnosis"]\',
-                                "project",
-                                "swapr",
-                                \'["mlaegn"]\') }}'
+    unique_key = ['pool','creation_block_number','creation_block_time']
 ) }}
 
 with pair_creation as (

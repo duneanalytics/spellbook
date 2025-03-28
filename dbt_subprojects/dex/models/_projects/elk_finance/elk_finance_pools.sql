@@ -1,10 +1,6 @@
 {{ config(
     schema = 'elk_finance',
-    alias = 'pools',
-    post_hook='{{ expose_spells(\'["gnosis"]\',
-                                "project",
-                                "elk_finance",
-                                \'["mlaegn"]\') }}'
+    alias = 'pools'
 ) }}
 
 {% set elk_finance_models = [

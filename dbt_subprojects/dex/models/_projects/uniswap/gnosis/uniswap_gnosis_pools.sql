@@ -4,11 +4,7 @@
     materialized = 'incremental',
     file_format = 'delta',
     incremental_strategy = 'merge',
-    unique_key = ['pool'],
-    post_hook='{{ expose_spells(\'["gnosis"]\',
-                                "project",
-                                "uniswap",
-                                \'["mlaegn"]\') }}'
+    unique_key = ['pool']
 ) }}
 
 SELECT 
