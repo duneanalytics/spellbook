@@ -21,6 +21,9 @@ with
             true
             and symbol = 'TON'
             and blockchain is null
+            {% if is_incremental() %}
+            and {{ incremental_predicate('date_trunc(\'day\', minute)') }}
+            {% endif %}
         group by
             1
     ),
