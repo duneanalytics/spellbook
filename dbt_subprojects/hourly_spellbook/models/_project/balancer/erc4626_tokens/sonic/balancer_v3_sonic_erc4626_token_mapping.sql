@@ -36,7 +36,7 @@ FROM (VALUES
      (0x711a93a8bD6803aF0a6122F2dE18c1a6AB7CB29C, 'Vicuna Wrapped scUSD', 'waSonicSCUSD', 0xd3DCe716f3eF535C5Ff8d041c1A41C3bd89b97aE, 'scUSD', 6).
      (0xd7c9f62622dB85545731F0E4e5D4556aC8a19832, 'Vicuna Wrapped USDT', 'waSonicUSDt', 0x6047828dc181963ba44974801FF68e538dA5eaF9, 'USDT', 6).
      (0xef23FdCbd9b36Ed99A6C51CaA83Af549c36601CF, 'Vicuna Wrapped USDC.e', 'waSonicUSDC', 0x3bcE5CB20x29219dd400f2Bf60E5a23d13Be72B486D403889473F0F148010BbEa2470e7b5df84C7812, 'USDC.e', 6).
-     (0x0A94e18bdbCcD048198806d7FF28A1B1D2590724, 'Silo Finance Borrowable scBTC Deposit, SiloId: 32', 'bscBTC-32', 0xBb30e76d9Bb2CC9631F7fC5Eb8e87B5Aff32bFbd, 'scBTC', 8).
+     (0x0A94e18bdbCcD048198806d7FF28A1B1D2590724, 'Silo Finance Borrowable scBTC Deposit, SiloId: 32', 'bscBTC-32', 0xBb30e76d9Bb2CC9631F7fC5Eb8e87B5Aff32bFbd, 'scBTC', 8)
     ) AS temp_table (erc4626_token, erc4626_token_name, erc4626_token_symbol, underlying_token, underlying_token_symbol, decimals)
 )
 
