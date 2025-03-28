@@ -12,7 +12,7 @@
     )
 }}
 
-{% set test_short_ci = true %}
+{% set test_short_ci = false %}
 
 WITH base_model as (
     SELECT
@@ -23,17 +23,8 @@ WITH base_model as (
         ,txns.to AS tx_to
         ,cast(gas_price as uint256) as gas_price
         ,txns.gas_used as gas_used
-        ,cast(gas_price as uint256) * cast(txns.gas_used as uint256) as tx_fee_raw
-        ,case when txns.priority_fee_per_gas is null or base_fee_per_gas = gas_price or txns.priority_fee_per_gas < 0
-            then map(array['base_fee'], array[cast(gas_price as uint256) * cast(txns.gas_used as uint256)])
-            else map(
-                array['base_fee', 'priority_fee'],
-                array[
-                    cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256),
-                    cast(priority_fee_per_gas as uint256) * cast(txns.gas_used as uint256)
-                ]
-            )
-        end as tx_fee_breakdown_raw
+        ,cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256) as tx_fee_raw
+        ,map(array['base_fee'], array[cast(base_fee_per_gas as uint256) * cast(txns.gas_used as uint256)]) as tx_fee_breakdown_raw
         ,{{var('ETH_ERC20_ADDRESS')}} as tx_fee_currency
         ,blocks.miner AS block_proposer
         ,txns.max_fee_per_gas
