@@ -8,6 +8,7 @@
 {% set base_models = [
     ref('katana_v2_ronin_base_trades')
     , ref('katana_v3_ronin_base_trades')
+    , ref('tamadotmeme_v1_ronin_base_trades')
 ] %}
 
 WITH base_union AS (
