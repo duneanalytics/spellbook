@@ -22,4 +22,6 @@ FROM (VALUES
     , (0xd61bbbb8369c46c15868ad9263a2710aced156c4, 'LUA', 18)
     , (0x7894b3088d069e70895effa4e8f7d2c243fd04c1, 'APRS', 18)
     , (0xf80132fc0a86add011bffce3aedd60a86e3d704d, 'ANIMA', 18)
+    , (0x7e73630f81647bcfd7b1f2c04c1c662d17d4577e, 'WBTC', 8)
+    , (0x3902228d6a3d2dc44731fd9d45fee6a61c722d0b, 'LINK', 18)
 ) AS temp_table (contract_address, symbol, decimals)
