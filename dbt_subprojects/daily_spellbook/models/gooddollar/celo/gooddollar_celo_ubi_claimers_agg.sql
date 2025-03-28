@@ -4,7 +4,6 @@
     alias = 'ubi_claimers_agg',
     materialized = 'view',
     unique_key = ['claimer'],
-    incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')],
     post_hook = '{{ expose_spells(blockchains = \'["celo"]\',
                                   spell_type = "project",
                                   spell_name = "gooddollar",
