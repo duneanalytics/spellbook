@@ -2,14 +2,24 @@
 -- Create a CTE to read the logs table and apply incremental filtering
 WITH base_filtered_logs AS (
     SELECT
-        *
+        logs.*,
+        settler_address,
+        zid, 
+        taker, 
+        method_id,
+        tag
     FROM
+        zeroex_tx
+    JOIN
         {{ source(blockchain, 'logs') }} AS logs
-    WHERE 1=1
+        on zeroex_tx.block_time = logs.block_time
+        and zeroex_tx.block_number = logs.block_number
+        and zeroex_tx.tx_hash = logs.tx_hash
+    WHERE 1=1 and rn = 1 
         {% if is_incremental() %}
-            AND {{ incremental_predicate('block_time') }}
+            AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
-            AND block_time >= DATE '{{start_date}}'
+            AND logs.block_time >= DATE '{{start_date}}'
         {% endif %}
 ), 
 
@@ -18,8 +28,8 @@ bundled_tx_check as (
         block_time,
         block_number, 
         count(*) tx_cnt
-        from zeroex_tx
-        group by 1,2,3
+    from zeroex_tx
+    group by 1,2,3
 ), 
 
 swap_signatures as (
@@ -53,7 +63,8 @@ swap_signatures as (
         (0xad7d6f97abf51ce18e17a38f4d70e975be9c0708474987bb3e26ad21bd93ca70),
         (0x54787c404bb33c88e86f4baf88183a3b0141d0a848e6a9f7a13b66ae3a9b73d1),
         (0x6ac6c02c73a1841cb185dff1fe5282ff4499ce709efd387f7fc6de10a5124320),
-        (0x1f5359759208315a45fc3fa86af1948560d8b87afdcaf1702a110ce0fbc305f3)
+        (0x1f5359759208315a45fc3fa86af1948560d8b87afdcaf1702a110ce0fbc305f3),
+        (0x40e9cecb9f5f1f1c5b9c97dec2917b7ee92e57ba5563708daca94dd84ad7112f)
     ) AS t(signature)
 ),
 
@@ -69,7 +80,7 @@ tbl_all_logs AS (
         topic2,
         method_id,
         tag,
-        st.settler_address,
+        settler_address,
         zid,
         tx_to,
         tx_from,
@@ -79,25 +90,22 @@ tbl_all_logs AS (
         case when topic0 = signature or logs.contract_address = settler_address then 'swap' end as log_type,
         data,
         row_number() over (partition by tx_hash order by index) rn,
-        cow_rn,
         case when tx_cnt > 1 then 1 else 0 end as bundled_tx
     FROM
         base_filtered_logs AS logs
-    JOIN
-        zeroex_tx st using (block_time, block_number, tx_hash)
     JOIN bundled_tx_check btx using (block_time, block_number, tx_hash)
     LEFT JOIN swap_signatures on topic0 = signature
     WHERE 1=1
         AND ( 
                 topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
-                   0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c)
+                   0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c,
+                   0xe59fdd36d0d223c0c7d996db7ad796880f45e1936cb0bb7ac102e7082e031487)
                 OR logs.contract_address = settler_address
                 OR swap_signatures.signature is not null
         )
     
         AND zid != 0xa00000000000000000000000
-        and rn = 1 
 ),
 
 swap_logs as (
@@ -116,8 +124,7 @@ swap_logs as (
         varbinary_to_uint256(varbinary_substring(data,85,12)) amount_out_
     from tbl_all_logs st 
     WHERE   
-       block_time > TIMESTAMP '2024-07-15'  
-       and log_type = 'swap'
+       log_type = 'swap'
        
 ),
 
@@ -129,7 +136,8 @@ taker_logs as (
         logs.tx_hash, 
         logs.index,
         logs.contract_address as taker_token,
-        amount as taker_amount
+        amount as taker_amount,
+        row_number() over (partition by logs.tx_hash order by (logs.index)) rn
     from tbl_all_logs logs
     left join swap_logs st 
         ON st.tx_hash = logs.tx_hash 
@@ -139,9 +147,8 @@ taker_logs as (
              varbinary_position(st.data, (logs.data)) <> 0 
             or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
           )
-          
+      
     where logs.block_time > TIMESTAMP '2024-07-15' 
-        and cow_rn is null 
         AND (
                 (
                 topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef, 
@@ -149,7 +156,7 @@ taker_logs as (
                 and ( 
                         (
                             bytearray_substring(logs.topic2,13,20) in (st.contract_address, settler_address) 
-                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker, tx_to, settler_address) 
+                        and bytearray_substring(logs.topic1,13,20) in (bytearray_substring(st.topic1,13,20), tx_from, taker, tx_to, settler_address, 0x0000000000000000000000000000000000000000) 
                         )
                         or (
                             bytearray_substring(logs.topic2,13,20) = taker 
@@ -160,9 +167,9 @@ taker_logs as (
                  and bytearray_substring(logs.topic1,13,20) in (tx_to, settler_address)  
         ) 
     )
-    select *, 
-        row_number() over (partition by tx_hash order by (index)) rn
-    from tbl_base  
+    select * 
+    from tbl_base
+    join zeroex_tx using (block_time, block_number, tx_hash, rn)
 ),
 
 maker_logs as (
@@ -188,16 +195,16 @@ maker_logs as (
         AND st.block_number = logs.block_number
         
     WHERE  
-        cow_rn is null 
-        and amount != 0 
-        and ( 
+        amount != 0 
+        and (
+             
                 ( topic0 in (0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef) 
                     and 
                         ( 
                         (
                             (
                             (bytearray_substring(logs.topic1,13,20) in (st.contract_address, settler_address)  
-                        and (bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker, settler_address, logs.contract_address))
+                        and (bytearray_substring(logs.topic2,13,20) in (bytearray_substring(st.topic2,13,20), tx_from, taker, settler_address, logs.contract_address, 0x0000000000000000000000000000000000000000))
                         )
                         or (bytearray_substring(logs.topic2,13,20) = taker and taker = tx_to ) 
                         or (bytearray_substring(logs.topic2,13,20) = st.contract_address 
@@ -208,14 +215,14 @@ maker_logs as (
                     )
                     and (varbinary_position(st.data, varbinary_ltrim(logs.data)) <> 0 
                     or varbinary_position(st.data, ( cast(-1 * varbinary_to_int256(varbinary_substring(logs.data, varbinary_length(logs.data) - 31, 32)) AS VARBINARY))) <> 0 
-                    or varbinary_to_uint256(logs.data) in (amount_out_) 
-                    or POSITION(CAST(varbinary_to_uint256(logs.data) AS VARCHAR) IN CAST(amount_out_ AS VARCHAR)) > 0
+                    or POSITION(CAST(varbinary_to_uint256(varbinary_ltrim(logs.data)) AS VARCHAR) IN CAST(amount_out_ AS VARCHAR)) > 0
+
                     ) 
                 
-                        )
-                        or (bytearray_substring(logs.topic1,13,20) in (settler_address)  
+                        )  
+                        or (bytearray_substring(logs.topic1,13,20) in (settler_address, st.contract_address)  
                         and (bytearray_substring(logs.topic2,13,20) in (taker))
-                        )
+                        )   
                     )
             )
             or (
@@ -223,6 +230,7 @@ maker_logs as (
                 and bytearray_substring(logs.topic1,13,20) in (tx_from, settler_address) 
             )
         )
+        
         
     ),
     tbl_logs_rn as (
@@ -259,62 +267,15 @@ maker_logs as (
     
 ),
 
--- Create a common table expression to read the cow_protocol_ethereum.trades table and apply incremental filtering
-base_cow_trades AS (
-    SELECT
-        *
-    FROM 
-        {{ source('cow_protocol_ethereum', 'trades') }}
-    WHERE
-        1 = 1
-        {% if is_incremental() %}
-        AND {{ incremental_predicate('block_time') }}
-        {% else %}
-        AND block_time >= DATE '{{start_date}}'
-        {% endif %}
-),
-
-cow_trades as (
-    with base_logs as (
-        select      distinct block_time, block_number, tx_hash, settler_address, logs.contract_address, tx_from, tx_to, taker, amount as taker_amount,
-                     tx_index, evt_index, buy_token_address as maker_token, atoms_bought as maker_amount, logs.contract_address as taker_token
-    FROM base_cow_trades as trades
-    JOIN tbl_all_logs as logs using (block_time, block_number, tx_hash)
-    where trades.sell_token_address = logs.contract_address and trades.atoms_sold = logs.amount
-        ),
-    base_logs_rn as (
-    select  *, 
-            row_number() over (partition by tx_hash order by evt_index) cow_trade_rn 
-        from base_logs
-        )
-    select 
-        b.block_time,
-        b.block_number,
-        b.tx_hash,
-        tx_from as taker,
-        maker_token,
-        maker_amount,
-        taker_token,
-        taker_amount,
-        tx_to,
-        tx_from,
-        evt_index,
-        b.settler_address,
-        zid,
-        tag,
-        b.settler_address as contract_address   
-    from base_logs_rn b
-    join zeroex_tx s on b.block_time = s.block_time 
-        and b.tx_hash = s.tx_hash 
-        and b.block_number = s.block_number 
-        and cow_rn = cow_trade_rn
-),
-
 tbl_trades as (
-select  block_time,
+select  distinct block_time,
         block_number,
         tx_hash,
-        case when st.taker in (0x0000000000001ff3684f28c67538d4d072c22734,
+        case 
+            {% if blockchain not in ['mode'] %}
+            when c.address is not null then tx_from 
+            {% endif %}
+             when st.taker in (0x0000000000001ff3684f28c67538d4d072c22734,
                             0x0000000000005E88410CcDFaDe4a5EfaE4b49562,
                             0x000000000000175a8b9bC6d539B3708EEd92EA6c,
                             0x9008d19f58aabd9ed0d60971565aa8510560ab41,
@@ -341,8 +302,10 @@ select  block_time,
         settler_address as contract_address 
     from maker_logs
     join zeroex_tx st using (block_time, block_number, tx_hash, rn, settler_address) 
-    union 
-    select * from cow_trades 
+    {% if blockchain not in ['mode'] %}
+    left join {{ source( blockchain, 'contracts') }} c on c.address = st.taker
+    {% endif %}
+    where maker_token != taker_token
 )
 select * from tbl_trades 
 
