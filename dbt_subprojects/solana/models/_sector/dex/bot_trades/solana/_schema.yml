@@ -5,7 +5,7 @@ models:
     meta:
       blockchain: solana
       sector: dex
-      contributors: ["whale_hunter", "hosuke"]
+      contributors: ["whale_hunter", "hosuke", "Sector920"]
     config:
       tags: ["solana", "dex", "bot", "trades"]
       description: >
@@ -817,3 +817,25 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - user
+
+  - name: bullx_solana_bot_trades
+    meta:
+      blockchain: solana
+      sector: dex
+      project: bullx
+      contributors: Sector920
+    config:
+      tags: ["solana", "dex", "bullx", "trades"]
+    description: >
+      bullx trades on Solana
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_id
+            - tx_index
+            - outer_instruction_index
+            - inner_instruction_index
+      - check_bot_trades_seed:
+          seed_file: ref('bullx_solana_trades_seed')
+          blockchain: solana
