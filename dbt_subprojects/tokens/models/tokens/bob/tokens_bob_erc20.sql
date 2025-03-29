@@ -29,5 +29,7 @@ FROM (VALUES
     (0xe75d0fb2c24a55ca1e3f96781a2bcc7bdba058f0, 'USDC', 6),
     (0x05d032ac25d322df992303dca074ee7392c117b9, 'USDT', 6),
     (0x03c7054bcb39f7b2e5b2c7acb37583e32d70cfa3, 'WBTC', 8),
-    (0x85008ae6198bc91ac0735cb5497cf125ddaac528, 'wstETH', 18)
+    (0x85008ae6198bc91ac0735cb5497cf125ddaac528, 'wstETH', 18),
+    (0xA45d4121b3D47719FF57a947A9d961539Ba33204, 'LBTC', 8),
+    (0x9998e05030Aee3Af9AD3df35A34F5C51e1628779, 'HybridBTC.pendle', 8)
 ) AS temp_table (contract_address, symbol, decimals)
