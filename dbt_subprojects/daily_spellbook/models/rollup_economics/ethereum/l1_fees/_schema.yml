@@ -1,0 +1,90 @@
+version: 3
+
+models:
+  - name: rollup_economics_ethereum_l1_fees
+    meta:
+      blockchain: ethereum
+      sector: rollup_economics
+      project: rollup_economics
+      contributors: niftytable, lgingerich, lorenz234
+    config:
+      tags: ['rollup', 'l2']
+    description: Fees spent by rollups on Ethereum L1 gas
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - origin_key
+            - tx_hash
+    columns:
+      - &name
+        name: name
+        description: "Name of the rollup"
+      - &origin_key
+        name: origin_key
+        description: "Unique identifier for the rollup"
+      - &block_time_month
+        name: block_time_month
+        description: "UTC event block month of each transaction"
+      - &block_time_day
+        name: block_time_day
+        description: "UTC event block day of each transaction"
+      - &block_time
+        name: block_time
+        description: "UTC event block time of each transaction"
+      - &block_number
+        name: block_number
+        description: "Ethereum block number of the transaction"
+      - &tx_type
+        name: type
+        description: "Transaction type"
+      - &nonce
+        name: nonce
+        description: "Nonce of the transaction sender"
+      - &tx_index
+        name: index
+        description: "Index of the transaction within the block"
+      - &success
+        name: success
+        description: "Boolean indicating if the transaction was successful"
+      - &block_hash
+        name: block_hash
+        description: "Ethereum block hash of the transaction"
+      - &tx_hash
+        name: tx_hash
+        description: "Ethereum transaction hash"
+      - &from_address
+        name: from_address
+        description: "Address that submitted the Ethereum transaction"
+      - &to_address
+        name: to_address
+        description: "Recipient address of the Ethereum transaction"
+      - &method
+        name: method
+        description: "Transaction method/function used by the Ethereum transaction"
+      - &gas_price
+        name: gas_price
+        description: "Gas price (in WEI) of the transaction"
+      - &gas_used
+        name: gas_used
+        description: "Total gas units consumed by the transaction"
+      - &max_fee_per_gas
+        name: max_fee_per_gas
+        description: "Max fee per gas unit (in WEI)"
+      - &max_priority_fee_per_gas
+        name: max_priority_fee_per_gas
+        description: "Max priority fee per gas unit (in WEI)"
+      - &priority_fee_per_gas
+        name: priority_fee_per_gas
+        description: "Priority fee per gas unit (in WEI)"
+      - &calldata_gas_used
+        name: calldata_gas_used
+        description: "Gas units used by calldata (input data) in the transaction"
+      - &data_length
+        name: data_length
+        description: "Byte length of the calldata in the transaction"
+      - &fee_native
+        name: fee_native
+        description: "Total transaction fee (in ETH)"
+      - &fee_usd
+        name: fee_usd
+        description: "Total transaction fee (in USD), calculated using ETH price at transaction time"
