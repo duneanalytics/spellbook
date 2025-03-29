@@ -64,3 +64,20 @@ models:
           seed_file: ref('uniswap_ink_base_trades_seed')
           filter:
             version: 2
+
+  - name: dyorswap_ink_base_trades
+    meta:
+      blockchain: ink
+      sector: dex
+      project: dyorswap
+      contributors: sunshinejulia9
+    config:
+      tags: ["ink", "dex", "trades", "dyorswap"]
+    description: "dyorswap ink base trades"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - tx_hash
+            - evt_index
+      - check_dex_base_trades_seed:
+          seed_file: ref('dyorswap_ink_base_trades_seed')
