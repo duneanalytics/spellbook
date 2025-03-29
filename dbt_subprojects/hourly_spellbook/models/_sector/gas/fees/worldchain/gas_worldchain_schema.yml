@@ -1,15 +1,15 @@
 version: 2
 
 models:
-  - name: gas_blast_fees
+  - name: gas_worldchain_fees
     meta:
-      blockchain: blast
+      blockchain: worldchain
       sector: gas
-      contributors: 0xRob, soispoke
+      contributors: 0xRob, soispoke, hosuke
     config:
-      tags: ['blast', 'gas', 'fees']
+      tags: ['worldchain', 'gas', 'fees']
     description: >
-        Gas Fees on Blast
+        Gas Fees on Worldchain
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -18,7 +18,7 @@ models:
       - check_seed:
           seed_file: ref('evm_gas_fees')
           filter:
-            blockchain: blast
+            blockchain: worldchain
           match_columns:
             - blockchain
             - tx_hash
