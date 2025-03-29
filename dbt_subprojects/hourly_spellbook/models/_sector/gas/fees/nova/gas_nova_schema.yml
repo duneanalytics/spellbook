@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: gas_nova_fees
+    meta:
+      blockchain: nova
+      sector: gas
+      contributors: 0xRob, hosuke
+    config:
+      tags: ['nova', 'gas', 'fees']
+    description: >
+        Gas Fees on Arbitrum Nova (AnyTrust)
+        
+        Arbitrum Nova is an Ethereum Layer 2 solution that uses AnyTrust protocol, a variant of Arbitrum's technology 
+        that offers significantly lower fees than Arbitrum One, making it ideal for gaming and social applications.
+        
+        The AnyTrust model uses a Data Availability Committee (DAC) approach, where a permissioned set of validators
+        is responsible for storing and providing access to transaction data. This reduces the amount of data that 
+        needs to be stored and processed on Ethereum mainnet, resulting in lower gas fees.
+        
+        Nova's gas fee structure includes:
+        
+        1. L1 Data Costs: Fees paid to cover the cost of posting data to Ethereum. These are significantly lower
+           than regular Arbitrum due to the DAC model, which only posts small proofs to L1 rather than all transaction data.
+           Estimated to be approximately 20-25% of the total transaction fee.
+        
+        2. L2 Execution Costs: Fees paid for computation on the Nova chain itself, which uses a gas pricing mechanism
+           similar to Arbitrum One but with a lower base fee (starting at 0.01 gwei).
+           Constitutes about 75-80% of the total transaction fee.
+        
+        3. Fallback Mechanism: In case the DAC fails to make data available, Nova includes a fallback mechanism
+           that leverages Ethereum's mainnet for data storage, which would increase fees but ensure system security.
+        
+        The AnyTrust protocol requires only two honest committee members for security, regardless of committee size,
+        making it a more efficient but still secure alternative to standard optimistic rollups.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: nova
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_raw
+      - dbt_utils.expression_is_true:
+          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
+          config:
+            where: "block_time > now() - interval '7' day"

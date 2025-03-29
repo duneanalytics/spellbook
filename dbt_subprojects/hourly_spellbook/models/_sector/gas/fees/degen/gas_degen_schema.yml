@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: gas_degen_fees
+    meta:
+      blockchain: degen
+      sector: gas
+      contributors: 0xRob, hosuke
+    config:
+      tags: ['degen', 'gas', 'fees']
+    description: >
+        Gas Fees on Degen Chain (Arbitrum Orbit)
+        
+        Degen Chain is a Layer 3 blockchain built with Arbitrum Orbit technology, designed specifically 
+        for the Degen community (primarily from Warpcast/Farcaster). It uses Base (an Ethereum Layer 2) 
+        for transaction settlement and AnyTrust protocol for data availability, offering ultra-low 
+        transaction fees and fast performance.
+        
+        As an Arbitrum Orbit chain, Degen's gas fee structure likely consists of several components:
+        
+        1. L3 Execution Fees: Fees paid to execute transactions on the Degen chain itself. This covers 
+           the computational costs of running the chain's transactions and state changes.
+        
+        2. Data Availability Fees: Fees related to ensuring data is available through the AnyTrust protocol 
+           and the Data Availability Committee (DAC).
+        
+        3. Settlement Fees: Costs associated with settling transactions on Base (the Layer 2 settlement layer).
+        
+        4. Priority Fees: Additional fees that may be charged during periods of network congestion to 
+           prioritize transactions.
+        
+        Degen Chain uses DEGEN as its native gas token, which was previously airdropped to the Degen 
+        community on Warpcast. The chain features a centralized sequencer for transaction ordering and 
+        processing, which helps maintain its high performance and low fees.
+        
+        For users, the gas fees on Degen Chain are significantly lower than on Ethereum mainnet or even 
+        many Layer 2 solutions, making it particularly suitable for frequent, small-value transactions 
+        and interactions within the Degen ecosystem.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: degen
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_raw
+      - dbt_utils.expression_is_true:
+          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
+          config:
+            where: "block_time > now() - interval '7' day"
