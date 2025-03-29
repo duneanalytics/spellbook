@@ -11,7 +11,4 @@
     ,incremental_predicates = [incremental_predicate('DBT_INTERNAL_DEST.block_time')]
     )
 }}
-
-{% set test_short_ci = false %}
-
 {{ arbitrum_orbit_stack_gas_fees(blockchain) }}
