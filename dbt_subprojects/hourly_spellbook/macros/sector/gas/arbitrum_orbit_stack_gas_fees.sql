@@ -1,4 +1,4 @@
-{% macro arbitrum_orbit_stack_gas_fees(blockchain) %}
+{% macro arbitrum_orbit_stack_gas_fees(blockchain, test_short_ci=false) %}
 
 WITH base_model as (
     SELECT
