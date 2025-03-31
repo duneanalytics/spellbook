@@ -1,4 +1,4 @@
-{% set blockchain = 'apechain' %}
+{% set blockchain = 'corn' %}
 
 {{ config(
     schema = 'gas_' + blockchain
