@@ -7,5 +7,5 @@ sources:
 
   - name: seaport_ronin
     tables:
-      - name: seaport_evt_orderfulfilled
-      - name: seaport_evt_ordersmatched
+      - name: seaport_evt_OrderFulfilled
+      - name: seaport_evt_OrdersMatched
