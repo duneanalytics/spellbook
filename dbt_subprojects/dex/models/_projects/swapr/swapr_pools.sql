@@ -5,7 +5,8 @@
 ) }}
 
 {% set swapr_models = [
-  ref('swapr_gnosis_pools')
+  ref('swapr_gnosis_pools'),
+  ref('swaprv3_gnosis_pools')
 ] %}
 
 SELECT *
