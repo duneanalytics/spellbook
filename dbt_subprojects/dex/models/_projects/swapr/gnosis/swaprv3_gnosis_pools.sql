@@ -15,7 +15,7 @@ WITH pool_creation AS (
     evt_block_time AS creation_block_time,
     evt_block_number AS creation_block_number,
     contract_address AS factory_address
-  FROM {{ source('swaprv3_gnosis', 'swaprv3factory_evt_pool') }}
+  FROM {{ source('swaprv3_gnosis', 'SwaprV3Factory_evt_Pool') }}
   {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
   {% endif %}
@@ -26,7 +26,7 @@ fee_updates AS (
     fee,
     evt_block_time AS creation_block_time,
     evt_block_number AS creation_block_number
-  FROM {{ source('swaprv3_gnosis', 'algebra_evt_fee') }}
+  FROM {{ source('swaprv3_gnosis', 'AlgebraPool_evt_Fee') }}
   {% if is_incremental() %}
     WHERE {{ incremental_predicate('evt_block_time') }}
   {% endif %}
