@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: gas_corn_fees
+    meta:
+      blockchain: corn
+      sector: gas
+      contributors: 0xRob, hosuke
+    config:
+      tags: ['corn', 'gas', 'fees']
+    description: >
+        Gas Fees on Arbitrum Corn (Orbit)
+        
+        Arbitrum Corn is an Orbit chain built using Arbitrum's technology stack. Orbit chains are customizable 
+        Layer 2 or Layer 3 solutions that can be deployed by developers with specific needs.
+        
+        As an Arbitrum Orbit chain, Corn's gas fee structure consists of four main components:
+        
+        1. l2BaseFee: Fees paid to execute transactions on the Orbit chain itself. This covers the computational
+           costs of running the chain's transactions and state changes. Approximately 40% of the total transaction fee.
+        
+        2. l2SurplusFee: Additional surplus fees charged during periods of network congestion, similar to
+           Ethereum's priority fees. These help manage network demand and prioritize transactions.
+           Approximately 10% of the total transaction fee, but varies based on network congestion.
+        
+        3. l1BaseFee: Fees paid to cover the cost of posting settlement transactions to the parent chain
+           (either Ethereum or Arbitrum One). This ensures data availability and security.
+           Approximately 45% of the total transaction fee.
+        
+        4. l1SurplusFee: An additional surplus fee that can be configured to award extra fees to the batch
+           poster for ensuring timely inclusion of transactions. Approximately 5% of the total transaction fee.
+        
+        Orbit chains like Corn have customizable fee parameters that can be managed by the chain operators
+        to optimize for their specific use cases. These parameters include minimum gas prices, congestion
+        thresholds, and fee allocations.
+        
+        For users, the total gas fees appear similar to other Ethereum-compatible chains, but behind the scenes,
+        these four components govern how fees are allocated to cover both execution and data availability costs.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - block_month
+            - tx_hash
+      - check_seed:
+          seed_file: ref('evm_gas_fees')
+          filter:
+            blockchain: corn
+          match_columns:
+            - blockchain
+            - tx_hash
+          check_columns:
+            - tx_fee_raw
+      - dbt_utils.expression_is_true:
+          expression: "tx_fee_raw = reduce(map_values(tx_fee_breakdown_raw),uint256 '0',(s, x) -> s + x,s -> s)"
+          config:
+            where: "block_time > now() - interval '7' day"
