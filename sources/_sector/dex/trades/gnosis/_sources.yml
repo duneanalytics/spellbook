@@ -37,3 +37,4 @@ sources:
     tables:
       - name: SwaprV3Factory_evt_Pool
       - name: AlgebraPool_evt_Fee
+      - name: AlgebraPool_evt_Swap
