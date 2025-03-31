@@ -5,23 +5,42 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['address'],
+        unique_key = ['address', 'token_balance_owner', 'token_mint_address', 'token_pairing_rank'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
                                     \'["ilemi"]\') }}')
 }}
 
-WITH
+{% if is_incremental() %}
+WITH affected_partitions AS (
+    SELECT DISTINCT address, token_balance_owner
+    FROM {{ source('solana', 'account_activity') }}
+    WHERE block_time > (SELECT COALESCE(MAX(activity_end), '1970-01-01'::timestamp) FROM {{ this }})
+    and address = 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo'
+),
+{% else %}
+WITH affected_partitions AS (
+    SELECT 1
+),
+{% endif %}
+
+      activity_for_processing AS (
+        SELECT act.*
+        FROM {{ source('solana','account_activity') }} act
+        {% if is_incremental() %}
+        INNER JOIN affected_partitions ap
+            ON act.address = ap.address AND act.token_balance_owner = ap.token_balance_owner
+        where act.address = 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo'
+        {% endif %}
+      ),
+
       token_offsetter AS (
       -- adds helper column to identify when an address was assigned a new token
             SELECT
                   *
                   , LAG(token_mint_address) OVER (PARTITION BY address, token_balance_owner ORDER BY block_time ASC) AS prev_token
-            FROM {{ source('solana','account_activity') }}
-            {% if is_incremental() %}
-            WHERE {{incremental_predicate('block_time')}}
-            {% endif %}
+            FROM activity_for_processing
       )
 
       , pair_orderings AS (
@@ -33,7 +52,7 @@ WITH
                         WHEN token_mint_address != prev_token THEN 1
                         ELSE 0
                         END
-                  ) OVER (PARTITION BY address, token_balance_owner ORDER BY block_time ASC) AS token_pairing_rank
+                  ) OVER (PARTITION BY address, token_balance_owner ORDER BY block_time ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS token_pairing_rank
             FROM token_offsetter
       )
 
@@ -46,7 +65,7 @@ WITH
                   , CAST(MIN(block_time) AS TIMESTAMP) AS activity_start
                   , CAST(MAX(block_time) AS TIMESTAMP) AS activity_end
             FROM pair_orderings
-            GROUP BY 1, 2, 3, token_pairing_rank
+            GROUP BY address, token_balance_owner, token_mint_address, token_pairing_rank
       )
 
       , nft_addresses AS (
@@ -56,7 +75,6 @@ WITH
             FROM {{ ref('tokens_solana_nft') }}
             WHERE
                   account_mint IS NOT NULL
-                  -- without this filter the old table classified many fungible tokens (e.g. JUP,DRIFT) as account_type=nft
                   AND token_standard NOT IN ('Fungible', 'FungibleAsset')
             GROUP BY 1
       )
@@ -75,4 +93,3 @@ SELECT
 FROM account_activity_base aa
 LEFT JOIN nft_addresses nft
     ON aa.token_mint_address = nft.account_mint
-ORDER BY address, activity_start
