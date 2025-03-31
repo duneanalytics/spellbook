@@ -28,6 +28,7 @@ sources:
     tables:
       - name: DXswapPair_evt_Swap
       - name: DXswapFactory_evt_PairCreated
+      - name: DXswapFactory_call_setSwapFee
   - name: uniswap_v3_gnosis
     tables:
       - name: uniswapv3pool_evt_swap

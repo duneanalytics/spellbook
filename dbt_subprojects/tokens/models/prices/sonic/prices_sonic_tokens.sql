@@ -54,4 +54,7 @@ FROM
     , ('wbtc-wrapped-bitcoin', 'scBTC', 0xBb30e76d9Bb2CC9631F7fC5Eb8e87B5Aff32bFbd, 8)
     , ('wbtc-wrapped-bitcoin', 'stkscBTC', 0xD0851030C94433C261B405fEcbf1DEC5E15948d0, 8)
     , ('wbtc-wrapped-bitcoin', 'wstkscBTC', 0xDb58c4DB1a0f45DDA3d2F8e44C3300BB6510c866, 8)
+    , ('wbtc-wrapped-bitcoin', 'wBTC', 0x0555e30da8f98308edb960aa94c0db47230d2b9c, 8)
+    , ('frxusd-frax-usd', 'frxUSD', 0x80eede496655fb9047dd39d9f418d5483ed600df, 18)
+    , ('frxeth-frax-ether', 'frxETH', 0x2fb960611bdc322a9a4a994252658cae9fe2eea1, 18)
 ) as temp (token_id, symbol, contract_address, decimals)
