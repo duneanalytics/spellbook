@@ -5,8 +5,8 @@ sources:
     tables:
       - name: MavisMarketPlace_evt_OrderMatched
 
-   - name: seaport_ronin
-    tables:
+ - name: seaport_ronin
+   tables:
       - name: seaport_evt_orderfulfilled
       - name: seaport_evt_ordersmatched
   
