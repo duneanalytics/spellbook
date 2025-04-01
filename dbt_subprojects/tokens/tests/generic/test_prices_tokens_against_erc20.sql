@@ -8,7 +8,7 @@ select
   ,contract_address
   ,t.symbol as prices_symbol
   ,erc20.symbol as erc20_symbol
-  ,(t.symbol = erc20.symbol) as equal_symbol 
+  ,(lower(t.symbol) = lower(erc20.symbol)) as equal_symbol 
   ,t.decimals as prices_decimals
   ,erc20.decimals as erc20_decimals
   ,(t.decimals = erc20.decimals) as equal_decimals
