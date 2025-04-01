@@ -10,7 +10,11 @@
     optional_columns = [],
     pair_column_name = 'pool'
 ) %}
-WITH base_swaps AS (
+WITH fee_events AS (
+  SELECT *
+  FROM {{ Fee_evt }}
+),
+base_swaps AS (
     SELECT
         t.evt_block_number AS block_number,
         t.evt_block_time AS block_time,
@@ -69,10 +73,10 @@ SELECT
     bs.evt_index,
     (
       SELECT fee
-      FROM {{ Fee_evt }}
-      WHERE contract_address = bs.project_contract_address
-        AND evt_block_time <= bs.block_time
-      ORDER BY evt_block_time DESC
+      FROM fee_events fe
+      WHERE fe.contract_address = bs.project_contract_address
+        AND fe.evt_block_time <= bs.block_time
+      ORDER BY fe.evt_block_time DESC
       LIMIT 1
     ) AS fee
 FROM base_swaps bs
