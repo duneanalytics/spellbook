@@ -52,7 +52,7 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - blockchain
-            - contract_address
+            - coalesce(contract_address, symbol)
       - test_prices_tokens_against_erc20
     columns:
       - &token_id
