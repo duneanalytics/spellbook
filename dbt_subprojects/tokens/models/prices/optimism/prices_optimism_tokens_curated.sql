@@ -116,7 +116,6 @@ FROM
     ('cbeth-coinbase-wrapped-staked-eth', 'cbETH', 0xaddb6a0412de1ba0f936dcaeb8aaa24578dcf3b2,18),
     ('grain-granary', 'GRAIN', 0xfD389Dc9533717239856190F42475d3f263a270d,18),
     ('usdc-usd-coin', 'USDC', 0x0b2c639c533813f4aa9d7837caf62653d097ff85, 6),
-    ('tbtc-tbtc', 'TBTC', 0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40, 18),
     ('axlusdc-axelar-wrapped-usdc', 'axlUSDC', 0xeb466342c4d449bc9f53a865d5cb90586f405215,6),
     ('beets-beethoven-x', 'BEETS', 0xb4bc46bc6cb217b59ea8f4530bae26bf69f677f0, 18),
     ('aeth-ankreth', 'ankrETH', 0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 18),
@@ -143,5 +142,5 @@ FROM
     ('bitcoin-hpos10i-bitcoin-hpos10i', 'BITCOIN (hpos10i)', 0x95d6bef5ced42c4c31e1b4c7f36e44b6a4802254,18),
     ('sarco-sarcophagus', 'SACRO', 0x7d342726b69c28d942ad8bfe6ac81b972349d524,18),
     ('tbtc-tbtc', 'tBTC', 0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40,18),
-    ('crvusd-curve-usd', 'crvUSD', 0x0994206dfe8de6ec6920ff4d779b0d950605fb53,18)
+    ('crvusd-curve-usd', 'crvUSD', 0xC52D7F23a2e460248Db6eE192Cb23dD12bDDCbf6,18)
 ) as temp (token_id, symbol, contract_address, decimals)
