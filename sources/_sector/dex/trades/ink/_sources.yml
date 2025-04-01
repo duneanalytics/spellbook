@@ -14,3 +14,7 @@ sources:
     tables:
       - name: UniswapV2Pair_evt_Swap
       - name: UniswapV2Factory_evt_PairCreated
+  - name: ink_swap_ink
+    tables:
+      - name: uniswapv2pair_evt_swap
+      - name: uniswapv2factory_evt_paircreated
