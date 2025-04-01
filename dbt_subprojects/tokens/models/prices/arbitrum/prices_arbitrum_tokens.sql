@@ -217,7 +217,7 @@ FROM
     ('reserve-eth-plus', 'arbitrum', 'ETH+', 0x18c14c2d707b2212e17d1579789fc06010cfca23, 18), 
     ('ethfi-etherfi', 'arbitrum', 'ETHFI', 0x7189fb5b6504bbff6a852b13b7b82a3c118fdc27, 18),
     ('ens-ethereum-name-service', 'arbitrum', 'ENS', 0xfea31d704deb0975da8e77bf13e04239e70d7c28, 18),
-    ('peth-peth', 'arbitrum', 'PETH', 0xa0df47432d9d88bcc040e9ee66ddc7e17a882715, 18),
+    ('peth-peth', 'arbitrum', 'pETH', 0xa0df47432d9d88bcc040e9ee66ddc7e17a882715, 18),
     --('arbi-arbiswap', 'arbitrum', 'ARBI', 0x9db8a10c7fe60d84397860b3af2e686d4f90c2b7, 18), --inactive 
     ('celr-celer-network', 'arbitrum', 'CELR', 0x3a8b787f78d775aecfeea15706d4221b40f345ab, 18),
     ('plx-plexus', 'arbitrum', 'PLX', 0x153516904bc7e28ae7c526e8aee4ec5eae878edb, 18),

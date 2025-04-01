@@ -21,7 +21,7 @@ FROM
     ('eth-ethereum', 'ETH', 0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee, 18),
     ('eth-ethereum', 'ETH', 0xdeaddeaddeaddeaddeaddeaddeaddeaddead0000,18),
     ('dai-dai', 'DAI', 0xda10009cbd5d07dd0cecc66161fc93d7c9000da1, 18),
-    ('usdc-usd-coin', 'USDC.e', 0x7f5c764cbc14f9669b88837ca1490cca17c31607, 6),
+    ('usdc-usd-coin', 'USDC', 0x7f5c764cbc14f9669b88837ca1490cca17c31607, 6),
     ('usdt-tether', 'USDT', 0x94b008aa00579c1307b0ef2c499ad98a8ce58e58, 6),
     ('wbtc-wrapped-bitcoin', 'WBTC', 0x68f180fcce6836688e9084f035309e29bf0a2095, 8),
     ('weth-weth', 'WETH', 0x4200000000000000000000000000000000000006,18),
