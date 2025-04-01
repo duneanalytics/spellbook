@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['address', 'token_balance_owner', 'token_mint_address', 'token_pairing_rank'],
+        unique_key = ['address', 'token_balance_owner', 'token_mint_address', 'valid_from', 'valid_to'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
