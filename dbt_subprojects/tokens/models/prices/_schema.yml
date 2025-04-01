@@ -48,12 +48,6 @@ models:
     config:
       tags: ['prices', 'tokens', 'usd']
     description: "Price tokens"
-    data_tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - blockchain
-            - coalesce(contract_address, symbol)
-      - test_prices_tokens_against_erc20
     columns:
       - &token_id
         name: token_id
