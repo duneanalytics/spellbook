@@ -133,7 +133,7 @@ with
             a.amm_name
             , toBase58(bytearray_substring(data,1+16,32)) as amm
             , toBase58(bytearray_substring(data,1+48,32)) as input_mint
-            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+80,8))) as input_amount
+            , bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+80,4))) as input_amount
             , toBase58(bytearray_substring(data,1+88,32)) as output_mint
             , bytearray_to_bigint(bytearray_reverse(bytearray_substring(data,1+120,8))) as output_amount
             , log_index
