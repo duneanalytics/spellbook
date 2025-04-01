@@ -89,4 +89,5 @@ FROM (VALUES
     , (0xc36f478888dddfa1a50f27442c610ac5dba8c22a, 'Vifi USDC-scUSD', 18)
     , (0xb8330f4027b6cb4402c5d02d535c87579cab2477, 'Vifi USDC-USDT', 18)
     , (0x6de36c1af417a438a69d4aaa3655022e52bbc606, 'Vifi scUSD-USDC', 18)
+    , (0x44BD4F79A95cF04505F2dc5C8e2e4043f67C7B07, 'POLTER', 18)
 ) as temp (contract_address, symbol, decimals)
