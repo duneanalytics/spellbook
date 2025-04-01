@@ -34,40 +34,56 @@ WITH affected_partitions AS (
         INNER JOIN affected_partitions ap
             ON act.address = ap.address
         {% endif %}
-        where act.address = 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo'  
+        where act.writable = true
       ),
 
-      token_offsetter AS (
-      -- adds helper column to identify when an address was assigned a new token
+      state_offsetter AS (
+      -- adds helper columns to identify when an address's owner OR mint changes
             SELECT
                   *
-                  , LAG(token_mint_address) OVER (PARTITION BY address, token_balance_owner ORDER BY block_time ASC) AS prev_token
+                  , LAG(token_balance_owner) OVER (PARTITION BY address ORDER BY block_time ASC) AS prev_owner
+                  , LAG(token_mint_address) OVER (PARTITION BY address ORDER BY block_time ASC) AS prev_mint
             FROM activity_for_processing
       )
 
-      , pair_orderings AS (
-      -- identifies the ordering of each address-mint pairing with support for repeated pairings
+      , change_periods AS (
+      -- identifies the ordering/rank of each contiguous period based on owner OR mint changes
             SELECT
                   *
                   , SUM(
                         CASE
-                        WHEN token_mint_address != prev_token THEN 1
+                        -- Increment when owner changes, or mint changes, or it's the first record for the address
+                        WHEN token_balance_owner != prev_owner 
+                             OR token_mint_address != prev_mint 
+                             OR (prev_owner IS NULL AND prev_mint IS NULL) 
+                        THEN 1 
                         ELSE 0
                         END
-                  ) OVER (PARTITION BY address, token_balance_owner ORDER BY block_time ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS token_pairing_rank
-            FROM token_offsetter
+                  ) OVER (PARTITION BY address ORDER BY block_time ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS change_period_rank
+            FROM state_offsetter
       )
 
-      , account_activity_base AS (
-      -- flattens data to each address-mint pairing with valid_from/valid_to timestamps
+      , period_starts AS (
+      -- Determine the start time for each distinct period
             SELECT
                   address
                   , token_balance_owner
                   , token_mint_address
-                  , CAST(MIN(block_time) AS TIMESTAMP) AS valid_from
-                  , CAST(MAX(block_time) AS TIMESTAMP) AS valid_to
-            FROM pair_orderings
-            GROUP BY address, token_balance_owner, token_mint_address, token_pairing_rank
+                  , change_period_rank
+                  , MIN(block_time) AS period_start_time -- This is the valid_from
+            FROM change_periods
+            GROUP BY address, token_balance_owner, token_mint_address, change_period_rank
+      )
+
+      , period_intervals AS (
+      -- Calculate valid_from and valid_to for each period using LEAD
+            SELECT
+                  address
+                  , token_balance_owner
+                  , token_mint_address
+                  , period_start_time AS valid_from
+                  , LEAD(period_start_time) OVER (PARTITION BY address ORDER BY period_start_time ASC) AS valid_to
+            FROM period_starts
       )
 
       , nft_addresses AS (
@@ -92,6 +108,6 @@ SELECT
             WHEN nft.account_mint IS NOT NULL THEN 'nft'
             ELSE 'fungible'
       END AS account_type
-FROM account_activity_base aa
+FROM period_intervals aa
 LEFT JOIN nft_addresses nft
     ON aa.token_mint_address = nft.account_mint
