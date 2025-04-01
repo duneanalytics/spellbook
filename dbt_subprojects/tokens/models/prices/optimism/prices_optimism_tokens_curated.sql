@@ -137,7 +137,7 @@ FROM
     ('dtoro-dextoro', 'DTORO', 0x1cef2d62af4cd26673c7416957cc4ec619a696a7, 18),
     ('osak-osaka-protocol', 'OSAK', 0xbfd5206962267c7b4b4a8b3d76ac2e1b2a5c4d5e, 18),
     ('gyd-gyro-dollar','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 18),
-    ('sdai-spark-protocol-dai', 'sDAI', 0x2218a117083f5b482b0bb821d27056ba9c04b1d3,18),
+    ('sdai-savings-dai', 'sDAI', 0x2218a117083f5b482b0bb821d27056ba9c04b1d3,18),
     ('frxeth-frax-ether', 'frxETH', 0x6806411765af15bddd26f8f544a34cc40cb9838b,18),
     ('bitcoin-hpos10i-bitcoin-hpos10i', 'BITCOIN (hpos10i)', 0x95d6bef5ced42c4c31e1b4c7f36e44b6a4802254,18),
     ('sarco-sarcophagus', 'SACRO', 0x7d342726b69c28d942ad8bfe6ac81b972349d524,18),
