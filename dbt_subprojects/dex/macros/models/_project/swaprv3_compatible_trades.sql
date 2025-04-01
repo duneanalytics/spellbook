@@ -67,14 +67,13 @@ SELECT
     bs.project_contract_address,
     bs.tx_hash,
     bs.evt_index,
-    fee_info.fee AS fee
+    (
+      SELECT fee
+      FROM {{ Fee_evt }}
+      WHERE contract_address = bs.project_contract_address
+        AND evt_block_time <= bs.block_time
+      ORDER BY evt_block_time DESC
+      LIMIT 1
+    ) AS fee
 FROM base_swaps bs
-LEFT JOIN LATERAL (
-    SELECT fee
-    FROM {{ Fee_evt }}
-    WHERE contract_address = bs.project_contract_address
-      AND evt_block_time <= bs.block_time
-    ORDER BY evt_block_time DESC
-    LIMIT 1
-) AS fee_info
 {% endmacro %}
