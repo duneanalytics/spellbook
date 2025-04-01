@@ -158,7 +158,7 @@ FROM
     ('gfi-gravity-finance', 'polygon', 'GFI', 0x874e178A2f3f3F9d34db862453Cd756E7eAb0381, 18),   
     ('om-mantra-dao', 'polygon', 'OM', 0xc3ec80343d2bae2f8e680fdadde7c17e71e114ea, 18),     
     ('glm-golem', 'polygon', 'GLM', 0x0B220b82F3eA3B7F6d9A1D8ab58930C064A2b5Bf, 18),     
-    ('super-superverse', 'polygon', 'SUPER', 0xa1428174f516f527fafdd146b883bb4428682737, 18) 
+    ('super-superfarm', 'polygon', 'SUPER', 0xa1428174f516f527fafdd146b883bb4428682737, 18) 
     
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
 where contract_address not in (
