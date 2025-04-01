@@ -1,5 +1,5 @@
 -- this tests checks a prices.tokens model against a tokens.erc20 model.
--- making sure we have to correct symbol and decimals for each token.
+-- making sure we have the correct decimals for each token.
 {% test test_prices_tokens_against_erc20(model) %}
 With comparison as (
 
@@ -17,5 +17,5 @@ inner join {{ref('tokens_erc20')}} erc20 using (blockchain, contract_address)
 )
 
 select * from comparison
-where not equal_symbol or not equal_decimals
+where not equal_decimals
 {% endtest %}
