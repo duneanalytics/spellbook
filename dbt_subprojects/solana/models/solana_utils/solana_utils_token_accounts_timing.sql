@@ -13,11 +13,13 @@
 }}
 
 {% if is_incremental() %}
+
+--attemting to limit data read to only the partitions that have changed
 WITH affected_partitions AS (
-    SELECT DISTINCT address, token_balance_owner
+    SELECT DISTINCT address
     FROM {{ source('solana', 'account_activity') }}
-    WHERE block_time > (SELECT COALESCE(MAX(activity_end), '1970-01-01'::timestamp) FROM {{ this }})
-    and address = 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo'
+    WHERE {{incremental_predicate('block_time')}}
+    
 ),
 {% else %}
 WITH affected_partitions AS (
@@ -30,9 +32,9 @@ WITH affected_partitions AS (
         FROM {{ source('solana','account_activity') }} act
         {% if is_incremental() %}
         INNER JOIN affected_partitions ap
-            ON act.address = ap.address AND act.token_balance_owner = ap.token_balance_owner
-        where act.address = 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo'
+            ON act.address = ap.address
         {% endif %}
+        where act.address = 'YgiU6QrKidVFS6PhwoeTeHZXiSc8Av2UykCk7umyddo'  
       ),
 
       token_offsetter AS (
