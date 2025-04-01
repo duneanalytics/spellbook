@@ -2,15 +2,15 @@
     blockchain = null,
     project = null,
     version = null,
-    Pair_evt_Swap = null,           
-    Factory_evt_PoolCreated = null, 
-    Fee_evt = null,                 
+    Pair_evt_Swap = null,
+    Factory_evt_PoolCreated = null,
+    Fee_evt = null,
     taker_column_name = 'recipient',
     maker_column_name = null,
-    optional_columns = [],          
+    optional_columns = [],
     pair_column_name = 'pool'
 ) %}
-WITH dexs AS (
+WITH base_swaps AS (
     SELECT
         t.evt_block_number AS block_number,
         t.evt_block_time AS block_time,
@@ -28,47 +28,53 @@ WITH dexs AS (
             WHEN t.amount0 < INT256 '0' THEN ABS(t.amount1) 
             ELSE ABS(t.amount0) 
         END AS token_sold_amount_raw,
-        CASE 
-            WHEN t.amount0 < INT256 '0' THEN f.token0 
-            ELSE f.token1 
-        END AS token_bought_address,
-        CASE 
-            WHEN t.amount0 < INT256 '0' THEN f.token1 
-            ELSE f.token0 
-        END AS token_sold_address,
+        f.token0 AS token0,
+        f.token1 AS token1,
         t.contract_address AS project_contract_address,
-        -- Pull the fee from the fee events table (if available)
-        fe.fee,
         t.evt_tx_hash AS tx_hash,
-        t.evt_index AS evt_index
+        t.evt_index AS evt_index,
+        t.amount0,
+        t.amount1,
+        t.liquidity,
+        t.price,
+        t.sender AS swap_sender
+        {%- if optional_columns is not empty -%}
+            {%- for col in optional_columns -%}
+                , {{ col }}
+            {%- endfor -%}
+        {%- endif -%}
     FROM {{ Pair_evt_Swap }} t
     INNER JOIN {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
-    LEFT JOIN {{ Fee_evt }} fe
-        ON fe.contract_address = t.contract_address
-           AND fe.evt_tx_hash = t.evt_tx_hash
-           AND fe.evt_index = t.evt_index
     {% if is_incremental() %}
-    WHERE {{ incremental_predicate('t.evt_block_time') }}
+      WHERE {{ incremental_predicate('t.evt_block_time') }}
     {% endif %}
 )
 SELECT
     '{{ blockchain }}' AS blockchain,
     '{{ project }}' AS project,
     '{{ version }}' AS version,
-    CAST(date_trunc('month', dexs.block_time) AS date) AS block_month,
-    CAST(date_trunc('day', dexs.block_time) AS date) AS block_date,
-    dexs.block_time,
-    dexs.block_number,
-    CAST(dexs.token_bought_amount_raw AS UINT256) AS token_bought_amount_raw,
-    CAST(dexs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw,
-    dexs.token_bought_address,
-    dexs.token_sold_address,
-    dexs.taker,
-    dexs.maker,
-    dexs.project_contract_address,
-    dexs.tx_hash,
-    dexs.evt_index,
-    dexs.fee
-FROM dexs
+    CAST(date_trunc('month', bs.block_time) AS date) AS block_month,
+    CAST(date_trunc('day', bs.block_time) AS date) AS block_date,
+    bs.block_time,
+    bs.block_number,
+    CAST(bs.token_bought_amount_raw AS UINT256) AS token_bought_amount_raw,
+    CAST(bs.token_sold_amount_raw AS UINT256) AS token_sold_amount_raw,
+    CASE WHEN bs.amount0 < INT256 '0' THEN bs.token0 ELSE bs.token1 END AS token_bought_address,
+    CASE WHEN bs.amount0 < INT256 '0' THEN bs.token1 ELSE bs.token0 END AS token_sold_address,
+    bs.taker,
+    bs.maker,
+    bs.project_contract_address,
+    bs.tx_hash,
+    bs.evt_index,
+    fee_info.fee AS fee
+FROM base_swaps bs
+LEFT JOIN LATERAL (
+    SELECT fee
+    FROM {{ Fee_evt }}
+    WHERE contract_address = bs.project_contract_address
+      AND evt_block_time <= bs.block_time
+    ORDER BY evt_block_time DESC
+    LIMIT 1
+) fee_info ON true
 {% endmacro %}
