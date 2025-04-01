@@ -737,5 +737,5 @@ FROM
         ('prcl-parcl', 'solana', 'PRCL', '4LLbsb5ReP3yEtYzmXewyGjcir5uXtKFURtaEUVC2AHs', 6),
         ('layer-solayer', 'solana', 'LAYER', 'LAYER4xPpTCb3QL8S9u41EAhAX7mhBn8Q6xMTwY2Yzc', 9),
         ('drift-drift-protocol', 'solana', 'DRIFT', 'DriFtupJYLTosbwoN8koMbEYSx54aFAVLddWsbksjwg7', 6),
-        ('tdccp-tdccp','solana','TDCCP','Hg8bKz4mvs8KNj9zew1cEF9tDw1x2GViB4RFZjVEmfrD',9)      
+        ('tdccp-takedown-the-ccp','solana','TDCCP','Hg8bKz4mvs8KNj9zew1cEF9tDw1x2GViB4RFZjVEmfrD',9)      
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
