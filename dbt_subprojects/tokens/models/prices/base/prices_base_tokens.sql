@@ -233,6 +233,6 @@ FROM
     ('skicat-ski-mask-cat', 'base', 'SKICAT',0xa6f774051dfb6b54869227fda2df9cb46f296c09, 18),
     ('aifun-ai-agent-layer', 'base', 'AIFUN',0xbdf317f9c153246c429f23f4093087164b145390, 18),
     ('cookie-cookie', 'base', 'COOKIE',0xc0041ef357b183448b235a8ea73ce4e4ec8c265f, 18),
-    ('anon-super-anon', 'base', 'ANON',0x0db510e79909666d6dec7f5e49370838c16d950f, 18)
+    ('anon-super-anon', 'base', 'ANON',0x0db510e79909666d6dec7f5e49370838c16d950f, 18),
     ('polter-polterfinance-protocol-token', 'base' 'POLTER', 0xA0820613976B441E2c6A90E4877E2fb5f7D72552, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
