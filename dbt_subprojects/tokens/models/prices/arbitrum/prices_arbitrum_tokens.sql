@@ -236,6 +236,6 @@ FROM
     --('s-s', 'arbitrum', 'S', 0xd44257dde89ca53f1471582f718632e690e46dc2, 18),
     --('ata-atlas', 'arbitrum', 'ATA', 0x296a0b8847bd4ed9af71a9ef238fa5be0778b611, 18),
     --('tian-bridged-tia-hyperlane', 'arbitrum', 'TIA', 0xd56734d7f9979dd94fae3d67c7e928234e71cd4c, 6),
-    ('ftw-black-agnus', 'arbitrum', 'FTW', 0x306fd3e7b169aa4ee19412323e1a5995b8c1a1f4, 8)
+    ('ftw-black-agnus', 'arbitrum', 'FTW', 0x306fd3e7b169aa4ee19412323e1a5995b8c1a1f4, 18)
     --('lua-lumi-finance', 'arbitrum', 'EBTC', 0xc3abc47863524ced8daf3ef98d74dd881e131c38, 8)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
