@@ -18,15 +18,15 @@ WITH base_swaps AS (
         {% if maker_column_name %}
             t.{{ maker_column_name }}
         {% else %}
-            CAST(NULL AS VARBINARY) 
+            CAST(NULL AS VARBINARY)
         {% endif %} AS maker,
         CASE 
-            WHEN t.amount0 < INT256 '0' THEN ABS(t.amount0) 
-            ELSE ABS(t.amount1) 
+            WHEN t.amount0 < INT256 '0' THEN ABS(t.amount0)
+            ELSE ABS(t.amount1)
         END AS token_bought_amount_raw,
         CASE 
-            WHEN t.amount0 < INT256 '0' THEN ABS(t.amount1) 
-            ELSE ABS(t.amount0) 
+            WHEN t.amount0 < INT256 '0' THEN ABS(t.amount1)
+            ELSE ABS(t.amount0)
         END AS token_sold_amount_raw,
         f.token0 AS token0,
         f.token1 AS token1,
@@ -76,5 +76,5 @@ LEFT JOIN LATERAL (
       AND evt_block_time <= bs.block_time
     ORDER BY evt_block_time DESC
     LIMIT 1
-) fee_info ON true
+) AS fee_info
 {% endmacro %}
