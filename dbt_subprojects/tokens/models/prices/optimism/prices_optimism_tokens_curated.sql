@@ -117,13 +117,13 @@ FROM
     ('grain-granary', 'GRAIN', 0xfD389Dc9533717239856190F42475d3f263a270d,18),
     ('usdc-usd-coin', 'USDC', 0x0b2c639c533813f4aa9d7837caf62653d097ff85, 6),
     ('tbtc-tbtc', 'TBTC', 0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40, 18),
-    ('axlusdc-axelar-wrapped-usdc', 'AXLUSDC', 0xeb466342c4d449bc9f53a865d5cb90586f405215, 6),
+    ('axlusdc-axelar-wrapped-usdc', 'axlUSDC', 0xeb466342c4d449bc9f53a865d5cb90586f405215,6),
     ('beets-beethoven-x', 'BEETS', 0xb4bc46bc6cb217b59ea8f4530bae26bf69f677f0, 18),
     ('aeth-ankreth', 'ankrETH', 0xe05a08226c49b636acf99c40da8dc6af83ce5bb3, 18),
     ('tux-magicaltux', 'TUX',  0x17aabf6838a6303fc6e9c5a227dc1eb6d95c829a, 18),
     ('sonne-sonne-finance', 'SONNE', 0x1db2466d9f5e10d7090e7152b68d62703a2245f0, 18),
     ('reth-rocket-pool-eth', 'rETH', 0x9bcef72be871e61ed4fbbc7630889bee758eb81d, 18),
-    ('weeth-wrapped-eeth', 'WEETH',0x5a7facb970d094b6c7ff1df0ea68d99e6e73cbff, 18),
+    ('weeth-wrapped-eeth', 'weETH', 0x5a7facb970d094b6c7ff1df0ea68d99e6e73cbff,18),
     ('next-connext-eth', 'NEXT', 0x58b9cb810a68a7f3e1e4f8cb45d1b9b3c79705e8, 18),
     ('ezeth-renzo-restaked-eth', 'ezETH', 0x2416092f143378750bb29b79ed961ab195cceea5, 18),
     ('usde-ethena-usde', 'USDe', 0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34, 18),
@@ -137,5 +137,11 @@ FROM
     ('trb-tellor', 'TRB', 0xaf8ca653fa2772d58f4368b0a71980e9e3ceb888, 18),
     ('dtoro-dextoro', 'DTORO', 0x1cef2d62af4cd26673c7416957cc4ec619a696a7, 18),
     ('osak-osaka-protocol', 'OSAK', 0xbfd5206962267c7b4b4a8b3d76ac2e1b2a5c4d5e, 18),
-    ('gyd-gyro-dollar','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 18)
+    ('gyd-gyro-dollar','GYD',0xca5d8f8a8d49439357d3cf46ca2e720702f132b8, 18),
+    ('sdai-spark-protocol-dai', 'sDAI', 0x2218a117083f5b482b0bb821d27056ba9c04b1d3,18),
+    ('frxeth-frax-ether', 'frxETH', 0x6806411765af15bddd26f8f544a34cc40cb9838b,18),
+    ('bitcoin-hpos10i-bitcoin-hpos10i', 'BITCOIN (hpos10i)', 0x95d6bef5ced42c4c31e1b4c7f36e44b6a4802254,18),
+    ('sarco-sarcophagus', 'SACRO', 0x7d342726b69c28d942ad8bfe6ac81b972349d524,18),
+    ('tbtc-tbtc', 'tBTC', 0x6c84a8f1c29108f47a79964b5fe888d4f4d0de40,18),
+    ('crvusd-curve-usd', 'crvUSD', 0x0994206dfe8de6ec6920ff4d779b0d950605fb53,18)
 ) as temp (token_id, symbol, contract_address, decimals)

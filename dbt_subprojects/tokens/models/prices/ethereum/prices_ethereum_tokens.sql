@@ -481,7 +481,7 @@ FROM
     ('par-parallel', 'ethereum', 'PAR', 0x68037790a0229e9ce6eaa8a99ea92964106c4703, 18),
     ('was-wasder', 'ethereum', 'WAS', 0x0c572544a4ee47904d54aaa6a970af96b6f00e1b, 18),
     ('wncg-wrapped-ncg', 'ethereum', 'WNCG', 0xf203ca1769ca8e9e8fe1da9d147db68b6c919817, 18),
-    ('bb-a-usd-balancer-boosted-aave-usd', 'ethereum', 'BB-A-USD', 0x7b50775383d3d6f0215a8f290f2c9e2eebbeceb2, 18),
+    ('bb-a-usd-balancer-boosted-aave-usd', 'ethereum', 'bb-a-USD', 0x7b50775383d3d6f0215a8f290f2c9e2eebbeceb2, 18),
     ('mir-mirror-protocol', 'ethereum', 'MIR', 0x09a3ecafa817268f77be1283176b946c4ff2e608, 18),
     ('oja-ojamu', 'ethereum', 'OJA', 0x0aa7efe4945db24d95ca6e117bba65ed326e291a, 18),
     ('tru-truebit-protocol', 'ethereum', 'TRU', 0xf65b5c5104c4fafd4b709d9d60a185eae063276c, 18),
