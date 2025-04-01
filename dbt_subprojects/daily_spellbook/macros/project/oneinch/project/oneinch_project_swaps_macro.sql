@@ -203,9 +203,9 @@ meta as (
                 , coalesce(
                     user_amount_usd_trusted
                     , caller_amount_usd_trusted
+                    , call_amount_usd_trusted
                     , user_amount_usd
                     , caller_amount_usd
-                    , call_amount_usd_trusted
                     , call_amount_usd
                 )
                 , greatest(user_amount_usd, caller_amount_usd)

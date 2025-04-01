@@ -25,7 +25,7 @@ FROM
     ,('link-chainlink', 'linea', 'LINK', 0x5B16228B94b68C7cE33AF2ACc5663eBdE4dCFA2d, 18)
     ,('dai-dai', 'linea', 'DAI', 0x4AF15ec2A0BD43Db75dd04E62FAA3B8EF36b00d5, 18)
     ,('m-btc-merlins-seal-btc', 'linea', 'M-BTC',0xe4D584ae9b753e549cAE66200A6475d2f00705f7, 18)
-    ,('solvbtc-solv-protocol-solvbtc', 'linea', 'solvBTC', 0x5FFcE65A40f6d3de5332766ffF6A28BF491C868c, 18)
+    ,('solvbtc-solv-protocol-solvbtc', 'linea', 'SolvBTC.m', 0x5FFcE65A40f6d3de5332766ffF6A28BF491C868c, 18)
     ,('lynx2-lynex', 'linea', 'LYNX', 0x1a51b19ce03dbe0cb44c1528e34a7edd7771e9af, 18)   
     ,('usdplus-usdplus', 'linea', 'USD+', 0xb79dd08ea68a908a97220c76d19a6aa9cbde4376, 6)
     ,('ezeth-renzo-restaked-eth', 'linea', 'ezETH', 0x2416092f143378750bb29b79ed961ab195cceea5, 18)

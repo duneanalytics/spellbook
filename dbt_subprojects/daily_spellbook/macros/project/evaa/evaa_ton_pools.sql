@@ -1,0 +1,11 @@
+{%- macro evaa_ton_pools()
+-%}
+{# Contains pool addresses #}
+
+SELECT pool_address, pool_name, v4_upgrate_lt FROM (VALUES 
+    ('0:BCAD466A47FA565750729565253CD073CA24D856804499090C2100D95C809F9E', 'Main pool', 49828980000001),
+    ('0:489595F65115A45C24A0DD0176309654FB00B95E40682F0C3E85D5A4D86DFB25', 'LP pool', 49712577000001),
+    ('0:0D511552DDF8413BD6E2BE2837E22C89422F7B16131BA62BE8D5A504012D8661', 'Alts pool', 0)
+    ) AS T(pool_address, pool_name, v4_upgrate_lt)
+
+{%- endmacro -%}
