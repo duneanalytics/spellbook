@@ -47,6 +47,7 @@ base_swaps AS (
                 , {{ col }}
             {%- endfor -%}
         {%- endif -%}
+        || ' ' AS spacer
     FROM {{ Pair_evt_Swap }} t
     INNER JOIN {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
