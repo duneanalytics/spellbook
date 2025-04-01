@@ -38,7 +38,7 @@ WITH base_swaps AS (
         t.liquidity,
         t.price,
         t.sender AS swap_sender
-        {%- if optional_columns is not empty -%}
+        {%- if optional_columns | length > 0 -%}
             {%- for col in optional_columns -%}
                 , {{ col }}
             {%- endfor -%}
