@@ -1,6 +1,6 @@
 -- this tests checks a prices.tokens model against a tokens.erc20 model.
 -- making sure we have to correct symbol and decimals for each token.
-{% test check_prices_tokens_against_erc20(model) %}
+{% test test_prices_tokens_against_erc20(model) %}
 With comparison as (
 
 select 
