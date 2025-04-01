@@ -9,11 +9,13 @@
 ) }}
 
 {{
-    uniswap_compatible_v3_trades(
+    swaprv3_compatible_trades(
         blockchain = 'gnosis',
         project = 'swaprv3',
         version = '3',
         Pair_evt_Swap = source('swaprv3_gnosis', 'AlgebraPool_evt_Swap'),
-        Factory_evt_PoolCreated = source('swaprv3_gnosis', 'SwaprV3Factory_evt_Pool')
+        Factory_evt_PoolCreated = source('swaprv3_gnosis', 'SwaprV3Factory_evt_Pool'),
+        Fee_evt = source('swaprv3_gnosis', 'AlgebraPool_evt_Fee'),
+        taker_column_name = 'recipient'
     )
 }}
