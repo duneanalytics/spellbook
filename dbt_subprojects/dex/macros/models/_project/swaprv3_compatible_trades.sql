@@ -84,7 +84,7 @@ SELECT
     j.project_contract_address,
     j.tx_hash,
     j.evt_index,
-    j.fee
+    COALESCE(j.fee, 100) AS fee
 FROM joined_fee j
 WHERE j.rn = 1 OR j.rn IS NULL
 {% endmacro %}
