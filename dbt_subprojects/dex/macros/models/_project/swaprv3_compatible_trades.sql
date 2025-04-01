@@ -42,12 +42,11 @@ base_swaps AS (
         t.liquidity,
         t.price,
         t.sender AS swap_sender
-        {%- if optional_columns | length > 0 -%}
-            {%- for col in optional_columns -%}
+        {% if optional_columns | length > 0 %}
+            {% for col in optional_columns %}
                 , {{ col }}
-            {%- endfor -%}
-        {%- endif -%}
-        || ' ' AS spacer
+            {% endfor %}
+        {% endif %}
     FROM {{ Pair_evt_Swap }} t
     INNER JOIN {{ Factory_evt_PoolCreated }} f
         ON f.{{ pair_column_name }} = t.contract_address
