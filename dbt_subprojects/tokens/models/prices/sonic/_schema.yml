@@ -9,6 +9,11 @@ models:
     config:
       tags: ['tokens', 'sonic', 'prices']
     description: "Token prices and metadata on Sonic"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - contract_address
+      - test_prices_tokens_against_erc20
     columns:
       - name: token_id
         description: "Unique identifier for the token"
