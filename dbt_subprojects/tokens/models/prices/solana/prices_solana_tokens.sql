@@ -736,5 +736,6 @@ FROM
         ('pyusd-paypal-usd', 'solana', 'PyUSD', '2b1kV6DkPAnxd5ixfnxCpjxmKwqjjaYmCZfHsFu24GXo', 6),
         ('prcl-parcl', 'solana', 'PRCL', '4LLbsb5ReP3yEtYzmXewyGjcir5uXtKFURtaEUVC2AHs', 6),
         ('layer-solayer', 'solana', 'LAYER', 'LAYER4xPpTCb3QL8S9u41EAhAX7mhBn8Q6xMTwY2Yzc', 9),
-        ('drift-drift-protocol', 'solana', 'DRIFT', 'DriFtupJYLTosbwoN8koMbEYSx54aFAVLddWsbksjwg7', 6)
+        ('drift-drift-protocol', 'solana', 'DRIFT', 'DriFtupJYLTosbwoN8koMbEYSx54aFAVLddWsbksjwg7', 6),
+        ('paxg-pax-gold','solana','PAXG','4V68SgViyBsEv37ridbG7pxzd1V78fVMHGaCHa2HGZMp',8)      
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
