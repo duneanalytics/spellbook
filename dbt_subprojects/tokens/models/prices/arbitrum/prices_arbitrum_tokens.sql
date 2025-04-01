@@ -233,9 +233,5 @@ FROM
     ('cow-cow-protocol-token', 'arbitrum', 'COW', 0xcb8b5CD20BdCaea9a010aC1F8d835824F5C87A04, 18),
     ('usdx-usdxmoney-usdx', 'arbitrum', 'USDX', 0xf3527ef8dE265eAa3716FB312c12847bFBA66Cef, 18),
     ('ebtc-etherfi-staked-btc', 'arbitrum', 'EBTC', 0x657e8c867d8b37dcc18fa4caead9c45eb088c642, 8),
-    --('s-s', 'arbitrum', 'S', 0xd44257dde89ca53f1471582f718632e690e46dc2, 18),
-    --('ata-atlas', 'arbitrum', 'ATA', 0x296a0b8847bd4ed9af71a9ef238fa5be0778b611, 18),
-    --('tian-bridged-tia-hyperlane', 'arbitrum', 'TIA', 0xd56734d7f9979dd94fae3d67c7e928234e71cd4c, 6),
-    ('ftw-black-agnus', 'arbitrum', 'FTW', 0x306fd3e7b169aa4ee19412323e1a5995b8c1a1f4, 8)
-    --('lua-lumi-finance', 'arbitrum', 'EBTC', 0xc3abc47863524ced8daf3ef98d74dd881e131c38, 8)
+    ('ftw-black-agnus', 'arbitrum', 'FTW', 0x306fd3e7b169aa4ee19412323e1a5995b8c1a1f4, 18)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
