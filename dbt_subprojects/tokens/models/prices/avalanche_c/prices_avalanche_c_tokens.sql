@@ -96,7 +96,6 @@ FROM
     ('ausd-agora-dollar', 'avalanche_c', 'AUSD', 0x00000000eFE302BEAA2b3e6e1b18d08D69a9012a, 6),
     ('stg-stargatetoken', 'avalanche_c', 'STG', 0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590, 18),
     --('tus-treasure-under-sea', 'avalanche_c', 'TUS', 0xf693248f96fe03422fea95ac0afbbbc4a8fdd172, 18),
-    --('cra-crabada', 'avalanche_c', 'CRA', 0xa32608e873f9ddef944b24798db69d80bbb4d1ed, 18),
     ('gmx-gmx', 'avalanche_c', 'GMX', 0x62edc0692bd897d2295872a9ffcac5425011c661, 18),
     ('klo-kalao', 'avalanche_c', 'KLO', 0xb27c8941a7df8958a1778c0259f76d1f8b711c35, 18),
     ('solvbtc-solv-protocol-solvbtc', 'avalanche_c', 'SolvBTC', 0xbc78d84ba0c46dfe32cf2895a19939c86b81a777, 18),
@@ -106,6 +105,10 @@ FROM
     ('arena-the-arena', 'avalanche_c', 'ARENA', 0xb8d7710f7d8349a506b75dd184f05777c82dad0c, 18),
     ('zro-layerzero', 'avalanche_c', 'ZRO', 0x6985884c4392d348587b19cb9eaaf157f13271cd, 18),
     ('beam-beam-eth', 'avalanche_c', 'BEAM', 0x62d0a8458ed7719fdaf978fe5929c6d342b0bfce, 18),
-    ('ggp-gogopool', 'avalanche_c', 'GGP', 0x69260B9483F9871ca57f81A90D91E2F96c2Cd11d, 18)
+    ('ggp-gogopool', 'avalanche_c', 'GGP', 0x69260B9483F9871ca57f81A90D91E2F96c2Cd11d, 18),
+    --('joe-lfj', 'avalanche_c', 'JOE', 0x6e84a6216ea6dacc71ee8e6b0a5b7322eebc0fdd, 18),
+    ('egg-chikn-egg', 'avalanche_c', 'EGG', 0x7761e2338b35bceb6bda6ce477ef012bde7ae611, 18),
+    ('cra-crabada', 'avalanche_c', 'CRA', 0xa32608e873f9ddef944b24798db69d80bbb4d1ed, 18),
+    ('ket-ket2', 'avalanche_c', 'KET', 0xffff003a6bad9b743d658048742935fffe2b6ed7, 18)
 
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
