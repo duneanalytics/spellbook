@@ -59,13 +59,13 @@ WITH affected_partitions AS (
       )
 
       , account_activity_base AS (
-      -- flattens data to each address-mint pairing with start/end timestamps
+      -- flattens data to each address-mint pairing with valid_from/valid_to timestamps
             SELECT
                   address
                   , token_balance_owner
                   , token_mint_address
-                  , CAST(MIN(block_time) AS TIMESTAMP) AS activity_start
-                  , CAST(MAX(block_time) AS TIMESTAMP) AS activity_end
+                  , CAST(MIN(block_time) AS TIMESTAMP) AS valid_from
+                  , CAST(MAX(block_time) AS TIMESTAMP) AS valid_to
             FROM pair_orderings
             GROUP BY address, token_balance_owner, token_mint_address, token_pairing_rank
       )
@@ -81,13 +81,13 @@ WITH affected_partitions AS (
             GROUP BY 1
       )
 
--- final table retains existing solana.account_activity columns with additional start/end columns
+-- final table retains existing solana.account_activity columns with additional valid_from/valid_to columns
 SELECT
     aa.address
     , aa.token_balance_owner
     , aa.token_mint_address
-    , aa.activity_start
-    , aa.activity_end
+    , aa.valid_from
+    , aa.valid_to
     , CASE
             WHEN nft.account_mint IS NOT NULL THEN 'nft'
             ELSE 'fungible'
