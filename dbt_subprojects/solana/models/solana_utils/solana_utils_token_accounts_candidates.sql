@@ -23,9 +23,9 @@ WITH address_counts AS (
         writable = true
         and token_mint_address is not null
         and token_balance_owner is not null
-        AND block_time >= DATE('2020-03-01') --filter for test run
+        AND block_time >= DATE('2025-03-01') --filter for test run
     GROUP BY address
-    HAVING unique_owner_count > 1 OR unique_mint_count > 1
+    HAVING COUNT(DISTINCT token_balance_owner) > 1 OR COUNT(DISTINCT token_mint_address) > 1
 )
 
 SELECT
