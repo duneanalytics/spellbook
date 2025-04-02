@@ -141,7 +141,7 @@ sources:
     description: "Prices tables across blockchains"
     tables:
       - name: balances_worldchain
-        identifier: balances_worldchain_0001
+        identifier: balances_worldchain_0002
         description: "Raw balances data"
         columns:
           - name: block_number
@@ -156,7 +156,7 @@ sources:
     description: "Prices tables across blockchains"
     tables:
       - name: balances_kaia
-        identifier: balances_kaia_0002
+        identifier: balances_kaia_0001
         description: "Raw balances data"
         columns:
           - name: block_number
