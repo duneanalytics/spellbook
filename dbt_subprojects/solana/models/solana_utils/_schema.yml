@@ -9,6 +9,10 @@ models:
       tags: ['solana','token_accounts']
     description: >
         unique token_mint_address and address pairs from solana.account_activity
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
     columns:
       - &token_mint_address
         name: token_mint_address
@@ -18,6 +22,20 @@ models:
         name: account_type
       - &updated_at
         name: updated_at
+
+  - name: solana_utils_token_accounts_timing
+    meta:
+      blockchain: solana
+      contributors: [0xBoxer, 0xRob]
+    config:
+      tags: ['solana','token_accounts']
+    description: >
+        Model to capture changes to token accounts over time, use valid_from and valid_to to find the correct record for any address at any point in time
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - address
+            - valid_from
 
   - name: solana_utils_epochs
     meta:

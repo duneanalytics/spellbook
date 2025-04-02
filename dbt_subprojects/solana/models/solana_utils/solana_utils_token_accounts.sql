@@ -12,7 +12,7 @@
                                     \'["ilemi"]\') }}')
 }}
 
-{% set start_date = '2025-03-01' %}
+{% set start_date = '2025-03-25' %}
 
 WITH
       distinct_accounts as (

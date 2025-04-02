@@ -5,7 +5,7 @@
         materialized = 'incremental',
         file_format = 'delta',
         incremental_strategy = 'merge',
-        unique_key = ['address', 'token_balance_owner', 'token_mint_address', 'valid_from', 'valid_to'],
+        unique_key = ['address', 'valid_from'],
         post_hook='{{ expose_spells(\'["solana"]\',
                                     "sector",
                                     "solana_utils",
@@ -13,7 +13,7 @@
 }}
 
 
-{% set start_date = '2025-03-01' %}
+{% set start_date = '2025-03-25' %}
 
 WITH
 {% if is_incremental() %}
