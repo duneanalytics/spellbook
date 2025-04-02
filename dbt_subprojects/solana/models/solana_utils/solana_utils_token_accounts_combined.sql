@@ -33,4 +33,4 @@ SELECT
     valid_to,
     account_type,
     'timed' AS source_model
-FROM {{ ref('solana_utils_token_accounts_timed') }} 
+FROM {{ ref('solana_utils_token_accounts_timing') }} 
