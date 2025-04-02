@@ -7,7 +7,8 @@ WITH base_filtered_logs AS (
         zid, 
         taker, 
         method_id,
-        tag
+        tag,
+        cow_rn
     FROM
         zeroex_tx
     JOIN
@@ -91,7 +92,8 @@ tbl_all_logs AS (
         case when topic0 = signature or logs.contract_address = settler_address then 'swap' end as log_type,
         data,
         row_number() over (partition by tx_hash order by index) rn,
-        case when tx_cnt > 1 then 1 else 0 end as bundled_tx
+        case when tx_cnt > 1 then 1 else 0 end as bundled_tx,
+        cow_rn
     FROM
         base_filtered_logs AS logs
     JOIN bundled_tx_check btx using (block_time, block_number, tx_hash)
