@@ -7,6 +7,7 @@
 -- (project, project_version, model)
 {% set nft_models = [
      ref('mavis_ronin_base_trades')
+     ,ref('opensea_v4_ronin_base_trades')
 ] %}
 
 with base_union as (
