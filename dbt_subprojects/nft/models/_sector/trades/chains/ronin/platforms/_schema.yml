@@ -15,7 +15,7 @@ models:
     meta:
      blockchain: ronin
      sector: nft
-     project: mavis_ronin
+     project: opensea_ronin
      contributors: ['peterrliem' ]
     config:
      tags: [ 'ronin', 'nft', 'trades', 'opensea' ]
