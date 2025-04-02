@@ -737,5 +737,8 @@ FROM
         ('prcl-parcl', 'solana', 'PRCL', '4LLbsb5ReP3yEtYzmXewyGjcir5uXtKFURtaEUVC2AHs', 6),
         ('layer-solayer', 'solana', 'LAYER', 'LAYER4xPpTCb3QL8S9u41EAhAX7mhBn8Q6xMTwY2Yzc', 9),
         ('drift-drift-protocol', 'solana', 'DRIFT', 'DriFtupJYLTosbwoN8koMbEYSx54aFAVLddWsbksjwg7', 6),
-        ('paxg-pax-gold','solana','PAXG','4V68SgViyBsEv37ridbG7pxzd1V78fVMHGaCHa2HGZMp',8)      
+        ('paxg-pax-gold','solana','PAXG','C6oFsE8nXRDThzrMEQ5SxaNFGKoyyfWDDVPw37JKvPTe',8),
+        ('link-chainlink','solana','LINK','CWE8jPTUYhdCTZYWPTe1o5DFqfdjzWKc9WKz6rSjQUdG',6),
+        ('virtual-virtual-protocol','solana','VIRTUAL','3iQL8BFS2vE7mww4ehAqQHAsbmRNCrPxizWAT2Zfyr9y',9),
+        ('ldo-lido-dao','solana','LDO','HZRCwxP2Vq9PCpPXooayhJ2bxTpo5xfpQrwB1svh332p',8)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
