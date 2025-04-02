@@ -180,3 +180,5 @@ models:
         combination_of_columns:
           - tx_hash
           - evt_index
+    - not_null:
+        column_name: fee
