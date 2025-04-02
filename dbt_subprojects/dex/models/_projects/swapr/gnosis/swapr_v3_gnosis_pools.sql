@@ -34,7 +34,7 @@ fee_updates AS (
 
 SELECT 
   'gnosis' AS blockchain,
-  'swaprv3' AS project,
+  'swapr' AS project,
   'v3' AS version,
   pc.pool,
   100 AS fee,  -- default fee for swaprv3 pools from the factory
