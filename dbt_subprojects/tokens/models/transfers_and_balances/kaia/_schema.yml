@@ -140,7 +140,7 @@ models:
       sector: tokens
       contributors: aalan3
     config:
-      tags: ['tokens','balances', 'base']
+      tags: ['tokens','balances', 'kaia']
     description: "Token balances enriched"
     columns:
       - name: block_date
