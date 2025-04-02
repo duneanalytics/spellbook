@@ -1,4 +1,4 @@
-{% macro swaprv3_compatible_trades(
+{% macro swapr_compatible_trades(
     blockchain = null,
     project = null,
     version = null,

@@ -211,5 +211,4 @@ FROM (VALUES
     , ('burrbear', 'BurrBear', 'Direct', 'moneygoesburr')
     , ('reservoir_swap', 'Reservoir Swap', 'Direct', 'reservoir0x')
     , ('inkyswap', 'InkySwap', 'Direct', 'inkyswap')
-    , ('swaprv3', 'Swapr V3', 'Direct', 'swaprv3')
 ) AS temp_table (project, name, marketplace_type, x_username)

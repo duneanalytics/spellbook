@@ -166,14 +166,14 @@ models:
             - tx_hash
             - evt_index
 
-  - name: swaprv3_gnosis_base_trades
+  - name: swapr_v3_gnosis_base_trades
     meta:
       blockchain: gnosis
       sector: dex
-      project: swaprv3
+      project: swapr
       contributors: mlaegn
     config:
-      tags: ["gnosis", "dex", "trades", "swaprv3", "v3"]
+      tags: ["gnosis", "dex", "trades", "swapr", "v3"]
     description: "Swapr V3 trades on Gnosis."
     data_tests:
     - dbt_utils.unique_combination_of_columns:

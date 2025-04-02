@@ -15,7 +15,7 @@
     , ref('levinswap_gnosis_base_trades')
     , ref('swapr_gnosis_base_trades')
     , ref('uniswap_v3_gnosis_base_trades')
-    , ref('swaprv3_gnosis_base_trades')
+    , ref('swapr_v3_gnosis_base_trades')
 ] %}
 
 WITH base_union AS (
