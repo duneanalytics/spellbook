@@ -12,9 +12,15 @@
                                     \'["ilemi"]\') }}')
 }}
 
+-- account_activity table is updated by a streaming service
+-- it's partitioned by address
+-- it contains a row for every transaction that has modified an account
+
+/*
+
 {% if is_incremental() %}
 
---attemting to limit data read to only the partitions that have changed
+--attemting to limit data read to only the partitions that have changed for incremental runs
 WITH affected_partitions AS (
     SELECT DISTINCT address
     FROM {{ source('solana', 'account_activity') }}
@@ -35,6 +41,7 @@ WITH affected_partitions AS (
             ON act.address = ap.address
         {% endif %}
         where act.writable = true
+        and act.block_time >= DATE ('2025-03-25')
       ),
 
       state_offsetter AS (
@@ -111,3 +118,7 @@ SELECT
 FROM period_intervals aa
 LEFT JOIN nft_addresses nft
     ON aa.token_mint_address = nft.account_mint
+
+
+
+*/
