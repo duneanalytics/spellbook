@@ -12,6 +12,9 @@
                                     \'["ilemi"]\') }}')
 }}
 
+
+{% set start_date = '2025-03-01' %}
+
 {% if is_incremental() %}
 
 --attemting to limit data read to only the partitions that have changed
@@ -35,6 +38,7 @@ WITH affected_partitions AS (
             ON act.address = ap.address
         {% endif %}
         where act.writable = true
+        and act.block_time >= timestamp '{{start_date}}'
       ),
 
       state_offsetter AS (

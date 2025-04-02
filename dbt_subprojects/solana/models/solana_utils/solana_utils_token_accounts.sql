@@ -12,6 +12,8 @@
                                     \'["ilemi"]\') }}')
 }}
 
+{% set start_date = '2025-03-01' %}
+
 WITH
       distinct_accounts as (
             SELECT
@@ -23,6 +25,7 @@ WITH
             {% if is_incremental() %}
             AND {{incremental_predicate('aa.block_time')}}
             {% endif %}
+            AND aa.block_time >= timestamp '{{start_date}}'
             group by 1
       )
 SELECT
