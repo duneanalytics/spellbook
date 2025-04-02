@@ -22,6 +22,9 @@ WITH affected_partitions AS (
     SELECT DISTINCT address
     FROM {{ source('solana', 'account_activity') }}
     WHERE {{incremental_predicate('block_time')}}
+    where writable = true
+        and token_mint_address is not null
+        and block_time >= timestamp '{{start_date}}'
     
 ),
 {% else %}
@@ -38,6 +41,7 @@ WITH affected_partitions AS (
             ON act.address = ap.address
         {% endif %}
         where act.writable = true
+        and act.token_mint_address is not null
         and act.block_time >= timestamp '{{start_date}}'
       ),
 
