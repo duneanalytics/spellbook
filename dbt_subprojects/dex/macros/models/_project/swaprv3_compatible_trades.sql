@@ -58,6 +58,8 @@ base_swaps AS (
     {% endif %}
 ),
 joined_fee AS (
+    -- Fee event is emmited when new timepoint appears, only for first swap in block
+    -- So there should always be a fee event to forward fill missing values within partition
     SELECT
         bs.*
         ,LAST_VALUE(fe.fee) IGNORE NULLS OVER w AS fee
