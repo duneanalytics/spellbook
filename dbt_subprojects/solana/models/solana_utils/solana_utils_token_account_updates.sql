@@ -105,7 +105,7 @@ SELECT
             WHEN nft.account_mint IS NOT NULL THEN 'nft'
             ELSE 'fungible'
       END AS account_type
-    , substring(aa.address, 1, 4) AS partition_key
+    , substring(aa.address, 1, 2) AS partition_key
 FROM periods aa
 LEFT JOIN nft_addresses nft
 ON aa.token_mint_address = nft.account_mint
