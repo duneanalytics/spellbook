@@ -13,112 +13,129 @@
                                     \'["ilemi"]\') }}')
 }}
 
--- account_activity table is updated by a streaming service
--- it's partitioned by address
--- it contains a row for every transaction that has modified an account
-
-
+-- This model creates time periods for addresses with multiple owners/mints
 
 {% if is_incremental() %}
-
---attemting to limit data read to only the partitions that have changed for incremental runs
-WITH affected_partitions AS (
-    SELECT DISTINCT address
-    FROM {{ source('solana', 'account_activity') }}
-    WHERE {{incremental_predicate('block_time')}}
-    
+--limiting data to only the partitions that have changed for incremental runs
+WITH addresses_to_process AS (
+    SELECT DISTINCT act.address
+    FROM {{ source('solana', 'account_activity') }} act
+    INNER JOIN {{ ref('solana_utils_token_accounts_candidates') }} cand
+        ON act.address = cand.address
+    WHERE {{incremental_predicate('act.block_time')}}
+    AND act.block_time >= DATE('2025-04-01') -- Test run with future date
 ),
 {% else %}
-WITH affected_partitions AS (
-    SELECT 1
+WITH addresses_to_process AS (
+    -- For full runs, get all candidate addresses
+    SELECT address
+    FROM {{ ref('solana_utils_token_accounts_candidates') }}
 ),
 {% endif %}
 
-      activity_for_processing AS (
-        SELECT act.*
-        FROM {{ source('solana','account_activity') }} act
-        {% if is_incremental() %}
-        INNER JOIN affected_partitions ap
-            ON act.address = ap.address
-        {% endif %}
-        where act.writable = true
-        and act.block_time >= DATE ('2025-03-25')
-      ),
+-- Only process activity for candidate addresses
+activity_for_processing AS (
+    SELECT 
+        act.address,
+        act.block_time,
+        act.token_balance_owner,
+        act.token_mint_address
+    FROM {{ source('solana','account_activity') }} act
+    INNER JOIN addresses_to_process proc
+        ON act.address = proc.address
+    WHERE 
+        act.writable = true
+        AND act.token_mint_address IS NOT NULL
+        AND act.token_balance_owner IS NOT NULL
+        AND act.block_time >= DATE('2025-04-01') -- Test run with future date
+),
 
-      state_offsetter AS (
-      -- adds helper columns to identify when an address's owner OR mint changes
-            SELECT
-                  *
-                  , LAG(token_balance_owner) OVER (PARTITION BY address ORDER BY block_time ASC) AS prev_owner
-                  , LAG(token_mint_address) OVER (PARTITION BY address ORDER BY block_time ASC) AS prev_mint
-            FROM activity_for_processing
-      )
+-- Number activity chronologically per address for LAG calculations
+numbered_activity AS (
+    SELECT
+        address,
+        block_time,
+        token_balance_owner,
+        token_mint_address,
+        -- Add row number to allow manual LAG calculation
+        ROW_NUMBER() OVER (PARTITION BY address ORDER BY block_time ASC) AS row_num
+    FROM activity_for_processing
+),
 
-      , change_periods AS (
-      -- identifies the ordering/rank of each contiguous period based on owner OR mint changes
-            SELECT
-                  *
-                  , SUM(
-                        CASE
-                        -- Increment when owner changes, or mint changes, or it's the first record for the address
-                        WHEN token_balance_owner != prev_owner 
-                             OR token_mint_address != prev_mint 
-                             OR (prev_owner IS NULL AND prev_mint IS NULL) 
-                        THEN 1 
-                        ELSE 0
-                        END
-                  ) OVER (PARTITION BY address ORDER BY block_time ASC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS change_period_rank
-            FROM state_offsetter
-      )
+-- Join with itself to simulate LAG function in a way compatible with all SQL dialects
+change_detection AS (
+    SELECT
+        current.address,
+        current.block_time,
+        current.token_balance_owner,
+        current.token_mint_address,
+        prev.token_balance_owner AS prev_owner,
+        prev.token_mint_address AS prev_mint,
+        -- Detect changes
+        CASE
+            WHEN prev.address IS NULL THEN 1 -- First record
+            WHEN current.token_balance_owner != prev.token_balance_owner THEN 1
+            WHEN current.token_mint_address != prev.token_mint_address THEN 1
+            ELSE 0
+        END AS is_change_point
+    FROM numbered_activity current
+    LEFT JOIN numbered_activity prev
+        ON current.address = prev.address
+        AND current.row_num = prev.row_num + 1
+),
 
-      , period_starts AS (
-      -- Determine the start time for each distinct period
-            SELECT
-                  address
-                  , token_balance_owner
-                  , token_mint_address
-                  , change_period_rank
-                  , MIN(block_time) AS period_start_time -- This is the valid_from
-            FROM change_periods
-            GROUP BY address, token_balance_owner, token_mint_address, change_period_rank
-      )
+-- Only keep rows where changes happened
+change_points AS (
+    SELECT
+        address,
+        block_time,
+        token_balance_owner,
+        token_mint_address 
+    FROM change_detection
+    WHERE is_change_point = 1
+),
 
-      , period_intervals AS (
-      -- Calculate valid_from and valid_to for each period using LEAD
-            SELECT
-                  address
-                  , token_balance_owner
-                  , token_mint_address
-                  , period_start_time AS valid_from
-                  , LEAD(period_start_time) OVER (PARTITION BY address ORDER BY period_start_time ASC) AS valid_to
-            FROM period_starts
-      )
+-- Number the change points chronologically
+numbered_changes AS (
+    SELECT
+        address,
+        block_time,
+        token_balance_owner,
+        token_mint_address,
+        ROW_NUMBER() OVER (PARTITION BY address ORDER BY block_time ASC) AS change_num
+    FROM change_points
+),
 
-      , nft_addresses AS (
-      -- updated nft logic to exclude fungible token_standard types from nft classification
-            SELECT
-                  account_mint
-            FROM {{ ref('tokens_solana_nft') }}
-            WHERE
-                  account_mint IS NOT NULL
-                  AND token_standard NOT IN ('Fungible', 'FungibleAsset')
-            GROUP BY 1
-      )
+-- Join with the next change to get valid_to
+time_periods AS (
+    SELECT
+        current.address,
+        current.token_balance_owner,
+        current.token_mint_address,
+        current.block_time AS valid_from,
+        next_change.block_time AS valid_to
+    FROM numbered_changes current
+    LEFT JOIN numbered_changes next_change
+        ON current.address = next_change.address
+        AND current.change_num = next_change.change_num - 1
+)
 
--- final table retains existing solana.account_activity columns with additional valid_from/valid_to columns
+-- Join with NFT data directly, without creating a separate subquery
 SELECT
-    aa.address
-    , aa.token_balance_owner
-    , aa.token_mint_address
-    , aa.valid_from
-    , aa.valid_to
-    , CASE
-            WHEN nft.account_mint IS NOT NULL THEN 'nft'
-            ELSE 'fungible'
-      END AS account_type
-FROM period_intervals aa
-LEFT JOIN nft_addresses nft
-    ON aa.token_mint_address = nft.account_mint
+    tp.address,
+    tp.token_balance_owner,
+    tp.token_mint_address,
+    tp.valid_from,
+    -- For the last period of each address (where valid_to is NULL), set to current time
+    COALESCE(tp.valid_to, CAST(NOW() AS TIMESTAMP)) AS valid_to,
+    CASE
+        WHEN nft.account_mint IS NOT NULL THEN 'nft'
+        ELSE 'fungible'
+    END AS account_type
+FROM time_periods tp
+LEFT JOIN {{ ref('tokens_solana_nft') }} nft
+    ON tp.token_mint_address = nft.account_mint
+    AND nft.token_standard NOT IN ('Fungible', 'FungibleAsset')
 
 
 
