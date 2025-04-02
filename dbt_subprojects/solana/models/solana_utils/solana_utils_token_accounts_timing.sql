@@ -103,3 +103,7 @@ SELECT
 FROM periods aa
 LEFT JOIN nft_addresses nft
 ON aa.token_mint_address = nft.account_mint
+{% if is_incremental() %}
+-- only update records outside of the current interval if they have a valid_to date
+WHERE not(aa.valid_to is null and not {{incremental_predicate('aa.valid_from')}})
+{% endif %}
