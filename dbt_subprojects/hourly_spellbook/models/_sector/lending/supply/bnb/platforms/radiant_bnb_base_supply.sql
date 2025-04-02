@@ -15,6 +15,7 @@
     blockchain = 'bnb',
     project = 'radiant',
     version = '1',
-    project_decoded_as = 'radiant'
+    project_decoded_as = 'radiant',
+    wrapped_token_gateway_available = false
   )
 }}

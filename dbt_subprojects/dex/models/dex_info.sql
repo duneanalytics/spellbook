@@ -209,4 +209,6 @@ FROM (VALUES
     , ('unichainswap', 'UnichainSwap', 'Direct', 'unichainswap')
     , ('beraswap', 'BeraSwap', 'Direct', 'BeraSwap')
     , ('burrbear', 'BurrBear', 'Direct', 'moneygoesburr')
+    , ('reservoir_swap', 'Reservoir Swap', 'Direct', 'reservoir0x')
+    , ('inkyswap', 'InkySwap', 'Direct', 'inkyswap')
 ) AS temp_table (project, name, marketplace_type, x_username)

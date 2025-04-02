@@ -26,6 +26,20 @@
     , 'zkevm'
     , 'zksync'
     , 'zora'
+    , 'abstract'
+    , 'apechain'
+    , 'berachain'
+    , 'boba'
+    , 'corn'
+    , 'flare'
+    , 'ink'
+    , 'kaia'
+    , 'nova'
+    , 'sonic'
+    , 'sophon'
+    , 'viction'
+    , 'worldchain'
+    
    
 ] %}
 
@@ -35,9 +49,6 @@ FROM (
         SELECT
         blockchain
         , block_date
-        , transfer_amount_usd_sent
-        , transfer_amount_usd_received
-        , transfer_amount_usd
         , net_transfer_amount_usd
         FROM {{ ref('tokens_' + blockchain + '_net_transfers_daily') }}
         {% if not loop.last %}

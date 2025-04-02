@@ -33,6 +33,7 @@
     , ref('dex_ronin_base_trades')
     , ref('dex_scroll_base_trades')
     , ref('dex_sei_base_trades')
+    , ref('dex_shape_base_trades')
     , ref('dex_sonic_base_trades')
     , ref('dex_worldchain_base_trades')
     , ref('dex_zkevm_base_trades')

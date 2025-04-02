@@ -28,6 +28,7 @@
                                         , "ronin"
                                         , "scroll"
                                         , "sei"
+                                        , "shape"
                                         , "solana"
                                         , "sonic"
                                         , "sophon"
@@ -44,6 +45,8 @@
                                     \'["aalan3", "jeff-dude", "umer_h_adil", "0xBoxer", "rantum", "lgingerich", "hildobby", "cryptokoryo", "0xRob", "hosuke", "Henrystats"]\') }}'
         )
 }}
+
+-- stamp 1
 
 {% set prices_models = [
 ref('prices_native_tokens')
@@ -84,6 +87,7 @@ ref('prices_native_tokens')
 ,ref('prices_abstract_tokens')
 ,ref('prices_berachain_tokens')
 ,ref('prices_apechain_tokens')
+,ref('prices_shape_tokens')
 ] %}
 
 

@@ -217,5 +217,3 @@ models:
             - blockchain
             - block_date
             - contract_address
-        
-
