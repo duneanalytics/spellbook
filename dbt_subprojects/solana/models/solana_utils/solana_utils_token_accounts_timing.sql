@@ -13,7 +13,7 @@
 }}
 
 
-{% set start_date = '2025-04-01' %}
+{% set start_date = '2025-03-01' %}
 
 {% if is_incremental() %}
 
@@ -22,7 +22,7 @@ WITH affected_partitions AS (
     SELECT DISTINCT address
     FROM {{ source('solana', 'account_activity') }}
     WHERE {{incremental_predicate('block_time')}}
-    where writable = true
+    and writable = true
         and token_mint_address is not null
         and block_time >= timestamp '{{start_date}}'
     
