@@ -22,6 +22,7 @@ WITH
                   , max_by(aa.token_mint_address, aa.block_time) as token_mint_address
             FROM {{ source('solana','account_activity') }} aa
             WHERE aa.token_mint_address is not null
+            and writable = true
             {% if is_incremental() %}
             AND {{incremental_predicate('aa.block_time')}}
             {% endif %}
