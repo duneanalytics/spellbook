@@ -28,6 +28,7 @@ relevant_historical_data AS (
       ) new
       on old.address = new.address  -- only include historical data for addresses that have been updated
       where old.valid_to is null    -- this includes only the latest record for each address
+      and not {{incremental_predicate('old.valid_from')}}   -- ignore records that are already in the current interval
 ),
 {% endif %}
 
