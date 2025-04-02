@@ -65,8 +65,8 @@ joined_fee AS (
         ,LAST_VALUE(fe.fee) IGNORE NULLS OVER w AS fee
     FROM base_swaps bs
     LEFT JOIN fee_events fe
-        ON fe.evt_tx_hash = bs.evt_tx_hash
-        AND fe.contract_address = bs.contract_address
+        ON fe.evt_tx_hash = bs.tx_hash
+        AND fe.contract_address = bs.project_contract_address
         AND fe.evt_index < bs.evt_index
     WINDOW w AS (
         PARTITION BY 
