@@ -9,7 +9,7 @@
 ) }}
 
 {{
-    swapr_compatible_trades(
+    swapr_v3_compatible_trades(
         blockchain = 'gnosis',
         project = 'swapr',
         version = '3',
