@@ -4,7 +4,7 @@
         alias = 'token_account_updates',
         materialized = 'incremental',
         file_format = 'delta',
-        partition_by = 'partition_key',
+        partition_by = ['partition_key'],
         incremental_strategy = 'merge',
         unique_key = ['address', 'valid_from'],
         post_hook='{{ expose_spells(\'["solana"]\',
