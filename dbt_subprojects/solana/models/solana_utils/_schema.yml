@@ -23,7 +23,7 @@ models:
       - &updated_at
         name: updated_at
 
-  - name: solana_utils_token_accounts_timing
+  - name: solana_utils_token_account_updates
     meta:
       blockchain: solana
       contributors: [0xBoxer, 0xRob]
