@@ -1,7 +1,7 @@
 {{
   config(
         schema = 'solana_utils',
-        alias = 'token_accounts_timed',
+        alias = 'token_account_updates',
         materialized = 'incremental',
         file_format = 'delta',
         partition_by = 'partition_key',
