@@ -13,6 +13,6 @@
 {{
 balances_daily(
     balances_daily_agg = ref('tokens_kaia_balances_daily_agg'),
-    start_date = '2023-07-15',
+    start_date = '2019-06-24',
 )
 }}
