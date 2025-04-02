@@ -34,8 +34,8 @@ relevant_historical_data AS (
 activity_for_processing AS (
     SELECT 
       act.*
-      , LAG(token_balance_owner) OVER (PARTITION BY address ORDER BY block_time ASC) AS prev_owner
-      , LAG(token_mint_address) OVER (PARTITION BY address ORDER BY block_time ASC) AS prev_mint
+      , LAG(token_balance_owner) OVER (PARTITION BY address ORDER BY block_time ASC, tx_index ASC) AS prev_owner
+      , LAG(token_mint_address) OVER (PARTITION BY address ORDER BY block_time ASC, tx_index ASC) AS prev_mint
     FROM (
       select * 
       from (
@@ -44,6 +44,7 @@ activity_for_processing AS (
           , token_balance_owner
           , token_mint_address
           , block_time
+          , tx_index
         from {{ source('solana','account_activity') }} act
         where act.writable = true
         and act.token_mint_address is not null
@@ -58,6 +59,7 @@ activity_for_processing AS (
             , token_balance_owner
             , token_mint_address
             , valid_from as block_time
+            , 0 as tx_index
       from relevant_historical_data
       {% endif %}
     ) act
@@ -66,13 +68,14 @@ activity_for_processing AS (
 periods as (
 -- Determine the start time and end time for each period
       SELECT *
-            , LEAD(valid_from) OVER (PARTITION BY address ORDER BY valid_from ASC) as valid_to
+            , LEAD(valid_from) OVER (PARTITION BY address ORDER BY valid_from ASC, tx_index ASC) as valid_to
       FROM(
             SELECT
                   address
                   , token_balance_owner
                   , token_mint_address
                   , block_time AS valid_from
+                  , tx_index
             FROM activity_for_processing
             WHERE prev_owner != token_balance_owner 
                   OR prev_mint != token_mint_address
@@ -103,6 +106,7 @@ SELECT
 FROM periods aa
 LEFT JOIN nft_addresses nft
 ON aa.token_mint_address = nft.account_mint
+WHERE aa.valid_from != aa.valid_to -- ignore changes that are rechanged within a block
 {% if is_incremental() %}
 -- only update records outside of the current interval if they have a valid_to date
 WHERE not(aa.valid_to is null and not {{incremental_predicate('aa.valid_from')}})
