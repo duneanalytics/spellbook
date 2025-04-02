@@ -12,25 +12,11 @@
                                     \'["ilemi"]\') }}')
 }}
 
--- This model creates time periods for addresses with multiple owners/mints
 
-{% if is_incremental() %}
---limiting data to only the partitions that have changed for incremental runs
 WITH addresses_to_process AS (
-    SELECT DISTINCT act.address
-    FROM {{ source('solana', 'account_activity') }} act
-    INNER JOIN {{ ref('solana_utils_token_accounts_candidates') }} cand
-        ON act.address = cand.address
-    WHERE {{incremental_predicate('act.block_time')}}
-    AND act.block_time >= DATE('2025-04-01') -- Test run with future date
-),
-{% else %}
-WITH addresses_to_process AS (
-    -- For full runs, get all candidate addresses
     SELECT address
     FROM {{ ref('solana_utils_token_accounts_candidates') }}
 ),
-{% endif %}
 
 -- Only process activity for candidate addresses
 activity_for_processing AS (
@@ -45,8 +31,7 @@ activity_for_processing AS (
     WHERE 
         act.writable = true
         AND act.token_mint_address IS NOT NULL
-        AND act.token_balance_owner IS NOT NULL
-        AND act.block_time >= DATE('2025-04-01') -- Test run with future date
+        AND act.block_time >= DATE('2025-04-01') -- Test run
 ),
 
 -- Number activity chronologically per address for LAG calculations
