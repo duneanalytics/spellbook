@@ -46,6 +46,8 @@
         )
 }}
 
+-- stamp 1
+
 {% set prices_models = [
 ref('prices_native_tokens')
 ,ref('prices_arbitrum_tokens')
