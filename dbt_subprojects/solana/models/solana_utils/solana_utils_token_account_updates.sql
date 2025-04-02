@@ -13,7 +13,7 @@
 }}
 
 
-{% set start_date = '2025-03-25' %}
+{% set start_date = '2025-01-01' %}
 
 WITH
 {% if is_incremental() %}
