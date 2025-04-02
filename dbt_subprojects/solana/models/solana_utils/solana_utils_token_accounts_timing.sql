@@ -87,7 +87,7 @@ nft_addresses AS (
       WHERE
             account_mint IS NOT NULL
             AND token_standard NOT IN ('Fungible', 'FungibleAsset')
-) nft
+)
 
 -- final table retains existing solana.account_activity columns with additional valid_from/valid_to columns
 SELECT
@@ -101,5 +101,5 @@ SELECT
             ELSE 'fungible'
       END AS account_type
 FROM periods aa
-LEFT JOIN nft
+LEFT JOIN nft_addresses nft
 ON aa.token_mint_address = nft.account_mint
