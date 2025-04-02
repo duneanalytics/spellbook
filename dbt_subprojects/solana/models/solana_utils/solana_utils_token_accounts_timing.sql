@@ -4,6 +4,7 @@
         alias = 'token_accounts_timed',
         materialized = 'incremental',
         file_format = 'delta',
+        partition_by = 'partition_key',
         incremental_strategy = 'merge',
         unique_key = ['address', 'valid_from'],
         post_hook='{{ expose_spells(\'["solana"]\',
@@ -104,6 +105,7 @@ SELECT
             WHEN nft.account_mint IS NOT NULL THEN 'nft'
             ELSE 'fungible'
       END AS account_type
+    , substring(aa.address, 1, 4) AS partition_key
 FROM periods aa
 LEFT JOIN nft_addresses nft
 ON aa.token_mint_address = nft.account_mint
