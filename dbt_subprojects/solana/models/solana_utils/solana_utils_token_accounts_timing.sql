@@ -106,7 +106,7 @@ SELECT
 FROM periods aa
 LEFT JOIN nft_addresses nft
 ON aa.token_mint_address = nft.account_mint
-WHERE aa.valid_from != aa.valid_to -- ignore changes that are rechanged within a block
+WHERE aa.valid_from IS DISTINCT FROM aa.valid_to -- ignore changes that happen within the same block
 {% if is_incremental() %}
 -- only update records outside of the current interval if they have a valid_to date
 AND not(aa.valid_to is null and not {{incremental_predicate('aa.valid_from')}})
