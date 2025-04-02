@@ -156,14 +156,14 @@ models:
       - name: decimals
       - name: collection_name
 
-  - name: tokens_base_balances_daily_agg_base
+  - name: tokens_kaia_balances_daily_agg_kaia
     meta:
-      blockchain: base
+      blockchain: kaia
       sector: tokens
       contributors: aalan3
     config:
-      tags: ['tokens','balances', 'base']
-    description: "Token balances daily base"
+      tags: ['tokens','balances', 'kaia']
+    description: "Token balances daily kaia"
     columns:
           - name: day
           - name: block_number
