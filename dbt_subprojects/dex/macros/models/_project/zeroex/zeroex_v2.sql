@@ -19,7 +19,7 @@ WITH base_filtered_logs AS (
         {% if is_incremental() %}
             AND {{ incremental_predicate('logs.block_time') }}
         {% else %}
-            AND logs.block_time >= DATE '{{start_date}}'
+            AND logs.block_time >= DATE '2025-03-01'
         {% endif %}
 ), 
 
@@ -64,7 +64,8 @@ swap_signatures as (
         (0x54787c404bb33c88e86f4baf88183a3b0141d0a848e6a9f7a13b66ae3a9b73d1),
         (0x6ac6c02c73a1841cb185dff1fe5282ff4499ce709efd387f7fc6de10a5124320),
         (0x1f5359759208315a45fc3fa86af1948560d8b87afdcaf1702a110ce0fbc305f3),
-        (0x40e9cecb9f5f1f1c5b9c97dec2917b7ee92e57ba5563708daca94dd84ad7112f)
+        (0x40e9cecb9f5f1f1c5b9c97dec2917b7ee92e57ba5563708daca94dd84ad7112f),
+        (0xa07a543ab8a018198e99ca0184c93fe9050a79400a0a723441f84de1d972cc17)
     ) AS t(signature)
 ),
 
@@ -100,14 +101,26 @@ tbl_all_logs AS (
                 topic0 IN (0x7fcf532c15f0a6db0bd6d0e038bea71d30d808c7d98cb3bf7268a95bf5081b65,
                    0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef,
                    0xe1fffcc4923d04b559f4d29a8bfc6cda04eb5b0d3c460751c2402c5c5cc9109c,
-                   0xe59fdd36d0d223c0c7d996db7ad796880f45e1936cb0bb7ac102e7082e031487)
+                   0xe59fdd36d0d223c0c7d996db7ad796880f45e1936cb0bb7ac102e7082e031487,
+                   0xed99827efb37016f2275f98c4bcf71c7551c75d59e9b450f79fa32e60be672c2)
                 OR logs.contract_address = settler_address
                 OR swap_signatures.signature is not null
         )
     
         AND zid != 0xa00000000000000000000000
 ),
-
+cow_log_range as (
+    select 
+            tx_hash,
+            block_time,
+            block_number,
+            min(index) min_index, 
+            max(index) max_index
+        from tbl_all_logs
+        where topic0 = 0xed99827efb37016f2275f98c4bcf71c7551c75d59e9b450f79fa32e60be672c2
+            AND bytearray_substring(topic1,13,20) != 0xDef1C0ded9bec7F1a1670819833240f027b25EfF
+        group by 1,2,3
+),
 swap_logs as (
     select  
         block_time, 
@@ -123,8 +136,11 @@ swap_logs as (
         rn,
         varbinary_to_uint256(varbinary_substring(data,85,12)) amount_out_
     from tbl_all_logs st 
+    left join cow_log_range cow using (block_time, block_number, tx_hash)
     WHERE   
        log_type = 'swap'
+       AND CASE WHEN cow_rn is not null then st.index > cow.min_index and st.index < cow.max_index
+           else 1=1 end 
        
 ),
 
