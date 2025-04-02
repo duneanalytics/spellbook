@@ -31,7 +31,7 @@ activity_for_processing AS (
     WHERE 
         act.writable = true
         AND act.token_mint_address IS NOT NULL
-        AND act.block_time >= DATE('2025-04-01') -- Test run
+        AND act.block_time >= DATE('2025-03-01') -- Test run
 ),
 
 -- Number activity chronologically per address for LAG calculations
@@ -111,7 +111,7 @@ SELECT
     tp.token_mint_address,
     tp.valid_from,
     -- For the last period of each address (where valid_to is NULL), set to current time
-    COALESCE(tp.valid_to, CAST(NOW() AS TIMESTAMP)) AS valid_to,
+    COALESCE(tp.valid_to, current_timestamp) AS valid_to,
     CASE
         WHEN nft.account_mint IS NOT NULL THEN 'nft'
         ELSE 'fungible'

@@ -24,7 +24,7 @@ WITH filtered_activity AS (
         writable = true
         AND token_mint_address IS NOT NULL
         AND token_balance_owner IS NOT NULL
-        AND block_time >= DATE('2025-04-01') -- Test run with future date
+        AND block_time >= DATE('2025-03-01') -- Test run with future date
 ),
 
 -- Group and count distinct values

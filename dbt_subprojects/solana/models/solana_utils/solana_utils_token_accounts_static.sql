@@ -27,7 +27,7 @@ WITH base_data AS (
         act.writable = true
         AND act.token_mint_address IS NOT NULL
         AND act.token_balance_owner IS NOT NULL
-        AND act.block_time >= DATE('2025-04-01')
+        AND act.block_time >= DATE('2025-03-01')
         AND {{incremental_predicate('act.block_time')}}
         AND NOT EXISTS (
             SELECT 1 
@@ -52,7 +52,7 @@ WITH base_data AS (
         act.writable = true
         AND act.token_mint_address IS NOT NULL
         AND act.token_balance_owner IS NOT NULL
-        AND act.block_time >= DATE('2025-04-01')
+        AND act.block_time >= DATE('2025-03-01')
         AND NOT EXISTS (
             SELECT 1 
             FROM {{ ref('solana_utils_token_accounts_candidates') }} cand
@@ -71,7 +71,7 @@ SELECT
     bd.token_balance_owner,
     bd.token_mint_address,
     bd.valid_from,
-    cast(now() as timestamp) AS valid_to,
+    current_timestamp AS valid_to,
     CASE
         WHEN nft.account_mint IS NOT NULL THEN 'nft'
         ELSE 'fungible'
