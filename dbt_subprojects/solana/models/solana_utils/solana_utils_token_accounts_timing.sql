@@ -1,6 +1,7 @@
 {{
   config(
         schema = 'solana_utils',
+        tags = ['prod_exclude'],
         alias = 'token_accounts_timed',
         materialized = 'incremental',
         file_format = 'delta',
@@ -16,7 +17,7 @@
 -- it's partitioned by address
 -- it contains a row for every transaction that has modified an account
 
-/*
+
 
 {% if is_incremental() %}
 
@@ -121,4 +122,3 @@ LEFT JOIN nft_addresses nft
 
 
 
-*/
