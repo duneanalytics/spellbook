@@ -120,6 +120,3 @@ FROM time_periods tp
 LEFT JOIN {{ ref('tokens_solana_nft') }} nft
     ON tp.token_mint_address = nft.account_mint
     AND nft.token_standard NOT IN ('Fungible', 'FungibleAsset')
-
-
-

@@ -71,7 +71,7 @@ SELECT
     bd.token_balance_owner,
     bd.token_mint_address,
     bd.valid_from,
-    current_timestamp AS valid_to,
+    cast(now() as timestamp) AS valid_to,
     CASE
         WHEN nft.account_mint IS NOT NULL THEN 'nft'
         ELSE 'fungible'
