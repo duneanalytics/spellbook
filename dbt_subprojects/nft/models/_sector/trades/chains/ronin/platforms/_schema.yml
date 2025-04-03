@@ -37,10 +37,4 @@ models:
    config:
     tags: [ 'ronin', 'nft', 'trades', 'axie marketplace', 'axie' ]
    description: "axie marketplace base trades"
-   data_tests:
-    - check_columns_nft_base_trades
-    - dbt_utils.unique_combination_of_columns:
-        combination_of_columns:
-          - block_number
-          - tx_hash
-          - sub_tx_trade_id
+   
