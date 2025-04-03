@@ -219,7 +219,7 @@ base_trades as (
   contract_address as project_contract_address,
   tx_hash,
   axie_treasury_address as platform_fee_address, -- since owner of nft collection is also the owner of the marketplace
-  axie_fee_amount_raw as platform_fee_amount_raw,
+  0 as platform_fee_amount_raw,
   axie_treasury_address as royalty_fee_address, -- since owner of nft collection is also the owner of the marketplace
   axie_fee_amount_raw as royalty_fee_amount_raw,
   axie_fee_amount_raw as ronin_treasury_fee_amount_raw,
