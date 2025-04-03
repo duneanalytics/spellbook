@@ -95,7 +95,7 @@ UNION ALL
   contract_address,
   coalesce(
             from_hex(json_extract_scalar(json_parse(element_at(receivedAllocs, cardinality(receivedAllocs))), '$.recipient')),
-            from_hex(json_extract_scalar(json_parse(json_extract_scalar("order, '$.info')), '$.maker')),
+            from_hex(json_extract_scalar(json_parse(json_extract_scalar("order", '$.info')), '$.maker')),
             from_hex(json_extract_scalar("order",'$.maker'))
             ) as seller,
   coalesce(from_hex(json_extract_scalar("order", '$.recipient')),evt_tx_from) as buyer,
