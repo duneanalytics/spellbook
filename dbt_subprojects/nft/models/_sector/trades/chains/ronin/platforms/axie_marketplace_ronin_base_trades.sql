@@ -148,7 +148,7 @@ UNION ALL
   _settlePrice as price_raw,
   cast(json_extract(_order, '$.basePrice') as DOUBLE) as base_unit_price_raw,
   from_hex('0x245db945c485b68fdc429e4f7085a1761aa4d45d') as axie_treasury_address,
-  cast(json_extract(_order, '$.marketFeePercentage') as DOUBLE)/10000 as axie_fee
+  cast(json_extract(_order, '$.marketFeePercentage') as DOUBLE)/10000 as axie_fee,
   cast(_settlePrice as DOUBLE) * cast(json_extract(_order, '$.marketFeePercentage') as DOUBLE)/10000  as axie_fee_amount_raw
   FROM
     {{ source('axie_marketplace_ronin','OrderExchangeLogic_call_settleOrder') }}
@@ -183,7 +183,7 @@ UNION ALL
   _settlePrice as price_raw,
   cast(json_extract(_order, '$.basePrice') as DOUBLE) as base_unit_price_raw,
   from_hex('0x245db945c485b68fdc429e4f7085a1761aa4d45d') as axie_treasury_address,
-  cast(json_extract(_order, '$.marketFeePercentage') as DOUBLE)/10000 as axie_fee
+  cast(json_extract(_order, '$.marketFeePercentage') as DOUBLE)/10000 as axie_fee,
   cast(_settlePrice as DOUBLE) * cast(json_extract(_order, '$.marketFeePercentage') as DOUBLE)/10000  as axie_fee_amount_raw
   FROM
     {{ source('axie_marketplace_ronin','OrderExchangeLogic_call_swapTokensAndSettleOrder') }}
