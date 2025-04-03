@@ -182,3 +182,5 @@ models:
           - evt_index
     - not_null:
         column_name: fee
+    - check_dex_base_trades_seed:
+          seed_file: ref('swapr_gnosis_base_trades_seed')
