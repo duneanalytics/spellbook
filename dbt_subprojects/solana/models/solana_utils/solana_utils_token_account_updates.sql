@@ -67,7 +67,7 @@ activity_for_processing AS (
   ),
 
 periods as (
--- Determine the start time and end time for each period
+-- Determine the start time for each period
       SELECT *
             , LEAD(valid_from) OVER (PARTITION BY address ORDER BY valid_from ASC, tx_index ASC) as valid_to
       FROM(
