@@ -213,7 +213,7 @@ base_trades as (
   seller,
   buyer,
   'buy' as trade_category,
-  -- 'secondary' as trade_type, -- primary sales can take place too
+  '' as trade_type, -- primary sales can take place too
   price_raw,
   currency_address as currency_contract,
   contract_address as project_contract_address,
