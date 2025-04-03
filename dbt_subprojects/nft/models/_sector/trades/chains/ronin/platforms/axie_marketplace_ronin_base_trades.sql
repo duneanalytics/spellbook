@@ -222,7 +222,7 @@ base_trades as (
   axie_fee_amount_raw as platform_fee_amount_raw,
   axie_treasury_address as royalty_fee_address, -- since owner of nft collection is also the owner of the marketplace
   axie_fee_amount_raw as royalty_fee_amount_raw,
-  axie_fee_amount_raw as ronin_treasury_fee_amount_raw
+  axie_fee_amount_raw as ronin_treasury_fee_amount_raw,
   evt_index as sub_tx_trade_id
   FROM trade_details
   )
