@@ -36,7 +36,7 @@ models:
     contributors: ['peterrliem' ]
    config:
     tags: [ 'ronin', 'nft', 'trades', 'axie marketplace', 'axie' ]
-   description: "opensea base trades"
+   description: "axie marketplace base trades"
    data_tests:
     - check_columns_nft_base_trades
     - dbt_utils.unique_combination_of_columns:
