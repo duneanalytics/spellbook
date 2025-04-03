@@ -24,3 +24,9 @@ sources:
       - name: Pool_evt_Borrow
       - name: Pool_evt_Repay
       - name: Pool_evt_LiquidationCall
+
+  - name: spark_protocol_gnosis
+    tables:
+      - name: Pool_evt_Borrow
+      - name: Pool_evt_Repay
+      - name: Pool_evt_LiquidationCall
