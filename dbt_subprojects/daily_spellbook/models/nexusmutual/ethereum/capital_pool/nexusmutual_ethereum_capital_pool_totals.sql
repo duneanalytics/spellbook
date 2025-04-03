@@ -42,7 +42,7 @@ lido_oracle as (
 
 steth_adjusted_date as (
   select
-    t.block_date
+    t.block_date,
     date_add('day', case when t.block_time < lo.block_time then -1 else 0 end, t.block_date) as block_oracle_date,
     t.amount as steth_amount
   from lido_oracle lo
