@@ -27,7 +27,8 @@
                                         "sonic",
                                         "zkevm",
                                         "zksync",
-                                        "zora"
+                                        "zora",
+                                        "ink"
                                         ]\',
                                     "sector",
                                     "evms",
@@ -63,6 +64,7 @@
      , ('apechain', source('apechain', 'blocks'))
      , ('berachain', source('berachain', 'blocks'))
      , ('b3', source('b3', 'blocks'))
+     , ('ink', source('ink', 'blocks'))
 ] %}
 
 SELECT *

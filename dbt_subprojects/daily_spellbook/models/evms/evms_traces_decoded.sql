@@ -2,7 +2,7 @@
         schema='evms',
         alias = 'traces_decoded',
         unique_key=['blockchain', 'tx_hash', 'evt_index'],
-        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin"]\',
+        post_hook='{{ expose_spells(\'["ethereum", "polygon", "bnb", "avalanche_c", "gnosis", "fantom", "optimism", "arbitrum", "celo", "base", "zksync", "zora", "scroll", "linea", "zkevm", "blast", "mantle", "ronin", "ink"]\',
                                     "sector",
                                     "evms",
                                     \'["hildobby"]\') }}'
@@ -29,6 +29,7 @@
      , ('mantle', source('mantle', 'traces_decoded'))
      , ('sei', source('sei', 'traces_decoded'))
      , ('ronin', source('ronin', 'traces_decoded'))
+     , ('ink', source('ink', 'traces_decoded'))
 ] %}
 
 SELECT *

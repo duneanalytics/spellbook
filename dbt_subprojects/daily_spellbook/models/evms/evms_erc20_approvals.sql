@@ -27,7 +27,8 @@
                                         "sonic",
                                         "zkevm",
                                         "zksync",
-                                        "zora"
+                                        "zora",
+                                        "ink"
                                         ]\',
                                     "sector",
                                     "evms",
@@ -61,6 +62,7 @@
      , ('kaia', source('erc20_kaia', 'evt_approval'))
      , ('berachain', source('erc20_berachain', 'evt_approval'))
      , ('b3', source('erc20_b3', 'evt_approval'))
+     , ('ink', source('erc20_ink', 'evt_approval'))
 ] %}
 
 SELECT *
