@@ -1,6 +1,6 @@
 {{
   config(
-    
+    tags = ['prod_exclude'],
     alias = 'all_transactions',
     partition_by = ['block_month'],
     materialized = 'incremental',
