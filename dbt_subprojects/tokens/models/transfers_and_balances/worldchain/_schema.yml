@@ -155,7 +155,7 @@ models:
       - name: decimals
       - name: collection_name
 
-  - name: tokens_worldchain_balances_daily_agg_worldchain
+  - name: tokens_worldchain_balances_daily_agg_base
     meta:
       blockchain: worldchain
       sector: tokens
