@@ -7,7 +7,7 @@
 
 {{
     balances_enrich(
-        balances_raw = ref('tokens_kaia_balances_daily_agg_kaia'),
+        balances_raw = ref('tokens_kaia_balances_daily_agg_base'),
         daily=true,
     )
 }}
