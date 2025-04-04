@@ -10,8 +10,7 @@ models:
       tags: ['gnosis', 'swapr', 'pools']
     description: >
       Swapr DEX pools on the Gnosis chain.
-      This model joins pair creation events with the latest fee update events so that the fee column reflects the current fee.
-      If no fee update is available, it defaults to 2500 (i.e. 0.25%).
+      This unified model combines both Swapr V2 and Swapr V3 pools.
     data_tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -28,7 +27,7 @@ models:
       - name: pool
         description: "DEX pool smart contract address"
       - name: fee
-        description: "The current fee for the pool, updated dynamically if available, otherwise defaults to 0.25%"
+        description: "The current fee for the pool, updated dynamically if available, otherwise default depending on each one's factory contract."
       - name: token0
         description: "First token in the pool"
       - name: token1
