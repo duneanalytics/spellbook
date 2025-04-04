@@ -16,7 +16,7 @@ seeds:
   - name: pepeboost_bsc_trades_seed
     config:
       column_types:
-        version: varchar
+        version: varbinary
         token_bought_address: varbinary
         token_sold_address: varbinary
         fee_token_address: varbinary
