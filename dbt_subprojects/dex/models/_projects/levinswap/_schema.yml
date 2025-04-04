@@ -1,0 +1,44 @@
+version: 2
+
+models:
+  - name: levinswap_pools
+    meta:
+      blockchain: gnosis
+      sector: dex
+      contributors: mlaegn
+    config:
+      tags: ['gnosis', 'levinswap', 'pools']
+    description: >
+      Levinswap DEX pools on the Gnosis chain.
+      Since Levinswap is a Uniswap V2 fork, a fixed fee of 3000 is assumed.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - pool
+    columns:
+      - &blockchain
+        name: blockchain
+        description: "Blockchain on which the DEX is deployed"
+      - &project
+        name: project
+        description: "Project name of the DEX (levinswap)"
+      - &version
+        name: version
+        description: "Version of the pool creation standard (v2)"
+      - name: pool
+        description: "DEX pool smart contract address"
+      - name: fee
+        description: "Defined fee (fixed at 3000)"
+      - &token0
+        name: token0
+        description: "First token in the pool"
+      - &token1
+        name: token1
+        description: "Second token in the pool"
+      - name: creation_block_time
+        description: "Block time when the pool was created"
+      - name: creation_block_number
+        description: "Block number when the pool was created"
+      - name: contract_address
+        description: "Factory contract address used to create the pool"

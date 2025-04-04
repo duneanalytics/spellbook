@@ -89,4 +89,8 @@ FROM (VALUES
     , (0xc36f478888dddfa1a50f27442c610ac5dba8c22a, 'Vifi USDC-scUSD', 18)
     , (0xb8330f4027b6cb4402c5d02d535c87579cab2477, 'Vifi USDC-USDT', 18)
     , (0x6de36c1af417a438a69d4aaa3655022e52bbc606, 'Vifi scUSD-USDC', 18)
+    , (0xbe27993204ec64238f71a527b4c4d5f4949034c3, 'PT-wstkscUSD-29MAY2025', 6)
+    , (0x46eb02b9f47634c4fab3110cc7adc1c6311dfac1, 'PT-wOS-29MAY2025', 18)
+    , (0x420df605d062f8611efb3f203bf258159b8fffde, 'PT-stS-29MAY2025', 18)
+    , (0xa2161e75edf50d70544e6588788a5732a3105c00, 'PT-wstkscETH-29MAY2025', 18)
 ) as temp (contract_address, symbol, decimals)
