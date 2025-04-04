@@ -1,6 +1,6 @@
 {{ config(
         schema = 'tokens_worldchain',
-        alias = 'balances_daily_agg_worldchain',
+        alias = 'balances_daily_agg_base',
         file_format = 'delta',
         materialized='incremental',
         incremental_strategy='merge',
