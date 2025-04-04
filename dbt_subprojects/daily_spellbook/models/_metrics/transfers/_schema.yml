@@ -75,6 +75,31 @@ models:
             - blockchain
             - block_date
 
+  - name: metrics_ton_transfers_daily_asset
+    meta:
+      blockchain: ton
+      sector: metrics
+      contributors: krishhh
+    config:
+      tags: ['metrics', 'transfers', 'daily', 'asset', 'ton']
+    description: "Total transfer amount per day per asset"
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - block_date
+            - contract_address
+    columns:
+      - name: blockchain
+        description: "The blockchain network"
+      - name: block_date
+        description: "The date of the block"
+      - name: contract_address
+        description: "The contract address of the asset"
+      - name: symbol
+      - name: net_transfer_amount_usd
+        description: "The total net transfer amount for the day and asset"
+
   - name: metrics_bitcoin_transfers_daily
     meta:
       sector: metrics
