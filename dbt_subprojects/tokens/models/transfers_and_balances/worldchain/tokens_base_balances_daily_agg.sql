@@ -7,7 +7,7 @@
 
 {{
     balances_enrich(
-        balances_raw = ref('tokens_worldchain_balances_daily_agg_worldchain'),
+        balances_raw = ref('tokens_worldchain_balances_daily_agg_base'),
         daily=true,
     )
 }}
