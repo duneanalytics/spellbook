@@ -1,13 +1,13 @@
 {{
   config(
-    schema='solana_utils'
+    schema='solana_utils',
     alias='token_accounts_alt_approach_self_join',
     materialized='table',
     partitioned_by=['token_account']
   )
 }}
 
-
+{% set start_date = '2025-01-01' %}
 
 WITH initializations AS (
   SELECT
@@ -17,6 +17,7 @@ WITH initializations AS (
     call_block_time AS event_time,
     'init' AS event_type
   FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount') }}
+  WHERE call_block_time >= timestamp '{{start_date}}'
 
   UNION ALL
 
@@ -27,6 +28,7 @@ WITH initializations AS (
     call_block_time,
     'init'
   FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount2') }}
+  WHERE call_block_time >= timestamp '{{start_date}}'
 
   UNION ALL
 
@@ -37,6 +39,7 @@ WITH initializations AS (
     call_block_time,
     'init'
   FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount3') }}
+  WHERE call_block_time >= timestamp '{{start_date}}'
 ),
 
 latest_init_before_transfer AS (
@@ -50,6 +53,7 @@ latest_init_before_transfer AS (
     ON sa.account_owned = i.token_account
     AND i.event_time < sa.call_block_time
   WHERE json_extract_scalar(sa.authorityType, '$.AuthorityType') = 'AccountOwner'
+    AND sa.call_block_time >= timestamp '{{start_date}}'
   GROUP BY i.token_account, i.account_mint, sa.call_block_time
 ),
 
@@ -63,6 +67,7 @@ latest_init_before_closure AS (
   LEFT JOIN initializations i 
     ON c.account_account = i.token_account
     AND i.event_time < c.call_block_time
+  WHERE c.call_block_time >= timestamp '{{start_date}}'
   GROUP BY i.token_account, i.account_mint, c.call_block_time
 ),
 
@@ -78,6 +83,7 @@ ownership_transfers AS (
     ON sa.account_owned = li.token_account
     AND sa.call_block_time = li.transfer_time
   WHERE json_extract_scalar(sa.authorityType, '$.AuthorityType') = 'AccountOwner'
+    AND sa.call_block_time >= timestamp '{{start_date}}'
 ),
 
 closures AS (
@@ -91,6 +97,7 @@ closures AS (
   LEFT JOIN latest_init_before_closure li 
     ON c.account_account = li.token_account
     AND c.call_block_time = li.closure_time
+  WHERE c.call_block_time >= timestamp '{{start_date}}'
 ),
 
 all_events AS (
