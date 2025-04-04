@@ -225,3 +225,22 @@ models:
             - evt_index
       - check_bot_trades_seed:
           seed_file: ref('flokibot_bnb_trades_seed')
+
+  - name: pepeboost_bsc_bot_trades
+    meta:
+      blockchain: bnb
+      sector: dex
+      project: pepeboost
+      contributors: whale_hunter
+    config:
+      tags: ["evm", "dex", "pepeboost", "trades"]
+    description: >
+      Pepeboost trades on BSC
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - blockchain
+            - tx_hash
+            - evt_index
+      - check_bot_trades_seed:
+          seed_file: ref('pepeboost_bsc_trades_seed')
