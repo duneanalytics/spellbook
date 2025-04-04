@@ -12,7 +12,7 @@
 
 {{
 balances_daily(
-    balances_daily_agg = ref('tokens_worldchain_balances_daily_agg_worldchain'),
+    balances_daily_agg = ref('tokens_worldchain_balances_daily_agg_base'),
     start_date = '2024-06-25',
 )
 }}
