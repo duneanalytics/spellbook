@@ -1,6 +1,6 @@
 {{
   config(
-    alias='token_accounts_alt_approach',
+    alias='token_accounts_alt_approach_self_join',
     materialized='table',
     partitioned_by=['token_account']
   )
