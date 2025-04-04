@@ -155,3 +155,67 @@ models:
       - name: symbol
       - name: decimals
       - name: collection_name
+
+  - name: tokens_kaia_balances_daily_agg_base
+    meta:
+      blockchain: kaia
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'kaia']
+    description: "Token balances daily kaia"
+    columns:
+          - name: day
+          - name: block_number
+          - name: block_time
+          - name: contract_address
+          - name: address
+          - name: token_id
+          - name: amount
+          - name: type
+
+  - name: tokens_kaia_balances_daily_agg
+    meta:
+      blockchain: kaia
+      sector: tokens
+      contributors: aalan3
+    config:
+      tags: ['tokens','balances', 'kaia']
+    description: "Token balances daily enriched"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name
+
+  - name: tokens_kaia_balances_daily
+    meta:
+      blockchain: kaia
+      sector: tokens
+      contributors: 0xRob
+    config:
+      tags: [ 'tokens','balances', 'kaia' ]
+    description: "Token balances daily enriched"
+    columns:
+      - name: day
+      - name: block_date
+      - name: block_number
+      - name: type
+      - name: token_address
+      - name: wallet_address
+      - name: balance_raw
+      - name: balance
+      - name: balance_usd
+      - name: price_rate
+      - name: symbol
+      - name: decimals
+      - name: collection_name
