@@ -1,6 +1,6 @@
 {{ config(
         schema = 'tokens_kaia',
-        alias = 'balances_daily_agg_kaia',
+        alias = 'balances_daily_agg_base',
         file_format = 'delta',
         materialized='incremental',
         incremental_strategy='merge',
