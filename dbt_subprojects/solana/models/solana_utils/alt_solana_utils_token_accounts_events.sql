@@ -168,7 +168,7 @@ SELECT
   event_time,
   event_type,
   token_account_prefix,
-  DATE_TRUNC('month', event_time) AS event_time_month,
+  block_month AS event_time_month,
   instruction_uniq_id
 FROM initializations_with_month
 {% if is_incremental() %}
