@@ -63,7 +63,7 @@ latest_init_before_transfer AS (
     t.token_account,
     t.account_mint,
     t.transfer_time,
-    t.latest_init_time
+    t.init_time AS latest_init_time
   FROM (
     SELECT
       i.token_account,
@@ -91,13 +91,13 @@ latest_init_before_closure AS (
     t.token_account,
     t.account_mint,
     t.closure_time,
-    t.latest_init_time
+    t.init_time AS latest_init_time
   FROM (
     SELECT
       i.token_account,
       i.account_mint,
       c.call_block_time AS closure_time,
-      i.event_time AS latest_init_time,
+      i.event_time AS init_time,
       ROW_NUMBER() OVER (
         PARTITION BY i.token_account, c.call_block_time
         ORDER BY i.event_time DESC
