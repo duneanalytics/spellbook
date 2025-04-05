@@ -19,7 +19,7 @@ SELECT
     tx_index,
     bytearray_to_bigint(
         bytearray_reverse(
-            bytearray_substring(data, 2, 8)
+            bytearray_substring(data, 2, 4)
         )
     ) as compute_limit
 FROM {{ source('solana', 'instruction_calls') }}
