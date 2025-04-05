@@ -12,7 +12,6 @@ seeds:
         user: varbinary
         tx_hash: varbinary
 
-seeds:
   - name: pepeboost_bsc_trades_seed
     config:
       column_types:
