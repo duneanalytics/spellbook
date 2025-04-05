@@ -137,7 +137,7 @@ ownership_transfers AS (
     sa.call_block_time AS event_time,
     'owner_change' AS event_type,
     sa.token_account_prefix, -- Use the pre-calculated prefix
-    sa.call_block_month,
+    sa.call_block_month AS event_time_month,
     sa.instruction_uniq_id
   FROM filtered_authority_changes sa
   LEFT JOIN latest_init_before_transfer li 
@@ -153,7 +153,7 @@ closures AS (
     c.call_block_time AS event_time,
     'close' AS event_type,
     c.token_account_prefix, -- Use the pre-calculated prefix
-    DATE_TRUNC('month', c.call_block_time) AS event_time_month,
+    c.call_block_month AS event_time_month,
     c.instruction_uniq_id
   FROM filtered_account_closures c
   LEFT JOIN latest_init_before_closure li 
