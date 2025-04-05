@@ -494,3 +494,31 @@ sources:
             description: "Timestamp of the block containing this event"
           - name: evt_block_number
             description: "Block number containing this event"
+
+  - name: contracts
+    description: "The contracts table contains information about smart contracts deployed on the Shape network."
+    columns:
+      - name: address
+        description: "The address of the deployed contract"
+      - name: abi_id
+        description: "Identifier for the contract's ABI (Application Binary Interface)"
+      - name: abi
+        description: "The contract's ABI (Application Binary Interface) in JSON format"
+      - name: from
+        description: "Address that deployed the contract"
+      - name: code
+        description: "The contract's bytecode"
+      - name: name
+        description: "Human-readable name of the contract"
+      - name: namespace
+        description: "Categorical grouping or project name associated with the contract"
+      - name: dynamic
+        description: "Boolean indicating if the contract uses dynamic features"
+      - name: base
+        description: "Base contract address if this is a proxy or clone"
+      - name: factory
+        description: "Address of the factory contract if this was deployed by a factory"
+      - name: detection_source
+        description: "Source of contract detection information"
+      - name: created_at
+        description: "Timestamp when the contract was created"
