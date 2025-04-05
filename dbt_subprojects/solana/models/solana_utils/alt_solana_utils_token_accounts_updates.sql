@@ -7,7 +7,6 @@
   )
 }}
 
-{% set start_date = '2025-04-05' %}
 
 -- Combine state calculation and interval determination in one CTE
 WITH combined_events AS (
@@ -40,12 +39,17 @@ WITH combined_events AS (
 -- Final selection from the combined CTE
 SELECT
   token_account,
-  account_owner,
-  account_mint,
+  account_owner as token_balance_owner,
+  account_mint as token_mint_address,
+  event_type,
   valid_from,
-  valid_from_instruction_uniq_id,
   COALESCE(valid_to, TIMESTAMP '9999-12-31 23:59:59') AS valid_to,
+  valid_from_instruction_uniq_id,
   COALESCE(valid_to_instruction_uniq_id, '999999999999999999999') AS valid_to_instruction_uniq_id,
   token_account_prefix
 FROM combined_events
 
+
+-- need to add a the NFT flag to the CTE
+-- need to add token 22 accounts to this pipeline
+-- with token 22 we are covered for tokens transfers, we don't cover NFT transfers anyways

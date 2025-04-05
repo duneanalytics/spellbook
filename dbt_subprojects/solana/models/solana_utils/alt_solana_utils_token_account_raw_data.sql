@@ -11,8 +11,6 @@
   )
 }}
 
-{% set start_date = '2021-01-01' %}
-
 --Init events contain mint address, and owner address
 --Init v1
 SELECT
@@ -30,7 +28,7 @@ SELECT
       lpad(cast(coalesce(call_inner_instruction_index, 0) as varchar), 4, '0')
     ) AS instruction_uniq_id
 FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount') }}
-WHERE call_block_time >= timestamp '{{start_date}}'
+WHERE 1=1
 {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
 {% endif %}
@@ -53,7 +51,7 @@ SELECT
       lpad(cast(coalesce(call_inner_instruction_index, 0) as varchar), 4, '0')
     ) AS instruction_uniq_id
 FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount2') }}
-WHERE call_block_time >= timestamp '{{start_date}}'
+WHERE 1=1
 {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
 {% endif %}
@@ -76,7 +74,7 @@ SELECT
       lpad(cast(coalesce(call_inner_instruction_index, 0) as varchar), 4, '0')
     ) AS instruction_uniq_id
 FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount3') }}
-WHERE call_block_time >= timestamp '{{start_date}}'
+WHERE 1=1
 {% if is_incremental() %}
   AND {{ incremental_predicate('call_block_time') }}
 {% endif %} 
@@ -101,7 +99,7 @@ SELECT
     ) AS instruction_uniq_id
   FROM {{ source('spl_token_solana', 'spl_token_call_setauthority') }}
   WHERE json_extract_scalar(authorityType, '$.AuthorityType') = 'AccountOwner'
-  AND call_block_time >= timestamp '{{start_date}}'
+  AND 1=1
   {% if is_incremental() %}
     AND {{ incremental_predicate('call_block_time') }}
   {% endif %}
@@ -124,7 +122,7 @@ SELECT
       lpad(cast(coalesce(call_inner_instruction_index, 0) as varchar), 4, '0')
     ) AS instruction_uniq_id
   FROM {{ source('spl_token_solana', 'spl_token_call_closeaccount') }}
-  WHERE call_block_time >= timestamp '{{start_date}}'
+  WHERE 1=1
     {% if is_incremental() %}
     AND {{ incremental_predicate('call_block_time') }}
     {% endif %}
