@@ -70,51 +70,63 @@ filtered_account_closures AS (
     {% endif %}
 ),
 
-
+-- Use window function instead of GROUP BY to find latest initialization
 latest_init_before_transfer AS (
   SELECT
-    sa.account_owned AS token_account,
-    li.account_mint,
-    sa.call_block_time AS transfer_time,
-    li.event_time AS latest_init_time,
-    li.instruction_uniq_id AS init_instruction_uniq_id
-  FROM filtered_authority_changes sa
-  LEFT JOIN LATERAL (
+    t.token_account,
+    t.account_mint,
+    t.transfer_time,
+    t.init_time AS latest_init_time,
+    t.instruction_uniq_id AS init_instruction_uniq_id
+  FROM (
     SELECT
+      i.token_account,
       i.account_mint,
-      i.event_time,
-      i.instruction_uniq_id
-    FROM initializations_with_month i
-    WHERE i.token_account = sa.account_owned
+      sa.call_block_time AS transfer_time,
+      i.event_time AS init_time,
+      i.instruction_uniq_id,
+      ROW_NUMBER() OVER (
+        PARTITION BY i.token_account, sa.call_block_time
+        ORDER BY i.event_time DESC, i.instruction_uniq_id DESC
+      ) AS rn
+    FROM filtered_authority_changes sa
+    JOIN initializations_with_month i
+      ON sa.account_owned = i.token_account
       AND i.event_time < sa.call_block_time
-      AND i.token_account_prefix = sa.token_account_prefix
+      -- for better performance
+      AND sa.token_account_prefix = i.token_account_prefix
       AND i.block_month <= sa.call_block_month
-    ORDER BY i.event_time DESC, i.instruction_uniq_id DESC
-    LIMIT 1
-  ) li ON TRUE
+  ) t
+  WHERE t.rn = 1
 ),
 
 latest_init_before_closure AS (
   SELECT
-    c.account_account AS token_account,
-    li.account_mint,
-    c.call_block_time AS closure_time,
-    li.event_time AS latest_init_time,
-    li.instruction_uniq_id AS init_instruction_uniq_id
-  FROM filtered_account_closures c
-  LEFT JOIN LATERAL (
+    t.token_account,
+    t.account_mint,
+    t.closure_time,
+    t.init_time AS latest_init_time,
+    t.instruction_uniq_id AS init_instruction_uniq_id
+  FROM (
     SELECT
+      i.token_account,
       i.account_mint,
-      i.event_time,
-      i.instruction_uniq_id
-    FROM initializations_with_month i
-    WHERE i.token_account = c.account_account
+      c.call_block_time AS closure_time,
+      i.event_time AS init_time,
+      i.instruction_uniq_id,
+      ROW_NUMBER() OVER (
+        PARTITION BY i.token_account, c.call_block_time
+        ORDER BY i.event_time DESC, i.instruction_uniq_id DESC
+      ) AS rn
+    FROM filtered_account_closures c
+    JOIN initializations_with_month i
+      ON c.account_account = i.token_account
       AND i.event_time < c.call_block_time
-      AND i.token_account_prefix = c.token_account_prefix
+      -- for better performance
+      AND c.token_account_prefix = i.token_account_prefix
       AND i.block_month <= c.call_block_month
-    ORDER BY i.event_time DESC, i.instruction_uniq_id DESC
-    LIMIT 1
-  ) li ON TRUE
+  ) t
+  WHERE t.rn = 1
 ),
 
 ownership_transfers AS (
