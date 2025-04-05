@@ -9,3 +9,12 @@ sources:
     tables:
       - name: seaport_evt_OrderFulfilled
       - name: seaport_evt_OrdersMatched
+
+  - name: axie_marketplace_ronin
+    tables:
+      - name: AppAxieOrderExchangeV1_call_settleOrder
+      - name: AppAxieOrderExchangeV1_call_swapTokensAndSettleOrder
+      - name: MarketGateway_evt_OrderMatched
+      - name: OrderExchangeLogic_call_settleOrder
+      - name: OrderExchangeLogic_call_swapTokensAndSettleOrder
+# to add 0x213073989821f738a7ba3520c3d31a1f9ad31bbd later
