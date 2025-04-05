@@ -7,7 +7,7 @@
                         blockchains = \'["solana"]\',
                         spell_type = "sector",
                         spell_name = "dex_solana",
-                        contributors = \'["whale_hunter", "hosuke"]\') }}'
+                        contributors = \'["whale_hunter", "hosuke", "Sector920"]\') }}'
     )
 }}
 
@@ -39,6 +39,7 @@
     , ref('tradewiz_solana_bot_trades')
     , ref('prophetbots_solana_bot_trades')
     , ref('sanji_solana_bot_trades')
+    , ref('bullx_solana_bot_trades')
 ] %}
 
 {% for bot in solana_trading_bot %}
