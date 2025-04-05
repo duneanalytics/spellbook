@@ -1,44 +1,28 @@
 {{
   config(
     schema='solana_utils',
-    alias='token_accounts_alt_approach_lead_func',
-    materialized='table'
+    alias='token_accounts_events',
+    materialized='incremental',
+    file_format='delta',
+    partition_by=['token_account_prefix'],
+    incremental_strategy='merge',
+    incremental_predicates=[incremental_predicate('DBT_INTERNAL_DEST.event_time')],
+    unique_key=['token_account', 'event_time', 'event_type']
   )
 }}
 
-{% set start_date = '2025-01-01' %}
+{% set start_date = '2025-04-01' %}
 
 WITH initializations AS (
+  -- Use the pre-materialized initializations table
   SELECT
-    account_account AS token_account,
+    token_account,
     account_owner,
     account_mint,
-    call_block_time AS event_time,
-    'init' AS event_type
-  FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount') }}
-  WHERE call_block_time >= timestamp '{{start_date}}'
-
-  UNION ALL
-
-  SELECT
-    account_account,
-    owner as account_owner,
-    account_mint,
-    call_block_time,
-    'init'
-  FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount2') }}
-  WHERE call_block_time >= timestamp '{{start_date}}'
-
-  UNION ALL
-
-  SELECT
-    account_account,
-    owner as account_owner,
-    account_mint,
-    call_block_time,
-    'init'
-  FROM {{ source('spl_token_solana', 'spl_token_call_initializeaccount3') }}
-  WHERE call_block_time >= timestamp '{{start_date}}'
+    event_time,
+    'init' AS event_type,
+    token_account_prefix
+  FROM {{ ref('alt_solana_utils_token_account_initializations') }}
 ),
 
 latest_init_before_transfer AS (
@@ -48,11 +32,15 @@ latest_init_before_transfer AS (
     sa.call_block_time AS transfer_time,
     MAX(i.event_time) AS latest_init_time
   FROM {{ source('spl_token_solana', 'spl_token_call_setauthority') }} sa
-  LEFT JOIN initializations i 
+  -- Join to ALL initializations, not just recent ones
+  LEFT JOIN {{ ref('alt_solana_utils_token_account_initializations') }} i 
     ON sa.account_owned = i.token_account
     AND i.event_time < sa.call_block_time
   WHERE json_extract_scalar(sa.authorityType, '$.AuthorityType') = 'AccountOwner'
     AND sa.call_block_time >= timestamp '{{start_date}}'
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('sa.call_block_time') }}
+    {% endif %}
   GROUP BY i.token_account, i.account_mint, sa.call_block_time
 ),
 
@@ -63,10 +51,14 @@ latest_init_before_closure AS (
     c.call_block_time AS closure_time,
     MAX(i.event_time) AS latest_init_time
   FROM {{ source('spl_token_solana', 'spl_token_call_closeaccount') }} c
-  LEFT JOIN initializations i 
+  -- Join to ALL initializations, not just recent ones
+  LEFT JOIN {{ ref('alt_solana_utils_token_account_initializations') }} i 
     ON c.account_account = i.token_account
     AND i.event_time < c.call_block_time
   WHERE c.call_block_time >= timestamp '{{start_date}}'
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('c.call_block_time') }}
+    {% endif %}
   GROUP BY i.token_account, i.account_mint, c.call_block_time
 ),
 
@@ -76,13 +68,17 @@ ownership_transfers AS (
     sa.newAuthority AS account_owner,
     li.account_mint, -- get mint from latest initialization
     sa.call_block_time AS event_time,
-    'owner_change' AS event_type
+    'owner_change' AS event_type,
+    SUBSTRING(sa.account_owned, 1, 1) AS token_account_prefix
   FROM {{ source('spl_token_solana', 'spl_token_call_setauthority') }} sa
   LEFT JOIN latest_init_before_transfer li 
     ON sa.account_owned = li.token_account
     AND sa.call_block_time = li.transfer_time
   WHERE json_extract_scalar(sa.authorityType, '$.AuthorityType') = 'AccountOwner'
     AND sa.call_block_time >= timestamp '{{start_date}}'
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('sa.call_block_time') }}
+    {% endif %}
 ),
 
 closures AS (
@@ -91,38 +87,27 @@ closures AS (
     NULL AS account_owner,
     li.account_mint, -- get mint from latest initialization
     c.call_block_time AS event_time,
-    'close' AS event_type
+    'close' AS event_type,
+    SUBSTRING(c.account_account, 1, 1) AS token_account_prefix
   FROM {{ source('spl_token_solana', 'spl_token_call_closeaccount') }} c
   LEFT JOIN latest_init_before_closure li 
     ON c.account_account = li.token_account
     AND c.call_block_time = li.closure_time
   WHERE c.call_block_time >= timestamp '{{start_date}}'
-),
-
-all_events AS (
-  SELECT * FROM initializations
-  UNION ALL
-  SELECT * FROM ownership_transfers
-  UNION ALL
-  SELECT * FROM closures
-),
-
-timeline AS (
-  SELECT
-    token_account,
-    account_owner,
-    account_mint,
-    event_time AS valid_from,
-    LEAD(event_time) OVER (PARTITION BY token_account ORDER BY event_time) AS valid_to
-  FROM all_events
+    {% if is_incremental() %}
+    AND {{ incremental_predicate('c.call_block_time') }}
+    {% endif %}
 )
 
-SELECT
-  token_account,
-  account_owner,
-  account_mint,
-  valid_from,
-  COALESCE(valid_to, TIMESTAMP '9999-12-31 23:59:59') AS valid_to
-FROM timeline
-WHERE account_owner IS NOT NULL AND account_mint IS NOT NULL
-ORDER BY token_account, valid_from
+-- Only query recent initialization events in incremental mode
+{% if is_incremental() %}
+SELECT * FROM initializations
+WHERE {{ incremental_predicate('event_time') }}
+{% else %}
+SELECT * FROM initializations
+{% endif %}
+
+UNION ALL
+SELECT * FROM ownership_transfers
+UNION ALL
+SELECT * FROM closures 
