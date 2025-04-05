@@ -740,5 +740,6 @@ FROM
         ('paxg-pax-gold','solana','PAXG','C6oFsE8nXRDThzrMEQ5SxaNFGKoyyfWDDVPw37JKvPTe',8),
         ('link-chainlink','solana','LINK','CWE8jPTUYhdCTZYWPTe1o5DFqfdjzWKc9WKz6rSjQUdG',6),
         ('virtual-virtual-protocol','solana','VIRTUAL','3iQL8BFS2vE7mww4ehAqQHAsbmRNCrPxizWAT2Zfyr9y',9),
-        ('ldo-lido-dao','solana','LDO','HZRCwxP2Vq9PCpPXooayhJ2bxTpo5xfpQrwB1svh332p',8)
+        ('ldo-lido-dao','solana','LDO','HZRCwxP2Vq9PCpPXooayhJ2bxTpo5xfpQrwB1svh332p',8),
+        ('dbr-debridge','solana','DBR','DBRiDgJAMsM95moTzJs7M9LnkGErpbv9v6CUR1DXnUu5',6)
 ) as temp (token_id, blockchain, symbol, contract_address, decimals)
