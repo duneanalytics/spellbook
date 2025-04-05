@@ -91,7 +91,7 @@ SELECT
   null as account_mint,
   call_block_time AS event_time,
   DATE_TRUNC('month', call_block_time) AS block_month,
-  SUBSTRING(account_account, 1, 2) AS token_account_prefix,
+  SUBSTRING(newAuthority, 1, 2) AS token_account_prefix,
   'owner_change' AS event_type,
      CONCAT(
       lpad(cast(call_block_slot as varchar), 12, '0'), '-', 

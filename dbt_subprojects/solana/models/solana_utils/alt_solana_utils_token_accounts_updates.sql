@@ -7,7 +7,7 @@
   )
 }}
 
-{% set start_date = '2025-04-01' %}
+{% set start_date = '2025-04-05' %}
 
 -- Combine state calculation and interval determination in one CTE
 WITH combined_events AS (
@@ -20,10 +20,10 @@ WITH combined_events AS (
     -- When an account closes, the mint resets to NULL
     CASE
       WHEN event_type = 'owner_change' THEN
-        LAST_VALUE(account_mint IGNORE NULLS) OVER (
+        LAST_VALUE(account_mint) OVER (
           PARTITION BY token_account
-          ORDER BY instruction_uniq_id ASC
-          ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+          ORDER BY instruction_uniq_id ASC 
+        )
       ELSE account_mint
     END AS account_mint,
     event_time AS valid_from,
@@ -46,7 +46,6 @@ SELECT
   valid_from_instruction_uniq_id,
   COALESCE(valid_to, TIMESTAMP '9999-12-31 23:59:59') AS valid_to,
   COALESCE(valid_to_instruction_uniq_id, '999999999999999999999') AS valid_to_instruction_uniq_id,
-  token_account_prefix,
-  instruction_uniq_id
+  token_account_prefix
 FROM combined_events
 
