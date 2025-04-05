@@ -1,5 +1,6 @@
 {{
   config(
+    tags=['prod_exclude'],
     schema='solana_utils',
     alias='token_accounts_alt_approach_self_join',
     materialized='table'
