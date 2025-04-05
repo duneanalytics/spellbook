@@ -10,6 +10,7 @@
     , ref('uniswap_v3_ink_base_trades')
     , ref('uniswap_v4_ink_base_trades')
     , ref('inkyswap_ink_base_trades')
+    , ref('squidswap_ink_base_trades')
 ] %}
 
 WITH base_union AS (
