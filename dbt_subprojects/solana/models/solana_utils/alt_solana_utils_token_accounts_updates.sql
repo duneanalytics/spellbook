@@ -1,7 +1,7 @@
 {{
   config(
     schema='solana_utils',
-    alias='token_accounts_alt_approach_lead_func',
+    alias='alt_solana_utils_token_accounts_updates',
     materialized='table',
     partition_by=['token_account_prefix']
   )
@@ -9,37 +9,44 @@
 
 {% set start_date = '2025-04-01' %}
 
--- Final model that applies the lead function to the incremental events model
-WITH events_filtered AS (
+-- Combine state calculation and interval determination in one CTE
+WITH combined_events AS (
   SELECT
     token_account,
     account_owner,
-    account_mint,
+    -- Calculate account_mint using LAST_VALUE
+    -- When an account is initialized, the mint is carried forward
+    -- When an account owner changes, the mint is carried forward
+    -- When an account closes, the mint resets to NULL
+    CASE
+      WHEN event_type = 'owner_change' THEN
+        LAST_VALUE(account_mint IGNORE NULLS) OVER (
+          PARTITION BY token_account
+          ORDER BY instruction_uniq_id ASC
+          ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)
+      ELSE account_mint
+    END AS account_mint,
     event_time AS valid_from,
-    token_account_prefix,
-    instruction_uniq_id
-  FROM {{ ref('alt_solana_utils_token_accounts_events') }}
-),
-
-timeline AS (
-  SELECT
-    token_account,
-    account_owner,
-    account_mint,
-    valid_from,
-    LEAD(valid_from) OVER (PARTITION BY token_account ORDER BY valid_from) AS valid_to,
-    token_account_prefix,
-    instruction_uniq_id
-  FROM events_filtered
+    instruction_uniq_id as valid_from_instruction_uniq_id,
+    -- the next event time is the valid_to
+    LEAD(event_time, 1) OVER (PARTITION BY token_account ORDER BY event_time ASC) AS valid_to,
+    LEAD(instruction_uniq_id, 1) OVER (PARTITION BY token_account ORDER BY instruction_uniq_id ASC) AS valid_to_instruction_uniq_id,
+    block_month,
+    event_type,
+    token_account_prefix
+  FROM {{ ref('alt_solana_utils_token_account_raw_data') }}
 )
 
+-- Final selection from the combined CTE
 SELECT
   token_account,
   account_owner,
   account_mint,
   valid_from,
+  valid_from_instruction_uniq_id,
   COALESCE(valid_to, TIMESTAMP '9999-12-31 23:59:59') AS valid_to,
+  COALESCE(valid_to_instruction_uniq_id, '999999999999999999999') AS valid_to_instruction_uniq_id,
   token_account_prefix,
   instruction_uniq_id
-FROM timeline
-WHERE account_owner IS NOT NULL AND account_mint IS NOT NULL
+FROM combined_events
+
